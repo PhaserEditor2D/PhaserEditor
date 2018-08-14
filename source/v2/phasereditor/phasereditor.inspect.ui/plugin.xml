@@ -28,7 +28,7 @@
       <view
             category="phasereditor.ui.phaser"
             class="phasereditor.inspect.ui.views.PhaserFilesView"
-            icon="platform:/plugin/phasereditor.ui/icons/page_white_code.png"
+            icon="platform:/plugin/phasereditor.ui/icons/generic_editor.png"
             id="phasereditor.inspect.ui.views.PhaserFilesView"
             name="Phaser Files">
       </view>

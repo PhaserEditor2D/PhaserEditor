@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="16" height="16" version="1.1">
+	<title>Film</title>
+	<desc>Film</desc>
+	<g id="icon" transform="translate(8,8)">
+		<defs>
+			<linearGradient id="backing" x1="0%" y1="0%" x2="00%" y2="100%">
+				<stop offset="0%" stop-color="#717171" />
+				<stop offset="40%" stop-color="#515151" />
+				<stop offset="80%" stop-color="#404040" />
+				<stop offset="100%" stop-color="#050505" />
+			</linearGradient>
+			<linearGradient id="sky" x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#76c8ff" />
+				<stop offset="50%" stop-color="#68beff" />
+				<stop offset="80%" stop-color="#60b9ff" />
+				<stop offset="100%" stop-color="#2e9cff" />
+			</linearGradient>
+			<linearGradient id="grass" x1="0%" y1="0%" x2="0%" y2="100%">
+				<stop offset="0%" stop-color="#80da4f" />
+				<stop offset="100%" stop-color="#9be26e" />
+			</linearGradient>
+			<linearGradient id="bush" x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#2bbe3f" />
+				<stop offset="100%" stop-color="#6ad142" />
+			</linearGradient>
+			<linearGradient id="plague" x1="0%" y1="0%" x2="100%" y2="0%">
+				<stop offset="0%" stop-color="#e8d462" />
+				<stop offset="100%" stop-color="#e9d461" />
+			</linearGradient>
+			<mask id="grips">
+				<rect width="16" height="16" x="-8" y="-8" fill="#ffffff" />
+				<g id="side">
+					<g id="dashes">
+						<rect width="1" height="0.75" x="4" y="1.5" fill="#818181" />
+						<rect width="1" height="0.75" x="4" y="3.75" fill="#5a5a5a" />
+						<rect width="1" height="0.75" x="4" y="6" fill="#4d4d4d" />
+					</g>
+					<use xlink:href="#dashes" transform="scale(1,-1) translate(0,-1)" />
+				</g>
+				<use xlink:href="#side" transform="scale(-1,1)" />
+			</mask>
+		</defs>
+		<path fill="url(#backing)" mask="url(#grips)"
+			d="M0,-6 h3 a1,1 0 0,1 1,-1 h1 a1,1 0 0,1 1,1 v13 a1,1 0 0,1 -1,1 h-1 a1,1 0 0,1 -1,-1 h-6 a1,1 0 0,1 -1,1 h-1 a1,1 0 0,1 -1,-1 v-13 a1,1 0 0,1 1,-1 h1 a1,1 0 0,1 1,1 h3 z" />
+		<g id="picture">
+			<rect width="6" height="4" x="-3" y="1" fill="url(#sky)" />
+			<path fill="#f8de60" d="M3,1 v2 a2,2 0 0,1 -2,-2" />
+			<path fill="#fae78c" d="M3,1 v1 a1,1 0 0,1 -1,-1" />
+			<rect width="6" height="1" x="-3" y="5" fill="url(#grass)" />
+			<path fill="url(#bush)" d="M-3,2 c2.5,0 2.5,2 3.5,2 a1,1 0 0,1 1,1 l-4.5,0" />
+			<path fill="#60cb70" d="M-3,2 a1.5,1.5 0 0,1 0,3" />
+		</g>
+		<use xlink:href="#picture" transform="translate(0,-6)" />
+	</g>
+</svg>

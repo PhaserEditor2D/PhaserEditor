@@ -91,8 +91,8 @@
       <wizard
             class="phasereditor.animation.ui.editor.wizards.NewAnimationsFileWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
-            id="phasereditor.animation.ui.newAnimationsFile"
+            icon="platform:/plugin/phasereditor.ui/icons/new_frame-animation.png"
+            id="phasereditor.animation.ui.editor.newAnimationsFile"
             name="Animations File">
          <description>
             Creates a new Animations JSON file.

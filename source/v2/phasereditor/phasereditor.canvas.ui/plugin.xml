@@ -20,7 +20,7 @@
             category="phasereditor.ui.wizardCategory"
             class="phasereditor.canvas.ui.wizards.NewWizard_State"
             hasPages="true"
-            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
+            icon="platform:/plugin/phasereditor.ui/icons/new_canvas.png"
             id="phasereditor.canvas.ui.newStateWizard"
             name="State File">
       </wizard>
@@ -28,7 +28,7 @@
             category="phasereditor.ui.wizardCategory"
             class="phasereditor.canvas.ui.wizards.NewWizard_Group"
             hasPages="true"
-            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
+            icon="platform:/plugin/phasereditor.ui/icons/new_canvas.png"
             id="phasereditor.canvas.ui.newGroupWizard"
             name="Group Prefab File">
       </wizard>
@@ -36,7 +36,7 @@
             category="phasereditor.ui.wizardCategory"
             class="phasereditor.canvas.ui.wizards.NewWizard_Sprite"
             hasPages="true"
-            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
+            icon="platform:/plugin/phasereditor.ui/icons/new_canvas.png"
             id="phasereditor.canvas.ui.newSpriteWizard"
             name="Sprite Prefab File">
       </wizard>
@@ -964,7 +964,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.showcode"
-                  icon="platform:/plugin/phasereditor.ui/icons/page_white_code.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/generic_editor.png"
                   style="push">
                <visibleWhen
                      checkEnabled="false">

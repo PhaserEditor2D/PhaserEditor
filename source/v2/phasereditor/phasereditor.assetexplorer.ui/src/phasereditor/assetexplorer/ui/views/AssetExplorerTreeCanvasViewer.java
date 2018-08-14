@@ -102,22 +102,22 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		}
 
 		if (elem instanceof CanvasType) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewCanvasWizardLauncher((CanvasType) elem)));
+			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_CANVAS, new NewCanvasWizardLauncher((CanvasType) elem)));
 			item.setHeader(true);
 		}
 
 		if (elem == AssetExplorer.ANIMATIONS_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewAnimationWizardLauncher()));
+			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_FRAME_ANIMATION, new NewAnimationWizardLauncher()));
 			item.setHeader(true);
 		}
 
 		if (elem == AssetExplorer.ATLAS_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewAtlasWizardLauncher()));
+			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_ATLAS, new NewAtlasWizardLauncher()));
 			item.setHeader(true);
 		}
 
 		if (elem == AssetExplorer.PACK_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewAssetPackWizardLauncher()));
+			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_BOX, new NewAssetPackWizardLauncher()));
 			item.setHeader(true);
 		}
 
@@ -160,8 +160,8 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 	class NewWizardLauncherTreeItemAction extends TreeCanvasItemAction {
 		private NewWizardLancher _launcher;
 
-		public NewWizardLauncherTreeItemAction(NewWizardLancher launcher) {
-			super(EditorSharedImages.getImage(IMG_ADD), launcher.getLabel());
+		public NewWizardLauncherTreeItemAction(String icon, NewWizardLancher launcher) {
+			super(EditorSharedImages.getImage(icon), launcher.getLabel());
 			_launcher = launcher;
 		}
 

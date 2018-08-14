@@ -38,8 +38,8 @@ public interface IEditorSharedImages {
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";
 	String IMG_GENERIC_ELEMENT = "icons/generic_element.png";
 	String IMG_IMAGES = "icons/images.png";
+	String IMG_NEW_ATLAS= "icons/atlas_add.png";
 	String IMG_IMAGE = "icons/image.png";
-	String IMG_SCRIPT_CODE = "icons/page_white_code.png";
 	String IMG_ASSET_FOLDER = "icons/folder_brick.png";
 	String IMG_ASSET_KEY = "icons/brick.png";
 	String IMG_ASSET_ELEM_KEY = IMG_GENERIC_ELEMENT;
@@ -50,6 +50,7 @@ public interface IEditorSharedImages {
 	String IMG_PACKAGE_ADD = "icons/package_add.png";
 	String IMG_PACKAGE_SEARCH = "icons/box.png";
 	String IMG_BOX = "icons/box.png";
+	String IMG_NEW_BOX = "icons/box_add.png";
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";
 	String IMG_TEMPLATE_OBJ = "icons/template_obj.png";
 	String IMG_WORLD = "icons/world.png";
@@ -67,12 +68,14 @@ public interface IEditorSharedImages {
 	String IMG_SHAPE_EDIT = "icons/shape_square_edit.png";
 	String IMG_PACKAGE_2 = "icons/package.png";
 	String IMG_CANVAS = "icons/canvas.png";
+	String IMG_NEW_CANVAS = "icons/new_canvas.png";
 	String IMG_MONITOR_EDIT = "icons/monitor_edit.png";
 	String IMG_ROTATE = "icons/arrow-rotate-clockwise.png";
 	String IMG_PLAY = "icons/control_play.png";
 	String IMG_PAUSE = "icons/control_pause.png";
 	String IMG_STOP = "icons/control_stop.png";
 	String IMG_FRAME_ANIMATION = "icons/frame-animation.png";
+	String IMG_NEW_FRAME_ANIMATION = "icons/new_frame-animation.png";
 	String IMG_NEW_VIEW = "platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png";
 	String IMG_CONTROL_EQUALIZER = "icons/control_equalizer.png";
 	String IMG_ARROW_OUT = "icons/arrow_out.png";

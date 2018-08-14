@@ -49,7 +49,7 @@ public class PhaserFileStyledLabelProvider extends PhaserElementStyledLabelProvi
 			if (Files.isDirectory(path)) {
 				cell.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER));
 			} else {
-				cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
+				cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_GENERIC_EDITOR));
 			}
 		}
 

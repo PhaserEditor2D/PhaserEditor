@@ -29,7 +29,7 @@
             class="phasereditor.project.ui.wizards.NewJSClassFileWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
             hasPages="true"
-            icon="platform:/plugin/phasereditor.ui/icons/page_white_code.png"
+            icon="platform:/plugin/phasereditor.ui/icons/new_generic_editor.png"
             id="phasereditor.project.ui.newclass"
             name="JavaScript Class File">
       </wizard>
