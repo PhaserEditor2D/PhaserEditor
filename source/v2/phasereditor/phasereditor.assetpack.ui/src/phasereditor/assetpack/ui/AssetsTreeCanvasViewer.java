@@ -86,8 +86,11 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			var frames = asset.getSubElements();
 			if (!frames.isEmpty()) {
 				var frame = frames.get(0);
-				fd = frame.getFrameData();
 				file = frame.getImageFile();
+				var img = getCanvas().loadImage(file);
+				if (img != null) {
+					fd = FrameData.fromImage(img);
+				}
 			}
 		} else if (elem instanceof SpritesheetAssetModel) {
 			var asset = (SpritesheetAssetModel) elem;
@@ -129,6 +132,9 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		if (file == null || fd == null) {
 			super.setItemIconProperties(item, elem);
 		} else {
+			// we do this to the loading at once!
+			getCanvas().loadImage(file);
+			
 			item.setFrameData(fd);
 			item.setImageFile(file);
 			item.setIconType(IconType.IMAGE_FRAME);
