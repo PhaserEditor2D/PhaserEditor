@@ -38,7 +38,7 @@ public class PGridModel {
 		_sections = new ArrayList<>();
 		_extraData = new HashMap<>();
 	}
-	
+
 	public Map<String, Object> getExtraData() {
 		return _extraData;
 	}
@@ -46,7 +46,7 @@ public class PGridModel {
 	public List<PGridSection> getSections() {
 		return _sections;
 	}
-	
+
 	public void addSection(String name, PGridProperty<?>... porperties) {
 		_sections.add(new PGridSection(name, porperties));
 	}
@@ -61,4 +61,29 @@ public class PGridModel {
 		}
 		return null;
 	}
+
+	@SuppressWarnings({ "static-method", "rawtypes", "unchecked" })
+	public void setPropertyValue(PGridProperty prop, Object value, boolean notify) {
+		prop.setValue(value, notify);
+	}
+
+	@SuppressWarnings({ "rawtypes", "static-method" })
+	public Object getPropertyValue(PGridProperty prop) {
+		return prop.getValue();
+	}
+	
+	private PGridPage _propertyPage;
+
+	public void setPropertyPage(PGridPage propertyPage) {
+		_propertyPage = propertyPage;
+	}
+
+	public PGridPage getPropertyPage() {
+		return _propertyPage;
+	}
+
+	protected void refreshGrid() {
+		_propertyPage.getGrid().refresh();
+	}
+
 }

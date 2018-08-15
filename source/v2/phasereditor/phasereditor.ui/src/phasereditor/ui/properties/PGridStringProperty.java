@@ -47,4 +47,9 @@ public abstract class PGridStringProperty extends PGridProperty<String> {
 	public String getMessage() {
 		return _message;
 	}
+	
+	@Override
+	public String getDefaultValue() {
+		return "";
+	}
 }

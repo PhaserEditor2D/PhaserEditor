@@ -21,11 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 
 import phasereditor.animation.ui.editor.AnimationsEditor;
+import phasereditor.ui.properties.MultiPGridModel;
+import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridPage;
 
 /**
@@ -53,12 +62,30 @@ public class AnimationsPGridPage extends PGridPage {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+
 		super.selectionChanged(part, selection);
 
-		var model = (BaseAnimationPGridModel) getGrid().getModel();
+		PGridModel model = getGrid().getModel();
+
 		if (model != null) {
 			model.setPropertyPage(this);
 		}
+	}
+
+	@Override
+	protected PGridModel createModelWithSelection(IStructuredSelection selection) {
+		var elems = selection.toArray();
+
+		if (elems.length > 1) {
+			List<PGridModel> models = Arrays.stream(elems)
+					.map(e -> createModelWithSelection(new StructuredSelection(e))).collect(toList());
+
+			MultiPGridModel multiModel = new MultiPGridModel(models);
+
+			return multiModel;
+		}
+		
+		return super.createModelWithSelection(selection);
 	}
 
 }

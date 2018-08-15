@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Font;
 
 /**
@@ -30,8 +29,8 @@ import org.eclipse.swt.graphics.Font;
  */
 public class PGridKeyLabelProvider extends PGridLabelProvider {
 
-	public PGridKeyLabelProvider(Viewer viewer) {
-		super(viewer);
+	public PGridKeyLabelProvider(PGrid grid) {
+		super(grid);
 	}
 
 	@Override

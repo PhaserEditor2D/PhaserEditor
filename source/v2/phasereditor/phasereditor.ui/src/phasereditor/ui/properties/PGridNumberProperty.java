@@ -67,4 +67,9 @@ public abstract class PGridNumberProperty extends PGridProperty<Double> {
 	public boolean isInteger() {
 		return _isInteger;
 	}
+	
+	@Override
+	public Double getDefaultValue() {
+		return Double.valueOf(0);
+	}
 }

@@ -40,7 +40,7 @@ public abstract class PGridProperty<T> {
 		_nodeId = nodeId;
 		_tooltip = tooltip;
 	}
-	
+
 	public PGridSection getSection() {
 		return _section;
 	}
@@ -75,7 +75,7 @@ public abstract class PGridProperty<T> {
 	public abstract void setValue(T value, boolean notify);
 
 	public abstract boolean isModified();
-	
+
 	public T getDefaultValue() {
 		throw new UnsupportedOperationException();
 	}
@@ -91,5 +91,9 @@ public abstract class PGridProperty<T> {
 	@SuppressWarnings({ "static-method", "unused" })
 	public CellEditor createCellEditor(Composite parent, Object element) {
 		return null;
+	}
+
+	public boolean matches(PGridProperty<?> other) {
+		return getClass() == other.getClass() && getName().equals(other.getName());
 	}
 }

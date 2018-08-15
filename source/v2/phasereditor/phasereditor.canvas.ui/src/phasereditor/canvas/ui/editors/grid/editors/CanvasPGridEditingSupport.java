@@ -57,6 +57,7 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.ComboBoxViewerCellEditor2;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.properties.PGrid;
 import phasereditor.ui.properties.PGridEditingSupport;
 import phasereditor.ui.properties.PGridNumberProperty;
 import phasereditor.ui.properties.PGridProperty;
@@ -71,8 +72,8 @@ public class CanvasPGridEditingSupport extends PGridEditingSupport {
 
 	private ObjectCanvas _canvas;
 
-	public CanvasPGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
-		super(viewer, supportUndoRedo);
+	public CanvasPGridEditingSupport(PGrid grid, ColumnViewer viewer, boolean supportUndoRedo) {
+		super(grid, viewer, supportUndoRedo);
 	}
 
 	public void setCanvas(ObjectCanvas canvas) {

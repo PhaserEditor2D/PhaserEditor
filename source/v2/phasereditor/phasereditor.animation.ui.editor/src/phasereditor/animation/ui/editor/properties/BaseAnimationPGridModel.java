@@ -30,21 +30,12 @@ import phasereditor.ui.properties.PGridModel;
  */
 public class BaseAnimationPGridModel extends PGridModel {
 
-	private AnimationsPGridPage _propertyPage;
-
-	public void setPropertyPage(AnimationsPGridPage propertyPage) {
-		_propertyPage = propertyPage;
-	}
-
+	@Override
 	public AnimationsPGridPage getPropertyPage() {
-		return _propertyPage;
+		return (AnimationsPGridPage) super.getPropertyPage();
 	}
-
-	protected void refreshGrid() {
-		_propertyPage.getGrid().refresh();
-	}
-
+	
 	public AnimationsEditor getEditor() {
-		return _propertyPage.getEditor();
+		return getPropertyPage().getEditor();
 	}
 }

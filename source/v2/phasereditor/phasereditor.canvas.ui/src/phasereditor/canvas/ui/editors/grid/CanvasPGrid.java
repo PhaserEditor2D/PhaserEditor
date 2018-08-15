@@ -46,12 +46,12 @@ public class CanvasPGrid extends PGrid {
 
 	@Override
 	protected PGridEditingSupport createEditingSupport(TreeViewer viewer, boolean supportUndoRedo) {
-		return new CanvasPGridEditingSupport(viewer, supportUndoRedo);
+		return new CanvasPGridEditingSupport(this, viewer, supportUndoRedo);
 	}
 
 	@Override
 	protected PGridValueLabelProvider createValueLabelProvider() {
-		return new CanvasPGridValueLabelProvider(getViewer());
+		return new CanvasPGridValueLabelProvider(this);
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class PGrid extends Composite {
 	private PGridValueLabelProvider _valueLabelProvider;
 	private PGridKeyLabelProvider _keyLabelProvider;
 	private boolean _alwaysExpandAll;
-	
+
 	public PGrid(Composite parent, int style) {
 		this(parent, style, true, false);
 	}
@@ -139,16 +139,15 @@ public class PGrid extends Composite {
 	}
 
 	protected PGridKeyLabelProvider createKeyLabelProvider() {
-		return new PGridKeyLabelProvider(_treeViewer);
+		return new PGridKeyLabelProvider(this);
 	}
 
 	protected PGridValueLabelProvider createValueLabelProvider() {
-		return new PGridValueLabelProvider(getViewer());
+		return new PGridValueLabelProvider(this);
 	}
 
-	@SuppressWarnings("static-method")
 	protected PGridEditingSupport createEditingSupport(TreeViewer viewer, boolean supportUndoRedo) {
-		return new PGridEditingSupport(viewer, supportUndoRedo);
+		return new PGridEditingSupport(this, viewer, supportUndoRedo);
 	}
 
 	public PGridEditingSupport getEditSupport() {
@@ -293,9 +292,14 @@ public class PGrid extends Composite {
 			return;
 		}
 
+		var expandTheFirstTime = _model == null;
+
 		if (model == _model) {
 			_treeViewer.refresh();
 		} else {
+
+			_model = model;
+
 			Object[] expanded = _treeViewer.getExpandedElements();
 			Object[] selected = ((IStructuredSelection) _treeViewer.getSelection()).toArray();
 
@@ -341,11 +345,10 @@ public class PGrid extends Composite {
 		}
 
 		// expand it first time
-		if (_model == null) {
+		if (expandTheFirstTime) {
 			_treeViewer.expandAll();
 		}
 
-		_model = model;
 	}
 
 	protected void updateColumnsLayout() {

@@ -24,7 +24,6 @@ package phasereditor.ui.properties;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
@@ -36,19 +35,48 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class PGridValueLabelProvider extends PGridLabelProvider {
-	public PGridValueLabelProvider(ColumnViewer viewer) {
-		super(viewer);
+	public PGridValueLabelProvider(PGrid grid) {
+		super(grid);
 	}
 
+	@SuppressWarnings("rawtypes")
+	protected Object getPropertyValue(PGridProperty prop) {
+		PGrid grid = getGrid();
+		PGridModel model = grid.getModel();
+		return model.getPropertyValue(prop);
+	}
+
+	@SuppressWarnings("rawtypes")
 	@Override
-	public String getText(Object element) {
+	public final String getText(Object element) {
 		if (element instanceof PGridSection) {
 			return "(properties)";
 		}
 
+		if (element instanceof PGridProperty) {
+			var prop = (PGridProperty) element;
+
+			var model = getGrid().getModel();
+			if (model instanceof MultiPGridModel) {
+
+				var values = ((MultiPGridModel) model).getPropertyValues(prop);
+
+				if (values.size() != 1) {
+					return "";
+				}
+			}
+
+			return getPropertyValueLabel(prop);
+		}
+
+		return super.getText(element);
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected String getPropertyValueLabel(PGridProperty element) {
 		if (element instanceof PGridColorProperty) {
 			PGridColorProperty prop = (PGridColorProperty) element;
-			RGB rgb = prop.getValue();
+			RGB rgb = (RGB) getPropertyValue(prop);
 
 			if (rgb == null) {
 				return "";
@@ -61,13 +89,8 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			return ColorButtonSupport.getHexString(rgb);
 		}
 
-
-		if (element instanceof PGridProperty) {
-			Object value = ((PGridProperty<?>) element).getValue();
-			return value == null ? "" : value.toString().replace("\n\r", "").replace("\n", "");
-		}
-
-		return super.getText(element);
+		Object value = getPropertyValue((element));
+		return value == null ? "" : value.toString().replace("\n\r", "").replace("\n", "");
 	}
 
 	private Map<Object, Image> _images = new HashMap<>();
@@ -81,7 +104,7 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 				return null;
 			}
 
-			RGB value = prop.getValue();
+			RGB value = (RGB) getPropertyValue(prop);
 			if (value == null) {
 				return null;
 			}

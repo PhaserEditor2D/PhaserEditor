@@ -38,8 +38,15 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 
 	private Viewer _viewer;
 
-	public PGridLabelProvider(Viewer viewer) {
-		_viewer = viewer;
+	private PGrid _grid;
+
+	public PGridLabelProvider(PGrid grid) {
+		_grid = grid;
+		_viewer = grid.getViewer();
+	}
+	
+	public PGrid getGrid() {
+		return _grid;
 	}
 
 	public Viewer getViewer() {

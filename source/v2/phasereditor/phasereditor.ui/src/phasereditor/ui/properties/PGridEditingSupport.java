@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
+import static java.lang.System.out;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -29,6 +31,7 @@ import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -45,10 +48,12 @@ public class PGridEditingSupport extends EditingSupport {
 
 	private boolean _supportUndoRedo;
 	private Runnable _onChanged;
+	private PGrid _grid;
 
-	public PGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
+	public PGridEditingSupport(PGrid grid, ColumnViewer viewer, boolean supportUndoRedo) {
 		super(viewer);
 		_supportUndoRedo = supportUndoRedo;
+		_grid = grid;
 	}
 
 	public void setOnChanged(Runnable onChanged) {
@@ -58,7 +63,7 @@ public class PGridEditingSupport extends EditingSupport {
 	public Runnable getOnChanged() {
 		return _onChanged;
 	}
-
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	protected CellEditor getCellEditor(Object element) {
@@ -148,17 +153,26 @@ public class PGridEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 		if (element instanceof PGridProperty<?>) {
-			return ((PGridProperty<?>) element).getValue();
+
+			PGridProperty<?> prop = (PGridProperty<?>) element;
+
+			Object value = _grid.getModel().getPropertyValue(prop);
+
+			return value;
 		}
+
 		return null;
 	}
 
-	@SuppressWarnings({ "null", "rawtypes", "unchecked" })
+	@SuppressWarnings({ "null", "rawtypes" })
 	@Override
 	protected void setValue(Object element, Object value) {
+
+		PGridModel model = _grid.getModel();
+
 		PGridProperty prop = (PGridProperty) element;
 
-		Object old = prop.getValue();
+		Object old = model.getPropertyValue(prop);
 
 		boolean changed = false;
 
@@ -184,7 +198,9 @@ public class PGridEditingSupport extends EditingSupport {
 				executeChangePropertyValueOperation(value, prop);
 
 			} else {
-				prop.setValue(value, true);
+
+				model.setPropertyValue(prop, value, true);
+
 				if (_onChanged != null) {
 					_onChanged.run();
 				}

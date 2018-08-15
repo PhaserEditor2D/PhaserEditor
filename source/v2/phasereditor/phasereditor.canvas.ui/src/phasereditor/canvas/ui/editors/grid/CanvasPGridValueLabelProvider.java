@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
@@ -41,10 +40,10 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.properties.PGrid;
 import phasereditor.ui.properties.PGridColorProperty;
 import phasereditor.ui.properties.PGridEnumProperty;
 import phasereditor.ui.properties.PGridProperty;
-import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridValueLabelProvider;
 
 /**
@@ -54,8 +53,8 @@ import phasereditor.ui.properties.PGridValueLabelProvider;
 public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 	private ObjectCanvas _canvas;
 
-	public CanvasPGridValueLabelProvider(ColumnViewer viewer) {
-		super(viewer);
+	public CanvasPGridValueLabelProvider(PGrid grid) {
+		super(grid);
 	}
 
 	public void setCanvas(ObjectCanvas canvas) {
@@ -66,20 +65,18 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 		return _canvas;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public String getText(Object element) {
-		if (element instanceof PGridSection) {
-			return "(properties)";
-		}
+	protected Object getPropertyValue(PGridProperty element) {
 
 		if (element instanceof PGridLoadPackProperty) {
-			Set<LoadPack> value = ((PGridLoadPackProperty) element).getValue();
+			Set<LoadPack> value = (Set<LoadPack>) getPropertyValue(element);
 			return LoadPack.toString(value);
 		}
 
 		if (element instanceof PGridColorProperty) {
 			PGridColorProperty prop = (PGridColorProperty) element;
-			RGB rgb = prop.getValue();
+			RGB rgb = (RGB) getPropertyValue(prop);
 
 			if (rgb == null) {
 				return "";
@@ -98,12 +95,12 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 		}
 
 		if (element instanceof PGridAnimationsProperty) {
-			List<AnimationModel> value = ((PGridAnimationsProperty) element).getValue();
+			List<AnimationModel> value = (List<AnimationModel>) getPropertyValue(element);
 			return PGridAnimationsProperty.getLabel(value);
 		}
 
 		if (element instanceof PGridEnumProperty) {
-			Object value = ((PGridEnumProperty<?>) element).getValue();
+			Object value = getPropertyValue(element);
 
 			if (value instanceof PhysicsType) {
 				return ((PhysicsType) value).getPhaserName();
@@ -120,7 +117,7 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 
 		if (element instanceof PGridSpriteProperty) {
 			PGridSpriteProperty prop = (PGridSpriteProperty) element;
-			String id = prop.getValue();
+			String id = (String) getPropertyValue(prop);
 			BaseObjectModel model = _canvas.getWorldModel().findById(id);
 
 			if (model == null) {
@@ -131,21 +128,16 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 		}
 
 		if (element instanceof PGridBitmapTextFontProperty) {
-			BitmapFontAssetModel asset = ((PGridBitmapTextFontProperty) element).getValue();
+			BitmapFontAssetModel asset = (BitmapFontAssetModel) getPropertyValue(element);
 			if (asset == null) {
 				return "null";
 			}
 
 			return asset.getKey();
 		}
-		
 
-		if (element instanceof PGridProperty) {
-			Object value = ((PGridProperty<?>) element).getValue();
-			return value == null ? "" : value.toString().replace("\n\r", "").replace("\n", "");
-		}
-
-		return super.getText(element);
+		Object value = getPropertyValue(element);
+		return value == null ? "" : value.toString().replace("\n\r", "").replace("\n", "");
 	}
 
 	private Map<Object, Image> _images = new HashMap<>();
@@ -159,7 +151,7 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 				return null;
 			}
 
-			RGB value = prop.getValue();
+			RGB value = (RGB) getPropertyValue(prop);
 			if (value == null) {
 				return null;
 			}
@@ -172,7 +164,7 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 		}
 
 		if (element instanceof PGridFrameProperty) {
-			return AssetLabelProvider.GLOBAL_16.getImage(((PGridFrameProperty) element).getValue());
+			return AssetLabelProvider.GLOBAL_16.getImage(getPropertyValue((PGridFrameProperty) element));
 		}
 
 		return super.getImage(element);
