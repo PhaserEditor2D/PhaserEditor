@@ -98,7 +98,7 @@ public class AssetExplorer extends ViewPart {
 
 		_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
 		_filteredTreeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		_treeCanvas = _filteredTreeCanvas.getCanvas();
 		_treeCanvas.addMouseListener(new MouseAdapter() {
 			@Override
@@ -124,6 +124,7 @@ public class AssetExplorer extends ViewPart {
 
 		if (elem instanceof IProject) {
 			provider.forceToFocuseOnProject((IProject) elem);
+			_lastToken = elem;
 			_viewer.refreshContent();
 			// _treeCanvasAdapter.expandToLevel(3);
 		} else if (elem instanceof IFile) {
@@ -312,11 +313,11 @@ public class AssetExplorer extends ViewPart {
 
 	public void refreshContent(IProject project) {
 
-		out.println("Assets.refreshContent(" + project.getName() + ")");
+		out.println("Assets.refreshContent(" + (project == null ? "null" : project.getName()) + ")");
 
 		IProject currentProject = _contentProvider.getProjectInContent();
 
-		if (currentProject != null && project != currentProject) {
+		if (currentProject != null && project == currentProject) {
 			out.println("  Skip refresh.");
 			return;
 		}
@@ -334,7 +335,7 @@ public class AssetExplorer extends ViewPart {
 
 		try {
 			_treeCanvas.setRedraw(false);
-			
+
 			_viewer.refreshContent();
 
 			List<Object> toExpand = new ArrayList<>();
