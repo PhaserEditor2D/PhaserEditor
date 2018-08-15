@@ -113,7 +113,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				}
 				
 				for(var action : item.getActions()) {
-					if (action._hitArea.contains(x, y)) {
+					if (action._hitArea != null && action._hitArea.contains(x, y)) {
 						return false;
 					}
 				}
@@ -326,6 +326,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		_fullHeight = 0;
 
 		var gc = e.gc;
+		
+		prepareGC(gc);
 
 		Transform tx = new Transform(getDisplay());
 		tx.translate(0, _origin.y);
@@ -462,7 +464,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		if (_filterText != null) {
 			filter(_filterText);
 		} else {
-			redraw();
+			updateVisibleItemsList();
 		}
 	}
 

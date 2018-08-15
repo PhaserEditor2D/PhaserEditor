@@ -33,7 +33,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -74,7 +76,7 @@ public class BaseImageCanvas extends Canvas {
 		super(parent, style);
 
 		_disableCanche = false;
-		
+
 		_gobalCanvases.add(this);
 
 		_references = new ArrayList<>();
@@ -82,15 +84,21 @@ public class BaseImageCanvas extends Canvas {
 		addDisposeListener(this::widgetDisposed);
 	}
 
-	
+	public static void prepareGC(GC gc) {
+		if (!PhaserEditorUI.get_pref_Preview_Anitialias()) {
+			gc.setAntialias(SWT.OFF);
+			gc.setInterpolation(SWT.OFF);
+		}
+	}
+
 	public boolean isDisableCanche() {
 		return _disableCanche;
 	}
-	
+
 	public void setDisableCanche(boolean disableCanche) {
 		_disableCanche = disableCanche;
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void widgetDisposed(DisposeEvent e) {
 		if (PlatformUI.getWorkbench().isClosing()) {
@@ -113,7 +121,7 @@ public class BaseImageCanvas extends Canvas {
 		if (file == null || !file.exists()) {
 			return null;
 		}
-		
+
 		if (_disableCanche) {
 			Image image = new Image(getDisplay(), file.getAbsolutePath());
 			return image;

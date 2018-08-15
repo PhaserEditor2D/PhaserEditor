@@ -206,6 +206,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 		}
 
 		GC gc = e.gc;
+		
+		prepareGC(gc);
 
 		computeRects();
 

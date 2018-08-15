@@ -176,6 +176,8 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		}
 
 		var gc = e.gc;
+		
+		prepareGC(gc);
 
 		var tx = new Transform(getDisplay());
 		tx.translate(0, _origin.y);

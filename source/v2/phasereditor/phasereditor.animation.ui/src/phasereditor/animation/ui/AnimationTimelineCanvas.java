@@ -359,6 +359,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		var gc = e.gc;
 
+		prepareGC(gc);
+		
 		Transform tx = new Transform(getDisplay());
 		tx.translate(_origin, 0);
 		gc.setTransform(tx);

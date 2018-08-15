@@ -127,6 +127,7 @@ public class PhaserEditorUI {
 	public static final String PREF_VALUE_COLOR_DIALOG_JAVA = "java";
 	public static final String PREF_VALUE_COLOR_DIALOG_NATIVE = "native";
 
+	public static final String PREF_PROP_PREVIEW_ANTIALIAS = "phasereditor.ui.preview.antialiasing";
 	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = "phasereditor.ui.preview.imageBackgroundType";
 	public static final String PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT = "0";
 	public static final String PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_ONE_COLOR = "1";
@@ -264,6 +265,10 @@ public class PhaserEditorUI {
 
 	public static boolean get_pref_Dialog_Color_Java() {
 		return getPreferenceStore().getString(PREF_PROP_COLOR_DIALOG_TYPE).equals(PREF_VALUE_COLOR_DIALOG_JAVA);
+	}
+	
+	public static boolean get_pref_Preview_Anitialias() {
+		return getPreferenceStore().getBoolean(PREF_PROP_PREVIEW_ANTIALIAS);
 	}
 
 	public static boolean get_pref_Preview_Spritesheet_paintFramesBorder() {
@@ -824,7 +829,7 @@ public class PhaserEditorUI {
 
 	// http://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java
 	private static final String[] Q = new String[] { "", "k", "m", "g", "t", "P", "E" };
-
+	
 	public static String getFileHumanSize(long bytes) {
 		for (int i = 6; i > 0; i--) {
 			double step = Math.pow(1024, i);

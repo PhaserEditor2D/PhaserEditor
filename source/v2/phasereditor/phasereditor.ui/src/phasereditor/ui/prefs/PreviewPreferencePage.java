@@ -1,5 +1,6 @@
 package phasereditor.ui.prefs;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -58,6 +59,10 @@ public class PreviewPreferencePage extends FieldEditorPreferencePage implements 
 					group));
 			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, "Pattern color",
 					group));
+		}
+		
+		{
+			addField(new BooleanFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_ANTIALIAS, "Use interpolation and anti-aliasing to render images (disable if your game uses pixel art).", parent));
 		}
 
 	}

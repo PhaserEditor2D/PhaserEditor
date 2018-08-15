@@ -340,6 +340,8 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 			fitWindow();
 		}
 
+		prepareGC(e.gc);
+		
 		customPaintControl(e);
 	}
 
