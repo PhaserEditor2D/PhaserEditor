@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.assetexplorer.ui.views.AssetExplorer;
+import phasereditor.assetexplorer.ui.views.AssetsView;
 
 /**
  * @author arian
@@ -45,7 +45,7 @@ public class NewAssetExplorerHandler extends AbstractHandler {
 		try {
 			String id2 = Long.toString(currentTimeMillis());
 			IWorkbenchPage page = window.getActivePage();
-			page.showView(AssetExplorer.ID, id2,
+			page.showView(AssetsView.ID, id2,
 					IWorkbenchPage.VIEW_CREATE);
 		} catch (PartInitException e) {
 			e.printStackTrace();

@@ -11,7 +11,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import phasereditor.assetexplorer.ui.views.AssetExplorer;
+import phasereditor.assetexplorer.ui.views.AssetsView;
 import phasereditor.project.core.IProjectBuildParticipant;
 
 public class AssetsExplorerProjectBuildParticipant implements IProjectBuildParticipant {
@@ -49,10 +49,14 @@ public class AssetsExplorerProjectBuildParticipant implements IProjectBuildParti
 		IWorkbenchPage page = window.getActivePage();
 		IViewReference[] refs = page.getViewReferences();
 		for (IViewReference ref : refs) {
-			if (ref.getId().equals(AssetExplorer.ID)) {
-				AssetExplorer view = (AssetExplorer) ref.getView(false);
+			if (ref.getId().equals(AssetsView.ID)) {
+				AssetsView view = (AssetsView) ref.getView(false);
 				if (view != null) {
 					view.refreshContent(project);
+
+					if (!view.isInitialStateRecovered()) {
+						swtRun(1000, () -> view.recoverInitialState());
+					}
 				}
 			}
 		}

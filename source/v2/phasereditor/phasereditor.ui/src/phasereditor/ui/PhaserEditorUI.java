@@ -266,7 +266,7 @@ public class PhaserEditorUI {
 	public static boolean get_pref_Dialog_Color_Java() {
 		return getPreferenceStore().getString(PREF_PROP_COLOR_DIALOG_TYPE).equals(PREF_VALUE_COLOR_DIALOG_JAVA);
 	}
-	
+
 	public static boolean get_pref_Preview_Anitialias() {
 		return getPreferenceStore().getBoolean(PREF_PROP_PREVIEW_ANTIALIAS);
 	}
@@ -754,6 +754,20 @@ public class PhaserEditorUI {
 		});
 	}
 
+	public static void swtRun(long delayMillis, Runnable run) {
+		new Thread(() -> {
+			try {
+				Thread.sleep(delayMillis);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			swtRun(run);
+
+		}).start();
+
+	}
+
 	public static void swtRun(Runnable run) {
 		try {
 
@@ -829,7 +843,7 @@ public class PhaserEditorUI {
 
 	// http://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java
 	private static final String[] Q = new String[] { "", "k", "m", "g", "t", "P", "E" };
-	
+
 	public static String getFileHumanSize(long bytes) {
 		for (int i = 6; i > 0; i--) {
 			double step = Math.pow(1024, i);
@@ -1226,13 +1240,13 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintListItemBackground(GC gc, int i, int x, int y, int w, int h) {
-		
+
 		gc.setAlpha(60);
 		gc.setBackground(i % 2 == 0 ? gc.getDevice().getSystemColor(SWT.COLOR_WHITE)
 				: PhaserEditorUI.get_pref_Preview_PatternColor());
 		gc.fillRectangle(x, y, w, h);
 		gc.setAlpha(255);
-		
+
 	}
 
 	public static void paintScaledImageInArea(GC gc, Image image, FrameData fd, Rectangle renderArea) {

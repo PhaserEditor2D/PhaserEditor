@@ -62,11 +62,11 @@ class AssetExplorerLabelProvider extends LabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
-		if (element == AssetExplorer.CANVAS_NODE) {
+		if (element == AssetsView.CANVAS_NODE) {
 			return AssetLabelProvider.getFolderImage();
 		}
 
-		if (element == AssetExplorer.PACK_NODE) {
+		if (element == AssetsView.PACK_NODE) {
 			return AssetLabelProvider.getFolderImage();
 		}
 

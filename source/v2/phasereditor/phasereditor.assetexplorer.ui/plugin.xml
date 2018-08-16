@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             category="phasereditor.ui.phaser"
-            class="phasereditor.assetexplorer.ui.views.AssetExplorer"
+            class="phasereditor.assetexplorer.ui.views.AssetsView"
             icon="platform:/plugin/phasereditor.ui/icons/folder_picture.png"
             id="phasereditor.assetpack.views.assetExplorer"
             name="Assets">

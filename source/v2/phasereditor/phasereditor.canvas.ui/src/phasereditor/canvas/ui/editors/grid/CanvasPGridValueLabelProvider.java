@@ -67,7 +67,7 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected Object getPropertyValue(PGridProperty element) {
+	protected String getPropertyValueLabel(PGridProperty element) {
 
 		if (element instanceof PGridLoadPackProperty) {
 			Set<LoadPack> value = (Set<LoadPack>) getPropertyValue(element);
@@ -136,7 +136,7 @@ public class CanvasPGridValueLabelProvider extends PGridValueLabelProvider {
 			return asset.getKey();
 		}
 
-		Object value = getPropertyValue(element);
+		Object value = super.getPropertyValueLabel(element);
 		return value == null ? "" : value.toString().replace("\n\r", "").replace("\n", "");
 	}
 

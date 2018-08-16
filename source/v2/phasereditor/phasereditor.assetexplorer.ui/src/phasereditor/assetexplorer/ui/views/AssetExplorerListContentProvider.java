@@ -37,7 +37,7 @@ public class AssetExplorerListContentProvider extends AssetExplorerContentProvid
 	@Override
 	public Object[] getChildren(Object parent) {
 
-		if (parent == AssetExplorer.ROOT) {
+		if (parent == AssetsView.ROOT) {
 			List<Object> list = new ArrayList<>();
 			fillList(parent, list);
 			return list.toArray();

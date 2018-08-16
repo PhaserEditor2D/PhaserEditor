@@ -22,8 +22,11 @@
 package phasereditor.assetexplorer.ui.views;
 
 import static java.lang.System.out;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.commands.operations.IUndoContext;
@@ -43,7 +46,9 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -70,8 +75,12 @@ import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
-@SuppressWarnings("synthetic-access")
-public class AssetExplorer extends ViewPart {
+@SuppressWarnings({ "synthetic-access", "boxing" })
+public class AssetsView extends ViewPart {
+	/**
+	 * 
+	 */
+	private static final String EXPANDED_INDEXES_KEY = "expandedIndexes";
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	private AssetExplorerContentProvider _contentProvider;
 	private TreeCanvas _treeCanvas;
@@ -88,7 +97,7 @@ public class AssetExplorer extends ViewPart {
 	public static String PACK_NODE = "Pack Files";
 	public static String PROJECTS_NODE = "Other Projects";
 
-	public AssetExplorer() {
+	public AssetsView() {
 		super();
 	}
 
@@ -187,7 +196,6 @@ public class AssetExplorer extends ViewPart {
 
 		_viewer = new AssetExplorerTreeCanvasViewer(_treeCanvas, _contentProvider, new AssetExplorerLabelProvider());
 		_viewer.setInput(ROOT);
-
 	}
 
 	private void initPartListener() {
@@ -233,6 +241,7 @@ public class AssetExplorer extends ViewPart {
 
 	Object _lastToken = null;
 	private AssetExplorerTreeCanvasViewer _viewer;
+	private List<Integer> _initialExpandedIndexes;
 
 	void refreshViewer() {
 
@@ -251,10 +260,22 @@ public class AssetExplorer extends ViewPart {
 				refreshContent(project);
 				_lastToken = project;
 			}
+
 		} finally {
 			_treeCanvas.setRedraw(true);
 		}
 
+	}
+
+	public boolean isInitialStateRecovered() {
+		return _initialExpandedIndexes == null;
+	}
+	
+	public void recoverInitialState() {
+		if (_initialExpandedIndexes != null) {
+			_treeCanvas.setExpandedIndexes(_initialExpandedIndexes);
+			_initialExpandedIndexes = null;
+		}
 	}
 
 	public static IProject getActiveProject() {
@@ -379,6 +400,29 @@ public class AssetExplorer extends ViewPart {
 		} finally {
 			_treeCanvas.setRedraw(true);
 		}
+	}
+
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+
+		String str = memento.getString(EXPANDED_INDEXES_KEY);
+
+		if (str != null) {
+			try {
+				_initialExpandedIndexes = Arrays.stream(str.split(",")).map(s -> Integer.parseInt(s)).collect(toList());
+			} catch (Exception e) {
+				// do nothing
+			}
+		}
+
+		super.init(site, memento);
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		List<Integer> expandedIndexes = _treeCanvas.getExpandedIndexes();
+
+		memento.putString(EXPANDED_INDEXES_KEY, expandedIndexes.stream().map(i -> i.toString()).collect(joining(",")));
 	}
 
 }

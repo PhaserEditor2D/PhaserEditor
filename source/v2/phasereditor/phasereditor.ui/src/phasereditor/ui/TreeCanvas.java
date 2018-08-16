@@ -47,7 +47,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
  * @author arian
  *
  */
-@SuppressWarnings("synthetic-access")
+@SuppressWarnings({ "synthetic-access", "boxing" })
 public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
 	private static final int MIN_ROW_HEIGHT = 20;
 	private static final int ACTION_SPACE = 2;
@@ -107,20 +107,20 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			@Override
 			public boolean isInformationControlValidPosition(int index, int x, int y) {
 				var item = _visibleItems.get(index);
-				
+
 				if (item._toggleHitArea != null && item._toggleHitArea.contains(x, y)) {
 					return false;
 				}
-				
-				for(var action : item.getActions()) {
+
+				for (var action : item.getActions()) {
 					if (action._hitArea != null && action._hitArea.contains(x, y)) {
 						return false;
 					}
 				}
-				
+
 				return true;
 			}
-			
+
 			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				var item = _visibleItems.get(index);
@@ -160,7 +160,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				var item = _visibleItems.get(index);
 				return item._data;
 			}
-			
 
 			@Override
 			public void mouseMove(MouseEvent e) {
@@ -242,7 +241,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			super();
 			_item = item;
 		}
-		
 
 		public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
 			var gc = e.gc;
@@ -311,11 +309,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		}
 
 		public int computeRowHeight(TreeCanvas canvas) {
-			
+
 			if (_item.getIconType() == IconType.IMAGE_FRAME) {
 				return canvas.getImageSize() + 4;
 			}
-			
+
 			return MIN_ROW_HEIGHT;
 		}
 	}
@@ -326,7 +324,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		_fullHeight = 0;
 
 		var gc = e.gc;
-		
+
 		prepareGC(gc);
 
 		Transform tx = new Transform(getDisplay());
@@ -349,18 +347,18 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			int rowHeight = renderer.computeRowHeight(this);
 
 			// paint background
-			
+
 			if (_utils.isSelectedIndex(i)) {
 				gc.setBackground(PhaserEditorUI.getListSelectionColor());
 				gc.fillRectangle(0, y, e.width, rowHeight);
 			}
 
 			PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
-			
+
 			// render item
-			
+
 			renderer.render(this, e, i, x, y);
-			
+
 			// paint toogle
 
 			if (item.hasChildren()) {
@@ -476,6 +474,20 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		return _items.stream().filter(i -> i.isExpanded()).collect(toList());
 	}
 
+	public List<Integer> getExpandedIndexes() {
+		return _items.stream().filter(i -> i.isExpanded()).map(i -> i.getIndex()).collect(toList());
+	}
+
+	public void setExpandedIndexes(List<Integer> indexes) {
+		var set = new HashSet<>(indexes);
+
+		for (var item : _items) {
+			item.setExpanded(set.contains(item.getIndex()));
+		}
+
+		updateVisibleItemsList();
+	}
+
 	public void setExpandedObjects(List<Object> objects) {
 		var set = new HashSet<>(objects);
 		for (var item : _items) {
@@ -499,6 +511,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 	private void updateItemsList(List<TreeCanvasItem> items) {
 		for (var item : items) {
+			item._index = _items.size();
 			_items.add(item);
 			updateItemsList(item.getChildren());
 		}

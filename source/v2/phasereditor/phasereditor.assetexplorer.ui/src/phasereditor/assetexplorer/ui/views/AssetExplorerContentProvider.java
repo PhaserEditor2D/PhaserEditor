@@ -50,7 +50,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parent) {
-		IProject activeProjet = AssetExplorer.getActiveProject();
+		IProject activeProjet = AssetsView.getActiveProject();
 
 		if (_forceToFocuseOnProject != null && _forceToFocuseOnProject.exists()) {
 			activeProjet = _forceToFocuseOnProject;
@@ -64,7 +64,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			_projectInContent = activeProjet;
 		}
 
-		if (parent == AssetExplorer.ROOT) {
+		if (parent == AssetsView.ROOT) {
 
 			if (activeProjet == null) {
 				List<Object> list = new ArrayList<>();
@@ -76,20 +76,20 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 			return new Object[] {
 
-					AssetExplorer.CANVAS_NODE,
+					AssetsView.CANVAS_NODE,
 
-					AssetExplorer.ANIMATIONS_NODE,
+					AssetsView.ANIMATIONS_NODE,
 
-					AssetExplorer.ATLAS_NODE,
+					AssetsView.ATLAS_NODE,
 
-					AssetExplorer.PACK_NODE,
+					AssetsView.PACK_NODE,
 
-					AssetExplorer.PROJECTS_NODE
+					AssetsView.PROJECTS_NODE
 
 			};
 		}
 
-		if (parent == AssetExplorer.PROJECTS_NODE) {
+		if (parent == AssetsView.PROJECTS_NODE) {
 
 			var projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 
@@ -99,15 +99,15 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 		}
 
-		if (parent == AssetExplorer.ANIMATIONS_NODE) {
+		if (parent == AssetsView.ANIMATIONS_NODE) {
 			return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).toArray();
 		}
 
-		if (parent == AssetExplorer.ATLAS_NODE) {
+		if (parent == AssetsView.ATLAS_NODE) {
 			return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
 		}
 
-		if (parent == AssetExplorer.CANVAS_NODE) {
+		if (parent == AssetsView.CANVAS_NODE) {
 			List<Object> list = new ArrayList<>();
 
 			list.add(CanvasType.SPRITE);
@@ -117,7 +117,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-		if (parent == AssetExplorer.PACK_NODE) {
+		if (parent == AssetsView.PACK_NODE) {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
 			List<Object> list = new ArrayList<>();

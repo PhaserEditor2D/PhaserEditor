@@ -81,17 +81,17 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
 		}
 
-		if (elem == AssetExplorer.CANVAS_NODE
+		if (elem == AssetsView.CANVAS_NODE
 
 				|| elem instanceof CanvasType
 
-				|| elem == AssetExplorer.ANIMATIONS_NODE
+				|| elem == AssetsView.ANIMATIONS_NODE
 
-				|| elem == AssetExplorer.ATLAS_NODE
+				|| elem == AssetsView.ATLAS_NODE
 
-				|| elem == AssetExplorer.PACK_NODE
+				|| elem == AssetsView.PACK_NODE
 
-				|| elem == AssetExplorer.PROJECTS_NODE) {
+				|| elem == AssetsView.PROJECTS_NODE) {
 			item.setIcon(null);
 		}
 
@@ -103,7 +103,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 
 		var actions = item.getActions();
 
-		if (elem == AssetExplorer.CANVAS_NODE) {
+		if (elem == AssetsView.CANVAS_NODE) {
 			item.setHeader(true);
 		}
 
@@ -112,22 +112,22 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			item.setHeader(true);
 		}
 
-		if (elem == AssetExplorer.ANIMATIONS_NODE) {
+		if (elem == AssetsView.ANIMATIONS_NODE) {
 			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_FRAME_ANIMATION, new NewAnimationWizardLauncher()));
 			item.setHeader(true);
 		}
 
-		if (elem == AssetExplorer.ATLAS_NODE) {
+		if (elem == AssetsView.ATLAS_NODE) {
 			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_ATLAS, new NewAtlasWizardLauncher()));
 			item.setHeader(true);
 		}
 
-		if (elem == AssetExplorer.PACK_NODE) {
+		if (elem == AssetsView.PACK_NODE) {
 			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_BOX, new NewAssetPackWizardLauncher()));
 			item.setHeader(true);
 		}
 
-		if (elem == AssetExplorer.PROJECTS_NODE) {
+		if (elem == AssetsView.PROJECTS_NODE) {
 			// actions.add(new NewWizardLauncherTreeItemAction(new
 			// NewAssetPackWizardLauncher()));
 			item.setHeader(true);
