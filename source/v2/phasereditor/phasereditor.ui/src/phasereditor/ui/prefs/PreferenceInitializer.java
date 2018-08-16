@@ -17,7 +17,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		RGB _RED = new RGB(255, 0, 0);
 		RGB _BLUE = new RGB(0, 0, 255);
 		RGB _YELLOW = new RGB(255, 255, 0);
-		RGB _GRAY = new RGB(192, 192, 192);
+//		RGB _GRAY = new RGB(192, 192, 192);
 
 		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
 		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
@@ -27,7 +27,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				PhaserEditorUI.PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR,
 				StringConverter.asString(new RGB(180, 180, 180)));
-		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, StringConverter.asString(_GRAY));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, StringConverter.asString(PhaserEditorUI.getListTextColor().getRGB()));
 
 		// spritesheet
 

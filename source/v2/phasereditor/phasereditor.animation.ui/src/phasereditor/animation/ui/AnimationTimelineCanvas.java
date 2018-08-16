@@ -360,7 +360,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		var gc = e.gc;
 
 		prepareGC(gc);
-		
+
 		Transform tx = new Transform(getDisplay());
 		tx.translate(_origin, 0);
 		gc.setTransform(tx);
@@ -415,10 +415,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			}
 
 			{
-				gc.setAlpha(60);
-				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_WHITE : SWT.COLOR_GRAY));
-				gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
-				gc.setAlpha(255);
+				PhaserEditorUI.paintListItemBackground(gc, i, (int) frameX, 0, (int) frameWidth, e.height);
 			}
 
 			if (frameHeight > 0) {
@@ -662,7 +659,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		IAssetFrameModel assetFrame = frame.getFrameAsset();
 		if (assetFrame != null) {
-			PhaserEditorUI.set_DND_Image(event, assetFrame.getImageFile().getLocation().toFile(), assetFrame.getFrameData().src);
+			PhaserEditorUI.set_DND_Image(event, assetFrame.getImageFile().getLocation().toFile(),
+					assetFrame.getFrameData().src);
 		}
 
 		if (selectedFrames.contains(frame)) {
