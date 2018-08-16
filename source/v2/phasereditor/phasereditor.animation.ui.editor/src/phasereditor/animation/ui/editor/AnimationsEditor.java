@@ -37,8 +37,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -210,7 +208,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
 		_animCanvas.addPaintListener(e -> {
 			if (_animCanvas.getModel() != null) {
-				e.gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR));
+				e.gc.setAlpha(40);
+				e.gc.setForeground(_animCanvas.getForeground());
 				e.gc.drawText(_animCanvas.getModel().getKey(), 0, 0, true);
 			}
 		});
