@@ -605,11 +605,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	protected void outliner_selectionChanged(SelectionChangedEvent event) {
 		var elem = event.getStructuredSelection().getFirstElement();
-		if (elem != null) {
-			var anim = (AnimationModel_in_Editor) elem;
-			loadAnimation(anim);
-			getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(anim));
-		}
+		var anim = (AnimationModel_in_Editor) elem;
+		loadAnimation(anim);
+		getEditorSite().getSelectionProvider().setSelection(event.getStructuredSelection());
 	}
 
 	protected void selectAnimation(AnimationModel_in_Editor anim) {
@@ -669,7 +667,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		@Override
 		public void createControl(Composite parent) {
 			_listCanvas = new FilteredAnimationsList<>(parent, SWT.NONE);
-			
+
 			AssetPackUI.installAssetTooltips(_listCanvas.getCanvas(), _listCanvas.getUtils());
 
 			{
