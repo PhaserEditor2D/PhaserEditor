@@ -27,7 +27,9 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
@@ -141,7 +143,7 @@ public class AssetsView extends ViewPart {
 
 		if (elem instanceof IProject) {
 			provider.forceToFocuseOnProject((IProject) elem);
-			_lastToken = elem;
+			_lastToken = (IProject) elem;
 			_viewer.refreshContent();
 			// _treeCanvasAdapter.expandToLevel(3);
 		} else if (elem instanceof IFile) {
@@ -247,11 +249,13 @@ public class AssetsView extends ViewPart {
 		getViewSite().getPage().addPartListener(_partListener);
 	}
 
-	Object _lastToken = null;
+	IProject _lastToken = null;
 	private AssetExplorerTreeCanvasViewer _viewer;
 	private List<Integer> _initialExpandedIndexes;
 	private String _initialFilterText;
 	private JSONObject _initialTreeState;
+	private Map<IProject, List<Integer>> _projectExpansionMap = new HashMap<>();
+	private Map<IProject, String> _projectFilterMap = new HashMap<>();
 
 	void refreshViewer() {
 
@@ -267,7 +271,22 @@ public class AssetsView extends ViewPart {
 			IProject project = getActiveProject();
 
 			if (project != _lastToken) {
+
+				if (_lastToken != null) {
+					_projectExpansionMap.put(_lastToken, _treeCanvas.getExpandedIndexes());
+					_projectFilterMap.put(_lastToken, _filteredTreeCanvas.getFilterText());
+				}
+
 				refreshContent(project);
+
+				{
+					var indexes = _projectExpansionMap.getOrDefault(project, List.of());
+					_treeCanvas.setExpandedIndexes(indexes);
+
+					var filter = _projectFilterMap.get(project);
+					_filteredTreeCanvas.setFilterText(filter);
+				}
+
 				_lastToken = project;
 			}
 
@@ -295,6 +314,8 @@ public class AssetsView extends ViewPart {
 
 			_initialExpandedIndexes = null;
 		}
+
+		_lastToken = getActiveProject();
 	}
 
 	public static IProject getActiveProject() {
@@ -462,6 +483,8 @@ public class AssetsView extends ViewPart {
 			_treeCanvas.saveState(jsonState);
 			memento.putString(CANVAS_STATE_KEY, jsonState.toString());
 		}
+
+		// TODO: save all the mapping information of all the projects.
 	}
 
 }
