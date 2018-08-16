@@ -72,6 +72,8 @@ import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.menus.CommandContributionItem;
+import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -303,17 +305,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 						openNewAnimationDialog(null);
 					}
 				});
-				manager.add(new Separator());
-				for (var anim : getModel().getAnimations()) {
-					manager.add(new Action(anim.getKey()) {
-
-						@Override
-						public void run() {
-							selectAnimation((AnimationModel_in_Editor) anim);
-						}
-					});
-				}
-
+				manager.add(new CommandContributionItem(
+						new CommandContributionItemParameter(getEditorSite(),
+								"outline", "phasereditor.ui.quickOutline", SWT.PUSH)));
+				
 				AnimationModel currentAnim = getAnimationCanvas().getModel();
 
 				if (currentAnim != null) {
