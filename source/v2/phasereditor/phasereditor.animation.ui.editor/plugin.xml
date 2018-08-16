@@ -51,12 +51,28 @@
             class="phasereditor.animation.ui.editor.handlers.PlayPauseAnimationHandler"
             commandId="phasereditor.animation.ui.playPauseAnimation">
          <activeWhen>
-            <with
-                  variable="activePartId">
-               <equals
-                     value="phasereditor.animation.ui.AnimationsEditor">
-               </equals>
-            </with>
+            <or>
+               <with
+                     variable="activePartId">
+                  <equals
+                        value="phasereditor.animation.ui.AnimationsEditor">
+                  </equals>
+               </with>
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="phasereditor.animation.ui.AnimationsEditor">
+                     </equals>
+                  </with>
+                  <with
+                        variable="activePartId">
+                     <equals
+                           value="org.eclipse.ui.views.ContentOutline">
+                     </equals>
+                  </with>
+               </and>
+            </or>
          </activeWhen>
       </handler>
    </extension>

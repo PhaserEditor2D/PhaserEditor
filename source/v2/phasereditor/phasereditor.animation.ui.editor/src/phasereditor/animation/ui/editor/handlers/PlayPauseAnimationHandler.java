@@ -11,7 +11,7 @@ public class PlayPauseAnimationHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		var editor = (AnimationsEditor) HandlerUtil.getActivePart(event);
+		var editor = (AnimationsEditor) HandlerUtil.getActiveEditor(event);
 		editor.playOrPause();
 		return null;
 	}
