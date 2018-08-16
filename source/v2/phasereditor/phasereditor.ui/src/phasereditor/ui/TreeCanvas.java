@@ -471,6 +471,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		}
 	}
 
+	
+	public List<TreeCanvasItem> getVisibleItems() {
+		return _visibleItems;
+	}
+	
 	public List<TreeCanvasItem> getItems() {
 		return _items;
 	}

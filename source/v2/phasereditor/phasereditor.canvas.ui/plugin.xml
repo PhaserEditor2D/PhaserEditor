@@ -915,8 +915,7 @@
                   visible="true">
             </separator>
             <command
-                  commandId="phasereditor.canvas.ui.quickOutline"
-                  icon="platform:/plugin/phasereditor.ui/icons/outline_co.png"
+                  commandId="phasereditor.ui.quickOutline"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -1115,11 +1114,6 @@
             defaultHandler="phasereditor.canvas.ui.handlers.ZoomRestoreHandler"
             id="phasereditor.canvas.ui.zoomRestore"
             name="Restore Zoom">
-      </command>
-      <command
-            categoryId="phasereditor.canvas.ui.editor.category"
-            id="phasereditor.canvas.ui.quickOutline"
-            name="Quick outline">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
@@ -1934,7 +1928,7 @@
       
       <handler
             class="phasereditor.canvas.ui.handlers.QuickOutlineHandler"
-            commandId="phasereditor.canvas.ui.quickOutline">
+            commandId="phasereditor.ui.quickOutline">
          <activeWhen>
             <with
                   variable="activePartId">
@@ -2488,12 +2482,6 @@
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M2+P">
-      </key>
-      <key
-            commandId="phasereditor.canvas.ui.quickOutline"
-            contextId="phasereditor.canvas.ui.nodescontext"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+O">
       </key>
       <key
             commandId="phasereditor.canvas.ui.quickEdit"

@@ -41,15 +41,12 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -83,7 +80,6 @@ import org.json.JSONException;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
-import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
@@ -94,8 +90,6 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
@@ -104,7 +98,6 @@ import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 /**
  * @author arian
@@ -304,7 +297,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			public void menuAboutToShow(IMenuManager manager) {
 				manager.removeAll();
 				manager.add(new Action("New Animation",
-						EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_FRAME_ANIMATION)) {
+						EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_NEW_FRAME_ANIMATION)) {
 					@Override
 					public void run() {
 						openNewAnimationDialog(null);
@@ -313,10 +306,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				manager.add(new Separator());
 				for (var anim : getModel().getAnimations()) {
 					manager.add(new Action(anim.getKey()) {
-						{
-							setImageDescriptor(
-									ImageDescriptor.createFromImage(AssetLabelProvider.GLOBAL_16.getImage(anim)));
-						}
 
 						@Override
 						public void run() {
@@ -616,7 +605,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		getEditorSite().getSelectionProvider().setSelection(event.getStructuredSelection());
 	}
 
-	protected void selectAnimation(AnimationModel_in_Editor anim) {
+	public void selectAnimation(AnimationModel_in_Editor anim) {
 		StructuredSelection selection = anim == null ? StructuredSelection.EMPTY : new StructuredSelection(anim);
 
 		if (_outliner == null) {
@@ -674,39 +663,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		@Override
 		public void createControl(Composite parent) {
 			_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
-			_viewer = new TreeCanvasViewer(_filteredTreeCanvas.getCanvas(), new ITreeContentProvider() {
-
-				@Override
-				public boolean hasChildren(Object element) {
-					return false;
-				}
-
-				@Override
-				public Object getParent(Object element) {
-					return null;
-				}
-
-				@Override
-				public Object[] getElements(Object inputElement) {
-					return ((AnimationsModel) inputElement).getAnimations().toArray();
-				}
-
-				@Override
-				public Object[] getChildren(Object parentElement) {
-					return new Object[0];
-				}
-			}, new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					return ((AnimationModel) element).getKey();
-				}
-			}) {
-				@Override
-				protected void setItemProperties(TreeCanvasItem item, Object elem) {
-					super.setItemProperties(item, elem);
-					item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
-				}
-			};
+			_viewer = new AnimationsTreeViewer(_filteredTreeCanvas.getCanvas());
 
 			AssetPackUI.installAssetTooltips(_filteredTreeCanvas.getCanvas(), _filteredTreeCanvas.getUtils());
 

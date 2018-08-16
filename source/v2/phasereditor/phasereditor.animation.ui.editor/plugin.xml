@@ -75,6 +75,18 @@
             </or>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.animation.ui.editor.handlers.QickOutlineHandler"
+            commandId="phasereditor.ui.quickOutline">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

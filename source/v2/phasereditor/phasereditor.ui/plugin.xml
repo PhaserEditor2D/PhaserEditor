@@ -62,6 +62,11 @@
       </category>
       <command
             categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.ui.quickOutline"
+            name="Quick Outline">
+      </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
             description="Show selection in the Preview window"
             id="phasereditor.ui.commands.showInPreview"
             name="Open In Preview">
@@ -93,6 +98,12 @@
            contextId="org.eclipse.ui.contexts.window"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
            sequence="M1+M3+V">
+     </key>
+     <key
+           commandId="phasereditor.ui.quickOutline"
+           contextId="org.eclipse.ui.contexts.window"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+O">
      </key>
   </extension>
    <extension
@@ -142,5 +153,12 @@
                type="phasereditor.ui.ISourceLocation">
          </adapter>
       </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="phasereditor.ui.quickOutline"
+            icon="platform:/plugin/phasereditor.ui/icons/outline_co.png">
+      </image>
    </extension>
 </plugin>

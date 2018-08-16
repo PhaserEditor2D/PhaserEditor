@@ -58,6 +58,10 @@ public class FilteredTreeCanvas extends Composite {
 
 	}
 
+	public Text getTextControl() {
+		return _filterText;
+	}
+	
 	public TreeCanvas getCanvas() {
 		return _canvas;
 	}
