@@ -33,9 +33,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -131,6 +128,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private boolean _dirty;
 	private String _initialAnimtionKey;
 	JSONObject _initialOutlinerState;
+	private Action _deleteAction;
+	private Action _newAction;
+	private CommandContributionItem _outlineAction;
 
 	public AnimationsEditor() {
 	}
@@ -217,8 +217,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		disableToolbar();
 
-		createContextMenu();
-
 		AnimationModel_in_Editor anim = null;
 
 		if (!_model.getAnimations().isEmpty()) {
@@ -301,42 +299,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	private void createContextMenu() {
-		MenuManager menuManager = new MenuManager();
-		menuManager.addMenuListener(new IMenuListener() {
-
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				manager.removeAll();
-				manager.add(new Action("New Animation",
-						EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_NEW_FRAME_ANIMATION)) {
-					@Override
-					public void run() {
-						openNewAnimationDialog(null);
-					}
-				});
-				manager.add(new CommandContributionItem(new CommandContributionItemParameter(getEditorSite(), "outline",
-						"phasereditor.ui.quickOutline", SWT.PUSH)));
-
-				AnimationModel currentAnim = getAnimationCanvas().getModel();
-
-				if (currentAnim != null) {
-					manager.add(new Separator());
-					manager.add(new Action("Delete", Workbench.getInstance().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
-						@Override
-						public void run() {
-							deleteAnimations(List.of((AnimationModel_in_Editor) currentAnim));
-						}
-					});
-				}
-			}
-		});
-
-		var menu = menuManager.createContextMenu(_animCanvas);
-		_animCanvas.setMenu(menu);
-	}
-
 	private void disableToolbar() {
 		for (var btn : _playbackActions) {
 			btn.setEnabled(false);
@@ -344,6 +306,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		_zoom_1_1_action.setEnabled(false);
 		_zoom_fitWindow_action.setEnabled(false);
+		_deleteAction.setEnabled(false);
 	}
 
 	private void animationStatusChanged(Status status) {
@@ -461,12 +424,39 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animCanvas);
 		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animCanvas);
 
+		_deleteAction = new Action("Delete",
+				Workbench.getInstance().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
+			@Override
+			public void run() {
+				var anim = (AnimationModel_in_Editor) getAnimationCanvas().getModel();
+				if (anim != null) {
+					deleteAnimations(List.of(anim));
+				}
+			}
+		};
+
+		_newAction = new Action("New Animation",
+				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_NEW_FRAME_ANIMATION)) {
+			@Override
+			public void run() {
+				openNewAnimationDialog(null);
+			}
+		};
+
+		_outlineAction = new CommandContributionItem(new CommandContributionItemParameter(getEditorSite(), "outline",
+				"phasereditor.ui.quickOutline", SWT.PUSH));
+
 		manager.add(_playAction);
 		manager.add(_pauseAction);
 		manager.add(_stopAction);
 		manager.add(new Separator());
 		manager.add(_zoom_1_1_action);
 		manager.add(_zoom_fitWindow_action);
+		manager.add(new Separator());
+
+		manager.add(_newAction);
+		manager.add(_outlineAction);
+		manager.add(_deleteAction);
 
 		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
 
@@ -634,10 +624,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			_zoom_1_1_action.setEnabled(false);
 			_zoom_fitWindow_action.setEnabled(false);
+			_deleteAction.setEnabled(false);
 
 			_animCanvas.setModel(null);
 			_timelineCanvas.setModel(null);
-
+			
 			return;
 		}
 
@@ -654,6 +645,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		_zoom_1_1_action.setEnabled(true);
 		_zoom_fitWindow_action.setEnabled(true);
+		_deleteAction.setEnabled(true);
 	}
 
 	class Outliner extends Page implements IContentOutlinePage, ISelectionChangedListener {
@@ -708,7 +700,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			_initialListeners.clear();
 			_initialSelection = null;
-			
+
 			if (_initialOutlinerState != null) {
 				_outliner.getFilteredTreeCanvas().getCanvas().restoreState(_initialOutlinerState);
 				_initialOutlinerState = null;
