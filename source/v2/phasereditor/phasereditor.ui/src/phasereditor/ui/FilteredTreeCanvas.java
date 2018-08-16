@@ -69,4 +69,8 @@ public class FilteredTreeCanvas extends Composite {
 	public void setFilterText(String filterText) {
 		_filterText.setText(filterText);
 	}
+
+	public FrameCanvasUtils getUtils() {
+		return _canvas.getUtils();
+	}
 }

@@ -48,6 +48,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -81,8 +83,8 @@ import org.json.JSONException;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
+import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
-import phasereditor.animation.ui.FilteredAnimationsList;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -92,13 +94,17 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.SelectionProviderImpl;
+import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 /**
  * @author arian
@@ -658,21 +664,55 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	class Outliner extends Page implements IContentOutlinePage, ISelectionChangedListener {
-		private FilteredAnimationsList<AnimationsModel_in_Editor> _listCanvas;
+		private FilteredTreeCanvas _filteredTreeCanvas;
 		private SelectionProviderImpl _selProvider;
+		private TreeCanvasViewer _viewer;
 
 		public Outliner() {
 		}
 
 		@Override
 		public void createControl(Composite parent) {
-			_listCanvas = new FilteredAnimationsList<>(parent, SWT.NONE);
+			_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
+			_viewer = new TreeCanvasViewer(_filteredTreeCanvas.getCanvas(), new ITreeContentProvider() {
 
-			AssetPackUI.installAssetTooltips(_listCanvas.getCanvas(), _listCanvas.getUtils());
+				@Override
+				public boolean hasChildren(Object element) {
+					return false;
+				}
+
+				@Override
+				public Object getParent(Object element) {
+					return null;
+				}
+
+				@Override
+				public Object[] getElements(Object inputElement) {
+					return ((AnimationsModel) inputElement).getAnimations().toArray();
+				}
+
+				@Override
+				public Object[] getChildren(Object parentElement) {
+					return new Object[0];
+				}
+			}, new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					return ((AnimationModel) element).getKey();
+				}
+			}) {
+				@Override
+				protected void setItemProperties(TreeCanvasItem item, Object elem) {
+					super.setItemProperties(item, elem);
+					item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
+				}
+			};
+
+			AssetPackUI.installAssetTooltips(_filteredTreeCanvas.getCanvas(), _filteredTreeCanvas.getUtils());
 
 			{
 				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
-				DropTarget target = new DropTarget(_listCanvas.getCanvas(), options);
+				DropTarget target = new DropTarget(_filteredTreeCanvas.getCanvas(), options);
 				Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 				target.setTransfer(types);
 				target.addDropListener(new DropTargetAdapter() {
@@ -690,15 +730,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				});
 			}
 
-			_listCanvas.setModel(getModel());
+			_viewer.setInput(getModel());
 
 			for (var l : _initialListeners) {
-				_listCanvas.getUtils().addSelectionChangedListener(l);
+				_filteredTreeCanvas.getUtils().addSelectionChangedListener(l);
 			}
 
 			if (_initialSelection != null) {
-				_listCanvas.getUtils().setSelection(_initialSelection);
-				_listCanvas.redraw();
+				_filteredTreeCanvas.getUtils().setSelection(_initialSelection);
+				_filteredTreeCanvas.redraw();
 			}
 
 			_initialListeners.clear();
@@ -718,38 +758,38 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		@Override
 		public void addSelectionChangedListener(ISelectionChangedListener listener) {
-			if (_listCanvas == null) {
+			if (_filteredTreeCanvas == null) {
 				_initialListeners.add(listener);
 				return;
 			}
 
-			_listCanvas.getUtils().addSelectionChangedListener(listener);
+			_filteredTreeCanvas.getUtils().addSelectionChangedListener(listener);
 		}
 
 		@Override
 		public ISelection getSelection() {
-			return _listCanvas.getUtils().getSelection();
+			return _filteredTreeCanvas.getUtils().getSelection();
 		}
 
 		@Override
 		public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-			if (_listCanvas == null) {
+			if (_filteredTreeCanvas == null) {
 				_initialListeners.remove(listener);
 				return;
 			}
 
-			_listCanvas.getUtils().removeSelectionChangedListener(listener);
+			_filteredTreeCanvas.getUtils().removeSelectionChangedListener(listener);
 		}
 
 		@Override
 		public void setSelection(ISelection selection) {
-			if (_listCanvas == null) {
+			if (_filteredTreeCanvas == null) {
 				_initialSelection = selection;
 				return;
 			}
 
-			_listCanvas.getUtils().setSelection(selection);
-			_listCanvas.redraw();
+			_filteredTreeCanvas.getUtils().setSelection(selection);
+			_filteredTreeCanvas.redraw();
 		}
 
 		@Override
@@ -759,17 +799,17 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		@Override
 		public Control getControl() {
-			return _listCanvas;
+			return _filteredTreeCanvas;
 		}
 
 		@Override
 		public void setFocus() {
-			_listCanvas.setFocus();
+			_filteredTreeCanvas.setFocus();
 		}
 
 		public void refresh() {
-			if (_listCanvas != null) {
-				_listCanvas.refresh();
+			if (_filteredTreeCanvas != null) {
+				_viewer.refreshContent();
 			}
 		}
 	}

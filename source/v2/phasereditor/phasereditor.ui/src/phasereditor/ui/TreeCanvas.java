@@ -242,6 +242,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_item = item;
 		}
 
+		@SuppressWarnings("unused")
 		public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
 			var gc = e.gc;
 
@@ -251,7 +252,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			var isImageFrame = _item.getIconType() == IconType.IMAGE_FRAME;
 			var icon = _item.getIcon();
 			var iconBounds = icon == null ? null : icon.getBounds();
-			boolean selected = canvas.getUtils().isSelectedIndex(index);
 
 			if (isImageFrame) {
 				textX += canvas.getImageSize() + ICON_AND_TEXT_SPACE;
@@ -264,7 +264,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			String label = _item.getLabel();
 
 			if (label != null) {
-				gc.setForeground(selected ? PhaserEditorUI.getListSelectionTextColor() : canvas.getForeground());
 				var extent = gc.textExtent(label);
 
 				if (_item.isHeader()) {
@@ -348,12 +347,18 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			// paint background
 
-			if (_utils.isSelectedIndex(i)) {
-				gc.setBackground(PhaserEditorUI.getListSelectionColor());
-				gc.fillRectangle(0, y, e.width, rowHeight);
-			}
+			{
+				boolean selected = _utils.isSelectedIndex(i);
 
-			PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
+				gc.setForeground(selected ? PhaserEditorUI.getListSelectionTextColor() : getForeground());
+
+				if (selected) {
+					gc.setBackground(PhaserEditorUI.getListSelectionColor());
+					gc.fillRectangle(0, y, e.width, rowHeight);
+				}
+
+				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
+			}
 
 			// render item
 
