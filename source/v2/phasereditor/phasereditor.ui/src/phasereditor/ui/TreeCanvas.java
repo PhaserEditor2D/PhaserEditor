@@ -567,10 +567,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	void updateScrollNow() {
 		Rectangle client = getClientArea();
 		ScrollBar vBar = getVerticalBar();
+		int vSelection = vBar.getSelection();
 		vBar.setMaximum(_fullHeight);
 		vBar.setThumb(Math.min(_fullHeight, client.height));
 		int vPage = _fullHeight - client.height;
-		int vSelection = vBar.getSelection();
 		if (vSelection >= vPage) {
 			if (vPage <= 0)
 				vSelection = 0;
@@ -804,6 +804,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		updateVisibleItemsList();
 	}
 
+	public String getFilterText() {
+		return _filterText;
+	}
+
 	public void setExpandedItems(List<TreeCanvasItem> expanded) {
 		for (var item : _items) {
 			item.setExpanded(false);
@@ -866,4 +870,5 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		redraw();
 	}
+
 }

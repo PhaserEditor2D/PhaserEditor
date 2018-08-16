@@ -80,6 +80,14 @@ public class AssetsView extends ViewPart {
 	/**
 	 * 
 	 */
+	private static final String CANVAS_STATE_KEY = "canvasState";
+	/**
+	 * 
+	 */
+	private static final String FILTER_TEXT_KEY = "filterText";
+	/**
+	 * 
+	 */
 	private static final String EXPANDED_INDEXES_KEY = "expandedIndexes";
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	private AssetExplorerContentProvider _contentProvider;
@@ -242,6 +250,8 @@ public class AssetsView extends ViewPart {
 	Object _lastToken = null;
 	private AssetExplorerTreeCanvasViewer _viewer;
 	private List<Integer> _initialExpandedIndexes;
+	private String _initialFilterText;
+	private JSONObject _initialTreeState;
 
 	void refreshViewer() {
 
@@ -270,10 +280,19 @@ public class AssetsView extends ViewPart {
 	public boolean isInitialStateRecovered() {
 		return _initialExpandedIndexes == null;
 	}
-	
-	public void recoverInitialState() {
+
+	public void restoreInitialState() {
 		if (_initialExpandedIndexes != null) {
 			_treeCanvas.setExpandedIndexes(_initialExpandedIndexes);
+
+			if (_initialFilterText != null) {
+				_filteredTreeCanvas.setFilterText(_initialFilterText);
+			}
+
+			if (_initialTreeState != null) {
+				_treeCanvas.restoreState(_initialTreeState);
+			}
+
 			_initialExpandedIndexes = null;
 		}
 	}
@@ -405,13 +424,27 @@ public class AssetsView extends ViewPart {
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 
-		String str = memento.getString(EXPANDED_INDEXES_KEY);
+		{
+			var str = memento.getString(EXPANDED_INDEXES_KEY);
 
-		if (str != null) {
-			try {
-				_initialExpandedIndexes = Arrays.stream(str.split(",")).map(s -> Integer.parseInt(s)).collect(toList());
-			} catch (Exception e) {
-				// do nothing
+			if (str != null) {
+				try {
+					_initialExpandedIndexes = Arrays.stream(str.split(",")).map(s -> Integer.parseInt(s))
+							.collect(toList());
+				} catch (Exception e) {
+					// do nothing
+				}
+			}
+		}
+
+		{
+			_initialFilterText = memento.getString(FILTER_TEXT_KEY);
+		}
+
+		{
+			var str = memento.getString(CANVAS_STATE_KEY);
+			if (str != null) {
+				_initialTreeState = new JSONObject(str);
 			}
 		}
 
@@ -423,6 +456,12 @@ public class AssetsView extends ViewPart {
 		List<Integer> expandedIndexes = _treeCanvas.getExpandedIndexes();
 
 		memento.putString(EXPANDED_INDEXES_KEY, expandedIndexes.stream().map(i -> i.toString()).collect(joining(",")));
+		memento.putString(FILTER_TEXT_KEY, _filteredTreeCanvas.getFilterText());
+		{
+			JSONObject jsonState = new JSONObject();
+			_treeCanvas.saveState(jsonState);
+			memento.putString(CANVAS_STATE_KEY, jsonState.toString());
+		}
 	}
 
 }

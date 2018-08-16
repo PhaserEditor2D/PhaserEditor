@@ -55,7 +55,7 @@ public class AssetsExplorerProjectBuildParticipant implements IProjectBuildParti
 					view.refreshContent(project);
 
 					if (!view.isInitialStateRecovered()) {
-						swtRun(1000, () -> view.recoverInitialState());
+						swtRun(1000, () -> view.restoreInitialState());
 					}
 				}
 			}

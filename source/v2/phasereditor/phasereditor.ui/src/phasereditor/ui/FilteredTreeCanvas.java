@@ -57,8 +57,16 @@ public class FilteredTreeCanvas extends Composite {
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 	}
-	
+
 	public TreeCanvas getCanvas() {
 		return _canvas;
+	}
+
+	public String getFilterText() {
+		return _filterText.getText();
+	}
+
+	public void setFilterText(String filterText) {
+		_filterText.setText(filterText);
 	}
 }

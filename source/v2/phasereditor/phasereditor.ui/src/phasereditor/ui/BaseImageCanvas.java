@@ -40,6 +40,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
+import org.json.JSONObject;
 
 /**
  * @author arian
@@ -201,5 +202,15 @@ public class BaseImageCanvas extends Canvas {
 
 	private static String computeKey(File file) {
 		return file.getAbsolutePath() + "@" + file.lastModified();
+	}
+
+	@SuppressWarnings("unused")
+	public void saveState(JSONObject jsonState) {
+		//
+	}
+
+	@SuppressWarnings("unused")
+	public void restoreState(JSONObject jsonState) {
+		//
 	}
 }
