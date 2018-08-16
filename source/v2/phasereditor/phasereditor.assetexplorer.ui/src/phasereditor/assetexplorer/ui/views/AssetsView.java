@@ -316,6 +316,8 @@ public class AssetsView extends ViewPart {
 		}
 
 		_lastToken = getActiveProject();
+		
+		_treeCanvas.redraw();
 	}
 
 	public static IProject getActiveProject() {

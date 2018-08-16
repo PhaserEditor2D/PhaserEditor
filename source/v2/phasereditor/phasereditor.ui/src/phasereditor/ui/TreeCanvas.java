@@ -42,6 +42,7 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.json.JSONObject;
 
 /**
  * @author arian
@@ -879,6 +880,20 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		updateVisibleItemsList();
 
 		redraw();
+	}
+	
+	@Override
+	public void saveState(JSONObject jsonState) {
+		super.saveState(jsonState);
+		
+		jsonState.put("TreeCanvas.imageSize", _imageSize);
+	}
+	
+	@Override
+	public void restoreState(JSONObject jsonState) {
+		super.restoreState(jsonState);
+		
+		_imageSize = jsonState.optInt("TreeCanvas.imageSize", 48);
 	}
 
 }

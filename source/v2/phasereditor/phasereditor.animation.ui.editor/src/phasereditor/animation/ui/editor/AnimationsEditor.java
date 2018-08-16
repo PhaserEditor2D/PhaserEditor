@@ -79,6 +79,7 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
@@ -107,6 +108,14 @@ import phasereditor.ui.TreeCanvasViewer;
  */
 public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
+	/**
+	 * 
+	 */
+	private static final String ANIMATION_KEY = "animation";
+	/**
+	 * 
+	 */
+	private static final String OUTLINER_TREE_STATE_KEY = "outliner.tree.state";
 	public static final String ID = "phasereditor.animation.ui.AnimationsEditor"; //$NON-NLS-1$
 	private AnimationsModel_in_Editor _model;
 	private AnimationCanvas _animCanvas;
@@ -121,6 +130,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 	private boolean _dirty;
 	private String _initialAnimtionKey;
+	JSONObject _initialOutlinerState;
 
 	public AnimationsEditor() {
 	}
@@ -305,10 +315,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 						openNewAnimationDialog(null);
 					}
 				});
-				manager.add(new CommandContributionItem(
-						new CommandContributionItemParameter(getEditorSite(),
-								"outline", "phasereditor.ui.quickOutline", SWT.PUSH)));
-				
+				manager.add(new CommandContributionItem(new CommandContributionItemParameter(getEditorSite(), "outline",
+						"phasereditor.ui.quickOutline", SWT.PUSH)));
+
 				AnimationModel currentAnim = getAnimationCanvas().getModel();
 
 				if (currentAnim != null) {
@@ -655,6 +664,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		public Outliner() {
 		}
 
+		public FilteredTreeCanvas getFilteredTreeCanvas() {
+			return _filteredTreeCanvas;
+		}
+
 		@Override
 		public void createControl(Composite parent) {
 			_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
@@ -695,6 +708,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			_initialListeners.clear();
 			_initialSelection = null;
+			
+			if (_initialOutlinerState != null) {
+				_outliner.getFilteredTreeCanvas().getCanvas().restoreState(_initialOutlinerState);
+				_initialOutlinerState = null;
+			}
 
 		}
 
@@ -829,14 +847,27 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	@Override
 	public void saveState(IMemento memento) {
 		var anim = getAnimationCanvas().getModel();
+
 		if (anim != null) {
-			memento.putString("animation", anim.getKey());
+			memento.putString(ANIMATION_KEY, anim.getKey());
+		}
+
+		if (_outliner != null) {
+			var jsonSate = new JSONObject();
+			_outliner.getFilteredTreeCanvas().getCanvas().saveState(jsonSate);
+			memento.putString(OUTLINER_TREE_STATE_KEY, jsonSate.toString());
 		}
 	}
 
 	@Override
 	public void restoreState(IMemento memento) {
-		_initialAnimtionKey = memento.getString("animation");
+		_initialAnimtionKey = memento.getString(ANIMATION_KEY);
+		{
+			var str = memento.getString(OUTLINER_TREE_STATE_KEY);
+			if (str != null) {
+				_initialOutlinerState = new JSONObject(str);
+			}
+		}
 	}
 
 	public void refreshOutline() {
