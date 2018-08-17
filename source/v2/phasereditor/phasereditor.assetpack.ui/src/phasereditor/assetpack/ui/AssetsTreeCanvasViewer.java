@@ -59,8 +59,8 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 	}
 
 	@Override
-	protected void setItemIconProperties(TreeCanvasItem item, Object elem) {
-
+	protected void setItemIconProperties(TreeCanvasItem item) {
+		var elem = item.getData();
 		IFile file = null;
 		FrameData fd = null;
 
@@ -130,7 +130,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		item.setKeywords(keywords.isEmpty() ? null : keywords.stream().collect(joining(",")));
 
 		if (file == null || fd == null) {
-			super.setItemIconProperties(item, elem);
+			super.setItemIconProperties(item);
 		} else {
 			// we do this to the loading at once!
 			getCanvas().loadImage(file);

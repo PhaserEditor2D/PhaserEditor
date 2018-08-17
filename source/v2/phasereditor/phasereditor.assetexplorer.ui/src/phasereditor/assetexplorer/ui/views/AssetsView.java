@@ -144,7 +144,7 @@ public class AssetsView extends ViewPart {
 		if (elem instanceof IProject) {
 			provider.forceToFocuseOnProject((IProject) elem);
 			_lastToken = (IProject) elem;
-			_viewer.refreshContent();
+			_viewer.refresh();
 			// _treeCanvasAdapter.expandToLevel(3);
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
@@ -266,7 +266,7 @@ public class AssetsView extends ViewPart {
 		_treeCanvas.setRedraw(false);
 
 		try {
-			out.println("AssetExplorerContentProvider.refreshViewer()");
+			out.println("AssetsView.refreshViewer()");
 
 			IProject project = getActiveProject();
 
@@ -380,7 +380,7 @@ public class AssetsView extends ViewPart {
 
 		IProject currentProject = _contentProvider.getProjectInContent();
 
-		if (currentProject != null && project == currentProject) {
+		if (currentProject != null && project != currentProject) {
 			out.println("  Skip refresh.");
 			return;
 		}
@@ -399,7 +399,7 @@ public class AssetsView extends ViewPart {
 		try {
 			_treeCanvas.setRedraw(false);
 
-			_viewer.refreshContent();
+			_viewer.refresh();
 
 			List<Object> toExpand = new ArrayList<>();
 

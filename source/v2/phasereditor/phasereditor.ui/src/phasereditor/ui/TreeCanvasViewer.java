@@ -56,7 +56,12 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 		return _input;
 	}
 
-	public void refreshContent() {
+	public void refresh() {
+		refreshContent();
+		refreshLabels();
+	}
+
+	protected void refreshContent() {
 		var roots = new ArrayList<TreeCanvasItem>();
 
 		if (_input != null) {
@@ -67,11 +72,12 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 		}
 
 		_canvas.setRoots(roots);
+
 	}
 
-	public void refreshLabels() {
+	protected void refreshLabels() {
 		for (var item : _canvas.getItems()) {
-			refreshItem(item, item);
+			setItemProperties(item);
 		}
 	}
 
@@ -81,16 +87,17 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 
 	private TreeCanvasItem buildItem(Object elem) {
 		var item = new TreeCanvasItem();
+		item.setData(elem);
 
-		refreshItem(elem, item);
+		refreshItem(item);
 
 		return item;
 	}
 
-	private void refreshItem(Object elem, TreeCanvasItem item) {
-		setItemProperties(item, elem);
+	private void refreshItem(TreeCanvasItem item) {
+		setItemProperties(item);
 
-		var children = _contentProvider.getChildren(elem);
+		var children = _contentProvider.getChildren(item.getData());
 
 		for (var child : children) {
 			var item2 = buildItem(child);
@@ -98,14 +105,13 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 		}
 	}
 
-	protected void setItemProperties(TreeCanvasItem item, Object elem) {
-		item.setData(elem);
-		item.setLabel(_labelProvider.getText(elem));
-		setItemIconProperties(item, elem);
+	protected void setItemProperties(TreeCanvasItem item) {
+		item.setLabel(_labelProvider.getText(item.getData()));
+		setItemIconProperties(item);
 	}
 
-	protected void setItemIconProperties(TreeCanvasItem item, Object elem) {
-		item.setIcon(_labelProvider.getImage(elem));
+	protected void setItemIconProperties(TreeCanvasItem item) {
+		item.setIcon(_labelProvider.getImage(item.getData()));
 		item.setIconType(IconType.COMMON_ICON);
 	}
 

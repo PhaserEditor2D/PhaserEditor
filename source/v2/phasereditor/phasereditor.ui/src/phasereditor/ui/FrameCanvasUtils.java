@@ -331,7 +331,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		//
 	}
 
-	private void shiftSelection(int dir) {
+	protected void shiftSelection(int dir) {
 
 		if (_lastSelectedObject == null) {
 			return;

@@ -770,7 +770,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		public void refresh() {
 			if (_filteredTreeCanvas != null) {
-				_viewer.refreshContent();
+				_viewer.refresh();
 			}
 		}
 	}

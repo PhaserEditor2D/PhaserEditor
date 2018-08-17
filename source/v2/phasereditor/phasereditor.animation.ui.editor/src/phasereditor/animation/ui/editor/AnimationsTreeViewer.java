@@ -68,8 +68,8 @@ public class AnimationsTreeViewer extends TreeCanvasViewer {
 	}
 	
 	@Override
-	protected void setItemProperties(TreeCanvasItem item, Object elem) {
-		super.setItemProperties(item, elem);
+	protected void setItemProperties(TreeCanvasItem item) {
+		super.setItemProperties(item);
 		item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
 	}
 
