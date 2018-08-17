@@ -22,6 +22,11 @@
 package phasereditor.animation.ui.editor.wizards;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -30,11 +35,16 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
+import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.ui.wizards.NewPage_AssetPackSection;
+import phasereditor.project.core.ProjectCore;
+
 public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 
 	private IStructuredSelection _selection;
 	private AnimationsFileWizardPage _filePage;
 	private IWorkbenchPage _windowPage;
+	private NewPage_AssetPackSection _assetPackPage;
 
 	public NewAnimationsFileWizard() {
 		setWindowTitle("New Animations File");
@@ -43,7 +53,18 @@ public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		_filePage = new AnimationsFileWizardPage(_selection);
+		_assetPackPage = new NewPage_AssetPackSection(_filePage);
+
 		addPage(_filePage);
+		addPage(_assetPackPage);
+	}
+
+	public AnimationsFileWizardPage getFilePage() {
+		return _filePage;
+	}
+
+	public NewPage_AssetPackSection getAssetPackPage() {
+		return _assetPackPage;
 	}
 
 	@Override
@@ -54,7 +75,6 @@ public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		boolean performedOK = false;
 
 		// no file extension specified so add default extension
 		String fileName = _filePage.getFileName();
@@ -65,21 +85,38 @@ public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 
 		// create a new empty file
 		IFile file = _filePage.createNewFile();
+
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
-		if (file != null) {
-			// open the file in editor
-			try {
-				IDE.openEditor(_windowPage, file);
-			} catch (PartInitException e) {
-				throw new RuntimeException(e);
-			}
-
-			// everything's fine
-			performedOK = true;
+		if (file == null) {
+			return false;
 		}
 
-		return performedOK;
+		var job = new WorkspaceJob("Adding file to the asset pack") {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+				getAssetPackPage().performFinish(monitor, section -> {
+					var pack = section.getPack();
+					var asset = new AnimationsAssetModel(pack.createKey(file), section);
+					asset.setUrl(ProjectCore.getAssetUrl(file));
+					section.addAsset(asset, false);
+				});
+
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
+
+		// open the file in editor
+		try {
+			IDE.openEditor(_windowPage, file);
+		} catch (PartInitException e) {
+			throw new RuntimeException(e);
+		}
+
+		return true;
 	}
 
 }

@@ -50,11 +50,12 @@ public class AnimationsAssetModel extends AssetModel {
 
 	public AnimationsAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		
 		_url = jsonData.optString("url", null);
 		_dataKey = jsonData.optString("dataKey", null);
 	}
 
-	protected AnimationsAssetModel(String key, AssetSectionModel section) throws JSONException {
+	public AnimationsAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.animation, section);
 	}
 
