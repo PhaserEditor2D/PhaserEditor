@@ -30,13 +30,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
-import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
 import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
@@ -80,10 +78,6 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			super.setItemIconProperties(item);
 		}
 		
-		if (elem instanceof AnimationModel) {
-			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
-		}
-
 		if (elem == AssetsView.CANVAS_NODE
 
 				|| elem instanceof CanvasType

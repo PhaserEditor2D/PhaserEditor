@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Point;
 
+import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -129,6 +130,10 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 					}
 				}
 			}
+		}
+		
+		if (elem instanceof AnimationModel) {
+			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
 		}
 
 		LinkedHashSet<String> keywords = new LinkedHashSet<>();
