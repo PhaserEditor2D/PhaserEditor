@@ -472,11 +472,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		}
 	}
 
-	
 	public List<TreeCanvasItem> getVisibleItems() {
 		return _visibleItems;
 	}
-	
+
 	public List<TreeCanvasItem> getItems() {
 		return _items;
 	}
@@ -516,15 +515,16 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private void updateItemsList() {
 		_items = new ArrayList<>();
 
-		updateItemsList(_roots);
+		updateItemsList(null, _roots);
 
 	}
 
-	private void updateItemsList(List<TreeCanvasItem> items) {
+	private void updateItemsList(TreeCanvasItem parent, List<TreeCanvasItem> items) {
 		for (var item : items) {
 			item._index = _items.size();
+			item._parent = parent;
 			_items.add(item);
-			updateItemsList(item.getChildren());
+			updateItemsList(item, item.getChildren());
 		}
 	}
 
@@ -653,11 +653,16 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		int _y;
 		int _rowHeight;
 		private TreeCanvasItemRenderer _renderer;
+		TreeCanvasItem _parent;
 
 		public TreeCanvasItem() {
 			_children = new ArrayList<>();
 			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
+		}
+		
+		public TreeCanvasItem getParent() {
+			return _parent;
 		}
 
 		public TreeCanvasItemRenderer getRenderer() {
@@ -699,7 +704,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		public List<TreeCanvasItemAction> getActions() {
 			return _actions;
 		}
-		
+
 		public void setActions(List<TreeCanvasItemAction> actions) {
 			_actions = actions;
 		}
@@ -885,19 +890,51 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		redraw();
 	}
-	
+
 	@Override
 	public void saveState(JSONObject jsonState) {
 		super.saveState(jsonState);
-		
+
 		jsonState.put("TreeCanvas.imageSize", _imageSize);
 	}
-	
+
 	@Override
 	public void restoreState(JSONObject jsonState) {
 		super.restoreState(jsonState);
-		
+
 		_imageSize = jsonState.optInt("TreeCanvas.imageSize", 48);
+	}
+
+	public void expandToLevel(Object elem, int level) {
+		if (elem == null) {
+			return;
+		}
+
+		for (var item : _visibleItems) {
+			if (item.getData() == elem) {
+				itemExpandToRoot(item);
+				itemExpandToLevel(item, level);
+			}
+		}
+
+		updateVisibleItemsList();
+	}
+
+	private void itemExpandToRoot(TreeCanvasItem item) {
+		if (item != null) {
+			item.setExpanded(true);
+			itemExpandToRoot(item.getParent());
+		}
+	}
+
+	private void itemExpandToLevel(TreeCanvasItem item, int level) {
+		item.setExpanded(true);
+
+		if (level > 1) {
+			for (var child : item.getChildren()) {
+				itemExpandToLevel(child, level - 1);
+			}
+		}
 	}
 
 }

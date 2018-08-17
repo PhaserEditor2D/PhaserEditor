@@ -23,6 +23,9 @@ package phasereditor.ui;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 
@@ -33,7 +36,7 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class TreeCanvasViewer implements IEditorSharedImages {
+public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider {
 
 	private ITreeContentProvider _contentProvider;
 	private LabelProvider _labelProvider;
@@ -73,6 +76,10 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 
 		_canvas.setRoots(roots);
 
+	}
+	
+	public void expandToLevel(Object elem, int level) {
+		_canvas.expandToLevel(elem, level);
 	}
 
 	protected void refreshLabels() {
@@ -121,5 +128,26 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 
 	public ITreeContentProvider getContentProvider() {
 		return _contentProvider;
+	}
+
+	@Override
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		_canvas.getUtils().addSelectionChangedListener(listener);
+	}
+
+	@Override
+	public ISelection getSelection() {
+		return _canvas.getUtils().getSelection();
+	}
+
+	@Override
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		_canvas.getUtils().removeSelectionChangedListener(listener);
+	}
+
+	@Override
+	public void setSelection(ISelection selection) {
+		_canvas.getUtils().setSelection(selection);
+		_canvas.redraw();
 	}
 }

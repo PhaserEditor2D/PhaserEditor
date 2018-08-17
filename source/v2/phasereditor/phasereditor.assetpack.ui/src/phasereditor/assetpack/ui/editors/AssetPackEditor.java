@@ -110,14 +110,16 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.FilteredContentOutlinePage;
+import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.PGridPage;
 
 /**
@@ -182,9 +184,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		if (pack == null) {
 			return;
 		}
-		
+
 		var sel = (IStructuredSelection) getEditorSite().getSelectionProvider().getSelection();
-		
+
 		if (sel == null) {
 			return;
 		}
@@ -1043,14 +1045,20 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		getAssetsComp().getViewer().setSelection(sel);
 	}
 
-	class AssetPackEditorOutlinePage extends FilteredContentOutlinePage {
+	class AssetPackEditorOutlinePage extends FilteredTreeCanvasContentOutlinePage {
 		private ISelectionChangedListener _listener;
 
 		public AssetPackEditorOutlinePage() {
 		}
 
+		@Override
+		protected TreeCanvasViewer createViewer() {
+			return new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getCanvas(), new AssetsContentProvider(true),
+					AssetLabelProvider.GLOBAL_16);
+		}
+
 		public void revealAndSelect(IStructuredSelection selection) {
-			TreeViewer viewer = getViewer();
+			var viewer = getViewer();
 
 			var iter = selection.iterator();
 			while (iter.hasNext()) {
@@ -1073,15 +1081,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		public void createControl(Composite parent) {
 			super.createControl(parent);
 
-			TreeViewer viewer = getTreeViewer();
-			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-			viewer.setContentProvider(new AssetsContentProvider(true));
-			viewer.setInput(getModel());
+			var viewer = getViewer();
+			
 			viewer.addSelectionChangedListener(_listener = new ISelectionChangedListener() {
 
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
-					if (!viewer.getTree().isFocusControl()) {
+					if (!viewer.getCanvas().isFocusControl()) {
 						return;
 					}
 
@@ -1110,7 +1116,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					getAssetsComp().getViewer().setSelection(event.getSelection());
 				}
 			});
-			AssetPackUI.installAssetTooltips(viewer);
+			
+			AssetPackUI.installAssetTooltips(viewer.getCanvas(), viewer.getCanvas().getUtils());
+			
+			viewer.setInput(getModel());
+			
 			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
 		}
 
