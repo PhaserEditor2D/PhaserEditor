@@ -81,6 +81,10 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	public void expandToLevel(Object elem, int level) {
 		_canvas.expandToLevel(elem, level);
 	}
+	
+	public void reveal(Object elem) {
+		_canvas.reveal(elem);
+	}
 
 	protected void refreshLabels() {
 		for (var item : _canvas.getItems()) {

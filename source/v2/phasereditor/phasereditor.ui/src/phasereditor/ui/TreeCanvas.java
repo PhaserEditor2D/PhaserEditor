@@ -660,7 +660,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
 		}
-		
+
 		public TreeCanvasItem getParent() {
 			return _parent;
 		}
@@ -910,10 +910,24 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			return;
 		}
 
-		for (var item : _visibleItems) {
+		for (var item : _items) {
 			if (item.getData() == elem) {
 				itemExpandToRoot(item);
 				itemExpandToLevel(item, level);
+			}
+		}
+
+		updateVisibleItemsList();
+	}
+
+	public void reveal(Object elem) {
+		if (elem == null) {
+			return;
+		}
+
+		for (var item : _items) {
+			if (item.getData() == elem) {
+				itemExpandToRoot(item.getParent());
 			}
 		}
 
@@ -930,7 +944,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private void itemExpandToLevel(TreeCanvasItem item, int level) {
 		item.setExpanded(true);
 
-		if (level > 1) {
+		if (level > 0) {
 			for (var child : item.getChildren()) {
 				itemExpandToLevel(child, level - 1);
 			}

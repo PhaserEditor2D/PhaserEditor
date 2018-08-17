@@ -1063,14 +1063,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			var iter = selection.iterator();
 			while (iter.hasNext()) {
 				var elem = iter.next();
-				if (elem instanceof AssetGroupModel) {
-					viewer.expandToLevel(((AssetGroupModel) elem).getSection(), 1);
-				} else if (elem instanceof IAssetKey) {
-					AssetModel asset = ((IAssetKey) elem).getAsset();
-					AssetSectionModel section = asset.getSection();
-					viewer.expandToLevel(section, 1);
-					viewer.expandToLevel(asset, 1);
-				}
+				viewer.reveal(elem);
 			}
 
 			viewer.setSelection(selection);
@@ -1082,7 +1075,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			super.createControl(parent);
 
 			var viewer = getViewer();
-			
+
 			viewer.addSelectionChangedListener(_listener = new ISelectionChangedListener() {
 
 				@Override
@@ -1116,11 +1109,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					getAssetsComp().getViewer().setSelection(event.getSelection());
 				}
 			});
-			
+
 			AssetPackUI.installAssetTooltips(viewer.getCanvas(), viewer.getCanvas().getUtils());
-			
+
 			viewer.setInput(getModel());
-			
+
 			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
 		}
 
