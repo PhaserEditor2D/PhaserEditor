@@ -699,6 +699,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		public List<TreeCanvasItemAction> getActions() {
 			return _actions;
 		}
+		
+		public void setActions(List<TreeCanvasItemAction> actions) {
+			_actions = actions;
+		}
 
 		public IconType getIconType() {
 			return _iconType;
