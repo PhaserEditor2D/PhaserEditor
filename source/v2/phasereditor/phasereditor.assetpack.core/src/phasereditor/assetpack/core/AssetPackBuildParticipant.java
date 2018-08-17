@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -40,6 +41,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.assetpack.core.AssetPackModel.BuildProblem;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.project.core.ProjectCore;
 
@@ -61,7 +63,7 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 		ProjectCore.deleteResourceMarkers(project, AssetPackCore.ASSET_PACK_PROBLEM_ID);
 		AssetPackCore.removeAssetPackModels(project);
 	}
-	
+
 	@Override
 	public void projectDeleted(IProject project, Map<String, Object> env) {
 		AssetPackCore.removeAssetPackModels(project);
@@ -76,8 +78,8 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 		List<AssetPackModel> list = AssetPackCore.getAssetPackModels(project);
 
 		for (AssetPackModel pack : list) {
-			List<IStatus> problems = pack.build();
-			for (IStatus problem : problems) {
+			var problems = pack.build();
+			for (var problem : problems) {
 				createAssetPackMarker(pack.getFile(), problem);
 			}
 		}
@@ -234,7 +236,7 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 					List<IStatus> problems = new ArrayList<>();
 					asset.build(problems);
 					for (IStatus problem : problems) {
-						createAssetPackMarker(file, problem);
+						createAssetPackMarker(file, new BuildProblem(problem, asset));
 					}
 				}
 			}
@@ -244,8 +246,14 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 		}
 	}
 
-	private static void createAssetPackMarker(IFile file, IStatus problem) {
-		ProjectCore.createErrorMarker(AssetPackCore.ASSET_PACK_PROBLEM_ID, problem, file);
+	private static void createAssetPackMarker(IFile file, BuildProblem problem) {
+		IMarker marker = ProjectCore.createErrorMarker(AssetPackCore.ASSET_PACK_PROBLEM_ID, problem.getStatus(), file);
+		try {
+			marker.setAttribute(AssetPackCore.ASSET_EDITOR_GOTO_MARKER_ATTR,
+					AssetPackCore.getAssetStringReference(problem.getAsset()));
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static PackDelta getData(Map<String, Object> env) {

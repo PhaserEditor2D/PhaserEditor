@@ -189,20 +189,48 @@ public final class AssetPackModel {
 		return delta;
 	}
 
-	public List<IStatus> build() {
+	public static class BuildProblem {
+		private IStatus status;
+		private AssetModel _asset;
+		
+		
+		public BuildProblem(IStatus status, AssetModel asset) {
+			super();
+			this.status = status;
+			_asset = asset;
+		}
+		
+		public IStatus getStatus() {
+			return status;
+		}
+
+		public AssetModel getAsset() {
+			return _asset;
+		}
+	}
+	
+	public List<BuildProblem> build() {
 		out.println("Build asset pack " + getFile().getLocation());
 
-		List<IStatus> problems = new ArrayList<>();
+		var problems = new ArrayList<BuildProblem>();
 
 		for (AssetSectionModel section : _sections) {
 			for (AssetModel model : section.getAssets()) {
-				model.build(problems);
+				var list = new ArrayList<IStatus>();
+				model.build(list);
+				for(var status : list) {
+					problems.add(new BuildProblem(status, model));
+				}
 			}
 		}
 
 		for (AssetSectionModel section : _sections) {
 			for (AssetModel model : section.getAssets()) {
-				model.buildSecondPass(problems);
+				var list = new ArrayList<IStatus>();
+				model.buildSecondPass(list);
+				for(var status : list) {
+					problems.add(new BuildProblem(status, model));
+				}
 			}
 		}
 

@@ -66,12 +66,16 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 
 		if (elem instanceof IAssetFrameModel) {
 			var asset = (IAssetFrameModel) elem;
-			fd = asset.getFrameData();
 			file = asset.getImageFile();
+			if (file != null) {
+				fd = asset.getFrameData();
+			}
 		} else if (elem instanceof ImageAssetModel) {
 			var asset = (ImageAssetModel) elem;
-			fd = asset.getFrame().getFrameData();
 			file = asset.getFrame().getImageFile();
+			if (file != null) {
+				fd = asset.getFrame().getFrameData();
+			}
 		} else if (elem instanceof AtlasAssetModel) {
 			var asset = (AtlasAssetModel) elem;
 			fd = new FrameData(0);
@@ -87,9 +91,11 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			if (!frames.isEmpty()) {
 				var frame = frames.get(0);
 				file = frame.getImageFile();
-				var img = getCanvas().loadImage(file);
-				if (img != null) {
-					fd = FrameData.fromImage(img);
+				if (file != null) {
+					var img = getCanvas().loadImage(file);
+					if (img != null) {
+						fd = FrameData.fromImage(img);
+					}
 				}
 			}
 		} else if (elem instanceof SpritesheetAssetModel) {
@@ -117,8 +123,10 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 				var assetFrame = animFrame.getFrameAsset();
 
 				if (assetFrame != null) {
-					fd = assetFrame.getFrameData();
 					file = assetFrame.getImageFile();
+					if (file != null) {
+						fd = assetFrame.getFrameData();
+					}
 				}
 			}
 		}
@@ -134,7 +142,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		} else {
 			// we do this to the loading at once!
 			getCanvas().loadImage(file);
-			
+
 			item.setFrameData(fd);
 			item.setImageFile(file);
 			item.setIconType(IconType.IMAGE_FRAME);
@@ -166,16 +174,16 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 				keywords.add("frame");
 			}
 
-		} 
-		
+		}
+
 		if (elem instanceof AnimationsModel || elem instanceof AnimationModel) {
 			keywords.add("animation");
 		}
-		
+
 		if (elem instanceof AssetPackModel) {
 			keywords.add("pack");
 		}
-		
+
 		if (elem instanceof IProject) {
 			keywords.add("project");
 		}
