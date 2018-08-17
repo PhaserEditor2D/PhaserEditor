@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.events.MouseEvent;
@@ -104,8 +106,9 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 
 		var elem = item.getData();
 		
-		var actions = item.getActions();
-
+		var actions = new ArrayList<TreeCanvasItemAction>();
+		item.setActions(actions);
+		
 		if (elem == AssetsView.CANVAS_NODE) {
 			item.setHeader(true);
 		}
