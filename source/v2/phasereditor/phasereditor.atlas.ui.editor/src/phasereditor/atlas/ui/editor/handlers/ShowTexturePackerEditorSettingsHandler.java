@@ -1,4 +1,4 @@
-package phasereditor.atlas.ui.handlers;
+package phasereditor.atlas.ui.editor.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.atlas.ui.editors.TexturePackerEditor;
+import phasereditor.atlas.ui.editor.TexturePackerEditor;
 
 public class ShowTexturePackerEditorSettingsHandler extends AbstractHandler {
 

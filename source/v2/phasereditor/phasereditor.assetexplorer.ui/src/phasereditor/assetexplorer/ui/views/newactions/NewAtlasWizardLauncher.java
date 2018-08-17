@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.INewWizard;
 
 import phasereditor.atlas.core.AtlasCore;
-import phasereditor.atlas.ui.wizards.NewAtlasMakerWizard;
+import phasereditor.atlas.ui.editor.wizards.NewAtlasMakerWizard;
 
 /**
  * @author arian

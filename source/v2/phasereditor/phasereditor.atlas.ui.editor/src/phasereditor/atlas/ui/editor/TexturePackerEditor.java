@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.ui.editors;
+package phasereditor.atlas.ui.editor;
 
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.eclipseFileToJavaPath;
@@ -119,7 +119,7 @@ import phasereditor.ui.properties.PGridPage;
 
 public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
 
-	public static final String ID = "phasereditor.atlas.ui.editors.TexturePackerEditor"; //$NON-NLS-1$
+	public static final String ID = "phasereditor.atlas.ui.editor.TexturePackerEditor"; //$NON-NLS-1$
 
 	protected TexturePackerEditorModel _model;
 	private Composite _container;

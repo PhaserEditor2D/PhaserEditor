@@ -1,18 +1,18 @@
-package phasereditor.atlas.ui.handlers;
+package phasereditor.atlas.ui.editor.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.atlas.ui.editors.TexturePackerEditor;
+import phasereditor.atlas.ui.editor.TexturePackerEditor;
 
-public class DeleteAtlasSelectionHandler extends AbstractHandler {
+public class BuildAtlasHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		TexturePackerEditor editor = (TexturePackerEditor) HandlerUtil.getActiveEditor(event);
-		editor.deleteSelection();
+		editor.manuallyBuild();
 		return null;
 	}
 

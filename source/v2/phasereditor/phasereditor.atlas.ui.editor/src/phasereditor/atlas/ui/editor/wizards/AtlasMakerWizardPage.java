@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.ui.wizards;
+package phasereditor.atlas.ui.editor.wizards;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import phasereditor.atlas.ui.editors.TexturePackerEditorModel;
+import phasereditor.atlas.ui.editor.TexturePackerEditorModel;
 import phasereditor.project.core.ProjectCore;
 
 public class AtlasMakerWizardPage extends WizardNewFileCreationPage {

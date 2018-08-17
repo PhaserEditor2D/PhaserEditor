@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.ui.editors;
+package phasereditor.atlas.ui.editor;
 
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.isEditorSupportedImage;
