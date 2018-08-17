@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.108.0",
  phasereditor.ui,
  phasereditor.libgdx,
  phasereditor.project.core,
- phasereditor.atlas.ui;bundle-version="1.5.0"
+ phasereditor.atlas.ui;bundle-version="1.5.0",
+ phasereditor.assetpack.ui;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Automatic-Module-Name: phasereditor.atlas.ui.editor
 Bundle-ActivationPolicy: lazy

@@ -19,12 +19,13 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.wizards;
+package phasereditor.assetpack.ui.wizards;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -34,14 +35,17 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetSectionsContentProvider;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
-import phasereditor.canvas.core.CanvasModel;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -49,17 +53,19 @@ import phasereditor.project.core.ProjectCore;
  */
 public class NewPage_AssetPackSection extends WizardPage {
 	private TreeViewer _treeViewer;
-	private CanvasModel _canvasModel;
 	private Button _btnAddTheSource;
 	private AssetSectionModel _selectedSection;
+	private WizardNewFileCreationPage _filePage;
+	private IProject _project;
 
 	/**
 	 * Create the wizard.
 	 */
-	public NewPage_AssetPackSection() {
+	public NewPage_AssetPackSection(WizardNewFileCreationPage filePage) {
 		super("assetPackPage");
+		_filePage = filePage;
 		setTitle("Loading");
-		setDescription("Add the source file to an Asset Pack.");
+		setDescription("Add the file to an Asset Pack.");
 	}
 
 	/**
@@ -76,7 +82,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 		_btnAddTheSource = new Button(container, SWT.CHECK);
 		_btnAddTheSource.setSelection(true);
-		_btnAddTheSource.setText("Add the source file as 'script' to an Asset Pack file.");
+		_btnAddTheSource.setText("Add the file to a pack section.");
 
 		_treeViewer = new TreeViewer(container);
 		Tree tree = _treeViewer.getTree();
@@ -131,31 +137,65 @@ public class NewPage_AssetPackSection extends WizardPage {
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 
-		IPath path = getWizard().getFilePage().getContainerFullPath();
+		_project = getProject();
 
-		IProject project = ProjectCore.getProjectFromPath(path);
-
-		_treeViewer.setInput(project);
+		_treeViewer.setInput(_project);
 		_treeViewer.expandAll();
 
 		updatePageComplete();
 	}
 
-	@Override
-	public NewWizard_Base getWizard() {
-		return (NewWizard_Base) super.getWizard();
-	}
-
-	public void setCanvasModel(CanvasModel model) {
-		_canvasModel = model;
-	}
-
-	public CanvasModel getCanvasModel() {
-		return _canvasModel;
+	private IProject getProject() {
+		return ProjectCore.getProjectFromPath(_filePage.getContainerFullPath());
 	}
 
 	public AssetSectionModel getSelectedSection() {
 		return _selectedSection;
+	}
+
+	public void performFinish(IProgressMonitor monitor, Consumer<AssetSectionModel> addElementsToSection) {
+		AssetSectionModel addToSection = getSelectedSection();
+		if (addToSection != null) {
+
+			var sectionKey = addToSection.getKey();
+
+			PhaserEditorUI.swtRun(new Runnable() {
+
+				@Override
+				public void run() {
+					List<AssetPackEditor> editors = AssetPackUI
+							.findOpenAssetPackEditors(addToSection.getPack().getFile());
+
+					for (AssetPackEditor editor : editors) {
+						AssetPackModel pack = editor.getModel();
+
+						var section = pack.findSection(sectionKey);
+
+						if (section != null) {
+
+							addElementsToSection.accept(section);
+
+							editor.refresh();
+
+							pack.setDirty(false);
+						}
+					}
+				}
+			});
+
+			for (AssetPackModel pack : AssetPackCore.getAssetPackModels(_project)) {
+
+				AssetSectionModel section = pack.findSection(sectionKey);
+
+				if (section != null) {
+
+					addElementsToSection.accept(section);
+
+					pack.save(monitor);
+				}
+			}
+
+		}
 	}
 
 }

@@ -33,8 +33,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -58,7 +58,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -67,8 +66,6 @@ import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
-import org.eclipse.ui.menus.CommandContributionItem;
-import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -79,6 +76,7 @@ import org.json.JSONObject;
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
+import phasereditor.animation.ui.editor.handlers.QuickOutlineDialog;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -103,13 +101,7 @@ import phasereditor.ui.TreeCanvasViewer;
  */
 public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
-	/**
-	 * 
-	 */
 	private static final String ANIMATION_KEY = "animation";
-	/**
-	 * 
-	 */
 	private static final String OUTLINER_TREE_STATE_KEY = "outliner.tree.state";
 	public static final String ID = "phasereditor.animation.ui.AnimationsEditor"; //$NON-NLS-1$
 	private AnimationsModel_in_Editor _model;
@@ -128,7 +120,39 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	JSONObject _initialOutlinerState;
 	private Action _deleteAction;
 	private Action _newAction;
-	private CommandContributionItem _outlineAction;
+	private Action _outlineAction;
+
+	public Action getPlayAction() {
+		return _playAction;
+	}
+
+	public Action getPauseAction() {
+		return _pauseAction;
+	}
+
+	public Action getStopAction() {
+		return _stopAction;
+	}
+
+	public ImageCanvas_Zoom_1_1_Action getZoom_1_1_action() {
+		return _zoom_1_1_action;
+	}
+
+	public ImageCanvas_Zoom_FitWindow_Action getZoom_fitWindow_action() {
+		return _zoom_fitWindow_action;
+	}
+
+	public Action getDeleteAction() {
+		return _deleteAction;
+	}
+
+	public Action getNewAction() {
+		return _newAction;
+	}
+
+	public Action getOutlineAction() {
+		return _outlineAction;
+	}
 
 	public AnimationsEditor() {
 	}
@@ -152,8 +176,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_animCanvas = new AnimationCanvas(topComp, SWT.NONE);
 		_animCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		createToolbar(topComp);
-
 		_timelineCanvas = new AnimationTimelineCanvas_in_Editor(sash, SWT.BORDER);
 		_timelineCanvas.setEditor(this);
 
@@ -163,6 +185,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	private void afterCreateWidgets() {
+
+		createActions();
+		
+		createContextMenus();
+
 		getEditorSite().setSelectionProvider(new ISelectionProvider() {
 
 			private ISelection _selection;
@@ -234,6 +261,34 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		init_DND_Support();
+	}
+
+	private void createContextMenus() {
+		var manager = new MenuManager();
+		
+		manager.add(getPlayAction());
+		manager.add(getPauseAction());
+		manager.add(getStopAction());
+		
+		manager.add(new Separator());
+
+		
+		manager.add(getZoom_1_1_action());
+		manager.add(getZoom_fitWindow_action());
+		
+		manager.add(new Separator());
+
+		manager.add(getNewAction());
+		manager.add(getOutlineAction());
+		
+		manager.add(new Separator());
+
+		
+		manager.add(getDeleteAction());
+		
+		var menu = manager.createContextMenu(_animCanvas);
+		
+		_animCanvas.setMenu(menu);
 	}
 
 	private void init_DND_Support() {
@@ -316,6 +371,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		case RUNNING:
 			_playAction.setChecked(true);
 			_pauseAction.setChecked(false);
+			_stopAction.setChecked(false);
 			break;
 		case STOPPED:
 			// TODO: do we really want to do this? it breaks the animation, it looks like
@@ -363,8 +419,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	private ToolBar createToolbar(Composite parent) {
-		ToolBarManager manager = new ToolBarManager(SWT.BORDER);
+	private void createActions() {
 
 		_playAction = new Action("Play", IAction.AS_CHECK_BOX) {
 			{
@@ -442,24 +497,27 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			}
 		};
 
-		_outlineAction = new CommandContributionItem(new CommandContributionItemParameter(getEditorSite(), "outline",
-				"phasereditor.ui.quickOutline", SWT.PUSH));
+		_outlineAction = new Action("Quick Outline",
+				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_OUTLINE)) {
+			@Override
+			public void run() {
+				var model = getModel();
 
-		manager.add(_playAction);
-		manager.add(_pauseAction);
-		manager.add(_stopAction);
-		manager.add(new Separator());
-		manager.add(_zoom_1_1_action);
-		manager.add(_zoom_fitWindow_action);
-		manager.add(new Separator());
+				var dlg = new QuickOutlineDialog(getEditorSite().getShell());
+				dlg.setModel(model);
+				dlg.setSelected(getAnimationCanvas().getModel());
 
-		manager.add(_newAction);
-		manager.add(_outlineAction);
-		manager.add(_deleteAction);
+				if (dlg.open() == Window.OK) {
+					var selected = dlg.getSelected();
+					if (selected != null) {
+						selectAnimation((AnimationModel_in_Editor) selected);
+					}
+				}
+			}
+		};
 
 		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
 
-		return manager.createControl(parent);
 	}
 
 	@Override
@@ -627,7 +685,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			_animCanvas.setModel(null);
 			_timelineCanvas.setModel(null);
-			
+
 			return;
 		}
 

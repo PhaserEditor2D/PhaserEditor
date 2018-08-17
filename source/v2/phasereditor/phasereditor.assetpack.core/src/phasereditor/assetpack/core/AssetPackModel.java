@@ -641,11 +641,7 @@ public final class AssetPackModel {
 	}
 
 	public String createKey(IFile file) {
-		String name = file.getName();
-		String ext = file.getFileExtension();
-		if (ext.length() > 0) {
-			name = name.substring(0, name.length() - ext.length() - 1);
-		}
+		var name = file.getFullPath().removeFileExtension().toFile().getName();
 		return createKey(name);
 	}
 

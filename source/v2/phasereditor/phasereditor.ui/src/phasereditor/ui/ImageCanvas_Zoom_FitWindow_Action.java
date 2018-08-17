@@ -35,6 +35,7 @@ public class ImageCanvas_Zoom_FitWindow_Action extends Action {
 	}
 
 	public ImageCanvas_Zoom_FitWindow_Action(IZoomable canvas) {
+		super("Adjust To Window");
 		_canvas = canvas;
 		setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ARROW_OUT));
 		setToolTipText("Zoom the image to fit the window.");

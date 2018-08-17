@@ -21,7 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editor.wizards;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -30,10 +37,15 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.wizards.NewPage_AssetPackSection;
+import phasereditor.project.core.ProjectCore;
+
 public class NewAtlasMakerWizard extends Wizard implements INewWizard {
 	private IStructuredSelection _selection;
-	private AtlasMakerWizardPage _page;
+	private AtlasMakerWizardPage _filePage;
 	private IWorkbenchPage _windowPage;
+	private NewPage_AssetPackSection _assetPackPage;
 
 	public NewAtlasMakerWizard() {
 		setWindowTitle("New Atlas Generator File");
@@ -41,8 +53,20 @@ public class NewAtlasMakerWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		_page = new AtlasMakerWizardPage(_selection, "New Atlas Generator File", "Create a new Atlas generator file.");
-		addPage(_page);
+		_filePage = new AtlasMakerWizardPage(_selection, "New Atlas Generator File",
+				"Create a new Atlas generator file.");
+		_assetPackPage = new NewPage_AssetPackSection(_filePage);
+
+		addPage(_filePage);
+		addPage(_assetPackPage);
+	}
+
+	public AtlasMakerWizardPage getFilePage() {
+		return _filePage;
+	}
+
+	public NewPage_AssetPackSection getAssetPackPage() {
+		return _assetPackPage;
 	}
 
 	@Override
@@ -51,33 +75,67 @@ public class NewAtlasMakerWizard extends Wizard implements INewWizard {
 		_windowPage = workbench.getActiveWorkbenchWindow().getActivePage();
 	}
 
+	public IWorkbenchPage getWindowPage() {
+		return _windowPage;
+	}
+
 	@Override
 	public boolean performFinish() {
-		boolean performedOK = false;
 
 		// no file extension specified so add default extension
-		String fileName = _page.getFileName();
+		String fileName = _filePage.getFileName();
 		if (fileName.lastIndexOf('.') == -1) {
 			String newFileName = fileName + ".atlas";
-			_page.setFileName(newFileName);
+			_filePage.setFileName(newFileName);
 		}
 
-		// create a new empty file
-		IFile file = _page.createNewFile();
-		// if there was problem with creating file, it will be null, so make
-		// sure to check
-		if (file != null) {
-			// open the file in editor
-			try {
-				IDE.openEditor(_windowPage, file);
-			} catch (PartInitException e) {
-				throw new RuntimeException(e);
+		IFile file = getFilePage().createNewFile();
+
+		if (file == null) {
+			return false;
+		}
+
+		var job = new WorkspaceJob("Creating Texture Packer file.") {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+				// create a new empty file
+
+				// if there was problem with creating file, it will be null, so make
+				// sure to check
+
+				getAssetPackPage().performFinish(monitor, section -> {
+					var pack = section.getPack();
+
+					var asset = new MultiAtlasAssetModel(pack.createKey(file), section);
+
+					var jsonFile = file.getProject()
+							.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("json"));
+
+					asset.setKey(pack.createKey(jsonFile));
+					asset.setUrl(ProjectCore.getAssetUrl(jsonFile));
+					asset.setPath(ProjectCore.getAssetUrl(jsonFile.getProject(), file.getParent().getFullPath()));
+
+					section.addAsset(asset, false);
+				});
+
+				swtRun(() -> {
+					// open the file in editor
+					try {
+						IDE.openEditor(getWindowPage(), file);
+					} catch (PartInitException e) {
+						throw new RuntimeException(e);
+					}
+				});
+
+				return Status.OK_STATUS;
 			}
 
-			// everything's fine
-			performedOK = true;
-		}
+		};
 
-		return performedOK;
+		job.schedule();
+
+		return true;
 	}
 }

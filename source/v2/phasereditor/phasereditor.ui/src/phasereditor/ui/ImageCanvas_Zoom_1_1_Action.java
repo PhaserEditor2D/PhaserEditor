@@ -36,6 +36,7 @@ public class ImageCanvas_Zoom_1_1_Action extends Action {
 	}
 
 	public ImageCanvas_Zoom_1_1_Action(IZoomable canvas) {
+		super("Reset Zoom (1:1)");
 		_canvas = canvas;
 		setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ZOOM_RESTORE));
 		setToolTipText("Reset the image to the original size.");

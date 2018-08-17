@@ -23,7 +23,6 @@ package phasereditor.canvas.ui.wizards;
 
 import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
-import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -52,12 +51,9 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
-import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.wizards.NewPage_AssetPackSection;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
@@ -82,7 +78,8 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 	private NewPage_File _filePage;
 	private IWorkbenchPage _windowPage;
 	private CanvasType _canvasType;
-	private NewPage_AssetPackSection _assetPackPage;
+	NewPage_AssetPackSection _assetPackPage;
+	IFile _createdCanvasFile;
 
 	public NewWizard_Base(CanvasType canvasType) {
 		super();
@@ -142,11 +139,10 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 		addPage(_filePage);
 
-		_assetPackPage = new NewPage_AssetPackSection();
-		_assetPackPage.setCanvasModel(getModel());
+		_assetPackPage = new NewPage_AssetPackSection(_filePage);
 
 		addPage(_assetPackPage);
-		
+
 		addExtraPages();
 	}
 
@@ -192,15 +188,15 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		}
 
 		// create a new empty file
-		IFile mainFile = _filePage.createNewFile();
+		_createdCanvasFile = _filePage.createNewFile();
 
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
-		if (mainFile != null) {
+		if (_createdCanvasFile != null) {
 
 			// check for free version
 
-			IProject project = mainFile.getProject();
+			IProject project = _createdCanvasFile.getProject();
 			if (LicCore.isEvaluationProduct()) {
 				String rule = CanvasCore.isFreeVersionAllowed(project);
 				if (rule != null) {
@@ -211,7 +207,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 			// --
 
-			WorkspaceJob job = new WorkspaceJob("Add script to packs") {
+			WorkspaceJob job = new WorkspaceJob("Creating the new Canvas file") {
 
 				@Override
 				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
@@ -219,37 +215,15 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 					setLangFromProjectType();
 
 					if (isCanvasFileDesired()) {
-						createCanvasFile(mainFile, monitor);
+						createCanvasFile(_createdCanvasFile, monitor);
 					} else {
-						createFinalModelJSON(mainFile);
+						createFinalModelJSON(_createdCanvasFile);
 					}
 
 					{
-						createSourceFile(mainFile.getParent(), monitor);
-						AssetSectionModel addToSection = getAssetPackPage().getSelectedSection();
-						if (addToSection != null) {
+						createSourceFile(_createdCanvasFile.getParent(), monitor);
 
-							PhaserEditorUI.swtRun(new Runnable() {
-
-								@Override
-								public void run() {
-									List<AssetPackEditor> editors = AssetPackUI
-											.findOpenAssetPackEditors(addToSection.getPack().getFile());
-
-									for (AssetPackEditor editor : editors) {
-										AssetPackModel pack = editor.getModel();
-										addScriptAssetToPack(mainFile, pack, addToSection.getKey());
-										editor.refresh();
-									}
-								}
-							});
-
-							for (AssetPackModel pack : AssetPackCore.getAssetPackModels(project)) {
-								addScriptAssetToPack(mainFile, pack, addToSection.getKey());
-								pack.save(monitor);
-							}
-
-						}
+						_assetPackPage.performFinish(monitor, NewWizard_Base.this::addScriptAssetToPack);
 					}
 
 					PhaserEditorUI.swtRun(new Runnable() {
@@ -258,7 +232,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 						public void run() {
 							// open the file in editor
 							try {
-								IDE.openEditor(getWindowPage(), mainFile);
+								IDE.openEditor(getWindowPage(), _createdCanvasFile);
 							} catch (PartInitException e) {
 								throw new RuntimeException(e);
 							}
@@ -274,20 +248,18 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		return true;
 	}
 
-	static void addScriptAssetToPack(IFile mainFile, AssetPackModel pack, String sectionKey) {
-		IProject project = mainFile.getProject();
+	void addScriptAssetToPack(AssetSectionModel section) {
+		IProject project = _createdCanvasFile.getProject();
 
-		AssetSectionModel section2 = pack.findSection(sectionKey);
-		if (section2 != null) {
-			ScriptAssetModel asset = new ScriptAssetModel(pack.createKey(mainFile), section2);
+		var pack = section.getPack();
 
-			IPath jsFilePath = mainFile.getFullPath().removeFileExtension().addFileExtension("js");
-			String url = ProjectCore.getAssetUrl(project, jsFilePath);
-			asset.setUrl(url);
+		ScriptAssetModel asset = new ScriptAssetModel(pack.createKey(_createdCanvasFile), section);
 
-			section2.addAsset(asset, false);
-		}
-		pack.setDirty(false);
+		IPath jsFilePath = _createdCanvasFile.getFullPath().removeFileExtension().addFileExtension("js");
+		String url = ProjectCore.getAssetUrl(project, jsFilePath);
+		asset.setUrl(url);
+
+		section.addAsset(asset, false);
 	}
 
 	void createCanvasFile(IFile file, IProgressMonitor monitor) {
