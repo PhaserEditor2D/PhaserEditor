@@ -279,15 +279,13 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					gc.fillRectangle(0, y, e.width, rowHeight);
 				}
 				
-				gc.setForeground(getForeground());
-
 				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
 			}
 
 			// render item
 
 			renderer.render(this, e, i, x, y);
-
+			
 			// paint toogle
 
 			if (item.hasChildren()) {
@@ -349,6 +347,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 					int loc = _utils.getDropLocation();
 
+					gc.setForeground(getForeground());
 					gc.setLineWidth(2);
 
 					if (loc == TreeCanvasDropAdapter.LOCATION_BEFORE || loc == TreeCanvasDropAdapter.LOCATION_ON) {

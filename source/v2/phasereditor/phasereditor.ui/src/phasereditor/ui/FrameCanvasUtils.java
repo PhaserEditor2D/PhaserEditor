@@ -80,6 +80,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		canvas.addMouseMoveListener(this);
 		canvas.addMouseWheelListener(this);
 		canvas.addMouseListener(this);
+
 		canvas.addKeyListener(this);
 
 		if (initDND) {
@@ -144,6 +145,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	@Override
 	public void mouseMove(MouseEvent e) {
 		updateOverIndex(e);
+		if (_dropIndex != -1) {
+			dropDone();
+		}
 	}
 
 	public void updateOverIndex(MouseEvent e) {
@@ -201,6 +205,11 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		if (old != newObj) {
 			_dropObject = newObj;
 		}
+
+		if (_dropObject == null) {
+			_dropIndex = -1;
+		}
+
 	}
 
 	public Object getDropObject() {

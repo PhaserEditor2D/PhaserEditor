@@ -210,7 +210,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 		currentTarget = determineTarget(event);
 		doDropValidation(event);
 	}
-
+	
 	@Override
 	public void dragOperationChanged(DropTargetEvent event) {
 		currentTarget = determineTarget(event);
@@ -233,7 +233,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 			doDropValidation(event);
 		}
 	}
-
+	
 	@Override
 	public void drop(DropTargetEvent event) {
 		currentLocation = determineLocation(event);

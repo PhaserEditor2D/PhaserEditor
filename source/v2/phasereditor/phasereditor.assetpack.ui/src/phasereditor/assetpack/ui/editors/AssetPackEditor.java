@@ -61,7 +61,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -462,9 +461,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			viewer.addDropSupport(DND.DROP_MOVE, types, new TreeCanvasDropAdapter(viewer) {
 
-				private int _location;
-				private int _target;
-
 				@Override
 				public boolean validateDrop(Object target, int operation, TransferData transferType) {
 					return true;
@@ -472,10 +468,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 				@Override
 				public boolean performDrop(Object data) {
-					if (_target == -1) {
-						return false;
-					}
-
 					Object[] array = ((IStructuredSelection) data).toArray();
 
 					for (var elem : array) {
@@ -488,6 +480,15 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 
 				private boolean performAssetModelDrop(Object[] array) {
+
+					FrameCanvasUtils utils = getViewer().getUtils();
+					
+					int location = utils.getDropLocation();
+
+					if (location != LOCATION_ON) {
+						return false;
+					}
+					
 					AssetPackModel pack = getModel();
 					var moving = List.of(array)
 
@@ -501,11 +502,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						return false;
 					}
 
-					if (_location != LOCATION_ON) {
-						return false;
-					}
 
-					var section = pack.getSections().get(_target);
+					var section = pack.getSections().get(utils.getDropIndex());
 
 					AssetPackUI.launchMoveWizard(section, new StructuredSelection(moving));
 
@@ -513,6 +511,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 
 				private boolean performSectionDrop(Object[] array) {
+					
+
+					FrameCanvasUtils utils = getViewer().getUtils();
+					
+					int location = utils.getDropLocation();
+					
 					AssetPackModel pack = getModel();
 					var moving = List.of(array)
 
@@ -528,7 +532,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					var sections = pack.getSections();
 
-					int index = _target;
+					int index = utils.getDropIndex();
 
 					var pivot = sections.get(index);
 
@@ -540,7 +544,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						index = 0;
 					}
 
-					if (_location == LOCATION_AFTER) {
+					if (location == LOCATION_AFTER) {
 						index++;
 					}
 
@@ -549,15 +553,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					AssetPackEditor.this.refresh();
 
 					return true;
-				}
-
-				@Override
-				public void dragOver(DropTargetEvent event) {
-					_location = determineLocation(event);
-
-					_target = getViewer().getUtils().getOverIndex();
-
-					super.dragOver(event);
 				}
 			});
 		}
