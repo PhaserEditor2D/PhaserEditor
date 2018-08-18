@@ -57,7 +57,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public static final int ACTION_SPACE = 2;
 	public static final int ACTION_PADDING = 2;
 	public static final int MIN_ROW_HEIGHT = 20;
-	
+
 	private List<TreeCanvasItem> _roots;
 	private List<TreeCanvasItem> _visibleItems;
 	private List<TreeCanvasItem> _items;
@@ -137,7 +137,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			public Rectangle getRenderImageSrcFrame(int index) {
 				var item = _visibleItems.get(index);
 
-				if (item.getIconType() == IconType.IMAGE_FRAME) {
+				if (item._frameData != null) {
 					return item._frameData.src;
 				}
 
@@ -148,7 +148,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			public File getImageFile(int index) {
 				var item = _visibleItems.get(index);
 
-				if (item.getIconType() == IconType.IMAGE_FRAME) {
+				if (item._imageFile != null) {
 					return item._imageFile;
 				}
 
@@ -514,11 +514,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		redraw();
 	}
 
-	@Deprecated
-	public enum IconType {
-		IMAGE_FRAME, COMMON_ICON
-	}
-
 	public static class TreeCanvasItemAction {
 
 		private Image _image;
@@ -561,7 +556,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		private Object _data;
 		private File _imageFile;
 		private FrameData _frameData;
-		private IconType _iconType;
 		private Image _icon;
 		private List<TreeCanvasItem> _children;
 		private List<TreeCanvasItemAction> _actions;
@@ -580,7 +574,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		public TreeCanvasItem() {
 			_children = new ArrayList<>();
-			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
 			_alpha = 1;
 		}
@@ -588,11 +581,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		public float getAlpha() {
 			return _alpha;
 		}
-		
+
 		public void setAlpha(float alpha) {
 			_alpha = alpha;
 		}
-		
+
 		public TreeCanvasItem getParent() {
 			return _parent;
 		}
@@ -639,16 +632,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		public void setActions(List<TreeCanvasItemAction> actions) {
 			_actions = actions;
-		}
-
-		@Deprecated
-		public IconType getIconType() {
-			return _iconType;
-		}
-
-		@Deprecated
-		public void setIconType(IconType iconType) {
-			_iconType = iconType;
 		}
 
 		public void add(TreeCanvasItem item) {
@@ -884,15 +867,14 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 		}
 	}
-	
+
 	public void addDragSupport(int operations, Transfer[] transferTypes, DragSourceListener listener) {
 		final DragSource dragSource = new DragSource(this, operations);
 		dragSource.setTransfer(transferTypes);
 		dragSource.addDragListener(listener);
 	}
 
-	public void addDropSupport(int operations, Transfer[] transferTypes,
-			final DropTargetListener listener) {
+	public void addDropSupport(int operations, Transfer[] transferTypes, final DropTargetListener listener) {
 		DropTarget dropTarget = new DropTarget(this, operations);
 		dropTarget.setTransfer(transferTypes);
 		dropTarget.addDropListener(listener);

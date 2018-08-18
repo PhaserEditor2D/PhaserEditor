@@ -42,7 +42,6 @@ import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.TreeCanvas;
-import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 
@@ -72,8 +71,6 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			}
 
 			item.setLabel(file.getName());
-			item.setIconType(IconType.IMAGE_FRAME);
-
 		} else {
 			super.setItemIconProperties(item);
 		}

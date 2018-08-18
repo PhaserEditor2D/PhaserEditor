@@ -34,7 +34,6 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 
-import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 /**
@@ -132,7 +131,6 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		item.setIcon(_labelProvider.getImage(item.getData()));
-		item.setIconType(IconType.COMMON_ICON);
 	}
 
 	public LabelProvider getLabelProvider() {

@@ -27,8 +27,10 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,8 +50,6 @@ import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -57,19 +57,15 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.StyledCellLabelProvider;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -511,14 +507,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					AssetPackUI.launchMoveWizard(section, new StructuredSelection(moving));
 
-					// for (var asset : moving) {
-					// asset.getSection().removeAsset(asset, false);
-					// }
-					//
-					// section.addAllAssets(0, moving, true);
-					//
-					// AssetPackEditor.this.refresh();
-
 					return true;
 				}
 
@@ -591,80 +579,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				String sectionName = dlg.getValue();
 				executeOperation(new AddSectionOperation(sectionName));
 			}
-		}
-	}
-
-	private class TypesColumnLabelProvider extends StyledCellLabelProvider {
-		@Override
-		public void update(ViewerCell cell) {
-			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
-			Color decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
-
-			var item = (AssetGroupModel) cell.getElement();
-
-			int countAssets = item.getAssets().size();
-
-			String text;
-			StyleRange[] styles;
-
-			String name = item.getType().name();
-			if (countAssets > 0) {
-				text = name + " (" + countAssets + ")";
-				int start = name.length();
-				int len = text.length() - start;
-
-				var style1 = new StyleRange(0, start, null, null);
-				var style2 = new StyleRange(start, len, counterColor, null);
-				styles = new StyleRange[] { style1, style2 };
-			} else {
-				text = name;
-
-				var style = new StyleRange(0, text.length(), decorationsColor, null);
-				style.fontStyle = SWT.ITALIC;
-
-				styles = new StyleRange[] { style };
-			}
-
-			cell.setStyleRanges(styles);
-			cell.setText(text);
-			cell.setImage(AssetLabelProvider.GLOBAL_16.getImage(item.getType()));
-		}
-	}
-
-	private class SectionColumnLabelProvider extends StyledCellLabelProvider {
-		@Override
-		public void update(ViewerCell cell) {
-			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
-			Color decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
-
-			var item = (AssetSectionModel) cell.getElement();
-
-			int countAssets = item.getAssets().size();
-
-			String text;
-			StyleRange[] styles;
-
-			String name = item.getKey();
-			if (countAssets > 0) {
-				text = name + " (" + countAssets + ")";
-				int start = name.length();
-				int len = text.length() - start;
-
-				var style1 = new StyleRange(0, start, null, null);
-				var style2 = new StyleRange(start, len, counterColor, null);
-				styles = new StyleRange[] { style1, style2 };
-			} else {
-				text = name;
-
-				var style = new StyleRange(0, text.length(), decorationsColor, null);
-				style.fontStyle = SWT.ITALIC;
-
-				styles = new StyleRange[] { style };
-			}
-
-			cell.setStyleRanges(styles);
-			cell.setText(text);
-			cell.setImage(AssetLabelProvider.GLOBAL_16.getImage(item));
 		}
 	}
 
@@ -865,6 +779,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		afterCreateWidgets();
 	}
 
+	Map<AssetSectionModel, AssetGroupModel> _lastSelectedTypeMap = new HashMap<>();
+
 	private void afterCreateWidgets() {
 		_sectionsComp.getViewer().setInput(_model);
 		_sectionsComp.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
@@ -873,6 +789,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			public void selectionChanged(SelectionChangedEvent event) {
 				var section = (AssetSectionModel) event.getStructuredSelection().getFirstElement();
 				getTypesComp().getViewer().setInput(section);
+
+				var group = _lastSelectedTypeMap.getOrDefault(section,
+						(AssetGroupModel) getTypesComp().getViewer().getCanvas().getVisibleItems().get(0).getData());
+
+				getTypesComp().getViewer().setSelection(new StructuredSelection(group));
 
 				if (getSectionsComp().getViewer().getCanvas().isFocusControl()) {
 					if (getOutliner() != null) {
@@ -891,7 +812,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				if (selection.isEmpty()) {
 					input = new Object[] {};
 				} else {
-					input = selection.getFirstElement();
+					var group = (AssetGroupModel) selection.getFirstElement();
+					_lastSelectedTypeMap.put(group.getSection(), group);
+					input = group;
 				}
 
 				getAssetsComp().getViewer().setInput(input);

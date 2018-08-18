@@ -22,10 +22,8 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
@@ -41,13 +39,10 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 		int textX = x;
 		int rowHeight = computeRowHeight(canvas);
 
-		var isImageFrame = _item.getIconType() == IconType.IMAGE_FRAME;
 		var icon = _item.getIcon();
 		var iconBounds = icon == null ? null : icon.getBounds();
 
-		if (isImageFrame) {
-			textX += canvas.getImageSize() + ICON_AND_TEXT_SPACE;
-		} else if (iconBounds != null) {
+		if (iconBounds != null) {
 			textX += iconBounds.width + ICON_AND_TEXT_SPACE;
 		}
 
@@ -73,22 +68,7 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			gc.setFont(canvas.getFont());
 		}
 
-		// paint icon or image
-
-		if (isImageFrame) {
-
-			// paint image
-
-			var file = _item.getImageFile();
-			var img = canvas.loadImage(file);
-			var fd = _item.getFrameData();
-
-			if (img != null) {
-				PhaserEditorUI.paintScaledImageInArea(gc, img, fd,
-						new Rectangle(x + 2, y + 2, canvas.getImageSize(), canvas.getImageSize()), false, true);
-			}
-
-		} else if (iconBounds != null) {
+		if (iconBounds != null) {
 
 			// paint icon
 
@@ -102,11 +82,6 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 	@Override
 	public int computeRowHeight(TreeCanvas canvas) {
-
-		if (_item.getIconType() == IconType.IMAGE_FRAME) {
-			return canvas.getImageSize() + 4;
-		}
-
 		return TreeCanvas.MIN_ROW_HEIGHT;
 	}
 }
