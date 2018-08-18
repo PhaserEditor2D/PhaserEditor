@@ -55,10 +55,10 @@ import org.json.JSONObject;
  */
 @SuppressWarnings({ "synthetic-access", "boxing" })
 public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
-	private static final int MIN_ROW_HEIGHT = 20;
-	private static final int ACTION_SPACE = 2;
-	private static final int ACTION_PADDING = 2;
-	private static final int ICON_AND_TEXT_SPACE = 5;
+	public static final int ACTION_SPACE = 2;
+	public static final int ACTION_PADDING = 2;
+	public static final int MIN_ROW_HEIGHT = 20;
+	
 	private List<TreeCanvasItem> _roots;
 	private List<TreeCanvasItem> _visibleItems;
 	private List<TreeCanvasItem> _items;
@@ -240,15 +240,13 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		};
 	}
 
-	public static class TreeCanvasItemRenderer {
-		protected final TreeCanvasItem _item;
+	public static class TreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		public TreeCanvasItemRenderer(TreeCanvasItem item) {
-			super();
-			_item = item;
+			super(item);
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
 			var gc = e.gc;
 
@@ -314,6 +312,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 		}
 
+		@Override
 		public int computeRowHeight(TreeCanvas canvas) {
 
 			if (_item.getIconType() == IconType.IMAGE_FRAME) {
@@ -341,7 +340,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		int y = 0;
 		for (var item : _visibleItems) {
 
-			TreeCanvasItemRenderer renderer;
+			BaseTreeCanvasItemRenderer renderer;
 			if (item.getRenderer() == null) {
 				renderer = new TreeCanvasItemRenderer(item);
 			} else {
@@ -599,6 +598,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		redraw();
 	}
 
+	@Deprecated
 	public enum IconType {
 		IMAGE_FRAME, COMMON_ICON
 	}
@@ -658,7 +658,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		private boolean _expanded;
 		int _y;
 		int _rowHeight;
-		private TreeCanvasItemRenderer _renderer;
+		private BaseTreeCanvasItemRenderer _renderer;
 		TreeCanvasItem _parent;
 		private float _alpha;
 
@@ -681,11 +681,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			return _parent;
 		}
 
-		public TreeCanvasItemRenderer getRenderer() {
+		public BaseTreeCanvasItemRenderer getRenderer() {
 			return _renderer;
 		}
 
-		public void setRenderer(TreeCanvasItemRenderer renderer) {
+		public void setRenderer(BaseTreeCanvasItemRenderer renderer) {
 			_renderer = renderer;
 		}
 
@@ -725,10 +725,12 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_actions = actions;
 		}
 
+		@Deprecated
 		public IconType getIconType() {
 			return _iconType;
 		}
 
+		@Deprecated
 		public void setIconType(IconType iconType) {
 			_iconType = iconType;
 		}

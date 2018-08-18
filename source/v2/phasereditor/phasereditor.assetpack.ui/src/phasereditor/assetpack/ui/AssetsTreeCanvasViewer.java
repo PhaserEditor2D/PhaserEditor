@@ -44,6 +44,7 @@ import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.ui.FrameData;
+import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -154,11 +155,12 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		if (file == null || fd == null) {
 			super.setItemIconProperties(item);
 		} else {
-			// we do this to the loading at once!
+			// we do this to do the loading at once!
 			getCanvas().loadImage(file);
 
 			item.setFrameData(fd);
 			item.setImageFile(file);
+			item.setRenderer(new ImageTreeCanvasItemRenderer(item));
 			item.setIconType(IconType.IMAGE_FRAME);
 		}
 	}
