@@ -26,15 +26,15 @@ import org.eclipse.swt.events.PaintEvent;
 
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.audio.core.AudioCore;
+import phasereditor.ui.IconTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
-import phasereditor.ui.TreeCanvas.TreeCanvasItemRenderer;
 
 /**
  * @author arian
  *
  */
-public class AudioTreeCanvasItemRenderer extends TreeCanvasItemRenderer {
+public class AudioTreeCanvasItemRenderer extends IconTreeCanvasItemRenderer {
 
 	public AudioTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);

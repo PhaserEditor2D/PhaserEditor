@@ -30,17 +30,17 @@ import org.eclipse.swt.graphics.Rectangle;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
-import phasereditor.ui.TreeCanvas.TreeCanvasItemRenderer;
 
 /**
  * @author arian
  *
  */
-public class AnimationTreeCanvasItemRenderer extends TreeCanvasItemRenderer {
+public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 	public AnimationTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);

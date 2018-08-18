@@ -114,34 +114,22 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 				fd.srcSize = new Point(fd.src.width, fd.src.height);
 				file = asset.getUrlFile();
 			}
-		} else if (elem instanceof AnimationFrameModel || elem instanceof AnimationModel) {
-			AnimationFrameModel animFrame = null;
+		} else if (elem instanceof AnimationFrameModel) {
+			AnimationFrameModel animFrame = (AnimationFrameModel) elem;
+			var assetFrame = animFrame.getFrameAsset();
 
-			if (elem instanceof AnimationFrameModel) {
-				animFrame = (AnimationFrameModel) elem;
-			} else {
-				var anim = (AnimationModel) elem;
-				if (!anim.getFrames().isEmpty()) {
-					animFrame = anim.getFrames().get(0);
-				}
-			}
-
-			if (animFrame != null) {
-				var assetFrame = animFrame.getFrameAsset();
-
-				if (assetFrame != null) {
-					file = assetFrame.getImageFile();
-					if (file != null) {
-						fd = assetFrame.getFrameData();
-					}
+			if (assetFrame != null) {
+				file = assetFrame.getImageFile();
+				if (file != null) {
+					fd = assetFrame.getFrameData();
 				}
 			}
 		}
-		
+
 		if (elem instanceof AnimationModel) {
 			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
 		}
-		
+
 		if (elem instanceof AudioAssetModel) {
 			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
 		}

@@ -1258,11 +1258,11 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintScaledImageInArea(GC gc, Image image, FrameData fd, Rectangle renderArea) {
-		paintScaledImageInArea(gc, image, fd, renderArea, true);
+		paintScaledImageInArea(gc, image, fd, renderArea, true, true);
 	}
 
 	public static void paintScaledImageInArea(GC gc, Image image, FrameData fd, Rectangle renderArea,
-			boolean blankSpaces) {
+			boolean blankSpaces, boolean center) {
 
 		int frameHeight = renderArea.height;
 		int frameWidth = renderArea.width;
@@ -1283,7 +1283,7 @@ public class PhaserEditorUI {
 		double scaleX = imgW / (blankSpaces ? fd.srcSize.x : fd.src.width);
 		double scaleY = imgH / (blankSpaces ? fd.srcSize.y : fd.src.height);
 
-		var imgX = renderArea.x + frameWidth / 2 - imgW / 2 + (blankSpaces ? fd.dst.x : 0) * scaleX;
+		var imgX = renderArea.x + (center? frameWidth / 2 - imgW / 2 : 0) + (blankSpaces ? fd.dst.x : 0) * scaleX;
 		var imgY = renderArea.y + frameHeight / 2 - imgH / 2 + (blankSpaces ? fd.dst.y : 0) * scaleY;
 
 		double imgDstW = (blankSpaces ? fd.dst.width : fd.src.width) * scaleX;

@@ -46,7 +46,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
 /**
@@ -240,89 +239,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		};
 	}
 
-	public static class TreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
-
-		public TreeCanvasItemRenderer(TreeCanvasItem item) {
-			super(item);
-		}
-
-		@Override
-		public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
-			var gc = e.gc;
-
-			int textX = x;
-			int rowHeight = computeRowHeight(canvas);
-
-			var isImageFrame = _item.getIconType() == IconType.IMAGE_FRAME;
-			var icon = _item.getIcon();
-			var iconBounds = icon == null ? null : icon.getBounds();
-
-			if (isImageFrame) {
-				textX += canvas.getImageSize() + ICON_AND_TEXT_SPACE;
-			} else if (iconBounds != null) {
-				textX += iconBounds.width + ICON_AND_TEXT_SPACE;
-			}
-
-			// paint text
-
-			String label = _item.getLabel();
-
-			if (label != null) {
-				var extent = gc.textExtent(label);
-
-				if (_item.isHeader()) {
-					gc.setFont(SWTResourceManager.getBoldFont(canvas.getFont()));
-				}
-
-				if (_item.isParentByNature() && _item.getChildren().isEmpty()) {
-					gc.setAlpha((int) (125 * _item.getAlpha()));
-				}
-
-				gc.setAlpha((int) (255 * _item.getAlpha()));
-				gc.drawText(label, textX, y + (rowHeight - extent.y) / 2, true);
-
-				gc.setAlpha(255);
-				gc.setFont(canvas.getFont());
-			}
-
-			// paint icon or image
-
-			if (isImageFrame) {
-
-				// paint image
-
-				var file = _item.getImageFile();
-				var img = canvas.loadImage(file);
-				var fd = _item.getFrameData();
-
-				if (img != null) {
-					PhaserEditorUI.paintScaledImageInArea(gc, img, fd,
-							new Rectangle(x + 2, y + 2, canvas.getImageSize(), canvas.getImageSize()), false);
-				}
-
-			} else if (iconBounds != null) {
-
-				// paint icon
-
-				if (_item.isHeader()) {
-					gc.drawImage(icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
-				} else {
-					gc.drawImage(icon, x, y + (rowHeight - iconBounds.height) / 2);
-				}
-			}
-		}
-
-		@Override
-		public int computeRowHeight(TreeCanvas canvas) {
-
-			if (_item.getIconType() == IconType.IMAGE_FRAME) {
-				return canvas.getImageSize() + 4;
-			}
-
-			return MIN_ROW_HEIGHT;
-		}
-	}
-
 	@Override
 	public void paintControl(PaintEvent e) {
 
@@ -342,7 +258,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			BaseTreeCanvasItemRenderer renderer;
 			if (item.getRenderer() == null) {
-				renderer = new TreeCanvasItemRenderer(item);
+				renderer = new IconTreeCanvasItemRenderer(item);
 			} else {
 				renderer = item.getRenderer();
 			}
