@@ -83,6 +83,9 @@ public class BaseImageCanvas extends Canvas {
 		_references = new ArrayList<>();
 
 		addDisposeListener(this::widgetDisposed);
+
+		PhaserEditorUI.forceApplyCompositeStyle(this);
+		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 	}
 
 	public static void prepareGC(GC gc) {

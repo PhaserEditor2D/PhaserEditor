@@ -1084,9 +1084,14 @@ public class PhaserEditorUI {
 			Shell c = new Shell();
 			PhaserEditorUI.applyThemeStyle(c);
 			Color background = c.getBackground();
+			Color foreground = c.getForeground();
+			
 			if (!canvas.isDisposed()) {
 				canvas.setBackground(background);
+				canvas.setForeground(foreground);
+				canvas.redraw();
 			}
+			
 			c.close();
 			c.dispose();
 		});

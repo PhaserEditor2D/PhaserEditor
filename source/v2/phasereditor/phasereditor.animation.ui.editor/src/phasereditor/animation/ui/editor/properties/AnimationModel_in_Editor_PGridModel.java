@@ -32,7 +32,7 @@ import phasereditor.ui.properties.PGridStringProperty;
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
+@SuppressWarnings({"boxing", "synthetic-access"})
 public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel {
 	private AnimationModel_in_Editor _animation;
 	private String _id;

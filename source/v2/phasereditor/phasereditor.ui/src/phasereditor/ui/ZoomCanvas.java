@@ -199,9 +199,6 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 			}
 		});
 
-		PhaserEditorUI.forceApplyCompositeStyle(this);
-
-		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 	}
 
 	@Override

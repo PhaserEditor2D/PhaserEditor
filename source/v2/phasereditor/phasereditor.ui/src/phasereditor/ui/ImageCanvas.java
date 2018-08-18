@@ -207,10 +207,6 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 				//
 			}
 		});
-
-		PhaserEditorUI.forceApplyCompositeStyle(this);
-
-		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 	}
 
 	protected void fitWindow() {

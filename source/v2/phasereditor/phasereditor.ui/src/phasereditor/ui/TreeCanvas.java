@@ -84,7 +84,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
-
+		
 		_origin = new Point(0, 0);
 
 		final ScrollBar vBar = getVerticalBar();

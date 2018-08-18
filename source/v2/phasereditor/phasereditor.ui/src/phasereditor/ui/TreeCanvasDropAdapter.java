@@ -369,6 +369,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	 * @param event
 	 *            the event
 	 */
+	@SuppressWarnings("static-method")
 	@Deprecated
 	protected void handleException(Throwable exception, DropTargetEvent event) {
 		// Currently we never rethrow because VA/Java crashes if an SWT

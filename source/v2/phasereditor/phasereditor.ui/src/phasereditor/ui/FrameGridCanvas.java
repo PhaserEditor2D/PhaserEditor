@@ -152,14 +152,10 @@ public class FrameGridCanvas extends BaseImageCanvas
 			updateScroll();
 		});
 
-		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
-
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
-		// scrollable canvas do not get the right style
-		PhaserEditorUI.forceApplyCompositeStyle(this);
 
 		addKeyListener(this);
 
