@@ -34,6 +34,7 @@ import org.eclipse.swt.graphics.Point;
 import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -138,6 +139,10 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		
 		if (elem instanceof AnimationModel) {
 			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
+		}
+		
+		if (elem instanceof AudioAssetModel) {
+			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
 		}
 
 		LinkedHashSet<String> keywords = new LinkedHashSet<>();

@@ -409,6 +409,10 @@ public class AudioCore {
 	}
 
 	public synchronized static Path getSoundWavesFile(IFile file, boolean forceMake) {
+		if (file == null) {
+			return null;
+		}
+		
 		try {
 			String filename = file.getPersistentProperty(WAVEFORM_FILENAME_KEY);
 			Path dir = ProjectCore.getUserCacheFolder().resolve("waves");
