@@ -790,10 +790,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				var section = (AssetSectionModel) event.getStructuredSelection().getFirstElement();
 				getTypesComp().getViewer().setInput(section);
 
+				List<TreeCanvasItem> items = getTypesComp().getViewer().getCanvas().getVisibleItems();
 				var group = _lastSelectedTypeMap.getOrDefault(section,
-						(AssetGroupModel) getTypesComp().getViewer().getCanvas().getVisibleItems().get(0).getData());
-
-				getTypesComp().getViewer().setSelection(new StructuredSelection(group));
+						(AssetGroupModel) (items.isEmpty() ? null : items.get(0).getData()));
+				if (group != null) {
+					getTypesComp().getViewer().setSelection(new StructuredSelection(group));
+				}
 
 				if (getSectionsComp().getViewer().getCanvas().isFocusControl()) {
 					if (getOutliner() != null) {
