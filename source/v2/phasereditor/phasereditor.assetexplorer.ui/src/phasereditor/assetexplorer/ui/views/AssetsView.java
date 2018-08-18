@@ -316,7 +316,7 @@ public class AssetsView extends ViewPart {
 		}
 
 		_lastToken = getActiveProject();
-		
+
 		_treeCanvas.redraw();
 	}
 
@@ -446,28 +446,29 @@ public class AssetsView extends ViewPart {
 
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		if (memento != null) {
+			{
+				var str = memento.getString(EXPANDED_INDEXES_KEY);
 
-		{
-			var str = memento.getString(EXPANDED_INDEXES_KEY);
-
-			if (str != null) {
-				try {
-					_initialExpandedIndexes = Arrays.stream(str.split(",")).map(s -> Integer.parseInt(s))
-							.collect(toList());
-				} catch (Exception e) {
-					// do nothing
+				if (str != null) {
+					try {
+						_initialExpandedIndexes = Arrays.stream(str.split(",")).map(s -> Integer.parseInt(s))
+								.collect(toList());
+					} catch (Exception e) {
+						// do nothing
+					}
 				}
 			}
-		}
 
-		{
-			_initialFilterText = memento.getString(FILTER_TEXT_KEY);
-		}
+			{
+				_initialFilterText = memento.getString(FILTER_TEXT_KEY);
+			}
 
-		{
-			var str = memento.getString(CANVAS_STATE_KEY);
-			if (str != null) {
-				_initialTreeState = new JSONObject(str);
+			{
+				var str = memento.getString(CANVAS_STATE_KEY);
+				if (str != null) {
+					_initialTreeState = new JSONObject(str);
+				}
 			}
 		}
 
