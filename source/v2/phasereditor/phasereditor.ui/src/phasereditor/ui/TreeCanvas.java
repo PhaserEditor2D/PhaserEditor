@@ -84,7 +84,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
-		
+
 		_origin = new Point(0, 0);
 
 		final ScrollBar vBar = getVerticalBar();
@@ -278,6 +278,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					gc.setBackground(PhaserEditorUI.getListSelectionColor());
 					gc.fillRectangle(0, y, e.width, rowHeight);
 				}
+				
+				gc.setForeground(getForeground());
 
 				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
 			}
@@ -339,6 +341,27 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				}
 			}
 
+			// paint droping line
+			{
+				int dropIndex = _utils.getDropIndex();
+
+				if (dropIndex == i) {
+
+					int loc = _utils.getDropLocation();
+
+					gc.setLineWidth(2);
+
+					if (loc == TreeCanvasDropAdapter.LOCATION_BEFORE || loc == TreeCanvasDropAdapter.LOCATION_ON) {
+						gc.drawLine(0, y, e.width, y);
+					}
+
+					if (loc == TreeCanvasDropAdapter.LOCATION_AFTER || loc == TreeCanvasDropAdapter.LOCATION_ON) {
+						gc.drawLine(0, y + rowHeight, e.width, y + rowHeight);
+					}
+
+					gc.setLineWidth(1);
+				}
+			}
 			item._y = y;
 			item._rowHeight = rowHeight;
 

@@ -34,6 +34,7 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyEvent;
@@ -57,6 +58,13 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	private Object _lastSelectedObject;
 	private Object _overObject;
 	private Canvas _canvas;
+	private Object _dropObject;
+
+	/**
+	 * The same as {@link DropTargetEvent#feedback}.
+	 */
+	private int _dropLocation;
+	private int _dropIndex;
 
 	public FrameCanvasUtils(Canvas canvas, boolean initDND) {
 		super(true);
@@ -64,6 +72,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		_canvas = canvas;
 
 		_overObject = null;
+		_dropObject = null;
+		_dropIndex = -1;
 
 		_selectedObjects = new ArrayList<>();
 
@@ -84,18 +94,18 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public abstract Rectangle getSelectionFrameArea(int index);
 
 	public abstract Point viewToModel(int x, int y);
-	
+
 	public abstract Point modelToView(int x, int y);
 
 	public abstract Object getFrameObject(int index);
 
 	public abstract File getImageFile(int index);
-	
+
 	@SuppressWarnings({ "static-method", "unused" })
 	public boolean isInformationControlValidPosition(int index, int x, int y) {
 		return true;
 	}
-	
+
 	public int getOverIndex() {
 		return indexOf(_overObject);
 	}
@@ -135,7 +145,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public void mouseMove(MouseEvent e) {
 		updateOverIndex(e);
 	}
-	
+
 	public void updateOverIndex(MouseEvent e) {
 		if (getFramesCount() == 0) {
 			return;
@@ -154,6 +164,58 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			_overObject = newObj;
 			_canvas.redraw();
 		}
+	}
+
+	public void updateDropIndex(DropTargetEvent e) {
+
+		_dropIndex = -1;
+
+		if (getFramesCount() == 0) {
+			return;
+		}
+
+		var old = _dropObject;
+		Object newObj = null;
+
+		var viewPoint = _canvas.toControl(new Point(e.x, e.y));
+		var modelPoint = viewToModel(viewPoint.x, viewPoint.y);
+
+		for (int i = 0; i < getFramesCount(); i++) {
+			Rectangle rect = getSelectionFrameArea(i);
+			if (rect.contains(modelPoint)) {
+				newObj = getFrameObject(i);
+				_dropIndex = i;
+
+				_dropLocation = TreeCanvasDropAdapter.LOCATION_ON;
+
+				if (modelPoint.y < rect.y + rect.height * 0.25) {
+					_dropLocation = TreeCanvasDropAdapter.LOCATION_BEFORE;
+				} else if (modelPoint.y >= rect.y + rect.height * 0.75) {
+					_dropLocation = TreeCanvasDropAdapter.LOCATION_AFTER;
+				}
+
+				break;
+			}
+		}
+
+		if (old != newObj) {
+			_dropObject = newObj;
+		}
+	}
+
+	public Object getDropObject() {
+		return _dropObject;
+	}
+
+	public int getDropIndex() {
+		return _dropIndex;
+	}
+
+	/**
+	 * {@linkplain TreeCanvasDropAdapter#LOCATION_ON}
+	 */
+	public int getDropLocation() {
+		return _dropLocation;
 	}
 
 	@Override
@@ -336,11 +398,10 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		if (getFramesCount() == 0) {
 			return;
 		}
-		
+
 		if (_lastSelectedObject == null) {
 			_lastSelectedObject = getFrameObject(0);
 		}
-		
 
 		int i = indexOf(_lastSelectedObject);
 		int j = i + dir;
@@ -376,7 +437,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		}
 
 		int index = indexOf(_overObject);
-		
+
 		ISelection sel = null;
 
 		if (_selectedObjects.contains(_overObject)) {
@@ -405,5 +466,11 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		if (event.image != null) {
 			event.image.dispose();
 		}
+	}
+
+	public void dropDone() {
+		_dropObject = null;
+		_dropIndex = -1;
+		_canvas.redraw();
 	}
 }

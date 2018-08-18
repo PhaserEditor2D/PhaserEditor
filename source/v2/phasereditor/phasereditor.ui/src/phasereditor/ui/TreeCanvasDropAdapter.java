@@ -134,17 +134,6 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	}
 
 	/**
-	 * Clears internal state of this drop adapter. This method can be called when no
-	 * DnD operation is underway, to clear internal state from previous drop
-	 * operations.
-	 *
-	 * @since 3.5
-	 */
-	protected void clearState() {
-		this.currentTarget = null;
-	}
-
-	/**
 	 * Returns the position of the given event's coordinates relative to its target.
 	 * The position is determined to be before, after, or on the item, based on some
 	 * threshold value.
@@ -157,7 +146,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 
 		var utils = _canvas.getUtils();
 
-		int index = utils.getOverIndex();
+		int index = utils.getDropIndex();
 
 		if (index == -1) {
 			return LOCATION_NONE;
@@ -168,15 +157,17 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 
 		var bounds = utils.getSelectionFrameArea(index);
 
+		int location = LOCATION_ON;
+
 		if ((modelPoint.y - bounds.y) < 5) {
-			return LOCATION_BEFORE;
+			location = LOCATION_BEFORE;
+		} else if ((bounds.y + bounds.height - modelPoint.y) < 5) {
+			location = LOCATION_AFTER;
 		}
+		
+		_canvas.redraw();
 
-		if ((bounds.y + bounds.height - modelPoint.y) < 5) {
-			return LOCATION_AFTER;
-		}
-
-		return LOCATION_ON;
+		return location;
 	}
 
 	/**
@@ -186,9 +177,11 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	 *            the event
 	 * @return The target of the drop, may be <code>null</code>.
 	 */
-	@SuppressWarnings("static-method")
 	protected Object determineTarget(DropTargetEvent event) {
-		return event.item == null ? null : event.item.getData();
+
+		_canvas.getUtils().updateDropIndex(event);
+
+		return _canvas.getUtils().getDropObject();
 	}
 
 	private void doDropValidation(DropTargetEvent event) {
@@ -257,14 +250,18 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 		// reset for next time
 		currentOperation = DND.DROP_NONE;
 		currentEvent = null;
+
+		_canvas.getUtils().dropDone();
 	}
 
 	@Override
 	public void dropAccept(DropTargetEvent event) {
 		currentEvent = event;
+
 		if (!validateDrop(currentTarget, event.detail, event.currentDataType)) {
 			currentOperation = event.detail = DND.DROP_NONE;
 		}
+
 		currentEvent = null;
 	}
 
@@ -415,6 +412,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	}
 
 	private void setFeedback(DropTargetEvent event, int location) {
+
 		if (feedbackEnabled) {
 			switch (location) {
 			case LOCATION_BEFORE:

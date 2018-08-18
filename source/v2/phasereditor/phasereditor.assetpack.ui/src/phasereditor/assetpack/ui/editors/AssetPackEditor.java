@@ -105,6 +105,7 @@ import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -458,6 +459,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		private void initDragAndDrop(TreeCanvasViewer viewer) {
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+
 			viewer.addDropSupport(DND.DROP_MOVE, types, new TreeCanvasDropAdapter(viewer) {
 
 				private int _location;
@@ -661,9 +663,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 			viewer.addDropSupport(DND.DROP_MOVE, types, new TreeCanvasDropAdapter(viewer) {
 
-				private int _location;
-				private int _target;
-
 				@Override
 				public boolean validateDrop(Object target, int operation, TransferData transferType) {
 					return true;
@@ -671,6 +670,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 				@Override
 				public boolean performDrop(Object data) {
+					FrameCanvasUtils utils = viewer.getCanvas().getUtils();
+					int _target = utils.getDropIndex();
+					int feedback = utils.getDropLocation();
+
 					if (_target == -1) {
 						return false;
 					}
@@ -691,23 +694,19 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						return false;
 					}
 
-					var assets = getTypesComp().getSelectedGroup().getAssets();
-
-					int index = _target;
-
-					AssetModel pivot = assets.get(index);
+					AssetModel pivot = (AssetModel) utils.getDropObject();
 
 					AssetSectionModel section = getSectionsComp().getSelectedSection();
 
 					section.removeAllAssets(moving, false);
 
-					index = section.getAssets().indexOf(pivot);
+					int index = section.getAssets().indexOf(pivot);
 
 					if (index < 0) {
 						index = 0;
 					}
 
-					if (_location == LOCATION_AFTER) {
+					if (feedback == TreeCanvasDropAdapter.LOCATION_AFTER) {
 						index++;
 					}
 
@@ -716,13 +715,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					AssetPackEditor.this.refresh();
 
 					return true;
-				}
-
-				@Override
-				public void dragOver(DropTargetEvent event) {
-					_location = determineLocation(event);
-					_target = getViewer().getUtils().getOverIndex();
-					super.dragOver(event);
 				}
 			});
 		}
