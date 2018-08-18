@@ -59,6 +59,10 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		super(canvas, contentProvider, labelProvider);
 	}
 
+	public AssetsTreeCanvasViewer(TreeCanvas canvas) {
+		super(canvas);
+	}
+
 	@Override
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		var elem = item.getData();

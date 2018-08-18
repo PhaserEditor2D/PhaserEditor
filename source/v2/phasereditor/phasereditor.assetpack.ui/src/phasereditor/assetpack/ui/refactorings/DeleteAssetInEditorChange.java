@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
@@ -88,7 +87,7 @@ public class DeleteAssetInEditorChange extends Change {
 		boolean[] reveal = { false };
 
 		Display.getDefault().syncExec(() -> {
-			TreeViewer viewer = _editor.getAssetsComp().getViewer();
+			var viewer = _editor.getAssetsComp().getViewer();
 			List<Object> expanded = Arrays.asList(viewer.getExpandedElements());
 			reveal[0] = expanded.contains(_asset.getGroup());
 			section.removeAsset(_asset, true);

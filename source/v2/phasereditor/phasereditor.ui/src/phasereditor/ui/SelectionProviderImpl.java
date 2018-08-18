@@ -43,6 +43,7 @@ public class SelectionProviderImpl implements ISelectionProvider {
 	public SelectionProviderImpl(boolean autoFireSelectionChanged) {
 		_listeners = new ListenerList<>();
 		_autoFireSelectionChanged = autoFireSelectionChanged;
+		_selection = StructuredSelection.EMPTY;
 	}
 
 	@Override

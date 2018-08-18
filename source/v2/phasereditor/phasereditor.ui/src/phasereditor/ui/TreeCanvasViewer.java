@@ -22,12 +22,17 @@
 package phasereditor.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.dnd.Transfer;
 
 import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -42,6 +47,10 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	private LabelProvider _labelProvider;
 	private Object _input;
 	private TreeCanvas _canvas;
+
+	public TreeCanvasViewer(TreeCanvas canvas) {
+		this(canvas, null, null);
+	}
 
 	public TreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
 		super();
@@ -77,11 +86,11 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		_canvas.setRoots(roots);
 
 	}
-	
+
 	public void expandToLevel(Object elem, int level) {
 		_canvas.expandToLevel(elem, level);
 	}
-	
+
 	public void reveal(Object elem) {
 		_canvas.reveal(elem);
 	}
@@ -130,8 +139,16 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		return _labelProvider;
 	}
 
+	public void setLabelProvider(LabelProvider labelProvider) {
+		_labelProvider = labelProvider;
+	}
+
 	public ITreeContentProvider getContentProvider() {
 		return _contentProvider;
+	}
+
+	public void setContentProvider(ITreeContentProvider contentProvider) {
+		_contentProvider = contentProvider;
 	}
 
 	@Override
@@ -144,6 +161,10 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		return _canvas.getUtils().getSelection();
 	}
 
+	public IStructuredSelection getStructuredSelection() {
+		return (IStructuredSelection) getSelection();
+	}
+
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		_canvas.getUtils().removeSelectionChangedListener(listener);
@@ -153,5 +174,18 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	public void setSelection(ISelection selection) {
 		_canvas.getUtils().setSelection(selection);
 		_canvas.redraw();
+	}
+
+	public void addDragSupport(int operations, Transfer[] transferTypes, DragSourceListener listener) {
+		_canvas.addDragSupport(operations, transferTypes, listener);
+	}
+
+	public void addDropSupport(int operations, Transfer[] transferTypes, final DropTargetListener listener) {
+		_canvas.addDropSupport(operations, transferTypes, listener);
+	}
+
+	public Object[] getExpandedElements() {
+		List<Object> list = _canvas.getExpandedObjects();
+		return list.toArray(new Object[list.size()]);
 	}
 }

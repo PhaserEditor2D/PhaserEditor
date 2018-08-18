@@ -132,6 +132,7 @@ import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.TreeCanvasViewer;
 
 public class AssetPackUI {
 
@@ -551,6 +552,10 @@ public class AssetPackUI {
 			i++;
 		}
 		return list;
+	}
+	
+	public static void installAssetTooltips(TreeCanvasViewer viewer) {
+		installAssetTooltips(viewer.getCanvas(), viewer.getCanvas().getUtils());
 	}
 	
 	public static void installAssetTooltips(FilteredFrameGrid frameGrid) {

@@ -31,6 +31,11 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -272,9 +277,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				}
 
 				if (_item.isParentByNature() && _item.getChildren().isEmpty()) {
-					gc.setAlpha(125);
+					gc.setAlpha((int) (125 * _item.getAlpha()));
 				}
 
+				gc.setAlpha((int) (255 * _item.getAlpha()));
 				gc.drawText(label, textX, y + (rowHeight - extent.y) / 2, true);
 
 				gc.setAlpha(255);
@@ -654,13 +660,23 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		int _rowHeight;
 		private TreeCanvasItemRenderer _renderer;
 		TreeCanvasItem _parent;
+		private float _alpha;
 
 		public TreeCanvasItem() {
 			_children = new ArrayList<>();
 			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
+			_alpha = 1;
 		}
 
+		public float getAlpha() {
+			return _alpha;
+		}
+		
+		public void setAlpha(float alpha) {
+			_alpha = alpha;
+		}
+		
 		public TreeCanvasItem getParent() {
 			return _parent;
 		}
@@ -949,6 +965,19 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				itemExpandToLevel(child, level - 1);
 			}
 		}
+	}
+	
+	public void addDragSupport(int operations, Transfer[] transferTypes, DragSourceListener listener) {
+		final DragSource dragSource = new DragSource(this, operations);
+		dragSource.setTransfer(transferTypes);
+		dragSource.addDragListener(listener);
+	}
+
+	public void addDropSupport(int operations, Transfer[] transferTypes,
+			final DropTargetListener listener) {
+		DropTarget dropTarget = new DropTarget(this, operations);
+		dropTarget.setTransfer(transferTypes);
+		dropTarget.addDropListener(listener);
 	}
 
 }

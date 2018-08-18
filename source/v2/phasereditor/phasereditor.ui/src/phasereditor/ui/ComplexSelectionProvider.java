@@ -26,7 +26,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredViewer;
 
 /**
  * @author arian
@@ -34,11 +33,11 @@ import org.eclipse.jface.viewers.StructuredViewer;
  */
 public class ComplexSelectionProvider implements ISelectionProvider {
 
-	private StructuredViewer[] _viewers;
+	private ISelectionProvider[] _viewers;
 	private ListenerList<ISelectionChangedListener> _listeners;
 	private ISelection _selection;
 
-	public ComplexSelectionProvider(StructuredViewer... viewers) {
+	public ComplexSelectionProvider(ISelectionProvider... viewers) {
 		super();
 		_listeners = new ListenerList<>();
 		_viewers = viewers;

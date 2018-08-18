@@ -55,22 +55,15 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
@@ -84,11 +77,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
@@ -116,9 +107,12 @@ import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.TreeCanvas;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.PGridPage;
 
@@ -270,7 +264,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	class ColumnComp extends Composite {
 
-		private TreeViewer _viewer;
+		private TreeCanvasViewer _viewer;
 		private ToolBar _toolbar;
 
 		public ColumnComp(Composite parent, String title) {
@@ -308,11 +302,41 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 
 			{
-				FilteredTree tree = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
+				var tree = new FilteredTreeCanvas(this, SWT.NONE);
 				tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				_viewer = tree.getViewer();
+				_viewer = createTreeViewer(tree.getCanvas());
 			}
 
+		}
+
+		protected TreeCanvasViewer createTreeViewer(TreeCanvas canvas) {
+			return new AssetsTreeCanvasViewer(canvas) {
+				@Override
+				protected void setItemProperties(TreeCanvasItem item) {
+					super.setItemProperties(item);
+
+					var obj = item.getData();
+
+					int count = 0;
+					float alpha = 1f;
+
+					if (obj instanceof AssetSectionModel) {
+						count = ((AssetSectionModel) obj).getAssets().size();
+						alpha = count == 0 ? 0.5f : 1f;
+					}
+
+					if (obj instanceof AssetGroupModel) {
+						count = ((AssetGroupModel) obj).getAssets().size();
+						alpha = count == 0 ? 0.5f : 1f;
+					}
+
+					if (count > 0) {
+						item.setLabel(item.getLabel() + " (" + count + ")");
+					}
+
+					item.setAlpha(alpha);
+				}
+			};
 		}
 
 		@SuppressWarnings("unused")
@@ -320,7 +344,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			// empty
 		}
 
-		public TreeViewer getViewer() {
+		public TreeCanvasViewer getViewer() {
 			return _viewer;
 		}
 
@@ -396,7 +420,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		private void validateButtons() {
-			ITreeSelection sel = getViewer().getStructuredSelection();
+			var sel = getViewer().getStructuredSelection();
 			_deleteBtn.setEnabled(!sel.isEmpty());
 			_renameBtn.setEnabled(!sel.isEmpty());
 		}
@@ -407,7 +431,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		public SectionsComp(Composite parent) {
 			super(parent, "Sections");
 
-			TreeViewer viewer = getViewer();
+			var viewer = getViewer();
 			viewer.setContentProvider(new ITreeContentProvider() {
 
 				@Override
@@ -430,26 +454,15 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					return new Object[] {};
 				}
 			});
-			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-			var col = new TreeViewerColumn(getViewer(), SWT.NONE);
-			col.getColumn().setWidth(1000);
 
-			col.setLabelProvider(new SectionColumnLabelProvider());
+			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 
 			initDragAndDrop(viewer);
 		}
 
-		private void initDragAndDrop(TreeViewer viewer) {
+		private void initDragAndDrop(TreeCanvasViewer viewer) {
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
-			viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-					LocalSelectionTransfer.getTransfer().setSelection(selection);
-				}
-			});
-			viewer.addDropSupport(DND.DROP_MOVE, types, new ViewerDropAdapter(viewer) {
+			viewer.addDropSupport(DND.DROP_MOVE, types, new TreeCanvasDropAdapter(viewer) {
 
 				private int _location;
 				private int _target;
@@ -551,12 +564,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				@Override
 				public void dragOver(DropTargetEvent event) {
 					_location = determineLocation(event);
-					var item = (TreeItem) event.item;
-					if (item == null) {
-						_target = -1;
-					} else {
-						_target = viewer.getTree().indexOf(item);
-					}
+
+					_target = getViewer().getUtils().getOverIndex();
+
 					super.dragOver(event);
 				}
 			});
@@ -584,7 +594,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
-	public class TypesColumnLabelProvider extends StyledCellLabelProvider {
+	private class TypesColumnLabelProvider extends StyledCellLabelProvider {
 		@Override
 		public void update(ViewerCell cell) {
 			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
@@ -621,7 +631,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
-	public class SectionColumnLabelProvider extends StyledCellLabelProvider {
+	private class SectionColumnLabelProvider extends StyledCellLabelProvider {
 		@Override
 		public void update(ViewerCell cell) {
 			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
@@ -698,17 +708,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 			});
 
-			getViewer().setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					var item = (AssetGroupModel) element;
-					return item.getType().name();
-				}
-			});
-			var col = new TreeViewerColumn(getViewer(), SWT.NONE);
-			col.getColumn().setWidth(1000);
-
-			col.setLabelProvider(new TypesColumnLabelProvider());
+			getViewer().setLabelProvider(AssetLabelProvider.GLOBAL_16);
 		}
 
 		public AssetType getSelectedType() {
@@ -725,7 +725,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		public AssetsComp(Composite parent) {
 			super(parent, "Files");
-			TreeViewer viewer = getViewer();
+
+			var viewer = getViewer();
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 			viewer.setContentProvider(new AssetsContentProvider(true));
 			AssetPackUI.installAssetTooltips(viewer);
@@ -742,17 +743,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			initDragAndDrop(viewer);
 		}
 
-		private void initDragAndDrop(TreeViewer viewer) {
+		private void initDragAndDrop(TreeCanvasViewer viewer) {
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
-			viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-					LocalSelectionTransfer.getTransfer().setSelection(selection);
-				}
-			});
-			viewer.addDropSupport(DND.DROP_MOVE, types, new ViewerDropAdapter(viewer) {
+			viewer.addDropSupport(DND.DROP_MOVE, types, new TreeCanvasDropAdapter(viewer) {
 
 				private int _location;
 				private int _target;
@@ -814,12 +807,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				@Override
 				public void dragOver(DropTargetEvent event) {
 					_location = determineLocation(event);
-					var item = (TreeItem) event.item;
-					if (item == null) {
-						_target = -1;
-					} else {
-						_target = viewer.getTree().indexOf(item);
-					}
+					_target = getViewer().getUtils().getOverIndex();
 					super.dragOver(event);
 				}
 			});
@@ -886,7 +874,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				var section = (AssetSectionModel) event.getStructuredSelection().getFirstElement();
 				getTypesComp().getViewer().setInput(section);
 
-				if (getSectionsComp().getViewer().getTree().isFocusControl()) {
+				if (getSectionsComp().getViewer().getCanvas().isFocusControl()) {
 					if (getOutliner() != null) {
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
@@ -908,7 +896,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 				getAssetsComp().getViewer().setInput(input);
 
-				if (getTypesComp().getViewer().getTree().isFocusControl()) {
+				if (getTypesComp().getViewer().getCanvas().isFocusControl()) {
 					if (getOutliner() != null) {
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
@@ -920,7 +908,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				if (getAssetsComp().getViewer().getTree().isFocusControl()) {
+				if (getAssetsComp().getViewer().getCanvas().isFocusControl()) {
 					if (getOutliner() != null) {
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
@@ -928,8 +916,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 		});
 
-		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(_sectionsComp.getViewer(),
-				_typesComp.getViewer(), _assetsComp.getViewer()));
+		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(
+				_sectionsComp.getViewer().getCanvas().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
 
 		recoverEditingPoint();
 

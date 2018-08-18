@@ -57,7 +57,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	/**
 	 * The viewer to which this drop support has been added.
 	 */
-	private TreeCanvas viewer;
+	private TreeCanvas _canvas;
 
 	/**
 	 * The current operation.
@@ -119,14 +119,18 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	 */
 	private boolean selectFeedbackEnabled = true;
 
+	protected TreeCanvasDropAdapter(TreeCanvasViewer viewer) {
+		this(viewer.getCanvas());
+	}
+
 	/**
 	 * Creates a new drop adapter for the given viewer.
 	 *
-	 * @param viewer
+	 * @param canvas
 	 *            the viewer
 	 */
-	protected TreeCanvasDropAdapter(TreeCanvas viewer) {
-		this.viewer = viewer;
+	protected TreeCanvasDropAdapter(TreeCanvas canvas) {
+		this._canvas = canvas;
 	}
 
 	/**
@@ -151,7 +155,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	 */
 	protected int determineLocation(DropTargetEvent event) {
 
-		var utils = viewer.getUtils();
+		var utils = _canvas.getUtils();
 
 		int index = utils.getOverIndex();
 
@@ -159,7 +163,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 			return LOCATION_NONE;
 		}
 
-		var viewPoint = viewer.toControl(event.x, event.y);
+		var viewPoint = _canvas.toControl(event.x, event.y);
 		var modelPoint = utils.viewToModel(viewPoint.x, viewPoint.y);
 
 		var bounds = utils.getSelectionFrameArea(index);
@@ -167,7 +171,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 		if ((modelPoint.y - bounds.y) < 5) {
 			return LOCATION_BEFORE;
 		}
-		
+
 		if ((bounds.y + bounds.height - modelPoint.y) < 5) {
 			return LOCATION_AFTER;
 		}
@@ -333,7 +337,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	 *         null if no objects are selected
 	 */
 	protected Object getSelectedObject() {
-		ISelection selection = viewer.getUtils().getSelection();
+		ISelection selection = _canvas.getUtils().getSelection();
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
 			IStructuredSelection structured = (IStructuredSelection) selection;
 			return structured.getFirstElement();
@@ -345,7 +349,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	 * @return the viewer to which this drop support has been added.
 	 */
 	protected TreeCanvas getViewer() {
-		return viewer;
+		return _canvas;
 	}
 
 	/**
