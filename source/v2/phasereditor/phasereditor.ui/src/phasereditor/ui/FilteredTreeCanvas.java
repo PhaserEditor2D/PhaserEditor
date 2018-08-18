@@ -22,6 +22,8 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,6 +48,14 @@ public class FilteredTreeCanvas extends Composite {
 		_filterText = new Text(this, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		_filterText.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		_filterText.setMessage("type filter text");
+		_filterText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.keyCode == SWT.ARROW_DOWN) {
+					getCanvas().setFocus();
+				}
+			}
+		});
 
 		_textChanged = e -> {
 			_canvas.filter(_filterText.getText());
