@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -120,7 +121,6 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
 import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.ui.views.PreviewView;
 
-@SuppressWarnings("restriction")
 public class PhaserEditorUI {
 
 	public static final String PREF_PROP_COLOR_DIALOG_TYPE = "phasereditor.ui.dialogs.colorDialogType";
@@ -376,7 +376,7 @@ public class PhaserEditorUI {
 	public static Color getListSelectionTextColor() {
 		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
 	}
-	
+
 	public static Color getListTextColor() {
 		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
 	}
@@ -892,28 +892,22 @@ public class PhaserEditorUI {
 		return new Rectangle(dstX, dstY, dstW, dstH);
 	}
 
-	public static void set_DND_Image(DragSourceEvent e, IFile file, Rectangle src) {
-		set_DND_Image(e, file == null ? null : file.getLocation().toFile(), src);
-	}
-
-	public static void set_DND_Image(DragSourceEvent e, File file, Rectangle src) {
-		if (file == null) {
+	public static void set_DND_Image(DragSourceEvent e, Image image, Rectangle src) {
+		if (image == null) {
 			return;
 		}
-		
-		Image image = scaleImage_DND(file.getAbsolutePath(), src);
-		e.image = image;
-		if (image != null) {
+
+		Image image2 = scaleImage_DND(image, src);
+
+		e.image = image2;
+
+		if (image2 != null) {
 			e.offsetX = src.width / 2;
 			e.offsetY = src.height / 2;
 		}
 	}
 
-	public static Image scaleImage_DND(IFile file, Rectangle src) {
-		return scaleImage_DND(file.getLocation().toPortableString(), src);
-	}
-
-	public static Image scaleImage_DND(String filepath, Rectangle src) {
+	public static Image scaleImage_DND(Image image, Rectangle src) {
 		int maxSize = 256;
 		int minSize = 64;
 
@@ -922,16 +916,54 @@ public class PhaserEditorUI {
 		int newSize = Math.min(maxSize, srcSize);
 		newSize = Math.max(newSize, minSize);
 
-		return scaleImage(filepath, src, newSize, null);
-	}
-
-	public static Image scaleImage(IFile file, Rectangle src, int newSize, BufferedImage overlay) {
-		return scaleImage(file.getLocation().toPortableString(), src, newSize, overlay);
+		return scaleImage(image, src, newSize);
 	}
 
 	public static Image scaleImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
+		try (FileInputStream input = new FileInputStream(new File(filepath))) {
+			return scaleImage(input, src, newSize, overlay);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Image scaleImage(Image image, Rectangle src, int newSize) {
+		var data1 = image.getImageData();
+		
+		var data2 = new ImageData(newSize, newSize, data1.depth, data1.palette);
+		data2.alphaData = new byte[newSize * newSize];
+		
+		var scaled = new Image(Display.getDefault(), data2);
+		
+
+		GC gc = new GC(scaled);
+
+		if (PhaserEditorUI.get_pref_Preview_Anitialias()) {
+			gc.setAntialias(SWT.ON);
+			gc.setInterpolation(SWT.ON);
+		} else {
+			gc.setAntialias(SWT.OFF);
+			gc.setInterpolation(SWT.OFF);
+		}
+
+		Rectangle src2 = src == null ? image.getBounds() : src;
+
+		ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
+		calc.fit(newSize, newSize);
+
+		Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
+
+		gc.drawImage(image, src2.x, src2.y, src2.width, src2.height, z.x, z.y, z.width, z.height);
+
+		gc.dispose();
+
+		return scaled;
+	}
+
+	public static Image scaleImage(InputStream input, Rectangle src, int newSize, BufferedImage overlay) {
 		try {
-			BufferedImage swingimg = ImageIO.read(new File(filepath));
+			BufferedImage swingimg = ImageIO.read(input);
 			BufferedImage swingimg2 = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = swingimg2.createGraphics();
 			Rectangle src2 = src == null ? new Rectangle(0, 0, swingimg.getWidth(), swingimg.getHeight()) : src;
@@ -1085,13 +1117,13 @@ public class PhaserEditorUI {
 			PhaserEditorUI.applyThemeStyle(c);
 			Color background = c.getBackground();
 			Color foreground = c.getForeground();
-			
+
 			if (!canvas.isDisposed()) {
 				canvas.setBackground(background);
 				canvas.setForeground(foreground);
 				canvas.redraw();
 			}
-			
+
 			c.close();
 			c.dispose();
 		});
@@ -1288,7 +1320,7 @@ public class PhaserEditorUI {
 		double scaleX = imgW / (blankSpaces ? fd.srcSize.x : fd.src.width);
 		double scaleY = imgH / (blankSpaces ? fd.srcSize.y : fd.src.height);
 
-		var imgX = renderArea.x + (center? frameWidth / 2 - imgW / 2 : 0) + (blankSpaces ? fd.dst.x : 0) * scaleX;
+		var imgX = renderArea.x + (center ? frameWidth / 2 - imgW / 2 : 0) + (blankSpaces ? fd.dst.x : 0) * scaleX;
 		var imgY = renderArea.y + frameHeight / 2 - imgH / 2 + (blankSpaces ? fd.dst.y : 0) * scaleY;
 
 		double imgDstW = (blankSpaces ? fd.dst.width : fd.src.width) * scaleX;

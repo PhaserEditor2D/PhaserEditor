@@ -110,7 +110,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	private TreeCanvasItem buildItem(Object elem) {
-		var item = new TreeCanvasItem();
+		var item = new TreeCanvasItem(getCanvas());
 		item.setData(elem);
 
 		refreshItem(item);

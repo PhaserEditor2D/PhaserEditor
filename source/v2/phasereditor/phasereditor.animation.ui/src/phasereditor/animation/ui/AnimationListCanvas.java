@@ -23,11 +23,9 @@ package phasereditor.animation.ui;
 
 import static java.util.stream.Collectors.toList;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
@@ -94,7 +92,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			}
 
 			@Override
-			public Rectangle getRenderImageSrcFrame(int index) {
+			public Rectangle get_DND_Image_SrcFrame(int index) {
 				IAssetFrameModel asset = findAssetFor(index);
 
 				if (asset == null) {
@@ -130,16 +128,14 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			}
 			
 			@Override
-			public File getImageFile(int index) {
+			public Image get_DND_Image(int index) {
 				IAssetFrameModel asset = findAssetFor(index);
 
 				if (asset == null) {
 					return null;
 				}
 
-				IFile file = asset.getImageFile();
-				
-				return file == null? null : file.getLocation().toFile();
+				return loadImage(asset.getImageFile());
 			}
 
 			@Override

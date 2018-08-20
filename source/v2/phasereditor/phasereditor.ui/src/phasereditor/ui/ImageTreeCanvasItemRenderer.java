@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -41,6 +44,8 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 		this(item, image, FrameData.fromImage(image));
 	}
 
+	
+
 	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image, FrameData fd) {
 		super(item);
 		_image = image;
@@ -58,7 +63,9 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	}
 
 	@Override
-	public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
+	public void render(PaintEvent e, int index, int x, int y) {
+		var canvas = _item.getCanvas();
+		
 		var gc = e.gc;
 
 		int imgSize = canvas.getImageSize();
@@ -110,5 +117,19 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 						new Rectangle(x + 2, y + 2, e.width - x - 5, rowHeight - textHeight - 10), false, false);
 			}
 		}
+	}
+
+
+
+	@Override
+	public Image get_DND_Image() {
+		return _image;
+	}
+
+
+
+	@Override
+	public FrameData get_DND_Image_FrameData() {
+		return _fd;
 	}
 }

@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
@@ -90,7 +90,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract int getFramesCount();
 
-	public abstract Rectangle getRenderImageSrcFrame(int index);
+	public abstract Rectangle get_DND_Image_SrcFrame(int index);
 
 	public abstract Rectangle getSelectionFrameArea(int index);
 
@@ -100,7 +100,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract Object getFrameObject(int index);
 
-	public abstract File getImageFile(int index);
+	public abstract Image get_DND_Image(int index);
 
 	@SuppressWarnings({ "static-method", "unused" })
 	public boolean isInformationControlValidPosition(int index, int x, int y) {
@@ -457,10 +457,11 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			_canvas.redraw();
 		}
 
-		var file = getImageFile(index);
-		var src = getRenderImageSrcFrame(index);
-
-		PhaserEditorUI.set_DND_Image(event, file, src);
+		var image = get_DND_Image(index);
+		if (image != null) {
+			var src = get_DND_Image_SrcFrame(index);
+			PhaserEditorUI.set_DND_Image(event, image, src);
+		}
 
 		LocalSelectionTransfer.getTransfer().setSelection(sel);
 	}
@@ -473,6 +474,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	@Override
 	public void dragFinished(DragSourceEvent event) {
 		if (event.image != null) {
+			// always dispose the image because it is a scaled copy of the original!
 			event.image.dispose();
 		}
 	}

@@ -47,8 +47,9 @@ public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer 
 	}
 
 	@Override
-	public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
+	public void render(PaintEvent e, int index, int x, int y) {
 		var anim = (AnimationModel) _item.getData();
+		var canvas = _item.getCanvas();
 		
 		var gc = e.gc;
 		
@@ -124,6 +125,16 @@ public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer 
 	@Override
 	public int computeRowHeight(TreeCanvas canvas) {
 		return canvas.getImageSize() + 32;
+	}
+
+	@Override
+	public Image get_DND_Image() {
+		return null;
+	}
+
+	@Override
+	public FrameData get_DND_Image_FrameData() {
+		return null;
 	}
 
 }

@@ -23,10 +23,12 @@ package phasereditor.assetpack.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.audio.core.AudioCore;
-import phasereditor.ui.IconTreeCanvasItemRenderer;
+import phasereditor.ui.BaseTreeCanvasItemRenderer;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -34,51 +36,69 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class AudioTreeCanvasItemRenderer extends IconTreeCanvasItemRenderer {
+public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
+
+	private Image _image;
+	private AudioAssetModel _audioAsset;
 
 	public AudioTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);
+
+		var canvas = item.getCanvas();
+
+		_audioAsset = (AudioAssetModel) _item.getData();
+
+		IFile audioFile = null;
+		for (var url : _audioAsset.getUrls()) {
+			audioFile = _audioAsset.getFileFromUrl(url);
+			if (audioFile != null) {
+				break;
+			}
+		}
+
+		var imgPath = AudioCore.getSoundWavesFile(audioFile, false);
+
+		_image = canvas.loadImage(imgPath.toFile());
 	}
 
 	@Override
-	public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
-		var audio = (AudioAssetModel) _item.getData();
-		
+	public void render(PaintEvent e, int index, int x, int y) {
+		var canvas = _item.getCanvas();
+
 		var gc = e.gc;
-		
-		int rowHeight =  computeRowHeight(canvas);
-		
+
+		int rowHeight = computeRowHeight(canvas);
+
 		int textHeight = gc.stringExtent("M").y;
-		
+
 		int textOffset = textHeight + 5;
 		int imgHeight = rowHeight - textOffset - 10;
 
 		if (imgHeight >= 16) {
-			IFile audioFile = null;
-			for(var url : audio.getUrls()) {
-				audioFile = audio.getFileFromUrl(url);
-				if (audioFile != null) {
-					break;
-				}
-			}
-			
-			var imgPath = AudioCore.getSoundWavesFile(audioFile, false);
-			
-			var img = canvas.loadImage(imgPath.toFile());
-			
-			if (img != null) {
+			if (_image != null) {
 				gc.setAlpha(150);
-				gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, x, y + 5, e.width - x - 5, imgHeight);
-				gc.setAlpha(255);	
+				gc.drawImage(_image, 0, 0, _image.getBounds().width, _image.getBounds().height, x, y + 5,
+						e.width - x - 5, imgHeight);
+				gc.setAlpha(255);
 			}
 
-			gc.drawText(audio.getKey(), x + 5, y + rowHeight - textOffset, true);
-		} 
+			gc.drawText(_audioAsset.getKey(), x + 5, y + rowHeight - textOffset, true);
+		}
 	}
-	
+
 	@Override
 	public int computeRowHeight(TreeCanvas canvas) {
 		return canvas.getImageSize() + 32;
 	}
 
+	@Override
+	public Image get_DND_Image() {
+		return _image;
+	}
+
+	@Override
+	public FrameData get_DND_Image_FrameData() {
+		return FrameData.fromImage(_image);
+	}
+	
 }

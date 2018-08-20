@@ -659,8 +659,13 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		IAssetFrameModel assetFrame = frame.getFrameAsset();
 		if (assetFrame != null) {
-			PhaserEditorUI.set_DND_Image(event, assetFrame.getImageFile().getLocation().toFile(),
-					assetFrame.getFrameData().src);
+
+			var img = loadImage(assetFrame.getImageFile());
+			
+			if (img != null) {
+				FrameData fd = assetFrame.getFrameData();
+				PhaserEditorUI.set_DND_Image(event, img, fd.src);
+			}
 		}
 
 		if (selectedFrames.contains(frame)) {

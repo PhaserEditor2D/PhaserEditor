@@ -41,6 +41,7 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -57,6 +58,7 @@ import phasereditor.ui.IFrameProvider;
 import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.PhaserEditorUI;
 
 @SuppressWarnings("synthetic-access")
 public class SpritesheetAssetPreviewComp extends Composite {
@@ -92,7 +94,10 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 				var frame = (SpritesheetAssetModel.FrameModel) ((StructuredSelection) sel).getFirstElement();
 
-				AssetPackUI.set_DND_Image(event, frame);
+				Image img = _sheetCanvas.loadImage(frame.getImageFile());
+				if (img != null) {
+					PhaserEditorUI.set_DND_Image(event, img, frame.getFrameData().src);
+				}
 
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);

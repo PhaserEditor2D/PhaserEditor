@@ -294,6 +294,10 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public Image getImage() {
 		return _image;
 	}
+	
+	public FrameData getFrameData() {
+		return _frameData;
+	}
 
 	private void setImage(Image image) {
 		setImage(image, image == null ? null : image.getBounds());

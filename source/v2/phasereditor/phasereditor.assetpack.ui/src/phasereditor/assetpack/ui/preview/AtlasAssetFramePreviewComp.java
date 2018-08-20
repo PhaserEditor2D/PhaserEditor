@@ -31,11 +31,13 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasAssetFramePreviewComp extends SingleFrameCanvas {
 	static final Object NO_SELECTION = "none";
@@ -58,7 +60,18 @@ public class AtlasAssetFramePreviewComp extends SingleFrameCanvas {
 					event.doit = false;
 					return;
 				}
-				AssetPackUI.set_DND_Image(event, getModel());
+
+				Image image = getImage();
+
+				FrameData fd = getFrameData();
+
+				if (image != null) {
+					if (fd == null) {
+						fd = FrameData.fromImage(image);
+					}
+					PhaserEditorUI.set_DND_Image(event, image, fd.src);
+				}
+
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
 			}

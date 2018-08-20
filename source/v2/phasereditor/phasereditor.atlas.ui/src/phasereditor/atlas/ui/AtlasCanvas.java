@@ -21,16 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui;
 
-import java.io.File;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -70,14 +69,14 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			}
 
 			@Override
-			public Rectangle getRenderImageSrcFrame(int index) {
+			public Rectangle get_DND_Image_SrcFrame(int index) {
 				AtlasFrame frame = _frames.get(index);
 				return frame.getFrameData().src;
 			}
 
 			@Override
-			public File getImageFile(int index) {
-				return _file;
+			public Image get_DND_Image(int index) {
+				return getImage();
 			}
 
 			@Override
@@ -174,17 +173,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 		generateFramesRects();
 	}
 
-	private File _file;
-
 	public void setSelection(IStructuredSelection sel, boolean fireChanged) {
 		_utils.setSelection(sel, fireChanged);
 
-	}
-
-	@Override
-	public void setImageFile(IFile file) {
-		super.setImageFile(file);
-		_file = file == null? null : file.getLocation().toFile();
 	}
 
 	public void selectAll() {

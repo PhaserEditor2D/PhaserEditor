@@ -24,12 +24,10 @@ package phasereditor.ui;
 import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceListener;
@@ -135,25 +133,25 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 
 			@Override
-			public Rectangle getRenderImageSrcFrame(int index) {
+			public Rectangle get_DND_Image_SrcFrame(int index) {
 				var item = _visibleItems.get(index);
 
-				if (item._frameData != null) {
-					return item._frameData.src;
-				}
+				var renderer = item.getRenderer();
 
+				FrameData fd = renderer.get_DND_Image_FrameData();
+				if (fd != null) {
+					return fd.src;
+				}
 				return null;
 			}
 
 			@Override
-			public File getImageFile(int index) {
+			public Image get_DND_Image(int index) {
 				var item = _visibleItems.get(index);
 
-				if (item._imageFile != null) {
-					return item._imageFile;
-				}
+				var renderer = item.getRenderer();
 
-				return null;
+				return renderer.get_DND_Image();
 			}
 
 			@Override
@@ -269,7 +267,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			BaseTreeCanvasItemRenderer renderer;
 			if (item.getRenderer() == null) {
-				renderer = new IconTreeCanvasItemRenderer(item);
+				renderer = new IconTreeCanvasItemRenderer(item, null);
 			} else {
 				renderer = item.getRenderer();
 			}
@@ -300,7 +298,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			// render item
 
-			renderer.render(this, e, i, x, y);
+			renderer.render(e, i, x, y);
 
 			// paint toogle
 
@@ -623,8 +621,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public static class TreeCanvasItem {
 		public Rectangle _toggleHitArea;
 		private Object _data;
-		private File _imageFile;
-		private FrameData _frameData;
 		private Image _icon;
 		private List<TreeCanvasItem> _children;
 		private List<TreeCanvasItemAction> _actions;
@@ -640,11 +636,17 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		private BaseTreeCanvasItemRenderer _renderer;
 		TreeCanvasItem _parent;
 		private float _alpha;
+		private TreeCanvas _canvas;
 
-		public TreeCanvasItem() {
+		public TreeCanvasItem(TreeCanvas canvas) {
 			_children = new ArrayList<>();
 			_actions = new ArrayList<>();
 			_alpha = 1;
+			_canvas = canvas;
+		}
+
+		public TreeCanvas getCanvas() {
+			return _canvas;
 		}
 
 		public float getAlpha() {
@@ -733,26 +735,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		public void setData(Object data) {
 			_data = data;
-		}
-
-		public File getImageFile() {
-			return _imageFile;
-		}
-
-		public void setImageFile(File imageFile) {
-			_imageFile = imageFile;
-		}
-
-		public void setImageFile(IFile file) {
-			setImageFile(file.getLocation().toFile());
-		}
-
-		public FrameData getFrameData() {
-			return _frameData;
-		}
-
-		public void setFrameData(FrameData frameData) {
-			_frameData = frameData;
 		}
 
 		public Image getIcon() {

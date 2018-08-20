@@ -1056,7 +1056,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 						var img = getCanvas().loadImage(file);
 						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
 					}
-					
+
 					if (element instanceof TexturePackerEditorFrame) {
 						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 						IFile file = findFile(frame);

@@ -40,7 +40,7 @@ import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.FrameData;
+import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
@@ -65,9 +65,8 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			var imgFile = CanvasUI.getCanvasScreenshotFile(file, false);
 
 			if (imgFile != null) {
-				item.setImageFile(imgFile.toFile());
-				var img = getCanvas().loadImage(item.getImageFile());
-				item.setFrameData(FrameData.fromImage(img));
+				var img = getCanvas().loadImage(imgFile.toFile());
+				item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
 			}
 
 			item.setLabel(file.getName());

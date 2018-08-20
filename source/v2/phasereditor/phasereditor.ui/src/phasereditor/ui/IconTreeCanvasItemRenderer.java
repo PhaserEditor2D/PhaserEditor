@@ -22,25 +22,30 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
-	public IconTreeCanvasItemRenderer(TreeCanvasItem item) {
+	private Image _icon;
+
+	public IconTreeCanvasItemRenderer(TreeCanvasItem item, Image icon) {
 		super(item);
+		_icon = icon;
 	}
 
 	@Override
-	public void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y) {
+	public void render(PaintEvent e, int index, int x, int y) {
+		var canvas = _item.getCanvas();
+		
 		var gc = e.gc;
 
 		int textX = x;
 		int rowHeight = computeRowHeight(canvas);
 
-		var icon = _item.getIcon();
-		var iconBounds = icon == null ? null : icon.getBounds();
+		var iconBounds = _icon == null ? null : _icon.getBounds();
 
 		if (iconBounds != null) {
 			textX += iconBounds.width + ICON_AND_TEXT_SPACE;
@@ -73,9 +78,9 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			// paint icon
 
 			if (_item.isHeader()) {
-				gc.drawImage(icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
+				gc.drawImage(_icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
 			} else {
-				gc.drawImage(icon, x, y + (rowHeight - iconBounds.height) / 2);
+				gc.drawImage(_icon, x, y + (rowHeight - iconBounds.height) / 2);
 			}
 		}
 	}
@@ -83,5 +88,15 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	@Override
 	public int computeRowHeight(TreeCanvas canvas) {
 		return TreeCanvas.MIN_ROW_HEIGHT;
+	}
+
+	@Override
+	public Image get_DND_Image() {
+		return _icon;
+	}
+
+	@Override
+	public FrameData get_DND_Image_FrameData() {
+		return _icon == null? null : FrameData.fromImage(_icon);
 	}
 }

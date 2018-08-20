@@ -144,10 +144,6 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		} else {
 			// we do this to do the loading at once!
 			var image = getCanvas().loadImage(file);
-
-			item.setFrameData(fd);
-			item.setImageFile(file);
-			
 			item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, fd));
 		}
 	}

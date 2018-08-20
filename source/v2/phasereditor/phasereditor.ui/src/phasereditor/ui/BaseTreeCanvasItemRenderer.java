@@ -22,6 +22,7 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Image;
 
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -40,8 +41,11 @@ public abstract class BaseTreeCanvasItemRenderer {
 		_item = item;
 	}
 
-	public abstract void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y);
+	public abstract void render(PaintEvent e, int index, int x, int y);
 
 	public abstract int computeRowHeight(TreeCanvas canvas);
 	
+	public abstract Image get_DND_Image();
+	
+	public abstract FrameData get_DND_Image_FrameData();
 }
