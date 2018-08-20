@@ -135,7 +135,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	protected void setItemIconProperties(TreeCanvasItem item) {
-		item.setIcon(_labelProvider.getImage(item.getData()));
+		item.setRenderer(new IconTreeCanvasItemRenderer(item, _labelProvider.getImage(item.getData())));
 	}
 
 	public LabelProvider getLabelProvider() {

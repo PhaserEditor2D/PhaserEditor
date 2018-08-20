@@ -266,11 +266,9 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		for (var item : _visibleItems) {
 
 			BaseTreeCanvasItemRenderer renderer;
-			if (item.getRenderer() == null) {
-				renderer = new IconTreeCanvasItemRenderer(item, null);
-			} else {
-				renderer = item.getRenderer();
-			}
+			
+			renderer = item.getRenderer();
+			
 
 			int x = item.getDepth() * _indentSize + /* the expand/collapse icon */16;
 
@@ -621,7 +619,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public static class TreeCanvasItem {
 		public Rectangle _toggleHitArea;
 		private Object _data;
-		private Image _icon;
 		private List<TreeCanvasItem> _children;
 		private List<TreeCanvasItemAction> _actions;
 		private String _label;
@@ -643,6 +640,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_actions = new ArrayList<>();
 			_alpha = 1;
 			_canvas = canvas;
+			_renderer = new IconTreeCanvasItemRenderer(this, null);
 		}
 
 		public TreeCanvas getCanvas() {
@@ -735,14 +733,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		public void setData(Object data) {
 			_data = data;
-		}
-
-		public Image getIcon() {
-			return _icon;
-		}
-
-		public void setIcon(Image icon) {
-			_icon = icon;
 		}
 
 		public List<TreeCanvasItem> getChildren() {

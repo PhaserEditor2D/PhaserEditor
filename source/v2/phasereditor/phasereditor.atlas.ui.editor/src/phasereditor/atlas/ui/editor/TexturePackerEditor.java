@@ -108,6 +108,7 @@ import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.IconTreeCanvasItemRenderer;
 import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -1065,7 +1066,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					}
 
 					if (element instanceof TexturePackerEditorModel) {
-						item.setIcon(EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES));
+						item.setRenderer(new IconTreeCanvasItemRenderer(item, EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES)));
 					}
 				}
 			};

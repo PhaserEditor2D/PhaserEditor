@@ -40,6 +40,7 @@ import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IconTreeCanvasItemRenderer;
 import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -85,7 +86,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 				|| elem == AssetsView.PACK_NODE
 
 				|| elem == AssetsView.PROJECTS_NODE) {
-			item.setIcon(null);
+			item.setRenderer(new IconTreeCanvasItemRenderer(item, null));
 		}
 
 	}
