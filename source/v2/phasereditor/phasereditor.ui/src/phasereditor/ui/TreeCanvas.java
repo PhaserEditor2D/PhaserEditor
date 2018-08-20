@@ -64,12 +64,13 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private int _indentSize;
 	private int _imageSize;
 	private int _fullHeight;
-	private Point _origin;
+	private int _origin;
 	private boolean _updateScroll;
 	private FrameCanvasUtils _utils;
 	protected TreeCanvasItemAction _overAction;
 	private String _filterText;
 	private HashSet<TreeCanvasItem> _filteredItems;
+	private boolean _revealSelection;
 
 	public TreeCanvas(Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
@@ -85,11 +86,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		addPaintListener(this);
 		addMouseWheelListener(this);
 
-		_origin = new Point(0, 0);
+		_origin = 0;
 
 		final ScrollBar vBar = getVerticalBar();
 		vBar.addListener(SWT.Selection, e -> {
-			_origin.y = -vBar.getSelection();
+			_origin = -vBar.getSelection();
 			redraw();
 		});
 
@@ -101,12 +102,12 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			@Override
 			public Point viewToModel(int x, int y) {
-				return new Point(x, y - _origin.y);
+				return new Point(x, y - _origin);
 			}
 
 			@Override
 			public Point modelToView(int x, int y) {
-				return new Point(x, y + _origin.y);
+				return new Point(x, y + _origin);
 			}
 
 			@Override
@@ -236,6 +237,13 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 				super.mouseUp(e);
 			}
+
+			@Override
+			protected void shiftSelection(int dir) {
+				super.shiftSelection(dir);
+
+				_revealSelection = true;
+			}
 		};
 	}
 
@@ -249,11 +257,14 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		prepareGC(gc);
 
 		Transform tx = new Transform(getDisplay());
-		tx.translate(0, _origin.y);
+		tx.translate(0, _origin);
 		gc.setTransform(tx);
 
 		int i = 0;
 		int y = 0;
+		int selectionStart = -1;
+		int selectionHeight = -1;
+
 		for (var item : _visibleItems) {
 
 			BaseTreeCanvasItemRenderer renderer;
@@ -278,14 +289,19 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					gc.setBackground(PhaserEditorUI.getListSelectionColor());
 					gc.fillRectangle(0, y, e.width, rowHeight);
 				}
-				
+
 				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
+
+				if (selected) {
+					selectionStart = y;
+					selectionHeight = rowHeight;
+				}
 			}
 
 			// render item
 
 			renderer.render(this, e, i, x, y);
-			
+
 			// paint toogle
 
 			if (item.hasChildren()) {
@@ -373,6 +389,18 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_updateScroll = false;
 			updateScrollNow();
 		}
+
+		if (_revealSelection) {
+			_revealSelection = false;
+			var viewPoint = _utils.modelToView(0, selectionStart);
+			var r = getClientArea();
+
+			if (viewPoint.y < r.y || viewPoint.y + selectionHeight > r.height) {
+				scrollTo(selectionStart - selectionHeight);
+				redraw();
+			}
+		}
+
 	}
 
 	public void selectAll() {
@@ -528,12 +556,31 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		if (vSelection >= vPage) {
 			if (vPage <= 0)
 				vSelection = 0;
-			_origin.y = -vSelection;
+			_origin = -vSelection;
 		}
 
 		vBar.setVisible(_fullHeight > client.height);
 
 		redraw();
+	}
+
+	private void scrollTo(int y) {
+
+		var vBar = getVerticalBar();
+
+		int thumb = vBar.getThumb();
+
+		int sel = y;
+
+		if (sel < 0) {
+			sel = 0;
+		} else if (sel > _fullHeight - thumb) {
+			sel = _fullHeight - thumb;
+		}
+
+		vBar.setSelection(sel);
+
+		_origin = -sel;
 	}
 
 	public static class TreeCanvasItemAction {
