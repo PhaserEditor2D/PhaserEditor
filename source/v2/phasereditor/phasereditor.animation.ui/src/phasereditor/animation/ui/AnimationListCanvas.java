@@ -254,6 +254,8 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 
 			y += _rowHeight;
 		}
+		
+		tx.dispose();
 	}
 
 	private void buildFilterMap(String patten) {

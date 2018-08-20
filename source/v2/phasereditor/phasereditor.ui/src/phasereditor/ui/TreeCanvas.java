@@ -396,6 +396,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				redraw();
 			}
 		}
+		
+		tx.dispose();
 
 	}
 

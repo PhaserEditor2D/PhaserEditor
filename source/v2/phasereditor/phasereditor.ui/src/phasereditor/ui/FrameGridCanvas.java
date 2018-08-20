@@ -272,6 +272,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 				i++;
 			}
 		}
+		
+		tx.dispose();
 
 	}
 

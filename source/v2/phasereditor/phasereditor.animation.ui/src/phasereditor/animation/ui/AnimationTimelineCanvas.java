@@ -473,6 +473,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			_updateScroll = false;
 			updateScroll();
 		}
+		
+		tx.dispose();
 
 	}
 
