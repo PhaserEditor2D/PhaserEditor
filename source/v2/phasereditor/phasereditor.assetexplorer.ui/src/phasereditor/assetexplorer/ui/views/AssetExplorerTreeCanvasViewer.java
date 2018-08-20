@@ -60,7 +60,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 	@Override
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		var elem = item.getData();
-		
+
 		if (elem instanceof CanvasFile) {
 			var file = ((CanvasFile) elem).getFile();
 			var imgFile = CanvasUI.getCanvasScreenshotFile(file, false);
@@ -74,7 +74,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		} else {
 			super.setItemIconProperties(item);
 		}
-		
+
 		if (elem == AssetsView.CANVAS_NODE
 
 				|| elem instanceof CanvasType
@@ -96,16 +96,17 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		super.setItemProperties(item);
 
 		var elem = item.getData();
-		
+
 		var actions = new ArrayList<TreeCanvasItemAction>();
 		item.setActions(actions);
-		
+
 		if (elem == AssetsView.CANVAS_NODE) {
 			item.setHeader(true);
 		}
 
 		if (elem instanceof CanvasType) {
-			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_CANVAS, new NewCanvasWizardLauncher((CanvasType) elem)));
+			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_CANVAS,
+					new NewCanvasWizardLauncher((CanvasType) elem)));
 			item.setHeader(true);
 		}
 

@@ -69,6 +69,12 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		var elem = item.getData();
 		IFile file = null;
 		FrameData fd = null;
+		
+		LinkedHashSet<String> keywords = new LinkedHashSet<>();
+
+		addKeywords(elem, keywords);
+
+		item.setKeywords(keywords.isEmpty() ? null : keywords.stream().collect(joining(",")));
 
 		if (elem instanceof IAssetFrameModel) {
 			var asset = (IAssetFrameModel) elem;
@@ -125,26 +131,20 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			}
 		}
 
-		if (elem instanceof AnimationModel) {
-			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
-		}
-
-		if (elem instanceof AudioAssetModel) {
-			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
-		}
-
-		LinkedHashSet<String> keywords = new LinkedHashSet<>();
-
-		addKeywords(elem, keywords);
-
-		item.setKeywords(keywords.isEmpty() ? null : keywords.stream().collect(joining(",")));
-
 		if (file == null || fd == null) {
 			super.setItemIconProperties(item);
 		} else {
 			// we do this to do the loading at once!
 			var image = getCanvas().loadImage(file);
 			item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, fd));
+		}
+		
+		if (elem instanceof AnimationModel) {
+			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
+		}
+
+		if (elem instanceof AudioAssetModel) {
+			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
 		}
 	}
 
