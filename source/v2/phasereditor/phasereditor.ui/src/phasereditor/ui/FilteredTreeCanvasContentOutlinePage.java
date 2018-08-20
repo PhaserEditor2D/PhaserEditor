@@ -72,7 +72,7 @@ public abstract class FilteredTreeCanvasContentOutlinePage extends Page
 		_initialSelection = null;
 	}
 
-	public TreeCanvasViewer getViewer() {
+	public TreeCanvasViewer getTreeViewer() {
 		return _viewer;
 	}
 

@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.widgets.Control;
 
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -101,6 +102,10 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	public TreeCanvas getCanvas() {
+		return _canvas;
+	}
+	
+	public Control getControl() {
 		return _canvas;
 	}
 
@@ -185,5 +190,9 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	public Object[] getExpandedElements() {
 		List<Object> list = _canvas.getExpandedObjects();
 		return list.toArray(new Object[list.size()]);
+	}
+
+	public void expandAll() {
+		_canvas.expandAll();
 	}
 }

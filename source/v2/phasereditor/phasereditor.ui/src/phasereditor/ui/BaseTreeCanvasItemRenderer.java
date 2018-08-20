@@ -43,4 +43,5 @@ public abstract class BaseTreeCanvasItemRenderer {
 	public abstract void render(TreeCanvas canvas, PaintEvent e, int index, int x, int y);
 
 	public abstract int computeRowHeight(TreeCanvas canvas);
+	
 }

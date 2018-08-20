@@ -31,10 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
@@ -70,8 +67,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreePath;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.dnd.DND;
@@ -111,10 +106,12 @@ import com.badlogic.gdx.utils.Array;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.FilteredContentOutlinePage;
+import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.PGridPage;
 
 public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
@@ -590,7 +587,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					}
 
 					_model.setPages(newEditorPages);
-					
+
 					for (EditorPage page : _model.getPages()) {
 						String atlasImageName = _model.getAtlasImageName(page.getIndex());
 						IFile file = _model.getFile().getParent().getFile(new Path(atlasImageName));
@@ -825,7 +822,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE, false);
 		// we handle the cache
 		canvas.setDisableCanche(true);
-		
+
 		ISelectionChangedListener listener = new ISelectionChangedListener() {
 
 			@Override
@@ -847,7 +844,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		var selection = canvas.getSelection();
 
 		if (_outliner != null) {
-			_outliner.getViewer().expandAll();
+			_outliner.getTreeViewer().expandAll();
 			_outliner.removeSelectionChangedListener(_outlinerSelectionListener);
 			_outliner.setSelection(selection);
 			_outliner.addSelectionChangedListener(_outlinerSelectionListener);
@@ -989,14 +986,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	class TexturePackerEditorOutlineLabelProvider extends LabelProvider {
 
-		private IconCache _cache = new IconCache();
-
-		@Override
-		public void dispose() {
-			super.dispose();
-			_cache.dispose();
-		}
-
 		@Override
 		public String getText(Object element) {
 			if (element instanceof TexturePackerEditorModel) {
@@ -1013,31 +1002,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 			return super.getText(element);
 		}
-
-		@Override
-		public Image getImage(Object element) {
-
-			if (element instanceof TexturePackerEditorModel) {
-				return EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES);
-			}
-
-			if (element instanceof EditorPage) {
-				return ((EditorPage) element).getImage();
-			}
-
-			if (element instanceof TexturePackerEditorFrame) {
-				TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
-				IFile file = findFile(frame);
-				if (file != null) {
-					Image img = _cache.getIcon(file, 16, null);
-					return img;
-				}
-			}
-			return super.getImage(element);
-		}
 	}
 
-	class TexturePackerContentOutlinePage extends FilteredContentOutlinePage {
+	class TexturePackerContentOutlinePage extends FilteredTreeCanvasContentOutlinePage {
 		public TexturePackerContentOutlinePage() {
 		}
 
@@ -1045,7 +1012,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		public void createControl(Composite parent) {
 			super.createControl(parent);
 
-			TreeViewer viewer = getTreeViewer();
+			var viewer = getTreeViewer();
 			viewer.setLabelProvider(new TexturePackerEditorOutlineLabelProvider());
 			viewer.setContentProvider(new TexturePackerEditorOutlineContentProvider());
 			viewer.setInput(TexturePackerEditor.this);
@@ -1055,22 +1022,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		@Override
 		public void setSelection(ISelection selection) {
-			List<Object> items = new ArrayList<>();
-			Map<Object, Object> parents = new HashMap<>();
-
-			for (Object elem : ((IStructuredSelection) selection).toArray()) {
-				if (elem instanceof TexturePackerEditorFrame) {
-					items.add(elem);
-					for (EditorPage pages : _model.getPages()) {
-						if (pages.contains(elem)) {
-							parents.put(elem, pages);
-						}
-					}
-				}
-			}
-
-			for (Entry<Object, Object> entry : parents.entrySet()) {
-				getTreeViewer().reveal(new TreePath(new Object[] { getModel(), entry.getValue(), entry.getKey() }));
+			for (Object obj : ((IStructuredSelection) selection).toArray()) {
+				getTreeViewer().reveal(obj);
 			}
 
 			getTreeViewer().setSelection(selection);
@@ -1081,6 +1034,49 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			getTreeViewer().removeSelectionChangedListener(_outlinerSelectionListener);
 			TexturePackerEditor.this._outliner = null;
 			super.dispose();
+		}
+
+		@Override
+		protected TreeCanvasViewer createViewer() {
+			return new TreeCanvasViewer(getCanvas()) {
+				@Override
+				protected void setItemProperties(TreeCanvasItem item) {
+					super.setItemProperties(item);
+
+					var element = item.getData();
+
+					if (element instanceof EditorPage) {
+						EditorPage page = (EditorPage) element;
+						var file = page.getImageFile();
+						item.setImageFile(file);
+						item.setFrameData(FrameData.fromImage(page.getImage()));
+					}
+
+					if (element instanceof TexturePackerEditorFrame) {
+						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
+						IFile file = findFile(frame);
+						var img = getCanvas().loadImage(file);
+						if (img != null) {
+							item.setImageFile(file);
+							item.setFrameData(FrameData.fromImage(img));
+						}
+					}
+					
+					if (element instanceof TexturePackerEditorFrame) {
+						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
+						IFile file = findFile(frame);
+						var img = getCanvas().loadImage(file);
+						if (img != null) {
+							item.setImageFile(file);
+							item.setFrameData(FrameData.fromImage(img));
+						}
+					}
+
+					if (element instanceof TexturePackerEditorModel) {
+						item.setIcon(EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES));
+					}
+				}
+			};
 		}
 	}
 

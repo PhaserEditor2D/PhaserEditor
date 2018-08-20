@@ -958,7 +958,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		public void revealAndSelect(IStructuredSelection selection) {
-			var viewer = getViewer();
+			var viewer = getTreeViewer();
 
 			var iter = selection.iterator();
 			while (iter.hasNext()) {
@@ -974,7 +974,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		public void createControl(Composite parent) {
 			super.createControl(parent);
 
-			var viewer = getViewer();
+			var viewer = getTreeViewer();
 
 			viewer.addSelectionChangedListener(_listener = new ISelectionChangedListener() {
 
@@ -1020,7 +1020,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		@Override
 		public void dispose() {
 
-			getViewer().removeSelectionChangedListener(_listener);
+			getTreeViewer().removeSelectionChangedListener(_listener);
 
 			setOutliner(null);
 
