@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import java.io.File;
-
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -36,8 +34,17 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  */
 public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
-	public ImageTreeCanvasItemRenderer(TreeCanvasItem item) {
+	private Image _image;
+	private FrameData _fd;
+
+	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image) {
+		this(item, image, FrameData.fromImage(image));
+	}
+
+	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image, FrameData fd) {
 		super(item);
+		_image = image;
+		_fd = fd;
 	}
 
 	@Override
@@ -69,9 +76,9 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		if (label != null) {
 			var extent = gc.textExtent(label);
-			
+
 			textHeight = extent.y;
-			
+
 			if (_item.isHeader()) {
 				gc.setFont(SWTResourceManager.getBoldFont(canvas.getFont()));
 			}
@@ -94,27 +101,14 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		// paint image
 
-		var img = getItemImage(canvas);
-		var fd = getItemFrameData();
-
-		if (img != null) {
+		if (_image != null) {
 			if (iconified) {
-				PhaserEditorUI.paintScaledImageInArea(gc, img, fd, new Rectangle(x + 2, y + 1, imgSize, rowHeight - 2),
-						false, true);
+				PhaserEditorUI.paintScaledImageInArea(gc, _image, _fd,
+						new Rectangle(x + 2, y + 1, imgSize, rowHeight - 2), false, true);
 			} else {
-				PhaserEditorUI.paintScaledImageInArea(gc, img, fd,
+				PhaserEditorUI.paintScaledImageInArea(gc, _image, _fd,
 						new Rectangle(x + 2, y + 2, e.width - x - 5, rowHeight - textHeight - 10), false, false);
 			}
 		}
 	}
-
-	protected FrameData getItemFrameData() {
-		return _item.getFrameData();
-	}
-
-	protected Image getItemImage(TreeCanvas canvas) {
-		File file = _item.getImageFile();
-		return canvas.loadImage(file);
-	}
-
 }

@@ -53,6 +53,10 @@ public class FrameData implements Cloneable {
 	}
 
 	public static FrameData fromImage(Image img) {
+		if (img == null) {
+			return null;
+		}
+		
 		var fd = new FrameData(0);
 
 		fd.src = img.getBounds();

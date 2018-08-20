@@ -107,8 +107,8 @@ import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
-import phasereditor.ui.FrameData;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
@@ -1047,29 +1047,21 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 					if (element instanceof EditorPage) {
 						EditorPage page = (EditorPage) element;
-						var file = page.getImageFile();
-						item.setImageFile(file);
-						item.setFrameData(FrameData.fromImage(page.getImage()));
+						item.setRenderer(new ImageTreeCanvasItemRenderer(item, page.getImage()));
 					}
 
 					if (element instanceof TexturePackerEditorFrame) {
 						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 						IFile file = findFile(frame);
 						var img = getCanvas().loadImage(file);
-						if (img != null) {
-							item.setImageFile(file);
-							item.setFrameData(FrameData.fromImage(img));
-						}
+						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
 					}
 					
 					if (element instanceof TexturePackerEditorFrame) {
 						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 						IFile file = findFile(frame);
 						var img = getCanvas().loadImage(file);
-						if (img != null) {
-							item.setImageFile(file);
-							item.setFrameData(FrameData.fromImage(img));
-						}
+						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
 					}
 
 					if (element instanceof TexturePackerEditorModel) {
