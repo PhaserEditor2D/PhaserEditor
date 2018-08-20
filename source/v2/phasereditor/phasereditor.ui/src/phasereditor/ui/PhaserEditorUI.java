@@ -916,7 +916,7 @@ public class PhaserEditorUI {
 		int newSize = Math.min(maxSize, srcSize);
 		newSize = Math.max(newSize, minSize);
 
-		return scaleImage(image, src, newSize);
+		return scaleImage(image, src, newSize, 200);
 	}
 
 	public static Image scaleImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
@@ -928,7 +928,7 @@ public class PhaserEditorUI {
 		}
 	}
 
-	public static Image scaleImage(Image image, Rectangle src, int newSize) {
+	public static Image scaleImage(Image image, Rectangle src, int newSize, int alpha) {
 		var data1 = image.getImageData();
 		
 		var data2 = new ImageData(newSize, newSize, data1.depth, data1.palette);
@@ -954,6 +954,7 @@ public class PhaserEditorUI {
 
 		Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
 
+		gc.setAlpha(alpha);
 		gc.drawImage(image, src2.x, src2.y, src2.width, src2.height, z.x, z.y, z.width, z.height);
 
 		gc.dispose();
