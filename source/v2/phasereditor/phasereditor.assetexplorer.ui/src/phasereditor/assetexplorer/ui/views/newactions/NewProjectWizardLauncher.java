@@ -32,7 +32,7 @@ import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
 public class NewProjectWizardLauncher extends NewWizardLancher {
 
 	public NewProjectWizardLauncher() {
-		super("Create a new Phaser Project...");
+		super("Phaser Project...");
 	}
 
 	@Override

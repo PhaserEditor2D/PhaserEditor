@@ -29,8 +29,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 
-import phasereditor.assetexplorer.ui.views.newactions.NewExampleProjectWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewProjectWizardLauncher;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -67,11 +65,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent == AssetsView.ROOT) {
 
 			if (activeProjet == null) {
-				List<Object> list = new ArrayList<>();
-				list.add(new NewProjectWizardLauncher());
-				list.add(new NewExampleProjectWizardLauncher());
-				list.addAll(List.of(ResourcesPlugin.getWorkspace().getRoot().getProjects()));
-				return list.toArray();
+				return new Object[] { AssetsView.PROJECTS_NODE };
 			}
 
 			return new Object[] {
@@ -94,6 +88,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			var projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 
 			var current = activeProjet;
+
+			if (current == null) {
+				return projects;
+			}
 
 			return Arrays.stream(projects).filter(p -> current != p).toArray();
 
