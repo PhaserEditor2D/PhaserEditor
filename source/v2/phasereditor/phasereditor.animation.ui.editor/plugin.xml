@@ -148,7 +148,7 @@
       <commonWizard
             menuGroupId="phaser.new.other"
             type="new"
-            wizardId="phasereditor.animation.ui.newAnimationsFile">
+            wizardId="phasereditor.animation.ui.editor.newAnimationsFile">
          <enablement></enablement>
       </commonWizard>
    </extension>
