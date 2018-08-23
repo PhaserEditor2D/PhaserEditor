@@ -14,29 +14,28 @@ public class AnimationsEditorActionBarContributor extends EditorActionBarContrib
 	@Override
 	public void setActiveEditor(IEditorPart targetEditor) {
 		_editor = (AnimationsEditor) targetEditor;
-		
+
 		var manager = getActionBars().getToolBarManager();
-		
+
 		manager.removeAll();
-		
+
 		manager.add(_editor.getPlayAction());
 		manager.add(_editor.getPauseAction());
 		manager.add(_editor.getStopAction());
-		
+
 		manager.add(new Separator());
 
-		
 		manager.add(_editor.getZoom_1_1_action());
 		manager.add(_editor.getZoom_fitWindow_action());
-		
+
 		manager.add(new Separator());
 
 		manager.add(_editor.getNewAction());
 		manager.add(_editor.getOutlineAction());
-		
+		manager.add(_editor.getQuickEditAction());
+
 		manager.add(new Separator());
 
-		
 		manager.add(_editor.getDeleteAction());
 
 	}

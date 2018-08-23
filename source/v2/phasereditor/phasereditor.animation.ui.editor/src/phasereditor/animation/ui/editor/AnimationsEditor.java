@@ -93,6 +93,8 @@ import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.properties.PGrid;
+import phasereditor.ui.properties.QuickEditDialog;
 
 /**
  * @author arian
@@ -120,6 +122,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private Action _deleteAction;
 	private Action _newAction;
 	private Action _outlineAction;
+	private Action _quickEditAction;
 
 	public Action getPlayAction() {
 		return _playAction;
@@ -151,6 +154,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	public Action getOutlineAction() {
 		return _outlineAction;
+	}
+
+	public Action getQuickEditAction() {
+		return _quickEditAction;
 	}
 
 	public AnimationsEditor() {
@@ -186,7 +193,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private void afterCreateWidgets() {
 
 		createActions();
-		
+
 		createContextMenus();
 
 		getEditorSite().setSelectionProvider(new ISelectionProvider() {
@@ -264,29 +271,28 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	private void createContextMenus() {
 		var manager = new MenuManager();
-		
+
 		manager.add(getPlayAction());
 		manager.add(getPauseAction());
 		manager.add(getStopAction());
-		
+
 		manager.add(new Separator());
 
-		
 		manager.add(getZoom_1_1_action());
 		manager.add(getZoom_fitWindow_action());
-		
+
 		manager.add(new Separator());
 
 		manager.add(getNewAction());
 		manager.add(getOutlineAction());
-		
+		manager.add(getQuickEditAction());
+
 		manager.add(new Separator());
 
-		
 		manager.add(getDeleteAction());
-		
+
 		var menu = manager.createContextMenu(_animCanvas);
-		
+
 		_animCanvas.setMenu(menu);
 	}
 
@@ -512,6 +518,43 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 						selectAnimation((AnimationModel_in_Editor) selected);
 					}
 				}
+			}
+		};
+
+		_quickEditAction = new Action("Quick Edit",
+				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_EDIT)) {
+
+			@Override
+			public void run() {
+
+				var sel = (IStructuredSelection) getEditorSite().getSelectionProvider().getSelection();
+
+				if (sel.isEmpty()) {
+					return;
+				}
+
+				var model = AnimationsPGridPage.createModelWithSelection_public(sel);
+
+				var dlg = new QuickEditDialog(getEditorSite().getShell()) {
+					@Override
+					protected PGrid createPGrid(Composite container) {
+						var grid = new PGrid(container, SWT.NONE, false, true);
+
+						grid.setOnChanged(() -> {
+
+							gridPropertyChanged();
+
+							QuickEditDialog.regreshAllPGridPropertyViews();
+
+						});
+
+						return grid;
+					}
+				};
+				dlg.setModel(model);
+
+				dlg.open();
+
 			}
 		};
 

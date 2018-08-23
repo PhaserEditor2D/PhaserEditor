@@ -165,5 +165,9 @@
             commandId="phasereditor.ui.quickOutline"
             icon="platform:/plugin/phasereditor.ui/icons/outline_co.png">
       </image>
+      <image
+            commandId="phasereditor.ui.quickEdit"
+            icon="icons/pencil.png">
+      </image>
    </extension>
 </plugin>
