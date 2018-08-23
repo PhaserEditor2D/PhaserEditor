@@ -32,13 +32,13 @@ import phasereditor.ui.properties.PGridStringProperty;
  * @author arian
  *
  */
-@SuppressWarnings({"boxing", "synthetic-access"})
+@SuppressWarnings({"boxing"})
 public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel {
 	private AnimationModel_in_Editor _animation;
 	private String _id;
 
 	public AnimationModel_in_Editor_PGridModel(AnimationModel_in_Editor anim) {
-		super();
+		super(anim.getAnimations().getEditor());
 		_animation = anim;
 
 		_id = anim.getKey();
@@ -75,7 +75,6 @@ public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel
 					@Override
 					public void setValue(Double value, boolean notify) {
 						anim.setFrameRate(value);
-						refreshGrid();
 					}
 
 					@Override
@@ -94,7 +93,6 @@ public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel
 					@Override
 					public void setValue(Double value, boolean notify) {
 						anim.setDuration(value.intValue());
-						refreshGrid();
 					}
 
 					@Override

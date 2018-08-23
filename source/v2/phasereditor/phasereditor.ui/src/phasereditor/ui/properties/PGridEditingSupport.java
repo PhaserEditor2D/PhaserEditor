@@ -204,7 +204,7 @@ public class PGridEditingSupport extends EditingSupport {
 			}
 		}
 
-		getViewer().refresh(element);
+		getViewer().refresh();
 	}
 
 	@SuppressWarnings({ "static-method", "unchecked", "rawtypes" })

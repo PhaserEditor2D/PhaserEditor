@@ -30,12 +30,14 @@ import phasereditor.ui.properties.PGridModel;
  */
 public class BaseAnimationPGridModel extends PGridModel {
 
-	@Override
-	public AnimationsPGridPage getPropertyPage() {
-		return (AnimationsPGridPage) super.getPropertyPage();
-	}
+	private AnimationsEditor _editor;
 	
+	public BaseAnimationPGridModel(AnimationsEditor editor) {
+		super();
+		_editor = editor;
+	}
+
 	public AnimationsEditor getEditor() {
-		return getPropertyPage().getEditor();
+		return _editor;
 	}
 }

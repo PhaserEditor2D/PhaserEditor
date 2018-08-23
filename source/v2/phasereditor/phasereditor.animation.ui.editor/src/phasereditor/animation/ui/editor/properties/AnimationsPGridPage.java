@@ -26,11 +26,10 @@ import static java.util.stream.Collectors.toList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbenchPart;
 
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.ui.properties.MultiPGridModel;
@@ -61,31 +60,26 @@ public class AnimationsPGridPage extends PGridPage {
 	}
 
 	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-
-		super.selectionChanged(part, selection);
-
-		PGridModel model = getGrid().getModel();
-
-		if (model != null) {
-			model.setPropertyPage(this);
-		}
+	protected PGridModel createModelWithSelection(IStructuredSelection selection) {
+		return createModelWithSelection_public(selection);
 	}
 
-	@Override
-	protected PGridModel createModelWithSelection(IStructuredSelection selection) {
+	public static PGridModel createModelWithSelection_public(IStructuredSelection selection) {
 		var elems = selection.toArray();
 
 		if (elems.length > 1) {
 			List<PGridModel> models = Arrays.stream(elems)
-					.map(e -> createModelWithSelection(new StructuredSelection(e))).collect(toList());
+					.map(e -> createModelWithSelection_public(new StructuredSelection(e))).collect(toList());
 
 			MultiPGridModel multiModel = new MultiPGridModel(models);
 
 			return multiModel;
 		}
-		
-		return super.createModelWithSelection(selection);
+
+		var elem = selection.getFirstElement();
+		PGridModel model = Adapters.adapt(elem, PGridModel.class);
+
+		return model;
 	}
 
 }

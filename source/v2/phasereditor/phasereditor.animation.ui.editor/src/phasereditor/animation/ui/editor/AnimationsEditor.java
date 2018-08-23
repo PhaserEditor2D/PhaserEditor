@@ -76,7 +76,6 @@ import org.json.JSONObject;
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
-import phasereditor.animation.ui.editor.handlers.QuickOutlineDialog;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -103,7 +102,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	private static final String ANIMATION_KEY = "animation";
 	private static final String OUTLINER_TREE_STATE_KEY = "outliner.tree.state";
-	public static final String ID = "phasereditor.animation.ui.AnimationsEditor"; //$NON-NLS-1$
+	public static final String ID = "phasereditor.animation.ui.editor.AnimationsEditor"; //$NON-NLS-1$
 	private AnimationsModel_in_Editor _model;
 	private AnimationCanvas _animCanvas;
 	Outliner _outliner;

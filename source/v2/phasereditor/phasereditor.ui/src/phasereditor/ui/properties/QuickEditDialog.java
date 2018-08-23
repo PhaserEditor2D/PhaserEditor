@@ -19,44 +19,35 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui.editor.handlers;
+package phasereditor.ui.properties;
 
-import java.util.List;
+import java.util.Arrays;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-
-import phasereditor.animation.ui.editor.AnimationsTreeViewer;
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.ui.FilteredTreeCanvas;
-import phasereditor.ui.TreeCanvas;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.properties.PropertySheet;
 
 /**
  * @author arian
  *
  */
-public class QuickOutlineDialog extends Dialog implements MouseListener {
+public abstract class QuickEditDialog extends Dialog {
 
-	private FilteredTreeCanvas _filteredTree;
-	private AnimationsModel _model;
-	private AnimationsTreeViewer _viewer;
-	private AnimationModel _selected;
+	private PGrid _grid;
+	private PGridModel _model;
 
 	/**
 	 * Create the dialog.
 	 * 
 	 * @param parentShell
 	 */
-	public QuickOutlineDialog(Shell parentShell) {
+	public QuickEditDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
@@ -70,87 +61,59 @@ public class QuickOutlineDialog extends Dialog implements MouseListener {
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new FillLayout());
 
-		_filteredTree = new FilteredTreeCanvas(container, SWT.BORDER);
-		_viewer = new AnimationsTreeViewer(_filteredTree.getCanvas());
+		_grid = createPGrid(container);
 
 		afterCreateWidgets();
 
 		return container;
 	}
 
+	protected abstract PGrid createPGrid(Composite container);
+
 	@Override
 	protected void configureShell(Shell newShell) {
+		newShell.setText("Quick Edit");
+
 		super.configureShell(newShell);
-		newShell.setText("Animations");
 	}
 
-	private void afterCreateWidgets() {
-		_viewer.getCanvas().addMouseListener(this);
-		_viewer.setInput(getModel());
-
-		if (_selected != null) {
-			_viewer.getCanvas().getUtils().setSelectionObject(_selected);
-		}
+	public void setModel(PGridModel model) {
+		_model = model;
 	}
 
-	@Override
-	protected void okPressed() {
-
-		TreeCanvas canvas = _viewer.getCanvas();
-		List<Object> selection = canvas.getUtils().getSelectedObjects();
-		if (selection.isEmpty()) {
-			if (canvas.getVisibleItems().size() == 1) {
-				_selected = (AnimationModel) canvas.getVisibleItems().get(0).getData();
-				return;
-			}
-
-			return;
-		}
-
-		_selected = (AnimationModel) selection.get(0);
-
-		super.okPressed();
-	}
-
-	public AnimationsModel getModel() {
+	public PGridModel getModel() {
 		return _model;
 	}
 
-	public void setModel(AnimationsModel model) {
-		_model = model;
+	private void afterCreateWidgets() {
+		_grid.setModel(_model);
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
+	/**
+	 * Return the initial size of the dialog.
+	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(450, 600);
+		return new Point(450, 300);
 	}
 
-	public void setSelected(AnimationModel selected) {
-		_selected = selected;
+	public static void regreshAllPGridPropertyViews() {
+
+		Arrays.stream(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences())
+				.filter(ref -> ref.getId().equals("org.eclipse.ui.views.PropertySheet")).forEach(ref -> {
+					var view = ref.getView(false);
+					if (view != null) {
+						var propView = (PropertySheet) view;
+						var page = (PGridPage) propView.getCurrentPage();
+						page.getGrid().refresh();
+					}
+				});
+
 	}
 
-	public AnimationModel getSelected() {
-		return _selected;
-	}
-
-	@Override
-	public void mouseDoubleClick(MouseEvent e) {
-		okPressed();
-	}
-
-	@Override
-	public void mouseDown(MouseEvent e) {
-		//
-	}
-
-	@Override
-	public void mouseUp(MouseEvent e) {
-		//
-	}
 }

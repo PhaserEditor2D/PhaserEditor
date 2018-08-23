@@ -76,6 +76,11 @@
             id="phasereditor.ui.showSourceCode"
             name="Show Source Code">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.ui.quickEdit"
+            name="Quick Edit">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">

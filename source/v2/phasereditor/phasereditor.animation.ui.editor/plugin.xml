@@ -7,7 +7,7 @@
             class="phasereditor.animation.ui.editor.AnimationsEditor"
             contributorClass="phasereditor.animation.ui.editor.AnimationsEditorActionBarContributor"
             icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
-            id="phasereditor.animation.ui.AnimationsEditor"
+            id="phasereditor.animation.ui.editor.AnimationsEditor"
             name="Animations Editor">
          <contentTypeBinding
                contentTypeId="phasereditor.assetpack.core.animations">
@@ -18,7 +18,7 @@
          point="phasereditor.project.core.buildParticipant">
       <participant
             handler="phasereditor.animation.ui.editor.AnimationsEditorProjectBuildParticipant"
-            id="phasereditor.animation.ui.AnimationsEditorProjectBuildParticipant"
+            id="phasereditor.animation.ui.editor.AnimationsEditorProjectBuildParticipant"
             order="1000">
       </participant>
    </extension>
@@ -31,7 +31,7 @@
             <with
                   variable="activeEditorId">
                <equals
-                     value="phasereditor.animation.ui.AnimationsEditor">
+                     value="phasereditor.animation.ui.editor.AnimationsEditor">
                </equals>
             </with>
          </activeWhen>
@@ -43,7 +43,7 @@
             <with
                   variable="activePartId">
                <equals
-                     value="phasereditor.animation.ui.AnimationsEditor">
+                     value="phasereditor.animation.ui.editor.AnimationsEditor">
                </equals>
             </with>
          </activeWhen>
@@ -56,14 +56,14 @@
                <with
                      variable="activePartId">
                   <equals
-                        value="phasereditor.animation.ui.AnimationsEditor">
+                        value="phasereditor.animation.ui.editor.AnimationsEditor">
                   </equals>
                </with>
                <and>
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="phasereditor.animation.ui.AnimationsEditor">
+                           value="phasereditor.animation.ui.editor.AnimationsEditor">
                      </equals>
                   </with>
                   <with
@@ -83,9 +83,37 @@
             <with
                   variable="activePartId">
                <equals
-                     value="phasereditor.animation.ui.AnimationsEditor">
+                     value="phasereditor.animation.ui.editor.AnimationsEditor">
                </equals>
             </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.animation.ui.editor.handlers.QuickEditHandler"
+            commandId="phasereditor.ui.quickEdit">
+         <activeWhen>
+            <or>
+               <with
+                     variable="activePartId">
+                  <equals
+                        value="phasereditor.animation.ui.editor.AnimationsEditor">
+                  </equals>
+               </with>
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="phasereditor.animation.ui.editor.AnimationsEditor">
+                     </equals>
+                  </with>
+                  <with
+                        variable="activePartId">
+                     <equals
+                           value="org.eclipse.ui.views.ContentOutline">
+                     </equals>
+                  </with>
+               </and>
+            </or>
          </activeWhen>
       </handler>
    </extension>
@@ -104,6 +132,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="SPACE">
+      </key>
+      <key
+            commandId="phasereditor.ui.quickEdit"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Q">
       </key>
    </extension>
    

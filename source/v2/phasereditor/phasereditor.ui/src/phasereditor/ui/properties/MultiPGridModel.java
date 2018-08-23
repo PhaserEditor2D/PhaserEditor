@@ -113,13 +113,4 @@ public class MultiPGridModel extends PGridModel {
 			}
 		}
 	}
-
-	@Override
-	public void setPropertyPage(PGridPage propertyPage) {
-		super.setPropertyPage(propertyPage);
-
-		for (var model : _models) {
-			model.setPropertyPage(propertyPage);
-		}
-	}
 }

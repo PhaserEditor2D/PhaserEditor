@@ -71,19 +71,4 @@ public class PGridModel {
 	public Object getPropertyValue(PGridProperty prop) {
 		return prop.getValue();
 	}
-	
-	private PGridPage _propertyPage;
-
-	public void setPropertyPage(PGridPage propertyPage) {
-		_propertyPage = propertyPage;
-	}
-
-	public PGridPage getPropertyPage() {
-		return _propertyPage;
-	}
-
-	protected void refreshGrid() {
-		_propertyPage.getGrid().refresh();
-	}
-
 }
