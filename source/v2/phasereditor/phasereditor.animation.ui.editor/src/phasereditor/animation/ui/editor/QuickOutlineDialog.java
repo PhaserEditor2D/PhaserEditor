@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
@@ -86,6 +87,8 @@ public class QuickOutlineDialog extends Dialog implements MouseListener {
 	private void afterCreateWidgets() {
 		_viewer.getCanvas().addMouseListener(this);
 		_viewer.setInput(getModel());
+		
+		AssetPackUI.installAssetTooltips(_viewer.getCanvas(), _viewer.getCanvas().getUtils());
 
 		if (_selected != null) {
 			_viewer.getCanvas().getUtils().setSelectionObject(_selected);
