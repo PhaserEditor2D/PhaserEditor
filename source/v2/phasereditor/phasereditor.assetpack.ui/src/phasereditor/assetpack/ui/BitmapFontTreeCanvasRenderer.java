@@ -19,20 +19,19 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
-
-import java.util.List;
+package phasereditor.assetpack.ui;
 
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
+import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.FrameData;
-import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.ImageCanvas.ZoomCalculator;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -40,61 +39,51 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
+public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 
-	public AnimationTreeCanvasItemRenderer(TreeCanvasItem item) {
+	public BitmapFontTreeCanvasRenderer(TreeCanvasItem item) {
 		super(item);
 	}
 
 	@Override
 	public void render(PaintEvent e, int index, int x, int y) {
-		var anim = (AnimationModel) _item.getData();
+
+		GC gc = e.gc;
+
 		var canvas = _item.getCanvas();
 
-		var gc = e.gc;
+		var asset = (BitmapFontAssetModel) _item.getData();
+		var frame = asset.getFrame();
+		var image = canvas.loadImage(frame.getImageFile());
+		var model = asset.createFontModel();
+		var rowHeight = computeRowHeight(canvas);
 
-		int rowHeight = computeRowHeight(canvas);
+		if (image != null && model != null) {
+			var text = "abc123";// asset.getKey();
 
-		int textHeight = gc.stringExtent("M").y;
+			var metrics = model.metrics(text);
+			var calc = new ZoomCalculator(metrics.getWidth(), metrics.getHeight());
+			calc.fit(new Rectangle(0, 0, e.width - x, canvas.getImageSize()));
+			calc.offsetX = 0;
 
-		int textOffset = textHeight + 5;
-		int imgHeight = rowHeight - textOffset - 10;
+			model.render(new RenderArgs(text), new BitmapFontRenderer() {
 
-		List<AnimationFrameModel> frames = anim.getFrames();
-
-		for (int j = 0; j < frames.size(); j++) {
-			var frame = frames.get(j);
-
-			IAssetFrameModel asset = frame.getFrameAsset();
-
-			if (asset != null) {
-				var file = asset.getImageFile();
-				var fd = asset.getFrameData();
-				fd = adaptFrameData(fd);
-
-				var img = canvas.loadImage(file);
-				if (img != null) {
-					Rectangle area = new Rectangle(x + j * imgHeight, y + 5, imgHeight, imgHeight);
-
-					if (area.x > e.width) {
-						break;
-					}
-
-					PhaserEditorUI.paintScaledImageInArea(gc, img, fd, area);
+				@Override
+				public void render(char c, int charX, int charY, int srcX, int srcY, int srcW, int srcH) {
+					Rectangle z = calc.imageToScreen(charX, charY, srcW, srcH);
+					gc.drawImage(image, srcX, srcY, srcW, srcH, x + z.x, y + z.y, z.width, z.height);
 				}
-			}
+
+			});
 		}
 
-		gc.drawText(anim.getKey(), x + 5, y + rowHeight - textOffset, true);
+		{
+			String label = asset.getKey();
+			var extent = gc.textExtent(label);
+			var textHeight = extent.y;
+			gc.drawText(label, x, y + rowHeight - textHeight - 5, true);
+		}
 
-	}
-
-	private static FrameData adaptFrameData(FrameData fd1) {
-		var fd = fd1.clone();
-		fd.srcSize.x = fd.src.width;
-		fd.srcSize.y = fd.src.height;
-		fd.dst = new Rectangle(0, 0, fd.src.width, fd.src.height);
-		return fd;
 	}
 
 	@Override
@@ -104,12 +93,17 @@ public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer 
 
 	@Override
 	public Image get_DND_Image() {
-		return null;
+		var frame = ((BitmapFontAssetModel) _item.getData()).getFrame();
+		var file = frame.getImageFile();
+		var img = _item.getCanvas().loadImage(file);
+		return img;
 	}
 
 	@Override
 	public FrameData get_DND_Image_FrameData() {
-		return null;
+		var frame = ((BitmapFontAssetModel) _item.getData()).getFrame();
+		var fd = frame.getFrameData();
+		return fd;
 	}
 
 }

@@ -278,6 +278,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				Composite top = new Composite(this, SWT.NONE);
 
 				GridLayout layout = new GridLayout(2, false);
+				layout.marginLeft = 5;
 				layout.marginWidth = 0;
 				layout.marginHeight = 0;
 
@@ -482,13 +483,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				private boolean performAssetModelDrop(Object[] array) {
 
 					FrameCanvasUtils utils = getViewer().getUtils();
-					
+
 					int location = utils.getDropLocation();
 
 					if (location != LOCATION_ON) {
 						return false;
 					}
-					
+
 					AssetPackModel pack = getModel();
 					var moving = List.of(array)
 
@@ -502,7 +503,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						return false;
 					}
 
-
 					var section = pack.getSections().get(utils.getDropIndex());
 
 					AssetPackUI.launchMoveWizard(section, new StructuredSelection(moving));
@@ -511,12 +511,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 
 				private boolean performSectionDrop(Object[] array) {
-					
 
 					FrameCanvasUtils utils = getViewer().getUtils();
-					
+
 					int location = utils.getDropLocation();
-					
+
 					AssetPackModel pack = getModel();
 					var moving = List.of(array)
 

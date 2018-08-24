@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;

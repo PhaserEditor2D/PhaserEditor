@@ -163,7 +163,7 @@ public class BitmapFontAssetModel extends AssetModel {
 
 		@Override
 		public IFile getImageFile() {
-			return BitmapFontAssetModel.this.getFileFromUrl(getFontDataURL());
+			return BitmapFontAssetModel.this.getFileFromUrl(getTextureURL());
 		}
 
 		@Override
