@@ -957,16 +957,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		public void revealAndSelect(IStructuredSelection selection) {
-			var viewer = getTreeViewer();
-
-			var iter = selection.iterator();
-			while (iter.hasNext()) {
-				var elem = iter.next();
-				viewer.reveal(elem);
-			}
-
-			viewer.setSelection(selection);
-
+			getTreeViewer().setSelection(selection, true);
 		}
 
 		@Override

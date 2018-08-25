@@ -1020,11 +1020,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		@Override
 		public void setSelection(ISelection selection) {
-			for (Object obj : ((IStructuredSelection) selection).toArray()) {
-				getTreeViewer().reveal(obj);
-			}
-
-			getTreeViewer().setSelection(selection);
+			getTreeViewer().setSelection(selection, true);
 		}
 
 		@Override

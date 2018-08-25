@@ -23,14 +23,18 @@ package phasereditor.atlas.core;
 
 import java.util.Map;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONObject;
 import org.w3c.dom.Element;
 
 import phasereditor.ui.FrameData;
+import phasereditor.ui.properties.PGridInfoProperty;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridSection;
 
-public class AtlasFrame {
+public class AtlasFrame implements IAdaptable {
 	private String _name;
 	private int _frameX;
 	private int _frameY;
@@ -44,6 +48,7 @@ public class AtlasFrame {
 	private int _sourceH;
 	private boolean _bottomUp;
 	private int _index;
+	private PGridModel _propGridModel;
 
 	public static AtlasFrame fromXMLItem(int index, Element node) {
 		AtlasFrame fi = new AtlasFrame(index);
@@ -126,7 +131,7 @@ public class AtlasFrame {
 		AtlasFrame fi = new AtlasFrame(index);
 
 		fi.setName((String) yaml.get("name"));
-		
+
 		fi.setBottomUp(true);
 
 		var yamlRect = (Map) yaml.get("rect");
@@ -140,7 +145,7 @@ public class AtlasFrame {
 		fi.setSpriteY(0);
 		fi.setSpriteW(fi.getFrameW());
 		fi.setSpriteH(fi.getFrameH());
-		
+
 		fi.setSourceW(fi.getFrameW());
 		fi.setSourceH(fi.getFrameH());
 
@@ -162,7 +167,7 @@ public class AtlasFrame {
 		_sourceH = frame._sourceH;
 
 		_name = frame._name;
-		
+
 		_bottomUp = frame._bottomUp;
 	}
 
@@ -177,7 +182,7 @@ public class AtlasFrame {
 	public void setName(String name) {
 		_name = name;
 	}
-	
+
 	public boolean isBottomUp() {
 		return _bottomUp;
 	}
@@ -185,7 +190,7 @@ public class AtlasFrame {
 	public void setBottomUp(boolean bottomUp) {
 		_bottomUp = bottomUp;
 	}
-	
+
 	public int getFrameX() {
 		return _frameX;
 	}
@@ -265,11 +270,11 @@ public class AtlasFrame {
 	public void setSourceH(int sourceH) {
 		_sourceH = sourceH;
 	}
-	
+
 	public int getIndex() {
 		return _index;
 	}
-	
+
 	public FrameData getFrameData() {
 		FrameData data = new FrameData(_index);
 		data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
@@ -277,4 +282,48 @@ public class AtlasFrame {
 		data.srcSize = new Point(getSourceW(), getSourceH());
 		return data;
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == PGridModel.class) {
+
+			if (_propGridModel == null) {
+				_propGridModel = createPropertyGridModel();
+			}
+
+			return _propGridModel;
+		}
+		return null;
+	}
+
+	protected PGridModel createPropertyGridModel() {
+		PGridModel model = new PGridModel();
+
+		PGridSection section = new PGridSection("Frame");
+		model.getSections().add(section);
+
+		section.add(new PGridInfoProperty("Name", this::getName));
+		section.add(new PGridInfoProperty("Frame X", this::getFrameX));
+		section.add(new PGridInfoProperty("Frame Y", this::getFrameY));
+		section.add(new PGridInfoProperty("Frame Width", this::getFrameW));
+		section.add(new PGridInfoProperty("Frame Height", this::getFrameH));
+
+		section = new PGridSection("Sprite");
+		model.getSections().add(section);
+
+		section.add(new PGridInfoProperty("Sprite X", this::getSpriteX));
+		section.add(new PGridInfoProperty("Sprite Y", this::getSpriteY));
+		section.add(new PGridInfoProperty("Sprite Width", this::getSpriteW));
+		section.add(new PGridInfoProperty("Sprite Height", this::getSpriteH));
+
+		section = new PGridSection("Source");
+		model.getSections().add(section);
+
+		section.add(new PGridInfoProperty("Source Width", this::getSourceW));
+		section.add(new PGridInfoProperty("Source Height", this::getSourceH));
+
+		return model;
+	}
+
 }

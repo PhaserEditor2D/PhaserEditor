@@ -874,7 +874,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		_filteredItems.removeAll(item.getChildren());
 
 		updateVisibleItemsList();
-		
+
 		requestUpdateScroll();
 	}
 
@@ -907,16 +907,16 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		updateVisibleItemsList();
 	}
 
-	public void reveal(Object elem) {
-		if (elem == null) {
-			return;
-		}
-
+	public void reveal(Object... elems) {
 		for (var item : _items) {
-			if (item.getData() == elem) {
-				itemExpandToRoot(item.getParent());
+			for (Object elem : elems) {
+				if (item.getData() == elem) {
+					itemExpandToRoot(item.getParent());
+				}
 			}
 		}
+
+		_revealSelection = true;
 
 		updateVisibleItemsList();
 	}

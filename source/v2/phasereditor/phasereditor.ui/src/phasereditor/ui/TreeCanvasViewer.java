@@ -91,10 +91,6 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		_canvas.expandToLevel(elem, level);
 	}
 
-	public void reveal(Object elem) {
-		_canvas.reveal(elem);
-	}
-
 	protected void refreshLabels() {
 		for (var item : _canvas.getItems()) {
 			setItemProperties(item);
@@ -104,7 +100,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	public TreeCanvas getCanvas() {
 		return _canvas;
 	}
-	
+
 	public Control getControl() {
 		return _canvas;
 	}
@@ -175,7 +171,16 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	@Override
 	public void setSelection(ISelection selection) {
+		setSelection(selection, false);
+	}
+
+	public void setSelection(ISelection selection, boolean reveal) {
 		_canvas.getUtils().setSelection(selection);
+
+		if (reveal) {
+			_canvas.reveal(((IStructuredSelection) selection).toArray());
+		}
+
 		_canvas.redraw();
 	}
 
