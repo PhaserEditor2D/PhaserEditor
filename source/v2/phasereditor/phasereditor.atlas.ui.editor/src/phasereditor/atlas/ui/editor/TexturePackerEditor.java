@@ -113,7 +113,6 @@ import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.properties.PGridPage;
 
 public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
 
@@ -127,8 +126,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	TexturePackerContentOutlinePage _outliner;
 
 	private ISelectionProvider _selectionProvider;
-
-	private PGridPage _properties;
 
 	private MenuManager _menuManager;
 
@@ -1066,7 +1063,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					}
 
 					if (element instanceof TexturePackerEditorModel) {
-						item.setRenderer(new IconTreeCanvasItemRenderer(item, EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES)));
+						item.setRenderer(new IconTreeCanvasItemRenderer(item,
+								EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES)));
 					}
 				}
 			};
@@ -1081,7 +1079,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		if (adapter == IPropertySheetPage.class) {
-			return createProperties();
+			return new TexturePackerPGridPage(this);
 		}
 
 		if (adapter.equals(IContextProvider.class)) {
@@ -1107,20 +1105,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		return super.getAdapter(adapter);
 	}
 
-	/**
-	 * @return
-	 */
-	private Object createProperties() {
-		if (_properties == null) {
-			_properties = new TexturePackerPGridPage(this);
-		}
-
-		return _properties;
-	}
-
-	/**
-	 * @return
-	 */
 	private Object createOutliner() {
 		if (_outliner == null) {
 			_outlinerSelectionListener = new ISelectionChangedListener() {

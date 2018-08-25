@@ -26,16 +26,15 @@ import java.util.function.Supplier;
 import org.eclipse.core.runtime.IAdaptable;
 
 import phasereditor.atlas.core.AtlasFrame;
+import phasereditor.ui.properties.PGridInfoProperty;
 import phasereditor.ui.properties.PGridModel;
-import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridProperty;
 import phasereditor.ui.properties.PGridSection;
-import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
 public class TexturePackerEditorFrame extends AtlasFrame implements IAdaptable {
 
 	private PGridModel _gridModel;
@@ -68,71 +67,30 @@ public class TexturePackerEditorFrame extends AtlasFrame implements IAdaptable {
 		PGridSection section = new PGridSection("Frame");
 		model.getSections().add(section);
 
-		section.add(createStringProperty("Name", this::getName));
-		section.add(createNumberProperty("Frame X", this::getFrameX));
-		section.add(createNumberProperty("Frame Y", this::getFrameY));
-		section.add(createNumberProperty("Frame Width", this::getFrameW));
-		section.add(createNumberProperty("Frame Height", this::getFrameH));
+		section.add(createProperty("Name", this::getName));
+		section.add(createProperty("Frame X", this::getFrameX));
+		section.add(createProperty("Frame Y", this::getFrameY));
+		section.add(createProperty("Frame Width", this::getFrameW));
+		section.add(createProperty("Frame Height", this::getFrameH));
 
 		section = new PGridSection("Sprite");
 		model.getSections().add(section);
 
-		section.add(createNumberProperty("Sprite X", this::getSpriteX));
-		section.add(createNumberProperty("Sprite Y", this::getSpriteY));
-		section.add(createNumberProperty("Sprite Width", this::getSpriteW));
-		section.add(createNumberProperty("Sprite Height", this::getSpriteH));
+		section.add(createProperty("Sprite X", this::getSpriteX));
+		section.add(createProperty("Sprite Y", this::getSpriteY));
+		section.add(createProperty("Sprite Width", this::getSpriteW));
+		section.add(createProperty("Sprite Height", this::getSpriteH));
 
 		section = new PGridSection("Source");
 		model.getSections().add(section);
 
-		section.add(createNumberProperty("Source Width", this::getSourceW));
-		section.add(createNumberProperty("Source Height", this::getSourceH));
+		section.add(createProperty("Source Width", this::getSourceW));
+		section.add(createProperty("Source Height", this::getSourceH));
 
 		return model;
 	}
 
-	private static PGridNumberProperty createNumberProperty(String name, Supplier<Number> getter) {
-		return new PGridNumberProperty(name, name, "") {
-
-			@Override
-			public boolean isModified() {
-				return false;
-			}
-
-			@Override
-			public boolean isReadOnly() {
-				return true;
-			}
-
-			@Override
-			public Double getValue() {
-				return getter.get().doubleValue();
-			}
-		};
-	}
-
-	private static PGridStringProperty createStringProperty(String name, Supplier<String> getter) {
-		return new PGridStringProperty(name, name, "") {
-
-			@Override
-			public boolean isModified() {
-				return false;
-			}
-
-			@Override
-			public boolean isReadOnly() {
-				return true;
-			}
-
-			@Override
-			public String getValue() {
-				return getter.get();
-			}
-
-			@Override
-			public void setValue(String value, boolean notify) {
-				//
-			}
-		};
+	private static PGridProperty<?> createProperty(String name, Supplier<Object> getter) {
+		return new PGridInfoProperty(name, getter);
 	}
 }
