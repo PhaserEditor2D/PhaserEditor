@@ -140,10 +140,6 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		canvasRect.x = 0;
 		canvasRect.y = 0;
 		GC gc = e.gc;
-		
-		gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
-		gc.fillRectangle(canvasRect);
-
 
 		if (_music == null) {
 			String msg = _errorMessage == null ? "(no audio)" : _errorMessage;
@@ -151,6 +147,10 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		} else {
 
 			Display display = getDisplay();
+
+			gc.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
+			gc.fillRectangle(canvasRect);
+
 			Color grayColor = display.getSystemColor(SWT.COLOR_DARK_GRAY);
 
 			if (img == null) {
@@ -182,7 +182,7 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 			if (_duration > 0) {
 
 				gc.setForeground(display.getSystemColor(SWT.COLOR_RED));
-				
+
 				// play-line
 
 				if (_playing) {

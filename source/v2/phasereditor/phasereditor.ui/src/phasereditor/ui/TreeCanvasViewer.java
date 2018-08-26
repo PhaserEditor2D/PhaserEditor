@@ -201,4 +201,12 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	public void expandAll() {
 		_canvas.expandAll();
 	}
+
+	public void setCheckedElements(Object[] elements) {
+		_canvas.setCheckedElements(elements);
+	}
+	
+	public Object[] getCheckedElements() {
+		return _canvas.getCheckedElements();
+	}
 }

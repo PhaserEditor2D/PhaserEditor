@@ -325,7 +325,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			renderer = item.getRenderer();
 
 			int x = item.getDepth() * _indentSize;
-			int collapseIconX = x + 16;
+			int collapseIconX = x;
 			int checkboxIconX = collapseIconX + 2 + 16;
 
 			if (_showCheckbox) {
@@ -1003,6 +1003,19 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		DropTarget dropTarget = new DropTarget(this, operations);
 		dropTarget.setTransfer(transferTypes);
 		dropTarget.addDropListener(listener);
+	}
+
+	public void setCheckedElements(Object[] elements) {
+		var set = new HashSet<>(List.of(elements));
+		for (var item : _items) {
+			var checked = set.contains(item.getData());
+			item.setChecked(checked);
+		}
+		redraw();
+	}
+
+	public Object[] getCheckedElements() {
+		return _items.stream().filter(item -> item.isChecked()).map(item -> item.getData()).toArray();
 	}
 
 }

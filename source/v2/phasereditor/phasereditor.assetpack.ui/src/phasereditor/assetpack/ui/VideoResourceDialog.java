@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.widgets;
+package phasereditor.assetpack.ui;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,9 +48,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
-import phasereditor.audiosprite.ui.GdxMusicControl;
+import javafx.scene.media.MediaPlayer;
+import phasereditor.assetpack.ui.preview.VideoPreviewComp;
 
-public class AudioResourceDialog extends Dialog {
+public class VideoResourceDialog extends Dialog {
 	CheckboxTableViewer _filesViewer;
 
 	/**
@@ -57,7 +59,7 @@ public class AudioResourceDialog extends Dialog {
 	 * 
 	 * @param parentShell
 	 */
-	public AudioResourceDialog(Shell parentShell) {
+	public VideoResourceDialog(Shell parentShell) {
 		super(parentShell);
 		setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
 	}
@@ -67,6 +69,7 @@ public class AudioResourceDialog extends Dialog {
 	 * 
 	 * @param parent
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
@@ -81,13 +84,12 @@ public class AudioResourceDialog extends Dialog {
 		gd_lblMessage.widthHint = 100;
 		gd_lblMessage.verticalIndent = 10;
 		lblMessage.setLayoutData(gd_lblMessage);
-		lblMessage.setText("Check the audio files. Those in bold are not yet used in this pack.");
+		lblMessage.setText("Check the video files. Those in bold are not yet used in this pack.");
 
-		Composite composite_1 = new Composite(container, SWT.NONE);
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		composite_1.setLayout(new GridLayout(1, false));
+		SashForm sashForm = new SashForm(container, SWT.NONE);
+		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		_filesViewer = CheckboxTableViewer.newCheckList(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		_filesViewer = CheckboxTableViewer.newCheckList(sashForm, SWT.BORDER | SWT.FULL_SELECTION);
 		_filesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -95,14 +97,9 @@ public class AudioResourceDialog extends Dialog {
 			}
 		});
 		Table _table = _filesViewer.getTable();
-		GridData gd__table = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd__table.widthHint = 150;
-		_table.setLayoutData(gd__table);
 
-		_audioPlayer = new GdxMusicControl(composite_1, SWT.NONE);
-		GridData gd_audioPlayer = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-		gd_audioPlayer.heightHint = 200;
-		_audioPlayer.setLayoutData(gd_audioPlayer);
+		_videoPlayer = new VideoPreviewComp(sashForm, SWT.NONE);
+		sashForm.setWeights(new int[] { 3, 4 });
 		_filesViewer.setContentProvider(new ArrayContentProvider());
 		_filesViewer.setLabelProvider(new LabelProvider());
 
@@ -111,17 +108,32 @@ public class AudioResourceDialog extends Dialog {
 		return container;
 	}
 
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Video Selector");
+	}
+
+	@Override
+	public boolean close() {
+		MediaPlayer player = _videoPlayer.getVideoCanvas().getMediaView().getMediaPlayer();
+		if (player != null) {
+			player.dispose();
+		}
+		return super.close();
+	}
+
 	protected void setPlayerFile(ISelection selection) {
 		IFile file = null;
 		if (!selection.isEmpty()) {
 			file = (IFile) ((IStructuredSelection) selection).getFirstElement();
-			_audioPlayer.load(file);
+			_videoPlayer.setVideoFile(file);
 		}
 	}
 
 	private List<IFile> _allFiles;
 	private LabelProvider _labelProvider;
-	private GdxMusicControl _audioPlayer;
+	private VideoPreviewComp _videoPlayer;
 	private List<IFile> _initialFiles;
 	private List<IFile> _selection;
 
@@ -145,6 +157,7 @@ public class AudioResourceDialog extends Dialog {
 			}
 		});
 		_selection = Collections.emptyList();
+		_videoPlayer.getVideoCanvas().setAutoPlay(true);
 	}
 
 	protected void updateSelectedFiles() {
@@ -181,14 +194,11 @@ public class AudioResourceDialog extends Dialog {
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
+	/**
+	 * Return the initial size of the dialog.
+	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(457, 481);
-	}
-
-	@Override
-	protected void configureShell(Shell newShell) {
-		super.configureShell(newShell);
-		newShell.setText("Audio Selector");
+		return new Point(543, 481);
 	}
 }

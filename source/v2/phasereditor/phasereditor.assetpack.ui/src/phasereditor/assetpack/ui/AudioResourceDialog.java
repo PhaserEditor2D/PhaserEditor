@@ -19,26 +19,22 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.widgets;
+package phasereditor.assetpack.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,20 +42,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
 
-import javafx.scene.media.MediaPlayer;
-import phasereditor.assetpack.ui.preview.VideoPreviewComp;
+import phasereditor.audiosprite.ui.GdxMusicControl;
+import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.TreeArrayContentProvider;
+import phasereditor.ui.TreeCanvas;
+import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
-public class VideoResourceDialog extends Dialog {
-	CheckboxTableViewer _filesViewer;
+public class AudioResourceDialog extends Dialog {
+	TreeCanvasViewer _filesViewer;
+	private TreeCanvas _treeCanvas;
+	private FilteredTreeCanvas _filteredCanvas;
 
 	/**
 	 * Create the dialog.
 	 * 
 	 * @param parentShell
 	 */
-	public VideoResourceDialog(Shell parentShell) {
+	public AudioResourceDialog(Shell parentShell) {
 		super(parentShell);
 		setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
 	}
@@ -69,7 +70,6 @@ public class VideoResourceDialog extends Dialog {
 	 * 
 	 * @param parent
 	 */
-	@SuppressWarnings("unused")
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
@@ -84,23 +84,31 @@ public class VideoResourceDialog extends Dialog {
 		gd_lblMessage.widthHint = 100;
 		gd_lblMessage.verticalIndent = 10;
 		lblMessage.setLayoutData(gd_lblMessage);
-		lblMessage.setText("Check the video files. Those in bold are not yet used in this pack.");
+		lblMessage.setText("Check the audio files. Those in bold are not yet used in this pack.");
 
-		SashForm sashForm = new SashForm(container, SWT.NONE);
-		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Composite composite_1 = new Composite(container, SWT.NONE);
+		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		composite_1.setLayout(new GridLayout(1, false));
 
-		_filesViewer = CheckboxTableViewer.newCheckList(sashForm, SWT.BORDER | SWT.FULL_SELECTION);
+		_filteredCanvas = new FilteredTreeCanvas(composite_1, SWT.BORDER);
+		_treeCanvas = _filteredCanvas.getCanvas();
+		_treeCanvas.setShowCheckbox(true);
+		_filesViewer = createViewer();
 		_filesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				setPlayerFile(event.getSelection());
 			}
 		});
-		Table _table = _filesViewer.getTable();
+		GridData gd__table = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd__table.widthHint = 150;
+		_filteredCanvas.setLayoutData(gd__table);
 
-		_videoPlayer = new VideoPreviewComp(sashForm, SWT.NONE);
-		sashForm.setWeights(new int[] { 3, 4 });
-		_filesViewer.setContentProvider(new ArrayContentProvider());
+		_audioPlayer = new GdxMusicControl(composite_1, SWT.BORDER);
+		GridData gd_audioPlayer = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_audioPlayer.heightHint = 200;
+		_audioPlayer.setLayoutData(gd_audioPlayer);
+		_filesViewer.setContentProvider(new TreeArrayContentProvider());
 		_filesViewer.setLabelProvider(new LabelProvider());
 
 		afterCreateWidgets();
@@ -108,34 +116,34 @@ public class VideoResourceDialog extends Dialog {
 		return container;
 	}
 
-	@Override
-	protected void configureShell(Shell newShell) {
-		super.configureShell(newShell);
-		newShell.setText("Video Selector");
-	}
-
-	@Override
-	public boolean close() {
-		MediaPlayer player = _videoPlayer.getVideoCanvas().getMediaView().getMediaPlayer();
-		if (player != null) {
-			player.dispose();
-		}
-		return super.close();
+	private TreeCanvasViewer createViewer() {
+		return new TreeCanvasViewer(_treeCanvas) {
+			@Override
+			protected void setItemProperties(TreeCanvasItem item) {
+				super.setItemProperties(item);
+				
+				var renderer = new AudioTreeCanvasItemRenderer(item);
+				
+				renderer.setLabel(item.getLabel());
+				
+				item.setRenderer(renderer);
+				
+			}
+		};
 	}
 
 	protected void setPlayerFile(ISelection selection) {
 		IFile file = null;
 		if (!selection.isEmpty()) {
 			file = (IFile) ((IStructuredSelection) selection).getFirstElement();
-			_videoPlayer.setVideoFile(file);
+			_audioPlayer.load(file);
 		}
 	}
 
 	private List<IFile> _allFiles;
 	private LabelProvider _labelProvider;
-	private VideoPreviewComp _videoPlayer;
+	private GdxMusicControl _audioPlayer;
 	private List<IFile> _initialFiles;
-	private List<IFile> _selection;
 
 	public void setInput(List<IFile> files) {
 		_allFiles = files;
@@ -149,28 +157,10 @@ public class VideoResourceDialog extends Dialog {
 		_filesViewer.setLabelProvider(_labelProvider);
 		_filesViewer.setInput(_allFiles);
 		_filesViewer.setCheckedElements(_initialFiles.toArray());
-		_filesViewer.addCheckStateListener(new ICheckStateListener() {
-
-			@Override
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				updateSelectedFiles();
-			}
-		});
-		_selection = Collections.emptyList();
-		_videoPlayer.getVideoCanvas().setAutoPlay(true);
-	}
-
-	protected void updateSelectedFiles() {
-		Object[] elems = _filesViewer.getCheckedElements();
-		List<IFile> list = new ArrayList<>();
-		for (Object elem : elems) {
-			list.add((IFile) elem);
-		}
-		_selection = list;
 	}
 
 	public List<IFile> getSelection() {
-		return _selection;
+		return Arrays.stream(_filesViewer.getCheckedElements()).map(e -> (IFile) e).collect(toList());
 	}
 
 	public void setInitialFiles(List<IFile> selectedFiles) {
@@ -194,11 +184,14 @@ public class VideoResourceDialog extends Dialog {
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
-	/**
-	 * Return the initial size of the dialog.
-	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(543, 481);
+		return new Point(720, 600);
+	}
+
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Audio Selector");
 	}
 }

@@ -50,7 +50,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
+import phasereditor.assetpack.ui.SpritesheetPreviewCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.IEditorSharedImages;

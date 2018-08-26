@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
+import phasereditor.assetpack.ui.ImagePreviewComp;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class ExternalImageFileInformationControl extends BaseInformationControl {

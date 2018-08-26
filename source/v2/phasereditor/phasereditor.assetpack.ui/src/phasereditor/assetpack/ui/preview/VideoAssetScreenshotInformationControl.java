@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
+import phasereditor.assetpack.ui.ImagePreviewComp;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.info.BaseInformationControl;
 

@@ -39,26 +39,48 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 	private Image _image;
-	private AudioAssetModel _audioAsset;
+	private String _label;
 
 	public AudioTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);
 
 		var canvas = item.getCanvas();
 
-		_audioAsset = (AudioAssetModel) _item.getData();
+		var data = _item.getData();
 
-		IFile audioFile = null;
-		for (var url : _audioAsset.getUrls()) {
-			audioFile = _audioAsset.getFileFromUrl(url);
-			if (audioFile != null) {
-				break;
+		IFile audioFile;
+		_label = "";
+
+		if (data instanceof AudioAssetModel) {
+			var asset = (AudioAssetModel) data;
+
+			_label = asset.getKey();
+			
+			audioFile = null;
+			
+			for (var url : asset.getUrls()) {
+				audioFile = asset.getFileFromUrl(url);
+				if (audioFile != null) {
+					break;
+				}
 			}
+
+		} else {
+			audioFile = (IFile) data;
+			_label = audioFile.getName();
 		}
 
 		var imgPath = AudioCore.getSoundWavesFile(audioFile, false);
 
 		_image = canvas.loadImage(imgPath.toFile());
+	}
+	
+	public String getLabel() {
+		return _label;
+	}
+	
+	public void setLabel(String label) {
+		_label = label;
 	}
 
 	@Override
@@ -82,7 +104,7 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 				gc.setAlpha(255);
 			}
 
-			gc.drawText(_audioAsset.getKey(), x + 5, y + rowHeight - textOffset, true);
+			gc.drawText(_label, x + 5, y + rowHeight - textOffset, true);
 		}
 	}
 
@@ -100,5 +122,5 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	public FrameData get_DND_Image_FrameData() {
 		return FrameData.fromImage(_image);
 	}
-	
+
 }

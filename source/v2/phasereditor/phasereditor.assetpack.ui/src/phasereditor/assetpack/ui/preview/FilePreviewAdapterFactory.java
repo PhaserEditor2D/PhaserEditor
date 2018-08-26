@@ -32,7 +32,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
+import phasereditor.assetpack.ui.ImagePreviewComp;
 import phasereditor.audiosprite.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 

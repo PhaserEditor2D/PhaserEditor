@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
+import phasereditor.assetpack.ui.SpritesheetPreviewCanvas;
 
 public class QuickSpritesheetAssetPreviewComp extends Composite {
 	private Label _resolutionLabel;
