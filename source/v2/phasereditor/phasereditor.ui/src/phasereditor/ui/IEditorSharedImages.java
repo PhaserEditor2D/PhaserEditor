@@ -26,6 +26,8 @@ public interface IEditorSharedImages {
 	String IMG_GENERIC_EDITOR = "icons/generic_editor.png";
 	String IMG_BULLET_EXPAND = "icons/blender_ICON_DISCLOSURE_TRI_RIGHT.png"; // "icons/bullet_toggle_plus.png";
 	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; //"icons/bullet_toggle_minus.png";
+	String IMG_CHECK_OFF = "icons/blender_ICON_CHECKBOX_DEHLT.png";
+	String IMG_CHECK_ON = "icons/blender_ICON_CHECKBOX_HLT.png";
 	String IMG_SHAPE = "icons/shape_square.png";
 	String IMG_SHAPE_GROUP_NODE = "icons/shape_node_group.png";
 	String IMG_ADD = "icons/add.png";

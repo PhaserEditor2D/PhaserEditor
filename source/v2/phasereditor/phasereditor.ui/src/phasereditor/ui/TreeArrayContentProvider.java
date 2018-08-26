@@ -21,31 +21,55 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Image;
+import java.util.List;
 
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseTreeCanvasItemRenderer {
+public class TreeArrayContentProvider implements ITreeContentProvider {
 
-	public static final int ICON_AND_TEXT_SPACE = 5;
+	private static final Object[] EMPTY = new Object[0];
 
-	protected final TreeCanvasItem _item;
-
-	public BaseTreeCanvasItemRenderer(TreeCanvasItem item) {
-		super();
-		_item = item;
+	@Override
+	public void dispose() {
+		//
 	}
-	
-	public abstract void render(PaintEvent e, int index, int x, int y);
 
-	public abstract int computeRowHeight(TreeCanvas canvas);
-	
-	public abstract Image get_DND_Image();
-	
-	public abstract FrameData get_DND_Image_FrameData();
+	@Override
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		//
+	}
+
+	@Override
+	public Object[] getElements(Object inputElement) {
+		if (inputElement instanceof List) {
+			return ((List<?>) inputElement).toArray();
+		}
+		
+		if (inputElement == null || !inputElement.getClass().isArray()) {
+			return EMPTY;
+		}
+		
+		return (Object[]) inputElement;
+	}
+
+	@Override
+	public Object[] getChildren(Object parentElement) {
+		return EMPTY;
+	}
+
+	@Override
+	public Object getParent(Object element) {
+		return null;
+	}
+
+	@Override
+	public boolean hasChildren(Object element) {
+		return false;
+	}
+
 }

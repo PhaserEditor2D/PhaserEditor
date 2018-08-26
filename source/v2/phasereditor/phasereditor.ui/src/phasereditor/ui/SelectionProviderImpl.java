@@ -36,19 +36,19 @@ import org.eclipse.jface.viewers.StructuredSelection;
  */
 public class SelectionProviderImpl implements ISelectionProvider {
 
-	private ListenerList<ISelectionChangedListener> _listeners;
+	private ListenerList<ISelectionChangedListener> _selectionListeners;
 	private ISelection _selection;
 	private boolean _autoFireSelectionChanged;
 
 	public SelectionProviderImpl(boolean autoFireSelectionChanged) {
-		_listeners = new ListenerList<>();
+		_selectionListeners = new ListenerList<>();
 		_autoFireSelectionChanged = autoFireSelectionChanged;
 		_selection = StructuredSelection.EMPTY;
 	}
 
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		_listeners.add(listener);
+		_selectionListeners.add(listener);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class SelectionProviderImpl implements ISelectionProvider {
 
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		_listeners.remove(listener);
+		_selectionListeners.remove(listener);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class SelectionProviderImpl implements ISelectionProvider {
 
 	public void fireSelectionChanged() {
 		var e = new SelectionChangedEvent(this, _selection);
-		for (var l : _listeners) {
+		for (var l : _selectionListeners) {
 			l.selectionChanged(e);
 		}
 	}

@@ -69,12 +69,15 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private String _filterText;
 	private HashSet<TreeCanvasItem> _filteredItems;
 	private boolean _revealSelection;
+	private boolean _showCheckbox;
 
 	public TreeCanvas(Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
 
 		_indentSize = 16;
 		_imageSize = 48;
+
+		_showCheckbox = false;
 
 		_roots = List.of();
 		_visibleItems = List.of();
@@ -113,6 +116,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				var item = _visibleItems.get(index);
 
 				if (item._toggleHitArea != null && item._toggleHitArea.contains(x, y)) {
+					return false;
+				}
+
+				if (item._checkHitArea != null && item._checkHitArea.contains(x, y)) {
 					return false;
 				}
 
@@ -228,6 +235,15 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 						}
 					}
 
+					if (item._checkHitArea != null) {
+
+						if (item._checkHitArea.contains(modelPoint)) {
+							item._checked = !item._checked;
+							redraw();
+							return;
+						}
+					}
+
 					if (_overAction != null) {
 						_overAction.run(e);
 					}
@@ -308,7 +324,15 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			renderer = item.getRenderer();
 
-			int x = item.getDepth() * _indentSize + /* the expand/collapse icon */16;
+			int x = item.getDepth() * _indentSize;
+			int collapseIconX = x + 16;
+			int checkboxIconX = collapseIconX + 2 + 16;
+
+			if (_showCheckbox) {
+				x = checkboxIconX + 16 + 5;
+			} else {
+				x = collapseIconX + 16 + 5;
+			}
 
 			int rowHeight = renderer.computeRowHeight(this);
 
@@ -336,10 +360,23 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			if (item.hasChildren()) {
 				var path = item.isExpanded() ? IEditorSharedImages.IMG_BULLET_COLLAPSE
 						: IEditorSharedImages.IMG_BULLET_EXPAND;
-				var img = EditorSharedImages.getImage(path);
-				item._toggleHitArea = new Rectangle(x - 16, y + (rowHeight - img.getBounds().height) / 2, 16, 16);
-				gc.drawImage(img, item._toggleHitArea.x, item._toggleHitArea.y);
+				var icon = EditorSharedImages.getImage(path);
+				Rectangle b = icon.getBounds();
+				item._toggleHitArea = new Rectangle(collapseIconX + (8 - b.width / 2), y + (rowHeight - b.height) / 2,
+						16, 16);
+				gc.drawImage(icon, item._toggleHitArea.x, item._toggleHitArea.y);
 
+			}
+
+			// paint checkbox
+
+			if (_showCheckbox) {
+				var path = item.isChecked() ? IEditorSharedImages.IMG_CHECK_ON : IEditorSharedImages.IMG_CHECK_OFF;
+				var icon = EditorSharedImages.getImage(path);
+				Rectangle b = icon.getBounds();
+				item._checkHitArea = new Rectangle(checkboxIconX + (8 - b.width / 2), y + (rowHeight - b.height) / 2,
+						16, 16);
+				gc.drawImage(icon, item._checkHitArea.x, item._checkHitArea.y);
 			}
 
 			// paint actions
@@ -432,6 +469,14 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 	public void selectAll() {
 		_utils.selectAll();
+	}
+
+	public boolean isShowCheckbox() {
+		return _showCheckbox;
+	}
+
+	public void setShowCheckbox(boolean showCheckbox) {
+		_showCheckbox = showCheckbox;
 	}
 
 	public int getIndentSize() {
@@ -646,6 +691,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	}
 
 	public static class TreeCanvasItem {
+		protected boolean _checked;
+		public Rectangle _checkHitArea;
 		public Rectangle _toggleHitArea;
 		private Object _data;
 		private List<TreeCanvasItem> _children;
@@ -670,6 +717,14 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_alpha = 1;
 			_canvas = canvas;
 			_renderer = new IconTreeCanvasItemRenderer(this, null);
+		}
+
+		public boolean isChecked() {
+			return _checked;
+		}
+
+		public void setChecked(boolean checked) {
+			_checked = checked;
 		}
 
 		public TreeCanvas getCanvas() {
