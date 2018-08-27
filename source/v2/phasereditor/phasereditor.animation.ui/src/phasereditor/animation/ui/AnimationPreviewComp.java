@@ -27,8 +27,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
@@ -90,7 +88,8 @@ public class AnimationPreviewComp extends SashForm {
 		_animationCanvas.setPlaybackCallback(this::animationStatusChanged);
 		_animationCanvas.addPaintListener(e -> {
 			if (_animationCanvas.getModel() != null) {
-				e.gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR));
+				e.gc.setAlpha(40);
+				e.gc.setForeground(_animationCanvas.getForeground());
 				e.gc.drawText(_animationCanvas.getModel().getKey(), 0, 0, true);
 			}
 		});
