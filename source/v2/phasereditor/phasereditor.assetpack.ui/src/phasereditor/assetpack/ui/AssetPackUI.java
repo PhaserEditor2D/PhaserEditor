@@ -35,7 +35,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -56,7 +55,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -127,7 +125,9 @@ import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.ListCanvasDialog;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
 
 public class AssetPackUI {
@@ -308,11 +308,11 @@ public class AssetPackUI {
 			initial = files.get(0);
 		}
 
-		ListDialog dlg = new ListDialog(shell);
+		var dlg = new ListCanvasDialog(shell);
 		dlg.setTitle(objectName);
 		dlg.setMessage("Select the " + objectName + " path. Those in bold are not used.");
 		dlg.setLabelProvider(createFilesLabelProvider(usedFiles, shell));
-		dlg.setContentProvider(new ArrayContentProvider());
+		dlg.setContentProvider(new TreeArrayContentProvider());
 		dlg.setInput(files);
 
 		if (initial != null) {
