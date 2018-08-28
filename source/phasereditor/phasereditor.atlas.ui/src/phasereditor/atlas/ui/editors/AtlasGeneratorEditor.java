@@ -649,6 +649,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 								if (settings.isIncludeFolderName()) {
 									String name = regionName.substring(nameStartIndex);
+									name = name.replace("\\", "/").replace("/", "_");
 									frame.setName(name);
 								} else {
 									frame.setName(PhaserEditorUI.getNameFromFilename(regionName));
