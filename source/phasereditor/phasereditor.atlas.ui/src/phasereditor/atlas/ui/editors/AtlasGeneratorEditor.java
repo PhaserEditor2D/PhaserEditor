@@ -598,6 +598,37 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 					_frameRegionNameMap = new HashMap<>();
 
+					List<String> names = new ArrayList<>();
+
+					for (Region region : regions) {
+						names.add(region.name);
+					}
+
+					int nameStartIndex = 0;
+
+					if (settings.isIncludeFolderName()) {
+						if (!names.isEmpty()) {
+							String test = names.stream().sorted((a, b) -> Integer.compare(a.length(), b.length()))
+									.findFirst().get();
+
+							for (int i = 0; i < test.length(); i++) {
+								char c = test.charAt(i);
+
+								for (String name : names) {
+									char c2 = name.charAt(i);
+									if (c2 != c) {
+										nameStartIndex = i;
+										break;
+									}
+								}
+
+								if (nameStartIndex > 0) {
+									break;
+								}
+							}
+						}
+					}
+
 					for (TextureAtlasData.Page page : data.getPages()) {
 						File textureFile = page.textureFile.file();
 
@@ -615,7 +646,14 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 								if (region.index != -1) {
 									regionName += "_" + region.index;
 								}
-								frame.setName(PhaserEditorUI.getNameFromFilename(regionName));
+
+								if (settings.isIncludeFolderName()) {
+									String name = regionName.substring(nameStartIndex);
+									frame.setName(name);
+								} else {
+									frame.setName(PhaserEditorUI.getNameFromFilename(regionName));
+								}
+
 								frame.setFrameX(region.left);
 								frame.setFrameY(region.top);
 								frame.setFrameW(region.width);

@@ -30,6 +30,8 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 
 public class SettingsBean extends Settings implements Cloneable {
 
+	private boolean _includeFolderName;
+	
 	public SettingsBean() {
 		init();
 	}
@@ -46,6 +48,7 @@ public class SettingsBean extends Settings implements Cloneable {
 		limitMemory = false;
 		flattenPaths = false;
 		useIndexes = false;
+		_includeFolderName = false;
 	}
 
 	public void update(SettingsBean settings) {
@@ -85,6 +88,8 @@ public class SettingsBean extends Settings implements Cloneable {
 		scale = settings.scale;
 		scaleSuffix = settings.scaleSuffix;
 		atlasExtension = settings.atlasExtension;
+		
+		_includeFolderName = settings._includeFolderName;
 	}
 
 	@Override
@@ -133,6 +138,8 @@ public class SettingsBean extends Settings implements Cloneable {
 		// avoid scale
 		// avoid scaleSuffix
 		atlasExtension = obj.optString("atlasExtension", ".atlas");
+		
+		_includeFolderName = obj.optBoolean("includeFolderName", false);
 	}
 
 	public void write(JSONObject obj) {
@@ -172,6 +179,8 @@ public class SettingsBean extends Settings implements Cloneable {
 		// avoid scale
 		// avoid scaleSuffix
 		obj.put("atlasExtension", atlasExtension);
+		
+		obj.put("includeFolderName", _includeFolderName);
 	}
 
 	public boolean isPot() {
@@ -462,4 +471,12 @@ public class SettingsBean extends Settings implements Cloneable {
 		this.atlasExtension = atlasExtension;
 	}
 
+	public boolean isIncludeFolderName() {
+		return _includeFolderName;
+	}
+	
+	public void setIncludeFolderName(boolean includeFolderName) {
+		this._includeFolderName = includeFolderName;
+	}
+	
 }
