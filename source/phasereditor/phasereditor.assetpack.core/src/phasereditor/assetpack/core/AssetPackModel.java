@@ -226,6 +226,22 @@ public final class AssetPackModel {
 		return ProjectCore.getWebContentFolder(_file.getProject());
 	}
 
+	public List<IFile> discoverBitmapFontFiles() throws CoreException {
+		Function<IFile, Boolean> isFontFile = new Function<IFile, Boolean>() {
+
+			@Override
+			public Boolean apply(IFile f) {
+				String ext = f.getFileExtension();
+				if (ext != null && (ext.equals("xml") || ext.equals("fnt"))) {
+					return Boolean.TRUE;
+				}
+				return Boolean.FALSE;
+			}
+		};
+		
+		return discoverFiles(isFontFile);
+	}
+	
 	public List<IFile> discoverImageFiles() throws CoreException {
 		return AssetPackCore.discoverImageFiles(getDiscoverFolder());
 	}

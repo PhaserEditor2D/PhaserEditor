@@ -642,9 +642,52 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return openNewAtlasListDialog(section);
 		case audiosprite:
 			return openNewAusiospriteListDialog(section);
+		case binary:
+			return openNewBinaryListDialog(section);
+		case bitmapFont:
+			return openNewBitmapFontListDialog(section);
 		default:
 			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
 		}
+	}
+
+	private List<AssetModel> openNewBitmapFontListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverBitmapFontFiles();
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "bitmapFont", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			BitmapFontAssetModel asset = new BitmapFontAssetModel(pack.createKey(file), section);
+			asset.setAtlasURL(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewBinaryListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> binaryFiles = pack.discoverFiles(f -> Boolean.TRUE);
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "binary", binaryFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			BinaryAssetModel asset = new BinaryAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+
+			list.add(asset);
+		}
+
+		return list;
 	}
 
 	private List<AssetModel> openNewAusiospriteListDialog(AssetSectionModel section) throws CoreException {
@@ -655,7 +698,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		List<AssetModel> list = new ArrayList<>();
 
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "audioSprite", audiospriteFiles, shell);
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "audiosprite", audiospriteFiles, shell);
 
 		for (IFile file : selectedFiles) {
 			AudioSpriteAssetModel asset = new AudioSpriteAssetModel(pack.createKey(file), section);

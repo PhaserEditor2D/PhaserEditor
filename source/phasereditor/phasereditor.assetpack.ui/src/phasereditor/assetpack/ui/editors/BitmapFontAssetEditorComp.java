@@ -25,7 +25,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -181,18 +180,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getAtlasURL());
-			Function<IFile, Boolean> isFontFile = new Function<IFile, Boolean>() {
-
-				@Override
-				public Boolean apply(IFile f) {
-					String ext = f.getFileExtension();
-					if (ext != null && (ext.equals("xml") || ext.equals("fnt"))) {
-						return Boolean.TRUE;
-					}
-					return Boolean.FALSE;
-				}
-			};
-			List<IFile> xmlFiles = pack.discoverFiles(isFontFile);
+			List<IFile> xmlFiles = pack.discoverBitmapFontFiles();
 
 			AssetPackUI.browseAssetFile(pack, "bitmap font XML/FNT", urlFile, xmlFiles, getShell(),
 					new Consumer<String>() {
