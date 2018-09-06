@@ -23,6 +23,10 @@ package phasereditor.assetpack.ui.editors;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -70,6 +74,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -109,6 +114,8 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
+import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
+import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -598,19 +605,71 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 
 			if (factory != null) {
-				AssetType type = factory.getType();
-				AssetPackModel pack = getModel();
-				String key = pack.createKey(type.name());
-				AssetModel asset = factory.createAsset(key, section);
-				// section.addAsset(asset, true);
-				// refresh();
-				// revealElement(asset);
-				executeOperation(new AddAssetOperation(section, asset));
+				List<AssetModel> assets = openNewAssetListDialog(section, factory);
+
+				CompositeOperation op = new CompositeOperation();
+
+				for (AssetModel asset : assets) {
+					op.add(new AddAssetOperation(section, asset));
+				}
+
+				executeOperation(op);
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	private List<AssetModel> openNewAssetListDialog(AssetSectionModel section, AssetFactory factory) throws Exception {
+		AssetType type = factory.getType();
+
+		switch (type) {
+
+		case image:
+			return openNewImageListDialog(section);
+
+		default:
+			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
+		}
+	}
+
+	private List<AssetModel> openNewImageListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> imageFiles = pack.discoverImageFiles();
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
+
+		IFile initial = null;
+
+		if (!imageFiles.isEmpty()) {
+			initial = imageFiles.get(0);
+		}
+
+		Shell shell = getEditorSite().getShell();
+		ImageResourceDialog dlg = new ImageResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(imageFiles);
+		dlg.setObjectName("image");
+		dlg.setMulti(true);
+
+		if (initial != null) {
+			dlg.setInitial(initial);
+		}
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+			for (Object obj : dlg.getMultipleSelection()) {
+				IFile file = (IFile) obj;
+				ImageAssetModel asset = new ImageAssetModel(pack.createKey(file), section);
+				asset.setUrl(asset.getUrlFromFile(file));
+				list.add(asset);
+			}
+		}
+
+		return list;
 	}
 
 	void updateUIFromSelection() {

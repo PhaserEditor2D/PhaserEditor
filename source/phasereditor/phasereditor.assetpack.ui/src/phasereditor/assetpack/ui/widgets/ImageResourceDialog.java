@@ -70,33 +70,28 @@ public class ImageResourceDialog extends Dialog {
 		container.setLayout(new GridLayout(1, false));
 
 		Composite composite_1 = new Composite(container, SWT.NONE);
-		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.FILL, false,
-				false, 1, 1);
+		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd_composite_1.verticalIndent = 10;
 		composite_1.setLayoutData(gd_composite_1);
 		composite_1.setLayout(new GridLayout(1, false));
 
 		_messageLabel = new Label(composite_1, SWT.NONE);
-		_messageLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-				false, 1, 1));
-		_messageLabel
-				.setText("Select the yyy image. Those in bold are not used in this pack.");
+		_messageLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		_messageLabel.setText("Select the yyy image. Those in bold are not used in this pack.");
 
 		Composite composite = new Composite(container, SWT.NONE);
-		GridData gd_composite = new GridData(SWT.FILL, SWT.FILL, true, true, 1,
-				1);
+		GridData gd_composite = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_composite.verticalIndent = 10;
 		composite.setLayoutData(gd_composite);
 		GridLayout gl_composite = new GridLayout(2, true);
 		composite.setLayout(gl_composite);
 
-		_listViewer = new TableViewer(composite, SWT.BORDER | SWT.V_SCROLL);
+		_listViewer = new TableViewer(composite, SWT.BORDER | SWT.V_SCROLL | (_multi ? SWT.MULTI : 0));
 		Table list = _listViewer.getTable();
 		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 
 		_imagePreviewCanvas = new ImagePreviewComp(composite, SWT.BORDER);
-		_imagePreviewCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-				true, true, 1, 1));
+		_imagePreviewCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_listViewer.setContentProvider(new ArrayContentProvider());
 		_listViewer.setLabelProvider(new LabelProvider());
 
@@ -108,6 +103,8 @@ public class ImageResourceDialog extends Dialog {
 	private ImagePreviewComp _imagePreviewCanvas;
 	private IResource _initial;
 	private String _objectName;
+	private Object[] _multipleSelection;
+	private boolean _multi;
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -125,24 +122,28 @@ public class ImageResourceDialog extends Dialog {
 				okPressed();
 			}
 		});
-		_listViewer
-				.addSelectionChangedListener(new ISelectionChangedListener() {
+		_listViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-					@Override
-					public void selectionChanged(SelectionChangedEvent event) {
-						getPreview().setImageFile(
-								(IFile) ((IStructuredSelection) event
-										.getSelection()).getFirstElement());
-					}
-				});
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				getPreview().setImageFile((IFile) ((IStructuredSelection) event.getSelection()).getFirstElement());
+			}
+		});
 		if (_initial != null) {
 			_listViewer.setSelection(new StructuredSelection(_initial), true);
 		}
 		if (_objectName != null) {
-			_messageLabel.setText("Select the " + _objectName
-					+ " image. Those in bold are not used in this pack.");
+			_messageLabel.setText("Select the " + _objectName + " image. Those in bold are not used in this pack.");
 		}
 		return control;
+	}
+
+	public void setMulti(boolean multi) {
+		_multi = multi;
+	}
+
+	public boolean isMulti() {
+		return _multi;
 	}
 
 	public void setObjectName(String objectName) {
@@ -164,21 +165,25 @@ public class ImageResourceDialog extends Dialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
-				true);
-		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	@Override
 	protected void okPressed() {
-		_selection = ((IStructuredSelection) _listViewer.getSelection())
-				.getFirstElement();
+		IStructuredSelection sel = (IStructuredSelection) _listViewer.getSelection();
+		_selection = sel.getFirstElement();
+		_multipleSelection = sel.toArray();
+
 		super.okPressed();
 	}
 
 	public Object getSelection() {
 		return _selection;
+	}
+
+	public Object[] getMultipleSelection() {
+		return _multipleSelection;
 	}
 
 	public ImagePreviewComp getPreview() {
@@ -189,7 +194,7 @@ public class ImageResourceDialog extends Dialog {
 	protected Point getInitialSize() {
 		return new Point(544, 481);
 	}
-	
+
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
@@ -199,6 +204,5 @@ public class ImageResourceDialog extends Dialog {
 	public void setInitial(IResource initial) {
 		_initial = initial;
 	}
-	
-	
+
 }

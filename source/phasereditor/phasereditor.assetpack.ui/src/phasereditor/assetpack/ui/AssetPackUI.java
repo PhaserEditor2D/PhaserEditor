@@ -440,7 +440,7 @@ public class AssetPackUI {
 		return "";
 	}
 
-	private static LabelProvider createFilesLabelProvider(Set<IFile> usedFiles, Shell shell) {
+	public static LabelProvider createFilesLabelProvider(Set<IFile> usedFiles, Shell shell) {
 		class FilesLabelProvider extends LabelProvider implements IFontProvider {
 
 			private WorkbenchLabelProvider _baseLabels = new WorkbenchLabelProvider();

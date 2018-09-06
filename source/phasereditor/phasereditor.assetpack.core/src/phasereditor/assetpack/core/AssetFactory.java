@@ -402,16 +402,7 @@ public abstract class AssetFactory {
 		}
 	}
 
-	/**
-	 * Create a new asset.
-	 * 
-	 * @param model
-	 *            The pack model.
-	 * @param key
-	 *            The key of the new asset.
-	 * @return The new asset.
-	 * @throws Exception
-	 */
+	@Deprecated
 	public abstract AssetModel createAsset(String key, AssetSectionModel section) throws Exception;
 
 	public abstract AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception;
