@@ -270,7 +270,7 @@ public final class AssetPackModel {
 		return getFile().getParent();
 	}
 
-	public List<IFile> discoverTextFiles(String[] exts) throws CoreException {
+	public List<IFile> discoverTextFiles(String... exts) throws CoreException {
 		return AssetPackCore.discoverFiles(getDiscoverFolder(), AssetPackCore.createFileExtFilter(exts));
 	}
 

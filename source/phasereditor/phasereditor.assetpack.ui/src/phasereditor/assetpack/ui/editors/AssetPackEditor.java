@@ -106,6 +106,7 @@ import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.JsonAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.ShaderAssetModel;
@@ -646,9 +647,97 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return openNewBinaryListDialog(section);
 		case bitmapFont:
 			return openNewBitmapFontListDialog(section);
+		case json:
+			return openNewJsonListDialog(section);
+		case physics:
+			return openNewPhysicsListDialog(section);
+		case script:
+			return openNewScriptListDialog(section);
+		case shader:
+			return openNewShaderListDialog(section);
 		default:
 			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
 		}
+	}
+
+	private List<AssetModel> openNewShaderListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("vert", "frag", "tesc", "tese", "geom", "comp");
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "script", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			ShaderAssetModel asset = new ShaderAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewScriptListDialog(AssetSectionModel section) throws CoreException {
+
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("js");
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "script", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			ScriptAssetModel asset = new ScriptAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+
+	}
+
+	private List<AssetModel> openNewPhysicsListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("json");
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "physics", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			PhysicsAssetModel asset = new PhysicsAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewJsonListDialog(AssetSectionModel section) throws CoreException {
+
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("json");
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "json", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			JsonAssetModel asset = new JsonAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+
 	}
 
 	private List<AssetModel> openNewBitmapFontListDialog(AssetSectionModel section) throws CoreException {
