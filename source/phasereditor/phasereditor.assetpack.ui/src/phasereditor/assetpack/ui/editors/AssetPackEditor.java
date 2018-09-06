@@ -25,7 +25,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -38,6 +41,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
@@ -115,8 +119,10 @@ import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
+import phasereditor.assetpack.ui.widgets.AddAudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.lic.LicCore;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
@@ -629,10 +635,50 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		case image:
 			return openNewImageListDialog(section);
-
+		case audio:
+			return openNewAudioListDialog(section);
 		default:
 			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
 		}
+	}
+
+	private List<AssetModel> openNewAudioListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+
+		List<IFile> audioFiles = pack.discoverAudioFiles();
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(audioFiles);
+
+		Shell shell = getEditorSite().getShell();
+		AddAudioResourceDialog dlg = new AddAudioResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(audioFiles);
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+
+			Map<String, List<String>> filesMap = new HashMap<>();
+
+			for (IFile file : dlg.getSelection()) {
+				String prefix = file.getFullPath().removeFileExtension().toPortableString();
+
+				if (!filesMap.containsKey(prefix)) {
+					filesMap.put(prefix, new ArrayList<>());
+				}
+
+				filesMap.get(prefix).add(ProjectCore.getAssetUrl(file));
+			}
+
+			for (Entry<String, List<String>> entry : filesMap.entrySet()) {
+				Path path = new Path(entry.getKey());
+				AudioAssetModel asset = new AudioAssetModel(pack.createKey(path.lastSegment()), section);
+				asset.setUrls(entry.getValue());
+				list.add(asset);
+			}
+		}
+
+		return list;
 	}
 
 	private List<AssetModel> openNewImageListDialog(AssetSectionModel section) throws CoreException {
