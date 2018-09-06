@@ -121,6 +121,7 @@ import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
 import phasereditor.assetpack.ui.widgets.AddAudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
+import phasereditor.atlas.core.AtlasCore;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
@@ -637,9 +638,71 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return openNewImageListDialog(section);
 		case audio:
 			return openNewAudioListDialog(section);
+		case atlas:
+			return openNewAtlasListDialog(section);
+		case audiosprite:
+			return openNewAusiospriteListDialog(section);
 		default:
 			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
 		}
+	}
+
+	private List<AssetModel> openNewAusiospriteListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> audiospriteFiles = pack.discoverAudioSpriteFiles();
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "audioSprite", audiospriteFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			AudioSpriteAssetModel asset = new AudioSpriteAssetModel(pack.createKey(file), section);
+			asset.setJsonURL(asset.getUrlFromFile(file));
+
+			List<IFile> files = pack.pickAudioFiles();
+			if (!files.isEmpty()) {
+				asset.setKey(pack.createKey(files.get(0)));
+				List<String> urls = asset.getUrlsFromFiles(files);
+				asset.setUrls(urls);
+			}
+
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewAtlasListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> atlasFiles = pack.discoverAtlasFiles();
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "atlas", atlasFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			AtlasAssetModel asset = new AtlasAssetModel(pack.createKey(file), section);
+			asset.setAtlasURL(asset.getUrlFromFile(file));
+
+			String format = AtlasCore.getAtlasFormat(file);
+
+			if (format != null) {
+				asset.setFormat(format);
+			}
+
+			IFile textureFile = file.getProject()
+					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("png"));
+			if (textureFile.exists()) {
+				asset.setTextureURL(asset.getUrlFromFile(textureFile));
+			}
+			list.add(asset);
+		}
+
+		return list;
 	}
 
 	private List<AssetModel> openNewAudioListDialog(AssetSectionModel section) throws CoreException {

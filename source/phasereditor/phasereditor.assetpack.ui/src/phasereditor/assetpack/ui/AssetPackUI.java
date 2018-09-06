@@ -115,6 +115,7 @@ import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.ListSelectionDialog2;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackUI {
@@ -133,7 +134,7 @@ public class AssetPackUI {
 		}
 		return result;
 	}
-	
+
 	public static void launchMoveWizard(IStructuredSelection selection) {
 		Object[] selarray = selection.toArray();
 
@@ -313,6 +314,27 @@ public class AssetPackUI {
 		}
 
 		return "";
+	}
+
+	public static List<IFile> browseManyAssetFile(AssetPackModel packModel, String objectName, List<IFile> files,
+			Shell shell) {
+
+		Set<IFile> usedFiles = packModel.sortFilesByNotUsed(files);
+
+		ListSelectionDialog2 dlg = new ListSelectionDialog2(shell, files, new ArrayContentProvider(),
+				createFilesLabelProvider(usedFiles, shell),
+				"Select the " + objectName + " path. Those in bold are not used.");
+		dlg.setTitle(objectName);
+
+		List<IFile> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK && dlg.getResult().length > 0) {
+			for (Object obj : dlg.getResult()) {
+				list.add((IFile) obj);
+			}
+		}
+
+		return list;
 	}
 
 	public static String browseImageUrl(AssetPackModel packModel, String objectName, IFile curImageFile,
