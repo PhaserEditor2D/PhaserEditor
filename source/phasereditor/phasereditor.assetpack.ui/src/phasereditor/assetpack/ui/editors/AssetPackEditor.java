@@ -655,9 +655,89 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return openNewScriptListDialog(section);
 		case shader:
 			return openNewShaderListDialog(section);
+		case spritesheet:
+			return openNewSpritesheetListDialog(section);
+		case text:
+			return openNewTextListDialog(section);
+		case tilemap:
+			return openNewTilemapListDialog(section);
 		default:
 			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
 		}
+	}
+
+	private List<AssetModel> openNewTilemapListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> tilemapFiles = pack.discoverTilemapFiles();
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "tilemap", tilemapFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			TilemapAssetModel asset = new TilemapAssetModel(pack.createKey(file), section);
+
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+			
+			String ext = file.getFileExtension().toLowerCase();
+			if (ext.equals("csv")) {
+				asset.setFormat(TilemapAssetModel.TILEMAP_CSV);
+			} else {
+				asset.setFormat(TilemapAssetModel.TILEMAP_TILED_JSON);
+			}
+
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewTextListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> textFiles = pack.discoverFiles(f -> Boolean.TRUE);
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "text", textFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			TextAssetModel asset = new TextAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewSpritesheetListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> imageFiles = pack.discoverImageFiles();
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
+
+		Shell shell = getEditorSite().getShell();
+		ImageResourceDialog dlg = new ImageResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(imageFiles);
+		dlg.setObjectName("spritesheet");
+		dlg.setMulti(true);
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+			for (Object obj : dlg.getMultipleSelection()) {
+				IFile file = (IFile) obj;
+				SpritesheetAssetModel asset = new SpritesheetAssetModel(pack.createKey(file), section);
+				asset.setUrl(asset.getUrlFromFile(file));
+				list.add(asset);
+			}
+		}
+
+		return list;
 	}
 
 	private List<AssetModel> openNewShaderListDialog(AssetSectionModel section) throws CoreException {
@@ -668,7 +748,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		List<AssetModel> list = new ArrayList<>();
 
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "script", jsonFiles, shell);
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "shader", jsonFiles, shell);
 
 		for (IFile file : selectedFiles) {
 			ShaderAssetModel asset = new ShaderAssetModel(pack.createKey(file), section);
@@ -882,22 +962,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
 
-		IFile initial = null;
-
-		if (!imageFiles.isEmpty()) {
-			initial = imageFiles.get(0);
-		}
-
 		Shell shell = getEditorSite().getShell();
 		ImageResourceDialog dlg = new ImageResourceDialog(shell);
 		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
 		dlg.setInput(imageFiles);
 		dlg.setObjectName("image");
 		dlg.setMulti(true);
-
-		if (initial != null) {
-			dlg.setInitial(initial);
-		}
 
 		List<AssetModel> list = new ArrayList<>();
 
