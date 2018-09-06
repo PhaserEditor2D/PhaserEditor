@@ -114,6 +114,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TextAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.assetpack.core.XmlAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -121,6 +122,7 @@ import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
 import phasereditor.assetpack.ui.widgets.AddAudioResourceDialog;
+import phasereditor.assetpack.ui.widgets.AddVideoResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.lic.LicCore;
@@ -615,13 +617,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			if (factory != null) {
 				List<AssetModel> assets = openNewAssetListDialog(section, factory);
 
-				CompositeOperation op = new CompositeOperation();
+				if (!assets.isEmpty()) {
 
-				for (AssetModel asset : assets) {
-					op.add(new AddAssetOperation(section, asset));
+					CompositeOperation op = new CompositeOperation();
+
+					for (AssetModel asset : assets) {
+						op.add(new AddAssetOperation(section, asset));
+					}
+
+					executeOperation(op);
 				}
-
-				executeOperation(op);
 			}
 
 		} catch (Exception e) {
@@ -661,9 +666,75 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return openNewTextListDialog(section);
 		case tilemap:
 			return openNewTilemapListDialog(section);
+		case video:
+			return openNewVideoListDialog(section);
+		case xml:
+			return openNewXmlListDialog(section);
 		default:
-			return Collections.singletonList(factory.createAsset(section.getPack().createKey(type.name()), section));
+			return Collections.emptyList();
 		}
+	}
+
+	private List<AssetModel> openNewXmlListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> xmlFiles = pack.discoverTextFiles("xml");
+
+		Shell shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "xml", xmlFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			XmlAssetModel asset = new XmlAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewVideoListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+
+		List<IFile> videoFiles = pack.discoverVideoFiles();
+
+		Set<IFile> usedFiles = pack.findUsedFiles();
+
+		Shell shell = getEditorSite().getShell();
+
+		AddVideoResourceDialog dlg = new AddVideoResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(videoFiles);
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+			List<IFile> selection = dlg.getSelection();
+			if (selection != null) {
+
+				Map<String, List<String>> filesMap = new HashMap<>();
+
+				for (IFile file : dlg.getSelection()) {
+					String prefix = file.getFullPath().removeFileExtension().toPortableString();
+
+					if (!filesMap.containsKey(prefix)) {
+						filesMap.put(prefix, new ArrayList<>());
+					}
+
+					filesMap.get(prefix).add(ProjectCore.getAssetUrl(file));
+				}
+
+				for (Entry<String, List<String>> entry : filesMap.entrySet()) {
+					Path path = new Path(entry.getKey());
+					VideoAssetModel asset = new VideoAssetModel(pack.createKey(path.lastSegment()), section);
+					asset.setUrls(entry.getValue());
+					list.add(asset);
+				}
+			}
+		}
+
+		return list;
 	}
 
 	private List<AssetModel> openNewTilemapListDialog(AssetSectionModel section) throws CoreException {
@@ -680,7 +751,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			TilemapAssetModel asset = new TilemapAssetModel(pack.createKey(file), section);
 
 			asset.setUrl(ProjectCore.getAssetUrl(file));
-			
+
 			String ext = file.getFileExtension().toLowerCase();
 			if (ext.equals("csv")) {
 				asset.setFormat(TilemapAssetModel.TILEMAP_CSV);
