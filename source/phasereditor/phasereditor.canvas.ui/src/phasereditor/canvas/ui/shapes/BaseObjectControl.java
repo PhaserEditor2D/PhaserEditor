@@ -502,7 +502,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isModified() {
-				return getModel().isFixedToCamera();
+				T model = getModel();
+				return model.isFixedToCamera() != model.isFixedToCamera_default();
 			}
 
 			@Override

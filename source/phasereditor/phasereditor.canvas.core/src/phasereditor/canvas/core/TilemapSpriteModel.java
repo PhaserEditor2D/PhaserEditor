@@ -51,14 +51,21 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 	public TilemapSpriteModel(GroupModel parent, TilemapAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
+		
 		_tileWidth = 32;
 		_tileHeight = 32;
 		_resizeWorld = true;
 		_collisionIndexes = Collections.emptyList();
+		
+		setFixedToCamera(true);
+		setFixedToCamera_default(true);
 	}
 
 	public TilemapSpriteModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
+		
+		setFixedToCamera(true);
+		setFixedToCamera_default(true);
 	}
 
 	@Override

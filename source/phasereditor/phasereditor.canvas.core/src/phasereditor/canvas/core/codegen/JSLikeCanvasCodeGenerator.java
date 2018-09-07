@@ -312,11 +312,19 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 
 		if (model.isPrefabInstance()) {
+
+			// Here we generate a constructor call of the prefab. Not all game object types
+			// can be created as prefab, these are the one are allowed:
+			// - Image
+			// - Spritesheet/Atlas frame
+			// - Tile
+			// - Button
+			// - Text
+			// - Bitmap
+
 			String prefabName = model.isPrefabInstance() ? model.getPrefab().getClassName() : null;
 			boolean writeTexture = model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE);
 			Call call = new Call("new " + prefabName);
-			// a prefab instance only supports images, sprite atlas and sprite
-			// sheet for now.
 
 			if (model instanceof ImageSpriteModel) {
 
@@ -512,6 +520,14 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			}
 		}
 		line(";");
+		
+		// init some objects
+		
+		if (model instanceof TilemapSpriteModel) {
+			generateTilemapInit((TilemapSpriteModel) model, parVar);
+		}
+		
+		// generates props
 
 		String props = cut(mark1, mark2);
 		append(props);
@@ -631,10 +647,6 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 	protected void generateProperties(BaseSpriteModel model) {
 
-		if (model instanceof TilemapSpriteModel) {
-			generateTilemapProps((TilemapSpriteModel) model);
-		}
-
 		generateObjectProps(model);
 
 		generateSpriteProps(model);
@@ -648,7 +660,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
-	private void generateTilemapProps(TilemapSpriteModel model) {
+	private void generateTilemapInit(TilemapSpriteModel model, String parentVar) {
 		String varname = getLocalVarName(model);
 		String layerVarname = varname + "_layer";
 
@@ -666,7 +678,11 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			line(varname + ".setCollision(" + list.toString() + ");");
 		}
 
-		line("var " + layerVarname + " = " + varname + ".createLayer(0);");
+		if (parentVar == null) {
+			line("var " + layerVarname + " = " + varname + ".createLayer(0);");
+		} else {
+			line("var " + layerVarname + " = " + varname + ".createLayer(0, null, null, " + parentVar + ");");
+		}
 	}
 
 	private void generateTilemapLayerProps(TilemapSpriteModel model) {
@@ -707,7 +723,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 
 		if (model.isOverriding(BaseObjectModel.PROPSET_POSITION)) {
-			if (model instanceof GroupModel) {
+			if (model instanceof GroupModel || model instanceof TilemapSpriteModel) {
 				if (model.getX() != 0 || model.getY() != 0) {
 					line(varname + ".position.setTo(" + model.getX() + ", " + model.getY() + ");");
 				}
@@ -745,7 +761,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 
 		if (model.isOverriding(BaseObjectModel.PROPSET_FIXED_TO_CAMERA)) {
-			if (model.isFixedToCamera()) {
+			if (model.isFixedToCamera() != model.isFixedToCamera_default()) {
 				line(varname + ".fixedToCamera = " + model.isFixedToCamera() + ";");
 			}
 		}

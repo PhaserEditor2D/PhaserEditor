@@ -62,7 +62,6 @@ public abstract class BaseObjectModel {
 	public static final String PROPSET_FIXED_TO_CAMERA = "fixedToCamera";
 	public static final String DEF_NAME = null;
 	private static final boolean DEF_RENDERABLE = true;
-	private static final boolean DEF_FIXED_TO_CAMERA = false;
 
 	private Prefab _prefab;
 	private List<String> _prefabOverride;
@@ -89,6 +88,7 @@ public abstract class BaseObjectModel {
 
 	private boolean _renderable;
 	private boolean _fixedToCamera;
+	private boolean _fixedToCamera_default;
 
 	public BaseObjectModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -124,7 +124,7 @@ public abstract class BaseObjectModel {
 
 		_renderable = DEF_RENDERABLE;
 
-		_fixedToCamera = DEF_FIXED_TO_CAMERA;
+		_fixedToCamera = _fixedToCamera_default;
 	}
 
 	public String getId() {
@@ -393,6 +393,14 @@ public abstract class BaseObjectModel {
 	public void setFixedToCamera(boolean fixedToCamera) {
 		_fixedToCamera = fixedToCamera;
 	}
+	
+	public boolean isFixedToCamera_default() {
+		return _fixedToCamera_default;
+	}
+	
+	public void setFixedToCamera_default(boolean fixedToCamera_default) {
+		_fixedToCamera_default = fixedToCamera_default;
+	}
 
 	public void read(JSONObject obj) {
 		readMetadata(obj);
@@ -432,7 +440,7 @@ public abstract class BaseObjectModel {
 		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
 		_alpha = jsonInfo.optDouble("alpha", DEF_ALPHA);
 		_renderable = jsonInfo.optBoolean("renderable", DEF_RENDERABLE);
-		_fixedToCamera = jsonInfo.optBoolean("fixedToCamera", DEF_FIXED_TO_CAMERA);
+		_fixedToCamera = jsonInfo.optBoolean("fixedToCamera", _fixedToCamera_default);
 	}
 
 	public BaseObjectModel copy(boolean keepId) {
@@ -608,7 +616,7 @@ public abstract class BaseObjectModel {
 			if (prefabInstance) {
 				jsonInfo.put("fixedToCamera", _fixedToCamera);
 			} else {
-				jsonInfo.put("fixedToCamera", _fixedToCamera, DEF_FIXED_TO_CAMERA);
+				jsonInfo.put("fixedToCamera", _fixedToCamera, _fixedToCamera_default);
 			}
 		}
 	}
