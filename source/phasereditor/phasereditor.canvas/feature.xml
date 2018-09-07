@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.canvas"
       label="Phaser Editor - Canvas"
-      version="1.5.1.20180506"
+      version="1.5.2.20180907"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.3.v20180301-0715">

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.5.1.20180506" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.5.2.20180907" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 1.5.1.20180506
+         Phaser Editor 1.5.2.20180907
 
 Supports Phaser v2.6.2 (built-in)
 
@@ -41,7 +41,7 @@ https://phasereditor2d.com
 https://twitter.com/PhaserEditor2D
 https://facebook.com/PhaserEditor2D
 
-Copyright (c) Arian Fornaris 2015-2017
+Copyright (c) Arian Fornaris 2015-2018
       </text>
    </aboutInfo>
 
