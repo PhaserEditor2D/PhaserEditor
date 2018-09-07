@@ -15,7 +15,7 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="drawing.svg">
   <defs
      id="defs2" />
@@ -26,15 +26,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8000001"
-     inkscape:cx="423.16101"
-     inkscape:cy="686.15298"
+     inkscape:zoom="1.9798991"
+     inkscape:cx="485.34204"
+     inkscape:cy="648.91425"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1016"
-     inkscape:window-x="0"
+     inkscape:window-width="1869"
+     inkscape:window-height="1025"
+     inkscape:window-x="51"
      inkscape:window-y="27"
      inkscape:window-maximized="1" />
   <metadata
@@ -80,6 +80,6 @@
          id="tspan854-8-2-4"
          x="125.82595"
          y="142.25009"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:monospace;-inkscape-font-specification:monospace;fill:#f1dd64;fill-opacity:1;stroke-width:0.26458332">1.5.1/20180506</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:monospace;-inkscape-font-specification:monospace;fill:#f1dd64;fill-opacity:1;stroke-width:0.26458332">1.5.2/20180907</tspan></text>
   </g>
 </svg>
