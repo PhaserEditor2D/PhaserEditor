@@ -60,6 +60,7 @@ Parameter                      Documentation
 ``Use indexes``                To sort the sprites by using a ``_01.png`` suffix in the source files.
 ``Alias``                      Equal images are packed once.
 ``Grid``                       To pack the images in a uniform grid. You can use this together with the Indexes option to create spritesheets.
+``Use folders name``           Prepend the parent folders name to the frames name. Many times developers group the source images in different folders with a special meaning, for example, the images are grouped in an ``Attacking`` and ``Idle`` folders, so, by enabling this parameter, the names of the folders are prepended to the name of the frames: ``Attacking_001`` .. ``Attacking_010``, ``Idle_001`` .. ``Idle_010``.
 ============================== ==========================================================
 
 Multiple pages
