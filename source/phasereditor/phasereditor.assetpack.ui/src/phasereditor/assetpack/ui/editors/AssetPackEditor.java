@@ -1037,7 +1037,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		ImageResourceDialog dlg = new ImageResourceDialog(shell);
 		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
 		dlg.setInput(imageFiles);
-		dlg.setObjectName("image");
+		dlg.setObjectName("");
 		dlg.setMulti(true);
 
 		List<AssetModel> list = new ArrayList<>();
