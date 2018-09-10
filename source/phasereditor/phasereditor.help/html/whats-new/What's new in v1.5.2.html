@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>What's new in v1.5.2</title>
+</head>
+<body>
+
+
+<div id="wmd-preview" class="wmd-panel wmd-preview"><p>Hi,</p>
+
+<p>Today we are releasing a minor release of the v1 of the editor: v1.5.2.</p>
+
+<p>We are putting all our energies on releasing a preview of the v2, but v1 is going to be updated until the users request it.</p>
+
+<p>These are the v1 updates:</p>
+
+<h2>Texture Packer</h2>
+
+<p>A new parameter was added to the Atlas Generator editor: <code>Use folders name</code>. When this option is selected, the name of the frames includes the folder name of the source image. It can help the developer to a certain classification of the images. See <a href="https://github.com/PhaserEditor2D/PhaserEditor/issues/85">#85</a>.</p>
+
+<p><img src="What's new in v1.5.2_files/20180910103238-Atlas%20generator%20include%20folder%20name.png" alt="Atlas Generatorparameter Use folders names" title=""></p>
+
+<h2>Asset Pack editor</h2>
+
+<p>Now it is possible to add many images (and the other asset types like video, audio, atlas, etc…) at once in the Asset Pack editor. When you press the Add button it shows a dialog with all the images, so you can select those you want to add. See <a href="https://github.com/PhaserEditor2D/PhaserEditor/issues/84">#84</a>.</p>
+
+<p><img src="What's new in v1.5.2_files/20180910105450-Asset%20pack%20editor%20add%20many%20images%20at%20once.png" alt="Asset pack editor: allows add many images at once" title=""></p>
+
+<h2>Canvas editor</h2>
+
+<p>Fixed bug <a href="https://github.com/PhaserEditor2D/PhaserEditor/issues/79">#79</a>: add the tilemap to the parent group. Note the tilemaps are fixed to the camera by default.</p>
+
+<p>Fixed bug <a href="https://github.com/PhaserEditor2D/PhaserEditor/issues/78">#78</a>: escape string literals of text objects.</p>
+
+<h2>What’s next</h2>
+
+<p>Now we are going back to the development of v2. We are very excited because it is the time of migrating the scene editor.</p>
+
+<p>We are considering to do a deep replacement of the scene rendering. Right now we are using the JavaFX toolkit but it is terrible for rendering pixel art (antialiasing and interpolation cannot be disabled), so probably we are going to implement a native SWT renderer. This will take some time and we have to do some investigation on mix SWT with JavaFX in the same scene, but we think the final result will be faster and more accurate.</p>
+
+<p>Keep in touch!</p>
+
+<p>Arian</p></div>
+
+</body>
+</html>
+
