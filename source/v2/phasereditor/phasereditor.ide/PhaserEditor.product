@@ -63,7 +63,7 @@ Copyright (c) Arian Fornaris 2015-2017
       startupProgressRect="5,275,445,15"
       startupMessageRect="7,252,445,0"
       startupForegroundColor="000000" />
-   <launcher name="PhaserEditor">
+   <launcher name="PhaserEditor2D">
       <macosx icon="/phasereditor.ide/icons/Eclipse.icns"/>
       <win useIco="true">
          <ico path="/phasereditor.ide/icons/win-icons.ico"/>
