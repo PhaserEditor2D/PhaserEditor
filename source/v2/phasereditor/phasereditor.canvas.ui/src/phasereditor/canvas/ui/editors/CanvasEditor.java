@@ -127,6 +127,8 @@ public class CanvasEditor extends MultiPageEditorPart
 	protected IContextActivation _paletteContext;
 	private CanvasSettingsComp _settingsPage;
 	private Control _designPage;
+	private ObjectCanvas2 _designPage2;
+	
 	private UndoRedoActionGroup _undoRedoGroup;
 
 	public CanvasEditor() {
@@ -248,6 +250,7 @@ public class CanvasEditor extends MultiPageEditorPart
 	protected void createPages() {
 		createDesignPage();
 		createSettingsPage();
+		createNewDesignPage();
 
 		addEditorActivationListeners();
 		addPageChangedListener(this);
@@ -308,6 +311,13 @@ public class CanvasEditor extends MultiPageEditorPart
 	}
 
 	private void createDesignPage() {
+		_designPage2 = new ObjectCanvas2(getContainer(), SWT.NONE);
+		int i = addPage(_designPage2);
+		setPageText(i, "Design 2");
+		setPageImage(i, getTitleImage());
+	}
+
+	private void createNewDesignPage() {
 		_designPage = createCanvasPartControl(getContainer());
 		int i = addPage(_designPage);
 		setPageText(i, "Design");
@@ -399,7 +409,7 @@ public class CanvasEditor extends MultiPageEditorPart
 		restoreState();
 
 		initContexts();
-		
+
 		initPGrid();
 
 		// addEditorActivationListeners();
@@ -412,7 +422,6 @@ public class CanvasEditor extends MultiPageEditorPart
 	private void initPalette() {
 		_paletteComp.setProject(getEditorInputFile().getProject());
 	}
-	
 
 	private void initContexts() {
 		getContextService().activateContext(EDITOR_CONTEXT_ID);
@@ -467,6 +476,8 @@ public class CanvasEditor extends MultiPageEditorPart
 
 	private void initCanvas() {
 		_canvas.init(this, _model, _grid, _outlineTree.getViewer(), _paletteComp);
+		_designPage2.init(this, _model, _grid, getOutline());
+		
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}
 
