@@ -137,6 +137,7 @@ public class AtlasAssetModel extends AssetModel {
 		firePropertyChange("format");
 	}
 
+	@SuppressWarnings("unchecked")
 	public class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 		private final AtlasAssetModel _asset;
 

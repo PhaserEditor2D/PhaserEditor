@@ -157,7 +157,7 @@ public class SceneRenderer {
 
 		} else if (model instanceof ButtonSpriteModel) {
 
-			renderTexture(gc, (IAssetFrameModel) ((ButtonSpriteModel) model).getAssetKey());
+			renderTexture(gc, ((ButtonSpriteModel) model).getAssetKey());
 
 		} else if (model instanceof TileSpriteModel) {
 

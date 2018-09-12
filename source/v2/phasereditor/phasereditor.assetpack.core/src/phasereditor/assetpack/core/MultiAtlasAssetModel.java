@@ -174,6 +174,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 
 		private IFile _imageFile;

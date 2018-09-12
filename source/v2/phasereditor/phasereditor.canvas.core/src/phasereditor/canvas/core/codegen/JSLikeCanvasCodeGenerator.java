@@ -354,7 +354,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 					// buttons based on image do not have outFrames
 					outFrameKey = "null";
 				} else {
-					outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
+					outFrameKey = frameKey(button.getAssetKey());
 				}
 				call.value("this.game");
 				call.value(button.getX());
@@ -435,7 +435,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 					// buttons based on image do not have outFrames
 					outFrameKey = "null";
 				} else {
-					outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
+					outFrameKey = frameKey(button.getAssetKey());
 				}
 
 				append("button(" + // sprite

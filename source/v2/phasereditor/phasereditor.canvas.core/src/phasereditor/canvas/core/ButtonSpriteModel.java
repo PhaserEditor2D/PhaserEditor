@@ -26,13 +26,12 @@ import org.json.JSONObject;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.IAssetKey;
 
 /**
  * @author arian
  *
  */
-public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
+public class ButtonSpriteModel extends AssetSpriteModel<IAssetFrameModel> {
 
 	private static final String DEF_CALLBACK_CONTEXT = "this";
 
@@ -125,7 +124,7 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	public IAssetFrameModel getFrame() {
-		return (IAssetFrameModel) getAssetKey();
+		return getAssetKey();
 	}
 
 	public IAssetFrameModel getOverFrame() {
@@ -138,7 +137,7 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	public IAssetFrameModel getOutFrame() {
 		// the out frame is the sprite frame
-		return (IAssetFrameModel) getAssetKey();
+		return getAssetKey();
 	}
 
 	public IAssetFrameModel getDownFrame() {
@@ -177,9 +176,9 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	public void build() {
 		super.build();
 
-		_overFrame = (IAssetFrameModel) buildAssetKey(_overFrame);
-		_downFrame = (IAssetFrameModel) buildAssetKey(_downFrame);
-		_upFrame = (IAssetFrameModel) buildAssetKey(_upFrame);
+		_overFrame = buildAssetKey(_overFrame);
+		_downFrame = buildAssetKey(_downFrame);
+		_upFrame = buildAssetKey(_upFrame);
 	}
 
 }

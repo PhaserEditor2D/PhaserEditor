@@ -187,7 +187,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public IAssetFrameModel getValue() {
-					return (IAssetFrameModel) getModel().getAssetKey();
+					return getModel().getAssetKey();
 				}
 
 				@Override
@@ -254,7 +254,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 	@Override
 	public void updateFromModel() {
-		IAssetFrameModel frame = (IAssetFrameModel) getModel().getAssetKey();
+		IAssetFrameModel frame = getModel().getAssetKey();
 
 		_frameData = frame.getFrameData();
 
