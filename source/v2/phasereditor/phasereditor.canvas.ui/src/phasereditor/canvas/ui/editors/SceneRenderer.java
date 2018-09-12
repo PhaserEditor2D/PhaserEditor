@@ -39,6 +39,7 @@ import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.BitmapTextModel;
+import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
@@ -154,6 +155,10 @@ public class SceneRenderer {
 
 			renderTexture(gc, ((SpritesheetSpriteModel) model).getAssetKey());
 
+		} else if (model instanceof ButtonSpriteModel) {
+
+			renderTexture(gc, (IAssetFrameModel) ((ButtonSpriteModel) model).getAssetKey());
+
 		} else if (model instanceof TileSpriteModel) {
 
 			renderTileSprite(gc, (TileSpriteModel) model);
@@ -167,7 +172,6 @@ public class SceneRenderer {
 			renderBitmapText(gc, (BitmapTextModel) model);
 
 		}
-
 	}
 
 	private void renderBitmapText(GC gc, BitmapTextModel model) {
