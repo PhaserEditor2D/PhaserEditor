@@ -32,10 +32,13 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
+import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
@@ -158,7 +161,29 @@ public class SceneRenderer {
 		} else if (model instanceof TilemapSpriteModel) {
 
 			renderTilemapSprite(gc, (TilemapSpriteModel) model);
+
+		} else if (model instanceof BitmapTextModel) {
+
+			renderBitmapText(gc, (BitmapTextModel) model);
+
 		}
+
+	}
+
+	private void renderBitmapText(GC gc, BitmapTextModel model) {
+
+		var fontModel = model.getFontModel();
+
+		var img = loadImage(model.getAssetKey().getTextureFile());
+
+		fontModel.render(new RenderArgs(model.getText()), new BitmapFontRenderer() {
+
+			@Override
+			public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+				gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+			}
+
+		});
 
 	}
 
