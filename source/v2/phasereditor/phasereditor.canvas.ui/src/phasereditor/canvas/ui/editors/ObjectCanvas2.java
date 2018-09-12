@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.canvas.core.CanvasModel;
@@ -31,12 +32,13 @@ import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.ZoomCanvas;
 
 /**
  * @author arian
  *
  */
-public class ObjectCanvas2 extends BaseImageCanvas implements PaintListener {
+public class ObjectCanvas2 extends ZoomCanvas {
 
 	private CanvasEditor _editor;
 	private EditorSettings _settingsModel;
@@ -63,8 +65,13 @@ public class ObjectCanvas2 extends BaseImageCanvas implements PaintListener {
 	}
 
 	@Override
-	public void paintControl(PaintEvent e) {
+	protected void customPaintControl(PaintEvent e) {
 		_renderer.renderWorld(e.gc, _worldModel);
+	}
+
+	@Override
+	protected Point getImageSize() {
+		return new Point(1, 1);
 	}
 	
 }

@@ -34,10 +34,9 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class ZoomCanvas extends Canvas implements PaintListener, IZoomable {
+public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListener, IZoomable {
 
 	private Point _preferredSize;
 	private int _offsetX;
@@ -207,6 +206,8 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 			_fitWindow = false;
 			fitWindow();
 		}
+		
+		prepareGC(e.gc);
 		
 		customPaintControl(e);
 	}

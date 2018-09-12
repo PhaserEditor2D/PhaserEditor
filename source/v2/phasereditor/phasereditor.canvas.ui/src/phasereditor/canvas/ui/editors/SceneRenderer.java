@@ -21,10 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -36,8 +40,8 @@ import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
-import phasereditor.ui.BaseImageCanvas;
 
 /**
  * @author arian
@@ -53,9 +57,16 @@ public class SceneRenderer {
 
 	public void renderWorld(GC gc, WorldModel worldModel) {
 
-		BaseImageCanvas.prepareGC(gc);
-
 		var tx = new Transform(_canvas.getDisplay());
+
+		{
+			int dx = _canvas.getOffsetX();
+			int dy = _canvas.getOffsetY();
+			float scale = _canvas.getScale();
+
+			tx.translate(dx, dy);
+			tx.scale(scale, scale);
+		}
 
 		renderObject(gc, tx, worldModel);
 
@@ -144,8 +155,100 @@ public class SceneRenderer {
 
 			renderTileSprite(gc, (TileSpriteModel) model);
 
+		} else if (model instanceof TilemapSpriteModel) {
+
+			renderTilemapSprite(gc, (TilemapSpriteModel) model);
 		}
 
+	}
+
+	private void renderTilemapSprite(GC gc, TilemapSpriteModel model) {
+
+		var asset = model.getAssetKey();
+
+		int[][] map = asset.getCsvData();
+
+		int tileW = model.getTileWidth();
+		int tileH = model.getTileHeight();
+
+		if (map.length == 0) {
+
+			gc.drawText("Tilemap CSV: empty map", 0, 0, true);
+
+		} else {
+			ImageAssetModel tilesetAsset = model.getTilesetImage();
+
+			if (tilesetAsset != null) {
+				IFile file = tilesetAsset.getUrlFile();
+
+				var img = loadImage(file);
+
+				if (img != null) {
+					var imgSize = img.getBounds();
+
+					for (int i = 0; i < map.length; i++) {
+						int[] row = map[i];
+
+						for (int j = 0; j < row.length; j++) {
+							int frame = map[i][j];
+							if (frame < 0) {
+								// nothing, empty space
+							} else {
+
+								int tilesetW = imgSize.width;
+								int srcX = frame * tileW % tilesetW;
+								int srcY = frame * tileW / tilesetW * tileH;
+
+								gc.drawImage(img, srcX, srcY, tileW, tileH, j * tileW, i * tileH, tileW, tileH);
+							}
+						}
+					}
+
+					return;
+				}
+			}
+
+			// render fallback image
+
+			int max = 0;
+			for (int i = 0; i < map.length; i++) {
+				for (int j = 0; j < map[i].length; j++) {
+					max = Math.max(map[i][j], max);
+				}
+			}
+
+			var colors = new Color[max];
+			for (int i = 0; i < max; i++) {
+				java.awt.Color c = java.awt.Color.getHSBColor((float) i / (float) max, 0.85f, 1.0f);
+				colors[i] = SWTResourceManager.getColor(c.getRed(), c.getGreen(), c.getBlue());
+			}
+
+			for (int i = 0; i < map.length; i++) {
+				int[] row = map[i];
+
+				for (int j = 0; j < row.length; j++) {
+
+					int frame = map[i][j];
+
+					if (frame < 0) {
+						continue;
+					}
+
+					int x = j * tileW;
+					int y = i * tileH;
+
+					// paint map with colors
+					Color c = colors[frame % colors.length];
+					gc.setBackground(c);
+					gc.fillRectangle(x, y, tileW + 1, tileH + 1);
+				}
+			}
+		}
+
+	}
+
+	private Image loadImage(IFile file) {
+		return _canvas.loadImage(file);
 	}
 
 	private static Point getTextureSize(BaseSpriteModel model) {
@@ -204,7 +307,8 @@ public class SceneRenderer {
 		// x = x * tileScaleX;
 		// y = y * tileScaleY;
 
-		// TODO: do not do clipping when it is not needed.
+		// TODO: do not do clipping when it is not needed. Or better, do some match and
+		// just paint the portion it needs!
 		gc.setClipping(0, 0, (int) width, (int) height);
 
 		if (frameWidth > 0 && frameHeight > 0) {
