@@ -87,7 +87,7 @@ public class SceneRenderer {
 		tx.dispose();
 	}
 
-	private void renderGroup(GC gc, Transform tx, WorldModel groupModel) {
+	private void renderGroup(GC gc, Transform tx, GroupModel groupModel) {
 
 		var txElements = new float[6];
 		tx.getElements(txElements);
@@ -104,6 +104,10 @@ public class SceneRenderer {
 
 	private void renderObject(GC gc, Transform tx, BaseObjectModel objModel) {
 
+		if (!objModel.isEditorShow()) {
+			return;
+		}
+		
 		{
 			// position
 			tx.translate((float) objModel.getX(), (float) objModel.getY());
@@ -128,8 +132,8 @@ public class SceneRenderer {
 		}
 
 		if (objModel instanceof GroupModel) {
-
-			renderGroup(gc, tx, (WorldModel) objModel);
+			
+			renderGroup(gc, tx, (GroupModel) objModel);
 
 		} else if (objModel instanceof BaseSpriteModel) {
 
@@ -425,8 +429,8 @@ public class SceneRenderer {
 
 		// TODO: do not do clipping when it is not needed. Or better, do some match and
 		// just paint the portion it needs!
-		var clipping = gc.getClipping();
-		gc.setClipping(0, 0, (int) width, (int) height);
+//		var clipping = gc.getClipping();
+//		gc.setClipping(0, 0, (int) width, (int) height);
 
 		if (frameWidth > 0 && frameHeight > 0) {
 
@@ -462,7 +466,7 @@ public class SceneRenderer {
 			}
 		}
 
-		gc.setClipping(clipping);
+//		gc.setClipping(clipping);
 	}
 
 	private void renderTexture(GC gc, IAssetFrameModel assetFrame) {
