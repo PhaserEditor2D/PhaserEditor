@@ -179,7 +179,7 @@ public class SceneRenderer {
 
 		} else if (model instanceof BitmapTextModel) {
 
-			renderBitmapText(gc, (BitmapTextModel) model);
+			renderBitmapText(gc, tx, (BitmapTextModel) model);
 
 		} else if (model instanceof MissingAssetSpriteModel) {
 
@@ -198,19 +198,19 @@ public class SceneRenderer {
 		int height = model.getStyleFontSize();
 		// normal, bold, italic
 		int style = SWT.NORMAL;
-		
+
 		if (model.getStyleFontWeight() == FontWeight.BOLD) {
 			style = SWT.BOLD;
 		}
-		
+
 		if (model.getStyleFontStyle() == FontPosture.ITALIC) {
 			style |= SWT.ITALIC;
 		}
-		
+
 		Font font = new Font(gc.getDevice(), name, height, style);
 		gc.setFont(font);
 		gc.drawText(model.getText(), 0, 0, true);
-		
+
 		font.dispose();
 
 	}
@@ -237,21 +237,45 @@ public class SceneRenderer {
 		}
 	}
 
-	private void renderBitmapText(GC gc, BitmapTextModel model) {
+	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel model) {
+		// TODO: we should do this in other place
+		model.build();
 
 		var fontModel = model.getFontModel();
 
 		var img = loadImage(model.getAssetKey().getTextureFile());
 
-		fontModel.render(new RenderArgs(model.getText()), new BitmapFontRenderer() {
+		double scale = (double) model.getFontSize() / (double) fontModel.getInfoSize();
 
-			@Override
-			public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-				gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
-			}
+		var tx2 = newTx(gc, tx);
+		tx2.scale((float) scale, (float) scale);
+		gc.setTransform(tx2);
 
-		});
+		try {
 
+			fontModel.render(new RenderArgs(model.getText()), new BitmapFontRenderer() {
+
+				@Override
+				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+				}
+
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		tx2.dispose();
+
+		gc.setTransform(tx);
+
+	}
+
+	private static Transform newTx(GC gc, Transform tx) {
+		var txElements = new float[6];
+		tx.getElements(txElements);
+		return new Transform(gc.getDevice(), txElements);
 	}
 
 	private void renderTilemapSprite(GC gc, TilemapSpriteModel model) {
