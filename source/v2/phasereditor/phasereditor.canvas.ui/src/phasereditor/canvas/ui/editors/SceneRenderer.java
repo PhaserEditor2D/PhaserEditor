@@ -22,18 +22,26 @@
 package phasereditor.canvas.ui.editors;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.json.JSONObject;
 
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
+import phasereditor.canvas.core.Activator;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -42,7 +50,9 @@ import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
+import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
@@ -171,6 +181,59 @@ public class SceneRenderer {
 
 			renderBitmapText(gc, (BitmapTextModel) model);
 
+		} else if (model instanceof MissingAssetSpriteModel) {
+
+			renderMissingAsset(gc, (MissingAssetSpriteModel) model);
+
+		} else if (model instanceof TextModel) {
+
+			renderText(gc, (TextModel) model);
+
+		}
+	}
+
+	private static void renderText(GC gc, TextModel model) {
+
+		String name = model.getStyleFont();
+		int height = model.getStyleFontSize();
+		// normal, bold, italic
+		int style = SWT.NORMAL;
+		
+		if (model.getStyleFontWeight() == FontWeight.BOLD) {
+			style = SWT.BOLD;
+		}
+		
+		if (model.getStyleFontStyle() == FontPosture.ITALIC) {
+			style |= SWT.ITALIC;
+		}
+		
+		Font font = new Font(gc.getDevice(), name, height, style);
+		gc.setFont(font);
+		gc.drawText(model.getText(), 0, 0, true);
+		
+		font.dispose();
+
+	}
+
+	@SuppressWarnings("static-method")
+	private void renderMissingAsset(GC gc, MissingAssetSpriteModel model) {
+
+		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
+		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
+
+		try {
+			JSONObject data = model.getSrcData();
+			JSONObject refObj = data.getJSONObject("asset-ref");
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("MISSING ASSET\nsection=" + refObj.getString("section") + "\nkey=" + refObj.getString("asset"));
+			if (refObj.has("sprite")) {
+				sb.append("\nframe=" + refObj.getString("sprite"));
+			}
+			gc.drawText(sb.toString(), 0, 0, false);
+		} catch (Exception e) {
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e), 0);
+			gc.drawText("Missing asset", 0, 0, true);
 		}
 	}
 
@@ -338,6 +401,7 @@ public class SceneRenderer {
 
 		// TODO: do not do clipping when it is not needed. Or better, do some match and
 		// just paint the portion it needs!
+		var clipping = gc.getClipping();
 		gc.setClipping(0, 0, (int) width, (int) height);
 
 		if (frameWidth > 0 && frameHeight > 0) {
@@ -374,7 +438,7 @@ public class SceneRenderer {
 			}
 		}
 
-		gc.setClipping((Rectangle) null);
+		gc.setClipping(clipping);
 	}
 
 	private void renderTexture(GC gc, IAssetFrameModel assetFrame) {
