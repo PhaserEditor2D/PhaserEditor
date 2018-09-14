@@ -21,10 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -41,14 +44,16 @@ import phasereditor.ui.ZoomCanvas;
  */
 public class ObjectCanvas2 extends ZoomCanvas {
 
-	private static final int X_LABELS_HEIGHT = 25;
-	private static final int Y_LABEL_WIDTH = 50;
+	private static final int X_LABELS_HEIGHT = 18;
+	private static final int Y_LABEL_WIDTH = 18;
 	private CanvasEditor _editor;
 	private EditorSettings _settingsModel;
 	private WorldModel _worldModel;
 	private CanvasPGrid _pgrid;
 	private TreeViewer _outline;
 	private SceneRenderer _worldRenderer;
+	private float _renderModelSnapX;
+	private float _renderModelSnapY;
 
 	public ObjectCanvas2(Composite parent, int style) {
 		super(parent, style);
@@ -71,6 +76,8 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	protected void customPaintControl(PaintEvent e) {
 		renderBackground(e);
 
+		renderGrid(e);
+
 		var tx = new Transform(getDisplay());
 		tx.translate(Y_LABEL_WIDTH, X_LABELS_HEIGHT);
 
@@ -91,15 +98,124 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		gc.fillRectangle(0, 0, e.width, e.height);
 	}
 
-	private void renderLabels(PaintEvent e) {
+	private void renderGrid(PaintEvent e) {
 		var gc = e.gc;
 
-		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_DARK_GRAY));
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_GRAY));
+		gc.setForeground(SWTResourceManager.getColor(_settingsModel.getGridColor()));
 
 		// paint labels
 
+		var calc = calc();
+
+		var modelInitialSnapX = 5f;
+		var modelInitialSnapY = 5f;
+
 		var modelSnapX = 10f;
+		var modelSnapY = 10f;
+		var viewSnapX = 0f;
+		var viewSnapY = 0f;
+
+		int i = 1;
+		while (viewSnapX < 10) {
+			modelSnapX = (float) Math.pow(modelInitialSnapX, i);
+			viewSnapX = calc.modelToViewWidth(modelSnapX);
+			i++;
+		}
+
+		_renderModelSnapX = modelSnapX;
+		_renderModelSnapY = modelSnapY;
+
+		var modelNextSnapX = modelSnapX * 4;
+		var modelNextNextSnapX = modelSnapX * 8;
+
+		i = 1;
+		while (viewSnapY < 10) {
+			modelSnapY = (float) Math.pow(modelInitialSnapY, i);
+			viewSnapY = calc.modelToViewHeight(modelSnapY);
+			i++;
+		}
+
+		var modelNextSnapY = modelSnapY * 4;
+		var modelNextNextSnapY = modelSnapY * 8;
+
+		var modelStartX = calc.viewToModelX(0);
+		var modelStartY = calc.viewToModelY(0);
+
+		var modelRight = calc.viewToModelX(e.width);
+		var modelBottom = calc.viewToModelY(e.height);
+
+		modelStartX = (int) (modelStartX / modelSnapX) * modelSnapX;
+		modelStartY = (int) (modelStartY / modelSnapY) * modelSnapY;
+
+		i = 0;
+		while (true) {
+
+			var modelX = modelStartX + i * modelSnapX;
+
+			if (modelX > modelRight) {
+				break;
+			}
+
+			gc.setLineWidth(1);
+			if (modelX % modelNextNextSnapX == 0) {
+				gc.setAlpha(255);
+				gc.setLineWidth(2);
+			} else if (modelX % modelNextSnapX == 0) {
+				gc.setAlpha(200);
+			} else {
+				gc.setAlpha(150);
+			}
+
+			var viewX = calc.modelToViewX(modelX) + Y_LABEL_WIDTH;
+
+			gc.drawLine((int) viewX, X_LABELS_HEIGHT, (int) viewX, e.height);
+
+			i++;
+		}
+
+		gc.setAlpha(255);
+
+		i = 0;
+		while (true) {
+
+			var modelY = modelStartY + i * modelSnapY;
+
+			if (modelY > modelBottom) {
+				break;
+			}
+
+			var viewY = calc.modelToViewY(modelY) + X_LABELS_HEIGHT;
+
+			gc.setLineWidth(1);
+			if (modelY % modelNextNextSnapY == 0) {
+				gc.setLineWidth(2);
+				gc.setAlpha(255);
+			} else if (modelY % modelNextSnapY == 0) {
+				gc.setAlpha(200);
+			} else {
+				gc.setAlpha(150);
+			}
+
+			gc.drawLine(X_LABELS_HEIGHT, (int) viewY, e.width, (int) viewY);
+
+			i++;
+		}
+
+		gc.setAlpha(255);
+	}
+
+	private void renderLabels(PaintEvent e) {
+		var gc = e.gc;
+
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		gc.setBackground(SWTResourceManager.getColor(_settingsModel.getBackgroundColor()));
+
+		gc.fillRectangle(0, 0, e.width, X_LABELS_HEIGHT);
+		gc.fillRectangle(0, 0, Y_LABEL_WIDTH, e.height);
+
+		// paint labels
+
+		var modelSnapX = _renderModelSnapX;
 		var modelSnapY = 10f;
 
 		var calc = calc();
@@ -109,33 +225,32 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		var modelRight = calc.viewToModelX(e.width);
 		var modelBottom = calc.viewToModelY(e.height);
 
-		var e1 = gc.stringExtent(Float.toString(modelStartX));
-		var e2 = gc.stringExtent(Float.toString(modelRight));
-
-		gc.fillRectangle(0, 0, e.width, X_LABELS_HEIGHT);
-		gc.fillRectangle(0, 0, Y_LABEL_WIDTH, e.height);
-
-		gc.fillRectangle(0, e.height - X_LABELS_HEIGHT, e.width, e.height);
-		gc.fillRectangle(e.width - Y_LABEL_WIDTH, 0, e.width, e.height);
-
-		var viewLabelWidth = Math.max(e1.x, e2.x);
-		var viewLabelHeight = e1.y + 10;
-
-		var modelLabelWidth = calc.viewToModelWidth(viewLabelWidth);
-		var modelLabelHeight = calc.viewToModelWidth(viewLabelHeight);
-
-		if (modelSnapX < modelLabelWidth) {
-			modelSnapX = (int) (modelLabelWidth / modelSnapX) * modelSnapX + modelSnapX;
+		int i;
+		
+		i = 2;
+		while (true) {
+			float viewSnapX = calc.modelToViewWidth(modelSnapX);
+			if (viewSnapX > 80) {
+				break;
+			}
+			modelSnapX = _renderModelSnapX * i;
+			i++;
 		}
 
-		if (modelSnapY < modelLabelHeight) {
-			modelSnapY = (int) (modelLabelHeight / modelSnapY) * modelSnapY + modelSnapY;
+		i = 2;
+		while (true) {
+			float viewSnapY = calc.modelToViewWidth(modelSnapY);
+			if (viewSnapY > 80) {
+				break;
+			}
+			modelSnapY = _renderModelSnapY * i;
+			i++;
 		}
 
 		modelStartX = (int) (modelStartX / modelSnapX) * modelSnapX;
 		modelStartY = (int) (modelStartY / modelSnapY) * modelSnapY;
 
-		int i = 0;
+		i = 0;
 		while (true) {
 
 			var modelX = modelStartX + i * modelSnapX;
@@ -148,17 +263,17 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 			if (viewX >= Y_LABEL_WIDTH && viewX <= e.width - Y_LABEL_WIDTH) {
 				String label = Float.toString(modelX);
-				var labelExtent = gc.textExtent(label);
 
-				gc.drawString(label, (int) viewX - labelExtent.x / 2, 0, true);
-				gc.drawLine((int) viewX, X_LABELS_HEIGHT - 5, (int) viewX, X_LABELS_HEIGHT);
-
-				gc.drawString(label, (int) viewX - labelExtent.x / 2, e.height - labelExtent.y, true);
-				gc.drawLine((int) viewX, e.height - X_LABELS_HEIGHT, (int) viewX, e.height - X_LABELS_HEIGHT + 5);
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+				gc.drawString(label, (int) viewX + 5, 0, true);
+				gc.setForeground(SWTResourceManager.getColor(_settingsModel.getGridColor()));
+				gc.drawLine((int) viewX, 0, (int) viewX, X_LABELS_HEIGHT);
 			}
 
 			i++;
 		}
+
+		gc.drawLine(Y_LABEL_WIDTH, X_LABELS_HEIGHT, e.width, X_LABELS_HEIGHT);
 
 		i = 0;
 		while (true) {
@@ -174,32 +289,31 @@ public class ObjectCanvas2 extends ZoomCanvas {
 			if (viewY >= X_LABELS_HEIGHT && viewY <= e.height - X_LABELS_HEIGHT) {
 
 				String label = Float.toString(modelY);
-				var labelExtent = gc.textExtent(label);
+				var labelExtent = gc.stringExtent(label);
 
-				gc.drawString(label, Y_LABEL_WIDTH - labelExtent.x - 7, (int) viewY - labelExtent.y / 2, true);
-				gc.drawLine(Y_LABEL_WIDTH - 5, (int) viewY, Y_LABEL_WIDTH, (int) viewY);
+				var tx = new Transform(getDisplay());
 
-				gc.drawString(label, e.width - labelExtent.x - 7, (int) viewY - labelExtent.y / 2, true);
-				gc.drawLine(e.width - Y_LABEL_WIDTH, (int) viewY, e.width - Y_LABEL_WIDTH + 5, (int) viewY);
+				tx.translate(0, viewY + 5 + labelExtent.x);
+				tx.rotate(-90);
+
+				gc.setTransform(tx);
+
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+				gc.drawString(label, 0, 0, true);
+
+				gc.setTransform(null);
+				tx.dispose();
+
+				gc.setForeground(SWTResourceManager.getColor(_settingsModel.getGridColor()));
+				gc.drawLine(0, (int) viewY, Y_LABEL_WIDTH, (int) viewY);
 			}
 
 			i++;
 		}
 
-		gc.setAlpha(100);
-		gc.setLineWidth(2);
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
-
-		gc.drawLine(Y_LABEL_WIDTH, X_LABELS_HEIGHT, e.width - Y_LABEL_WIDTH, X_LABELS_HEIGHT);
-		gc.drawLine(Y_LABEL_WIDTH, e.height - X_LABELS_HEIGHT, e.width - Y_LABEL_WIDTH, e.height - X_LABELS_HEIGHT);
-
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
-
-		gc.drawLine(Y_LABEL_WIDTH, X_LABELS_HEIGHT, Y_LABEL_WIDTH, e.height - X_LABELS_HEIGHT);
-		gc.drawLine(e.width - Y_LABEL_WIDTH, X_LABELS_HEIGHT, e.width - Y_LABEL_WIDTH, e.height - X_LABELS_HEIGHT);
+		gc.drawLine(Y_LABEL_WIDTH, X_LABELS_HEIGHT, Y_LABEL_WIDTH, e.height);
 
 		gc.setAlpha(255);
-		gc.setLineWidth(1);
 	}
 
 	@Override
