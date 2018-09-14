@@ -21,13 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -70,6 +67,13 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		_worldRenderer = new SceneRenderer(this);
 
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+
+		_worldRenderer.dispose();
 	}
 
 	@Override
@@ -226,7 +230,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		var modelBottom = calc.viewToModelY(e.height);
 
 		int i;
-		
+
 		i = 2;
 		while (true) {
 			float viewSnapX = calc.modelToViewWidth(modelSnapX);

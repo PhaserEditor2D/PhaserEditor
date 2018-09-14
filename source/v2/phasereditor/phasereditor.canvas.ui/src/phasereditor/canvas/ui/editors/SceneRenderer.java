@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -29,6 +32,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -56,6 +60,7 @@ import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.ui.BaseImageCanvas;
 
 /**
  * @author arian
@@ -69,10 +74,16 @@ public class SceneRenderer {
 		_canvas = canvas;
 	}
 
+	public void dispose() {
+		for (var img : _imageCache.values()) {
+			img.dispose();
+		}
+	}
+
 	public void renderWorld(GC gc, Transform tx, WorldModel worldModel) {
 
 		var tx2 = newTx(gc, tx);
-		
+
 		try {
 
 			{
@@ -287,7 +298,7 @@ public class SceneRenderer {
 		return new Transform(gc.getDevice(), txElements);
 	}
 
-	private void renderTilemapSprite(GC gc, TilemapSpriteModel model) {
+	private Image createTilemapImage(TilemapSpriteModel model) {
 
 		var asset = model.getAssetKey();
 
@@ -297,10 +308,25 @@ public class SceneRenderer {
 		int tileH = model.getTileHeight();
 
 		if (map.length == 0) {
+			return null;
+		}
 
-			gc.drawText("Tilemap CSV: empty map", 0, 0, true);
+		var temp = new Image(_canvas.getDisplay(), 1, 1);
+		var tempData = temp.getImageData();
 
-		} else {
+		int width = map[0].length * tileW;
+		int height = map.length * tileH;
+		var data = new ImageData(width, height, tempData.depth, tempData.palette);
+		data.alphaData = new byte[width * height];
+
+		var tilemapImage = new Image(_canvas.getDisplay(), data);
+
+		temp.dispose();
+
+		GC gc = new GC(tilemapImage);
+
+		try {
+
 			ImageAssetModel tilesetAsset = model.getTilesetImage();
 
 			if (tilesetAsset != null) {
@@ -308,29 +334,33 @@ public class SceneRenderer {
 
 				var img = loadImage(file);
 
-				if (img != null) {
-					var imgSize = img.getBounds();
+				if (img == null) {
+					return null;
+				}
 
-					for (int i = 0; i < map.length; i++) {
-						int[] row = map[i];
+				BaseImageCanvas.prepareGC(gc);
 
-						for (int j = 0; j < row.length; j++) {
-							int frame = map[i][j];
-							if (frame < 0) {
-								// nothing, empty space
-							} else {
+				var imgSize = img.getBounds();
 
-								int tilesetW = imgSize.width;
-								int srcX = frame * tileW % tilesetW;
-								int srcY = frame * tileW / tilesetW * tileH;
+				for (int i = 0; i < map.length; i++) {
+					int[] row = map[i];
 
-								gc.drawImage(img, srcX, srcY, tileW, tileH, j * tileW, i * tileH, tileW, tileH);
-							}
+					for (int j = 0; j < row.length; j++) {
+						int frame = map[i][j];
+						if (frame < 0) {
+							// nothing, empty space
+						} else {
+
+							int tilesetW = imgSize.width;
+							int srcX = frame * tileW % tilesetW;
+							int srcY = frame * tileW / tilesetW * tileH;
+
+							gc.drawImage(img, srcX, srcY, tileW, tileH, j * tileW, i * tileH, tileW, tileH);
 						}
 					}
-
-					return;
 				}
+
+				return tilemapImage;
 			}
 
 			// render fallback image
@@ -368,6 +398,50 @@ public class SceneRenderer {
 					gc.fillRectangle(x, y, tileW + 1, tileH + 1);
 				}
 			}
+
+			return null;
+
+		} finally {
+			gc.dispose();
+		}
+	}
+
+	private Map<String, Image> _imageCache = new HashMap<>();
+
+	private void renderTilemapSprite(GC gc, TilemapSpriteModel model) {
+
+		Image img = null;
+
+		if (model.getTilesetImage() != null) {
+			var tilesetImageFile = model.getTilesetImage().getUrlFile();
+			if (tilesetImageFile != null) {
+				var tilesetImage = loadImage(tilesetImageFile);
+				if (tilesetImage != null) {
+					var mapFile = model.getAssetKey().getUrlFile();
+					if (mapFile != null) {
+
+						var key = tilesetImageFile.getFullPath().toPortableString() + "$"
+								+ tilesetImageFile.getLocalTimeStamp() + "$" + mapFile.getFullPath().toPortableString()
+								+ "$" + mapFile.getLocalTimeStamp() + "$" + model.getTileWidth() + "$"
+								+ model.getTileHeight();
+
+						if (_imageCache.containsKey(key)) {
+							img = _imageCache.get(key);
+						} else {
+							img = createTilemapImage(model);
+							if (img != null) {
+								_imageCache.put(key, img);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (img == null) {
+			gc.drawString("Cannot render tilemap '" + model.getEditorName() + "'", 0, 0);
+		} else {
+			gc.drawImage(img, 0, 0);
 		}
 
 	}
