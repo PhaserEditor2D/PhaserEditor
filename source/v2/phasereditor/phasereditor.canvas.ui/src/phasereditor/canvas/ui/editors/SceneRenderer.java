@@ -69,22 +69,26 @@ public class SceneRenderer {
 		_canvas = canvas;
 	}
 
-	public void renderWorld(GC gc, WorldModel worldModel) {
+	public void renderWorld(GC gc, Transform tx, WorldModel worldModel) {
 
-		var tx = new Transform(_canvas.getDisplay());
+		var tx2 = newTx(gc, tx);
+		
+		try {
 
-		{
-			int dx = _canvas.getOffsetX();
-			int dy = _canvas.getOffsetY();
-			float scale = _canvas.getScale();
+			{
+				int dx = _canvas.getOffsetX();
+				int dy = _canvas.getOffsetY();
+				float scale = _canvas.getScale();
 
-			tx.translate(dx, dy);
-			tx.scale(scale, scale);
+				tx2.translate(dx, dy);
+				tx2.scale(scale, scale);
+			}
+
+			renderObject(gc, tx2, worldModel);
+		} finally {
+			tx2.dispose();
+			gc.setTransform(null);
 		}
-
-		renderObject(gc, tx, worldModel);
-
-		tx.dispose();
 	}
 
 	private void renderGroup(GC gc, Transform tx, GroupModel groupModel) {
@@ -107,7 +111,7 @@ public class SceneRenderer {
 		if (!objModel.isEditorShow()) {
 			return;
 		}
-		
+
 		{
 			// position
 			tx.translate((float) objModel.getX(), (float) objModel.getY());
@@ -132,7 +136,7 @@ public class SceneRenderer {
 		}
 
 		if (objModel instanceof GroupModel) {
-			
+
 			renderGroup(gc, tx, (GroupModel) objModel);
 
 		} else if (objModel instanceof BaseSpriteModel) {
@@ -196,7 +200,8 @@ public class SceneRenderer {
 		}
 	}
 
-	private static void renderText(GC gc, TextModel model) {
+	@SuppressWarnings("static-method")
+	private void renderText(GC gc, TextModel model) {
 
 		String name = model.getStyleFont();
 		int height = model.getStyleFontSize();
@@ -429,8 +434,8 @@ public class SceneRenderer {
 
 		// TODO: do not do clipping when it is not needed. Or better, do some match and
 		// just paint the portion it needs!
-//		var clipping = gc.getClipping();
-//		gc.setClipping(0, 0, (int) width, (int) height);
+		// var clipping = gc.getClipping();
+		// gc.setClipping(0, 0, (int) width, (int) height);
 
 		if (frameWidth > 0 && frameHeight > 0) {
 
@@ -466,7 +471,7 @@ public class SceneRenderer {
 			}
 		}
 
-//		gc.setClipping(clipping);
+		// gc.setClipping(clipping);
 	}
 
 	private void renderTexture(GC gc, IAssetFrameModel assetFrame) {

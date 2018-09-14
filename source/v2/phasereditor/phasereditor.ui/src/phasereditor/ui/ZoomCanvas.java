@@ -56,21 +56,45 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 			this.imgHeight = imgHeight;
 		}
 
-		public float screenToImageX(float x) {
+		public float viewToModelWidth(float width) {
+			return width / scale;
+		}
+		
+		public float viewToModelHeight(float height) {
+			return height / scale;
+		}
+		
+		public float modelToViewWidth(float width) {
+			return width * scale;
+		}
+		
+		public float modelToViewHeight(float height) {
+			return height * scale;
+		}
+		
+		public float viewToModelX(float x) {
 			return (x - offsetX) / scale;
 		}
 
-		public float screenToImageY(float y) {
+		public float viewToModelY(float y) {
 			return (y - offsetY) / scale;
 		}
 
-		public Rectangle imageToScreen(float x, float y, float width, float height) {
+		public float modelToViewX(float x) {
+			return offsetX + x * scale;
+		}
+		
+		public float modelToViewY(float y) {
+			return offsetY + y * scale;
+		}
+		
+		public Rectangle modelToView(float x, float y, float width, float height) {
 			return new Rectangle((int) (offsetX + x * scale), (int) (offsetY + y * scale), (int) (width * scale),
 					(int) (height * scale));
 		}
 
-		public Rectangle imageToScreen(Rectangle rect) {
-			return imageToScreen(rect.x, rect.y, rect.width, rect.height);
+		public Rectangle modelToView(Rectangle rect) {
+			return modelToView(rect.x, rect.y, rect.width, rect.height);
 		}
 
 		public void imageSize(Rectangle rect) {
@@ -133,15 +157,15 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 
 			ZoomCalculator calc = calc();
 
-			float x1 = calc.screenToImageX(e.x);
-			float y1 = calc.screenToImageY(e.y);
+			float x1 = calc.viewToModelX(e.x);
+			float y1 = calc.viewToModelY(e.y);
 
 			float newScale = oldScale * zoom;
 
 			calc.scale = newScale;
 
-			float x2 = calc.screenToImageX(e.x);
-			float y2 = calc.screenToImageY(e.y);
+			float x2 = calc.viewToModelX(e.x);
+			float y2 = calc.viewToModelY(e.y);
 
 			float fx = (x2 - x1) / calc.imgWidth;
 			float fy = (y2 - y1) / calc.imgHeight;
