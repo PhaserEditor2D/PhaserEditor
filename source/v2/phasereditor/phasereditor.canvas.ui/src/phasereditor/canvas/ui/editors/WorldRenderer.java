@@ -213,18 +213,38 @@ public class WorldRenderer {
 		}
 	}
 
+	private static class TextLine {
+
+		public TextLine(String line, int x, int y, int width, int height) {
+			this.line = line;
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+		}
+
+		public String line;
+		public int x;
+		public int y;
+		public int width;
+		public int height;
+	}
+
 	@SuppressWarnings("static-method")
 	private void renderText(GC gc, TextModel model) {
 
 		var name = model.getStyleFont();
 		int height = model.getStyleFontSize();
 		var styleFill = model.getStyleFill();
+		var styleBackground = model.getStyleBackgroundColor();
 		var styleStroke = model.getStyleStroke();
 		var styleStroleThickness = model.getStyleStrokeThickness();
 
 		var styleFillColor = SWTResourceManager.getColor(ColorUtil.web(styleFill).rgb);
 		Color styleStrokeColor = styleStroke == null ? null
 				: SWTResourceManager.getColor(ColorUtil.web(styleStroke).rgb);
+		Color styleBackgroundColor = styleBackground == null ? null
+				: SWTResourceManager.getColor(ColorUtil.web(styleBackground).rgb);
 
 		// normal, bold, italic
 		int style = SWT.NORMAL;
@@ -249,16 +269,40 @@ public class WorldRenderer {
 		var text = model.getText();
 		var lines = text.split("\\R");
 
-		var y = 0;
-		for (var line : lines) {
+		var textWidth = 0;
+		var textHeight = 0;
+
+		var textLines = new TextLine[lines.length];
+
+		{
+			var y = 0;
+
+			for (int i = 0; i < lines.length; i++) {
+				var line = lines[i];
+				var m = gc.textExtent(line);
+				textLines[i] = new TextLine(line, 0, y, m.x, m.y);
+				y += m.y;
+
+				textWidth = Math.max(m.x, textWidth);
+			}
+
+			textHeight = y;
+		}
+
+		if (styleBackgroundColor != null) {
+			gc.setBackground(styleBackgroundColor);
+			gc.fillRectangle(0, 0, textWidth, textHeight);
+		}
+
+		for (var textLine : textLines) {
 
 			if (styleStroke == null || styleStroleThickness == 0) {
-				gc.drawText(line, 0, y, true);
+				gc.drawText(textLine.line, textLine.x, textLine.y, true);
 			} else {
 
 				var path = new Path(gc.getDevice());
 
-				path.addString(line, 0, y, font);
+				path.addString(textLine.line, textLine.x, textLine.y, font);
 
 				gc.setBackground(styleFillColor);
 				gc.fillPath(path);
@@ -273,9 +317,6 @@ public class WorldRenderer {
 
 				path.dispose();
 			}
-
-			var m = gc.textExtent(line);
-			y += m.y;
 		}
 
 		gc.setFont(oldFont);
