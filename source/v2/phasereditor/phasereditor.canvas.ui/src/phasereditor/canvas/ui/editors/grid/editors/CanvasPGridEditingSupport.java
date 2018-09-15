@@ -86,8 +86,17 @@ public class CanvasPGridEditingSupport extends PGridEditingSupport {
 
 	@Override
 	protected CellEditor getCellEditor(Object element) {
+
 		Composite parent = (Composite) getViewer().getControl();
 
+		
+		if (element instanceof PGridProperty) {
+			CellEditor editor = ((PGridProperty<?>) element).createCellEditor(parent, element);
+			if (editor != null) {
+				return editor;
+			}
+		}
+		
 		if (element instanceof PGridNumberProperty) {
 			return createCanvasNumberEditor(parent);
 		} else if (element instanceof PGridSpriteProperty) {

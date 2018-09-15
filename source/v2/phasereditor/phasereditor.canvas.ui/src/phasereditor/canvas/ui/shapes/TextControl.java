@@ -24,7 +24,14 @@ package phasereditor.canvas.ui.shapes;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.DialogCellEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FontDialog;
 
 import javafx.geometry.Point2D;
 import javafx.scene.text.Font;
@@ -130,7 +137,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
 		validProperties.addAll(Arrays.asList(
-				// @formatter:off
+		// @formatter:off
 				TextModel.PROPSET_TEXT, TextModel.PROPSET_TEXT_STYLE
 		// @formatter:on
 		));
@@ -173,6 +180,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		{
 			List<String> names = Font.getFamilies();
+
 			_fontName_property = new PGridEnumProperty<>(getId(), "style.font", "The name of the font",
 					names.toArray(new String[names.size()])) {
 
@@ -198,6 +206,36 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				@Override
 				public boolean isReadOnly() {
 					return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+				}
+
+				public CellEditor createCellEditor(Composite parent, Object element) {
+					return new DialogCellEditor(parent) {
+
+						@Override
+						protected Object openDialogBox(Control cellEditorWindow) {
+							TextModel model = getModel();
+							
+							var name = model.getStyleFont();
+
+							var dlg = new FontDialog(cellEditorWindow.getShell());
+							try {
+								var fd = new FontData(name, model.getStyleFontSize(), SWT.NORMAL);
+								dlg.setFontList(new FontData[] { fd });
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+
+							dlg.setText("style.font");
+
+							var result = dlg.open();
+
+							if (result != null) {
+								return result.getName();
+							}
+
+							return null;
+						}
+					};
 				}
 			};
 			section.add(_fontName_property);
