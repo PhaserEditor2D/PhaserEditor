@@ -227,10 +227,13 @@ public class SceneRenderer {
 			style |= SWT.ITALIC;
 		}
 
+		var oldFont = gc.getFont();
 		Font font = new Font(gc.getDevice(), name, height, style);
 		gc.setFont(font);
+
 		gc.drawText(model.getText(), 0, 0, true);
 
+		gc.setFont(oldFont);
 		font.dispose();
 
 	}
