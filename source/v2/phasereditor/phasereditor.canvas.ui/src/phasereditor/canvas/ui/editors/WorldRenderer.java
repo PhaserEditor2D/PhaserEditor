@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
@@ -239,6 +240,7 @@ public class WorldRenderer {
 		var styleBackground = model.getStyleBackgroundColor();
 		var styleStroke = model.getStyleStroke();
 		var styleStroleThickness = model.getStyleStrokeThickness();
+		var styleAlign = model.getStyleAlign();
 
 		var styleFillColor = SWTResourceManager.getColor(ColorUtil.web(styleFill).rgb);
 		Color styleStrokeColor = styleStroke == null ? null
@@ -288,6 +290,17 @@ public class WorldRenderer {
 
 			textHeight = y;
 		}
+		
+		if (styleAlign == TextAlignment.CENTER) {
+			for(var textLine : textLines) {
+				textLine.x = (textWidth - textLine.width) / 2;
+			}
+		} else if (styleAlign == TextAlignment.RIGHT) {
+			for(var textLine : textLines) {
+				textLine.x = textWidth - textLine.width;
+			}
+		}
+		
 
 		if (styleBackgroundColor != null) {
 			gc.setBackground(styleBackgroundColor);
