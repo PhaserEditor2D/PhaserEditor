@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -61,15 +62,16 @@ import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.ColorUtil;
 
 /**
  * @author arian
  *
  */
-public class SceneRenderer {
+public class WorldRenderer {
 	private ObjectCanvas2 _canvas;
 
-	public SceneRenderer(ObjectCanvas2 canvas) {
+	public WorldRenderer(ObjectCanvas2 canvas) {
 		super();
 		_canvas = canvas;
 	}
@@ -214,8 +216,16 @@ public class SceneRenderer {
 	@SuppressWarnings("static-method")
 	private void renderText(GC gc, TextModel model) {
 
-		String name = model.getStyleFont();
+		var name = model.getStyleFont();
 		int height = model.getStyleFontSize();
+		var styleFill = model.getStyleFill();
+		var styleStroke = model.getStyleStroke();
+		var styleStroleThickness = model.getStyleStrokeThickness();
+
+		var styleFillColor = SWTResourceManager.getColor(ColorUtil.web(styleFill).rgb);
+		Color styleStrokeColor = styleStroke == null ? null
+				: SWTResourceManager.getColor(ColorUtil.web(styleStroke).rgb);
+
 		// normal, bold, italic
 		int style = SWT.NORMAL;
 
@@ -227,11 +237,30 @@ public class SceneRenderer {
 			style |= SWT.ITALIC;
 		}
 
+		// TODO: Missing backgroud color. But to do this, we need to compute the text
+		// bounds.
+
 		var oldFont = gc.getFont();
 		Font font = new Font(gc.getDevice(), name, height, style);
 		gc.setFont(font);
 
-		gc.drawText(model.getText(), 0, 0, true);
+		gc.setForeground(styleFillColor);
+
+		if (styleStroke == null || styleStroleThickness == 0) {
+			gc.drawText(model.getText(), 0, 0, true);
+		} else {
+			var path = new Path(gc.getDevice());
+			path.addString(model.getText(), 0, 0, font);
+			
+			gc.setBackground(styleFillColor);
+			gc.fillPath(path);
+
+			var lineWidth = gc.getLineWidth();
+			gc.setLineWidth(styleStroleThickness);
+			gc.setForeground(styleStrokeColor);
+			gc.drawPath(path);
+			gc.setLineWidth(lineWidth);
+		}
 
 		gc.setFont(oldFont);
 		font.dispose();

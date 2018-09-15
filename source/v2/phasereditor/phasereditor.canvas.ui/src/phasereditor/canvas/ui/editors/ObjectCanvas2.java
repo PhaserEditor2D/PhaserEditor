@@ -48,7 +48,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	private WorldModel _worldModel;
 	private CanvasPGrid _pgrid;
 	private TreeViewer _outline;
-	private SceneRenderer _worldRenderer;
+	private WorldRenderer _worldRenderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
 
@@ -65,7 +65,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		_pgrid = grid;
 		_outline = outline;
 
-		_worldRenderer = new SceneRenderer(this);
+		_worldRenderer = new WorldRenderer(this);
 	}
 
 	@Override
