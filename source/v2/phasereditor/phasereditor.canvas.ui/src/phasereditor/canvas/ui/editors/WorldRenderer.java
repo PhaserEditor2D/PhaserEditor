@@ -246,25 +246,40 @@ public class WorldRenderer {
 
 		gc.setForeground(styleFillColor);
 
-		if (styleStroke == null || styleStroleThickness == 0) {
-			gc.drawText(model.getText(), 0, 0, true);
-		} else {
-			var path = new Path(gc.getDevice());
-			path.addString(model.getText(), 0, 0, font);
-			
-			gc.setBackground(styleFillColor);
-			gc.fillPath(path);
+		var text = model.getText();
+		var lines = text.split("\\R");
 
-			var lineWidth = gc.getLineWidth();
-			gc.setLineWidth(styleStroleThickness);
-			gc.setForeground(styleStrokeColor);
-			gc.drawPath(path);
-			gc.setLineWidth(lineWidth);
+		var y = 0;
+		for (var line : lines) {
+
+			if (styleStroke == null || styleStroleThickness == 0) {
+				gc.drawText(line, 0, y, true);
+			} else {
+
+				var path = new Path(gc.getDevice());
+
+				path.addString(line, 0, y, font);
+
+				gc.setBackground(styleFillColor);
+				gc.fillPath(path);
+
+				var lineWidth = gc.getLineWidth();
+				gc.setLineWidth(styleStroleThickness);
+				gc.setForeground(styleStrokeColor);
+
+				gc.drawPath(path);
+
+				gc.setLineWidth(lineWidth);
+
+				path.dispose();
+			}
+
+			var m = gc.textExtent(line);
+			y += m.y;
 		}
 
 		gc.setFont(oldFont);
 		font.dispose();
-
 	}
 
 	@SuppressWarnings("static-method")
