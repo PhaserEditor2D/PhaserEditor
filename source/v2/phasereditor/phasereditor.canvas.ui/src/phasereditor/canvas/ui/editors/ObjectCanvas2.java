@@ -66,7 +66,6 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		_outline = outline;
 
 		_worldRenderer = new SceneRenderer(this);
-
 	}
 
 	@Override
@@ -111,9 +110,14 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		var calc = calc();
 
-		var modelInitialSnapX = 5f;
-		var modelInitialSnapY = 5f;
+		var initialModelSnapX = 5f;
+		var initialModelSnapY = 5f;
 
+		if (_settingsModel.isEnableStepping()) {
+			initialModelSnapX = _settingsModel.getStepWidth();
+			initialModelSnapY = _settingsModel.getStepHeight();
+		}
+		
 		var modelSnapX = 10f;
 		var modelSnapY = 10f;
 		var viewSnapX = 0f;
@@ -121,7 +125,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		int i = 1;
 		while (viewSnapX < 10) {
-			modelSnapX = (float) Math.pow(modelInitialSnapX, i);
+			modelSnapX = (float) Math.pow(initialModelSnapX, i);
 			viewSnapX = calc.modelToViewWidth(modelSnapX);
 			i++;
 		}
@@ -134,7 +138,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		i = 1;
 		while (viewSnapY < 10) {
-			modelSnapY = (float) Math.pow(modelInitialSnapY, i);
+			modelSnapY = (float) Math.pow(initialModelSnapY, i);
 			viewSnapY = calc.modelToViewHeight(modelSnapY);
 			i++;
 		}
