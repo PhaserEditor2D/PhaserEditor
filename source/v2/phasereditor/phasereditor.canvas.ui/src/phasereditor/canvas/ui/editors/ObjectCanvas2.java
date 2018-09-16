@@ -21,8 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
@@ -32,7 +33,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.WorldModel;
-import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -46,8 +46,6 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	private CanvasEditor _editor;
 	private EditorSettings _settingsModel;
 	private WorldModel _worldModel;
-	private CanvasPGrid _pgrid;
-	private TreeViewer _outline;
 	private WorldRenderer _worldRenderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
@@ -56,18 +54,21 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		super(parent, style);
 
 		addPaintListener(this);
+		addMouseListener(new SelectionMouseListener());
 	}
 
-	public void init(CanvasEditor editor, CanvasModel model, CanvasPGrid grid, TreeViewer outline) {
+	public void init(CanvasEditor editor, CanvasModel model) {
 		_editor = editor;
 		_settingsModel = model.getSettings();
 		_worldModel = model.getWorld();
-		_pgrid = grid;
-		_outline = outline;
 
 		_worldRenderer = new WorldRenderer(this);
 	}
 	
+	public CanvasEditor getEditor() {
+		return _editor;
+	}
+
 	public WorldModel getWorldModel() {
 		return _worldModel;
 	}
@@ -75,7 +76,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	public WorldRenderer getWorldRenderer() {
 		return _worldRenderer;
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -125,7 +126,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 			initialModelSnapX = _settingsModel.getStepWidth();
 			initialModelSnapY = _settingsModel.getStepHeight();
 		}
-		
+
 		var modelSnapX = 10f;
 		var modelSnapY = 10f;
 		var viewSnapX = 0f;
@@ -335,6 +336,28 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	@Override
 	protected Point getImageSize() {
 		return new Point(1, 1);
+	}
+
+	private class SelectionMouseListener implements MouseListener {
+
+		public SelectionMouseListener() {
+		}
+		
+		@Override
+		public void mouseDoubleClick(MouseEvent e) {
+			//
+		}
+
+		@Override
+		public void mouseDown(MouseEvent e) {
+			//
+		}
+
+		@Override
+		public void mouseUp(MouseEvent e) {
+			//
+		}
+
 	}
 
 }

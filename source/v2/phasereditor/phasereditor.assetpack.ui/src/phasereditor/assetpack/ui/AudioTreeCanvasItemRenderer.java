@@ -55,9 +55,9 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			var asset = (AudioAssetModel) data;
 
 			_label = asset.getKey();
-			
+
 			audioFile = null;
-			
+
 			for (var url : asset.getUrls()) {
 				audioFile = asset.getFileFromUrl(url);
 				if (audioFile != null) {
@@ -74,11 +74,11 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		_image = canvas.loadImage(imgPath.toFile());
 	}
-	
+
 	public String getLabel() {
 		return _label;
 	}
-	
+
 	public void setLabel(String label) {
 		_label = label;
 	}
@@ -98,10 +98,14 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		if (imgHeight >= 16) {
 			if (_image != null) {
-				gc.setAlpha(150);
-				gc.drawImage(_image, 0, 0, _image.getBounds().width, _image.getBounds().height, x, y + 5,
-						e.width - x - 5, imgHeight);
-				gc.setAlpha(255);
+				int w = e.width - x - 5;
+				if (w > 0) {
+					gc.setAlpha(150);
+					gc.drawImage(_image, 0, 0, _image.getBounds().width, _image.getBounds().height, x, y + 5, w,
+							imgHeight);
+					gc.setAlpha(255);
+				}
+
 			}
 
 			gc.drawText(_label, x + 5, y + rowHeight - textOffset, true);

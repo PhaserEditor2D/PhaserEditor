@@ -160,11 +160,11 @@ public class CanvasEditor extends MultiPageEditorPart
 
 		return super.getAdapter(adapter);
 	}
-	
+
 	public CanvasOutline getOutline2() {
 		return _outline2;
 	}
-	
+
 	public void setOutline2(CanvasOutline outline2) {
 		_outline2 = outline2;
 	}
@@ -502,7 +502,8 @@ public class CanvasEditor extends MultiPageEditorPart
 
 	private void initCanvas() {
 		_canvas.init(this, _model, _grid, _outlineTree.getViewer(), _paletteComp);
-		_canvas2.init(this, _model, _grid, getOutline());
+
+		_canvas2.init(this, _model);
 
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}

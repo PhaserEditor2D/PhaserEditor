@@ -930,12 +930,11 @@ public class PhaserEditorUI {
 
 	public static Image scaleImage(Image image, Rectangle src, int newSize, int alpha) {
 		var data1 = image.getImageData();
-		
+
 		var data2 = new ImageData(newSize, newSize, data1.depth, data1.palette);
 		data2.alphaData = new byte[newSize * newSize];
-		
+
 		var scaled = new Image(Display.getDefault(), data2);
-		
 
 		GC gc = new GC(scaled);
 
@@ -1326,8 +1325,10 @@ public class PhaserEditorUI {
 
 		double imgDstW = (blankSpaces ? fd.dst.width : fd.src.width) * scaleX;
 		double imgDstH = (blankSpaces ? fd.dst.height : fd.src.height) * scaleY;
-
-		gc.drawImage(image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY, (int) imgDstW,
-				(int) imgDstH);
+		
+		if (imgDstW > 0 && imgDstH > 0) {
+			gc.drawImage(image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY, (int) imgDstW,
+					(int) imgDstH);
+		}
 	}
 }

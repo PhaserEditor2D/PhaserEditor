@@ -235,11 +235,11 @@ public abstract class BaseObjectModel {
 	public void setEditorPublic(boolean editorPublic) {
 		_editorPublic = editorPublic;
 	}
-	
+
 	public boolean isEditorField() {
 		return _editorField;
 	}
-	
+
 	public void setEditorField(boolean editorField) {
 		_editorField = editorField;
 	}
@@ -637,5 +637,4 @@ public abstract class BaseObjectModel {
 		}
 		return null;
 	}
-
 }

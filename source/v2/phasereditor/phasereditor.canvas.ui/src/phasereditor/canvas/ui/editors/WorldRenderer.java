@@ -71,10 +71,16 @@ import phasereditor.ui.ColorUtil;
  */
 public class WorldRenderer {
 	private ObjectCanvas2 _canvas;
+	private Map<BaseObjectModel, float[]> _modelTransformMap;
+	private Map<BaseObjectModel, float[]> _modelBoundsMap;
 
 	public WorldRenderer(ObjectCanvas2 canvas) {
 		super();
+
 		_canvas = canvas;
+
+		_modelTransformMap = new HashMap<>();
+		_modelBoundsMap = new HashMap<>();
 	}
 
 	public void dispose() {
@@ -84,6 +90,9 @@ public class WorldRenderer {
 	}
 
 	public void renderWorld(GC gc, Transform tx, WorldModel worldModel) {
+
+		_modelTransformMap = new HashMap<>();
+		_modelBoundsMap = new HashMap<>();
 
 		var tx2 = newTx(gc, tx);
 
@@ -99,20 +108,57 @@ public class WorldRenderer {
 			}
 
 			renderObject(gc, tx2, worldModel);
+
 		} finally {
 			tx2.dispose();
 			gc.setTransform(null);
+		}
+
+		startDebug(gc, worldModel);
+	}
+
+	private void startDebug(GC gc, BaseObjectModel model) {
+		var oldTx = new Transform(gc.getDevice());
+		gc.getTransform(oldTx);
+
+		var newTx = new Transform(gc.getDevice());
+		gc.setTransform(newTx);
+
+		debugObject(gc, model);
+
+		gc.setTransform(oldTx);
+	}
+
+	private void debugObject(GC gc, BaseObjectModel model) {
+
+		if (model instanceof GroupModel) {
+			for (var model2 : ((GroupModel) model).getChildren()) {
+				debugObject(gc, model2);
+			}
+		}
+
+		var bounds = _modelBoundsMap.get(model);
+
+		if (bounds != null) {
+			gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
+
+			var points = new int[bounds.length];
+
+			for (int i = 0; i < points.length; i++) {
+				points[i] = (int) bounds[i];
+			}
+
+			gc.drawPolygon(points);
 		}
 	}
 
 	private void renderGroup(GC gc, Transform tx, GroupModel groupModel) {
 
-		var txElements = new float[6];
-		tx.getElements(txElements);
+		setObjectTransform(gc, tx, groupModel);
 
 		for (var obj : groupModel.getChildren()) {
 
-			var tx2 = new Transform(gc.getDevice(), txElements);
+			var tx2 = newTx(gc, tx);
 
 			renderObject(gc, tx2, obj);
 
@@ -173,23 +219,23 @@ public class WorldRenderer {
 			tx.translate((float) x, (float) y);
 		}
 
-		gc.setTransform(tx);
+		setObjectTransform(gc, tx, model);
 
 		if (model instanceof ImageSpriteModel) {
 
-			renderTexture(gc, ((ImageSpriteModel) model).getAssetKey());
+			renderTexture(gc, model, ((ImageSpriteModel) model).getAssetKey());
 
 		} else if (model instanceof AtlasSpriteModel) {
 
-			renderTexture(gc, ((AtlasSpriteModel) model).getAssetKey());
+			renderTexture(gc, model, ((AtlasSpriteModel) model).getAssetKey());
 
 		} else if (model instanceof SpritesheetSpriteModel) {
 
-			renderTexture(gc, ((SpritesheetSpriteModel) model).getAssetKey());
+			renderTexture(gc, model, ((SpritesheetSpriteModel) model).getAssetKey());
 
 		} else if (model instanceof ButtonSpriteModel) {
 
-			renderTexture(gc, ((ButtonSpriteModel) model).getAssetKey());
+			renderTexture(gc, model, ((ButtonSpriteModel) model).getAssetKey());
 
 		} else if (model instanceof TileSpriteModel) {
 
@@ -288,17 +334,16 @@ public class WorldRenderer {
 
 			textHeight = y;
 		}
-		
+
 		if (styleAlign == TextAlignment.CENTER) {
-			for(var textLine : textLines) {
+			for (var textLine : textLines) {
 				textLine.x = (textWidth - textLine.width) / 2;
 			}
 		} else if (styleAlign == TextAlignment.RIGHT) {
-			for(var textLine : textLines) {
+			for (var textLine : textLines) {
 				textLine.x = textWidth - textLine.width;
 			}
 		}
-		
 
 		if (styleBackgroundColor != null) {
 			gc.setBackground(styleBackgroundColor);
@@ -368,19 +413,26 @@ public class WorldRenderer {
 
 		var tx2 = newTx(gc, tx);
 		tx2.scale((float) scale, (float) scale);
-		gc.setTransform(tx2);
+
+		setObjectTransform(gc, tx2, model);
 
 		try {
-
+			
+			int[] size = new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE };
+			
 			fontModel.render(new RenderArgs(model.getText()), new BitmapFontRenderer() {
 
 				@Override
 				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
 					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+					size[0] = Math.max(x + srcW, size[0]);
+					size[1] = Math.max(y + srcH, size[1]);
 				}
 
 			});
 
+			setObjectBounds(gc, model, 0, 0, size[0], size[1]);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -515,12 +567,14 @@ public class WorldRenderer {
 			gc.drawString("Cannot render tilemap '" + model.getEditorName() + "'", 0, 0);
 		} else {
 			gc.drawImage(img, 0, 0);
+			var b = img.getBounds();
+			setObjectBounds(gc, model, 0, 0, b.width, b.height);
 		}
 
 	}
 
 	public Image getTilemapImage(TilemapSpriteModel model) {
-		
+
 		Image img = null;
 
 		if (model.getTilesetImage() != null) {
@@ -548,7 +602,7 @@ public class WorldRenderer {
 				}
 			}
 		}
-		
+
 		return img;
 	}
 
@@ -558,8 +612,8 @@ public class WorldRenderer {
 
 	private static Point getTextureSize(BaseSpriteModel model) {
 
-		//TODO: implement the rest of the models
-		
+		// TODO: implement the rest of the models
+
 		if (model instanceof AssetSpriteModel) {
 			var key = ((AssetSpriteModel<?>) model).getAssetKey();
 
@@ -653,15 +707,58 @@ public class WorldRenderer {
 			}
 		}
 
+		setObjectBounds(gc, tileModel, 0f, 0f, (float) width, (float) height);
+
 		// gc.setClipping(clipping);
 	}
 
-	private void renderTexture(GC gc, IAssetFrameModel assetFrame) {
+	private void renderTexture(GC gc, BaseObjectModel model, IAssetFrameModel assetFrame) {
 		var img = _canvas.loadImage(assetFrame.getImageFile());
 
 		var fd = assetFrame.getFrameData();
 
 		gc.drawImage(img, fd.src.x, fd.src.y, fd.src.width, fd.src.height, fd.dst.x, fd.dst.y, fd.dst.width,
 				fd.dst.height);
+
+		setObjectBounds(gc, model, 0, 0, fd.srcSize.x, fd.srcSize.y);
+	}
+
+	private void setObjectTransform(GC gc, Transform tx, BaseObjectModel model) {
+		gc.setTransform(tx);
+
+		var txElems = _modelTransformMap.get(model);
+
+		if (txElems == null) {
+			txElems = new float[6];
+			_modelTransformMap.put(model, txElems);
+		}
+
+		tx.getElements(txElems);
+	}
+
+	private void setObjectBounds(GC gc, BaseObjectModel model, float x, float y, float width, float height) {
+		var txElems = _modelTransformMap.get(model);
+		var tx = new Transform(gc.getDevice(), txElems);
+
+		// tx.invert();
+
+		var points = new float[] {
+
+				x, y,
+
+				x + width, y,
+
+				x + width, y + height,
+
+				x, y + height
+
+		};
+
+		tx.transform(points);
+
+		tx.dispose();
+
+		_modelBoundsMap.put(model, points);
+
 	}
 }
