@@ -762,13 +762,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		@Override
 		public void createControl(Composite parent) {
 			_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
-			_viewer = new AnimationsTreeViewer(_filteredTreeCanvas.getCanvas());
+			_viewer = new AnimationsTreeViewer(_filteredTreeCanvas.getTree());
 
-			AssetPackUI.installAssetTooltips(_filteredTreeCanvas.getCanvas(), _filteredTreeCanvas.getUtils());
+			AssetPackUI.installAssetTooltips(_filteredTreeCanvas.getTree(), _filteredTreeCanvas.getUtils());
 
 			{
 				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
-				DropTarget target = new DropTarget(_filteredTreeCanvas.getCanvas(), options);
+				DropTarget target = new DropTarget(_filteredTreeCanvas.getTree(), options);
 				Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 				target.setTransfer(types);
 				target.addDropListener(new DropTargetAdapter() {
@@ -801,7 +801,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			_initialSelection = null;
 
 			if (_initialOutlinerState != null) {
-				_outliner.getFilteredTreeCanvas().getCanvas().restoreState(_initialOutlinerState);
+				_outliner.getFilteredTreeCanvas().getTree().restoreState(_initialOutlinerState);
 				_initialOutlinerState = null;
 			}
 
@@ -945,7 +945,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		if (_outliner != null) {
 			var jsonSate = new JSONObject();
-			_outliner.getFilteredTreeCanvas().getCanvas().saveState(jsonSate);
+			_outliner.getFilteredTreeCanvas().getTree().saveState(jsonSate);
 			memento.putString(OUTLINER_TREE_STATE_KEY, jsonSate.toString());
 		}
 	}

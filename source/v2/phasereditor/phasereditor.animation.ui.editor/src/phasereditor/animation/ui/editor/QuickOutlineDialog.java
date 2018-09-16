@@ -71,7 +71,7 @@ public class QuickOutlineDialog extends Dialog implements MouseListener {
 		container.setLayout(new FillLayout());
 
 		_filteredTree = new FilteredTreeCanvas(container, SWT.BORDER);
-		_viewer = new AnimationsTreeViewer(_filteredTree.getCanvas());
+		_viewer = new AnimationsTreeViewer(_filteredTree.getTree());
 
 		afterCreateWidgets();
 

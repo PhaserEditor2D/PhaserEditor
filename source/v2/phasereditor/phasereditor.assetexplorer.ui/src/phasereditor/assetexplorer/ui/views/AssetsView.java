@@ -118,7 +118,7 @@ public class AssetsView extends ViewPart {
 		_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
 		_filteredTreeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		_treeCanvas = _filteredTreeCanvas.getCanvas();
+		_treeCanvas = _filteredTreeCanvas.getTree();
 		_treeCanvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {

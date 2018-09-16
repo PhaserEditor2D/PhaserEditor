@@ -67,7 +67,15 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		_worldRenderer = new WorldRenderer(this);
 	}
+	
+	public WorldModel getWorldModel() {
+		return _worldModel;
+	}
 
+	public WorldRenderer getWorldRenderer() {
+		return _worldRenderer;
+	}
+	
 	@Override
 	public void dispose() {
 		super.dispose();

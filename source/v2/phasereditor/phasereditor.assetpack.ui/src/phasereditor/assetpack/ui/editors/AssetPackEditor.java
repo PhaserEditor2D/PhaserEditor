@@ -301,7 +301,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			{
 				var tree = new FilteredTreeCanvas(this, SWT.NONE);
 				tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				_viewer = createTreeViewer(tree.getCanvas());
+				_viewer = createTreeViewer(tree.getTree());
 			}
 
 		}
@@ -952,7 +952,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		@Override
 		protected TreeCanvasViewer createViewer() {
-			return new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getCanvas(), new AssetsContentProvider(true),
+			return new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getTree(), new AssetsContentProvider(true),
 					AssetLabelProvider.GLOBAL_16);
 		}
 

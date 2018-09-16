@@ -509,6 +509,18 @@ public class WorldRenderer {
 
 	private void renderTilemapSprite(GC gc, TilemapSpriteModel model) {
 
+		Image img = getTilemapImage(model);
+
+		if (img == null) {
+			gc.drawString("Cannot render tilemap '" + model.getEditorName() + "'", 0, 0);
+		} else {
+			gc.drawImage(img, 0, 0);
+		}
+
+	}
+
+	public Image getTilemapImage(TilemapSpriteModel model) {
+		
 		Image img = null;
 
 		if (model.getTilesetImage() != null) {
@@ -536,13 +548,8 @@ public class WorldRenderer {
 				}
 			}
 		}
-
-		if (img == null) {
-			gc.drawString("Cannot render tilemap '" + model.getEditorName() + "'", 0, 0);
-		} else {
-			gc.drawImage(img, 0, 0);
-		}
-
+		
+		return img;
 	}
 
 	private Image loadImage(IFile file) {

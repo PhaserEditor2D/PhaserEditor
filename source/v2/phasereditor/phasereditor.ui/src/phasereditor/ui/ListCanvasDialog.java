@@ -100,7 +100,7 @@ public class ListCanvasDialog extends SelectionDialog {
 		Composite parent = (Composite) super.createDialogArea(container);
 		createMessageArea(parent);
 		_tree = new FilteredTreeCanvas(parent, getTableStyle());
-		fTableViewer = new TreeCanvasViewer(_tree.getCanvas());
+		fTableViewer = new TreeCanvasViewer(_tree.getTree());
 		fTableViewer.setContentProvider(fContentProvider);
 		fTableViewer.setLabelProvider(fLabelProvider);
 		fTableViewer.setInput(fInput);

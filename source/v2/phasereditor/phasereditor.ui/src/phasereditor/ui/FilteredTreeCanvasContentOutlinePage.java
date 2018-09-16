@@ -56,7 +56,7 @@ public abstract class FilteredTreeCanvasContentOutlinePage extends Page
 	@Override
 	public void createControl(Composite parent) {
 		_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
-		_canvas = _filteredTreeCanvas.getCanvas();
+		_canvas = _filteredTreeCanvas.getTree();
 		_viewer = createViewer();
 
 		for (var l : _initialListeners) {

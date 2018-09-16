@@ -91,7 +91,7 @@ public class AudioResourceDialog extends Dialog {
 		composite_1.setLayout(new GridLayout(1, false));
 
 		_filteredCanvas = new FilteredTreeCanvas(composite_1, SWT.BORDER);
-		_treeCanvas = _filteredCanvas.getCanvas();
+		_treeCanvas = _filteredCanvas.getTree();
 		_treeCanvas.setShowCheckbox(true);
 		_filesViewer = createViewer();
 		_filesViewer.addSelectionChangedListener(new ISelectionChangedListener() {

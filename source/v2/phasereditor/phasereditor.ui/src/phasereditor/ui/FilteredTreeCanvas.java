@@ -38,7 +38,7 @@ public class FilteredTreeCanvas extends Composite {
 
 	private Text _filterText;
 	protected ModifyListener _textChanged;
-	private TreeCanvas _canvas;
+	private TreeCanvas _tree;
 
 	public FilteredTreeCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -52,19 +52,19 @@ public class FilteredTreeCanvas extends Composite {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.ARROW_DOWN) {
-					getCanvas().setFocus();
+					getTree().setFocus();
 				}
 			}
 		});
 
 		_textChanged = e -> {
-			_canvas.filter(_filterText.getText());
+			_tree.filter(_filterText.getText());
 		};
 
 		_filterText.addModifyListener(_textChanged);
 
-		_canvas = new TreeCanvas(this, SWT.NONE);
-		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		_tree = new TreeCanvas(this, SWT.NONE);
+		_tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 	}
 
@@ -72,8 +72,8 @@ public class FilteredTreeCanvas extends Composite {
 		return _filterText;
 	}
 	
-	public TreeCanvas getCanvas() {
-		return _canvas;
+	public TreeCanvas getTree() {
+		return _tree;
 	}
 
 	public String getFilterText() {
@@ -85,6 +85,6 @@ public class FilteredTreeCanvas extends Composite {
 	}
 
 	public FrameCanvasUtils getUtils() {
-		return _canvas.getUtils();
+		return _tree.getUtils();
 	}
 }

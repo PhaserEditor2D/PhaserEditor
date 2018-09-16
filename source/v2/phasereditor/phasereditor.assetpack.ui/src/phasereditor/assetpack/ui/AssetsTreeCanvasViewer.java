@@ -68,29 +68,49 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 	@Override
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		var elem = item.getData();
-		IFile file = null;
-		FrameData fd = null;
-		
+
 		LinkedHashSet<String> keywords = new LinkedHashSet<>();
 
 		addKeywords(elem, keywords);
 
 		item.setKeywords(keywords.isEmpty() ? null : keywords.stream().collect(joining(",")));
 
-		if (elem instanceof IAssetFrameModel) {
-			var asset = (IAssetFrameModel) elem;
+		var imageRenderer = createImageRenderer(item, elem);
+
+		if (imageRenderer == null) {
+			super.setItemIconProperties(item);
+		} else {
+			item.setRenderer(imageRenderer);
+		}
+
+		if (elem instanceof AnimationModel) {
+			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
+		} else if (elem instanceof AudioAssetModel) {
+			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
+		} else if (elem instanceof BitmapFontAssetModel) {
+			item.setRenderer(new BitmapFontTreeCanvasRenderer(item));
+		}
+	}
+
+	public static ImageTreeCanvasItemRenderer createImageRenderer(TreeCanvasItem item, Object element) {
+
+		IFile file = null;
+		FrameData fd = null;
+
+		if (element instanceof IAssetFrameModel) {
+			var asset = (IAssetFrameModel) element;
 			file = asset.getImageFile();
 			if (file != null) {
 				fd = asset.getFrameData();
 			}
-		} else if (elem instanceof ImageAssetModel) {
-			var asset = (ImageAssetModel) elem;
+		} else if (element instanceof ImageAssetModel) {
+			var asset = (ImageAssetModel) element;
 			file = asset.getFrame().getImageFile();
 			if (file != null) {
 				fd = asset.getFrame().getFrameData();
 			}
-		} else if (elem instanceof AtlasAssetModel) {
-			var asset = (AtlasAssetModel) elem;
+		} else if (element instanceof AtlasAssetModel) {
+			var asset = (AtlasAssetModel) element;
 			fd = new FrameData(0);
 			fd.src = asset.getImageSize();
 			if (fd.src != null) {
@@ -98,21 +118,21 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 				fd.srcSize = new Point(fd.src.width, fd.src.height);
 				file = asset.getTextureFile();
 			}
-		} else if (elem instanceof MultiAtlasAssetModel) {
-			var asset = (MultiAtlasAssetModel) elem;
+		} else if (element instanceof MultiAtlasAssetModel) {
+			var asset = (MultiAtlasAssetModel) element;
 			var frames = asset.getSubElements();
 			if (!frames.isEmpty()) {
 				var frame = frames.get(0);
 				file = frame.getImageFile();
 				if (file != null) {
-					var img = getCanvas().loadImage(file);
+					var img = item.getCanvas().loadImage(file);
 					if (img != null) {
 						fd = FrameData.fromImage(img);
 					}
 				}
 			}
-		} else if (elem instanceof SpritesheetAssetModel) {
-			var asset = (SpritesheetAssetModel) elem;
+		} else if (element instanceof SpritesheetAssetModel) {
+			var asset = (SpritesheetAssetModel) element;
 			fd = new FrameData(0);
 			fd.src = asset.getImageSize();
 			if (fd.src != null) {
@@ -120,8 +140,8 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 				fd.srcSize = new Point(fd.src.width, fd.src.height);
 				file = asset.getUrlFile();
 			}
-		} else if (elem instanceof AnimationFrameModel) {
-			AnimationFrameModel animFrame = (AnimationFrameModel) elem;
+		} else if (element instanceof AnimationFrameModel) {
+			AnimationFrameModel animFrame = (AnimationFrameModel) element;
 			var assetFrame = animFrame.getFrameAsset();
 
 			if (assetFrame != null) {
@@ -133,20 +153,12 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		}
 
 		if (file == null || fd == null) {
-			super.setItemIconProperties(item);
-		} else {
-			// we do this to do the loading at once!
-			var image = getCanvas().loadImage(file);
-			item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, fd));
+			return null;
 		}
-		
-		if (elem instanceof AnimationModel) {
-			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
-		} else  if (elem instanceof AudioAssetModel) {
-			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
-		} else if (elem instanceof BitmapFontAssetModel) {
-			item.setRenderer(new BitmapFontTreeCanvasRenderer(item));
-		}
+
+		var image = item.getCanvas().loadImage(file);
+
+		return new ImageTreeCanvasItemRenderer(item, image, fd);
 	}
 
 	@SuppressWarnings("static-method")

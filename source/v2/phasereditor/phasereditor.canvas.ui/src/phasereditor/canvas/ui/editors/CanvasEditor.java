@@ -72,6 +72,7 @@ import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,6 +86,7 @@ import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
 import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
+import phasereditor.canvas.ui.editors.outline.CanvasOutline;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.editors.properties.CanvasPropertiesPage;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -129,9 +131,10 @@ public class CanvasEditor extends MultiPageEditorPart
 	protected IContextActivation _paletteContext;
 	private CanvasSettingsComp _settingsPage;
 	private Control _designPage;
-	private ObjectCanvas2 _designPage2;
-	
+	private ObjectCanvas2 _canvas2;
+
 	private UndoRedoActionGroup _undoRedoGroup;
+	private CanvasOutline _outline2;
 
 	public CanvasEditor() {
 	}
@@ -142,12 +145,28 @@ public class CanvasEditor extends MultiPageEditorPart
 		if (adapter == CanvasEditor.class) {
 			return this;
 		}
-		
+
 		if (adapter == IPropertySheetPage.class) {
 			return new CanvasPropertiesPage();
 		}
-		
+
+		if (adapter == IContentOutlinePage.class) {
+			if (_outline2 == null) {
+				_outline2 = new CanvasOutline(this);
+			}
+
+			return _outline2;
+		}
+
 		return super.getAdapter(adapter);
+	}
+	
+	public CanvasOutline getOutline2() {
+		return _outline2;
+	}
+	
+	public void setOutline2(CanvasOutline outline2) {
+		_outline2 = outline2;
 	}
 
 	@Override
@@ -318,8 +337,8 @@ public class CanvasEditor extends MultiPageEditorPart
 	}
 
 	private void createDesignPage() {
-		_designPage2 = new ObjectCanvas2(getContainer(), SWT.NONE);
-		int i = addPage(_designPage2);
+		_canvas2 = new ObjectCanvas2(getContainer(), SWT.NONE);
+		int i = addPage(_canvas2);
 		setPageText(i, "Design 2");
 		setPageImage(i, getTitleImage());
 	}
@@ -483,8 +502,8 @@ public class CanvasEditor extends MultiPageEditorPart
 
 	private void initCanvas() {
 		_canvas.init(this, _model, _grid, _outlineTree.getViewer(), _paletteComp);
-		_designPage2.init(this, _model, _grid, getOutline());
-		
+		_canvas2.init(this, _model, _grid, getOutline());
+
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}
 
@@ -594,6 +613,10 @@ public class CanvasEditor extends MultiPageEditorPart
 
 	public ObjectCanvas getCanvas() {
 		return _canvas;
+	}
+
+	public ObjectCanvas2 getCanvas2() {
+		return _canvas2;
 	}
 
 	public TreeViewer getOutline() {

@@ -95,7 +95,7 @@ public class ImageResourceDialog extends Dialog {
 
 		var filteredTree = new FilteredTreeCanvas(composite, SWT.BORDER);
 		filteredTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
-		_treeCanvas = filteredTree.getCanvas();
+		_treeCanvas = filteredTree.getTree();
 		_listViewer = createViewer();
 
 		_imagePreviewCanvas = new ImagePreviewComp(composite, SWT.BORDER);
