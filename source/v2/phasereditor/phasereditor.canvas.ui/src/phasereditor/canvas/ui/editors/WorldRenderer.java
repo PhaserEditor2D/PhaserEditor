@@ -278,7 +278,6 @@ public class WorldRenderer {
 		public int height;
 	}
 
-	@SuppressWarnings("static-method")
 	private void renderText(GC gc, TextModel model) {
 
 		var name = model.getStyleFont();
@@ -350,6 +349,8 @@ public class WorldRenderer {
 			gc.fillRectangle(0, 0, textWidth, textHeight);
 		}
 
+		setObjectBounds(gc, model, 0, 0, textWidth, textHeight);
+
 		for (var textLine : textLines) {
 
 			if (styleStroke == null || styleStroleThickness == 0) {
@@ -379,11 +380,12 @@ public class WorldRenderer {
 		font.dispose();
 	}
 
-	@SuppressWarnings("static-method")
 	private void renderMissingAsset(GC gc, MissingAssetSpriteModel model) {
 
 		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
 		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
+
+		String text;
 
 		try {
 			JSONObject data = model.getSrcData();
@@ -394,11 +396,17 @@ public class WorldRenderer {
 			if (refObj.has("sprite")) {
 				sb.append("\nframe=" + refObj.getString("sprite"));
 			}
-			gc.drawText(sb.toString(), 0, 0, false);
+			text = sb.toString();
+			gc.drawText(text, 0, 0, false);
+
 		} catch (Exception e) {
 			StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e), 0);
-			gc.drawText("Missing asset", 0, 0, true);
+			text = "Missing asset";
+			gc.drawText(text, 0, 0, true);
 		}
+
+		var m = gc.textExtent(text);
+		setObjectBounds(gc, model, 0, 0, m.x, m.y);
 	}
 
 	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel model) {
@@ -417,9 +425,9 @@ public class WorldRenderer {
 		setObjectTransform(gc, tx2, model);
 
 		try {
-			
+
 			int[] size = new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE };
-			
+
 			fontModel.render(new RenderArgs(model.getText()), new BitmapFontRenderer() {
 
 				@Override
@@ -432,7 +440,7 @@ public class WorldRenderer {
 			});
 
 			setObjectBounds(gc, model, 0, 0, size[0], size[1]);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
