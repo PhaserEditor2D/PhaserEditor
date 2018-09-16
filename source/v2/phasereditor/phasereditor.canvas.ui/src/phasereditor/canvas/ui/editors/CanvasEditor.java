@@ -72,6 +72,7 @@ import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -85,6 +86,7 @@ import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
 import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
+import phasereditor.canvas.ui.editors.properties.CanvasPropertiesPage;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -140,6 +142,11 @@ public class CanvasEditor extends MultiPageEditorPart
 		if (adapter == CanvasEditor.class) {
 			return this;
 		}
+		
+		if (adapter == IPropertySheetPage.class) {
+			return new CanvasPropertiesPage();
+		}
+		
 		return super.getAdapter(adapter);
 	}
 

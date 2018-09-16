@@ -228,6 +228,7 @@ public class WorldRenderer {
 		public int x;
 		public int y;
 		public int width;
+		@SuppressWarnings("unused")
 		public int height;
 	}
 
@@ -258,9 +259,6 @@ public class WorldRenderer {
 		if (model.getStyleFontStyle() == FontPosture.ITALIC) {
 			style |= SWT.ITALIC;
 		}
-
-		// TODO: Missing backgroud color. But to do this, we need to compute the text
-		// bounds.
 
 		var oldFont = gc.getFont();
 		Font font = new Font(gc.getDevice(), name, height, style);
@@ -553,6 +551,8 @@ public class WorldRenderer {
 
 	private static Point getTextureSize(BaseSpriteModel model) {
 
+		//TODO: implement the rest of the models
+		
 		if (model instanceof AssetSpriteModel) {
 			var key = ((AssetSpriteModel<?>) model).getAssetKey();
 
