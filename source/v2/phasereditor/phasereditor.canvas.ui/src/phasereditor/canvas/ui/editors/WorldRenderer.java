@@ -130,17 +130,19 @@ public class WorldRenderer {
 	}
 
 	private void debugObject(GC gc, BaseObjectModel model) {
+		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
 
 		if (model instanceof GroupModel) {
 			for (var model2 : ((GroupModel) model).getChildren()) {
 				debugObject(gc, model2);
 			}
+
+			gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLUE));
 		}
 
 		var bounds = _modelBoundsMap.get(model);
 
 		if (bounds != null) {
-			gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
 
 			var points = new int[bounds.length];
 
@@ -164,6 +166,27 @@ public class WorldRenderer {
 
 			tx2.dispose();
 		}
+
+		var minX = Float.MAX_VALUE;
+		var minY = Float.MAX_VALUE;
+		var maxX = Float.MIN_VALUE;
+		var maxY = Float.MIN_VALUE;
+		
+		for (var obj : groupModel.getChildren()) {
+			var points = _modelBoundsMap.get(obj);
+			if (points != null) {
+				for (int i = 0; i + 1 < points.length; i += 2) {
+					var x = points[i];
+					var y = points[i + 1];
+					minX = Math.min(minX, x);
+					minY = Math.min(minY, y);
+					maxX = Math.max(maxX, x);
+					maxY = Math.max(maxY, y);
+				}
+			}
+		}
+
+		_modelBoundsMap.put(groupModel, new float[] { minX, minY, maxX, minY, maxX, maxY, minX, maxY });
 	}
 
 	private void renderObject(GC gc, Transform tx, BaseObjectModel objModel) {
