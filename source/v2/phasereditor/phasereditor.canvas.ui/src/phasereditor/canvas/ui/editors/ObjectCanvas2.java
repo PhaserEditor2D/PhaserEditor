@@ -21,17 +21,24 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.EditorSettings;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.ui.ZoomCanvas;
 
@@ -49,9 +56,12 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	private WorldRenderer _worldRenderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
+	private List<Object> _selection;
 
 	public ObjectCanvas2(Composite parent, int style) {
 		super(parent, style);
+
+		_selection = new ArrayList<>();
 
 		addPaintListener(this);
 		addMouseListener(new SelectionMouseListener());
@@ -64,7 +74,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		_worldRenderer = new WorldRenderer(this);
 	}
-	
+
 	public CanvasEditor getEditor() {
 		return _editor;
 	}
@@ -95,7 +105,23 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		_worldRenderer.renderWorld(e.gc, tx, _worldModel);
 
+		renderSelection(e.gc);
+
 		renderLabels(e);
+	}
+
+	private void renderSelection(GC gc) {
+		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
+
+		for (var obj : _selection) {
+			if (obj instanceof BaseObjectModel) {
+				var bounds = _worldRenderer.getObjectBounds((BaseObjectModel) obj);
+				if (bounds != null) {
+					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
+							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
+				}
+			}
+		}
 	}
 
 	private void renderBackground(PaintEvent e) {
@@ -227,8 +253,10 @@ public class ObjectCanvas2 extends ZoomCanvas {
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		gc.setBackground(SWTResourceManager.getColor(_settingsModel.getBackgroundColor()));
 
+		gc.setAlpha(220);
 		gc.fillRectangle(0, 0, e.width, X_LABELS_HEIGHT);
 		gc.fillRectangle(0, 0, Y_LABEL_WIDTH, e.height);
+		gc.setAlpha(255);
 
 		// paint labels
 
@@ -342,7 +370,7 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		public SelectionMouseListener() {
 		}
-		
+
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			//
@@ -355,9 +383,159 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 		@Override
 		public void mouseUp(MouseEvent e) {
-			//
+			updateSelectionWithMouseEvent(e);
 		}
 
+	}
+
+	BaseObjectModel pickObject(int x, int y) {
+
+		var pick = pickObject(_worldModel, x, y);
+
+		return pick;
+	}
+
+	private BaseObjectModel pickObject(BaseObjectModel model, int x, int y) {
+		if (model instanceof GroupModel) {
+			var groupModel = (GroupModel) model;
+
+			if (groupModel.isEditorClosed() || groupModel.isPrefabInstance()) {
+
+				var polygon = _worldRenderer.getObjectBounds(model);
+
+				if (hitsPolygon(x, y, polygon)) {
+					return model;
+				}
+
+			} else {
+
+				for (var model2 : groupModel.getChildren()) {
+					var pick = pickObject(model2, x, y);
+					if (pick != null) {
+						return pick;
+					}
+				}
+
+			}
+
+			return null;
+		}
+
+		var polygon = _worldRenderer.getObjectBounds(model);
+
+		if (hitsPolygon(x, y, polygon)) {
+			return model;
+		}
+
+		return null;
+	}
+
+	void updateSelectionWithMouseEvent(MouseEvent e) {
+		var fireUpdateSelection = false;
+
+		var pick = pickObject(e.x, e.y);
+
+		if (pick == null) {
+			fireUpdateSelection = !_selection.isEmpty();
+			_selection = new ArrayList<>();
+		} else {
+			if ((e.stateMask & SWT.CTRL) != 0) {
+				if (_selection.contains(pick)) {
+					_selection.remove(pick);
+				} else {
+					_selection.add(pick);
+				}
+			} else {
+				_selection = new ArrayList<>();
+				_selection.add(pick);
+			}
+
+			fireUpdateSelection = true;
+		}
+
+		if (fireUpdateSelection) {
+			redraw();
+
+			_editor.getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(_selection));
+		}
+	}
+
+	private static boolean hitsPolygon(int x, int y, float[] polygon) {
+		if (polygon == null) {
+			return false;
+		}
+
+		int npoints = polygon.length / 2;
+
+		if (npoints <= 2) {
+			return false;
+		}
+
+		var xpoints = new int[npoints];
+		var ypoints = new int[npoints];
+
+		for (int i = 0; i < npoints; i++) {
+			xpoints[i] = (int) polygon[i * 2];
+			ypoints[i] = (int) polygon[i * 2 + 1];
+		}
+
+		int hits = 0;
+
+		int lastx = xpoints[npoints - 1];
+		int lasty = ypoints[npoints - 1];
+		int curx, cury;
+
+		// Walk the edges of the polygon
+		for (int i = 0; i < npoints; lastx = curx, lasty = cury, i++) {
+			curx = xpoints[i];
+			cury = ypoints[i];
+
+			if (cury == lasty) {
+				continue;
+			}
+
+			int leftx;
+			if (curx < lastx) {
+				if (x >= lastx) {
+					continue;
+				}
+				leftx = curx;
+			} else {
+				if (x >= curx) {
+					continue;
+				}
+				leftx = lastx;
+			}
+
+			double test1, test2;
+			if (cury < lasty) {
+				if (y < cury || y >= lasty) {
+					continue;
+				}
+				if (x < leftx) {
+					hits++;
+					continue;
+				}
+				test1 = x - curx;
+				test2 = y - cury;
+			} else {
+				if (y < lasty || y >= cury) {
+					continue;
+				}
+				if (x < leftx) {
+					hits++;
+					continue;
+				}
+				test1 = x - lastx;
+				test2 = y - lasty;
+			}
+
+			if (test1 < (test2 / (lasty - cury) * (lastx - curx))) {
+				hits++;
+			}
+		}
+
+		return ((hits & 1) != 0);
 	}
 
 }

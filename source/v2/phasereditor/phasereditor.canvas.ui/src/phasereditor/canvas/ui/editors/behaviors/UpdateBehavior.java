@@ -37,6 +37,7 @@ import org.eclipse.ui.IWorkbench;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -169,6 +170,13 @@ public class UpdateBehavior {
 			IObjectNode node = (IObjectNode) element;
 			BaseObjectControl<?> control = node.getControl();
 			return control.getPropertyModel();
+		}
+
+		// lets do this because the migration process
+		if (element instanceof BaseObjectModel) {
+			var grid = new PGridModel();
+			grid.addSection("Just for migration purpose");
+			return grid;
 		}
 
 		throw new InvalidParameterException("All elements needs a property model.");

@@ -73,6 +73,7 @@ public class WorldRenderer {
 	private ObjectCanvas2 _canvas;
 	private Map<BaseObjectModel, float[]> _modelTransformMap;
 	private Map<BaseObjectModel, float[]> _modelBoundsMap;
+	private boolean _debug;
 
 	public WorldRenderer(ObjectCanvas2 canvas) {
 		super();
@@ -114,7 +115,9 @@ public class WorldRenderer {
 			gc.setTransform(null);
 		}
 
-		startDebug(gc, worldModel);
+		if (_debug) {
+			startDebug(gc, worldModel);
+		}
 	}
 
 	private void startDebug(GC gc, BaseObjectModel model) {
@@ -171,7 +174,7 @@ public class WorldRenderer {
 		var minY = Float.MAX_VALUE;
 		var maxX = Float.MIN_VALUE;
 		var maxY = Float.MIN_VALUE;
-		
+
 		for (var obj : groupModel.getChildren()) {
 			var points = _modelBoundsMap.get(obj);
 			if (points != null) {
@@ -791,5 +794,9 @@ public class WorldRenderer {
 
 		_modelBoundsMap.put(model, points);
 
+	}
+
+	public float[] getObjectBounds(BaseObjectModel obj) {
+		return _modelBoundsMap.get(obj);
 	}
 }

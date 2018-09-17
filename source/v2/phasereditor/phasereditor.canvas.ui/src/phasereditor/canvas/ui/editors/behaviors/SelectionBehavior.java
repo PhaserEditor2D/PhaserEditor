@@ -363,7 +363,9 @@ public class SelectionBehavior implements ISelectionProvider {
 			_selection = (IStructuredSelection) selection;
 			List<IObjectNode> list = new ArrayList<>();
 			for (Object obj : _selection.toArray()) {
-				list.add((IObjectNode) obj);
+				if (obj instanceof IObjectNode) {
+					list.add((IObjectNode) obj);
+				}
 			}
 			_selectedNodes = list;
 		}
