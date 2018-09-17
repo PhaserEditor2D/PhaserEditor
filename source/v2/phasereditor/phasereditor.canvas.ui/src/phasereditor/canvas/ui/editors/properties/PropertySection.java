@@ -21,16 +21,49 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.properties;
 
+import java.util.HashSet;
+import java.util.stream.Stream;
+
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * @author arian
  *
  */
-public class PropertySection extends Composite {
+public abstract class PropertySection {
+	private Object[] _models;
+	private String _name;
 
-	public PropertySection(Composite parent, int style) {
-		super(parent, style);
+	public PropertySection(String name) {
+		_name = name;
 	}
+	
+	public String getName() {
+		return _name;
+	}
+
+	public Object[] getModels() {
+		return _models;
+	}
+
+	public void setModels(Object[] models) {
+		_models = models;
+	}
+
+	protected static String flatStringValues(Stream<String> values) {
+		var set = new HashSet<>();
+		values.forEach(v -> set.add(v));
+
+		if (set.size() == 1) {
+			return (String) set.toArray()[0];
+		}
+
+		return "";
+	}
+
+	public abstract boolean canEdit(Object obj);
+
+	public abstract Control createContent(Composite parent);
 
 }

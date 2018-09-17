@@ -409,7 +409,9 @@ public class ObjectCanvas2 extends ZoomCanvas {
 
 			} else {
 
-				for (var model2 : groupModel.getChildren()) {
+				List<BaseObjectModel> children = groupModel.getChildren();
+				for (int i = children.size() - 1; i >= 0; i--) {
+					var model2 = children.get(i);
 					var pick = pickObject(model2, x, y);
 					if (pick != null) {
 						return pick;
@@ -431,6 +433,10 @@ public class ObjectCanvas2 extends ZoomCanvas {
 	}
 
 	void updateSelectionWithMouseEvent(MouseEvent e) {
+		if (e.button != 1) {
+			return;
+		}
+
 		var fireUpdateSelection = false;
 
 		var pick = pickObject(e.x, e.y);

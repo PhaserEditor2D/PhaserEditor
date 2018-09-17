@@ -21,8 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.properties;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -30,6 +36,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.wb.swt.SWTResourceManager;
+
+import phasereditor.canvas.core.BaseObjectModel;
 
 /**
  * @author arian
@@ -41,7 +50,67 @@ public class CanvasPropertiesPage extends Page implements IPropertySheetPage {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		//
+		var models = ((IStructuredSelection) selection).toArray();
+
+		for (var c : _sectionsContainer.getChildren()) {
+			c.dispose();
+		}
+
+		var map = new HashMap<Object, PropertySection>();
+		var sections = new ArrayList<PropertySection>();
+
+		for (var model : models) {
+			var objSections = createSections(model);
+
+			for (var section : objSections) {
+				if (!map.containsKey(section.getClass())) {
+					map.put(objSections.getClass(), section);
+					sections.add(section);
+				}
+			}
+		}
+
+		var finalSections = new ArrayList<PropertySection>();
+
+		for (var section : sections) {
+			var accept = true;
+			for (var model : models) {
+				if (!section.canEdit(model)) {
+					accept = false;
+					break;
+				}
+			}
+			if (accept) {
+				finalSections.add(section);
+			}
+		}
+
+		for (var section : finalSections) {
+			section.setModels(models);
+
+			var title = new Label(_sectionsContainer, SWT.NONE);
+			title.setText(section.getName());
+			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
+
+			var control = section.createContent(_sectionsContainer);
+			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+			var sep = new Label(_sectionsContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+			sep.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		}
+
+		_sectionsContainer.layout();
+	}
+
+	private List<PropertySection> createSections(Object obj) {
+		List<PropertySection> list = new ArrayList<>();
+
+		if (obj instanceof BaseObjectModel) {
+			list.add(new Editor_BaseObjectSection(this));
+			list.add(new Object_BaseObjectSection(this));
+		}
+
+		return list;
 	}
 
 	@Override
