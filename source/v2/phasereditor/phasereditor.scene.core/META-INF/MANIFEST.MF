@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Scene Editor Core
+Bundle-SymbolicName: phasereditor.scene.core
+Bundle-Version: 2.0.0
+Bundle-Activator: phasereditor.scene.core.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ phasereditor.assetpack.core;bundle-version="1.5.0",
+ org.json;bundle-version="1.4.0",
+ phasereditor.ui;bundle-version="1.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-9
+Automatic-Module-Name: phasereditor.scene.core
+Bundle-ActivationPolicy: lazy
+Export-Package: phasereditor.scene.core
