@@ -79,6 +79,16 @@ var Sprite = new Class({
         GameObject.call(this, scene, 'Sprite');
 
         /**
+         * The internal crop data object, as used by `setCrop` and passed to the `Frame.setCropUVs` method.
+         *
+         * @name Phaser.GameObjects.Sprite#_crop
+         * @type {object}
+         * @private
+         * @since 3.11.0
+         */
+        this._crop = this.resetCropObject();
+
+        /**
          * The Animation Controller of this Sprite.
          *
          * @name Phaser.GameObjects.Sprite#anims
@@ -91,7 +101,7 @@ var Sprite = new Class({
         this.setPosition(x, y);
         this.setSizeToFrame();
         this.setOriginFromFrame();
-        this.initPipeline('TextureTintPipeline');
+        this.initPipeline();
     },
 
     /**

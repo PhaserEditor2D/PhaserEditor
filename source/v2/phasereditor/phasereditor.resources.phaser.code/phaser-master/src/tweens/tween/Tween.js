@@ -899,6 +899,12 @@ var Tween = new Class({
 
         if (this.state !== TWEEN_CONST.REMOVED)
         {
+            if (this.state === TWEEN_CONST.PAUSED || this.state === TWEEN_CONST.PENDING_ADD)
+            {
+                this.parent._destroy.push(this);
+                this.parent._toProcess++;
+            }
+
             this.state = TWEEN_CONST.PENDING_REMOVE;
         }
     },
@@ -910,7 +916,7 @@ var Tween = new Class({
      * @since 3.0.0
      *
      * @param {number} timestamp - [description]
-     * @param {number} delta - [description]
+     * @param {number} delta - The delta time in ms since the last frame. This is a smoothed and capped value based on the FPS rate.
      *
      * @return {boolean} Returns `true` if this Tween has finished and should be removed from the Tween Manager, otherwise returns `false`.
      */

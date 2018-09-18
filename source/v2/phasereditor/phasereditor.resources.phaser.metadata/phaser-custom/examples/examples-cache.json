@@ -567,6 +567,16 @@
         ]
       },
       {
+        "mainFile": "src/animation/reverse animation.js",
+        "map": [
+          {
+            "orig": "src/animation/reverse animation.js",
+            "dst": "reverse animation.js"
+          },
+          {"orig": "assets/animations/mummy37x45.png"}
+        ]
+      },
+      {
         "mainFile": "src/animation/scaled animation.js",
         "map": [
           {
@@ -1080,42 +1090,160 @@
     "subCategories": [],
     "examples": [
       {
-        "mainFile": "src/bugs/container bounds.js",
+        "mainFile": "src/bugs/ap postupdate.js",
         "map": [
           {
-            "orig": "src/bugs/container bounds.js",
-            "dst": "container bounds.js"
+            "orig": "src/bugs/ap postupdate.js",
+            "dst": "ap postupdate.js"
           },
-          {"orig": "assets/sprites/pangball.png"}
+          {"orig": "assets/sprites/50x50-white.png"},
+          {"orig": "assets/sprites/50x50-black.png"}
         ]
       },
       {
-        "mainFile": "src/bugs/emitter blend mode.js",
+        "mainFile": "src/bugs/ap tilemap.js",
         "map": [
           {
-            "orig": "src/bugs/emitter blend mode.js",
-            "dst": "emitter blend mode.js"
+            "orig": "src/bugs/ap tilemap.js",
+            "dst": "ap tilemap.js"
           },
-          {"orig": "assets/pics/ra-einstein.png"}
+          {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"},
+          {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
+          {"orig": "assets/sprites/spaceman.png"}
         ]
       },
       {
-        "mainFile": "src/bugs/mask.js",
+        "mainFile": "src/bugs/container tilesprite.js",
+        "map": [
+          {
+            "orig": "src/bugs/container tilesprite.js",
+            "dst": "container tilesprite.js"
+          },
+          {"orig": "assets/sprites/mushroom2.png"},
+          {"orig": "assets/sprites/advanced_wars_land.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/input res.js",
+        "map": [
+          {
+            "orig": "src/bugs/input res.js",
+            "dst": "input res.js"
+          },
+          {"orig": "assets/sprites/block.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/light.js",
+        "map": [
+          {
+            "orig": "src/bugs/light.js",
+            "dst": "light.js"
+          },
+          {"orig": "assets/tilemaps/tiles/drawtiles1_n.png"},
+          {"orig": "assets/tilemaps/tiles/drawtiles1.png"},
+          {"orig": "assets/tilemaps/csv/grid.csv"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/light 2.js",
+        "map": [
+          {
+            "orig": "src/bugs/light 2.js",
+            "dst": "light 2.js"
+          },
+          {"orig": "assets/tilemaps/tiles/drawtiles1_n.png"},
+          {"orig": "assets/tilemaps/tiles/drawtiles1.png"},
+          {"orig": "assets/normal-maps/phaser2_n.png"},
+          {"orig": "assets/sprites/phaser2.png"},
+          {"orig": "assets/tilemaps/csv/grid.csv"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/multi pan.js",
+        "map": [
+          {
+            "orig": "src/bugs/multi pan.js",
+            "dst": "multi pan.js"
+          },
+          {"orig": "assets/tests/camera/earthbound-scarab.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/pixi text.js",
         "map": [{
-          "orig": "src/bugs/mask.js",
-          "dst": "mask.js"
+          "orig": "src/bugs/pixi text.js",
+          "dst": "pixi text.js"
         }]
       },
       {
-        "mainFile": "src/bugs/particles.js",
+        "mainFile": "src/bugs/rad test.js",
         "map": [
           {
-            "orig": "src/bugs/particles.js",
-            "dst": "particles.js"
+            "orig": "src/bugs/rad test.js",
+            "dst": "rad test.js"
           },
-          {"orig": "assets/skies/space3.png"},
-          {"orig": "assets/sprites/phaser3-logo.png"},
-          {"orig": "assets/particles/red.png"}
+          {"orig": "assets/sprites/advanced_wars_land.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/rect scale.js",
+        "map": [{
+          "orig": "src/bugs/rect scale.js",
+          "dst": "rect scale.js"
+        }]
+      },
+      {
+        "mainFile": "src/bugs/reverse anim.js",
+        "map": [{
+          "orig": "src/bugs/reverse anim.js",
+          "dst": "reverse anim.js"
+        }]
+      },
+      {
+        "mainFile": "src/bugs/rounded texture.js",
+        "map": [{
+          "orig": "src/bugs/rounded texture.js",
+          "dst": "rounded texture.js"
+        }]
+      },
+      {
+        "mainFile": "src/bugs/rt crop.js",
+        "map": [
+          {
+            "orig": "src/bugs/rt crop.js",
+            "dst": "rt crop.js"
+          },
+          {"orig": "assets/sprites/bunny.png"},
+          {"orig": "assets/sprites/50x50.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/scene keys.js",
+        "map": [
+          {
+            "orig": "src/bugs/scene keys.js",
+            "dst": "scene keys.js"
+          },
+          {"orig": "assets/skies/gradient26.png"},
+          {"orig": "assets/skies/grid.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/stroke.js",
+        "map": [{
+          "orig": "src/bugs/stroke.js",
+          "dst": "stroke.js"
+        }]
+      },
+      {
+        "mainFile": "src/bugs/ts 2.js",
+        "map": [
+          {
+            "orig": "src/bugs/ts 2.js",
+            "dst": "ts 2.js"
+          },
+          {"orig": "assets/sprites/pangball.png"}
         ]
       }
     ]
@@ -1268,6 +1396,16 @@
               "dst": "rectangle.js"
             },
             {"orig": "assets/sprites/mushroom2.png"}
+          ]
+        },
+        {
+          "mainFile": "src/camera/3D camera/rectangle scaled.js",
+          "map": [
+            {
+              "orig": "src/camera/3D camera/rectangle scaled.js",
+              "dst": "rectangle scaled.js"
+            },
+            {"orig": "assets/sprites/phaser-dude.png"}
           ]
         },
         {
@@ -1480,6 +1618,32 @@
         ]
       },
       {
+        "mainFile": "src/camera/ignore gameobjects.js",
+        "map": [
+          {
+            "orig": "src/camera/ignore gameobjects.js",
+            "dst": "ignore gameobjects.js"
+          },
+          {"orig": "assets/sprites/asuna_by_vali233.png"},
+          {"orig": "assets/sprites/brain.png"},
+          {"orig": "assets/fonts/bitmap/desyrel.png"},
+          {"orig": "assets/fonts/bitmap/desyrel.xml"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/ignore gameobjects in containers.js",
+        "map": [
+          {
+            "orig": "src/camera/ignore gameobjects in containers.js",
+            "dst": "ignore gameobjects in containers.js"
+          },
+          {"orig": "assets/sprites/asuna_by_vali233.png"},
+          {"orig": "assets/sprites/brain.png"},
+          {"orig": "assets/fonts/bitmap/desyrel.png"},
+          {"orig": "assets/fonts/bitmap/desyrel.xml"}
+        ]
+      },
+      {
         "mainFile": "src/camera/minimap camera.js",
         "map": [
           {
@@ -1543,6 +1707,32 @@
         ]
       },
       {
+        "mainFile": "src/camera/render to texture canvas.js",
+        "map": [
+          {
+            "orig": "src/camera/render to texture canvas.js",
+            "dst": "render to texture canvas.js"
+          },
+          {"orig": "assets/pics/the-end-by-iloe-and-made.jpg"},
+          {"orig": "assets/sprites/hotdog.png"},
+          {"orig": "assets/sprites/phaser3-logo-small.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/render to texture shader.js",
+        "map": [{
+          "orig": "src/camera/render to texture shader.js",
+          "dst": "render to texture shader.js"
+        }]
+      },
+      {
+        "mainFile": "src/camera/render to texture shader 5.js",
+        "map": [{
+          "orig": "src/camera/render to texture shader 5.js",
+          "dst": "render to texture shader 5.js"
+        }]
+      },
+      {
         "mainFile": "src/camera/rotate camera.js",
         "map": [
           {
@@ -1593,6 +1783,13 @@
           },
           {"orig": "assets/pics/lazur-skkaay3.png"}
         ]
+      },
+      {
+        "mainFile": "src/camera/shader multi cam test.js",
+        "map": [{
+          "orig": "src/camera/shader multi cam test.js",
+          "dst": "shader multi cam test.js"
+        }]
       },
       {
         "mainFile": "src/camera/shake.js",
@@ -2161,6 +2358,20 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/display/color/brighten.js",
+            "map": [{
+              "orig": "src/display/color/brighten.js",
+              "dst": "brighten.js"
+            }]
+          },
+          {
+            "mainFile": "src/display/color/darken.js",
+            "map": [{
+              "orig": "src/display/color/darken.js",
+              "dst": "darken.js"
+            }]
+          },
+          {
             "mainFile": "src/display/color/Hex String To Color.js",
             "map": [{
               "orig": "src/display/color/Hex String To Color.js",
@@ -2168,10 +2379,31 @@
             }]
           },
           {
+            "mainFile": "src/display/color/lighten.js",
+            "map": [{
+              "orig": "src/display/color/lighten.js",
+              "dst": "lighten.js"
+            }]
+          },
+          {
             "mainFile": "src/display/color/RGB String To Color.js",
             "map": [{
               "orig": "src/display/color/RGB String To Color.js",
               "dst": "RGB String To Color.js"
+            }]
+          },
+          {
+            "mainFile": "src/display/color/random color.js",
+            "map": [{
+              "orig": "src/display/color/random color.js",
+              "dst": "random color.js"
+            }]
+          },
+          {
+            "mainFile": "src/display/color/random gray.js",
+            "map": [{
+              "orig": "src/display/color/random gray.js",
+              "dst": "random gray.js"
             }]
           },
           {
@@ -2361,16 +2593,10 @@
           },
           {
             "mainFile": "src/display/masks/BitmapMask Particles.js",
-            "map": [
-              {
-                "orig": "src/display/masks/BitmapMask Particles.js",
-                "dst": "BitmapMask Particles.js"
-              },
-              {"orig": "assets/sprites/bunny.png"},
-              {"orig": "assets/pics/platformer-backdrop.png"},
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/display/masks/BitmapMask Particles.js",
+              "dst": "BitmapMask Particles.js"
+            }]
           },
           {
             "mainFile": "src/display/masks/BitmapMask Text.js",
@@ -2605,6 +2831,17 @@
             ]
           },
           {
+            "mainFile": "src/display/tint/tint and alpha.js",
+            "map": [
+              {
+                "orig": "src/display/tint/tint and alpha.js",
+                "dst": "tint and alpha.js"
+              },
+              {"orig": "assets/pics/swirl1.jpg"},
+              {"orig": "assets/pics/morty.png"}
+            ]
+          },
+          {
             "mainFile": "src/display/tint/tint fill.js",
             "map": [
               {
@@ -2790,6 +3027,16 @@
             },
             {"orig": "assets/pics/thalion-rain.png"},
             {"orig": "assets/sprites/phaser3-logo-x2.png"}
+          ]
+        },
+        {
+          "mainFile": "src/game config/scale/scaled canvas.js",
+          "map": [
+            {
+              "orig": "src/game config/scale/scaled canvas.js",
+              "dst": "scaled canvas.js"
+            },
+            {"orig": "assets/pics/zero-two.png"}
           ]
         },
         {
@@ -3708,6 +3955,17 @@
             ]
           },
           {
+            "mainFile": "src/game objects/container/child blend mode.js",
+            "map": [
+              {
+                "orig": "src/game objects/container/child blend mode.js",
+                "dst": "child blend mode.js"
+              },
+              {"orig": "assets/pics/uv-grid-diag.png"},
+              {"orig": "assets/sprites/phaser3-logo.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/container/child order.js",
             "map": [
               {
@@ -3966,6 +4224,16 @@
             ]
           },
           {
+            "mainFile": "src/game objects/container/nested container visibility.js",
+            "map": [
+              {
+                "orig": "src/game objects/container/nested container visibility.js",
+                "dst": "nested container visibility.js"
+              },
+              {"orig": "assets/pics/lance-overdose-loader-eye.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/container/nested get bounds test.js",
             "map": [
               {
@@ -4026,6 +4294,16 @@
                 "dst": "rotation.js"
               },
               {"orig": "assets/sprites/lemming.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/container/scaled input test.js",
+            "map": [
+              {
+                "orig": "src/game objects/container/scaled input test.js",
+                "dst": "scaled input test.js"
+              },
+              {"orig": "assets/pics/lance-overdose-loader-eye.png"}
             ]
           },
           {
@@ -4111,13 +4389,10 @@
         "examples": [
           {
             "mainFile": "src/game objects/dom element/blend mode.js",
-            "map": [
-              {
-                "orig": "src/game objects/dom element/blend mode.js",
-                "dst": "blend mode.js"
-              },
-              {"orig": "assets/pics/ra-einstein.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/dom element/blend mode.js",
+              "dst": "blend mode.js"
+            }]
           },
           {
             "mainFile": "src/game objects/dom element/cursors test.js",
@@ -4218,7 +4493,208 @@
       {
         "name": "Graphics",
         "relPath": "src/game objects/graphics",
-        "subCategories": [],
+        "subCategories": [{
+          "name": "Primitives",
+          "relPath": "src/game objects/graphics/primitives",
+          "subCategories": [],
+          "examples": [
+            {
+              "mainFile": "src/game objects/graphics/primitives/arc filled.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/arc filled.js",
+                  "dst": "arc filled.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/sprites/bunny.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/arc gradient filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/arc gradient filled.js",
+                "dst": "arc gradient filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/arc stroked.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/arc stroked.js",
+                  "dst": "arc stroked.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/sprites/bunny.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/fill circle.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/fill circle.js",
+                  "dst": "fill circle.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/sprites/bunny.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/line between.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/line between.js",
+                  "dst": "line between.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/line gradient stroked.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/line gradient stroked.js",
+                "dst": "line gradient stroked.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/path filled.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/path filled.js",
+                  "dst": "path filled.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/path gradient filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/path gradient filled.js",
+                "dst": "path gradient filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/path stroked.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/path stroked.js",
+                  "dst": "path stroked.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/rectangle filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/rectangle filled.js",
+                "dst": "rectangle filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/rectangle filled texture.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/rectangle filled texture.js",
+                  "dst": "rectangle filled texture.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/atlas/megaset-0.png"},
+                {"orig": "assets/atlas/megaset-0.json"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/rectangle gradient filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/rectangle gradient filled.js",
+                "dst": "rectangle gradient filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/rectangle stroked.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/rectangle stroked.js",
+                  "dst": "rectangle stroked.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/sprites/bunny.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/scene stack test.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/scene stack test.js",
+                  "dst": "scene stack test.js"
+                },
+                {"orig": "assets/atlas/megaset-0.png"},
+                {"orig": "assets/atlas/megaset-0.json"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/split path filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/split path filled.js",
+                "dst": "split path filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/triangle fill types.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/triangle fill types.js",
+                  "dst": "triangle fill types.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/sprites/128x128.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/triangle filled.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/triangle filled.js",
+                  "dst": "triangle filled.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/sprites/bunny.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/triangle filled texture.js",
+              "map": [
+                {
+                  "orig": "src/game objects/graphics/primitives/triangle filled texture.js",
+                  "dst": "triangle filled texture.js"
+                },
+                {"orig": "assets/textures/alien-metal.jpg"},
+                {"orig": "assets/atlas/megaset-0.png"},
+                {"orig": "assets/atlas/megaset-0.json"},
+                {"orig": "assets/sprites/128x128.png"}
+              ]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/triangle gradient filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/triangle gradient filled.js",
+                "dst": "triangle gradient filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/triangle gradient stroked.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/triangle gradient stroked.js",
+                "dst": "triangle gradient stroked.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/triangle stroked.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/triangle stroked.js",
+                "dst": "triangle stroked.js"
+              }]
+            }
+          ]
+        }],
         "examples": [
           {
             "mainFile": "src/game objects/graphics/arc.js",
@@ -4232,6 +4708,13 @@
             "map": [{
               "orig": "src/game objects/graphics/arc stroke.js",
               "dst": "arc stroke.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/graphics/atari lines.js",
+            "map": [{
+              "orig": "src/game objects/graphics/atari lines.js",
+              "dst": "atari lines.js"
             }]
           },
           {
@@ -4280,6 +4763,13 @@
             }]
           },
           {
+            "mainFile": "src/game objects/graphics/generate texture test.js",
+            "map": [{
+              "orig": "src/game objects/graphics/generate texture test.js",
+              "dst": "generate texture test.js"
+            }]
+          },
+          {
             "mainFile": "src/game objects/graphics/generate texture to blitter.js",
             "map": [
               {
@@ -4312,11 +4802,26 @@
             }]
           },
           {
+            "mainFile": "src/game objects/graphics/health bars demo.js",
+            "map": [
+              {
+                "orig": "src/game objects/graphics/health bars demo.js",
+                "dst": "health bars demo.js"
+              },
+              {"orig": "assets/pics/fairy-background-craft-pixel.png"},
+              {"orig": "assets/animations/elves-craft-pixel.png"},
+              {"orig": "assets/animations/elves-craft-pixel.json"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/graphics/Line Rendering.js",
-            "map": [{
-              "orig": "src/game objects/graphics/Line Rendering.js",
-              "dst": "Line Rendering.js"
-            }]
+            "map": [
+              {
+                "orig": "src/game objects/graphics/Line Rendering.js",
+                "dst": "Line Rendering.js"
+              },
+              {"orig": "assets/sprites/phaser2.png"}
+            ]
           },
           {
             "mainFile": "src/game objects/graphics/line thickness.js",
@@ -4462,6 +4967,13 @@
             }]
           },
           {
+            "mainFile": "src/game objects/graphics/rect test.js",
+            "map": [{
+              "orig": "src/game objects/graphics/rect test.js",
+              "dst": "rect test.js"
+            }]
+          },
+          {
             "mainFile": "src/game objects/graphics/single obj viewer.js",
             "map": [
               {
@@ -4536,6 +5048,16 @@
                 "dst": "teapot.js"
               },
               {"orig": "assets/text/teapot.obj"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/graphics/trace.js",
+            "map": [
+              {
+                "orig": "src/game objects/graphics/trace.js",
+                "dst": "trace.js"
+              },
+              {"orig": "assets/tests/sw.png"}
             ]
           },
           {
@@ -4917,6 +5439,19 @@
             ]
           },
           {
+            "mainFile": "src/game objects/lights/dynamic tilemap layer.js",
+            "map": [
+              {
+                "orig": "src/game objects/lights/dynamic tilemap layer.js",
+                "dst": "dynamic tilemap layer.js"
+              },
+              {"orig": "assets/tilemaps/tiles/drawtiles1_n.png"},
+              {"orig": "assets/tilemaps/tiles/drawtiles1.png"},
+              {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/tilemaps/csv/grid.csv"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/lights/graveyard.js",
             "map": [
               {
@@ -4955,6 +5490,18 @@
               },
               {"orig": "assets/normal-maps/brick_n.png"},
               {"orig": "assets/normal-maps/brick.jpg"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/lights/rotated sprite.js",
+            "map": [
+              {
+                "orig": "src/game objects/lights/rotated sprite.js",
+                "dst": "rotated sprite.js"
+              },
+              {"orig": "assets/normal-maps/spider_n.png"},
+              {"orig": "assets/normal-maps/spider.png"},
+              {"orig": "assets/normal-maps/light.png"}
             ]
           },
           {
@@ -5100,17 +5647,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/camera test.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/camera test.js",
-                "dst": "camera test.js"
-              },
-              {"orig": "assets/particles/smoke-puff.png"},
-              {"orig": "assets/particles/smoke0.png"},
-              {"orig": "assets/particles/muzzleflash3.png"},
-              {"orig": "assets/particles/blue.png"},
-              {"orig": "assets/particles/red.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/camera test.js",
+              "dst": "camera test.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/change emitter order.js",
@@ -5135,14 +5675,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/collide emitter bounds sides.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/collide emitter bounds sides.js",
-                "dst": "collide emitter bounds sides.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/collide emitter bounds sides.js",
+              "dst": "collide emitter bounds sides.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/create emitter.js",
@@ -5156,14 +5692,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/create emitter from config.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/create emitter from config.js",
-                "dst": "create emitter from config.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/create emitter from config.js",
+              "dst": "create emitter from config.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/create emitter from config 2.js",
@@ -5177,13 +5709,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/create emitter from config 3.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/create emitter from config 3.js",
-                "dst": "create emitter from config 3.js"
-              },
-              {"orig": "assets/particles/blue.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/create emitter from config 3.js",
+              "dst": "create emitter from config 3.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/create emitter from config 4.js",
@@ -5222,13 +5751,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/custom particles.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/custom particles.js",
-                "dst": "custom particles.js"
-              },
-              {"orig": "assets/animations/mummy37x45.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/custom particles.js",
+              "dst": "custom particles.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/death zone custom.js",
@@ -5243,14 +5769,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/death zone follow mouse.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/death zone follow mouse.js",
-                "dst": "death zone follow mouse.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/death zone follow mouse.js",
+              "dst": "death zone follow mouse.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/death zone from arcade body.js",
@@ -5298,13 +5820,19 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/double acceleration.js",
+            "map": [{
+              "orig": "src/game objects/particle emitter/double acceleration.js",
+              "dst": "double acceleration.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/particle emitter/dynamic emitter config property.js",
             "map": [
               {
-                "orig": "src/game objects/particle emitter/double acceleration.js",
-                "dst": "double acceleration.js"
+                "orig": "src/game objects/particle emitter/dynamic emitter config property.js",
+                "dst": "dynamic emitter config property.js"
               },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
+              {"orig": "assets/sprites/arrow.png"}
             ]
           },
           {
@@ -5320,14 +5848,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/edge zone custom.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/edge zone custom.js",
-                "dst": "edge zone custom.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/edge zone custom.js",
+              "dst": "edge zone custom.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/edge zone from curve.js",
@@ -5342,14 +5866,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/edge zone speed.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/edge zone speed.js",
-                "dst": "edge zone speed.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/edge zone speed.js",
+              "dst": "edge zone speed.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/electric.js",
@@ -5365,15 +5885,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/electric 2.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/electric 2.js",
-                "dst": "electric 2.js"
-              },
-              {"orig": "assets/particles/blue.png"},
-              {"orig": "assets/particles/yellow.png"},
-              {"orig": "assets/sprites/dragcircle.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/electric 2.js",
+              "dst": "electric 2.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/emit from manager.js",
@@ -5476,15 +5991,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/fireworks.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/fireworks.js",
-                "dst": "fireworks.js"
-              },
-              {"orig": "assets/particles/blue.png"},
-              {"orig": "assets/particles/red.png"},
-              {"orig": "assets/sprites/phaser2.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/fireworks.js",
+              "dst": "fireworks.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/follow sprite.js",
@@ -5500,13 +6010,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/frame cycle.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/frame cycle.js",
-                "dst": "frame cycle.js"
-              },
-              {"orig": "assets/sprites/diamonds32x24x5.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/frame cycle.js",
+              "dst": "frame cycle.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/gravity well.js",
@@ -5518,6 +6025,13 @@
               {"orig": "assets/particles/flares.png"},
               {"orig": "assets/particles/flares.json"}
             ]
+          },
+          {
+            "mainFile": "src/game objects/particle emitter/manager transform.js",
+            "map": [{
+              "orig": "src/game objects/particle emitter/manager transform.js",
+              "dst": "manager transform.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/mouse trail.js",
@@ -5557,13 +6071,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/multi frame test.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/multi frame test.js",
-                "dst": "multi frame test.js"
-              },
-              {"orig": "assets/sprites/fruitnveg64wh37.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/multi frame test.js",
+              "dst": "multi frame test.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/multiple emitters.js",
@@ -5578,14 +6089,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/parallax.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/parallax.js",
-                "dst": "parallax.js"
-              },
-              {"orig": "assets/atlas/megaset-0.png"},
-              {"orig": "assets/atlas/megaset-0.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/parallax.js",
+              "dst": "parallax.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/particle editor.js",
@@ -5611,15 +6118,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/particles on a moving curve.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/particles on a moving curve.js",
-                "dst": "particles on a moving curve.js"
-              },
-              {"orig": "assets/sprites/dragcircle.png"},
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/particles on a moving curve.js",
+              "dst": "particles on a moving curve.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/particles on a path.js",
@@ -5634,14 +6136,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/random emit zone.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/random emit zone.js",
-                "dst": "random emit zone.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/random emit zone.js",
+              "dst": "random emit zone.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/random emit zone custom.js",
@@ -5656,14 +6154,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/rotating line.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/rotating line.js",
-                "dst": "rotating line.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/rotating line.js",
+              "dst": "rotating line.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/scale emitter.js",
@@ -5688,14 +6182,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/stepped lifespan.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/stepped lifespan.js",
-                "dst": "stepped lifespan.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/stepped lifespan.js",
+              "dst": "stepped lifespan.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/stepped position.js",
@@ -5732,14 +6222,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/test new ops.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/test new ops.js",
-                "dst": "test new ops.js"
-              },
-              {"orig": "assets/ui/undersea-bg.png"},
-              {"orig": "assets/sprites/fish-136x80.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/test new ops.js",
+              "dst": "test new ops.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/tint.js",
@@ -5772,13 +6258,10 @@
         "examples": [
           {
             "mainFile": "src/game objects/quad/basic quad.js",
-            "map": [
-              {
-                "orig": "src/game objects/quad/basic quad.js",
-                "dst": "basic quad.js"
-              },
-              {"orig": "assets/pics/sure-shot-by-made.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/quad/basic quad.js",
+              "dst": "basic quad.js"
+            }]
           },
           {
             "mainFile": "src/game objects/quad/quad with atlas frame.js",
@@ -5799,6 +6282,27 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/game objects/render texture/atlas frame to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/atlas frame to render texture.js",
+                "dst": "atlas frame to render texture.js"
+              },
+              {"orig": "assets/atlas/megaset-0.png"},
+              {"orig": "assets/atlas/megaset-0.json"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/blitter to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/blitter to render texture.js",
+                "dst": "blitter to render texture.js"
+              },
+              {"orig": "assets/sprites/atari130xe.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/render texture/brute force.js",
             "map": [{
               "orig": "src/game objects/render texture/brute force.js",
@@ -5817,13 +6321,74 @@
             ]
           },
           {
+            "mainFile": "src/game objects/render texture/container to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/container to render texture.js",
+                "dst": "container to render texture.js"
+              },
+              {"orig": "assets/sprites/lemming.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/destroy render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/destroy render texture.js",
+                "dst": "destroy render texture.js"
+              },
+              {"orig": "assets/particles/bubble.png"},
+              {"orig": "assets/sprites/phaser-dude.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/draw on texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/draw on texture.js",
+                "dst": "draw on texture.js"
+              },
+              {"orig": "assets/sprites/brush3.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/render texture/draw to render texture.js",
             "map": [
               {
                 "orig": "src/game objects/render texture/draw to render texture.js",
                 "dst": "draw to render texture.js"
               },
-              {"orig": "assets/sprites/bunny.png"}
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/pics/baal-loader.png"},
+              {"orig": "assets/particles/flares.png"},
+              {"orig": "assets/particles/flares.json"},
+              {"orig": "assets/fonts/bitmap/desyrel.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.xml"},
+              {"orig": "assets/pics/sure-shot-by-made.png"},
+              {"orig": "assets/sprites/mushroom2.png"},
+              {"orig": "assets/sprites/atari130xe.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/dynamic bitmap text to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/dynamic bitmap text to render texture.js",
+                "dst": "dynamic bitmap text to render texture.js"
+              },
+              {"orig": "assets/fonts/bitmap/desyrel.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.xml"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/dynamic tilemap to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/dynamic tilemap to render texture.js",
+                "dst": "dynamic tilemap to render texture.js"
+              },
+              {"orig": "assets/tilemaps/tiles/tmw_desert_spacing.png"},
+              {"orig": "assets/tilemaps/maps/desert.json"}
             ]
           },
           {
@@ -5846,6 +6411,25 @@
               },
               {"orig": "assets/sprites/phaser-dude.png"},
               {"orig": "assets/particles/muzzleflash3.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/graphics to render texture.js",
+            "map": [{
+              "orig": "src/game objects/render texture/graphics to render texture.js",
+              "dst": "graphics to render texture.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/render texture/group to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/group to render texture.js",
+                "dst": "group to render texture.js"
+              },
+              {"orig": "assets/tests/invaders/invader1.png"},
+              {"orig": "assets/tests/invaders/invader2.png"},
+              {"orig": "assets/tests/invaders/invader3.png"}
             ]
           },
           {
@@ -5889,6 +6473,39 @@
             ]
           },
           {
+            "mainFile": "src/game objects/render texture/particle emitter to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/particle emitter to render texture.js",
+                "dst": "particle emitter to render texture.js"
+              },
+              {"orig": "assets/particles/flares.png"},
+              {"orig": "assets/particles/flares.json"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/render texture to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/render texture to render texture.js",
+                "dst": "render texture to render texture.js"
+              },
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/sprites/128x128-v2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/resize render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/resize render texture.js",
+                "dst": "resize render texture.js"
+              },
+              {"orig": "assets/particles/bubble.png"},
+              {"orig": "assets/sprites/phaser-dude.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/render texture/resize rendertexture.js",
             "map": [
               {
@@ -5897,6 +6514,38 @@
               },
               {"orig": "assets/sprites/phaser-dude.png"}
             ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/save texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/save texture.js",
+                "dst": "save texture.js"
+              },
+              {"orig": "assets/particles/bubble.png"},
+              {"orig": "assets/sprites/phaser-dude.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/scene to render texture.js",
+            "map": [{
+              "orig": "src/game objects/render texture/scene to render texture.js",
+              "dst": "scene to render texture.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/render texture/scene to render texture quad.js",
+            "map": [{
+              "orig": "src/game objects/render texture/scene to render texture quad.js",
+              "dst": "scene to render texture quad.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/render texture/scene to render texture with crop.js",
+            "map": [{
+              "orig": "src/game objects/render texture/scene to render texture with crop.js",
+              "dst": "scene to render texture with crop.js"
+            }]
           },
           {
             "mainFile": "src/game objects/render texture/scratch.js",
@@ -5922,13 +6571,63 @@
             ]
           },
           {
+            "mainFile": "src/game objects/render texture/sprite to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/sprite to render texture.js",
+                "dst": "sprite to render texture.js"
+              },
+              {"orig": "assets/particles/bubble.png"},
+              {"orig": "assets/sprites/phaser-dude.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/static bitmap text to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/static bitmap text to render texture.js",
+                "dst": "static bitmap text to render texture.js"
+              },
+              {"orig": "assets/fonts/bitmap/desyrel.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.xml"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/static tilemap to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/static tilemap to render texture.js",
+                "dst": "static tilemap to render texture.js"
+              },
+              {"orig": "assets/tilemaps/tiles/super-mario.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/text to render texture.js",
+            "map": [{
+              "orig": "src/game objects/render texture/text to render texture.js",
+              "dst": "text to render texture.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/render texture/texture key to render texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/texture key to render texture.js",
+                "dst": "texture key to render texture.js"
+              },
+              {"orig": "assets/particles/bubble.png"},
+              {"orig": "assets/sprites/phaser-dude.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/render texture/trail.js",
             "map": [
               {
                 "orig": "src/game objects/render texture/trail.js",
                 "dst": "trail.js"
               },
-              {"orig": "assets/sprites/phaser-dude.png"}
+              {"orig": "assets/particles/bubble.png"}
             ]
           },
           {
@@ -5954,6 +6653,209 @@
         ]
       },
       {
+        "name": "Shapes",
+        "relPath": "src/game objects/shapes",
+        "subCategories": [],
+        "examples": [
+          {
+            "mainFile": "src/game objects/shapes/arc.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/arc.js",
+                "dst": "arc.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/blend modes.js",
+            "map": [{
+              "orig": "src/game objects/shapes/blend modes.js",
+              "dst": "blend modes.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/circle.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/circle.js",
+                "dst": "circle.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/curve.js",
+            "map": [{
+              "orig": "src/game objects/shapes/curve.js",
+              "dst": "curve.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/draw.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/draw.js",
+                "dst": "draw.js"
+              },
+              {"orig": "assets/skies/gradient4.png"},
+              {"orig": "assets/swatches/gradient-palettes.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/ellipse.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/ellipse.js",
+                "dst": "ellipse.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/grid.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/grid.js",
+                "dst": "grid.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/iso birdie.js",
+            "map": [{
+              "orig": "src/game objects/shapes/iso birdie.js",
+              "dst": "iso birdie.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/iso box.js",
+            "map": [{
+              "orig": "src/game objects/shapes/iso box.js",
+              "dst": "iso box.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/iso draw.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/iso draw.js",
+                "dst": "iso draw.js"
+              },
+              {"orig": "assets/skies/gradient4.png"},
+              {"orig": "assets/swatches/gradient-palettes.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/iso image.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/iso image.js",
+                "dst": "iso image.js"
+              },
+              {"orig": "assets/tests/terrain/terrain2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/iso landscape.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/iso landscape.js",
+                "dst": "iso landscape.js"
+              },
+              {"orig": "assets/tests/98_2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/iso triangle.js",
+            "map": [{
+              "orig": "src/game objects/shapes/iso triangle.js",
+              "dst": "iso triangle.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/line.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/line.js",
+                "dst": "line.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/polygon.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/polygon.js",
+                "dst": "polygon.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/rectangle.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/rectangle.js",
+                "dst": "rectangle.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/spline.js",
+            "map": [{
+              "orig": "src/game objects/shapes/spline.js",
+              "dst": "spline.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/stacker.js",
+            "map": [{
+              "orig": "src/game objects/shapes/stacker.js",
+              "dst": "stacker.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/shapes/stacker es6.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/stacker es6.js",
+                "dst": "stacker es6.js"
+              },
+              {"orig": "assets/skies/gradient26.png"},
+              {"orig": "assets/skies/grid.png"},
+              {"orig": "assets/audio/stacker/place.m4a"},
+              {"orig": "assets/audio/stacker/miss.m4a"},
+              {"orig": "assets/audio/stacker/gamelost.m4a"},
+              {"orig": "assets/audio/stacker/gamewon.m4a"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/star.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/star.js",
+                "dst": "star.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shapes/triangle.js",
+            "map": [
+              {
+                "orig": "src/game objects/shapes/triangle.js",
+                "dst": "triangle.js"
+              },
+              {"orig": "assets/skies/background1.png"}
+            ]
+          }
+        ]
+      },
+      {
         "name": "Sprites",
         "relPath": "src/game objects/sprites",
         "subCategories": [],
@@ -5968,6 +6870,16 @@
               {"orig": "assets/sprites/bunny.png"},
               {"orig": "assets/sprites/atari400.png"},
               {"orig": "assets/sprites/phaser2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/sprites/custom sprite class ES6.js",
+            "map": [
+              {
+                "orig": "src/game objects/sprites/custom sprite class ES6.js",
+                "dst": "custom sprite class ES6.js"
+              },
+              {"orig": "assets/sprites/brain.png"}
             ]
           },
           {
@@ -6035,6 +6947,79 @@
         ]
       },
       {
+        "name": "Tests",
+        "relPath": "src/game objects/tests",
+        "subCategories": [],
+        "examples": [
+          {
+            "mainFile": "src/game objects/tests/dynamic bitmap text.js",
+            "map": [
+              {
+                "orig": "src/game objects/tests/dynamic bitmap text.js",
+                "dst": "dynamic bitmap text.js"
+              },
+              {"orig": "assets/pics/debug-grid-1920x1920.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.xml"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/tests/image.js",
+            "map": [
+              {
+                "orig": "src/game objects/tests/image.js",
+                "dst": "image.js"
+              },
+              {"orig": "assets/pics/debug-grid-1920x1920.png"},
+              {"orig": "assets/sprites/phaser3-logo-small.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/tests/single tilesprite.js",
+            "map": [
+              {
+                "orig": "src/game objects/tests/single tilesprite.js",
+                "dst": "single tilesprite.js"
+              },
+              {"orig": "assets/sprites/mushroom-32x32.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/tests/static bitmap text.js",
+            "map": [
+              {
+                "orig": "src/game objects/tests/static bitmap text.js",
+                "dst": "static bitmap text.js"
+              },
+              {"orig": "assets/pics/debug-grid-1920x1920.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.xml"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/tests/text.js",
+            "map": [
+              {
+                "orig": "src/game objects/tests/text.js",
+                "dst": "text.js"
+              },
+              {"orig": "assets/pics/debug-grid-1920x1920.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/tests/tilesprite.js",
+            "map": [
+              {
+                "orig": "src/game objects/tests/tilesprite.js",
+                "dst": "tilesprite.js"
+              },
+              {"orig": "assets/pics/debug-grid-1920x1920.png"},
+              {"orig": "assets/sprites/space-baddie.png"}
+            ]
+          }
+        ]
+      },
+      {
         "name": "Text",
         "relPath": "src/game objects/text",
         "subCategories": [{
@@ -6068,10 +7053,24 @@
               }]
             },
             {
+              "mainFile": "src/game objects/text/static/change text.js",
+              "map": [{
+                "orig": "src/game objects/text/static/change text.js",
+                "dst": "change text.js"
+              }]
+            },
+            {
               "mainFile": "src/game objects/text/static/create from config.js",
               "map": [{
                 "orig": "src/game objects/text/static/create from config.js",
                 "dst": "create from config.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/text/static/custom webfont.js",
+              "map": [{
+                "orig": "src/game objects/text/static/custom webfont.js",
+                "dst": "custom webfont.js"
               }]
             },
             {
@@ -6082,10 +7081,27 @@
               }]
             },
             {
+              "mainFile": "src/game objects/text/static/google webfont.js",
+              "map": [
+                {
+                  "orig": "src/game objects/text/static/google webfont.js",
+                  "dst": "google webfont.js"
+                },
+                {"orig": "assets/skies/gradient28.png"}
+              ]
+            },
+            {
               "mainFile": "src/game objects/text/static/italic text.js",
               "map": [{
                 "orig": "src/game objects/text/static/italic text.js",
                 "dst": "italic text.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/text/static/line spacing.js",
+              "map": [{
+                "orig": "src/game objects/text/static/line spacing.js",
+                "dst": "line spacing.js"
               }]
             },
             {
@@ -6124,6 +7140,13 @@
               }]
             },
             {
+              "mainFile": "src/game objects/text/static/set test string.js",
+              "map": [{
+                "orig": "src/game objects/text/static/set test string.js",
+                "dst": "set test string.js"
+              }]
+            },
+            {
               "mainFile": "src/game objects/text/static/shadow stroke styles.js",
               "map": [
                 {
@@ -6138,6 +7161,13 @@
               "map": [{
                 "orig": "src/game objects/text/static/text bounds.js",
                 "dst": "text bounds.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/text/static/text key.js",
+              "map": [{
+                "orig": "src/game objects/text/static/text key.js",
+                "dst": "text key.js"
               }]
             },
             {
@@ -6208,6 +7238,17 @@
               {
                 "orig": "src/game objects/tile sprite/Atlas - Canvas.js",
                 "dst": "Atlas - Canvas.js"
+              },
+              {"orig": "assets/atlas/megaset-2.png"},
+              {"orig": "assets/atlas/megaset-2.json"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/tile sprite/change frame.js",
+            "map": [
+              {
+                "orig": "src/game objects/tile sprite/change frame.js",
+                "dst": "change frame.js"
               },
               {"orig": "assets/atlas/megaset-2.png"},
               {"orig": "assets/atlas/megaset-2.json"}
@@ -6641,6 +7682,17 @@
                 ]
               },
               {
+                "mainFile": "src/game objects/tilemap/dynamic/tile draw order.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/tilemap/dynamic/tile draw order.js",
+                    "dst": "tile draw order.js"
+                  },
+                  {"orig": "assets/tilemaps/tiles/tileorder.png"},
+                  {"orig": "assets/tilemaps/maps/tileorder.json"}
+                ]
+              },
+              {
                 "mainFile": "src/game objects/tilemap/dynamic/weighted randomize.js",
                 "map": [
                   {
@@ -6844,6 +7896,17 @@
                   {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16_blue.png"},
                   {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
                   {"orig": "assets/sprites/spaceman.png"}
+                ]
+              },
+              {
+                "mainFile": "src/game objects/tilemap/static/tile draw order.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/tilemap/static/tile draw order.js",
+                    "dst": "tile draw order.js"
+                  },
+                  {"orig": "assets/tilemaps/tiles/tileorder.png"},
+                  {"orig": "assets/tilemaps/maps/tileorder.json"}
                 ]
               },
               {
@@ -8084,6 +9147,13 @@
             }]
           },
           {
+            "mainFile": "src/geom/polygon/get points.js",
+            "map": [{
+              "orig": "src/geom/polygon/get points.js",
+              "dst": "get points.js"
+            }]
+          },
+          {
             "mainFile": "src/geom/polygon/set to.js",
             "map": [{
               "orig": "src/geom/polygon/set to.js",
@@ -8661,11 +9731,41 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/input/camera/camera container ignore.js",
+            "map": [
+              {
+                "orig": "src/input/camera/camera container ignore.js",
+                "dst": "camera container ignore.js"
+              },
+              {"orig": "assets/sprites/phaser3-logo.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/camera/camera ignore.js",
+            "map": [
+              {
+                "orig": "src/input/camera/camera ignore.js",
+                "dst": "camera ignore.js"
+              },
+              {"orig": "assets/sprites/phaser3-logo.png"}
+            ]
+          },
+          {
             "mainFile": "src/input/camera/graphics contains.js",
             "map": [{
               "orig": "src/input/camera/graphics contains.js",
               "dst": "graphics contains.js"
             }]
+          },
+          {
+            "mainFile": "src/input/camera/large world high res.js",
+            "map": [
+              {
+                "orig": "src/input/camera/large world high res.js",
+                "dst": "large world high res.js"
+              },
+              {"orig": "assets/sprites/block.png"}
+            ]
           },
           {
             "mainFile": "src/input/camera/multi cam sprite.js",
@@ -8676,17 +9776,6 @@
               },
               {"orig": "assets/pics/lance-overdose-loader-eye.png"},
               {"orig": "assets/pics/debug-grid-1920x1920.png"}
-            ]
-          },
-          {
-            "mainFile": "src/input/camera/sprite.js",
-            "map": [
-              {
-                "orig": "src/input/camera/sprite.js",
-                "dst": "sprite.js"
-              },
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"},
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"}
             ]
           },
           {
@@ -9052,6 +10141,16 @@
                 "dst": "sprite example.js"
               },
               {"orig": "assets/sprites/bsquadron-enemies.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/game object/tilesprite on down.js",
+            "map": [
+              {
+                "orig": "src/input/game object/tilesprite on down.js",
+                "dst": "tilesprite on down.js"
+              },
+              {"orig": "assets/sprites/mushroom2.png"}
             ]
           },
           {
@@ -9453,6 +10552,19 @@
             ]
           },
           {
+            "mainFile": "src/input/mouse/right mouse button.js",
+            "map": [
+              {
+                "orig": "src/input/mouse/right mouse button.js",
+                "dst": "right mouse button.js"
+              },
+              {"orig": "assets/sprites/phaser.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/oz_pov_melting_disk.png"},
+              {"orig": "assets/sprites/palm-tree-left.png"}
+            ]
+          },
+          {
             "mainFile": "src/input/mouse/shape hit tests.js",
             "map": [
               {
@@ -9555,6 +10667,38 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/input/pixel perfect/atlas frame.js",
+            "map": [
+              {
+                "orig": "src/input/pixel perfect/atlas frame.js",
+                "dst": "atlas frame.js"
+              },
+              {"orig": "assets/atlas/megaset-0.png"},
+              {"orig": "assets/atlas/megaset-0.json"}
+            ]
+          },
+          {
+            "mainFile": "src/input/pixel perfect/image with lots of alpha.js",
+            "map": [
+              {
+                "orig": "src/input/pixel perfect/image with lots of alpha.js",
+                "dst": "image with lots of alpha.js"
+              },
+              {"orig": "assets/sprites/hello.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/pixel perfect/large trimmed atlas frame.js",
+            "map": [
+              {
+                "orig": "src/input/pixel perfect/large trimmed atlas frame.js",
+                "dst": "large trimmed atlas frame.js"
+              },
+              {"orig": "assets/atlas/megaset-2.png"},
+              {"orig": "assets/atlas/megaset-2.json"}
+            ]
+          },
+          {
             "mainFile": "src/input/pixel perfect/on down.js",
             "map": [
               {
@@ -9571,6 +10715,17 @@
               {
                 "orig": "src/input/pixel perfect/on drag.js",
                 "dst": "on drag.js"
+              },
+              {"orig": "assets/sprites/phaser3-logo.png"},
+              {"orig": "assets/sprites/phaser3-logo-alpha.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/pixel perfect/on move.js",
+            "map": [
+              {
+                "orig": "src/input/pixel perfect/on move.js",
+                "dst": "on move.js"
               },
               {"orig": "assets/sprites/phaser3-logo.png"},
               {"orig": "assets/sprites/phaser3-logo-alpha.png"}
@@ -10358,8 +11513,7 @@
               {"orig": "assets/sprites/shmup-baddie2.png"},
               {"orig": "assets/sprites/shmup-baddie-bullet.png"},
               {"orig": "assets/sprites/shmup-baddie.png"},
-              {"orig": "assets/sprites/ship.png"},
-              {"orig": "assets/sprites/shinyball.png"}
+              {"orig": "assets/sprites/ship.png"}
             ]
           },
           {
@@ -11038,6 +12192,40 @@
               "orig": "src/loader/loader events/start loader manually.js",
               "dst": "start loader manually.js"
             }]
+          },
+          {
+            "mainFile": "src/loader/loader events/test loading files already loaded.js",
+            "map": [
+              {
+                "orig": "src/loader/loader events/test loading files already loaded.js",
+                "dst": "test loading files already loaded.js"
+              },
+              {"orig": "assets/sprites/128x128.png"},
+              {"orig": "assets/sprites/amiga-cursor.png"},
+              {"orig": "assets/sprites/aqua_ball.png"},
+              {"orig": "assets/sprites/arrow.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/atari130xe.png"},
+              {"orig": "assets/sprites/atari400.png"},
+              {"orig": "assets/sprites/atari800.png"},
+              {"orig": "assets/sprites/atari800xl.png"},
+              {"orig": "assets/sprites/atari1200xl.png"},
+              {"orig": "assets/sprites/balls.png"},
+              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/bikkuriman.png"},
+              {"orig": "assets/sprites/block.png"},
+              {"orig": "assets/sprites/blue_ball.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/bsquadron1.png"},
+              {"orig": "assets/sprites/bsquadron2.png"},
+              {"orig": "assets/sprites/bsquadron3.png"},
+              {"orig": "assets/sprites/budbrain_chick.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/sprites/cakewalk.png"},
+              {"orig": "assets/sprites/flectrum.png"},
+              {"orig": "assets/sprites/fork.png"}
+            ]
           }
         ]
       },
@@ -11139,17 +12327,42 @@
         "name": "Svg",
         "relPath": "src/loader/svg",
         "subCategories": [],
-        "examples": [{
-          "mainFile": "src/loader/svg/load svg.js",
-          "map": [
-            {
-              "orig": "src/loader/svg/load svg.js",
-              "dst": "load svg.js"
-            },
-            {"orig": "assets/svg/pencil.svg"},
-            {"orig": "assets/svg/cartman.svg"}
-          ]
-        }]
+        "examples": [
+          {
+            "mainFile": "src/loader/svg/load svg.js",
+            "map": [
+              {
+                "orig": "src/loader/svg/load svg.js",
+                "dst": "load svg.js"
+              },
+              {"orig": "assets/svg/pencil.svg"},
+              {"orig": "assets/svg/cartman.svg"},
+              {"orig": "assets/svg/fireflower.svg"}
+            ]
+          },
+          {
+            "mainFile": "src/loader/svg/load svg with fixed size.js",
+            "map": [
+              {
+                "orig": "src/loader/svg/load svg with fixed size.js",
+                "dst": "load svg with fixed size.js"
+              },
+              {"orig": "assets/svg/cartman.svg"}
+            ]
+          },
+          {
+            "mainFile": "src/loader/svg/load svg with scale.js",
+            "map": [
+              {
+                "orig": "src/loader/svg/load svg with scale.js",
+                "dst": "load svg with scale.js"
+              },
+              {"orig": "assets/svg/pencil.svg"},
+              {"orig": "assets/svg/cartman.svg"},
+              {"orig": "assets/svg/fireflower.svg"}
+            ]
+          }
+        ]
       },
       {
         "name": "Texture Atlas Json",
@@ -12563,6 +13776,16 @@
             ]
           },
           {
+            "mainFile": "src/physics/matterjs/body scale.js",
+            "map": [
+              {
+                "orig": "src/physics/matterjs/body scale.js",
+                "dst": "body scale.js"
+              },
+              {"orig": "assets/sprites/columns-blue.png"}
+            ]
+          },
+          {
             "mainFile": "src/physics/matterjs/body velocity.js",
             "map": [
               {
@@ -12720,6 +13943,16 @@
               },
               {"orig": "assets/sprites/block.png"},
               {"orig": "assets/sprites/platform.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/matterjs/increase body scale.js",
+            "map": [
+              {
+                "orig": "src/physics/matterjs/increase body scale.js",
+                "dst": "increase body scale.js"
+              },
+              {"orig": "assets/sprites/columns-blue.png"}
             ]
           },
           {
@@ -12981,6 +14214,16 @@
             "dst": "custom game object.js"
           },
           {"orig": "assets/sprites/clown.png"}
+        ]
+      },
+      {
+        "mainFile": "src/plugins/destroy game with plugin.js",
+        "map": [
+          {
+            "orig": "src/plugins/destroy game with plugin.js",
+            "dst": "destroy game with plugin.js"
+          },
+          {"orig": "assets/loader-tests/RandomNamePlugin.js"}
         ]
       },
       {
@@ -13352,6 +14595,24 @@
         ]
       },
       {
+        "mainFile": "src/textures/crop render texture.js",
+        "map": [
+          {
+            "orig": "src/textures/crop render texture.js",
+            "dst": "crop render texture.js"
+          },
+          {"orig": "assets/atlas/megaset-0.png"},
+          {"orig": "assets/atlas/megaset-0.json"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop text.js",
+        "map": [{
+          "orig": "src/textures/crop text.js",
+          "dst": "crop text.js"
+        }]
+      },
+      {
         "mainFile": "src/textures/crop texture atlas frame.js",
         "map": [
           {
@@ -13423,6 +14684,16 @@
             "dst": "crop texture image scaled.js"
           },
           {"orig": "assets/sprites/hotdog.png"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop tilesprite.js",
+        "map": [
+          {
+            "orig": "src/textures/crop tilesprite.js",
+            "dst": "crop tilesprite.js"
+          },
+          {"orig": "assets/sprites/mushroom-32x32.png"}
         ]
       },
       {
@@ -13541,6 +14812,13 @@
         "map": [{
           "orig": "src/textures/text texture.js",
           "dst": "text texture.js"
+        }]
+      },
+      {
+        "mainFile": "src/textures/texture from base64.js",
+        "map": [{
+          "orig": "src/textures/texture from base64.js",
+          "dst": "texture from base64.js"
         }]
       },
       {
@@ -14089,6 +15367,16 @@
           {
             "orig": "src/tweens/delay.js",
             "dst": "delay.js"
+          },
+          {"orig": "assets/sprites/block.png"}
+        ]
+      },
+      {
+        "mainFile": "src/tweens/destroy a tween.js",
+        "map": [
+          {
+            "orig": "src/tweens/destroy a tween.js",
+            "dst": "destroy a tween.js"
           },
           {"orig": "assets/sprites/block.png"}
         ]

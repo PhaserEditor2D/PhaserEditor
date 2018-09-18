@@ -276,7 +276,8 @@ var KeyboardPlugin = new Class({
 
     /**
      * @typedef {object} CursorKeys
-     *
+     * @memberOf Phaser.Input.Keyboard
+     * 
      * @property {Phaser.Input.Keyboard.Key} [up] - A Key object mapping to the UP arrow key.
      * @property {Phaser.Input.Keyboard.Key} [down] - A Key object mapping to the DOWN arrow key.
      * @property {Phaser.Input.Keyboard.Key} [left] - A Key object mapping to the LEFT arrow key.
@@ -343,7 +344,12 @@ var KeyboardPlugin = new Class({
 
             for (var i = 0; i < keys.length; i++)
             {
-                output[keys[i]] = this.addKey(keys[i]);
+                var currentKey = keys[i].trim();
+
+                if (currentKey)
+                {
+                    output[currentKey] = this.addKey(currentKey);
+                }
             }
         }
         else
@@ -450,11 +456,11 @@ var KeyboardPlugin = new Class({
      * An array of either integers (key codes) or strings, or a mixture of both
      * An array of objects (such as Key objects) with a public 'keyCode' property
      *
-     * For example, to listen for the Konami code (up, up, up, down, down, down, left, left, left, right, right, right)
+     * For example, to listen for the Konami code (up, up, down, down, left, right, left, right, b, a, enter)
      * you could pass the following array of key codes:
      *
      * ```javascript
-     * this.input.keyboard.createCombo([ 38, 38, 38, 40, 40, 40, 37, 37, 37, 39, 39, 39 ], { resetOnMatch: true });
+     * this.input.keyboard.createCombo([ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13 ], { resetOnMatch: true });
      *
      * this.input.keyboard.on('keycombomatch', function (event) {
      *     console.log('Konami Code entered!');

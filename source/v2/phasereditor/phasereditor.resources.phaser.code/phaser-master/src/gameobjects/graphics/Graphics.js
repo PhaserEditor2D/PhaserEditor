@@ -4,11 +4,19 @@
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
-var Camera = require('../../cameras/2d/Camera.js');
+var BaseCamera = require('../../cameras/2d/BaseCamera.js');
 var Class = require('../../utils/Class');
 var Commands = require('./Commands');
-var Components = require('../components');
-var Ellipse = require('../../geom/ellipse/');
+var ComponentsAlpha = require('../components/Alpha');
+var ComponentsBlendMode = require('../components/BlendMode');
+var ComponentsDepth = require('../components/Depth');
+var ComponentsMask = require('../components/Mask');
+var ComponentsPipeline = require('../components/Pipeline');
+var ComponentsTransform = require('../components/Transform');
+var ComponentsVisible = require('../components/Visible');
+var ComponentsScrollFactor = require('../components/ScrollFactor');
+
+var Ellipse = require('../../geom/ellipse/Ellipse');
 var GameObject = require('../GameObject');
 var GetFastValue = require('../../utils/object/GetFastValue');
 var GetValue = require('../../utils/object/GetValue');
@@ -55,7 +63,7 @@ var Render = require('./GraphicsRender');
 
 /**
  * @classdesc
- * A Graphics object is a way to draw primitive shapes to you game. Primitives include forms of geometry, such as
+ * A Graphics object is a way to draw primitive shapes to your game. Primitives include forms of geometry, such as
  * Rectangles, Circles, and Polygons. They also include lines, arcs and curves. When you initially create a Graphics
  * object it will be empty.
  *
@@ -117,14 +125,14 @@ var Graphics = new Class({
     Extends: GameObject,
 
     Mixins: [
-        Components.Alpha,
-        Components.BlendMode,
-        Components.Depth,
-        Components.Mask,
-        Components.Pipeline,
-        Components.Transform,
-        Components.Visible,
-        Components.ScrollFactor,
+        ComponentsAlpha,
+        ComponentsBlendMode,
+        ComponentsDepth,
+        ComponentsMask,
+        ComponentsPipeline,
+        ComponentsTransform,
+        ComponentsVisible,
+        ComponentsScrollFactor,
         Render
     ],
 
@@ -138,7 +146,7 @@ var Graphics = new Class({
         GameObject.call(this, scene, 'Graphics');
 
         this.setPosition(x, y);
-        this.initPipeline('FlatTintPipeline');
+        this.initPipeline();
 
         /**
          * The horizontal display origin of the Graphics.
@@ -310,6 +318,139 @@ var Graphics = new Class({
             Commands.FILL_STYLE,
             color, alpha
         );
+
+        return this;
+    },
+
+    /**
+     * Sets a gradient fill style. This is a WebGL only feature.
+     *
+     * The gradient color values represent the 4 corners of an untransformed rectangle.
+     * The gradient is used to color all filled shapes and paths drawn after calling this method.
+     * If you wish to turn a gradient off, call `fillStyle` and provide a new single fill color.
+     *
+     * When filling a triangle only the first 3 color values provided are used for the 3 points of a triangle.
+     *
+     * This feature is best used only on rectangles and triangles. All other shapes will give strange results.
+     *
+     * Note that for objects such as arcs or ellipses, or anything which is made out of triangles, each triangle used
+     * will be filled with a gradient on its own. There is no ability to gradient fill a shape or path as a single
+     * entity at this time.
+     *
+     * @method Phaser.GameObjects.Graphics#fillGradientStyle
+     * @webglOnly
+     * @since 3.12.0
+     *
+     * @param {integer} topLeft - The tint being applied to the top-left of the Game Object.
+     * @param {integer} topRight - The tint being applied to the top-right of the Game Object.
+     * @param {integer} bottomLeft - The tint being applied to the bottom-left of the Game Object.
+     * @param {integer} bottomRight - The tint being applied to the bottom-right of the Game Object.
+     * @param {number} [alpha=1] - The fill alpha.
+     *
+     * @return {Phaser.GameObjects.Graphics} This Game Object.
+     */
+    fillGradientStyle: function (topLeft, topRight, bottomLeft, bottomRight, alpha)
+    {
+        if (alpha === undefined) { alpha = 1; }
+
+        this.commandBuffer.push(
+            Commands.GRADIENT_FILL_STYLE,
+            alpha, topLeft, topRight, bottomLeft, bottomRight
+        );
+
+        return this;
+    },
+
+    /**
+     * Sets a gradient line style. This is a WebGL only feature.
+     *
+     * The gradient color values represent the 4 corners of an untransformed rectangle.
+     * The gradient is used to color all stroked shapes and paths drawn after calling this method.
+     * If you wish to turn a gradient off, call `lineStyle` and provide a new single line color.
+     *
+     * This feature is best used only on single lines. All other shapes will give strange results.
+     *
+     * Note that for objects such as arcs or ellipses, or anything which is made out of triangles, each triangle used
+     * will be filled with a gradient on its own. There is no ability to gradient stroke a shape or path as a single
+     * entity at this time.
+     *
+     * @method Phaser.GameObjects.Graphics#lineGradientStyle
+     * @webglOnly
+     * @since 3.12.0
+     *
+     * @param {number} lineWidth - The stroke width.
+     * @param {integer} topLeft - The tint being applied to the top-left of the Game Object.
+     * @param {integer} topRight - The tint being applied to the top-right of the Game Object.
+     * @param {integer} bottomLeft - The tint being applied to the bottom-left of the Game Object.
+     * @param {integer} bottomRight - The tint being applied to the bottom-right of the Game Object.
+     * @param {number} [alpha=1] - The fill alpha.
+     *
+     * @return {Phaser.GameObjects.Graphics} This Game Object.
+     */
+    lineGradientStyle: function (lineWidth, topLeft, topRight, bottomLeft, bottomRight, alpha)
+    {
+        if (alpha === undefined) { alpha = 1; }
+
+        this.commandBuffer.push(
+            Commands.GRADIENT_LINE_STYLE,
+            lineWidth, alpha, topLeft, topRight, bottomLeft, bottomRight
+        );
+
+        return this;
+    },
+
+    /**
+     * Sets the texture frame this Graphics Object will use when drawing all shapes defined after calling this.
+     *
+     * Textures are referenced by their string-based keys, as stored in the Texture Manager.
+     *
+     * Once set, all shapes will use this texture. Call this method with no arguments to clear it.
+     *
+     * The textures are not tiled. They are stretched to the dimensions of the shapes being rendered. For this reason,
+     * it works best with seamless / tileable textures.
+     *
+     * The mode argument controls how the textures are combined with the fill colors. The default value (0) will
+     * multiply the texture by the fill color. A value of 1 will use just the fill color, but the alpha data from the texture,
+     * and a value of 2 will use just the texture and no fill color at all.
+     *
+     * @method Phaser.GameObjects.Graphics#setTexture
+     * @since 3.12.0
+     * @webglOnly
+     *
+     * @param {string} [key] - The key of the texture to be used, as stored in the Texture Manager. Leave blank to clear a previously set texture.
+     * @param {(string|integer)} [frame] - The name or index of the frame within the Texture.
+     * @param {number} [mode=0] - The texture tint mode. 0 is multiply, 1 is alpha only and 2 is texture only.
+     *
+     * @return {this} This Game Object.
+     */
+    setTexture: function (key, frame, mode)
+    {
+        if (mode === undefined) { mode = 0; }
+
+        if (key === undefined)
+        {
+            this.commandBuffer.push(
+                Commands.CLEAR_TEXTURE
+            );
+        }
+        else
+        {
+            var textureFrame = this.scene.sys.textures.getFrame(key, frame);
+
+            if (textureFrame)
+            {
+                if (mode === 2)
+                {
+                    mode = 3;
+                }
+
+                this.commandBuffer.push(
+                    Commands.SET_TEXTURE,
+                    textureFrame,
+                    mode
+                );
+            }
+        }
 
         return this;
     },
@@ -1080,8 +1221,12 @@ var Graphics = new Class({
      *
      * This method can be used to create circles, or parts of circles.
      * 
-     * Use the optional `overshoot` argument to allow the arc to extend beyond 360 degrees. This is useful if you're drawing
-     * an arc with an especially thick line, as it will allow the arc to fully join-up. Try small values at first, i.e. 0.01.
+     * Make sure you call `beginPath` before starting the arc unless you wish for the arc to automatically
+     * close when filled or stroked.
+     *
+     * Use the optional `overshoot` argument increase the number of iterations that take place when
+     * the arc is rendered in WebGL. This is useful if you're drawing an arc with an especially thick line,
+     * as it will allow the arc to fully join-up. Try small values at first, i.e. 0.01.
      *
      * Call {@link Phaser.GameObjects.Graphics#fillPath} or {@link Phaser.GameObjects.Graphics#strokePath} after calling
      * this method to draw the arc.
@@ -1095,7 +1240,7 @@ var Graphics = new Class({
      * @param {number} startAngle - The starting angle, in radians.
      * @param {number} endAngle - The ending angle, in radians.
      * @param {boolean} [anticlockwise=false] - Whether the drawing should be anticlockwise or clockwise.
-     * @param {number} [overshoot=0] - This value allows you to overshoot the endAngle by this amount. Useful if the arc has a thick stroke and needs to overshoot to join-up cleanly.
+     * @param {number} [overshoot=0] - This value allows you to increase the segment iterations in WebGL rendering. Useful if the arc has a thick stroke and needs to overshoot to join-up cleanly. Use small numbers such as 0.01 to start with and increase as needed.
      *
      * @return {Phaser.GameObjects.Graphics} This Game Object.
      */
@@ -1104,38 +1249,9 @@ var Graphics = new Class({
         if (anticlockwise === undefined) { anticlockwise = false; }
         if (overshoot === undefined) { overshoot = 0; }
 
-        var PI2 = Math.PI * 2;
-
-        if (anticlockwise)
-        {
-            if (endAngle < -PI2)
-            {
-                endAngle = -PI2 - overshoot;
-            }
-            else if (endAngle >= 0)
-            {
-                endAngle = -PI2 + endAngle % PI2 - overshoot;
-            }
-        }
-        else
-        {
-            endAngle -= startAngle;
-            endAngle += overshoot;
-
-            if (endAngle > PI2 + overshoot)
-            {
-                endAngle = PI2 + overshoot;
-                
-            }
-            else if (endAngle < -overshoot)
-            {
-                endAngle = PI2 + endAngle % PI2 - overshoot;
-            }
-        }
-
         this.commandBuffer.push(
             Commands.ARC,
-            x, y, radius, startAngle, endAngle, anticlockwise
+            x, y, radius, startAngle, endAngle, anticlockwise, overshoot
         );
 
         return this;
@@ -1169,40 +1285,11 @@ var Graphics = new Class({
         if (anticlockwise === undefined) { anticlockwise = false; }
         if (overshoot === undefined) { overshoot = 0; }
 
-        var PI2 = Math.PI * 2;
-
-        if (anticlockwise)
-        {
-            if (endAngle < -PI2)
-            {
-                endAngle = -PI2 - overshoot;
-            }
-            else if (endAngle >= 0)
-            {
-                endAngle = -PI2 + endAngle % PI2 - overshoot;
-            }
-        }
-        else
-        {
-            endAngle -= startAngle;
-            endAngle += overshoot;
-
-            if (endAngle > PI2 + overshoot)
-            {
-                endAngle = PI2 + overshoot;
-                
-            }
-            else if (endAngle <= -overshoot)
-            {
-                endAngle = PI2 + endAngle % PI2 - overshoot;
-            }
-        }
-
         this.commandBuffer.push(Commands.BEGIN_PATH);
 
         this.commandBuffer.push(Commands.MOVE_TO, x, y);
 
-        this.commandBuffer.push(Commands.ARC, x, y, radius, startAngle, endAngle, anticlockwise);
+        this.commandBuffer.push(Commands.ARC, x, y, radius, startAngle, endAngle, anticlockwise, overshoot);
 
         this.commandBuffer.push(Commands.CLOSE_PATH);
 
@@ -1357,10 +1444,12 @@ var Graphics = new Class({
     generateTexture: function (key, width, height)
     {
         var sys = this.scene.sys;
+        var renderer = sys.game.renderer;
 
         if (width === undefined) { width = sys.game.config.width; }
         if (height === undefined) { height = sys.game.config.height; }
 
+        Graphics.TargetCamera.setScene(this.scene);
         Graphics.TargetCamera.setViewport(0, 0, width, height);
         Graphics.TargetCamera.scrollX = this.x;
         Graphics.TargetCamera.scrollY = this.y;
@@ -1401,11 +1490,12 @@ var Graphics = new Class({
 
         if (ctx)
         {
-            this.renderCanvas(sys.game.renderer, this, 0.0, Graphics.TargetCamera, null, ctx);
+            // var GraphicsCanvasRenderer = function (renderer, src, interpolationPercentage, camera, parentMatrix, renderTargetCtx, allowClip)
+            this.renderCanvas(renderer, this, 0, Graphics.TargetCamera, null, ctx, false);
 
-            if (sys.game.renderer.gl && texture)
+            if (renderer.gl && texture)
             {
-                texture.source[0].glTexture = sys.game.renderer.canvasToTexture(ctx.canvas, texture.source[0].glTexture);
+                texture.source[0].glTexture = renderer.canvasToTexture(ctx.canvas, texture.source[0].glTexture);
             }
         }
 
@@ -1433,6 +1523,6 @@ var Graphics = new Class({
  * @type {Phaser.Cameras.Scene2D.Camera}
  * @since 3.1.0
  */
-Graphics.TargetCamera = new Camera(0, 0, 0, 0);
+Graphics.TargetCamera = new BaseCamera();
 
 module.exports = Graphics;

@@ -4,7 +4,6 @@
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
-var GameObject = require('../GameObject');
 var Utils = require('../../renderer/webgl/Utils');
 
 /**
@@ -24,11 +23,6 @@ var Utils = require('../../renderer/webgl/Utils');
  */
 var MeshWebGLRenderer = function (renderer, src, interpolationPercentage, camera, parentMatrix)
 {
-    if (GameObject.RENDER_MASK !== src.renderFlags || (src.cameraFilter > 0 && (src.cameraFilter & camera.id)))
-    {
-        return;
-    }
-
     var pipeline = this.pipeline;
 
     renderer.setPipeline(pipeline, src);
@@ -65,8 +59,6 @@ var MeshWebGLRenderer = function (renderer, src, interpolationPercentage, camera
     var frame = src.frame;
     var texture = frame.glTexture;
 
-    pipeline.setTexture2D(texture, 0);
-
     var vertices = src.vertices;
     var uvs = src.uv;
     var colors = src.colors;
@@ -79,6 +71,8 @@ var MeshWebGLRenderer = function (renderer, src, interpolationPercentage, camera
     {
         pipeline.flush();
     }
+
+    pipeline.setTexture2D(texture, 0);
 
     var vertexViewF32 = pipeline.vertexViewF32;
     var vertexViewU32 = pipeline.vertexViewU32;

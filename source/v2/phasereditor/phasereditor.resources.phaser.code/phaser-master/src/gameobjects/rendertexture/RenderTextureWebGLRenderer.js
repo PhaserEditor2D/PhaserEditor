@@ -4,7 +4,6 @@
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
-var GameObject = require('../GameObject');
 var Utils = require('../../renderer/webgl/Utils');
 
 /**
@@ -24,25 +23,23 @@ var Utils = require('../../renderer/webgl/Utils');
  */
 var RenderTextureWebGLRenderer = function (renderer, src, interpolationPercentage, camera, parentMatrix)
 {
-    if (GameObject.RENDER_MASK !== src.renderFlags || (src.cameraFilter > 0 && (src.cameraFilter & camera._id)))
-    {
-        return;
-    }
-
+    var frame = src.frame;
+    var width = frame.width;
+    var height = frame.height;
     var getTint = Utils.getTintAppendFloatAlpha;
 
     this.pipeline.batchTexture(
         src,
-        src.texture,
-        src.texture.width, src.texture.height,
+        frame.glTexture,
+        width, height,
         src.x, src.y,
-        src.width, src.height,
+        width, height,
         src.scaleX, src.scaleY,
         src.rotation,
         src.flipX, !src.flipY,
         src.scrollFactorX, src.scrollFactorY,
         src.displayOriginX, src.displayOriginY,
-        0, 0, src.texture.width, src.texture.height,
+        0, 0, width, height,
         getTint(src._tintTL, camera.alpha * src._alphaTL),
         getTint(src._tintTR, camera.alpha * src._alphaTR),
         getTint(src._tintBL, camera.alpha * src._alphaBL),
@@ -52,6 +49,9 @@ var RenderTextureWebGLRenderer = function (renderer, src, interpolationPercentag
         camera,
         parentMatrix
     );
+
+    //  Force clear the current texture so that items next in the batch (like Graphics) don't try and use it
+    renderer.setBlankTexture(true);
 };
 
 module.exports = RenderTextureWebGLRenderer;

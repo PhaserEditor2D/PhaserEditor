@@ -6,6 +6,7 @@
  */
 
 var ArrayUtils = require('../../utils/array');
+var BlendModes = require('../../renderer/BlendModes');
 var Class = require('../../utils/Class');
 var Components = require('../components');
 var GameObject = require('../GameObject');
@@ -194,6 +195,8 @@ var Container = new Class({
         this.setPosition(x, y);
 
         this.clearAlpha();
+
+        this.setBlendMode(BlendModes.SKIP_CHECK);
 
         if (children)
         {
@@ -435,6 +438,7 @@ var Container = new Class({
 
     /**
      * Returns the world transform matrix as used for Bounds checks.
+     * 
      * The returned matrix is temporal and shouldn't be stored.
      *
      * @method Phaser.GameObjects.Container#getBoundsTransformMatrix
@@ -444,7 +448,7 @@ var Container = new Class({
      */
     getBoundsTransformMatrix: function ()
     {
-        return this.getWorldTransformMatrix(this.tempTransformMatrix);
+        return this.getWorldTransformMatrix(this.tempTransformMatrix, this.localTransform);
     },
 
     /**

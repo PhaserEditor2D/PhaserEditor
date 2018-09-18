@@ -336,6 +336,16 @@ var InputManager = new Class({
          */
         this._tempMatrix = new TransformMatrix();
 
+        /**
+         * A re-cycled matrix used in hit test calculations.
+         *
+         * @name Phaser.Input.InputManager#_tempMatrix2
+         * @type {Phaser.GameObjects.Components.TransformMatrix}
+         * @private
+         * @since 3.12.0
+         */
+        this._tempMatrix2 = new TransformMatrix();
+
         game.events.once('boot', this.boot, this);
     },
 
@@ -1050,14 +1060,15 @@ var InputManager = new Class({
      * @since 3.10.0
      *
      * @param {Phaser.GameObjects.GameObject} gameObject - The Game Object to test.
+     * @param {Phaser.Cameras.Scene2D.Camera} camera - The Camera which is being tested against.
      *
      * @return {boolean} `true` if the Game Object should be considered for input, otherwise `false`.
      */
-    inputCandidate: function (gameObject)
+    inputCandidate: function (gameObject, camera)
     {
         var input = gameObject.input;
 
-        if (!input || !input.enabled || !gameObject.willRender())
+        if (!input || !input.enabled || !gameObject.willRender(camera))
         {
             return false;
         }
@@ -1069,7 +1080,7 @@ var InputManager = new Class({
         {
             do
             {
-                if (!parent.visible)
+                if (!parent.willRender(camera))
                 {
                     visible = false;
                     break;
@@ -1108,17 +1119,19 @@ var InputManager = new Class({
         if (output === undefined) { output = this._tempHitTest; }
 
         var tempPoint = this._tempPoint;
-        var cameraW = camera.width;
-        var cameraH = camera.height;
+
+        var csx = camera.scrollX;
+        var csy = camera.scrollY;
 
         output.length = 0;
 
         var x = pointer.x;
         var y = pointer.y;
 
-        if (!(x >= camera.x && y >= camera.y && x <= camera.x + cameraW && y <= camera.y + cameraH))
+        if (camera.resolution !== 1)
         {
-            return output;
+            x += camera._x;
+            y += camera._y;
         }
 
         //  Stores the world point inside of tempPoint
@@ -1127,38 +1140,36 @@ var InputManager = new Class({
         pointer.worldX = tempPoint.x;
         pointer.worldY = tempPoint.y;
 
-        //  Disable until fixed.
-        // var culledGameObjects = camera.cull(gameObjects);
-
         var point = { x: 0, y: 0 };
 
-        var res = this.game.config.resolution;
-
         var matrix = this._tempMatrix;
+        var parentMatrix = this._tempMatrix2;
 
         for (var i = 0; i < gameObjects.length; i++)
         {
             var gameObject = gameObjects[i];
 
-            if (!this.inputCandidate(gameObject))
+            //  Checks if the Game Object can receive input (isn't being ignored by the camera, invisible, etc)
+            //  and also checks all of its parents, if any
+            if (!this.inputCandidate(gameObject, camera))
             {
                 continue;
             }
 
-            var px = tempPoint.x * res + (camera.scrollX * gameObject.scrollFactorX) - camera.scrollX;
-            var py = tempPoint.y * res + (camera.scrollY * gameObject.scrollFactorY) - camera.scrollY;
+            var px = tempPoint.x + (csx * gameObject.scrollFactorX) - csx;
+            var py = tempPoint.y + (csy * gameObject.scrollFactorY) - csy;
 
             if (gameObject.parentContainer)
             {
-                gameObject.getWorldTransformMatrix(matrix);
+                gameObject.getWorldTransformMatrix(matrix, parentMatrix);
 
-                TransformXY(px, py, matrix.tx, matrix.ty, matrix.rotation, matrix.scaleX, matrix.scaleY, point);
+                matrix.applyInverse(px, py, point);
             }
             else
             {
                 TransformXY(px, py, gameObject.x, gameObject.y, gameObject.rotation, gameObject.scaleX, gameObject.scaleY, point);
             }
-
+    
             if (this.pointWithinHitArea(gameObject, point.x, point.y))
             {
                 output.push(gameObject);
@@ -1245,8 +1256,8 @@ var InputManager = new Class({
      * @since 3.10.0
      *
      * @param {Phaser.Input.Pointer} pointer - The Pointer to transform the values for.
-     *
-     * @return {number} The translated value.
+     * @param {number} pageX - The Page X value.
+     * @param {number} pageY - The Page Y value.
      */
     transformPointer: function (pointer, pageX, pageY)
     {
@@ -1254,7 +1265,6 @@ var InputManager = new Class({
         pointer.prevPosition.x = pointer.x;
         pointer.prevPosition.y = pointer.y;
 
-        //  Set the new position
         pointer.x = (pageX - this.bounds.left) * this.scale.x;
         pointer.y = (pageY - this.bounds.top) * this.scale.y;
     },

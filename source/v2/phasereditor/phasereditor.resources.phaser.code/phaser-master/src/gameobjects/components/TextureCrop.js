@@ -46,16 +46,6 @@ var TextureCrop = {
     isCropped: false,
 
     /**
-     * The internal crop data object, as used by `setCrop` and passed to the `Frame.setCropUVs` method.
-     *
-     * @name Phaser.GameObjects.Components.TextureCrop#isCropped
-     * @type {object}
-     * @private
-     * @since 3.11.0
-     */
-    _crop: { u0: 0, v0: 0, u1: 0, v1: 0, width: 0, height: 0, x: 0, y: 0, flipX: false, flipY: false, cx: 0, cy: 0, cw: 0, ch: 0 },
-
-    /**
      * Applies a crop to a texture based Game Object, such as a Sprite or Image.
      * 
      * The crop is a rectangle that limits the area of the texture frame that is visible during rendering.
@@ -191,6 +181,20 @@ var TextureCrop = {
         }
 
         return this;
+    },
+
+    /**
+     * Internal method that returns a blank, well-formed crop object for use by a Game Object.
+     *
+     * @method Phaser.GameObjects.Components.TextureCrop#resetCropObject
+     * @private
+     * @since 3.12.0
+     * 
+     * @return {object} The crop object.
+     */
+    resetCropObject: function ()
+    {
+        return { u0: 0, v0: 0, u1: 0, v1: 0, width: 0, height: 0, x: 0, y: 0, flipX: false, flipY: false, cx: 0, cy: 0, cw: 0, ch: 0 };
     }
 
 };

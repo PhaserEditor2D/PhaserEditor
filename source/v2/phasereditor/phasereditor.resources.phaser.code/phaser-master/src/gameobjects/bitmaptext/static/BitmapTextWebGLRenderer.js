@@ -4,7 +4,6 @@
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
-var GameObject = require('../../GameObject');
 var Utils = require('../../../renderer/webgl/Utils');
 
 /**
@@ -27,7 +26,7 @@ var BitmapTextWebGLRenderer = function (renderer, src, interpolationPercentage, 
     var text = src._text;
     var textLength = text.length;
 
-    if (GameObject.RENDER_MASK !== src.renderFlags || textLength === 0 || (src.cameraFilter > 0 && (src.cameraFilter & camera._id)))
+    if (textLength === 0)
     {
         return;
     }
@@ -190,17 +189,17 @@ var BitmapTextWebGLRenderer = function (renderer, src, interpolationPercentage, 
         var xw = x + (glyphW * scale);
         var yh = y + (glyphH * scale);
 
-        var tx0 = x * calcMatrix.a + y * calcMatrix.c + calcMatrix.e;
-        var ty0 = x * calcMatrix.b + y * calcMatrix.d + calcMatrix.f;
+        var tx0 = calcMatrix.getX(x, y);
+        var ty0 = calcMatrix.getY(x, y);
 
-        var tx1 = x * calcMatrix.a + yh * calcMatrix.c + calcMatrix.e;
-        var ty1 = x * calcMatrix.b + yh * calcMatrix.d + calcMatrix.f;
+        var tx1 = calcMatrix.getX(x, yh);
+        var ty1 = calcMatrix.getY(x, yh);
 
-        var tx2 = xw * calcMatrix.a + yh * calcMatrix.c + calcMatrix.e;
-        var ty2 = xw * calcMatrix.b + yh * calcMatrix.d + calcMatrix.f;
+        var tx2 = calcMatrix.getX(xw, yh);
+        var ty2 = calcMatrix.getY(xw, yh);
 
-        var tx3 = xw * calcMatrix.a + y * calcMatrix.c + calcMatrix.e;
-        var ty3 = xw * calcMatrix.b + y * calcMatrix.d + calcMatrix.f;
+        var tx3 = calcMatrix.getX(xw, y);
+        var ty3 = calcMatrix.getY(xw, y);
 
         if (roundPixels)
         {
@@ -217,7 +216,7 @@ var BitmapTextWebGLRenderer = function (renderer, src, interpolationPercentage, 
             ty3 |= 0;
         }
 
-        pipeline.batchVertices(tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3, u0, v0, u1, v1, tintTL, tintTR, tintBL, tintBR, tintEffect);
+        pipeline.batchQuad(tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3, u0, v0, u1, v1, tintTL, tintTR, tintBL, tintBR, tintEffect);
     }
 };
 

@@ -8,8 +8,7 @@ var SnapFloor = require('../../math/snap/SnapFloor');
 var SnapCeil = require('../../math/snap/SnapCeil');
 
 /**
- * Returns the tiles in the given layer that are within the camera's viewport. This is used
- * internally.
+ * Returns the tiles in the given layer that are within the camera's viewport. This is used internally.
  *
  * @function Phaser.Tilemaps.Components.CullTiles
  * @private
@@ -21,45 +20,123 @@ var SnapCeil = require('../../math/snap/SnapCeil');
  *
  * @return {Phaser.Tilemaps.Tile[]} An array of Tile objects.
  */
-var CullTiles = function (layer, camera, outputArray)
+var CullTiles = function (layer, camera, outputArray, renderOrder)
 {
     if (outputArray === undefined) { outputArray = []; }
+    if (renderOrder === undefined) { renderOrder = 0; }
 
     outputArray.length = 0;
-    
-    var tilemapLayer = layer.tilemapLayer;
-    var skipCull = tilemapLayer.skipCull;
 
-    var tileW = Math.floor(layer.tileWidth * tilemapLayer.scaleX);
-    var tileH = Math.floor(layer.tileHeight * tilemapLayer.scaleY);
+    var tilemap = layer.tilemapLayer.tilemap;
+    var tilemapLayer = layer.tilemapLayer;
 
     var mapData = layer.data;
     var mapWidth = layer.width;
     var mapHeight = layer.height;
 
-    //  Camera world view bounds, snapped for tile size
+    //  We need to use the tile sizes defined for the map as a whole, not the layer,
+    //  in order to calculate the bounds correctly. As different sized tiles may be
+    //  placed on the grid and we cannot trust layer.baseTileWidth to give us the true size.
+    var tileW = Math.floor(tilemap.tileWidth * tilemapLayer.scaleX);
+    var tileH = Math.floor(tilemap.tileHeight * tilemapLayer.scaleY);
 
-    var boundsLeft = SnapFloor(camera.worldView.x, tileW) - (tilemapLayer.cullPaddingX * tileW);
-    var boundsRight = SnapCeil(camera.worldView.right, tileW) + (tilemapLayer.cullPaddingX * tileW);
-    var boundsTop = SnapFloor(camera.worldView.y, tileH) - (tilemapLayer.cullPaddingY * tileH);
-    var boundsBottom = SnapCeil(camera.worldView.bottom, tileH) + (tilemapLayer.cullPaddingY * tileH);
+    var drawLeft = 0;
+    var drawRight = mapWidth;
+    var drawTop = 0;
+    var drawBottom = mapHeight;
 
-    for (var y = 0; y < mapHeight; y++)
+    if (!tilemapLayer.skipCull && tilemapLayer.scrollFactorX === 1 && tilemapLayer.scrollFactorY === 1)
     {
-        for (var x = 0; x < mapWidth; x++)
+        //  Camera world view bounds, snapped for scaled tile size
+        //  Cull Padding values are given in tiles, not pixels
+
+        var boundsLeft = SnapFloor(camera.worldView.x - tilemapLayer.x, tileW, 0, true) - tilemapLayer.cullPaddingX;
+        var boundsRight = SnapCeil(camera.worldView.right - tilemapLayer.x, tileW, 0, true) + tilemapLayer.cullPaddingX;
+        var boundsTop = SnapFloor(camera.worldView.y - tilemapLayer.y, tileH, 0, true) - tilemapLayer.cullPaddingY;
+        var boundsBottom = SnapCeil(camera.worldView.bottom - tilemapLayer.y, tileH, 0, true) + tilemapLayer.cullPaddingY;
+
+        drawLeft = Math.max(0, boundsLeft);
+        drawRight = Math.min(mapWidth, boundsRight);
+        drawTop = Math.max(0, boundsTop);
+        drawBottom = Math.min(mapHeight, boundsBottom);
+    }
+
+    var x;
+    var y;
+    var tile;
+
+    if (renderOrder === 0)
+    {
+        //  right-down
+
+        for (y = drawTop; y < drawBottom; y++)
         {
-            var tile = mapData[y][x];
-
-            if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0)
+            for (x = drawLeft; x < drawRight; x++)
             {
-                continue;
+                tile = mapData[y][x];
+    
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0)
+                {
+                    continue;
+                }
+    
+                outputArray.push(tile);
             }
+        }
+    }
+    else if (renderOrder === 1)
+    {
+        //  left-down
 
-            var tilePixelX = (tile.pixelX + tilemapLayer.x) * tilemapLayer.scaleX;
-            var tilePixelY = (tile.pixelY + tilemapLayer.y) * tilemapLayer.scaleY;
-
-            if (skipCull || (tilePixelX >= boundsLeft && tilePixelX + tileW <= boundsRight && tilePixelY >= boundsTop && tilePixelY + tileH <= boundsBottom))
+        for (y = drawTop; y < drawBottom; y++)
+        {
+            for (x = drawRight; x >= drawLeft; x--)
             {
+                tile = mapData[y][x];
+    
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0)
+                {
+                    continue;
+                }
+    
+                outputArray.push(tile);
+            }
+        }
+    }
+    else if (renderOrder === 2)
+    {
+        //  right-up
+
+        for (y = drawBottom; y >= drawTop; y--)
+        {
+            for (x = drawLeft; x < drawRight; x++)
+            {
+                tile = mapData[y][x];
+    
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0)
+                {
+                    continue;
+                }
+    
+                outputArray.push(tile);
+            }
+        }
+    }
+    else if (renderOrder === 3)
+    {
+        //  left-up
+
+        for (y = drawBottom; y >= drawTop; y--)
+        {
+            for (x = drawRight; x >= drawLeft; x--)
+            {
+                tile = mapData[y][x];
+    
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0)
+                {
+                    continue;
+                }
+    
                 outputArray.push(tile);
             }
         }

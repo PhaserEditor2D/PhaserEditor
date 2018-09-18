@@ -21,6 +21,7 @@ var GetValue = require('../../utils/object/GetValue');
  * @property {Phaser.Input.Keyboard.Key} [left] - The Key to be pressed that will move the Camera left.
  * @property {Phaser.Input.Keyboard.Key} [right] - The Key to be pressed that will move the Camera right.
  * @property {Phaser.Input.Keyboard.Key} [up] - The Key to be pressed that will move the Camera up.
+ * @property {Phaser.Input.Keyboard.Key} [down] - The Key to be pressed that will move the Camera down.
  * @property {Phaser.Input.Keyboard.Key} [zoomIn] - The Key to be pressed that will zoom the Camera in.
  * @property {Phaser.Input.Keyboard.Key} [zoomOut] - The Key to be pressed that will zoom the Camera out.
  * @property {number} [zoomSpeed=0.01] - The speed at which the camera will zoom if the `zoomIn` or `zoomOut` keys are pressed.
@@ -231,7 +232,7 @@ var FixedKeyControl = new Class({
      * @method Phaser.Cameras.Controls.FixedKeyControl#update
      * @since 3.0.0
      *
-     * @param {number} delta - [description]
+     * @param {number} delta - The delta time in ms since the last frame. This is a smoothed and capped value based on the FPS rate.
      */
     update: function (delta)
     {

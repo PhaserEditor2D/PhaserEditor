@@ -40,6 +40,7 @@ var propertyMap = {
     maxLines: [ 'maxLines', 0 ],
     fixedWidth: [ 'fixedWidth', 0 ],
     fixedHeight: [ 'fixedHeight', 0 ],
+    resolution: [ 'resolution', 0 ],
     rtl: [ 'rtl', false ],
     testString: [ 'testString', '|MÃ‰qgy' ],
     baselineX: [ 'baselineX', 1.2 ],
@@ -53,7 +54,7 @@ var propertyMap = {
 /**
  * Font metrics for a Text Style object.
  *
- * @typedef {object} TextMetrics
+ * @typedef {object} BitmapTextMetrics
  *
  * @property {number} ascent - The ascent of the font.
  * @property {number} descent - The descent of the font.
@@ -260,6 +261,17 @@ var TextStyle = new Class({
         this.fixedHeight;
 
         /**
+         * The resolution the text is rendered to its internal canvas at.
+         * The default is 0, which means it will use the resolution set in the Game Config.
+         *
+         * @name Phaser.GameObjects.Text.TextStyle#resolution
+         * @type {number}
+         * @default 0
+         * @since 3.12.0
+         */
+        this.resolution;
+
+        /**
          * Whether the text should render right to left.
          *
          * @name Phaser.GameObjects.Text.TextStyle#rtl
@@ -310,7 +322,7 @@ var TextStyle = new Class({
         this._font;
 
         //  Set to defaults + user style
-        this.setStyle(style, false);
+        this.setStyle(style, false, true);
 
         var metrics = GetValue(style, 'metrics', false);
 
@@ -347,12 +359,14 @@ var TextStyle = new Class({
      *
      * @param {object} style - The style settings to set.
      * @param {boolean} [updateText=true] - Whether to update the text immediately.
+     * @param {boolean} [setDefaults=false] - Use the default values is not set, or the local values.
      *
      * @return {Phaser.GameObjects.Text} The parent Text object.
      */
-    setStyle: function (style, updateText)
+    setStyle: function (style, updateText, setDefaults)
     {
         if (updateText === undefined) { updateText = true; }
+        if (setDefaults === undefined) { setDefaults = false; }
 
         //  Avoid type mutation
         if (style && style.hasOwnProperty('fontSize') && typeof style.fontSize === 'number')
@@ -362,14 +376,16 @@ var TextStyle = new Class({
 
         for (var key in propertyMap)
         {
+            var value = (setDefaults) ? propertyMap[key][1] : this[key];
+
             if (key === 'wordWrapCallback' || key === 'wordWrapCallbackScope')
             {
                 // Callback & scope should be set without processing the values
-                this[key] = GetValue(style, propertyMap[key][0], propertyMap[key][1]);
+                this[key] = GetValue(style, propertyMap[key][0], value);
             }
             else
             {
-                this[key] = GetAdvancedValue(style, propertyMap[key][0], propertyMap[key][1]);
+                this[key] = GetAdvancedValue(style, propertyMap[key][0], value);
             }
         }
 
@@ -378,7 +394,7 @@ var TextStyle = new Class({
 
         if (font === null)
         {
-            this._font = [ this.fontStyle, this.fontSize, this.fontFamily ].join(' ');
+            this._font = [ this.fontStyle, this.fontSize, this.fontFamily ].join(' ').trim();
         }
         else
         {
@@ -479,7 +495,7 @@ var TextStyle = new Class({
     {
         if (recalculateMetrics)
         {
-            this._font = [ this.fontStyle, this.fontSize, this.fontFamily ].join(' ');
+            this._font = [ this.fontStyle, this.fontSize, this.fontFamily ].join(' ').trim();
 
             this.metrics = MeasureText(this);
         }
@@ -671,6 +687,29 @@ var TextStyle = new Class({
     setColor: function (color)
     {
         this.color = color;
+
+        return this.update(false);
+    },
+
+    /**
+     * Set the resolution used by the Text object.
+     *
+     * By default it will be set to match the resolution set in the Game Config,
+     * but you can override it via this method. It allows for much clearer text on High DPI devices,
+     * at the cost of memory because it uses larger internal Canvas textures for the Text.
+     * 
+     * Please use with caution, as the more high res Text you have, the more memory it uses up.
+     *
+     * @method Phaser.GameObjects.Text.TextStyle#setResolution
+     * @since 3.12.0
+     *
+     * @param {number} value - The resolution for this Text object to use.
+     *
+     * @return {Phaser.GameObjects.Text} The parent Text object.
+     */
+    setResolution: function (value)
+    {
+        this.resolution = value;
 
         return this.update(false);
     },
@@ -929,7 +968,7 @@ var TextStyle = new Class({
      * @method Phaser.GameObjects.Text.TextStyle#getTextMetrics
      * @since 3.0.0
      *
-     * @return {TextMetrics} The text metrics.
+     * @return {BitmapTextMetrics} The text metrics.
      */
     getTextMetrics: function ()
     {
