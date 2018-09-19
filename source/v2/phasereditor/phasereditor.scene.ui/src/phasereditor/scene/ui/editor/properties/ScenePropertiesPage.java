@@ -45,6 +45,7 @@ import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -169,6 +170,10 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 		if (obj instanceof FlipComponent) {
 			list.add(new FlipSection(this));
+		}
+		
+		if (obj instanceof VisibleComponent) {
+			list.add(new VisibleSection(this));
 		}
 
 		return list;

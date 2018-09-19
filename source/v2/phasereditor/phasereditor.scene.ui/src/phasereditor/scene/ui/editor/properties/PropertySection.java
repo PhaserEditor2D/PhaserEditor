@@ -30,6 +30,9 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -73,6 +76,28 @@ public abstract class PropertySection {
 		}
 
 		return "";
+	}
+
+	protected static Boolean flatValues_to_Boolean(Stream<Boolean> values) {
+		var set = new HashSet<>();
+		values.forEach(v -> set.add(v));
+
+		if (set.size() == 1) {
+			var value = set.toArray()[0];
+			return (Boolean) value;
+		}
+
+		return null;
+	}
+
+	@SuppressWarnings({ "boxing", "static-method" })
+	protected void listen(Button check, Consumer<Boolean> listener) {
+		check.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				listener.accept(check.getSelection());
+			}
+		});
 	}
 
 	@SuppressWarnings("static-method")

@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.function.Consumer;
 
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.ui.editor.SceneCanvas;
@@ -34,33 +35,42 @@ import phasereditor.scene.ui.editor.SceneEditor;
  */
 public abstract class ScenePropertySection extends PropertySection {
 	private ScenePropertiesPage _page;
-	
 
 	public ScenePropertySection(String name, ScenePropertiesPage page) {
 		super(name);
 		_page = page;
 	}
-	
+
 	public ScenePropertiesPage getPage() {
 		return _page;
 	}
-	
+
 	public SceneEditor getEditor() {
 		return _page.getEditor();
 	}
-	
+
 	public SceneCanvas getCanvas() {
 		return getEditor().getCanvas();
 	}
-	
+
 	@Override
 	protected void listen(Text text, Consumer<String> listener) {
 		super.listen(text, value -> {
-			
+
 			listener.accept(value);
-			
+
 			getCanvas().redraw();
-			
+
+		});
+	}
+
+	@Override
+	protected void listen(Button check, Consumer<Boolean> listener) {
+		super.listen(check, value -> {
+
+			listener.accept(value);
+
+			getCanvas().redraw();
 		});
 	}
 }
