@@ -23,81 +23,96 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
 import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.TextureComponent;
 
 /**
  * @author arian
  *
  */
-public class OriginSection extends ScenePropertySection {
+public class TextureSection extends ScenePropertySection {
 
-	private Label _originXLabel;
-	private Text _originXText;
-	private Label _originYLabel;
-	private Text _originYText;
+	private SingleFrameCanvas _frameCanvas;
+	private Label _frameLabel;
 
-	public OriginSection(ScenePropertiesPage page) {
-		super("Origin", page);
+	public TextureSection(ScenePropertiesPage page) {
+		super("Texture", page);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof OriginComponent;
+		return obj instanceof TextureComponent;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
+		var comp = new Composite(parent, SWT.NONE);
+		comp.setLayout(new GridLayout(1, false));
 
-		Composite comp = new Composite(parent, SWT.NONE);
+		{
+			_frameCanvas = new SingleFrameCanvas(comp, SWT.BORDER);
+			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+			gd.heightHint = 100;
+			gd.minimumWidth = 100;
+			_frameCanvas.setLayoutData(gd);
+		}
 
-		comp.setLayout(new GridLayout(5, false));
+		{
+			_frameLabel = new Label(comp, SWT.WRAP);
+			_frameLabel.setText("Frame");
+			_frameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		var label = new Label(comp, SWT.NONE);
-		label.setText("Origin");
-
-		_originXLabel = new Label(comp, SWT.NONE);
-		_originXLabel.setText("X");
-
-		_originXText = new Text(comp, SWT.BORDER);
-		_originXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-		_originYLabel = new Label(comp, SWT.NONE);
-		_originYLabel.setText("Y");
-
-		_originYText = new Text(comp, SWT.BORDER);
-		_originYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		}
 
 		update_UI_from_Model();
 
 		return comp;
 	}
 
-	@SuppressWarnings("boxing")
 	private void update_UI_from_Model() {
-
 		var models = List.of(getModels());
 
-		// origin
+		var frame = (IAssetFrameModel) flatValues_to_Object(
+				models.stream().map(model -> TextureComponent.get_frame((ObjectModel) model)));
 
-		_originXText
-				.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX((ObjectModel) model))));
-		_originYText
-				.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY((ObjectModel) model))));
+		if (frame == null) {
+			_frameLabel.setText("Frame");
+		} else {
+			var sb = new StringBuilder();
+			if (frame instanceof ImageAssetModel.Frame) {
+				sb.append("key: " + frame.getKey());
+			} else {
+				sb.append("key: " + frame.getAsset().getKey() + "\nframe: " + frame.getKey());
+			}
 
-		listenFloat(_originXText,
-				value -> models.forEach(model -> OriginComponent.set_originX((ObjectModel) model, value)));
-		listenFloat(_originYText,
-				value -> models.forEach(model -> OriginComponent.set_originY((ObjectModel) model, value)));
+			var fd = frame.getFrameData();
 
+			sb.append("\n");
+			sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
+			sb.append("\n");
+
+			IFile file = frame.getImageFile();
+
+			if (file != null) {
+				sb.append("file: " + file.getName());
+			}
+
+			_frameLabel.setText(sb.toString());
+		}
+
+		_frameCanvas.setModel(frame);
+		_frameCanvas.resetZoom();
 	}
 
 }

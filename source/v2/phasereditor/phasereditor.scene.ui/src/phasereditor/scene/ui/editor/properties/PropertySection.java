@@ -61,7 +61,7 @@ public abstract class PropertySection {
 		_models = models;
 	}
 
-	protected static String flatValues(Stream<?> values) {
+	protected static String flatValues_to_String(Stream<?> values) {
 		var set = new HashSet<>();
 		values.forEach(v -> set.add(v));
 
@@ -76,6 +76,18 @@ public abstract class PropertySection {
 		}
 
 		return "";
+	}
+	
+	protected static Object flatValues_to_Object(Stream<?> values) {
+		var set = new HashSet<>();
+		values.forEach(v -> set.add(v));
+
+		if (set.size() == 1) {
+			var value = set.toArray()[0];
+			return value;
+		}
+
+		return null;
 	}
 
 	protected static Boolean flatValues_to_Boolean(Stream<Boolean> values) {

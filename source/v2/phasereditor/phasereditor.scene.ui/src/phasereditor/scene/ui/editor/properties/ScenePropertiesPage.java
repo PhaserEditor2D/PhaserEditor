@@ -44,6 +44,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -176,6 +177,10 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 			list.add(new VisibleSection(this));
 		}
 
+		if (obj instanceof TextureComponent) {
+			list.add(new TextureSection(this));
+		}
+		
 		return list;
 	}
 

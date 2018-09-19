@@ -134,8 +134,8 @@ public class TransformSection extends ScenePropertySection {
 
 		// x y
 
-		_xText.setText(flatValues(models.stream().map(model -> TransformComponent.get_x((ObjectModel) model))));
-		_yText.setText(flatValues(models.stream().map(model -> TransformComponent.get_y((ObjectModel) model))));
+		_xText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_x((ObjectModel) model))));
+		_yText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_y((ObjectModel) model))));
 
 		listenFloat(_xText, value -> models.forEach(model -> TransformComponent.set_x((ObjectModel) model, value)));
 		listenFloat(_yText, value -> models.forEach(model -> TransformComponent.set_y((ObjectModel) model, value)));
@@ -143,9 +143,9 @@ public class TransformSection extends ScenePropertySection {
 		// scale
 
 		_scaleXText
-				.setText(flatValues(models.stream().map(model -> TransformComponent.get_scaleX((ObjectModel) model))));
+				.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX((ObjectModel) model))));
 		_scaleYText
-				.setText(flatValues(models.stream().map(model -> TransformComponent.get_scaleY((ObjectModel) model))));
+				.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY((ObjectModel) model))));
 
 		listenFloat(_scaleXText,
 				value -> models.forEach(model -> TransformComponent.set_scaleX((ObjectModel) model, value)));
@@ -154,7 +154,7 @@ public class TransformSection extends ScenePropertySection {
 
 		// angle
 
-		_angleText.setText(flatValues(models.stream().map(model -> TransformComponent.get_angle((ObjectModel) model))));
+		_angleText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle((ObjectModel) model))));
 
 		listenFloat(_angleText,
 				value -> models.forEach(model -> TransformComponent.set_angle((ObjectModel) model, value)));
