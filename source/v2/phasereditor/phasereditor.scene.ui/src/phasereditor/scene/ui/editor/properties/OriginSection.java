@@ -65,7 +65,7 @@ public class OriginSection extends ScenePropertySection {
 		comp.setLayout(new GridLayout(6, false));
 
 		var manager = new ToolBarManager();
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_ORIGIN)) {
+		manager.add(new Action("Origin", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
 			//
 		});
 		manager.createControl(comp);

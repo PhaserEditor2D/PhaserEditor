@@ -101,7 +101,7 @@ public interface IEditorSharedImages {
 	String IMG_SPLIT_VERTICAL = "icons/application-tile-vertical.png";
 	String IMG_GAME_CONTROLLER = "icons/controller.png";
 	String IMG_TYPE_VARIABLE_OBJ = "icons/typevariable_obj.png";
-	String IMG_EDIT_OBJ_PROPERTY = "icons/page_white_edit.png";
+	String IMG_EDIT_OBJ_PROPERTY = "icons/cursor.png";
 	String IMG_EDIT_POSITION = "icons/shape_move.png";
 	String IMG_EDIT_SCALE = "icons/shape_handles.png";
 	String IMG_EDIT_ANGLE = "icons/arrow_rotate_clockwise_blue.png";

@@ -74,7 +74,7 @@ public class TransformSection extends ScenePropertySection {
 
 			{
 				var manager = new ToolBarManager();
-				manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_POSITION)) {
+				manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
 					//
 				});
 				manager.createControl(comp);
@@ -135,7 +135,7 @@ public class TransformSection extends ScenePropertySection {
 			// scale
 
 			var manager = new ToolBarManager();
-			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE)) {
+			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
 				//
 			});
 			manager.createControl(comp);
@@ -161,7 +161,7 @@ public class TransformSection extends ScenePropertySection {
 			// angle
 
 			var manager = new ToolBarManager();
-			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
+			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
 				//
 			});
 			manager.createControl(comp);
