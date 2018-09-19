@@ -138,6 +138,9 @@ public class SceneCanvas extends ZoomCanvas {
 
 		redraw();
 
+		if (_editor.getOutline() != null) {
+			_editor.getOutline().refresh();
+		}
 	}
 
 	public void init(SceneEditor editor) {
@@ -466,7 +469,10 @@ public class SceneCanvas extends ZoomCanvas {
 
 	ObjectModel pickObject(int x, int y) {
 
-		for (var obj : _sceneModel.getObjects()) {
+		List<ObjectModel> objects = _sceneModel.getObjects();
+
+		for (int i = objects.size() - 1; i >= 0; i--) {
+			var obj = objects.get(i);
 			var pick = pickObject(obj, x, y);
 			if (pick != null) {
 				return pick;
