@@ -105,6 +105,8 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 	}
 
+	int _counter = 0;
+
 	protected void selectionDropped(int x, int y, Object[] data) {
 		var calc = calc();
 
@@ -123,6 +125,8 @@ public class SceneCanvas extends ZoomCanvas {
 				var frame = (IAssetFrameModel) obj;
 
 				var sprite = new SpriteModel();
+
+				EditorComponent.set_editorName(sprite, frame.getKey() + ++_counter);
 
 				TransformComponent.set_x(sprite, modelX);
 				TransformComponent.set_y(sprite, modelY);
