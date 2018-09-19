@@ -9,12 +9,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors;bundle-version="3.11.100",
  org.eclipse.ui.ide;bundle-version="3.14.0",
+ org.eclipse.core.resources;bundle-version="3.13.0",
  phasereditor.ui;bundle-version="1.5.0",
  phasereditor.assetpack.core;bundle-version="1.5.0",
  phasereditor.assetpack.ui;bundle-version="1.5.0",
  phasereditor.scene.core;bundle-version="2.0.0",
- org.eclipse.core.resources;bundle-version="3.13.0",
  org.json;bundle-version="1.4.0",
+ org.eclipse.ui.views;bundle-version="3.9.100",
  phasereditor.bmpfont.core;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Automatic-Module-Name: phasereditor.scene.ui

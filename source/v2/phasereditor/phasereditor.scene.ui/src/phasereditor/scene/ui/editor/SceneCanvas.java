@@ -36,6 +36,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
@@ -89,10 +90,10 @@ public class SceneCanvas extends ZoomCanvas {
 				@Override
 				public void drop(DropTargetEvent event) {
 					var loc = toDisplay(0, 0);
-					
+
 					var x = event.x - loc.x;
 					var y = event.y - loc.y;
-					
+
 					if (event.data instanceof Object[]) {
 						selectionDropped(x, y, (Object[]) event.data);
 					}
@@ -113,11 +114,11 @@ public class SceneCanvas extends ZoomCanvas {
 		var list = new ArrayList<ObjectModel>();
 
 		for (var obj : data) {
-			
+
 			if (obj instanceof ImageAssetModel) {
 				obj = ((ImageAssetModel) obj).getFrame();
 			}
-			
+
 			if (obj instanceof IAssetFrameModel) {
 				var frame = (IAssetFrameModel) obj;
 
@@ -192,24 +193,29 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 	}
 
-	@SuppressWarnings("static-method")
 	private void renderBackground(PaintEvent e) {
 		var gc = e.gc;
 
-		var bgColor = SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY);
-		var fgColor = SWTResourceManager.getColor(SWT.COLOR_GRAY);
-
-		gc.setBackground(bgColor);
-		gc.setForeground(fgColor);
+		gc.setBackground(getBackgroundColor());
+		gc.setForeground(getGridColor());
 
 		gc.fillRectangle(0, 0, e.width, e.height);
+	}
+
+	@SuppressWarnings("static-method")
+	private Color getGridColor() {
+		return SWTResourceManager.getColor(200, 200, 200);
+	}
+
+	@SuppressWarnings("static-method")
+	private Color getBackgroundColor() {
+		return SWTResourceManager.getColor(180, 180, 180);
 	}
 
 	private void renderGrid(PaintEvent e) {
 		var gc = e.gc;
 
-		// gc.setForeground(SWTResourceManager.getColor(_settingsModel.getGridColor()));
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+		gc.setForeground(getGridColor());
 
 		// paint labels
 
@@ -321,7 +327,7 @@ public class SceneCanvas extends ZoomCanvas {
 		var gc = e.gc;
 
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
+		gc.setBackground(getBackgroundColor());
 
 		gc.setAlpha(220);
 		gc.fillRectangle(0, 0, e.width, X_LABELS_HEIGHT);
@@ -381,7 +387,7 @@ public class SceneCanvas extends ZoomCanvas {
 
 				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 				gc.drawString(label, (int) viewX + 5, 0, true);
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+				gc.setForeground(getGridColor());
 				gc.drawLine((int) viewX, 0, (int) viewX, X_LABELS_HEIGHT);
 			}
 
@@ -419,7 +425,7 @@ public class SceneCanvas extends ZoomCanvas {
 				gc.setTransform(null);
 				tx.dispose();
 
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+				gc.setForeground(getGridColor());
 				gc.drawLine(0, (int) viewY, Y_LABEL_WIDTH, (int) viewY);
 			}
 

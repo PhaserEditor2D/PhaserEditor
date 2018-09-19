@@ -8,8 +8,10 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.ui.editor.properties.ScenePropertiesPage;
 import phasereditor.ui.SelectionProviderImpl;
 
 public class SceneEditor extends EditorPart {
@@ -70,6 +72,21 @@ public class SceneEditor extends EditorPart {
 
 	public SceneModel getSceneModel() {
 		return _model;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		
+		if (adapter == IPropertySheetPage.class) {
+			return new ScenePropertiesPage(this);
+		}
+		
+		return super.getAdapter(adapter);
+	}
+
+	public SceneCanvas getCanvas() {
+		return _canvas;
 	}
 
 }

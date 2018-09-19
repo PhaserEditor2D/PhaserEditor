@@ -19,40 +19,48 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core;
+package phasereditor.scene.ui.editor.properties;
+
+import java.util.function.Consumer;
+
+import org.eclipse.swt.widgets.Text;
+
+import phasereditor.scene.ui.editor.SceneCanvas;
+import phasereditor.scene.ui.editor.SceneEditor;
 
 /**
  * @author arian
  *
  */
-public class SpriteModel extends ObjectModel implements
+public abstract class ScenePropertySection extends PropertySection {
+	private ScenePropertiesPage _page;
+	
 
-		FlipComponent,
-
-		OriginComponent,
-
-		TextureComponent,
-
-		TransformComponent,
-
-		VisibleComponent {
-
-	//
-
-	public SpriteModel() {
-
-		EditorComponent.init(this);
-		
-		FlipComponent.init(this);
-
-		OriginComponent.init(this);
-
-		TextureComponent.init(this);
-
-		TransformComponent.init(this);
-		
-		VisibleComponent.init(this);
-
+	public ScenePropertySection(String name, ScenePropertiesPage page) {
+		super(name);
+		_page = page;
 	}
-
+	
+	public ScenePropertiesPage getPage() {
+		return _page;
+	}
+	
+	public SceneEditor getEditor() {
+		return _page.getEditor();
+	}
+	
+	public SceneCanvas getCanvas() {
+		return getEditor().getCanvas();
+	}
+	
+	@Override
+	protected void listen(Text text, Consumer<String> listener) {
+		super.listen(text, value -> {
+			
+			listener.accept(value);
+			
+			getCanvas().redraw();
+			
+		});
+	}
 }
