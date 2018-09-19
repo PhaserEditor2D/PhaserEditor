@@ -28,8 +28,11 @@ import java.util.List;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -43,6 +46,8 @@ import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 
 /**
  * @author arian
@@ -50,16 +55,14 @@ import phasereditor.scene.ui.editor.SceneEditor;
  */
 public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
-	private Composite _sectionsContainer;
+	Composite _sectionsContainer;
 	private SceneEditor _editor;
-	
-	
 
 	public ScenePropertiesPage(SceneEditor editor) {
 		super();
 		_editor = editor;
 	}
-	
+
 	public SceneEditor getEditor() {
 		return _editor;
 	}
@@ -104,7 +107,13 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		for (var section : finalSections) {
 			section.setModels(models);
 
-			var title = new Label(_sectionsContainer, SWT.NONE);
+			var header = new Composite(_sectionsContainer, SWT.NONE);
+			header.setLayout(new RowLayout());
+
+			var collapseBtn = new Label(header, SWT.NONE);
+			collapseBtn.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_BULLET_COLLAPSE));
+
+			var title = new Label(header, SWT.NONE);
 			title.setText(section.getName());
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
 
@@ -113,6 +122,31 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 			var sep = new Label(_sectionsContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
 			sep.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+			var expandListener = new MouseAdapter() {
+				boolean _collapsed = false;
+
+				@Override
+				public void mouseUp(MouseEvent e) {
+					_collapsed = !_collapsed;
+
+					var img = EditorSharedImages.getImage(_collapsed ? IEditorSharedImages.IMG_BULLET_EXPAND
+							: IEditorSharedImages.IMG_BULLET_COLLAPSE);
+
+					collapseBtn.setImage(img);
+
+					control.setVisible(!_collapsed);
+
+					var gd = (GridData) control.getLayoutData();
+					gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
+
+					_sectionsContainer.layout();
+				}
+			};
+			
+			title.addMouseListener(expandListener);
+			collapseBtn.addMouseListener(expandListener);
+
 		}
 
 		_sectionsContainer.layout();
