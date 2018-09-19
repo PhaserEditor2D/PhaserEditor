@@ -23,6 +23,8 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -64,10 +67,18 @@ public class TransformSection extends ScenePropertySection {
 	public Control createContent(Composite parent) {
 
 		var comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(5, false));
+		comp.setLayout(new GridLayout(6, false));
 
 		{
 			// position
+
+			{
+				var manager = new ToolBarManager();
+				manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_POSITION)) {
+					//
+				});
+				manager.createControl(comp);
+			}
 
 			var label = new Label(comp, SWT.NONE);
 			label.setText("Position");
@@ -87,7 +98,47 @@ public class TransformSection extends ScenePropertySection {
 		}
 
 		{
+			new Label(comp, SWT.NONE);
+
+			new Label(comp, SWT.NONE);
+
+			new Label(comp, SWT.NONE);
+
+			var xtoolbar = new ToolBarManager();
+			xtoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
+				//
+			});
+			xtoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_CENTER)) {
+				//
+			});
+			xtoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_RIGHT)) {
+				//
+			});
+			xtoolbar.createControl(comp);
+
+			new Label(comp, SWT.NONE);
+
+			var ytoolbar = new ToolBarManager();
+			ytoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_TOP)) {
+				//
+			});
+			ytoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_MIDDLE)) {
+				//
+			});
+			ytoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_BOTTOM)) {
+				//
+			});
+			ytoolbar.createControl(comp);
+		}
+		
+		{
 			// scale
+
+			var manager = new ToolBarManager();
+			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE)) {
+				//
+			});
+			manager.createControl(comp);
 
 			var label = new Label(comp, SWT.NONE);
 			label.setText("Scale");
@@ -108,6 +159,12 @@ public class TransformSection extends ScenePropertySection {
 
 		{
 			// angle
+
+			var manager = new ToolBarManager();
+			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
+				//
+			});
+			manager.createControl(comp);
 
 			var label = new Label(comp, SWT.NONE);
 			label.setText("Angle");
@@ -134,18 +191,20 @@ public class TransformSection extends ScenePropertySection {
 
 		// x y
 
-		_xText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_x((ObjectModel) model))));
-		_yText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_y((ObjectModel) model))));
+		_xText.setText(
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_x((ObjectModel) model))));
+		_yText.setText(
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_y((ObjectModel) model))));
 
 		listenFloat(_xText, value -> models.forEach(model -> TransformComponent.set_x((ObjectModel) model, value)));
 		listenFloat(_yText, value -> models.forEach(model -> TransformComponent.set_y((ObjectModel) model, value)));
 
 		// scale
 
-		_scaleXText
-				.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX((ObjectModel) model))));
-		_scaleYText
-				.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY((ObjectModel) model))));
+		_scaleXText.setText(
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX((ObjectModel) model))));
+		_scaleYText.setText(
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY((ObjectModel) model))));
 
 		listenFloat(_scaleXText,
 				value -> models.forEach(model -> TransformComponent.set_scaleX((ObjectModel) model, value)));
@@ -154,7 +213,8 @@ public class TransformSection extends ScenePropertySection {
 
 		// angle
 
-		_angleText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle((ObjectModel) model))));
+		_angleText.setText(
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle((ObjectModel) model))));
 
 		listenFloat(_angleText,
 				value -> models.forEach(model -> TransformComponent.set_angle((ObjectModel) model, value)));

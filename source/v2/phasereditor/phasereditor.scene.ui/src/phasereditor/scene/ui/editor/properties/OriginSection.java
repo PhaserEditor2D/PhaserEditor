@@ -23,6 +23,8 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -59,8 +62,14 @@ public class OriginSection extends ScenePropertySection {
 
 		Composite comp = new Composite(parent, SWT.NONE);
 
-		comp.setLayout(new GridLayout(5, false));
+		comp.setLayout(new GridLayout(6, false));
 
+		var manager = new ToolBarManager();
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_ORIGIN)) {
+			//
+		});
+		manager.createControl(comp);
+		
 		var label = new Label(comp, SWT.NONE);
 		label.setText("Origin");
 

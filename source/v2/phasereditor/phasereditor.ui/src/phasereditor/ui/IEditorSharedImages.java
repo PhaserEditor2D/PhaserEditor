@@ -101,6 +101,17 @@ public interface IEditorSharedImages {
 	String IMG_SPLIT_VERTICAL = "icons/application-tile-vertical.png";
 	String IMG_GAME_CONTROLLER = "icons/controller.png";
 	String IMG_TYPE_VARIABLE_OBJ = "icons/typevariable_obj.png";
+	String IMG_EDIT_OBJ_PROPERTY = "icons/page_white_edit.png";
+	String IMG_EDIT_POSITION = "icons/shape_move.png";
+	String IMG_EDIT_SCALE = "icons/shape_handles.png";
+	String IMG_EDIT_ANGLE = "icons/arrow_rotate_clockwise_blue.png";
+	String IMG_EDIT_ORIGIN = "icons/anchor.png";
+	String IMG_ALIGN_LEFT = "icons/shape_align_left.png";
+	String IMG_ALIGN_CENTER = "icons/shape_align_center.png";
+	String IMG_ALIGN_RIGHT = "icons/shape_align_right.png";
+	String IMG_ALIGN_TOP = "icons/shape_align_top.png";
+	String IMG_ALIGN_MIDDLE = "icons/shape_align_middle.png";
+	String IMG_ALIGN_BOTTOM = "icons/shape_align_bottom.png";
 	
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";

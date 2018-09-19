@@ -37,11 +37,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.ui.IEditorSharedImages;
+
 /**
  * @author arian
  *
  */
-public abstract class PropertySection {
+public abstract class PropertySection implements IEditorSharedImages {
 	private Object[] _models;
 	private String _name;
 
