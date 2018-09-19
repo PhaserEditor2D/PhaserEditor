@@ -44,6 +44,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VisibleComponent;
@@ -145,7 +146,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 					_sectionsContainer.layout();
 				}
 			};
-			
+
 			title.addMouseListener(expandListener);
 			collapseBtn.addMouseListener(expandListener);
 
@@ -172,7 +173,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		if (obj instanceof FlipComponent) {
 			list.add(new FlipSection(this));
 		}
-		
+
 		if (obj instanceof VisibleComponent) {
 			list.add(new VisibleSection(this));
 		}
@@ -180,7 +181,11 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		if (obj instanceof TextureComponent) {
 			list.add(new TextureSection(this));
 		}
-		
+
+		if (obj instanceof SpriteModel) {
+			list.add(new EmptyBodySection(this));
+		}
+
 		return list;
 	}
 
