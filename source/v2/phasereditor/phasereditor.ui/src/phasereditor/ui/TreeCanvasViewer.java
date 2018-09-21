@@ -127,7 +127,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	protected void setItemProperties(TreeCanvasItem item) {
 		item.setLabel(_labelProvider.getText(item.getData()));
-		
+
 		setItemIconProperties(item);
 	}
 
@@ -198,6 +198,10 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		return list.toArray(new Object[list.size()]);
 	}
 
+	public void setExpandedElements(Object[] elems) {
+		_canvas.setExpandedObjects(List.of(elems));
+	}
+
 	public void expandAll() {
 		_canvas.expandAll();
 	}
@@ -205,7 +209,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	public void setCheckedElements(Object[] elements) {
 		_canvas.setCheckedElements(elements);
 	}
-	
+
 	public Object[] getCheckedElements() {
 		return _canvas.getCheckedElements();
 	}

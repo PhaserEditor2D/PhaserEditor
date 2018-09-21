@@ -148,7 +148,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		var targetObj = utils.getDropObject();
 
 		var sceneObjects = _editor.getSceneModel().getObjects();
-		
+
 		out.println("---");
 		out.println("location: " + location);
 		out.println("target: " + targetObj);
@@ -261,7 +261,11 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	}
 
 	public void refresh() {
+		var elems = _viewer.getExpandedElements();
+
 		_viewer.refresh();
+
+		_viewer.setExpandedElements(elems);
 	}
 
 }

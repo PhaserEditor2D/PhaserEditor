@@ -152,6 +152,7 @@ public class SceneEditor extends EditorPart {
 
 	public void refreshOtuline() {
 		if (_outline != null) {
+			
 			_outline.refresh();
 		}
 	}
