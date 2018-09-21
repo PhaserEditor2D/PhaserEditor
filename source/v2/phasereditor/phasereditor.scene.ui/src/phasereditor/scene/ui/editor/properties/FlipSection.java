@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,6 +32,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.scene.core.FlipComponent;
+import phasereditor.scene.core.ObjectModel;
 
 /**
  * @author arian
@@ -57,7 +60,6 @@ public class FlipSection extends ScenePropertySection {
 
 		// filp
 
-
 		new Label(comp, SWT.NONE);
 
 		_flipXBtn = new Button(comp, SWT.TOGGLE);
@@ -70,7 +72,50 @@ public class FlipSection extends ScenePropertySection {
 		_flipYBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		_flipYBtn.setText("Flip: Y");
 
+		update_UI_from_Model();
+
 		return comp;
+	}
+
+	@SuppressWarnings("boxing")
+	private void update_UI_from_Model() {
+		var models = List.of(getModels());
+
+		{
+			// x
+
+			var value = flatValues_to_Boolean(
+					models.stream().map(model -> FlipComponent.get_flipX((ObjectModel) model)));
+
+			_flipXBtn.setSelection(value != null && value);
+
+			listen(_flipXBtn, val -> {
+
+				models.forEach(model -> FlipComponent.set_flipX((ObjectModel) model, val));
+
+				_flipXBtn.setSelection(val);
+
+				getEditor().setDirty(true);
+			});
+		}
+
+		{
+			// y
+
+			var value = flatValues_to_Boolean(
+					models.stream().map(model -> FlipComponent.get_flipY((ObjectModel) model)));
+
+			_flipYBtn.setSelection(value != null && value);
+
+			listen(_flipYBtn, val -> {
+
+				models.forEach(model -> FlipComponent.set_flipY((ObjectModel) model, val));
+
+				_flipYBtn.setSelection(val);
+
+				getEditor().setDirty(true);
+			});
+		}
 	}
 
 }
