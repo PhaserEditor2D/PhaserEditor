@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Transform;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
@@ -215,17 +216,34 @@ public class SceneObjectRenderer {
 			tx.scale(scaleX, scaleY);
 		}
 
+		var tx2 = tx;
+		{
+			// flip
+
+			if (objModel instanceof FlipComponent) {
+				tx2 = newTx(gc, tx);
+				tx2.scale(FlipComponent.get_flipX(objModel) ? -1 : 1, FlipComponent.get_flipY(objModel) ? -1 : 1);
+				gc.setTransform(tx2);
+			}
+		}
+
 		if (objModel instanceof SpriteModel) {
 
-			renderSprite(gc, tx, (SpriteModel) objModel);
+			renderSprite(gc, tx2, (SpriteModel) objModel);
 
 		}
 
 		if (objModel instanceof ParentComponent) {
 
-			renderChildren(gc, tx, objModel);
+			renderChildren(gc, tx2, objModel);
 
 		}
+
+		if (tx2 != tx) {
+			gc.setTransform(tx);
+			tx2.dispose();
+		}
+
 	}
 
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
@@ -325,7 +343,7 @@ public class SceneObjectRenderer {
 	public float[] getObjectBounds(ObjectModel obj) {
 		return _modelBoundsMap.get(obj);
 	}
-	
+
 	public float[] getObjectChildrenBounds(ObjectModel obj) {
 		return _modelChildrenBoundsMap.get(obj);
 	}
