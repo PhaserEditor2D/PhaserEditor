@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 
 /**
@@ -29,14 +28,9 @@ import phasereditor.assetpack.core.IAssetFrameModel;
  *
  */
 public interface TextureComponent {
-	static AssetModel get_texture(ObjectModel obj) {
-		return (AssetModel) obj.get("texture");
-	}
-
-	static void set_texture(ObjectModel obj, AssetModel texture) {
-		obj.put("texture", texture);
-	}
-
+	
+	static String frame_name = "frame";
+	
 	static IAssetFrameModel get_frame(ObjectModel obj) {
 		return (IAssetFrameModel) obj.get("frame");
 	}
@@ -46,7 +40,6 @@ public interface TextureComponent {
 	}
 	
 	static void init(ObjectModel obj) {
-		set_texture(obj, null);
 		set_frame(obj, null);
 	}
 }

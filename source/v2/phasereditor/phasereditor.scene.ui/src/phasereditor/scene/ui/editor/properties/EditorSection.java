@@ -70,9 +70,9 @@ public class EditorSection extends ScenePropertySection {
 	}
 
 	private void update_UI_from_Model() {
-		
-		_editorNameText.setText(
-				flatValues_to_String(Arrays.stream(getModels()).map(model -> EditorComponent.get_editorName((ObjectModel) model))));
+
+		_editorNameText.setText(flatValues_to_String(
+				Arrays.stream(getModels()).map(model -> EditorComponent.get_editorName((ObjectModel) model))));
 	}
 
 }

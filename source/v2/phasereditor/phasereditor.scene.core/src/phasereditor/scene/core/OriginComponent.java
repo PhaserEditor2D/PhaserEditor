@@ -29,6 +29,8 @@ package phasereditor.scene.core;
 public interface OriginComponent {
 
 	// origin
+	static String originX_name = "originX";
+	static String originY_name = "originY";
 
 	static float originX_default = 0.5f;
 	static float originY_default = 0.5f;
@@ -48,7 +50,7 @@ public interface OriginComponent {
 	static void set_originY(ObjectModel obj, float originY) {
 		obj.put("originY", originY);
 	}
-
+	
 	static void init(ObjectModel obj) {
 		set_originX(obj, originX_default);
 		set_originY(obj, originY_default);

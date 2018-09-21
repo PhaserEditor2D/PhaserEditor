@@ -24,11 +24,19 @@ package phasereditor.scene.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import phasereditor.lic.LicCore;
+
 /**
  * @author arian
  *
  */
 public class SceneModel {
+	private static final int VERSION = 1;
+
 	private List<ObjectModel> _objects;
 
 	public SceneModel() {
@@ -37,5 +45,51 @@ public class SceneModel {
 
 	public List<ObjectModel> getObjects() {
 		return _objects;
+	}
+
+	public void write(JSONObject data) {
+		data.put("-app", "Scene Editor - " + LicCore.PRODUCT_NAME);
+		data.put("-version", VERSION);
+		var list = new JSONArray();
+		data.put("objects", list);
+		for (var obj : _objects) {
+			var objData = new JSONObject();
+			list.put(objData);
+			obj.write(objData);
+		}
+	}
+
+	public void read(JSONObject data, IProject project) {
+		var objects = new ArrayList<ObjectModel>();
+
+		var listData = data.getJSONArray("objects");
+
+		for (int i = 0; i < listData.length(); i++) {
+			var objData = listData.getJSONObject(i);
+
+			var type = objData.getString("-type");
+
+			ObjectModel model = createModel(type);
+
+			if (model != null) {
+				model.read(objData, project);
+				objects.add(model);
+			}
+		}
+
+		_objects = objects;
+	}
+
+	@SuppressWarnings("incomplete-switch")
+	public static ObjectModel createModel(String type) {
+
+		switch (type) {
+
+		case SpriteModel.TYPE:
+			return new SpriteModel();
+
+		}
+
+		return null;
 	}
 }

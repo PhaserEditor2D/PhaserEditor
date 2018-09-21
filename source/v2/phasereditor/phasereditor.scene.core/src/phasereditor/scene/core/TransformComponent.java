@@ -29,7 +29,7 @@ package phasereditor.scene.core;
 public interface TransformComponent {
 
 	// x
-
+	static String x_name = "x";
 	static float x_default = 0f;
 
 	static float get_x(ObjectModel obj) {
@@ -42,6 +42,8 @@ public interface TransformComponent {
 
 	// y
 
+	static String y_name = "y";
+
 	static float y_default = 0f;
 
 	static float get_y(ObjectModel obj) {
@@ -53,6 +55,9 @@ public interface TransformComponent {
 	}
 
 	// scale
+
+	static String scaleX_name = "scaleX";
+	static String scaleY_name = "scaleY";
 
 	static float scaleX_default = 1f;
 	static float scaleY_default = 1f;
@@ -75,6 +80,8 @@ public interface TransformComponent {
 
 	// angle
 
+	static String angle_name = "angle";
+
 	static float angle_default = 0f;
 
 	static float get_angle(ObjectModel obj) {
@@ -84,7 +91,7 @@ public interface TransformComponent {
 	static void set_angle(ObjectModel obj, float angle) {
 		obj.put("angle", angle);
 	}
-	
+
 	static void init(ObjectModel obj) {
 		set_angle(obj, angle_default);
 		set_scaleX(obj, scaleX_default);

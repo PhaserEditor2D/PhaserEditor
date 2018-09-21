@@ -86,6 +86,8 @@ public class VisibleSection extends ScenePropertySection {
 
 			_visibleBtn.setGrayed(false);
 			_visibleBtn.setSelection(val);
+
+			getEditor().setDirty(true);
 		});
 	}
 

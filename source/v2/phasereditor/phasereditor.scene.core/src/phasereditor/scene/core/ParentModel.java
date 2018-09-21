@@ -22,20 +22,63 @@
 package phasereditor.scene.core;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import org.eclipse.core.resources.IProject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * @author arian
  *
  */
-public class ChildrenModel extends ObjectModel {
-	private List<ObjectModel> _children;
-	
-	public ChildrenModel() {
-		_children = new ArrayList<>();
+public abstract class ParentModel extends ObjectModel implements ParentComponent {
+	public ParentModel() {
+
+		ParentComponent.init(this);
+
 	}
-	
-	public List<ObjectModel> getChildren() {
-		return _children;
+
+	@Override
+	public void read(JSONObject data, IProject project) {
+
+		super.read(data, project);
+
+		var children = new ArrayList<ObjectModel>();
+
+		var childrenData = data.getJSONArray(children_name);
+
+		for (int i = 0; i < childrenData.length(); i++) {
+			var objData = childrenData.getJSONObject(i);
+
+			var type = objData.getString("-type");
+
+			ObjectModel model = SceneModel.createModel(type);
+
+			if (model != null) {
+				model.read(objData, project);
+				children.add(model);
+			}
+		}
+
+		ParentComponent.set_children(this, children);
 	}
-} 
+
+	@Override
+	public void write(JSONObject data) {
+		super.write(data);
+
+		var childrenData = new JSONArray();
+
+		data.put(children_name, childrenData);
+
+		var children = ParentComponent.get_children(this);
+
+		for (var obj : children) {
+			var objData = new JSONObject();
+			childrenData.put(objData);
+
+			obj.write(objData);
+		}
+	}
+
+}

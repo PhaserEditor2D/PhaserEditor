@@ -32,10 +32,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.scene.core.ChildrenModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextureComponent;
@@ -45,18 +45,20 @@ import phasereditor.scene.core.TransformComponent;
  * @author arian
  *
  */
-public class SceneObjectsRenderer {
+public class SceneObjectRenderer {
 	private SceneCanvas _canvas;
 	private Map<ObjectModel, float[]> _modelTransformMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
+	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
 	private boolean _debug;
 
-	public SceneObjectsRenderer(SceneCanvas canvas) {
+	public SceneObjectRenderer(SceneCanvas canvas) {
 		super();
 
 		_canvas = canvas;
 
 		_modelTransformMap = new HashMap<>();
+		_modelChildrenBoundsMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
 	}
 
@@ -114,8 +116,8 @@ public class SceneObjectsRenderer {
 	private void debugObject(GC gc, ObjectModel model) {
 		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
 
-		if (model instanceof ChildrenModel) {
-			for (var model2 : ((ChildrenModel) model).getChildren()) {
+		if (model instanceof ParentComponent) {
+			for (var model2 : ParentComponent.get_children(model)) {
 				debugObject(gc, model2);
 			}
 
@@ -136,11 +138,13 @@ public class SceneObjectsRenderer {
 		}
 	}
 
-	private void renderChildren(GC gc, Transform tx, ChildrenModel groupModel) {
+	private void renderChildren(GC gc, Transform tx, ObjectModel parent) {
 
-		setObjectTransform(gc, tx, groupModel);
+		setObjectTransform(gc, tx, parent);
 
-		for (var obj : groupModel.getChildren()) {
+		var children = ParentComponent.get_children(parent);
+
+		for (var obj : children) {
 
 			var tx2 = newTx(gc, tx);
 
@@ -154,7 +158,7 @@ public class SceneObjectsRenderer {
 		var maxX = Float.MIN_VALUE;
 		var maxY = Float.MIN_VALUE;
 
-		for (var obj : groupModel.getChildren()) {
+		for (var obj : children) {
 			var points = _modelBoundsMap.get(obj);
 			if (points != null) {
 				for (int i = 0; i + 1 < points.length; i += 2) {
@@ -168,7 +172,7 @@ public class SceneObjectsRenderer {
 			}
 		}
 
-		_modelBoundsMap.put(groupModel, new float[] { minX, minY, maxX, minY, maxX, maxY, minX, maxY });
+		_modelChildrenBoundsMap.put(parent, new float[] { minX, minY, maxX, minY, maxX, maxY, minX, maxY });
 	}
 
 	private void renderObject(GC gc, Transform tx, ObjectModel objModel) {
@@ -217,9 +221,9 @@ public class SceneObjectsRenderer {
 
 		}
 
-		if (objModel instanceof ChildrenModel) {
+		if (objModel instanceof ParentComponent) {
 
-			renderChildren(gc, tx, (ChildrenModel) objModel);
+			renderChildren(gc, tx, objModel);
 
 		}
 	}
@@ -320,5 +324,9 @@ public class SceneObjectsRenderer {
 
 	public float[] getObjectBounds(ObjectModel obj) {
 		return _modelBoundsMap.get(obj);
+	}
+	
+	public float[] getObjectChildrenBounds(ObjectModel obj) {
+		return _modelChildrenBoundsMap.get(obj);
 	}
 }

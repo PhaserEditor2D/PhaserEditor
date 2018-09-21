@@ -29,6 +29,7 @@ package phasereditor.scene.core;
 public interface VisibleComponent {
 	// visible
 
+	static String visible_name = "visible";
 	static boolean visible_default = true;
 
 	static boolean get_visible(ObjectModel obj) {

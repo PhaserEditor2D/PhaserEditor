@@ -29,6 +29,9 @@ package phasereditor.scene.core;
 public interface FlipComponent {
 
 	// flip
+	
+	static String flipX_name = "flipX";
+	static String flipY_name = "flipY";
 
 	static boolean flipX_default = false;
 	static boolean flipY_default = false;
@@ -48,7 +51,7 @@ public interface FlipComponent {
 	static void set_flipY(ObjectModel obj, boolean flipY) {
 		obj.put("flipY", flipY);
 	}
-
+	
 	static void init(ObjectModel obj) {
 		set_flipX(obj, flipX_default);
 		set_flipY(obj, flipY_default);

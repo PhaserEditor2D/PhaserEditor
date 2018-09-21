@@ -29,6 +29,8 @@ package phasereditor.scene.core;
 public interface EditorComponent {
 	// editorShow
 
+	static String editorShow_name = "editorShow";
+
 	static boolean editorShow_default = true;
 
 	static boolean get_editorShow(ObjectModel obj) {
@@ -38,8 +40,10 @@ public interface EditorComponent {
 	static void set_editorShow(ObjectModel obj, boolean editorShow) {
 		obj.put("editorShow", editorShow);
 	}
-	
+
 	// editorClosed
+
+	static String editorClosed_name = "editorClosed";
 
 	static boolean editorClosed_default = false;
 
@@ -50,9 +54,11 @@ public interface EditorComponent {
 	static void set_editorClosed(ObjectModel obj, boolean editorClosed) {
 		obj.put("editorClosed", editorClosed);
 	}
-	
+
 	// editorName
 
+	static String editorName_name = "editorName";
+	
 	static String editorName_default = "unnamed";
 
 	static String get_editorName(ObjectModel obj) {
@@ -62,7 +68,7 @@ public interface EditorComponent {
 	static void set_editorName(ObjectModel obj, String editorName) {
 		obj.put("editorName", editorName);
 	}
-	
+
 	static void init(ObjectModel obj) {
 		set_editorName(obj, editorName_default);
 		set_editorShow(obj, editorShow_default);

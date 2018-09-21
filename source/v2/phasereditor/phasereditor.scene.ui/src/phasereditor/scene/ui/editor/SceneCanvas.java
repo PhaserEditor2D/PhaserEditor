@@ -45,7 +45,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.scene.core.ChildrenModel;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneModel;
@@ -63,7 +63,7 @@ public class SceneCanvas extends ZoomCanvas {
 	private static final int X_LABELS_HEIGHT = 18;
 	private static final int Y_LABEL_WIDTH = 18;
 	private SceneEditor _editor;
-	private SceneObjectsRenderer _renderer;
+	private SceneObjectRenderer _renderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
 	private List<Object> _selection;
@@ -132,7 +132,6 @@ public class SceneCanvas extends ZoomCanvas {
 				TransformComponent.set_y(sprite, modelY);
 
 				TextureComponent.set_frame(sprite, (IAssetFrameModel) obj);
-				TextureComponent.set_texture(sprite, frame.getAsset());
 
 				list.add(sprite);
 			}
@@ -145,20 +144,22 @@ public class SceneCanvas extends ZoomCanvas {
 		if (_editor.getOutline() != null) {
 			_editor.getOutline().refresh();
 		}
+		
+		_editor.setDirty(true);
 	}
 
 	public void init(SceneEditor editor) {
 		_editor = editor;
 		_sceneModel = editor.getSceneModel();
 
-		_renderer = new SceneObjectsRenderer(this);
+		_renderer = new SceneObjectRenderer(this);
 	}
 
 	public SceneEditor getEditor() {
 		return _editor;
 	}
 
-	public SceneObjectsRenderer getWorldRenderer() {
+	public SceneObjectRenderer getWorldRenderer() {
 		return _renderer;
 	}
 
@@ -487,12 +488,10 @@ public class SceneCanvas extends ZoomCanvas {
 	}
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
-		if (model instanceof ChildrenModel) {
-			var childrenModel = (ChildrenModel) model;
+		if (model instanceof ParentComponent) {
+			if (EditorComponent.get_editorClosed(model) /* || groupModel.isPrefabInstance() */) {
 
-			if (EditorComponent.get_editorClosed(childrenModel) /* || groupModel.isPrefabInstance() */) {
-
-				var polygon = _renderer.getObjectBounds(model);
+				var polygon = _renderer.getObjectChildrenBounds(model);
 
 				if (hitsPolygon(x, y, polygon)) {
 					return model;
@@ -500,7 +499,7 @@ public class SceneCanvas extends ZoomCanvas {
 
 			} else {
 
-				var children = childrenModel.getChildren();
+				var children = ParentComponent.get_children(model);
 				for (int i = children.size() - 1; i >= 0; i--) {
 					var model2 = children.get(i);
 					var pick = pickObject(model2, x, y);
@@ -510,8 +509,6 @@ public class SceneCanvas extends ZoomCanvas {
 				}
 
 			}
-
-			return null;
 		}
 
 		var polygon = _renderer.getObjectBounds(model);

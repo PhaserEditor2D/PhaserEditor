@@ -32,5 +32,6 @@ public class TileSpriteModel extends ObjectModel implements
 		OriginComponent
 
 {
+	//
 
 }

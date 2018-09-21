@@ -27,7 +27,8 @@ import java.util.Collections;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import phasereditor.scene.core.ChildrenModel;
+import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 
 /**
@@ -63,9 +64,8 @@ public class SceneOutlineContentProvider implements ITreeContentProvider {
 			return list.toArray();
 		}
 
-		if (parent instanceof ChildrenModel) {
-			var group = (ChildrenModel) parent;
-			var list = new ArrayList<>(group.getChildren());
+		if (parent instanceof ParentComponent) {
+			var list = new ArrayList<>(ParentComponent.get_children((ObjectModel) parent));
 			Collections.reverse(list);
 			return list.toArray();
 		}

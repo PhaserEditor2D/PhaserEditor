@@ -69,7 +69,7 @@ public class OriginSection extends ScenePropertySection {
 			//
 		});
 		manager.createControl(comp);
-		
+
 		var label = new Label(comp, SWT.NONE);
 		label.setText("Origin");
 
@@ -97,15 +97,20 @@ public class OriginSection extends ScenePropertySection {
 
 		// origin
 
-		_originXText
-				.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX((ObjectModel) model))));
-		_originYText
-				.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY((ObjectModel) model))));
+		_originXText.setText(
+				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX((ObjectModel) model))));
+		_originYText.setText(
+				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY((ObjectModel) model))));
 
-		listenFloat(_originXText,
-				value -> models.forEach(model -> OriginComponent.set_originX((ObjectModel) model, value)));
-		listenFloat(_originYText,
-				value -> models.forEach(model -> OriginComponent.set_originY((ObjectModel) model, value)));
+		listenFloat(_originXText, value -> {
+			models.forEach(model -> OriginComponent.set_originX((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
+
+		listenFloat(_originYText, value -> {
+			models.forEach(model -> OriginComponent.set_originY((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
 
 	}
 

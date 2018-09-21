@@ -1,5 +1,9 @@
 package phasereditor.scene.ui.editor;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -10,9 +14,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.outline.SceneOutline;
+import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertiesPage;
 import phasereditor.ui.SelectionProviderImpl;
 
@@ -20,7 +26,8 @@ public class SceneEditor extends EditorPart {
 
 	private SceneModel _model;
 	private SceneCanvas _canvas;
-	private SceneOutline _outline;
+	private SceneOutlinePage _outline;
+	private boolean _dirty;
 
 	public SceneEditor() {
 		// TODO Auto-generated constructor stub
@@ -28,14 +35,28 @@ public class SceneEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
 
+		JSONObject data = new JSONObject();
+
+		_model.write(data);
+
+		var file = getEditorInput().getFile();
+
+		try (var input = new ByteArrayInputStream(data.toString(2).getBytes())) {
+
+			file.setContents(input, true, false, monitor);
+
+			setDirty(false);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
-
+		// not supported
 	}
 
 	@Override
@@ -45,14 +66,29 @@ public class SceneEditor extends EditorPart {
 
 		site.setSelectionProvider(new SelectionProviderImpl(true));
 
-		setPartName(((IFileEditorInput) input).getName());
+		IFileEditorInput fileInput = (IFileEditorInput) input;
+
+		setPartName(fileInput.getName());
 
 		_model = new SceneModel();
+
+		var file = fileInput.getFile();
+
+		try (var contents = file.getContents()) {
+
+			var data = new JSONObject(new JSONTokener(contents));
+
+			_model.read(data, file.getProject());
+
+		} catch (IOException | CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public boolean isDirty() {
-		return false;
+	public IFileEditorInput getEditorInput() {
+		return (IFileEditorInput) super.getEditorInput();
 	}
 
 	@Override
@@ -86,7 +122,7 @@ public class SceneEditor extends EditorPart {
 		}
 
 		if (adapter == IContentOutlinePage.class) {
-			return _outline = new SceneOutline(this);
+			return _outline = new SceneOutlinePage(this);
 		}
 
 		return super.getAdapter(adapter);
@@ -96,12 +132,22 @@ public class SceneEditor extends EditorPart {
 		return _canvas;
 	}
 
-	public void setOutline(SceneOutline outline) {
+	public void setOutline(SceneOutlinePage outline) {
 		_outline = outline;
 	}
 
-	public SceneOutline getOutline() {
+	public SceneOutlinePage getOutline() {
 		return _outline;
+	}
+
+	public void setDirty(boolean dirty) {
+		_dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
+	}
+
+	@Override
+	public boolean isDirty() {
+		return _dirty;
 	}
 
 }

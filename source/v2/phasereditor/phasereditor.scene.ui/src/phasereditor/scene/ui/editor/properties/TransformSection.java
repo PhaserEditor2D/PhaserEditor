@@ -130,7 +130,7 @@ public class TransformSection extends ScenePropertySection {
 			});
 			ytoolbar.createControl(comp);
 		}
-		
+
 		{
 			// scale
 
@@ -196,8 +196,15 @@ public class TransformSection extends ScenePropertySection {
 		_yText.setText(
 				flatValues_to_String(models.stream().map(model -> TransformComponent.get_y((ObjectModel) model))));
 
-		listenFloat(_xText, value -> models.forEach(model -> TransformComponent.set_x((ObjectModel) model, value)));
-		listenFloat(_yText, value -> models.forEach(model -> TransformComponent.set_y((ObjectModel) model, value)));
+		listenFloat(_xText, value -> {
+			models.forEach(model -> TransformComponent.set_x((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
+
+		listenFloat(_yText, value -> {
+			models.forEach(model -> TransformComponent.set_y((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
 
 		// scale
 
@@ -206,18 +213,25 @@ public class TransformSection extends ScenePropertySection {
 		_scaleYText.setText(
 				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY((ObjectModel) model))));
 
-		listenFloat(_scaleXText,
-				value -> models.forEach(model -> TransformComponent.set_scaleX((ObjectModel) model, value)));
-		listenFloat(_scaleYText,
-				value -> models.forEach(model -> TransformComponent.set_scaleY((ObjectModel) model, value)));
+		listenFloat(_scaleXText, value -> {
+			models.forEach(model -> TransformComponent.set_scaleX((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
+
+		listenFloat(_scaleYText, value -> {
+			models.forEach(model -> TransformComponent.set_scaleY((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
 
 		// angle
 
 		_angleText.setText(
 				flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle((ObjectModel) model))));
 
-		listenFloat(_angleText,
-				value -> models.forEach(model -> TransformComponent.set_angle((ObjectModel) model, value)));
+		listenFloat(_angleText, value -> {
+			models.forEach(model -> TransformComponent.set_angle((ObjectModel) model, value));
+			getEditor().setDirty(true);
+		});
 	}
 
 }

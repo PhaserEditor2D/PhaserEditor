@@ -23,6 +23,10 @@ package phasereditor.scene.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import org.eclipse.core.resources.IProject;
+import org.json.JSONObject;
 
 /**
  * @author arian
@@ -31,12 +35,18 @@ import java.util.Map;
 public abstract class ObjectModel implements EditorComponent {
 
 	private Map<String, Object> _map;
+	private String _id;
 
 	public ObjectModel() {
+		_id = UUID.randomUUID().toString();
+
 		_map = new HashMap<>();
-		
-		EditorComponent.set_editorShow(this, editorShow_default);
-		EditorComponent.set_editorClosed(this, editorClosed_default);
+
+		EditorComponent.init(this);
+	}
+
+	public String getId() {
+		return _id;
 	}
 
 	public void put(String key, Object value) {
@@ -45,6 +55,22 @@ public abstract class ObjectModel implements EditorComponent {
 
 	public Object get(String key) {
 		return _map.get(key);
+	}
+
+	public void write(JSONObject data) {
+		data.put("-id", _id);
+
+		data.put(editorName_name, EditorComponent.get_editorName(this));
+		data.put(editorClosed_name, EditorComponent.get_editorClosed(this), editorClosed_default);
+	}
+
+	@SuppressWarnings("unused")
+	public void read(JSONObject data, IProject project) {
+		_id = data.getString("-id");
+
+		EditorComponent.set_editorName(this, data.getString(editorName_name));
+		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));
+
 	}
 
 }
