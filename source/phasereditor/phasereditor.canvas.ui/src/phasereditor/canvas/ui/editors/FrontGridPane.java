@@ -58,7 +58,7 @@ public class FrontGridPane extends Canvas {
 
 	private void paintGridLabels() {
 		GraphicsContext g2 = getGraphicsContext2D();
-		g2.setFont(Font.font("Monospaced", FontWeight.BOLD, FONT_SIZE));
+		 g2.setFont(Font.font(FONT_SIZE));
 
 		g2.setFill(Color.BLACK);
 
