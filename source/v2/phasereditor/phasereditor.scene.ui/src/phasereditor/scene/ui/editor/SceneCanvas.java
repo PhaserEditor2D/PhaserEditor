@@ -141,10 +141,8 @@ public class SceneCanvas extends ZoomCanvas {
 
 		redraw();
 
-		if (_editor.getOutline() != null) {
-			_editor.getOutline().refresh();
-		}
-		
+		_editor.refreshOtuline();
+
 		_editor.setDirty(true);
 	}
 

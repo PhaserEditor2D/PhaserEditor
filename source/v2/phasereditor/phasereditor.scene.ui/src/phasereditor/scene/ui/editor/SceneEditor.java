@@ -150,4 +150,10 @@ public class SceneEditor extends EditorPart {
 		return _dirty;
 	}
 
+	public void refreshOtuline() {
+		if (_outline != null) {
+			_outline.refresh();
+		}
+	}
+
 }

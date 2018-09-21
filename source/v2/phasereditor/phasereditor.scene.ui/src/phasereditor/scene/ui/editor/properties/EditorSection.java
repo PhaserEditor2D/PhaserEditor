@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -71,8 +71,18 @@ public class EditorSection extends ScenePropertySection {
 
 	private void update_UI_from_Model() {
 
+		var models = List.of(getModels());
+		
 		_editorNameText.setText(flatValues_to_String(
-				Arrays.stream(getModels()).map(model -> EditorComponent.get_editorName((ObjectModel) model))));
+				models.stream().map(model -> EditorComponent.get_editorName((ObjectModel) model))));
+		
+		listen(_editorNameText, value -> {
+			models.stream().forEach(model -> EditorComponent.set_editorName((ObjectModel) model, value));
+			
+			getEditor().setDirty(true);
+			getEditor().refreshOtuline();
+			
+		});
 	}
 
 }
