@@ -21,9 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
+import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -110,11 +115,15 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		for (var section : finalSections) {
 			section.setModels(models);
 
+			var sectionId = section.getClass().getSimpleName();
+
+			var collapsed = _collapsedSectionsIds.contains(sectionId);
+
 			var header = new Composite(_sectionsContainer, SWT.NONE);
 			header.setLayout(new RowLayout());
 
 			var collapseBtn = new Label(header, SWT.NONE);
-			collapseBtn.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_BULLET_COLLAPSE));
+			collapseBtn.setImage(EditorSharedImages.getImage(collapsed ? IMG_BULLET_EXPAND : IMG_BULLET_COLLAPSE));
 
 			var title = new Label(header, SWT.NONE);
 			title.setText(section.getName());
@@ -122,6 +131,11 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 			var control = section.createContent(_sectionsContainer);
 			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+			if (collapsed) {
+				((GridData) control.getLayoutData()).heightHint = 0;
+				control.setVisible(false);
+			}
 
 			var sep = new Label(_sectionsContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
 			sep.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -144,16 +158,24 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 					gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
 
 					_sectionsContainer.layout();
+
+					if (_collapsed) {
+						_collapsedSectionsIds.add(sectionId);
+					} else {
+						_collapsedSectionsIds.remove(sectionId);
+					}
+
 				}
 			};
 
 			title.addMouseListener(expandListener);
 			collapseBtn.addMouseListener(expandListener);
-
 		}
 
 		_sectionsContainer.layout();
 	}
+
+	static Set<String> _collapsedSectionsIds = new HashSet<>();
 
 	private List<PropertySection> createSections(Object obj) {
 		List<PropertySection> list = new ArrayList<>();
