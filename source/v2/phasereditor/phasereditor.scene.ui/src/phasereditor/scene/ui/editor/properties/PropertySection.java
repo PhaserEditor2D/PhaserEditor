@@ -173,5 +173,4 @@ public abstract class PropertySection implements IEditorSharedImages {
 	public abstract boolean canEdit(Object obj);
 
 	public abstract Control createContent(Composite parent);
-
 }

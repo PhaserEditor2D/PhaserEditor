@@ -75,8 +75,10 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		return _editor;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+
 		var models = ((IStructuredSelection) selection).toArray();
 
 		for (var c : _sectionsContainer.getChildren()) {
@@ -114,12 +116,34 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 		for (var section : finalSections) {
 			section.setModels(models);
+			new RowComp(_sectionsContainer, section);
+		}
+
+		_sectionsContainer.layout();
+	}
+
+	public class RowComp extends Composite {
+
+		private PropertySection _section;
+
+		public RowComp(Composite parent, PropertySection section) {
+			super(parent, SWT.NONE);
+
+			_section = section;
+
+			{
+				var gl = new GridLayout(1, false);
+				gl.marginWidth = 0;
+				gl.marginHeight = 0;
+				setLayout(gl);
+				setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			}
 
 			var sectionId = section.getClass().getSimpleName();
 
 			var collapsed = _collapsedSectionsIds.contains(sectionId);
 
-			var header = new Composite(_sectionsContainer, SWT.NONE);
+			var header = new Composite(this, SWT.NONE);
 			header.setLayout(new RowLayout());
 
 			var collapseBtn = new Label(header, SWT.NONE);
@@ -129,7 +153,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 			title.setText(section.getName());
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
 
-			var control = section.createContent(_sectionsContainer);
+			var control = section.createContent(this);
 			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 			if (collapsed) {
@@ -137,7 +161,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 				control.setVisible(false);
 			}
 
-			var sep = new Label(_sectionsContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+			var sep = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
 			sep.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 			var expandListener = new MouseAdapter() {
@@ -157,7 +181,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 					var gd = (GridData) control.getLayoutData();
 					gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
 
-					_sectionsContainer.layout();
+					control.requestLayout();
 
 					if (_collapsed) {
 						_collapsedSectionsIds.add(sectionId);
@@ -172,7 +196,10 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 			collapseBtn.addMouseListener(expandListener);
 		}
 
-		_sectionsContainer.layout();
+		public PropertySection getSection() {
+			return _section;
+		}
+
 	}
 
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
