@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -28,9 +30,16 @@ public class SceneEditor extends EditorPart {
 	private SceneCanvas _canvas;
 	private SceneOutlinePage _outline;
 	private boolean _dirty;
+	ISelectionChangedListener _outlinerSelectionListener;
 
 	public SceneEditor() {
-		// TODO Auto-generated constructor stub
+		_outlinerSelectionListener = new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				getCanvas().setSelection_from_external(event.getStructuredSelection());
+			}
+		};
 	}
 
 	@Override
@@ -122,7 +131,18 @@ public class SceneEditor extends EditorPart {
 		}
 
 		if (adapter == IContentOutlinePage.class) {
-			return _outline = new SceneOutlinePage(this);
+			_outline = new SceneOutlinePage(this) {
+
+				@Override
+				public void createControl(Composite parent) {
+					super.createControl(parent);
+
+					addSelectionChangedListener(_outlinerSelectionListener);
+				}
+			};
+
+			return _outline;
+
 		}
 
 		return super.getAdapter(adapter);
@@ -132,8 +152,9 @@ public class SceneEditor extends EditorPart {
 		return _canvas;
 	}
 
-	public void setOutline(SceneOutlinePage outline) {
-		_outline = outline;
+	public void removeOutline() {
+		_outline.removeSelectionChangedListener(_outlinerSelectionListener);
+		_outline = null;
 	}
 
 	public SceneOutlinePage getOutline() {

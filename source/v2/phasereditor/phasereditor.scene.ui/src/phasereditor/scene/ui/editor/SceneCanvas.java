@@ -539,7 +539,11 @@ public class SceneCanvas extends ZoomCanvas {
 		if (fireUpdateSelection) {
 			redraw();
 
-			_editor.getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(_selection));
+			StructuredSelection sel = new StructuredSelection(_selection);
+			_editor.getEditorSite().getSelectionProvider().setSelection(sel);
+			if (_editor.getOutline() != null) {
+				_editor.getOutline().setSelection_from_external(sel);
+			}
 		}
 	}
 
@@ -619,6 +623,11 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 
 		return ((hits & 1) != 0);
+	}
+
+	public void setSelection_from_external(IStructuredSelection selection) {
+		_selection = new ArrayList<>(List.of(selection.toArray()));
+		redraw();
 	}
 
 }

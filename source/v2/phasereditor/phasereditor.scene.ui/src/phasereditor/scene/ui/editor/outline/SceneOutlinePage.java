@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.outline;
 
+import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	private SceneEditor _editor;
 	private FilteredTreeCanvas _filterTree;
-	private TreeCanvasViewer _viewer;
+	protected TreeCanvasViewer _viewer;
 
 	public SceneOutlinePage(SceneEditor editor) {
 		_editor = editor;
@@ -67,24 +68,24 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		// TODO Auto-generated method stub
+		out.println("add selection listener " + listener);
+		_viewer.addSelectionChangedListener(listener);
 	}
 
 	@Override
 	public ISelection getSelection() {
-		// TODO Auto-generated method stub
-		return null;
+		return _viewer.getSelection();
 	}
 
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		// TODO Auto-generated method stub
+		_viewer.removeSelectionChangedListener(listener);
 	}
 
 	@Override
 	public void setSelection(ISelection selection) {
-		// TODO Auto-generated method stub
-
+		out.println("set selection " + selection);
+		_viewer.setSelection(selection, true);
 	}
 
 	public SceneEditor getEditor() {
@@ -196,14 +197,14 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 					ParentComponent.addChild(newParent, model);
 				}
 
+				refresh();
+
+				_viewer.setSelection(new StructuredSelection(newDrops.toArray()), true);
+
+				_editor.getCanvas().redraw();
+
 			}
 		}
-
-		refresh();
-
-		_viewer.setSelection(new StructuredSelection(models), true);
-
-		_editor.getCanvas().redraw();
 
 		return true;
 	}
@@ -221,7 +222,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	@Override
 	public void dispose() {
 
-		_editor.setOutline(null);
+		_editor.removeOutline();
 
 		super.dispose();
 	}
@@ -232,6 +233,11 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		_viewer.refresh();
 
 		_viewer.setExpandedElements(elems);
+	}
+
+	public void setSelection_from_external(StructuredSelection sel) {
+		_viewer.getCanvas().getUtils().setSelection(sel, false);
+		_viewer.getCanvas().reveal(sel.toArray());
 	}
 
 }
