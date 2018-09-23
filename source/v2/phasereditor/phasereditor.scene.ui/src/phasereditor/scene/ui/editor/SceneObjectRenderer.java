@@ -21,7 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -30,6 +32,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.scene.core.EditorComponent;
@@ -48,24 +51,30 @@ import phasereditor.scene.core.TransformComponent;
  */
 public class SceneObjectRenderer {
 	private SceneCanvas _canvas;
-	private Map<ObjectModel, float[]> _modelTransformMap;
+	private Map<ObjectModel, float[]> _modelMatrixMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
 	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
 	private boolean _debug;
+	private List<Runnable> _postPaintActions;
 
 	public SceneObjectRenderer(SceneCanvas canvas) {
 		super();
 
 		_canvas = canvas;
 
-		_modelTransformMap = new HashMap<>();
+		_modelMatrixMap = new HashMap<>();
 		_modelChildrenBoundsMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
+		_postPaintActions = new ArrayList<>();
+	}
+
+	public void addPostPaintAction(Runnable action) {
+		_postPaintActions.add(action);
 	}
 
 	public void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
 
-		_modelTransformMap = new HashMap<>();
+		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
 
 		var tx2 = newTx(gc, tx);
@@ -91,6 +100,16 @@ public class SceneObjectRenderer {
 		if (_debug) {
 			startDebug(gc, sceneModel);
 		}
+
+		for (var action : _postPaintActions) {
+			try {
+				action.run();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		_postPaintActions.clear();
 	}
 
 	private void startDebug(GC gc, SceneModel model) {
@@ -241,14 +260,15 @@ public class SceneObjectRenderer {
 
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
 		{
-			// anchor
-			var anchorX = OriginComponent.get_originX(model);
-			var anchorY = OriginComponent.get_originY(model);
+			// origin
+			
+			var originX = OriginComponent.get_originX(model);
+			var originY = OriginComponent.get_originY(model);
 
 			var size = getTextureSize(model);
 
-			double x = -size.x * anchorX;
-			double y = -size.y * anchorY;
+			double x = -size.x * originX;
+			double y = -size.y * originY;
 			tx.translate((float) x, (float) y);
 		}
 
@@ -299,18 +319,18 @@ public class SceneObjectRenderer {
 	private void setObjectTransform(GC gc, Transform tx, ObjectModel model) {
 		gc.setTransform(tx);
 
-		var txElems = _modelTransformMap.get(model);
+		var matrix = _modelMatrixMap.get(model);
 
-		if (txElems == null) {
-			txElems = new float[6];
-			_modelTransformMap.put(model, txElems);
+		if (matrix == null) {
+			matrix = new float[6];
+			_modelMatrixMap.put(model, matrix);
 		}
 
-		tx.getElements(txElems);
+		tx.getElements(matrix);
 	}
 
 	private void setObjectBounds(GC gc, ObjectModel model, float x, float y, float width, float height) {
-		var txElems = _modelTransformMap.get(model);
+		var txElems = _modelMatrixMap.get(model);
 		var tx = new Transform(gc.getDevice(), txElems);
 
 		var points = new float[] {
@@ -339,5 +359,36 @@ public class SceneObjectRenderer {
 
 	public float[] getObjectChildrenBounds(ObjectModel obj) {
 		return _modelChildrenBoundsMap.get(obj);
+	}
+
+	public float[] localToScene(ObjectModel model, float localX, float localY) {
+
+		var matrix = _modelMatrixMap.get(model);
+
+		var tx = new Transform(Display.getDefault(), matrix);
+
+		var point = new float[] { localX, localY };
+
+		tx.transform(point);
+
+		tx.dispose();
+
+		return point;
+	}
+
+	public float[] sceneToLocal(ObjectModel model, float sceneX, float sceneY) {
+		var matrix = _modelMatrixMap.get(model);
+
+		var tx = new Transform(Display.getDefault(), matrix);
+
+		tx.invert();
+		
+		var point = new float[] { sceneX, sceneY };
+
+		tx.transform(point);
+
+		tx.dispose();
+
+		return point;
 	}
 }

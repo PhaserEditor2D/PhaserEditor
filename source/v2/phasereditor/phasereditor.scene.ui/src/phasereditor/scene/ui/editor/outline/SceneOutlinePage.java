@@ -46,6 +46,7 @@ import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TextureComponent;
+import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -185,21 +186,45 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 					}
 				}
 
+				var renderer = _editor.getCanvas().getSceneRenderer();
+
 				for (var model : newDrops) {
 
-					var parent = ParentComponent.get_parent(model);
+					if (model instanceof TransformComponent) {
 
-					if (parent != null) {
+						var oldParent = ParentComponent.get_parent(model);
+
+						float localX = TransformComponent.get_x(model);
+						float localY = TransformComponent.get_y(model);
+
+						var globalPoint = renderer.localToScene(oldParent, localX, localY);
+
+						// move to the new parent
+
 						ParentComponent.removeFromParent(model);
-					}
+						ParentComponent.addChild(newParent, model);
 
-					// add to the new parent
-					ParentComponent.addChild(newParent, model);
+						renderer.addPostPaintAction(() -> {
+
+							var newLocalPoint = renderer.sceneToLocal(newParent, globalPoint[0], globalPoint[1]);
+
+							TransformComponent.set_x(model, newLocalPoint[0]);
+							TransformComponent.set_y(model, newLocalPoint[1]);
+
+							getEditor().getCanvas().redraw();
+						});
+					} else {
+						// move to the new parent
+						ParentComponent.removeFromParent(model);
+						ParentComponent.addChild(newParent, model);
+					}
 				}
 
 				refresh();
 
-				_viewer.setSelection(new StructuredSelection(newDrops.toArray()), true);
+				renderer.addPostPaintAction(() -> {
+					_viewer.setSelection(new StructuredSelection(newDrops.toArray()), true);
+				});
 
 				_editor.getCanvas().redraw();
 

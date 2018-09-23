@@ -53,11 +53,11 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 
 			var type = objData.getString("-type");
 
-			ObjectModel model = SceneModel.createModel(type);
+			ObjectModel childModel = SceneModel.createModel(type);
 
-			if (model != null) {
-				model.read(objData, project);
-				children.add(model);
+			if (childModel != null) {
+				childModel.read(objData, project);
+				children.add(childModel);
 			}
 		}
 

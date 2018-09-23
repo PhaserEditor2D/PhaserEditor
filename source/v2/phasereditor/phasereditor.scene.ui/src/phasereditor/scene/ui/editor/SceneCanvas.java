@@ -159,7 +159,7 @@ public class SceneCanvas extends ZoomCanvas {
 		return _editor;
 	}
 
-	public SceneObjectRenderer getWorldRenderer() {
+	public SceneObjectRenderer getSceneRenderer() {
 		return _renderer;
 	}
 
