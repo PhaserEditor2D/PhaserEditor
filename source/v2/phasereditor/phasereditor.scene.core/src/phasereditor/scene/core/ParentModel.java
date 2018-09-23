@@ -32,8 +32,9 @@ import org.json.JSONObject;
  *
  */
 public abstract class ParentModel extends ObjectModel implements ParentComponent {
-	public ParentModel() {
-
+	public ParentModel(String type) {
+		super(type);
+		
 		ParentComponent.init(this);
 
 	}

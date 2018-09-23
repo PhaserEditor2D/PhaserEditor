@@ -29,6 +29,8 @@ public class WorldModel extends ParentModel {
 	public static final String TYPE = "World";
 	
 	public WorldModel() {
+		super(TYPE);
+		
 		EditorComponent.set_editorName(this, "world");
 	}
 }

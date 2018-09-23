@@ -36,8 +36,10 @@ public abstract class ObjectModel implements EditorComponent {
 
 	private Map<String, Object> _map;
 	private String _id;
+	private String _type;
 
-	public ObjectModel() {
+	public ObjectModel(String type) {
+		_type = type;
 		_id = UUID.randomUUID().toString();
 
 		_map = new HashMap<>();
@@ -58,6 +60,7 @@ public abstract class ObjectModel implements EditorComponent {
 	}
 
 	public void write(JSONObject data) {
+		data.put("-type", _type);
 		data.put("-id", _id);
 
 		data.put(editorName_name, EditorComponent.get_editorName(this));
@@ -67,6 +70,7 @@ public abstract class ObjectModel implements EditorComponent {
 	@SuppressWarnings("unused")
 	public void read(JSONObject data, IProject project) {
 		_id = data.getString("-id");
+		_type = data.getString("-type");
 
 		EditorComponent.set_editorName(this, data.getString(editorName_name));
 		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));

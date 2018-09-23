@@ -32,6 +32,12 @@ public class TileSpriteModel extends ObjectModel implements
 		OriginComponent
 
 {
+
+	public static final String TYPE = "TileSprite";
+
+	public TileSpriteModel() {
+		super(TYPE);
+	}
 	//
 
 }

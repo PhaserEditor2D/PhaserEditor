@@ -21,9 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.outline;
 
-import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -148,21 +148,43 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		int location = utils.getDropLocation();
 		var targetObj = utils.getDropObject();
 
-		out.println("---");
-		out.println("location: " + location);
-		out.println("target: " + targetObj);
-
 		if (location == TreeCanvasDropAdapter.LOCATION_ON) {
 
 			if (targetObj instanceof ParentComponent) {
 				var newParent = (ObjectModel) targetObj;
 
-				// remove target from the objects to drop
-				models.remove(newParent);
-				
-				//TODO: check it is not adding to a children
+				var newDrops = new ArrayList<ObjectModel>();
 
+				// avoid dropping on descendents
 				for (var model : models) {
+					if (ParentComponent.isDescendentOf(newParent, model)) {
+						continue;
+					}
+
+					newDrops.add(model);
+				}
+
+				{
+					// filter dropping kids
+
+					var list = new ArrayList<>(newDrops);
+
+					for (int i = 0; i < list.size() - 1; i++) {
+						for (int j = i + 1; j < list.size(); j++) {
+							var a = list.get(i);
+							var b = list.get(j);
+							if (ParentComponent.isDescendentOf(a, b)) {
+								newDrops.remove(a);
+							}
+
+							if (ParentComponent.isDescendentOf(b, a)) {
+								newDrops.remove(b);
+							}
+						}
+					}
+				}
+
+				for (var model : newDrops) {
 
 					var parent = ParentComponent.get_parent(model);
 

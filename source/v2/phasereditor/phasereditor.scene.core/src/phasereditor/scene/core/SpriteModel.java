@@ -49,6 +49,7 @@ public class SpriteModel extends ParentModel implements
 	public static final String TYPE = "Sprite";
 
 	public SpriteModel() {
+		super(TYPE);
 
 		FlipComponent.init(this);
 
@@ -59,15 +60,13 @@ public class SpriteModel extends ParentModel implements
 		TransformComponent.init(this);
 
 		VisibleComponent.init(this);
-		
+
 	}
 
 	@Override
 	public void write(JSONObject data) {
 
 		super.write(data);
-
-		data.put("-type", TYPE);
 
 		data.put(flipX_name, FlipComponent.get_flipX(this), flipX_default);
 		data.put(flipY_name, FlipComponent.get_flipY(this), flipY_default);
