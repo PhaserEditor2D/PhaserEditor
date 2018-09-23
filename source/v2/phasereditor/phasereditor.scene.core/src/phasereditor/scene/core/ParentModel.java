@@ -61,6 +61,9 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		}
 
 		ParentComponent.set_children(this, children);
+		for(var child : children) {
+			ParentComponent.set_parent(child, this);
+		}
 	}
 
 	@Override

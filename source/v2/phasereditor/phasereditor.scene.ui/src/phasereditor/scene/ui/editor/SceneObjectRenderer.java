@@ -81,14 +81,7 @@ public class SceneObjectRenderer {
 				tx2.scale(scale, scale);
 			}
 
-			for (var objModel : sceneModel.getObjects()) {
-
-				var tx3 = newTx(gc, tx2);
-
-				renderObject(gc, tx3, objModel);
-
-				tx3.dispose();
-			}
+			renderObject(gc, tx2, sceneModel.getRootObject());
 
 		} finally {
 			tx2.dispose();
@@ -107,9 +100,7 @@ public class SceneObjectRenderer {
 		var newTx = new Transform(gc.getDevice());
 		gc.setTransform(newTx);
 
-		for (var objModel : model.getObjects()) {
-			debugObject(gc, objModel);
-		}
+		debugObject(gc, model.getRootObject());
 
 		gc.setTransform(oldTx);
 	}
@@ -182,38 +173,40 @@ public class SceneObjectRenderer {
 			return;
 		}
 
-		{
-			// position
+		if (objModel instanceof TransformComponent) {
+			{
+				// position
 
-			var x = TransformComponent.get_x(objModel);
-			var y = TransformComponent.get_y(objModel);
+				var x = TransformComponent.get_x(objModel);
+				var y = TransformComponent.get_y(objModel);
 
-			tx.translate(x, y);
-		}
+				tx.translate(x, y);
+			}
 
-		{
-			// rotation
+			{
+				// rotation
 
-			var angle = TransformComponent.get_angle(objModel);
+				var angle = TransformComponent.get_angle(objModel);
 
-			tx.rotate(angle);
-		}
+				tx.rotate(angle);
+			}
 
-		// {
-		// // pivot
-		// var px = objModel.getPivotX();
-		// var py = objModel.getPivotY();
-		// tx.translate((float) (-px * objModel.getScaleX()), (float) (-py *
-		// objModel.getScaleY()));
-		// }
+			// {
+			// // pivot
+			// var px = objModel.getPivotX();
+			// var py = objModel.getPivotY();
+			// tx.translate((float) (-px * objModel.getScaleX()), (float) (-py *
+			// objModel.getScaleY()));
+			// }
 
-		{
-			// scale
+			{
+				// scale
 
-			var scaleX = TransformComponent.get_scaleX(objModel);
-			var scaleY = TransformComponent.get_scaleY(objModel);
+				var scaleX = TransformComponent.get_scaleX(objModel);
+				var scaleY = TransformComponent.get_scaleY(objModel);
 
-			tx.scale(scaleX, scaleY);
+				tx.scale(scaleX, scaleY);
+			}
 		}
 
 		var tx2 = tx;

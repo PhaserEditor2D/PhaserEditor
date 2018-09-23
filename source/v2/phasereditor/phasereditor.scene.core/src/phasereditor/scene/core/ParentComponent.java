@@ -59,8 +59,7 @@ public interface ParentComponent {
 	static void removeFromParent(ObjectModel child) {
 		var parent = get_parent(child);
 		if (parent != null) {
-			get_children(parent).remove(child);
-			set_parent(child, null);
+			removeChild(parent, child);
 		}
 	}
 

@@ -31,6 +31,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
@@ -147,8 +148,6 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		int location = utils.getDropLocation();
 		var targetObj = utils.getDropObject();
 
-		var sceneObjects = _editor.getSceneModel().getObjects();
-
 		out.println("---");
 		out.println("location: " + location);
 		out.println("target: " + targetObj);
@@ -156,86 +155,31 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		if (location == TreeCanvasDropAdapter.LOCATION_ON) {
 
 			if (targetObj instanceof ParentComponent) {
-				var parent = (ObjectModel) targetObj;
+				var newParent = (ObjectModel) targetObj;
 
 				// remove target from the objects to drop
-				models.remove(parent);
+				models.remove(newParent);
+				
+				//TODO: check it is not adding to a children
 
 				for (var model : models) {
 
-					// remove from the scene objects, if it is the case
-					sceneObjects.remove(model);
+					var parent = ParentComponent.get_parent(model);
 
-					// remove from a parent object, if it is the case
-					ParentComponent.removeFromParent(model);
+					if (parent != null) {
+						ParentComponent.removeFromParent(model);
+					}
 
 					// add to the new parent
-					ParentComponent.addChild(parent, model);
+					ParentComponent.addChild(newParent, model);
 				}
 
 			}
-		} else {
-
-			if (targetObj == null) {
-
-				sceneObjects.removeAll(models);
-
-				for (var model : models) {
-					ParentComponent.removeFromParent(model);
-				}
-
-				if (location == TreeCanvasDropAdapter.LOCATION_BEFORE) {
-					sceneObjects.addAll(0, models);
-				} else {
-					sceneObjects.addAll(models);
-				}
-
-			} else if (targetObj instanceof ObjectModel) {
-
-				sceneObjects.removeAll(models);
-
-				var targetModel = (ObjectModel) targetObj;
-
-				List<ObjectModel> list;
-
-				{
-					var parentOfTarget = ParentComponent.get_parent(targetModel);
-
-					if (parentOfTarget == null) {
-						list = sceneObjects;
-					} else {
-						list = ParentComponent.get_children(parentOfTarget);
-					}
-				}
-
-				for (var model : models) {
-					ParentComponent.removeFromParent(model);
-				}
-
-				var index = list.indexOf(targetModel);
-
-				if (location == TreeCanvasDropAdapter.LOCATION_AFTER) {
-					index++;
-				}
-
-				if (index > list.size()) {
-					index = list.size();
-				}
-
-				if (index < 0) {
-					index = 0;
-				}
-
-				list.addAll(index, models);
-
-				for (var model : models) {
-					ParentComponent.set_parent(model, targetModel);
-				}
-			}
-
 		}
 
-		_viewer.refresh();
+		refresh();
+
+		_viewer.setSelection(new StructuredSelection(models), true);
 
 		_editor.getCanvas().redraw();
 

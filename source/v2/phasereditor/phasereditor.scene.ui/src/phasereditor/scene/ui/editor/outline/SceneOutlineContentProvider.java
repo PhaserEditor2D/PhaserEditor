@@ -60,8 +60,7 @@ public class SceneOutlineContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		if (parent instanceof SceneModel) {
-			var list = ((SceneModel) parent).getObjects();
-			return list.toArray();
+			return new Object[] { ((SceneModel) parent).getRootObject() };
 		}
 
 		if (parent instanceof ParentComponent) {

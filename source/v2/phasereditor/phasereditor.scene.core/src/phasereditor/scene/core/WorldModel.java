@@ -21,71 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
-import org.eclipse.core.resources.IProject;
-import org.json.JSONObject;
-
-import phasereditor.lic.LicCore;
-
 /**
  * @author arian
  *
  */
-public class SceneModel {
-	private static final int VERSION = 1;
-
-	private ParentModel _rootObject;
-
-	public SceneModel() {
-		_rootObject = new WorldModel();
-	}
-
-	public ParentModel getRootObject() {
-		return _rootObject;
-	}
-
-	public void write(JSONObject data) {
-		data.put("-app", "Scene Editor - " + LicCore.PRODUCT_NAME);
-		data.put("-version", VERSION);
-
-		{
-			JSONObject rootData;
-			if (_rootObject == null) {
-				rootData = null;
-			} else {
-				rootData = new JSONObject();
-				_rootObject.write(rootData);
-			}
-
-			data.put("root", rootData);
-		}
-	}
-
-	public void read(JSONObject data, IProject project) {
-		var rootData = data.optJSONObject("root");
-
-		var type = rootData.getString("-type");
-
-		ObjectModel model = createModel(type);
-
-		if (model != null) {
-			model.read(rootData, project);
-			_rootObject = (ParentModel) model;
-		}
-	}
-
-	@SuppressWarnings("incomplete-switch")
-	public static ObjectModel createModel(String type) {
-
-		switch (type) {
-
-		case SpriteModel.TYPE:
-			return new SpriteModel();
-
-		case WorldModel.TYPE:
-			return new WorldModel();
-
-		}
-
-		return null;
+public class WorldModel extends ParentModel {
+	public static final String TYPE = "World";
+	
+	public WorldModel() {
+		EditorComponent.set_editorName(this, "world");
 	}
 }

@@ -113,7 +113,7 @@ public class SceneCanvas extends ZoomCanvas {
 		var modelX = calc.viewToModelX(x);
 		var modelY = calc.viewToModelY(y);
 
-		var list = new ArrayList<ObjectModel>();
+		var newModels = new ArrayList<ObjectModel>();
 
 		for (var obj : data) {
 
@@ -133,11 +133,13 @@ public class SceneCanvas extends ZoomCanvas {
 
 				TextureComponent.set_frame(sprite, (IAssetFrameModel) obj);
 
-				list.add(sprite);
+				newModels.add(sprite);
 			}
 		}
 
-		_sceneModel.getObjects().addAll(list);
+		for (var model : newModels) {
+			ParentComponent.addChild(_sceneModel.getRootObject(), model);
+		}
 
 		redraw();
 
@@ -471,18 +473,7 @@ public class SceneCanvas extends ZoomCanvas {
 	}
 
 	ObjectModel pickObject(int x, int y) {
-
-		List<ObjectModel> objects = _sceneModel.getObjects();
-
-		for (int i = objects.size() - 1; i >= 0; i--) {
-			var obj = objects.get(i);
-			var pick = pickObject(obj, x, y);
-			if (pick != null) {
-				return pick;
-			}
-		}
-
-		return null;
+		return pickObject(_sceneModel.getRootObject(), x, y);
 	}
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
