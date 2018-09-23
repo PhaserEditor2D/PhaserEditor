@@ -263,12 +263,17 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 		return _scale;
 	}
 
-	public int getOffsetX() {
-		return _offsetX;
-	}
 
 	@Override
 	public void setPanOffsetX(int offsetX) {
+		_offsetX = offsetX;
+	}
+	
+	public int getOffsetX() {
+		return _offsetX;
+	}
+	
+	public void setOffsetX(int offsetX) {
 		_offsetX = offsetX;
 	}
 

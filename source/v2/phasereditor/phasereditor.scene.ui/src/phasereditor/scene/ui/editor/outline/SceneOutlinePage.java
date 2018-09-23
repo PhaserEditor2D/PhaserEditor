@@ -36,6 +36,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.Page;
@@ -113,9 +115,22 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 			}
 
 		};
+		_viewer.getCanvas().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				revealSelectedObjectInScene();
+			}
+		});
 		_viewer.setInput(_editor.getSceneModel());
 
 		init_DND();
+	}
+
+	protected void revealSelectedObjectInScene() {
+		var obj = _viewer.getCanvas().getUtils().getOverObject();
+		if (obj != null && obj instanceof ObjectModel) {
+			_editor.getCanvas().reveal( (ObjectModel) obj);
+		}
 	}
 
 	private void init_DND() {

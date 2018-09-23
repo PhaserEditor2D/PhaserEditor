@@ -45,9 +45,9 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextureComponent;
@@ -627,6 +627,29 @@ public class SceneCanvas extends ZoomCanvas {
 
 	public void setSelection_from_external(IStructuredSelection selection) {
 		_selection = new ArrayList<>(List.of(selection.toArray()));
+		redraw();
+	}
+
+	public void reveal(ObjectModel model) {
+		var objBounds = _renderer.getObjectBounds(model);
+
+		if (objBounds == null) {
+			return;
+		}
+
+		var x1 = objBounds[0];
+		var y1 = objBounds[1];
+		var x2 = objBounds[4];
+		var y2 = objBounds[5];
+
+		var w = x2 - x1;
+		var h = y2 - y1;
+
+		var canvasBounds = getBounds();
+
+		setOffsetX((int) (getOffsetX() - x1 + Y_LABEL_WIDTH + canvasBounds.width / 2 - w / 2));
+		setOffsetY((int) (getOffsetY() - y1 + X_LABELS_HEIGHT + canvasBounds.height / 2 - h / 2));
+
 		redraw();
 	}
 
