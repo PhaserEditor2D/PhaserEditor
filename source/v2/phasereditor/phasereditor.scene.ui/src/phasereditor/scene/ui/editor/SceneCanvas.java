@@ -391,7 +391,7 @@ public class SceneCanvas extends ZoomCanvas {
 			var viewX = calc.modelToViewX(modelX) + Y_LABEL_WIDTH;
 
 			if (viewX >= Y_LABEL_WIDTH && viewX <= e.width - Y_LABEL_WIDTH) {
-				String label = Float.toString(modelX);
+				String label = Integer.toString((int) modelX);
 
 				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 				gc.drawString(label, (int) viewX + 5, 0, true);
@@ -417,7 +417,7 @@ public class SceneCanvas extends ZoomCanvas {
 
 			if (viewY >= X_LABELS_HEIGHT && viewY <= e.height - X_LABELS_HEIGHT) {
 
-				String label = Float.toString(modelY);
+				String label = Integer.toString((int) modelY);
 				var labelExtent = gc.stringExtent(label);
 
 				var tx = new Transform(getDisplay());

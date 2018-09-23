@@ -155,12 +155,24 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				var newDrops = new ArrayList<ObjectModel>();
 
 				// avoid dropping on descendents
+
 				for (var model : models) {
 					if (ParentComponent.isDescendentOf(newParent, model)) {
 						continue;
 					}
 
 					newDrops.add(model);
+				}
+
+				// avoid droping on parents
+
+				{
+					var list = new ArrayList<>(newDrops);
+					for (var model : list) {
+						if (ParentComponent.get_parent(model) == newParent) {
+							newDrops.remove(model);
+						}
+					}
 				}
 
 				{
@@ -181,6 +193,10 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 							}
 						}
 					}
+				}
+
+				if (newDrops.isEmpty()) {
+					return false;
 				}
 
 				var renderer = _editor.getCanvas().getSceneRenderer();
