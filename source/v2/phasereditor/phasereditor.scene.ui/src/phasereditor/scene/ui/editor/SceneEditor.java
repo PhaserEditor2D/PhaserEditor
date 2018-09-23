@@ -2,6 +2,8 @@ package phasereditor.scene.ui.editor;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,6 +33,7 @@ public class SceneEditor extends EditorPart {
 	private SceneOutlinePage _outline;
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
+	private List<ScenePropertiesPage> _propertyPages;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -40,6 +43,7 @@ public class SceneEditor extends EditorPart {
 				getCanvas().setSelection_from_external(event.getStructuredSelection());
 			}
 		};
+		_propertyPages = new ArrayList<>();
 	}
 
 	@Override
@@ -127,7 +131,10 @@ public class SceneEditor extends EditorPart {
 	public Object getAdapter(Class adapter) {
 
 		if (adapter == IPropertySheetPage.class) {
-			return new ScenePropertiesPage(this);
+			var page = new ScenePropertiesPage(this);
+			_propertyPages.add(page);
+			
+			return page;
 		}
 
 		if (adapter == IContentOutlinePage.class) {
@@ -160,6 +167,10 @@ public class SceneEditor extends EditorPart {
 	public SceneOutlinePage getOutline() {
 		return _outline;
 	}
+	
+	public List<ScenePropertiesPage> getPropertyPages() {
+		return _propertyPages;
+	}
 
 	public void setDirty(boolean dirty) {
 		_dirty = dirty;
@@ -175,6 +186,10 @@ public class SceneEditor extends EditorPart {
 		if (_outline != null) {
 			_outline.refresh();
 		}
+	}
+
+	public void removePropertyPage(ScenePropertiesPage page) {
+		_propertyPages.remove(page);
 	}
 
 }

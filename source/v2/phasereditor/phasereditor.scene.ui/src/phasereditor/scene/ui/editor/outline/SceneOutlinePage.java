@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.outline;
 
-import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -69,7 +68,6 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		out.println("add selection listener " + listener);
 		_viewer.addSelectionChangedListener(listener);
 	}
 
@@ -85,7 +83,6 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	@Override
 	public void setSelection(ISelection selection) {
-		out.println("set selection " + selection);
 		_viewer.setSelection(selection, true);
 	}
 
@@ -223,7 +220,11 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				refresh();
 
 				renderer.addPostPaintAction(() -> {
-					_viewer.setSelection(new StructuredSelection(newDrops.toArray()), true);
+					var sel = new StructuredSelection(newDrops.toArray());
+					_viewer.setSelection(sel, true);
+					for (var page : _editor.getPropertyPages()) {
+						page.selectionChanged(_editor, sel);
+					}
 				});
 
 				_editor.getCanvas().redraw();
