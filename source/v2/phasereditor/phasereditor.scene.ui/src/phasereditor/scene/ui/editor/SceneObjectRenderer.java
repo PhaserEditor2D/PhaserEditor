@@ -76,6 +76,7 @@ public class SceneObjectRenderer {
 
 		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
+		_modelChildrenBoundsMap = new HashMap<>();
 
 		var tx2 = newTx(gc, tx);
 

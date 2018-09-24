@@ -49,6 +49,7 @@ import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasDropAdapter;
@@ -214,6 +215,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 					return false;
 				}
 
+				var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+
 				var renderer = _editor.getCanvas().getSceneRenderer();
 
 				for (var model : newDrops) {
@@ -240,6 +243,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 							TransformComponent.set_y(model, newLocalPoint[1]);
 
 							getEditor().getCanvas().redraw();
+
 						});
 					} else {
 						// move to the new parent
@@ -252,10 +256,17 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				renderer.addPostPaintAction(() -> {
 					var sel = new StructuredSelection(newDrops.toArray());
+
 					_viewer.setSelection(sel, true);
+
 					for (var page : _editor.getPropertyPages()) {
 						page.selectionChanged(_editor, sel);
 					}
+
+					var afterSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+
+					_editor.executeOperation(
+							new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
 				});
 
 				_editor.getCanvas().redraw();

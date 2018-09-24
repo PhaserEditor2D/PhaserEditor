@@ -90,18 +90,28 @@ public class SceneSnapshotOperation extends AbstractOperation {
 		var project = editor.getEditorInput().getFile().getProject();
 		var canvas = editor.getCanvas();
 
-		var selectionProvider = editor.getEditorSite().getSelectionProvider();
+		List<?> currentSelection = ((IStructuredSelection) editor.getEditorSite().getSelectionProvider().getSelection())
+				.toList();
 
-		List<?> selection = ((IStructuredSelection) selectionProvider.getSelection()).toList();
-
-		var selectedIds = selection.stream().map(obj -> ((ObjectModel) obj).getId()).collect(toList());
+		var selectedIds = currentSelection.stream().map(obj -> ((ObjectModel) obj).getId()).collect(toList());
 
 		model.read(data, project);
 
-		selectionProvider.setSelection(new StructuredSelection(selectedIds.stream()
-				.map(id -> model.getRootObject().findById(id)).filter(obj -> obj != null).toArray()));
+		var selectedItems = selectedIds.stream().map(id -> model.getRootObject().findById(id))
+				.filter(obj -> obj != null).toArray();
 
-		editor.refreshOutline_basedOnId();
+		var newSelection = new StructuredSelection(selectedItems);
+
+		editor.getCanvas().setSelection_from_external(newSelection);
+
+		if (editor.getOutline() != null) {
+			editor.getOutline().setSelection_from_external(newSelection);
+			editor.refreshOutline_basedOnId();
+		}
+
+		for (var page : editor.getPropertyPages()) {
+			page.selectionChanged(editor, newSelection);
+		}
 
 		canvas.redraw();
 
