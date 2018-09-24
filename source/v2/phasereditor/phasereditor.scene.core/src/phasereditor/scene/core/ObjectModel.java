@@ -60,8 +60,8 @@ public abstract class ObjectModel implements EditorComponent {
 	}
 
 	public void write(JSONObject data) {
-		data.put("-type", _type);
 		data.put("-id", _id);
+		data.put("-type", _type);
 
 		data.put(editorName_name, EditorComponent.get_editorName(this));
 		data.put(editorClosed_name, EditorComponent.get_editorClosed(this), editorClosed_default);

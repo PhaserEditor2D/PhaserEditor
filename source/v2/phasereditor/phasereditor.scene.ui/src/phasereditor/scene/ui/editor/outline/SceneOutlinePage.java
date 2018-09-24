@@ -129,7 +129,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	protected void revealSelectedObjectInScene() {
 		var obj = _viewer.getCanvas().getUtils().getOverObject();
 		if (obj != null && obj instanceof ObjectModel) {
-			_editor.getCanvas().reveal( (ObjectModel) obj);
+			_editor.getCanvas().reveal((ObjectModel) obj);
 		}
 	}
 
@@ -290,6 +290,20 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		_viewer.refresh();
 
 		_viewer.setExpandedElements(elems);
+	}
+
+	public void refresh_basedOnId() {
+		var elems = _viewer.getExpandedElements();
+
+		var expandedIds = Arrays.stream(elems).map(e -> ((ObjectModel) e).getId()).collect(toList());
+
+		_viewer.refresh();
+
+		var root = _editor.getSceneModel().getRootObject();
+
+		var expanded = expandedIds.stream().map(id -> root.findById(id)).filter(o -> o != null).toArray();
+
+		_viewer.setExpandedElements(expanded);
 	}
 
 	public void setSelection_from_external(StructuredSelection sel) {

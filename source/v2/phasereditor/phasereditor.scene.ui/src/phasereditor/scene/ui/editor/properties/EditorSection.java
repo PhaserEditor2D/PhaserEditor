@@ -80,7 +80,7 @@ public class EditorSection extends ScenePropertySection {
 			models.stream().forEach(model -> EditorComponent.set_editorName((ObjectModel) model, value));
 			
 			getEditor().setDirty(true);
-			getEditor().refreshOtuline();
+			getEditor().refreshOutline();
 			
 		});
 	}

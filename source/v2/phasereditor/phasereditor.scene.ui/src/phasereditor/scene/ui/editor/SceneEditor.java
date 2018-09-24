@@ -5,16 +5,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -34,6 +40,20 @@ public class SceneEditor extends EditorPart {
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
 	private List<ScenePropertiesPage> _propertyPages;
+
+	public final IUndoContext undoContext = new IUndoContext() {
+
+		@Override
+		public boolean matches(IUndoContext context) {
+			return context == this;
+		}
+
+		@Override
+		public String getLabel() {
+			return "SCENE_EDITOR_CONTEXT";
+		}
+	};
+	private UndoRedoActionGroup _undoRedoGroup;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -78,6 +98,8 @@ public class SceneEditor extends EditorPart {
 		setInput(input);
 
 		site.setSelectionProvider(new SelectionProviderImpl(true));
+
+		registerUndoActions();
 
 		IFileEditorInput fileInput = (IFileEditorInput) input;
 
@@ -133,7 +155,7 @@ public class SceneEditor extends EditorPart {
 		if (adapter == IPropertySheetPage.class) {
 			var page = new ScenePropertiesPage(this);
 			_propertyPages.add(page);
-			
+
 			return page;
 		}
 
@@ -167,7 +189,7 @@ public class SceneEditor extends EditorPart {
 	public SceneOutlinePage getOutline() {
 		return _outline;
 	}
-	
+
 	public List<ScenePropertiesPage> getPropertyPages() {
 		return _propertyPages;
 	}
@@ -182,9 +204,15 @@ public class SceneEditor extends EditorPart {
 		return _dirty;
 	}
 
-	public void refreshOtuline() {
+	public void refreshOutline() {
 		if (_outline != null) {
 			_outline.refresh();
+		}
+	}
+
+	public void refreshOutline_basedOnId() {
+		if (_outline != null) {
+			_outline.refresh_basedOnId();
 		}
 	}
 
@@ -192,4 +220,26 @@ public class SceneEditor extends EditorPart {
 		_propertyPages.remove(page);
 	}
 
+	private void registerUndoActions() {
+		IEditorSite site = getEditorSite();
+
+		_undoRedoGroup = new UndoRedoActionGroup(site, undoContext, true);
+
+		IActionBars actionBars = site.getActionBars();
+		_undoRedoGroup.fillActionBars(actionBars);
+
+		actionBars.updateActionBars();
+	}
+
+	public void executeOperation(IUndoableOperation operation) {
+		operation.addContext(undoContext);
+		IWorkbench workbench = getSite().getWorkbenchWindow().getWorkbench();
+		try {
+			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();
+			history.execute(operation, null, this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
 }

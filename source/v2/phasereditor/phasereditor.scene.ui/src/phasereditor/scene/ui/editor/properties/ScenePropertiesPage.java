@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import static java.lang.System.out;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
 
@@ -79,8 +78,6 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 	@SuppressWarnings("unused")
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-
-		out.println("properties: selection changed");
 
 		var models = ((IStructuredSelection) selection).toArray();
 

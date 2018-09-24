@@ -52,6 +52,7 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -108,6 +109,9 @@ public class SceneCanvas extends ZoomCanvas {
 	int _counter = 0;
 
 	protected void selectionDropped(int x, int y, Object[] data) {
+
+		var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+
 		var calc = calc();
 
 		var modelX = calc.viewToModelX(x);
@@ -141,9 +145,13 @@ public class SceneCanvas extends ZoomCanvas {
 			ParentComponent.addChild(_sceneModel.getRootObject(), model);
 		}
 
+		var afterSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+
+		_editor.executeOperation(new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
+
 		redraw();
 
-		_editor.refreshOtuline();
+		_editor.refreshOutline();
 
 		_editor.setDirty(true);
 	}

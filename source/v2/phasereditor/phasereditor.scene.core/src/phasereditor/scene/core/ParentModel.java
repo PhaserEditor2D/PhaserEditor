@@ -34,9 +34,28 @@ import org.json.JSONObject;
 public abstract class ParentModel extends ObjectModel implements ParentComponent {
 	public ParentModel(String type) {
 		super(type);
-		
+
 		ParentComponent.init(this);
 
+	}
+
+	public ObjectModel findById(String id) {
+		if (getId().equals(id)) {
+			return this;
+		}
+
+		for (var child : ParentComponent.get_children(this)) {
+
+			if (child instanceof ParentModel) {
+				var found = ((ParentModel) child).findById(id);
+				if (found != null) {
+					return found;
+				}
+			} else if (child.getId().equals(id)) {
+				return child;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -62,7 +81,7 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		}
 
 		ParentComponent.set_children(this, children);
-		for(var child : children) {
+		for (var child : children) {
 			ParentComponent.set_parent(child, this);
 		}
 	}
