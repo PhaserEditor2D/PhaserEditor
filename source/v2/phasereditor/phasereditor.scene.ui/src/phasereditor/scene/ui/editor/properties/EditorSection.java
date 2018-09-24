@@ -82,7 +82,7 @@ public class EditorSection extends ScenePropertySection {
 			getEditor().setDirty(true);
 			getEditor().refreshOutline();
 			
-		});
+		}, models);
 	}
 
 }

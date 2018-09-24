@@ -88,7 +88,7 @@ public class VisibleSection extends ScenePropertySection {
 			_visibleBtn.setSelection(val);
 
 			getEditor().setDirty(true);
-		});
+		}, models);
 	}
 
 }

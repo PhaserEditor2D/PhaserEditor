@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.widgets.Button;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.undo.ObjectSnapshotOperation;
 
 /**
  * @author arian
@@ -53,24 +55,56 @@ public abstract class ScenePropertySection extends PropertySection {
 		return getEditor().getCanvas();
 	}
 
-	@Override
-	protected void listen(Text text, Consumer<String> listener) {
+	protected void listenFloat(Text text, Consumer<Float> listener, List<Object> models) {
+		super.listenFloat(text, value -> {
+
+			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+
+			listener.accept(value);
+
+			getCanvas().getSceneRenderer().addPostPaintAction(() -> {
+				var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+				getEditor()
+						.executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			});
+
+			getCanvas().redraw();
+		});
+	}
+
+	protected void listen(Text text, Consumer<String> listener, List<Object> models) {
 		super.listen(text, value -> {
 
+			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+
 			listener.accept(value);
+
+			getCanvas().getSceneRenderer().addPostPaintAction(() -> {
+				var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+				getEditor()
+						.executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			});
 
 			getCanvas().redraw();
 
 		});
 	}
 
-	@Override
-	protected void listen(Button check, Consumer<Boolean> listener) {
+	protected void listen(Button check, Consumer<Boolean> listener, List<Object> models) {
 		super.listen(check, value -> {
 
+			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+
 			listener.accept(value);
+
+			getCanvas().getSceneRenderer().addPostPaintAction(() -> {
+				var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+				getEditor()
+						.executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			});
 
 			getCanvas().redraw();
 		});
 	}
+
 }

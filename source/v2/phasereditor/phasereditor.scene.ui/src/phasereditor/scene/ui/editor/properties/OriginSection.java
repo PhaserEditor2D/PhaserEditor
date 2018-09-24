@@ -105,12 +105,12 @@ public class OriginSection extends ScenePropertySection {
 		listenFloat(_originXText, value -> {
 			models.forEach(model -> OriginComponent.set_originX((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 
 		listenFloat(_originYText, value -> {
 			models.forEach(model -> OriginComponent.set_originY((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 
 	}
 

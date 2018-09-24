@@ -21,8 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.undo;
 
-import static java.util.stream.Collectors.toList;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -31,8 +30,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.ObjectModel;
@@ -42,22 +39,26 @@ import phasereditor.scene.ui.editor.SceneEditor;
  * @author arian
  *
  */
-public class SceneSnapshotOperation extends AbstractOperation {
+public class ObjectSnapshotOperation extends AbstractOperation {
 
-	private JSONObject _beforeData;
-	private JSONObject _afterData;
+	public static List<JSONObject> takeSnapshot(List<Object> models) {
+		var list = new ArrayList<JSONObject>();
 
-	public static JSONObject takeSnapshot(SceneEditor editor) {
-		var data = new JSONObject();
+		for (var model : models) {
+			var data = new JSONObject();
+			((ObjectModel) model).write(data);
+			list.add(data);
+		}
 
-		editor.getSceneModel().write(data);
-
-		return data;
+		return list;
 	}
 
-	public SceneSnapshotOperation(JSONObject beforeData, JSONObject afterData, String label) {
+	private List<JSONObject> _beforeData;
+	private List<JSONObject> _afterData;
+
+	public ObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label) {
 		super(label);
-		
+
 		_beforeData = beforeData;
 		_afterData = afterData;
 	}
@@ -84,33 +85,27 @@ public class SceneSnapshotOperation extends AbstractOperation {
 		return Status.OK_STATUS;
 	}
 
-	private static void loadSnapshot(IAdaptable info, JSONObject data) {
+	private static void loadSnapshot(IAdaptable info, List<JSONObject> list) {
 		var editor = info.getAdapter(SceneEditor.class);
-		var model = editor.getSceneModel();
+		var sceneModel = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
 		var canvas = editor.getCanvas();
 
-		List<?> currentSelection = ((IStructuredSelection) editor.getEditorSite().getSelectionProvider().getSelection())
-				.toList();
+		for (var data : list) {
+			var id = data.getString("-id");
+			var model = sceneModel.getRootObject().findById(id);
 
-		var selectedIds = currentSelection.stream().map(obj -> ((ObjectModel) obj).getId()).collect(toList());
-
-		model.read(data, project);
-
-		var selectedItems = selectedIds.stream().map(id -> model.getRootObject().findById(id))
-				.filter(obj -> obj != null).toArray();
-
-		var newSelection = new StructuredSelection(selectedItems);
-
-		editor.getCanvas().setSelection_from_external(newSelection);
+			if (model != null) {
+				model.read(data, project);
+			}
+		}
 
 		if (editor.getOutline() != null) {
-			editor.getOutline().setSelection_from_external(newSelection);
 			editor.refreshOutline_basedOnId();
 		}
 
 		for (var page : editor.getPropertyPages()) {
-			page.selectionChanged(editor, newSelection);
+			page.selectionChanged(editor, editor.getEditorSite().getSelectionProvider().getSelection());
 		}
 
 		canvas.redraw();

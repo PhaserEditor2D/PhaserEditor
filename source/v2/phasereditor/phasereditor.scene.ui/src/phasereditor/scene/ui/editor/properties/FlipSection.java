@@ -96,7 +96,7 @@ public class FlipSection extends ScenePropertySection {
 				_flipXBtn.setSelection(val);
 
 				getEditor().setDirty(true);
-			});
+			}, models);
 		}
 
 		{
@@ -114,7 +114,7 @@ public class FlipSection extends ScenePropertySection {
 				_flipYBtn.setSelection(val);
 
 				getEditor().setDirty(true);
-			});
+			}, models);
 		}
 	}
 

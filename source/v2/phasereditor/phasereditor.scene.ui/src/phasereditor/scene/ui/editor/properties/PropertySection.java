@@ -79,7 +79,7 @@ public abstract class PropertySection implements IEditorSharedImages {
 
 		return "";
 	}
-	
+
 	protected static Object flatValues_to_Object(Stream<?> values) {
 		var set = new HashSet<>();
 		values.forEach(v -> set.add(v));
@@ -160,6 +160,7 @@ public abstract class PropertySection implements IEditorSharedImages {
 	@SuppressWarnings({ "boxing" })
 	protected void listenFloat(Text text, Consumer<Float> listener) {
 		listen(text, str -> {
+
 			try {
 				float value = Float.parseFloat(str);
 
@@ -167,6 +168,7 @@ public abstract class PropertySection implements IEditorSharedImages {
 			} catch (NumberFormatException e) {
 				// noting
 			}
+
 		});
 	}
 

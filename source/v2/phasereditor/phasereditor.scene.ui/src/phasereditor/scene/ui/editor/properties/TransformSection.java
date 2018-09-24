@@ -199,12 +199,12 @@ public class TransformSection extends ScenePropertySection {
 		listenFloat(_xText, value -> {
 			models.forEach(model -> TransformComponent.set_x((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 
 		listenFloat(_yText, value -> {
 			models.forEach(model -> TransformComponent.set_y((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 
 		// scale
 
@@ -216,12 +216,12 @@ public class TransformSection extends ScenePropertySection {
 		listenFloat(_scaleXText, value -> {
 			models.forEach(model -> TransformComponent.set_scaleX((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 
 		listenFloat(_scaleYText, value -> {
 			models.forEach(model -> TransformComponent.set_scaleY((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 
 		// angle
 
@@ -231,7 +231,7 @@ public class TransformSection extends ScenePropertySection {
 		listenFloat(_angleText, value -> {
 			models.forEach(model -> TransformComponent.set_angle((ObjectModel) model, value));
 			getEditor().setDirty(true);
-		});
+		}, models);
 	}
 
 }
