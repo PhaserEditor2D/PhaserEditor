@@ -89,7 +89,7 @@ public class ObjectSnapshotOperation extends AbstractOperation {
 		var editor = info.getAdapter(SceneEditor.class);
 		var sceneModel = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
-		var canvas = editor.getCanvas();
+		var canvas = editor.getScene();
 
 		for (var data : list) {
 			var id = data.getString("-id");

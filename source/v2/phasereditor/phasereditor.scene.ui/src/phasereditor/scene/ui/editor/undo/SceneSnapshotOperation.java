@@ -88,7 +88,7 @@ public class SceneSnapshotOperation extends AbstractOperation {
 		var editor = info.getAdapter(SceneEditor.class);
 		var model = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
-		var canvas = editor.getCanvas();
+		var canvas = editor.getScene();
 
 		List<?> currentSelection = ((IStructuredSelection) editor.getEditorSite().getSelectionProvider().getSelection())
 				.toList();
@@ -102,7 +102,7 @@ public class SceneSnapshotOperation extends AbstractOperation {
 
 		var newSelection = new StructuredSelection(selectedItems);
 
-		editor.getCanvas().setSelection_from_external(newSelection);
+		editor.getScene().setSelection_from_external(newSelection);
 
 		if (editor.getOutline() != null) {
 			editor.getOutline().setSelection_from_external(newSelection);

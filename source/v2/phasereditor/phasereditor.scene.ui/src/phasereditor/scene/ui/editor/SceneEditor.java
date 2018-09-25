@@ -60,7 +60,7 @@ public class SceneEditor extends EditorPart {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				getCanvas().setSelection_from_external(event.getStructuredSelection());
+				getScene().setSelection_from_external(event.getStructuredSelection());
 			}
 		};
 		_propertyPages = new ArrayList<>();
@@ -177,7 +177,7 @@ public class SceneEditor extends EditorPart {
 		return super.getAdapter(adapter);
 	}
 
-	public SceneCanvas getCanvas() {
+	public SceneCanvas getScene() {
 		return _canvas;
 	}
 

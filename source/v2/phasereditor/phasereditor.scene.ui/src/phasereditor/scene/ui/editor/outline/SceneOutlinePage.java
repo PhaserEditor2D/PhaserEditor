@@ -130,7 +130,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	protected void revealSelectedObjectInScene() {
 		var obj = _viewer.getCanvas().getUtils().getOverObject();
 		if (obj != null && obj instanceof ObjectModel) {
-			_editor.getCanvas().reveal((ObjectModel) obj);
+			_editor.getScene().reveal((ObjectModel) obj);
 		}
 	}
 
@@ -217,7 +217,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
 
-				var renderer = _editor.getCanvas().getSceneRenderer();
+				var renderer = _editor.getScene().getSceneRenderer();
 
 				for (var model : newDrops) {
 
@@ -242,7 +242,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 							TransformComponent.set_x(model, newLocalPoint[0]);
 							TransformComponent.set_y(model, newLocalPoint[1]);
 
-							getEditor().getCanvas().redraw();
+							getEditor().getScene().redraw();
 
 						});
 					} else {
@@ -269,7 +269,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 							new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
 				});
 
-				_editor.getCanvas().redraw();
+				_editor.getScene().redraw();
 
 			}
 		}

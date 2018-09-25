@@ -52,7 +52,7 @@ public abstract class ScenePropertySection extends PropertySection {
 	}
 
 	public SceneCanvas getCanvas() {
-		return getEditor().getCanvas();
+		return getEditor().getScene();
 	}
 
 	protected void listenFloat(Text text, Consumer<Float> listener, List<Object> models) {
