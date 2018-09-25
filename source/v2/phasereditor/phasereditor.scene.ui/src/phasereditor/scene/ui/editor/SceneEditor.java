@@ -232,6 +232,7 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public void executeOperation(IUndoableOperation operation) {
+		
 		operation.addContext(undoContext);
 		IWorkbench workbench = getSite().getWorkbenchWindow().getWorkbench();
 		try {

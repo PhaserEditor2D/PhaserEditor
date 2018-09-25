@@ -61,12 +61,10 @@ public abstract class ScenePropertySection extends PropertySection {
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
-
-			getCanvas().getSceneRenderer().addPostPaintAction(() -> {
-				var afterData = ObjectSnapshotOperation.takeSnapshot(models);
-				getEditor()
-						.executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
-			});
+			
+			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+			
+			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});
@@ -79,11 +77,9 @@ public abstract class ScenePropertySection extends PropertySection {
 
 			listener.accept(value);
 
-			getCanvas().getSceneRenderer().addPostPaintAction(() -> {
-				var afterData = ObjectSnapshotOperation.takeSnapshot(models);
-				getEditor()
-						.executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
-			});
+			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+
+			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 
@@ -97,11 +93,8 @@ public abstract class ScenePropertySection extends PropertySection {
 
 			listener.accept(value);
 
-			getCanvas().getSceneRenderer().addPostPaintAction(() -> {
-				var afterData = ObjectSnapshotOperation.takeSnapshot(models);
-				getEditor()
-						.executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
-			});
+			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});

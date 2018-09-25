@@ -130,6 +130,7 @@ public abstract class PropertySection implements IEditorSharedImages {
 
 				if (!value.equals(_initial)) {
 					listener.accept(value);
+					_initial = value;
 				}
 			}
 
