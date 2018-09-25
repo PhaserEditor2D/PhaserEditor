@@ -80,7 +80,8 @@ public class TextureSection extends ScenePropertySection {
 		return comp;
 	}
 
-	private void update_UI_from_Model() {
+	@Override
+	public void update_UI_from_Model() {
 		var models = List.of(getModels());
 
 		var frame = (IAssetFrameModel) flatValues_to_Object(

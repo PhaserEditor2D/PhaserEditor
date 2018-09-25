@@ -32,6 +32,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -106,12 +107,22 @@ public abstract class PropertySection implements IEditorSharedImages {
 
 	@SuppressWarnings({ "boxing", "static-method" })
 	protected void listen(Button check, Consumer<Boolean> listener) {
-		check.addSelectionListener(new SelectionAdapter() {
+
+		var oldListener = check.getData("-prop-listener");
+		if (oldListener != null) {
+			check.removeSelectionListener((SelectionListener) oldListener);
+		}
+
+		var newListener = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				listener.accept(check.getSelection());
 			}
-		});
+		};
+
+		check.addSelectionListener(newListener);
+
+		check.setData("-prop-listener", newListener);
 	}
 
 	@SuppressWarnings("static-method")
@@ -153,9 +164,18 @@ public abstract class PropertySection implements IEditorSharedImages {
 			}
 		}
 
+		var oldListener = text.getData("-prop-listener");
+		if (oldListener != null) {
+			text.removeFocusListener((FocusListener) oldListener);
+			text.removeKeyListener((KeyListener) oldListener);
+		}
+
 		var textListener = new TextListener();
+
 		text.addFocusListener(textListener);
 		text.addKeyListener(textListener);
+
+		text.setData("-prop-listener", textListener);
 	}
 
 	@SuppressWarnings({ "boxing" })
@@ -176,4 +196,6 @@ public abstract class PropertySection implements IEditorSharedImages {
 	public abstract boolean canEdit(Object obj);
 
 	public abstract Control createContent(Composite parent);
+
+	public abstract void update_UI_from_Model();
 }

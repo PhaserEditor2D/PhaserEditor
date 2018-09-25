@@ -21,10 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -81,27 +83,28 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 		var models = ((IStructuredSelection) selection).toArray();
 
-		for (var c : _sectionsContainer.getChildren()) {
-			c.dispose();
-		}
+		// create all candidate sections
+		var allSections = new ArrayList<PropertySection>();
+		{
+			var clsMap = new HashMap<Object, PropertySection>();
+			for (var model : models) {
+				var objSections = createSections(model);
 
-		var map = new HashMap<Object, PropertySection>();
-		var sections = new ArrayList<PropertySection>();
-
-		for (var model : models) {
-			var objSections = createSections(model);
-
-			for (var section : objSections) {
-				if (!map.containsKey(section.getClass())) {
-					map.put(section.getClass(), section);
-					sections.add(section);
+				for (var section : objSections) {
+					if (!clsMap.containsKey(section.getClass())) {
+						clsMap.put(section.getClass(), section);
+						allSections.add(section);
+					}
 				}
 			}
 		}
 
-		var finalSections = new ArrayList<PropertySection>();
+		// pick only unique sections
 
-		for (var section : sections) {
+		var uniqueSections = new ArrayList<PropertySection>();
+		var sectionMap = new HashMap<>();
+
+		for (var section : allSections) {
 			var accept = true;
 			for (var model : models) {
 				if (!section.canEdit(model)) {
@@ -110,16 +113,59 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 				}
 			}
 			if (accept) {
-				finalSections.add(section);
+				uniqueSections.add(section);
+				sectionMap.put(section.getClass(), section);
 			}
 		}
 
-		for (var section : finalSections) {
-			section.setModels(models);
-			new RowComp(_sectionsContainer, section);
+		// dispose all rows with irrelevant sections
+
+		for (var control : _sectionsContainer.getChildren()) {
+			var row = (RowComp) control;
+
+			var newSection = sectionMap.get(row.getSection().getClass());
+
+			if (newSection == null) {
+				row.dispose();
+			}
 		}
 
-		_sectionsContainer.layout();
+		// create the missing rows, or update current rows
+
+		for (var section : uniqueSections) {
+			var createNew = true;
+
+			for (var control : _sectionsContainer.getChildren()) {
+				var row = (RowComp) control;
+
+				var oldSection = row.getSection();
+
+				if (oldSection.getClass() == section.getClass()) {
+					oldSection.setModels(models);
+					oldSection.update_UI_from_Model();
+					createNew = false;
+					break;
+				}
+			}
+
+			if (createNew) {
+				section.setModels(models);
+				new RowComp(_sectionsContainer, section);
+			}
+
+		}
+
+		// sort the rows, following the new sections order
+
+		var clsList = uniqueSections.stream().map(section -> section.getClass()).collect(toList());
+
+		var rowList = _sectionsContainer.getChildren();
+
+		Arrays.sort(rowList, (a, b) -> {
+			return Integer.compare(clsList.indexOf(a.getClass()), clsList.indexOf(b.getClass()));
+		});
+
+		_sectionsContainer.layout(rowList);
 	}
 
 	public class RowComp extends Composite {
@@ -253,12 +299,12 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 	public void setFocus() {
 		_sectionsContainer.setFocus();
 	}
-	
+
 	@Override
 	public void dispose() {
 
 		_editor.removePropertyPage(this);
-		
+
 		super.dispose();
 	}
 

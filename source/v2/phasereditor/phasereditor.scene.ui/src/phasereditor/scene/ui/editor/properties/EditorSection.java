@@ -69,7 +69,8 @@ public class EditorSection extends ScenePropertySection {
 		return comp;
 	}
 
-	private void update_UI_from_Model() {
+	@Override
+	public void update_UI_from_Model() {
 
 		var models = List.of(getModels());
 		

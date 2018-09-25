@@ -77,8 +77,9 @@ public class FlipSection extends ScenePropertySection {
 		return comp;
 	}
 
+	@Override
 	@SuppressWarnings("boxing")
-	private void update_UI_from_Model() {
+	public void update_UI_from_Model() {
 		var models = List.of(getModels());
 
 		{
