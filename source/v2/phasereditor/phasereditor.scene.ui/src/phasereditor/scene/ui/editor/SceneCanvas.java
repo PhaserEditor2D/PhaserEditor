@@ -159,6 +159,8 @@ public class SceneCanvas extends ZoomCanvas {
 		_editor.refreshOutline();
 
 		_editor.setDirty(true);
+		
+		_editor.getEditorSite().getPage().activate(_editor);
 	}
 
 	public void init(SceneEditor editor) {
