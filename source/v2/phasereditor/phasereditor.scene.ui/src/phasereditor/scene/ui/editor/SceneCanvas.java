@@ -157,7 +157,7 @@ public class SceneCanvas extends ZoomCanvas {
 		_editor.refreshOutline();
 
 		_editor.setDirty(true);
-		
+
 		_editor.getEditorSite().getPage().activate(_editor);
 	}
 
@@ -552,9 +552,9 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 
 		if (fireUpdateSelection) {
-			redraw();
-
 			setSelection_from_internal(list);
+
+			redraw();
 		}
 	}
 
@@ -672,6 +672,19 @@ public class SceneCanvas extends ZoomCanvas {
 
 		setOffsetX((int) (getOffsetX() - x1 + Y_LABEL_WIDTH + canvasBounds.width / 2 - w / 2));
 		setOffsetY((int) (getOffsetY() - y1 + X_LABELS_HEIGHT + canvasBounds.height / 2 - h / 2));
+
+		redraw();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void selectAll() {
+		var list = new ArrayList<ObjectModel>();
+
+		var root = getEditor().getSceneModel().getRootObject();
+
+		root.visitChildren(model -> list.add(model));
+
+		setSelection_from_internal((List) list);
 
 		redraw();
 	}

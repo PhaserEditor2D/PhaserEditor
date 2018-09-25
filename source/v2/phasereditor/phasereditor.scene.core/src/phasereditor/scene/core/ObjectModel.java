@@ -24,6 +24,7 @@ package phasereditor.scene.core;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
@@ -75,6 +76,19 @@ public abstract class ObjectModel implements EditorComponent {
 		EditorComponent.set_editorName(this, data.getString(editorName_name));
 		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));
 
+	}
+
+	public void visit(Consumer<ObjectModel> visitor) {
+		visitor.accept(this);
+
+		if (this instanceof ParentComponent) {
+
+			var children = ParentComponent.get_children(this);
+
+			for (var child : children) {
+				child.visit(visitor);
+			}
+		}
 	}
 
 }

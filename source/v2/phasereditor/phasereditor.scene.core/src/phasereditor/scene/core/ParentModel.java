@@ -22,6 +22,7 @@
 package phasereditor.scene.core;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.json.JSONArray;
@@ -101,6 +102,14 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 			childrenData.put(objData);
 
 			obj.write(objData);
+		}
+	}
+
+	public void visitChildren(Consumer<ObjectModel> visitor) {
+		var children = ParentComponent.get_children(this);
+
+		for (var child : children) {
+			child.visit(visitor);
 		}
 	}
 
