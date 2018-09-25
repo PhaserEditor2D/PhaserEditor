@@ -108,6 +108,7 @@ public class SceneCanvas extends ZoomCanvas {
 
 	int _counter = 0;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
 
 		var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
@@ -148,6 +149,10 @@ public class SceneCanvas extends ZoomCanvas {
 		var afterSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
 
 		_editor.executeOperation(new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
+
+		_renderer.addPostPaintAction(() -> {
+			setSelection_from_internal((List) newModels);
+		});
 
 		redraw();
 
@@ -526,19 +531,21 @@ public class SceneCanvas extends ZoomCanvas {
 
 		var pick = pickObject(e.x, e.y);
 
+		var list = new ArrayList<>(_selection);
+
 		if (pick == null) {
-			fireUpdateSelection = !_selection.isEmpty();
-			_selection = new ArrayList<>();
+			fireUpdateSelection = !list.isEmpty();
+			list = new ArrayList<>();
 		} else {
 			if ((e.stateMask & SWT.CTRL) != 0) {
-				if (_selection.contains(pick)) {
-					_selection.remove(pick);
+				if (list.contains(pick)) {
+					list.remove(pick);
 				} else {
-					_selection.add(pick);
+					list.add(pick);
 				}
 			} else {
-				_selection = new ArrayList<>();
-				_selection.add(pick);
+				list = new ArrayList<>();
+				list.add(pick);
 			}
 
 			fireUpdateSelection = true;
@@ -547,11 +554,19 @@ public class SceneCanvas extends ZoomCanvas {
 		if (fireUpdateSelection) {
 			redraw();
 
-			StructuredSelection sel = new StructuredSelection(_selection);
-			_editor.getEditorSite().getSelectionProvider().setSelection(sel);
-			if (_editor.getOutline() != null) {
-				_editor.getOutline().setSelection_from_external(sel);
-			}
+			setSelection_from_internal(list);
+		}
+	}
+
+	private void setSelection_from_internal(List<Object> list) {
+		var sel = new StructuredSelection(list);
+
+		_selection = list;
+
+		_editor.getEditorSite().getSelectionProvider().setSelection(sel);
+
+		if (_editor.getOutline() != null) {
+			_editor.getOutline().setSelection_from_external(sel);
 		}
 	}
 
