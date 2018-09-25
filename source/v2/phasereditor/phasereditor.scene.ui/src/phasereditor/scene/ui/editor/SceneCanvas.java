@@ -150,9 +150,7 @@ public class SceneCanvas extends ZoomCanvas {
 
 		_editor.executeOperation(new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
 
-		_renderer.addPostPaintAction(() -> {
-			setSelection_from_internal((List) newModels);
-		});
+		setSelection_from_internal((List) newModels);
 
 		redraw();
 
