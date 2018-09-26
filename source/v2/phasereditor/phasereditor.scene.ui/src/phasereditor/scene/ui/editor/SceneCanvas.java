@@ -826,6 +826,25 @@ public class SceneCanvas extends ZoomCanvas {
 
 		var nameComputer = new NameComputer(_sceneModel.getRootObject());
 
+		float[] offsetPoint;
+
+		{
+			var minX = Float.MAX_VALUE;
+			var minY = Float.MAX_VALUE;
+
+			for (var model : pasteModels) {
+				if (model instanceof TransformComponent) {
+					var x = TransformComponent.get_x(model);
+					var y = TransformComponent.get_y(model);
+
+					minX = Math.min(minX, x);
+					minY = Math.min(minY, y);
+				}
+			}
+
+			offsetPoint = new float[] { minX - localCursorPoint[0], minY - localCursorPoint[1] };
+		}
+
 		for (var model : pasteModels) {
 			model.visit(model2 -> {
 				model2.setId(UUID.randomUUID().toString());
@@ -839,12 +858,21 @@ public class SceneCanvas extends ZoomCanvas {
 
 			if (model instanceof TransformComponent) {
 				// TODO: honor the snapping settings
+
+				var x = TransformComponent.get_x(model);
+				var y = TransformComponent.get_y(model);
+
 				if (placeAtCursorPosition) {
-					TransformComponent.set_x(model, localCursorPoint[0]);
-					TransformComponent.set_y(model, localCursorPoint[1]);
+
+					// if (offsetPoint == null) {
+					// offsetPoint = new float[] { x - localCursorPoint[0], y - localCursorPoint[1]
+					// };
+					// }
+
+					TransformComponent.set_x(model, x - offsetPoint[0]);
+					TransformComponent.set_y(model, y - offsetPoint[1]);
+
 				} else {
-					var x = TransformComponent.get_x(model);
-					var y = TransformComponent.get_y(model);
 
 					var point = _renderer.sceneToLocal(parent, x, y);
 
