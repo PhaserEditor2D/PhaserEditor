@@ -77,6 +77,7 @@ import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
+import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -646,7 +647,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		if (adapter == IPropertySheetPage.class) {
-			return new AnimationsPGridPage(this);
+			// return new AnimationsPGridPage(this);
+			return new AnimationsPropertyPage(this);
 		}
 
 		return super.getAdapter(adapter);

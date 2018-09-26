@@ -193,6 +193,21 @@ public abstract class FormPropertySection implements IEditorSharedImages {
 		});
 	}
 
+	@SuppressWarnings({ "boxing" })
+	protected void listenInt(Text text, Consumer<Integer> listener) {
+		listen(text, str -> {
+
+			try {
+				var value = Integer.parseInt(str);
+
+				listener.accept(value);
+			} catch (NumberFormatException e) {
+				// noting
+			}
+
+		});
+	}
+
 	public abstract boolean canEdit(Object obj);
 
 	public abstract Control createContent(Composite parent);
