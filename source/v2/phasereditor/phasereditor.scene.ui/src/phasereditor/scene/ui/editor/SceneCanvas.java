@@ -51,6 +51,7 @@ import org.json.JSONObject;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
@@ -115,10 +116,10 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 	}
 
-	int _counter = 0;
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
+
+		var nameComputer = new NameComputer(_sceneModel.getRootObject());
 
 		var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
 
@@ -140,7 +141,9 @@ public class SceneCanvas extends ZoomCanvas {
 
 				var sprite = new SpriteModel();
 
-				EditorComponent.set_editorName(sprite, frame.getKey() + ++_counter);
+				var name = nameComputer.newName(frame.getKey());
+
+				EditorComponent.set_editorName(sprite, name);
 
 				TransformComponent.set_x(sprite, modelX);
 				TransformComponent.set_y(sprite, modelY);
@@ -821,10 +824,17 @@ public class SceneCanvas extends ZoomCanvas {
 
 		// set new id and editorName
 
+		var nameComputer = new NameComputer(_sceneModel.getRootObject());
+
 		for (var model : pasteModels) {
 			model.visit(model2 -> {
 				model2.setId(UUID.randomUUID().toString());
-				EditorComponent.set_editorName(model2, EditorComponent.get_editorName(model2) + "_copy");
+
+				var name = EditorComponent.get_editorName(model2);
+
+				name = nameComputer.newName(name);
+
+				EditorComponent.set_editorName(model2, name);
 			});
 
 			if (model instanceof TransformComponent) {

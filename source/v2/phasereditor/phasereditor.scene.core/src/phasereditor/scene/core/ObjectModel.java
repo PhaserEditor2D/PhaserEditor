@@ -55,7 +55,7 @@ public abstract class ObjectModel implements EditorComponent {
 	public void setId(String id) {
 		_id = id;
 	}
-	
+
 	public String getType() {
 		return _type;
 	}
