@@ -259,4 +259,5 @@ public class SceneEditor extends EditorPart {
 
 		_sceneCanvas.redraw();
 	}
+
 }

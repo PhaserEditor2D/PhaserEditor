@@ -692,6 +692,24 @@ public class SceneCanvas extends ZoomCanvas {
 		redraw();
 	}
 
+	public void delete() {
+		var beforeData = SceneSnapshotOperation.takeSnapshot(_editor);
+
+		for (var obj : _selection) {
+			var model = (ObjectModel) obj;
+
+			ParentComponent.removeFromParent(model);
+		}
+
+		redraw();
+
+		_editor.setSelection(StructuredSelection.EMPTY);
+
+		var afterData = SceneSnapshotOperation.takeSnapshot(_editor);
+
+		_editor.executeOperation(new SceneSnapshotOperation(beforeData, afterData, "Delete objects"));
+	}
+
 	public void copy() {
 		var sel = new StructuredSelection(_selection);
 
@@ -701,6 +719,11 @@ public class SceneCanvas extends ZoomCanvas {
 		Clipboard cb = new Clipboard(getDisplay());
 		cb.setContents(new Object[] { sel.toArray() }, new Transfer[] { transfer });
 		cb.dispose();
+	}
+
+	public void cut() {
+		copy();
+		delete();
 	}
 
 	public void paste() {
@@ -730,7 +753,7 @@ public class SceneCanvas extends ZoomCanvas {
 		// create the copies
 
 		for (var obj : copyElements) {
-			if (obj != root) {
+			if (obj instanceof ObjectModel && obj != root) {
 				var model = (ObjectModel) obj;
 				var data = new JSONObject();
 				model.write(data);
@@ -793,5 +816,4 @@ public class SceneCanvas extends ZoomCanvas {
 
 		return result;
 	}
-
 }
