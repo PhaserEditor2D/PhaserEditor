@@ -57,7 +57,7 @@ public class SceneSnapshotOperation extends AbstractOperation {
 
 	public SceneSnapshotOperation(JSONObject beforeData, JSONObject afterData, String label) {
 		super(label);
-		
+
 		_beforeData = beforeData;
 		_afterData = afterData;
 	}
@@ -88,7 +88,6 @@ public class SceneSnapshotOperation extends AbstractOperation {
 		var editor = info.getAdapter(SceneEditor.class);
 		var model = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
-		var canvas = editor.getScene();
 
 		List<?> currentSelection = ((IStructuredSelection) editor.getEditorSite().getSelectionProvider().getSelection())
 				.toList();
@@ -100,20 +99,7 @@ public class SceneSnapshotOperation extends AbstractOperation {
 		var selectedItems = selectedIds.stream().map(id -> model.getRootObject().findById(id))
 				.filter(obj -> obj != null).toArray();
 
-		var newSelection = new StructuredSelection(selectedItems);
-
-		editor.getScene().setSelection_from_external(newSelection);
-
-		if (editor.getOutline() != null) {
-			editor.getOutline().setSelection_from_external(newSelection);
-			editor.refreshOutline_basedOnId();
-		}
-
-		for (var page : editor.getPropertyPages()) {
-			page.selectionChanged(editor, newSelection);
-		}
-
-		canvas.redraw();
+		editor.setSelection(new StructuredSelection(selectedItems));
 
 		editor.setDirty(true);
 	}

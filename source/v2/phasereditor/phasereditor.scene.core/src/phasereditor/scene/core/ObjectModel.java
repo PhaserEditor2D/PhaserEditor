@@ -52,6 +52,14 @@ public abstract class ObjectModel implements EditorComponent {
 		return _id;
 	}
 
+	public void setId(String id) {
+		_id = id;
+	}
+	
+	public String getType() {
+		return _type;
+	}
+
 	public void put(String key, Object value) {
 		_map.put(key, value);
 	}
@@ -90,5 +98,4 @@ public abstract class ObjectModel implements EditorComponent {
 			}
 		}
 	}
-
 }

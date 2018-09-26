@@ -23,11 +23,13 @@ package phasereditor.scene.ui.editor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
@@ -42,6 +44,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -687,6 +690,108 @@ public class SceneCanvas extends ZoomCanvas {
 		setSelection_from_internal((List) list);
 
 		redraw();
+	}
+
+	public void copy() {
+		var sel = new StructuredSelection(_selection);
+
+		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+		transfer.setSelection(sel);
+
+		Clipboard cb = new Clipboard(getDisplay());
+		cb.setContents(new Object[] { sel.toArray() }, new Transfer[] { transfer });
+		cb.dispose();
+	}
+
+	public void paste() {
+
+		var beforeData = SceneSnapshotOperation.takeSnapshot(_editor);
+
+		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+
+		Clipboard cb = new Clipboard(getDisplay());
+		Object content = cb.getContents(transfer);
+		cb.dispose();
+
+		if (content == null) {
+			return;
+		}
+
+		var editor = getEditor();
+
+		var project = editor.getEditorInput().getFile().getProject();
+
+		var copyElements = ((IStructuredSelection) content).toArray();
+
+		List<ObjectModel> pasteModels = new ArrayList<>();
+
+		var root = editor.getSceneModel().getRootObject();
+
+		// create the copies
+
+		for (var obj : copyElements) {
+			if (obj != root) {
+				var model = (ObjectModel) obj;
+				var data = new JSONObject();
+				model.write(data);
+				var newModel = SceneModel.createModel(model.getType());
+				newModel.read(data, project);
+				pasteModels.add(newModel);
+			}
+		}
+
+		// remove the children
+
+		pasteModels = filterChidlren(pasteModels);
+
+		var cursorPoint = toControl(getDisplay().getCursorLocation());
+
+		var localPoint = _renderer.sceneToLocal(root, cursorPoint.x, cursorPoint.y);
+
+		// set new id and editorName
+
+		for (var model : pasteModels) {
+			model.visit(model2 -> {
+				model2.setId(UUID.randomUUID().toString());
+				EditorComponent.set_editorName(model2, EditorComponent.get_editorName(model2) + "_copy");
+			});
+
+			if (model instanceof TransformComponent) {
+				// TODO: honor the snapping settings
+				TransformComponent.set_x(model, localPoint[0]);
+				TransformComponent.set_y(model, localPoint[1]);
+			}
+		}
+
+		// add to the root object
+
+		for (var model : pasteModels) {
+			ParentComponent.addChild(root, model);
+		}
+
+		editor.setSelection(new StructuredSelection(pasteModels));
+
+		editor.setDirty(true);
+
+		var afterData = SceneSnapshotOperation.takeSnapshot(_editor);
+
+		_editor.executeOperation(new SceneSnapshotOperation(beforeData, afterData, "Paste objects."));
+	}
+
+	public static List<ObjectModel> filterChidlren(List<ObjectModel> models) {
+		var result = new ArrayList<>(models);
+
+		for (var i = 0; i < models.size() - 1; i++) {
+			for (var j = i + 1; j < models.size(); j++) {
+				var a = models.get(i);
+				var b = models.get(j);
+				if (ParentComponent.isDescendentOf(a, b)) {
+					result.remove(a);
+				}
+			}
+		}
+
+		return result;
 	}
 
 }

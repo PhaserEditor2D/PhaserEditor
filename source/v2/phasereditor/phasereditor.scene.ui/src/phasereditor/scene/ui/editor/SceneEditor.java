@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
@@ -35,7 +36,7 @@ import phasereditor.ui.SelectionProviderImpl;
 public class SceneEditor extends EditorPart {
 
 	private SceneModel _model;
-	private SceneCanvas _canvas;
+	private SceneCanvas _sceneCanvas;
 	private SceneOutlinePage _outline;
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
@@ -133,15 +134,15 @@ public class SceneEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_canvas = new SceneCanvas(parent, SWT.NONE);
+		_sceneCanvas = new SceneCanvas(parent, SWT.NONE);
 
-		_canvas.init(this);
+		_sceneCanvas.init(this);
 
 	}
 
 	@Override
 	public void setFocus() {
-		_canvas.setFocus();
+		_sceneCanvas.setFocus();
 	}
 
 	public SceneModel getSceneModel() {
@@ -178,7 +179,7 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public SceneCanvas getScene() {
-		return _canvas;
+		return _sceneCanvas;
 	}
 
 	public void removeOutline() {
@@ -232,7 +233,7 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public void executeOperation(IUndoableOperation operation) {
-		
+
 		operation.addContext(undoContext);
 		IWorkbench workbench = getSite().getWorkbenchWindow().getWorkbench();
 		try {
@@ -242,5 +243,20 @@ public class SceneEditor extends EditorPart {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void setSelection(StructuredSelection selection) {
+		getScene().setSelection_from_external(selection);
+
+		if (_outline != null) {
+			_outline.setSelection_from_external(selection);
+			refreshOutline_basedOnId();
+		}
+
+		for (var page : _propertyPages) {
+			page.selectionChanged(this, selection);
+		}
+
+		_sceneCanvas.redraw();
 	}
 }
