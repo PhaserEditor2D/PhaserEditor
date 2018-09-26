@@ -43,7 +43,7 @@ public class EditorSection extends ScenePropertySection {
 	private Label _editorNameLabel;
 	private Text _editorNameText;
 
-	public EditorSection(ScenePropertiesPage page) {
+	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
 	}
 

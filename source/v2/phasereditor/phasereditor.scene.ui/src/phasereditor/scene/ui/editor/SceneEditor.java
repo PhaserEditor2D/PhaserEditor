@@ -30,7 +30,7 @@ import org.json.JSONTokener;
 
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
-import phasereditor.scene.ui.editor.properties.ScenePropertiesPage;
+import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
 
 public class SceneEditor extends EditorPart {
@@ -40,7 +40,7 @@ public class SceneEditor extends EditorPart {
 	private SceneOutlinePage _outline;
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
-	private List<ScenePropertiesPage> _propertyPages;
+	private List<ScenePropertyPage> _propertyPages;
 
 	public final IUndoContext undoContext = new IUndoContext() {
 
@@ -154,7 +154,7 @@ public class SceneEditor extends EditorPart {
 	public Object getAdapter(Class adapter) {
 
 		if (adapter == IPropertySheetPage.class) {
-			var page = new ScenePropertiesPage(this);
+			var page = new ScenePropertyPage(this);
 			_propertyPages.add(page);
 
 			return page;
@@ -191,7 +191,7 @@ public class SceneEditor extends EditorPart {
 		return _outline;
 	}
 
-	public List<ScenePropertiesPage> getPropertyPages() {
+	public List<ScenePropertyPage> getPropertyPages() {
 		return _propertyPages;
 	}
 
@@ -217,7 +217,7 @@ public class SceneEditor extends EditorPart {
 		}
 	}
 
-	public void removePropertyPage(ScenePropertiesPage page) {
+	public void removePropertyPage(ScenePropertyPage page) {
 		_propertyPages.remove(page);
 	}
 

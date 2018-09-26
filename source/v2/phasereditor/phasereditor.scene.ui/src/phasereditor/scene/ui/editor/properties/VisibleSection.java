@@ -41,7 +41,7 @@ public class VisibleSection extends ScenePropertySection {
 
 	private Button _visibleBtn;
 
-	public VisibleSection(ScenePropertiesPage page) {
+	public VisibleSection(ScenePropertyPage page) {
 		super("Visible", page);
 	}
 

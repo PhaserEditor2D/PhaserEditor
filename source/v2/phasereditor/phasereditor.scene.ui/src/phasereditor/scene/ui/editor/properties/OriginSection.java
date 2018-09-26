@@ -48,7 +48,7 @@ public class OriginSection extends ScenePropertySection {
 	private Label _originYLabel;
 	private Text _originYText;
 
-	public OriginSection(ScenePropertiesPage page) {
+	public OriginSection(ScenePropertyPage page) {
 		super("Origin", page);
 	}
 

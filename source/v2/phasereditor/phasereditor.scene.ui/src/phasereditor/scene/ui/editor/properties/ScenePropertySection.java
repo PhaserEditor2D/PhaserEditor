@@ -30,25 +30,27 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.ObjectSnapshotOperation;
+import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public abstract class ScenePropertySection extends PropertySection {
-	private ScenePropertiesPage _page;
+public abstract class ScenePropertySection extends FormPropertySection {
+	private FormPropertyPage _page;
 
-	public ScenePropertySection(String name, ScenePropertiesPage page) {
+	public ScenePropertySection(String name, FormPropertyPage page) {
 		super(name);
 		_page = page;
 	}
 
-	public ScenePropertiesPage getPage() {
+	public FormPropertyPage getPage() {
 		return _page;
 	}
 
 	public SceneEditor getEditor() {
-		return _page.getEditor();
+		return ((ScenePropertyPage) _page).getEditor();
 	}
 
 	public SceneCanvas getCanvas() {

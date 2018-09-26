@@ -36,7 +36,7 @@ import phasereditor.scene.core.SpriteModel;
  */
 public class EmptyBodySection extends ScenePropertySection {
 
-	public EmptyBodySection(ScenePropertiesPage page) {
+	public EmptyBodySection(ScenePropertyPage page) {
 		super("Body", page);
 	}
 

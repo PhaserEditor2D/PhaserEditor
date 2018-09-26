@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.ui.properties;
 
 import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
@@ -51,14 +51,6 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.scene.core.EditorComponent;
-import phasereditor.scene.core.FlipComponent;
-import phasereditor.scene.core.OriginComponent;
-import phasereditor.scene.core.SpriteModel;
-import phasereditor.scene.core.TextureComponent;
-import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.core.VisibleComponent;
-import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -66,19 +58,13 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-public class ScenePropertiesPage extends Page implements IPropertySheetPage {
+public abstract class FormPropertyPage extends Page implements IPropertySheetPage {
 
 	Composite _sectionsContainer;
-	private SceneEditor _editor;
 	private ScrolledComposite _scrolledCompo;
 
-	public ScenePropertiesPage(SceneEditor editor) {
+	public FormPropertyPage() {
 		super();
-		_editor = editor;
-	}
-
-	public SceneEditor getEditor() {
-		return _editor;
 	}
 
 	@SuppressWarnings("unused")
@@ -88,9 +74,9 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		var models = ((IStructuredSelection) selection).toArray();
 
 		// create all candidate sections
-		var allSections = new ArrayList<PropertySection>();
+		var allSections = new ArrayList<FormPropertySection>();
 		{
-			var clsMap = new HashMap<Object, PropertySection>();
+			var clsMap = new HashMap<Object, FormPropertySection>();
 			for (var model : models) {
 				var objSections = createSections(model);
 
@@ -105,7 +91,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 		// pick only unique sections
 
-		var uniqueSections = new ArrayList<PropertySection>();
+		var uniqueSections = new ArrayList<FormPropertySection>();
 		var sectionMap = new HashMap<>();
 
 		for (var section : allSections) {
@@ -176,9 +162,9 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 	public class RowComp extends Composite {
 
-		private PropertySection _section;
+		private FormPropertySection _section;
 
-		public RowComp(Composite parent, PropertySection section) {
+		public RowComp(Composite parent, FormPropertySection section) {
 			super(parent, SWT.NONE);
 
 			_section = section;
@@ -250,7 +236,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 			collapseBtn.addMouseListener(expandListener);
 		}
 
-		public PropertySection getSection() {
+		public FormPropertySection getSection() {
 			return _section;
 		}
 
@@ -258,40 +244,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
 
-	private List<PropertySection> createSections(Object obj) {
-		List<PropertySection> list = new ArrayList<>();
-
-		if (obj instanceof EditorComponent) {
-			list.add(new EditorSection(this));
-		}
-
-		if (obj instanceof TransformComponent) {
-			list.add(new TransformSection(this));
-		}
-
-		if (obj instanceof OriginComponent) {
-			list.add(new OriginSection(this));
-		}
-
-		if (obj instanceof FlipComponent) {
-			list.add(new FlipSection(this));
-		}
-
-		if (obj instanceof VisibleComponent) {
-			list.add(new VisibleSection(this));
-		}
-
-		if (obj instanceof TextureComponent) {
-			list.add(new TextureSection(this));
-		}
-
-		if (obj instanceof SpriteModel) {
-			list.add(new EmptyBodySection(this));
-		}
-
-		return list;
-	}
-
+	protected abstract List<FormPropertySection> createSections(Object obj);
 	@Override
 	public void createControl(Composite parent) {
 		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
@@ -320,13 +273,4 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 	public void setFocus() {
 		_scrolledCompo.setFocus();
 	}
-
-	@Override
-	public void dispose() {
-
-		_editor.removePropertyPage(this);
-
-		super.dispose();
-	}
-
 }

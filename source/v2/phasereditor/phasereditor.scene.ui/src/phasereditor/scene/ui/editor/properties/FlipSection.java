@@ -43,7 +43,7 @@ public class FlipSection extends ScenePropertySection {
 	private Button _flipXBtn;
 	private Button _flipYBtn;
 
-	public FlipSection(ScenePropertiesPage page) {
+	public FlipSection(ScenePropertyPage page) {
 		super("Flip", page);
 	}
 

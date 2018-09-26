@@ -53,7 +53,7 @@ public class TransformSection extends ScenePropertySection {
 	private Text _scaleYText;
 	private Text _angleText;
 
-	public TransformSection(ScenePropertiesPage page) {
+	public TransformSection(ScenePropertyPage page) {
 		super("Transform", page);
 	}
 

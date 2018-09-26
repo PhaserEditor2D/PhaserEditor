@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.ui.properties;
 
 import java.util.HashSet;
 import java.util.function.Consumer;
@@ -44,11 +44,11 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-public abstract class PropertySection implements IEditorSharedImages {
+public abstract class FormPropertySection implements IEditorSharedImages {
 	private Object[] _models;
 	private String _name;
 
-	public PropertySection(String name) {
+	public FormPropertySection(String name) {
 		_name = name;
 	}
 

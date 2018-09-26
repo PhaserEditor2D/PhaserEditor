@@ -46,7 +46,7 @@ public class TextureSection extends ScenePropertySection {
 	private SingleFrameCanvas _frameCanvas;
 	private Label _frameLabel;
 
-	public TextureSection(ScenePropertiesPage page) {
+	public TextureSection(ScenePropertyPage page) {
 		super("Texture", page);
 	}
 
