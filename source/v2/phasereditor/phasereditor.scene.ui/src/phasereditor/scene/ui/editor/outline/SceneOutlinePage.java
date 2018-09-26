@@ -124,6 +124,10 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		});
 		_viewer.setInput(_editor.getSceneModel());
 
+		var scene = _editor.getScene();
+
+		_viewer.getCanvas().setEditActions(scene::copy, scene::cut, scene::paste);
+
 		init_DND();
 	}
 

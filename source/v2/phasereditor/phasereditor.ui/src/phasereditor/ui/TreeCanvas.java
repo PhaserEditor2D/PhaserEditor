@@ -1018,4 +1018,32 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		return _items.stream().filter(item -> item.isChecked()).map(item -> item.getData()).toArray();
 	}
 
+	private Runnable _copyAction;
+	private Runnable _cutAction;
+	private Runnable _pasteAction;
+
+	public void copy() {
+		if (_copyAction != null) {
+			_copyAction.run();
+		}
+	}
+
+	public void cut() {
+		if (_cutAction != null) {
+			_cutAction.run();
+		}
+	}
+
+	public void paste() {
+		if (_pasteAction != null) {
+			_pasteAction.run();
+		}
+	}
+
+	public void setEditActions(Runnable copy, Runnable cut, Runnable paste) {
+		_copyAction = copy;
+		_cutAction = cut;
+		_pasteAction = paste;
+	}
+
 }

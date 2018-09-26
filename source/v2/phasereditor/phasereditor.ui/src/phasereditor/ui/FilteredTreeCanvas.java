@@ -63,9 +63,13 @@ public class FilteredTreeCanvas extends Composite {
 
 		_filterText.addModifyListener(_textChanged);
 
-		_tree = new TreeCanvas(this, SWT.NONE);
+		_tree = createTree();
 		_tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+	}
+
+	protected TreeCanvas createTree() {
+		return new TreeCanvas(this, SWT.NONE);
 	}
 
 	public Text getTextControl() {
