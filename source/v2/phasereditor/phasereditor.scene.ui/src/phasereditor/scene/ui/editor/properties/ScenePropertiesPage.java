@@ -35,8 +35,11 @@ import java.util.Set;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -67,6 +70,7 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 	Composite _sectionsContainer;
 	private SceneEditor _editor;
+	private ScrolledComposite _scrolledCompo;
 
 	public ScenePropertiesPage(SceneEditor editor) {
 		super();
@@ -166,6 +170,8 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 		});
 
 		_sectionsContainer.layout(rowList);
+
+		updateScrolledComposite();
 	}
 
 	public class RowComp extends Composite {
@@ -235,6 +241,8 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 						_collapsedSectionsIds.remove(sectionId);
 					}
 
+					updateScrolledComposite();
+
 				}
 			};
 
@@ -286,18 +294,31 @@ public class ScenePropertiesPage extends Page implements IPropertySheetPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		_sectionsContainer = new Composite(parent, SWT.NONE);
+		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
+		_sectionsContainer = new Composite(_scrolledCompo, SWT.NONE);
 		_sectionsContainer.setLayout(new GridLayout(1, false));
+
+		_scrolledCompo.setContent(_sectionsContainer);
+		_scrolledCompo.setExpandVertical(true);
+		_scrolledCompo.setExpandHorizontal(true);
+		_scrolledCompo.addControlListener(ControlListener.controlResizedAdapter(e -> {
+			updateScrolledComposite();
+		}));
+	}
+
+	void updateScrolledComposite() {
+		Rectangle r = _scrolledCompo.getClientArea();
+		_scrolledCompo.setMinSize(_sectionsContainer.computeSize(r.width, SWT.DEFAULT));
 	}
 
 	@Override
 	public Control getControl() {
-		return _sectionsContainer;
+		return _scrolledCompo;
 	}
 
 	@Override
 	public void setFocus() {
-		_sectionsContainer.setFocus();
+		_scrolledCompo.setFocus();
 	}
 
 	@Override
