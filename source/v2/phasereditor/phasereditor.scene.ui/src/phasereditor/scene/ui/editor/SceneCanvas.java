@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -64,6 +66,10 @@ import phasereditor.ui.ZoomCanvas;
  */
 public class SceneCanvas extends ZoomCanvas {
 
+	/**
+	 * 
+	 */
+	private static final String SCENE_COPY_STAMP = "--scene--copy--stamp--";
 	private static final int X_LABELS_HEIGHT = 18;
 	private static final int Y_LABEL_WIDTH = 18;
 	private SceneEditor _editor;
@@ -711,7 +717,38 @@ public class SceneCanvas extends ZoomCanvas {
 	}
 
 	public void copy() {
-		var sel = new StructuredSelection(_selection);
+
+		var sel = new StructuredSelection(
+				filterChidlren(_selection.stream().map(o -> (ObjectModel) o).collect(toList()))
+
+						.stream().map(model -> {
+
+							var data = new JSONObject();
+
+							data.put(SCENE_COPY_STAMP, true);
+
+							model.write(data);
+
+							// convert the local position to a global position
+
+							if (model instanceof TransformComponent) {
+
+								var parent = ParentComponent.get_parent(model);
+
+								var globalPoint = new float[] { 0, 0 };
+
+								if (parent != null) {
+									globalPoint = _renderer.localToScene(parent, TransformComponent.get_x(model),
+											TransformComponent.get_y(model));
+								}
+
+								data.put(TransformComponent.x_name, globalPoint[0]);
+								data.put(TransformComponent.y_name, globalPoint[1]);
+							}
+
+							return data;
+
+						}).toArray());
 
 		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 		transfer.setSelection(sel);
@@ -727,6 +764,13 @@ public class SceneCanvas extends ZoomCanvas {
 	}
 
 	public void paste() {
+
+		var root = getEditor().getSceneModel().getRootObject();
+
+		paste(root, true);
+	}
+
+	public void paste(ObjectModel parent, boolean placeAtCursorPosition) {
 
 		var beforeData = SceneSnapshotOperation.takeSnapshot(_editor);
 
@@ -748,19 +792,24 @@ public class SceneCanvas extends ZoomCanvas {
 
 		List<ObjectModel> pasteModels = new ArrayList<>();
 
-		var root = editor.getSceneModel().getRootObject();
-
 		// create the copies
 
 		for (var obj : copyElements) {
-			if (obj instanceof ObjectModel && obj != root) {
-				var model = (ObjectModel) obj;
-				var data = new JSONObject();
-				model.write(data);
-				var newModel = SceneModel.createModel(model.getType());
-				newModel.read(data, project);
-				pasteModels.add(newModel);
+			if (obj instanceof JSONObject) {
+				var data = (JSONObject) obj;
+				if (data.has(SCENE_COPY_STAMP)) {
+
+					String type = data.getString("-type");
+
+					var newModel = SceneModel.createModel(type);
+
+					newModel.read(data, project);
+
+					pasteModels.add(newModel);
+
+				}
 			}
+
 		}
 
 		// remove the children
@@ -768,8 +817,7 @@ public class SceneCanvas extends ZoomCanvas {
 		pasteModels = filterChidlren(pasteModels);
 
 		var cursorPoint = toControl(getDisplay().getCursorLocation());
-
-		var localPoint = _renderer.sceneToLocal(root, cursorPoint.x, cursorPoint.y);
+		var localCursorPoint = _renderer.sceneToLocal(parent, cursorPoint.x, cursorPoint.y);
 
 		// set new id and editorName
 
@@ -781,15 +829,25 @@ public class SceneCanvas extends ZoomCanvas {
 
 			if (model instanceof TransformComponent) {
 				// TODO: honor the snapping settings
-				TransformComponent.set_x(model, localPoint[0]);
-				TransformComponent.set_y(model, localPoint[1]);
+				if (placeAtCursorPosition) {
+					TransformComponent.set_x(model, localCursorPoint[0]);
+					TransformComponent.set_y(model, localCursorPoint[1]);
+				} else {
+					var x = TransformComponent.get_x(model);
+					var y = TransformComponent.get_y(model);
+
+					var point = _renderer.sceneToLocal(parent, x, y);
+
+					TransformComponent.set_x(model, point[0]);
+					TransformComponent.set_y(model, point[1]);
+				}
 			}
 		}
 
 		// add to the root object
 
 		for (var model : pasteModels) {
-			ParentComponent.addChild(root, model);
+			ParentComponent.addChild(parent, model);
 		}
 
 		editor.setSelection(new StructuredSelection(pasteModels));

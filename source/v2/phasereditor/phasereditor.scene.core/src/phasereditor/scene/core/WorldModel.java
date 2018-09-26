@@ -25,12 +25,14 @@ package phasereditor.scene.core;
  * @author arian
  *
  */
-public class WorldModel extends ParentModel {
+public class WorldModel extends ParentModel implements TransformComponent {
 	public static final String TYPE = "World";
-	
+
 	public WorldModel() {
 		super(TYPE);
-		
+
 		EditorComponent.set_editorName(this, "world");
+		TransformComponent.init(this);
+
 	}
 }
