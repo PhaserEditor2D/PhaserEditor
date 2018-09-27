@@ -55,6 +55,9 @@ public class DragObjectsEvents {
 	}
 
 	public void done() {
+
+		_scene.getEditor().updatePropertyPagesContentWithSelection();
+
 		_objects = null;
 
 		var afterData = SceneSnapshotOperation.takeSnapshot(_scene.getEditor());
@@ -89,8 +92,6 @@ public class DragObjectsEvents {
 				TransformComponent.set_y(model, localPoint[1]);
 			}
 		}
-
-		_scene.getEditor().updatePropertyPagesContentWithSelection();
 
 		_scene.redraw();
 	}
