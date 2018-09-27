@@ -54,6 +54,7 @@ public class SceneObjectRenderer {
 	private Map<ObjectModel, float[]> _modelMatrixMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
 	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
+
 	private boolean _debug;
 	private List<Runnable> _postPaintActions;
 
@@ -187,6 +188,28 @@ public class SceneObjectRenderer {
 		_modelChildrenBoundsMap.put(parent, new float[] { minX, minY, maxX, minY, maxX, maxY, minX, maxY });
 	}
 
+	public static float[] joinBounds(float[] a, float[] b) {
+		var minX = Float.MAX_VALUE;
+		var minY = Float.MAX_VALUE;
+		var maxX = Float.MIN_VALUE;
+		var maxY = Float.MIN_VALUE;
+
+		for (var points : new float[][] { a, b }) {
+			if (points != null) {
+				for (int i = 0; i + 1 < points.length; i += 2) {
+					var x = points[i];
+					var y = points[i + 1];
+					minX = Math.min(minX, x);
+					minY = Math.min(minY, y);
+					maxX = Math.max(maxX, x);
+					maxY = Math.max(maxY, y);
+				}
+			}
+		}
+
+		return new float[] { minX, minY, maxX, minY, maxX, maxY, minX, maxY };
+	}
+
 	private void renderObject(GC gc, Transform tx, ObjectModel objModel) {
 
 		if (!EditorComponent.get_editorShow(objModel)) {
@@ -262,7 +285,7 @@ public class SceneObjectRenderer {
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
 		{
 			// origin
-			
+
 			var originX = OriginComponent.get_originX(model);
 			var originY = OriginComponent.get_originY(model);
 
@@ -383,7 +406,7 @@ public class SceneObjectRenderer {
 		var tx = new Transform(Display.getDefault(), matrix);
 
 		tx.invert();
-		
+
 		var point = new float[] { sceneX, sceneY };
 
 		tx.transform(point);

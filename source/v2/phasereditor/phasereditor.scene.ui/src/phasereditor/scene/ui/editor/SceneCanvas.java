@@ -230,12 +230,33 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	private void renderSelection(GC gc) {
-		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
-
 		for (var obj : _selection) {
 			if (obj instanceof ObjectModel) {
-				var bounds = _renderer.getObjectBounds((ObjectModel) obj);
+				var model = (ObjectModel) obj;
+
+				final var bounds = _renderer.getObjectBounds(model);
+
 				if (bounds != null) {
+
+					if (obj instanceof ParentComponent) {
+						if (!ParentComponent.get_children(model).isEmpty()) {
+							var childrenBounds = _renderer.getObjectChildrenBounds(model);
+
+							if (childrenBounds != null) {
+
+								var merge = SceneObjectRenderer.joinBounds(bounds, childrenBounds);
+
+								gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
+
+								gc.drawPolygon(
+										new int[] { (int) merge[0], (int) merge[1], (int) merge[2], (int) merge[3],
+												(int) merge[4], (int) merge[5], (int) merge[6], (int) merge[7] });
+							}
+
+						}
+					}
+
+					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
 				}
