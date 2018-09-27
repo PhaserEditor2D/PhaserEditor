@@ -890,7 +890,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			
 			if (_dragObjectsEvents.isDragging()) {
-				_dragObjectsEvents.stopDrag();
+				_dragObjectsEvents.done();
 			}
 
 			return;
@@ -903,7 +903,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	@Override
 	public void mouseMove(MouseEvent e) {
 		if (_dragObjectsEvents.isDragging()) {
-			_dragObjectsEvents.updateDrag(e);
+			_dragObjectsEvents.update(e);
 		}
 	}
 
@@ -917,7 +917,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var obj = pickObject(e.x, e.y);
 
 		if (_selection.contains(obj)) {
-			_dragObjectsEvents.startDrag(e);
+			_dragObjectsEvents.start(e);
 		}
 	}
 }

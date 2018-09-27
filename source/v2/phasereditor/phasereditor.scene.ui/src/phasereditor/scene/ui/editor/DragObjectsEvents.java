@@ -28,10 +28,12 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.MouseEvent;
+import org.json.JSONObject;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 
 /**
  * @author arian
@@ -46,16 +48,21 @@ public class DragObjectsEvents {
 	private int _startX;
 	private int _startY;
 	private List<ObjectModel> _objects;
+	private JSONObject _beforeData;
 
 	public DragObjectsEvents(SceneCanvas scene) {
 		_scene = scene;
 	}
 
-	public void stopDrag() {
+	public void done() {
 		_objects = null;
+
+		var afterData = SceneSnapshotOperation.takeSnapshot(_scene.getEditor());
+
+		_scene.getEditor().executeOperation(new SceneSnapshotOperation(_beforeData, afterData, "Move objects"));
 	}
 
-	public void updateDrag(MouseEvent e) {
+	public void update(MouseEvent e) {
 		var cursorX = e.x;
 		var cursorY = e.y;
 
@@ -92,7 +99,10 @@ public class DragObjectsEvents {
 		return _objects != null;
 	}
 
-	public void startDrag(MouseEvent e) {
+	public void start(MouseEvent e) {
+
+		_beforeData = SceneSnapshotOperation.takeSnapshot(_scene.getEditor());
+
 		_startX = e.x;
 		_startY = e.y;
 
