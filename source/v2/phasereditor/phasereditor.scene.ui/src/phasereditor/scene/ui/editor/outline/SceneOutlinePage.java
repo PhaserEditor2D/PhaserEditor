@@ -287,6 +287,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 							new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
 				});
 
+				_editor.setDirty(true);
+
 				_editor.getScene().redraw();
 
 			}

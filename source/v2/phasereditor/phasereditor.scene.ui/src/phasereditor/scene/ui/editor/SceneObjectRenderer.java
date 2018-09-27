@@ -65,6 +65,7 @@ public class SceneObjectRenderer {
 
 		_modelMatrixMap = new HashMap<>();
 		_modelChildrenBoundsMap = new HashMap<>();
+
 		_modelBoundsMap = new HashMap<>();
 		_postPaintActions = new ArrayList<>();
 	}
@@ -173,6 +174,7 @@ public class SceneObjectRenderer {
 
 		for (var obj : children) {
 			var points = _modelBoundsMap.get(obj);
+
 			if (points != null) {
 				for (int i = 0; i + 1 < points.length; i += 2) {
 					var x = points[i];
