@@ -66,6 +66,9 @@ public class DragObjectsEvents {
 	}
 
 	public void update(MouseEvent e) {
+
+		_scene.getEditor().setDirty(true);
+
 		var cursorX = e.x;
 		var cursorY = e.y;
 

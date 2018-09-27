@@ -196,8 +196,10 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public void setDirty(boolean dirty) {
-		_dirty = dirty;
-		firePropertyChange(PROP_DIRTY);
+		if (dirty != _dirty) {
+			_dirty = dirty;
+			firePropertyChange(PROP_DIRTY);
+		}
 	}
 
 	@Override
