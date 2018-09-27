@@ -325,7 +325,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				break;
 			}
 
-			gc.setLineWidth(1);
 			if (modelX % modelNextNextSnapX == 0) {
 				gc.setAlpha(255);
 				gc.setLineWidth(2);
@@ -338,6 +337,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			var viewX = calc.modelToViewX(modelX) + Y_LABEL_WIDTH;
 
 			gc.drawLine((int) viewX, X_LABELS_HEIGHT, (int) viewX, e.height);
+
+			gc.setLineWidth(1);
 
 			i++;
 		}
@@ -355,7 +356,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			var viewY = calc.modelToViewY(modelY) + X_LABELS_HEIGHT;
 
-			gc.setLineWidth(1);
 			if (modelY % modelNextNextSnapY == 0) {
 				gc.setLineWidth(2);
 				gc.setAlpha(255);
@@ -366,6 +366,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			}
 
 			gc.drawLine(X_LABELS_HEIGHT, (int) viewY, e.width, (int) viewY);
+
+			gc.setLineWidth(1);
 
 			i++;
 		}
@@ -888,15 +890,13 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			_dragDetected = false;
 
-			
 			if (_dragObjectsEvents.isDragging()) {
 				_dragObjectsEvents.done();
 			}
 
 			return;
 		}
-		
-		
+
 		_selectionEvents.updateSelection(e);
 	}
 
