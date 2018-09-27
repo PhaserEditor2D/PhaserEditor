@@ -254,7 +254,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					}
 				}
-				
+
 				if (bounds != null) {
 					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
@@ -694,6 +694,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		redraw();
 
+		_editor.setDirty(true);
+
 		_editor.setSelection(StructuredSelection.EMPTY);
 
 		var afterData = SceneSnapshotOperation.takeSnapshot(_editor);
@@ -882,12 +884,14 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public static List<ObjectModel> filterChidlren(List<ObjectModel> models) {
 		var result = new ArrayList<>(models);
 
-		for (var i = 0; i < models.size() - 1; i++) {
-			for (var j = i + 1; j < models.size(); j++) {
-				var a = models.get(i);
-				var b = models.get(j);
-				if (ParentComponent.isDescendentOf(a, b)) {
-					result.remove(a);
+		for (var i = 0; i < models.size(); i++) {
+			for (var j = 0; j < models.size(); j++) {
+				if (i != j) {
+					var a = models.get(i);
+					var b = models.get(j);
+					if (ParentComponent.isDescendentOf(a, b)) {
+						result.remove(a);
+					}
 				}
 			}
 		}
