@@ -84,8 +84,11 @@ public class BaseImageCanvas extends Canvas {
 
 		addDisposeListener(this::widgetDisposed);
 
-		PhaserEditorUI.forceApplyCompositeStyle(this);
+		// PhaserEditorUI.forceApplyControlStyle(this, Label.class);
+
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
+
+		// setData("org.eclipse.e4.ui.css.CssClassName", "Label");
 	}
 
 	public static void prepareGC(GC gc) {

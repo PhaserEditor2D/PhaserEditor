@@ -592,15 +592,15 @@ declare type GameConfig = {
      */
     seed?: string[];
     /**
-     * [description]
+     * The title of the game.
      */
     title?: string;
     /**
-     * [description]
+     * The url of the game.
      */
     url?: string;
     /**
-     * [description]
+     * The version of the game.
      */
     version?: string;
     /**
@@ -3973,17 +3973,17 @@ declare namespace Phaser {
         class AnimationManager extends Phaser.Events.EventEmitter {
             /**
              * 
-             * @param game [description]
+             * @param game A reference to the Phaser.Game instance.
              */
             constructor(game: Phaser.Game);
 
             /**
-             * [description]
+             * A reference to the Phaser.Game instance.
              */
             protected game: Phaser.Game;
 
             /**
-             * [description]
+             * A reference to the Texture Manager.
              */
             protected textureManager: Phaser.Textures.TextureManager;
 
@@ -4028,70 +4028,74 @@ declare namespace Phaser {
             /**
              * [description]
              * @param data [description]
-             * @param clearCurrentAnimations [description] Default false.
+             * @param clearCurrentAnimations If set to `true`, the current animations will be removed (`anims.clear()`). If set to `false` (default), the animations in `data` will be added. Default false.
              */
             fromJSON(data: string | JSONAnimationManager | JSONAnimation, clearCurrentAnimations?: boolean): Phaser.Animations.Animation[];
 
             /**
-             * [description]
-             * @param key [description]
-             * @param config [description]
+             * Generate an array of {@link AnimationFrameConfig} objects from a texture key and configuration object.
+             * 
+             * Generates objects with string frame names, as configured by the given {@link AnimationFrameConfig}.
+             * @param key The key for the texture containing the animation frames.
+             * @param config The configuration object for the animation frame names.
              */
             generateFrameNames(key: string, config?: GenerateFrameNamesConfig): AnimationFrameConfig[];
 
             /**
-             * Generates an array of {@link AnimationFrameConfig} objects from a texture key and configuration object.
+             * Generate an array of {@link AnimationFrameConfig} objects from a texture key and configuration object.
+             * 
+             * Generates objects with numbered frame names, as configured by the given {@link GenerateFrameNumbersConfig}.
              * @param key The key for the texture containing the animation frames.
              * @param config The configuration object for the animation frames.
              */
             generateFrameNumbers(key: string, config: GenerateFrameNumbersConfig): AnimationFrameConfig[];
 
             /**
-             * [description]
-             * @param key [description]
+             * Get an Animation.
+             * @param key The key of the Animation to retrieve.
              */
             get(key: string): Phaser.Animations.Animation;
 
             /**
-             * Load an Animation into a Game Objects Animation Component.
-             * @param child [description]
-             * @param key [description]
-             * @param startFrame [description]
+             * Load an Animation into a Game Object's Animation Component.
+             * @param child The Game Object to load the animation into.
+             * @param key The key of the animation to load.
+             * @param startFrame The name of a start frame to set on the loaded animation.
              */
             load(child: Phaser.GameObjects.GameObject, key: string, startFrame?: string | integer): Phaser.GameObjects.GameObject;
 
             /**
-             * [description]
+             * Pause all animations.
              */
             pauseAll(): Phaser.Animations.AnimationManager;
 
             /**
-             * [description]
-             * @param key [description]
-             * @param child [description]
+             * Play an animation on the given Game Objects that have an Animation Component.
+             * @param key The key of the animation to play on the Game Object.
+             * @param child The Game Objects to play the animation on.
              */
-            play(key: string, child: Phaser.GameObjects.GameObject): Phaser.Animations.AnimationManager;
+            play(key: string, child: Phaser.GameObjects.GameObject | Phaser.GameObjects.GameObject[]): Phaser.Animations.AnimationManager;
 
             /**
-             * [description]
-             * @param key [description]
+             * Remove an animation.
+             * @param key The key of the animation to remove.
              */
             remove(key: string): Phaser.Animations.Animation;
 
             /**
-             * [description]
+             * Resume all paused animations.
              */
             resumeAll(): Phaser.Animations.AnimationManager;
 
             /**
-             * Takes an array of Game Objects that have the Animation Component and then
+             * Takes an array of Game Objects that have an Animation Component and then
              * starts the given animation playing on them, each one offset by the
              * `stagger` amount given to this method.
              * @param key The key of the animation to play on the Game Objects.
-             * @param children An array of Game Objects to play the animation on. They must have the Animation Component.
+             * @param children An array of Game Objects to play the animation on. They must have an Animation Component.
              * @param stagger The amount of time, in milliseconds, to offset each play time by. Default 0.
              */
-            staggerPlay<G extends Phaser.GameObjects.GameObject[]>(key: string, children: Phaser.GameObjects.GameObject[], stagger?: number): G;
+            staggerPlay<G extends Phaser.GameObjects.GameObject[]>(key: string, children: Phaser.GameObjects.GameObject | Phaser.GameObjects.GameObject[], stagger?: number): G;
 
             /**
              * [description]
@@ -4256,9 +4260,12 @@ declare namespace Phaser {
         plugins: Phaser.Plugins.PluginManager;
 
         /**
-         * An instance of the Facebook Instant Games Manager.
+         * An instance of the Facebook Instant Games Plugin.
+         * 
+         * This will only be available if the plugin has been built into Phaser,
+         * or you're using the special Facebook Instant Games custom build.
          */
-        facebook: any;
+        facebook: Phaser.FacebookInstantGamesPlugin;
 
         /**
          * Does the window the game is running in currently have focus or not?
@@ -4399,7 +4406,7 @@ declare namespace Phaser {
             readonly scaleMode: any;
 
             /**
-             * [description]
+             * Force Phaser to use a specific renderer. Can be `CONST.CANVAS`, `CONST.WEBGL`, `CONST.HEADLESS` or `CONST.AUTO` (default)
              */
             readonly renderType: number;
 
@@ -4429,17 +4436,17 @@ declare namespace Phaser {
             readonly seed: string[];
 
             /**
-             * [description]
+             * The title of the game.
              */
             readonly gameTitle: string;
 
             /**
-             * [description]
+             * The URL of the game.
              */
             readonly gameURL: string;
 
             /**
-             * [description]
+             * The version of the game.
              */
             readonly gameVersion: string;
 
@@ -4514,7 +4521,7 @@ declare namespace Phaser {
             readonly inputGamepadEventTarget: any;
 
             /**
-             * [description]
+             * Set to `true` to disable context menu. Default value is `false`.
              */
             readonly disableContextMenu: boolean;
 
@@ -4564,7 +4571,7 @@ declare namespace Phaser {
             readonly roundPixels: boolean;
 
             /**
-             * [description]
+             * Prevent pixel art from becoming blurred when scaled. It will remain crisp (tells the WebGL renderer to automatically create textures using a linear filter mode).
              */
             readonly pixelArt: boolean;
 
@@ -4639,7 +4646,7 @@ declare namespace Phaser {
             readonly loaderPath: string;
 
             /**
-             * [description]
+             * Maximum parallel downloads allowed for resources (Default to 32).
              */
             readonly loaderMaxParallelDownloads: integer;
 
@@ -7239,7 +7246,7 @@ declare namespace Phaser {
 
     namespace Curves {
         /**
-         * [description]
+         * A higher-order Bézier curve constructed of four points.
          */
         class CubicBezier extends Phaser.Curves.Curve {
             /**
@@ -7252,22 +7259,22 @@ declare namespace Phaser {
             constructor(p0: Phaser.Math.Vector2 | Phaser.Math.Vector2[], p1: Phaser.Math.Vector2, p2: Phaser.Math.Vector2, p3: Phaser.Math.Vector2);
 
             /**
-             * [description]
+             * The start point of this curve.
              */
             p0: Phaser.Math.Vector2;
 
             /**
-             * [description]
+             * The first control point of this curve.
              */
             p1: Phaser.Math.Vector2;
 
             /**
-             * [description]
+             * The second control point of this curve.
              */
             p2: Phaser.Math.Vector2;
 
             /**
-             * [description]
+             * The end point of this curve.
              */
             p3: Phaser.Math.Vector2;
 
@@ -7278,7 +7285,7 @@ declare namespace Phaser {
             getStartPoint<O extends Phaser.Math.Vector2>(out?: O): O;
 
             /**
-             * [description]
+             * Returns the resolution of this curve.
              * @param divisions The amount of divisions used by this curve.
              */
             getResolution(divisions: number): number;
@@ -7291,19 +7298,19 @@ declare namespace Phaser {
             getPoint<O extends Phaser.Math.Vector2>(t: number, out?: O): O;
 
             /**
-             * [description]
-             * @param graphics [description]
-             * @param pointsTotal [description] Default 32.
+             * Draws this curve to the specified graphics object.
+             * @param graphics The graphics object this curve should be drawn to.
+             * @param pointsTotal The number of intermediary points that make up this curve. A higher number of points will result in a smoother curve. Default 32.
              */
             draw<G extends Phaser.GameObjects.Graphics>(graphics: G, pointsTotal?: integer): G;
 
             /**
-             * [description]
+             * Returns a JSON object that describes this curve.
              */
             toJSON(): JSONCurve;
 
             /**
-             * [description]
+             * Generates a curve from a JSON object.
              * @param data The JSON object containing this curve data.
              */
             static fromJSON(data: JSONCurve): Phaser.Curves.CubicBezier;
@@ -7381,9 +7388,9 @@ declare namespace Phaser {
 
             /**
              * [description]
-             * @param out [description]
+             * @param out Optional Vector object to store the result in.
              */
-            getEndPoint(out: Phaser.Math.Vector2): Phaser.Math.Vector2;
+            getEndPoint(out?: Phaser.Math.Vector2): Phaser.Math.Vector2;
 
             /**
              * [description]
@@ -7733,18 +7740,18 @@ declare namespace Phaser {
 
             /**
              * [description]
-             * @param graphics [description]
-             * @param pointsTotal [description] Default 32.
+             * @param graphics `Graphics` object to draw onto.
+             * @param pointsTotal Number of points to be used for drawing the curve. Higher numbers result in smoother curve but require more processing. Default 32.
              */
             draw<G extends Phaser.GameObjects.Graphics>(graphics: G, pointsTotal?: integer): G;
 
             /**
-             * [description]
+             * Converts the curve into a JSON compatible object.
              */
             toJSON(): JSONCurve;
 
             /**
-             * [description]
+             * Creates a curve from a JSON object, e. g. created by `toJSON`.
              * @param data The JSON object containing this curve data.
              */
             static fromJSON(data: JSONCurve): Phaser.Curves.QuadraticBezier;
@@ -7994,13 +8001,13 @@ declare namespace Phaser {
 
             /**
              * [description]
-             * @param divisions [description] Default 12.
+             * @param divisions The number of points to divide the path in to. Default 12.
              */
             getPoints(divisions?: integer): Phaser.Math.Vector2[];
 
             /**
              * [description]
-             * @param out [description]
+             * @param out `Vector2` instance that should be used for storing the result. If `undefined` a new `Vector2` will be created.
              */
             getRandomPoint<O extends Phaser.Math.Vector2>(out?: O): O;
 
@@ -28355,6 +28362,12 @@ declare namespace Phaser {
             constructor(scene: Phaser.Scene, x?: number, y?: number, x1?: number, y1?: number, x2?: number, y2?: number, strokeColor?: number, strokeAlpha?: number);
 
             /**
+             * The width (or thickness) of the line.
+             * See the setLineWidth method for extra details on changing this on WebGL.
+             */
+            lineWidth: number;
+
+            /**
              * Sets the width of the line.
              * 
              * When using the WebGL renderer you can have different start and end widths.
@@ -28979,6 +28992,7 @@ declare namespace Phaser {
          * The Polygon Shape is created by providing a list of points, which are then used to create an
          * internal Polygon geometry object. The points can be set from a variety of formats:
          * 
+         * - A string containing paired values separated by a single space: `'40 0 40 20 100 20 100 80 40 80 40 100 0 50'`
          * - An array of Point or Vector2 objects: `[new Phaser.Math.Vec2(x1, y1), ...]`
          * - An array of objects with public x/y properties: `[obj1, obj2, ...]`
          * - An array of paired numbers that represent point coordinates: `[x1,y1, x2,y2, ...]`
@@ -35509,7 +35523,7 @@ declare namespace Phaser {
 
             /**
              * [description]
-             * @param line [description]
+             * @param line The Line object to get the normal value from.
              */
             static NormalX(line: Phaser.Geom.Line): number;
 
@@ -35628,9 +35642,9 @@ declare namespace Phaser {
             static CopyFrom<O extends Phaser.Geom.Point>(source: Phaser.Geom.Point, dest: O): O;
 
             /**
-             * [description]
-             * @param point [description]
-             * @param toCompare [description]
+             * A comparison of two `Point` objects to see if they are equal.
+             * @param point The original `Point` to compare against.
+             * @param toCompare The second `Point` to compare.
              */
             static Equals(point: Phaser.Geom.Point, toCompare: Phaser.Geom.Point): boolean;
 
@@ -35802,9 +35816,9 @@ declare namespace Phaser {
             points: Phaser.Geom.Point[];
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
+             * Check to see if the Polygon contains the given x / y coordinates.
+             * @param x The x coordinate to check within the polygon.
+             * @param y The y coordinate to check within the polygon.
              */
             contains(x: number, y: number): boolean;
 
@@ -35813,6 +35827,7 @@ declare namespace Phaser {
              * 
              * The points can be set from a variety of formats:
              * 
+             * - A string containing paired values separated by a single space: `'40 0 40 20 100 20 100 80 40 80 40 100 0 50'`
              * - An array of Point objects: `[new Phaser.Point(x1, y1), ...]`
              * - An array of objects with public x/y properties: `[obj1, obj2, ...]`
              * - An array of paired numbers that represent point coordinates: `[x1,y1, x2,y2, ...]`
@@ -35905,9 +35920,9 @@ declare namespace Phaser {
             static Contains(rect: Phaser.Geom.Rectangle, x: number, y: number): boolean;
 
             /**
-             * [description]
-             * @param rect [description]
-             * @param point [description]
+             * Determines whether the specified point is contained within the rectangular region defined by this Rectangle object.
+             * @param rect The Rectangle object.
+             * @param point The point object to be checked. Can be a Phaser Point object or any object with x and y values.
              */
             static ContainsPoint(rect: Phaser.Geom.Rectangle, point: Phaser.Geom.Point): boolean;
 
@@ -35926,9 +35941,10 @@ declare namespace Phaser {
             static CopyFrom<O extends Phaser.Geom.Rectangle>(source: Phaser.Geom.Rectangle, dest: O): O;
 
             /**
-             * [description]
-             * @param rect [description]
-             * @param out [description]
+             * Create an array of points for each corner of a Rectangle
+             * If an array is specified, each point object will be added to the end of the array, otherwise a new array will be created.
+             * @param rect The Rectangle object to be decomposed.
+             * @param out If provided, each point will be added to this array.
              */
             static Decompose(rect: Phaser.Geom.Rectangle, out?: any[]): any[];
 
@@ -35994,11 +36010,11 @@ declare namespace Phaser {
             static GetPoint<O extends Phaser.Geom.Point>(rectangle: Phaser.Geom.Rectangle, position: number, out?: O): O;
 
             /**
-             * [description]
-             * @param rectangle [description]
+             * Return an array of points from the perimeter of the rectangle, each spaced out based on the quantity or step required.
+             * @param rectangle The Rectangle object to get the points from.
              * @param step [description]
              * @param quantity [description]
-             * @param out [description]
+             * @param out An optional array to store the points in.
              */
             static GetPoints<O extends Phaser.Geom.Point[]>(rectangle: Phaser.Geom.Rectangle, step: number, quantity: integer, out?: O): O;
 
@@ -36044,9 +36060,10 @@ declare namespace Phaser {
             static MergePoints<O extends Phaser.Geom.Rectangle>(target: O, points: Phaser.Geom.Point[]): O;
 
             /**
-             * [description]
-             * @param target [description]
-             * @param source [description]
+             * Merges the source rectangle into the target rectangle and returns the target.
+             * Neither rectangle should have a negative width or height.
+             * @param target Target rectangle. Will be modified to include source rectangle.
+             * @param source Rectangle that will be merged into target rectangle.
              */
             static MergeRect<O extends Phaser.Geom.Rectangle>(target: O, source: Phaser.Geom.Rectangle): O;
 
@@ -36180,14 +36197,14 @@ declare namespace Phaser {
             setPosition(x: number, y?: number): Phaser.Geom.Rectangle;
 
             /**
-             * [description]
-             * @param width [description]
-             * @param height [description] Default width.
+             * Sets the width and height of the Rectangle.
+             * @param width The width to set the Rectangle to.
+             * @param height The height to set the Rectangle to. Default width.
              */
             setSize(width: number, height?: number): Phaser.Geom.Rectangle;
 
             /**
-             * [description]
+             * Determines if the Rectangle is empty. A Rectangle is empty if its width or height is less than or equal to 0.
              */
             isEmpty(): boolean;
 
@@ -36216,32 +36233,36 @@ declare namespace Phaser {
             getLineD<O extends Phaser.Geom.Line>(line?: O): O;
 
             /**
-             * [description]
+             * The x coordinate of the left of the Rectangle.
+             * Changing the left property of a Rectangle object has no effect on the y and height properties. However it does affect the width property, whereas changing the x value does not affect the width property.
              */
             left: number;
 
             /**
-             * [description]
+             * The sum of the x and width properties.
+             * Changing the right property of a Rectangle object has no effect on the x, y and height properties, however it does affect the width property.
              */
             right: number;
 
             /**
-             * [description]
+             * The y coordinate of the top of the Rectangle. Changing the top property of a Rectangle object has no effect on the x and width properties.
+             * However it does affect the height property, whereas changing the y value does not affect the height property.
              */
             top: number;
 
             /**
-             * [description]
+             * The sum of the y and height properties.
+             * Changing the bottom property of a Rectangle object has no effect on the x, y and width properties, but does change the height property.
              */
             bottom: number;
 
             /**
-             * [description]
+             * The x coordinate of the center of the Rectangle.
              */
             centerX: number;
 
             /**
-             * [description]
+             * The y coordinate of the center of the Rectangle.
              */
             centerY: number;
 
@@ -36271,12 +36292,12 @@ declare namespace Phaser {
         class Triangle {
             /**
              * 
-             * @param x1 [description] Default 0.
-             * @param y1 [description] Default 0.
-             * @param x2 [description] Default 0.
-             * @param y2 [description] Default 0.
-             * @param x3 [description] Default 0.
-             * @param y3 [description] Default 0.
+             * @param x1 `x` coordinate of the first point. Default 0.
+             * @param y1 `y` coordinate of the first point. Default 0.
+             * @param x2 `x` coordinate of the second point. Default 0.
+             * @param y2 `y` coordinate of the second point. Default 0.
+             * @param x3 `x` coordinate of the third point. Default 0.
+             * @param y3 `y` coordinate of the third point. Default 0.
              */
             constructor(x1?: number, y1?: number, x2?: number, y2?: number, x3?: number, y3?: number);
 
@@ -36287,10 +36308,11 @@ declare namespace Phaser {
             static Area(triangle: Phaser.Geom.Triangle): number;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param length [description]
+             * Builds an equilateral triangle. In the equilateral triangle, all the sides are the same length (congruent) and all the angles are the same size (congruent).
+             * The x/y specifies the top-middle of the triangle (x1/y1) and length is the length of each side.
+             * @param x x coordinate of the top point of the triangle.
+             * @param y y coordinate of the top point of the triangle.
+             * @param length Length of each side of the triangle.
              */
             static BuildEquilateral(x: number, y: number, length: number): Phaser.Geom.Triangle;
 
@@ -36314,11 +36336,11 @@ declare namespace Phaser {
             static BuildRight(x: number, y: number, width: number, height: number): Phaser.Geom.Triangle;
 
             /**
-             * [description]
-             * @param triangle [description]
-             * @param x [description]
-             * @param y [description]
-             * @param centerFunc [description]
+             * Positions the Triangle so that it is centered on the given coordinates.
+             * @param triangle The triangle to be positioned.
+             * @param x The horizontal coordinate to center on.
+             * @param y The vertical coordinate to center on.
+             * @param centerFunc The function used to center the triangle. Defaults to Centroid centering.
              */
             static CenterOn<O extends Phaser.Geom.Triangle>(triangle: O, x: number, y: number, centerFunc?: CenterFunction): O;
 
@@ -36362,11 +36384,12 @@ declare namespace Phaser {
             static Contains(triangle: Phaser.Geom.Triangle, x: number, y: number): boolean;
 
             /**
-             * [description]
-             * @param triangle [description]
-             * @param points [description]
-             * @param returnFirst [description]
-             * @param out [description]
+             * Filters an array of point-like objects to only those contained within a triangle.
+             * If `returnFirst` is true, will return an array containing only the first point in the provided array that is within the triangle (or an empty array if there are no such points).
+             * @param triangle The triangle that the points are being checked in.
+             * @param points An array of point-like objects (objects that have an `x` and `y` property)
+             * @param returnFirst If `true`, return an array containing only the first point found that is within the triangle. Default false.
+             * @param out If provided, the points that are within the triangle will be appended to this array instead of being added to a new array. If `returnFirst` is true, only the first point found within the triangle will be appended. This array will also be returned by this function.
              */
             static ContainsArray(triangle: Phaser.Geom.Triangle, points: Phaser.Geom.Point[], returnFirst?: boolean, out?: any[]): Phaser.Geom.Point[];
 
@@ -36431,7 +36454,7 @@ declare namespace Phaser {
             static Offset<O extends Phaser.Geom.Triangle>(triangle: O, x: number, y: number): O;
 
             /**
-             * [description]
+             * Gets the length of the perimeter of the given triangle.
              * @param triangle [description]
              */
             static Perimeter(triangle: Phaser.Geom.Triangle): number;
@@ -36468,71 +36491,71 @@ declare namespace Phaser {
             static RotateAroundXY<O extends Phaser.Geom.Triangle>(triangle: O, x: number, y: number, angle: number): O;
 
             /**
-             * [description]
+             * `x` coordinate of the first point.
              */
             x1: number;
 
             /**
-             * [description]
+             * `y` coordinate of the first point.
              */
             y1: number;
 
             /**
-             * [description]
+             * `x` coordinate of the second point.
              */
             x2: number;
 
             /**
-             * [description]
+             * `y` coordinate of the second point.
              */
             y2: number;
 
             /**
-             * [description]
+             * `x` coordinate of the third point.
              */
             x3: number;
 
             /**
-             * [description]
+             * `y` coordinate of the third point.
              */
             y3: number;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
+             * Checks whether a given points lies within the triangle.
+             * @param x The x coordinate of the point to check.
+             * @param y The y coordinate of the point to check.
              */
             contains(x: number, y: number): boolean;
 
             /**
-             * [description]
-             * @param position [description]
-             * @param output [description]
+             * Returns a specific point  on the triangle.
+             * @param position Position as float within `0` and `1`. `0` equals the first point.
+             * @param output Optional Point, or point-like object, that the calculated point will be written to.
              */
             getPoint<O extends Phaser.Geom.Point>(position: number, output?: O): O;
 
             /**
-             * [description]
-             * @param quantity [description]
-             * @param stepRate [description]
-             * @param output [description]
+             * Calculates a list of evenly distributed points on the triangle. It is either possible to pass an amount of points to be generated (`quantity`) or the distance between two points (`stepRate`).
+             * @param quantity Number of points to be generated. Can be falsey when `stepRate` should be used. All points have the same distance along the triangle.
+             * @param stepRate Distance between two points. Will only be used when `quantity` is falsey.
+             * @param output Optional Array for writing the calculated points into. Otherwise a new array will be created.
              */
             getPoints<O extends Phaser.Geom.Point[]>(quantity: integer, stepRate?: number, output?: O): O;
 
             /**
-             * [description]
-             * @param point [description]
+             * Returns a random point along the triangle.
+             * @param point Optional `Point` that should be modified. Otherwise a new one will be created.
              */
             getRandomPoint<O extends Phaser.Geom.Point>(point?: O): O;
 
             /**
-             * [description]
-             * @param x1 [description] Default 0.
-             * @param y1 [description] Default 0.
-             * @param x2 [description] Default 0.
-             * @param y2 [description] Default 0.
-             * @param x3 [description] Default 0.
-             * @param y3 [description] Default 0.
+             * Sets all three points of the triangle. Leaving out any coordinate sets it to be `0`.
+             * @param x1 `x` coordinate of the first point. Default 0.
+             * @param y1 `y` coordinate of the first point. Default 0.
+             * @param x2 `x` coordinate of the second point. Default 0.
+             * @param y2 `y` coordinate of the second point. Default 0.
+             * @param x3 `x` coordinate of the third point. Default 0.
+             * @param y3 `y` coordinate of the third point. Default 0.
              */
             setTo(x1?: number, y1?: number, x2?: number, y2?: number, x3?: number, y3?: number): Phaser.Geom.Triangle;
 
@@ -36555,22 +36578,22 @@ declare namespace Phaser {
             getLineC<O extends Phaser.Geom.Line>(line?: O): O;
 
             /**
-             * [description]
+             * Left most X coordinate of the triangle. Setting it moves the triangle on the X axis accordingly.
              */
             left: number;
 
             /**
-             * [description]
+             * Right most X coordinate of the triangle. Setting it moves the triangle on the X axis accordingly.
              */
             right: number;
 
             /**
-             * [description]
+             * Top most Y coordinate of the triangle. Setting it moves the triangle on the Y axis accordingly.
              */
             top: number;
 
             /**
-             * [description]
+             * Bottom most Y coordinate of the triangle. Setting it moves the triangle on the Y axis accordingly.
              */
             bottom: number;
 
@@ -40144,7 +40167,7 @@ declare namespace Phaser {
              * @param audioXhrSettings An XHR Settings configuration object for the audio file. Used in replacement of the Loaders default XHR Settings.
              * @param jsonXhrSettings An XHR Settings configuration object for the json file. Used in replacement of the Loaders default XHR Settings.
              */
-            audioSprite(key: string | Phaser.Loader.FileTypes.AudioSpriteFileConfig | Phaser.Loader.FileTypes.AudioSpriteFileConfig[], jsonURL: string, audioURL?: string, audioConfig?: any, audioXhrSettings?: XHRSettingsObject, jsonXhrSettings?: XHRSettingsObject): Phaser.Loader.LoaderPlugin;
+            audioSprite(key: string | Phaser.Loader.FileTypes.AudioSpriteFileConfig | Phaser.Loader.FileTypes.AudioSpriteFileConfig[], jsonURL: string, audioURL?: string | string[], audioConfig?: any, audioXhrSettings?: XHRSettingsObject, jsonXhrSettings?: XHRSettingsObject): Phaser.Loader.LoaderPlugin;
 
             /**
              * Adds a Binary file, or array of Binary files, to the current load queue.
@@ -42059,7 +42082,7 @@ declare namespace Phaser {
                 /**
                  * The absolute or relative URL to load the audio file from.
                  */
-                audioURL?: string;
+                audioURL?: Object;
                 /**
                  * The audio configuration options.
                  */
@@ -42088,7 +42111,7 @@ declare namespace Phaser {
                  * @param audioXhrSettings An XHR Settings configuration object for the audio file. Used in replacement of the Loaders default XHR Settings.
                  * @param jsonXhrSettings An XHR Settings configuration object for the json file. Used in replacement of the Loaders default XHR Settings.
                  */
-                constructor(loader: Phaser.Loader.LoaderPlugin, key: string | Phaser.Loader.FileTypes.AudioSpriteFileConfig, jsonURL: string, audioURL?: string, audioConfig?: any, audioXhrSettings?: XHRSettingsObject, jsonXhrSettings?: XHRSettingsObject);
+                constructor(loader: Phaser.Loader.LoaderPlugin, key: string | Phaser.Loader.FileTypes.AudioSpriteFileConfig, jsonURL: string, audioURL?: Object, audioConfig?: any, audioXhrSettings?: XHRSettingsObject, jsonXhrSettings?: XHRSettingsObject);
 
             }
 
@@ -48660,9 +48683,9 @@ declare namespace Phaser {
                 updateFromGameObject(): Phaser.Physics.Arcade.StaticBody;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the offset of the body.
+                 * @param x The horizontal offset of the Body from the Game Object's center.
+                 * @param y The vertical offset of the Body from the Game Object's center.
                  */
                 setOffset(x: number, y: number): Phaser.Physics.Arcade.StaticBody;
 
@@ -48708,7 +48731,7 @@ declare namespace Phaser {
                 getBounds(obj: ArcadeBodyBounds): ArcadeBodyBounds;
 
                 /**
-                 * [description]
+                 * Checks to see if a given x,y coordinate is colliding with this Static Body.
                  * @param x [description]
                  * @param y [description]
                  */
@@ -54808,6 +54831,13 @@ declare namespace Phaser {
                 add: Phaser.Physics.Matter.Factory;
 
                 /**
+                 * A reference to the `Matter.Vertices` module which contains methods for creating and manipulating sets of vertices.
+                 * A set of vertices is an array of `Matter.Vector` with additional indexing properties inserted by `Vertices.create`.
+                 * A `Matter.Body` maintains a set of vertices to represent the shape of the object (its convex hull).
+                 */
+                verts: MatterJS.Vertices;
+
+                /**
                  * [description]
                  */
                 getConfig(): object;
@@ -56437,11 +56467,6 @@ declare namespace Phaser {
 
                 /**
                  * [description]
-                 */
-                postUpdate(): void;
-
-                /**
-                 * [description]
                  * @param path [description]
                  * @param points [description]
                  */
@@ -56687,23 +56712,23 @@ declare namespace Phaser {
                 }
 
                 /**
-                 * [description]
+                 * Provides methods used for getting and setting the position, scale and rotation of a Game Object.
                  */
                 interface Transform {
                     /**
-                     * [description]
+                     * The x position of this Game Object.
                      */
                     x: number;
                     /**
-                     * [description]
+                     * The y position of this Game Object.
                      */
                     y: number;
                     /**
-                     * [description]
+                     * The horizontal scale of this Game Object.
                      */
                     scaleX: number;
                     /**
-                     * [description]
+                     * The vertical scale of this Game Object.
                      */
                     scaleY: number;
                     /**
@@ -56735,10 +56760,10 @@ declare namespace Phaser {
                      */
                     setAngle(degrees?: number): Phaser.GameObjects.GameObject;
                     /**
-                     * [description]
-                     * @param x [description] Default 1.
-                     * @param y [description] Default x.
-                     * @param point [description]
+                     * Sets the scale of this Game Object.
+                     * @param x The horizontal scale of this Game Object. Default 1.
+                     * @param y The vertical scale of this Game Object. If not set it will use the x value. Default x.
+                     * @param point The point (Vector2) from which scaling will occur.
                      */
                     setScale(x?: number, y?: number, point?: Phaser.Math.Vector2): Phaser.GameObjects.GameObject;
                 }
@@ -58590,7 +58615,7 @@ declare namespace Phaser {
                      * Called every time the pipeline needs to be used.
                      * It binds all necessary resources.
                      */
-                    onBind(): Phaser.Renderer.WebGL.Pipelines.BitmapMaskPipeline;
+                    onBind(): this;
 
                     /**
                      * [description]
@@ -58598,7 +58623,7 @@ declare namespace Phaser {
                      * @param height [description]
                      * @param resolution [description]
                      */
-                    resize(width: number, height: number, resolution: number): Phaser.Renderer.WebGL.Pipelines.BitmapMaskPipeline;
+                    resize(width: number, height: number, resolution: number): this;
 
                     /**
                      * Binds necessary resources and renders the mask to a separated framebuffer.
@@ -58637,7 +58662,7 @@ declare namespace Phaser {
                      * @param scene [description]
                      * @param camera [description]
                      */
-                    onRender(scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera): Phaser.Renderer.WebGL.Pipelines.ForwardDiffuseLightPipeline;
+                    onRender(scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera): this;
 
                     /**
                      * Sets the Game Objects normal map as the active texture.
@@ -58729,7 +58754,7 @@ declare namespace Phaser {
                      * Called every time the pipeline needs to be used.
                      * It binds all necessary resources.
                      */
-                    onBind(): Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline;
+                    onBind(): this;
 
                     /**
                      * Resizes this pipeline and updates the projection.
@@ -58737,7 +58762,7 @@ declare namespace Phaser {
                      * @param height The new height.
                      * @param resolution The resolution.
                      */
-                    resize(width: number, height: number, resolution: number): Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline;
+                    resize(width: number, height: number, resolution: number): this;
 
                     /**
                      * Assigns a texture to the current batch. If a texture is already set it creates
@@ -58750,7 +58775,7 @@ declare namespace Phaser {
                     /**
                      * Uploads the vertex data and emits a draw call for the current batch of vertices.
                      */
-                    flush(): Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline;
+                    flush(): this;
 
                     /**
                      * Takes a Sprite Game Object, or any object that extends it, and adds it to the batch.
@@ -59783,7 +59808,7 @@ declare namespace Phaser {
             game: Phaser.Game;
 
             /**
-             * The FaceBook Instant Games Plugin.
+             * The Facebook Instant Games Plugin.
              */
             facebook: any;
 
@@ -61446,6 +61471,11 @@ declare namespace Phaser {
             readonly canvas: HTMLCanvasElement;
 
             /**
+             * The 2D Canvas Rendering Context.
+             */
+            readonly context: CanvasRenderingContext2D;
+
+            /**
              * The width of the Canvas.
              * This property is read-only, if you wish to change it use the `setSize` method.
              */
@@ -61903,8 +61933,9 @@ declare namespace Phaser {
             /**
              * Returns an array of all the Frames in the given TextureSource.
              * @param sourceIndex The index of the TextureSource to get the Frames from.
+             * @param includeBase Include the `__BASE` Frame in the output array? Default false.
              */
-            getFramesFromTextureSource(sourceIndex: integer): Phaser.Textures.Frame[];
+            getFramesFromTextureSource(sourceIndex: integer, includeBase?: boolean): Phaser.Textures.Frame[];
 
             /**
              * Returns an array with all of the names of the Frames in this Texture.
@@ -63150,22 +63181,17 @@ declare namespace Phaser {
             copy(): Phaser.Tilemaps.Tilemap;
 
             /**
-             * Creates a new and empty DynamicTilemapLayer. The currently selected layer in the map is set
-             * to this new layer.
+             * Creates a new and empty DynamicTilemapLayer. The currently selected layer in the map is set to this new layer.
              * @param name The name of this layer. Must be unique within the map.
-             * @param tileset The tileset the new layer will use.
+             * @param tileset The tileset, or an array of tilesets, used to render this layer. Can be a string or a Tileset object.
              * @param x The world x position where the top left of this layer will be placed. Default 0.
              * @param y The world y position where the top left of this layer will be placed. Default 0.
-             * @param width The width of the layer in tiles. If not specified, it will default
-             * to the map's width.
-             * @param height The height of the layer in tiles. If not specified, it will default
-             * to the map's height.
-             * @param tileWidth The width of the tiles the layer uses for calculations. If not
-             * specified, it will default to the map's tileWidth.
-             * @param tileHeight The height of the tiles the layer uses for calculations. If not
-             * specified, it will default to the map's tileHeight.
+             * @param width The width of the layer in tiles. If not specified, it will default to the map's width.
+             * @param height The height of the layer in tiles. If not specified, it will default to the map's height.
+             * @param tileWidth The width of the tiles the layer uses for calculations. If not specified, it will default to the map's tileWidth.
+             * @param tileHeight The height of the tiles the layer uses for calculations. If not specified, it will default to the map's tileHeight.
              */
-            createBlankDynamicLayer(name: string, tileset: Phaser.Tilemaps.Tileset, x?: number, y?: number, width?: integer, height?: integer, tileWidth?: integer, tileHeight?: integer): Phaser.Tilemaps.DynamicTilemapLayer;
+            createBlankDynamicLayer(name: string, tileset: string | string[] | Phaser.Tilemaps.Tileset | Phaser.Tilemaps.Tileset[], x?: number, y?: number, width?: integer, height?: integer, tileWidth?: integer, tileHeight?: integer): Phaser.Tilemaps.DynamicTilemapLayer;
 
             /**
              * Creates a new DynamicTilemapLayer that renders the LayerData associated with the given
@@ -63177,15 +63203,12 @@ declare namespace Phaser {
              * 
              * Unlike a static layer, a dynamic layer can be modified. See DynamicTilemapLayer for more
              * information.
-             * @param layerID The layer array index value, or if a string is given, the
-             * layer name from Tiled.
-             * @param tileset The tileset the new layer will use.
-             * @param x The x position to place the layer in the world. If not specified, it will
-             * default to the layer offset from Tiled or 0.
-             * @param y The y position to place the layer in the world. If not specified, it will
-             * default to the layer offset from Tiled or 0.
+             * @param layerID The layer array index value, or if a string is given, the layer name from Tiled.
+             * @param tileset The tileset, or an array of tilesets, used to render this layer. Can be a string or a Tileset object.
+             * @param x The x position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
+             * @param y The y position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
              */
-            createDynamicLayer(layerID: integer | string, tileset: Phaser.Tilemaps.Tileset, x: number, y: number): Phaser.Tilemaps.DynamicTilemapLayer;
+            createDynamicLayer(layerID: integer | string, tileset: string | string[] | Phaser.Tilemaps.Tileset | Phaser.Tilemaps.Tileset[], x: number, y: number): Phaser.Tilemaps.DynamicTilemapLayer;
 
             /**
              * Creates a Sprite for every object matching the given gid in the map data. All properties from
@@ -63232,15 +63255,12 @@ declare namespace Phaser {
              * 
              * It's important to remember that a static layer cannot be modified. See StaticTilemapLayer for
              * more information.
-             * @param layerID The layer array index value, or if a string is given, the
-             * layer name from Tiled.
-             * @param tileset The tileset the new layer will use.
-             * @param x The x position to place the layer in the world. If not specified, it will
-             * default to the layer offset from Tiled or 0.
-             * @param y The y position to place the layer in the world. If not specified, it will
-             * default to the layer offset from Tiled or 0.
+             * @param layerID The layer array index value, or if a string is given, the layer name from Tiled.
+             * @param tileset The tileset, or an array of tilesets, used to render this layer. Can be a string or a Tileset object.
+             * @param x The x position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
+             * @param y The y position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
              */
-            createStaticLayer(layerID: integer | string, tileset: Phaser.Tilemaps.Tileset, x: number, y: number): Phaser.Tilemaps.StaticTilemapLayer;
+            createStaticLayer(layerID: integer | string, tileset: string | string[] | Phaser.Tilemaps.Tileset | Phaser.Tilemaps.Tileset[], x: number, y: number): Phaser.Tilemaps.StaticTilemapLayer;
 
             /**
              * Removes all layer data from this Tilemap and nulls the scene reference. This will destroy any
@@ -63492,6 +63512,12 @@ declare namespace Phaser {
              * @param layer [description]
              */
             getTilesWithinWorldXY(worldX: number, worldY: number, width: number, height: number, filteringOptions?: object, camera?: Phaser.Cameras.Scene2D.Camera, layer?: Phaser.Tilemaps.LayerData): Phaser.Tilemaps.Tile[];
+
+            /**
+             * Gets the Tileset that has the given `name`, or null if an invalid `name` is given.
+             * @param name The name of the Tileset to get.
+             */
+            getTileset(name: string): Phaser.Tilemaps.Tileset;
 
             /**
              * Gets the index of the Tileset within this.tilesets that has the given `name`, or null if an
@@ -64141,25 +64167,26 @@ declare namespace Phaser {
         }
 
         /**
-         * A DynamicTilemapLayer is a game object that renders LayerData from a Tilemap. A
-         * DynamicTilemapLayer can only render tiles from a single tileset.
+         * A Dynamic Tilemap Layer is a Game Object that renders LayerData from a Tilemap when used in combination
+         * with one, or more, Tilesets.
          * 
-         * A DynamicTilemapLayer trades some speed for being able to apply powerful effects. Unlike a
-         * StaticTilemapLayer, you can apply per-tile effects like tint or alpha, and you can change the
-         * tiles in a DynamicTilemapLayer. Use this over a StaticTilemapLayer when you need those
-         * features.
+         * A Dynamic Tilemap Layer trades some speed for being able to apply powerful effects. Unlike a
+         * Static Tilemap Layer, you can apply per-tile effects like tint or alpha, and you can change the
+         * tiles in a DynamicTilemapLayer.
+         * 
+         * Use this over a Static Tilemap Layer when you need those features.
          */
         class DynamicTilemapLayer extends Phaser.GameObjects.GameObject implements Phaser.GameObjects.Components.Alpha, Phaser.GameObjects.Components.BlendMode, Phaser.GameObjects.Components.ComputedSize, Phaser.GameObjects.Components.Depth, Phaser.GameObjects.Components.Flip, Phaser.GameObjects.Components.GetBounds, Phaser.GameObjects.Components.Origin, Phaser.GameObjects.Components.Pipeline, Phaser.GameObjects.Components.ScaleMode, Phaser.GameObjects.Components.ScrollFactor, Phaser.GameObjects.Components.Transform, Phaser.GameObjects.Components.Visible {
             /**
              * 
-             * @param scene [description]
+             * @param scene The Scene to which this Game Object belongs.
              * @param tilemap The Tilemap this layer is a part of.
              * @param layerIndex The index of the LayerData associated with this layer.
-             * @param tileset The tileset used to render the tiles in this layer.
+             * @param tileset The tileset, or an array of tilesets, used to render this layer. Can be a string or a Tileset object.
              * @param x The world x position where the top left of this layer will be placed. Default 0.
              * @param y The world y position where the top left of this layer will be placed. Default 0.
              */
-            constructor(scene: Phaser.Scene, tilemap: Phaser.Tilemaps.Tilemap, layerIndex: integer, tileset: Phaser.Tilemaps.Tileset, x?: number, y?: number);
+            constructor(scene: Phaser.Scene, tilemap: Phaser.Tilemaps.Tilemap, layerIndex: integer, tileset: string | string[] | Phaser.Tilemaps.Tileset | Phaser.Tilemaps.Tileset[], x?: number, y?: number);
 
             /**
              * Used internally by physics system to perform fast type checks.
@@ -64183,9 +64210,11 @@ declare namespace Phaser {
             layer: Phaser.Tilemaps.LayerData;
 
             /**
-             * The Tileset associated with this layer. A tilemap layer can only render from one Tileset.
+             * The Tileset/s associated with this layer.
+             * 
+             * As of Phaser 3.14 this property is now an array of Tileset objects, previously it was a single reference.
              */
-            tileset: Phaser.Tilemaps.Tileset;
+            tileset: Phaser.Tilemaps.Tileset[];
 
             /**
              * Used internally with the canvas render. This holds the tiles that are visible within the
@@ -64240,6 +64269,11 @@ declare namespace Phaser {
              * See the `TilemapComponents.CullTiles` source code for details on implementing your own culling system.
              */
             cullCallback: Function;
+
+            /**
+             * An array holding the mapping between the tile indexes and the tileset they belong to.
+             */
+            gidMap: Phaser.Tilemaps.Tileset[];
 
             /**
              * Sets the rendering (draw) order of the tiles in this layer.
@@ -65847,24 +65881,25 @@ declare namespace Phaser {
         }
 
         /**
-         * A StaticTilemapLayer is a game object that renders LayerData from a Tilemap. A
-         * StaticTilemapLayer can only render tiles from a single tileset.
+         * A Static Tilemap Layer is a Game Object that renders LayerData from a Tilemap when used in combination
+         * with one, or more, Tilesets.
          * 
-         * A StaticTilemapLayer is optimized for speed over flexibility. You cannot apply per-tile
-         * effects like tint or alpha. You cannot change the tiles in a StaticTilemapLayer. Use this
-         * over a DynamicTilemapLayer when you don't need either of those features.
+         * A Static Tilemap Layer is optimized for rendering speed over flexibility. You cannot apply per-tile
+         * effects like tint or alpha, or change the tiles or tilesets the layer uses.
+         * 
+         * Use a Static Tilemap Layer instead of a Dynamic Tilemap Layer when you don't need tile manipulation features.
          */
         class StaticTilemapLayer extends Phaser.GameObjects.GameObject implements Phaser.GameObjects.Components.Alpha, Phaser.GameObjects.Components.BlendMode, Phaser.GameObjects.Components.ComputedSize, Phaser.GameObjects.Components.Depth, Phaser.GameObjects.Components.Flip, Phaser.GameObjects.Components.GetBounds, Phaser.GameObjects.Components.Origin, Phaser.GameObjects.Components.Pipeline, Phaser.GameObjects.Components.ScaleMode, Phaser.GameObjects.Components.Transform, Phaser.GameObjects.Components.Visible, Phaser.GameObjects.Components.ScrollFactor {
             /**
              * 
-             * @param scene [description]
+             * @param scene The Scene to which this Game Object belongs.
              * @param tilemap The Tilemap this layer is a part of.
              * @param layerIndex The index of the LayerData associated with this layer.
-             * @param tileset The tileset used to render the tiles in this layer.
+             * @param tileset The tileset, or an array of tilesets, used to render this layer. Can be a string or a Tileset object.
              * @param x The world x position where the top left of this layer will be placed. Default 0.
              * @param y The world y position where the top left of this layer will be placed. Default 0.
              */
-            constructor(scene: Phaser.Scene, tilemap: Phaser.Tilemaps.Tilemap, layerIndex: integer, tileset: Phaser.Tilemaps.Tileset, x?: number, y?: number);
+            constructor(scene: Phaser.Scene, tilemap: Phaser.Tilemaps.Tilemap, layerIndex: integer, tileset: string | string[] | Phaser.Tilemaps.Tileset | Phaser.Tilemaps.Tileset[], x?: number, y?: number);
 
             /**
              * Used internally by physics system to perform fast type checks.
@@ -65888,9 +65923,11 @@ declare namespace Phaser {
             layer: Phaser.Tilemaps.LayerData;
 
             /**
-             * The Tileset associated with this layer. A tilemap layer can only render from one Tileset.
+             * The Tileset/s associated with this layer.
+             * 
+             * As of Phaser 3.14 this property is now an array of Tileset objects, previously it was a single reference.
              */
-            tileset: Phaser.Tilemaps.Tileset;
+            tileset: Phaser.Tilemaps.Tileset[];
 
             /**
              * Used internally by the Canvas renderer.
@@ -65961,6 +65998,18 @@ declare namespace Phaser {
             cullCallback: Function;
 
             /**
+             * An array holding the mapping between the tile indexes and the tileset they belong to.
+             */
+            gidMap: Phaser.Tilemaps.Tileset[];
+
+            /**
+             * Upload the tile data to a VBO.
+             * @param camera The camera to render to.
+             * @param tilesetIndex The tileset index.
+             */
+            upload(camera: Phaser.Cameras.Scene2D.Camera, tilesetIndex: integer): Phaser.Tilemaps.StaticTilemapLayer;
+
+            /**
              * Sets the rendering (draw) order of the tiles in this layer.
              * 
              * The default is 'right-down', meaning it will order the tiles starting from the top-left,
@@ -65980,12 +66029,6 @@ declare namespace Phaser {
              * @param renderOrder The render (draw) order value. Either an integer between 0 and 3, or a string: 'right-down', 'left-down', 'right-up' or 'left-up'.
              */
             setRenderOrder(renderOrder: integer | string): this;
-
-            /**
-             * Upload the tile data to a VBO.
-             * @param camera The camera to render to.
-             */
-            upload(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Tilemaps.StaticTilemapLayer;
 
             /**
              * Calculates interesting faces at the given tile coordinates of the specified layer. Interesting
@@ -68636,6 +68679,770 @@ declare namespace Phaser {
 
     }
 
+    /**
+     * The Facebook Instant Games Plugin for Phaser 3 provides a seamless bridge between Phaser
+     * and the Facebook Instant Games API version 6.2.
+     * 
+     * You can access this plugin via the `facebook` property in a Scene, i.e:
+     * 
+     * ```javascript
+     * this.facebook.getPlatform();
+     * ```
+     * 
+     * If this is unavailable please check to make sure you're using a build of Phaser that has
+     * this plugin within it. You can quickly check this by looking at the dev tools console
+     * header - the Phaser version number will have `-FB` after it if this plugin is loaded.
+     * 
+     * If you are building your own version of Phaser then use this Webpack DefinePlugin flag:
+     * 
+     * `"typeof PLUGIN_FBINSTANT": JSON.stringify(true)`
+     * 
+     * You will find that every Instant Games API method has a mapping in this plugin.
+     * For a full list please consult either the plugin documentation, or the 6.2 SDK documentation
+     * at https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.2
+     * 
+     * Internally this plugin uses its own Data Manager to handle seamless user data updates and provides
+     * handy functions for advertisement displaying, opening share dialogs, logging, leaderboards, purchase API requests,
+     * loader integration and more.
+     * 
+     * To get started with Facebook Instant Games you will need to register on Facebook and create a new Instant
+     * Game app that has its own unique app ID. Facebook have also provided a dashboard interface for setting up
+     * various features for your game, including leaderboards, ad requests and the payments API. There are lots
+     * of guides on the Facebook Developers portal to assist with setting these
+     * various systems up: https://developers.facebook.com/docs/games/instant-games/guides
+     * 
+     * For more details follow the Quick Start guide here: https://developers.facebook.com/docs/games/instant-games
+     */
+    class FacebookInstantGamesPlugin extends Phaser.Events.EventEmitter {
+        /**
+         * 
+         * @param game A reference to the Phaser.Game instance.
+         */
+        constructor(game: Phaser.Game);
+
+        /**
+         * A reference to the Phaser.Game instance.
+         */
+        readonly game: Phaser.Game;
+
+        /**
+         * A Data Manager instance.
+         * It allows you to store, query and retrieve any key/value data you may need to store.
+         * It's also used internally by the plugin to store FBIG API data.
+         */
+        data: Phaser.Data.DataManager;
+
+        /**
+         * Has the Facebook Instant Games API loaded yet?
+         * This is set automatically during the boot process.
+         */
+        hasLoaded: boolean;
+
+        /**
+         * Is the Data Manager currently locked?
+         */
+        dataLocked: boolean;
+
+        /**
+         * A list of the Facebook Instant Games APIs that are available,
+         * based on the given platform, context and user privacy settings.
+         * This value is populated automatically during boot.
+         */
+        supportedAPIs: string[];
+
+        /**
+         * Holds the entry point that the game was launched from.
+         * This value is populated automatically during boot.
+         */
+        entryPoint: string;
+
+        /**
+         * An object that contains any data associated with the entry point that the game was launched from.
+         * The contents of the object are developer-defined, and can occur from entry points on different platforms.
+         * This will return null for older mobile clients, as well as when there is no data associated with the particular entry point.
+         * This value is populated automatically during boot.
+         */
+        entryPointData: any;
+
+        /**
+         * A unique identifier for the current game context. This represents a specific context
+         * that the game is being played in (for example, a particular messenger conversation or facebook post).
+         * The identifier will be null if game is being played in a solo context.
+         * This value is populated automatically during boot.
+         */
+        contextID: string;
+
+        /**
+         * The current context in which your game is running. This can be either `null` or
+         * one of:
+         * 
+         * `POST` - The game is running inside of a Facebook post.
+         * `THREAD` - The game is running inside a Facebook Messenger thread.
+         * `GROUP` - The game is running inside a Facebook Group.
+         * `SOLO` - This is the default context, the player is the only participant.
+         * 
+         * This value is populated automatically during boot.
+         */
+        contextType: string;
+
+        /**
+         * The current locale.
+         * See https://origincache.facebook.com/developers/resources/?id=FacebookLocales.xml for a complete list of supported locale values.
+         * Use this to determine what languages the current game should be localized with.
+         * This value is populated automatically during boot.
+         */
+        locale: string;
+
+        /**
+         * The platform on which the game is currently running, i.e. `IOS`.
+         * This value is populated automatically during boot.
+         */
+        platform: string;
+
+        /**
+         * The string representation of the Facebook Instant Games SDK version being used.
+         * This value is populated automatically during boot.
+         */
+        version: string;
+
+        /**
+         * Holds the id of the player. This is a string based ID, the same as `FBInstant.player.getID()`.
+         * This value is populated automatically during boot if the API is supported.
+         */
+        playerID: string;
+
+        /**
+         * The player's localized display name.
+         * This value is populated automatically during boot if the API is supported.
+         */
+        playerName: string;
+
+        /**
+         * A url to the player's public profile photo. The photo will always be a square, and with dimensions
+         * of at least 200x200. When rendering it in the game, the exact dimensions should never be assumed to be constant.
+         * It's recommended to always scale the image to a desired size before rendering.
+         * This value is populated automatically during boot if the API is supported.
+         */
+        playerPhotoURL: string;
+
+        /**
+         * Whether a player can subscribe to the game bot or not.
+         */
+        playerCanSubscribeBot: boolean;
+
+        /**
+         * Does the current platform and context allow for use of the payments API?
+         * Currently this is only available on Facebook.com and Android 6+.
+         */
+        paymentsReady: boolean;
+
+        /**
+         * The set of products that are registered to the game.
+         */
+        catalog: Product[];
+
+        /**
+         * Contains all of the player's unconsumed purchases.
+         * The game must fetch the current player's purchases as soon as the client indicates that it is ready to perform payments-related operations,
+         * i.e. at game start. The game can then process and consume any purchases that are waiting to be consumed.
+         */
+        purchases: Purchase[];
+
+        /**
+         * Contains all of the leaderboard data, as populated by the `getLeaderboard()` method.
+         */
+        leaderboards: Phaser.FacebookInstantGamesPlugin.Leaderboard[];
+
+        /**
+         * Contains AdInstance objects, as created by the `preloadAds()` method.
+         */
+        ads: AdInstance[];
+
+        /**
+         * Call this method from your `Scene.preload` in order to sync the load progress
+         * of the Phaser Loader with the Facebook Instant Games loader display, i.e.:
+         * 
+         * ```javascript
+         * this.facebook.showLoadProgress(this);
+         * this.facebook.once('startgame', this.startGame, this);
+         * ```
+         * @param scene The Scene for which you want to show loader progress for.
+         */
+        showLoadProgress(scene: Phaser.Scene): this;
+
+        /**
+         * This method is called automatically when the game has finished loading,
+         * if you used the `showLoadProgress` method. If your game doesn't need to
+         * load any assets, or you're managing the load yourself, then call this
+         * method directly to start the API running.
+         * 
+         * When the API has finished starting this plugin will emit a `startgame` event
+         * which you should listen for.
+         */
+        gameStarted(): void;
+
+        /**
+         * Checks to see if a given Facebook Instant Games API is available or not.
+         * @param api The API to check for, i.e. `player.getID`.
+         */
+        checkAPI(api: string): boolean;
+
+        /**
+         * Returns the unique identifier for the current game context. This represents a specific context
+         * that the game is being played in (for example, a particular messenger conversation or facebook post).
+         * The identifier will be null if game is being played in a solo context.
+         * 
+         * It is only populated if `contextGetID` is in the list of supported APIs.
+         */
+        getID(): string;
+
+        /**
+         * Returns the current context in which your game is running. This can be either `null` or one of:
+         * 
+         * `POST` - The game is running inside of a Facebook post.
+         * `THREAD` - The game is running inside a Facebook Messenger thread.
+         * `GROUP` - The game is running inside a Facebook Group.
+         * `SOLO` - This is the default context, the player is the only participant.
+         * 
+         * It is only populated if `contextGetType` is in the list of supported APIs.
+         */
+        getType(): string;
+
+        /**
+         * Returns the current locale.
+         * See https://origincache.facebook.com/developers/resources/?id=FacebookLocales.xml for a complete list of supported locale values.
+         * Use this to determine what languages the current game should be localized with.
+         * It is only populated if `getLocale` is in the list of supported APIs.
+         */
+        getLocale(): string;
+
+        /**
+         * Returns the platform on which the game is currently running, i.e. `IOS`.
+         * It is only populated if `getPlatform` is in the list of supported APIs.
+         */
+        getPlatform(): string;
+
+        /**
+         * Returns the string representation of the Facebook Instant Games SDK version being used.
+         * It is only populated if `getSDKVersion` is in the list of supported APIs.
+         */
+        getSDKVersion(): string;
+
+        /**
+         * Returns the id of the player. This is a string based ID, the same as `FBInstant.player.getID()`.
+         * It is only populated if `playerGetID` is in the list of supported APIs.
+         */
+        getPlayerID(): string;
+
+        /**
+         * Returns the player's localized display name.
+         * It is only populated if `playerGetName` is in the list of supported APIs.
+         */
+        getPlayerName(): string;
+
+        /**
+         * Returns the url to the player's public profile photo. The photo will always be a square, and with dimensions
+         * of at least 200x200. When rendering it in the game, the exact dimensions should never be assumed to be constant.
+         * It's recommended to always scale the image to a desired size before rendering.
+         * It is only populated if `playerGetPhoto` is in the list of supported APIs.
+         */
+        getPlayerPhotoURL(): string;
+
+        /**
+         * Load the player's photo and store it in the Texture Manager, ready for use in-game.
+         * 
+         * This method works by using a Scene Loader instance and then asking the Loader to
+         * retrieve the image.
+         * 
+         * When complete the plugin will emit a `photocomplete` event, along with the key of the photo.
+         * 
+         * ```javascript
+         * this.facebook.loadPlayerPhoto(this, 'player').once('photocomplete', function (key) {
+         *   this.add.image(x, y, 'player);
+         * }, this);
+         * ```
+         * @param scene The Scene that will be responsible for loading this photo.
+         * @param key The key to use when storing the photo in the Texture Manager.
+         */
+        loadPlayerPhoto(scene: Phaser.Scene, key: string): this;
+
+        /**
+         * Checks if the current player can subscribe to the game bot.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they can subscribe, the `playerCanSubscribeBot` property is set to `true`
+         * and this plugin will emit the `cansubscribebot` event.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `cansubscribebotfail` event instead.
+         */
+        canSubscribeBot(): this;
+
+        /**
+         * Subscribes the current player to the game bot.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they are successfully subscribed this plugin will emit the `subscribebot` event.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `subscribebotfail` event instead.
+         */
+        subscribeBot(): this;
+
+        /**
+         * Gets the associated data from the player based on the given key, or array of keys.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes the data is set into this plugins Data Manager and the
+         * `getdata` event will be emitted.
+         * @param keys The key/s of the data to retrieve.
+         */
+        getData(keys: string | string[]): this;
+
+        /**
+         * Set data to be saved to the designated cloud storage of the current player. The game can store up to 1MB of data for each unique player.
+         * 
+         * The data save is requested in an async call, so the result isn't available immediately.
+         * 
+         * Data managed via this plugins Data Manager instance is automatically synced with Facebook. However, you can call this
+         * method directly if you need to replace the data object directly.
+         * 
+         * When the APIs `setDataAsync` call resolves it will emit the `savedata` event from this plugin. If the call fails for some
+         * reason it will emit `savedatafail` instead.
+         * 
+         * The call resolving does not necessarily mean that the input has already been persisted. Rather, it means that the data was valid and
+         * has been scheduled to be saved. It also guarantees that all values that were set are now available in `getData`.
+         * @param data An object containing a set of key-value pairs that should be persisted to cloud storage.
+         * The object must contain only serializable values - any non-serializable values will cause the entire modification to be rejected.
+         */
+        saveData(data: object): this;
+
+        /**
+         * Immediately flushes any changes to the player data to the designated cloud storage.
+         * This function is expensive, and should primarily be used for critical changes where persistence needs to be immediate
+         * and known by the game. Non-critical changes should rely on the platform to persist them in the background.
+         * NOTE: Calls to player.setDataAsync will be rejected while this function's result is pending.
+         * 
+         * Data managed via this plugins Data Manager instance is automatically synced with Facebook. However, you can call this
+         * method directly if you need to flush the data directly.
+         * 
+         * When the APIs `flushDataAsync` call resolves it will emit the `flushdata` event from this plugin. If the call fails for some
+         * reason it will emit `flushdatafail` instead.
+         */
+        flushData(): this;
+
+        /**
+         * Retrieve stats from the designated cloud storage of the current player.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes the `getstats` event will be emitted along with the data object returned.
+         * 
+         * If the call fails, i.e. it's not in the list of supported APIs, or the request was rejected,
+         * it will emit a `getstatsfail` event instead.
+         * @param keys An optional array of unique keys to retrieve stats for. If the function is called without it, it will fetch all stats.
+         */
+        getStats(keys?: string[]): this;
+
+        /**
+         * Save the stats of the current player to the designated cloud storage.
+         * 
+         * Stats in the Facebook Instant Games API are purely numerical values paired with a string-based key. Only numbers can be saved as stats,
+         * all other data types will be ignored.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes the `savestats` event will be emitted along with the data object returned.
+         * 
+         * If the call fails, i.e. it's not in the list of supported APIs, or the request was rejected,
+         * it will emit a `savestatsfail` event instead.
+         * @param data An object containing a set of key-value pairs that should be persisted to cloud storage as stats. Note that only numerical values are stored.
+         */
+        saveStats(data: object): this;
+
+        /**
+         * Increment the stats of the current player and save them to the designated cloud storage.
+         * 
+         * Stats in the Facebook Instant Games API are purely numerical values paired with a string-based key. Only numbers can be saved as stats,
+         * all other data types will be ignored.
+         * 
+         * The data object provided for this call should contain offsets for how much to modify the stats by:
+         * 
+         * ```javascript
+         * this.facebook.incStats({
+         *     level: 1,
+         *     zombiesSlain: 17,
+         *     rank: -1
+         * });
+         * ```
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes the `incstats` event will be emitted along with the data object returned.
+         * 
+         * If the call fails, i.e. it's not in the list of supported APIs, or the request was rejected,
+         * it will emit a `incstatsfail` event instead.
+         * @param data An object containing a set of key-value pairs indicating how much to increment each stat in cloud storage. Note that only numerical values are processed.
+         */
+        incStats(data: object): this;
+
+        /**
+         * Sets the data associated with the individual gameplay session for the current context.
+         * 
+         * This function should be called whenever the game would like to update the current session data.
+         * 
+         * This session data may be used to populate a variety of payloads, such as game play webhooks.
+         * @param data An arbitrary data object, which must be less than or equal to 1000 characters when stringified.
+         */
+        saveSession(data: object): this;
+
+        /**
+         * This invokes a dialog to let the user share specified content, either as a message in Messenger or as a post on the user's timeline.
+         * 
+         * A blob of data can be attached to the share which every game session launched from the share will be able to access via the `this.entryPointData` property.
+         * 
+         * This data must be less than or equal to 1000 characters when stringified.
+         * 
+         * When this method is called you should consider your game paused. Listen out for the `resume` event from this plugin to know when the dialog has been closed.
+         * 
+         * The user may choose to cancel the share action and close the dialog. The resulting `resume` event will be dispatched regardless if the user actually shared the content or not.
+         * @param text A text message to be shared.
+         * @param key The key of the texture to use as the share image.
+         * @param frame The frame of the texture to use as the share image. Set to `null` if you don't require a frame, but do need to set session data.
+         * @param sessionData A blob of data to attach to the share.
+         */
+        openShare(text: string, key: string, frame?: string, sessionData?: object): this;
+
+        /**
+         * This invokes a dialog to let the user invite a friend to play this game, either as a message in Messenger or as a post on the user's timeline.
+         * 
+         * A blob of data can be attached to the share which every game session launched from the share will be able to access via the `this.entryPointData` property.
+         * 
+         * This data must be less than or equal to 1000 characters when stringified.
+         * 
+         * When this method is called you should consider your game paused. Listen out for the `resume` event from this plugin to know when the dialog has been closed.
+         * 
+         * The user may choose to cancel the share action and close the dialog. The resulting `resume` event will be dispatched regardless if the user actually shared the content or not.
+         * @param text A text message to be shared.
+         * @param key The key of the texture to use as the share image.
+         * @param frame The frame of the texture to use as the share image. Set to `null` if you don't require a frame, but do need to set session data.
+         * @param sessionData A blob of data to attach to the share.
+         */
+        openInvite(text: string, key: string, frame?: string, sessionData?: object): this;
+
+        /**
+         * This invokes a dialog to let the user share specified content, either as a message in Messenger or as a post on the user's timeline.
+         * 
+         * A blob of data can be attached to the share which every game session launched from the share will be able to access via the `this.entryPointData` property.
+         * 
+         * This data must be less than or equal to 1000 characters when stringified.
+         * 
+         * When this method is called you should consider your game paused. Listen out for the `resume` event from this plugin to know when the dialog has been closed.
+         * 
+         * The user may choose to cancel the share action and close the dialog. The resulting `resume` event will be dispatched regardless if the user actually shared the content or not.
+         * @param text A text message to be shared.
+         * @param key The key of the texture to use as the share image.
+         * @param frame The frame of the texture to use as the share image. Set to `null` if you don't require a frame, but do need to set session data.
+         * @param sessionData A blob of data to attach to the share.
+         */
+        openRequest(text: string, key: string, frame?: string, sessionData?: object): this;
+
+        /**
+         * This invokes a dialog to let the user share specified content, either as a message in Messenger or as a post on the user's timeline.
+         * 
+         * A blob of data can be attached to the share which every game session launched from the share will be able to access via the `this.entryPointData` property.
+         * 
+         * This data must be less than or equal to 1000 characters when stringified.
+         * 
+         * When this method is called you should consider your game paused. Listen out for the `resume` event from this plugin to know when the dialog has been closed.
+         * 
+         * The user may choose to cancel the share action and close the dialog. The resulting `resume` event will be dispatched regardless if the user actually shared the content or not.
+         * @param text A text message to be shared.
+         * @param key The key of the texture to use as the share image.
+         * @param frame The frame of the texture to use as the share image. Set to `null` if you don't require a frame, but do need to set session data.
+         * @param sessionData A blob of data to attach to the share.
+         */
+        openChallenge(text: string, key: string, frame?: string, sessionData?: object): this;
+
+        /**
+         * This function determines whether the number of participants in the current game context is between a given minimum and maximum, inclusive.
+         * If one of the bounds is null only the other bound will be checked against.
+         * It will always return the original result for the first call made in a context in a given game play session.
+         * Subsequent calls, regardless of arguments, will return the answer to the original query until a context change occurs and the query result is reset.
+         * @param min The minimum bound of the context size query.
+         * @param max The maximum bound of the context size query.
+         */
+        isSizeBetween(min?: integer, max?: integer): object;
+
+        /**
+         * Request a switch into a specific context. If the player does not have permission to enter that context,
+         * or if the player does not provide permission for the game to enter that context, this will emit a `switchfail` event.
+         * 
+         * Otherwise, the plugin will emit the `switch` event when the game has switched into the specified context.
+         * @param contextID The ID of the desired context.
+         */
+        switchContext(contextID: string): this;
+
+        /**
+         * Opens a context selection dialog for the player. If the player selects an available context,
+         * the client will attempt to switch into that context, and emit the `choose` event if successful.
+         * Otherwise, if the player exits the menu or the client fails to switch into the new context, the `choosefail` event will be emitted.
+         * @param contextID The ID of the desired context.
+         */
+        chooseContext(contextID: string): this;
+
+        /**
+         * Attempts to create or switch into a context between a specified player and the current player.
+         * This plugin will emit the `create` event once the context switch is completed.
+         * If the API call fails, such as if the player listed is not a Connected Player of the current player or if the
+         * player does not provide permission to enter the new context, then the plugin will emit a 'createfail' event.
+         * @param playerID ID of the player.
+         */
+        createContext(playerID: string): this;
+
+        /**
+         * Fetches an array of ConnectedPlayer objects containing information about active players
+         * (people who played the game in the last 90 days) that are connected to the current player.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they are successfully subscribed this plugin will emit the `players` event along
+         * with the player data.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `playersfail` event instead.
+         */
+        getPlayers(): this;
+
+        /**
+         * Fetches the game's product catalog.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they are successfully subscribed this plugin will emit the `getcatalog` event along
+         * with the catalog data.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `getcatalogfail` event instead.
+         */
+        getCatalog(): this;
+
+        /**
+         * Begins the purchase flow for a specific product.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they are successfully subscribed this plugin will emit the `purchase` event along
+         * with the purchase data.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `purchasefail` event instead.
+         * @param productID The identifier of the product to purchase.
+         * @param developerPayload An optional developer-specified payload, to be included in the returned purchase's signed request.
+         */
+        purchase(productID: string, developerPayload?: string): this;
+
+        /**
+         * Fetches all of the player's unconsumed purchases. The game must fetch the current player's purchases
+         * as soon as the client indicates that it is ready to perform payments-related operations,
+         * i.e. at game start. The game can then process and consume any purchases that are waiting to be consumed.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they are successfully subscribed this plugin will emit the `getpurchases` event along
+         * with the purchase data.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `getpurchasesfail` event instead.
+         */
+        getPurchases(): this;
+
+        /**
+         * Consumes a specific purchase belonging to the current player. Before provisioning a product's effects to the player,
+         * the game should request the consumption of the purchased product. Once the purchase is successfully consumed,
+         * the game should immediately provide the player with the effects of their purchase.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If they are successfully subscribed this plugin will emit the `consumepurchase` event along
+         * with the purchase data.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `consumepurchasefail` event instead.
+         * @param purchaseToken The purchase token of the purchase that should be consumed.
+         */
+        consumePurchases(purchaseToken: string): this;
+
+        /**
+         * Informs Facebook of a custom update that occurred in the game.
+         * This will temporarily yield control to Facebook and Facebook will decide what to do based on what the update is.
+         * Once Facebook returns control to the game the plugin will emit an `update` or `upatefail` event.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * The `text` parameter is an update payload with the following structure:
+         * 
+         * ```
+         * text: {
+         *     default: 'X just invaded Y\'s village!',
+         *     localizations: {
+         *         ar_AR: 'X \u0641\u0642\u0637 \u063A\u0632\u062A ' +
+         *         '\u0642\u0631\u064A\u0629 Y!',
+         *         en_US: 'X just invaded Y\'s village!',
+         *         es_LA: '\u00A1X acaba de invadir el pueblo de Y!',
+         *     }
+         * }
+         * ```
+         * @param cta The call to action text.
+         * @param text The text object.
+         * @param key The key of the texture to use as the share image.
+         * @param frame The frame of the texture to use as the share image. Set to `null` if you don't require a frame, but do need to set session data.
+         * @param template The update template key.
+         * @param updateData The update data object payload.
+         */
+        update(cta: string, text: object, key: string, frame?: string | integer, template?: string, updateData?: object): this;
+
+        /**
+         * Informs Facebook of a leaderboard update that occurred in the game.
+         * This will temporarily yield control to Facebook and Facebook will decide what to do based on what the update is.
+         * Once Facebook returns control to the game the plugin will emit an `update` or `upatefail` event.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * The `text` parameter is an update payload with the following structure:
+         * 
+         * ```
+         * text: {
+         *     default: 'X just invaded Y\'s village!',
+         *     localizations: {
+         *         ar_AR: 'X \u0641\u0642\u0637 \u063A\u0632\u062A ' +
+         *         '\u0642\u0631\u064A\u0629 Y!',
+         *         en_US: 'X just invaded Y\'s village!',
+         *         es_LA: '\u00A1X acaba de invadir el pueblo de Y!',
+         *     }
+         * }
+         * ```
+         * @param cta The call to action text.
+         * @param text The text object.
+         * @param key The key of the texture to use as the share image.
+         * @param frame The frame of the texture to use as the share image. Set to `null` if you don't require a frame, but do need to set session data.
+         * @param template The update template key.
+         * @param updateData The update data object payload.
+         */
+        updateLeaderboard(cta: string, text: object, key: string, frame?: string | integer, template?: string, updateData?: object): this;
+
+        /**
+         * Request that the client switch to a different Instant Game.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If the game switches successfully this plugin will emit the `switchgame` event and the client will load the new game.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `switchgamefail` event instead.
+         * @param appID The Application ID of the Instant Game to switch to. The application must be an Instant Game, and must belong to the same business as the current game.
+         * @param data An optional data payload. This will be set as the entrypoint data for the game being switched to. Must be less than or equal to 1000 characters when stringified.
+         */
+        switchGame(appID: string, data?: object): this;
+
+        /**
+         * Prompts the user to create a shortcut to the game if they are eligible to.
+         * Can only be called once per session.
+         * 
+         * It makes an async call to the API, so the result isn't available immediately.
+         * 
+         * If the user choose to create a shortcut this plugin will emit the `shortcutcreated` event.
+         * 
+         * If they cannot, i.e. it's not in the list of supported APIs, or the request
+         * was rejected, it will emit a `shortcutcreatedfail` event instead.
+         */
+        createShortcut(): this;
+
+        /**
+         * Quits the game.
+         */
+        quit(): void;
+
+        /**
+         * Log an app event with FB Analytics.
+         * 
+         * See https://developers.facebook.com/docs/javascript/reference/v2.8#app_events for more details about FB Analytics.
+         * @param name Name of the event. Must be 2 to 40 characters, and can only contain '_', '-', ' ', and alphanumeric characters.
+         * @param value An optional numeric value that FB Analytics can calculate a sum with.
+         * @param params An optional object that can contain up to 25 key-value pairs to be logged with the event. Keys must be 2 to 40 characters, and can only contain '_', '-', ' ', and alphanumeric characters. Values must be less than 100 characters in length.
+         */
+        log(name: string, value?: number, params?: object): this;
+
+        /**
+         * Attempt to create an instance of an interstitial ad.
+         * 
+         * If the instance is created successfully then the ad is preloaded ready for display in-game via the method `showAd()`.
+         * @param placementID The ad placement ID, or an array of IDs, as created in your Audience Network settings within Facebook.
+         */
+        preloadAds(placementID: string | string[]): this;
+
+        /**
+         * Attempt to create an instance of an interstitial video ad.
+         * 
+         * If the instance is created successfully then the ad is preloaded ready for display in-game via the method `showVideo()`.
+         * @param placementID The ad placement ID, or an array of IDs, as created in your Audience Network settings within Facebook.
+         */
+        preloadVideoAds(placementID: string | string[]): this;
+
+        /**
+         * Displays a previously loaded interstitial ad.
+         * 
+         * If the ad is successfully displayed this plugin will emit the `showad` event, with the AdInstance object as its parameter.
+         * 
+         * If the ad cannot be displayed because there was no inventory to fill it, it will emit the `adsnofill` event.
+         * @param placementID The ad placement ID to display.
+         */
+        showAd(placementID: string): this;
+
+        /**
+         * Displays a previously loaded interstitial video ad.
+         * 
+         * If the ad is successfully displayed this plugin will emit the `showad` event, with the AdInstance object as its parameter.
+         * 
+         * If the ad cannot be displayed because there was no inventory to fill it, it will emit the `adsnofill` event.
+         * @param placementID The ad placement ID to display.
+         */
+        showVideo(placementID: string): this;
+
+        /**
+         * Attempts to match the current player with other users looking for people to play with.
+         * If successful, a new Messenger group thread will be created containing the matched players and the player will
+         * be context switched to that thread. This plugin will also dispatch the `matchplayer` event, containing the new context ID and Type.
+         * 
+         * The default minimum and maximum number of players in one matched thread are 2 and 20 respectively,
+         * depending on how many players are trying to get matched around the same time.
+         * 
+         * The values can be changed in `fbapp-config.json`. See the Bundle Config documentation for documentation about `fbapp-config.json`.
+         * @param matchTag Optional extra information about the player used to group them with similar players. Players will only be grouped with other players with exactly the same tag. The tag must only include letters, numbers, and underscores and be 100 characters or less in length.
+         * @param switchImmediately Optional extra parameter that specifies whether the player should be immediately switched to the new context when a match is found. By default this will be false which will mean the player needs explicitly press play after being matched to switch to the new context. Default false.
+         */
+        matchPlayer(matchTag?: string, switchImmediately?: boolean): this;
+
+        /**
+         * Fetch a specific leaderboard belonging to this Instant Game.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes the `getleaderboard` event will be emitted along with a Leaderboard object instance.
+         * @param name The name of the leaderboard. Each leaderboard for an Instant Game must have its own distinct name.
+         */
+        getLeaderboard(name: string): this;
+
+        /**
+         * Quits the Facebook API and then destroys this plugin.
+         */
+        destroy(): void;
+
+    }
+
 }
 
 declare type ArcadeBodyBounds = {
@@ -69826,6 +70633,213 @@ declare namespace Phaser.Utils.Objects {
     function MergeRight(obj1: object, obj2: object): object;
 
 }
+
+declare type AdInstance = {
+    /**
+     * Represents an instance of an ad.
+     */
+    instance: any;
+    /**
+     * The Audience Network placement ID of this ad instance.
+     */
+    placementID: string;
+    /**
+     * Has this ad already been shown in-game?
+     */
+    shown: boolean;
+    /**
+     * Is this a video ad?
+     */
+    video: boolean;
+};
+
+declare namespace Phaser.FacebookInstantGamesPlugin {
+    /**
+     * This class represents one single Leaderboard that belongs to a Facebook Instant Game.
+     * 
+     * You do not need to instantiate this class directly, it will be created when you use the
+     * `getLeaderboard()` method of the main plugin.
+     */
+    class Leaderboard {
+        /**
+         * 
+         * @param plugin A reference to the Facebook Instant Games Plugin.
+         * @param data An Instant Game leaderboard instance.
+         */
+        constructor(plugin: Phaser.FacebookInstantGamesPlugin, data: any);
+
+        /**
+         * A reference to the Facebook Instant Games Plugin.
+         */
+        plugin: Phaser.FacebookInstantGamesPlugin;
+
+        /**
+         * An Instant Game leaderboard instance.
+         */
+        ref: any;
+
+        /**
+         * The name of the leaderboard.
+         */
+        name: string;
+
+        /**
+         * The ID of the context that the leaderboard is associated with, or null if the leaderboard is not tied to a particular context.
+         */
+        contextID: string;
+
+        /**
+         * The total number of player entries in the leaderboard.
+         * This value defaults to zero. Populate it via the `getEntryCount()` method.
+         */
+        entryCount: integer;
+
+        /**
+         * The players score object.
+         * This value defaults to `null`. Populate it via the `getPlayerScore()` method.
+         */
+        playerScore: LeaderboardScore;
+
+        /**
+         * The scores in the Leaderboard from the currently requested range.
+         * This value defaults to an empty array. Populate it via the `getScores()` method.
+         * The contents of this array are reset each time `getScores()` is called.
+         */
+        scores: LeaderboardScore[];
+
+        /**
+         * Fetches the total number of player entries in the leaderboard.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes this Leaderboard will emit the `getentrycount` event along with the count and name of the Leaderboard.
+         */
+        getEntryCount(): this;
+
+        /**
+         * Updates the player's score. If the player has an existing score, the old score will only be replaced if the new score is better than it.
+         * NOTE: If the leaderboard is associated with a specific context, the game must be in that context to set a score for the player.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes this Leaderboard will emit the `setscore` event along with the score, any extra data and the name of the Leaderboard.
+         * @param score The new score for the player. Must be a 64-bit integer number.
+         * @param data Metadata to associate with the stored score. Must be less than 2KB in size.
+         */
+        setScore(score: integer, data?: string): this;
+
+        /**
+         * Gets the players leaderboard entry and stores it in the `playerScore` property.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes this Leaderboard will emit the `getplayerscore` event along with the score and the name of the Leaderboard.
+         */
+        getPlayerScore(): this;
+
+        /**
+         * Retrieves a set of leaderboard entries, ordered by score ranking in the leaderboard.
+         * 
+         * The data is requested in an async call, so the result isn't available immediately.
+         * 
+         * When the call completes this Leaderboard will emit the `getplayerscore` event along with the score and the name of the Leaderboard.
+         * @param count The number of entries to attempt to fetch from the leaderboard. Currently, up to a maximum of 100 entries may be fetched per query. Default 10.
+         * @param offset The offset from the top of the leaderboard that entries will be fetched from. Default 0.
+         */
+        getScores(count?: integer, offset?: integer): this;
+
+    }
+
+}
+
+declare type LeaderboardScore = {
+    /**
+     * An integer score value.
+     */
+    score: integer;
+    /**
+     * The score value, formatted with the score format associated with the leaderboard.
+     */
+    scoreFormatted: string;
+    /**
+     * The Unix timestamp of when the leaderboard entry was last updated.
+     */
+    timestamp: integer;
+    /**
+     * The entry's leaderboard ranking.
+     */
+    rank: integer;
+    /**
+     * The developer-specified payload associated with the score, or null if one was not set.
+     */
+    data: string;
+    /**
+     * The player's localized display name.
+     */
+    playerName: string;
+    /**
+     * A url to the player's public profile photo.
+     */
+    playerPhotoURL: string;
+    /**
+     * The game's unique identifier for the player.
+     */
+    playerID: string;
+};
+
+declare type Product = {
+    /**
+     * The title of the product.
+     */
+    title?: string;
+    /**
+     * The product's game-specified identifier.
+     */
+    productID?: string;
+    /**
+     * The product description.
+     */
+    description?: string;
+    /**
+     * A link to the product's associated image.
+     */
+    imageURI?: string;
+    /**
+     * The price of the product.
+     */
+    price?: string;
+    /**
+     * The currency code for the product.
+     */
+    priceCurrencyCode?: string;
+};
+
+declare type Purchase = {
+    /**
+     * A developer-specified string, provided during the purchase of the product.
+     */
+    developerPayload?: string;
+    /**
+     * The identifier for the purchase transaction.
+     */
+    paymentID?: string;
+    /**
+     * The product's game-specified identifier.
+     */
+    productID?: string;
+    /**
+     * Unix timestamp of when the purchase occurred.
+     */
+    purchaseTime?: string;
+    /**
+     * A token representing the purchase that may be used to consume the purchase.
+     */
+    purchaseToken?: string;
+    /**
+     * Server-signed encoding of the purchase request.
+     */
+    signedRequest?: string;
+};
 
 declare type integer = number;
 

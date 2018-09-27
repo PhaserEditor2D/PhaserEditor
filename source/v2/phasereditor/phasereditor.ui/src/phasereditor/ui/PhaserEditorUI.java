@@ -1111,21 +1111,52 @@ public class PhaserEditorUI {
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getBackground();
 	}
 
-	public static void forceApplyCompositeStyle(Composite canvas) {
-		canvas.getDisplay().asyncExec(() -> {
-			Shell c = new Shell();
-			PhaserEditorUI.applyThemeStyle(c);
-			Color background = c.getBackground();
-			Color foreground = c.getForeground();
+	private static Map<Class<?>, Object[]> _clsStyleMap = new HashMap<>();
 
-			if (!canvas.isDisposed()) {
-				canvas.setBackground(background);
-				canvas.setForeground(foreground);
-				canvas.redraw();
+	@SuppressWarnings("boxing")
+	public static void forceApplyControlStyle(Composite target, Class<?> templateClass) {
+		var style = _clsStyleMap.get(templateClass);
+
+		if (style != null) {
+
+			var bg = (RGB) style[0];
+			var fg = (RGB) style[1];
+
+			target.setBackground(SWTResourceManager.getColor(bg));
+			target.setForeground(SWTResourceManager.getColor(fg));
+
+			return;
+		}
+
+		target.getDisplay().asyncExec(() -> {
+			Shell shell = new Shell();
+
+			try {
+
+				var ctr = templateClass.getConstructor(Composite.class, int.class);
+				var temp = (Control) ctr.newInstance(shell, target.getStyle());
+
+				PhaserEditorUI.applyThemeStyle(shell);
+
+				Color bg = temp.getBackground();
+				Color fg = temp.getForeground();
+
+				_clsStyleMap.put(templateClass, new Object[] { bg.getRGB(), fg.getRGB() });
+
+				if (!target.isDisposed()) {
+					target.setBackground(bg);
+					target.setForeground(fg);
+					target.redraw();
+				}
+				
+				temp.dispose();
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			c.close();
-			c.dispose();
+			shell.close();
+			shell.dispose();
 		});
 	}
 
@@ -1325,7 +1356,7 @@ public class PhaserEditorUI {
 
 		double imgDstW = (blankSpaces ? fd.dst.width : fd.src.width) * scaleX;
 		double imgDstH = (blankSpaces ? fd.dst.height : fd.src.height) * scaleY;
-		
+
 		if (imgDstW > 0 && imgDstH > 0) {
 			gc.drawImage(image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY, (int) imgDstW,
 					(int) imgDstH);

@@ -406,7 +406,7 @@ public class AnimationsDialog extends Dialog {
 
 		updateFromAnimation();
 
-		PhaserEditorUI.forceApplyCompositeStyle(_canvas);
+		PhaserEditorUI.forceApplyControlStyle(_canvas, Label.class);
 	}
 
 	private void initFramesDrop() {
@@ -707,7 +707,7 @@ public class AnimationsDialog extends Dialog {
 
 		return _anim.isPublic();
 	}
-	
+
 	public void setField(boolean aField) {
 		if (_anim == null) {
 			return;
@@ -755,11 +755,13 @@ public class AnimationsDialog extends Dialog {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
+
 	@SuppressWarnings("rawtypes")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(_frameRateText);
+		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify)
+				.observe(_frameRateText);
 		IObservableValue frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
 		bindingContext.bindValue(observeText_frameRateTextObserveWidget, frameRate_selfObserveValue, null, null);
 		//
@@ -767,9 +769,11 @@ public class AnimationsDialog extends Dialog {
 		IObservableValue loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
 		bindingContext.bindValue(observeSelection_loopButtonObserveWidget, loop_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection().observe(_btnKilloncomplete);
+		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection()
+				.observe(_btnKilloncomplete);
 		IObservableValue killOnComplete_selfObserveValue = BeanProperties.value("killOnComplete").observe(_self);
-		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null, null);
+		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null,
+				null);
 		//
 		IObservableValue observeSelection_btnFieldObserveWidget = WidgetProperties.selection().observe(_btnField);
 		IObservableValue field_selfObserveValue = BeanProperties.value("field").observe(_self);
