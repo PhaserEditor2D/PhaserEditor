@@ -43,7 +43,10 @@ public class FilteredTreeCanvas extends Composite {
 	public FilteredTreeCanvas(Composite parent, int style) {
 		super(parent, style);
 
-		setLayout(new GridLayout(1, false));
+		var layout = new GridLayout(1, false);
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		setLayout(layout);
 
 		_filterText = new Text(this, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		_filterText.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
