@@ -37,8 +37,11 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -65,20 +68,19 @@ import phasereditor.ui.ZoomCanvas;
  * @author arian
  *
  */
-public class SceneCanvas extends ZoomCanvas {
+public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveListener, DragDetectListener {
 
-	/**
-	 * 
-	 */
 	private static final String SCENE_COPY_STAMP = "--scene--copy--stamp--";
-	private static final int X_LABELS_HEIGHT = 18;
-	private static final int Y_LABEL_WIDTH = 18;
+	public static final int X_LABELS_HEIGHT = 18;
+	public static final int Y_LABEL_WIDTH = 18;
 	private SceneEditor _editor;
 	private SceneObjectRenderer _renderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
-	private List<Object> _selection;
+	List<Object> _selection;
 	private SceneModel _sceneModel;
+	private DragObjectsEvents _dragObjectsEvents;
+	private SelectionEvents _selectionEvents;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -86,7 +88,13 @@ public class SceneCanvas extends ZoomCanvas {
 		_selection = new ArrayList<>();
 
 		addPaintListener(this);
-		addMouseListener(new SelectionMouseListener());
+
+		_dragObjectsEvents = new DragObjectsEvents(this);
+		_selectionEvents = new SelectionEvents(this);
+
+		addDragDetectListener(this);
+		addMouseListener(this);
+		addMouseMoveListener(this);
 
 		init_DND();
 	}
@@ -116,6 +124,15 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 	}
 
+	public float[] viewToModel(int x, int y) {
+		var calc = calc();
+
+		var modelX = calc.viewToModelX(x) - Y_LABEL_WIDTH;
+		var modelY = calc.viewToModelY(y) - X_LABELS_HEIGHT;
+
+		return new float[] { modelX, modelY };
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
 
@@ -125,8 +142,8 @@ public class SceneCanvas extends ZoomCanvas {
 
 		var calc = calc();
 
-		var modelX = calc.viewToModelX(x);
-		var modelY = calc.viewToModelY(y);
+		var modelX = calc.viewToModelX(x) - Y_LABEL_WIDTH;
+		var modelY = calc.viewToModelY(y) - X_LABELS_HEIGHT;
 
 		var newModels = new ArrayList<ObjectModel>();
 
@@ -475,28 +492,6 @@ public class SceneCanvas extends ZoomCanvas {
 		return new Point(1, 1);
 	}
 
-	private class SelectionMouseListener implements MouseListener {
-
-		public SelectionMouseListener() {
-		}
-
-		@Override
-		public void mouseDoubleClick(MouseEvent e) {
-			//
-		}
-
-		@Override
-		public void mouseDown(MouseEvent e) {
-			//
-		}
-
-		@Override
-		public void mouseUp(MouseEvent e) {
-			updateSelectionWithMouseEvent(e);
-		}
-
-	}
-
 	ObjectModel pickObject(int x, int y) {
 		return pickObject(_sceneModel.getRootObject(), x, y);
 	}
@@ -534,43 +529,7 @@ public class SceneCanvas extends ZoomCanvas {
 		return null;
 	}
 
-	void updateSelectionWithMouseEvent(MouseEvent e) {
-		if (e.button != 1) {
-			return;
-		}
-
-		var fireUpdateSelection = false;
-
-		var pick = pickObject(e.x, e.y);
-
-		var list = new ArrayList<>(_selection);
-
-		if (pick == null) {
-			fireUpdateSelection = !list.isEmpty();
-			list = new ArrayList<>();
-		} else {
-			if ((e.stateMask & SWT.CTRL) != 0) {
-				if (list.contains(pick)) {
-					list.remove(pick);
-				} else {
-					list.add(pick);
-				}
-			} else {
-				list = new ArrayList<>();
-				list.add(pick);
-			}
-
-			fireUpdateSelection = true;
-		}
-
-		if (fireUpdateSelection) {
-			setSelection_from_internal(list);
-
-			redraw();
-		}
-	}
-
-	private void setSelection_from_internal(List<Object> list) {
+	void setSelection_from_internal(List<Object> list) {
 		var sel = new StructuredSelection(list);
 
 		_selection = list;
@@ -911,5 +870,54 @@ public class SceneCanvas extends ZoomCanvas {
 		}
 
 		return result;
+	}
+
+	@Override
+	public void mouseDoubleClick(MouseEvent e) {
+		//
+	}
+
+	@Override
+	public void mouseDown(MouseEvent e) {
+		//
+	}
+
+	@Override
+	public void mouseUp(MouseEvent e) {
+		if (_dragDetected) {
+
+			_dragDetected = false;
+
+			
+			if (_dragObjectsEvents.isDragging()) {
+				_dragObjectsEvents.stopDrag();
+			}
+
+			return;
+		}
+		
+		
+		_selectionEvents.updateSelection(e);
+	}
+
+	@Override
+	public void mouseMove(MouseEvent e) {
+		if (_dragObjectsEvents.isDragging()) {
+			_dragObjectsEvents.updateDrag(e);
+		}
+	}
+
+	private boolean _dragDetected;
+
+	@Override
+	public void dragDetected(DragDetectEvent e) {
+
+		_dragDetected = true;
+
+		var obj = pickObject(e.x, e.y);
+
+		if (_selection.contains(obj)) {
+			_dragObjectsEvents.startDrag(e);
+		}
 	}
 }

@@ -260,4 +260,10 @@ public class SceneEditor extends EditorPart {
 		_sceneCanvas.redraw();
 	}
 
+	public void updatePropertyPagesContentWithSelection() {
+		for (var page : _propertyPages) {
+			page.selectionChanged(this, getEditorSite().getSelectionProvider().getSelection());
+		}
+	}
+
 }

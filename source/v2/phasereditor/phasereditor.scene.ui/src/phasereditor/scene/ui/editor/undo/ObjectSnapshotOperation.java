@@ -104,9 +104,7 @@ public class ObjectSnapshotOperation extends AbstractOperation {
 			editor.refreshOutline_basedOnId();
 		}
 
-		for (var page : editor.getPropertyPages()) {
-			page.selectionChanged(editor, editor.getEditorSite().getSelectionProvider().getSelection());
-		}
+		editor.updatePropertyPagesContentWithSelection();
 
 		canvas.redraw();
 
