@@ -35,6 +35,8 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
@@ -84,11 +86,17 @@ public class BaseImageCanvas extends Canvas {
 
 		addDisposeListener(this::widgetDisposed);
 
-		// PhaserEditorUI.forceApplyControlStyle(this, Label.class);
+		parent.setBackgroundMode(SWT.INHERIT_FORCE);
+
+		addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				setForeground(e.display.getActiveShell().getForeground());
+			}
+		});
 
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
-
-		// setData("org.eclipse.e4.ui.css.CssClassName", "Label");
 	}
 
 	public static void prepareGC(GC gc) {

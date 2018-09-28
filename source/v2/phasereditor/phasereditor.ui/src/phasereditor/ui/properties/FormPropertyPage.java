@@ -245,10 +245,12 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
 
 	protected abstract List<FormPropertySection> createSections(Object obj);
+
 	@Override
 	public void createControl(Composite parent) {
 		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
 		_sectionsContainer = new Composite(_scrolledCompo, SWT.NONE);
+		_sectionsContainer.setBackgroundMode(SWT.INHERIT_FORCE);
 		_sectionsContainer.setLayout(new GridLayout(1, false));
 
 		_scrolledCompo.setContent(_sectionsContainer);

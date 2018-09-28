@@ -1111,18 +1111,14 @@ public class PhaserEditorUI {
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getBackground();
 	}
 
-	private static Map<Class<?>, Object[]> _clsStyleMap = new HashMap<>();
+	private static Map<Class<?>, RGB> _clsStyleMap = new HashMap<>();
 
 	@SuppressWarnings("boxing")
 	public static void forceApplyControlStyle(Composite target, Class<?> templateClass) {
-		var style = _clsStyleMap.get(templateClass);
+		var fg = _clsStyleMap.get(templateClass);
 
-		if (style != null) {
+		if (fg != null) {
 
-			var bg = (RGB) style[0];
-			var fg = (RGB) style[1];
-
-			target.setBackground(SWTResourceManager.getColor(bg));
 			target.setForeground(SWTResourceManager.getColor(fg));
 
 			return;
@@ -1138,17 +1134,15 @@ public class PhaserEditorUI {
 
 				PhaserEditorUI.applyThemeStyle(shell);
 
-				Color bg = temp.getBackground();
-				Color fg = temp.getForeground();
+				var fgColor = temp.getForeground();
 
-				_clsStyleMap.put(templateClass, new Object[] { bg.getRGB(), fg.getRGB() });
+				_clsStyleMap.put(templateClass, fgColor.getRGB());
 
 				if (!target.isDisposed()) {
-					target.setBackground(bg);
-					target.setForeground(fg);
+					target.setForeground(fgColor);
 					target.redraw();
 				}
-				
+
 				temp.dispose();
 
 			} catch (Exception e) {
