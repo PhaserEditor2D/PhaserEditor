@@ -41,6 +41,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.json.JSONObject;
 
@@ -92,7 +93,10 @@ public class BaseImageCanvas extends Canvas {
 
 			@Override
 			public void paintControl(PaintEvent e) {
-				setForeground(e.display.getActiveShell().getForeground());
+				Shell shell = e.display.getActiveShell();
+				if (shell != null) {
+					setForeground(shell.getForeground());
+				}
 			}
 		});
 
