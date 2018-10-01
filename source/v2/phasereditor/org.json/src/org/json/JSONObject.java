@@ -683,6 +683,15 @@ public class JSONObject {
 		}
 	}
 
+	public float getFloat(String key) throws JSONException {
+		Object object = this.get(key);
+		try {
+			return object instanceof Number ? ((Number) object).floatValue() : Float.parseFloat((String) object);
+		} catch (Exception e) {
+			throw new JSONException("JSONObject[" + quote(key) + "] is not a number.");
+		}
+	}
+
 	/**
 	 * Get the int value associated with a key.
 	 *
@@ -994,6 +1003,10 @@ public class JSONObject {
 		return this.optDouble(key, Double.NaN);
 	}
 
+	public double optFloat(String key) {
+		return this.optFloat(key, Float.NaN);
+	}
+
 	/**
 	 * Get an optional double associated with a key, or the defaultValue if there is
 	 * no such key or if its value is not a number. If the value is a string, an
@@ -1008,6 +1021,14 @@ public class JSONObject {
 	public double optDouble(String key, double defaultValue) {
 		try {
 			return this.getDouble(key);
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
+
+	public float optFloat(String key, float defaultValue) {
+		try {
+			return this.getFloat(key);
 		} catch (Exception e) {
 			return defaultValue;
 		}
