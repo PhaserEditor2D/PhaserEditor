@@ -21,23 +21,56 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.eclipse.core.resources.IProject;
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
  */
-public class TileSpriteModel extends ObjectModel implements
+public class TileSpriteModel extends SpriteModel implements
 
-		FlipComponent,
-
-		OriginComponent
+		TileSpriteComponent
 
 {
 
+	@SuppressWarnings("hiding")
 	public static final String TYPE = "TileSprite";
 
 	public TileSpriteModel() {
 		super(TYPE);
+
+		TileSpriteComponent.init(this);
 	}
-	//
+
+	@Override
+	public void read(JSONObject data, IProject project) {
+
+		super.read(data, project);
+
+		TileSpriteComponent.set_tilePositionX(this, data.optFloat(tilePositionX_name, tilePositionX_default));
+		TileSpriteComponent.set_tilePositionY(this, data.optFloat(tilePositionY_name, tilePositionY_default));
+
+		TileSpriteComponent.set_tileScaleX(this, data.optFloat(tileScaleX_name, tileScaleX_default));
+		TileSpriteComponent.set_tileScaleY(this, data.optFloat(tileScaleY_name, tileScaleY_default));
+
+		TileSpriteComponent.set_width(this, data.optFloat(width_name, width_default));
+		TileSpriteComponent.set_height(this, data.optFloat(height_name, height_default));
+	}
+
+	@Override
+	public void write(JSONObject data) {
+
+		super.write(data);
+
+		data.put(tilePositionX_name, TileSpriteComponent.get_tilePositionX(this), tilePositionX_default);
+		data.put(tilePositionY_name, TileSpriteComponent.get_tilePositionY(this), tilePositionY_default);
+
+		data.put(tileScaleX_name, TileSpriteComponent.get_tileScaleX(this), tileScaleX_default);
+		data.put(tileScaleY_name, TileSpriteComponent.get_tileScaleY(this), tileScaleY_default);
+
+		data.put(width_name, TileSpriteComponent.get_width(this), width_default);
+		data.put(height_name, TileSpriteComponent.get_height(this), height_default);
+	}
 
 }

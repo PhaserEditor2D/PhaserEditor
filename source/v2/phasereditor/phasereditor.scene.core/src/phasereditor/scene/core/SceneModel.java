@@ -42,7 +42,7 @@ public class SceneModel {
 	public ParentModel getRootObject() {
 		return _rootObject;
 	}
-	
+
 	public void write(JSONObject data) {
 		data.put("-app", "Scene Editor - " + LicCore.PRODUCT_NAME);
 		data.put("-version", VERSION);
@@ -83,6 +83,9 @@ public class SceneModel {
 
 		case WorldModel.TYPE:
 			return new WorldModel();
+
+		case TileSpriteModel.TYPE:
+			return new TileSpriteModel();
 
 		}
 

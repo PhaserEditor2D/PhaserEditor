@@ -29,6 +29,7 @@ import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextureComponent;
+import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -78,6 +79,10 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		if (obj instanceof TextureComponent) {
 			list.add(new TextureSection(this));
+		}
+
+		if (obj instanceof TileSpriteComponent) {
+			list.add(new TileSpriteSection(this));
 		}
 
 		if (obj instanceof SpriteModel) {

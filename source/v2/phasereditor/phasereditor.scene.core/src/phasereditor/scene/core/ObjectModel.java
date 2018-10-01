@@ -79,7 +79,6 @@ public abstract class ObjectModel implements EditorComponent {
 	@SuppressWarnings("unused")
 	public void read(JSONObject data, IProject project) {
 		_id = data.getString("-id");
-		_type = data.getString("-type");
 
 		EditorComponent.set_editorName(this, data.getString(editorName_name));
 		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));

@@ -48,8 +48,8 @@ public class SpriteModel extends ParentModel implements
 
 	public static final String TYPE = "Sprite";
 
-	public SpriteModel() {
-		super(TYPE);
+	protected SpriteModel(String type) {
+		super(type);
 
 		FlipComponent.init(this);
 
@@ -61,6 +61,10 @@ public class SpriteModel extends ParentModel implements
 
 		VisibleComponent.init(this);
 
+	}
+
+	public SpriteModel() {
+		this(TYPE);
 	}
 
 	@Override
