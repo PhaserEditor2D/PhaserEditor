@@ -42,6 +42,7 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 
 /**
  * @author arian
@@ -99,8 +100,12 @@ public class EditorSection extends ScenePropertySection {
 		@Override
 		public void run() {
 
+			var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+
+			int i = 0;
+
 			var project = getEditor().getEditorInput().getFile().getProject();
-			
+
 			for (var obj : getModels()) {
 				var model = (ObjectModel) obj;
 
@@ -108,9 +113,10 @@ public class EditorSection extends ScenePropertySection {
 					continue;
 				}
 
+				i++;
+
 				var data = new JSONObject();
 				model.write(data);
-
 
 				ObjectModel newModel = null;
 
@@ -128,21 +134,26 @@ public class EditorSection extends ScenePropertySection {
 				}
 
 				if (newModel != null) {
-					
+
 					var parent = ParentComponent.get_parent(model);
 					var siblings = ParentComponent.get_children(parent);
 					var index = siblings.indexOf(model);
-					
+
 					ParentComponent.removeFromParent(model);
 					ParentComponent.addChild(parent, index, newModel);
 
 					getEditor().refreshOutline_basedOnId();
-					
+
 					getEditor().updatePropertyPagesContentWithSelection_basedOnId();
-					
+
 					getEditor().setDirty(true);
 				}
 
+			}
+
+			if (i > 0) {
+				var after = SceneSnapshotOperation.takeSnapshot(getEditor());
+				getEditor().executeOperation(new SceneSnapshotOperation(before, after, "Morph to " + _toType));
 			}
 
 		}
