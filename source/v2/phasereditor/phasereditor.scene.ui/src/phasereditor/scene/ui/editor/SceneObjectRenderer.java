@@ -43,6 +43,8 @@ import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextureComponent;
+import phasereditor.scene.core.TileSpriteComponent;
+import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 
 /**
@@ -300,9 +302,98 @@ public class SceneObjectRenderer {
 
 		setObjectTransform(gc, tx, model);
 
-		var frame = TextureComponent.get_frame(model);
+		if (model instanceof TileSpriteModel) {
 
-		renderTexture(gc, model, frame);
+			renderTileSprite(gc, (TileSpriteModel) model);
+
+		} else {
+			var frame = TextureComponent.get_frame(model);
+
+			renderTexture(gc, model, frame);
+		}
+	}
+
+	private void renderTileSprite(GC gc, TileSpriteModel model) {
+
+		var assetFrame = TextureComponent.get_frame(model);
+
+		var img = _canvas.loadImage(assetFrame.getImageFile());
+
+		var fd = assetFrame.getFrameData();
+
+		var tileScaleX = TileSpriteComponent.get_tileScaleX(model);
+		var tileScaleY = TileSpriteComponent.get_tileScaleY(model);
+
+		var frameWidth = fd.srcSize.x * tileScaleX;
+		var frameHeight = fd.srcSize.y * tileScaleY;
+
+		var width = TileSpriteComponent.get_width(model);
+		var height = TileSpriteComponent.get_height(model);
+
+		double x = 0;
+		double y = 0;
+
+		double xoffs = TileSpriteComponent.get_tilePositionX(model) % fd.srcSize.x;
+		double yoffs = TileSpriteComponent.get_tilePositionY(model) % fd.srcSize.y;
+
+		if (xoffs > 0) {
+			x = -fd.srcSize.x + xoffs;
+		} else if (xoffs < 0) {
+			x = xoffs;
+		}
+
+		if (yoffs > 0) {
+			y = -fd.srcSize.y + yoffs;
+		} else if (yoffs < 0) {
+			y = yoffs;
+		}
+
+		// x = x * tileScaleX;
+		// y = y * tileScaleY;
+
+		// TODO: do not do clipping when it is not needed. Or better, do some match and
+		// just paint the portion it needs!
+		// var clipping = gc.getClipping();
+		// gc.setClipping(0, 0, (int) width, (int) height);
+
+		if (frameWidth > 0 && frameHeight > 0) {
+
+			while (x < width) {
+
+				var y2 = y;
+
+				while (y2 < height) {
+					gc.drawImage(img,
+
+							fd.src.x,
+
+							fd.src.y,
+
+							fd.src.width,
+
+							fd.src.height,
+
+							//
+
+							(int) (x + fd.dst.x * tileScaleX),
+
+							(int) (y2 + fd.dst.y * tileScaleY),
+
+							(int) (fd.dst.width * tileScaleX),
+
+							(int) (fd.dst.height * tileScaleY));
+
+					y2 += frameHeight;
+				}
+
+				x += frameWidth;
+			}
+		}
+
+		// gc.setClipping(clipping);
+
+		setObjectBounds(gc, model, 0, 0, width, height);
+
 	}
 
 	private static Transform newTx(GC gc, Transform tx) {

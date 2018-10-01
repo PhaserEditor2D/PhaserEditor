@@ -73,4 +73,21 @@ public class TileSpriteModel extends SpriteModel implements
 		data.put(height_name, TileSpriteComponent.get_height(this), height_default);
 	}
 
+	public void setSizeToFrame() {
+		var frame = TextureComponent.get_frame(this);
+
+		if (frame == null) {
+
+			TileSpriteComponent.set_width(this, -1);
+			TileSpriteComponent.set_height(this, -1);
+
+		} else {
+
+			var size = frame.getFrameData().srcSize;
+
+			TileSpriteComponent.set_width(this, size.x);
+			TileSpriteComponent.set_height(this, size.y);
+		}
+	}
+
 }

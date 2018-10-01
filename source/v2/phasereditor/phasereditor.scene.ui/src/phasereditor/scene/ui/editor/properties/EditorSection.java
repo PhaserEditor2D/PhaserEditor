@@ -126,8 +126,10 @@ public class EditorSection extends ScenePropertySection {
 					newModel.read(data, project);
 					break;
 				case TileSpriteModel.TYPE:
-					newModel = new TileSpriteModel();
-					newModel.read(data, project);
+					var tileModel = new TileSpriteModel();
+					tileModel.read(data, project);
+					tileModel.setSizeToFrame();
+					newModel = tileModel;
 					break;
 				default:
 					break;
