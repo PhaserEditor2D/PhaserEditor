@@ -23,16 +23,25 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.json.JSONObject;
 
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
+import phasereditor.scene.core.SpriteModel;
+import phasereditor.scene.core.TileSpriteModel;
 
 /**
  * @author arian
@@ -42,6 +51,7 @@ public class EditorSection extends ScenePropertySection {
 
 	private Label _editorNameLabel;
 	private Text _editorNameText;
+	private Button _typeBtn;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -64,25 +74,109 @@ public class EditorSection extends ScenePropertySection {
 		_editorNameText = new Text(comp, SWT.BORDER);
 		_editorNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
+		{
+			var label = new Label(comp, SWT.NONE);
+			label.setText("Type");
+
+			_typeBtn = new Button(comp, SWT.NONE);
+			_typeBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			_typeBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
+		}
+
 		update_UI_from_Model();
 
 		return comp;
+	}
+
+	class MorphAction extends Action {
+		private String _toType;
+
+		public MorphAction(String toType) {
+			super("Morph To " + toType);
+			_toType = toType;
+		}
+
+		@Override
+		public void run() {
+
+			var project = getEditor().getEditorInput().getFile().getProject();
+			
+			for (var obj : getModels()) {
+				var model = (ObjectModel) obj;
+
+				if (model.getType().equals(_toType)) {
+					continue;
+				}
+
+				var data = new JSONObject();
+				model.write(data);
+
+
+				ObjectModel newModel = null;
+
+				switch (_toType) {
+				case SpriteModel.TYPE:
+					newModel = new SpriteModel();
+					newModel.read(data, project);
+					break;
+				case TileSpriteModel.TYPE:
+					newModel = new TileSpriteModel();
+					newModel.read(data, project);
+					break;
+				default:
+					break;
+				}
+
+				if (newModel != null) {
+					
+					var parent = ParentComponent.get_parent(model);
+					var siblings = ParentComponent.get_children(parent);
+					var index = siblings.indexOf(model);
+					
+					ParentComponent.removeFromParent(model);
+					ParentComponent.addChild(parent, index, newModel);
+
+					getEditor().refreshOutline_basedOnId();
+					
+					getEditor().updatePropertyPagesContentWithSelection_basedOnId();
+					
+					getEditor().setDirty(true);
+				}
+
+			}
+
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void populateTypeList(SelectionEvent e) {
+		var manager = new MenuManager();
+
+		for (var type : new String[] { SpriteModel.TYPE, TileSpriteModel.TYPE }) {
+			manager.add(new MorphAction(type));
+		}
+
+		var menu = manager.createContextMenu(_typeBtn);
+		menu.setVisible(true);
+
 	}
 
 	@Override
 	public void update_UI_from_Model() {
 
 		var models = List.of(getModels());
-		
+
 		_editorNameText.setText(flatValues_to_String(
 				models.stream().map(model -> EditorComponent.get_editorName((ObjectModel) model))));
-		
+
+		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> ((ObjectModel) model).getType())));
+
 		listen(_editorNameText, value -> {
 			models.stream().forEach(model -> EditorComponent.set_editorName((ObjectModel) model, value));
-			
+
 			getEditor().setDirty(true);
 			getEditor().refreshOutline();
-			
+
 		}, models);
 	}
 
