@@ -34,9 +34,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
+import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 
 /**
  * @author arian
@@ -150,10 +153,27 @@ public class TileSpriteSection extends ScenePropertySection {
 			var label = new Label(comp, SWT.NONE);
 			label.setText("Width");
 
-			_widthText = new Text(comp, SWT.BORDER);
+			var comp2 = new Composite(comp, SWT.NONE);
+			var ly = new GridLayout(2, false);
+			ly.marginWidth = 0;
+			ly.marginHeight = 0;
+			comp2.setLayout(ly);
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 3;
-			_widthText.setLayoutData(gd);
+			comp2.setLayoutData(gd);
+
+			_widthText = new Text(comp2, SWT.BORDER);
+			_widthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+			var manager = new ToolBarManager();
+			manager.add(
+					new Action("Reset to texture width.", EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
+						@Override
+						public void run() {
+							resetSizeToTexture(true, false);
+						}
+					});
+			manager.createControl(comp2);
 		}
 
 		{
@@ -163,15 +183,62 @@ public class TileSpriteSection extends ScenePropertySection {
 			var label = new Label(comp, SWT.NONE);
 			label.setText("Height");
 
-			_heightText = new Text(comp, SWT.BORDER);
+			var comp2 = new Composite(comp, SWT.NONE);
+			var ly = new GridLayout(2, false);
+			ly.marginWidth = 0;
+			ly.marginHeight = 0;
+			comp2.setLayout(ly);
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 3;
-			_heightText.setLayoutData(gd);
+			comp2.setLayoutData(gd);
+
+			_heightText = new Text(comp2, SWT.BORDER);
+			_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+			var manager = new ToolBarManager();
+			manager.add(
+					new Action("Reset to texture height.", EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
+						@Override
+						public void run() {
+							resetSizeToTexture(false, true);
+						}
+					});
+			manager.createControl(comp2);
 		}
 
 		update_UI_from_Model();
 
 		return comp;
+	}
+
+	protected void resetSizeToTexture(boolean width, boolean height) {
+
+		var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+
+		for (var obj : getModels()) {
+			var model = (TileSpriteModel) obj;
+			var frame = TextureComponent.get_frame(model);
+			if (frame != null) {
+				var fd = frame.getFrameData();
+				if (fd != null) {
+					var size = fd.srcSize;
+
+					if (width) {
+						TileSpriteComponent.set_width(model, size.x);
+					}
+
+					if (height) {
+						TileSpriteComponent.set_height(model, size.y);
+					}
+				}
+			}
+		}
+
+		getEditor().getScene().redraw();
+
+		var after = SceneSnapshotOperation.takeSnapshot(getEditor());
+		getEditor()
+				.executeOperation(new SceneSnapshotOperation(before, after, "Reset tile sprite size to texture size."));
 	}
 
 	@Override

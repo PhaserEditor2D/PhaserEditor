@@ -60,9 +60,11 @@ public class PreviewPreferencePage extends FieldEditorPreferencePage implements 
 			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, "Pattern color",
 					group));
 		}
-		
+
 		{
-			addField(new BooleanFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_ANTIALIAS, "Use interpolation and anti-aliasing to render images (disable if your game uses pixel art).", parent));
+			addField(new BooleanFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_ANTIALIAS,
+					"Use interpolation and anti-aliasing\nto render images (disable if your game uses pixel art).",
+					parent));
 		}
 
 	}

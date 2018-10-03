@@ -112,6 +112,8 @@ public interface IEditorSharedImages {
 	String IMG_ALIGN_TOP = "icons/shape_align_top.png";
 	String IMG_ALIGN_MIDDLE = "icons/shape_align_middle.png";
 	String IMG_ALIGN_BOTTOM = "icons/shape_align_bottom.png";
+	String IMG_ARROW_REFRESH = "icons/arrow_refresh.png";
+	
 	
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";
