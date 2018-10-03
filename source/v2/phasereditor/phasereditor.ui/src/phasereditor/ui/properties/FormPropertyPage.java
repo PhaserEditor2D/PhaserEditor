@@ -248,6 +248,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	@Override
 	public void createControl(Composite parent) {
+		
+		parent.setBackgroundMode(SWT.INHERIT_FORCE);
+		
 		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
 		_sectionsContainer = new Composite(_scrolledCompo, SWT.NONE);
 		_sectionsContainer.setBackgroundMode(SWT.INHERIT_FORCE);
