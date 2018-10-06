@@ -30,6 +30,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
@@ -56,6 +57,7 @@ public class SceneObjectRenderer {
 	private Map<ObjectModel, float[]> _modelMatrixMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
 	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
+	private Map<Object, Image> _imageCacheMap;
 
 	private boolean _debug;
 	private List<Runnable> _postPaintActions;
@@ -70,6 +72,24 @@ public class SceneObjectRenderer {
 
 		_modelBoundsMap = new HashMap<>();
 		_postPaintActions = new ArrayList<>();
+
+		_imageCacheMap = new HashMap<>();
+	}
+
+	public void dispose() {
+		for (var buffer : _imageCacheMap.values()) {
+			if (!buffer.isDisposed()) {
+				buffer.dispose();
+			}
+		}
+	}
+
+	public void clearImageInCache(Object key) {
+		var buffer = _imageCacheMap.remove(key);
+
+		if (buffer != null) {
+			buffer.dispose();
+		}
 	}
 
 	public void addPostPaintAction(Runnable action) {
@@ -313,8 +333,21 @@ public class SceneObjectRenderer {
 		}
 	}
 
-	private void renderTileSprite(GC gc, TileSpriteModel model) {
+	private Image createImage(int width, int height) {
+		var temp = new Image(_canvas.getDisplay(), 1, 1);
+		var tempData = temp.getImageData();
 
+		var data = new ImageData(width, height, tempData.depth, tempData.palette);
+		data.alphaData = new byte[width * height];
+
+		var img = new Image(_canvas.getDisplay(), data);
+
+		temp.dispose();
+
+		return img;
+	}
+
+	private Image createTileSpriteTexture(TileSpriteModel model) {
 		var assetFrame = TextureComponent.get_frame(model);
 
 		var img = _canvas.loadImage(assetFrame.getImageFile());
@@ -329,6 +362,9 @@ public class SceneObjectRenderer {
 
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
+
+		var buffer = createImage((int) width, (int) height);
+		var gc = new GC(buffer);
 
 		double x = 0;
 		double y = 0;
@@ -347,14 +383,6 @@ public class SceneObjectRenderer {
 		} else if (yoffs < 0) {
 			y = yoffs;
 		}
-
-		// x = x * tileScaleX;
-		// y = y * tileScaleY;
-
-		// TODO: do not do clipping when it is not needed. Or better, do some match and
-		// just paint the portion it needs!
-		// var clipping = gc.getClipping();
-		// gc.setClipping(0, 0, (int) width, (int) height);
 
 		if (frameWidth > 0 && frameHeight > 0) {
 
@@ -390,7 +418,23 @@ public class SceneObjectRenderer {
 			}
 		}
 
-		// gc.setClipping(clipping);
+		gc.dispose();
+
+		return buffer;
+	}
+
+	private void renderTileSprite(GC gc, TileSpriteModel model) {
+		var width = TileSpriteComponent.get_width(model);
+		var height = TileSpriteComponent.get_height(model);
+
+		var buffer = _imageCacheMap.getOrDefault(model, null);
+
+		if (buffer == null) {
+			buffer = createTileSpriteTexture(model);
+			_imageCacheMap.put(model, buffer);
+		}
+
+		gc.drawImage(buffer, 0, 0);
 
 		setObjectBounds(gc, model, 0, 0, width, height);
 

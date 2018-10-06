@@ -209,8 +209,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void dispose() {
 		super.dispose();
 
-		// TODO:
-		// _renderer.dispose();
+		_renderer.dispose();
 	}
 
 	@Override

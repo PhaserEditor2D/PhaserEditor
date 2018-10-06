@@ -37,9 +37,9 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 
 /**
  * @author arian
@@ -234,7 +234,13 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		}
 
+		var renderer = getEditor().getScene().getSceneRenderer();
+		for (var model : getModels()) {
+			renderer.clearImageInCache(model);
+		}
+
 		getEditor().updatePropertyPagesContentWithSelection();
+
 		getEditor().getScene().redraw();
 
 		var after = SceneSnapshotOperation.takeSnapshot(getEditor());
@@ -247,20 +253,34 @@ public class TileSpriteSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = List.of(getModels());
 
+		var renderer = getEditor().getScene().getSceneRenderer();
+
+		// tilePosition
+
 		_tilePositionXText.setText(flatValues_to_String(
 				models.stream().map(model -> TileSpriteComponent.get_tilePositionX((ObjectModel) model))));
 		_tilePositionYText.setText(flatValues_to_String(
 				models.stream().map(model -> TileSpriteComponent.get_tilePositionY((ObjectModel) model))));
 
 		listenFloat(_tilePositionXText, value -> {
+
 			models.forEach(model -> TileSpriteComponent.set_tilePositionX((ObjectModel) model, value));
+			models.forEach(renderer::clearImageInCache);
+
 			getEditor().setDirty(true);
+
 		}, models);
 
 		listenFloat(_tilePositionYText, value -> {
+
 			models.forEach(model -> TileSpriteComponent.set_tilePositionY((ObjectModel) model, value));
+			models.forEach(renderer::clearImageInCache);
+
 			getEditor().setDirty(true);
+
 		}, models);
+
+		// tileScale
 
 		_tileScaleXText.setText(flatValues_to_String(
 				models.stream().map(model -> TileSpriteComponent.get_tileScaleX((ObjectModel) model))));
@@ -268,14 +288,24 @@ public class TileSpriteSection extends ScenePropertySection {
 				models.stream().map(model -> TileSpriteComponent.get_tileScaleY((ObjectModel) model))));
 
 		listenFloat(_tileScaleXText, value -> {
+
 			models.forEach(model -> TileSpriteComponent.set_tileScaleX((ObjectModel) model, value));
+			models.forEach(renderer::clearImageInCache);
+
 			getEditor().setDirty(true);
+
 		}, models);
 
 		listenFloat(_tileScaleYText, value -> {
+
 			models.forEach(model -> TileSpriteComponent.set_tileScaleY((ObjectModel) model, value));
+			models.forEach(renderer::clearImageInCache);
+
 			getEditor().setDirty(true);
+
 		}, models);
+
+		// size
 
 		_widthText.setText(
 				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_width((ObjectModel) model))));
@@ -283,13 +313,21 @@ public class TileSpriteSection extends ScenePropertySection {
 				models.stream().map(model -> TileSpriteComponent.get_height((ObjectModel) model))));
 
 		listenFloat(_widthText, value -> {
+
 			models.forEach(model -> TileSpriteComponent.set_width((ObjectModel) model, value));
+			models.forEach(renderer::clearImageInCache);
+
 			getEditor().setDirty(true);
+
 		}, models);
 
 		listenFloat(_heightText, value -> {
+
 			models.forEach(model -> TileSpriteComponent.set_height((ObjectModel) model, value));
+			models.forEach(renderer::clearImageInCache);
+
 			getEditor().setDirty(true);
+
 		}, models);
 
 	}
