@@ -234,11 +234,13 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		}
 
+		getEditor().updatePropertyPagesContentWithSelection();
 		getEditor().getScene().redraw();
 
 		var after = SceneSnapshotOperation.takeSnapshot(getEditor());
 		getEditor()
 				.executeOperation(new SceneSnapshotOperation(before, after, "Reset tile sprite size to texture size."));
+
 	}
 
 	@Override
