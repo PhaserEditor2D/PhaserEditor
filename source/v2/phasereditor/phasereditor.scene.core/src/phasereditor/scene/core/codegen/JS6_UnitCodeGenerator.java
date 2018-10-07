@@ -75,6 +75,7 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 
 		for (var memberDecl : clsDecl.getMembers()) {
 			generateMemberDecl(memberDecl);
+			line();
 		}
 		
 		closeIndent("}");

@@ -84,6 +84,7 @@ public class SceneCodeBuilder {
 
 		for (var child : ParentComponent.get_children(model)) {
 			MethodCallDom methodCall = null;
+			
 			if (child instanceof TileSpriteModel) {
 				methodCall = buildCreateTileSprite(methodDecl, (TileSpriteModel) child);
 			} else if (child instanceof SpriteModel) {
@@ -96,12 +97,61 @@ public class SceneCodeBuilder {
 				assignToVar = buildOrigin(methodDecl, child) || assignToVar;
 			}
 
+			if (child instanceof TransformComponent) {
+				assignToVar = buildScale(methodDecl, child) || assignToVar;
+			}
+
+			if (child instanceof TransformComponent) {
+				assignToVar = buildAngle(methodDecl, child) || assignToVar;
+			}
+
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(EditorComponent.get_editorName(child));
 			}
+			
+			methodDecl.getInstructions().add(new RawCode(""));
+			
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildAngle(MethodDeclDom methodDecl, ObjectModel model) {
+		var a = TransformComponent.get_angle(model);
+
+		if (a == TransformComponent.angle_default) {
+			return false;
+		}
+
+		var name = EditorComponent.get_editorName(model);
+		var call = new MethodCallDom("setAngle", name);
+
+		call.arg(TransformComponent.get_angle(model));
+
+		methodDecl.getInstructions().add(call);
+
+		return true;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildScale(MethodDeclDom methodDecl, ObjectModel model) {
+		var x = TransformComponent.get_scaleX(model);
+		var y = TransformComponent.get_scaleY(model);
+
+		if (x == TransformComponent.scaleX_default && y == TransformComponent.scaleY_default) {
+			return false;
+		}
+
+		var name = EditorComponent.get_editorName(model);
+		var call = new MethodCallDom("setScale", name);
+
+		call.arg(TransformComponent.get_scaleX(model));
+		call.arg(TransformComponent.get_scaleY(model));
+
+		methodDecl.getInstructions().add(call);
+
+		return true;
 	}
 
 	@SuppressWarnings("static-method")
