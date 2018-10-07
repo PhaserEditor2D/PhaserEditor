@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core.codegen;
 
+import java.util.List;
+
 import org.eclipse.swt.graphics.RGB;
 
 /**
@@ -31,7 +33,6 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	private final StringBuilder _sb;
 	private String _replace;
 	private int _indent;
-	
 
 	public BaseCodeGenerator() {
 		_sb = new StringBuilder();
@@ -65,7 +66,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 
 		return defaultContent;
 	}
-	
+
 	public String getReplaceContent() {
 		return _replace;
 	}
@@ -91,7 +92,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 				return;
 			}
 		}
-		
+
 		append(openTag);
 		append(content);
 		append(closeTag);
@@ -102,14 +103,14 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		_sb.delete(start, end);
 		return str;
 	}
-	
+
 	public void trim(Runnable run) {
 		int a = length();
 		run.run();
 		int b = length();
-		
+
 		String str = _sb.substring(a, b);
-		
+
 		if (str.trim().length() == 0) {
 			_sb.delete(a, b);
 		}
@@ -117,6 +118,15 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 
 	public void append(String str) {
 		_sb.append(str);
+	}
+
+	public void join(List<String> elems) {
+		for (var i = 0; i < elems.size(); i++) {
+			if (i > 0) {
+				append(", ");
+			}
+			append(elems.get(i));
+		}
 	}
 
 	public void line() {
@@ -128,11 +138,11 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		append("\n");
 		append(getIndentTabs());
 	}
-	
-	public static String escapeStringLiterals(String text) {		
-		return text.replace("\\", "\\\\").replace("\r\n", "\n").replace("\n", "\\n").replace("'", "\\'").replace("\"", "\\\"");
+
+	public static String escapeStringLiterals(String text) {
+		return text.replace("\\", "\\\\").replace("\r\n", "\n").replace("\n", "\\n").replace("'", "\\'").replace("\"",
+				"\\\"");
 	}
-	
 
 	public void openIndent(String line) {
 		_indent++;

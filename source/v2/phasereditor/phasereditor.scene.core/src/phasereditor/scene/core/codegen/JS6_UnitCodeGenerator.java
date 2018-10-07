@@ -22,6 +22,7 @@
 package phasereditor.scene.core.codegen;
 
 import phasereditor.project.core.codegen.BaseCodeGenerator;
+import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
@@ -105,10 +106,27 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 	private void generateInstr(Object instr) {
 
 		if (instr instanceof RawCode) {
-
 			generateRawCode(((RawCode) instr));
-
+		} else if (instr instanceof MethodCallDom) {
+			generateMethodCall( (MethodCallDom) instr );
 		}
+	}
+
+	private void generateMethodCall(MethodCallDom call) {
+		if (call.getReturnToVar() != null) {
+			append("var ");
+			append(call.getReturnToVar());
+			append(" = ");
+		}
+		
+		append(call.getContextExpr());
+		append(".");
+		append(call.getMethodName());
+		append("(");
+		
+		join(call.getArgs());
+		
+		line(");");
 	}
 
 	private void generateRawCode(RawCode raw) {
