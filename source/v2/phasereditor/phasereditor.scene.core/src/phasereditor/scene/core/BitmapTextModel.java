@@ -52,6 +52,11 @@ public class BitmapTextModel extends ParentModel implements
 		super(TYPE);
 
 		OriginComponent.init(this);
+
+		// by default bitmap text has 0,0 origin
+		OriginComponent.set_originX(this, 0);
+		OriginComponent.set_originY(this, 0);
+
 		TransformComponent.init(this);
 		VisibleComponent.init(this);
 		TextualComponent.init(this);
@@ -62,8 +67,8 @@ public class BitmapTextModel extends ParentModel implements
 	public void write(JSONObject data) {
 		super.write(data);
 
-		data.put(originX_name, OriginComponent.get_originX(this), originX_default);
-		data.put(originY_name, OriginComponent.get_originY(this), originY_default);
+		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
+		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
 
 		data.put(x_name, TransformComponent.get_x(this), x_default);
 		data.put(y_name, TransformComponent.get_y(this), y_default);
@@ -72,7 +77,7 @@ public class BitmapTextModel extends ParentModel implements
 		data.put(angle_name, TransformComponent.get_angle(this), angle_default);
 
 		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
-		
+
 		data.put(text_name, TextualComponent.get_text(this), text_default);
 
 		{
@@ -94,8 +99,9 @@ public class BitmapTextModel extends ParentModel implements
 	public void read(JSONObject data, IProject project) {
 		super.read(data, project);
 
-		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, originX_default));
-		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, originY_default));
+		// origin default at 0,0
+		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, 0));
+		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, 0));
 
 		TransformComponent.set_x(this, (float) data.optDouble(x_name, x_default));
 		TransformComponent.set_y(this, (float) data.optDouble(y_name, y_default));
@@ -106,7 +112,7 @@ public class BitmapTextModel extends ParentModel implements
 		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 
 		TextualComponent.set_text(this, data.optString(text_name, text_default));
-		
+
 		BitmapTextComponent.set_align(this, data.optInt(align_name, align_default));
 		BitmapTextComponent.set_fontSize(this, data.optInt(fontSize_name, fontSize_default));
 

@@ -75,8 +75,8 @@ public class SpriteModel extends ParentModel implements
 		data.put(flipX_name, FlipComponent.get_flipX(this), flipX_default);
 		data.put(flipY_name, FlipComponent.get_flipY(this), flipY_default);
 
-		data.put(originX_name, OriginComponent.get_originX(this), originX_default);
-		data.put(originY_name, OriginComponent.get_originY(this), originY_default);
+		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
+		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
 
 		data.put(x_name, TransformComponent.get_x(this), x_default);
 		data.put(y_name, TransformComponent.get_y(this), y_default);
@@ -105,8 +105,8 @@ public class SpriteModel extends ParentModel implements
 		FlipComponent.set_flipX(this, data.optBoolean(flipX_name, flipX_default));
 		FlipComponent.set_flipY(this, data.optBoolean(flipY_name, flipY_default));
 
-		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, originX_default));
-		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, originY_default));
+		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, OriginComponent.originX_default(this)));
+		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, OriginComponent.originY_default(this)));
 
 		TransformComponent.set_x(this, (float) data.optDouble(x_name, x_default));
 		TransformComponent.set_y(this, (float) data.optDouble(y_name, y_default));

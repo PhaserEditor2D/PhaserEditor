@@ -43,6 +43,7 @@ import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.WorldModel;
+import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
@@ -105,15 +106,19 @@ public class SceneCodeBuilder {
 			var assignToVar = false;
 
 			if (child instanceof OriginComponent) {
-				assignToVar = buildOrigin(methodDecl, child) || assignToVar;
+				assignToVar = buildOriginProps(methodDecl, child) || assignToVar;
 			}
 
 			if (child instanceof TransformComponent) {
-				assignToVar = buildScale(methodDecl, child) || assignToVar;
+				assignToVar = buildScaleProps(methodDecl, child) || assignToVar;
 			}
 
 			if (child instanceof TransformComponent) {
-				assignToVar = buildAngle(methodDecl, child) || assignToVar;
+				assignToVar = buildAngleProps(methodDecl, child) || assignToVar;
+			}
+
+			if (child instanceof BitmapTextComponent) {
+				assignToVar = buildAlignProp(methodDecl, child) || assignToVar;
 			}
 
 			if (assignToVar && methodCall != null) {
@@ -125,6 +130,25 @@ public class SceneCodeBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildAlignProp(MethodDeclDom methodDecl, ObjectModel model) {
+		var align = BitmapTextComponent.get_align(model);
+
+		if (align == BitmapTextComponent.align_default) {
+			return false;
+		}
+
+		var name = EditorComponent.get_editorName(model);
+
+		var assign = new AssignPropertyDom("align", name);
+
+		assign.value(align);
+
+		methodDecl.getInstructions().add(assign);
+
+		return true;
 	}
 
 	@SuppressWarnings("static-method")
@@ -141,7 +165,7 @@ public class SceneCodeBuilder {
 		} else {
 			call.argLiteral(asset.getKey());
 		}
-		
+
 		call.argLiteral(TextualComponent.get_text(model));
 		call.arg(BitmapTextComponent.get_fontSize(model));
 		call.arg(BitmapTextComponent.get_align(model));
@@ -152,7 +176,7 @@ public class SceneCodeBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private boolean buildAngle(MethodDeclDom methodDecl, ObjectModel model) {
+	private boolean buildAngleProps(MethodDeclDom methodDecl, ObjectModel model) {
 		var a = TransformComponent.get_angle(model);
 
 		if (a == TransformComponent.angle_default) {
@@ -162,7 +186,7 @@ public class SceneCodeBuilder {
 		var name = EditorComponent.get_editorName(model);
 		var call = new MethodCallDom("setAngle", name);
 
-		call.arg(TransformComponent.get_angle(model));
+		call.arg(a);
 
 		methodDecl.getInstructions().add(call);
 
@@ -170,7 +194,7 @@ public class SceneCodeBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private boolean buildScale(MethodDeclDom methodDecl, ObjectModel model) {
+	private boolean buildScaleProps(MethodDeclDom methodDecl, ObjectModel model) {
 		var x = TransformComponent.get_scaleX(model);
 		var y = TransformComponent.get_scaleY(model);
 
@@ -190,12 +214,15 @@ public class SceneCodeBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private boolean buildOrigin(MethodDeclDom methodDecl, ObjectModel model) {
+	private boolean buildOriginProps(MethodDeclDom methodDecl, ObjectModel model) {
 
 		var x = OriginComponent.get_originX(model);
 		var y = OriginComponent.get_originY(model);
 
-		if (x == OriginComponent.originX_default && y == OriginComponent.originY_default) {
+		var x_default = OriginComponent.originX_default(model);
+		var y_default = OriginComponent.originY_default(model);
+
+		if (x == x_default && y == y_default) {
 			return false;
 		}
 

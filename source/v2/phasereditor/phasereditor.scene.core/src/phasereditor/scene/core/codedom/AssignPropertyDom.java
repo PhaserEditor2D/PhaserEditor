@@ -19,55 +19,48 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core;
+package phasereditor.scene.core.codedom;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
-public interface OriginComponent {
+public class AssignPropertyDom {
+	private String _propertyName;
+	private String _propertyValueExpr;
+	private String _contextExpr;
 
-	// origin
-	static String originX_name = "originX";
-	static String originY_name = "originY";
-
-	static float originX_default(ObjectModel obj) {
-
-		if (obj instanceof BitmapTextModel) {
-			return 0;
-		}
-
-		return .5f;
+	public AssignPropertyDom(String propertyName, String contextExpr) {
+		_propertyName = propertyName;
+		_contextExpr = contextExpr;
 	}
 
-	static float originY_default(ObjectModel obj) {
-		if (obj instanceof BitmapTextModel) {
-			return 0;
-		}
-
-		return .5f;
+	public void value(String expr) {
+		_propertyValueExpr = expr;
 	}
 
-	static float get_originX(ObjectModel obj) {
-		return (float) obj.get("originX");
+	public void valueLiteral(String expr) {
+		_propertyValueExpr = "'" + expr.replace("'", "\\\\'").replaceAll("\\R", "\\\\n") + "'";
 	}
 
-	static void set_originX(ObjectModel obj, float originX) {
-		obj.put("originX", originX);
+	public void value(float n) {
+		_propertyValueExpr = Float.toString(n);
 	}
 
-	static float get_originY(ObjectModel obj) {
-		return (float) obj.get("originY");
+	public void value(int n) {
+		_propertyValueExpr = Integer.toString(n);
 	}
 
-	static void set_originY(ObjectModel obj, float originY) {
-		obj.put("originY", originY);
+	public String getPropertyName() {
+		return _propertyName;
 	}
 
-	static void init(ObjectModel obj) {
-		set_originX(obj, originX_default(obj));
-		set_originY(obj, originY_default(obj));
+	public String getContextExpr() {
+		return _contextExpr;
+	}
+
+	public String getPropertyValueExpr() {
+		return _propertyValueExpr;
 	}
 
 }

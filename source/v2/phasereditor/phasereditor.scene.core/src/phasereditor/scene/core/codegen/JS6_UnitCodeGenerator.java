@@ -23,6 +23,7 @@ package phasereditor.scene.core.codegen;
 
 import phasereditor.project.core.codegen.BaseCodeGenerator;
 import phasereditor.scene.core.codedom.MethodCallDom;
+import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
@@ -77,7 +78,7 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 			generateMemberDecl(memberDecl);
 			line();
 		}
-		
+
 		closeIndent("}");
 	}
 
@@ -95,7 +96,6 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 
 		line("{");
 		openIndent();
-		
 
 		for (var instr : methodDecl.getInstructions()) {
 			generateInstr(instr);
@@ -107,10 +107,28 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 	private void generateInstr(Object instr) {
 
 		if (instr instanceof RawCode) {
+
 			generateRawCode(((RawCode) instr));
+
 		} else if (instr instanceof MethodCallDom) {
-			generateMethodCall( (MethodCallDom) instr );
+
+			generateMethodCall((MethodCallDom) instr);
+
+		} else if (instr instanceof AssignPropertyDom) {
+
+			generateAssignProperty((AssignPropertyDom) instr);
+
 		}
+	}
+
+	private void generateAssignProperty(AssignPropertyDom assign) {
+		append(assign.getContextExpr());
+		append(".");
+		append(assign.getPropertyName());
+		append(" = ");
+		append(assign.getPropertyValueExpr());
+		append(";");
+		line();
 	}
 
 	private void generateMethodCall(MethodCallDom call) {
@@ -119,14 +137,14 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 			append(call.getReturnToVar());
 			append(" = ");
 		}
-		
+
 		append(call.getContextExpr());
 		append(".");
 		append(call.getMethodName());
 		append("(");
-		
+
 		join(call.getArgs());
-		
+
 		line(");");
 	}
 
@@ -138,6 +156,6 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 
 		for (var line : lines) {
 			line(line);
-		}		
+		}
 	}
 }

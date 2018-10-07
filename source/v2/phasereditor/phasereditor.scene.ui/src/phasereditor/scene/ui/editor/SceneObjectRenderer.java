@@ -361,16 +361,17 @@ public class SceneObjectRenderer {
 					size[1] = Math.max(y + srcH, size[1]);
 				}
 			};
+
 			var args = new RenderArgs(TextualComponent.get_text(textModel));
 
 			// first pass
-			
+
 			fontModel.render(args, renderer);
 
 			// second pass
-			
+
 			fontModel.render(args, renderer);
-			
+
 			setObjectBounds(gc, textModel, 0, 0, size[0], size[1]);
 
 		} catch (Exception e) {
