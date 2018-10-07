@@ -291,6 +291,20 @@ public class SceneObjectRenderer {
 			}
 		}
 
+		// origin
+
+		if (objModel instanceof OriginComponent) {
+
+			var originX = OriginComponent.get_originX(objModel);
+			var originY = OriginComponent.get_originY(objModel);
+
+			var size = getTextureSize(objModel);
+
+			double x = -size[0] * originX;
+			double y = -size[1] * originY;
+			tx.translate((float) x, (float) y);
+		}
+
 		if (objModel instanceof BitmapTextModel) {
 
 			renderBitmapText(gc, tx2, (BitmapTextModel) objModel);
@@ -315,6 +329,9 @@ public class SceneObjectRenderer {
 	}
 
 	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel textModel) {
+		
+		setObjectTransform(gc, tx, textModel);
+		
 		var fontModel = textModel.createFontModel();
 
 		var asset = BitmapTextComponent.get_font(textModel);
@@ -355,19 +372,6 @@ public class SceneObjectRenderer {
 	}
 
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
-		{
-			// origin
-
-			var originX = OriginComponent.get_originX(model);
-			var originY = OriginComponent.get_originY(model);
-
-			var size = getTextureSize(model);
-
-			double x = -size[0] * originX;
-			double y = -size[1] * originY;
-			tx.translate((float) x, (float) y);
-		}
-
 		setObjectTransform(gc, tx, model);
 
 		if (model instanceof TileSpriteModel) {
