@@ -19,62 +19,39 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core.codedom;
+package phasereditor.scene.ui.editor.properties;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import phasereditor.ui.properties.FormPropertyPage;
 
 /**
  * @author arian
  *
  */
-public class MethodCallDom {
+public class BitmapTextSection extends ScenePropertySection {
 
-	private String _methodName;
-	private String _contextExpr;
-	private List<String> _args;
-	private String _returnToVar;
-
-	public MethodCallDom(String methodName, String contextExpr) {
-		super();
-		_methodName = methodName;
-		_contextExpr = contextExpr;
-		_args = new ArrayList<>();
-	}
-	
-	public String getReturnToVar() {
-		return _returnToVar;
-	}
-	
-	public void setReturnToVar(String returnToVar) {
-		_returnToVar = returnToVar;
+	public BitmapTextSection(FormPropertyPage page) {
+		super("BitmapText", page);
 	}
 
-	public void arg(String expr) {
-		_args.add(expr);
+	@Override
+	public boolean canEdit(Object obj) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	public void argLiteral(String expr) {
-		_args.add("'" + expr.replace("'", "\\\\'").replaceAll("\\R", "\\\\n") + "'");
+	@Override
+	public Control createContent(Composite parent) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public void arg(float n) {
-		_args.add(Float.toString(n));
+	@Override
+	public void update_UI_from_Model() {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void arg(int n) {
-		_args.add(Integer.toString(n));
-	}
-
-	public String getMethodName() {
-		return _methodName;
-	}
-
-	public String getContextExpr() {
-		return _contextExpr;
-	}
-
-	public List<String> getArgs() {
-		return _args;
-	}
 }
