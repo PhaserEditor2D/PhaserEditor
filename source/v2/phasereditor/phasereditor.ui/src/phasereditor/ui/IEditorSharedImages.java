@@ -88,6 +88,11 @@ public interface IEditorSharedImages {
 	String IMG_APPLICATION_TILE = "icons/application_view_tile.png";
 	String IMG_FONT = "icons/font.png";
 	String IMG_TEXT_ABC = "icons/text_abc.png";
+	
+	String IMG_TEXT_ALIGN_LEFT = "icons/text_align_left.png";
+	String IMG_TEXT_ALIGN_CENTER = "icons/text_align_center.png";
+	String IMG_TEXT_ALIGN_RIGHT = "icons/text_align_right.png";
+	
 	String IMG_TILED = "icons/tiled.png";
 	String IMG_SHAPE_FLIP_HORIZONTAL = "icons/shape_flip_horizontal.png";
 	String IMG_SHAPE_FLIP_VERTICAL = "icons/shape_flip_vertical.png";
