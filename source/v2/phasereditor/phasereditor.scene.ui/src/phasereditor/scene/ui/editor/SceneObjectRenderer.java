@@ -35,6 +35,10 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.bmpfont.core.BitmapFontRenderer;
+import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
+import phasereditor.scene.core.BitmapTextComponent;
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
@@ -42,6 +46,7 @@ import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
+import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
@@ -286,7 +291,11 @@ public class SceneObjectRenderer {
 			}
 		}
 
-		if (objModel instanceof SpriteModel) {
+		if (objModel instanceof BitmapTextModel) {
+
+			renderBitmapText(gc, tx2, (BitmapTextModel) objModel);
+
+		} else if (objModel instanceof SpriteModel) {
 
 			renderSprite(gc, tx2, (SpriteModel) objModel);
 
@@ -303,6 +312,46 @@ public class SceneObjectRenderer {
 			tx2.dispose();
 		}
 
+	}
+
+	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel textModel) {
+		var fontModel = textModel.createFontModel();
+
+		var asset = BitmapTextComponent.get_font(textModel);
+
+		var img = loadImage(asset.getTextureFile());
+
+		double scale = (double) BitmapTextComponent.get_fontSize(textModel) / (double) fontModel.getInfoSize();
+
+		var tx2 = newTx(gc, tx);
+		tx2.scale((float) scale, (float) scale);
+
+		setObjectTransform(gc, tx2, textModel);
+
+		try {
+
+			int[] size = new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE };
+
+			fontModel.render(new RenderArgs(TextualComponent.get_text(textModel)), new BitmapFontRenderer() {
+
+				@Override
+				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+					size[0] = Math.max(x + srcW, size[0]);
+					size[1] = Math.max(y + srcH, size[1]);
+				}
+
+			});
+
+			setObjectBounds(gc, textModel, 0, 0, size[0], size[1]);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		tx2.dispose();
+
+		gc.setTransform(tx);
 	}
 
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
@@ -453,16 +502,18 @@ public class SceneObjectRenderer {
 
 		// TODO: implement the rest of the models
 
-		if (model instanceof TileSpriteModel) {
+		if (model instanceof BitmapTextModel) {
+
+			return getBitmapTextSize((BitmapTextModel) model);
+
+		} else if (model instanceof TileSpriteModel) {
 			return new int[] {
 
 					(int) TileSpriteComponent.get_width(model),
 
 					(int) TileSpriteComponent.get_height(model) };
 
-		}
-
-		if (model instanceof TextureComponent) {
+		} else if (model instanceof TextureComponent) {
 
 			var frame = TextureComponent.get_frame(model);
 
@@ -472,6 +523,31 @@ public class SceneObjectRenderer {
 		}
 
 		return new int[] { 0, 0 };
+	}
+
+	private static int[] getBitmapTextSize(BitmapTextModel textModel) {
+
+		var fontModel = textModel.createFontModel();
+
+		double scale = (double) BitmapTextComponent.get_fontSize(textModel) / (double) fontModel.getInfoSize();
+
+		int[] size = new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE };
+
+		fontModel.render(new RenderArgs(TextualComponent.get_text(textModel)), new BitmapFontRenderer() {
+
+			@Override
+			public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+				size[0] = Math.max(x + srcW, size[0]);
+				size[1] = Math.max(y + srcH, size[1]);
+			}
+
+		});
+
+		size[0] = (int) (size[0] * scale);
+		size[1] = (int) (size[1] * scale);
+
+		return size;
+
 	}
 
 	private void renderTexture(GC gc, ObjectModel model, IAssetFrameModel assetFrame) {

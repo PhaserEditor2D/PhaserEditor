@@ -87,6 +87,8 @@ public class SceneModel {
 		case TileSpriteModel.TYPE:
 			return new TileSpriteModel();
 
+		case BitmapTextModel.TYPE:
+			return new BitmapTextModel();
 		}
 
 		return null;

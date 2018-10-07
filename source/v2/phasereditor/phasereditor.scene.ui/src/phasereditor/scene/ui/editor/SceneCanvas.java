@@ -51,14 +51,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.scene.core.BitmapTextComponent;
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
+import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
@@ -154,6 +158,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			}
 
 			if (obj instanceof IAssetFrameModel) {
+
 				var frame = (IAssetFrameModel) obj;
 
 				var sprite = new SpriteModel();
@@ -168,6 +173,27 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				TextureComponent.set_frame(sprite, (IAssetFrameModel) obj);
 
 				newModels.add(sprite);
+
+			} else if (obj instanceof BitmapFontAssetModel) {
+
+				var asset = (BitmapFontAssetModel) obj;
+
+				var textModel = new BitmapTextModel();
+
+				var name = nameComputer.newName(asset.getKey());
+
+				EditorComponent.set_editorName(textModel, name);
+
+				TransformComponent.set_x(textModel, modelX);
+				TransformComponent.set_y(textModel, modelY);
+
+				BitmapTextComponent.set_font(textModel, asset);
+				TextualComponent.set_text(textModel, "BitmapText");
+
+				textModel.updateSizeFromBitmapFont();
+
+				newModels.add(textModel);
+
 			}
 		}
 
