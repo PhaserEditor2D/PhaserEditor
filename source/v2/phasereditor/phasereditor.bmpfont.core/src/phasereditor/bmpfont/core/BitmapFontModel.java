@@ -478,7 +478,7 @@ public class BitmapFontModel {
 		}
 
 		String text = args.getText();
-		text = text.replace("\r\n", "\n").replace("\r", "\n");
+		text = text.replaceAll("\\R", "\n");
 
 		String normalText = "";
 
@@ -524,11 +524,11 @@ public class BitmapFontModel {
 				}
 
 				CharTag charTag = _chars.get(c);
-				
+
 				if (charTag == null) {
-					charTag = _chars.get((int)' ');
+					charTag = _chars.get((int) ' ');
 				}
-				
+
 				if (charTag == null) {
 					c = _chars.keySet().iterator().next();
 					charTag = _chars.get(c);
@@ -626,7 +626,15 @@ public class BitmapFontModel {
 
 		// render lines
 
-		lines.forEach(line -> line.forEach(c -> renderer.render(c.c, c.x, c.y, c.srcX, c.srcY, c.srcW, c.srcH)));
+		renderer.renderStart();
+
+		lines.forEach(line -> {
+			renderer.lineStart();
+			line.forEach(c -> renderer.render(c.c, c.x, c.y, c.srcX, c.srcY, c.srcW, c.srcH));
+			renderer.lineEnd();
+		});
+
+		renderer.renderEnd();
 	}
 
 	public static class MetricsRenderer implements BitmapFontRenderer {
@@ -651,6 +659,94 @@ public class BitmapFontModel {
 
 		public int getHeight() {
 			return _height;
+		}
+
+	}
+
+	public static abstract class AlignRenderer implements BitmapFontRenderer {
+		private List<Integer> _linesWidth;
+		private int _width;
+		private int _maxWidth;
+		private int _pass;
+		private int _line;
+		private int _align;
+
+		public AlignRenderer(int align) {
+			_align = align;
+
+			_linesWidth = new ArrayList<>();
+			_pass = 0;
+			_maxWidth = 0;
+		}
+
+		@Override
+		public void renderStart() {
+			_line = 0;
+		}
+
+		@Override
+		public void renderEnd() {
+			if (_pass == 0) {
+				_pass = 1;
+			}
+		}
+
+		@Override
+		public void lineStart() {
+			_width = 0;
+		}
+
+		@Override
+		public void lineEnd() {
+			switch (_pass) {
+			case 0:
+				_linesWidth.add(_width);
+				_maxWidth = Math.max(_maxWidth, _width);
+				break;
+			case 1:
+				_line++;
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public final void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+			switch (_pass) {
+			case 0:
+				_width = x + srcW;
+				break;
+			case 1:
+				var lineWidth = _linesWidth.get(_line);
+				var margin = 0;
+
+				switch (_align) {
+				case 0:
+					margin = 0;
+					break;
+				case 1:
+					margin = (_maxWidth - lineWidth) / 2;
+					break;
+				case 2:
+					margin = _maxWidth - lineWidth;
+					break;
+
+				default:
+					break;
+				}
+
+				renderAlign(c, x + margin, y, srcX, srcY, srcW, srcH);
+				break;
+			default:
+				break;
+			}
+		}
+
+		public abstract void renderAlign(char c, int x, int y, int srcX, int srcY, int srcW, int srcH);
+
+		public List<Integer> getLinesWidth() {
+			return _linesWidth;
 		}
 
 	}

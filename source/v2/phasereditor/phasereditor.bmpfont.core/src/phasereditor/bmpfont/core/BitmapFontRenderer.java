@@ -27,4 +27,20 @@ package phasereditor.bmpfont.core;
  */
 public interface BitmapFontRenderer {
 	public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH);
+
+	default void lineStart() {
+		// nothing
+	}
+
+	default void lineEnd() {
+		// nothing
+	}
+
+	default void renderStart() {
+		// nothing
+	}
+	
+	default void renderEnd() {
+		// nothing
+	}
 }
