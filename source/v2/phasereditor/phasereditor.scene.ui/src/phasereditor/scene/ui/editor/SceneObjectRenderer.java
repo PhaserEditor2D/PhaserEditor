@@ -31,7 +31,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
@@ -315,8 +314,8 @@ public class SceneObjectRenderer {
 
 			var size = getTextureSize(model);
 
-			double x = -size.x * originX;
-			double y = -size.y * originY;
+			double x = -size[0] * originX;
+			double y = -size[1] * originY;
 			tx.translate((float) x, (float) y);
 		}
 
@@ -450,9 +449,18 @@ public class SceneObjectRenderer {
 		return _canvas.loadImage(file);
 	}
 
-	private static Point getTextureSize(ObjectModel model) {
+	private static int[] getTextureSize(ObjectModel model) {
 
 		// TODO: implement the rest of the models
+
+		if (model instanceof TileSpriteModel) {
+			return new int[] {
+
+					(int) TileSpriteComponent.get_width(model),
+
+					(int) TileSpriteComponent.get_height(model) };
+
+		}
 
 		if (model instanceof TextureComponent) {
 
@@ -460,10 +468,10 @@ public class SceneObjectRenderer {
 
 			var fd = frame.getFrameData();
 
-			return fd.srcSize;
+			return new int[] { fd.srcSize.x, fd.srcSize.y };
 		}
 
-		return new Point(0, 0);
+		return new int[] { 0, 0 };
 	}
 
 	private void renderTexture(GC gc, ObjectModel model, IAssetFrameModel assetFrame) {
