@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.toList;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -34,6 +38,9 @@ import org.json.JSONTokener;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.WorldModel;
+import phasereditor.scene.core.codegen.JS6_UnitCodeGenerator;
+import phasereditor.scene.core.codegen.SceneCodeBuilder;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -91,6 +98,54 @@ public class SceneEditor extends EditorPart {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+
+		generateCode(monitor);
+
+	}
+
+	private void generateCode(IProgressMonitor monitor) {
+		try {
+			IFile sceneFile = getEditorInput().getFile();
+
+			var codePath = sceneFile.getProjectRelativePath().removeFileExtension().addFileExtension("js");
+
+			var codeFile = sceneFile.getProject().getFile(codePath);
+
+			Charset charset;
+
+			if (codeFile.exists()) {
+				charset = Charset.forName(codeFile.getCharset());
+			} else {
+				charset = Charset.forName("UTF-8");
+			}
+
+			String replace = null;
+
+			if (codeFile.exists()) {
+				byte[] bytes = Files.readAllBytes(codeFile.getLocation().makeAbsolute().toFile().toPath());
+				replace = new String(bytes, charset);
+			}
+
+			var builder = new SceneCodeBuilder(codeFile);
+			var unitDom = builder.build((WorldModel) getSceneModel().getRootObject());
+
+			var codeGenerator = new JS6_UnitCodeGenerator(unitDom);
+			var code = codeGenerator.generate(replace);
+
+			ByteArrayInputStream stream = new ByteArrayInputStream(code.getBytes(charset));
+			if (codeFile.exists()) {
+				codeFile.setContents(stream, IResource.NONE, monitor);
+			} else {
+				codeFile.create(stream, false, monitor);
+				codeFile.setCharset(charset.name(), monitor);
+			}
+			codeFile.refreshLocal(1, null);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	@Override
