@@ -30,11 +30,14 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.scene.core.BitmapTextComponent;
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SpriteModel;
+import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
@@ -84,11 +87,19 @@ public class SceneCodeBuilder {
 
 		for (var child : ParentComponent.get_children(model)) {
 			MethodCallDom methodCall = null;
-			
+
 			if (child instanceof TileSpriteModel) {
+
 				methodCall = buildCreateTileSprite(methodDecl, (TileSpriteModel) child);
+
+			} else if (child instanceof BitmapTextModel) {
+
+				methodCall = buildCreateBitmapText(methodDecl, (BitmapTextModel) child);
+
 			} else if (child instanceof SpriteModel) {
+
 				methodCall = buildCreateSprite(methodDecl, (SpriteModel) child);
+
 			}
 
 			var assignToVar = false;
@@ -108,12 +119,36 @@ public class SceneCodeBuilder {
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(EditorComponent.get_editorName(child));
 			}
-			
+
 			methodDecl.getInstructions().add(new RawCode(""));
-			
+
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model) {
+		var call = new MethodCallDom("bitmapText", "this.add");
+
+		call.arg((int) TransformComponent.get_x(model));
+		call.arg((int) TransformComponent.get_y(model));
+
+		var asset = BitmapTextComponent.get_font(model);
+
+		if (asset == null) {
+			call.arg("null");
+		} else {
+			call.argLiteral(asset.getKey());
+		}
+		
+		call.argLiteral(TextualComponent.get_text(model));
+		call.arg(BitmapTextComponent.get_fontSize(model));
+		call.arg(BitmapTextComponent.get_align(model));
+
+		methodDecl.getInstructions().add(call);
+
+		return call;
 	}
 
 	@SuppressWarnings("static-method")

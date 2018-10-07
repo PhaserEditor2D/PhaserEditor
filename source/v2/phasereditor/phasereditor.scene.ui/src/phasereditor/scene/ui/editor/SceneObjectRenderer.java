@@ -302,7 +302,7 @@ public class SceneObjectRenderer {
 
 			double x = -size[0] * originX;
 			double y = -size[1] * originY;
-			tx.translate((float) x, (float) y);
+			tx2.translate((float) x, (float) y);
 		}
 
 		if (objModel instanceof BitmapTextModel) {
