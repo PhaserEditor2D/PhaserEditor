@@ -130,4 +130,14 @@ public class SpriteModel extends ParentModel implements
 
 	}
 
+	@Override
+	public boolean allowMorphTo(String type) {
+
+		if (TileSpriteModel.TYPE.equals(type)) {
+			return true;
+		}
+
+		return false;
+	}
+
 }

@@ -89,5 +89,15 @@ public class TileSpriteModel extends SpriteModel implements
 			TileSpriteComponent.set_height(this, size.y);
 		}
 	}
+	
+	@Override
+	public boolean allowMorphTo(String type) {
+
+		if (SpriteModel.TYPE.equals(type)) {
+			return true;
+		}
+
+		return false;
+	}
 
 }

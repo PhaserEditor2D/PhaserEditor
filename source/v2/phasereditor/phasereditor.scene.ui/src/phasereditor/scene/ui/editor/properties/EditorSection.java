@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.json.JSONObject;
 
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
@@ -161,17 +162,29 @@ public class EditorSection extends ScenePropertySection {
 		}
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "boxing" })
 	private void populateTypeList(SelectionEvent e) {
+		var models = List.of(getModels());
+
 		var manager = new MenuManager();
 
-		for (var type : new String[] { SpriteModel.TYPE, TileSpriteModel.TYPE }) {
-			manager.add(new MorphAction(type));
+		for (var type : new String[] { SpriteModel.TYPE, TileSpriteModel.TYPE, BitmapTextModel.TYPE }) {
+
+			var allow = models.stream()
+
+					.map(m -> ((ObjectModel) m).allowMorphTo(type))
+
+					.reduce(true, (a, b) -> a && b);
+
+			if (allow) {
+				manager.add(new MorphAction(type));
+			}
 		}
 
-		var menu = manager.createContextMenu(_typeBtn);
-		menu.setVisible(true);
-
+		if (manager.getSize() > 0) {
+			var menu = manager.createContextMenu(_typeBtn);
+			menu.setVisible(true);
+		}
 	}
 
 	@Override

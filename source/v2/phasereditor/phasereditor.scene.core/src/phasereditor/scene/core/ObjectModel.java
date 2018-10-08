@@ -97,4 +97,9 @@ public abstract class ObjectModel implements EditorComponent {
 			}
 		}
 	}
+
+	@SuppressWarnings({ "static-method", "unused" })
+	public boolean allowMorphTo(String type) {
+		return false;
+	}
 }
