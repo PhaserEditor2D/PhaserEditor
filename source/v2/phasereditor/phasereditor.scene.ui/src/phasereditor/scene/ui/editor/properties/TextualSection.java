@@ -83,7 +83,12 @@ public class TextualSection extends ScenePropertySection {
 
 		listen(_textText, value -> {
 
-			models.stream().forEach(model -> TextualComponent.set_text((ObjectModel) model, value));
+			var renderer = getEditor().getScene().getSceneRenderer();
+
+			models.stream().forEach(model -> {
+				TextualComponent.set_text((ObjectModel) model, value);
+				renderer.clearImageInCache(model);
+			});
 
 			getEditor().setDirty(true);
 

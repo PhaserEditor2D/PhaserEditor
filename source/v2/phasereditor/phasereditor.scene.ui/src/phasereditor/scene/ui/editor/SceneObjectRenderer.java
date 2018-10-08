@@ -35,6 +35,7 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
@@ -52,6 +53,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.ui.BaseImageCanvas;
 
 /**
  * @author arian
@@ -331,13 +333,7 @@ public class SceneObjectRenderer {
 
 	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel textModel) {
 
-		setObjectTransform(gc, tx, textModel);
-
 		var fontModel = textModel.createFontModel();
-
-		var asset = BitmapTextComponent.get_font(textModel);
-
-		var img = loadImage(asset.getTextureFile());
 
 		double scale = (double) BitmapTextComponent.get_fontSize(textModel) / (double) fontModel.getInfoSize();
 
@@ -346,36 +342,62 @@ public class SceneObjectRenderer {
 
 		setObjectTransform(gc, tx2, textModel);
 
+		var image = _imageCacheMap.get(textModel);
+
+		if (image == null) {
+			image = createBitmapTextImage(gc, textModel, fontModel);
+			_imageCacheMap.put(textModel, image);
+
+		}
+
+		gc.drawImage(image, 0, 0);
+
+		var b = image.getBounds();
+		setObjectBounds(gc, textModel, 0, 0, b.width, b.height);
+		
+		tx2.dispose();
+
+		gc.setTransform(tx);
+	}
+
+	private Image createBitmapTextImage(GC gc, BitmapTextModel textModel, BitmapFontModel fontModel) {
+		var align = BitmapTextComponent.get_align(textModel);
+
+		var args = new RenderArgs(TextualComponent.get_text(textModel));
+		args.setAlign(Align.values()[align]);
+		args.setLetterSpacing(BitmapTextComponent.get_letterSpacing(textModel));
+
+		var metrics = fontModel.metrics(args);
+		var width = metrics.getWidth();
+		var height = metrics.getHeight();
+
+		var buffer = createImage(width, height);
+
+		GC gc2 = new GC(buffer);
+
+		BaseImageCanvas.prepareGC(gc);
+
+		var asset = BitmapTextComponent.get_font(textModel);
+
+		var fontTexture = loadImage(asset.getTextureFile());
+
 		try {
 
-			int[] size = new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE };
-
-			var align = BitmapTextComponent.get_align(textModel);
-
-			var args = new RenderArgs(TextualComponent.get_text(textModel));
-			args.setAlign(Align.values()[align]);
-			args.setLetterSpacing(BitmapTextComponent.get_letterSpacing(textModel));
-
 			fontModel.render(args, new BitmapFontRenderer() {
-				
+
 				@Override
 				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
-					
-					size[0] = Math.max(x + srcW, size[0]);
-					size[1] = Math.max(y + srcH, size[1]);
+					gc2.drawImage(fontTexture, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
 				}
-			} );
-
-			setObjectBounds(gc, textModel, 0, 0, size[0], size[1]);
+			});
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		tx2.dispose();
+		gc2.dispose();
 
-		gc.setTransform(tx);
+		return buffer;
 	}
 
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {

@@ -729,8 +729,13 @@ public class BitmapFontModel {
 	}
 
 	public MetricsRenderer metrics(String text) {
+		RenderArgs args = new RenderArgs(text);
+		return metrics(args);
+	}
+
+	public MetricsRenderer metrics(RenderArgs args) {
 		MetricsRenderer result = new MetricsRenderer();
-		render(new RenderArgs(text), result);
+		render(args, result);
 		return result;
 	}
 

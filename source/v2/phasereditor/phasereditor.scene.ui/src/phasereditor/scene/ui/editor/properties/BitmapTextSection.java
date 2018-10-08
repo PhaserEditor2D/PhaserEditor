@@ -97,6 +97,7 @@ public class BitmapTextSection extends ScenePropertySection {
 			var models = List.of(getModels());
 			models.forEach(model -> {
 				BitmapTextComponent.set_align((ObjectModel) model, _align);
+				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
 			});
 
 			var after = SceneSnapshotOperation.takeSnapshot(getEditor());
@@ -185,6 +186,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			for (var obj : getModels()) {
 				BitmapTextComponent.set_font((ObjectModel) obj, asset);
+				editor.getScene().getSceneRenderer().clearImageInCache(obj);
 			}
 
 			var after = SceneSnapshotOperation.takeSnapshot(editor);
@@ -226,6 +228,8 @@ public class BitmapTextSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = List.of(getModels());
 
+		var renderer = getEditor().getScene().getSceneRenderer();
+
 		_fontSizeText.setText(flatValues_to_String(
 				models.stream().map(model -> BitmapTextComponent.get_fontSize((ObjectModel) model))));
 
@@ -237,9 +241,17 @@ public class BitmapTextSection extends ScenePropertySection {
 			return asset == null ? "<null>" : asset.getKey();
 		})));
 
+		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
+			action.setChecked(flatValues_to_boolean(models.stream()
+					.map(model -> BitmapTextComponent.get_align((ObjectModel) model) == action.getAlign())));
+		}
+
 		listenInt(_fontSizeText, value -> {
 
-			models.stream().forEach(model -> BitmapTextComponent.set_fontSize((ObjectModel) model, value));
+			models.stream().forEach(model -> {
+				BitmapTextComponent.set_fontSize((ObjectModel) model, value);
+				renderer.clearImageInCache(model);
+			});
 
 			getEditor().setDirty(true);
 
@@ -247,16 +259,14 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		listenFloat(_letterSpacingText, value -> {
 
-			models.stream().forEach(model -> BitmapTextComponent.set_letterSpacing((ObjectModel) model, value));
+			models.stream().forEach(model -> {
+				BitmapTextComponent.set_letterSpacing((ObjectModel) model, value);
+				renderer.clearImageInCache(model);
+			});
 
 			getEditor().setDirty(true);
 
 		}, models);
-
-		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
-			action.setChecked(flatValues_to_boolean(models.stream()
-					.map(model -> BitmapTextComponent.get_align((ObjectModel) model) == action.getAlign())));
-		}
 
 	}
 
