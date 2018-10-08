@@ -40,7 +40,7 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.WorldModel;
 import phasereditor.scene.core.codegen.JS6_UnitCodeGenerator;
-import phasereditor.scene.core.codegen.SceneCodeBuilder;
+import phasereditor.scene.core.codegen.SceneCodeDomBuilder;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -126,7 +126,7 @@ public class SceneEditor extends EditorPart {
 				replace = new String(bytes, charset);
 			}
 
-			var builder = new SceneCodeBuilder(codeFile);
+			var builder = new SceneCodeDomBuilder(codeFile);
 			var unitDom = builder.build((WorldModel) getSceneModel().getRootObject());
 
 			var codeGenerator = new JS6_UnitCodeGenerator(unitDom);

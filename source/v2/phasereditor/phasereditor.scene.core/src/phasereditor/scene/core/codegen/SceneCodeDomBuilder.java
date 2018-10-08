@@ -54,11 +54,11 @@ import phasereditor.scene.core.codedom.UnitDom;
  * @author arian
  *
  */
-public class SceneCodeBuilder {
+public class SceneCodeDomBuilder {
 
 	private IFile _file;
 
-	public SceneCodeBuilder(IFile file) {
+	public SceneCodeDomBuilder(IFile file) {
 		_file = file;
 	}
 
@@ -172,8 +172,8 @@ public class SceneCodeBuilder {
 	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model) {
 		var call = new MethodCallDom("bitmapText", "this.add");
 
-		call.arg((int) TransformComponent.get_x(model));
-		call.arg((int) TransformComponent.get_y(model));
+		call.arg(TransformComponent.get_x(model));
+		call.arg(TransformComponent.get_y(model));
 
 		var asset = BitmapTextComponent.get_font(model);
 
@@ -258,8 +258,8 @@ public class SceneCodeBuilder {
 	private MethodCallDom buildCreateSprite(MethodDeclDom methodDecl, SpriteModel model) {
 		var call = new MethodCallDom("sprite", "this.add");
 
-		call.arg((int) TransformComponent.get_x(model));
-		call.arg((int) TransformComponent.get_y(model));
+		call.arg(TransformComponent.get_x(model));
+		call.arg(TransformComponent.get_y(model));
 
 		var frame = TextureComponent.get_frame(model);
 
@@ -275,11 +275,11 @@ public class SceneCodeBuilder {
 
 		var call = new MethodCallDom("tileSprite", "this.add");
 
-		call.arg((int) TransformComponent.get_x(model));
-		call.arg((int) TransformComponent.get_y(model));
+		call.arg(TransformComponent.get_x(model));
+		call.arg(TransformComponent.get_y(model));
 
-		call.arg((int) TileSpriteComponent.get_width(model));
-		call.arg((int) TileSpriteComponent.get_height(model));
+		call.arg(TileSpriteComponent.get_width(model));
+		call.arg(TileSpriteComponent.get_height(model));
 
 		var frame = TextureComponent.get_frame(model);
 
