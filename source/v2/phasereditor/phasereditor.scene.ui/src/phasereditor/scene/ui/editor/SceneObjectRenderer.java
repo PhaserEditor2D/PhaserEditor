@@ -354,7 +354,7 @@ public class SceneObjectRenderer {
 
 			var args = new RenderArgs(TextualComponent.get_text(textModel));
 			args.setAlign(Align.values()[align]);
-			args.setLineSpacing(BitmapTextComponent.get_letterSpacing(textModel));
+			args.setLetterSpacing(BitmapTextComponent.get_letterSpacing(textModel));
 
 			fontModel.render(args, new BitmapFontRenderer() {
 				
