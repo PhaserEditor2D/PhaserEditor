@@ -6,8 +6,12 @@
       <editor
             class="phasereditor.scene.ui.editor.SceneEditor"
             default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
             id="phasereditor.scene.ui.SceneEditor"
             name="Scene Editor">
+         <contentTypeBinding
+               contentTypeId="phasereditor.scene.core.SceneContentType">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension
