@@ -468,46 +468,46 @@ public class BitmapFontModel {
 
 	}
 
+	static class CharRenderInfo {
+		public char c;
+		public int x;
+		public int y;
+		public int srcX;
+		public int srcY;
+		public int srcW;
+		public int srcH;
+		public int x2;
+
+		public CharRenderInfo(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+			super();
+			this.c = c;
+			this.x = x;
+			this.y = y;
+			this.srcX = srcX;
+			this.srcY = srcY;
+			this.srcW = srcW;
+			this.srcH = srcH;
+		}
+
+	}
+
+	static class LineRenderInfo extends ArrayList<CharRenderInfo> {
+
+		private static final long serialVersionUID = 1L;
+
+		private int _pixelLength;
+
+		public void setPixelLength() {
+			_pixelLength = size() == 0 ? 0 : get(size() - 1).x2;
+		}
+
+		public int getPixelLength() {
+			return _pixelLength;
+		}
+
+	}
+	
 	public void render(RenderArgs args, BitmapFontRenderer renderer) {
-
-		class CharRenderInfo {
-			public char c;
-			public int x;
-			public int y;
-			public int srcX;
-			public int srcY;
-			public int srcW;
-			public int srcH;
-			public int x2;
-
-			public CharRenderInfo(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-				super();
-				this.c = c;
-				this.x = x;
-				this.y = y;
-				this.srcX = srcX;
-				this.srcY = srcY;
-				this.srcW = srcW;
-				this.srcH = srcH;
-			}
-
-		}
-
-		class LineRenderInfo extends ArrayList<CharRenderInfo> {
-
-			private static final long serialVersionUID = 1L;
-
-			private int _pixelLength;
-
-			public void setPixelLength() {
-				_pixelLength = size() == 0 ? 0 : get(size() - 1).x2;
-			}
-
-			public int getPixelLength() {
-				return _pixelLength;
-			}
-
-		}
 
 		String text = args.getText();
 		text = text.replaceAll("\\R", "\n");

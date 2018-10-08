@@ -105,6 +105,12 @@ public abstract class FormPropertySection implements IEditorSharedImages {
 		return null;
 	}
 
+	protected static boolean flatValues_to_boolean(Stream<Boolean> values) {
+		Boolean value = flatValues_to_Boolean(values);
+		return value != null && value.booleanValue();
+	}
+
+	
 	@SuppressWarnings({ "boxing", "static-method" })
 	protected void listen(Button check, Consumer<Boolean> listener) {
 

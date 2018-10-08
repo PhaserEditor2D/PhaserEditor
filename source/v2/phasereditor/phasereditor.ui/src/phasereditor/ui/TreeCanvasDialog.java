@@ -1,0 +1,94 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015, 2018 Arian Fornaris
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions: The above copyright notice and this permission
+// notice shall be included in all copies or substantial portions of the
+// Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+package phasereditor.ui;
+
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
+/**
+ * @author arian
+ *
+ */
+public class TreeCanvasDialog extends Dialog {
+
+	private FilteredTreeCanvas _filteredTree;
+	private TreeCanvasViewer _viewer;
+	private Object _input;
+	private Object _result;
+
+	public TreeCanvasDialog(Shell shell) {
+		super(shell);
+
+		setShellStyle(SWT.MAX | SWT.RESIZE | SWT.TITLE | SWT.CLOSE);
+	}
+
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		parent.setLayout(new GridLayout(1, false));
+		_filteredTree = new FilteredTreeCanvas(parent, SWT.BORDER);
+		_filteredTree.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		var tree = _filteredTree.getTree();
+
+		_viewer = createViewer(tree);
+		_viewer.setInput(_input);
+
+		return _filteredTree;
+	}
+
+	@SuppressWarnings("static-method")
+	protected TreeCanvasViewer createViewer(TreeCanvas tree) {
+		return new TreeCanvasViewer(tree);
+	}
+
+	public TreeCanvasViewer getViewer() {
+		return _viewer;
+	}
+	
+	@Override
+	protected Point getInitialSize() {
+		return new Point(480, 320);
+	}
+	
+	public void setInput(Object input) {
+		_input = input;
+	}
+	
+	public Object getInput() {
+		return _input;
+	}
+	
+	public Object getResult() {
+		return _result;
+	}
+	
+	public void setResult(Object result) {
+		_result = result;
+	}
+
+}

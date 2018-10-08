@@ -25,18 +25,32 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.TreeCanvas;
+import phasereditor.ui.TreeCanvasDialog;
+import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
@@ -50,6 +64,7 @@ public class BitmapTextSection extends ScenePropertySection {
 	private AlignAction _alignMiddleAction;
 	private AlignAction _alignRightAction;
 	private Text _letterSpacingText;
+	private Button _fontNameBtn;
 
 	public BitmapTextSection(FormPropertyPage page) {
 		super("Bitmap Text", page);
@@ -103,15 +118,6 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		{
 			var label = new Label(comp, SWT.NONE);
-			label.setText("Font Size");
-
-			_fontSizeText = new Text(comp, SWT.BORDER);
-			_fontSizeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-		}
-
-		{
-			var label = new Label(comp, SWT.NONE);
 			label.setText("Align");
 
 			var manager = new ToolBarManager();
@@ -129,6 +135,24 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		{
 			var label = new Label(comp, SWT.NONE);
+			label.setText("Font Name");
+
+			_fontNameBtn = new Button(comp, SWT.LEFT);
+			_fontNameBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			_fontNameBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::changeFont));
+		}
+
+		{
+			var label = new Label(comp, SWT.NONE);
+			label.setText("Font Size");
+
+			_fontSizeText = new Text(comp, SWT.BORDER);
+			_fontSizeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+		}
+
+		{
+			var label = new Label(comp, SWT.NONE);
 			label.setText("Letter Spacing");
 
 			_letterSpacingText = new Text(comp, SWT.BORDER);
@@ -141,6 +165,62 @@ public class BitmapTextSection extends ScenePropertySection {
 		return comp;
 	}
 
+	private void changeFont(SelectionEvent e) {
+		var dlg = new QuickSelectFontDialog(e.display.getActiveShell());
+
+		var editor = getEditor();
+
+		var project = editor.getEditorInput().getFile().getProject();
+
+		var packs = AssetPackCore.getAssetPackModels(project);
+
+		dlg.setInput(packs.stream().flatMap(pack -> pack.getAssets().stream())
+				.filter(asset -> asset instanceof BitmapFontAssetModel).toArray());
+
+		if (dlg.open() == Window.OK) {
+
+			var before = SceneSnapshotOperation.takeSnapshot(editor);
+
+			var asset = (BitmapFontAssetModel) dlg.getResult();
+
+			for (var obj : getModels()) {
+				BitmapTextComponent.set_font((ObjectModel) obj, asset);
+			}
+
+			var after = SceneSnapshotOperation.takeSnapshot(editor);
+
+			editor.executeOperation(new SceneSnapshotOperation(before, after, "Change bitmap text font."));
+
+			editor.getScene().redraw();
+			editor.setDirty(true);
+		}
+	}
+
+	static class QuickSelectFontDialog extends TreeCanvasDialog {
+
+		public QuickSelectFontDialog(Shell shell) {
+			super(shell);
+		}
+
+		@Override
+		protected TreeCanvasViewer createViewer(TreeCanvas tree) {
+			var viewer = new AssetsTreeCanvasViewer(tree, new AssetsContentProvider(), AssetLabelProvider.GLOBAL_16);
+
+			tree.addMouseListener(MouseListener.mouseDoubleClickAdapter(e -> {
+				setResult(getViewer().getStructuredSelection().getFirstElement());
+				close();
+			}));
+
+			return viewer;
+		}
+
+		@Override
+		protected void createButtonsForButtonBar(Composite parent) {
+			// no buttons
+		}
+
+	}
+
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
@@ -151,6 +231,11 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		_letterSpacingText.setText(flatValues_to_String(
 				models.stream().map(model -> BitmapTextComponent.get_letterSpacing((ObjectModel) model))));
+
+		_fontNameBtn.setText(flatValues_to_String(models.stream().map(model -> {
+			var asset = BitmapTextComponent.get_font((ObjectModel) model);
+			return asset == null ? "<null>" : asset.getKey();
+		})));
 
 		listenInt(_fontSizeText, value -> {
 
@@ -169,7 +254,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}, models);
 
 		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
-			action.setChecked(flatValues_to_Boolean(models.stream()
+			action.setChecked(flatValues_to_boolean(models.stream()
 					.map(model -> BitmapTextComponent.get_align((ObjectModel) model) == action.getAlign())));
 		}
 
