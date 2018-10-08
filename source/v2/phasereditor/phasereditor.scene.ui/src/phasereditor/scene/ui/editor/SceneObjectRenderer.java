@@ -35,9 +35,9 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.bmpfont.core.BitmapFontRenderer;
-import phasereditor.bmpfont.core.BitmapFontModel;
+import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
+import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
@@ -352,25 +352,20 @@ public class SceneObjectRenderer {
 
 			var align = BitmapTextComponent.get_align(textModel);
 
-			var renderer = new BitmapFontModel.AlignRenderer(align) {
+			var args = new RenderArgs(TextualComponent.get_text(textModel));
+			args.setAlign(Align.values()[align]);
+			args.setLineSpacing(BitmapTextComponent.get_letterSpacing(textModel));
 
+			fontModel.render(args, new BitmapFontRenderer() {
+				
 				@Override
-				public void renderAlign(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
 					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+					
 					size[0] = Math.max(x + srcW, size[0]);
 					size[1] = Math.max(y + srcH, size[1]);
 				}
-			};
-
-			var args = new RenderArgs(TextualComponent.get_text(textModel));
-
-			// first pass
-
-			fontModel.render(args, renderer);
-
-			// second pass
-
-			fontModel.render(args, renderer);
+			} );
 
 			setObjectBounds(gc, textModel, 0, 0, size[0], size[1]);
 

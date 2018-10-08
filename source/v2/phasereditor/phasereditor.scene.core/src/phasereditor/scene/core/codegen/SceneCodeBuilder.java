@@ -83,46 +83,44 @@ public class SceneCodeBuilder {
 		return unit;
 	}
 
-	private MethodDeclDom buildCreateMethod(WorldModel model) {
+	private MethodDeclDom buildCreateMethod(WorldModel worldModel) {
 		var methodDecl = new MethodDeclDom("create");
 
-		for (var child : ParentComponent.get_children(model)) {
+		for (var model : ParentComponent.get_children(worldModel)) {
 			MethodCallDom methodCall = null;
 
-			if (child instanceof TileSpriteModel) {
+			if (model instanceof TileSpriteModel) {
 
-				methodCall = buildCreateTileSprite(methodDecl, (TileSpriteModel) child);
+				methodCall = buildCreateTileSprite(methodDecl, (TileSpriteModel) model);
 
-			} else if (child instanceof BitmapTextModel) {
+			} else if (model instanceof BitmapTextModel) {
 
-				methodCall = buildCreateBitmapText(methodDecl, (BitmapTextModel) child);
+				methodCall = buildCreateBitmapText(methodDecl, (BitmapTextModel) model);
 
-			} else if (child instanceof SpriteModel) {
+			} else if (model instanceof SpriteModel) {
 
-				methodCall = buildCreateSprite(methodDecl, (SpriteModel) child);
+				methodCall = buildCreateSprite(methodDecl, (SpriteModel) model);
 
 			}
 
 			var assignToVar = false;
 
-			if (child instanceof OriginComponent) {
-				assignToVar = buildOriginProps(methodDecl, child) || assignToVar;
+			if (model instanceof OriginComponent) {
+				assignToVar = buildOriginProps(methodDecl, model) || assignToVar;
 			}
 
-			if (child instanceof TransformComponent) {
-				assignToVar = buildScaleProps(methodDecl, child) || assignToVar;
+			if (model instanceof TransformComponent) {
+				assignToVar = buildScaleProps(methodDecl, model) || assignToVar;
+				assignToVar = buildAngleProps(methodDecl, model) || assignToVar;
 			}
 
-			if (child instanceof TransformComponent) {
-				assignToVar = buildAngleProps(methodDecl, child) || assignToVar;
-			}
-
-			if (child instanceof BitmapTextComponent) {
-				assignToVar = buildAlignProp(methodDecl, child) || assignToVar;
+			if (model instanceof BitmapTextComponent) {
+				assignToVar = buildAlignProp(methodDecl, model) || assignToVar;
+				assignToVar = buildLetterSpacingProp(methodDecl, model) || assignToVar;
 			}
 
 			if (assignToVar && methodCall != null) {
-				methodCall.setReturnToVar(EditorComponent.get_editorName(child));
+				methodCall.setReturnToVar(EditorComponent.get_editorName(model));
 			}
 
 			methodDecl.getInstructions().add(new RawCode(""));
@@ -130,6 +128,25 @@ public class SceneCodeBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildLetterSpacingProp(MethodDeclDom methodDecl, ObjectModel model) {
+		var letterSpacing = BitmapTextComponent.get_letterSpacing(model);
+
+		if (letterSpacing == BitmapTextComponent.letterSpacing_default) {
+			return false;
+		}
+
+		var name = EditorComponent.get_editorName(model);
+
+		var assign = new AssignPropertyDom("letterSpacing", name);
+
+		assign.value(letterSpacing);
+
+		methodDecl.getInstructions().add(assign);
+
+		return true;
 	}
 
 	@SuppressWarnings("static-method")

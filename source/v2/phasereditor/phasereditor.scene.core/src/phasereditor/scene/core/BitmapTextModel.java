@@ -93,6 +93,7 @@ public class BitmapTextModel extends ParentModel implements
 
 		data.put(fontSize_name, BitmapTextComponent.get_fontSize(this), fontSize_default);
 		data.put(align_name, BitmapTextComponent.get_align(this), align_default);
+		data.put(letterSpacing_name, BitmapTextComponent.get_letterSpacing(this), letterSpacing_default);
 	}
 
 	@Override
@@ -115,6 +116,7 @@ public class BitmapTextModel extends ParentModel implements
 
 		BitmapTextComponent.set_align(this, data.optInt(align_name, align_default));
 		BitmapTextComponent.set_fontSize(this, data.optInt(fontSize_name, fontSize_default));
+		BitmapTextComponent.set_letterSpacing(this, data.optFloat(letterSpacing_name, letterSpacing_default));
 
 		{
 			BitmapFontAssetModel fontAsset = null;

@@ -74,11 +74,26 @@ public interface BitmapTextComponent {
 	static void set_align(ObjectModel obj, int align) {
 		obj.put("align", align);
 	}
+	
+	// letterSpacing
+
+	static String letterSpacing_name = "letterSpacing";
+
+	static float letterSpacing_default = 0;
+
+	static float get_letterSpacing(ObjectModel obj) {
+		return (float) obj.get("letterSpacing");
+	}
+
+	static void set_letterSpacing(ObjectModel obj, float letterSpacing) {
+		obj.put("letterSpacing", letterSpacing);
+	}
 
 	static void init(BitmapTextModel obj) {
 		set_font(obj, font_default);
 		set_fontSize(obj, fontSize_default);
 		set_align(obj, align_default);
+		set_letterSpacing(obj, letterSpacing_default);
 	}
 
 }

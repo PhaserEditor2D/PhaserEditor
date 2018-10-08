@@ -404,6 +404,7 @@ public class BitmapFontModel {
 		private int _fontSize;
 		private int _maxWidth;
 		private Align _align;
+		private float _lineSpacing;
 
 		/**
 		 * 
@@ -429,16 +430,40 @@ public class BitmapFontModel {
 			return _text;
 		}
 
+		public void setText(String text) {
+			_text = text;
+		}
+
 		public int getFontSize() {
 			return _fontSize;
+		}
+
+		public void setFontSize(int fontSize) {
+			_fontSize = fontSize;
 		}
 
 		public int getMaxWidth() {
 			return _maxWidth;
 		}
 
+		public void setMaxWidth(int maxWidth) {
+			_maxWidth = maxWidth;
+		}
+
 		public Align getAlign() {
 			return _align;
+		}
+
+		public void setAlign(Align align) {
+			_align = align;
+		}
+
+		public float getLineSpacing() {
+			return _lineSpacing;
+		}
+
+		public void setLineSpacing(float lineSpacing) {
+			_lineSpacing = lineSpacing;
 		}
 
 	}
@@ -624,6 +649,22 @@ public class BitmapFontModel {
 
 		}
 
+		// spacing
+		{
+			float lineSpacing = args.getLineSpacing();
+			if (lineSpacing != 0) {
+				for (LineRenderInfo line : lines) {
+					int i = 0;
+					for (CharRenderInfo c : line) {
+						var offset = lineSpacing * i;
+						c.x += offset;
+						c.x2 += offset;
+						i++;
+					}
+				}
+			}
+		}
+		
 		// render lines
 
 		renderer.renderStart();

@@ -49,6 +49,7 @@ public class BitmapTextSection extends ScenePropertySection {
 	private AlignAction _alignLeftAction;
 	private AlignAction _alignMiddleAction;
 	private AlignAction _alignRightAction;
+	private Text _letterSpacingText;
 
 	public BitmapTextSection(FormPropertyPage page) {
 		super("Bitmap Text", page);
@@ -126,6 +127,15 @@ public class BitmapTextSection extends ScenePropertySection {
 			toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
+		{
+			var label = new Label(comp, SWT.NONE);
+			label.setText("Letter Spacing");
+
+			_letterSpacingText = new Text(comp, SWT.BORDER);
+			_letterSpacingText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+		}
+
 		update_UI_from_Model();
 
 		return comp;
@@ -139,9 +149,20 @@ public class BitmapTextSection extends ScenePropertySection {
 		_fontSizeText.setText(flatValues_to_String(
 				models.stream().map(model -> BitmapTextComponent.get_fontSize((ObjectModel) model))));
 
+		_letterSpacingText.setText(flatValues_to_String(
+				models.stream().map(model -> BitmapTextComponent.get_letterSpacing((ObjectModel) model))));
+
 		listenInt(_fontSizeText, value -> {
 
 			models.stream().forEach(model -> BitmapTextComponent.set_fontSize((ObjectModel) model, value));
+
+			getEditor().setDirty(true);
+
+		}, models);
+
+		listenFloat(_letterSpacingText, value -> {
+
+			models.stream().forEach(model -> BitmapTextComponent.set_letterSpacing((ObjectModel) model, value));
 
 			getEditor().setDirty(true);
 
