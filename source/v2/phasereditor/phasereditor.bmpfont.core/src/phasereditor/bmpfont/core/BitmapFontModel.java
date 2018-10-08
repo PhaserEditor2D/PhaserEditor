@@ -497,9 +497,16 @@ public class BitmapFontModel {
 
 			private static final long serialVersionUID = 1L;
 
-			public int getPixelLength() {
-				return isEmpty() ? 0 : get(size() - 1).x2;
+			private int _pixelLength;
+
+			public void setPixelLength() {
+				_pixelLength = size() == 0 ? 0 : get(size() - 1).x2;
 			}
+
+			public int getPixelLength() {
+				return _pixelLength;
+			}
+
 		}
 
 		String text = args.getText();
@@ -624,29 +631,10 @@ public class BitmapFontModel {
 			}
 		}
 
-		// align
+		// compute the line width
 
-		if (args.getAlign() != Align.left) {
-			int maxLen = 0;
-
-			for (LineRenderInfo line : lines) {
-				int lineLen = line.getPixelLength();
-				maxLen = Math.max(maxLen, lineLen);
-			}
-
-			for (LineRenderInfo line : lines) {
-				int offset = maxLen - line.getPixelLength();
-
-				if (args.getAlign() == Align.center) {
-					offset = offset / 2;
-				}
-
-				for (CharRenderInfo c : line) {
-					c.x += offset;
-					c.x2 += offset;
-				}
-			}
-
+		for (var line : lines) {
+			line.setPixelLength();
 		}
 
 		// spacing
@@ -662,9 +650,40 @@ public class BitmapFontModel {
 						i++;
 					}
 				}
+
+				// compute the line width again
+
+				for (var line : lines) {
+					line.setPixelLength();
+				}
 			}
 		}
-		
+
+		// align
+
+		if (args.getAlign() != Align.left) {
+			int maxWidth = 0;
+
+			for (LineRenderInfo line : lines) {
+				int lineLen = line.getPixelLength();
+				maxWidth = Math.max(maxWidth, lineLen);
+			}
+
+			for (LineRenderInfo line : lines) {
+				int offset = maxWidth - line.getPixelLength();
+
+				if (args.getAlign() == Align.center) {
+					offset = offset / 2;
+				}
+
+				for (CharRenderInfo c : line) {
+					c.x += offset;
+					c.x2 += offset;
+				}
+			}
+
+		}
+
 		// render lines
 
 		renderer.renderStart();
