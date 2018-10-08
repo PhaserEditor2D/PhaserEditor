@@ -506,7 +506,7 @@ public class BitmapFontModel {
 		}
 
 	}
-	
+
 	public void render(RenderArgs args, BitmapFontRenderer renderer) {
 
 		String text = args.getText();
@@ -688,12 +688,17 @@ public class BitmapFontModel {
 
 		renderer.renderStart();
 
-		lines.forEach(line -> {
+		for(var line : lines) {
+			
 			renderer.lineStart();
-			line.forEach(c -> renderer.render(c.c, c.x, c.y, c.srcX, c.srcY, c.srcW, c.srcH));
+			
+			for(var c : line) {
+				renderer.render(c.c, c.x, c.y, c.srcX, c.srcY, c.srcW, c.srcH);
+			}
+			
 			renderer.lineEnd();
-		});
-
+		}
+		
 		renderer.renderEnd();
 	}
 
