@@ -62,6 +62,15 @@ public class SceneCodeDomBuilder {
 		_file = file;
 	}
 
+	private static String varname(ObjectModel model) {
+
+		var name = EditorComponent.get_editorName(model);
+
+		var id = JSCodeUtils.id(name);
+
+		return id;
+	}
+
 	public UnitDom build(WorldModel model) {
 
 		var unit = new UnitDom();
@@ -120,7 +129,7 @@ public class SceneCodeDomBuilder {
 			}
 
 			if (assignToVar && methodCall != null) {
-				methodCall.setReturnToVar(EditorComponent.get_editorName(model));
+				methodCall.setReturnToVar(varname(model));
 			}
 
 			methodDecl.getInstructions().add(new RawCode(""));
@@ -138,7 +147,7 @@ public class SceneCodeDomBuilder {
 			return false;
 		}
 
-		var name = EditorComponent.get_editorName(model);
+		var name = varname(model);
 
 		var assign = new AssignPropertyDom("letterSpacing", name);
 
@@ -157,7 +166,7 @@ public class SceneCodeDomBuilder {
 			return false;
 		}
 
-		var name = EditorComponent.get_editorName(model);
+		var name = varname(model);
 
 		var assign = new AssignPropertyDom("align", name);
 
@@ -200,7 +209,7 @@ public class SceneCodeDomBuilder {
 			return false;
 		}
 
-		var name = EditorComponent.get_editorName(model);
+		var name = varname(model);
 		var call = new MethodCallDom("setAngle", name);
 
 		call.arg(a);
@@ -219,7 +228,7 @@ public class SceneCodeDomBuilder {
 			return false;
 		}
 
-		var name = EditorComponent.get_editorName(model);
+		var name = varname(model);
 		var call = new MethodCallDom("setScale", name);
 
 		call.arg(TransformComponent.get_scaleX(model));
@@ -243,7 +252,7 @@ public class SceneCodeDomBuilder {
 			return false;
 		}
 
-		var name = EditorComponent.get_editorName(model);
+		var name = varname(model);
 		var call = new MethodCallDom("setOrigin", name);
 
 		call.arg(OriginComponent.get_originX(model));
