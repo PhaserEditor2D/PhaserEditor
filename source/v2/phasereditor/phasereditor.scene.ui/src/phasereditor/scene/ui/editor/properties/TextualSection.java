@@ -28,7 +28,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.ObjectModel;
@@ -59,15 +58,10 @@ public class TextualSection extends ScenePropertySection {
 
 		comp.setLayout(new GridLayout(1, false));
 
-		var label = new Label(comp, SWT.NONE);
-		label.setText("Text");
-
-		{
-			_textText = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
-			var gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-			gd.heightHint = 100;
-			_textText.setLayoutData(gd);
-		}
+		_textText = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		var gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = 100;
+		_textText.setLayoutData(gd);
 
 		update_UI_from_Model();
 
