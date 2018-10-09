@@ -60,7 +60,6 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 		return obj instanceof DynamicBitmapTextModel;
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -179,6 +178,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 		listenFloat(_scrollXText, value -> {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_scrollX((ObjectModel) model, value);
+				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
 			});
 
 			getEditor().setDirty(true);
@@ -188,6 +188,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 		listenFloat(_scrollYText, value -> {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_scrollY((ObjectModel) model, value);
+				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
 			});
 
 			getEditor().setDirty(true);

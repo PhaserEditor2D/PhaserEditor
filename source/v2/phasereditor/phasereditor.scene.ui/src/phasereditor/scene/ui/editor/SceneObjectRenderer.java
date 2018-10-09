@@ -343,7 +343,33 @@ public class SceneObjectRenderer {
 
 		}
 
+		Transform tx2 = null;
+
+		if (textModel instanceof DynamicBitmapTextComponent) {
+			// crop it
+
+			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(textModel);
+			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(textModel);
+
+			// if the text is not cropped, then it will be scrolled here
+
+			if (cropWidth == 0 || cropHeight == 0) {
+
+				var scrollX = DynamicBitmapTextComponent.get_scrollX(textModel);
+				var scrollY = DynamicBitmapTextComponent.get_scrollY(textModel);
+
+				tx2 = newTx(gc, tx);
+				tx2.translate(-scrollX, -scrollY);
+
+				setObjectTransform(gc, tx2, textModel);
+			}
+		}
+
 		gc.drawImage(image, 0, 0);
+
+		if (tx2 != null) {
+			tx2.dispose();
+		}
 
 		var b = image.getBounds();
 		setObjectBounds(gc, textModel, 0, 0, b.width, b.height);
@@ -359,20 +385,6 @@ public class SceneObjectRenderer {
 		var width = metrics.getWidth();
 		var height = metrics.getHeight();
 
-		if (textModel instanceof DynamicBitmapTextComponent) {
-			// crop it
-
-			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(textModel);
-			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(textModel);
-
-			// the text is not cropped if the width is 0 or the height is 0.
-
-			if (cropWidth > 0 && cropHeight > 0) {
-				width = Math.min(width, cropWidth);
-				height = Math.min(height, cropHeight);
-			}
-		}
-
 		var buffer = createImage(width, height);
 
 		GC gc2 = new GC(buffer);
@@ -382,6 +394,36 @@ public class SceneObjectRenderer {
 		var asset = BitmapTextComponent.get_font(textModel);
 
 		var fontTexture = loadImage(asset.getTextureFile());
+
+		Transform tx = null;
+
+		if (textModel instanceof DynamicBitmapTextComponent) {
+			// crop it
+
+			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(textModel);
+			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(textModel);
+
+			// the text is not cropped if the width is 0 or the height is 0.
+
+			if (cropWidth > 0 && cropHeight > 0) {
+
+				var originX = OriginComponent.get_originX(textModel);
+				var originY = OriginComponent.get_originY(textModel);
+
+				var cropX = width * originX;
+				var cropY = height * originY;
+
+				gc2.setClipping((int) cropX, (int) cropY, cropWidth, cropHeight);
+
+				var scrollX = DynamicBitmapTextComponent.get_scrollX(textModel);
+				var scrollY = DynamicBitmapTextComponent.get_scrollY(textModel);
+
+				tx = new Transform(gc2.getDevice());
+				tx.translate(-scrollX, -scrollY);
+				gc2.setTransform(tx);
+
+			}
+		}
 
 		try {
 
@@ -397,6 +439,10 @@ public class SceneObjectRenderer {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		if (tx != null) {
+			tx.dispose();
 		}
 
 		gc2.dispose();

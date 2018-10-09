@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.ui.EditorSharedImages;
@@ -104,12 +105,22 @@ public class OriginSection extends ScenePropertySection {
 				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY((ObjectModel) model))));
 
 		listenFloat(_originXText, value -> {
-			models.forEach(model -> OriginComponent.set_originX((ObjectModel) model, value));
+			models.forEach(model -> {
+				OriginComponent.set_originX((ObjectModel) model, value);
+				if (model instanceof DynamicBitmapTextComponent) {
+					getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				}
+			});
 			getEditor().setDirty(true);
 		}, models);
 
 		listenFloat(_originYText, value -> {
-			models.forEach(model -> OriginComponent.set_originY((ObjectModel) model, value));
+			models.forEach(model -> {
+				OriginComponent.set_originY((ObjectModel) model, value);
+				if (model instanceof DynamicBitmapTextComponent) {
+					getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				}
+			});
 			getEditor().setDirty(true);
 		}, models);
 
