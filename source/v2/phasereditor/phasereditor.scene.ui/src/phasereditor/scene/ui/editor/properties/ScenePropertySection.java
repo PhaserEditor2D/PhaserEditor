@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.ObjectSnapshotOperation;
@@ -37,7 +38,7 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
-public abstract class ScenePropertySection extends FormPropertySection {
+public abstract class ScenePropertySection extends FormPropertySection<ObjectModel> {
 	private FormPropertyPage _page;
 
 	public ScenePropertySection(String name, FormPropertyPage page) {
@@ -57,7 +58,13 @@ public abstract class ScenePropertySection extends FormPropertySection {
 		return getEditor().getScene();
 	}
 
-	protected void listenFloat(Text text, Consumer<Float> listener, List<Object> models) {
+	protected void dirtyModels() {
+		for(var model : getModels()) {
+			model.setDirty(true);
+		}
+	}
+	
+	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models) {
 		super.listenFloat(text, value -> {
 
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
@@ -72,7 +79,7 @@ public abstract class ScenePropertySection extends FormPropertySection {
 		});
 	}
 
-	protected void listenInt(Text text, Consumer<Integer> listener, List<Object> models) {
+	protected void listenInt(Text text, Consumer<Integer> listener, List<ObjectModel> models) {
 		super.listenInt(text, value -> {
 
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
@@ -87,7 +94,7 @@ public abstract class ScenePropertySection extends FormPropertySection {
 		});
 	}
 
-	protected void listen(Text text, Consumer<String> listener, List<Object> models) {
+	protected void listen(Text text, Consumer<String> listener, List<ObjectModel> models) {
 		super.listen(text, value -> {
 
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
@@ -103,7 +110,7 @@ public abstract class ScenePropertySection extends FormPropertySection {
 		});
 	}
 
-	protected void listen(Button check, Consumer<Boolean> listener, List<Object> models) {
+	protected void listen(Button check, Consumer<Boolean> listener, List<ObjectModel> models) {
 		super.listen(check, value -> {
 
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);

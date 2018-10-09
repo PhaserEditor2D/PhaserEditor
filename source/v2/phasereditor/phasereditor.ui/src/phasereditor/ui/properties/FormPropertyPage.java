@@ -58,6 +58,7 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class FormPropertyPage extends Page implements IPropertySheetPage {
 
 	Composite _sectionsContainer;
@@ -67,7 +68,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		super();
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused" })
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 

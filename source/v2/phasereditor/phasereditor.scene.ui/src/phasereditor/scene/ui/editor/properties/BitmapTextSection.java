@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
@@ -45,7 +43,6 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextComponent;
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.TreeCanvas;
@@ -94,11 +91,13 @@ public class BitmapTextSection extends ScenePropertySection {
 		public void run() {
 			var before = SceneSnapshotOperation.takeSnapshot(getEditor());
 
-			var models = List.of(getModels());
+			var models = getModels();
+			
 			models.forEach(model -> {
-				BitmapTextComponent.set_align((ObjectModel) model, _align);
-				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				BitmapTextComponent.set_align(model, _align);
 			});
+			
+			dirtyModels();
 
 			var after = SceneSnapshotOperation.takeSnapshot(getEditor());
 
@@ -185,9 +184,10 @@ public class BitmapTextSection extends ScenePropertySection {
 			var asset = (BitmapFontAssetModel) dlg.getResult();
 
 			for (var obj : getModels()) {
-				BitmapTextComponent.set_font((ObjectModel) obj, asset);
-				editor.getScene().getSceneRenderer().clearImageInCache(obj);
+				BitmapTextComponent.set_font(obj, asset);
 			}
+			
+			dirtyModels();
 
 			var after = SceneSnapshotOperation.takeSnapshot(editor);
 
@@ -226,33 +226,32 @@ public class BitmapTextSection extends ScenePropertySection {
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
-
-		var renderer = getEditor().getScene().getSceneRenderer();
+		var models = getModels();
 
 		_fontSizeText.setText(flatValues_to_String(
-				models.stream().map(model -> BitmapTextComponent.get_fontSize((ObjectModel) model))));
+				models.stream().map(model -> BitmapTextComponent.get_fontSize(model))));
 
 		_letterSpacingText.setText(flatValues_to_String(
-				models.stream().map(model -> BitmapTextComponent.get_letterSpacing((ObjectModel) model))));
+				models.stream().map(model -> BitmapTextComponent.get_letterSpacing(model))));
 
 		_fontNameBtn.setText(flatValues_to_String(models.stream().map(model -> {
-			var asset = BitmapTextComponent.get_font((ObjectModel) model);
+			var asset = BitmapTextComponent.get_font(model);
 			return asset == null ? "<null>" : asset.getKey();
 		})));
 
 		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
 			action.setChecked(flatValues_to_boolean(models.stream()
-					.map(model -> BitmapTextComponent.get_align((ObjectModel) model) == action.getAlign())));
+					.map(model -> BitmapTextComponent.get_align(model) == action.getAlign())));
 		}
 
 		listenInt(_fontSizeText, value -> {
 
 			models.stream().forEach(model -> {
-				BitmapTextComponent.set_fontSize((ObjectModel) model, value);
-				renderer.clearImageInCache(model);
+				BitmapTextComponent.set_fontSize(model, value);
 			});
 
+			dirtyModels();
+			
 			getEditor().setDirty(true);
 
 		}, models);
@@ -260,9 +259,10 @@ public class BitmapTextSection extends ScenePropertySection {
 		listenFloat(_letterSpacingText, value -> {
 
 			models.stream().forEach(model -> {
-				BitmapTextComponent.set_letterSpacing((ObjectModel) model, value);
-				renderer.clearImageInCache(model);
+				BitmapTextComponent.set_letterSpacing(model, value);
 			});
+			
+			dirtyModels();
 
 			getEditor().setDirty(true);
 

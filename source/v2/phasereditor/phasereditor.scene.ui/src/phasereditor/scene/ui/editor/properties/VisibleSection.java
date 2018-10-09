@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,7 +28,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.VisibleComponent;
 
 /**
@@ -68,10 +65,10 @@ public class VisibleSection extends ScenePropertySection {
 	@Override
 	@SuppressWarnings("boxing")
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		var value = flatValues_to_Boolean(
-				models.stream().map(model -> VisibleComponent.get_visible((ObjectModel) model)));
+				models.stream().map(model -> VisibleComponent.get_visible(model)));
 
 		if (value == null) {
 			_visibleBtn.setGrayed(true);
@@ -83,7 +80,7 @@ public class VisibleSection extends ScenePropertySection {
 
 		listen(_visibleBtn, val -> {
 
-			models.forEach(model -> VisibleComponent.set_visible((ObjectModel) model, val));
+			models.forEach(model -> VisibleComponent.set_visible(model, val));
 
 			_visibleBtn.setGrayed(false);
 			_visibleBtn.setSelection(val);

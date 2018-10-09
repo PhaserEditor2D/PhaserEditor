@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -34,7 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
 
 /**
@@ -82,10 +79,10 @@ public class TextureSection extends ScenePropertySection {
 
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		var frame = (IAssetFrameModel) flatValues_to_Object(
-				models.stream().map(model -> TextureComponent.get_frame((ObjectModel) model)));
+				models.stream().map(model -> TextureComponent.get_frame(model)));
 
 		if (frame == null) {
 			_frameLabel.setText("Frame");

@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -70,19 +67,18 @@ public class TextualSection extends ScenePropertySection {
 
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		_textText.setText(
-				flatValues_to_String(models.stream().map(model -> TextualComponent.get_text((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> TextualComponent.get_text(model))));
 
 		listen(_textText, value -> {
 
-			var renderer = getEditor().getScene().getSceneRenderer();
-
 			models.stream().forEach(model -> {
-				TextualComponent.set_text((ObjectModel) model, value);
-				renderer.clearImageInCache(model);
+				TextualComponent.set_text(model, value);
 			});
+			
+			dirtyModels();
 
 			getEditor().setDirty(true);
 

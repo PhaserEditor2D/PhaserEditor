@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,7 +30,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.scene.core.FlipComponent;
-import phasereditor.scene.core.ObjectModel;
 
 /**
  * @author arian
@@ -80,19 +77,19 @@ public class FlipSection extends ScenePropertySection {
 	@Override
 	@SuppressWarnings("boxing")
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		{
 			// x
 
 			var value = flatValues_to_Boolean(
-					models.stream().map(model -> FlipComponent.get_flipX((ObjectModel) model)));
+					models.stream().map(model -> FlipComponent.get_flipX(model)));
 
 			_flipXBtn.setSelection(value != null && value);
 
 			listen(_flipXBtn, val -> {
 
-				models.forEach(model -> FlipComponent.set_flipX((ObjectModel) model, val));
+				models.forEach(model -> FlipComponent.set_flipX(model, val));
 
 				_flipXBtn.setSelection(val);
 
@@ -104,13 +101,13 @@ public class FlipSection extends ScenePropertySection {
 			// y
 
 			var value = flatValues_to_Boolean(
-					models.stream().map(model -> FlipComponent.get_flipY((ObjectModel) model)));
+					models.stream().map(model -> FlipComponent.get_flipY(model)));
 
 			_flipYBtn.setSelection(value != null && value);
 
 			listen(_flipYBtn, val -> {
 
-				models.forEach(model -> FlipComponent.set_flipY((ObjectModel) model, val));
+				models.forEach(model -> FlipComponent.set_flipY(model, val));
 
 				_flipYBtn.setSelection(val);
 

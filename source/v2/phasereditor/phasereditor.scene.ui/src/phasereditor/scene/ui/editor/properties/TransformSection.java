@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -33,7 +31,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.EditorSharedImages;
 
@@ -188,49 +185,49 @@ public class TransformSection extends ScenePropertySection {
 	@SuppressWarnings("boxing")
 	public void update_UI_from_Model() {
 
-		var models = List.of(getModels());
+		var models = getModels();
 
 		// x y
 
 		_xText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_x((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_x(model))));
 		_yText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_y((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_y(model))));
 
 		listenFloat(_xText, value -> {
-			models.forEach(model -> TransformComponent.set_x((ObjectModel) model, value));
+			models.forEach(model -> TransformComponent.set_x(model, value));
 			getEditor().setDirty(true);
 		}, models);
 
 		listenFloat(_yText, value -> {
-			models.forEach(model -> TransformComponent.set_y((ObjectModel) model, value));
+			models.forEach(model -> TransformComponent.set_y(model, value));
 			getEditor().setDirty(true);
 		}, models);
 
 		// scale
 
 		_scaleXText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX(model))));
 		_scaleYText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY(model))));
 
 		listenFloat(_scaleXText, value -> {
-			models.forEach(model -> TransformComponent.set_scaleX((ObjectModel) model, value));
+			models.forEach(model -> TransformComponent.set_scaleX(model, value));
 			getEditor().setDirty(true);
 		}, models);
 
 		listenFloat(_scaleYText, value -> {
-			models.forEach(model -> TransformComponent.set_scaleY((ObjectModel) model, value));
+			models.forEach(model -> TransformComponent.set_scaleY(model, value));
 			getEditor().setDirty(true);
 		}, models);
 
 		// angle
 
 		_angleText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle(model))));
 
 		listenFloat(_angleText, value -> {
-			models.forEach(model -> TransformComponent.set_angle((ObjectModel) model, value));
+			models.forEach(model -> TransformComponent.set_angle(model, value));
 			getEditor().setDirty(true);
 		}, models);
 	}

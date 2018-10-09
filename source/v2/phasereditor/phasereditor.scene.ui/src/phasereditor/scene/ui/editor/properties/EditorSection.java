@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -109,7 +107,7 @@ public class EditorSection extends ScenePropertySection {
 			var project = getEditor().getEditorInput().getFile().getProject();
 
 			for (var obj : getModels()) {
-				var model = (ObjectModel) obj;
+				var model = obj;
 
 				if (model.getType().equals(_toType)) {
 					continue;
@@ -174,7 +172,7 @@ public class EditorSection extends ScenePropertySection {
 
 	@SuppressWarnings({ "unused", "boxing" })
 	private void populateTypeList(SelectionEvent e) {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		var manager = new MenuManager();
 
@@ -192,7 +190,7 @@ public class EditorSection extends ScenePropertySection {
 
 			var allow = models.stream()
 
-					.map(m -> ((ObjectModel) m).allowMorphTo(type))
+					.map(m -> m.allowMorphTo(type))
 
 					.reduce(true, (a, b) -> a && b);
 
@@ -209,16 +207,15 @@ public class EditorSection extends ScenePropertySection {
 
 	@Override
 	public void update_UI_from_Model() {
-
-		var models = List.of(getModels());
+		var models = getModels();
 
 		_editorNameText.setText(flatValues_to_String(
-				models.stream().map(model -> EditorComponent.get_editorName((ObjectModel) model))));
+				models.stream().map(model -> EditorComponent.get_editorName(model))));
 
-		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> ((ObjectModel) model).getType())));
+		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 
 		listen(_editorNameText, value -> {
-			models.stream().forEach(model -> EditorComponent.set_editorName((ObjectModel) model, value));
+			models.stream().forEach(model -> EditorComponent.set_editorName(model, value));
 
 			getEditor().setDirty(true);
 			getEditor().refreshOutline();

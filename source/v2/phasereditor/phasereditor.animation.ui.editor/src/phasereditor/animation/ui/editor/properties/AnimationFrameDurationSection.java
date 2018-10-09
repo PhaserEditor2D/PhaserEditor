@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,7 +39,7 @@ import phasereditor.ui.properties.FormPropertySection;
  *
  */
 @SuppressWarnings("boxing")
-public class AnimationFrameDurationSection extends FormPropertySection {
+public class AnimationFrameDurationSection extends FormPropertySection<AnimationFrameModel_in_Editor> {
 
 	private Text _durationText;
 	private Label _computedDurationLabel;
@@ -75,7 +73,8 @@ public class AnimationFrameDurationSection extends FormPropertySection {
 			new Label(comp, SWT.NONE);
 			_computedDurationLabel = new Label(comp, SWT.NONE);
 			_computedDurationLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_computedDurationLabel.setToolTipText("The computed duration of the frame. It is the frameRate-based duration plus the extra duration set in the 'duration' property.\nNOTE: This is not part of the Phaser API.");
+			_computedDurationLabel.setToolTipText(
+					"The computed duration of the frame. It is the frameRate-based duration plus the extra duration set in the 'duration' property.\nNOTE: This is not part of the Phaser API.");
 
 		}
 
@@ -86,7 +85,7 @@ public class AnimationFrameDurationSection extends FormPropertySection {
 
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		// duration
 
@@ -95,10 +94,10 @@ public class AnimationFrameDurationSection extends FormPropertySection {
 
 		listenInt(_durationText, value -> {
 			models.stream().forEach(model -> {
-				AnimationFrameModel_in_Editor frameModel = (AnimationFrameModel_in_Editor) model;
-				frameModel.setDuration(value);
 
-				var animation = frameModel.getAnimation();
+				model.setDuration(value);
+
+				var animation = model.getAnimation();
 				var editor = animation.getEditor();
 
 				animation.buildTimeline();

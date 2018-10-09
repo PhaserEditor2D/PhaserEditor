@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -33,7 +31,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
@@ -234,10 +231,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		}
 
-		var renderer = getEditor().getScene().getSceneRenderer();
-		for (var model : getModels()) {
-			renderer.clearImageInCache(model);
-		}
+		dirtyModels();
 
 		getEditor().updatePropertyPagesContentWithSelection();
 
@@ -251,21 +245,19 @@ public class TileSpriteSection extends ScenePropertySection {
 
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
-
-		var renderer = getEditor().getScene().getSceneRenderer();
+		var models = getModels();
 
 		// tilePosition
 
-		_tilePositionXText.setText(flatValues_to_String(
-				models.stream().map(model -> TileSpriteComponent.get_tilePositionX((ObjectModel) model))));
-		_tilePositionYText.setText(flatValues_to_String(
-				models.stream().map(model -> TileSpriteComponent.get_tilePositionY((ObjectModel) model))));
+		_tilePositionXText.setText(
+				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tilePositionX(model))));
+		_tilePositionYText.setText(
+				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tilePositionY(model))));
 
 		listenFloat(_tilePositionXText, value -> {
 
-			models.forEach(model -> TileSpriteComponent.set_tilePositionX((ObjectModel) model, value));
-			models.forEach(renderer::clearImageInCache);
+			models.forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -273,8 +265,8 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		listenFloat(_tilePositionYText, value -> {
 
-			models.forEach(model -> TileSpriteComponent.set_tilePositionY((ObjectModel) model, value));
-			models.forEach(renderer::clearImageInCache);
+			models.forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -282,15 +274,15 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		// tileScale
 
-		_tileScaleXText.setText(flatValues_to_String(
-				models.stream().map(model -> TileSpriteComponent.get_tileScaleX((ObjectModel) model))));
-		_tileScaleYText.setText(flatValues_to_String(
-				models.stream().map(model -> TileSpriteComponent.get_tileScaleY((ObjectModel) model))));
+		_tileScaleXText
+				.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tileScaleX(model))));
+		_tileScaleYText
+				.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tileScaleY(model))));
 
 		listenFloat(_tileScaleXText, value -> {
 
-			models.forEach(model -> TileSpriteComponent.set_tileScaleX((ObjectModel) model, value));
-			models.forEach(renderer::clearImageInCache);
+			models.forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -298,8 +290,8 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		listenFloat(_tileScaleYText, value -> {
 
-			models.forEach(model -> TileSpriteComponent.set_tileScaleY((ObjectModel) model, value));
-			models.forEach(renderer::clearImageInCache);
+			models.forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -307,15 +299,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		// size
 
-		_widthText.setText(
-				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_width((ObjectModel) model))));
-		_heightText.setText(flatValues_to_String(
-				models.stream().map(model -> TileSpriteComponent.get_height((ObjectModel) model))));
+		_widthText.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_width(model))));
+		_heightText.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_height(model))));
 
 		listenFloat(_widthText, value -> {
 
-			models.forEach(model -> TileSpriteComponent.set_width((ObjectModel) model, value));
-			models.forEach(renderer::clearImageInCache);
+			models.forEach(model -> TileSpriteComponent.set_width(model, value));
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -323,8 +313,8 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		listenFloat(_heightText, value -> {
 
-			models.forEach(model -> TileSpriteComponent.set_height((ObjectModel) model, value));
-			models.forEach(renderer::clearImageInCache);
+			models.forEach(model -> TileSpriteComponent.set_height(model, value));
+			dirtyModels();
 
 			getEditor().setDirty(true);
 

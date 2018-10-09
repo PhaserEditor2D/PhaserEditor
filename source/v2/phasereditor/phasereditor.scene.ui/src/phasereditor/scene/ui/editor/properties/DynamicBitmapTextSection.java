@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -35,7 +33,6 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -138,7 +135,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		setValues_to_Text(_displayCallbackText, models, DynamicBitmapTextComponent::get_displayCallback);
 
@@ -149,17 +146,17 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 		setValues_to_Text(_scrollYText, models, DynamicBitmapTextComponent::get_scrollY);
 
 		listen(_displayCallbackText, value -> {
-			models.forEach(model -> DynamicBitmapTextComponent.set_displayCallback((ObjectModel) model, value));
-
+			models.forEach(model -> DynamicBitmapTextComponent.set_displayCallback(model, value));
 			getEditor().setDirty(true);
 
 		}, models);
 
 		listenInt(_cropWidthText, value -> {
 			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_cropWidth((ObjectModel) model, value);
-				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				DynamicBitmapTextComponent.set_cropWidth(model, value);
 			});
+			
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -167,9 +164,10 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 		listenInt(_cropHeightText, value -> {
 			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_cropHeight((ObjectModel) model, value);
-				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				DynamicBitmapTextComponent.set_cropHeight(model, value);
 			});
+			
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -177,9 +175,10 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 		listenFloat(_scrollXText, value -> {
 			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_scrollX((ObjectModel) model, value);
-				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				DynamicBitmapTextComponent.set_scrollX(model, value);
 			});
+			
+			dirtyModels();
 
 			getEditor().setDirty(true);
 
@@ -187,10 +186,11 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 		listenFloat(_scrollYText, value -> {
 			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_scrollY((ObjectModel) model, value);
-				getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+				DynamicBitmapTextComponent.set_scrollY(model, value);
 			});
-
+			
+			dirtyModels();
+			
 			getEditor().setDirty(true);
 
 		}, models);

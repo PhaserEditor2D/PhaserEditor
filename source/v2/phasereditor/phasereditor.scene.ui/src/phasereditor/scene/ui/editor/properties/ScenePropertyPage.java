@@ -43,6 +43,7 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
+@SuppressWarnings("rawtypes")
 public class ScenePropertyPage extends FormPropertyPage {
 
 	private SceneEditor _editor;

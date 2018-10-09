@@ -41,12 +41,12 @@ import phasereditor.scene.ui.editor.SceneEditor;
  */
 public class ObjectSnapshotOperation extends AbstractOperation {
 
-	public static List<JSONObject> takeSnapshot(List<Object> models) {
+	public static List<JSONObject> takeSnapshot(List<ObjectModel> models) {
 		var list = new ArrayList<JSONObject>();
 
 		for (var model : models) {
 			var data = new JSONObject();
-			((ObjectModel) model).write(data);
+			model.write(data);
 			list.add(data);
 		}
 

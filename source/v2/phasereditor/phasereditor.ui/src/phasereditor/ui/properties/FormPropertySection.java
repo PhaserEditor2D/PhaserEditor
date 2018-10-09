@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
@@ -46,24 +47,33 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-public abstract class FormPropertySection implements IEditorSharedImages {
-	private Object[] _models;
+public abstract class FormPropertySection<T> implements IEditorSharedImages {
+	private List<T> _models;
 	private String _name;
 
 	public FormPropertySection(String name) {
 		_name = name;
+		_models = new ArrayList<>();
 	}
 
 	public String getName() {
 		return _name;
 	}
 
-	public Object[] getModels() {
+	public List<T> getModels() {
 		return _models;
 	}
 
-	public void setModels(Object[] models) {
-		_models = models;
+	public void setModels(List<T> models) {
+		_models = new ArrayList<>(models);
+	}
+
+	public void setModels(T[] models) {
+		_models = new ArrayList<>();
+
+		for (var model : models) {
+			_models.add(model);
+		}
 	}
 
 	protected static String flatValues_to_String(Stream<?> values) {
@@ -215,9 +225,8 @@ public abstract class FormPropertySection implements IEditorSharedImages {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
-	protected static <T> void setValues_to_Text(Text text, List<Object> models, Function<T, Object> get) {
-		text.setText(flatValues_to_String(models.stream().map(model -> get.apply((T) model))));
+	protected static <T> void setValues_to_Text(Text text, List<T> models, Function<T, Object> get) {
+		text.setText(flatValues_to_String(models.stream().map(model -> get.apply(model))));
 	}
 
 	public abstract boolean canEdit(Object obj);

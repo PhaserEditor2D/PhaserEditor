@@ -38,12 +38,14 @@ public abstract class ObjectModel implements EditorComponent {
 	private Map<String, Object> _map;
 	private String _id;
 	private String _type;
+	private boolean _dirty;
 
 	public ObjectModel(String type) {
 		_type = type;
 		_id = UUID.randomUUID().toString();
 
 		_map = new HashMap<>();
+		_dirty = true;
 
 		EditorComponent.init(this);
 	}
@@ -58,6 +60,14 @@ public abstract class ObjectModel implements EditorComponent {
 
 	public String getType() {
 		return _type;
+	}
+
+	public boolean isDirty() {
+		return _dirty;
+	}
+
+	public void setDirty(boolean dirty) {
+		_dirty = dirty;
 	}
 
 	public void put(String key, Object value) {

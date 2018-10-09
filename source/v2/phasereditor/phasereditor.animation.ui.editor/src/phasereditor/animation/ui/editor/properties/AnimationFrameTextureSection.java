@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -43,7 +41,7 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
-public class AnimationFrameTextureSection extends FormPropertySection {
+public class AnimationFrameTextureSection extends FormPropertySection<AnimationFrameModel_in_Editor> {
 
 	private SingleFrameCanvas _frameCanvas;
 	private Label _frameLabel;
@@ -84,7 +82,7 @@ public class AnimationFrameTextureSection extends FormPropertySection {
 
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		var frame = (IAssetFrameModel) flatValues_to_Object(
 				models.stream().map(model -> ((AnimationFrameModel) model).getFrameAsset()));

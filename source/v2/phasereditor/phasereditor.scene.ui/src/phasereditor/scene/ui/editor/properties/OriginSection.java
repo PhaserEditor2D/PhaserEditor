@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -34,7 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.ui.EditorSharedImages;
 
@@ -95,20 +92,20 @@ public class OriginSection extends ScenePropertySection {
 	@SuppressWarnings("boxing")
 	public void update_UI_from_Model() {
 
-		var models = List.of(getModels());
+		var models = getModels();
 
 		// origin
 
 		_originXText.setText(
-				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX(model))));
 		_originYText.setText(
-				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY((ObjectModel) model))));
+				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY(model))));
 
 		listenFloat(_originXText, value -> {
 			models.forEach(model -> {
-				OriginComponent.set_originX((ObjectModel) model, value);
+				OriginComponent.set_originX(model, value);
 				if (model instanceof DynamicBitmapTextComponent) {
-					getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+					model.setDirty(true);
 				}
 			});
 			getEditor().setDirty(true);
@@ -116,9 +113,9 @@ public class OriginSection extends ScenePropertySection {
 
 		listenFloat(_originYText, value -> {
 			models.forEach(model -> {
-				OriginComponent.set_originY((ObjectModel) model, value);
+				OriginComponent.set_originY(model, value);
 				if (model instanceof DynamicBitmapTextComponent) {
-					getEditor().getScene().getSceneRenderer().clearImageInCache(model);
+					model.setDirty(true);
 				}
 			});
 			getEditor().setDirty(true);

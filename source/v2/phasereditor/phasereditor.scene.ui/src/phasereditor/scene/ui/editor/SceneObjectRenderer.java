@@ -91,14 +91,6 @@ public class SceneObjectRenderer {
 		}
 	}
 
-	public void clearImageInCache(Object key) {
-		var buffer = _imageCacheMap.remove(key);
-
-		if (buffer != null) {
-			buffer.dispose();
-		}
-	}
-
 	public void addPostPaintAction(Runnable action) {
 		_postPaintActions.add(action);
 	}
@@ -331,37 +323,31 @@ public class SceneObjectRenderer {
 
 	}
 
-	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel textModel) {
+	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel model) {
 
-		setObjectTransform(gc, tx, textModel);
+		setObjectTransform(gc, tx, model);
 
-		var image = _imageCacheMap.get(textModel);
-
-		if (image == null) {
-			image = createBitmapTextImage(textModel);
-			_imageCacheMap.put(textModel, image);
-
-		}
+		var image = getBitmapTextImage(model);
 
 		Transform tx2 = null;
 
-		if (textModel instanceof DynamicBitmapTextComponent) {
+		if (model instanceof DynamicBitmapTextComponent) {
 			// crop it
 
-			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(textModel);
-			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(textModel);
+			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(model);
+			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(model);
 
 			// if the text is not cropped, then it will be scrolled here
 
 			if (cropWidth == 0 || cropHeight == 0) {
 
-				var scrollX = DynamicBitmapTextComponent.get_scrollX(textModel);
-				var scrollY = DynamicBitmapTextComponent.get_scrollY(textModel);
+				var scrollX = DynamicBitmapTextComponent.get_scrollX(model);
+				var scrollY = DynamicBitmapTextComponent.get_scrollY(model);
 
 				tx2 = newTx(gc, tx);
 				tx2.translate(-scrollX, -scrollY);
 
-				setObjectTransform(gc, tx2, textModel);
+				setObjectTransform(gc, tx2, model);
 			}
 		}
 
@@ -372,7 +358,7 @@ public class SceneObjectRenderer {
 		}
 
 		var b = image.getBounds();
-		setObjectBounds(gc, textModel, 0, 0, b.width, b.height);
+		setObjectBounds(gc, model, 0, 0, b.width, b.height);
 	}
 
 	private Image createBitmapTextImage(BitmapTextModel textModel) {
@@ -571,14 +557,20 @@ public class SceneObjectRenderer {
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
 
-		var buffer = _imageCacheMap.getOrDefault(model, null);
+		Image image;
 
-		if (buffer == null) {
-			buffer = createTileSpriteTexture(model);
-			_imageCacheMap.put(model, buffer);
+		if (model.isDirty()) {
+			image = createTileSpriteTexture(model);
+			var old = _imageCacheMap.put(model, image);
+			if (old != null) {
+				old.dispose();
+			}
+		} else {
+			image = _imageCacheMap.getOrDefault(model, null);
+			model.setDirty(false);
 		}
 
-		gc.drawImage(buffer, 0, 0);
+		gc.drawImage(image, 0, 0);
 
 		setObjectBounds(gc, model, 0, 0, width, height);
 
@@ -621,19 +613,31 @@ public class SceneObjectRenderer {
 		return new int[] { 0, 0 };
 	}
 
-	private int[] getBitmapTextSize(BitmapTextModel textModel) {
+	private int[] getBitmapTextSize(BitmapTextModel model) {
 
-		var image = _imageCacheMap.get(textModel);
-
-		if (image == null) {
-			image = createBitmapTextImage(textModel);
-			_imageCacheMap.put(textModel, image);
-		}
+		var image = getBitmapTextImage(model);
 
 		var b = image.getBounds();
 
 		return new int[] { b.width, b.height };
 
+	}
+
+	private Image getBitmapTextImage(BitmapTextModel model) {
+		Image image;
+
+		if (model.isDirty()) {
+			image = createBitmapTextImage(model);
+			var old = _imageCacheMap.put(model, image);
+			if (old != null) {
+				old.dispose();
+			}
+		} else {
+			image = _imageCacheMap.get(model);
+			model.setDirty(false);
+		}
+
+		return image;
 	}
 
 	private void renderTexture(GC gc, ObjectModel model, IAssetFrameModel assetFrame) {

@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -40,7 +38,7 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
-public class AnimationSection extends FormPropertySection {
+public class AnimationSection extends FormPropertySection<AnimationModel_in_Editor> {
 
 	private Label _computedDurationLabel;
 	private Text _durationText;
@@ -187,21 +185,20 @@ public class AnimationSection extends FormPropertySection {
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
-		var models = List.of(getModels());
+		var models = getModels();
 
 		// key
 
-		_keyText.setText(
-				flatValues_to_String(models.stream().map(model -> ((AnimationModel_in_Editor) model).getKey())));
+		_keyText.setText(flatValues_to_String(models.stream().map(model -> model.getKey())));
 
 		listen(_keyText, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
-				animation.setKey(value);
 
-				var editor = animation.getEditor();
+				model.setKey(value);
 
-				animation.buildTimeline();
+				var editor = model.getEditor();
+
+				model.buildTimeline();
 
 				editor.refreshOutline();
 				editor.getTimelineCanvas().redraw();
@@ -213,17 +210,16 @@ public class AnimationSection extends FormPropertySection {
 
 		// frameRate
 
-		_frameRateText.setText(
-				flatValues_to_String(models.stream().map(model -> ((AnimationModel_in_Editor) model).getFrameRate())));
+		_frameRateText.setText(flatValues_to_String(models.stream().map(model -> model.getFrameRate())));
 
 		listenFloat(_frameRateText, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
-				animation.setFrameRate(value);
 
-				var editor = animation.getEditor();
+				model.setFrameRate(value);
 
-				animation.buildTimeline();
+				var editor = model.getEditor();
+
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -232,17 +228,16 @@ public class AnimationSection extends FormPropertySection {
 
 		// duration
 
-		_durationText.setText(
-				flatValues_to_String(models.stream().map(model -> ((AnimationModel_in_Editor) model).getDuration())));
+		_durationText.setText(flatValues_to_String(models.stream().map(model -> model.getDuration())));
 
 		listenInt(_durationText, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
-				animation.setDuration(value);
 
-				var editor = animation.getEditor();
+				model.setDuration(value);
 
-				animation.buildTimeline();
+				var editor = model.getEditor();
+
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -256,18 +251,16 @@ public class AnimationSection extends FormPropertySection {
 
 		// delay
 
-		_delayText.setText(
-				flatValues_to_String(models.stream().map(model -> ((AnimationModel_in_Editor) model).getDelay())));
+		_delayText.setText(flatValues_to_String(models.stream().map(model -> model.getDelay())));
 
 		listenInt(_delayText, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
 
-				animation.setDelay(value);
+				model.setDelay(value);
 
-				var editor = animation.getEditor();
+				var editor = model.getEditor();
 
-				animation.buildTimeline();
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -276,18 +269,16 @@ public class AnimationSection extends FormPropertySection {
 
 		// repeat
 
-		_repeatText.setText(
-				flatValues_to_String(models.stream().map(model -> ((AnimationModel_in_Editor) model).getRepeat())));
+		_repeatText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeat())));
 
 		listenInt(_repeatText, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
 
-				animation.setRepeat(value);
+				model.setRepeat(value);
 
-				var editor = animation.getEditor();
+				var editor = model.getEditor();
 
-				animation.buildTimeline();
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -296,18 +287,16 @@ public class AnimationSection extends FormPropertySection {
 
 		// showOnStart
 
-		_showOnStartBtn.setSelection(flatValues_to_Boolean(
-				models.stream().map(model -> ((AnimationModel_in_Editor) model).isShowOnStart())));
+		_showOnStartBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isShowOnStart())));
 
 		listen(_showOnStartBtn, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
 
-				animation.setShowOnStart(value);
+				model.setShowOnStart(value);
 
-				var editor = animation.getEditor();
+				var editor = model.getEditor();
 
-				animation.buildTimeline();
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -316,18 +305,15 @@ public class AnimationSection extends FormPropertySection {
 
 		// hideOnComplete
 
-		_hideOnCompleteBtn.setSelection(flatValues_to_Boolean(
-				models.stream().map(model -> ((AnimationModel_in_Editor) model).isHideOnComplete())));
+		_hideOnCompleteBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isHideOnComplete())));
 
 		listen(_hideOnCompleteBtn, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
+				model.setHideOnComplete(value);
 
-				animation.setHideOnComplete(value);
+				var editor = model.getEditor();
 
-				var editor = animation.getEditor();
-
-				animation.buildTimeline();
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -336,18 +322,16 @@ public class AnimationSection extends FormPropertySection {
 
 		// skipMissedFrames
 
-		_skipMissedFramesBtn.setSelection(flatValues_to_Boolean(
-				models.stream().map(model -> ((AnimationModel_in_Editor) model).isSkipMissedFrames())));
+		_skipMissedFramesBtn
+				.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isSkipMissedFrames())));
 
 		listen(_skipMissedFramesBtn, value -> {
 			models.stream().forEach(model -> {
-				var animation = (AnimationModel_in_Editor) model;
+				model.setSkipMissedFrames(value);
 
-				animation.setSkipMissedFrames(value);
+				var editor = model.getEditor();
 
-				var editor = animation.getEditor();
-
-				animation.buildTimeline();
+				model.buildTimeline();
 
 				editor.getTimelineCanvas().redraw();
 				editor.setDirty();
@@ -359,7 +343,7 @@ public class AnimationSection extends FormPropertySection {
 		{
 			var total = 0;
 			for (var model : getModels()) {
-				total += ((AnimationModel_in_Editor) model).getComputedTotalDuration();
+				total += model.getComputedTotalDuration();
 			}
 			_computedDurationLabel.setText("Real duration: " + total);
 		}
