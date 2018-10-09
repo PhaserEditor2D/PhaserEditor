@@ -63,9 +63,9 @@ public abstract class ScenePropertySection extends FormPropertySection {
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
-			
+
 			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
-			
+
 			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
@@ -78,16 +78,15 @@ public abstract class ScenePropertySection extends FormPropertySection {
 			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
-			
+
 			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
-			
+
 			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});
 	}
 
-	
 	protected void listen(Text text, Consumer<String> listener, List<Object> models) {
 		super.listen(text, value -> {
 
@@ -117,5 +116,4 @@ public abstract class ScenePropertySection extends FormPropertySection {
 			getCanvas().redraw();
 		});
 	}
-
 }

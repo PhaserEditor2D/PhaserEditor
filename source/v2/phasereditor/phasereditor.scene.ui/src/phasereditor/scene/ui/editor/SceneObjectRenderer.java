@@ -40,6 +40,7 @@ import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
@@ -354,8 +355,23 @@ public class SceneObjectRenderer {
 		var args = createBitmapTextRenderArgs(textModel);
 
 		var metrics = fontModel.metrics(args);
+
 		var width = metrics.getWidth();
 		var height = metrics.getHeight();
+
+		if (textModel instanceof DynamicBitmapTextComponent) {
+			// crop it
+
+			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(textModel);
+			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(textModel);
+
+			// the text is not cropped if the width is 0 or the height is 0.
+
+			if (cropWidth > 0 && cropHeight > 0) {
+				width = Math.min(width, cropWidth);
+				height = Math.min(height, cropHeight);
+			}
+		}
 
 		var buffer = createImage(width, height);
 

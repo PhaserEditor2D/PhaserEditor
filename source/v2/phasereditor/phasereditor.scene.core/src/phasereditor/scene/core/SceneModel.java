@@ -89,6 +89,9 @@ public class SceneModel {
 
 		case BitmapTextModel.TYPE:
 			return new BitmapTextModel();
+
+		case DynamicBitmapTextModel.TYPE:
+			return new DynamicBitmapTextModel();
 		}
 
 		return null;

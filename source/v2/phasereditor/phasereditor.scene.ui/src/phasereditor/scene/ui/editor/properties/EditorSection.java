@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Text;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
@@ -132,6 +133,15 @@ public class EditorSection extends ScenePropertySection {
 					tileModel.setSizeToFrame();
 					newModel = tileModel;
 					break;
+				case BitmapTextModel.TYPE:
+					newModel = new BitmapTextModel();
+					newModel.read(data, project);
+					break;
+				case DynamicBitmapTextModel.TYPE:
+					newModel = new DynamicBitmapTextModel();
+					newModel.read(data, project);
+					break;
+
 				default:
 					break;
 				}
@@ -168,7 +178,17 @@ public class EditorSection extends ScenePropertySection {
 
 		var manager = new MenuManager();
 
-		for (var type : new String[] { SpriteModel.TYPE, TileSpriteModel.TYPE, BitmapTextModel.TYPE }) {
+		for (var type : new String[] {
+
+				SpriteModel.TYPE,
+
+				TileSpriteModel.TYPE,
+
+				BitmapTextModel.TYPE,
+
+				DynamicBitmapTextModel.TYPE
+
+		}) {
 
 			var allow = models.stream()
 

@@ -49,7 +49,11 @@ public class BitmapTextModel extends ParentModel implements
 	public static final String TYPE = "BitmapText";
 
 	public BitmapTextModel() {
-		super(TYPE);
+		this(TYPE);
+	}
+
+	protected BitmapTextModel(String type) {
+		super(type);
 
 		OriginComponent.init(this);
 
@@ -154,6 +158,11 @@ public class BitmapTextModel extends ParentModel implements
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean allowMorphTo(String type) {
+		return DynamicBitmapTextModel.TYPE.equals(type);
 	}
 
 }

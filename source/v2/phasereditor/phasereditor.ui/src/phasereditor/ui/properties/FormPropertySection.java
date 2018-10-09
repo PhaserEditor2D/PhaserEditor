@@ -22,7 +22,9 @@
 package phasereditor.ui.properties;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.eclipse.swt.SWT;
@@ -110,7 +112,6 @@ public abstract class FormPropertySection implements IEditorSharedImages {
 		return value != null && value.booleanValue();
 	}
 
-	
 	@SuppressWarnings({ "boxing", "static-method" })
 	protected void listen(Button check, Consumer<Boolean> listener) {
 
@@ -212,6 +213,11 @@ public abstract class FormPropertySection implements IEditorSharedImages {
 			}
 
 		});
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static <T> void setValues_to_Text(Text text, List<Object> models, Function<T, Object> get) {
+		text.setText(flatValues_to_String(models.stream().map(model -> get.apply((T) model))));
 	}
 
 	public abstract boolean canEdit(Object obj);

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import phasereditor.scene.core.BitmapTextComponent;
+import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
@@ -97,6 +98,10 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		if (obj instanceof BitmapTextComponent) {
 			list.add(new BitmapTextSection(this));
+		}
+
+		if (obj instanceof DynamicBitmapTextComponent) {
+			list.add(new DynamicBitmapTextSection(this));
 		}
 
 		return list;

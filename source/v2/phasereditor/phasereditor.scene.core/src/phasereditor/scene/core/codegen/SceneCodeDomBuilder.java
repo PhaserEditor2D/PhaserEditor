@@ -32,6 +32,8 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.core.DynamicBitmapTextComponent;
+import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
@@ -128,6 +130,10 @@ public class SceneCodeDomBuilder {
 				assignToVar = buildLetterSpacingProp(methodDecl, model) || assignToVar;
 			}
 
+			if (model instanceof DynamicBitmapTextComponent) {
+				assignToVar = buildDynamicBitmapTextProps(methodDecl, model) || assignToVar;
+			}
+
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(varname(model));
 			}
@@ -137,6 +143,85 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildDynamicBitmapTextProps(MethodDeclDom methodDecl, ObjectModel model) {
+
+		var assignToVar = false;
+
+		var name = varname(model);
+
+		// displayCallback
+		{
+			var displayCallback = DynamicBitmapTextComponent.get_displayCallback(model);
+
+			if (displayCallback != null && displayCallback.trim().length() > 0) {
+
+				assignToVar = true;
+
+				var instr = new MethodCallDom("setDisplayCallback", name);
+
+				instr.arg(displayCallback);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// crop size
+		{
+			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(model);
+			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(model);
+
+			// the text is not cropped if the widht or height are 0.
+
+			if (cropWidth != DynamicBitmapTextComponent.cropWidth_default
+					&& cropHeight != DynamicBitmapTextComponent.cropHeight_default) {
+
+				assignToVar = true;
+
+				var instr = new MethodCallDom("setSize", name);
+
+				instr.arg(cropWidth);
+				instr.arg(cropHeight);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// scroll X
+		{
+			var scrollX = DynamicBitmapTextComponent.get_scrollX(model);
+
+			if (scrollX != DynamicBitmapTextComponent.scrollX_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("scrollX", name);
+
+				instr.value(scrollX);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// scroll Y
+		{
+			var scrollY = DynamicBitmapTextComponent.get_scrollY(model);
+
+			if (scrollY != DynamicBitmapTextComponent.scrollY_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("scrollY", name);
+
+				instr.value(scrollY);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		return assignToVar;
 	}
 
 	@SuppressWarnings("static-method")
@@ -179,7 +264,10 @@ public class SceneCodeDomBuilder {
 
 	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model) {
-		var call = new MethodCallDom("bitmapText", "this.add");
+
+		var methodName = model instanceof DynamicBitmapTextModel ? "dynamicBitmapText" : "bitmapText";
+
+		var call = new MethodCallDom(methodName, "this.add");
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
