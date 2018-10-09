@@ -335,8 +335,14 @@ public class SceneCodeDomBuilder {
 		});
 
 		for (var pair : packSectionList.values()) {
-			var line = new RawCode("this.load.pack('" + pair[0] + "', '" + pair[1] + "');");
-			preloadDom.getInstructions().add(line);
+
+			var call = new MethodCallDom("pack", "this.load");
+
+			call.argLiteral(pair[0]);
+			call.argLiteral(pair[1]);
+
+			preloadDom.getInstructions().add(call);
+
 		}
 
 		return preloadDom;
