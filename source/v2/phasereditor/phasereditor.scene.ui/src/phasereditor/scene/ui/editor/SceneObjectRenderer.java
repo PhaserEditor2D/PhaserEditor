@@ -35,7 +35,6 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
@@ -333,19 +332,12 @@ public class SceneObjectRenderer {
 
 	private void renderBitmapText(GC gc, Transform tx, BitmapTextModel textModel) {
 
-		var fontModel = textModel.createFontModel();
-
-		double scale = (double) BitmapTextComponent.get_fontSize(textModel) / (double) fontModel.getInfoSize();
-
-		var tx2 = newTx(gc, tx);
-		tx2.scale((float) scale, (float) scale);
-
-		setObjectTransform(gc, tx2, textModel);
+		setObjectTransform(gc, tx, textModel);
 
 		var image = _imageCacheMap.get(textModel);
 
 		if (image == null) {
-			image = createBitmapTextImage(gc, textModel, fontModel);
+			image = createBitmapTextImage(textModel);
 			_imageCacheMap.put(textModel, image);
 
 		}
@@ -354,18 +346,12 @@ public class SceneObjectRenderer {
 
 		var b = image.getBounds();
 		setObjectBounds(gc, textModel, 0, 0, b.width, b.height);
-		
-		tx2.dispose();
-
-		gc.setTransform(tx);
 	}
 
-	private Image createBitmapTextImage(GC gc, BitmapTextModel textModel, BitmapFontModel fontModel) {
-		var align = BitmapTextComponent.get_align(textModel);
+	private Image createBitmapTextImage(BitmapTextModel textModel) {
+		var fontModel = textModel.createFontModel();
 
-		var args = new RenderArgs(TextualComponent.get_text(textModel));
-		args.setAlign(Align.values()[align]);
-		args.setLetterSpacing(BitmapTextComponent.get_letterSpacing(textModel));
+		var args = createBitmapTextRenderArgs(textModel);
 
 		var metrics = fontModel.metrics(args);
 		var width = metrics.getWidth();
@@ -375,7 +361,7 @@ public class SceneObjectRenderer {
 
 		GC gc2 = new GC(buffer);
 
-		BaseImageCanvas.prepareGC(gc);
+		BaseImageCanvas.prepareGC(gc2);
 
 		var asset = BitmapTextComponent.get_font(textModel);
 
@@ -385,9 +371,11 @@ public class SceneObjectRenderer {
 
 			fontModel.render(args, new BitmapFontRenderer() {
 
+				@SuppressWarnings("hiding")
 				@Override
-				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-					gc2.drawImage(fontTexture, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+				public void render(char c, int x, int y, int width, int height, int srcX, int srcY, int srcW,
+						int srcH) {
+					gc2.drawImage(fontTexture, srcX, srcY, srcW, srcH, x, y, width, height);
 				}
 			});
 
@@ -398,6 +386,19 @@ public class SceneObjectRenderer {
 		gc2.dispose();
 
 		return buffer;
+	}
+
+	private static RenderArgs createBitmapTextRenderArgs(BitmapTextModel textModel) {
+
+		int fontSize = BitmapTextComponent.get_fontSize(textModel);
+		var align = BitmapTextComponent.get_align(textModel);
+
+		var args = new RenderArgs(TextualComponent.get_text(textModel));
+		args.setFontSize(fontSize);
+		args.setAlign(Align.values()[align]);
+		args.setLetterSpacing(BitmapTextComponent.get_letterSpacing(textModel));
+
+		return args;
 	}
 
 	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
@@ -531,7 +532,7 @@ public class SceneObjectRenderer {
 		return _canvas.loadImage(file);
 	}
 
-	private static int[] getTextureSize(ObjectModel model) {
+	private int[] getTextureSize(ObjectModel model) {
 
 		// TODO: implement the rest of the models
 
@@ -558,28 +559,18 @@ public class SceneObjectRenderer {
 		return new int[] { 0, 0 };
 	}
 
-	private static int[] getBitmapTextSize(BitmapTextModel textModel) {
+	private int[] getBitmapTextSize(BitmapTextModel textModel) {
 
-		var fontModel = textModel.createFontModel();
+		var image = _imageCacheMap.get(textModel);
 
-		double scale = (double) BitmapTextComponent.get_fontSize(textModel) / (double) fontModel.getInfoSize();
+		if (image == null) {
+			image = createBitmapTextImage(textModel);
+			_imageCacheMap.put(textModel, image);
+		}
 
-		int[] size = new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE };
+		var b = image.getBounds();
 
-		fontModel.render(new RenderArgs(TextualComponent.get_text(textModel)), new BitmapFontRenderer() {
-
-			@Override
-			public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-				size[0] = Math.max(x + srcW, size[0]);
-				size[1] = Math.max(y + srcH, size[1]);
-			}
-
-		});
-
-		size[0] = (int) (size[0] * scale);
-		size[1] = (int) (size[1] * scale);
-
-		return size;
+		return new int[] { b.width, b.height };
 
 	}
 

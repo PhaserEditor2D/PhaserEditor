@@ -423,7 +423,7 @@ public class BitmapFontModel {
 		}
 
 		public RenderArgs(String text) {
-			this(text, 0, 32, Align.left);
+			this(text, 32, 0, Align.left);
 		}
 
 		public String getText() {
@@ -477,6 +477,8 @@ public class BitmapFontModel {
 		public int srcW;
 		public int srcH;
 		public int x2;
+		public int width;
+		public int height;
 
 		public CharRenderInfo(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
 			super();
@@ -487,6 +489,8 @@ public class BitmapFontModel {
 			this.srcY = srcY;
 			this.srcW = srcW;
 			this.srcH = srcH;
+			this.width = srcW;
+			this.height = srcH;
 		}
 
 	}
@@ -525,7 +529,7 @@ public class BitmapFontModel {
 		List<LineRenderInfo> lines;
 
 		{
-			int maxWidth = (int) (args.getMaxWidth() * (double) _infoTag.getSize() / args.getFontSize());
+			int maxWidth = args.getMaxWidth();
 
 			boolean wrap = maxWidth > 0;
 
@@ -684,21 +688,38 @@ public class BitmapFontModel {
 
 		}
 
+		// apply font scale
+		if (args.getFontSize() != 0) {
+			var scale = (double) args.getFontSize() / _infoTag.getSize();
+
+			if (scale != 1) {
+				for (LineRenderInfo line : lines) {
+					for (CharRenderInfo c : line) {
+						c.x = (int) (c.x * scale);
+						c.x2 = (int) (c.x2 * scale);
+						c.y = (int) (c.y * scale);
+						c.width = (int) (c.width * scale);
+						c.height = (int) (c.height * scale);
+					}
+				}
+			}
+		}
+
 		// render lines
 
 		renderer.renderStart();
 
-		for(var line : lines) {
-			
+		for (var line : lines) {
+
 			renderer.lineStart();
-			
-			for(var c : line) {
-				renderer.render(c.c, c.x, c.y, c.srcX, c.srcY, c.srcW, c.srcH);
+
+			for (var c : line) {
+				renderer.render(c.c, c.x, c.y, c.width, c.height, c.srcX, c.srcY, c.srcW, c.srcH);
 			}
-			
+
 			renderer.lineEnd();
 		}
-		
+
 		renderer.renderEnd();
 	}
 
@@ -708,13 +729,13 @@ public class BitmapFontModel {
 		private int _height = 0;
 
 		@Override
-		public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-			if (x + srcW > _width) {
-				_width = x + srcW;
+		public void render(char c, int x, int y, int width, int height, int srcX, int srcY, int srcW, int srcH) {
+			if (x + width > _width) {
+				_width = x + width;
 			}
 
-			if (y + srcH > _height) {
-				_height = y + srcH;
+			if (y + height > _height) {
+				_height = y + height;
 			}
 		}
 

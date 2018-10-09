@@ -67,8 +67,8 @@ public class BitmapFontCanvas extends ImageCanvas {
 			_model.render(new RenderArgs(_text), new BitmapFontRenderer() {
 
 				@Override
-				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-					Rectangle z = calc.imageToScreen(x, y, srcW, srcH);
+				public void render(char c, int x, int y, int width, int height, int srcX, int srcY, int srcW, int srcH) {
+					Rectangle z = calc.imageToScreen(x, y, width, height);
 					gc.drawImage(getImage(), srcX, srcY, srcW, srcH, z.x, z.y, z.width, z.height);
 				}
 

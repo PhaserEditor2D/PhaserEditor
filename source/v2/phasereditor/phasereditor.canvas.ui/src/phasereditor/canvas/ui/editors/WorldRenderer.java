@@ -457,8 +457,8 @@ public class WorldRenderer {
 			fontModel.render(new RenderArgs(model.getText()), new BitmapFontRenderer() {
 
 				@Override
-				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, srcW, srcH);
+				public void render(char c, int x, int y, int width, int height,  int srcX, int srcY, int srcW, int srcH) {
+					gc.drawImage(img, srcX, srcY, srcW, srcH, x, y, width, height);
 					size[0] = Math.max(x + srcW, size[0]);
 					size[1] = Math.max(y + srcH, size[1]);
 				}

@@ -78,7 +78,7 @@ public class BitmapTextNode extends Pane implements ISpriteNode, ITextSpriteNode
 		fontModel.render(model.createRenderArgs(), new BitmapFontRenderer() {
 
 			@Override
-			public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+			public void render(char c, int x, int y, int width, int height, int srcX, int srcY, int srcW, int srcH) {
 				if (srcW * srcH == 0) {
 					// space characters are renderer as a single transparent pixel or as a 0-size
 					// rectangle, in this case we should ignore it.

@@ -69,8 +69,8 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 			model.render(new RenderArgs(text), new BitmapFontRenderer() {
 
 				@Override
-				public void render(char c, int charX, int charY, int srcX, int srcY, int srcW, int srcH) {
-					Rectangle z = calc.imageToScreen(charX, charY, srcW, srcH);
+				public void render(char c, int charX, int charY, int charW, int charH, int srcX, int srcY, int srcW, int srcH) {
+					Rectangle z = calc.imageToScreen(charX, charY, charW, charH);
 					gc.drawImage(image, srcX, srcY, srcW, srcH, x + z.x, y + z.y, z.width, z.height);
 				}
 
