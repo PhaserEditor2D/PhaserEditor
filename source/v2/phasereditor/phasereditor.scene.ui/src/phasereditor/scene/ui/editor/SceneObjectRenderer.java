@@ -631,6 +631,7 @@ public class SceneObjectRenderer {
 
 		if (model.isDirty()) {
 			image = createBitmapTextImage(model);
+			
 			model.setDirty(false);
 
 			var old = _imageCacheMap.put(model, image);

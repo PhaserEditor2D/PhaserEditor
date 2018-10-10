@@ -28,7 +28,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
@@ -65,9 +64,8 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 		{
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Display Callback");
-			label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			label(comp, "Display Callback", "Phaser.GameObjects.DynamicBitmapText.displayCallback",
+					new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 			_displayCallbackText = new Text(comp, SWT.BORDER);
 			_displayCallbackText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
@@ -84,17 +82,14 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				manager.createControl(comp);
 			}
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Crop Size");
+			label(comp, "Crop Size", "Phaser.GameObjects.DynamicBitmapText.setSize");
 
-			label = new Label(comp, SWT.NONE);
-			label.setText("Width");
+			label(comp, "Width", "Phaser.GameObjects.DynamicBitmapText.cropWidth");
 
 			_cropWidthText = new Text(comp, SWT.BORDER);
 			_cropWidthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			label = new Label(comp, SWT.NONE);
-			label.setText("Height");
+			label(comp, "Height", "Phaser.GameObjects.DynamicBitmapText.cropHeight");
 
 			_cropHeightText = new Text(comp, SWT.BORDER);
 			_cropHeightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -111,17 +106,14 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				manager.createControl(comp);
 			}
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Scroll");
+			label(comp, "Scroll", "*The scroll position of the Bitmap Text");
 
-			label = new Label(comp, SWT.NONE);
-			label.setText("X");
+			label(comp, "X", "Phaser.GameObjects.DynamicBitmapText.scrollX");
 
 			_scrollXText = new Text(comp, SWT.BORDER);
 			_scrollXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			label = new Label(comp, SWT.NONE);
-			label.setText("Y");
+			label(comp, "Y", "Phaser.GameObjects.DynamicBitmapText.scrollY");
 
 			_scrollYText = new Text(comp, SWT.BORDER);
 			_scrollYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -155,7 +147,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_cropWidth(model, value);
 			});
-			
+
 			dirtyModels();
 
 			getEditor().setDirty(true);
@@ -166,7 +158,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_cropHeight(model, value);
 			});
-			
+
 			dirtyModels();
 
 			getEditor().setDirty(true);
@@ -177,7 +169,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_scrollX(model, value);
 			});
-			
+
 			dirtyModels();
 
 			getEditor().setDirty(true);
@@ -188,9 +180,9 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_scrollY(model, value);
 			});
-			
+
 			dirtyModels();
-			
+
 			getEditor().setDirty(true);
 
 		}, models);

@@ -28,7 +28,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
@@ -41,9 +40,7 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class OriginSection extends ScenePropertySection {
 
-	private Label _originXLabel;
 	private Text _originXText;
-	private Label _originYLabel;
 	private Text _originYText;
 
 	public OriginSection(ScenePropertyPage page) {
@@ -68,17 +65,14 @@ public class OriginSection extends ScenePropertySection {
 		});
 		manager.createControl(comp);
 
-		var label = new Label(comp, SWT.NONE);
-		label.setText("Origin");
+		label(comp, "Origin", "Phaser.GameObjects.Sprite.setOrigin");
 
-		_originXLabel = new Label(comp, SWT.NONE);
-		_originXLabel.setText("X");
+		label(comp, "X", "Phaser.GameObjects.Sprite.originX");
 
 		_originXText = new Text(comp, SWT.BORDER);
 		_originXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		_originYLabel = new Label(comp, SWT.NONE);
-		_originYLabel.setText("Y");
+		label(comp, "Y", "Phaser.GameObjects.Sprite.originY");
 
 		_originYText = new Text(comp, SWT.BORDER);
 		_originYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

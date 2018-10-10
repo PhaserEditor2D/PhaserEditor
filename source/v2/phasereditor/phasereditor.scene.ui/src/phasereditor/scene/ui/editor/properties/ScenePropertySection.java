@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -122,5 +123,15 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			getCanvas().redraw();
 		});
+	}
+	
+	@Override
+	protected String getHelp(String helpHint) {
+		
+		if (helpHint.startsWith("*")) {
+			return helpHint.substring(1);
+		}
+		
+		return InspectCore.getPhaserHelp().getMemberHelp(helpHint);
 	}
 }

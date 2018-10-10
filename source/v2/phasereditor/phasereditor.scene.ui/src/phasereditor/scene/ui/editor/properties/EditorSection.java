@@ -31,7 +31,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.json.JSONObject;
 
@@ -50,7 +49,6 @@ import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
  */
 public class EditorSection extends ScenePropertySection {
 
-	private Label _editorNameLabel;
 	private Text _editorNameText;
 	private Button _typeBtn;
 
@@ -69,17 +67,18 @@ public class EditorSection extends ScenePropertySection {
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
 
-		_editorNameLabel = new Label(comp, SWT.NONE);
-		_editorNameLabel.setText("Var Name");
+		label(comp, "Var Name", "*(Editor) The name of the variable used in the generated code.");
 
 		_editorNameText = new Text(comp, SWT.BORDER);
 		_editorNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Type");
+			label(comp, "Type", "*(Editor) The Phaser type of this object." +
+
+					"\n\nClick on the next button to morhp to other type.");
 
 			_typeBtn = new Button(comp, SWT.NONE);
+			_typeBtn.setToolTipText("Click to morph to other type.");
 			_typeBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			_typeBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
 		}
@@ -209,8 +208,8 @@ public class EditorSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		_editorNameText.setText(flatValues_to_String(
-				models.stream().map(model -> EditorComponent.get_editorName(model))));
+		_editorNameText
+				.setText(flatValues_to_String(models.stream().map(model -> EditorComponent.get_editorName(model))));
 
 		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 

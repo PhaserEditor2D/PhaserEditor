@@ -62,12 +62,14 @@ public class FlipSection extends ScenePropertySection {
 		_flipXBtn = new Button(comp, SWT.TOGGLE);
 		_flipXBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		_flipXBtn.setText("Flip: X");
+		_flipXBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.flipX"));
 
 		new Label(comp, SWT.NONE);
 
 		_flipYBtn = new Button(comp, SWT.TOGGLE);
 		_flipYBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		_flipYBtn.setText("Flip: Y");
+		_flipYBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.flipY"));
 
 		update_UI_from_Model();
 

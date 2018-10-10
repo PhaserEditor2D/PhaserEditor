@@ -36,9 +36,11 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.ui.IEditorSharedImages;
@@ -227,6 +229,29 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 
 	protected static <T> void setValues_to_Text(Text text, List<T> models, Function<T, Object> get) {
 		text.setText(flatValues_to_String(models.stream().map(model -> get.apply(model))));
+	}
+
+	protected Label label(Composite parent, String title, String helpId) {
+		return label(parent, title, helpId, null);
+	}
+	protected Label label(Composite parent, String title, String helpId, GridData gd) {
+		var label = new Label(parent, SWT.NONE);
+		label.setText(title);
+		
+		if (gd != null) {
+			label.setLayoutData(gd);
+		}
+
+		var help = getHelp(helpId);
+		if (help != null) {
+			label.setToolTipText(help);
+		}
+		return label;
+	}
+
+	@SuppressWarnings({ "static-method", "unused" })
+	protected String getHelp(String helpHint) {
+		return null;
 	}
 
 	public abstract boolean canEdit(Object obj);

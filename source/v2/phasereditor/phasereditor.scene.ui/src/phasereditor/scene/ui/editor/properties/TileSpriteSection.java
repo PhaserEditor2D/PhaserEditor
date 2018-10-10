@@ -78,22 +78,20 @@ public class TileSpriteSection extends ScenePropertySection {
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Tile Position");
+			label(comp, "Tile Position", "Phaser.GameObjects.TileSprite.setTilePosition");
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("X");
-			label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+			label(comp, "X", "Phaser.GameObjects.TileSprite.tilePositionX",
+					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
 			_tilePositionXText = new Text(comp, SWT.BORDER);
 			_tilePositionXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Y");
+			label(comp, "Y", "Phaser.GameObjects.TileSprite.tilePositionY",
+					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
 			_tilePositionYText = new Text(comp, SWT.BORDER);
 			_tilePositionYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -110,22 +108,20 @@ public class TileSpriteSection extends ScenePropertySection {
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Tile Scale");
+			label(comp, "Tile Scale", "Phaser.GameObjects.TileSprite.setTileScale");
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("X");
-			label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+			label(comp, "X", "Phaser.GameObjects.TileSprite.tileScaleX",
+					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
 			_tileScaleXText = new Text(comp, SWT.BORDER);
 			_tileScaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Y");
+			label(comp, "Y", "Phaser.GameObjects.TileSprite.tileScaleY",
+					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
 			_tileScaleYText = new Text(comp, SWT.BORDER);
 			_tileScaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -142,13 +138,11 @@ public class TileSpriteSection extends ScenePropertySection {
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Size");
+			label(comp, "Tile Size", "Phaser.GameObjects.TileSprite.setSize");
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Width");
+			label(comp, "Width", "Phaser.GameObjects.TileSprite.width");
 
 			var comp2 = new Composite(comp, SWT.NONE);
 			var ly = new GridLayout(2, false);
@@ -177,8 +171,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			new Label(comp, SWT.NONE);
 			new Label(comp, SWT.NONE);
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Height");
+			label(comp, "Height", "Phaser.GameObjects.TileSprite.height");
 
 			var comp2 = new Composite(comp, SWT.NONE);
 			var ly = new GridLayout(2, false);

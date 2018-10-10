@@ -40,13 +40,9 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class TransformSection extends ScenePropertySection {
 
-	private Label _xLabel;
 	private Text _xText;
-	private Label _yLabel;
 	private Text _yText;
-	private Label _scaleXLabel;
 	private Text _scaleXText;
-	private Label _scaleYLabel;
 	private Text _scaleYText;
 	private Text _angleText;
 
@@ -77,17 +73,14 @@ public class TransformSection extends ScenePropertySection {
 				manager.createControl(comp);
 			}
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Position");
+			label(comp, "Position", "Phaser.GameObjects.Sprite.setPosition");
 
-			_xLabel = new Label(comp, SWT.NONE);
-			_xLabel.setText("X");
+			label(comp, "X", "Phaser.GameObjects.Sprite.x");
 
 			_xText = new Text(comp, SWT.BORDER);
 			_xText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			_yLabel = new Label(comp, SWT.NONE);
-			_yLabel.setText("Y");
+			label(comp, "Y", "Phaser.GameObjects.Sprite.y");
 
 			_yText = new Text(comp, SWT.BORDER);
 			_yText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -137,17 +130,14 @@ public class TransformSection extends ScenePropertySection {
 			});
 			manager.createControl(comp);
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Scale");
+			label(comp, "Scale", "Phaser.GameObjects.Sprite.setScale");
 
-			_scaleXLabel = new Label(comp, SWT.NONE);
-			_scaleXLabel.setText("X");
+			label(comp, "X", "Phaser.GameObjects.Sprite.scaleX");
 
 			_scaleXText = new Text(comp, SWT.BORDER);
 			_scaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			_scaleYLabel = new Label(comp, SWT.NONE);
-			_scaleYLabel.setText("Y");
+			label(comp, "Y", "Phaser.GameObjects.Sprite.scaleY");
 
 			_scaleYText = new Text(comp, SWT.BORDER);
 			_scaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -163,8 +153,7 @@ public class TransformSection extends ScenePropertySection {
 			});
 			manager.createControl(comp);
 
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Angle");
+			label(comp, "Angle", "Phaser.GameObjects.Sprite.angle");
 
 			new Label(comp, SWT.NONE);
 
@@ -189,10 +178,8 @@ public class TransformSection extends ScenePropertySection {
 
 		// x y
 
-		_xText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_x(model))));
-		_yText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_y(model))));
+		_xText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_x(model))));
+		_yText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_y(model))));
 
 		listenFloat(_xText, value -> {
 			models.forEach(model -> TransformComponent.set_x(model, value));
@@ -206,10 +193,8 @@ public class TransformSection extends ScenePropertySection {
 
 		// scale
 
-		_scaleXText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX(model))));
-		_scaleYText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY(model))));
+		_scaleXText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX(model))));
+		_scaleYText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY(model))));
 
 		listenFloat(_scaleXText, value -> {
 			models.forEach(model -> TransformComponent.set_scaleX(model, value));
@@ -223,8 +208,7 @@ public class TransformSection extends ScenePropertySection {
 
 		// angle
 
-		_angleText.setText(
-				flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle(model))));
+		_angleText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle(model))));
 
 		listenFloat(_angleText, value -> {
 			models.forEach(model -> TransformComponent.set_angle(model, value));

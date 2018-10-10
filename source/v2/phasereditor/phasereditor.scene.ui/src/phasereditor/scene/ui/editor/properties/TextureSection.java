@@ -59,6 +59,7 @@ public class TextureSection extends ScenePropertySection {
 
 		{
 			_frameCanvas = new SingleFrameCanvas(comp, SWT.BORDER);
+			_frameCanvas.setToolTipText(getHelp("Phaser.GameObjects.Sprite.frame"));
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.heightHint = 100;
 			gd.minimumWidth = 100;

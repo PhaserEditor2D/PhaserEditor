@@ -33,7 +33,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -117,8 +116,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		comp.setLayout(new GridLayout(2, false));
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Align");
+			label(comp, "Align", "Phaser.GameObjects.BitmapText.align");
 
 			var manager = new ToolBarManager();
 
@@ -134,8 +132,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Font Name");
+			label(comp, "Font", "Phaser.GameObjects.BitmapText.font");
 
 			_fontNameBtn = new Button(comp, SWT.LEFT);
 			_fontNameBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -143,8 +140,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Font Size");
+			label(comp, "Font Size", "Phaser.GameObjects.BitmapText.fontSize");
 
 			_fontSizeText = new Text(comp, SWT.BORDER);
 			_fontSizeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -152,8 +148,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Letter Spacing");
+			label(comp, "Leter Spacing", "Phaser.GameObjects.BitmapText.letterSpacing");
 
 			_letterSpacingText = new Text(comp, SWT.BORDER);
 			_letterSpacingText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
