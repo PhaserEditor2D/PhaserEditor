@@ -127,6 +127,12 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 						item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
 					}
 				}
+				
+				if (data instanceof ObjectModel) {
+					var model = (ObjectModel) data;
+					var type = model.getType();
+					item.setKeywords(type);
+				}
 
 			}
 

@@ -918,8 +918,34 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	}
 
 	private boolean matches(TreeCanvasItem item) {
-		return _filterText == null || item.getLabel() == null || item.getLabel().toLowerCase().contains(_filterText)
-				|| (item.getKeywords() != null && item.getKeywords().contains(_filterText));
+		if (_filterText == null) {
+			return true;
+		}
+
+		var label = item.getLabel();
+
+		if (label == null) {
+			return true;
+		}
+
+		label = label.toUpperCase();
+
+		if (label.contains(_filterText)) {
+			return true;
+		}
+
+		var keywords = item.getKeywords();
+
+		if (keywords != null) {
+
+			keywords = keywords.toLowerCase();
+
+			if (keywords.contains(_filterText)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void toggleItem(TreeCanvasItem item) {
