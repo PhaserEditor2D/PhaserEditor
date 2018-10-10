@@ -928,7 +928,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			return true;
 		}
 
-		label = label.toUpperCase();
+		label = label.toLowerCase();
 
 		if (label.contains(_filterText)) {
 			return true;
