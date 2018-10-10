@@ -117,7 +117,13 @@ public class BitmapFontAssetModel extends AssetModel {
 		}
 
 		try {
+			
+			_fontModel = null;
+			
+			getFontModel();
+			
 			buildFrame();
+			
 		} catch (Exception e) {
 			problems.add(errorStatus(e.getMessage()));
 		}
@@ -143,6 +149,7 @@ public class BitmapFontAssetModel extends AssetModel {
 
 	private Frame _frame;
 	private ArrayList<IAssetElementModel> _elements;
+	private BitmapFontModel _fontModel;
 
 	public final class Frame implements IAssetFrameModel, IAssetElementModel {
 		private int _index;
@@ -202,6 +209,15 @@ public class BitmapFontAssetModel extends AssetModel {
 		}
 
 		return _elements;
+	}
+
+	public BitmapFontModel getFontModel() {
+
+		if (_fontModel == null) {
+			_fontModel = createFontModel();
+		}
+
+		return _fontModel;
 	}
 
 	public BitmapFontModel createFontModel() {

@@ -76,7 +76,7 @@ public class BitmapFontAssetPreviewComp extends Composite {
 		}
 
 		IFile imgFile = model.getFileFromUrl(model.getTextureURL());
-		BitmapFontModel fontModel = model.createFontModel();
+		BitmapFontModel fontModel = model.getFontModel();
 
 		_bitmapFontCanvas.setModel(fontModel);
 		_bitmapFontCanvas.setImageFile(imgFile);

@@ -141,19 +141,24 @@ public class BitmapTextModel extends ParentModel implements
 	}
 
 	public void updateSizeFromBitmapFont() {
-		var model = createFontModel();
+		
+		var model = getFontModel();
+		
 		if (model != null) {
+			
 			if (BitmapTextComponent.get_fontSize(this) == fontSize_default) {
 				BitmapTextComponent.set_fontSize(this, model.getInfoSize());
 			}
 		}
 	}
 
-	public BitmapFontModel createFontModel() {
+	public BitmapFontModel getFontModel() {
 		var fontAsset = BitmapTextComponent.get_font(this);
 
 		if (fontAsset != null) {
-			var model = fontAsset.createFontModel();
+			
+			var model = fontAsset.getFontModel();
+			
 			return model;
 		}
 
