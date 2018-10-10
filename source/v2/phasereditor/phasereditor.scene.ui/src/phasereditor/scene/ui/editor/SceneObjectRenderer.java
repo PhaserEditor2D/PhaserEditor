@@ -561,13 +561,16 @@ public class SceneObjectRenderer {
 
 		if (model.isDirty()) {
 			image = createTileSpriteTexture(model);
+
+			model.setDirty(false);
+
 			var old = _imageCacheMap.put(model, image);
+
 			if (old != null) {
 				old.dispose();
 			}
 		} else {
 			image = _imageCacheMap.getOrDefault(model, null);
-			model.setDirty(false);
 		}
 
 		gc.drawImage(image, 0, 0);
@@ -628,13 +631,15 @@ public class SceneObjectRenderer {
 
 		if (model.isDirty()) {
 			image = createBitmapTextImage(model);
+			model.setDirty(false);
+
 			var old = _imageCacheMap.put(model, image);
+
 			if (old != null) {
 				old.dispose();
 			}
 		} else {
 			image = _imageCacheMap.get(model);
-			model.setDirty(false);
 		}
 
 		return image;
