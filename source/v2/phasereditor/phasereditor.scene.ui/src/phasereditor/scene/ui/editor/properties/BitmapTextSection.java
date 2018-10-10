@@ -96,7 +96,7 @@ public class BitmapTextSection extends ScenePropertySection {
 				BitmapTextComponent.set_align(model, _align);
 			});
 			
-			dirtyModels();
+			setModelsToDirty();
 
 			var after = SceneSnapshotOperation.takeSnapshot(getEditor());
 
@@ -182,7 +182,7 @@ public class BitmapTextSection extends ScenePropertySection {
 				BitmapTextComponent.set_font(obj, asset);
 			}
 			
-			dirtyModels();
+			setModelsToDirty();
 
 			var after = SceneSnapshotOperation.takeSnapshot(editor);
 
@@ -245,7 +245,7 @@ public class BitmapTextSection extends ScenePropertySection {
 				BitmapTextComponent.set_fontSize(model, value);
 			});
 
-			dirtyModels();
+			setModelsToDirty();
 			
 			getEditor().setDirty(true);
 
@@ -257,7 +257,7 @@ public class BitmapTextSection extends ScenePropertySection {
 				BitmapTextComponent.set_letterSpacing(model, value);
 			});
 			
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 

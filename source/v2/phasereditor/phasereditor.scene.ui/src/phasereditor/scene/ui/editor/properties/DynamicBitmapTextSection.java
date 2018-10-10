@@ -148,7 +148,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				DynamicBitmapTextComponent.set_cropWidth(model, value);
 			});
 
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -159,7 +159,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				DynamicBitmapTextComponent.set_cropHeight(model, value);
 			});
 
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -170,7 +170,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				DynamicBitmapTextComponent.set_scrollX(model, value);
 			});
 
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -181,7 +181,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				DynamicBitmapTextComponent.set_scrollY(model, value);
 			});
 
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 

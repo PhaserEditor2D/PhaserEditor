@@ -44,6 +44,7 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TextureComponent;
@@ -51,6 +52,8 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.FrameData;
+import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
@@ -110,6 +113,18 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 					var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
 					if (renderer != null) {
 						item.setRenderer(renderer);
+					}
+				}
+
+				if (data instanceof BitmapTextModel) {
+					var model = (BitmapTextModel) data;
+					
+					var sceneRenderer = getEditor().getScene().getSceneRenderer();
+					
+					var image = sceneRenderer.getBitmapTextImage(model);
+					
+					if (image != null) {
+						item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
 					}
 				}
 

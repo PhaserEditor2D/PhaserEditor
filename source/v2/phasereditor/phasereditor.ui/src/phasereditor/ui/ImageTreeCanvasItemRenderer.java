@@ -105,7 +105,7 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		// paint image
 
-		if (_image != null) {
+		if (_image != null && !_image.isDisposed()) {
 			if (iconified) {
 				PhaserEditorUI.paintScaledImageInArea(gc, _image, _fd,
 						new Rectangle(x + 2, y + 1, imgSize, rowHeight - 2), false, true);

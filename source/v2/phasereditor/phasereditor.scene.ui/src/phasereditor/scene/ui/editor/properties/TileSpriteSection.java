@@ -224,7 +224,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		}
 
-		dirtyModels();
+		setModelsToDirty();
 
 		getEditor().updatePropertyPagesContentWithSelection();
 
@@ -250,7 +250,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_tilePositionXText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -259,7 +259,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_tilePositionYText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -275,7 +275,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_tileScaleXText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -284,7 +284,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_tileScaleYText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -298,7 +298,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_widthText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_width(model, value));
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
@@ -307,7 +307,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_heightText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_height(model, value));
-			dirtyModels();
+			setModelsToDirty();
 
 			getEditor().setDirty(true);
 

@@ -59,12 +59,19 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		return getEditor().getScene();
 	}
 
-	protected void dirtyModels() {
-		for(var model : getModels()) {
+	protected void setModelsToDirty() {
+		for (var model : getModels()) {
 			model.setDirty(true);
 		}
+
+		getEditor().refreshOutline();
 	}
-	
+
+	protected void setModelToDirty(ObjectModel model) {
+		model.setDirty(true);
+		getEditor().refreshOutline();
+	}
+
 	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models) {
 		super.listenFloat(text, value -> {
 
@@ -124,14 +131,14 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			getCanvas().redraw();
 		});
 	}
-	
+
 	@Override
 	protected String getHelp(String helpHint) {
-		
+
 		if (helpHint.startsWith("*")) {
 			return helpHint.substring(1);
 		}
-		
+
 		return InspectCore.getPhaserHelp().getMemberHelp(helpHint);
 	}
 }

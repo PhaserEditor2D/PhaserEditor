@@ -99,7 +99,7 @@ public class OriginSection extends ScenePropertySection {
 			models.forEach(model -> {
 				OriginComponent.set_originX(model, value);
 				if (model instanceof DynamicBitmapTextComponent) {
-					model.setDirty(true);
+					setModelToDirty(model);
 				}
 			});
 			getEditor().setDirty(true);
@@ -109,7 +109,7 @@ public class OriginSection extends ScenePropertySection {
 			models.forEach(model -> {
 				OriginComponent.set_originY(model, value);
 				if (model instanceof DynamicBitmapTextComponent) {
-					model.setDirty(true);
+					setModelToDirty(model);
 				}
 			});
 			getEditor().setDirty(true);

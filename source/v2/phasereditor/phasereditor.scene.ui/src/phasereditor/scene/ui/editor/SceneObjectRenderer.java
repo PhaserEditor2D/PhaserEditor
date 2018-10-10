@@ -84,11 +84,15 @@ public class SceneObjectRenderer {
 	}
 
 	public void dispose() {
-		for (var buffer : _imageCacheMap.values()) {
-			if (!buffer.isDisposed()) {
-				buffer.dispose();
+		for (var image : _imageCacheMap.values()) {
+			if (!image.isDisposed()) {
+				image.dispose();
 			}
 		}
+	}
+
+	public Image getModelImageFromCache(Object model) {
+		return _imageCacheMap.get(model);
 	}
 
 	public void addPostPaintAction(Runnable action) {
@@ -626,12 +630,12 @@ public class SceneObjectRenderer {
 
 	}
 
-	private Image getBitmapTextImage(BitmapTextModel model) {
+	public Image getBitmapTextImage(BitmapTextModel model) {
 		Image image;
 
 		if (model.isDirty()) {
 			image = createBitmapTextImage(model);
-			
+
 			model.setDirty(false);
 
 			var old = _imageCacheMap.put(model, image);
