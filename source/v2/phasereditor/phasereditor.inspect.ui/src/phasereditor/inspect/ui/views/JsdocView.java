@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChange
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
@@ -22,12 +23,15 @@ import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.ui.SelectionProviderImpl;
 
 public class JsdocView extends ViewPart implements ISelectionListener, LocationListener, IPreferenceChangeListener {
 
 	public static final String ID = "phasereditor.inspect.ui.jsdoc";
 	private Browser _browser;
 	private IJsdocProvider _currentProvider;
+	private Object _content;
+	private boolean _settingContent;
 
 	public JsdocView() {
 	}
@@ -41,6 +45,8 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 		InstanceScope.INSTANCE.getNode("org.eclipse.e4.ui.css.swt.theme").addPreferenceChangeListener(this);
 
 		setHtml("Select an element in the workbbench.");
+
+		getViewSite().setSelectionProvider(new SelectionProviderImpl(true));
 	}
 
 	@Override
@@ -67,26 +73,37 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	}
 
 	public void showJsdocFor(Object obj) {
+		if (_settingContent) {
+			return;
+		}
+
+		_settingContent = true;
+
+		_content = obj;
+
 		IJsdocProvider provider = null;
 
-		if (obj != null) {
+		if (obj == null) {
+			getViewSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
+		} else {
 			provider = Adapters.adapt(obj, IJsdocProvider.class);
+			getViewSite().getSelectionProvider().setSelection(new StructuredSelection(obj));
 		}
 
 		showFromProvider(provider);
+
+		_settingContent = false;
+	}
+
+	public Object getContent() {
+		return _content;
 	}
 
 	private void showFromProvider(IJsdocProvider provider) {
-		String html;
-		if (provider == null) {
-			html = "No available documentation.";
-		} else {
-			html = provider.getJsdoc();
+		if (provider != null) {
+			_currentProvider = provider;
+			setHtml(provider.getJsdoc());
 		}
-
-		setHtml(html);
-
-		_currentProvider = provider;
 	}
 
 	private void setHtml(String html) {
@@ -116,11 +133,11 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 		}
 
 		if (_currentProvider != null) {
-			IJsdocProvider newProvider = _currentProvider.processLink(event.location);
-			if (newProvider == null) {
+			var newContent = _currentProvider.processLink(event.location);
+			if (newContent == null) {
 				event.doit = false;
 			} else {
-				showFromProvider(newProvider);
+				showJsdocFor(newContent);
 			}
 		}
 	}

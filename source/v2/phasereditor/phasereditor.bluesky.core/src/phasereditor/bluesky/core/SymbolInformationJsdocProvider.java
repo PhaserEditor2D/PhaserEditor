@@ -40,7 +40,7 @@ public class SymbolInformationJsdocProvider implements IJsdocProvider {
 	}
 	
 	@Override
-	public IJsdocProvider processLink(String location) {
+	public Object processLink(String location) {
 		return null;
 	}
 

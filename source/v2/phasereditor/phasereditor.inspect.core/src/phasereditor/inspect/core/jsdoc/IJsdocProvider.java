@@ -28,5 +28,5 @@ package phasereditor.inspect.core.jsdoc;
 public interface IJsdocProvider {
 	public String getJsdoc();
 
-	public IJsdocProvider processLink(String location);
+	public Object processLink(String location);
 }

@@ -46,7 +46,7 @@ public class PhaserMemberJsdocProvider implements IJsdocProvider {
 	}
 
 	@Override
-	public IJsdocProvider processLink(String link) {
+	public IPhaserMember processLink(String link) {
 
 		String link2 = link;
 
@@ -78,13 +78,9 @@ public class PhaserMemberJsdocProvider implements IJsdocProvider {
 
 		out.println("PhaserMemberJsdocProvider: looking for member " + name);
 
-		IPhaserMember member = InspectCore.getPhaserHelp().getMembersMap().get(name);
+		var member = InspectCore.getPhaserHelp().getMembersMap().get(name);
 
-		if (member != null) {
-			return new PhaserMemberJsdocProvider(member);
-		}
-
-		return null;
+		return member;
 
 	}
 
