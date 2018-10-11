@@ -54,6 +54,10 @@ public class PhaserElementContentProvider implements ITreeContentProvider {
 
 			return list.toArray();
 		}
+		
+		if (inputElement instanceof PhaserType) {
+			return getChildren(inputElement);
+		}
 
 		return new Object[] {};
 	}

@@ -23,8 +23,12 @@ package phasereditor.inspect.ui.views;
 
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
@@ -35,9 +39,11 @@ import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserType;
+import phasereditor.inspect.ui.PhaserElementContentProvider;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
 import phasereditor.inspect.ui.PhaserSubTypesContentProvider;
 import phasereditor.inspect.ui.PhaserSuperTypesContentProvider;
+import phasereditor.ui.ComplexSelectionProvider;
 
 /**
  * @author arian
@@ -46,32 +52,44 @@ import phasereditor.inspect.ui.PhaserSuperTypesContentProvider;
 public class PhaserHierarchyView extends ViewPart {
 
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserHierarchyView"; //$NON-NLS-1$
-	private TreeViewer _viewer;
+	private TreeViewer _hierarchyViewer;
+	private TreeViewer _membersViewer;
 
 	public PhaserHierarchyView() {
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_viewer = new TreeViewer(parent);
-		_viewer.setLabelProvider(new PhaserElementLabelProvider() {
+		var sash = new SashForm(parent, SWT.VERTICAL);
+
+		_hierarchyViewer = new TreeViewer(sash);
+		
+		var labelProvider = new PhaserElementLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				return ((IPhaserMember) element).getName();
 			}
-		});
+		};
+		
+		_hierarchyViewer.setLabelProvider(labelProvider);
 
-		_viewer.setContentProvider(new PhaserSubTypesContentProvider());
+		_hierarchyViewer.setContentProvider(new PhaserSubTypesContentProvider());
+
+		_membersViewer = new TreeViewer(sash);
+		_membersViewer.setLabelProvider(labelProvider);
+		_membersViewer.setContentProvider(new PhaserElementContentProvider(false));
+
+		sash.setWeights(new int[] { 1, 1 });
 
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
-		getViewSite().setSelectionProvider(_viewer);
+		getViewSite().setSelectionProvider(new ComplexSelectionProvider(_hierarchyViewer, _membersViewer));
 
 		{
 			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
-			DropTarget target = new DropTarget(_viewer.getControl(), options);
+			DropTarget target = new DropTarget(_hierarchyViewer.getControl(), options);
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 			target.setTransfer(types);
 			target.addDropListener(new DropTargetAdapter() {
@@ -86,11 +104,28 @@ public class PhaserHierarchyView extends ViewPart {
 				}
 			});
 		}
+
+		_hierarchyViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				showMembers(event.getStructuredSelection().getFirstElement());
+			}
+		});
+	}
+
+	protected void showMembers(Object element) {
+		if (element == null) {
+			_membersViewer.setInput(new Object[] {});
+		} else {
+			var type = (PhaserType) element;
+			_membersViewer.setInput(type);
+		}
 	}
 
 	@Override
 	public void setFocus() {
-		_viewer.getTree().setFocus();
+		_hierarchyViewer.getTree().setFocus();
 	}
 
 	public void displayType(Object element) {
@@ -108,16 +143,16 @@ public class PhaserHierarchyView extends ViewPart {
 				}
 			}
 
-			_viewer.setInput(new Object[] { type });
-			_viewer.expandToLevel(2);
+			_hierarchyViewer.setInput(new Object[] { type });
+			_hierarchyViewer.expandToLevel(2);
 		}
 	}
 
 	public void setShowSubTypes(boolean showSubtypes) {
 		if (showSubtypes) {
-			_viewer.setContentProvider(new PhaserSubTypesContentProvider());
+			_hierarchyViewer.setContentProvider(new PhaserSubTypesContentProvider());
 		} else {
-			_viewer.setContentProvider(new PhaserSuperTypesContentProvider());
+			_hierarchyViewer.setContentProvider(new PhaserSuperTypesContentProvider());
 		}
 	}
 
