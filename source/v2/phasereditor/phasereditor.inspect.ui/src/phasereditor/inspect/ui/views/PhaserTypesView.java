@@ -29,6 +29,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -39,6 +40,10 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeColumn;
@@ -54,6 +59,7 @@ import phasereditor.inspect.ui.PhaserElementContentProvider;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
 import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.ViewerDragSourceListener;
 
 /**
  * @author arian
@@ -136,6 +142,16 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener, IPr
 		// InspectUI.installJsdocTooltips(_filteredTree.getViewer());
 
 		getViewSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
+
+		init_DND();
+	}
+
+	private void init_DND() {
+		{
+			DragSource dragSource = new DragSource(_filteredTree.getViewer().getControl(), DND.DROP_MOVE | DND.DROP_DEFAULT);
+			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+			dragSource.addDragListener(new ViewerDragSourceListener(_filteredTree.getViewer()));
+		}
 	}
 
 	/**

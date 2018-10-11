@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import phasereditor.inspect.core.jsdoc.PhaserType;
@@ -32,43 +29,14 @@ import phasereditor.inspect.core.jsdoc.PhaserType;
  * @author arian
  *
  */
-public class PhaserHierarchyContentProvider implements ITreeContentProvider {
+public class PhaserSubTypesContentProvider implements ITreeContentProvider {
 
-	private PhaserType _focusType;
-	private Set<PhaserType> _rootTypes;
-
-	public PhaserHierarchyContentProvider() {
-	}
-
-	public PhaserHierarchyContentProvider(PhaserType focusType) {
-		super();
-
-		_focusType = focusType;
-		_rootTypes = new LinkedHashSet<>();
-		_rootTypes.add(_focusType);
-
-		buildRoots();
-	}
-
-	private void buildRoots() {
-		Set<PhaserType> set = new LinkedHashSet<>();
-
-		for (PhaserType type : _rootTypes) {
-			set.addAll(type.getExtending());
-		}
-
-		if (!set.isEmpty()) {
-			_rootTypes = set;
-			buildRoots();
-		}
+	public PhaserSubTypesContentProvider() {
 	}
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		if (_rootTypes == null) {
-			return new Object[0];
-		}
-		return _rootTypes.toArray();
+		return new Object[] { ((Object[]) inputElement)[0] };
 	}
 
 	@Override

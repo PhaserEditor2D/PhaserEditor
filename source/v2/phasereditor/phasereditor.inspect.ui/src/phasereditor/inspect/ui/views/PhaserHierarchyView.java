@@ -22,25 +22,27 @@
 package phasereditor.inspect.ui.views;
 
 import org.eclipse.core.runtime.Adapters;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
-import phasereditor.inspect.ui.PhaserHierarchyContentProvider;
+import phasereditor.inspect.ui.PhaserSubTypesContentProvider;
 
 /**
  * @author arian
  *
  */
-public class PhaserHierarchyView extends ViewPart implements ISelectionListener {
+public class PhaserHierarchyView extends ViewPart {
 
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserHierarchyView"; //$NON-NLS-1$
 	private TreeViewer _viewer;
@@ -57,25 +59,32 @@ public class PhaserHierarchyView extends ViewPart implements ISelectionListener 
 				return ((IPhaserMember) element).getName();
 			}
 		});
-		_viewer.setContentProvider(new PhaserHierarchyContentProvider());
+
+		_viewer.setContentProvider(new PhaserSubTypesContentProvider());
 
 		afterCreateWidgets();
 	}
 
-	@Override
-	public void dispose() {
-
-		getViewSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
-
-		super.dispose();
-	}
-
 	private void afterCreateWidgets() {
-		_viewer.setInput(new Object());
-
 		getViewSite().setSelectionProvider(_viewer);
 
-		getViewSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
+		{
+			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
+			DropTarget target = new DropTarget(_viewer.getControl(), options);
+			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+			target.setTransfer(types);
+			target.addDropListener(new DropTargetAdapter() {
+				@Override
+				public void drop(DropTargetEvent event) {
+					if (event.data instanceof Object[]) {
+						displayType(((Object[]) event.data)[0]);
+					}
+					if (event.data instanceof IStructuredSelection) {
+						displayType(((IStructuredSelection) event.data).getFirstElement());
+					}
+				}
+			});
+		}
 	}
 
 	@Override
@@ -83,34 +92,23 @@ public class PhaserHierarchyView extends ViewPart implements ISelectionListener 
 		_viewer.getTree().setFocus();
 	}
 
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (part == this) {
-			return;
-		}
+	public void displayType(Object element) {
+		IPhaserMember member = Adapters.adapt(element, IPhaserMember.class);
 
-		if (selection instanceof IStructuredSelection) {
-
-			Object element = ((IStructuredSelection) selection).getFirstElement();
-
-			IPhaserMember member = Adapters.adapt(element, IPhaserMember.class);
-
-			if (member != null) {
-				PhaserType type;
-				if (member instanceof PhaserType) {
-					type = (PhaserType) member;
+		if (member != null) {
+			PhaserType type;
+			if (member instanceof PhaserType) {
+				type = (PhaserType) member;
+			} else {
+				if (member.getContainer() instanceof PhaserType) {
+					type = (PhaserType) member.getContainer();
 				} else {
-					if (member.getContainer() instanceof PhaserType) {
-						type = (PhaserType) member.getContainer();
-					} else {
-						return;
-					}
+					return;
 				}
-
-				_viewer.setContentProvider(new PhaserHierarchyContentProvider(type));
-				_viewer.expandAll();
-				_viewer.setSelection(new StructuredSelection(type), true);
 			}
+
+			_viewer.setInput(new Object[] { type });
+			_viewer.expandToLevel(2);
 		}
 	}
 
