@@ -21,12 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui.views;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_CLASS_OBJ;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Adapters;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -39,12 +44,14 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.ISelectionListener;
@@ -53,11 +60,13 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.PhaserElementContentProvider;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
 import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 import phasereditor.ui.ViewerDragSourceListener;
 
@@ -84,9 +93,57 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener, IPr
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout());
 
-		PatternFilter2 filter = new PatternFilter2();
+		var filter = new PatternFilter2() {
 
-		_filteredTree = new FilteredTree(container, SWT.NONE, filter, true);
+			@Override
+			public boolean isElementVisible(Viewer viewer, Object element) {
+
+				if (isSearchOnlyClasses()) {
+					if (!(element instanceof IMemberContainer)) {
+						return false;
+					}
+				}
+
+				return super.isElementVisible(viewer, element);
+			}
+		};
+
+		_filteredTree = new FilteredTree(container, SWT.NONE, filter, true) {
+
+			@SuppressWarnings("hiding")
+			@Override
+			protected Composite createFilterControls(Composite parent) {
+
+				super.createFilterControls(parent);
+
+				parent.setLayout(new GridLayout(3, false));
+
+				var manager = createFilterToolbarManager();
+
+				manager.createControl(parent);
+
+				return parent;
+			}
+
+			protected ToolBarManager createFilterToolbarManager() {
+				var manager = new ToolBarManager();
+
+				manager.add(new Action("Search only on types.", IAction.AS_CHECK_BOX) {
+					{
+						setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_CLASS_OBJ));
+					}
+
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void run() {
+						setSearchOnlyClasses(!isSearchOnlyClasses());
+						textChanged();
+					}
+				});
+
+				return manager;
+			}
+		};
 
 		TreeViewer treeViewer = _filteredTree.getViewer();
 		treeViewer.setContentProvider(new PhaserElementContentProvider(false));
@@ -111,6 +168,16 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener, IPr
 		createActions();
 		initializeToolBar();
 		initializeMenu();
+	}
+
+	private boolean _searchOnlyClasses;
+
+	public boolean isSearchOnlyClasses() {
+		return _searchOnlyClasses;
+	}
+
+	public void setSearchOnlyClasses(boolean searchOnlyClasses) {
+		_searchOnlyClasses = searchOnlyClasses;
 	}
 
 	@Override
@@ -148,7 +215,8 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener, IPr
 
 	private void init_DND() {
 		{
-			DragSource dragSource = new DragSource(_filteredTree.getViewer().getControl(), DND.DROP_MOVE | DND.DROP_DEFAULT);
+			DragSource dragSource = new DragSource(_filteredTree.getViewer().getControl(),
+					DND.DROP_MOVE | DND.DROP_DEFAULT);
 			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
 			dragSource.addDragListener(new ViewerDragSourceListener(_filteredTree.getViewer()));
 		}
