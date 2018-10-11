@@ -118,6 +118,8 @@ public interface IEditorSharedImages {
 	String IMG_ALIGN_MIDDLE = "icons/shape_align_middle.png";
 	String IMG_ALIGN_BOTTOM = "icons/shape_align_bottom.png";
 	String IMG_ARROW_REFRESH = "icons/arrow_refresh.png";
+	String IMG_SHOW_SUB_TYPES = "icons/sub_co.png";
+	String IMG_SHOW_SUPER_TYPES = "icons/super_co.png";
 	
 	
 	// lsp4e

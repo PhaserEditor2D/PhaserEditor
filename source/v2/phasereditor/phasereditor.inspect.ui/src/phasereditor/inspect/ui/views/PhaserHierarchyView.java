@@ -37,6 +37,7 @@ import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
 import phasereditor.inspect.ui.PhaserSubTypesContentProvider;
+import phasereditor.inspect.ui.PhaserSuperTypesContentProvider;
 
 /**
  * @author arian
@@ -109,6 +110,14 @@ public class PhaserHierarchyView extends ViewPart {
 
 			_viewer.setInput(new Object[] { type });
 			_viewer.expandToLevel(2);
+		}
+	}
+
+	public void setShowSubTypes(boolean showSubtypes) {
+		if (showSubtypes) {
+			_viewer.setContentProvider(new PhaserSubTypesContentProvider());
+		} else {
+			_viewer.setContentProvider(new PhaserSuperTypesContentProvider());
 		}
 	}
 
