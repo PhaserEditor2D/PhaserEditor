@@ -26,6 +26,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -41,6 +42,7 @@ import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.ui.PhaserElementContentProvider;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
+import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
 import phasereditor.inspect.ui.PhaserSubTypesContentProvider;
 import phasereditor.inspect.ui.PhaserSuperTypesContentProvider;
 import phasereditor.ui.ComplexSelectionProvider;
@@ -54,6 +56,7 @@ public class PhaserHierarchyView extends ViewPart {
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserHierarchyView"; //$NON-NLS-1$
 	private TreeViewer _hierarchyViewer;
 	private TreeViewer _membersViewer;
+	private PhaserElementStyledLabelProvider _styledLabelProvider;
 
 	public PhaserHierarchyView() {
 	}
@@ -63,20 +66,20 @@ public class PhaserHierarchyView extends ViewPart {
 		var sash = new SashForm(parent, SWT.VERTICAL);
 
 		_hierarchyViewer = new TreeViewer(sash);
-		
+
 		var labelProvider = new PhaserElementLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				return ((IPhaserMember) element).getName();
 			}
 		};
-		
 		_hierarchyViewer.setLabelProvider(labelProvider);
 
 		_hierarchyViewer.setContentProvider(new PhaserSubTypesContentProvider());
 
 		_membersViewer = new TreeViewer(sash);
-		_membersViewer.setLabelProvider(labelProvider);
+		_styledLabelProvider = new PhaserElementStyledLabelProvider(labelProvider);
+		_membersViewer.setLabelProvider(_styledLabelProvider);
 		_membersViewer.setContentProvider(new PhaserElementContentProvider(false));
 
 		sash.setWeights(new int[] { 1, 1 });
@@ -145,6 +148,8 @@ public class PhaserHierarchyView extends ViewPart {
 
 			_hierarchyViewer.setInput(new Object[] { type });
 			_hierarchyViewer.expandToLevel(2);
+			_hierarchyViewer.setSelection(new StructuredSelection(type));
+			_membersViewer.setSelection(new StructuredSelection(member), true);
 		}
 	}
 
@@ -155,5 +160,4 @@ public class PhaserHierarchyView extends ViewPart {
 			_hierarchyViewer.setContentProvider(new PhaserSuperTypesContentProvider());
 		}
 	}
-
 }

@@ -43,6 +43,7 @@ import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.ui.views.JsdocView;
+import phasereditor.inspect.ui.views.PhaserHierarchyView;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -51,6 +52,8 @@ import phasereditor.ui.PhaserEditorUI;
  */
 public class InspectUI {
 	public static final String JSDOC_VIEW_ID = "phasereditor.inspect.ui.jsdoc";
+	public static final String PHASER_HIERARCHY_VIEW_ID = PhaserHierarchyView.ID;
+	
 	private static List<ICustomInformationControlCreator> _informationControls;
 
 	public static void installJsdocTooltips(TreeViewer viewer) {
@@ -108,6 +111,20 @@ public class InspectUI {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static void showHierarchy(IPhaserMember member) {
+		try {
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+			var view = (PhaserHierarchyView) page.showView(InspectUI.PHASER_HIERARCHY_VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
+			view.displayType(member);
+			page.activate(view);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }

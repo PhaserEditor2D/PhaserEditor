@@ -37,6 +37,10 @@ import phasereditor.ui.IEditorSharedImages;
  */
 public class PhaserFileStyledLabelProvider extends PhaserElementStyledLabelProvider {
 
+	public PhaserFileStyledLabelProvider() {
+		super(new PhaserElementLabelProvider());
+	}
+
 	@Override
 	public void update(ViewerCell cell) {
 		Object element = cell.getElement();

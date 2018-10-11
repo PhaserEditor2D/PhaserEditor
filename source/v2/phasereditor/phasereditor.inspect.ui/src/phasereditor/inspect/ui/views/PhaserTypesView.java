@@ -43,7 +43,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -53,7 +52,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.FilteredTree;
@@ -147,13 +145,8 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener, IPr
 
 		TreeViewer treeViewer = _filteredTree.getViewer();
 		treeViewer.setContentProvider(new PhaserElementContentProvider(false));
-		treeViewer.setLabelProvider(new PhaserElementLabelProvider());
-
-		TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-		_styleLabelProvider = new PhaserElementStyledLabelProvider();
-		viewerColumn.setLabelProvider(_styleLabelProvider);
-		TreeColumn column = viewerColumn.getColumn();
-		column.setWidth(1000);
+		_styleLabelProvider = new PhaserElementStyledLabelProvider(new PhaserElementLabelProvider());
+		treeViewer.setLabelProvider(_styleLabelProvider);
 
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 

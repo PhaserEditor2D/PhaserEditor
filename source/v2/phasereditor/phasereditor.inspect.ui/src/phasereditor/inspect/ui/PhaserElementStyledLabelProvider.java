@@ -23,10 +23,12 @@ package phasereditor.inspect.ui;
 
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
@@ -40,11 +42,13 @@ import phasereditor.inspect.core.jsdoc.PhaserVariable;
  * @author arian
  *
  */
-public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider {
+public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider implements ILabelProvider {
 
 	private Color _secondaryColor;
+	private ILabelProvider _filterLabelProvider;
 
-	public PhaserElementStyledLabelProvider() {
+	public PhaserElementStyledLabelProvider(ILabelProvider filterLabelProvider) {
+		_filterLabelProvider = filterLabelProvider;
 		updateStyleValues();
 	}
 
@@ -116,6 +120,16 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider {
 		cell.setImage(JsdocRenderer.getInstance().getImage(member));
 
 		super.update(cell);
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		return null;
+	}
+
+	@Override
+	public String getText(Object element) {
+		return _filterLabelProvider.getText(element);
 	}
 
 }

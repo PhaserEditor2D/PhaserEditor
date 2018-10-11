@@ -18,16 +18,6 @@
          allPopups="false"
          locationURI="toolbar:phasereditor.chains.ui.views.chains?after=additions">
       <command
-            commandId="phasereditor.inspect.ui.showPhaserJsdoc"
-            icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"
-            style="push">
-      </command>
-      <command
-            commandId="phasereditor.ui.showSourceCode"
-            icon="platform:/plugin/phasereditor.ui/icons/source.png"
-            style="push">
-      </command>
-      <command
             commandId="phasereditor.inspect.ui.runPhaserExample"
             icon="platform:/plugin/phasereditor.ui/icons/world.png"
             style="push">
@@ -35,6 +25,23 @@
       <command
             commandId="phasereditor.project.ui.createExampleProject"
             icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
+            style="push">
+      </command>
+      <separator
+            name="phasereditor.chains.ui.separator1"
+            visible="true">
+      </separator>
+      <command
+            commandId="phasereditor.inspect.ui.showInHierarchy"
+            style="push">
+      </command>
+      <command
+            commandId="phasereditor.inspect.ui.showPhaserJsdoc"
+            style="push">
+      </command>
+      <command
+            commandId="phasereditor.ui.showSourceCode"
+            icon="platform:/plugin/phasereditor.ui/icons/source.png"
             style="push">
       </command>
    </menuContribution>
