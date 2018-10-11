@@ -36,6 +36,7 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
@@ -46,6 +47,7 @@ import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
 import phasereditor.inspect.ui.PhaserSubTypesContentProvider;
 import phasereditor.inspect.ui.PhaserSuperTypesContentProvider;
 import phasereditor.ui.ComplexSelectionProvider;
+import phasereditor.ui.PatternFilter2;
 
 /**
  * @author arian
@@ -57,6 +59,8 @@ public class PhaserHierarchyView extends ViewPart {
 	private TreeViewer _hierarchyViewer;
 	private TreeViewer _membersViewer;
 	private PhaserElementStyledLabelProvider _styledLabelProvider;
+	private FilteredTree _hierarchyTree;
+	private FilteredTree _membersTree;
 
 	public PhaserHierarchyView() {
 	}
@@ -65,7 +69,8 @@ public class PhaserHierarchyView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		var sash = new SashForm(parent, SWT.VERTICAL);
 
-		_hierarchyViewer = new TreeViewer(sash);
+		_hierarchyTree = new FilteredTree(sash, SWT.NONE, new PatternFilter2(), true);
+		_hierarchyViewer = _hierarchyTree.getViewer();
 
 		var labelProvider = new PhaserElementLabelProvider() {
 			@Override
@@ -77,7 +82,8 @@ public class PhaserHierarchyView extends ViewPart {
 
 		_hierarchyViewer.setContentProvider(new PhaserSubTypesContentProvider());
 
-		_membersViewer = new TreeViewer(sash);
+		_membersTree = new FilteredTree(sash, SWT.NONE, new PatternFilter2(), true);
+		_membersViewer = _membersTree.getViewer();
 		_styledLabelProvider = new PhaserElementStyledLabelProvider(labelProvider);
 		_membersViewer.setLabelProvider(_styledLabelProvider);
 		_membersViewer.setContentProvider(new PhaserElementContentProvider(false));
