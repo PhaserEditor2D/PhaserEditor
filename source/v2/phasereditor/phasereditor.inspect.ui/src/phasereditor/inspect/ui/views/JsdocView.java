@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -23,6 +24,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.ui.BackNextActions;
 import phasereditor.ui.SelectionProviderImpl;
 
 public class JsdocView extends ViewPart implements ISelectionListener, LocationListener, IPreferenceChangeListener {
@@ -32,6 +34,7 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	private IJsdocProvider _currentProvider;
 	private Object _content;
 	private boolean _settingContent;
+	private BackNextActions _backNextAction;
 
 	public JsdocView() {
 	}
@@ -47,6 +50,25 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 		setHtml("Select an element in the workbbench.");
 
 		getViewSite().setSelectionProvider(new SelectionProviderImpl(true));
+
+		initActionBars();
+	}
+
+	private void initActionBars() {
+		_backNextAction = new BackNextActions() {
+
+			@Override
+			protected void display(Object obj) {
+				navigateShowJsdocFor(obj);
+			}
+		};
+
+		var manager = getViewSite().getActionBars().getToolBarManager();
+
+		manager.add(_backNextAction.getBackAction());
+		manager.add(_backNextAction.getNextAction());
+
+		manager.add(new Separator());
 	}
 
 	@Override
@@ -73,6 +95,17 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	}
 
 	public void showJsdocFor(Object obj) {
+		if (obj != null) {
+
+			if (obj == _content) {
+				return;
+			}
+
+			_backNextAction.showNewObject(obj);
+		}
+	}
+
+	protected void navigateShowJsdocFor(Object obj) {
 		if (_settingContent) {
 			return;
 		}
