@@ -171,6 +171,11 @@ public class PhaserJsdocModel {
 			for (int i = 0; i < jsdocElements.length(); i++) {
 				JSONObject jsdocElement = jsdocElements.getJSONObject(i);
 
+				// do not add inherited members
+				if (jsdocElement.optBoolean("inherited", false)) {
+					continue;
+				}
+
 				String longname = jsdocElement.getString("longname");
 
 				if (longname.contains("~")) {
@@ -258,8 +263,10 @@ public class PhaserJsdocModel {
 
 		visited.add(type);
 
+		var subTypeMap = type.getMemberMap();
+		var inheritedMap = type.getInheritedMembers();
+
 		for (String superTypeName : type.getExtends()) {
-			Map<String, IPhaserMember> subTypeMap = type.getMemberMap();
 
 			IMemberContainer container = _containersMap.get(superTypeName);
 			PhaserType superType = container == null ? null : container.castType();
@@ -274,7 +281,7 @@ public class PhaserJsdocModel {
 
 			buildInheritance(visited, superType);
 
-			Map<String, IPhaserMember> superTypeMap = superType.getMemberMap();
+			var superTypeMap = superType.getMemberMap();
 
 			for (IPhaserMember member : superTypeMap.values()) {
 				String memberName = member.getName();
@@ -282,6 +289,7 @@ public class PhaserJsdocModel {
 					// out.println("Add " + superTypeName + "." + memberName + "
 					// to " + type.getName() + "." + memberName);
 					subTypeMap.put(memberName, member);
+					inheritedMap.add(member);
 				}
 			}
 		}

@@ -83,7 +83,7 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener, IPr
 		_filteredTree = new FilteredTree(container, SWT.NONE, filter, true);
 
 		TreeViewer treeViewer = _filteredTree.getViewer();
-		treeViewer.setContentProvider(new PhaserElementContentProvider());
+		treeViewer.setContentProvider(new PhaserElementContentProvider(false));
 		treeViewer.setLabelProvider(new PhaserElementLabelProvider());
 
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);

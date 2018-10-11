@@ -24,8 +24,10 @@ package phasereditor.inspect.core.jsdoc;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONObject;
 
@@ -41,6 +43,7 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 	private List<PhaserProperty> _properties;
 	private List<PhaserMethod> _methods;
 	private Map<String, IPhaserMember> _memberMap;
+	private Set<IPhaserMember> _inheritedMembers;
 	private int _height = -1;
 	private String _simpleName;
 
@@ -53,6 +56,7 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 		_methods = new ArrayList<>();
 		_consts = new ArrayList<>();
 		_memberMap = new HashMap<>();
+		_inheritedMembers = new HashSet<>();
 	}
 
 	public String getSimpleName() {
@@ -142,5 +146,8 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 	public Map<String, IPhaserMember> getMemberMap() {
 		return _memberMap;
 	}
-
+	
+	public Set<IPhaserMember> getInheritedMembers() {
+		return _inheritedMembers;
+	}
 }

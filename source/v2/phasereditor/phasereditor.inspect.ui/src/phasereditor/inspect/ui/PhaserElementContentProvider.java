@@ -26,16 +26,23 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
-import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
+import phasereditor.inspect.core.jsdoc.PhaserType;
 
 /**
  * @author arian
  *
  */
 public class PhaserElementContentProvider implements ITreeContentProvider {
+	private boolean _showInheritedMembers;
+
+	public PhaserElementContentProvider(boolean showInheritedMembers) {
+		super();
+		_showInheritedMembers = showInheritedMembers;
+	}
 
 	@Override
 	public Object[] getElements(Object inputElement) {
@@ -59,12 +66,35 @@ public class PhaserElementContentProvider implements ITreeContentProvider {
 
 		if (parentElement instanceof IMemberContainer) {
 			IMemberContainer container = (IMemberContainer) parentElement;
-			List<Object> list = new ArrayList<>();
+			List<IPhaserMember> list = new ArrayList<>();
+
 			list.addAll(container.getNamespaces());
 			list.addAll(container.getTypes());
 			list.addAll(container.getConstants());
 			list.addAll(container.getProperties());
 			list.addAll(container.getMethods());
+
+			if (!_showInheritedMembers) {
+
+				if (container instanceof PhaserType) {
+
+					var type = (PhaserType) container;
+
+					var set = type.getInheritedMembers();
+
+					var list2 = new ArrayList<>();
+
+					for (var member : list) {
+						if (!set.contains(member)) {
+							list2.add(member);
+						}
+					}
+
+					return list2.toArray();
+				}
+
+			}
+
 			return list.toArray();
 		}
 
