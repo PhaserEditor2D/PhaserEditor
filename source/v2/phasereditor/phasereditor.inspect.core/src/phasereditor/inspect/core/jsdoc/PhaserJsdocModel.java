@@ -71,6 +71,7 @@ public class PhaserJsdocModel {
 	private Map<String, IMemberContainer> _containersMap;
 	private Map<String, IPhaserMember> _membersMap;
 	private List<IPhaserMember> _rootNamespaces;
+	private Set<String> _elementsWithMembers;
 
 	private Path _srcFolder;
 	private PhaserGlobalScope _globalScope;
@@ -110,6 +111,7 @@ public class PhaserJsdocModel {
 		_containersMap = new HashMap<>();
 		_membersMap = new HashMap<>();
 		_rootNamespaces = new ArrayList<>();
+		_elementsWithMembers = new HashSet<>();
 
 		if (!Files.exists(docsJsonFile)) {
 			return;
@@ -120,6 +122,16 @@ public class PhaserJsdocModel {
 			JSONArray jsdocElements = jsonDoc.getJSONArray("docs");
 
 			// printElementKinds(jsdocElements);
+
+			// not all classes are declared as classes, for example
+			// Phaser.GameObjects.Component.Alpha, but we can detect it if there is any
+			// memberof declared.
+
+			for (int i = 0; i < jsdocElements.length(); i++) {
+				JSONObject obj = jsdocElements.getJSONObject(i);
+
+				buildElementsWidthMembers(obj);
+			}
 
 			// pass to get all the namespaces in the map
 
@@ -233,6 +245,13 @@ public class PhaserJsdocModel {
 				globals.sort((a, b) -> a.getName().compareTo(b.getName()));
 				_globalScope = new PhaserGlobalScope(globals);
 			}
+		}
+	}
+
+	private void buildElementsWidthMembers(JSONObject obj) {
+		var memberof = obj.optString("memberof", null);
+		if (memberof != null) {
+			_elementsWithMembers.add(memberof);
 		}
 	}
 
@@ -370,7 +389,18 @@ public class PhaserJsdocModel {
 		}
 
 		String kind = obj.getString("kind");
+
 		if (kind.equals("member") && !obj.has("params")) {
+
+			{
+				// check if it is not a class
+				var longname = obj.optString("longname");
+				if (_elementsWithMembers.contains(longname)) {
+					// this was parsed as a class
+					return;
+				}
+			}
+
 			String name = obj.optString("name", "");
 			String desc = obj.optString("description", "");
 			Object defaultValue = obj.opt("defaultvalue");
@@ -406,7 +436,7 @@ public class PhaserJsdocModel {
 				if (!map.containsKey(name)) {
 					map.put(name, property);
 
-					String longname = container.getName() + "." + name;
+					var longname = container.getName() + "." + name;
 					_membersMap.put(longname, property);
 
 					if (container instanceof PhaserType) {
@@ -607,9 +637,13 @@ public class PhaserJsdocModel {
 
 	private void buildClass(JSONObject obj) {
 		String kind = obj.getString("kind");
-		if (kind.equals("class")) {
 
-			String longname = obj.getString("longname");
+		String longname = obj.getString("longname");
+		
+ 		var hasMembers = _elementsWithMembers.contains(longname);
+		var isEnum = obj.optBoolean("isEnum");
+
+		if (kind.equals("class") || kind.equals("member") && hasMembers && !isEnum) {
 
 			// out.println("Parsing class: " + name);
 
