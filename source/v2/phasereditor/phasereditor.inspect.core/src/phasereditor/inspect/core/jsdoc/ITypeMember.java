@@ -27,4 +27,8 @@ package phasereditor.inspect.core.jsdoc;
  */
 public interface ITypeMember extends IPhaserMember {
 	public PhaserType getDeclType();
+	
+	public default boolean isInherited() {
+		return getContainer() != getDeclType();
+	}
 }

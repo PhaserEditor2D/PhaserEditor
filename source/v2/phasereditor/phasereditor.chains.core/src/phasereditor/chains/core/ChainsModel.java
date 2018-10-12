@@ -38,6 +38,7 @@ import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
+import phasereditor.inspect.core.jsdoc.ITypeMember;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
@@ -74,32 +75,17 @@ public class ChainsModel {
 
 			@Override
 			public int compare(ChainItem a, ChainItem b) {
-				if (a.getDepth() != b.getDepth()) {
-					return a.getDepth() - b.getDepth();
-				}
+				return Integer.compare(value(a), value(b));
+			}
 
-				boolean a_phaser = a.getChain().contains("Phaser");
-				boolean b_phaser = b.getChain().contains("Phaser");
+			private int value(ChainItem item) {
 
-				if (a_phaser != b_phaser) {
-					return a_phaser ? -1 : 1;
-				}
+				var phaser = item.getChain().contains("Phaser") ? 0 : 10;
+				var m = item.getPhaserMember();
+				var inherited = m instanceof ITypeMember && ((ITypeMember) m).isInherited() ? 10 : 0;
+				var depth = item.getDepth() + 1;
 
-				a_phaser = a.getReturnTypeName().contains("Phaser");
-				b_phaser = b.getReturnTypeName().contains("Phaser");
-
-				if (a_phaser != b_phaser) {
-					return a_phaser ? -1 : 1;
-				}
-
-				int a_type_weight = a.isType() ? 0 : countDots(a.getReturnTypeName());
-				int b_type_weight = b.isType() ? 0 : countDots(b.getReturnTypeName());
-
-				if (a_type_weight != b_type_weight) {
-					return (a_type_weight - b_type_weight);
-				}
-
-				return 0;
+				return depth * 100_000 + phaser * 1_000 + inherited;
 			}
 		});
 
@@ -187,9 +173,9 @@ public class ChainsModel {
 		var sb = new StringBuilder();
 
 		boolean open = false;
-		
+
 		for (char c : query.toCharArray()) {
-			
+
 			if (c == '*') {
 				if (open) {
 					sb.append("\\E");
@@ -208,7 +194,7 @@ public class ChainsModel {
 				sb.append(c);
 			}
 		}
-		
+
 		if (open) {
 			sb.append("\\E");
 		}
@@ -216,10 +202,6 @@ public class ChainsModel {
 		var pattern = sb.toString();
 
 		return patternStart + "(" + pattern + ")" + patternEnd;
-	}
-	
-	public static void main(String[] args) {
-		out.println(quote("a.bc()*p"));
 	}
 
 	public List<Match> searchExamples(String aQuery, int limit) {

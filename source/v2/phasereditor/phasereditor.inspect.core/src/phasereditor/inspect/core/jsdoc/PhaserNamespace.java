@@ -139,9 +139,27 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 			int bb = b.isEnum() ? 1 : 0;
 			return Integer.compare(aa, bb);
 		});
+		
 		_methods.sort(comparator);
 		_consts.sort(comparator);
 		_properties.sort(comparator);
+
+		comparator = (a, b) -> {
+
+			if (a.getContainer() == b.getContainer()) {
+				if (a.getContainer() instanceof PhaserType) {
+
+					var c = Integer.compare(((ITypeMember) a).isInherited() ? 1 : 0,
+							((ITypeMember) b).isInherited() ? 1 : 0);
+
+					if (c != 0) {
+						return c;
+					}
+				}
+			}
+
+			return a.getName().compareTo(b.getName());
+		};
 
 		_allMethods.sort(comparator);
 		_allProperties.sort(comparator);
