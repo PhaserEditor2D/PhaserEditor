@@ -35,6 +35,8 @@ import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.FlipComponent;
+import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
@@ -112,6 +114,10 @@ public class SceneCodeDomBuilder {
 
 				methodCall = buildCreateSprite(methodDecl, (SpriteModel) model);
 
+			} else if (model instanceof ImageModel) {
+
+				methodCall = buildCreateImage(methodDecl, (ImageModel) model);
+
 			}
 
 			var assignToVar = false;
@@ -121,8 +127,11 @@ public class SceneCodeDomBuilder {
 			}
 
 			if (model instanceof TransformComponent) {
-				assignToVar = buildScaleProps(methodDecl, model) || assignToVar;
-				assignToVar = buildAngleProps(methodDecl, model) || assignToVar;
+				assignToVar = buildTransformProps(methodDecl, model) || assignToVar;
+			}
+
+			if (model instanceof FlipComponent) {
+				assignToVar = buildFlipProps(methodDecl, model) || assignToVar;
 			}
 
 			if (model instanceof BitmapTextComponent) {
@@ -143,6 +152,48 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildFlipProps(MethodDeclDom methodDecl, ObjectModel model) {
+
+		var assignToVar = false;
+
+		var name = varname(model);
+
+		// flipX
+		{
+			var flipX = FlipComponent.get_flipX(model);
+
+			if (flipX != FlipComponent.flipX_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("flipX", name);
+
+				instr.value(flipX);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// flipY
+		{
+			var flipY = FlipComponent.get_flipY(model);
+
+			if (flipY != FlipComponent.flipY_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("flipY", name);
+
+				instr.value(flipY);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		return assignToVar;
 	}
 
 	@SuppressWarnings("static-method")
@@ -290,41 +341,46 @@ public class SceneCodeDomBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private boolean buildAngleProps(MethodDeclDom methodDecl, ObjectModel model) {
-		var a = TransformComponent.get_angle(model);
+	private boolean buildTransformProps(MethodDeclDom methodDecl, ObjectModel model) {
 
-		if (a == TransformComponent.angle_default) {
-			return false;
+		var assignToVar = false;
+
+		{
+			var x = TransformComponent.get_scaleX(model);
+			var y = TransformComponent.get_scaleY(model);
+
+			if (x != TransformComponent.scaleX_default || y != TransformComponent.scaleY_default) {
+
+				assignToVar = true;
+
+				var name = varname(model);
+				var call = new MethodCallDom("setScale", name);
+
+				call.arg(TransformComponent.get_scaleX(model));
+				call.arg(TransformComponent.get_scaleY(model));
+
+				methodDecl.getInstructions().add(call);
+			}
 		}
 
-		var name = varname(model);
-		var call = new MethodCallDom("setAngle", name);
+		{
 
-		call.arg(a);
+			var angle = TransformComponent.get_angle(model);
 
-		methodDecl.getInstructions().add(call);
+			if (angle != TransformComponent.angle_default) {
 
-		return true;
-	}
+				assignToVar = true;
 
-	@SuppressWarnings("static-method")
-	private boolean buildScaleProps(MethodDeclDom methodDecl, ObjectModel model) {
-		var x = TransformComponent.get_scaleX(model);
-		var y = TransformComponent.get_scaleY(model);
+				var name = varname(model);
+				var call = new MethodCallDom("setAngle", name);
 
-		if (x == TransformComponent.scaleX_default && y == TransformComponent.scaleY_default) {
-			return false;
+				call.arg(angle);
+
+				methodDecl.getInstructions().add(call);
+			}
 		}
 
-		var name = varname(model);
-		var call = new MethodCallDom("setScale", name);
-
-		call.arg(TransformComponent.get_scaleX(model));
-		call.arg(TransformComponent.get_scaleY(model));
-
-		methodDecl.getInstructions().add(call);
-
-		return true;
+		return assignToVar;
 	}
 
 	@SuppressWarnings("static-method")
@@ -354,6 +410,22 @@ public class SceneCodeDomBuilder {
 	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateSprite(MethodDeclDom methodDecl, SpriteModel model) {
 		var call = new MethodCallDom("sprite", "this.add");
+
+		call.arg(TransformComponent.get_x(model));
+		call.arg(TransformComponent.get_y(model));
+
+		var frame = TextureComponent.get_frame(model);
+
+		buildTextureArguments(call, frame);
+
+		methodDecl.getInstructions().add(call);
+
+		return call;
+	}
+	
+	@SuppressWarnings("static-method")
+	private MethodCallDom buildCreateImage(MethodDeclDom methodDecl, ImageModel model) {
+		var call = new MethodCallDom("image", "this.add");
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));

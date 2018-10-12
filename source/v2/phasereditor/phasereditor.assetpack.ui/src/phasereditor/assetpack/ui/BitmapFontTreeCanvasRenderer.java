@@ -65,7 +65,7 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 			var calc = new ZoomCalculator(metrics.getWidth(), metrics.getHeight());
 			calc.fit(new Rectangle(0, 0, e.width - x, canvas.getImageSize()));
 			calc.offsetX = 0;
-
+				
 			model.render(new RenderArgs(text), new BitmapFontRenderer() {
 
 				@Override

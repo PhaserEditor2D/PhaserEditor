@@ -57,11 +57,11 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
@@ -161,7 +161,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var frame = (IAssetFrameModel) obj;
 
-				var sprite = new SpriteModel();
+				var sprite = new ImageModel();
 
 				var name = nameComputer.newName(frame.getKey());
 

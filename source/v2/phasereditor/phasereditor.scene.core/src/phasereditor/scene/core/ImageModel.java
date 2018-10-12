@@ -19,52 +19,17 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core.codedom;
+package phasereditor.scene.core;
 
 /**
  * @author arian
  *
  */
-public class AssignPropertyDom {
-	private String _propertyName;
-	private String _propertyValueExpr;
-	private String _contextExpr;
+public class ImageModel extends BaseSpriteModel {
 
-	public AssignPropertyDom(String propertyName, String contextExpr) {
-		_propertyName = propertyName;
-		_contextExpr = contextExpr;
-	}
+	public static final String TYPE = "Image";
 
-	public void value(String expr) {
-		_propertyValueExpr = expr;
+	public ImageModel() {
+		super(TYPE);
 	}
-
-	public void valueLiteral(String expr) {
-		_propertyValueExpr = "'" + expr.replace("'", "\\\\'").replaceAll("\\R", "\\\\n") + "'";
-	}
-
-	public void value(float n) {
-		_propertyValueExpr = Float.toString(n);
-	}
-
-	public void value(int n) {
-		_propertyValueExpr = Integer.toString(n);
-	}
-	
-	public void value(boolean expr) {
-		value(Boolean.toString(expr));
-	}
-
-	public String getPropertyName() {
-		return _propertyName;
-	}
-
-	public String getContextExpr() {
-		return _contextExpr;
-	}
-
-	public String getPropertyValueExpr() {
-		return _propertyValueExpr;
-	}
-
 }

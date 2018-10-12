@@ -38,6 +38,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
+import phasereditor.scene.core.BaseSpriteModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
@@ -47,7 +48,6 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
@@ -308,9 +308,9 @@ public class SceneObjectRenderer {
 
 			renderBitmapText(gc, tx2, (BitmapTextModel) objModel);
 
-		} else if (objModel instanceof SpriteModel) {
+		} else if (objModel instanceof BaseSpriteModel) {
 
-			renderSprite(gc, tx2, (SpriteModel) objModel);
+			renderSprite(gc, tx2, (BaseSpriteModel) objModel);
 
 		}
 
@@ -453,7 +453,7 @@ public class SceneObjectRenderer {
 		return args;
 	}
 
-	private void renderSprite(GC gc, Transform tx, SpriteModel model) {
+	private void renderSprite(GC gc, Transform tx, BaseSpriteModel model) {
 		setObjectTransform(gc, tx, model);
 
 		if (model instanceof TileSpriteModel) {
@@ -461,6 +461,7 @@ public class SceneObjectRenderer {
 			renderTileSprite(gc, (TileSpriteModel) model);
 
 		} else {
+			
 			var frame = TextureComponent.get_frame(model);
 
 			renderTexture(gc, model, frame);

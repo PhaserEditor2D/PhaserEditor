@@ -28,13 +28,12 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class TileSpriteModel extends SpriteModel implements
+public class TileSpriteModel extends BaseSpriteModel implements
 
 		TileSpriteComponent
 
 {
 
-	@SuppressWarnings("hiding")
 	public static final String TYPE = "TileSprite";
 
 	public TileSpriteModel() {

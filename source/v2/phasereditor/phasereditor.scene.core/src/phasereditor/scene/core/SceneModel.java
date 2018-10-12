@@ -33,6 +33,20 @@ import phasereditor.lic.LicCore;
 public class SceneModel {
 	private static final int VERSION = 1;
 
+	public static final String[] GAME_OBJECT_TYPES = {
+
+			SpriteModel.TYPE,
+
+			ImageModel.TYPE,
+
+			TileSpriteModel.TYPE,
+
+			BitmapTextModel.TYPE,
+
+			DynamicBitmapTextModel.TYPE
+
+	};
+
 	private ParentModel _rootObject;
 
 	public SceneModel() {
@@ -78,11 +92,14 @@ public class SceneModel {
 
 		switch (type) {
 
+		case WorldModel.TYPE:
+			return new WorldModel();
+
 		case SpriteModel.TYPE:
 			return new SpriteModel();
 
-		case WorldModel.TYPE:
-			return new WorldModel();
+		case ImageModel.TYPE:
+			return new ImageModel();
 
 		case TileSpriteModel.TYPE:
 			return new TileSpriteModel();

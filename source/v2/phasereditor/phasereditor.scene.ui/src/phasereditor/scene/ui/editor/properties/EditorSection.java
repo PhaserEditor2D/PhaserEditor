@@ -37,8 +37,10 @@ import org.json.JSONObject;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
+import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
@@ -124,6 +126,10 @@ public class EditorSection extends ScenePropertySection {
 					newModel = new SpriteModel();
 					newModel.read(data, project);
 					break;
+				case ImageModel.TYPE:
+					newModel = new ImageModel();
+					newModel.read(data, project);
+					break;
 				case TileSpriteModel.TYPE:
 					var tileModel = new TileSpriteModel();
 					tileModel.read(data, project);
@@ -175,17 +181,7 @@ public class EditorSection extends ScenePropertySection {
 
 		var manager = new MenuManager();
 
-		for (var type : new String[] {
-
-				SpriteModel.TYPE,
-
-				TileSpriteModel.TYPE,
-
-				BitmapTextModel.TYPE,
-
-				DynamicBitmapTextModel.TYPE
-
-		}) {
+		for (var type : SceneModel.GAME_OBJECT_TYPES) {
 
 			var allow = models.stream()
 
