@@ -180,10 +180,46 @@ public class ChainsModel {
 		String patternStart = query.startsWith("*") ? "" : ".*";
 		String patternEnd = query.endsWith("*") ? "" : ".*";
 
-		String pattern = query.replace(".", "\\.").replace("*", ".*").replace("(", "\\(").replace(")", "\\)")
-				.replace(":", "\\:");
+		// String pattern = query.replace(".", "\\.").replace("*", ".*").replace("(",
+		// "\\(").replace(")", "\\)")
+		// .replace(":", "\\:");
+
+		var sb = new StringBuilder();
+
+		boolean open = false;
+		
+		for (char c : query.toCharArray()) {
+			
+			if (c == '*') {
+				if (open) {
+					sb.append("\\E");
+					sb.append(".*");
+					open = false;
+				} else {
+					sb.append(".*");
+					sb.append("\\Q");
+					open = true;
+				}
+			} else {
+				if (!open) {
+					sb.append("\\Q");
+					open = true;
+				}
+				sb.append(c);
+			}
+		}
+		
+		if (open) {
+			sb.append("\\E");
+		}
+
+		var pattern = sb.toString();
 
 		return patternStart + "(" + pattern + ")" + patternEnd;
+	}
+	
+	public static void main(String[] args) {
+		out.println(quote("a.bc()*p"));
 	}
 
 	public List<Match> searchExamples(String aQuery, int limit) {
@@ -329,7 +365,7 @@ public class ChainsModel {
 
 		boolean is_Phaser_Scenes_Systems = containerName.equals("Phaser.Scenes.Systems");
 
-		for (PhaserVariable prop : container.getProperties()) {
+		for (PhaserVariable prop : container.getAllProperties()) {
 			for (String typename : prop.getTypes()) {
 				String name = prop.getName();
 				String chain = prefix + "." + name;
@@ -362,7 +398,7 @@ public class ChainsModel {
 
 		// constants
 
-		for (PhaserVariable cons : container.getConstants()) {
+		for (PhaserVariable cons : container.getAllConstants()) {
 			String name = cons.getName();
 			String typename = cons.getTypes()[0];
 			String chain = prefix + "." + name;
@@ -377,7 +413,7 @@ public class ChainsModel {
 
 		// methods
 
-		for (PhaserMethod method : container.getMethods()) {
+		for (PhaserMethod method : container.getAllMethods()) {
 			String[] methodTypes = method.getReturnTypes();
 
 			if (methodTypes.length == 0) {

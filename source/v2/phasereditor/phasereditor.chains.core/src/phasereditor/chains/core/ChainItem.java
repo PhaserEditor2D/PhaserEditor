@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdaptable;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.ITypeMember;
 import phasereditor.inspect.core.jsdoc.PhaserConstant;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserNamespace;
@@ -38,6 +39,7 @@ public class ChainItem implements IAdaptable {
 	private IPhaserMember _phaserMember;
 	private String _display;
 	private int _returnTypeIndex;
+	private int _declTypeIndex;
 
 	public ChainItem(IPhaserMember phaserMember, String chain, String returnTypeName, int depth) {
 		_phaserMember = phaserMember;
@@ -45,12 +47,29 @@ public class ChainItem implements IAdaptable {
 		_returnTypeName = returnTypeName;
 		_depth = depth;
 		_returnTypeIndex = -1;
+		_declTypeIndex = -1;
+
 		if (isType() || isNamespace()) {
 			_display = chain;
 		} else {
+			String declType = "";
+
+			if (_phaserMember instanceof ITypeMember) {
+				var m = (ITypeMember) _phaserMember;
+				if (m.getDeclType() != null && m.getDeclType() != m.getContainer()) {
+					declType = " [" + m.getDeclType().getSimpleName() + "] ";
+				}
+			}
+
 			_display = chain + " : " + getReturnTypeName();
 			_returnTypeIndex = chain.length();
+			_declTypeIndex = _display.length();
+			_display += declType;
 		}
+	}
+	
+	public int getDeclTypeIndex() {
+		return _declTypeIndex;
 	}
 
 	public int getReturnTypeIndex() {

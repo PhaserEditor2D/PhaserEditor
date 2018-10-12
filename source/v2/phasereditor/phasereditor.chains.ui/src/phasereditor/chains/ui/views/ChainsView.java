@@ -109,7 +109,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 	protected ITheme _theme;
 	protected IGrammar _grammar;
 	protected Color _matchBorderColor;
-	private Color _quelifierColor;
+	private Color _qualifierColor;
 
 	class ChainsStyledCellLabelProvider extends StyledCellLabelProvider {
 
@@ -152,7 +152,9 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 
 		private void updateChainLabel(ViewerCell cell) {
 			Match match = (Match) cell.getElement();
+			
 			ChainItem chain = (ChainItem) match.item;
+			
 			cell.setBackground(_theme.getEditorBackground());
 			cell.setForeground(_theme.getEditorForeground());
 			cell.setText(match.toString());
@@ -173,7 +175,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 
 		_decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
-		_quelifierColor = JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR);
+		_qualifierColor = JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR);
 		_matchBorderColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
 
 		_grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
@@ -470,12 +472,24 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _font;
 			StyleRange returnTypeRange = new StyleRange();
+			StyleRange declTypeRange = new StyleRange();
 
 			{
 				int index = chain.getReturnTypeIndex();
 				if (index > 0) {
 					int len = chain.getDisplay().length() - index;
+					if (chain.getDeclTypeIndex() > 0) {
+						len = chain.getDeclTypeIndex() - index;
+					}
 					returnTypeRange = new StyleRange(index, len, _decorationsColor, null);
+				}
+			}
+			
+			{
+				int index = chain.getDeclTypeIndex();
+				if (index > 0) {
+					int len = chain.getDisplay().length() - index;
+					declTypeRange = new StyleRange(index, len, _qualifierColor, null);
 				}
 			}
 
@@ -484,9 +498,9 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 				italicRange.font = _italic;
 				italicRange.start = 0;
 				italicRange.length = text.length();
-				ranges = new StyleRange[] { allRange, italicRange, returnTypeRange, selRange };
+				ranges = new StyleRange[] { allRange, italicRange, returnTypeRange, declTypeRange, selRange };
 			} else {
-				ranges = new StyleRange[] { allRange, returnTypeRange, selRange };
+				ranges = new StyleRange[] { allRange, returnTypeRange, declTypeRange, selRange };
 			}
 
 			match.styles = ranges;
@@ -510,7 +524,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 			}
 
 			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
-					_quelifierColor, null);
+					_qualifierColor, null);
 
 			List<StyleRange> ranges = new ArrayList<>();
 

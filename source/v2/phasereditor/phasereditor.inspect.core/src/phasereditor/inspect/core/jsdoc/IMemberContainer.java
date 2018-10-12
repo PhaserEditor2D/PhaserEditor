@@ -45,7 +45,7 @@ public interface IMemberContainer extends IPhaserMember {
 	}
 
 	public int getHeight();
-	
+
 	Map<String, IPhaserMember> getMemberMap();
 
 	List<PhaserNamespace> getNamespaces();
@@ -57,6 +57,12 @@ public interface IMemberContainer extends IPhaserMember {
 	List<PhaserMethod> getMethods();
 
 	List<PhaserConstant> getConstants();
+
+	List<PhaserProperty> getAllProperties();
+
+	List<PhaserMethod> getAllMethods();
+
+	List<PhaserConstant> getAllConstants();
 
 	void build();
 }

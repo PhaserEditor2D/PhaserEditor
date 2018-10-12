@@ -38,10 +38,16 @@ import org.json.JSONObject;
 public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 
 	private List<PhaserNamespace> _namespaces;
+
 	private List<PhaserType> _types;
 	private List<PhaserConstant> _consts;
 	private List<PhaserProperty> _properties;
 	private List<PhaserMethod> _methods;
+
+	private List<PhaserConstant> _allConsts;
+	private List<PhaserProperty> _allProperties;
+	private List<PhaserMethod> _allMethods;
+
 	private Map<String, IPhaserMember> _memberMap;
 	private Set<IPhaserMember> _inheritedMembers;
 	private int _height = -1;
@@ -51,10 +57,16 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 		super(json);
 		_simpleName = json.getString("name");
 		_namespaces = new ArrayList<>();
+
 		_types = new ArrayList<>();
 		_properties = new ArrayList<>();
 		_methods = new ArrayList<>();
 		_consts = new ArrayList<>();
+
+		_allProperties = new ArrayList<>();
+		_allMethods = new ArrayList<>();
+		_allConsts = new ArrayList<>();
+
 		_memberMap = new HashMap<>();
 		_inheritedMembers = new HashSet<>();
 	}
@@ -88,6 +100,7 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 
 	@Override
 	public final void build() {
+
 		for (IPhaserMember member : _memberMap.values()) {
 			member.setContainer(this);
 			if (member instanceof PhaserType) {
@@ -103,6 +116,20 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 			}
 		}
 
+		_allMethods = new ArrayList<>(_methods);
+		_allProperties = new ArrayList<>(_properties);
+		_allConsts = new ArrayList<>(_consts);
+
+		for (var member : _inheritedMembers) {
+			if (member instanceof PhaserMethod) {
+				_allMethods.add((PhaserMethod) member);
+			} else if (member instanceof PhaserConstant) {
+				_allConsts.add((PhaserConstant) member);
+			} else if (member instanceof PhaserProperty) {
+				_allProperties.add((PhaserProperty) member);
+			}
+		}
+
 		Comparator<IPhaserMember> comparator = (a, b) -> a.getName().compareTo(b.getName());
 
 		_namespaces.sort(comparator);
@@ -115,6 +142,10 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 		_methods.sort(comparator);
 		_consts.sort(comparator);
 		_properties.sort(comparator);
+
+		_allMethods.sort(comparator);
+		_allProperties.sort(comparator);
+		_allConsts.sort(comparator);
 	}
 
 	@Override
@@ -143,10 +174,25 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 	}
 
 	@Override
+	public List<PhaserConstant> getAllConstants() {
+		return _allConsts;
+	}
+
+	@Override
+	public List<PhaserMethod> getAllMethods() {
+		return _allMethods;
+	}
+
+	@Override
+	public List<PhaserProperty> getAllProperties() {
+		return _allProperties;
+	}
+
+	@Override
 	public Map<String, IPhaserMember> getMemberMap() {
 		return _memberMap;
 	}
-	
+
 	public Set<IPhaserMember> getInheritedMembers() {
 		return _inheritedMembers;
 	}
