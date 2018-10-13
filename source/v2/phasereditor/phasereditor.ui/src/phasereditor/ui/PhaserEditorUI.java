@@ -53,6 +53,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
@@ -113,12 +114,12 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.ImageCanvas.ZoomCalculator;
-import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
@@ -311,12 +312,16 @@ public class PhaserEditorUI {
 
 			String editorId = "org.eclipse.ui.genericeditor.GenericEditor";
 
-			byte[] bytes = Files.readAllBytes(filePath);
-
 			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
-			input.setTooltip(input.getName());
+			try {
+				filePath.toFile().setReadOnly();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			var store = EFS.getLocalFileSystem().getStore(filePath.toUri());
+			var input = new FileStoreEditorInput(store);
 
 			// open in generic editor
 

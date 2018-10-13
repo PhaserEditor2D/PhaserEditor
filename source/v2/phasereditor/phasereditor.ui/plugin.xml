@@ -17,24 +17,6 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="phasereditor.ui.handlers.ShowSourceCodeHandler"
-            commandId="phasereditor.ui.showSourceCode">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <adapt
-                        type="phasereditor.ui.ISourceLocation">
-                  </adapt>
-               </iterate>
-            </with>
-         </activeWhen>
-      </handler>
-   </extension>
-   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
@@ -94,6 +76,21 @@
       <handler
             class="phasereditor.ui.handlers.ShowInPreviewHandler"
             commandId="phasereditor.ui.commands.showInPreview">
+      </handler>
+      <handler
+            class="phasereditor.ui.handlers.ShowSourceCodeHandler"
+            commandId="phasereditor.ui.showSourceCode">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <adapt
+                        type="phasereditor.ui.ISourceLocation">
+                  </adapt>
+               </iterate>
+            </with>
+         </activeWhen>
       </handler>
    </extension>
    <extension
