@@ -49,8 +49,40 @@ public class SceneModel {
 
 	private ParentModel _rootObject;
 
+	private boolean _snapEnabled;
+	private int _snapWidth;
+	private int _snapHeight;
+
 	public SceneModel() {
 		_rootObject = new WorldModel();
+		
+		_snapEnabled = false;
+		_snapWidth = 64;
+		_snapHeight = 64;
+	}
+
+	public boolean isSnapEnabled() {
+		return _snapEnabled;
+	}
+
+	public void setSnapEnabled(boolean snapEnabled) {
+		_snapEnabled = snapEnabled;
+	}
+
+	public int getSnapWidth() {
+		return _snapWidth;
+	}
+
+	public void setSnapWidth(int snapWidth) {
+		_snapWidth = snapWidth;
+	}
+
+	public int getSnapHeight() {
+		return _snapHeight;
+	}
+
+	public void setSnapHeight(int snapHeight) {
+		_snapHeight = snapHeight;
 	}
 
 	public ParentModel getRootObject() {

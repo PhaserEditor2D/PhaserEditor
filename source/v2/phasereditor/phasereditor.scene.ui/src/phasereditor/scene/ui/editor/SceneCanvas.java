@@ -319,14 +319,15 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		var initialModelSnapX = 5f;
 		var initialModelSnapY = 5f;
-
-		// if (_settingsModel.isEnableStepping()) {
-		// initialModelSnapX = _settingsModel.getStepWidth();
-		// initialModelSnapY = _settingsModel.getStepHeight();
-		// }
+		
+		if (_sceneModel.isSnapEnabled()) {
+			initialModelSnapX = _sceneModel.getSnapWidth();
+			initialModelSnapY = _sceneModel.getSnapHeight();
+		}
 
 		var modelSnapX = 10f;
 		var modelSnapY = 10f;
+
 		var viewSnapX = 0f;
 		var viewSnapY = 0f;
 
@@ -337,19 +338,20 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			i++;
 		}
 
-		_renderModelSnapX = modelSnapX;
-		_renderModelSnapY = modelSnapY;
-
-		var modelNextSnapX = modelSnapX * 4;
-		var modelNextNextSnapX = modelSnapX * 8;
-
 		i = 1;
 		while (viewSnapY < 10) {
 			modelSnapY = (float) Math.pow(initialModelSnapY, i);
 			viewSnapY = calc.modelToViewHeight(modelSnapY);
 			i++;
 		}
+		
+		_renderModelSnapX = modelSnapX;
+		_renderModelSnapY = modelSnapY;
 
+
+		var modelNextSnapX = modelSnapX * 4;
+		var modelNextNextSnapX = modelSnapX * 8;
+		
 		var modelNextSnapY = modelSnapY * 4;
 		var modelNextNextSnapY = modelSnapY * 8;
 

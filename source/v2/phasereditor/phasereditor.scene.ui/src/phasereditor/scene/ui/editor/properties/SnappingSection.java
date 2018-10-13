@@ -40,7 +40,7 @@ public class SnappingSection extends ScenePropertySection {
 
 	private Text _widthText;
 	private Text _heightText;
-	private Button _enabledButton;
+	private Button _enabledBtn;
 
 	public SnappingSection(FormPropertyPage page) {
 		super("Snapping", page);
@@ -58,9 +58,9 @@ public class SnappingSection extends ScenePropertySection {
 
 		{
 			// enabled
-			_enabledButton = new Button(comp, SWT.CHECK);
-			_enabledButton.setText("Enabled");
-			_enabledButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+			_enabledBtn = new Button(comp, SWT.CHECK);
+			_enabledBtn.setText("Enabled");
+			_enabledBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 		}
 		
 		{
@@ -78,13 +78,44 @@ public class SnappingSection extends ScenePropertySection {
 			_heightText = new Text(comp, SWT.BORDER);
 			_heightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
+		
+		update_UI_from_Model();
 
 		return comp;
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
-		//
+		var sceneModel = getEditor().getSceneModel();
+		
+		_enabledBtn.setSelection(sceneModel.isSnapEnabled());
+		_widthText.setText(Integer.toString(sceneModel.getSnapWidth()));
+		_heightText.setText(Integer.toString(sceneModel.getSnapWidth()));
+		
+		listen(_enabledBtn, value -> {
+			sceneModel.setSnapEnabled(value);
+			
+			getEditor().getScene().redraw();
+			getEditor().setDirty(true);
+		});
+		
+		listenInt(_widthText, value -> {
+			sceneModel.setSnapWidth(value);
+
+			getEditor().getScene().redraw();
+			getEditor().setDirty(true);
+			
+		});
+
+		listenInt(_heightText, value -> {
+			sceneModel.setSnapHeight(value);
+
+			getEditor().getScene().redraw();
+			getEditor().setDirty(true);
+			
+		});
+		
 	}
 
 }
