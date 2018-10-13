@@ -58,7 +58,7 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class FormPropertyPage extends Page implements IPropertySheetPage {
 
 	Composite _sectionsContainer;
@@ -68,11 +68,20 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		super();
 	}
 
+	protected abstract Object getDefaultModel();
+
 	@SuppressWarnings({ "unused" })
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
 		var models = ((IStructuredSelection) selection).toArray();
+
+		if (models.length == 0) {
+			var defaultModel = getDefaultModel();
+			if (defaultModel != null) {
+				models = new Object[] { defaultModel };
+			}
+		}
 
 		// create all candidate sections
 		var allSections = new ArrayList<FormPropertySection>();
@@ -249,9 +258,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	@Override
 	public void createControl(Composite parent) {
-		
+
 		parent.setBackgroundMode(SWT.INHERIT_FORCE);
-		
+
 		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
 		_sectionsContainer = new Composite(_scrolledCompo, SWT.NONE);
 		_sectionsContainer.setBackgroundMode(SWT.INHERIT_FORCE);

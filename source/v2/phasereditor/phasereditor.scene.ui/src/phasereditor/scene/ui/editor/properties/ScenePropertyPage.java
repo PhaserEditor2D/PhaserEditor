@@ -29,6 +29,7 @@ import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
@@ -60,6 +61,13 @@ public class ScenePropertyPage extends FormPropertyPage {
 	@Override
 	protected List<FormPropertySection> createSections(Object obj) {
 		List<FormPropertySection> list = new ArrayList<>();
+
+		if (obj instanceof SceneModel) {
+			list.add(new SnappingSection(this));
+			list.add(new CompilerSection(this));
+			list.add(new DisplaySection(this));
+			list.add(new AssetsSection(this));
+		}
 
 		if (obj instanceof EditorComponent) {
 			list.add(new EditorSection(this));
@@ -115,6 +123,11 @@ public class ScenePropertyPage extends FormPropertyPage {
 		_editor.removePropertyPage(this);
 
 		super.dispose();
+	}
+
+	@Override
+	protected Object getDefaultModel() {
+		return getEditor().getSceneModel();
 	}
 
 }

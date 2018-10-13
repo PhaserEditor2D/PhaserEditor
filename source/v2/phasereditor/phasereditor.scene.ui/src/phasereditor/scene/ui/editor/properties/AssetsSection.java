@@ -19,54 +19,58 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui.editor.properties;
+package phasereditor.scene.ui.editor.properties;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.jface.preference.ColorSelector;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-import phasereditor.animation.ui.editor.AnimationsEditor;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.scene.core.SceneModel;
 import phasereditor.ui.properties.FormPropertyPage;
-import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AnimationsPropertyPage extends FormPropertyPage {
+public class AssetsSection extends ScenePropertySection {
 
-	private AnimationsEditor _editor;
-
-	public AnimationsPropertyPage(AnimationsEditor editor) {
-		super();
-		_editor = editor;
-	}
-
-	public AnimationsEditor getEditor() {
-		return _editor;
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	protected List<FormPropertySection> createSections(Object obj) {
-		var list = new ArrayList<FormPropertySection>();
-
-		if (obj instanceof AnimationFrameModel) {
-			list.add(new AnimationFrameDurationSection());
-			list.add(new AnimationFrameTextureSection());
-		}
-
-		if (obj instanceof AnimationModel) {
-			list.add(new AnimationSection());
-		}
-
-		return list;
+	public AssetsSection(FormPropertyPage page) {
+		super("Assets", page);
 	}
 
 	@Override
-	protected Object getDefaultModel() {
-		return null;
+	public boolean canEdit(Object obj) {
+		return obj instanceof SceneModel;
+	}
+
+	@Override
+	public Control createContent(Composite parent) {
+
+		var comp = new Composite(parent, SWT.NONE);
+		comp.setLayout(new GridLayout(1, false));
+
+		{
+			var btn = new Button(comp, 0);
+			btn.setText("Rebuild Image Cache");
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		}
+
+		{
+			var colorSelector = new ColorSelector(comp);
+			colorSelector.getButton().setText("Missing Asset Color");
+			colorSelector.getButton().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		}
+
+		return comp;
+	}
+
+	@Override
+	public void update_UI_from_Model() {
+		//
 	}
 
 }
