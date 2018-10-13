@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.util.function.Supplier;
+
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -35,17 +37,22 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 	private Image _image;
+	private Supplier<Image> _imageProvider;
 	private FrameData _fd;
 
 	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image) {
 		this(item, image, FrameData.fromImage(image));
 	}
 
-	
-
 	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image, FrameData fd) {
 		super(item);
 		_image = image;
+		_fd = fd;
+	}
+
+	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Supplier<Image> imageProvider, FrameData fd) {
+		super(item);
+		_imageProvider = imageProvider;
 		_fd = fd;
 	}
 
@@ -62,7 +69,7 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	@Override
 	public void render(PaintEvent e, int index, int x, int y) {
 		var canvas = _item.getCanvas();
-		
+
 		var gc = e.gc;
 
 		int imgSize = canvas.getImageSize();
@@ -103,8 +110,12 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			gc.setFont(canvas.getFont());
 		}
 
-		// paint image
+		// get the image
+		
+		buildImage();
 
+		// paint image
+		
 		if (_image != null && !_image.isDisposed()) {
 			if (iconified) {
 				PhaserEditorUI.paintScaledImageInArea(gc, _image, _fd,
@@ -116,14 +127,24 @@ public class ImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 		}
 	}
 
-
+	private void buildImage() {
+		if (_image == null) {
+			if (_imageProvider != null) {
+				var image = _imageProvider.get();
+				if (image != null) {
+					_image = image;
+				}
+			}
+		}
+	}
 
 	@Override
 	public Image get_DND_Image() {
+		
+		buildImage();
+		
 		return _image;
 	}
-
-
 
 	@Override
 	public FrameData get_DND_Image_FrameData() {

@@ -40,11 +40,10 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 	private Image _image;
 	private String _label;
+	private IFile _audioFile;
 
 	public AudioTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);
-
-		var canvas = item.getCanvas();
 
 		var data = _item.getData();
 
@@ -69,10 +68,8 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			audioFile = (IFile) data;
 			_label = audioFile.getName();
 		}
-
-		var imgPath = AudioCore.getSoundWavesFile(audioFile, false);
-
-		_image = canvas.loadImage(imgPath.toFile());
+		
+		_audioFile = audioFile;
 	}
 
 	public String getLabel() {
@@ -87,6 +84,11 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	public void render(PaintEvent e, int index, int x, int y) {
 		var canvas = _item.getCanvas();
 
+		if (_image == null) {
+			var imgPath = AudioCore.getSoundWavesFile(_audioFile, false);
+			_image = canvas.loadImage(imgPath.toFile());
+		}
+		
 		var gc = e.gc;
 
 		int rowHeight = computeRowHeight(canvas);

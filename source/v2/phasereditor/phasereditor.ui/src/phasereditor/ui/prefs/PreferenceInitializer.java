@@ -27,6 +27,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				PhaserEditorUI.PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR,
 				StringConverter.asString(new RGB(180, 180, 180)));
+		
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, StringConverter.asString(PhaserEditorUI.getListTextColor().getRGB()));
 
 		// spritesheet
@@ -45,6 +46,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR, StringConverter.asString(_BLUE));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH, 32);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT, 32);
+		
+		PhaserEditorUI.listenPreferences();
 	}
 
 }

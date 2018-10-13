@@ -170,4 +170,7 @@
             icon="icons/pencil.png">
       </image>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+   </extension>
 </plugin>

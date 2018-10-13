@@ -24,11 +24,13 @@ package phasereditor.assetpack.ui;
 import static java.util.stream.Collectors.joining;
 
 import java.util.LinkedHashSet;
+import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
 import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
@@ -156,9 +158,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			return null;
 		}
 
-		var image = item.getCanvas().loadImage(file);
-
-		return new ImageTreeCanvasItemRenderer(item, image, fd);
+		return new ImageTreeCanvasItemRenderer(item, new FileImageProvider(item.getCanvas(), file), fd);
 	}
 
 	@SuppressWarnings("static-method")
@@ -199,6 +199,23 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		if (elem instanceof IProject) {
 			keywords.add("project");
 		}
+	}
+
+	static class FileImageProvider implements Supplier<Image> {
+
+		private TreeCanvas _canvas;
+		private IFile _file;
+
+		public FileImageProvider(TreeCanvas canvas, IFile file) {
+			_canvas = canvas;
+			_file = file;
+		}
+
+		@Override
+		public Image get() {
+			return _canvas.loadImage(_file);
+		}
+
 	}
 
 }

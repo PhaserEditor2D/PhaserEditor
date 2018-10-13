@@ -112,6 +112,7 @@ public class BitmapFontAssetModel extends AssetModel {
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "textureURL", _textureURL);
 		validateUrl(problems, "fontDataURL", _fontDataURL);
+		
 		if (_normalMap != null) {
 			validateUrl(problems, "normalMap", _normalMap);
 		}
