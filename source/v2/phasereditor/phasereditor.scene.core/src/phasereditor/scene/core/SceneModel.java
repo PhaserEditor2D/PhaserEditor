@@ -22,15 +22,19 @@
 package phasereditor.scene.core;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.resource.StringConverter;
+import org.eclipse.swt.graphics.RGB;
 import org.json.JSONObject;
 
 import phasereditor.lic.LicCore;
+import phasereditor.ui.ColorUtil;
 
 /**
  * @author arian
  *
  */
 public class SceneModel {
+
 	private static final int VERSION = 1;
 
 	public static final String[] GAME_OBJECT_TYPES = {
@@ -53,12 +57,36 @@ public class SceneModel {
 	private int _snapWidth;
 	private int _snapHeight;
 
+	private RGB _backgroundColor;
+	private RGB _foregroundColor;
+	private static final RGB DEF_FG_RGB = ColorUtil.WHITESMOKE.rgb;
+	private static final RGB DEF_BG_RGB = ColorUtil.LIGHTGRAY.rgb;
+
 	public SceneModel() {
 		_rootObject = new WorldModel();
-		
+
 		_snapEnabled = false;
-		_snapWidth = 64;
-		_snapHeight = 64;
+		_snapWidth = 16;
+		_snapHeight = 16;
+
+		_backgroundColor = DEF_BG_RGB;
+		_foregroundColor = DEF_FG_RGB;
+	}
+
+	public RGB getBackgroundColor() {
+		return _backgroundColor;
+	}
+
+	public void setBackgroundColor(RGB backgroundColor) {
+		_backgroundColor = backgroundColor;
+	}
+
+	public RGB getForegroundColor() {
+		return _foregroundColor;
+	}
+
+	public void setForegroundColor(RGB foregroundColor) {
+		_foregroundColor = foregroundColor;
 	}
 
 	public boolean isSnapEnabled() {
@@ -104,6 +132,8 @@ public class SceneModel {
 
 			data.put("root", rootData);
 		}
+
+		writeProperties(data);
 	}
 
 	public void read(JSONObject data, IProject project) {
@@ -117,6 +147,40 @@ public class SceneModel {
 			model.read(rootData, project);
 			_rootObject = (ParentModel) model;
 		}
+
+		readProperties(data);
+	}
+
+	public void writeProperties(JSONObject data) {
+		{
+			data.put("snapEnabled", _snapEnabled, false);
+			data.put("snapWidth", _snapWidth, 16);
+			data.put("snapHeight", _snapHeight, 16);
+		}
+		{
+			data.put("backgroundColor", asString(_backgroundColor), asString(DEF_BG_RGB));
+			data.put("foregroundColor", asString(_foregroundColor), asString(DEF_FG_RGB));
+		}
+	}
+
+	public void readProperties(JSONObject data) {
+		{
+			_snapEnabled = data.optBoolean("snapEnabled", false);
+			_snapWidth = data.optInt("snapWidth", 16);
+			_snapHeight = data.optInt("snapHeight", 16);
+		}
+		{
+			_backgroundColor = asRGB(data.optString("backgroundColor", asString(DEF_BG_RGB)));
+			_foregroundColor = asRGB(data.optString("foregroundColor", asString(DEF_FG_RGB)));
+		}
+	}
+
+	private static String asString(RGB color) {
+		return StringConverter.asString(color);
+	}
+
+	private static RGB asRGB(String color) {
+		return StringConverter.asRGB(color);
 	}
 
 	@SuppressWarnings("incomplete-switch")

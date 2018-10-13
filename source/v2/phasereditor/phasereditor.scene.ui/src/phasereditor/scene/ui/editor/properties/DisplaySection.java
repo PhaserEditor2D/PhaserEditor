@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -41,6 +42,8 @@ public class DisplaySection extends ScenePropertySection {
 
 	private Text _widthText;
 	private Text _heightText;
+	private ColorSelector _bgColorSelector;
+	private ColorSelector _fgColorSelector;
 
 	public DisplaySection(FormPropertyPage page) {
 		super("Display", page);
@@ -81,22 +84,41 @@ public class DisplaySection extends ScenePropertySection {
 			new Label(comp, 0);
 
 			var colorSelector = new ColorSelector(comp);
-			colorSelector.getButton().setText("FG");
+			colorSelector.getButton().setText("BG");
 			colorSelector.getButton().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			_bgColorSelector = colorSelector;
+			_bgColorSelector.addListener(e -> {
+
+				getEditor().getSceneModel().setBackgroundColor((RGB) e.getNewValue());
+				getEditor().getScene().redraw();
+
+			});
 
 			new Label(comp, 0);
 
 			colorSelector = new ColorSelector(comp);
 			colorSelector.getButton().setText("FG");
 			colorSelector.getButton().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			_fgColorSelector = colorSelector;
+			_fgColorSelector.addListener(e -> {
+
+				getEditor().getSceneModel().setForegroundColor((RGB) e.getNewValue());
+				getEditor().getScene().redraw();
+
+			});
 		}
+
+		update_UI_from_Model();
 
 		return comp;
 	}
 
 	@Override
 	public void update_UI_from_Model() {
-		//
+		var sceneModel = getEditor().getSceneModel();
+
+		_bgColorSelector.setColorValue(sceneModel.getBackgroundColor());
+		_fgColorSelector.setColorValue(sceneModel.getForegroundColor());
 	}
 
 }

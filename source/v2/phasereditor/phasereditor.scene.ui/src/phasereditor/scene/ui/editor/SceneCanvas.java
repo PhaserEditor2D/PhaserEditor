@@ -298,14 +298,12 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		gc.fillRectangle(0, 0, e.width, e.height);
 	}
 
-	@SuppressWarnings("static-method")
 	private Color getGridColor() {
-		return SWTResourceManager.getColor(200, 200, 200);
+		return SWTResourceManager.getColor(_sceneModel.getForegroundColor());
 	}
 
-	@SuppressWarnings("static-method")
 	private Color getBackgroundColor() {
-		return SWTResourceManager.getColor(180, 180, 180);
+		return SWTResourceManager.getColor(_sceneModel.getBackgroundColor());
 	}
 
 	private void renderGrid(PaintEvent e) {
@@ -319,7 +317,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		var initialModelSnapX = 5f;
 		var initialModelSnapY = 5f;
-		
+
 		if (_sceneModel.isSnapEnabled()) {
 			initialModelSnapX = _sceneModel.getSnapWidth();
 			initialModelSnapY = _sceneModel.getSnapHeight();
@@ -344,14 +342,13 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			viewSnapY = calc.modelToViewHeight(modelSnapY);
 			i++;
 		}
-		
+
 		_renderModelSnapX = modelSnapX;
 		_renderModelSnapY = modelSnapY;
 
-
 		var modelNextSnapX = modelSnapX * 4;
 		var modelNextNextSnapX = modelSnapX * 8;
-		
+
 		var modelNextSnapY = modelSnapY * 4;
 		var modelNextNextSnapY = modelSnapY * 8;
 

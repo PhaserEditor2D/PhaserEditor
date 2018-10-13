@@ -91,7 +91,7 @@ public class SnappingSection extends ScenePropertySection {
 		
 		_enabledBtn.setSelection(sceneModel.isSnapEnabled());
 		_widthText.setText(Integer.toString(sceneModel.getSnapWidth()));
-		_heightText.setText(Integer.toString(sceneModel.getSnapWidth()));
+		_heightText.setText(Integer.toString(sceneModel.getSnapHeight()));
 		
 		listen(_enabledBtn, value -> {
 			sceneModel.setSnapEnabled(value);
