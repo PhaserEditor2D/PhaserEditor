@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.json.JSONObject;
 
@@ -59,6 +60,7 @@ public class EditorSection extends ScenePropertySection {
 	private Text _editorNameText;
 	private Button _typeBtn;
 	private Action _fieldAction;
+	private Scale _transpScale;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -114,6 +116,15 @@ public class EditorSection extends ScenePropertySection {
 			_typeBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
 		}
 
+		{
+			label(comp, "Transparency", "*(Editor) Transparency of the object when is renderer in the editor.");
+
+			_transpScale = new Scale(comp, 0);
+			_transpScale.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			_transpScale.setMinimum(0);
+			_transpScale.setMinimum(100);
+		}
+
 		update_UI_from_Model();
 
 		return comp;
@@ -126,7 +137,7 @@ public class EditorSection extends ScenePropertySection {
 			var before = WorldSnapshotOperation.takeSnapshot(editor);
 
 			EditorComponent.set_editorField(model, _fieldAction.isChecked());
-			
+
 			editor.setDirty(true);
 
 			var after = WorldSnapshotOperation.takeSnapshot(editor);
@@ -258,6 +269,9 @@ public class EditorSection extends ScenePropertySection {
 
 		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 
+		_transpScale.setSelection(flatValues_to_int(
+				models.stream().map(model -> (int) (EditorComponent.get_editorTransparency(model) * 100)), 100));
+
 		listen(_editorNameText, value -> {
 			models.stream().forEach(model -> EditorComponent.set_editorName(model, value));
 
@@ -265,6 +279,13 @@ public class EditorSection extends ScenePropertySection {
 			getEditor().refreshOutline();
 
 		}, models);
+
+		listenFloat(_transpScale, value -> {
+			models.stream().forEach(model -> EditorComponent.set_editorTransparency(model, value));
+
+			getEditor().getScene().redraw();
+			getEditor().setDirty(true);
+		});
 	}
 
 }

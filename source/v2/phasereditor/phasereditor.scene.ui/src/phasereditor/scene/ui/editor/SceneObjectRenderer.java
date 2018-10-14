@@ -237,18 +237,28 @@ public class SceneObjectRenderer {
 		return new float[] { minX, minY, maxX, minY, maxX, maxY, minX, maxY };
 	}
 
-	private void renderObject(GC gc, Transform tx, ObjectModel objModel) {
+	private void renderObject(GC gc, Transform tx, ObjectModel model) {
 
-		if (!EditorComponent.get_editorShow(objModel)) {
+		if (!EditorComponent.get_editorShow(model)) {
 			return;
 		}
 
-		if (objModel instanceof TransformComponent) {
+		var alpha = gc.getAlpha();
+		var transp = EditorComponent.get_editorTransparency(model);
+
+		{
+
+			if (transp != 1) {
+				gc.setAlpha((int) (transp * 255));
+			}
+		}
+
+		if (model instanceof TransformComponent) {
 			{
 				// position
 
-				var x = TransformComponent.get_x(objModel);
-				var y = TransformComponent.get_y(objModel);
+				var x = TransformComponent.get_x(model);
+				var y = TransformComponent.get_y(model);
 
 				tx.translate(x, y);
 			}
@@ -256,7 +266,7 @@ public class SceneObjectRenderer {
 			{
 				// rotation
 
-				var angle = TransformComponent.get_angle(objModel);
+				var angle = TransformComponent.get_angle(model);
 
 				tx.rotate(angle);
 			}
@@ -272,8 +282,8 @@ public class SceneObjectRenderer {
 			{
 				// scale
 
-				var scaleX = TransformComponent.get_scaleX(objModel);
-				var scaleY = TransformComponent.get_scaleY(objModel);
+				var scaleX = TransformComponent.get_scaleX(model);
+				var scaleY = TransformComponent.get_scaleY(model);
 
 				tx.scale(scaleX, scaleY);
 			}
@@ -283,46 +293,50 @@ public class SceneObjectRenderer {
 		{
 			// flip
 
-			if (objModel instanceof FlipComponent) {
+			if (model instanceof FlipComponent) {
 				tx2 = newTx(gc, tx);
-				tx2.scale(FlipComponent.get_flipX(objModel) ? -1 : 1, FlipComponent.get_flipY(objModel) ? -1 : 1);
+				tx2.scale(FlipComponent.get_flipX(model) ? -1 : 1, FlipComponent.get_flipY(model) ? -1 : 1);
 				gc.setTransform(tx2);
 			}
 		}
 
 		// origin
 
-		if (objModel instanceof OriginComponent) {
+		if (model instanceof OriginComponent) {
 
-			var originX = OriginComponent.get_originX(objModel);
-			var originY = OriginComponent.get_originY(objModel);
+			var originX = OriginComponent.get_originX(model);
+			var originY = OriginComponent.get_originY(model);
 
-			var size = getTextureSize(objModel);
+			var size = getTextureSize(model);
 
 			double x = -size[0] * originX;
 			double y = -size[1] * originY;
 			tx2.translate((float) x, (float) y);
 		}
 
-		if (objModel instanceof BitmapTextModel) {
+		if (model instanceof BitmapTextModel) {
 
-			renderBitmapText(gc, tx2, (BitmapTextModel) objModel);
+			renderBitmapText(gc, tx2, (BitmapTextModel) model);
 
-		} else if (objModel instanceof BaseSpriteModel) {
+		} else if (model instanceof BaseSpriteModel) {
 
-			renderSprite(gc, tx2, (BaseSpriteModel) objModel);
+			renderSprite(gc, tx2, (BaseSpriteModel) model);
 
 		}
 
-		if (objModel instanceof ParentComponent) {
+		if (model instanceof ParentComponent) {
 
-			renderChildren(gc, tx2, objModel);
+			renderChildren(gc, tx2, model);
 
 		}
 
 		if (tx2 != tx) {
 			gc.setTransform(tx);
 			tx2.dispose();
+		}
+
+		if (transp != 1) {
+			gc.setAlpha(alpha);
 		}
 
 	}
@@ -461,7 +475,7 @@ public class SceneObjectRenderer {
 			renderTileSprite(gc, (TileSpriteModel) model);
 
 		} else {
-			
+
 			var frame = TextureComponent.get_frame(model);
 
 			renderTexture(gc, model, frame);

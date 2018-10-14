@@ -82,11 +82,26 @@ public interface EditorComponent {
 	static void set_editorField(ObjectModel obj, boolean editorField) {
 		obj.put("editorField", editorField);
 	}
+	
+	// editorTransparency
+
+	static String editorTransparency_name = "editorTransparency";
+
+	static float editorTransparency_default = 1;
+
+	static float get_editorTransparency(ObjectModel obj) {
+		return (float) obj.get("editorTransparency");
+	}
+
+	static void set_editorTransparency(ObjectModel obj, float editorTransparency) {
+		obj.put("editorTransparency", editorTransparency);
+	}
 
 	static void init(ObjectModel obj) {
 		set_editorName(obj, editorName_default);
 		set_editorField(obj, editorField_default);
 		set_editorShow(obj, editorShow_default);
 		set_editorClosed(obj, editorClosed_default);
+		set_editorTransparency(obj, editorTransparency_default);
 	}
 }

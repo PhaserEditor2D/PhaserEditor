@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.ui.IEditorSharedImages;
@@ -107,6 +108,19 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		}
 
 		return null;
+	}
+	
+	@SuppressWarnings("boxing")
+	protected static int flatValues_to_int(Stream<Integer> values, int def) {
+		var set = new HashSet<>();
+		values.forEach(v -> set.add(v));
+
+		if (set.size() == 1) {
+			var value = set.toArray()[0];
+			return (int) value;
+		}
+
+		return def;
 	}
 
 	protected static Boolean flatValues_to_Boolean(Stream<Boolean> values) {
@@ -264,6 +278,29 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 			}
 
 		});
+	}
+
+	@SuppressWarnings({ "boxing", "static-method" })
+	protected void listenFloat(Scale scale, Consumer<Float> listener) {
+		var oldListener = scale.getData("-prop-listener");
+		if (oldListener != null) {
+			scale.removeSelectionListener((SelectionListener) oldListener);
+		}
+
+		var scaleListener = new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				listener.accept((float) scale.getSelection() / 100);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				//
+			}
+		};
+
+		scale.addSelectionListener(scaleListener);
+		scale.setData("-prop-listener", scaleListener);
 	}
 
 	protected static <T> void setValues_to_Text(Text text, List<T> models, Function<T, Object> get) {

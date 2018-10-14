@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.inspect.core.InspectCore;
@@ -81,7 +82,8 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});
@@ -96,7 +98,8 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});
@@ -111,7 +114,8 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 
@@ -126,9 +130,27 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			listener.accept(value);
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
-			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
+		});
+	}
+
+	protected void listenFloat(Scale scale, Consumer<Float> listener, List<ObjectModel> models) {
+		super.listenFloat(scale, value -> {
+
+			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
+
+			listener.accept(value);
+
+			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
+			
+			getEditor().executeOperation(
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+
+			getCanvas().redraw();
+
 		});
 	}
 

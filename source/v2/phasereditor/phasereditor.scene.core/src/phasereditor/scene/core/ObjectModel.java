@@ -85,6 +85,7 @@ public abstract class ObjectModel implements EditorComponent {
 		data.put(editorName_name, EditorComponent.get_editorName(this));
 		data.put(editorField_name, EditorComponent.get_editorField(this));
 		data.put(editorClosed_name, EditorComponent.get_editorClosed(this), editorClosed_default);
+		data.put(editorTransparency_name, EditorComponent.get_editorTransparency(this), editorTransparency_default);
 	}
 
 	@SuppressWarnings("unused")
@@ -94,6 +95,8 @@ public abstract class ObjectModel implements EditorComponent {
 		EditorComponent.set_editorName(this, data.getString(editorName_name));
 		EditorComponent.set_editorField(this, data.optBoolean(editorField_name));
 		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));
+		EditorComponent.set_editorTransparency(this,
+				data.optFloat(editorTransparency_name, editorTransparency_default));
 
 	}
 
