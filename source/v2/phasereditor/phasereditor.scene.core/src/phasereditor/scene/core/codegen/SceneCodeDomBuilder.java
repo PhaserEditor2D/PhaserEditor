@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core.codegen;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +101,8 @@ public class SceneCodeDomBuilder {
 		var methodDecl = new MethodDeclDom("create");
 
 		var worldModel = sceneModel.getRootObject();
-		
+		var fieldModels = new ArrayList<ObjectModel>();
+
 		for (var model : ParentComponent.get_children(worldModel)) {
 			MethodCallDom methodCall = null;
 
@@ -123,6 +125,11 @@ public class SceneCodeDomBuilder {
 			}
 
 			var assignToVar = false;
+
+			if (EditorComponent.get_editorField(model)) {
+				assignToVar = true;
+				fieldModels.add(model);
+			}
 
 			if (model instanceof OriginComponent) {
 				assignToVar = buildOriginProps(methodDecl, model) || assignToVar;
@@ -152,8 +159,18 @@ public class SceneCodeDomBuilder {
 			methodDecl.getInstructions().add(new RawCode(""));
 
 		}
-		
-		
+
+		for (var model : fieldModels) {
+			var local = varname(model);
+
+			var fieldName = JSCodeUtils.fieldOf(local);
+
+			var instr = new AssignPropertyDom(fieldName, "this");
+			instr.value(local);
+
+			methodDecl.getInstructions().add(instr);
+		}
+
 		{
 			var userCode = sceneModel.getCreateUserCode();
 
@@ -163,7 +180,7 @@ public class SceneCodeDomBuilder {
 				methodDecl.getInstructions().add(0, new RawCode(before));
 			}
 
-			var after = userCode.getBeforeCode();
+			var after = userCode.getAfterCode();
 
 			if (after.length() > 0) {
 				methodDecl.getInstructions().add(new RawCode(after));
@@ -533,7 +550,7 @@ public class SceneCodeDomBuilder {
 				preloadDom.getInstructions().add(0, new RawCode(before));
 			}
 
-			var after = userCode.getBeforeCode();
+			var after = userCode.getAfterCode();
 
 			if (after.length() > 0) {
 				preloadDom.getInstructions().add(new RawCode(after));

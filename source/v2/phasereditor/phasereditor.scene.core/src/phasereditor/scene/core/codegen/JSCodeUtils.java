@@ -40,4 +40,8 @@ public class JSCodeUtils {
 
 		return sb.toString();
 	}
+	
+	public static String fieldOf(String varname) {
+		return "f" + varname.substring(0, 1).toUpperCase() + varname.substring(1);
+	}
 }

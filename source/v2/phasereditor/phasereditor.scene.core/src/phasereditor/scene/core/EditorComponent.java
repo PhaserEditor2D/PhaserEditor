@@ -69,9 +69,23 @@ public interface EditorComponent {
 		obj.put("editorName", editorName);
 	}
 	
+	// editorField
+
+	static String editorField_name = "editorField";
+
+	static boolean editorField_default = false;
+
+	static boolean get_editorField(ObjectModel obj) {
+		return (boolean) obj.get("editorField");
+	}
+
+	static void set_editorField(ObjectModel obj, boolean editorField) {
+		obj.put("editorField", editorField);
+	}
 
 	static void init(ObjectModel obj) {
 		set_editorName(obj, editorName_default);
+		set_editorField(obj, editorField_default);
 		set_editorShow(obj, editorShow_default);
 		set_editorClosed(obj, editorClosed_default);
 	}

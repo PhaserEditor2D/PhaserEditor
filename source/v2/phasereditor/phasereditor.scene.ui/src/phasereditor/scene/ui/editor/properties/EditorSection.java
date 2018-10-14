@@ -22,7 +22,9 @@
 package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -43,7 +45,10 @@ import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -53,6 +58,7 @@ public class EditorSection extends ScenePropertySection {
 
 	private Text _editorNameText;
 	private Button _typeBtn;
+	private Action _fieldAction;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -69,10 +75,33 @@ public class EditorSection extends ScenePropertySection {
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
 
-		label(comp, "Var Name", "*(Editor) The name of the variable used in the generated code.");
+		{
+			label(comp, "Var Name", "*(Editor) The name of the variable used in the generated code.");
 
-		_editorNameText = new Text(comp, SWT.BORDER);
-		_editorNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var row = new Composite(comp, 0);
+			row.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			var gl = new GridLayout(2, false);
+			gl.marginWidth = gl.marginHeight = 0;
+			row.setLayout(gl);
+
+			_editorNameText = new Text(row, SWT.BORDER);
+			_editorNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			var toolbar = new ToolBarManager();
+
+			toolbar.add(_fieldAction = new Action("Assign to a property.", IAction.AS_CHECK_BOX) {
+				{
+					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PROPERTY));
+				}
+
+				@Override
+				public void run() {
+					update_editorField();
+				}
+			});
+
+			toolbar.createControl(row);
+		}
 
 		{
 			label(comp, "Type", "*(Editor) The Phaser type of this object." +
@@ -88,6 +117,22 @@ public class EditorSection extends ScenePropertySection {
 		update_UI_from_Model();
 
 		return comp;
+	}
+
+	protected void update_editorField() {
+		getModels().forEach(model -> {
+			SceneEditor editor = getEditor();
+
+			var before = WorldSnapshotOperation.takeSnapshot(editor);
+
+			EditorComponent.set_editorField(model, _fieldAction.isChecked());
+			
+			editor.setDirty(true);
+
+			var after = WorldSnapshotOperation.takeSnapshot(editor);
+
+			editor.executeOperation(new SceneSnapshotOperation(before, after, "Set variables field flag."));
+		});
 	}
 
 	class MorphAction extends Action {
@@ -200,12 +245,16 @@ public class EditorSection extends ScenePropertySection {
 		}
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var models = getModels();
 
 		_editorNameText
 				.setText(flatValues_to_String(models.stream().map(model -> EditorComponent.get_editorName(model))));
+
+		_fieldAction.setChecked(
+				flatValues_to_boolean(models.stream().map(model -> EditorComponent.get_editorField(model))));
 
 		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 

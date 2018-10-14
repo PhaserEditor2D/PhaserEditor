@@ -83,6 +83,7 @@ public abstract class ObjectModel implements EditorComponent {
 		data.put("-type", _type);
 
 		data.put(editorName_name, EditorComponent.get_editorName(this));
+		data.put(editorField_name, EditorComponent.get_editorField(this));
 		data.put(editorClosed_name, EditorComponent.get_editorClosed(this), editorClosed_default);
 	}
 
@@ -91,6 +92,7 @@ public abstract class ObjectModel implements EditorComponent {
 		_id = data.getString("-id");
 
 		EditorComponent.set_editorName(this, data.getString(editorName_name));
+		EditorComponent.set_editorField(this, data.optBoolean(editorField_name));
 		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));
 
 	}
