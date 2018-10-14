@@ -372,18 +372,18 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			if (modelX % modelNextNextSnapX == 0) {
 				gc.setAlpha(255);
-				gc.setLineWidth(2);
+				//gc.setLineWidth(2);
 			} else if (modelX % modelNextSnapX == 0) {
-				gc.setAlpha(200);
-			} else {
 				gc.setAlpha(150);
+			} else {
+				gc.setAlpha(100);
 			}
 
 			var viewX = calc.modelToViewX(modelX) + Y_LABEL_WIDTH;
 
 			gc.drawLine((int) viewX, X_LABELS_HEIGHT, (int) viewX, e.height);
 
-			gc.setLineWidth(1);
+//			gc.setLineWidth(1);
 
 			i++;
 		}
@@ -402,17 +402,17 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			var viewY = calc.modelToViewY(modelY) + X_LABELS_HEIGHT;
 
 			if (modelY % modelNextNextSnapY == 0) {
-				gc.setLineWidth(2);
+				// gc.setLineWidth(2);
 				gc.setAlpha(255);
 			} else if (modelY % modelNextSnapY == 0) {
-				gc.setAlpha(200);
-			} else {
 				gc.setAlpha(150);
+			} else {
+				gc.setAlpha(100);
 			}
 
 			gc.drawLine(X_LABELS_HEIGHT, (int) viewY, e.width, (int) viewY);
 
-			gc.setLineWidth(1);
+			// gc.setLineWidth(1);
 
 			i++;
 		}
@@ -423,7 +423,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private void renderLabels(PaintEvent e) {
 		var gc = e.gc;
 
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		gc.setForeground(getGridColor());
 		gc.setBackground(getBackgroundColor());
 
 		gc.setAlpha(220);
@@ -482,9 +482,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			if (viewX >= Y_LABEL_WIDTH && viewX <= e.width - Y_LABEL_WIDTH) {
 				String label = Integer.toString((int) modelX);
 
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 				gc.drawString(label, (int) viewX + 5, 0, true);
-				gc.setForeground(getGridColor());
 				gc.drawLine((int) viewX, 0, (int) viewX, X_LABELS_HEIGHT);
 			}
 
@@ -516,13 +514,11 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				gc.setTransform(tx);
 
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 				gc.drawString(label, 0, 0, true);
 
 				gc.setTransform(null);
 				tx.dispose();
 
-				gc.setForeground(getGridColor());
 				gc.drawLine(0, (int) viewY, Y_LABEL_WIDTH, (int) viewY);
 			}
 
