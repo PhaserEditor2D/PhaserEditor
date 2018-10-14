@@ -115,4 +115,12 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 	public String getAfterText() {
 		return _afterTextViewer.getDocument().get();
 	}
+
+	public SourceViewer getBeforeTextViewer() {
+		return _beforeTextViewer;
+	}
+
+	public SourceViewer getAfterTextViewer() {
+		return _afterTextViewer;
+	}
 }

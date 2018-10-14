@@ -67,6 +67,9 @@ public class SceneModel {
 	private int _borderWidth;
 	private int _borderHeight;
 
+	private MethodUserCodeModel _preloadUserCode;
+	private MethodUserCodeModel _createUserCode;
+
 	public SceneModel() {
 		_rootObject = new WorldModel();
 
@@ -81,6 +84,17 @@ public class SceneModel {
 		_borderY = 0;
 		_borderWidth = 800;
 		_borderHeight = 600;
+
+		_preloadUserCode = new MethodUserCodeModel("preload");
+		_createUserCode = new MethodUserCodeModel("create");
+	}
+
+	public MethodUserCodeModel getPreloadUserCode() {
+		return _preloadUserCode;
+	}
+
+	public MethodUserCodeModel getCreateUserCode() {
+		return _createUserCode;
 	}
 
 	public int getBorderY() {
@@ -211,6 +225,13 @@ public class SceneModel {
 			data.put("borderWidth", _borderWidth, 800);
 			data.put("borderHeight", _borderHeight, 600);
 		}
+
+		{
+			var userCodeData = new JSONObject();
+			_preloadUserCode.write(userCodeData);
+			_createUserCode.write(userCodeData);
+			data.put("userCode", userCodeData);
+		}
 	}
 
 	public void readProperties(JSONObject data) {
@@ -230,6 +251,14 @@ public class SceneModel {
 			_borderY = data.optInt("borderY", 0);
 			_borderWidth = data.optInt("borderWidth", 800);
 			_borderHeight = data.optInt("borderHeight", 600);
+		}
+
+		{
+			var userCodeData = data.optJSONObject("userCode");
+			if (userCodeData != null) {
+				_preloadUserCode.read(userCodeData);
+				_createUserCode.read(userCodeData);
+			}
 		}
 	}
 

@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -122,6 +123,43 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	protected static boolean flatValues_to_boolean(Stream<Boolean> values) {
 		Boolean value = flatValues_to_Boolean(values);
 		return value != null && value.booleanValue();
+	}
+
+	@SuppressWarnings({ "static-method" })
+	protected void listen(SourceViewer viewer, Consumer<String> listener) {
+		var control = viewer.getControl();
+
+		var oldListener = control.getData("-prop-listener");
+		if (oldListener != null) {
+			control.removeFocusListener((FocusListener) oldListener);
+		}
+
+		var controlListener = new FocusListener() {
+			private String _initial;
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				fireChanged();
+			}
+
+			private void fireChanged() {
+				var value = viewer.getDocument().get();
+
+				if (!value.equals(_initial)) {
+					listener.accept(value);
+					_initial = value;
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				_initial = viewer.getDocument().get();
+			}
+		};
+
+		control.addFocusListener(controlListener);
+		control.setData("-prop-listener", controlListener);
+
 	}
 
 	@SuppressWarnings({ "boxing", "static-method" })
@@ -234,10 +272,11 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	protected Label label(Composite parent, String title, String helpId) {
 		return label(parent, title, helpId, null);
 	}
+
 	protected Label label(Composite parent, String title, String helpId, GridData gd) {
 		var label = new Label(parent, SWT.NONE);
 		label.setText(title);
-		
+
 		if (gd != null) {
 			label.setLayoutData(gd);
 		}

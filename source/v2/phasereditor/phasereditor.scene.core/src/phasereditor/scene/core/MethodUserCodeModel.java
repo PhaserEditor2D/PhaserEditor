@@ -21,58 +21,56 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
-public interface EditorComponent {
-	// editorShow
+public class MethodUserCodeModel {
+	private String _methodName;
+	private String _beforeCode;
+	private String _afterCode;
 
-	static String editorShow_name = "editorShow";
-
-	static boolean editorShow_default = true;
-
-	static boolean get_editorShow(ObjectModel obj) {
-		return (boolean) obj.get("editorShow");
+	public MethodUserCodeModel(String methodName) {
+		super();
+		_methodName = methodName;
+		_beforeCode = "";
+		_afterCode = "";
 	}
 
-	static void set_editorShow(ObjectModel obj, boolean editorShow) {
-		obj.put("editorShow", editorShow);
+	public String getBeforeCode() {
+		return _beforeCode;
 	}
 
-	// editorClosed
-
-	static String editorClosed_name = "editorClosed";
-
-	static boolean editorClosed_default = false;
-
-	static boolean get_editorClosed(ObjectModel obj) {
-		return (boolean) obj.get("editorClosed");
+	public void setBeforeCode(String beforeCode) {
+		_beforeCode = beforeCode;
 	}
 
-	static void set_editorClosed(ObjectModel obj, boolean editorClosed) {
-		obj.put("editorClosed", editorClosed);
+	public String getAfterCode() {
+		return _afterCode;
 	}
 
-	// editorName
-
-	static String editorName_name = "editorName";
-	
-	static String editorName_default = "unnamed";
-
-	static String get_editorName(ObjectModel obj) {
-		return (String) obj.get("editorName");
+	public void setAfterCode(String afterCode) {
+		_afterCode = afterCode;
 	}
 
-	static void set_editorName(ObjectModel obj, String editorName) {
-		obj.put("editorName", editorName);
-	}
-	
+	public void write(JSONObject data) {
+		var methData = new JSONObject();
 
-	static void init(ObjectModel obj) {
-		set_editorName(obj, editorName_default);
-		set_editorShow(obj, editorShow_default);
-		set_editorClosed(obj, editorClosed_default);
+		methData.put("before", _beforeCode, "");
+		methData.put("after", _afterCode, "");
+
+		data.put(_methodName, methData);
 	}
+
+	public void read(JSONObject data) {
+		var methData = data.optJSONObject(_methodName);
+
+		if (methData != null) {
+			_beforeCode = methData.optString("before", "");
+			_afterCode = methData.optString("after", "");
+		}
+	}
+
 }

@@ -21,58 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.eclipse.core.resources.IFile;
+
 /**
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
-public interface EditorComponent {
-	// editorShow
+public class SceneCore {
 
-	static String editorShow_name = "editorShow";
+	public static IFile getSceneSourceCodeFile(IFile sceneFile) {
+		var path = sceneFile.getProjectRelativePath();
 
-	static boolean editorShow_default = true;
+		// for now it only compiles to JavaScript.
 
-	static boolean get_editorShow(ObjectModel obj) {
-		return (boolean) obj.get("editorShow");
-	}
-
-	static void set_editorShow(ObjectModel obj, boolean editorShow) {
-		obj.put("editorShow", editorShow);
-	}
-
-	// editorClosed
-
-	static String editorClosed_name = "editorClosed";
-
-	static boolean editorClosed_default = false;
-
-	static boolean get_editorClosed(ObjectModel obj) {
-		return (boolean) obj.get("editorClosed");
-	}
-
-	static void set_editorClosed(ObjectModel obj, boolean editorClosed) {
-		obj.put("editorClosed", editorClosed);
-	}
-
-	// editorName
-
-	static String editorName_name = "editorName";
-	
-	static String editorName_default = "unnamed";
-
-	static String get_editorName(ObjectModel obj) {
-		return (String) obj.get("editorName");
-	}
-
-	static void set_editorName(ObjectModel obj, String editorName) {
-		obj.put("editorName", editorName);
-	}
-	
-
-	static void init(ObjectModel obj) {
-		set_editorName(obj, editorName_default);
-		set_editorShow(obj, editorShow_default);
-		set_editorClosed(obj, editorClosed_default);
+		return sceneFile.getProject().getFile(path.removeFileExtension().addFileExtension("js"));
 	}
 }

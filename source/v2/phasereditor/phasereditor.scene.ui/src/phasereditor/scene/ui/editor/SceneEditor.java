@@ -4,8 +4,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,10 +11,11 @@ import java.util.List;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -37,10 +36,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.SceneCompiler;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.WorldModel;
-import phasereditor.scene.core.codegen.JS6_UnitCodeGenerator;
-import phasereditor.scene.core.codegen.SceneCodeDomBuilder;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -103,49 +100,31 @@ public class SceneEditor extends EditorPart {
 
 	}
 
-	private void generateCode(IProgressMonitor monitor) {
+	void generateCode(IProgressMonitor monitor) {
 		try {
-			IFile sceneFile = getEditorInput().getFile();
+			var compiler = new SceneCompiler(getEditorInput().getFile(), getSceneModel());
 
-			var codePath = sceneFile.getProjectRelativePath().removeFileExtension().addFileExtension("js");
-
-			var codeFile = sceneFile.getProject().getFile(codePath);
-
-			Charset charset;
-
-			if (codeFile.exists()) {
-				charset = Charset.forName(codeFile.getCharset());
-			} else {
-				charset = Charset.forName("UTF-8");
-			}
-
-			String replace = null;
-
-			if (codeFile.exists()) {
-				byte[] bytes = Files.readAllBytes(codeFile.getLocation().makeAbsolute().toFile().toPath());
-				replace = new String(bytes, charset);
-			}
-
-			var builder = new SceneCodeDomBuilder(codeFile);
-			var unitDom = builder.build((WorldModel) getSceneModel().getRootObject());
-
-			var codeGenerator = new JS6_UnitCodeGenerator(unitDom);
-			var code = codeGenerator.generate(replace);
-
-			ByteArrayInputStream stream = new ByteArrayInputStream(code.getBytes(charset));
-			if (codeFile.exists()) {
-				codeFile.setContents(stream, IResource.NONE, monitor);
-			} else {
-				codeFile.create(stream, false, monitor);
-				codeFile.setCharset(charset.name(), monitor);
-			}
-			codeFile.refreshLocal(1, null);
+			compiler.compile(monitor);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	public void compile() {
+		var job = new WorkspaceJob("Scene compiler.") {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+				generateCode(monitor);
+
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 	}
 
 	@Override
@@ -342,5 +321,4 @@ public class SceneEditor extends EditorPart {
 
 		getSite().getSelectionProvider().setSelection(sel);
 	}
-
 }
