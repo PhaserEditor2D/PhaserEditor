@@ -40,13 +40,13 @@ import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
+import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.core.WorldModel;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MethodCallDom;
@@ -75,7 +75,7 @@ public class SceneCodeDomBuilder {
 		return id;
 	}
 
-	public UnitDom build(WorldModel model) {
+	public UnitDom build(SceneModel model) {
 
 		var unit = new UnitDom();
 
@@ -96,9 +96,11 @@ public class SceneCodeDomBuilder {
 		return unit;
 	}
 
-	private MethodDeclDom buildCreateMethod(WorldModel worldModel) {
+	private MethodDeclDom buildCreateMethod(SceneModel sceneModel) {
 		var methodDecl = new MethodDeclDom("create");
 
+		var worldModel = sceneModel.getRootObject();
+		
 		for (var model : ParentComponent.get_children(worldModel)) {
 			MethodCallDom methodCall = null;
 
@@ -149,6 +151,23 @@ public class SceneCodeDomBuilder {
 
 			methodDecl.getInstructions().add(new RawCode(""));
 
+		}
+		
+		
+		{
+			var userCode = sceneModel.getCreateUserCode();
+
+			var before = userCode.getBeforeCode();
+
+			if (before.length() > 0) {
+				methodDecl.getInstructions().add(0, new RawCode(before));
+			}
+
+			var after = userCode.getBeforeCode();
+
+			if (after.length() > 0) {
+				methodDecl.getInstructions().add(new RawCode(after));
+			}
 		}
 
 		return methodDecl;
@@ -422,7 +441,7 @@ public class SceneCodeDomBuilder {
 
 		return call;
 	}
-	
+
 	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateImage(MethodDeclDom methodDecl, ImageModel model) {
 		var call = new MethodCallDom("image", "this.add");
@@ -475,13 +494,13 @@ public class SceneCodeDomBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private MethodDeclDom buildPreloadMethod(WorldModel model) {
+	private MethodDeclDom buildPreloadMethod(SceneModel model) {
 
 		var preloadDom = new MethodDeclDom("preload");
 
 		Map<String, String[]> packSectionList = new HashMap<>();
 
-		model.visit(objModel -> {
+		model.getRootObject().visit(objModel -> {
 			if (objModel instanceof TextureComponent) {
 				var frame = TextureComponent.get_frame(objModel);
 				if (frame != null) {
@@ -503,6 +522,22 @@ public class SceneCodeDomBuilder {
 
 			preloadDom.getInstructions().add(call);
 
+		}
+
+		{
+			var userCode = model.getPreloadUserCode();
+
+			var before = userCode.getBeforeCode();
+
+			if (before.length() > 0) {
+				preloadDom.getInstructions().add(0, new RawCode(before));
+			}
+
+			var after = userCode.getBeforeCode();
+
+			if (after.length() > 0) {
+				preloadDom.getInstructions().add(new RawCode(after));
+			}
 		}
 
 		return preloadDom;

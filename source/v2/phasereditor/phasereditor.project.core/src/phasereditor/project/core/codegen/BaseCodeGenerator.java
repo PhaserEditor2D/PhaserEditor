@@ -140,8 +140,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	}
 
 	public static String escapeStringLiterals(String text) {
-		return text.replace("\\", "\\\\").replace("\r\n", "\n").replace("\n", "\\n").replace("'", "\\'").replace("\"",
-				"\\\"");
+		return text.replace("\\", "\\\\").replace("\\R", "\n").replace("'", "\\'").replace("\"", "\\\"");
 	}
 
 	public void openIndent(String line) {

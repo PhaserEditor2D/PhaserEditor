@@ -89,12 +89,11 @@ public class DisplaySection extends BaseDesignSection {
 		{
 			// color
 
-			label(comp, "Editor Colors", "*The editor colors.");
+			label(comp, "Colors", "*The editor colors.");
 
-			new Label(comp, 0);
+			label(comp, "Background", "*The canvas background color.");
 
 			var colorSelector = new ColorSelector(comp);
-			colorSelector.getButton().setText("BG");
 			colorSelector.getButton().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			_bgColorSelector = colorSelector;
 			_bgColorSelector.addListener(e -> {
@@ -105,10 +104,9 @@ public class DisplaySection extends BaseDesignSection {
 
 			});
 
-			new Label(comp, 0);
+			label(comp, "Foreground", "*The canvas foreground color.");
 
 			colorSelector = new ColorSelector(comp);
-			colorSelector.getButton().setText("FG");
 			colorSelector.getButton().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			_fgColorSelector = colorSelector;
 			_fgColorSelector.addListener(e -> {

@@ -65,7 +65,7 @@ public class SceneCompiler {
 		}
 
 		var builder = new SceneCodeDomBuilder(codeFile);
-		var unitDom = builder.build((WorldModel) _sceneModel.getRootObject());
+		var unitDom = builder.build(_sceneModel);
 
 		var codeGenerator = new JS6_UnitCodeGenerator(unitDom);
 		var code = codeGenerator.generate(replace);

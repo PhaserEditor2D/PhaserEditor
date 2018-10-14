@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,13 +55,7 @@ public class AssetsSection extends ScenePropertySection {
 		{
 			var btn = new Button(comp, 0);
 			btn.setText("Rebuild Image Cache");
-			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-		}
-
-		{
-			var colorSelector = new ColorSelector(comp);
-			colorSelector.getButton().setText("Missing Asset Color");
-			colorSelector.getButton().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+			btn.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		}
 
 		return comp;

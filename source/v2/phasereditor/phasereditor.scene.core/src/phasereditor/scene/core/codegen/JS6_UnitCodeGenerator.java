@@ -79,7 +79,13 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 			line();
 		}
 
+		section("/* START-USER-CODE */", "/* END-USER-CODE */", "\n\n\t// Write your code here.\n\n\t");
+
 		closeIndent("}");
+		
+		line();
+		
+		section("/* END OF COMPILED CODE */", "\n\n// You can write more code here\n");
 	}
 
 	private void generateMemberDecl(MemberDeclDom memberDecl) {
