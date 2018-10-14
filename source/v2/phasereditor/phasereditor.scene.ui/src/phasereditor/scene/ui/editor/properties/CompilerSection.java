@@ -21,11 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
@@ -35,6 +35,7 @@ import org.eclipse.ui.ide.IDE;
 
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
@@ -62,17 +63,9 @@ public class CompilerSection extends BaseDesignSection {
 		comp.setLayout(new GridLayout(1, false));
 
 		{
-			// compile
-			var btn = new Button(comp, SWT.NONE);
-			btn.setText("Compile");
-			btn.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().compile()));
-		}
-
-		{
 			// user code
 
-			label(comp, "User Code", "*Compile the scene.");
+			label(comp, "User Code:", "*The user code to be inserted in the JavaScript file.");
 
 			var tabFolder = new TabFolder(comp, SWT.NONE);
 			var gd = new GridData(GridData.FILL_BOTH);
@@ -97,19 +90,13 @@ public class CompilerSection extends BaseDesignSection {
 				_preloadComp = codeComp;
 			}
 
-			var btn = new Button(comp, SWT.NONE);
-			btn.setText("Open Source File");
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				openSourceFile();
-			}));
-
 			update_UI_from_Model();
 		}
 
 		return comp;
 	}
 
-	private void openSourceFile() {
+	void openSourceFile() {
 		var file = SceneCore.getSceneSourceCodeFile(getEditor().getEditorInput().getFile());
 		if (file.exists()) {
 			try {
@@ -119,6 +106,23 @@ public class CompilerSection extends BaseDesignSection {
 				throw new RuntimeException(e1);
 			}
 		}
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(new Action("Compile scene.", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
+			@Override
+			public void run() {
+				getEditor().compile();
+			}
+		});
+
+		manager.add(new Action("Open JavaScript Source File.", EditorSharedImages.getImageDescriptor(IMG_GOTO_SOURCE)) {
+			@Override
+			public void run() {
+				openSourceFile();
+			}
+		});
 	}
 
 	@Override

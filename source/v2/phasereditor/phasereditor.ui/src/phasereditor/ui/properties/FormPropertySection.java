@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -298,4 +299,9 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	public abstract Control createContent(Composite parent);
 
 	public abstract void update_UI_from_Model();
+
+	@SuppressWarnings("unused")
+	public void fillToolbar(ToolBarManager manager) {
+		// nothing
+	}
 }

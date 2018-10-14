@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -42,7 +43,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -192,7 +192,13 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			var collapsed = _collapsedSectionsIds.contains(sectionId);
 
 			var header = new Composite(this, SWT.NONE);
-			header.setLayout(new RowLayout());
+			{
+				header.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+				var gl = new GridLayout(3, false);
+				gl.marginWidth = 0;
+				gl.marginHeight = 0;
+				header.setLayout(gl);
+			}
 
 			var collapseBtn = new Label(header, SWT.NONE);
 			collapseBtn.setImage(EditorSharedImages.getImage(collapsed ? IMG_BULLET_EXPAND : IMG_BULLET_COLLAPSE));
@@ -200,6 +206,11 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			var title = new Label(header, SWT.NONE);
 			title.setText(section.getName());
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
+
+			var toolbarManager = new ToolBarManager();
+			section.fillToolbar(toolbarManager);
+			var toolbar = toolbarManager.createControl(header);
+			toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
 			var control = section.createContent(this);
 			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
