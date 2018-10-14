@@ -265,11 +265,15 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		view.x += Y_LABEL_WIDTH;
 		view.y += X_LABELS_HEIGHT;
 
+		gc.setAlpha(150);
+		
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		gc.drawRectangle(view.x + 1, view.y + 1, view.width, view.height);
 
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		gc.drawRectangle(view);
+		
+		gc.setAlpha(255);
 	}
 
 	private void renderSelection(GC gc) {
