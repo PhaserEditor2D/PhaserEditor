@@ -50,7 +50,7 @@ import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.ImageTreeCanvasItemRenderer;
@@ -254,7 +254,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 					return false;
 				}
 
-				var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+				var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
 				var renderer = _editor.getScene().getSceneRenderer();
 
@@ -302,10 +302,10 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 						page.selectionChanged(_editor, sel);
 					}
 
-					var afterSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+					var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
 					_editor.executeOperation(
-							new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
+							new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
 				});
 
 				_editor.setDirty(true);

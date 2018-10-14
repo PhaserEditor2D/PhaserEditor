@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -203,7 +203,7 @@ public class TileSpriteSection extends ScenePropertySection {
 
 	protected void resetSizeToTexture(boolean width, boolean height) {
 
-		var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+		var before = WorldSnapshotOperation.takeSnapshot(getEditor());
 
 		for (var obj : getModels()) {
 			var model = (TileSpriteModel) obj;
@@ -230,9 +230,9 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		getEditor().getScene().redraw();
 
-		var after = SceneSnapshotOperation.takeSnapshot(getEditor());
+		var after = WorldSnapshotOperation.takeSnapshot(getEditor());
 		getEditor()
-				.executeOperation(new SceneSnapshotOperation(before, after, "Reset tile sprite size to texture size."));
+				.executeOperation(new WorldSnapshotOperation(before, after, "Reset tile sprite size to texture size."));
 
 	}
 

@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 
 /**
  * @author arian
@@ -60,9 +60,9 @@ public class DragObjectsEvents {
 
 		_objects = null;
 
-		var afterData = SceneSnapshotOperation.takeSnapshot(_scene.getEditor());
+		var afterData = WorldSnapshotOperation.takeSnapshot(_scene.getEditor());
 
-		_scene.getEditor().executeOperation(new SceneSnapshotOperation(_beforeData, afterData, "Move objects"));
+		_scene.getEditor().executeOperation(new WorldSnapshotOperation(_beforeData, afterData, "Move objects"));
 	}
 
 	public void update(MouseEvent e) {
@@ -105,7 +105,7 @@ public class DragObjectsEvents {
 
 	public void start(MouseEvent e) {
 
-		_beforeData = SceneSnapshotOperation.takeSnapshot(_scene.getEditor());
+		_beforeData = WorldSnapshotOperation.takeSnapshot(_scene.getEditor());
 
 		_startX = e.x;
 		_startY = e.y;

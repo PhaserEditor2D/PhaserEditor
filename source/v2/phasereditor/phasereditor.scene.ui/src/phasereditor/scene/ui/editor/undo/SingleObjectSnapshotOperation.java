@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.undo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
@@ -29,34 +32,40 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
+import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 
 /**
  * @author arian
  *
  */
-public class SceneSnapshotOperation extends AbstractOperation {
+public class SingleObjectSnapshotOperation extends AbstractOperation {
 
-	public static JSONObject takeSnapshot(SceneEditor editor) {
-		var data = new JSONObject();
+	public static List<JSONObject> takeSnapshot(List<ObjectModel> models) {
+		var list = new ArrayList<JSONObject>();
 
-		editor.getSceneModel().writeProperties(data);
+		for (var model : models) {
+			var data = new JSONObject();
+			model.write(data);
+			list.add(data);
+		}
 
-		return data;
+		return list;
 	}
 
-	private JSONObject _beforeData;
-	private JSONObject _afterData;
+	private List<JSONObject> _beforeData;
+	private List<JSONObject> _afterData;
 
-	public SceneSnapshotOperation(JSONObject before, JSONObject after, String label) {
+	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label) {
 		super(label);
 
-		_beforeData = before;
-		_afterData = after;
+		_beforeData = beforeData;
+		_afterData = afterData;
 	}
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		// nothing to do, the change was made
 		return Status.OK_STATUS;
 	}
 
@@ -76,13 +85,30 @@ public class SceneSnapshotOperation extends AbstractOperation {
 		return Status.OK_STATUS;
 	}
 
-	private static void loadSnapshot(IAdaptable info, JSONObject data) {
+	private static void loadSnapshot(IAdaptable info, List<JSONObject> list) {
 		var editor = info.getAdapter(SceneEditor.class);
+		var sceneModel = editor.getSceneModel();
+		var project = editor.getEditorInput().getFile().getProject();
+		var canvas = editor.getScene();
 
-		editor.getSceneModel().readProperties(data);
+		for (var data : list) {
+			var id = data.getString("-id");
+			var model = sceneModel.getRootObject().findById(id);
+
+			if (model != null) {
+				model.read(data, project);
+			}
+		}
+
+		if (editor.getOutline() != null) {
+			editor.refreshOutline_basedOnId();
+		}
 
 		editor.updatePropertyPagesContentWithSelection();
-		editor.getScene().redraw();
+
+		canvas.redraw();
+
 		editor.setDirty(true);
 	}
+
 }

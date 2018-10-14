@@ -31,7 +31,7 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.ObjectSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -75,13 +75,13 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models) {
 		super.listenFloat(text, value -> {
 
-			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
 
-			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});
@@ -90,13 +90,13 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	protected void listenInt(Text text, Consumer<Integer> listener, List<ObjectModel> models) {
 		super.listenInt(text, value -> {
 
-			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
 
-			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});
@@ -105,13 +105,13 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	protected void listen(Text text, Consumer<String> listener, List<ObjectModel> models) {
 		super.listen(text, value -> {
 
-			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
 
-			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
+			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 
@@ -121,12 +121,12 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	protected void listen(Button check, Consumer<Boolean> listener, List<ObjectModel> models) {
 		super.listen(check, value -> {
 
-			var beforeData = ObjectSnapshotOperation.takeSnapshot(models);
+			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
 
-			var afterData = ObjectSnapshotOperation.takeSnapshot(models);
-			getEditor().executeOperation(new ObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
+			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 			getCanvas().redraw();
 		});

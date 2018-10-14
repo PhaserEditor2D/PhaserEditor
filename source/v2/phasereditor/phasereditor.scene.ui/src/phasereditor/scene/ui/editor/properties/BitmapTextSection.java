@@ -42,7 +42,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextComponent;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvasDialog;
@@ -88,7 +88,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		@Override
 		public void run() {
-			var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+			var before = WorldSnapshotOperation.takeSnapshot(getEditor());
 
 			var models = getModels();
 			
@@ -98,9 +98,9 @@ public class BitmapTextSection extends ScenePropertySection {
 			
 			setModelsToDirty();
 
-			var after = SceneSnapshotOperation.takeSnapshot(getEditor());
+			var after = WorldSnapshotOperation.takeSnapshot(getEditor());
 
-			getEditor().executeOperation(new SceneSnapshotOperation(before, after, "Change bitmap text align."));
+			getEditor().executeOperation(new WorldSnapshotOperation(before, after, "Change bitmap text align."));
 
 			getEditor().setDirty(true);
 			getEditor().getScene().redraw();
@@ -174,7 +174,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		if (dlg.open() == Window.OK) {
 
-			var before = SceneSnapshotOperation.takeSnapshot(editor);
+			var before = WorldSnapshotOperation.takeSnapshot(editor);
 
 			var asset = (BitmapFontAssetModel) dlg.getResult();
 
@@ -184,9 +184,9 @@ public class BitmapTextSection extends ScenePropertySection {
 			
 			setModelsToDirty();
 
-			var after = SceneSnapshotOperation.takeSnapshot(editor);
+			var after = WorldSnapshotOperation.takeSnapshot(editor);
 
-			editor.executeOperation(new SceneSnapshotOperation(before, after, "Change bitmap text font."));
+			editor.executeOperation(new WorldSnapshotOperation(before, after, "Change bitmap text font."));
 
 			editor.getScene().redraw();
 			editor.setDirty(true);

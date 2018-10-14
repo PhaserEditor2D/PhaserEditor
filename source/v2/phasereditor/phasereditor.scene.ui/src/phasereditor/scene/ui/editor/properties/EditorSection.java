@@ -43,7 +43,7 @@ import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 
 /**
  * @author arian
@@ -101,7 +101,7 @@ public class EditorSection extends ScenePropertySection {
 		@Override
 		public void run() {
 
-			var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+			var before = WorldSnapshotOperation.takeSnapshot(getEditor());
 
 			int i = 0;
 
@@ -168,8 +168,8 @@ public class EditorSection extends ScenePropertySection {
 			}
 
 			if (i > 0) {
-				var after = SceneSnapshotOperation.takeSnapshot(getEditor());
-				getEditor().executeOperation(new SceneSnapshotOperation(before, after, "Morph to " + _toType));
+				var after = WorldSnapshotOperation.takeSnapshot(getEditor());
+				getEditor().executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + _toType));
 			}
 
 		}

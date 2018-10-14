@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
@@ -89,8 +90,10 @@ public class DisplaySection extends ScenePropertySection {
 			_bgColorSelector = colorSelector;
 			_bgColorSelector.addListener(e -> {
 
-				getEditor().getSceneModel().setBackgroundColor((RGB) e.getNewValue());
-				getEditor().getScene().redraw();
+				wrapOperation(() -> {
+					getEditor().getSceneModel().setBackgroundColor((RGB) e.getNewValue());
+					getEditor().getScene().redraw();
+				});
 
 			});
 
@@ -101,10 +104,10 @@ public class DisplaySection extends ScenePropertySection {
 			colorSelector.getButton().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			_fgColorSelector = colorSelector;
 			_fgColorSelector.addListener(e -> {
-
-				getEditor().getSceneModel().setForegroundColor((RGB) e.getNewValue());
-				getEditor().getScene().redraw();
-
+				wrapOperation(() -> {
+					getEditor().getSceneModel().setForegroundColor((RGB) e.getNewValue());
+					getEditor().getScene().redraw();
+				});
 			});
 		}
 
@@ -119,6 +122,16 @@ public class DisplaySection extends ScenePropertySection {
 
 		_bgColorSelector.setColorValue(sceneModel.getBackgroundColor());
 		_fgColorSelector.setColorValue(sceneModel.getForegroundColor());
+	}
+
+	private void wrapOperation(Runnable run) {
+		var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+
+		run.run();
+
+		var after = SceneSnapshotOperation.takeSnapshot(getEditor());
+
+		getEditor().executeOperation(new SceneSnapshotOperation(before, after, "Change display property."));
 	}
 
 }

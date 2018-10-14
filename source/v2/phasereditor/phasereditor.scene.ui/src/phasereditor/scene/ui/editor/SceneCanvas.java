@@ -65,7 +65,7 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -142,7 +142,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		var nameComputer = new NameComputer(_sceneModel.getRootObject());
 
-		var beforeSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+		var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
 		var calc = calc();
 
@@ -201,9 +201,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			ParentComponent.addChild(_sceneModel.getRootObject(), model);
 		}
 
-		var afterSnapshot = SceneSnapshotOperation.takeSnapshot(_editor);
+		var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
-		_editor.executeOperation(new SceneSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
+		_editor.executeOperation(new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
 
 		setSelection_from_internal((List) newModels);
 
@@ -704,7 +704,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	public void delete() {
-		var beforeData = SceneSnapshotOperation.takeSnapshot(_editor);
+		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
 
 		for (var obj : _selection) {
 			var model = (ObjectModel) obj;
@@ -718,9 +718,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		_editor.setSelection(StructuredSelection.EMPTY);
 
-		var afterData = SceneSnapshotOperation.takeSnapshot(_editor);
+		var afterData = WorldSnapshotOperation.takeSnapshot(_editor);
 
-		_editor.executeOperation(new SceneSnapshotOperation(beforeData, afterData, "Delete objects"));
+		_editor.executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Delete objects"));
 	}
 
 	public void copy() {
@@ -779,7 +779,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	public void paste(ObjectModel parent, boolean placeAtCursorPosition) {
 
-		var beforeData = SceneSnapshotOperation.takeSnapshot(_editor);
+		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
 
 		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 
@@ -896,9 +896,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		editor.setDirty(true);
 
-		var afterData = SceneSnapshotOperation.takeSnapshot(_editor);
+		var afterData = WorldSnapshotOperation.takeSnapshot(_editor);
 
-		_editor.executeOperation(new SceneSnapshotOperation(beforeData, afterData, "Paste objects."));
+		_editor.executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Paste objects."));
 	}
 
 	public static List<ObjectModel> filterChidlren(List<ObjectModel> models) {
