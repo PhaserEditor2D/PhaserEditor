@@ -242,16 +242,34 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	protected void customPaintControl(PaintEvent e) {
 		renderBackground(e);
 
-		renderGrid(e);
+		var calc = calc();
+
+		renderGrid(e, calc);
 
 		var tx = new Transform(getDisplay());
 		tx.translate(Y_LABEL_WIDTH, X_LABELS_HEIGHT);
 
 		_renderer.renderScene(e.gc, tx, _editor.getSceneModel());
 
+		renderBorders(e.gc, calc);
+
 		renderSelection(e.gc);
 
-		renderLabels(e);
+		renderLabels(e, calc);
+	}
+
+	private void renderBorders(GC gc, ZoomCalculator calc) {
+		var view = calc.modelToView(_sceneModel.getBorderX(), _sceneModel.getBorderY(), _sceneModel.getBorderWidth(),
+				_sceneModel.getBorderHeight());
+
+		view.x += Y_LABEL_WIDTH;
+		view.y += X_LABELS_HEIGHT;
+
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		gc.drawRectangle(view.x + 1, view.y + 1, view.width, view.height);
+
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		gc.drawRectangle(view);
 	}
 
 	private void renderSelection(GC gc) {
@@ -306,14 +324,12 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		return SWTResourceManager.getColor(_sceneModel.getBackgroundColor());
 	}
 
-	private void renderGrid(PaintEvent e) {
+	private void renderGrid(PaintEvent e, ZoomCalculator calc) {
 		var gc = e.gc;
 
 		gc.setForeground(getGridColor());
 
 		// paint labels
-
-		var calc = calc();
 
 		var initialModelSnapX = 5f;
 		var initialModelSnapY = 5f;
@@ -372,7 +388,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			if (modelX % modelNextNextSnapX == 0) {
 				gc.setAlpha(255);
-				//gc.setLineWidth(2);
+				// gc.setLineWidth(2);
 			} else if (modelX % modelNextSnapX == 0) {
 				gc.setAlpha(150);
 			} else {
@@ -383,7 +399,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			gc.drawLine((int) viewX, X_LABELS_HEIGHT, (int) viewX, e.height);
 
-//			gc.setLineWidth(1);
+			// gc.setLineWidth(1);
 
 			i++;
 		}
@@ -420,7 +436,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		gc.setAlpha(255);
 	}
 
-	private void renderLabels(PaintEvent e) {
+	private void renderLabels(PaintEvent e, ZoomCalculator calc) {
 		var gc = e.gc;
 
 		gc.setForeground(getGridColor());
@@ -436,7 +452,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var modelSnapX = _renderModelSnapX;
 		var modelSnapY = 10f;
 
-		var calc = calc();
 		var modelStartX = calc.viewToModelX(0);
 		var modelStartY = calc.viewToModelY(0);
 

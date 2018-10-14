@@ -29,14 +29,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.scene.core.SceneModel;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
  * @author arian
  *
  */
-public class SnappingSection extends ScenePropertySection {
+public class SnappingSection extends BaseDesignSection {
 
 	private Text _widthText;
 	private Text _heightText;
@@ -44,11 +43,6 @@ public class SnappingSection extends ScenePropertySection {
 
 	public SnappingSection(FormPropertyPage page) {
 		super("Snapping", page);
-	}
-
-	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
 	}
 
 	@Override
@@ -62,10 +56,10 @@ public class SnappingSection extends ScenePropertySection {
 			_enabledBtn.setText("Enabled");
 			_enabledBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 		}
-		
+
 		{
 			// size
-			
+
 			label(comp, "Size", "*The snapping size.");
 
 			label(comp, "Width", "*The snapping width.");
@@ -78,7 +72,7 @@ public class SnappingSection extends ScenePropertySection {
 			_heightText = new Text(comp, SWT.BORDER);
 			_heightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
-		
+
 		update_UI_from_Model();
 
 		return comp;
@@ -88,34 +82,29 @@ public class SnappingSection extends ScenePropertySection {
 	@Override
 	public void update_UI_from_Model() {
 		var sceneModel = getEditor().getSceneModel();
-		
+
 		_enabledBtn.setSelection(sceneModel.isSnapEnabled());
 		_widthText.setText(Integer.toString(sceneModel.getSnapWidth()));
 		_heightText.setText(Integer.toString(sceneModel.getSnapHeight()));
-		
-		listen(_enabledBtn, value -> {
-			sceneModel.setSnapEnabled(value);
-			
-			getEditor().getScene().redraw();
-			getEditor().setDirty(true);
-		});
-		
-		listenInt(_widthText, value -> {
-			sceneModel.setSnapWidth(value);
 
-			getEditor().getScene().redraw();
-			getEditor().setDirty(true);
-			
+		listen(_enabledBtn, value -> {
+			wrapOperation(() -> {
+				sceneModel.setSnapEnabled(value);
+			});
+		});
+
+		listenInt(_widthText, value -> {
+			wrapOperation(() -> {
+				sceneModel.setSnapWidth(value);
+			});
 		});
 
 		listenInt(_heightText, value -> {
-			sceneModel.setSnapHeight(value);
-
-			getEditor().getScene().redraw();
-			getEditor().setDirty(true);
-			
+			wrapOperation(() -> {
+				sceneModel.setSnapHeight(value);
+			});
 		});
-		
+
 	}
 
 }

@@ -31,28 +31,23 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
  * @author arian
  *
  */
-public class DisplaySection extends ScenePropertySection {
+public class DisplaySection extends BaseDesignSection {
 
-	private Text _widthText;
-	private Text _heightText;
+	private Text _borderWidthText;
+	private Text _borderHeightText;
 	private ColorSelector _bgColorSelector;
 	private ColorSelector _fgColorSelector;
+	private Text _borderXText;
+	private Text _borderYText;
 
 	public DisplaySection(FormPropertyPage page) {
 		super("Display", page);
-	}
-
-	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -62,19 +57,33 @@ public class DisplaySection extends ScenePropertySection {
 		comp.setLayout(new GridLayout(5, false));
 
 		{
-			// size
+			// border XYs
 
-			label(comp, "Border Size", "*The broder size.");
+			label(comp, "Border", "*The broder bounds.");
+
+			label(comp, "X", "*The border X.");
+
+			_borderXText = new Text(comp, SWT.BORDER);
+			_borderXText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			label(comp, "Y", "*The border Y.");
+
+			_borderYText = new Text(comp, SWT.BORDER);
+			_borderYText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			// border size
+
+			new Label(comp, 0);
 
 			label(comp, "Width", "*The border width.");
 
-			_widthText = new Text(comp, SWT.BORDER);
-			_widthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			_borderWidthText = new Text(comp, SWT.BORDER);
+			_borderWidthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			label(comp, "Height", "*The border height.");
 
-			_heightText = new Text(comp, SWT.BORDER);
-			_heightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			_borderHeightText = new Text(comp, SWT.BORDER);
+			_borderHeightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 
 		{
@@ -92,7 +101,6 @@ public class DisplaySection extends ScenePropertySection {
 
 				wrapOperation(() -> {
 					getEditor().getSceneModel().setBackgroundColor((RGB) e.getNewValue());
-					getEditor().getScene().redraw();
 				});
 
 			});
@@ -106,7 +114,6 @@ public class DisplaySection extends ScenePropertySection {
 			_fgColorSelector.addListener(e -> {
 				wrapOperation(() -> {
 					getEditor().getSceneModel().setForegroundColor((RGB) e.getNewValue());
-					getEditor().getScene().redraw();
 				});
 			});
 		}
@@ -116,22 +123,42 @@ public class DisplaySection extends ScenePropertySection {
 		return comp;
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var sceneModel = getEditor().getSceneModel();
 
+		_borderXText.setText(Integer.toString(sceneModel.getBorderX()));
+		_borderYText.setText(Integer.toString(sceneModel.getBorderY()));
+		_borderWidthText.setText(Integer.toString(sceneModel.getBorderWidth()));
+		_borderHeightText.setText(Integer.toString(sceneModel.getBorderHeight()));
+
 		_bgColorSelector.setColorValue(sceneModel.getBackgroundColor());
 		_fgColorSelector.setColorValue(sceneModel.getForegroundColor());
-	}
 
-	private void wrapOperation(Runnable run) {
-		var before = SceneSnapshotOperation.takeSnapshot(getEditor());
+		listenInt(_borderXText, value -> {
+			wrapOperation(() -> {
+				sceneModel.setBorderX(value);
+			});
+		});
 
-		run.run();
+		listenInt(_borderYText, value -> {
+			wrapOperation(() -> {
+				sceneModel.setBorderY(value);
+			});
+		});
 
-		var after = SceneSnapshotOperation.takeSnapshot(getEditor());
+		listenInt(_borderWidthText, value -> {
+			wrapOperation(() -> {
+				sceneModel.setBorderWidth(value);
+			});
+		});
 
-		getEditor().executeOperation(new SceneSnapshotOperation(before, after, "Change display property."));
+		listenInt(_borderHeightText, value -> {
+			wrapOperation(() -> {
+				sceneModel.setBorderHeight(value);
+			});
+		});
 	}
 
 }

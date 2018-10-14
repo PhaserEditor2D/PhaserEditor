@@ -62,6 +62,11 @@ public class SceneModel {
 	private static final RGB DEF_FG_RGB = ColorUtil.WHITESMOKE.rgb;
 	private static final RGB DEF_BG_RGB = ColorUtil.LIGHTGRAY.rgb;
 
+	private int _borderX;
+	private int _borderY;
+	private int _borderWidth;
+	private int _borderHeight;
+
 	public SceneModel() {
 		_rootObject = new WorldModel();
 
@@ -71,6 +76,43 @@ public class SceneModel {
 
 		_backgroundColor = DEF_BG_RGB;
 		_foregroundColor = DEF_FG_RGB;
+
+		_borderX = 0;
+		_borderY = 0;
+		_borderWidth = 800;
+		_borderHeight = 600;
+	}
+
+	public int getBorderY() {
+		return _borderY;
+	}
+
+	public void setBorderY(int borderY) {
+		_borderY = borderY;
+	}
+
+	public int getBorderX() {
+		return _borderX;
+	}
+
+	public void setBorderX(int borderX) {
+		_borderX = borderX;
+	}
+
+	public int getBorderWidth() {
+		return _borderWidth;
+	}
+
+	public void setBorderWidth(int borderWidth) {
+		_borderWidth = borderWidth;
+	}
+
+	public int getBorderHeight() {
+		return _borderHeight;
+	}
+
+	public void setBorderHeight(int borderHeight) {
+		_borderHeight = borderHeight;
 	}
 
 	public RGB getBackgroundColor() {
@@ -157,9 +199,17 @@ public class SceneModel {
 			data.put("snapWidth", _snapWidth, 16);
 			data.put("snapHeight", _snapHeight, 16);
 		}
+
 		{
 			data.put("backgroundColor", asString(_backgroundColor), asString(DEF_BG_RGB));
 			data.put("foregroundColor", asString(_foregroundColor), asString(DEF_FG_RGB));
+		}
+
+		{
+			data.put("borderX", _borderX, 0);
+			data.put("borderY", _borderY, 0);
+			data.put("borderWidth", _borderWidth, 800);
+			data.put("borderHeight", _borderHeight, 600);
 		}
 	}
 
@@ -169,9 +219,17 @@ public class SceneModel {
 			_snapWidth = data.optInt("snapWidth", 16);
 			_snapHeight = data.optInt("snapHeight", 16);
 		}
+
 		{
 			_backgroundColor = asRGB(data.optString("backgroundColor", asString(DEF_BG_RGB)));
 			_foregroundColor = asRGB(data.optString("foregroundColor", asString(DEF_FG_RGB)));
+		}
+
+		{
+			_borderX = data.optInt("borderX", 0);
+			_borderY = data.optInt("borderY", 0);
+			_borderWidth = data.optInt("borderWidth", 800);
+			_borderHeight = data.optInt("borderHeight", 600);
 		}
 	}
 
