@@ -35,6 +35,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -109,7 +111,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 
 		return null;
 	}
-	
+
 	@SuppressWarnings("boxing")
 	protected static int flatValues_to_int(Stream<Integer> values, int def) {
 		var set = new HashSet<>();
@@ -280,26 +282,54 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		});
 	}
 
-	@SuppressWarnings({ "boxing", "static-method" })
+	@SuppressWarnings("boxing")
+	class ScaleListener extends MouseAdapter implements SelectionListener {
+
+		private Consumer<Float> _listener;
+		private int _value;
+		private int _initial;
+
+		public ScaleListener(Consumer<Float> listener) {
+			super();
+			_listener = listener;
+		}
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			_value = ((Scale) e.widget).getSelection();
+		}
+
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+			//
+		}
+
+		@Override
+		public void mouseDown(MouseEvent e) {
+			_initial = ((Scale) e.widget).getSelection();
+		}
+
+		@Override
+		public void mouseUp(MouseEvent e) {
+			if (_value != _initial) {
+				_initial = _value;
+				_listener.accept((float) _value / 100);
+			}
+		}
+
+	}
+
 	protected void listenFloat(Scale scale, Consumer<Float> listener) {
 		var oldListener = scale.getData("-prop-listener");
+
 		if (oldListener != null) {
 			scale.removeSelectionListener((SelectionListener) oldListener);
 		}
 
-		var scaleListener = new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				listener.accept((float) scale.getSelection() / 100);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				//
-			}
-		};
+		var scaleListener = new ScaleListener(listener);
 
 		scale.addSelectionListener(scaleListener);
+		scale.addMouseListener(scaleListener);
 		scale.setData("-prop-listener", scaleListener);
 	}
 

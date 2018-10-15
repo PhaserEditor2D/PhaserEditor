@@ -281,11 +281,11 @@ public class EditorSection extends ScenePropertySection {
 		}, models);
 
 		listenFloat(_transpScale, value -> {
+			
 			models.stream().forEach(model -> EditorComponent.set_editorTransparency(model, value));
 
-			getEditor().getScene().redraw();
 			getEditor().setDirty(true);
-		});
+		}, models);
 	}
 
 }
