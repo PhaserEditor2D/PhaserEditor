@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
@@ -60,20 +61,17 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		return getEditor().getScene();
 	}
 
-	protected void setModelsToDirty() {
-		for (var model : getModels()) {
-			model.setDirty(true);
-		}
-
-		getEditor().refreshOutline();
-	}
-
-	protected void setModelToDirty(ObjectModel model) {
-		model.setDirty(true);
-		getEditor().refreshOutline();
-	}
-
 	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models) {
+		listenFloat(text, listener, models, false);
+	}
+
+	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models, boolean dirtyModels) {
+		listenFloat(text, listener, models, dirtyModels, null);
+	}
+
+	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models, boolean dirtyModels,
+			Function<ObjectModel, Boolean> filterDirtyModels) {
+
 		super.listenFloat(text, value -> {
 
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
@@ -82,14 +80,35 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData,
+					"Change object property", dirtyModels, filterDirtyModels));
+
+			dirtyModels(models, dirtyModels, filterDirtyModels);
 
 			getCanvas().redraw();
+
 		});
 	}
 
+	private void dirtyModels(List<ObjectModel> models, boolean dirtyModels,
+			Function<ObjectModel, Boolean> filterDirtyModels) {
+
+		if (dirtyModels) {
+			models.forEach(model -> {
+				if (filterDirtyModels == null || filterDirtyModels.apply(model).booleanValue()) {
+					model.setDirty(true);
+				}
+			});
+
+			getEditor().refreshOutline();
+		}
+	}
+
 	protected void listenInt(Text text, Consumer<Integer> listener, List<ObjectModel> models) {
+		listenInt(text, listener, models, false);
+	}
+
+	protected void listenInt(Text text, Consumer<Integer> listener, List<ObjectModel> models, boolean dirtyModels) {
 		super.listenInt(text, value -> {
 
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
@@ -99,13 +118,19 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", dirtyModels));
+
+			dirtyModels(models, dirtyModels, null);
 
 			getCanvas().redraw();
 		});
 	}
 
 	protected void listen(Text text, Consumer<String> listener, List<ObjectModel> models) {
+		listen(text, listener, models, false);
+	}
+
+	protected void listen(Text text, Consumer<String> listener, List<ObjectModel> models, boolean dirtyModels) {
 		super.listen(text, value -> {
 
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
@@ -115,7 +140,9 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", dirtyModels));
+
+			dirtyModels(models, dirtyModels, null);
 
 			getCanvas().redraw();
 
@@ -123,16 +150,27 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	}
 
 	protected void wrapOperation(Runnable run, List<ObjectModel> models) {
+		wrapOperation(run, models, false, null);
+	}
+	
+	protected void wrapOperation(Runnable run, List<ObjectModel> models, boolean dirtyModels) {
+		wrapOperation(run, models, dirtyModels, null);
+	}
+	
+	protected void wrapOperation(Runnable run, List<ObjectModel> models, boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
 		var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 		run.run();
 
 		var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-		getEditor()
-				.executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+		getEditor().executeOperation(
+				new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", dirtyModels, filterDirtyModels));
+
+		dirtyModels(models, dirtyModels, null);
 
 		getCanvas().redraw();
+
 	}
 
 	protected void listen(Button check, Consumer<Boolean> listener, List<ObjectModel> models) {
@@ -143,6 +181,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			listener.accept(value);
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
+
 			getEditor().executeOperation(
 					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 

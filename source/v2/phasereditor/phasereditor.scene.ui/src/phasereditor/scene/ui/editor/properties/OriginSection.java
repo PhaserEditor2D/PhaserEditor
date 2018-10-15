@@ -84,6 +84,7 @@ public class OriginSection extends ScenePropertySection {
 
 		}
 
+		@SuppressWarnings("boxing")
 		@Override
 		public void run() {
 
@@ -96,10 +97,10 @@ public class OriginSection extends ScenePropertySection {
 						OriginComponent.set_originY(model, _value);
 					}
 				});
-				
+
 				OriginSection.this.update_UI_from_Model();
 
-			}, getModels());
+			}, getModels(), true, model -> model instanceof DynamicBitmapTextComponent);
 
 		}
 	}
@@ -168,26 +169,20 @@ public class OriginSection extends ScenePropertySection {
 		listenFloat(_originXText, value -> {
 			models.forEach(model -> {
 				OriginComponent.set_originX(model, value);
-				if (model instanceof DynamicBitmapTextComponent) {
-					setModelToDirty(model);
-				}
 			});
-			
+
 			updateActions_UI_from_Model();
 			getEditor().setDirty(true);
-		}, models);
+		}, models, true, model -> model instanceof DynamicBitmapTextComponent);
 
 		listenFloat(_originYText, value -> {
 			models.forEach(model -> {
 				OriginComponent.set_originY(model, value);
-				if (model instanceof DynamicBitmapTextComponent) {
-					setModelToDirty(model);
-				}
 			});
-			
+
 			updateActions_UI_from_Model();
 			getEditor().setDirty(true);
-		}, models);
+		}, models, true, model -> model instanceof DynamicBitmapTextComponent);
 
 	}
 

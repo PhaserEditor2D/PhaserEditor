@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -203,7 +203,7 @@ public class TileSpriteSection extends ScenePropertySection {
 
 	protected void resetSizeToTexture(boolean width, boolean height) {
 
-		var before = WorldSnapshotOperation.takeSnapshot(getEditor());
+		var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
 		for (var obj : getModels()) {
 			var model = (TileSpriteModel) obj;
@@ -224,16 +224,14 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		}
 
-		setModelsToDirty();
+		var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
+		getEditor().executeOperation(
+				new SingleObjectSnapshotOperation(before, after, "Reset tile sprite size to texture size.", true));
+		
 		getEditor().updatePropertyPagesContentWithSelection();
 
 		getEditor().getScene().redraw();
-
-		var after = WorldSnapshotOperation.takeSnapshot(getEditor());
-		getEditor()
-				.executeOperation(new WorldSnapshotOperation(before, after, "Reset tile sprite size to texture size."));
-
 	}
 
 	@Override
@@ -250,20 +248,18 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_tilePositionXText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
-			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		listenFloat(_tilePositionYText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
-			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		// tileScale
 
@@ -275,20 +271,18 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_tileScaleXText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
-			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		listenFloat(_tileScaleYText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
-			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		// size
 
@@ -298,20 +292,18 @@ public class TileSpriteSection extends ScenePropertySection {
 		listenFloat(_widthText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_width(model, value));
-			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		listenFloat(_heightText, value -> {
 
 			models.forEach(model -> TileSpriteComponent.set_height(model, value));
-			setModelsToDirty();
 
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 	}
 

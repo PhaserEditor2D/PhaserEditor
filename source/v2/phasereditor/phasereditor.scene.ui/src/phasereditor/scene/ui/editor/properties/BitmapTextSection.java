@@ -22,11 +22,11 @@
 package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -42,7 +42,6 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextComponent;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvasDialog;
@@ -61,6 +60,7 @@ public class BitmapTextSection extends ScenePropertySection {
 	private AlignAction _alignRightAction;
 	private Text _letterSpacingText;
 	private Button _fontNameBtn;
+	private FontAction _fontAction;
 
 	public BitmapTextSection(FormPropertyPage page) {
 		super("Bitmap Text", page);
@@ -88,19 +88,13 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		@Override
 		public void run() {
-			var before = WorldSnapshotOperation.takeSnapshot(getEditor());
 
-			var models = getModels();
-			
-			models.forEach(model -> {
-				BitmapTextComponent.set_align(model, _align);
-			});
-			
-			setModelsToDirty();
+			wrapOperation(() -> {
+				getModels().forEach(model -> {
+					BitmapTextComponent.set_align(model, _align);
+				});
 
-			var after = WorldSnapshotOperation.takeSnapshot(getEditor());
-
-			getEditor().executeOperation(new WorldSnapshotOperation(before, after, "Change bitmap text align."));
+			}, getModels(), true);
 
 			getEditor().setDirty(true);
 			getEditor().getScene().redraw();
@@ -120,12 +114,9 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			var manager = new ToolBarManager();
 
-			manager.add(_alignLeftAction = new AlignAction("ALIGN_LEFT", IMG_TEXT_ALIGN_LEFT,
-					BitmapTextComponent.ALIGN_LEFT));
-			manager.add(_alignMiddleAction = new AlignAction("ALIGN_MIDDLE", IMG_TEXT_ALIGN_CENTER,
-					BitmapTextComponent.ALIGN_MIDDLE));
-			manager.add(_alignRightAction = new AlignAction("ALIGN_RIGHT", IMG_TEXT_ALIGN_RIGHT,
-					BitmapTextComponent.ALIGN_RIGHT));
+			manager.add(_alignLeftAction);
+			manager.add(_alignMiddleAction);
+			manager.add(_alignRightAction);
 
 			var toolbar = manager.createControl(comp);
 			toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -136,7 +127,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			_fontNameBtn = new Button(comp, SWT.LEFT);
 			_fontNameBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_fontNameBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::changeFont));
+			_fontNameBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> _fontAction.run()));
 		}
 
 		{
@@ -158,39 +149,6 @@ public class BitmapTextSection extends ScenePropertySection {
 		update_UI_from_Model();
 
 		return comp;
-	}
-
-	private void changeFont(SelectionEvent e) {
-		var dlg = new QuickSelectFontDialog(e.display.getActiveShell());
-
-		var editor = getEditor();
-
-		var project = editor.getEditorInput().getFile().getProject();
-
-		var packs = AssetPackCore.getAssetPackModels(project);
-
-		dlg.setInput(packs.stream().flatMap(pack -> pack.getAssets().stream())
-				.filter(asset -> asset instanceof BitmapFontAssetModel).toArray());
-
-		if (dlg.open() == Window.OK) {
-
-			var before = WorldSnapshotOperation.takeSnapshot(editor);
-
-			var asset = (BitmapFontAssetModel) dlg.getResult();
-
-			for (var obj : getModels()) {
-				BitmapTextComponent.set_font(obj, asset);
-			}
-			
-			setModelsToDirty();
-
-			var after = WorldSnapshotOperation.takeSnapshot(editor);
-
-			editor.executeOperation(new WorldSnapshotOperation(before, after, "Change bitmap text font."));
-
-			editor.getScene().redraw();
-			editor.setDirty(true);
-		}
 	}
 
 	static class QuickSelectFontDialog extends TreeCanvasDialog {
@@ -218,16 +176,101 @@ public class BitmapTextSection extends ScenePropertySection {
 
 	}
 
+	class FontAction extends Action {
+		public FontAction() {
+			super(getHelp("Phaser.GameObjects.BitmapText.font"), EditorSharedImages.getImageDescriptor(IMG_FONT));
+		}
+
+		@Override
+		public void run() {
+			var dlg = new QuickSelectFontDialog(getEditor().getSite().getShell());
+
+			var editor = getEditor();
+
+			var project = editor.getEditorInput().getFile().getProject();
+
+			var packs = AssetPackCore.getAssetPackModels(project);
+
+			dlg.setInput(packs.stream().flatMap(pack -> pack.getAssets().stream())
+					.filter(asset -> asset instanceof BitmapFontAssetModel).toArray());
+
+			if (dlg.open() == Window.OK) {
+
+				wrapOperation(() -> {
+
+					var asset = (BitmapFontAssetModel) dlg.getResult();
+
+					for (var obj : getModels()) {
+						BitmapTextComponent.set_font(obj, asset);
+					}
+
+				}, getModels(), true);
+
+				editor.setDirty(true);
+			}
+		}
+	}
+
+	class FontSizeAction extends Action {
+		private boolean _plus;
+
+		public FontSizeAction(boolean plus) {
+			super(plus ? "+ Font Size" : "- Font Size",
+					EditorSharedImages.getImageDescriptor(plus ? IMG_FONT_PLUS : IMG_FONT_MINUS));
+			_plus = plus;
+		}
+
+		@Override
+		public void run() {
+
+			wrapOperation(() -> {
+				for (var model : getModels()) {
+					var size = BitmapTextComponent.get_fontSize(model);
+					BitmapTextComponent.set_fontSize(model, size + (_plus ? 2 : -2));
+				}
+
+				update_UI_from_Model();
+
+				getEditor().setDirty(true);
+
+			}, getModels(), true);
+
+		}
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+
+		_alignLeftAction = new AlignAction("ALIGN_LEFT", IMG_TEXT_ALIGN_LEFT, BitmapTextComponent.ALIGN_LEFT);
+		_alignMiddleAction = new AlignAction("ALIGN_MIDDLE", IMG_TEXT_ALIGN_CENTER, BitmapTextComponent.ALIGN_MIDDLE);
+		_alignRightAction = new AlignAction("ALIGN_RIGHT", IMG_TEXT_ALIGN_RIGHT, BitmapTextComponent.ALIGN_RIGHT);
+
+		_fontAction = new FontAction();
+
+		manager.add(_alignLeftAction);
+		manager.add(_alignMiddleAction);
+		manager.add(_alignRightAction);
+
+		manager.add(new Separator());
+
+		manager.add(_fontAction);
+
+		manager.add(new Separator());
+
+		manager.add(new FontSizeAction(true));
+		manager.add(new FontSizeAction(false));
+	}
+
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		_fontSizeText.setText(flatValues_to_String(
-				models.stream().map(model -> BitmapTextComponent.get_fontSize(model))));
+		_fontSizeText
+				.setText(flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_fontSize(model))));
 
-		_letterSpacingText.setText(flatValues_to_String(
-				models.stream().map(model -> BitmapTextComponent.get_letterSpacing(model))));
+		_letterSpacingText.setText(
+				flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_letterSpacing(model))));
 
 		_fontNameBtn.setText(flatValues_to_String(models.stream().map(model -> {
 			var asset = BitmapTextComponent.get_font(model);
@@ -235,33 +278,34 @@ public class BitmapTextSection extends ScenePropertySection {
 		})));
 
 		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
-			action.setChecked(flatValues_to_boolean(models.stream()
-					.map(model -> BitmapTextComponent.get_align(model) == action.getAlign())));
+			action.setChecked(flatValues_to_boolean(
+					models.stream().map(model -> BitmapTextComponent.get_align(model) == action.getAlign())));
 		}
 
 		listenInt(_fontSizeText, value -> {
 
-			models.stream().forEach(model -> {
-				BitmapTextComponent.set_fontSize(model, value);
-			});
+			wrapOperation(() -> {
+				getModels().stream().forEach(model -> {
+					BitmapTextComponent.set_fontSize(model, value);
+				});
 
-			setModelsToDirty();
-			
+			}, getModels(), true);
+
 			getEditor().setDirty(true);
 
-		}, models);
+		});
 
 		listenFloat(_letterSpacingText, value -> {
 
-			models.stream().forEach(model -> {
-				BitmapTextComponent.set_letterSpacing(model, value);
-			});
-			
-			setModelsToDirty();
+			wrapOperation(() -> {
+				getModels().stream().forEach(model -> {
+					BitmapTextComponent.set_letterSpacing(model, value);
+				});
+			}, getModels());
 
 			getEditor().setDirty(true);
 
-		}, models);
+		});
 
 	}
 

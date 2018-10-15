@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.undo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
@@ -55,12 +56,27 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 	private List<JSONObject> _beforeData;
 	private List<JSONObject> _afterData;
+	private boolean _dirtyModels;
+	private Function<ObjectModel, Boolean> _filterDirtyModels;
 
-	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label) {
+	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label,
+			boolean dirtyModels) {
+		this(beforeData, afterData, label, dirtyModels, null);
+	}
+
+	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label,
+			boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
 		super(label);
 
 		_beforeData = beforeData;
 		_afterData = afterData;
+
+		_dirtyModels = dirtyModels;
+		_filterDirtyModels = filterDirtyModels;
+	}
+
+	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label) {
+		this(beforeData, afterData, label, false);
 	}
 
 	@Override
@@ -85,7 +101,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 		return Status.OK_STATUS;
 	}
 
-	private static void loadSnapshot(IAdaptable info, List<JSONObject> list) {
+	private void loadSnapshot(IAdaptable info, List<JSONObject> list) {
 		var editor = info.getAdapter(SceneEditor.class);
 		var sceneModel = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
@@ -97,6 +113,13 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 			if (model != null) {
 				model.read(data, project);
+
+				if (_dirtyModels) {
+					if (_filterDirtyModels == null || _filterDirtyModels.apply(model).booleanValue()) {
+						model.setDirty(true);
+					}
+
+				}
 			}
 		}
 

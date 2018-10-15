@@ -78,11 +78,9 @@ public class TextualSection extends ScenePropertySection {
 				TextualComponent.set_text(model, value);
 			});
 			
-			setModelsToDirty();
-
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 	}
 
 }

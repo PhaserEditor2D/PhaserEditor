@@ -148,44 +148,36 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 				DynamicBitmapTextComponent.set_cropWidth(model, value);
 			});
 
-			setModelsToDirty();
-
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		listenInt(_cropHeightText, value -> {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_cropHeight(model, value);
 			});
 
-			setModelsToDirty();
-
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		listenFloat(_scrollXText, value -> {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_scrollX(model, value);
 			});
 
-			setModelsToDirty();
-
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 		listenFloat(_scrollYText, value -> {
 			models.forEach(model -> {
 				DynamicBitmapTextComponent.set_scrollY(model, value);
 			});
 
-			setModelsToDirty();
-
 			getEditor().setDirty(true);
 
-		}, models);
+		}, models, true);
 
 	}
 
