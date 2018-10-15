@@ -21,15 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 
 import phasereditor.scene.core.FlipComponent;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -37,8 +38,8 @@ import phasereditor.scene.core.FlipComponent;
  */
 public class FlipSection extends ScenePropertySection {
 
-	private Button _flipXBtn;
-	private Button _flipYBtn;
+	private Action _flipXAction;
+	private Action _flipYAction;
 
 	public FlipSection(ScenePropertyPage page) {
 		super("Flip", page);
@@ -55,25 +56,47 @@ public class FlipSection extends ScenePropertySection {
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(4, false));
 
-		// filp
-
-		new Label(comp, SWT.NONE);
-
-		_flipXBtn = new Button(comp, SWT.TOGGLE);
-		_flipXBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		_flipXBtn.setText("Flip: X");
-		_flipXBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.flipX"));
-
-		new Label(comp, SWT.NONE);
-
-		_flipYBtn = new Button(comp, SWT.TOGGLE);
-		_flipYBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		_flipYBtn.setText("Flip: Y");
-		_flipYBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.flipY"));
-
 		update_UI_from_Model();
 
 		return comp;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(
+				_flipXAction = new Action(getHelp("Phaser.GameObjects.Components.Flip.flipX"), IAction.AS_CHECK_BOX) {
+
+					{
+						setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_SHAPE_FLIP_HORIZONTAL));
+					}
+
+					@Override
+					public void run() {
+						var value = isChecked();
+
+						wrapOperation(() -> {
+							getModels().forEach(model -> FlipComponent.set_flipX(model, value));
+						}, getModels());
+					}
+				});
+
+		manager.add(
+				_flipYAction = new Action(getHelp("Phaser.GameObjects.Components.Flip.flipY"), IAction.AS_CHECK_BOX) {
+
+					{
+						setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_SHAPE_FLIP_VERTICAL));
+					}
+
+					@Override
+					public void run() {
+						var value = isChecked();
+
+						wrapOperation(() -> {
+							getModels().forEach(model -> FlipComponent.set_flipY(model, value));
+						}, getModels());
+					}
+				});
+
 	}
 
 	@Override
@@ -84,37 +107,17 @@ public class FlipSection extends ScenePropertySection {
 		{
 			// x
 
-			var value = flatValues_to_Boolean(
-					models.stream().map(model -> FlipComponent.get_flipX(model)));
+			var value = flatValues_to_Boolean(models.stream().map(model -> FlipComponent.get_flipX(model)));
 
-			_flipXBtn.setSelection(value != null && value);
-
-			listen(_flipXBtn, val -> {
-
-				models.forEach(model -> FlipComponent.set_flipX(model, val));
-
-				_flipXBtn.setSelection(val);
-
-				getEditor().setDirty(true);
-			}, models);
+			_flipXAction.setChecked(value != null && value);
 		}
 
 		{
 			// y
 
-			var value = flatValues_to_Boolean(
-					models.stream().map(model -> FlipComponent.get_flipY(model)));
+			var value = flatValues_to_Boolean(models.stream().map(model -> FlipComponent.get_flipY(model)));
 
-			_flipYBtn.setSelection(value != null && value);
-
-			listen(_flipYBtn, val -> {
-
-				models.forEach(model -> FlipComponent.set_flipY(model, val));
-
-				_flipYBtn.setSelection(val);
-
-				getEditor().setDirty(true);
-			}, models);
+			_flipYAction.setChecked(value != null && value);
 		}
 	}
 

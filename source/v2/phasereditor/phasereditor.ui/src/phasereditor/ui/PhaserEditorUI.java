@@ -702,7 +702,15 @@ public class PhaserEditorUI {
 	}
 
 	public static boolean isPreviewBackgroundSolidColor() {
-		return PREF_PROP_COLOR_DIALOG_TYPE.equals(PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_ONE_COLOR);
+		return _PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE.equals(PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_ONE_COLOR);
+	}
+
+	public static boolean isPreviewBackgroundTransparent() {
+		return _PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE.equals(PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT);
+	}
+
+	public static boolean isPreviewBackgroundPattern() {
+		return _PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE.equals(PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TWO_COLORS);
 	}
 
 	public static Color get_pref_Preview_PatternColor() {

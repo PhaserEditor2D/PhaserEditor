@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -42,6 +45,7 @@ public class OriginSection extends ScenePropertySection {
 
 	private Text _originXText;
 	private Text _originYText;
+	private List<OriginAction> _actions;
 
 	public OriginSection(ScenePropertyPage page) {
 		super("Origin", page);
@@ -50,6 +54,72 @@ public class OriginSection extends ScenePropertySection {
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof OriginComponent;
+	}
+
+	class OriginAction extends Action {
+		private int _id;
+		private boolean _x;
+		private float _value;
+
+		public OriginAction(String axis, int id) {
+			super("Set Origin.", AS_CHECK_BOX);
+			_x = axis.equals("x");
+			_id = id;
+			_value = new float[] { 0, 0.5f, 1 }[id];
+
+			setImageDescriptor(EditorSharedImages.getImageDescriptor("icons/origin-" + axis + "-" + _id + ".png"));
+		}
+
+		@SuppressWarnings({ "boxing", "synthetic-access" })
+		public void update_UI_from_Model() {
+			var flat = flatValues_to_Object(getModels().stream().map(model -> {
+				if (_x) {
+					return OriginComponent.get_originX(model);
+				}
+
+				return OriginComponent.get_originY(model);
+			}));
+
+			setChecked(flat != null && ((Float) flat).floatValue() == _value);
+
+		}
+
+		@Override
+		public void run() {
+
+			wrapOperation(() -> {
+
+				getModels().forEach(model -> {
+					if (_x) {
+						OriginComponent.set_originX(model, _value);
+					} else {
+						OriginComponent.set_originY(model, _value);
+					}
+				});
+				
+				OriginSection.this.update_UI_from_Model();
+
+			}, getModels());
+
+		}
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+
+		_actions = new ArrayList<>();
+
+		for (int i = 0; i <= 2; i++) {
+			var action = new OriginAction("x", i);
+			manager.add(action);
+			_actions.add(action);
+		}
+
+		for (int i = 0; i <= 2; i++) {
+			var action = new OriginAction("y", i);
+			manager.add(action);
+			_actions.add(action);
+		}
 	}
 
 	@Override
@@ -90,10 +160,10 @@ public class OriginSection extends ScenePropertySection {
 
 		// origin
 
-		_originXText.setText(
-				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX(model))));
-		_originYText.setText(
-				flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY(model))));
+		_originXText.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX(model))));
+		_originYText.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY(model))));
+
+		updateActions_UI_from_Model();
 
 		listenFloat(_originXText, value -> {
 			models.forEach(model -> {
@@ -102,6 +172,8 @@ public class OriginSection extends ScenePropertySection {
 					setModelToDirty(model);
 				}
 			});
+			
+			updateActions_UI_from_Model();
 			getEditor().setDirty(true);
 		}, models);
 
@@ -112,9 +184,17 @@ public class OriginSection extends ScenePropertySection {
 					setModelToDirty(model);
 				}
 			});
+			
+			updateActions_UI_from_Model();
 			getEditor().setDirty(true);
 		}, models);
 
+	}
+
+	private void updateActions_UI_from_Model() {
+		for (var action : _actions) {
+			action.update_UI_from_Model();
+		}
 	}
 
 }

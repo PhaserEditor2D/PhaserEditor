@@ -24,8 +24,6 @@ package phasereditor.ui;
 public interface IEditorSharedImages {
 	String IMG_NEW_PHASER_PROJECT = "icons/new_phaser_project.png";
 	String IMG_GENERIC_EDITOR = "icons/generic_editor.png";
-	String IMG_BULLET_EXPAND = "icons/blender_ICON_DISCLOSURE_TRI_RIGHT.png"; // "icons/bullet_toggle_plus.png";
-	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; //"icons/bullet_toggle_minus.png";
 	String IMG_CHECK_OFF = "icons/blender_ICON_CHECKBOX_DEHLT.png";
 	String IMG_CHECK_ON = "icons/blender_ICON_CHECKBOX_HLT.png";
 	String IMG_SHAPE = "icons/shape_square.png";
@@ -97,6 +95,7 @@ public interface IEditorSharedImages {
 	String IMG_TILED = "icons/tiled.png";
 	String IMG_SHAPE_FLIP_HORIZONTAL = "icons/shape_flip_horizontal.png";
 	String IMG_SHAPE_FLIP_VERTICAL = "icons/shape_flip_vertical.png";
+	
 	String IMG_ARROW_ROTATE_CLOCKWISE = "icons/arrow_rotate_clockwise_blue.png";
 	String IMG_ARROW_ROTATE_ANTICLOCKWISE = "icons/arrow_rotate_anticlockwise_blue.png";
 	String IMG_ASTERISK = "icons/asterisk.png";
@@ -123,6 +122,7 @@ public interface IEditorSharedImages {
 	String IMG_SHOW_SUPER_TYPES = "icons/super_co.png";
 	
 	
+	
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";
 	String IMG_ENUM = "icons/enum.png";
@@ -134,4 +134,9 @@ public interface IEditorSharedImages {
 	String IMG_PROPERTY = "icons/property.png";
 	String IMG_VARIABLE = "icons/variable.png";
 	String IMG_EDIT = "icons/pencil.png";
+	
+	// blender
+	
+	String IMG_BULLET_EXPAND = "icons/blender_ICON_DISCLOSURE_TRI_RIGHT.png"; // "icons/bullet_toggle_plus.png";
+	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; //"icons/bullet_toggle_minus.png";
 }

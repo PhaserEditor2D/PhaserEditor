@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg44"
+   sodipodi:docname="origin-x-2.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="./origin-x-2@2x.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192">
+  <metadata
+     id="metadata50">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Shape Align Bottom</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs48">
+    <defs
+       id="defs31">
+      <linearGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(0.74535599,0,0,1.3416408,8,8)"
+         y2="3.72678"
+         x2="-1.3416408"
+         y1="-2.981424"
+         x1="-8.0498447"
+         id="shape1">
+        <stop
+           id="stop6"
+           stop-color="#afcbf5"
+           offset="0%" />
+        <stop
+           id="stop8"
+           stop-color="#90b6f3"
+           offset="100%" />
+      </linearGradient>
+      <linearGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(0.65465367,0,0,1.5275252,8,8)"
+         y2="2.6186147"
+         x2="-3.0550505"
+         y1="-1.963961"
+         x1="-7.6376262"
+         id="shape1inner">
+        <stop
+           id="stop11"
+           stop-color="#c0d5f7"
+           offset="0%" />
+        <stop
+           id="stop13"
+           stop-color="#adc9f6"
+           offset="100%" />
+      </linearGradient>
+      <linearGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(0,0.64549721,-1.5491933,0,7.0606999,10.499999)"
+         y2="3.2274861"
+         x2="7.7459667"
+         y1="-4.5184806"
+         x1="0"
+         id="shape2">
+        <stop
+           id="stop16"
+           stop-color="#8cb3e6"
+           offset="0%" />
+        <stop
+           id="stop18"
+           stop-color="#5883d2"
+           offset="100%" />
+      </linearGradient>
+      <linearGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(0,0.54772257,-1.8257419,0,7.0606999,10.5)"
+         y2="2.1908902"
+         x2="7.3029674"
+         y1="-3.2863353"
+         x1="1.8257419"
+         id="shape2inner">
+        <stop
+           id="stop21"
+           stop-color="#a7c5ec"
+           offset="0%" />
+        <stop
+           id="stop23"
+           stop-color="#81a1de"
+           offset="100%" />
+      </linearGradient>
+      <linearGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(0,3.6055513,-0.2773501,0,8,9.4999999)"
+         y2="21.633308"
+         x2="1.6641006"
+         y1="21.633308"
+         x1="-1.9414507"
+         id="line">
+        <stop
+           id="stop26"
+           stop-color="#a5a5a5"
+           offset="0%" />
+        <stop
+           id="stop28"
+           stop-color="#3a3a3a"
+           offset="100%" />
+      </linearGradient>
+    </defs>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1869"
+     inkscape:window-height="1025"
+     id="namedview46"
+     showgrid="false"
+     inkscape:zoom="16"
+     inkscape:cx="-1.5865733"
+     inkscape:cy="3.5199737"
+     inkscape:window-x="51"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg44" />
+  <title
+     id="title2">Shape Align Bottom</title>
+  <desc
+     id="desc4">Shape Align Bottom</desc>
+  <g
+     id="g8840"
+     transform="rotate(-90,7.25,8.75)">
+    <g
+       transform="translate(0.93930006,-1)"
+       id="g1180">
+      <rect
+         style="fill:url(#shape2);stroke-width:0.99999982"
+         id="rect37"
+         y="5"
+         x="3.0606999"
+         height="8"
+         width="8" />
+      <rect
+         style="fill:url(#shape2inner);stroke-width:0.99999994"
+         id="rect39"
+         y="6"
+         x="4.0606999"
+         height="6"
+         width="6" />
+    </g>
+    <rect
+       width="12"
+       height="1"
+       x="2"
+       y="14"
+       id="rect41"
+       style="fill:url(#line);stroke-width:1" />
+  </g>
+</svg>

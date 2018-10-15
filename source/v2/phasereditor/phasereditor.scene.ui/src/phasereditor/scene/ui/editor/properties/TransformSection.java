@@ -55,6 +55,30 @@ public class TransformSection extends ScenePropertySection {
 		return obj instanceof TransformComponent;
 	}
 
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
+			//
+		});
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_CENTER)) {
+			//
+		});
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_RIGHT)) {
+			//
+		});
+
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_TOP)) {
+			//
+		});
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_MIDDLE)) {
+			//
+		});
+		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_BOTTOM)) {
+			//
+		});
+	}
+
 	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
@@ -85,40 +109,6 @@ public class TransformSection extends ScenePropertySection {
 			_yText = new Text(comp, SWT.BORDER);
 			_yText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		}
-
-		{
-			new Label(comp, SWT.NONE);
-
-			new Label(comp, SWT.NONE);
-
-			new Label(comp, SWT.NONE);
-
-			var xtoolbar = new ToolBarManager();
-			xtoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
-				//
-			});
-			xtoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_CENTER)) {
-				//
-			});
-			xtoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_RIGHT)) {
-				//
-			});
-			xtoolbar.createControl(comp);
-
-			new Label(comp, SWT.NONE);
-
-			var ytoolbar = new ToolBarManager();
-			ytoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_TOP)) {
-				//
-			});
-			ytoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_MIDDLE)) {
-				//
-			});
-			ytoolbar.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_BOTTOM)) {
-				//
-			});
-			ytoolbar.createControl(comp);
 		}
 
 		{

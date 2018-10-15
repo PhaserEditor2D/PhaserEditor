@@ -122,6 +122,19 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		});
 	}
 
+	protected void wrapOperation(Runnable run, List<ObjectModel> models) {
+		var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
+
+		run.run();
+
+		var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
+
+		getEditor()
+				.executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+
+		getCanvas().redraw();
+	}
+
 	protected void listen(Button check, Consumer<Boolean> listener, List<ObjectModel> models) {
 		super.listen(check, value -> {
 
@@ -145,7 +158,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			listener.accept(value);
 
 			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
-			
+
 			getEditor().executeOperation(
 					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 

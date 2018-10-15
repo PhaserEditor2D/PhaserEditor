@@ -87,17 +87,20 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		super.customPaintControl(e);
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	protected void drawImageBackground(GC gc, Rectangle b) {
 		if (_spritesheet == null || _rects.isEmpty()) {
 			return;
 		}
 
-		if (PhaserEditorUI.isPreviewBackgroundSolidColor()) {
-			PhaserEditorUI.paintPreviewBackground(gc, b);
+		if (!PhaserEditorUI.isPreviewBackgroundPattern()) {
+			super.drawImageBackground(gc, b);
 		}
 
+	}
+
+	@SuppressWarnings("boxing")
+	private void paintSelection(GC gc) {
 		Color selectionColor = PhaserEditorUI.getListSelectionColor();
 
 		ZoomCalculator calc = calc();
@@ -111,6 +114,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			Rectangle r2 = new Rectangle(r.x, r.y, r.width + 1, r.height + 1);
 
 			if (_selectedFrames.contains(fd.index)) {
+				gc.setAlpha(150);
 				gc.setBackground(selectionColor);
 				gc.fillRectangle(r2);
 				gc.setAlpha(255);
@@ -118,13 +122,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 			var frame = _spritesheet.getFrames().get(i++);
 			PhaserEditorUI.paintListItemBackground(gc, frame.getColumn() + frame.getRow(), r2);
-
 		}
-
-		if (!PhaserEditorUI.isPreviewBackgroundSolidColor()) {
-			PhaserEditorUI.paintPreviewBackground(gc, b);
-		}
-
 	}
 
 	@Override
@@ -211,6 +209,8 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					}
 				}
 			}
+
+			paintSelection(gc);
 		}
 	}
 

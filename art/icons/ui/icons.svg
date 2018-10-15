@@ -16,7 +16,7 @@
    viewBox="0 0 744.09448819 1052.3622047"
    id="svg5715"
    version="1.1"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="icons.svg">
   <defs
      id="defs5717">
@@ -2818,17 +2818,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313708"
-     inkscape:cx="617.26319"
-     inkscape:cy="21.451091"
+     inkscape:zoom="0.70710675"
+     inkscape:cx="280.93788"
+     inkscape:cy="669.42759"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1869"
-     inkscape:window-height="1019"
-     inkscape:window-x="51"
+     inkscape:window-width="935"
+     inkscape:window-height="1025"
+     inkscape:window-x="985"
      inkscape:window-y="27"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata5720">
     <rdf:RDF>
@@ -5761,7 +5761,8 @@
        transform="translate(145.39554,-4.6403665)"
        inkscape:export-filename="folder_brick@2x.png"
        inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90">
+       inkscape:export-ydpi="90"
+       style="fill:url(#linearGradient2389)">
       <image
          width="30"
          height="30"
@@ -5770,7 +5771,8 @@
          id="image5155"
          x="302.53513"
          y="550.12146"
-         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\folder@2x.png" />
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\folder@2x.png"
+         style="fill:url(#linearGradient2389)" />
       <image
          width="15.16733"
          height="14.670146"
@@ -5779,7 +5781,8 @@
          id="image5166"
          x="317.3678"
          y="550.12146"
-         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\brick@2x.png" />
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\brick@2x.png"
+         style="fill:url(#linearGradient2389)" />
     </g>
     <g
        id="g5317"
