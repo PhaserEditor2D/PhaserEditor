@@ -62,6 +62,7 @@ import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
@@ -266,13 +267,13 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		view.y += X_LABELS_HEIGHT;
 
 		gc.setAlpha(150);
-		
+
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		gc.drawRectangle(view.x + 1, view.y + 1, view.width, view.height);
 
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		gc.drawRectangle(view);
-		
+
 		gc.setAlpha(255);
 	}
 
@@ -565,30 +566,90 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				var polygon = _renderer.getObjectChildrenBounds(model);
 
 				if (hitsPolygon(x, y, polygon)) {
-					return model;
+
+					if (hitsImage(x, y, model)) {
+						return model;
+					}
 				}
 
 			} else {
 
 				var children = ParentComponent.get_children(model);
+
 				for (int i = children.size() - 1; i >= 0; i--) {
+
 					var model2 = children.get(i);
+
 					var pick = pickObject(model2, x, y);
+
 					if (pick != null) {
 						return pick;
 					}
 				}
 
+				if (hitsImage(x, y, model)) {
+					return model;
+				}
 			}
 		}
 
 		var polygon = _renderer.getObjectBounds(model);
 
 		if (hitsPolygon(x, y, polygon)) {
-			return model;
+
+			if (hitsImage(x, y, model)) {
+				return model;
+			}
 		}
 
 		return null;
+	}
+
+	private boolean hitsImage(int x, int y, ObjectModel model) {
+		var renderer = getSceneRenderer();
+
+		var img = renderer.getModelImageFromCache(model);
+
+		var xy = renderer.sceneToLocal(model, x, y);
+
+		var imgX = (int) xy[0];
+		var imgY = (int) xy[1];
+
+		if (img == null) {
+			if (model instanceof ImageModel || model instanceof SpriteModel) {
+				var frame = TextureComponent.get_frame(model);
+
+				if (frame == null) {
+					return false;
+				}
+
+				img = loadImage(frame.getImageFile());
+
+				if (img == null) {
+					return false;
+				}
+
+				var frameData = frame.getFrameData();
+
+				imgX = imgX + frameData.src.x - frameData.dst.x;
+				imgY = imgY + frameData.src.y - frameData.dst.y;
+			}
+		}
+
+		if (img == null) {
+			return false;
+		}
+
+		if (img.getBounds().contains(imgX, imgY)) {
+
+			var data = img.getImageData();
+
+			var pixel = data.getAlpha(imgX, imgY);
+
+			return pixel != 0;
+		}
+
+		return false;
 	}
 
 	void setSelection_from_internal(List<Object> list) {
