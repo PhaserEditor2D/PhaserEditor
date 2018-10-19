@@ -351,14 +351,14 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		int i = 1;
 		while (viewSnapX < 30) {
-			modelSnapX = (float) Math.pow(initialModelSnapX, i);
+			modelSnapX = initialModelSnapX * i;
 			viewSnapX = calc.modelToViewWidth(modelSnapX);
 			i++;
 		}
 
 		i = 1;
 		while (viewSnapY < 30) {
-			modelSnapY = (float) Math.pow(initialModelSnapY, i);
+			modelSnapY = initialModelSnapY * i;
 			viewSnapY = calc.modelToViewHeight(modelSnapY);
 			i++;
 		}
@@ -454,7 +454,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		// paint labels
 
 		var modelSnapX = _renderModelSnapX;
-		var modelSnapY = 10f;
+		var modelSnapY = _renderModelSnapY;
 
 		var modelStartX = calc.viewToModelX(0);
 		var modelStartY = calc.viewToModelY(0);

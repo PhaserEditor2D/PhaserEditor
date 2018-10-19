@@ -150,6 +150,7 @@ public class SceneObjectRenderer {
 		debugObject(gc, model.getRootObject());
 
 		gc.setTransform(oldTx);
+		
 	}
 
 	private void debugObject(GC gc, ObjectModel model) {

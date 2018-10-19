@@ -71,6 +71,7 @@ public class CompilerSection extends BaseDesignSection {
 			var gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 300;
 			tabFolder.setLayoutData(gd);
+			tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
 
 			{
 
