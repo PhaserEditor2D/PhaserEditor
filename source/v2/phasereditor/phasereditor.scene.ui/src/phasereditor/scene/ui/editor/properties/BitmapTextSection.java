@@ -26,26 +26,18 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.AssetsContentProvider;
-import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.TreeCanvas;
-import phasereditor.ui.TreeCanvasDialog;
-import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
@@ -99,8 +91,6 @@ public class BitmapTextSection extends ScenePropertySection {
 			getEditor().setDirty(true);
 			getEditor().getScene().redraw();
 
-			update_UI_from_Model();
-
 		}
 	}
 
@@ -151,31 +141,6 @@ public class BitmapTextSection extends ScenePropertySection {
 		return comp;
 	}
 
-	static class QuickSelectFontDialog extends TreeCanvasDialog {
-
-		public QuickSelectFontDialog(Shell shell) {
-			super(shell);
-		}
-
-		@Override
-		protected TreeCanvasViewer createViewer(TreeCanvas tree) {
-			var viewer = new AssetsTreeCanvasViewer(tree, new AssetsContentProvider(), AssetLabelProvider.GLOBAL_16);
-
-			tree.addMouseListener(MouseListener.mouseDoubleClickAdapter(e -> {
-				setResult(getViewer().getStructuredSelection().getFirstElement());
-				close();
-			}));
-
-			return viewer;
-		}
-
-		@Override
-		protected void createButtonsForButtonBar(Composite parent) {
-			// no buttons
-		}
-
-	}
-
 	class FontAction extends Action {
 		public FontAction() {
 			super(getHelp("Phaser.GameObjects.BitmapText.font"), EditorSharedImages.getImageDescriptor(IMG_FONT));
@@ -183,7 +148,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		@Override
 		public void run() {
-			var dlg = new QuickSelectFontDialog(getEditor().getSite().getShell());
+			var dlg = new QuickSelectAssetDialog(getEditor().getSite().getShell());
 
 			var editor = getEditor();
 

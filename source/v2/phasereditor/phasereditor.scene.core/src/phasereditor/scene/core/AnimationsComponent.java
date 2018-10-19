@@ -21,38 +21,27 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
-import org.eclipse.core.resources.IProject;
-import org.json.JSONObject;
-
 /**
  * @author arian
  *
  */
-public class SpriteModel extends BaseSpriteModel implements AnimationsComponent {
+public interface AnimationsComponent {
+	// autoPlayAnimKey
 
-	public static final String TYPE = "Sprite";
+	static String autoPlayAnimKey_name = "autoPlayAnimKey";
 
-	protected SpriteModel(String type) {
-		super(type);
+	static String autoPlayAnimKey_default = null;
 
-		AnimationsComponent.init(this);
+	static String get_autoPlayAnimKey(ObjectModel obj) {
+		return (String) obj.get("autoPlayAnimKey");
 	}
 
-	public SpriteModel() {
-		this(TYPE);
+	static void set_autoPlayAnimKey(ObjectModel obj, String autoPlayAnimKey) {
+		obj.put("autoPlayAnimKey", autoPlayAnimKey);
 	}
-
-	@Override
-	public void write(JSONObject data) {
-		super.write(data);
-
-		data.put(autoPlayAnimKey_name, AnimationsComponent.get_autoPlayAnimKey(this), autoPlayAnimKey_default);
+	
+	static void init(ObjectModel model) {
+		set_autoPlayAnimKey(model, autoPlayAnimKey_default);
 	}
-
-	@Override
-	public void read(JSONObject data, IProject project) {
-		super.read(data, project);
-
-		AnimationsComponent.set_autoPlayAnimKey(this, data.optString(autoPlayAnimKey_name, autoPlayAnimKey_default));
-	}
+	
 }

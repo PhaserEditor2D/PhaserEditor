@@ -11,6 +11,7 @@ import java.util.List;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -164,6 +165,10 @@ public class SceneEditor extends EditorPart {
 	@Override
 	public IFileEditorInput getEditorInput() {
 		return (IFileEditorInput) super.getEditorInput();
+	}
+	
+	public IProject getProject() {
+		return getEditorInput().getFile().getProject();
 	}
 
 	@Override

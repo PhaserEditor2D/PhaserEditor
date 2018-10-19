@@ -73,8 +73,6 @@ public class SnappingSection extends BaseDesignSection {
 			_heightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

@@ -586,10 +586,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 						return pick;
 					}
 				}
-
-				if (hitsImage(x, y, model)) {
-					return model;
-				}
 			}
 		}
 

@@ -19,40 +19,43 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core;
+package phasereditor.scene.ui.editor.properties;
 
-import org.eclipse.core.resources.IProject;
-import org.json.JSONObject;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
-/**
- * @author arian
- *
- */
-public class SpriteModel extends BaseSpriteModel implements AnimationsComponent {
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.ui.TreeCanvas;
+import phasereditor.ui.TreeCanvasDialog;
+import phasereditor.ui.TreeCanvasViewer;
 
-	public static final String TYPE = "Sprite";
+public class QuickSelectAssetDialog extends TreeCanvasDialog {
 
-	protected SpriteModel(String type) {
-		super(type);
-
-		AnimationsComponent.init(this);
-	}
-
-	public SpriteModel() {
-		this(TYPE);
+	public QuickSelectAssetDialog(Shell shell) {
+		super(shell);
 	}
 
 	@Override
-	public void write(JSONObject data) {
-		super.write(data);
+	protected TreeCanvasViewer createViewer(TreeCanvas tree) {
+		var viewer = new AssetsTreeCanvasViewer(tree, new AssetsContentProvider(), AssetLabelProvider.GLOBAL_16);
 
-		data.put(autoPlayAnimKey_name, AnimationsComponent.get_autoPlayAnimKey(this), autoPlayAnimKey_default);
+		tree.addMouseListener(MouseListener.mouseDoubleClickAdapter(e -> {
+			setResult(getViewer().getStructuredSelection().getFirstElement());
+			close();
+		}));
+
+		AssetPackUI.installAssetTooltips(tree, tree.getUtils());
+		
+		return viewer;
 	}
 
 	@Override
-	public void read(JSONObject data, IProject project) {
-		super.read(data, project);
-
-		AnimationsComponent.set_autoPlayAnimKey(this, data.optString(autoPlayAnimKey_name, autoPlayAnimKey_default));
+	protected void createButtonsForButtonBar(Composite parent) {
+		// no buttons
 	}
+
 }

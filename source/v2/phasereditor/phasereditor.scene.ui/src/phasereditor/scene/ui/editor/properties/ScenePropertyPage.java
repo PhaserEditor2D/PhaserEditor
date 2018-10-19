@@ -24,13 +24,13 @@ package phasereditor.scene.ui.editor.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
@@ -97,10 +97,6 @@ public class ScenePropertyPage extends FormPropertyPage {
 			list.add(new TileSpriteSection(this));
 		}
 
-		if (obj instanceof SpriteModel) {
-			list.add(new EmptyBodySection(this));
-		}
-
 		if (obj instanceof TextualComponent) {
 			list.add(new TextualSection(this));
 		}
@@ -112,6 +108,15 @@ public class ScenePropertyPage extends FormPropertyPage {
 		if (obj instanceof DynamicBitmapTextComponent) {
 			list.add(new DynamicBitmapTextSection(this));
 		}
+
+		if (obj instanceof AnimationsComponent) {
+			list.add(new AnimationsSection(this));
+		}
+		
+		
+//		if (obj instanceof SpriteModel) {
+//			list.add(new EmptyBodySection(this));
+//		}
 
 		return list;
 

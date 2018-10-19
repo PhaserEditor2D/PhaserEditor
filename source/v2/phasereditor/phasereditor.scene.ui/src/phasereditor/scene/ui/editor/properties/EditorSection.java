@@ -125,8 +125,6 @@ public class EditorSection extends ScenePropertySection {
 			_transpScale.setMinimum(100);
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

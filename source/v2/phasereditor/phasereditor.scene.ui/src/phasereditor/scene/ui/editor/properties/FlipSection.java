@@ -56,8 +56,6 @@ public class FlipSection extends ScenePropertySection {
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(4, false));
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

@@ -196,8 +196,6 @@ public class TileSpriteSection extends ScenePropertySection {
 			manager.createControl(comp2);
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

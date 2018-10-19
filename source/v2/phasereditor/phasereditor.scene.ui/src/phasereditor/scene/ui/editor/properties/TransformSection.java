@@ -155,8 +155,6 @@ public class TransformSection extends ScenePropertySection {
 
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

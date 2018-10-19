@@ -148,8 +148,6 @@ public class OriginSection extends ScenePropertySection {
 		_originYText = new Text(comp, SWT.BORDER);
 		_originYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

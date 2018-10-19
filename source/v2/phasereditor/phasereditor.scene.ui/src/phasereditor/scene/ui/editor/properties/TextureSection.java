@@ -73,8 +73,6 @@ public class TextureSection extends ScenePropertySection {
 
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

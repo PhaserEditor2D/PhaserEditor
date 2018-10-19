@@ -91,7 +91,6 @@ public class CompilerSection extends BaseDesignSection {
 				_preloadComp = codeComp;
 			}
 
-			update_UI_from_Model();
 		}
 
 		return comp;

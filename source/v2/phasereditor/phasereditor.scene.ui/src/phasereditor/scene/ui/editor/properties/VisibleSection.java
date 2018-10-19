@@ -58,8 +58,6 @@ public class VisibleSection extends ScenePropertySection {
 		_visibleBtn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		_visibleBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.visible"));
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

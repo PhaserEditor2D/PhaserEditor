@@ -207,13 +207,15 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			title.setText(section.getName());
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
 
+			var control = section.createContent(this);
+			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			
 			var toolbarManager = new ToolBarManager();
 			section.fillToolbar(toolbarManager);
 			var toolbar = toolbarManager.createControl(header);
 			toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
-
-			var control = section.createContent(this);
-			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			
+			section.update_UI_from_Model();
 
 			if (collapsed) {
 				((GridData) control.getLayoutData()).heightHint = 0;

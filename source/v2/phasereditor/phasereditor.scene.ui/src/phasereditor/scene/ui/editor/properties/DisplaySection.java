@@ -116,8 +116,6 @@ public class DisplaySection extends BaseDesignSection {
 			});
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

@@ -119,8 +119,6 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 			_scrollYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

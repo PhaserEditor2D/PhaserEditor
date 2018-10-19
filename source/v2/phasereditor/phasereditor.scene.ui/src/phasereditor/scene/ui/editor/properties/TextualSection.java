@@ -60,8 +60,6 @@ public class TextualSection extends ScenePropertySection {
 		gd.heightHint = 100;
 		_textText.setLayoutData(gd);
 
-		update_UI_from_Model();
-
 		return comp;
 	}
 

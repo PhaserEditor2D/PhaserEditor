@@ -104,8 +104,10 @@ public class AnimationPreviewComp extends SashForm {
 				btn.setEnabled(false);
 			}
 
-			_zoom_1_1_action.setEnabled(false);
-			_zoom_fitWindow_action.setEnabled(false);
+			if (_zoom_1_1_action != null) {
+				_zoom_1_1_action.setEnabled(false);
+				_zoom_fitWindow_action.setEnabled(false);
+			}
 
 			_animationCanvas.setModel(null);
 			_timelineCanvas.setModel(null);
@@ -126,9 +128,10 @@ public class AnimationPreviewComp extends SashForm {
 			_timelineCanvas.setModel(_model);
 		}
 
-		_zoom_1_1_action.setEnabled(true);
-		_zoom_fitWindow_action.setEnabled(true);
-
+		if (_zoom_1_1_action != null) {
+			_zoom_1_1_action.setEnabled(true);
+			_zoom_fitWindow_action.setEnabled(true);
+		}
 	}
 
 	public AnimationModel getModel() {
@@ -185,12 +188,43 @@ public class AnimationPreviewComp extends SashForm {
 			btn.setEnabled(false);
 		}
 
-		_zoom_1_1_action.setEnabled(false);
-		_zoom_fitWindow_action.setEnabled(false);
+		if (_zoom_1_1_action != null) {
+			_zoom_1_1_action.setEnabled(false);
+			_zoom_fitWindow_action.setEnabled(false);
+		}
 	}
 
 	public void createToolBar(IToolBarManager manager) {
 
+		_showTimeline = new Action("Timeline",
+				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_SPLIT)) {
+			@Override
+			public void run() {
+				if (getMaximizedControl() == null) {
+					setMaximizedControl(getAnimationCanvas());
+				} else {
+					setMaximizedControl(null);
+				}
+			}
+		};
+
+		_showTimeline.setChecked(true);
+
+		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animationCanvas);
+		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animationCanvas);
+
+		createPlaybackToolbar(manager);
+
+		manager.add(new Separator());
+		manager.add(_showTimeline);
+		manager.add(new Separator());
+		manager.add(_zoom_1_1_action);
+		manager.add(_zoom_fitWindow_action);
+
+		disableToolbar();
+	}
+
+	public void createPlaybackToolbar(IToolBarManager manager) {
 		_playAction = new Action("Play", IAction.AS_CHECK_BOX) {
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY));
@@ -245,34 +279,11 @@ public class AnimationPreviewComp extends SashForm {
 
 		};
 
-		_showTimeline = new Action("Timeline",
-				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_SPLIT)) {
-			@Override
-			public void run() {
-				if (getMaximizedControl() == null) {
-					setMaximizedControl(getAnimationCanvas());
-				} else {
-					setMaximizedControl(null);
-				}
-			}
-		};
-		_showTimeline.setChecked(true);
-
-		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animationCanvas);
-		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animationCanvas);
-
 		manager.add(_playAction);
 		manager.add(_pauseAction);
 		manager.add(_stopAction);
-		manager.add(new Separator());
-		manager.add(_showTimeline);
-		manager.add(new Separator());
-		manager.add(_zoom_1_1_action);
-		manager.add(_zoom_fitWindow_action);
 
 		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
-
-		disableToolbar();
 	}
 
 }

@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text;bundle-version="3.13.0",
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
- org.eclipse.tm4e.ui;bundle-version="0.1.0"
+ org.eclipse.tm4e.ui;bundle-version="0.1.0",
+ phasereditor.animation.ui;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Automatic-Module-Name: phasereditor.scene.ui
 Bundle-ActivationPolicy: lazy
