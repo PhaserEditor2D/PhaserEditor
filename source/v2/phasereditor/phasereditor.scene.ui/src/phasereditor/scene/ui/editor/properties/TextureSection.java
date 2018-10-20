@@ -69,7 +69,7 @@ public class TextureSection extends ScenePropertySection {
 		{
 			_frameLabel = new Label(comp, SWT.WRAP);
 			_frameLabel.setText("Frame");
-			_frameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+			_frameLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		}
 
@@ -90,19 +90,17 @@ public class TextureSection extends ScenePropertySection {
 			if (frame instanceof ImageAssetModel.Frame) {
 				sb.append("key: " + frame.getKey());
 			} else {
-				sb.append("key: " + frame.getAsset().getKey() + "\nframe: " + frame.getKey());
+				sb.append("key: " + frame.getAsset().getKey() + " / frame: " + frame.getKey());
 			}
 
 			var fd = frame.getFrameData();
 
-			sb.append("\n");
-			sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
-			sb.append("\n");
+			sb.append("\nsize: " + fd.srcSize.x + "x" + fd.srcSize.y);
 
 			IFile file = frame.getImageFile();
 
 			if (file != null) {
-				sb.append("file: " + file.getName());
+				sb.append(" / file: " + file.getName());
 			}
 
 			_frameLabel.setText(sb.toString());
