@@ -40,6 +40,7 @@ public class TreeCanvasDialog extends Dialog {
 	private TreeCanvasViewer _viewer;
 	private Object _input;
 	private Object _result;
+	private String _title;
 
 	public TreeCanvasDialog(Shell shell) {
 		super(shell);
@@ -60,6 +61,10 @@ public class TreeCanvasDialog extends Dialog {
 
 		return _filteredTree;
 	}
+	
+	public FilteredTreeCanvas getFilteredTree() {
+		return _filteredTree;
+	}
 
 	@SuppressWarnings("static-method")
 	protected TreeCanvasViewer createViewer(TreeCanvas tree) {
@@ -69,26 +74,42 @@ public class TreeCanvasDialog extends Dialog {
 	public TreeCanvasViewer getViewer() {
 		return _viewer;
 	}
-	
+
 	@Override
 	protected Point getInitialSize() {
 		return new Point(480, 320);
 	}
-	
+
 	public void setInput(Object input) {
 		_input = input;
 	}
-	
+
 	public Object getInput() {
 		return _input;
 	}
-	
+
 	public Object getResult() {
 		return _result;
 	}
-	
+
 	public void setResult(Object result) {
 		_result = result;
+	}
+
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		if (_title != null) {
+			newShell.setText(_title);
+		}
+	}
+
+	public String getTitle() {
+		return _title;
+	}
+
+	public void setTitle(String title) {
+		_title = title;
 	}
 
 }

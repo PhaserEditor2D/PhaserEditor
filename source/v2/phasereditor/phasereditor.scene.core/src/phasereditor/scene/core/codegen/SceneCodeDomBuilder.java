@@ -31,6 +31,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
@@ -152,6 +153,10 @@ public class SceneCodeDomBuilder {
 				assignToVar = buildDynamicBitmapTextProps(methodDecl, model) || assignToVar;
 			}
 
+			if (model instanceof AnimationsComponent) {
+				assignToVar = buildAnimationsProps(methodDecl, model) || assignToVar;
+			}
+
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(varname(model));
 			}
@@ -188,6 +193,24 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildAnimationsProps(MethodDeclDom methodDecl, ObjectModel model) {
+		var key = AnimationsComponent.get_autoPlayAnimKey(model);
+
+		if (key == null) {
+			return false;
+		}
+
+		var name = varname(model);
+
+		var instr = new MethodCallDom("play", name + ".anims");
+		instr.argLiteral(key);
+
+		methodDecl.getInstructions().add(instr);
+
+		return true;
 	}
 
 	@SuppressWarnings("static-method")

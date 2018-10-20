@@ -95,14 +95,19 @@ public class AnimationsSection extends ScenePropertySection {
 	private void clearAnimation() {
 
 		wrapOperation(() -> {
+			
 			getModels().forEach(model -> AnimationsComponent.set_autoPlayAnimKey(model, null));
+			
 		}, getModels());
 
+		getEditor().setDirty(true);
+		
 		update_UI_from_Model();
 	}
 
 	private void browseAnimation() {
 		var dlg = new QuickSelectAssetDialog(getEditor().getEditorSite().getShell());
+		dlg.setTitle("Select Animation");
 
 		dlg.setInput(getAnimations());
 
@@ -114,6 +119,8 @@ public class AnimationsSection extends ScenePropertySection {
 					AnimationsComponent.set_autoPlayAnimKey(model, anim.getKey());
 				});
 			}, getModels());
+				
+			getEditor().setDirty(true);
 
 			update_UI_from_Model();
 		}

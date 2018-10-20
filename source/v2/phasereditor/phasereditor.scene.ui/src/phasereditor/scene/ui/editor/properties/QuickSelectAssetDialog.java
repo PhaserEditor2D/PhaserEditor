@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -44,18 +48,45 @@ public class QuickSelectAssetDialog extends TreeCanvasDialog {
 		var viewer = new AssetsTreeCanvasViewer(tree, new AssetsContentProvider(), AssetLabelProvider.GLOBAL_16);
 
 		tree.addMouseListener(MouseListener.mouseDoubleClickAdapter(e -> {
-			setResult(getViewer().getStructuredSelection().getFirstElement());
-			close();
+			closeDialog();
 		}));
 
+		var keyListener = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.character == SWT.CR || e.character == SWT.LF) {
+					if (viewer.getStructuredSelection().isEmpty()) {
+						var visibleItems = tree.getVisibleItems();
+
+						if (visibleItems.size() == 1) {
+							var item = visibleItems.get(0);
+							viewer.setSelection(new StructuredSelection(item.getData()));
+						}
+					}
+
+					tree.getDisplay().asyncExec(() -> closeDialog());
+				}
+			}
+		};
+
+		tree.addKeyListener(keyListener);
+
+		getFilteredTree().getTextControl().addKeyListener(keyListener);
+
 		AssetPackUI.installAssetTooltips(tree, tree.getUtils());
-		
+
 		return viewer;
+	}
+
+	protected void closeDialog() {
+		var firstElement = getViewer().getStructuredSelection().getFirstElement();
+
+		setResult(firstElement);
+		close();
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		// no buttons
 	}
-
 }
