@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -81,7 +80,7 @@ public class AnimationsSection extends ScenePropertySection {
 		_clearBtn.setText("Clear");
 		_clearBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> clearAnimation()));
 
-		_animCanvas = new AnimationPreviewComp(comp, SWT.BORDER);
+		_animCanvas = new AnimationPreviewComp(comp, 0);
 		{
 			var gd = new GridData(GridData.FILL_BOTH);
 			gd.horizontalSpan = 2;
