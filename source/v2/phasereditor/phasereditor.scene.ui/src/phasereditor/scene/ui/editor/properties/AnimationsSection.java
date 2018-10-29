@@ -73,7 +73,7 @@ public class AnimationsSection extends ScenePropertySection {
 		_browseBtn = new Button(comp, 0);
 		_browseBtn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		_browseBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-			this.browseAnimation();
+			this.selectAnimation();
 		}));
 
 		_clearBtn = new Button(comp, 0);
@@ -104,7 +104,7 @@ public class AnimationsSection extends ScenePropertySection {
 		update_UI_from_Model();
 	}
 
-	private void browseAnimation() {
+	private void selectAnimation() {
 		var dlg = new QuickSelectAssetDialog(getEditor().getEditorSite().getShell());
 		dlg.setTitle("Select Animation");
 
