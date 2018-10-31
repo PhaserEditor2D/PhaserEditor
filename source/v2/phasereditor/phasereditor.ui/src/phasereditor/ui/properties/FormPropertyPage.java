@@ -120,13 +120,25 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 		// dispose all rows with irrelevant sections
 
+		// for (var control : _sectionsContainer.getChildren()) {
+		// var row = (RowComp) control;
+		//
+		// var newSection = sectionMap.get(row.getSection().getClass());
+		//
+		// if (newSection == null) {
+		// row.dispose();
+		// }
+		// }
+
 		for (var control : _sectionsContainer.getChildren()) {
 			var row = (RowComp) control;
 
 			var newSection = sectionMap.get(row.getSection().getClass());
 
 			if (newSection == null) {
-				row.dispose();
+				row.setVisible(false);
+				var gd = (GridData) row.getLayoutData();
+				gd.heightHint = 0;
 			}
 		}
 
@@ -141,6 +153,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 				var oldSection = row.getSection();
 
 				if (oldSection.getClass() == section.getClass()) {
+					row.setVisible(true);
+					var gd = (GridData) row.getLayoutData();
+					gd.heightHint = -1;
 					oldSection.setModels(models);
 					oldSection.update_UI_from_Model();
 					createNew = false;
@@ -209,12 +224,12 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 			var control = section.createContent(this);
 			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-			
+
 			var toolbarManager = new ToolBarManager();
 			section.fillToolbar(toolbarManager);
 			var toolbar = toolbarManager.createControl(header);
 			toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
-			
+
 			section.update_UI_from_Model();
 
 			if (collapsed) {
@@ -277,7 +292,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
 		_sectionsContainer = new Composite(_scrolledCompo, SWT.NONE);
 		_sectionsContainer.setBackgroundMode(SWT.INHERIT_FORCE);
-		_sectionsContainer.setLayout(new GridLayout(1, false));
+		var layout = new GridLayout(1, false);
+		layout.verticalSpacing = 0;
+		_sectionsContainer.setLayout(layout);
 
 		_scrolledCompo.setContent(_sectionsContainer);
 		_scrolledCompo.setExpandVertical(true);
