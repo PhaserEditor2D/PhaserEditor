@@ -85,17 +85,21 @@ public class BitmapTextSection extends ScenePropertySection {
 				getModels().forEach(model -> {
 					BitmapTextComponent.set_align(model, _align);
 				});
-
+				
 			}, getModels(), true);
 
 			getEditor().setDirty(true);
 			getEditor().getScene().redraw();
-
+			
+			updateAlignActionsState();
 		}
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
+		
+		createActions();
+		
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
 
@@ -135,8 +139,6 @@ public class BitmapTextSection extends ScenePropertySection {
 			_letterSpacingText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		}
-
-		update_UI_from_Model();
 
 		return comp;
 	}
@@ -206,12 +208,6 @@ public class BitmapTextSection extends ScenePropertySection {
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 
-		_alignLeftAction = new AlignAction("ALIGN_LEFT", IMG_TEXT_ALIGN_LEFT, BitmapTextComponent.ALIGN_LEFT);
-		_alignMiddleAction = new AlignAction("ALIGN_MIDDLE", IMG_TEXT_ALIGN_CENTER, BitmapTextComponent.ALIGN_MIDDLE);
-		_alignRightAction = new AlignAction("ALIGN_RIGHT", IMG_TEXT_ALIGN_RIGHT, BitmapTextComponent.ALIGN_RIGHT);
-
-		_fontAction = new FontAction();
-
 		manager.add(_alignLeftAction);
 		manager.add(_alignMiddleAction);
 		manager.add(_alignRightAction);
@@ -226,13 +222,23 @@ public class BitmapTextSection extends ScenePropertySection {
 		manager.add(new FontSizeAction(false));
 	}
 
+	private void createActions() {
+		_alignLeftAction = new AlignAction("ALIGN_LEFT", IMG_TEXT_ALIGN_LEFT, BitmapTextComponent.ALIGN_LEFT);
+		_alignMiddleAction = new AlignAction("ALIGN_MIDDLE", IMG_TEXT_ALIGN_CENTER, BitmapTextComponent.ALIGN_MIDDLE);
+		_alignRightAction = new AlignAction("ALIGN_RIGHT", IMG_TEXT_ALIGN_RIGHT, BitmapTextComponent.ALIGN_RIGHT);
+
+		_fontAction = new FontAction();
+	}
+
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var models = getModels();
 
+		String flatValues_to_String = flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_fontSize(model)));
+		
 		_fontSizeText
-				.setText(flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_fontSize(model))));
+				.setText(flatValues_to_String);
 
 		_letterSpacingText.setText(
 				flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_letterSpacing(model))));
@@ -242,10 +248,7 @@ public class BitmapTextSection extends ScenePropertySection {
 			return asset == null ? "<null>" : asset.getKey();
 		})));
 
-		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
-			action.setChecked(flatValues_to_boolean(
-					models.stream().map(model -> BitmapTextComponent.get_align(model) == action.getAlign())));
-		}
+		updateAlignActionsState();
 
 		listenInt(_fontSizeText, value -> {
 
@@ -266,12 +269,20 @@ public class BitmapTextSection extends ScenePropertySection {
 				getModels().stream().forEach(model -> {
 					BitmapTextComponent.set_letterSpacing(model, value);
 				});
-			}, getModels());
+			}, getModels(), true);
 
 			getEditor().setDirty(true);
 
 		});
 
+	}
+
+	@SuppressWarnings("boxing")
+	void updateAlignActionsState() {
+		for (var action : new AlignAction[] { _alignLeftAction, _alignMiddleAction, _alignRightAction }) {
+			action.setChecked(flatValues_to_boolean(
+					getModels().stream().map(model -> BitmapTextComponent.get_align(model) == action.getAlign())));
+		}
 	}
 
 }

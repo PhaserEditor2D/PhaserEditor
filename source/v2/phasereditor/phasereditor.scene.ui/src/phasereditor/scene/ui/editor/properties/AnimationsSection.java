@@ -70,6 +70,15 @@ public class AnimationsSection extends ScenePropertySection {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
 
+		
+		_animCanvas = new AnimationPreviewComp(comp, 0);
+		{
+			var gd = new GridData(GridData.FILL_BOTH);
+			gd.horizontalSpan = 2;
+			gd.heightHint = 200;
+			_animCanvas.setLayoutData(gd);
+		}
+		
 		_browseBtn = new Button(comp, 0);
 		_browseBtn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		_browseBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
@@ -80,13 +89,6 @@ public class AnimationsSection extends ScenePropertySection {
 		_clearBtn.setText("Clear");
 		_clearBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> clearAnimation()));
 
-		_animCanvas = new AnimationPreviewComp(comp, 0);
-		{
-			var gd = new GridData(GridData.FILL_BOTH);
-			gd.horizontalSpan = 2;
-			gd.heightHint = 200;
-			_animCanvas.setLayoutData(gd);
-		}
 
 		return comp;
 	}
