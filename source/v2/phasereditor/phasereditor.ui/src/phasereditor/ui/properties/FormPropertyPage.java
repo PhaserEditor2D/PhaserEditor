@@ -206,7 +206,13 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			var toolbarManager = new ToolBarManager();
 			section.fillToolbar(toolbarManager);
 			var toolbar = toolbarManager.createControl(header);
-			toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+			{
+				toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+
+				if (toolbar.getItemCount() == 0) {
+					((GridData) header.getLayoutData()).verticalIndent = 5;
+				}
+			}
 
 			section.update_UI_from_Model();
 
