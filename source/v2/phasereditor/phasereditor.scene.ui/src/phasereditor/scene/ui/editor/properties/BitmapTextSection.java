@@ -158,6 +158,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			var packs = AssetPackCore.getAssetPackModels(project);
 
+			dlg.setTitle("Select BitmapFont");
 			dlg.setInput(packs.stream().flatMap(pack -> pack.getAssets().stream())
 					.filter(asset -> asset instanceof BitmapFontAssetModel).toArray());
 

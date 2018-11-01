@@ -21,12 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
-import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -118,17 +116,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			}
 		}
 
-		// dispose all rows with irrelevant sections
-
-		// for (var control : _sectionsContainer.getChildren()) {
-		// var row = (RowComp) control;
-		//
-		// var newSection = sectionMap.get(row.getSection().getClass());
-		//
-		// if (newSection == null) {
-		// row.dispose();
-		// }
-		// }
+		// hide all rows with irrelevant sections
 
 		for (var control : _sectionsContainer.getChildren()) {
 			var row = (RowComp) control;
@@ -170,17 +158,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 		}
 
-		// sort the rows, following the new sections order
-
-		var clsList = uniqueSections.stream().map(section -> section.getClass()).collect(toList());
-
-		var rowList = _sectionsContainer.getChildren();
-
-		Arrays.sort(rowList, (a, b) -> {
-			return Integer.compare(clsList.indexOf(a.getClass()), clsList.indexOf(b.getClass()));
-		});
-
-		_sectionsContainer.layout(rowList);
+		_sectionsContainer.layout();
 
 		updateScrolledComposite();
 	}

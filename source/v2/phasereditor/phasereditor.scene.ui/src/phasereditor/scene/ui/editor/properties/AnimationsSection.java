@@ -167,9 +167,13 @@ public class AnimationsSection extends ScenePropertySection {
 		}
 
 		_animCanvas.setVisible(found != null);
+		{
+			var gd = (GridData) _animCanvas.getLayoutData();
+			gd.heightHint = found == null? 0 : 200;
+		}
 		_animCanvas.setModel(found);
 
-		_animCanvas.getParent().layout();
+		_animCanvas.getParent().getParent().layout();
 	}
 
 }
