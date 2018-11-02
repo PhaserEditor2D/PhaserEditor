@@ -383,6 +383,10 @@ public class SceneObjectRenderer {
 	private Image createBitmapTextImage(BitmapTextModel textModel) {
 		var fontModel = textModel.getFontModel();
 
+		if (fontModel == null) {
+			return null;
+		}
+		
 		var args = createBitmapTextRenderArgs(textModel);
 
 		var metrics = fontModel.metrics(args);
