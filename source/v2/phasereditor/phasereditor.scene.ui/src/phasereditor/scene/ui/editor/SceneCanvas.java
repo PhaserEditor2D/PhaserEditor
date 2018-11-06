@@ -24,6 +24,7 @@ package phasereditor.scene.ui.editor;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +67,7 @@ import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.interactive.RenderInteractiveElement;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.ColorUtil;
 import phasereditor.ui.ZoomCanvas;
@@ -87,6 +89,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SceneModel _sceneModel;
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
+	private List<RenderInteractiveElement> _interactiveElements;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -105,6 +108,24 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		init_DND();
 
 		setZoomWhenShiftPressed(false);
+
+		_interactiveElements = new ArrayList<>();
+	}
+
+	public List<RenderInteractiveElement> getInteractiveElements() {
+		return _interactiveElements;
+	}
+
+	public void clearInteractiveElements() {
+		_interactiveElements.clear();
+	}
+
+	public void setInteractiveElements(RenderInteractiveElement... elems) {
+		clearInteractiveElements();
+
+		_interactiveElements.addAll(Arrays.asList(elems));
+
+		redraw();
 	}
 
 	private void init_DND() {
@@ -259,7 +280,17 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		renderSelection(e.gc);
 
+		renderInteractiveElements(e.gc);
+
 		renderLabels(e, calc);
+	}
+
+	private void renderInteractiveElements(GC gc) {
+
+		for (var elem : _interactiveElements) {
+			elem.render(gc);
+		}
+
 	}
 
 	private void renderBorders(GC gc, ZoomCalculator calc) {
@@ -321,16 +352,16 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					gc.setForeground(selectionColor);
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
-					
+
 					var name = EditorComponent.get_editorName(model);
-					
+
 					var x = bounds[0];
 					var y = bounds[1];
-					
+
 					gc.setAlpha(150);
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 					gc.drawText(name, (int) x - 1, (int) y - 21, true);
-					
+
 					gc.setAlpha(255);
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 					gc.drawText(name, (int) x, (int) y - 20, true);
@@ -1029,11 +1060,28 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		//
+		for (var elem : _interactiveElements) {
+			elem.mouseDown(e);
+		}
 	}
 
 	@Override
 	public void mouseUp(MouseEvent e) {
+		boolean contains = false;
+
+		for (var elem : _interactiveElements) {
+			if (elem.contains(e.x, e.y)) {
+				contains = true;
+				break;
+			}
+		}
+
+		if (contains) {
+			for (var elem : _interactiveElements) {
+				elem.mouseUp(e);
+			}
+		}
+
 		if (_dragDetected) {
 
 			_dragDetected = false;
@@ -1045,13 +1093,42 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			return;
 		}
 
-		_selectionEvents.updateSelection(e);
+		if (!contains) {
+			var prevSelection = _selection;
+
+			_selectionEvents.updateSelection(e);
+
+			if (prevSelection.size() != _selection.size()) {
+				clearInteractiveElements();
+			}
+		}
+
 	}
 
 	@Override
 	public void mouseMove(MouseEvent e) {
-		if (_dragObjectsEvents.isDragging()) {
-			_dragObjectsEvents.update(e);
+		boolean contains = false;
+
+		for (var elem : _interactiveElements) {
+			if (elem.contains(e.x, e.y)) {
+				contains = true;
+				break;
+			}
+		}
+
+		if (contains) {
+
+			for (var elem : _interactiveElements) {
+				elem.mouseMove(e);
+			}
+
+			redraw();
+		} else {
+
+			if (_dragObjectsEvents.isDragging()) {
+				_dragObjectsEvents.update(e);
+			}
+
 		}
 	}
 

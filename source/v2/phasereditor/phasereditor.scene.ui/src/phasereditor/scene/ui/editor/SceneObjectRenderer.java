@@ -740,6 +740,43 @@ public class SceneObjectRenderer {
 
 		return point;
 	}
+	
+	public float globalScaleX(ObjectModel model) {
+		var scale = TransformComponent.get_scaleX(model);
+		
+		var parent = ParentComponent.get_parent(model);
+		
+		if (parent == null) {
+			return _canvas.getScale() * scale;
+		}
+		
+		return scale * globalScaleX(parent);
+	}
+	
+	public float globalScaleY(ObjectModel model) {
+		var scale = TransformComponent.get_scaleY(model);
+		
+		var parent = ParentComponent.get_parent(model);
+		
+		if (parent == null) {
+			return _canvas.getScale() * scale;
+		}
+		
+		return scale * globalScaleY(parent);
+	}
+	
+	public float globalAngle(ObjectModel model) {
+		var angle = TransformComponent.get_angle(model);
+		
+		var parent = ParentComponent.get_parent(model);
+		
+		if (parent == null) {
+			return angle;
+		}
+		
+		return angle + globalAngle(parent);
+	}
+	
 
 	public float[] sceneToLocal(ObjectModel model, float sceneX, float sceneY) {
 		var matrix = _modelMatrixMap.get(model);

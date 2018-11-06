@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.interactive.TilePositionElement;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -72,7 +73,17 @@ public class TileSpriteSection extends ScenePropertySection {
 		{
 			var manager = new ToolBarManager();
 			manager.add(new Action("Tile Position", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-				//
+				@Override
+				public void run() {
+					getEditor().getScene().setInteractiveElements(
+
+							new TilePositionElement(getEditor(), getModels(), true, false),
+							new TilePositionElement(getEditor(), getModels(), false, true),
+							new TilePositionElement(getEditor(), getModels(), true, true)
+
+					);
+
+				}
 			});
 			manager.createControl(comp);
 		}
@@ -226,7 +237,7 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		getEditor().executeOperation(
 				new SingleObjectSnapshotOperation(before, after, "Reset tile sprite size to texture size.", true));
-		
+
 		getEditor().updatePropertyPagesContentWithSelection();
 
 		getEditor().getScene().redraw();

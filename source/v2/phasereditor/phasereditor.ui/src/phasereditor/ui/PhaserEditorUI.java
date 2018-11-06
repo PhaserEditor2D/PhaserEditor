@@ -1369,4 +1369,14 @@ public class PhaserEditorUI {
 					(int) imgDstH);
 		}
 	}
+	
+	public static float distance(float[] a, float[] b) {
+		return distance(a[0], a[1], b[0], b[1]);
+	}
+
+	public static float distance(float x1, float y1, float x2, float y2) {
+		double a = x2 - x1;
+        double b = y2 - y1;
+        return (float) Math.sqrt(a * a + b * b);
+	}
 }
