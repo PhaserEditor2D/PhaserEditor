@@ -311,16 +311,29 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					gc.setLineWidth(3);
 					gc.setAlpha(150);
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-					
+
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
-					
+
 					gc.setAlpha(255);
 					gc.setLineWidth(1);
-					
+
 					gc.setForeground(selectionColor);
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
+					
+					var name = EditorComponent.get_editorName(model);
+					
+					var x = bounds[0];
+					var y = bounds[1];
+					
+					gc.setAlpha(150);
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+					gc.drawText(name, (int) x - 1, (int) y - 21, true);
+					
+					gc.setAlpha(255);
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+					gc.drawText(name, (int) x, (int) y - 20, true);
 				}
 			}
 		}
