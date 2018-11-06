@@ -53,6 +53,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	private boolean _fitWindow;
 	private IFile _imageFile;
 	protected Rectangle _imageRenderArea;
+	private boolean _zoomWhenShiftPressed;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -137,6 +138,12 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 
 		@Override
 		public void mouseScrolled(MouseEvent e) {
+			if (isZoomWhenShiftPressed()) {
+				if ((e.stateMask & SWT.SHIFT) == 0) {
+					return;
+				}
+			}
+
 			float zoom = (e.count < 0 ? 0.9f : 1.1f);
 
 			float oldScale = getScale();
@@ -207,6 +214,16 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 				//
 			}
 		});
+
+		_zoomWhenShiftPressed = true;
+	}
+
+	public boolean isZoomWhenShiftPressed() {
+		return _zoomWhenShiftPressed;
+	}
+
+	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
+		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
 
 	protected void fitWindow() {
@@ -264,12 +281,12 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public void setImageFile(IFile file) {
 		setImageFile(file, loadImage(file));
 	}
-	
+
 	public void setImageFile(IFile file, Image image) {
 		_imageFile = file;
 		setImage(image);
 	}
-	
+
 	public final IFile getImageFile() {
 		return _imageFile;
 	}
@@ -294,7 +311,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public Image getImage() {
 		return _image;
 	}
-	
+
 	public FrameData getFrameData() {
 		return _frameData;
 	}
@@ -328,7 +345,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public Rectangle getImageViewport() {
 		return _viewport;
 	}
-	
+
 	public Rectangle getImageRenderArea() {
 		return _imageRenderArea;
 	}
@@ -341,7 +358,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		}
 
 		prepareGC(e.gc);
-		
+
 		customPaintControl(e);
 	}
 
@@ -369,16 +386,18 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 					size = _frameData.srcSize;
 				}
 
-				_imageRenderArea = new Rectangle((int) (_panOffsetX + origDst.x * _scale), (int) (_panOffsetY + origDst.y * _scale),
-						(int) (origDst.width * _scale), (int) (origDst.height * _scale));
+				_imageRenderArea = new Rectangle((int) (_panOffsetX + origDst.x * _scale),
+						(int) (_panOffsetY + origDst.y * _scale), (int) (origDst.width * _scale),
+						(int) (origDst.height * _scale));
 
 				bgDst = new Rectangle(_panOffsetX, _panOffsetY, (int) (size.x * _scale), (int) (size.y * _scale));
 			}
 
 			drawImageBackground(gc, bgDst);
 
-			drawImage(gc, src.x, src.y, src.width, src.height, _imageRenderArea.width, _imageRenderArea.height, _imageRenderArea.x, _imageRenderArea.y);
-			
+			drawImage(gc, src.x, src.y, src.width, src.height, _imageRenderArea.width, _imageRenderArea.height,
+					_imageRenderArea.x, _imageRenderArea.y);
+
 			gc.setAntialias(SWT.ON);
 
 			drawMore(gc, src.width, src.height, bgDst.width, bgDst.height, bgDst.x, bgDst.y);

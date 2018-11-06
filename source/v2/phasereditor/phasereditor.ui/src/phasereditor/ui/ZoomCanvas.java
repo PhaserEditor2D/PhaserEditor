@@ -43,6 +43,7 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 	private int _offsetY;
 	private float _scale = 1;
 	private boolean _fitWindow;
+	private boolean _zoomWhenShiftPressed;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -151,6 +152,13 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 
 		@Override
 		public void mouseScrolled(MouseEvent e) {
+			
+			if (isZoomWhenShiftPressed()) {
+				if ((e.stateMask & SWT.SHIFT) == 0) {
+					return;
+				}
+			}
+			
 			float zoom = (e.count < 0 ? 0.9f : 1.1f);
 
 			float oldScale = getScale();
@@ -221,7 +229,17 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 				//
 			}
 		});
+		
+		_zoomWhenShiftPressed = true;
 
+	}
+	
+	public boolean isZoomWhenShiftPressed() {
+		return _zoomWhenShiftPressed;
+	}
+	
+	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
+		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
 
 	@Override

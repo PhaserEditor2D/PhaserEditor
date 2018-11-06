@@ -71,6 +71,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		setLayout(new StackLayout());
 
 		_atlasCanvas = new AtlasCanvas(this, SWT.NONE, true);
+		_atlasCanvas.setZoomWhenShiftPressed(false);
 		_filteredGrid = new FilteredFrameGrid(this, SWT.NONE, true);
 		AssetPackUI.installAssetTooltips(_filteredGrid);
 

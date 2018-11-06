@@ -818,6 +818,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private AtlasCanvas createAtlasCanvas(Composite parent) {
 		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE, false);
+		canvas.setZoomWhenShiftPressed(false);
 		// we handle the cache
 		canvas.setDisableCanche(true);
 

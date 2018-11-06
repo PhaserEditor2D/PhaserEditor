@@ -247,6 +247,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				e.gc.drawText(_animCanvas.getModel().getKey(), 0, 0, true);
 			}
 		});
+		_animCanvas.setZoomWhenShiftPressed(false);
+		
+		_timelineCanvas.setZoomWhenShiftPressed(false);
 
 		disableToolbar();
 

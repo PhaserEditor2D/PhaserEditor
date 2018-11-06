@@ -79,6 +79,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 	private Set<AnimationFrameModel> _selectedFrames = new LinkedHashSet<>();
 	private AnimationFrameModel _lastSelectedFrame;
 	private AnimationCanvas _animCanvas;
+	private boolean _zoomWhenShiftPressed;
 
 	public AnimationTimelineCanvas(Composite parent, int style) {
 		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -104,7 +105,17 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		init_DND_Support();
 
 		initMouseSupport();
+		
+		_zoomWhenShiftPressed = true;
 
+	}
+	
+	public boolean isZoomWhenShiftPressed() {
+		return _zoomWhenShiftPressed;
+	}
+	
+	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
+		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
 
 	private void initMouseSupport() {
@@ -553,6 +564,12 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
+		if (isZoomWhenShiftPressed()) {
+			if ((e.stateMask & SWT.SHIFT) == 0) {
+				return;
+			}
+		}
+		
 		if (e.count < 0) {
 			_widthFactor -= 0.2;
 		} else {

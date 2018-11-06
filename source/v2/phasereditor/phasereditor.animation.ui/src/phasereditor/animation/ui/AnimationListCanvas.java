@@ -126,7 +126,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			public Point modelToView(int x, int y) {
 				return new Point(x, y + _origin.y);
 			}
-			
+
 			@Override
 			public Image get_DND_Image(int index) {
 				IAssetFrameModel asset = findAssetFor(index);
@@ -172,7 +172,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		}
 
 		var gc = e.gc;
-		
+
 		prepareGC(gc);
 
 		var tx = new Transform(getDisplay());
@@ -254,7 +254,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 
 			y += _rowHeight;
 		}
-		
+
 		tx.dispose();
 	}
 
@@ -299,10 +299,9 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		} else {
 			_animations = new ArrayList<>(_model.getAnimations());
 		}
-		
-		
+
 		updateScroll();
-		
+
 		redraw();
 	}
 
@@ -327,7 +326,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 
 	void updateScroll() {
 		ScrollBar vBar = getVerticalBar();
-		
+
 		if (_animations.isEmpty()) {
 			vBar.setMaximum(0);
 			vBar.setSelection(0);
@@ -335,7 +334,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			_origin.y = 0;
 			return;
 		}
-		
+
 		var b = getBounds();
 		b.height = _rowHeight * _animations.size();
 		Rectangle rect = b;

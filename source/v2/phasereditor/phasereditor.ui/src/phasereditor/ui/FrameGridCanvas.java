@@ -518,7 +518,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if (_listLayout && (e.stateMask & SWT.SHIFT) == 0) {
+		if ((e.stateMask & SWT.SHIFT) == 0) {
 			return;
 		}
 

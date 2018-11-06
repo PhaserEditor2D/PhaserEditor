@@ -102,6 +102,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		addMouseMoveListener(this);
 
 		init_DND();
+		
+		setZoomWhenShiftPressed(false);
 	}
 
 	private void init_DND() {
