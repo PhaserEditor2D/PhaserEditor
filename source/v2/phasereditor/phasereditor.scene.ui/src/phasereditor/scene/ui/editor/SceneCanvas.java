@@ -67,6 +67,7 @@ import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.ColorUtil;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -102,7 +103,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		addMouseMoveListener(this);
 
 		init_DND();
-		
+
 		setZoomWhenShiftPressed(false);
 	}
 
@@ -280,6 +281,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	private void renderSelection(GC gc) {
+
+		var selectionColor = SWTResourceManager.getColor(ColorUtil.GREENYELLOW.rgb);
+
 		for (var obj : _selection) {
 			if (obj instanceof ObjectModel) {
 				var model = (ObjectModel) obj;
@@ -294,19 +298,27 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 							var merge = SceneObjectRenderer.joinBounds(bounds, childrenBounds);
 
-							gc.setAlpha(150);
-							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
+							gc.setForeground(selectionColor);
 
 							gc.drawPolygon(new int[] { (int) merge[0], (int) merge[1], (int) merge[2], (int) merge[3],
 									(int) merge[4], (int) merge[5], (int) merge[6], (int) merge[7] });
-							gc.setAlpha(255);
 						}
 
 					}
 				}
 
 				if (bounds != null) {
-					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
+					gc.setLineWidth(3);
+					gc.setAlpha(150);
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+					
+					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
+							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
+					
+					gc.setAlpha(255);
+					gc.setLineWidth(1);
+					
+					gc.setForeground(selectionColor);
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
 				}
