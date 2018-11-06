@@ -1112,7 +1112,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		for (var elem : _interactiveElements) {
 			if (elem.contains(e.x, e.y)) {
 				contains = true;
-				break;
 			}
 		}
 
@@ -1122,13 +1121,16 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				elem.mouseMove(e);
 			}
 
-			redraw();
 		} else {
 
 			if (_dragObjectsEvents.isDragging()) {
 				_dragObjectsEvents.update(e);
 			}
 
+		}
+
+		if (!_interactiveElements.isEmpty()) {
+			redraw();
 		}
 	}
 

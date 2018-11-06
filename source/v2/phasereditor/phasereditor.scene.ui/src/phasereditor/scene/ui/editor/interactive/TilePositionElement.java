@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -32,6 +33,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -40,6 +42,7 @@ import phasereditor.scene.ui.editor.SceneEditor;
 @SuppressWarnings("boxing")
 public class TilePositionElement extends RenderInteractiveElement {
 
+	private static final int BOX = 14;
 	private static final int ARROW_LENGTH = 80;
 	private int _globalX;
 	private int _globalY;
@@ -48,6 +51,7 @@ public class TilePositionElement extends RenderInteractiveElement {
 	private int _initialGlobalX;
 	private boolean _changeX;
 	private boolean _changeY;
+	private boolean _hightlights;
 
 	public TilePositionElement(SceneEditor editor, List<ObjectModel> models, boolean changeX, boolean changeY) {
 		super(editor, models);
@@ -114,31 +118,21 @@ public class TilePositionElement extends RenderInteractiveElement {
 		globalAngle = globalAngle / size;
 
 		if (_changeX && _changeY) {
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-			fillRect(gc, globalX, _globalY, globalAngle, 12);
-
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-			fillRect(gc, globalX, _globalY, globalAngle, 10);
-
+			fillRect(gc, globalX, _globalY, globalAngle, BOX,
+					SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
 		} else {
 			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-			fillRect(gc, globalX, _globalY, globalAngle, 12);
-
-			gc.setLineWidth(3);
-			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
-			gc.setLineWidth(1);
-
-			var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+			var color = SWTResourceManager
+					.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
 
 			gc.setBackground(color);
 			gc.setForeground(color);
 
 			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
 
-			fillRect(gc, globalX, globalY, globalAngle, 10);
+			fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
 		}
 
 		_globalX = globalX;
@@ -146,14 +140,37 @@ public class TilePositionElement extends RenderInteractiveElement {
 
 	}
 
-	private static void fillRect(GC gc, int globalX, int globalY, float globalAngle, int size) {
+	private static void fillArrow(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
+		var tx = new Transform(gc.getDevice());
+
+		tx.translate(globalX, globalY);
+		tx.rotate(globalAngle);
+		tx.translate(0, -size / 2);
+		gc.setTransform(tx);
+
+		gc.setBackground(color);
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+
+		gc.fillPolygon(new int[] { 0, 0, size, size / 2, 0, size });
+		gc.drawPolygon(new int[] { 0, 0, size, size / 2, 0, size });
+
+		gc.setTransform(null);
+
+		tx.dispose();
+	}
+
+	private static void fillRect(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
 		var tx = new Transform(gc.getDevice());
 
 		tx.translate(globalX, globalY);
 		tx.rotate(globalAngle);
 		gc.setTransform(tx);
 
+		gc.setBackground(color);
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+
 		gc.fillRectangle(-size / 2, -size / 2, size, size);
+		gc.drawRectangle(-size / 2, -size / 2, size, size);
 
 		gc.setTransform(null);
 
@@ -167,15 +184,11 @@ public class TilePositionElement extends RenderInteractiveElement {
 			return true;
 		}
 
-		boolean b = _globalX - 5 <= sceneX
+		var contains = PhaserEditorUI.distance(sceneX, sceneY, _globalX, _globalY) <= BOX;
 
-				&& _globalX + 5 >= sceneX
+		_hightlights = contains;
 
-				&& _globalY - 5 <= sceneY
-
-				&& _globalY + 5 >= sceneY;
-
-		return b;
+		return contains;
 	}
 
 	@Override
