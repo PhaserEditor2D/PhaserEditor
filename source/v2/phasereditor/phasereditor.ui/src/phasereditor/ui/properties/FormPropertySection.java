@@ -292,6 +292,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		public ScaleListener(Consumer<Float> listener) {
 			super();
 			_listener = listener;
+			_initial = -1;
 		}
 
 		@Override
@@ -301,16 +302,20 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
-			//
-		}
-
-		@Override
-		public void mouseDown(MouseEvent e) {
 			_initial = ((Scale) e.widget).getSelection();
 		}
 
 		@Override
+		public void mouseDown(MouseEvent e) {
+			//
+		}
+
+		@Override
 		public void mouseUp(MouseEvent e) {
+			applyValue();
+		}
+
+		private void applyValue() {
 			if (_value != _initial) {
 				_initial = _value;
 				_listener.accept((float) _value / 100);
@@ -320,10 +325,12 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	}
 
 	protected void listenFloat(Scale scale, Consumer<Float> listener) {
-		var oldListener = scale.getData("-prop-listener");
+		@SuppressWarnings("unchecked")
+		var oldListener = (ScaleListener) scale.getData("-prop-listener");
 
 		if (oldListener != null) {
-			scale.removeSelectionListener((SelectionListener) oldListener);
+			scale.removeSelectionListener(oldListener);
+			scale.removeMouseListener(oldListener);
 		}
 
 		var scaleListener = new ScaleListener(listener);

@@ -50,7 +50,6 @@ public class FlipSection extends ScenePropertySection {
 		return obj instanceof FlipComponent;
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NONE);
