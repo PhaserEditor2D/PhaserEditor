@@ -13,7 +13,7 @@ var NOOP = require('../utils/NOOP');
  * This is invoked automatically by the Phaser.Game instance.
  *
  * @class RequestAnimationFrame
- * @memberOf Phaser.DOM
+ * @memberof Phaser.DOM
  * @constructor
  * @since 3.0.0
  */
@@ -94,14 +94,14 @@ var RequestAnimationFrame = new Class({
          */
         this.step = function step (timestamp)
         {
-            // DOMHighResTimeStamp
+            //  DOMHighResTimeStamp
             _this.lastTime = _this.tick;
 
             _this.tick = timestamp;
 
-            _this.callback(timestamp);
-
             _this.timeOutID = window.requestAnimationFrame(step);
+
+            _this.callback(timestamp);
         };
 
         /**
@@ -122,9 +122,9 @@ var RequestAnimationFrame = new Class({
 
             _this.tick = d;
 
-            _this.callback(d);
-
             _this.timeOutID = window.setTimeout(stepTimeout, delay);
+
+            _this.callback(d);
         };
     },
 

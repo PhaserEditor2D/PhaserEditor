@@ -18,7 +18,7 @@ var Render = require('./ParticleManagerRender');
  *
  * @class ParticleEmitterManager
  * @extends Phaser.GameObjects.GameObject
- * @memberOf Phaser.GameObjects.Particles
+ * @memberof Phaser.GameObjects.Particles
  * @constructor
  * @since 3.0.0
  *
@@ -446,6 +446,18 @@ var ParticleEmitterManager = new Class({
      * @since 3.10.0
      */
     setScrollFactor: function ()
+    {
+    },
+
+    /**
+     * A NOOP method so you can pass an EmitterManager to a Container.
+     * Calling this method will do nothing. It is intentionally empty.
+     *
+     * @method Phaser.GameObjects.Particles.ParticleEmitterManager#setBlendMode
+     * @private
+     * @since 3.15.0
+     */
+    setBlendMode: function ()
     {
     }
 

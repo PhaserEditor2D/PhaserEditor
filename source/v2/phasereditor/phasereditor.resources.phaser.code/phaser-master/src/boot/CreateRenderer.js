@@ -57,10 +57,13 @@ var CreateRenderer = function (game)
     if (config.canvas)
     {
         game.canvas = config.canvas;
+
+        game.canvas.width = game.scale.canvasWidth;
+        game.canvas.height = game.scale.canvasHeight;
     }
     else
     {
-        game.canvas = CanvasPool.create(game, config.width * config.resolution, config.height * config.resolution, config.renderType);
+        game.canvas = CanvasPool.create(game, game.scale.canvasWidth, game.scale.canvasHeight, config.renderType);
     }
 
     //  Does the game config provide some canvas css styles to use?
@@ -74,10 +77,6 @@ var CreateRenderer = function (game)
     {
         CanvasInterpolation.setCrisp(game.canvas);
     }
-
-    //  Zoomed?
-    game.canvas.style.width = (config.width * config.zoom).toString() + 'px';
-    game.canvas.style.height = (config.height * config.zoom).toString() + 'px';
 
     if (config.renderType === CONST.HEADLESS)
     {
@@ -97,9 +96,6 @@ var CreateRenderer = function (game)
         if (config.renderType === CONST.WEBGL)
         {
             game.renderer = new WebGLRenderer(game);
-
-            //  The WebGL Renderer sets this value during its init, not on construction
-            game.context = null;
         }
         else
         {
@@ -116,9 +112,6 @@ var CreateRenderer = function (game)
         config.renderType = CONST.WEBGL;
 
         game.renderer = new WebGLRenderer(game);
-
-        //  The WebGL Renderer sets this value during its init, not on construction
-        game.context = null;
     }
 
     if (!typeof WEBGL_RENDERER && typeof CANVAS_RENDERER)

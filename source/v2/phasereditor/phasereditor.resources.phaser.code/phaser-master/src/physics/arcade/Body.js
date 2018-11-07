@@ -38,7 +38,7 @@ var Vector2 = require('../../math/Vector2');
  * Its static counterpart is {@link Phaser.Physics.Arcade.StaticBody}.
  *
  * @class Body
- * @memberOf Phaser.Physics.Arcade
+ * @memberof Phaser.Physics.Arcade
  * @constructor
  * @since 3.0.0
  *
@@ -299,7 +299,7 @@ var Body = new Class({
          *
          * @name Phaser.Physics.Arcade.Body#newVelocity
          * @type {Phaser.Math.Vector2}
-         * @readOnly
+         * @readonly
          * @since 3.0.0
          */
         this.newVelocity = new Vector2();
@@ -644,7 +644,7 @@ var Body = new Class({
 
         /**
          * Whether this Body is checked for collisions and for which directions.
-         * You can set `checkCollision.none = false` to disable collision checks.
+         * You can set `checkCollision.none = true` to disable collision checks.
          *
          * @name Phaser.Physics.Arcade.Body#checkCollision
          * @type {ArcadeBodyCollision}
@@ -717,7 +717,7 @@ var Body = new Class({
          *
          * @name Phaser.Physics.Arcade.Body#physicsType
          * @type {integer}
-         * @readOnly
+         * @readonly
          * @since 3.0.0
          */
         this.physicsType = CONST.DYNAMIC_BODY;
@@ -1415,7 +1415,7 @@ var Body = new Class({
 
         if (this.debugShowBody)
         {
-            graphic.lineStyle(1, this.debugBodyColor);
+            graphic.lineStyle(graphic.defaultStrokeWidth, this.debugBodyColor);
 
             if (this.isCircle)
             {
@@ -1429,7 +1429,7 @@ var Body = new Class({
 
         if (this.debugShowVelocity)
         {
-            graphic.lineStyle(1, this.world.defaults.velocityDebugColor, 1);
+            graphic.lineStyle(graphic.defaultStrokeWidth, this.world.defaults.velocityDebugColor, 1);
             graphic.lineBetween(x, y, x + this.velocity.x / 2, y + this.velocity.y / 2);
         }
     },
@@ -1956,6 +1956,25 @@ var Body = new Class({
     },
 
     /**
+     * Sets the Body's `enable` property.
+     *
+     * @method Phaser.Physics.Arcade.Body#setEnable
+     * @since 3.15.0
+     *
+     * @param {boolean} [value=true] - The value to assign to `enable`.
+     *
+     * @return {Phaser.Physics.Arcade.Body} This Body object.
+     */
+    setEnable: function (value)
+    {
+        if (value === undefined) { value = true; }
+
+        this.enable = value;
+
+        return this;
+    },
+
+    /**
      * The Body's horizontal position (left edge).
      *
      * @name Phaser.Physics.Arcade.Body#x
@@ -2002,7 +2021,7 @@ var Body = new Class({
      *
      * @name Phaser.Physics.Arcade.Body#left
      * @type {number}
-     * @readOnly
+     * @readonly
      * @since 3.0.0
      */
     left: {
@@ -2019,7 +2038,7 @@ var Body = new Class({
      *
      * @name Phaser.Physics.Arcade.Body#right
      * @type {number}
-     * @readOnly
+     * @readonly
      * @since 3.0.0
      */
     right: {
@@ -2036,7 +2055,7 @@ var Body = new Class({
      *
      * @name Phaser.Physics.Arcade.Body#top
      * @type {number}
-     * @readOnly
+     * @readonly
      * @since 3.0.0
      */
     top: {
@@ -2053,7 +2072,7 @@ var Body = new Class({
      *
      * @name Phaser.Physics.Arcade.Body#bottom
      * @type {number}
-     * @readOnly
+     * @readonly
      * @since 3.0.0
      */
     bottom: {

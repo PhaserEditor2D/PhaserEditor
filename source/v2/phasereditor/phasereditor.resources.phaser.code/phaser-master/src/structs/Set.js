@@ -10,10 +10,10 @@ var Class = require('../utils/Class');
  * @callback EachSetCallback
  * @generic E - [entry]
  *
- * @param {*} entry - [description]
- * @param {number} index - [description]
+ * @param {*} entry - The Set entry.
+ * @param {number} index - The index of the entry within the Set.
  *
- * @return {?boolean} [description]
+ * @return {?boolean} The callback result.
  */
 
 /**
@@ -21,7 +21,7 @@ var Class = require('../utils/Class');
  * A Set is a collection of unique elements.
  *
  * @class Set
- * @memberOf Phaser.Structs
+ * @memberof Phaser.Structs
  * @constructor
  * @since 3.0.0
  *

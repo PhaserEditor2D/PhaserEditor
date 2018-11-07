@@ -25,7 +25,7 @@ var Vector2 = require('../math/Vector2');
  * callbacks.
  *
  * @class Pointer
- * @memberOf Phaser.Input
+ * @memberof Phaser.Input
  * @constructor
  * @since 3.0.0
  *
@@ -52,7 +52,7 @@ var Pointer = new Class({
          *
          * @name Phaser.Input.Pointer#id
          * @type {integer}
-         * @readOnly
+         * @readonly
          * @since 3.0.0
          */
         this.id = id;
@@ -283,6 +283,18 @@ var Pointer = new Class({
          * @since 3.0.0
          */
         this.wasTouch = false;
+
+        /**
+         * Did this Pointer get canceled by a touchcancel event?
+         * 
+         * Note: "canceled" is the American-English spelling of "cancelled". Please don't submit PRs correcting it!
+         *
+         * @name Phaser.Input.Pointer#wasCanceled
+         * @type {boolean}
+         * @default false
+         * @since 3.15.0
+         */
+        this.wasCanceled = false;
 
         /**
          * If the mouse is locked, the horizontal relative movement of the Pointer in pixels since last frame.
@@ -524,6 +536,7 @@ var Pointer = new Class({
         this.dirty = true;
 
         this.wasTouch = true;
+        this.wasCanceled = false;
     },
 
     /**
@@ -580,6 +593,35 @@ var Pointer = new Class({
         this.dirty = true;
 
         this.wasTouch = true;
+        this.wasCanceled = false;
+        
+        this.active = false;
+    },
+
+    /**
+     * Internal method to handle a Touch Cancel Event.
+     *
+     * @method Phaser.Input.Pointer#touchcancel
+     * @private
+     * @since 3.15.0
+     *
+     * @param {TouchEvent} event - The Touch Event to process.
+     */
+    touchcancel: function (event)
+    {
+        this.buttons = 0;
+
+        this.event = event;
+
+        this.primaryDown = false;
+
+        this.justUp = false;
+        this.isDown = false;
+
+        this.dirty = true;
+
+        this.wasTouch = true;
+        this.wasCanceled = true;
         
         this.active = false;
     },

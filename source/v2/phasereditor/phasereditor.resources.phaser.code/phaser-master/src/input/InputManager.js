@@ -29,7 +29,7 @@ var TransformXY = require('../math/TransformXY');
  * for dealing with all input events for a Scene.
  *
  * @class InputManager
- * @memberOf Phaser.Input
+ * @memberof Phaser.Input
  * @constructor
  * @since 3.0.0
  *
@@ -48,7 +48,7 @@ var InputManager = new Class({
          *
          * @name Phaser.Input.InputManager#game
          * @type {Phaser.Game}
-         * @readOnly
+         * @readonly
          * @since 3.0.0
          */
         this.game = game;
@@ -214,7 +214,7 @@ var InputManager = new Class({
          *
          * @name Phaser.Input.InputManager#pointersTotal
          * @type {integer}
-         * @readOnly
+         * @readonly
          * @since 3.10.0
          */
         this.pointersTotal = config.inputActivePointers;
@@ -397,6 +397,7 @@ var InputManager = new Class({
      */
     resize: function ()
     {
+        /*
         this.updateBounds();
 
         //  Game config size
@@ -410,6 +411,7 @@ var InputManager = new Class({
         //  Scale factor
         this.scale.x = gw / bw;
         this.scale.y = gh / bh;
+        */
     },
 
     /**
@@ -489,6 +491,10 @@ var InputManager = new Class({
 
                 case CONST.TOUCH_END:
                     this.stopPointer(event, time);
+                    break;
+
+                case CONST.TOUCH_CANCEL:
+                    this.cancelPointer(event, time);
                     break;
 
                 case CONST.POINTER_LOCK_CHANGE:
@@ -697,6 +703,37 @@ var InputManager = new Class({
     },
 
     /**
+     * Called by the main update loop when a Touch Cancel Event is received.
+     *
+     * @method Phaser.Input.InputManager#cancelPointer
+     * @private
+     * @since 3.15.0
+     *
+     * @param {TouchEvent} event - The native DOM event to be processed.
+     * @param {number} time - The time stamp value of this game step.
+     */
+    cancelPointer: function (event, time)
+    {
+        var pointers = this.pointers;
+
+        for (var c = 0; c < event.changedTouches.length; c++)
+        {
+            var changedTouch = event.changedTouches[c];
+
+            for (var i = 1; i < this.pointersTotal; i++)
+            {
+                var pointer = pointers[i];
+
+                if (pointer.active && pointer.identifier === changedTouch.identifier)
+                {
+                    pointer.touchend(changedTouch, time);
+                    break;
+                }
+            }
+        }
+    },
+
+    /**
      * Adds new Pointer objects to the Input Manager.
      *
      * By default Phaser creates 2 pointer objects: `mousePointer` and `pointer1`.
@@ -837,6 +874,21 @@ var InputManager = new Class({
 
             this._hasUpCallback = this.processDomCallbacks(callbacks.upOnce, callbacks.up, event);
         }
+    },
+
+    /**
+     * Queues a touch cancel event, as passed in by the TouchManager.
+     * Also dispatches any DOM callbacks for this event.
+     *
+     * @method Phaser.Input.InputManager#queueTouchCancel
+     * @private
+     * @since 3.15.0
+     *
+     * @param {TouchEvent} event - The native DOM Touch event.
+     */
+    queueTouchCancel: function (event)
+    {
+        this.queue.push(CONST.TOUCH_CANCEL, event);
     },
 
     /**

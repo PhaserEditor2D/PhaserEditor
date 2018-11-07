@@ -9,8 +9,8 @@
  * 
  * @name Phaser.BlendModes
  * @enum {integer}
- * @memberOf Phaser
- * @readOnly
+ * @memberof Phaser
+ * @readonly
  * @since 3.0.0
  */
 
