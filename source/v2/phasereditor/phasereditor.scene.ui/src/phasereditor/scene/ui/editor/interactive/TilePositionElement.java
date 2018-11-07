@@ -33,6 +33,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -246,6 +247,36 @@ public class TilePositionElement extends RenderInteractiveElement {
 
 	@Override
 	public void mouseUp(MouseEvent e) {
+		if (_dragging) {
+
+			var editor = getEditor();
+
+			getModels().forEach(model -> {
+
+				model.put("final-tilePositionX", TileSpriteComponent.get_tilePositionX(model));
+				model.put("final-tilePositionY", TileSpriteComponent.get_tilePositionY(model));
+
+				TileSpriteComponent.set_tilePositionX(model, (float) model.get("initial-tilePositionX"));
+				TileSpriteComponent.set_tilePositionY(model, (float) model.get("initial-tilePositionY"));
+
+			});
+
+			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+
+			getModels().forEach(model -> {
+
+				TileSpriteComponent.set_tilePositionX(model, (float) model.get("final-tilePositionX"));
+				TileSpriteComponent.set_tilePositionY(model, (float) model.get("final-tilePositionY"));
+
+			});
+
+			var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+
+			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set tile position.", true));
+
+			editor.setDirty(true);
+
+		}
 		_dragging = false;
 	}
 

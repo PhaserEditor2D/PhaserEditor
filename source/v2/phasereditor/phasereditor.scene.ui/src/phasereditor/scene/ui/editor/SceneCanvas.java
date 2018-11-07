@@ -716,6 +716,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		if (_editor.getOutline() != null) {
 			_editor.getOutline().setSelection_from_external(sel);
 		}
+		
+		clearInteractiveElements();
 	}
 
 	private static boolean hitsPolygon(int x, int y, float[] polygon) {
@@ -797,7 +799,11 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	public void setSelection_from_external(IStructuredSelection selection) {
+		
 		_selection = new ArrayList<>(List.of(selection.toArray()));
+		
+		clearInteractiveElements();
+		
 		redraw();
 	}
 

@@ -47,7 +47,7 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.SceneSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
@@ -132,15 +132,15 @@ public class EditorSection extends ScenePropertySection {
 		getModels().forEach(model -> {
 			SceneEditor editor = getEditor();
 
-			var before = WorldSnapshotOperation.takeSnapshot(editor);
+			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
 			EditorComponent.set_editorField(model, _fieldAction.isChecked());
 
 			editor.setDirty(true);
 
-			var after = WorldSnapshotOperation.takeSnapshot(editor);
+			var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
-			editor.executeOperation(new SceneSnapshotOperation(before, after, "Set variables field flag."));
+			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set variables field flag."));
 		});
 	}
 
