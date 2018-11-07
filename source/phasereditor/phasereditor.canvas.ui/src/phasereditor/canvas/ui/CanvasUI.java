@@ -27,7 +27,6 @@ import static java.lang.System.out;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -63,7 +62,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
@@ -470,9 +468,9 @@ public class CanvasUI {
 
 		javafx.scene.image.Image[] result = new javafx.scene.image.Image[1];
 
-		try (InputStream contents = file.getContents()) {
+		try {
 			CanvasModel model = new CanvasModel(file);
-			model.read(new JSONObject(new JSONTokener(contents)));
+			model.read(file);
 			GroupControl worldControl = new GroupControl(null, model.getWorld());
 			GroupNode node = worldControl.getNode();
 			node.setBackground(

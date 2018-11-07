@@ -23,7 +23,6 @@ package phasereditor.canvas.ui.editors;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.io.InputStream;
 import java.util.Arrays;
 
 import org.eclipse.core.commands.operations.IUndoContext;
@@ -74,7 +73,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.CanvasCore;
@@ -196,31 +194,29 @@ public class CanvasEditor extends MultiPageEditorPart
 		super.setInput(input);
 		IFileEditorInput fileInput = (IFileEditorInput) input;
 		IFile file = fileInput.getFile();
-		try (InputStream contents = file.getContents();) {
-			JSONObject data = new JSONObject(new JSONTokener(contents));
-			_model = new CanvasModel(file);
-			try {
-				_model.read(data);
-			} catch (Exception e) {
-				e.printStackTrace();
-				_model = new CanvasModel(file);
-				Display.getDefault().asyncExec(new Runnable() {
 
-					@Override
-					public void run() {
-						Shell shell = Display.getDefault().getActiveShell();
-						MessageDialog.openError(shell, "Error", "The scene data cannot ve loaded.\n" + e.getMessage());
-					}
-				});
-			}
-			_model.getWorld().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, arg -> {
-				firePropertyChange(PROP_DIRTY);
-			});
-			swtRun(this::updateTitle);
+		_model = new CanvasModel(file);
+		
+		try {
+			_model.read(file);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			_model = new CanvasModel(file);
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					Shell shell = Display.getDefault().getActiveShell();
+					MessageDialog.openError(shell, "Error", "The scene data cannot ve loaded.\n" + e.getMessage());
+				}
+			});
 		}
+		
+		_model.getWorld().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, arg -> {
+			firePropertyChange(PROP_DIRTY);
+		});
+		
+		swtRun(this::updateTitle);
 	}
 
 	@Override
@@ -406,7 +402,6 @@ public class CanvasEditor extends MultiPageEditorPart
 	private void initPalette() {
 		_paletteComp.setProject(getEditorInputFile().getProject());
 	}
-	
 
 	private void initContexts() {
 		getContextService().activateContext(EDITOR_CONTEXT_ID);

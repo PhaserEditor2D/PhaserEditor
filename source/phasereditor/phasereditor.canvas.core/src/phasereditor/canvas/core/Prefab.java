@@ -21,13 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.util.UUID;
 
 import org.eclipse.core.resources.IFile;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 /**
  * @author arian
@@ -66,10 +64,10 @@ public class Prefab extends CanvasFile{
 	public JSONObject newInstance(JSONObject initInfo) {
 		IFile file = getFile();
 		CanvasModel model = new CanvasModel(file);
-		try (InputStream contents = file.getContents()) {
-			JSONObject data = new JSONObject(new JSONTokener(contents));
-
-			model.read(data);
+		try {
+			
+			model.read(file);
+			
 			BaseObjectModel objModel;
 			if (model.getType() == CanvasType.SPRITE) {
 				objModel = model.getWorld().findFirstSprite();

@@ -22,14 +22,12 @@
 package phasereditor.canvas.ui;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IEditorPart;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.FindAssetReferencesResult;
 import phasereditor.assetpack.core.IAssetKey;
@@ -87,9 +85,7 @@ public class CanvasAssetReplacer implements IAssetReplacer {
 		for (IFile file : result.getFiles()) {
 			CanvasModel canvasModel = new CanvasModel(file);
 
-			try (InputStream contents = file.getContents()) {
-				canvasModel.read(new JSONObject(new JSONTokener(contents)));
-			}
+			canvasModel.read(file);
 
 			boolean changed = false;
 

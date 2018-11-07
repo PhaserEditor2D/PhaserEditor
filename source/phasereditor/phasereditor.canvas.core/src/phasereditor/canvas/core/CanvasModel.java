@@ -22,12 +22,17 @@
 package phasereditor.canvas.core;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * @author arian
@@ -71,7 +76,19 @@ public class CanvasModel {
 		_type = type;
 	}
 
-	public void read(JSONObject data) {
+	public void read(IFile file) throws Exception {
+		try (InputStream contents = file.getContents();) {
+			String charset = file.getCharset();
+			if (charset == null) {
+				charset = "UTF-8";
+			}
+			InputStreamReader reader = new InputStreamReader(contents, charset);
+			JSONObject data = new JSONObject(new JSONTokener(reader));
+			read(data);
+		}
+	}
+
+	private void read(JSONObject data) {
 		// version 1 did not write it explicitly
 		_version = data.optInt("canvas-version", 1);
 
@@ -79,7 +96,7 @@ public class CanvasModel {
 			String name = data.optString("type", CanvasType.GROUP.name());
 			_type = CanvasType.valueOf(name);
 		}
-		
+
 		_settings.read(data.getJSONObject("settings"));
 		{
 			JSONObject data2 = data.optJSONObject("stateSettings");
@@ -164,9 +181,27 @@ public class CanvasModel {
 
 		_world.setAssetTable(new AssetTable(_world));
 		_world.setPrefabTable(new PrefabTable(_world));
-		
+
 		write(data, true);
 
-		file.setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
+		Charset charset;
+
+		if (file.exists()) {
+			charset = Charset.forName(file.getCharset());
+		} else {
+			charset = Charset.forName("UTF-8");
+		}
+
+		String content = data.toString(2);
+
+		ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes(charset));
+
+		if (file.exists()) {
+			file.setContents(stream, IResource.NONE, monitor);
+		} else {
+			file.create(stream, false, monitor);
+			file.setCharset(charset.name(), monitor);
+		}
+
 	}
 }

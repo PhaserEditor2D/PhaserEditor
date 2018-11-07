@@ -24,7 +24,6 @@ package phasereditor.canvas.core;
 import static java.lang.System.out;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -85,7 +84,7 @@ public class CanvasCore {
 		ScriptEngineManager m = new ScriptEngineManager();
 		scriptEngine = m.getEngineByName("nashorn");
 	}
-	
+
 	public static Double scriptEngineEval(String value) {
 		try {
 			return Double.valueOf(value);
@@ -98,7 +97,7 @@ public class CanvasCore {
 			}
 		}
 	}
-	
+
 	public static String scriptEngineValidate(Object value) {
 		if (value instanceof String) {
 			String script = (String) value;
@@ -118,7 +117,7 @@ public class CanvasCore {
 		}
 		return null;
 	}
-	
+
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, e.getMessage(), e));
@@ -234,8 +233,8 @@ public class CanvasCore {
 
 	public static List<PrefabReference> findPrefabReferencesInFileContent(Prefab prefab, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
-		try (InputStream contents = file.getContents()) {
-			canvasModel.read(new JSONObject(new JSONTokener(contents)));
+		try {
+			canvasModel.read(file);
 			return findPrefabReferenceInModelContent(prefab, canvasModel.getWorld());
 		} catch (Exception e) {
 			logError(e);
@@ -317,8 +316,8 @@ public class CanvasCore {
 
 	public static List<IAssetReference> findAssetKeyReferencesInFileContent(IAssetKey assetKey, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
-		try (InputStream contents = file.getContents()) {
-			canvasModel.read(new JSONObject(new JSONTokener(contents)));
+		try {
+			canvasModel.read(file);
 			return findAssetKeyReferenceInModelContent(assetKey, canvasModel.getWorld());
 		} catch (Exception e) {
 			logError(e);
@@ -374,8 +373,8 @@ public class CanvasCore {
 
 	public static List<IAssetReference> findAssetReferencesInFileContent(AssetModel asset, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
-		try (InputStream contents = file.getContents()) {
-			canvasModel.read(new JSONObject(new JSONTokener(contents)));
+		try {
+			canvasModel.read(file);
 			return findAssetReferenceInModelContent(asset, canvasModel.getWorld());
 		} catch (Exception e) {
 			logError(e);
@@ -420,10 +419,10 @@ public class CanvasCore {
 
 		CanvasModel model = new CanvasModel(canvasFile);
 		SourceLang lang;
-		try (InputStream contents = canvasFile.getContents()) {
-			model.read(new JSONObject(new JSONTokener(contents)));
+		try {
+			model.read(canvasFile);
 			lang = model.getSettings().getLang();
-		} catch (IOException | CoreException e) {
+		} catch (Exception e) {
 			logError(e);
 			throw new RuntimeException(e);
 		}
