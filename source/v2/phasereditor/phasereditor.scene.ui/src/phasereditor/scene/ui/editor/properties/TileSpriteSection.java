@@ -35,6 +35,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.interactive.TilePositionElement;
+import phasereditor.scene.ui.editor.interactive.TileScaleElement;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -113,7 +114,17 @@ public class TileSpriteSection extends ScenePropertySection {
 		{
 			var manager = new ToolBarManager();
 			manager.add(new Action("Tile Scale", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-				//
+				@Override
+				public void run() {
+
+					getEditor().getScene().setInteractiveElements(
+
+							new TileScaleElement(getEditor(), getModels(), true, false),
+							new TileScaleElement(getEditor(), getModels(), false, true),
+							new TileScaleElement(getEditor(), getModels(), true, true)
+
+					);
+				}
 			});
 			manager.createControl(comp);
 		}
