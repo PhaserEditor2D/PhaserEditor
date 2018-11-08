@@ -240,6 +240,8 @@ public class TileSpriteSection extends ScenePropertySection {
 					if (height) {
 						TileSpriteComponent.set_height(model, size.y);
 					}
+					
+					model.setDirty(true);
 				}
 			}
 		}
