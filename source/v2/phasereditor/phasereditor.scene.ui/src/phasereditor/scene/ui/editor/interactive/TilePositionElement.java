@@ -210,6 +210,13 @@ public class TilePositionElement extends RenderInteractiveElement {
 				var tilePositionX = initialTilePositionX + dx;
 				var tilePositionY = initialTilePositionY + dy;
 
+				{
+					// snap
+					var sceneModel = getEditor().getSceneModel();
+					tilePositionX = sceneModel.snapValueX(tilePositionX);
+					tilePositionY = sceneModel.snapValueY(tilePositionY);
+				}
+
 				if (_changeX) {
 					TileSpriteComponent.set_tilePositionX(model, tilePositionX);
 				}

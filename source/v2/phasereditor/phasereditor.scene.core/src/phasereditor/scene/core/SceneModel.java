@@ -169,6 +169,25 @@ public class SceneModel {
 		_snapHeight = snapHeight;
 	}
 
+	public float snapValueX(float x) {
+
+		if (_snapEnabled) {
+			return Math.round(x / _snapWidth) * _snapWidth;
+		}
+
+		return x;
+	}
+
+	public float snapValueY(float y) {
+
+		if (_snapEnabled) {
+
+			return Math.round(y / _snapHeight) * _snapHeight;
+		}
+
+		return y;
+	}
+
 	public ParentModel getRootObject() {
 		return _rootObject;
 	}

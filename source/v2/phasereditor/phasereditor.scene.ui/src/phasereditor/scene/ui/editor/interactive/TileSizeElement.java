@@ -167,17 +167,9 @@ public class TileSizeElement extends RenderInteractiveElement {
 
 				{
 					// snap
-
 					var sceneModel = getEditor().getSceneModel();
-
-					if (sceneModel.isSnapEnabled()) {
-
-						var snapWidth = sceneModel.getSnapWidth();
-						var snapHeight = sceneModel.getSnapHeight();
-
-						width = Math.round(width / snapWidth) * snapWidth;
-						height = Math.round(height / snapHeight) * snapHeight;
-					}
+					width = sceneModel.snapValueX(width);
+					height = sceneModel.snapValueY(height);
 				}
 
 				if (width <= 0 || height <= 0) {
