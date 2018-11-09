@@ -157,6 +157,10 @@ public class SceneCodeDomBuilder {
 				assignToVar = buildAnimationsProps(methodDecl, model) || assignToVar;
 			}
 
+			if (model instanceof TileSpriteComponent) {
+				assignToVar = buildTileSpriteProps(methodDecl, model) || assignToVar;
+			}
+
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(varname(model));
 			}
@@ -193,6 +197,79 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildTileSpriteProps(MethodDeclDom methodDecl, ObjectModel model) {
+		var assignToVar = false;
+
+		var name = varname(model);
+
+		// tilePositionX
+		{
+			var tilePositionX = TileSpriteComponent.get_tilePositionX(model);
+
+			if (tilePositionX != TileSpriteComponent.tilePositionX_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("tilePositionX", name);
+
+				instr.value(tilePositionX);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// tilePositionY
+		{
+			var tilePositionY = TileSpriteComponent.get_tilePositionY(model);
+
+			if (tilePositionY != TileSpriteComponent.tilePositionY_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("tilePositionY", name);
+
+				instr.value(tilePositionY);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// tileScaleX
+		{
+			var tileScaleX = TileSpriteComponent.get_tileScaleX(model);
+
+			if (tileScaleX != TileSpriteComponent.tileScaleX_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("tileScaleX", name);
+
+				instr.value(tileScaleX);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		// tileScaleY
+		{
+			var tileScaleY = TileSpriteComponent.get_tileScaleY(model);
+
+			if (tileScaleY != TileSpriteComponent.tileScaleY_default) {
+
+				assignToVar = true;
+
+				var instr = new AssignPropertyDom("tileScaleY", name);
+
+				instr.value(tileScaleY);
+
+				methodDecl.getInstructions().add(instr);
+			}
+		}
+
+		return assignToVar;
 	}
 
 	@SuppressWarnings("static-method")
