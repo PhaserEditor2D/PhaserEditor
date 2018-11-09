@@ -21,10 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.RGB;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import phasereditor.lic.LicCore;
 import phasereditor.ui.ColorUtil;
@@ -209,6 +218,43 @@ public class SceneModel {
 		}
 
 		writeProperties(data);
+	}
+
+	public void read(IFile file) throws Exception {
+		try (InputStream contents = file.getContents();) {
+			String charset = file.getCharset();
+			if (charset == null) {
+				charset = "UTF-8";
+			}
+			InputStreamReader reader = new InputStreamReader(contents, charset);
+			JSONObject data = new JSONObject(new JSONTokener(reader));
+			read(data, file.getProject());
+		}
+	}
+	
+	public void save(IFile file, IProgressMonitor monitor) throws Exception {
+		JSONObject data = new JSONObject();
+
+		write(data);
+
+		Charset charset;
+
+		if (file.exists()) {
+			charset = Charset.forName(file.getCharset());
+		} else {
+			charset = Charset.forName("UTF-8");
+		}
+
+		String content = data.toString(2);
+
+		var stream = new ByteArrayInputStream(content.getBytes(charset));
+
+		if (file.exists()) {
+			file.setContents(stream, IResource.NONE, monitor);
+		} else {
+			file.create(stream, false, monitor);
+			file.setCharset(charset.name(), monitor);
+		}
 	}
 
 	public void read(JSONObject data, IProject project) {

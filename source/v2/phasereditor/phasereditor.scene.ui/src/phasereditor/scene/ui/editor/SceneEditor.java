@@ -2,8 +2,6 @@ package phasereditor.scene.ui.editor;
 
 import static java.util.stream.Collectors.toList;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +31,6 @@ import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCompiler;
@@ -79,16 +75,11 @@ public class SceneEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-
-		JSONObject data = new JSONObject();
-
-		_model.write(data);
-
 		var file = getEditorInput().getFile();
 
-		try (var input = new ByteArrayInputStream(data.toString(2).getBytes())) {
+		try {
 
-			file.setContents(input, true, false, monitor);
+			_model.save(file, monitor);
 
 			setDirty(false);
 
@@ -150,13 +141,11 @@ public class SceneEditor extends EditorPart {
 
 		var file = fileInput.getFile();
 
-		try (var contents = file.getContents()) {
+		try {
 
-			var data = new JSONObject(new JSONTokener(contents));
+			_model.read(file);
 
-			_model.read(data, file.getProject());
-
-		} catch (IOException | CoreException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -166,7 +155,7 @@ public class SceneEditor extends EditorPart {
 	public IFileEditorInput getEditorInput() {
 		return (IFileEditorInput) super.getEditorInput();
 	}
-	
+
 	public IProject getProject() {
 		return getEditorInput().getFile().getProject();
 	}
