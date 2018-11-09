@@ -511,8 +511,8 @@ public class SceneObjectRenderer {
 		var tileScaleX = TileSpriteComponent.get_tileScaleX(model);
 		var tileScaleY = TileSpriteComponent.get_tileScaleY(model);
 
-		var frameWidth = fd.srcSize.x * tileScaleX;
-		var frameHeight = fd.srcSize.y * tileScaleY;
+		var frameWidth = fd.src.width * tileScaleX;
+		var frameHeight = fd.src.height * tileScaleY;
 
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
@@ -523,17 +523,17 @@ public class SceneObjectRenderer {
 		double x = 0;
 		double y = 0;
 
-		double xoffs = TileSpriteComponent.get_tilePositionX(model) % fd.srcSize.x;
-		double yoffs = TileSpriteComponent.get_tilePositionY(model) % fd.srcSize.y;
+		double xoffs = TileSpriteComponent.get_tilePositionX(model) % fd.src.width;
+		double yoffs = TileSpriteComponent.get_tilePositionY(model) % fd.src.height;
 
 		if (xoffs > 0) {
-			x = -fd.srcSize.x + xoffs;
+			x = -fd.src.width + xoffs;
 		} else if (xoffs < 0) {
 			x = xoffs;
 		}
 
 		if (yoffs > 0) {
-			y = -fd.srcSize.y + yoffs;
+			y = -fd.src.height + yoffs;
 		} else if (yoffs < 0) {
 			y = yoffs;
 		}
@@ -557,9 +557,9 @@ public class SceneObjectRenderer {
 
 							//
 
-							(int) (x + fd.dst.x * tileScaleX),
+							(int) (x),
 
-							(int) (y2 + fd.dst.y * tileScaleY),
+							(int) (y2),
 
 							(int) (fd.dst.width * tileScaleX),
 
