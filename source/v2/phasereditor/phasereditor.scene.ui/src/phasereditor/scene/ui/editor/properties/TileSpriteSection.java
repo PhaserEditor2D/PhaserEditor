@@ -258,12 +258,18 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
-		getEditor().executeOperation(
+		var editor = getEditor();
+		
+		editor.executeOperation(
 				new SingleObjectSnapshotOperation(before, after, "Reset tile sprite size to texture size.", true));
 
-		getEditor().updatePropertyPagesContentWithSelection();
+		editor.updatePropertyPagesContentWithSelection();
 
-		getEditor().getScene().redraw();
+		editor.getScene().redraw();
+		
+		if (editor.getOutline() != null) {
+			editor.refreshOutline_basedOnId();
+		}
 	}
 
 	@Override

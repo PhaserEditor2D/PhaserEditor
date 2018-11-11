@@ -241,6 +241,10 @@ public class TileSizeElement extends RenderInteractiveElement {
 			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set tile position.", true));
 
 			editor.setDirty(true);
+			
+			if (editor.getOutline() != null) {
+				editor.refreshOutline_basedOnId();
+			}
 
 		}
 		_dragging = false;

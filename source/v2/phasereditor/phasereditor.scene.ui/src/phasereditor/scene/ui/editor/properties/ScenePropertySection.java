@@ -100,7 +100,11 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 				}
 			});
 
-			getEditor().refreshOutline();
+			var editor = getEditor();
+			
+			if (editor.getOutline() != null) {
+				editor.refreshOutline_basedOnId();
+			}
 		}
 	}
 

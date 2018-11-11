@@ -501,6 +501,26 @@ public class SceneObjectRenderer {
 		return img;
 	}
 
+	public Image getTileSpriteTextImage(TileSpriteModel model) {
+		Image image;
+
+		if (model.isDirty()) {
+			image = createTileSpriteTexture(model);
+
+			model.setDirty(false);
+
+			var old = _imageCacheMap.put(model, image);
+
+			if (old != null) {
+				old.dispose();
+			}
+		} else {
+			image = _imageCacheMap.get(model);
+		}
+
+		return image;
+	}
+
 	private Image createTileSpriteTexture(TileSpriteModel model) {
 		var assetFrame = TextureComponent.get_frame(model);
 
@@ -581,23 +601,11 @@ public class SceneObjectRenderer {
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
 
-		Image image;
+		var image = getTileSpriteTextImage(model);
 
-		if (model.isDirty()) {
-			image = createTileSpriteTexture(model);
-
-			model.setDirty(false);
-
-			var old = _imageCacheMap.put(model, image);
-
-			if (old != null) {
-				old.dispose();
-			}
-		} else {
-			image = _imageCacheMap.getOrDefault(model, null);
+		if (image != null) {
+			gc.drawImage(image, 0, 0);
 		}
-
-		gc.drawImage(image, 0, 0);
 
 		setObjectBounds(gc, model, 0, 0, width, height);
 
