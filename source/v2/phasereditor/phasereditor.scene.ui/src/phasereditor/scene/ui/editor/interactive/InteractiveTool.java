@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.interactive;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.events.MouseEvent;
@@ -35,18 +36,18 @@ import phasereditor.scene.ui.editor.SceneObjectRenderer;
  * @author arian
  *
  */
-public abstract class RenderInteractiveElement {
+public abstract class InteractiveTool {
 
-	private List<ObjectModel> _models;
 	private SceneEditor _editor;
 	protected boolean _dragging;
 
-	public RenderInteractiveElement(SceneEditor editor, List<ObjectModel> models) {
+	public InteractiveTool(SceneEditor editor) {
 		super();
 		_editor = editor;
-		_models = models;
 	}
-	
+
+	protected abstract boolean canEdit(ObjectModel model);
+
 	public boolean isDragging() {
 		return _dragging;
 	}
@@ -64,7 +65,16 @@ public abstract class RenderInteractiveElement {
 	}
 
 	public List<ObjectModel> getModels() {
-		return _models;
+
+		var list = new ArrayList<ObjectModel>();
+
+		for (var obj : getEditor().getSelection()) {
+			if (obj instanceof ObjectModel && canEdit((ObjectModel) obj)) {
+				list.add((ObjectModel) obj);
+			}
+		}
+
+		return list;
 	}
 
 	public abstract void render(GC gc);
@@ -89,7 +99,7 @@ public abstract class RenderInteractiveElement {
 	public boolean contains(int sceneX, int sceneY) {
 		return false;
 	}
-	
+
 	protected boolean doPaint() {
 		return !getScene().isInteractiveDragging();
 	}

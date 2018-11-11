@@ -67,7 +67,7 @@ import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.interactive.RenderInteractiveElement;
+import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.ColorUtil;
 import phasereditor.ui.ZoomCanvas;
@@ -89,7 +89,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SceneModel _sceneModel;
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
-	private List<RenderInteractiveElement> _interactiveElements;
+	private List<InteractiveTool> _interactiveElements;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -112,18 +112,12 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_interactiveElements = new ArrayList<>();
 	}
 
-	public List<RenderInteractiveElement> getInteractiveElements() {
+	public List<InteractiveTool> getInteractiveElements() {
 		return _interactiveElements;
 	}
 
-	public void clearInteractiveElements() {
-		_interactiveElements.clear();
-	}
-
-	public void setInteractiveElements(RenderInteractiveElement... elems) {
-		clearInteractiveElements();
-
-		_interactiveElements.addAll(Arrays.asList(elems));
+	public void setInteractiveElements(InteractiveTool... elems) {
+		_interactiveElements = Arrays.asList(elems);
 
 		redraw();
 	}
@@ -716,8 +710,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		if (_editor.getOutline() != null) {
 			_editor.getOutline().setSelection_from_external(sel);
 		}
-		
-		clearInteractiveElements();
 	}
 
 	private static boolean hitsPolygon(int x, int y, float[] polygon) {
@@ -799,11 +791,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	public void setSelection_from_external(IStructuredSelection selection) {
-		
+
 		_selection = new ArrayList<>(List.of(selection.toArray()));
-		
-		clearInteractiveElements();
-		
+
 		redraw();
 	}
 
@@ -1100,13 +1090,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		if (!contains) {
-			var prevSelection = _selection;
-
 			_selectionEvents.updateSelection(e);
-
-			if (prevSelection.size() != _selection.size()) {
-				clearInteractiveElements();
-			}
 		}
 
 	}
@@ -1155,7 +1139,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	public boolean isInteractiveDragging() {
-		
+
 		for (var elem : _interactiveElements) {
 			if (elem.isDragging()) {
 				return true;

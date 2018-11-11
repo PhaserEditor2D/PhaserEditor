@@ -86,7 +86,7 @@ public class TransformSection extends ScenePropertySection {
 	public Control createContent(Composite parent) {
 
 		createActions();
-		
+
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(6, false));
 
@@ -98,15 +98,15 @@ public class TransformSection extends ScenePropertySection {
 				manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
 					@Override
 					public void run() {
-						
+
 						getEditor().getScene().setInteractiveElements(
 
-								new PositionElement(getEditor(), getModels(), true, false),
-								new PositionElement(getEditor(), getModels(), false, true),
-								new PositionElement(getEditor(), getModels(), true, true)
+								new PositionElement(getEditor(), true, false),
+								new PositionElement(getEditor(), false, true),
+								new PositionElement(getEditor(), true, true)
 
 						);
-						
+
 					}
 				});
 				manager.createControl(comp);
@@ -175,7 +175,7 @@ public class TransformSection extends ScenePropertySection {
 
 	private void createActions() {
 		_localTransformAction = new Action("Transform in local coords.") {
-			
+
 		};
 	}
 

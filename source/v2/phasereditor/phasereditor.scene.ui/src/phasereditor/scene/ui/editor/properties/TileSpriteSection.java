@@ -79,9 +79,9 @@ public class TileSpriteSection extends ScenePropertySection {
 				public void run() {
 					getEditor().getScene().setInteractiveElements(
 
-							new TilePositionElement(getEditor(), getModels(), true, false),
-							new TilePositionElement(getEditor(), getModels(), false, true),
-							new TilePositionElement(getEditor(), getModels(), true, true)
+							new TilePositionElement(getEditor(), true, false),
+							new TilePositionElement(getEditor(), false, true),
+							new TilePositionElement(getEditor(), true, true)
 
 					);
 
@@ -120,9 +120,9 @@ public class TileSpriteSection extends ScenePropertySection {
 
 					getEditor().getScene().setInteractiveElements(
 
-							new TileScaleElement(getEditor(), getModels(), true, false),
-							new TileScaleElement(getEditor(), getModels(), false, true),
-							new TileScaleElement(getEditor(), getModels(), true, true)
+							new TileScaleElement(getEditor(), true, false),
+							new TileScaleElement(getEditor(), false, true),
+							new TileScaleElement(getEditor(), true, true)
 
 					);
 				}
@@ -159,9 +159,11 @@ public class TileSpriteSection extends ScenePropertySection {
 				public void run() {
 					getEditor().getScene().setInteractiveElements(
 
-							new TileSizeElement(getEditor(), getModels(), true, false),
-							new TileSizeElement(getEditor(), getModels(), false, true),
-							new TileSizeElement(getEditor(), getModels(), true, true)
+							new TileSizeElement(getEditor(), true, false),
+
+							new TileSizeElement(getEditor(), false, true),
+
+							new TileSizeElement(getEditor(), true, true)
 
 					);
 				}
@@ -259,14 +261,14 @@ public class TileSpriteSection extends ScenePropertySection {
 		var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
 		var editor = getEditor();
-		
+
 		editor.executeOperation(
 				new SingleObjectSnapshotOperation(before, after, "Reset tile sprite size to texture size.", true));
 
 		editor.updatePropertyPagesContentWithSelection();
 
 		editor.getScene().redraw();
-		
+
 		if (editor.getOutline() != null) {
 			editor.refreshOutline_basedOnId();
 		}

@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.interactive;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -33,6 +31,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
+import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
@@ -42,7 +41,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 @SuppressWarnings("boxing")
-public class TileScaleElement extends RenderInteractiveElement {
+public class TileScaleElement extends InteractiveTool {
 
 	private static final int BOX = 14;
 	private int _globalX;
@@ -53,11 +52,16 @@ public class TileScaleElement extends RenderInteractiveElement {
 	private boolean _changeY;
 	private boolean _hightlights;
 
-	public TileScaleElement(SceneEditor editor, List<ObjectModel> models, boolean changeX, boolean changeY) {
-		super(editor, models);
+	public TileScaleElement(SceneEditor editor, boolean changeX, boolean changeY) {
+		super(editor);
 
 		_changeX = changeX;
 		_changeY = changeY;
+	}
+	
+	@Override
+	protected boolean canEdit(ObjectModel model) {
+		return model instanceof TileSpriteModel;
 	}
 
 	@Override

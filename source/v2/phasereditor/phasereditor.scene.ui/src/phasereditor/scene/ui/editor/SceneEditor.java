@@ -315,4 +315,9 @@ public class SceneEditor extends EditorPart {
 
 		getSite().getSelectionProvider().setSelection(sel);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object> getSelection() {
+		return ((IStructuredSelection) getEditorSite().getSelectionProvider().getSelection()).toList();
+	}
 }

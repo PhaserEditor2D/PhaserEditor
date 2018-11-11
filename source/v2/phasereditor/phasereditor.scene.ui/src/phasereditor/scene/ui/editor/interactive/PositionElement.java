@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.interactive;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -45,7 +43,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 @SuppressWarnings("boxing")
-public class PositionElement extends RenderInteractiveElement {
+public class PositionElement extends InteractiveTool {
 
 	private static final int BOX = 14;
 	private static final int ARROW_LENGTH = 80;
@@ -59,11 +57,16 @@ public class PositionElement extends RenderInteractiveElement {
 	private float[] _centerPoint;
 	private float[] _startVector;
 
-	public PositionElement(SceneEditor editor, List<ObjectModel> models, boolean changeX, boolean changeY) {
-		super(editor, models);
+	public PositionElement(SceneEditor editor,  boolean changeX, boolean changeY) {
+		super(editor);
 
 		_changeX = changeX;
 		_changeY = changeY;
+	}
+	
+	@Override
+	protected boolean canEdit(ObjectModel model) {
+		return model instanceof TransformComponent;
 	}
 
 	@Override

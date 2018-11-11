@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.interactive;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -33,6 +31,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TileSpriteComponent;
+import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
@@ -42,7 +41,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 @SuppressWarnings("boxing")
-public class TilePositionElement extends RenderInteractiveElement {
+public class TilePositionElement extends InteractiveTool {
 
 	private static final int BOX = 14;
 	private static final int ARROW_LENGTH = 80;
@@ -54,11 +53,16 @@ public class TilePositionElement extends RenderInteractiveElement {
 	private boolean _changeY;
 	private boolean _hightlights;
 
-	public TilePositionElement(SceneEditor editor, List<ObjectModel> models, boolean changeX, boolean changeY) {
-		super(editor, models);
+	public TilePositionElement(SceneEditor editor, boolean changeX, boolean changeY) {
+		super(editor);
 
 		_changeX = changeX;
 		_changeY = changeY;
+	}
+
+	@Override
+	protected boolean canEdit(ObjectModel model) {
+		return model instanceof TileSpriteModel;
 	}
 
 	@Override
@@ -86,10 +90,10 @@ public class TilePositionElement extends RenderInteractiveElement {
 			var flipY = 1;
 
 			if (model instanceof FlipComponent) {
-				flipX = FlipComponent.get_flipX(model)? -1 : 1;
-				flipY = FlipComponent.get_flipY(model)? -1 : 1;
+				flipX = FlipComponent.get_flipX(model) ? -1 : 1;
+				flipY = FlipComponent.get_flipY(model) ? -1 : 1;
 			}
-			
+
 			if (_changeX && _changeY) {
 
 				globalX = centerGlobalX;
@@ -128,9 +132,9 @@ public class TilePositionElement extends RenderInteractiveElement {
 
 		_globalX = globalX;
 		_globalY = globalY;
-		
+
 		// paint
-		
+
 		if (doPaint()) {
 			if (_changeX && _changeY) {
 				fillRect(gc, globalX, _globalY, globalAngle, BOX,
@@ -150,7 +154,6 @@ public class TilePositionElement extends RenderInteractiveElement {
 				fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
 			}
 		}
-
 
 	}
 
@@ -299,7 +302,7 @@ public class TilePositionElement extends RenderInteractiveElement {
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
-			
+
 			getScene().redraw();
 
 		}
