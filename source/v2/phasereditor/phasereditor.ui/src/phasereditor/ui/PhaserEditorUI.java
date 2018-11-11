@@ -1369,14 +1369,33 @@ public class PhaserEditorUI {
 					(int) imgDstH);
 		}
 	}
-	
+
 	public static float distance(float[] a, float[] b) {
 		return distance(a[0], a[1], b[0], b[1]);
 	}
 
 	public static float distance(float x1, float y1, float x2, float y2) {
 		double a = x2 - x1;
-        double b = y2 - y1;
-        return (float) Math.sqrt(a * a + b * b);
+		double b = y2 - y1;
+		return (float) Math.sqrt(a * a + b * b);
+	}
+
+	public static float angle(float x1, float y1, float x2, float y2) {
+
+		final double delta = (x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+
+		if (delta > 1.0) {
+			return 0.0f;
+		}
+		if (delta < -1.0) {
+			return 180.0f;
+		}
+
+		return (float) Math.toDegrees(Math.acos(delta));
+
+	}
+	
+	public static float angle(float[] a, float[] b) {
+		return angle(a[0], a[1], b[0], b[1]);
 	}
 }

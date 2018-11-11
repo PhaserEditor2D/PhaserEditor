@@ -150,7 +150,7 @@ public class SceneObjectRenderer {
 		debugObject(gc, model.getRootObject());
 
 		gc.setTransform(oldTx);
-		
+
 	}
 
 	private void debugObject(GC gc, ObjectModel model) {
@@ -308,7 +308,7 @@ public class SceneObjectRenderer {
 			var originX = OriginComponent.get_originX(model);
 			var originY = OriginComponent.get_originY(model);
 
-			var size = getTextureSize(model);
+			var size = getObjectSize(model);
 
 			double x = -size[0] * originX;
 			double y = -size[1] * originY;
@@ -386,7 +386,7 @@ public class SceneObjectRenderer {
 		if (fontModel == null) {
 			return null;
 		}
-		
+
 		var args = createBitmapTextRenderArgs(textModel);
 
 		var metrics = fontModel.metrics(args);
@@ -613,7 +613,7 @@ public class SceneObjectRenderer {
 		return _canvas.loadImage(file);
 	}
 
-	private int[] getTextureSize(ObjectModel model) {
+	public float[] getObjectSize(ObjectModel model) {
 
 		// TODO: implement the rest of the models
 
@@ -622,7 +622,7 @@ public class SceneObjectRenderer {
 			return getBitmapTextSize((BitmapTextModel) model);
 
 		} else if (model instanceof TileSpriteModel) {
-			return new int[] {
+			return new float[] {
 
 					(int) TileSpriteComponent.get_width(model),
 
@@ -634,19 +634,19 @@ public class SceneObjectRenderer {
 
 			var fd = frame.getFrameData();
 
-			return new int[] { fd.srcSize.x, fd.srcSize.y };
+			return new float[] { fd.srcSize.x, fd.srcSize.y };
 		}
 
-		return new int[] { 0, 0 };
+		return new float[] { 0, 0 };
 	}
 
-	private int[] getBitmapTextSize(BitmapTextModel model) {
+	private float[] getBitmapTextSize(BitmapTextModel model) {
 
 		var image = getBitmapTextImage(model);
 
 		var b = image.getBounds();
 
-		return new int[] { b.width, b.height };
+		return new float[] { b.width, b.height };
 
 	}
 
@@ -740,43 +740,64 @@ public class SceneObjectRenderer {
 
 		return point;
 	}
-	
+
+	public float[] localToScene(ObjectModel model, float[] scenePoint) {
+		return localToScene(model, scenePoint[0], scenePoint[1]);
+	}
+
+	public float[] localToParent(ObjectModel model, float[] xy) {
+		return localToParent(model, xy[0], xy[1]);
+	}
+
+	public float[] localToParent(ObjectModel model, float x, float y) {
+		var parent = ParentComponent.get_parent(model);
+
+		var scenePoint = localToScene(model, x, y);
+
+		var parentPoint = sceneToLocal(parent, scenePoint);
+
+		return parentPoint;
+	}
+
 	public float globalScaleX(ObjectModel model) {
 		var scale = TransformComponent.get_scaleX(model);
-		
+
 		var parent = ParentComponent.get_parent(model);
-		
+
 		if (parent == null) {
 			return _canvas.getScale() * scale;
 		}
-		
+
 		return scale * globalScaleX(parent);
 	}
-	
+
 	public float globalScaleY(ObjectModel model) {
 		var scale = TransformComponent.get_scaleY(model);
-		
+
 		var parent = ParentComponent.get_parent(model);
-		
+
 		if (parent == null) {
 			return _canvas.getScale() * scale;
 		}
-		
+
 		return scale * globalScaleY(parent);
 	}
-	
+
 	public float globalAngle(ObjectModel model) {
 		var angle = TransformComponent.get_angle(model);
-		
+
 		var parent = ParentComponent.get_parent(model);
-		
+
 		if (parent == null) {
 			return angle;
 		}
-		
+
 		return angle + globalAngle(parent);
 	}
-	
+
+	public float[] sceneToLocal(ObjectModel model, float[] scenePoint) {
+		return sceneToLocal(model, scenePoint[0], scenePoint[1]);
+	}
 
 	public float[] sceneToLocal(ObjectModel model, float sceneX, float sceneY) {
 		var matrix = _modelMatrixMap.get(model);

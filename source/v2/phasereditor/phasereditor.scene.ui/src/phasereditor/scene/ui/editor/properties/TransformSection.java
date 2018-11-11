@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.interactive.PositionElement;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -92,7 +93,18 @@ public class TransformSection extends ScenePropertySection {
 			{
 				var manager = new ToolBarManager();
 				manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-					//
+					@Override
+					public void run() {
+						
+						getEditor().getScene().setInteractiveElements(
+
+								new PositionElement(getEditor(), getModels(), true, false),
+								new PositionElement(getEditor(), getModels(), false, true),
+								new PositionElement(getEditor(), getModels(), true, true)
+
+						);
+						
+					}
 				});
 				manager.createControl(comp);
 			}
