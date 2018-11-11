@@ -39,11 +39,16 @@ public abstract class RenderInteractiveElement {
 
 	private List<ObjectModel> _models;
 	private SceneEditor _editor;
+	protected boolean _dragging;
 
 	public RenderInteractiveElement(SceneEditor editor, List<ObjectModel> models) {
 		super();
 		_editor = editor;
 		_models = models;
+	}
+	
+	public boolean isDragging() {
+		return _dragging;
 	}
 
 	public SceneEditor getEditor() {
@@ -83,6 +88,10 @@ public abstract class RenderInteractiveElement {
 	@SuppressWarnings({ "static-method", "unused" })
 	public boolean contains(int sceneX, int sceneY) {
 		return false;
+	}
+	
+	protected boolean doPaint() {
+		return !getScene().isInteractiveDragging();
 	}
 
 }

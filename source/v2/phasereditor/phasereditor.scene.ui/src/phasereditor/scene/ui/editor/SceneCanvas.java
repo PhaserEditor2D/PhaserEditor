@@ -1153,4 +1153,15 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			_dragObjectsEvents.start(e);
 		}
 	}
+
+	public boolean isInteractiveDragging() {
+		
+		for (var elem : _interactiveElements) {
+			if (elem.isDragging()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

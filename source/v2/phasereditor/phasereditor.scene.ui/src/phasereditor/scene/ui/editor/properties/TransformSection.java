@@ -46,6 +46,7 @@ public class TransformSection extends ScenePropertySection {
 	private Text _scaleXText;
 	private Text _scaleYText;
 	private Text _angleText;
+	private Action _localTransformAction;
 
 	public TransformSection(ScenePropertyPage page) {
 		super("Transform", page);
@@ -84,6 +85,8 @@ public class TransformSection extends ScenePropertySection {
 	@Override
 	public Control createContent(Composite parent) {
 
+		createActions();
+		
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(6, false));
 
@@ -168,6 +171,12 @@ public class TransformSection extends ScenePropertySection {
 		}
 
 		return comp;
+	}
+
+	private void createActions() {
+		_localTransformAction = new Action("Transform in local coords.") {
+			
+		};
 	}
 
 	@Override

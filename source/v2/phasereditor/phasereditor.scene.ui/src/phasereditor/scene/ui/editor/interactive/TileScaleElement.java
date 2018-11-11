@@ -47,7 +47,6 @@ public class TileScaleElement extends RenderInteractiveElement {
 	private static final int BOX = 14;
 	private int _globalX;
 	private int _globalY;
-	private boolean _dragging;
 	private int _initialGlobalY;
 	private int _initialGlobalX;
 	private boolean _changeX;
@@ -92,7 +91,6 @@ public class TileScaleElement extends RenderInteractiveElement {
 				globalY = centerGlobalY;
 
 			} else if (_changeX) {
-				
 
 				var tileScale = TileSpriteComponent.get_tileScaleX(model);
 				var len = textureWidth * tileScale;
@@ -126,26 +124,30 @@ public class TileScaleElement extends RenderInteractiveElement {
 
 		globalAngle = globalAngle / size;
 
-		if (_changeX && _changeY) {
-			fillRect(gc, globalX, _globalY, globalAngle, BOX,
-					SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
-		} else {
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-			var color = SWTResourceManager
-					.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
-
-			gc.setBackground(color);
-			gc.setForeground(color);
-
-			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
-
-			fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
-		}
-
 		_globalX = globalX;
 		_globalY = globalY;
+
+		// paint
+
+		if (doPaint()) {
+			if (_changeX && _changeY) {
+				fillRect(gc, globalX, _globalY, globalAngle, BOX,
+						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+			} else {
+				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+
+				var color = SWTResourceManager
+						.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+
+				gc.setBackground(color);
+				gc.setForeground(color);
+
+				gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
+
+				fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+			}
+		}
 
 	}
 
@@ -267,10 +269,12 @@ public class TileScaleElement extends RenderInteractiveElement {
 			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set tile position.", true));
 
 			editor.setDirty(true);
-			
+
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
+			
+			getScene().redraw();
 
 		}
 		_dragging = false;

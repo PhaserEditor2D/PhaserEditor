@@ -46,7 +46,6 @@ public class TileSizeElement extends RenderInteractiveElement {
 	private static final int BOX = 14;
 	private int _globalX;
 	private int _globalY;
-	private boolean _dragging;
 	private int _initialGlobalY;
 	private int _initialGlobalX;
 	private boolean _changeX;
@@ -99,19 +98,23 @@ public class TileSizeElement extends RenderInteractiveElement {
 
 		globalAngle = globalAngle / size;
 
-		gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-		var color = SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE
-				: (_changeX && _changeY ? SWT.COLOR_YELLOW : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN)));
-
-		gc.setBackground(color);
-		gc.setForeground(color);
-
-		fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
-
 		_globalX = globalX;
 		_globalY = globalY;
+
+		// paint
+
+		if (doPaint()) {
+			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+
+			var color = SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE
+					: (_changeX && _changeY ? SWT.COLOR_YELLOW : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN)));
+
+			gc.setBackground(color);
+			gc.setForeground(color);
+
+			fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+		}
 
 	}
 
@@ -241,10 +244,12 @@ public class TileSizeElement extends RenderInteractiveElement {
 			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set tile position.", true));
 
 			editor.setDirty(true);
-			
+
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
+
+			getScene().redraw();
 
 		}
 		_dragging = false;
