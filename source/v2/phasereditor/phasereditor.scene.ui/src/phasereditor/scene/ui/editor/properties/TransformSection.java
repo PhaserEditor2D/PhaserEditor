@@ -22,6 +22,7 @@
 package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.interactive.PositionElement;
+import phasereditor.scene.ui.editor.interactive.PositionTool;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -47,6 +48,7 @@ public class TransformSection extends ScenePropertySection {
 	private Text _scaleYText;
 	private Text _angleText;
 	private Action _localTransformAction;
+	private Action _positionToolAction;
 
 	public TransformSection(ScenePropertyPage page) {
 		super("Transform", page);
@@ -95,20 +97,7 @@ public class TransformSection extends ScenePropertySection {
 
 			{
 				var manager = new ToolBarManager();
-				manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-					@Override
-					public void run() {
-
-						getEditor().getScene().setInteractiveElements(
-
-								new PositionElement(getEditor(), true, false),
-								new PositionElement(getEditor(), false, true),
-								new PositionElement(getEditor(), true, true)
-
-						);
-
-					}
-				});
+				manager.add(_positionToolAction);
 				manager.createControl(comp);
 			}
 
@@ -130,7 +119,7 @@ public class TransformSection extends ScenePropertySection {
 			// scale
 
 			var manager = new ToolBarManager();
-			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
+			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE)) {
 				//
 			});
 			manager.createControl(comp);
@@ -153,7 +142,7 @@ public class TransformSection extends ScenePropertySection {
 			// angle
 
 			var manager = new ToolBarManager();
-			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
+			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
 				//
 			});
 			manager.createControl(comp);
@@ -174,6 +163,28 @@ public class TransformSection extends ScenePropertySection {
 	}
 
 	private void createActions() {
+		_positionToolAction = new Action("Position tool.", IAction.AS_CHECK_BOX) {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_POSITION));
+			}
+
+			@Override
+			public void run() {
+				if (isChecked()) {
+					setInteractiveTools(
+
+							new PositionTool(getEditor(), true, false), new PositionTool(getEditor(), false, true),
+							new PositionTool(getEditor(), true, true)
+
+					);
+				} else {
+					setInteractiveTools();
+				}
+
+			}
+		};
+
 		_localTransformAction = new Action("Transform in local coords.") {
 
 		};
@@ -223,6 +234,12 @@ public class TransformSection extends ScenePropertySection {
 			models.forEach(model -> TransformComponent.set_angle(model, value));
 			getEditor().setDirty(true);
 		}, models);
+
+		updateActions();
+	}
+
+	private void updateActions() {
+		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
 	}
 
 }

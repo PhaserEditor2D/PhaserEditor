@@ -28,8 +28,8 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -41,10 +41,9 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 @SuppressWarnings("boxing")
-public class TilePositionElement extends InteractiveTool {
+public class TileScaleTool extends InteractiveTool {
 
 	private static final int BOX = 14;
-	private static final int ARROW_LENGTH = 80;
 	private int _globalX;
 	private int _globalY;
 	private int _initialGlobalY;
@@ -53,13 +52,13 @@ public class TilePositionElement extends InteractiveTool {
 	private boolean _changeY;
 	private boolean _hightlights;
 
-	public TilePositionElement(SceneEditor editor, boolean changeX, boolean changeY) {
+	public TileScaleTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);
 
 		_changeX = changeX;
 		_changeY = changeY;
 	}
-
+	
 	@Override
 	protected boolean canEdit(ObjectModel model) {
 		return model instanceof TileSpriteModel;
@@ -76,8 +75,12 @@ public class TilePositionElement extends InteractiveTool {
 		var globalAngle = 0f;
 
 		for (var model : getModels()) {
-			var modelX = TileSpriteComponent.get_tilePositionX(model);
-			var modelY = TileSpriteComponent.get_tilePositionY(model);
+			var frame = TextureComponent.get_frame(model);
+			var textureWidth = frame.getFrameData().srcSize.x;
+			var textureHeight = frame.getFrameData().srcSize.y;
+
+			var modelX = 0;
+			var modelY = 0;
 
 			var globalXY = renderer.localToScene(model, modelX, modelY);
 
@@ -86,14 +89,6 @@ public class TilePositionElement extends InteractiveTool {
 
 			globalAngle += renderer.globalAngle(model);
 
-			var flipX = 1;
-			var flipY = 1;
-
-			if (model instanceof FlipComponent) {
-				flipX = FlipComponent.get_flipX(model) ? -1 : 1;
-				flipY = FlipComponent.get_flipY(model) ? -1 : 1;
-			}
-
 			if (_changeX && _changeY) {
 
 				globalX = centerGlobalX;
@@ -101,17 +96,20 @@ public class TilePositionElement extends InteractiveTool {
 
 			} else if (_changeX) {
 
-				var scale = renderer.globalScaleX(model);
+				var tileScale = TileSpriteComponent.get_tileScaleX(model);
+				var len = textureWidth * tileScale;
 
-				var xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale * flipX, modelY);
+				var xy = renderer.localToScene(model, modelX + len, modelY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
 
 			} else {
-				var scale = renderer.globalScaleY(model);
 
-				var xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale * flipY);
+				var tileScale = TileSpriteComponent.get_tileScaleY(model);
+				var len = textureHeight * tileScale;
+
+				var xy = renderer.localToScene(model, modelX, modelY + len);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -151,29 +149,10 @@ public class TilePositionElement extends InteractiveTool {
 
 				gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
 
-				fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+				fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
 			}
 		}
 
-	}
-
-	private static void fillArrow(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
-		var tx = new Transform(gc.getDevice());
-
-		tx.translate(globalX, globalY);
-		tx.rotate(globalAngle);
-		tx.translate(0, -size / 2);
-		gc.setTransform(tx);
-
-		gc.setBackground(color);
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-		gc.fillPolygon(new int[] { 0, 0, size, size / 2, 0, size });
-		gc.drawPolygon(new int[] { 0, 0, size, size / 2, 0, size });
-
-		gc.setTransform(null);
-
-		tx.dispose();
 	}
 
 	private static void fillRect(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
@@ -213,6 +192,9 @@ public class TilePositionElement extends InteractiveTool {
 		if (_dragging && contains(e.x, e.y)) {
 
 			for (var model : getModels()) {
+				var frame = TextureComponent.get_frame(model);
+				var textureWidth = frame.getFrameData().srcSize.x;
+				var textureHeight = frame.getFrameData().srcSize.y;
 
 				var initialLocalXY = (float[]) model.get("initial-local-xy");
 				var localXY = getRenderer().sceneToLocal(model, e.x, e.y);
@@ -220,25 +202,18 @@ public class TilePositionElement extends InteractiveTool {
 				var dx = localXY[0] - initialLocalXY[0];
 				var dy = localXY[1] - initialLocalXY[1];
 
-				var initialTilePositionX = (float) model.get("initial-tilePositionX");
-				var initialTilePositionY = (float) model.get("initial-tilePositionY");
+				var initialTileScaleX = (float) model.get("initial-tileScaleX");
+				var initialTileScaleY = (float) model.get("initial-tileScaleY");
 
-				var tilePositionX = initialTilePositionX + dx;
-				var tilePositionY = initialTilePositionY + dy;
-
-				{
-					// snap
-					var sceneModel = getEditor().getSceneModel();
-					tilePositionX = sceneModel.snapValueX(tilePositionX);
-					tilePositionY = sceneModel.snapValueY(tilePositionY);
-				}
+				var tileScaleX = initialTileScaleX + dx / textureWidth;
+				var tileScaleY = initialTileScaleY + dy / textureHeight;
 
 				if (_changeX) {
-					TileSpriteComponent.set_tilePositionX(model, tilePositionX);
+					TileSpriteComponent.set_tileScaleX(model, tileScaleX);
 				}
 
 				if (_changeY) {
-					TileSpriteComponent.set_tilePositionY(model, tilePositionY);
+					TileSpriteComponent.set_tileScaleY(model, tileScaleY);
 				}
 
 				model.setDirty(true);
@@ -258,8 +233,8 @@ public class TilePositionElement extends InteractiveTool {
 			_initialGlobalY = _globalY;
 
 			for (var model : getModels()) {
-				model.put("initial-tilePositionX", TileSpriteComponent.get_tilePositionX(model));
-				model.put("initial-tilePositionY", TileSpriteComponent.get_tilePositionY(model));
+				model.put("initial-tileScaleX", TileSpriteComponent.get_tileScaleX(model));
+				model.put("initial-tileScaleY", TileSpriteComponent.get_tileScaleY(model));
 
 				var xy = getRenderer().sceneToLocal(model, _initialGlobalX, _initialGlobalY);
 				model.put("initial-local-xy", xy);
@@ -276,11 +251,11 @@ public class TilePositionElement extends InteractiveTool {
 
 			getModels().forEach(model -> {
 
-				model.put("final-tilePositionX", TileSpriteComponent.get_tilePositionX(model));
-				model.put("final-tilePositionY", TileSpriteComponent.get_tilePositionY(model));
+				model.put("final-tileScaleX", TileSpriteComponent.get_tileScaleX(model));
+				model.put("final-tileScaleY", TileSpriteComponent.get_tileScaleY(model));
 
-				TileSpriteComponent.set_tilePositionX(model, (float) model.get("initial-tilePositionX"));
-				TileSpriteComponent.set_tilePositionY(model, (float) model.get("initial-tilePositionY"));
+				TileSpriteComponent.set_tileScaleX(model, (float) model.get("initial-tileScaleX"));
+				TileSpriteComponent.set_tileScaleY(model, (float) model.get("initial-tileScaleY"));
 
 			});
 
@@ -288,8 +263,8 @@ public class TilePositionElement extends InteractiveTool {
 
 			getModels().forEach(model -> {
 
-				TileSpriteComponent.set_tilePositionX(model, (float) model.get("final-tilePositionX"));
-				TileSpriteComponent.set_tilePositionY(model, (float) model.get("final-tilePositionY"));
+				TileSpriteComponent.set_tileScaleX(model, (float) model.get("final-tileScaleX"));
+				TileSpriteComponent.set_tileScaleY(model, (float) model.get("final-tileScaleY"));
 
 			});
 
@@ -302,7 +277,7 @@ public class TilePositionElement extends InteractiveTool {
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
-
+			
 			getScene().redraw();
 
 		}

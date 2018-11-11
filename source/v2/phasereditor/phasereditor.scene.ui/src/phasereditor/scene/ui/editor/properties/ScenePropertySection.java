@@ -33,6 +33,7 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -218,5 +219,9 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		}
 
 		return InspectCore.getPhaserHelp().getMemberHelp(helpHint);
+	}
+	
+	protected void setInteractiveTools(InteractiveTool... tools) {
+		getEditor().getScene().setInteractiveTools(tools);
 	}
 }

@@ -22,6 +22,7 @@
 package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -34,9 +35,9 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
-import phasereditor.scene.ui.editor.interactive.TilePositionElement;
-import phasereditor.scene.ui.editor.interactive.TileScaleElement;
-import phasereditor.scene.ui.editor.interactive.TileSizeElement;
+import phasereditor.scene.ui.editor.interactive.TilePositionTool;
+import phasereditor.scene.ui.editor.interactive.TileScaleTool;
+import phasereditor.scene.ui.editor.interactive.TileSizeTool;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -54,6 +55,11 @@ public class TileSpriteSection extends ScenePropertySection {
 	private Text _tileScaleYText;
 	private Text _widthText;
 	private Text _heightText;
+	private Action _positionToolAction;
+	private Action _sizeToolAction;
+	private Action _scaleToolAction;
+	private Action _resetTextureWidthAction;
+	private Action _resetTextureHeightAction;
 
 	public TileSpriteSection(FormPropertyPage page) {
 		super("Tile Sprite", page);
@@ -68,25 +74,71 @@ public class TileSpriteSection extends ScenePropertySection {
 	@Override
 	public Control createContent(Composite parent) {
 
+		createActions();
+
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(6, false));
+
+		// size
+
+		{
+			var manager = new ToolBarManager();
+			manager.add(_sizeToolAction);
+			manager.createControl(comp);
+		}
+
+		{
+			label(comp, "Tile Size", "Phaser.GameObjects.TileSprite.setSize");
+		}
+
+		{
+			label(comp, "Width", "Phaser.GameObjects.TileSprite.width");
+
+			var comp2 = new Composite(comp, SWT.NONE);
+			var ly = new GridLayout(2, false);
+			ly.marginWidth = 0;
+			ly.marginHeight = 0;
+			comp2.setLayout(ly);
+			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+			gd.horizontalSpan = 3;
+			comp2.setLayoutData(gd);
+
+			_widthText = new Text(comp2, SWT.BORDER);
+			_widthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+			var manager = new ToolBarManager();
+
+			manager.add(_resetTextureWidthAction);
+			manager.createControl(comp2);
+		}
+
+		{
+			new Label(comp, SWT.NONE);
+			new Label(comp, SWT.NONE);
+
+			label(comp, "Height", "Phaser.GameObjects.TileSprite.height");
+
+			var comp2 = new Composite(comp, SWT.NONE);
+			var ly = new GridLayout(2, false);
+			ly.marginWidth = 0;
+			ly.marginHeight = 0;
+			comp2.setLayout(ly);
+			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+			gd.horizontalSpan = 3;
+			comp2.setLayoutData(gd);
+
+			_heightText = new Text(comp2, SWT.BORDER);
+			_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+			var manager = new ToolBarManager();
+			manager.add(_resetTextureHeightAction);
+			manager.createControl(comp2);
+		}
 
 		// tilePosition
 		{
 			var manager = new ToolBarManager();
-			manager.add(new Action("Tile Position", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-				@Override
-				public void run() {
-					getEditor().getScene().setInteractiveElements(
-
-							new TilePositionElement(getEditor(), true, false),
-							new TilePositionElement(getEditor(), false, true),
-							new TilePositionElement(getEditor(), true, true)
-
-					);
-
-				}
-			});
+			manager.add(_positionToolAction);
 			manager.createControl(comp);
 		}
 
@@ -114,19 +166,7 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		{
 			var manager = new ToolBarManager();
-			manager.add(new Action("Tile Scale", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-				@Override
-				public void run() {
-
-					getEditor().getScene().setInteractiveElements(
-
-							new TileScaleElement(getEditor(), true, false),
-							new TileScaleElement(getEditor(), false, true),
-							new TileScaleElement(getEditor(), true, true)
-
-					);
-				}
-			});
+			manager.add(_scaleToolAction);
 			manager.createControl(comp);
 		}
 
@@ -150,87 +190,103 @@ public class TileSpriteSection extends ScenePropertySection {
 			_tileScaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
-		// size
+		return comp;
+	}
 
-		{
-			var manager = new ToolBarManager();
-			manager.add(new Action("Tile Size", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-				@Override
-				public void run() {
-					getEditor().getScene().setInteractiveElements(
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(_sizeToolAction);
+		manager.add(_positionToolAction);
+		manager.add(_scaleToolAction);
+	}
 
-							new TileSizeElement(getEditor(), true, false),
+	private void createActions() {
+		_resetTextureWidthAction = new Action("Reset to texture width.",
+				EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
+			@Override
+			public void run() {
+				resetSizeToTexture(true, false);
+			}
+		};
 
-							new TileSizeElement(getEditor(), false, true),
+		_resetTextureHeightAction = new Action("Reset to texture height.",
+				EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
+			@Override
+			public void run() {
+				resetSizeToTexture(false, true);
+			}
+		};
 
-							new TileSizeElement(getEditor(), true, true)
+		_positionToolAction = new Action("Tile Position", IAction.AS_CHECK_BOX) {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_TILE_POSITION));
+			}
+
+			@Override
+			public void run() {
+				if (isChecked()) {
+					setInteractiveTools(
+
+							new TilePositionTool(getEditor(), true, false),
+							new TilePositionTool(getEditor(), false, true),
+							new TilePositionTool(getEditor(), true, true)
 
 					);
+				} else {
+					setInteractiveTools();
 				}
-			});
-			manager.createControl(comp);
-		}
 
-		{
-			label(comp, "Tile Size", "Phaser.GameObjects.TileSprite.setSize");
-		}
+			}
+		};
 
-		{
-			label(comp, "Width", "Phaser.GameObjects.TileSprite.width");
+		_scaleToolAction = new Action("Tile Scale", IAction.AS_CHECK_BOX) {
 
-			var comp2 = new Composite(comp, SWT.NONE);
-			var ly = new GridLayout(2, false);
-			ly.marginWidth = 0;
-			ly.marginHeight = 0;
-			comp2.setLayout(ly);
-			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
-			gd.horizontalSpan = 3;
-			comp2.setLayoutData(gd);
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_TILE_SCALE));
+			}
 
-			_widthText = new Text(comp2, SWT.BORDER);
-			_widthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			@Override
+			public void run() {
+				if (isChecked()) {
+					setInteractiveTools(
 
-			var manager = new ToolBarManager();
-			manager.add(
-					new Action("Reset to texture width.", EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
-						@Override
-						public void run() {
-							resetSizeToTexture(true, false);
-						}
-					});
-			manager.createControl(comp2);
-		}
+							new TileScaleTool(getEditor(), true, false),
 
-		{
-			new Label(comp, SWT.NONE);
-			new Label(comp, SWT.NONE);
+							new TileScaleTool(getEditor(), false, true),
 
-			label(comp, "Height", "Phaser.GameObjects.TileSprite.height");
+							new TileScaleTool(getEditor(), true, true)
 
-			var comp2 = new Composite(comp, SWT.NONE);
-			var ly = new GridLayout(2, false);
-			ly.marginWidth = 0;
-			ly.marginHeight = 0;
-			comp2.setLayout(ly);
-			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
-			gd.horizontalSpan = 3;
-			comp2.setLayoutData(gd);
+					);
+				} else {
+					setInteractiveTools();
+				}
+			}
+		};
 
-			_heightText = new Text(comp2, SWT.BORDER);
-			_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		_sizeToolAction = new Action("Tile Size", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE));
+			}
 
-			var manager = new ToolBarManager();
-			manager.add(
-					new Action("Reset to texture height.", EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
-						@Override
-						public void run() {
-							resetSizeToTexture(false, true);
-						}
-					});
-			manager.createControl(comp2);
-		}
+			@Override
+			public void run() {
+				if (isChecked()) {
+					setInteractiveTools(
 
-		return comp;
+							new TileSizeTool(getEditor(), true, false),
+
+							new TileSizeTool(getEditor(), false, true),
+
+							new TileSizeTool(getEditor(), true, true)
+
+					);
+				} else {
+					setInteractiveTools();
+				}
+			}
+		};
+
 	}
 
 	protected void resetSizeToTexture(boolean width, boolean height) {
@@ -345,6 +401,16 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		}, models, true);
 
+		updateActions();
+
+	}
+
+	private void updateActions() {
+		var scene = getEditor().getScene();
+
+		_positionToolAction.setChecked(scene.hasInteractiveTool(TilePositionTool.class));
+		_scaleToolAction.setChecked(scene.hasInteractiveTool(TileScaleTool.class));
+		_sizeToolAction.setChecked(scene.hasInteractiveTool(TileSizeTool.class));
 	}
 
 }

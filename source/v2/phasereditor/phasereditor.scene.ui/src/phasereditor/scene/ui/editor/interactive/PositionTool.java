@@ -43,7 +43,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 @SuppressWarnings("boxing")
-public class PositionElement extends InteractiveTool {
+public class PositionTool extends InteractiveTool {
 
 	private static final int BOX = 14;
 	private static final int ARROW_LENGTH = 80;
@@ -57,7 +57,7 @@ public class PositionElement extends InteractiveTool {
 	private float[] _centerPoint;
 	private float[] _startVector;
 
-	public PositionElement(SceneEditor editor,  boolean changeX, boolean changeY) {
+	public PositionTool(SceneEditor editor,  boolean changeX, boolean changeY) {
 		super(editor);
 
 		_changeX = changeX;

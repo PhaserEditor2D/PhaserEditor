@@ -113,6 +113,8 @@ public interface IEditorSharedImages {
 	String IMG_EDIT_SCALE = "icons/shape_handles.png";
 	String IMG_EDIT_ANGLE = "icons/arrow_rotate_clockwise_blue.png";
 	String IMG_EDIT_ORIGIN = "icons/anchor.png";
+	String IMG_EDIT_TILE_SCALE = "icons/inner-shape-handles.png";
+	String IMG_EDIT_TILE_POSITION = "icons/inner-shape-move.png";
 	String IMG_ALIGN_LEFT = "icons/shape_align_left.png";
 	String IMG_ALIGN_CENTER = "icons/shape_align_center.png";
 	String IMG_ALIGN_RIGHT = "icons/shape_align_right.png";

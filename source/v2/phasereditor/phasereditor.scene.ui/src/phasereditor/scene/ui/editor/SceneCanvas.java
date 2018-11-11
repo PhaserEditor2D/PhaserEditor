@@ -89,7 +89,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SceneModel _sceneModel;
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
-	private List<InteractiveTool> _interactiveElements;
+	private List<InteractiveTool> _interactiveTools;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -109,17 +109,29 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		setZoomWhenShiftPressed(false);
 
-		_interactiveElements = new ArrayList<>();
+		_interactiveTools = new ArrayList<>();
 	}
 
-	public List<InteractiveTool> getInteractiveElements() {
-		return _interactiveElements;
+	public List<InteractiveTool> getInteractiveTools() {
+		return _interactiveTools;
 	}
 
-	public void setInteractiveElements(InteractiveTool... elems) {
-		_interactiveElements = Arrays.asList(elems);
+	public void setInteractiveTools(InteractiveTool... tools) {
+		_interactiveTools = Arrays.asList(tools);
 
+		getEditor().updatePropertyPagesContentWithSelection();
+		
 		redraw();
+	}
+
+	public boolean hasInteractiveTool(Class<?> cls) {
+		for (var tool : _interactiveTools) {
+			if (cls.isInstance(tool)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void init_DND() {
@@ -281,7 +293,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private void renderInteractiveElements(GC gc) {
 
-		for (var elem : _interactiveElements) {
+		for (var elem : _interactiveTools) {
 			elem.render(gc);
 		}
 
@@ -1056,7 +1068,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		for (var elem : _interactiveElements) {
+		for (var elem : _interactiveTools) {
 			elem.mouseDown(e);
 		}
 	}
@@ -1065,7 +1077,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void mouseUp(MouseEvent e) {
 		boolean contains = false;
 
-		for (var elem : _interactiveElements) {
+		for (var elem : _interactiveTools) {
 			if (elem.contains(e.x, e.y)) {
 				contains = true;
 				break;
@@ -1073,7 +1085,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		if (contains) {
-			for (var elem : _interactiveElements) {
+			for (var elem : _interactiveTools) {
 				elem.mouseUp(e);
 			}
 		}
@@ -1099,7 +1111,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void mouseMove(MouseEvent e) {
 		boolean contains = false;
 
-		for (var elem : _interactiveElements) {
+		for (var elem : _interactiveTools) {
 			if (elem.contains(e.x, e.y)) {
 				contains = true;
 			}
@@ -1107,7 +1119,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		if (contains) {
 
-			for (var elem : _interactiveElements) {
+			for (var elem : _interactiveTools) {
 				elem.mouseMove(e);
 			}
 
@@ -1119,7 +1131,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		}
 
-		if (!_interactiveElements.isEmpty()) {
+		if (!_interactiveTools.isEmpty()) {
 			redraw();
 		}
 	}
@@ -1140,7 +1152,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	public boolean isInteractiveDragging() {
 
-		for (var elem : _interactiveElements) {
+		for (var elem : _interactiveTools) {
 			if (elem.isDragging()) {
 				return true;
 			}
