@@ -30,6 +30,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -81,6 +82,14 @@ public class TilePositionElement extends RenderInteractiveElement {
 
 			globalAngle += renderer.globalAngle(model);
 
+			var flipX = 1;
+			var flipY = 1;
+
+			if (model instanceof FlipComponent) {
+				flipX = FlipComponent.get_flipX(model)? -1 : 1;
+				flipY = FlipComponent.get_flipY(model)? -1 : 1;
+			}
+			
 			if (_changeX && _changeY) {
 
 				globalX = centerGlobalX;
@@ -90,7 +99,7 @@ public class TilePositionElement extends RenderInteractiveElement {
 
 				var scale = renderer.globalScaleX(model);
 
-				var xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale, modelY);
+				var xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale * flipX, modelY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -98,7 +107,7 @@ public class TilePositionElement extends RenderInteractiveElement {
 			} else {
 				var scale = renderer.globalScaleY(model);
 
-				var xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale);
+				var xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale * flipY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];

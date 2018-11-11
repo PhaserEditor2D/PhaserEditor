@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.ParentComponent;
@@ -93,6 +94,14 @@ public class PositionElement extends RenderInteractiveElement {
 			centerGlobalY += globalXY[1];
 
 			globalAngle += renderer.globalAngle(model);
+			
+			var flipX = 1;
+			var flipY = 1;
+
+			if (model instanceof FlipComponent) {
+				flipX = FlipComponent.get_flipX(model)? -1 : 1;
+				flipY = FlipComponent.get_flipY(model)? -1 : 1;
+			}
 
 			if (_changeX && _changeY) {
 
@@ -100,10 +109,9 @@ public class PositionElement extends RenderInteractiveElement {
 				globalY = centerGlobalY;
 
 			} else if (_changeX) {
-
 				var scale = renderer.globalScaleX(model);
 
-				var xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale, modelY);
+				var xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale * flipX, modelY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -111,7 +119,7 @@ public class PositionElement extends RenderInteractiveElement {
 			} else {
 				var scale = renderer.globalScaleY(model);
 
-				var xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale);
+				var xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale * flipY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -141,7 +149,7 @@ public class PositionElement extends RenderInteractiveElement {
 		if (doPaint()) {
 
 			if (_changeX && _changeY) {
-				fillRect(gc, globalX, _globalY, globalAngle, BOX,
+				fillRect(gc, globalX, globalY, globalAngle, BOX,
 						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
 			} else {
 				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
