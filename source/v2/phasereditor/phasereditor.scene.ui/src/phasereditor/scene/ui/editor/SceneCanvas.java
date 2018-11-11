@@ -120,7 +120,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_interactiveTools = Arrays.asList(tools);
 
 		getEditor().updatePropertyPagesContentWithSelection();
-		
+
 		redraw();
 	}
 
@@ -294,7 +294,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private void renderInteractiveElements(GC gc) {
 
 		for (var elem : _interactiveTools) {
-			elem.render(gc);
+			if (!elem.getModels().isEmpty()) {
+				elem.render(gc);
+			}
 		}
 
 	}

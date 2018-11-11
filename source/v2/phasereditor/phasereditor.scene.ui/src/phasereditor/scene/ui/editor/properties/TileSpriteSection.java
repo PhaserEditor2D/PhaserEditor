@@ -299,14 +299,14 @@ public class TileSpriteSection extends ScenePropertySection {
 			if (frame != null) {
 				var fd = frame.getFrameData();
 				if (fd != null) {
-					var size = fd.srcSize;
+					var size = fd.src;
 
 					if (width) {
-						TileSpriteComponent.set_width(model, size.x);
+						TileSpriteComponent.set_width(model, size.width);
 					}
 
 					if (height) {
-						TileSpriteComponent.set_height(model, size.y);
+						TileSpriteComponent.set_height(model, size.height);
 					}
 
 					model.setDirty(true);

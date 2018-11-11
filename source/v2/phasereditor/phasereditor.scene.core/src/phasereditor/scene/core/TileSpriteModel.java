@@ -82,13 +82,13 @@ public class TileSpriteModel extends BaseSpriteModel implements
 
 		} else {
 
-			var size = frame.getFrameData().srcSize;
+			var size = frame.getFrameData().src;
 
-			TileSpriteComponent.set_width(this, size.x);
-			TileSpriteComponent.set_height(this, size.y);
+			TileSpriteComponent.set_width(this, size.width);
+			TileSpriteComponent.set_height(this, size.height);
 		}
 	}
-	
+
 	@Override
 	public boolean allowMorphTo(String type) {
 
