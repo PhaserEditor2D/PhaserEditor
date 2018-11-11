@@ -214,50 +214,85 @@ public class PositionElement extends RenderInteractiveElement {
 
 			var renderer = getRenderer();
 
-			for (var model : getModels()) {
+			if (_changeX && _changeY) {
+				for (var model : getModels()) {
 
-				var parent = ParentComponent.get_parent(model);
+					var parent = ParentComponent.get_parent(model);
 
-				var vector = new float[] { _changeX ? 1 : 0, _changeY ? 1 : 0 };
-				var tx = new Transform(Display.getDefault());
-				tx.rotate(TransformComponent.get_angle(model));
-				tx.transform(vector);
-				tx.dispose();
+					var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
+					var p1 = renderer.sceneToLocal(parent, e.x, e.y);
+					
+					var dx = p1[0] - p0[0];
+					var dy = p1[1] - p0[1];
 
-				var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
-				var p1 = renderer.sceneToLocal(parent, e.x, e.y);
+					var initialModelX = (float) model.get("initial-model-x");
+					var initialModelY = (float) model.get("initial-model-y");
 
-				var d = PhaserEditorUI.distance(p0, p1);
+					var modelX = initialModelX + dx;
+					var modelY = initialModelY + dy;
 
-				var moveVector = new float[] { e.x - _startDragCursorPoint[0], e.y - _startDragCursorPoint[1] };
-				var ang = PhaserEditorUI.angle(_startVector, moveVector);
+					{
+						// snap
+						var sceneModel = getEditor().getSceneModel();
+						modelX = sceneModel.snapValueX(modelX);
+						modelY = sceneModel.snapValueY(modelY);
+					}
+
+					TransformComponent.set_x(model, modelX);
+					TransformComponent.set_y(model, modelY);
+
+					model.setDirty(true);
+
+					getEditor().updatePropertyPagesContentWithSelection();
+				}
 				
-				if (ang > 90) {
-					d = -d;
+			} else {
+
+				for (var model : getModels()) {
+
+					var parent = ParentComponent.get_parent(model);
+
+					var vector = new float[] { _changeX ? 1 : 0, _changeY ? 1 : 0 };
+					var tx = new Transform(Display.getDefault());
+					tx.rotate(TransformComponent.get_angle(model));
+					tx.transform(vector);
+					tx.dispose();
+
+					var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
+					var p1 = renderer.sceneToLocal(parent, e.x, e.y);
+
+					var d = PhaserEditorUI.distance(p0, p1);
+
+					var moveVector = new float[] { e.x - _startDragCursorPoint[0], e.y - _startDragCursorPoint[1] };
+					var ang = PhaserEditorUI.angle(_startVector, moveVector);
+
+					if (ang > 90) {
+						d = -d;
+					}
+
+					vector[0] *= d;
+					vector[1] *= d;
+
+					var initialModelX = (float) model.get("initial-model-x");
+					var initialModelY = (float) model.get("initial-model-y");
+
+					var modelX = initialModelX + vector[0];
+					var modelY = initialModelY + vector[1];
+
+					{
+						// snap
+						var sceneModel = getEditor().getSceneModel();
+						modelX = sceneModel.snapValueX(modelX);
+						modelY = sceneModel.snapValueY(modelY);
+					}
+
+					TransformComponent.set_x(model, modelX);
+					TransformComponent.set_y(model, modelY);
+
+					model.setDirty(true);
+
+					getEditor().updatePropertyPagesContentWithSelection();
 				}
-
-				vector[0] *= d;
-				vector[1] *= d;
-
-				var initialModelX = (float) model.get("initial-model-x");
-				var initialModelY = (float) model.get("initial-model-y");
-
-				var modelX = initialModelX + vector[0];
-				var modelY = initialModelY + vector[1];
-
-				{
-					// snap
-					var sceneModel = getEditor().getSceneModel();
-					modelX = sceneModel.snapValueX(modelX);
-					modelY = sceneModel.snapValueY(modelY);
-				}
-
-				TransformComponent.set_x(model, modelX);
-				TransformComponent.set_y(model, modelY);
-
-				model.setDirty(true);
-
-				getEditor().updatePropertyPagesContentWithSelection();
 			}
 		}
 	}
