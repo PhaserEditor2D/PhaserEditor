@@ -1162,4 +1162,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		return false;
 	}
+
+	public List<Object> getSelection() {
+		return _selection;
+	}
 }

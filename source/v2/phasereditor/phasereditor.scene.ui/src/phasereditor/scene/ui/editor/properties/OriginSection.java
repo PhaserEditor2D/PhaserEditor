@@ -21,10 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -40,6 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneObjectRenderer;
 import phasereditor.ui.EditorSharedImages;
@@ -99,13 +97,9 @@ public class OriginSection extends ScenePropertySection {
 
 				getModels().forEach(model -> {
 
-					out.println("---");
-
 					SceneObjectRenderer renderer = getEditor().getScene().getSceneRenderer();
 
 					var size = renderer.getObjectSize(model);
-
-					out.println("size " + Arrays.toString(size));
 
 					var originX = OriginComponent.get_originX(model);
 					var originY = OriginComponent.get_originY(model);
@@ -130,12 +124,16 @@ public class OriginSection extends ScenePropertySection {
 						var tx = new Transform(Display.getDefault(), matrix);
 
 						var temp = new float[] { dx, dy };
-
 						tx.transform(temp);
 						tx.dispose();
 
-						dx = temp[0];
-						dy = temp[1];
+						var parent = ParentComponent.get_parent(model);
+						
+						var scaleX = renderer.globalScaleX(parent);
+						var scaleY = renderer.globalScaleY(parent);
+						
+						dx = temp[0] / scaleX;
+						dy = temp[1] / scaleY;
 					}
 
 					OriginComponent.set_originX(model, newOriginX);
