@@ -749,6 +749,28 @@ public class SceneObjectRenderer {
 		return point;
 	}
 
+	public float[] localToOther(ObjectModel a, ObjectModel b, float ax, float ay) {
+		var globalPoint = localToScene(a, ax, ay);
+		var otherPoint = sceneToLocal(b, globalPoint);
+		return otherPoint;
+	}
+
+	public float[] localToParent(ObjectModel model, float x, float y) {
+		return localToOther(model, ParentComponent.get_parent(model), x, y);
+	}
+
+	public float[] localToParent(ObjectModel model, float[] xy) {
+		return localToParent(model, xy[0], xy[1]);
+	}
+
+	public float[] parentToLocal(ObjectModel model, float x, float y) {
+		return localToOther(ParentComponent.get_parent(model), model, x, y);
+	}
+
+	public float[] parentToLocal(ObjectModel model, float[] xy) {
+		return parentToLocal(model, xy[0], xy[1]);
+	}
+
 	public float[] localToScene(ObjectModel model, float[] scenePoint) {
 		return localToScene(model, scenePoint[0], scenePoint[1]);
 	}
@@ -811,9 +833,9 @@ public class SceneObjectRenderer {
 
 	public Transform getObjectTransform(ObjectModel model) {
 		var matrix = _modelMatrixMap.get(model);
-		
+
 		var tx = new Transform(Display.getDefault(), matrix);
-		
+
 		return tx;
 	}
 

@@ -27,17 +27,14 @@ import java.util.List;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneObjectRenderer;
 import phasereditor.ui.EditorSharedImages;
@@ -104,37 +101,17 @@ public class OriginSection extends ScenePropertySection {
 					var originX = OriginComponent.get_originX(model);
 					var originY = OriginComponent.get_originY(model);
 
-					var initOriginOffsetDX = originX * size[0];
-					var initOriginOffsetDY = originY * size[1];
-
 					var newOriginX = _x ? _value : originX;
 					var newOriginY = _x ? originY : _value;
 
-					var originOffseDX = newOriginX * size[0];
-					var originOffsetDY = newOriginY * size[1];
+					var local1 = new float[] { originX * size[0], originY * size[1] };
+					var local2 = new float[] { newOriginX * size[0], newOriginY * size[1] };
 
-					var dx = originOffseDX - initOriginOffsetDX;
-					var dy = originOffsetDY - initOriginOffsetDY;
+					var parent1 = renderer.localToParent(model, local1);
+					var parent2 = renderer.localToParent(model, local2);
 
-					{
-						var matrix = renderer.getObjectMatrix(model);
-						matrix[4] = 0;
-						matrix[5] = 0;
-
-						var tx = new Transform(Display.getDefault(), matrix);
-
-						var temp = new float[] { dx, dy };
-						tx.transform(temp);
-						tx.dispose();
-
-						var parent = ParentComponent.get_parent(model);
-						
-						var scaleX = renderer.globalScaleX(parent);
-						var scaleY = renderer.globalScaleY(parent);
-						
-						dx = temp[0] / scaleX;
-						dy = temp[1] / scaleY;
-					}
+					var dx = parent2[0] - parent1[0];
+					var dy = parent2[1] - parent1[1];
 
 					OriginComponent.set_originX(model, newOriginX);
 					OriginComponent.set_originY(model, newOriginY);
