@@ -753,20 +753,6 @@ public class SceneObjectRenderer {
 		return localToScene(model, scenePoint[0], scenePoint[1]);
 	}
 
-	public float[] localToParent(ObjectModel model, float[] xy) {
-		return localToParent(model, xy[0], xy[1]);
-	}
-
-	public float[] localToParent(ObjectModel model, float x, float y) {
-		var parent = ParentComponent.get_parent(model);
-
-		var scenePoint = localToScene(model, x, y);
-
-		var parentPoint = sceneToLocal(parent, scenePoint);
-
-		return parentPoint;
-	}
-
 	public float globalScaleX(ObjectModel model) {
 		var scale = TransformComponent.get_scaleX(model);
 
@@ -821,5 +807,20 @@ public class SceneObjectRenderer {
 		tx.dispose();
 
 		return point;
+	}
+
+	public Transform getObjectTransform(ObjectModel model) {
+		var matrix = _modelMatrixMap.get(model);
+		
+		var tx = new Transform(Display.getDefault(), matrix);
+		
+		return tx;
+	}
+
+	/**
+	 * {m11, m12, m21, m22, dx, dy}
+	 */
+	public float[] getObjectMatrix(ObjectModel model) {
+		return _modelMatrixMap.get(model);
 	}
 }

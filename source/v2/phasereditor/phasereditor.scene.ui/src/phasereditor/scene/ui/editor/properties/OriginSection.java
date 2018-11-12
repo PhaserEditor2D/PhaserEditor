@@ -21,20 +21,27 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.SceneObjectRenderer;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -91,11 +98,51 @@ public class OriginSection extends ScenePropertySection {
 			wrapOperation(() -> {
 
 				getModels().forEach(model -> {
-					if (_x) {
-						OriginComponent.set_originX(model, _value);
-					} else {
-						OriginComponent.set_originY(model, _value);
+
+					out.println("---");
+
+					SceneObjectRenderer renderer = getEditor().getScene().getSceneRenderer();
+
+					var size = renderer.getObjectSize(model);
+
+					out.println("size " + Arrays.toString(size));
+
+					var originX = OriginComponent.get_originX(model);
+					var originY = OriginComponent.get_originY(model);
+
+					var initOriginOffsetDX = originX * size[0];
+					var initOriginOffsetDY = originY * size[1];
+
+					var newOriginX = _x ? _value : originX;
+					var newOriginY = _x ? originY : _value;
+
+					var originOffseDX = newOriginX * size[0];
+					var originOffsetDY = newOriginY * size[1];
+
+					var dx = originOffseDX - initOriginOffsetDX;
+					var dy = originOffsetDY - initOriginOffsetDY;
+
+					{
+						var matrix = renderer.getObjectMatrix(model);
+						matrix[4] = 0;
+						matrix[5] = 0;
+
+						var tx = new Transform(Display.getDefault(), matrix);
+
+						var temp = new float[] { dx, dy };
+
+						tx.transform(temp);
+						tx.dispose();
+
+						dx = temp[0];
+						dy = temp[1];
 					}
+
+					OriginComponent.set_originX(model, newOriginX);
+					OriginComponent.set_originY(model, newOriginY);
+
+					TransformComponent.set_x(model, TransformComponent.get_x(model) + dx);
+					TransformComponent.set_y(model, TransformComponent.get_y(model) + dy);
 				});
 
 				OriginSection.this.update_UI_from_Model();

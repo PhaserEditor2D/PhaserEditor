@@ -1394,7 +1394,7 @@ public class PhaserEditorUI {
 		return (float) Math.toDegrees(Math.acos(delta));
 
 	}
-	
+
 	public static float angle(float[] a, float[] b) {
 		return angle(a[0], a[1], b[0], b[1]);
 	}
