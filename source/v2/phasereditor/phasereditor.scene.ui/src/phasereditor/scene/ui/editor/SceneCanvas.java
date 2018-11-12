@@ -1070,6 +1070,10 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	public void mouseDown(MouseEvent e) {
+		if (e.button != 1) {
+			return;
+		}
+		
 		for (var elem : _interactiveTools) {
 			elem.mouseDown(e);
 		}
@@ -1077,6 +1081,11 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	public void mouseUp(MouseEvent e) {
+		
+		if (e.button != 1) {
+			return;
+		}
+		
 		boolean contains = false;
 
 		for (var elem : _interactiveTools) {
