@@ -28,6 +28,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
@@ -93,6 +94,14 @@ public class OriginTool extends InteractiveTool {
 			centerGlobalY += globalXY[1];
 
 			globalAngle += renderer.globalAngle(model);
+			
+			var flipX = 1;
+			var flipY = 1;
+
+			if (model instanceof FlipComponent) {
+				flipX = FlipComponent.get_flipX(model) ? -1 : 1;
+				flipY = FlipComponent.get_flipY(model) ? -1 : 1;
+			}
 
 			if (_changeX && _changeY) {
 
@@ -103,7 +112,7 @@ public class OriginTool extends InteractiveTool {
 
 				var scale = renderer.globalScaleX(model);
 
-				var xy = renderer.localToScene(model, localX + ARROW_LENGTH / scale, localY);
+				var xy = renderer.localToScene(model, localX + ARROW_LENGTH / scale * flipX, localY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -111,7 +120,7 @@ public class OriginTool extends InteractiveTool {
 			} else {
 				var scale = renderer.globalScaleY(model);
 
-				var xy = renderer.localToScene(model, localX, localY + ARROW_LENGTH / scale);
+				var xy = renderer.localToScene(model, localX, localY + ARROW_LENGTH / scale * flipY);
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
