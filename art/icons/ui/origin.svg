@@ -11,7 +11,7 @@
    height="16"
    version="1.1"
    id="svg44"
-   sodipodi:docname="origin-x-1.svg"
+   sodipodi:docname="origin.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    inkscape:export-filename="./origin-x-1@2x.png"
    inkscape:export-xdpi="192"
@@ -118,6 +118,23 @@
            offset="100%" />
       </linearGradient>
     </defs>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(3.6055513,0,0,-0.2773501,8,-8)"
+       y2="21.633308"
+       x2="1.6641006"
+       y1="21.633308"
+       x1="-1.9414507"
+       id="line-3">
+      <stop
+         id="stop26-6"
+         stop-color="#a5a5a5"
+         offset="0%" />
+      <stop
+         id="stop28-7"
+         stop-color="#3a3a3a"
+         offset="100%" />
+    </linearGradient>
   </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -169,4 +186,12 @@
      height="1"
      width="12"
      transform="matrix(0,-1,-1,0,0,0)" />
+  <rect
+     style="fill:url(#line-3);stroke-width:1"
+     id="rect41-5"
+     y="-8.5"
+     x="2"
+     height="1"
+     width="12"
+     transform="scale(1,-1)" />
 </svg>
