@@ -172,9 +172,9 @@ public class TileSizeTool extends InteractiveTool {
 				}
 
 				model.setDirty(true);
-
-				getEditor().updatePropertyPagesContentWithSelection();
 			}
+			
+			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

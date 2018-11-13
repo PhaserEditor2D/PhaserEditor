@@ -216,9 +216,10 @@ public class PositionTool extends InteractiveTool {
 					TransformComponent.set_y(model, modelY);
 
 					model.setDirty(true);
-
-					getEditor().updatePropertyPagesContentWithSelection();
+					
 				}
+				
+				getEditor().updatePropertyPagesContentWithSelection();
 
 			} else {
 
@@ -264,9 +265,10 @@ public class PositionTool extends InteractiveTool {
 					TransformComponent.set_y(model, modelY);
 
 					model.setDirty(true);
-
-					getEditor().updatePropertyPagesContentWithSelection();
+					
 				}
+				
+				getEditor().updatePropertyPagesContentWithSelection();
 			}
 		}
 	}

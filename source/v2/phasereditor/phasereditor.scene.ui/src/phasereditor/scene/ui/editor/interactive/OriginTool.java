@@ -224,9 +224,10 @@ public class OriginTool extends InteractiveTool {
 				TransformComponent.set_y(model, (float) model.get("initial-y") + dy);
 
 				model.setDirty(true);
-
-				getEditor().updatePropertyPagesContentWithSelection();
+				
 			}
+			
+			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

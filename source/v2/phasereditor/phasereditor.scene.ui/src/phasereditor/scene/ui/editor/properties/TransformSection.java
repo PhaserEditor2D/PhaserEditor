@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.interactive.PositionTool;
+import phasereditor.scene.ui.editor.interactive.ScaleTool;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -64,11 +65,11 @@ public class TransformSection extends ScenePropertySection {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		
+
 		manager.add(_positionToolAction);
 		manager.add(_scaleToolAction);
 		manager.add(_angleToolAction);
-		
+
 		manager.add(new Separator());
 
 		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
@@ -190,18 +191,39 @@ public class TransformSection extends ScenePropertySection {
 			}
 		};
 
-		_scaleToolAction = new Action("Scale tool", EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE)) {
+		_scaleToolAction = new Action("Scale tool.", IAction.AS_CHECK_BOX) {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE));
+			}
+
+			@Override
+			public void run() {
+				if (isChecked()) {
+					setInteractiveTools(
+
+							new ScaleTool(getEditor(), true, false),
+
+							new ScaleTool(getEditor(), false, true),
+
+							new ScaleTool(getEditor(), true, true)
+
+					);
+				} else {
+					setInteractiveTools();
+				}
+
+			}
+		};
+
+		_angleToolAction = new Action("Angle tool", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
 			//
 		};
-		 _angleToolAction = new Action("Angle tool", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
-			//
-		};
-		
+
 		_localTransformAction = new Action("Transform in local coords.") {
 
 		};
-		
-		
+
 	}
 
 	@Override
@@ -254,6 +276,7 @@ public class TransformSection extends ScenePropertySection {
 
 	private void updateActions() {
 		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
+		_scaleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(ScaleTool.class));
 	}
 
 }

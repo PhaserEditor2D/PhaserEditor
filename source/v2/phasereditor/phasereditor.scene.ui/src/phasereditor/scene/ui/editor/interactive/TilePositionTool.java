@@ -200,9 +200,9 @@ public class TilePositionTool extends InteractiveTool {
 				}
 
 				model.setDirty(true);
-
-				getEditor().updatePropertyPagesContentWithSelection();
 			}
+			
+			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 
