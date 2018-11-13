@@ -77,8 +77,8 @@ public class TileScaleTool extends InteractiveTool {
 			var textureWidth = frame.getFrameData().srcSize.x;
 			var textureHeight = frame.getFrameData().srcSize.y;
 
-			var modelX = 0;
-			var modelY = 0;
+			var modelX = TileSpriteComponent.get_tilePositionX(model);
+			var modelY = TileSpriteComponent.get_tilePositionY(model);
 
 			var globalXY = renderer.localToScene(model, modelX, modelY);
 
