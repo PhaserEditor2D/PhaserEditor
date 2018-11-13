@@ -133,11 +133,10 @@ public class TilePositionTool extends InteractiveTool {
 
 		// paint
 
-		if (doPaint()) {
 			if (_changeX && _changeY) {
 				fillRect(gc, globalX, _globalY, globalAngle, BOX,
 						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
-			} else {
+			} else if (doPaint()) {
 				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
@@ -151,8 +150,6 @@ public class TilePositionTool extends InteractiveTool {
 
 				fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
 			}
-		}
-
 	}
 
 	@Override

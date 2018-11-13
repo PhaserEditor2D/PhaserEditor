@@ -56,13 +56,13 @@ public class PositionTool extends InteractiveTool {
 	private float[] _centerPoint;
 	private float[] _startVector;
 
-	public PositionTool(SceneEditor editor,  boolean changeX, boolean changeY) {
+	public PositionTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);
 
 		_changeX = changeX;
 		_changeY = changeY;
 	}
-	
+
 	@Override
 	protected boolean canEdit(ObjectModel model) {
 		return model instanceof TransformComponent;
@@ -96,13 +96,13 @@ public class PositionTool extends InteractiveTool {
 			centerGlobalY += globalXY[1];
 
 			globalAngle += renderer.globalAngle(model);
-			
+
 			var flipX = 1;
 			var flipY = 1;
 
 			if (model instanceof FlipComponent) {
-				flipX = FlipComponent.get_flipX(model)? -1 : 1;
-				flipY = FlipComponent.get_flipY(model)? -1 : 1;
+				flipX = FlipComponent.get_flipX(model) ? -1 : 1;
+				flipY = FlipComponent.get_flipY(model) ? -1 : 1;
 			}
 
 			if (_changeX && _changeY) {
@@ -148,26 +148,22 @@ public class PositionTool extends InteractiveTool {
 
 		// paint
 
-		if (doPaint()) {
+		if (_changeX && _changeY) {
+			fillRect(gc, globalX, globalY, globalAngle, BOX,
+					SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+		} else if (doPaint()) {
+			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-			if (_changeX && _changeY) {
-				fillRect(gc, globalX, globalY, globalAngle, BOX,
-						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
-			} else {
-				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+			var color = SWTResourceManager
+					.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
 
-				var color = SWTResourceManager
-						.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+			gc.setBackground(color);
+			gc.setForeground(color);
 
-				gc.setBackground(color);
-				gc.setForeground(color);
+			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
 
-				gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
-
-				fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
-			}
-
+			fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
 		}
 
 	}

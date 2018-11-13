@@ -56,7 +56,7 @@ public class TileScaleTool extends InteractiveTool {
 		_changeX = changeX;
 		_changeY = changeY;
 	}
-	
+
 	@Override
 	protected boolean canEdit(ObjectModel model) {
 		return model instanceof TileSpriteModel;
@@ -131,24 +131,22 @@ public class TileScaleTool extends InteractiveTool {
 
 		// paint
 
-		if (doPaint()) {
-			if (_changeX && _changeY) {
-				fillRect(gc, globalX, _globalY, globalAngle, BOX,
-						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
-			} else {
-				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		if (_changeX && _changeY) {
+			fillRect(gc, globalX, _globalY, globalAngle, BOX,
+					SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+		} else if (doPaint()) {
+			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-				var color = SWTResourceManager
-						.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+			var color = SWTResourceManager
+					.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
 
-				gc.setBackground(color);
-				gc.setForeground(color);
+			gc.setBackground(color);
+			gc.setForeground(color);
 
-				gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
+			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
 
-				fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
-			}
+			fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
 		}
 
 	}
@@ -257,7 +255,7 @@ public class TileScaleTool extends InteractiveTool {
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
-			
+
 			getScene().redraw();
 
 		}
