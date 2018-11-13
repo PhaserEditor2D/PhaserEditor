@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -37,6 +38,7 @@ import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneObjectRenderer;
+import phasereditor.scene.ui.editor.interactive.OriginTool;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -47,7 +49,8 @@ public class OriginSection extends ScenePropertySection {
 
 	private Text _originXText;
 	private Text _originYText;
-	private List<OriginAction> _actions;
+	private List<OriginAction> _originPresetActions;
+	private Action _originToolAction;
 
 	public OriginSection(ScenePropertyPage page) {
 		super("Origin", page);
@@ -130,32 +133,63 @@ public class OriginSection extends ScenePropertySection {
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 
-		_actions = new ArrayList<>();
+		for (var action : _originPresetActions) {
+			manager.add(action);
+		}
+	}
+
+	private void createActions() {
+		_originPresetActions = new ArrayList<>();
 
 		for (int i = 0; i <= 2; i++) {
 			var action = new OriginAction("x", i);
-			manager.add(action);
-			_actions.add(action);
+			_originPresetActions.add(action);
 		}
 
 		for (int i = 0; i <= 2; i++) {
 			var action = new OriginAction("y", i);
-			manager.add(action);
-			_actions.add(action);
+			_originPresetActions.add(action);
 		}
+
+		_originToolAction = new Action("Origin", IAction.AS_CHECK_BOX) {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY));
+			}
+
+			@Override
+			public void run() {
+
+				if (isChecked()) {
+					setInteractiveTools(
+
+							new OriginTool(getEditor(), true, false),
+
+							new OriginTool(getEditor(), false, true),
+
+							new OriginTool(getEditor(), true, true)
+
+					);
+				} else {
+					setInteractiveTools();
+				}
+
+			}
+		};
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
+
+		createActions();
 
 		Composite comp = new Composite(parent, SWT.NONE);
 
 		comp.setLayout(new GridLayout(6, false));
 
 		var manager = new ToolBarManager();
-		manager.add(new Action("Origin", EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY)) {
-			//
-		});
+
+		manager.add(_originToolAction);
 		manager.createControl(comp);
 
 		label(comp, "Origin", "Phaser.GameObjects.Sprite.setOrigin");
@@ -207,9 +241,11 @@ public class OriginSection extends ScenePropertySection {
 	}
 
 	private void updateActions_UI_from_Model() {
-		for (var action : _actions) {
+		for (var action : _originPresetActions) {
 			action.update_UI_from_Model();
 		}
+
+		_originToolAction.setChecked(getEditor().getScene().hasInteractiveTool(OriginTool.class));
 	}
 
 }

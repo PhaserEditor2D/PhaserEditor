@@ -23,9 +23,7 @@ package phasereditor.scene.ui.editor.interactive;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Transform;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.FlipComponent;
@@ -155,43 +153,6 @@ public class TilePositionTool extends InteractiveTool {
 			}
 		}
 
-	}
-
-	private static void fillArrow(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
-		var tx = new Transform(gc.getDevice());
-
-		tx.translate(globalX, globalY);
-		tx.rotate(globalAngle);
-		tx.translate(0, -size / 2);
-		gc.setTransform(tx);
-
-		gc.setBackground(color);
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-		gc.fillPolygon(new int[] { 0, 0, size, size / 2, 0, size });
-		gc.drawPolygon(new int[] { 0, 0, size, size / 2, 0, size });
-
-		gc.setTransform(null);
-
-		tx.dispose();
-	}
-
-	private static void fillRect(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
-		var tx = new Transform(gc.getDevice());
-
-		tx.translate(globalX, globalY);
-		tx.rotate(globalAngle);
-		gc.setTransform(tx);
-
-		gc.setBackground(color);
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-		gc.fillRectangle(-size / 2, -size / 2, size, size);
-		gc.drawRectangle(-size / 2, -size / 2, size, size);
-
-		gc.setTransform(null);
-
-		tx.dispose();
 	}
 
 	@Override
