@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.interactive;
 
-import static java.lang.System.out;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
@@ -151,8 +149,6 @@ public class ScaleTool extends InteractiveTool {
 	public void mouseMove(MouseEvent e) {
 		if (_dragging && contains(e.x, e.y)) {
 
-			out.println("----");
-
 			var renderer = getRenderer();
 
 			for (var model : getModels()) {
@@ -164,8 +160,6 @@ public class ScaleTool extends InteractiveTool {
 				var localDX = localCursor[0] - initialLocalCursor[0];
 				var localDY = localCursor[1] - initialLocalCursor[1];
 
-				out.println("local delta " + localDX);
-
 				var size = getRenderer().getObjectSize(model);
 
 				var scaleX = (float) model.get("initial-scaleX");
@@ -173,8 +167,6 @@ public class ScaleTool extends InteractiveTool {
 
 				var scaleDX = localDX / size[0] * scaleX;
 				var scaleDY = localDY / size[1] * scaleY;
-
-				out.println("scale delta " + scaleDX);
 
 				var newScaleX = scaleX + scaleDX;
 				var newScaleY = scaleY + scaleDY;
