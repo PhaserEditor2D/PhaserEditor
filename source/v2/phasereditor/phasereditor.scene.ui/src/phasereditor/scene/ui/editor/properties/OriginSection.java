@@ -154,7 +154,7 @@ public class OriginSection extends ScenePropertySection {
 		_originToolAction = new Action("Origin", IAction.AS_CHECK_BOX) {
 
 			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_OBJ_PROPERTY));
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_ORIGIN));
 			}
 
 			@Override
