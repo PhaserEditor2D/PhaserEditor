@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -49,6 +50,8 @@ public class TransformSection extends ScenePropertySection {
 	private Text _angleText;
 	private Action _localTransformAction;
 	private Action _positionToolAction;
+	private Action _scaleToolAction;
+	private Action _angleToolAction;
 
 	public TransformSection(ScenePropertyPage page) {
 		super("Transform", page);
@@ -61,6 +64,12 @@ public class TransformSection extends ScenePropertySection {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
+		
+		manager.add(_positionToolAction);
+		manager.add(_scaleToolAction);
+		manager.add(_angleToolAction);
+		
+		manager.add(new Separator());
 
 		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
 			//
@@ -119,9 +128,7 @@ public class TransformSection extends ScenePropertySection {
 			// scale
 
 			var manager = new ToolBarManager();
-			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE)) {
-				//
-			});
+			manager.add(_scaleToolAction);
 			manager.createControl(comp);
 
 			label(comp, "Scale", "Phaser.GameObjects.Sprite.setScale");
@@ -142,9 +149,7 @@ public class TransformSection extends ScenePropertySection {
 			// angle
 
 			var manager = new ToolBarManager();
-			manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
-				//
-			});
+			manager.add(_angleToolAction);
 			manager.createControl(comp);
 
 			label(comp, "Angle", "Phaser.GameObjects.Sprite.angle");
@@ -185,9 +190,18 @@ public class TransformSection extends ScenePropertySection {
 			}
 		};
 
+		_scaleToolAction = new Action("Scale tool", EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE)) {
+			//
+		};
+		 _angleToolAction = new Action("Angle tool", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
+			//
+		};
+		
 		_localTransformAction = new Action("Transform in local coords.") {
 
 		};
+		
+		
 	}
 
 	@Override

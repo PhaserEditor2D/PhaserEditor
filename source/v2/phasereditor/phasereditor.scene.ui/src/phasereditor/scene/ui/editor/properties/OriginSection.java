@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -67,7 +68,7 @@ public class OriginSection extends ScenePropertySection {
 		private float _value;
 
 		public OriginAction(String axis, int id) {
-			super("Set Origin.", AS_CHECK_BOX);
+			super("Set origin in axis " + axis.toUpperCase(), AS_CHECK_BOX);
 			_x = axis.equals("x");
 			_id = id;
 			_value = new float[] { 0, 0.5f, 1 }[id];
@@ -133,6 +134,10 @@ public class OriginSection extends ScenePropertySection {
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 
+		manager.add(_originToolAction);
+		
+		manager.add(new Separator());
+		
 		for (var action : _originPresetActions) {
 			manager.add(action);
 		}
@@ -151,7 +156,7 @@ public class OriginSection extends ScenePropertySection {
 			_originPresetActions.add(action);
 		}
 
-		_originToolAction = new Action("Origin", IAction.AS_CHECK_BOX) {
+		_originToolAction = new Action("Origin tool.", IAction.AS_CHECK_BOX) {
 
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_ORIGIN));

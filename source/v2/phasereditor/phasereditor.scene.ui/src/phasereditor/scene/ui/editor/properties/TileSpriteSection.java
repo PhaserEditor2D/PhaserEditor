@@ -217,7 +217,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		};
 
-		_positionToolAction = new Action("Tile Position", IAction.AS_CHECK_BOX) {
+		_positionToolAction = new Action("Tile position tool.", IAction.AS_CHECK_BOX) {
 
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_TILE_POSITION));
@@ -240,7 +240,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		};
 
-		_scaleToolAction = new Action("Tile Scale", IAction.AS_CHECK_BOX) {
+		_scaleToolAction = new Action("Tile scale tool.", IAction.AS_CHECK_BOX) {
 
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_TILE_SCALE));
@@ -264,7 +264,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		};
 
-		_sizeToolAction = new Action("Tile Size", IAction.AS_CHECK_BOX) {
+		_sizeToolAction = new Action("Tile size tool.", IAction.AS_CHECK_BOX) {
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE));
 			}
