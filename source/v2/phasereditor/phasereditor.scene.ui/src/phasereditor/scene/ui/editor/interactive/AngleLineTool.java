@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.interactive;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
@@ -85,7 +84,7 @@ public class AngleLineTool extends InteractiveTool {
 
 			var parentAngle = renderer.globalAngle(ParentComponent.get_parent(model));
 
-			if (true /* isLocalCoords() */) {
+			if (getScene().isTransformLocalCoords()) {
 				startAngle = parentAngle;
 				endAngle = parentAngle + TransformComponent.get_angle(model);
 			} else {

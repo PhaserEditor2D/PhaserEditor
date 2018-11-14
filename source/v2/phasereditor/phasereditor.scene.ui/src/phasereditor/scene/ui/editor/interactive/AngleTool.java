@@ -147,6 +147,8 @@ public class AngleTool extends InteractiveTool {
 
 				TransformComponent.set_angle(model, (float) model.get("initial-angle") + deltaAngle);
 			}
+			
+			getEditor().updatePropertyPagesContentWithSelection();
 		}
 
 	}

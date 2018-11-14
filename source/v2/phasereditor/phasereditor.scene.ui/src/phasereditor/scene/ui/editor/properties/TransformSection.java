@@ -251,7 +251,7 @@ public class TransformSection extends ScenePropertySection {
 			}
 		};
 
-		_localTransformAction = new Action("Transform in local/global coords.", IAction.AS_CHECK_BOX) {
+		_localTransformAction = new Action("Transform in local/global coords.") {
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_HOUSE));
 			}
@@ -326,7 +326,6 @@ public class TransformSection extends ScenePropertySection {
 		
 		var local = getScene().isTransformLocalCoords();
 		
-		_localTransformAction.setChecked(local);
 		_localTransformAction.setImageDescriptor(EditorSharedImages.getImageDescriptor(local ? IMG_HOUSE : IMG_WORLD));
 		_localTransformAction.setText(local? "Transform in local coords." : "Transform in global coords.");
 	}
