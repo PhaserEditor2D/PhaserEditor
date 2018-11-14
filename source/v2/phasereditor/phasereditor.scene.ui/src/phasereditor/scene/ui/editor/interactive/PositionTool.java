@@ -78,6 +78,8 @@ public class PositionTool extends InteractiveTool {
 		var globalY = 0;
 		var globalAngle = 0f;
 
+		var localCoords = getScene().isTransformLocalCoords();
+
 		for (var model : getModels()) {
 
 			var objSize = renderer.getObjectSize(model);
@@ -95,7 +97,9 @@ public class PositionTool extends InteractiveTool {
 			centerGlobalX += globalXY[0];
 			centerGlobalY += globalXY[1];
 
-			globalAngle += renderer.globalAngle(model);
+			if (localCoords) {
+				globalAngle += renderer.globalAngle(model);
+			}
 
 			var flipX = 1;
 			var flipY = 1;
@@ -113,7 +117,14 @@ public class PositionTool extends InteractiveTool {
 			} else if (_changeX) {
 				var scale = renderer.globalScaleX(model);
 
-				var xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale * flipX, modelY);
+				float[] xy;
+
+				if (localCoords) {
+					xy = renderer.localToScene(model, modelX + ARROW_LENGTH / scale * flipX, modelY);
+				} else {
+					xy = renderer.localToScene(model, modelX, modelY);
+					xy[0] += ARROW_LENGTH;
+				}
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -121,7 +132,14 @@ public class PositionTool extends InteractiveTool {
 			} else {
 				var scale = renderer.globalScaleY(model);
 
-				var xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale * flipY);
+				float[] xy;
+
+				if (localCoords) {
+					xy = renderer.localToScene(model, modelX, modelY + ARROW_LENGTH / scale * flipY);
+				} else {
+					xy = renderer.localToScene(model, modelX, modelY);
+					xy[1] += ARROW_LENGTH;
+				}
 
 				globalX += (int) xy[0];
 				globalY += (int) xy[1];
@@ -188,88 +206,139 @@ public class PositionTool extends InteractiveTool {
 
 			var renderer = getRenderer();
 
-			if (_changeX && _changeY) {
-				for (var model : getModels()) {
+			var localCoords = getScene().isTransformLocalCoords();
 
-					var parent = ParentComponent.get_parent(model);
+			var changeXY = _changeX && _changeY;
 
-					var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
-					var p1 = renderer.sceneToLocal(parent, e.x, e.y);
+			if (localCoords || changeXY) {
 
-					var dx = p1[0] - p0[0];
-					var dy = p1[1] - p0[1];
+				if (changeXY) {
+					for (var model : getModels()) {
 
-					var initialModelX = (float) model.get("initial-model-x");
-					var initialModelY = (float) model.get("initial-model-y");
+						var parent = ParentComponent.get_parent(model);
 
-					var modelX = initialModelX + dx;
-					var modelY = initialModelY + dy;
+						var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
+						var p1 = renderer.sceneToLocal(parent, e.x, e.y);
 
-					{
-						// snap
-						var sceneModel = getEditor().getSceneModel();
-						modelX = sceneModel.snapValueX(modelX);
-						modelY = sceneModel.snapValueY(modelY);
+						var dx = p1[0] - p0[0];
+						var dy = p1[1] - p0[1];
+
+						var initialModelX = (float) model.get("initial-model-x");
+						var initialModelY = (float) model.get("initial-model-y");
+
+						var modelX = initialModelX + dx;
+						var modelY = initialModelY + dy;
+
+						{
+							// snap
+							var sceneModel = getEditor().getSceneModel();
+							modelX = sceneModel.snapValueX(modelX);
+							modelY = sceneModel.snapValueY(modelY);
+						}
+
+						TransformComponent.set_x(model, modelX);
+						TransformComponent.set_y(model, modelY);
+
+						model.setDirty(true);
+
 					}
 
-					TransformComponent.set_x(model, modelX);
-					TransformComponent.set_y(model, modelY);
+				} else {
 
-					model.setDirty(true);
-					
+					for (var model : getModels()) {
+
+						var parent = ParentComponent.get_parent(model);
+
+						var vector = new float[] { _changeX ? 1 : 0, _changeY ? 1 : 0 };
+						var tx = new Transform(Display.getDefault());
+						tx.rotate(TransformComponent.get_angle(model));
+						tx.transform(vector);
+						tx.dispose();
+
+						var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
+						var p1 = renderer.sceneToLocal(parent, e.x, e.y);
+
+						var d = PhaserEditorUI.distance(p0, p1);
+
+						var moveVector = new float[] { e.x - _startDragCursorPoint[0], e.y - _startDragCursorPoint[1] };
+						var ang = PhaserEditorUI.angle(_startVector, moveVector);
+
+						if (ang > 90) {
+							d = -d;
+						}
+
+						vector[0] *= d;
+						vector[1] *= d;
+
+						var initialModelX = (float) model.get("initial-model-x");
+						var initialModelY = (float) model.get("initial-model-y");
+
+						var modelX = initialModelX + vector[0];
+						var modelY = initialModelY + vector[1];
+
+						{
+							// snap
+							var sceneModel = getEditor().getSceneModel();
+							modelX = sceneModel.snapValueX(modelX);
+							modelY = sceneModel.snapValueY(modelY);
+						}
+
+						TransformComponent.set_x(model, modelX);
+						TransformComponent.set_y(model, modelY);
+
+						model.setDirty(true);
+
+					}
+
 				}
-				
-				getEditor().updatePropertyPagesContentWithSelection();
-
 			} else {
 
+				// global coords
+
+				var dx = e.x - _startDragCursorPoint[0];
+				var dy = e.y - _startDragCursorPoint[1];
+
 				for (var model : getModels()) {
 
-					var parent = ParentComponent.get_parent(model);
+					var initXY = (float[]) model.get("initial-scene-xy");
 
-					var vector = new float[] { _changeX ? 1 : 0, _changeY ? 1 : 0 };
-					var tx = new Transform(Display.getDefault());
-					tx.rotate(TransformComponent.get_angle(model));
-					tx.transform(vector);
-					tx.dispose();
+					var initY = initXY[1];
+					var initX = initXY[0];
 
-					var p0 = renderer.sceneToLocal(parent, _startDragCursorPoint);
-					var p1 = renderer.sceneToLocal(parent, e.x, e.y);
+					float[] point;
 
-					var d = PhaserEditorUI.distance(p0, p1);
+					if (changeXY) {
+						point = new float[] { initX + dx, initY + dy };
+					} else {
+						if (_changeX) {
+							point = new float[] { initX + dx, initY };
+						} else {
+							point = new float[] { initX, initY + dy };
+						}
 
-					var moveVector = new float[] { e.x - _startDragCursorPoint[0], e.y - _startDragCursorPoint[1] };
-					var ang = PhaserEditorUI.angle(_startVector, moveVector);
+						var parent = ParentComponent.get_parent(model);
 
-					if (ang > 90) {
-						d = -d;
+						point = renderer.sceneToLocal(parent, point);
+
+						var modelX = point[0];
+						var modelY = point[1];
+
+						{
+							// snap
+							var sceneModel = getEditor().getSceneModel();
+							point[0] = sceneModel.snapValueX(modelX);
+							point[1] = sceneModel.snapValueY(modelY);
+						}
+
+						TransformComponent.set_x(model, modelX);
+						TransformComponent.set_y(model, modelY);
+
+						model.setDirty(true);
 					}
-
-					vector[0] *= d;
-					vector[1] *= d;
-
-					var initialModelX = (float) model.get("initial-model-x");
-					var initialModelY = (float) model.get("initial-model-y");
-
-					var modelX = initialModelX + vector[0];
-					var modelY = initialModelY + vector[1];
-
-					{
-						// snap
-						var sceneModel = getEditor().getSceneModel();
-						modelX = sceneModel.snapValueX(modelX);
-						modelY = sceneModel.snapValueY(modelY);
-					}
-
-					TransformComponent.set_x(model, modelX);
-					TransformComponent.set_y(model, modelY);
-
-					model.setDirty(true);
-					
 				}
-				
-				getEditor().updatePropertyPagesContentWithSelection();
 			}
+
+			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 
@@ -280,11 +349,21 @@ public class PositionTool extends InteractiveTool {
 			_dragging = true;
 
 			_startDragCursorPoint = new float[] { e.x, e.y };
+
 			_startVector = new float[] { _arrowPoint[0] - _centerPoint[0], _arrowPoint[1] - _centerPoint[1] };
 
+			var renderer = getRenderer();
+
 			for (var model : getModels()) {
-				model.put("initial-model-x", TransformComponent.get_x(model));
-				model.put("initial-model-y", TransformComponent.get_y(model));
+				float x = TransformComponent.get_x(model);
+				float y = TransformComponent.get_y(model);
+
+				model.put("initial-model-x", x);
+				model.put("initial-model-y", y);
+				
+				var parent = ParentComponent.get_parent(model);
+				
+				model.put("initial-scene-xy", renderer.localToScene(parent, x, y));
 			}
 		}
 	}
