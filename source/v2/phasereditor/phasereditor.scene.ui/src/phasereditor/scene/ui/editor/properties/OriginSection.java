@@ -127,6 +127,8 @@ public class OriginSection extends ScenePropertySection {
 				OriginSection.this.update_UI_from_Model();
 
 			}, getModels(), true, model -> model instanceof DynamicBitmapTextComponent);
+			
+			getEditor().setDirty(true);
 
 		}
 	}
