@@ -34,6 +34,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.interactive.AngleLineTool;
+import phasereditor.scene.ui.editor.interactive.AngleTool;
 import phasereditor.scene.ui.editor.interactive.PositionTool;
 import phasereditor.scene.ui.editor.interactive.ScaleTool;
 import phasereditor.ui.EditorSharedImages;
@@ -216,8 +218,33 @@ public class TransformSection extends ScenePropertySection {
 			}
 		};
 
-		_angleToolAction = new Action("Angle tool", EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE)) {
-			//
+		_angleToolAction = new Action("Angle tool.", IAction.AS_CHECK_BOX) {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE));
+			}
+
+			@Override
+			public void run() {
+				if (isChecked()) {
+					setInteractiveTools(
+
+							new AngleLineTool(getEditor(), true),
+
+							new AngleLineTool(getEditor(), false),
+
+							new AngleTool(getEditor(), 1),
+
+							new AngleTool(getEditor(), 2),
+
+							new AngleTool(getEditor(), 3)
+
+					);
+				} else {
+					setInteractiveTools();
+				}
+
+			}
 		};
 
 		_localTransformAction = new Action("Transform in local coords.") {
@@ -277,6 +304,7 @@ public class TransformSection extends ScenePropertySection {
 	private void updateActions() {
 		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
 		_scaleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(ScaleTool.class));
+		_angleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(AngleTool.class));
 	}
 
 }

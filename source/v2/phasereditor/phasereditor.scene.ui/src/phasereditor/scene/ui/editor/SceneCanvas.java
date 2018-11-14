@@ -1100,7 +1100,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				elem.mouseUp(e);
 			}
 		}
-
+		
 		if (_dragDetected) {
 
 			_dragDetected = false;
