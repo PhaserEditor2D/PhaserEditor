@@ -90,6 +90,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
+	private boolean _interactiveToolsDragging_renderFlag;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -271,6 +272,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
+
+		_interactiveToolsDragging_renderFlag = isInteractiveDragging();
+
 		renderBackground(e);
 
 		var calc = calc();
@@ -347,32 +351,36 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				}
 
 				if (bounds != null) {
-					gc.setLineWidth(3);
-					gc.setAlpha(150);
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+					if (!_interactiveToolsDragging_renderFlag) {
+						gc.setLineWidth(3);
+						gc.setAlpha(150);
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
-							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
+						gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
+								(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
 
-					gc.setAlpha(255);
-					gc.setLineWidth(1);
+						gc.setAlpha(255);
+						gc.setLineWidth(1);
+					}
 
 					gc.setForeground(selectionColor);
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
 
-					var name = EditorComponent.get_editorName(model);
+					if (!_interactiveToolsDragging_renderFlag) {
+						var name = EditorComponent.get_editorName(model);
 
-					var x = bounds[0];
-					var y = bounds[1];
+						var x = bounds[0];
+						var y = bounds[1];
 
-					gc.setAlpha(150);
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-					gc.drawText(name, (int) x - 1, (int) y - 21, true);
+						gc.setAlpha(150);
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+						gc.drawText(name, (int) x - 1, (int) y - 21, true);
 
-					gc.setAlpha(255);
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-					gc.drawText(name, (int) x, (int) y - 20, true);
+						gc.setAlpha(255);
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+						gc.drawText(name, (int) x, (int) y - 20, true);
+					}
 				}
 			}
 		}
@@ -1073,7 +1081,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		if (e.button != 1) {
 			return;
 		}
-		
+
 		for (var elem : _interactiveTools) {
 			elem.mouseDown(e);
 		}
@@ -1081,11 +1089,11 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	public void mouseUp(MouseEvent e) {
-		
+
 		if (e.button != 1) {
 			return;
 		}
-		
+
 		boolean contains = false;
 
 		for (var elem : _interactiveTools) {
@@ -1100,7 +1108,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				elem.mouseUp(e);
 			}
 		}
-		
+
 		if (_dragDetected) {
 
 			_dragDetected = false;
