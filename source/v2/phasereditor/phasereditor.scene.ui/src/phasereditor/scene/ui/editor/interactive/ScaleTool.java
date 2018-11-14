@@ -26,7 +26,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
@@ -73,11 +72,8 @@ public class ScaleTool extends InteractiveTool {
 		for (var model : getModels()) {
 			var size = getRenderer().getObjectSize(model);
 
-			var flipX = model instanceof FlipComponent && FlipComponent.get_flipX(model);
-			var flipY = model instanceof FlipComponent && FlipComponent.get_flipY(model);
-
-			var modelX = flipX ? 0 : size[0];
-			var modelY = flipY ? 0 : size[1];
+			var modelX = size[0];
+			var modelY = size[1];
 
 			var globalXY = renderer.localToScene(model, modelX, modelY);
 
@@ -91,8 +87,8 @@ public class ScaleTool extends InteractiveTool {
 				globalY = centerGlobalY;
 
 			} else {
-				var x = _changeX ? (flipX ? 0 : size[0]) : size[0] / 2;
-				var y = _changeY ? (flipY ? 0 : size[1]) : size[1] / 2;
+				var x = _changeX ? size[0] : size[0] / 2;
+				var y = _changeY ? size[1] : size[1] / 2;
 
 				var xy = renderer.localToScene(model, x, y);
 
@@ -158,19 +154,12 @@ public class ScaleTool extends InteractiveTool {
 			var renderer = getRenderer();
 
 			for (var model : getModels()) {
-
-				var flipX = model instanceof FlipComponent && FlipComponent.get_flipX(model);
-				var flipY = model instanceof FlipComponent && FlipComponent.get_flipY(model);
-
 				var matrix = (float[]) model.get("initial-matrix");
 				var localCursor = renderer.sceneToLocal(matrix, e.x, e.y);
 				var initialLocalCursor = (float[]) model.get("initial-cursor-local-xy");
 
 				var localDX = localCursor[0] - initialLocalCursor[0];
 				var localDY = localCursor[1] - initialLocalCursor[1];
-				
-				localDX *= flipX? -1 : 1;
-				localDY *= flipY? -1 : 1;
 
 				var size = getRenderer().getObjectSize(model);
 
@@ -183,11 +172,11 @@ public class ScaleTool extends InteractiveTool {
 				var newScaleX = scaleX + scaleDX;
 				var newScaleY = scaleY + scaleDY;
 
-				var x = (float) model.get("initial-x")
-						+ localDX * scaleX * OriginComponent.get_originX(model) * (flipX ? 1 : 1);
+				float originX = OriginComponent.get_originX(model);
+				float originY = OriginComponent.get_originY(model);
 
-				var y = (float) model.get("initial-y")
-						+ localDY * scaleY * OriginComponent.get_originY(model) * (flipY ? 1 : 1);
+				var x = (float) model.get("initial-x") + localDX * scaleX * originX;
+				var y = (float) model.get("initial-y") + localDY * scaleY * originY;
 
 				if (_changeX) {
 					TransformComponent.set_scaleX(model, newScaleX);
