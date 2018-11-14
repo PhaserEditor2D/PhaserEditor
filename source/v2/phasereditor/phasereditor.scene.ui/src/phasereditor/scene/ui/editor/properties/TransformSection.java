@@ -74,6 +74,10 @@ public class TransformSection extends ScenePropertySection {
 
 		manager.add(new Separator());
 
+		manager.add(_localTransformAction);
+
+		manager.add(new Separator());
+
 		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
 			//
 		});
@@ -247,8 +251,22 @@ public class TransformSection extends ScenePropertySection {
 			}
 		};
 
-		_localTransformAction = new Action("Transform in local coords.") {
+		_localTransformAction = new Action("Transform in local/global coords.", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_HOUSE));
+			}
 
+			@Override
+			public void run() {
+
+				var scene = getScene();
+
+				scene.setTransformLocalCoords(!scene.isTransformLocalCoords());
+
+				updateActions();
+
+				scene.redraw();
+			}
 		};
 
 	}
@@ -301,10 +319,16 @@ public class TransformSection extends ScenePropertySection {
 		updateActions();
 	}
 
-	private void updateActions() {
+	void updateActions() {
 		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
 		_scaleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(ScaleTool.class));
 		_angleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(AngleTool.class));
+		
+		var local = getScene().isTransformLocalCoords();
+		
+		_localTransformAction.setChecked(local);
+		_localTransformAction.setImageDescriptor(EditorSharedImages.getImageDescriptor(local ? IMG_HOUSE : IMG_WORLD));
+		_localTransformAction.setText(local? "Transform in local coords." : "Transform in global coords.");
 	}
 
 }

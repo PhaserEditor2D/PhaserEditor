@@ -58,7 +58,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		return ((ScenePropertyPage) _page).getEditor();
 	}
 
-	public SceneCanvas getCanvas() {
+	public SceneCanvas getScene() {
 		return getEditor().getScene();
 	}
 
@@ -86,7 +86,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			dirtyModels(models, dirtyModels, filterDirtyModels);
 
-			getCanvas().redraw();
+			getScene().redraw();
 
 		});
 	}
@@ -127,7 +127,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			dirtyModels(models, dirtyModels, null);
 
-			getCanvas().redraw();
+			getScene().redraw();
 		});
 	}
 
@@ -149,7 +149,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 			dirtyModels(models, dirtyModels, null);
 
-			getCanvas().redraw();
+			getScene().redraw();
 
 		});
 	}
@@ -174,7 +174,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		dirtyModels(models, dirtyModels, null);
 
-		getCanvas().redraw();
+		getScene().redraw();
 
 	}
 
@@ -190,7 +190,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			getEditor().executeOperation(
 					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
-			getCanvas().redraw();
+			getScene().redraw();
 		});
 	}
 
@@ -206,7 +206,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			getEditor().executeOperation(
 					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
-			getCanvas().redraw();
+			getScene().redraw();
 
 		});
 	}

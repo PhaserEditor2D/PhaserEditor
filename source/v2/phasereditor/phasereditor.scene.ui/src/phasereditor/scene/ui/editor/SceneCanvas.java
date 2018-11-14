@@ -91,6 +91,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _interactiveToolsDragging_renderFlag;
+	private boolean _transformLocalCoords;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -111,6 +112,16 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		setZoomWhenShiftPressed(false);
 
 		_interactiveTools = new ArrayList<>();
+
+		_transformLocalCoords = true;
+	}
+
+	public boolean isTransformLocalCoords() {
+		return _transformLocalCoords;
+	}
+
+	public void setTransformLocalCoords(boolean transformLocalCoords) {
+		_transformLocalCoords = transformLocalCoords;
 	}
 
 	public List<InteractiveTool> getInteractiveTools() {
