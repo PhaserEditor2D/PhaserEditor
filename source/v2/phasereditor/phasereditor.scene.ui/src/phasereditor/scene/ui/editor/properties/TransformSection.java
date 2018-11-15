@@ -186,7 +186,10 @@ public class TransformSection extends ScenePropertySection {
 				if (isChecked()) {
 					setInteractiveTools(
 
-							new PositionTool(getEditor(), true, false), new PositionTool(getEditor(), false, true),
+							new PositionTool(getEditor(), true, false),
+
+							new PositionTool(getEditor(), false, true),
+
 							new PositionTool(getEditor(), true, true)
 
 					);
@@ -233,15 +236,15 @@ public class TransformSection extends ScenePropertySection {
 				if (isChecked()) {
 					setInteractiveTools(
 
-							new AngleLineTool(getEditor(), true),
-
-							new AngleLineTool(getEditor(), false),
-
 							new AngleTool(getEditor(), 1),
 
 							new AngleTool(getEditor(), 2),
 
-							new AngleTool(getEditor(), 3)
+							new AngleTool(getEditor(), 3),
+
+							new AngleLineTool(getEditor(), true),
+
+							new AngleLineTool(getEditor(), false)
 
 					);
 				} else {
@@ -323,11 +326,11 @@ public class TransformSection extends ScenePropertySection {
 		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
 		_scaleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(ScaleTool.class));
 		_angleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(AngleTool.class));
-		
+
 		var local = getScene().isTransformLocalCoords();
-		
+
 		_localTransformAction.setImageDescriptor(EditorSharedImages.getImageDescriptor(local ? IMG_HOUSE : IMG_WORLD));
-		_localTransformAction.setText(local? "Transform in local coords." : "Transform in global coords.");
+		_localTransformAction.setText(local ? "Transform in local coords." : "Transform in global coords.");
 	}
 
 }
