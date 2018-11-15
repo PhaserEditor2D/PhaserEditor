@@ -69,7 +69,6 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
-import phasereditor.ui.ColorUtil;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -283,6 +282,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
+		// I dont know why the line width affects the transform in angles of 45.5.
+		e.gc.setLineWidth(1);
 
 		_interactiveToolsDragging_renderFlag = isInteractiveDragging();
 
@@ -292,7 +293,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		renderGrid(e, calc);
 
-		var tx = new Transform(getDisplay());
+		var tx = new Transform(e.gc.getDevice());
 		tx.translate(Y_LABEL_WIDTH, X_LABELS_HEIGHT);
 
 		_renderer.renderScene(e.gc, tx, _editor.getSceneModel());
@@ -304,6 +305,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		renderInteractiveElements(e.gc);
 
 		renderLabels(e, calc);
+
+		tx.dispose();
 	}
 
 	private void renderInteractiveElements(GC gc) {
@@ -336,7 +339,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private void renderSelection(GC gc) {
 
-		var selectionColor = SWTResourceManager.getColor(ColorUtil.GREENYELLOW.rgb);
+		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
 
 		for (var obj : _selection) {
 			if (obj instanceof ObjectModel) {
@@ -362,18 +365,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				}
 
 				if (bounds != null) {
-					if (!_interactiveToolsDragging_renderFlag) {
-						gc.setLineWidth(3);
-						gc.setAlpha(150);
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-
-						gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
-								(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
-
-						gc.setAlpha(255);
-						gc.setLineWidth(1);
-					}
-
 					gc.setForeground(selectionColor);
 					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
 							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
@@ -478,7 +469,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			if (modelX % modelNextNextSnapX == 0) {
 				gc.setAlpha(255);
-				// gc.setLineWidth(2);
 			} else if (modelX % modelNextSnapX == 0) {
 				gc.setAlpha(150);
 			} else {
@@ -488,8 +478,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			var viewX = calc.modelToViewX(modelX) + Y_LABEL_WIDTH;
 
 			gc.drawLine((int) viewX, X_LABELS_HEIGHT, (int) viewX, e.height);
-
-			// gc.setLineWidth(1);
 
 			i++;
 		}
@@ -508,7 +496,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			var viewY = calc.modelToViewY(modelY) + X_LABELS_HEIGHT;
 
 			if (modelY % modelNextNextSnapY == 0) {
-				// gc.setLineWidth(2);
 				gc.setAlpha(255);
 			} else if (modelY % modelNextSnapY == 0) {
 				gc.setAlpha(150);
@@ -517,8 +504,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			}
 
 			gc.drawLine(X_LABELS_HEIGHT, (int) viewY, e.width, (int) viewY);
-
-			// gc.setLineWidth(1);
 
 			i++;
 		}

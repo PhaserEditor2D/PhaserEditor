@@ -23,7 +23,6 @@ package phasereditor.scene.ui.editor.interactive;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.ObjectModel;
@@ -106,20 +105,28 @@ public class AngleLineTool extends InteractiveTool {
 
 		gc.setForeground(SWTResourceManager.getColor(ColorUtil.WHITESMOKE.rgb));
 
-		var tx = new Transform(Display.getDefault());
-
+		var tx = new Transform(gc.getDevice());
+		
 		tx.translate(centerX, centerY);
 		tx.rotate(_start ? globalStartAngle : globalEndAngle);
 
-		var p0 = new float[] { 0, 0 };
-		var p1 = new float[] { 150, 0 };
+//		var p0 = new float[] { 0, 0 };
+//		var p1 = new float[] { 150, 0 };
+//
+//		tx.transform(p0);
+//		tx.transform(p1);
+//		
+//		tx.dispose();
 
-		tx.transform(p0);
-		tx.transform(p1);
+		// gc.drawLine((int) p0[0], (int) p0[1], (int) p1[0], (int) p1[1]);
+		
+		gc.setTransform(tx);
+		
+		gc.drawLine(0, 0, 150, 0);
+		
+		gc.setTransform(null);
 		
 		tx.dispose();
-
-		gc.drawLine((int) p0[0], (int) p0[1], (int) p1[0], (int) p1[1]);
 		
 	}
 
