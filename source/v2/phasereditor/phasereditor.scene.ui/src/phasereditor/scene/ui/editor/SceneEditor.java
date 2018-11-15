@@ -315,4 +315,6 @@ public class SceneEditor extends EditorPart {
 
 		getSite().getSelectionProvider().setSelection(sel);
 	}
+	
+	
 }

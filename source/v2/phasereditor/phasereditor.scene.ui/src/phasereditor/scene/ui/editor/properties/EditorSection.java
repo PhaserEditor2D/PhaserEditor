@@ -35,20 +35,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
-import org.json.JSONObject;
 
-import phasereditor.scene.core.BitmapTextModel;
-import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
-import phasereditor.scene.core.ImageModel;
-import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.SpriteModel;
-import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -154,79 +146,9 @@ public class EditorSection extends ScenePropertySection {
 
 		@Override
 		public void run() {
-
-			var before = WorldSnapshotOperation.takeSnapshot(getEditor());
-
-			int i = 0;
-
-			var project = getEditor().getEditorInput().getFile().getProject();
-
-			for (var obj : getModels()) {
-				var model = obj;
-
-				if (model.getType().equals(_toType)) {
-					continue;
-				}
-
-				i++;
-
-				var data = new JSONObject();
-				model.write(data);
-
-				ObjectModel newModel = null;
-
-				switch (_toType) {
-				case SpriteModel.TYPE:
-					newModel = new SpriteModel();
-					newModel.read(data, project);
-					break;
-				case ImageModel.TYPE:
-					newModel = new ImageModel();
-					newModel.read(data, project);
-					break;
-				case TileSpriteModel.TYPE:
-					var tileModel = new TileSpriteModel();
-					tileModel.read(data, project);
-					tileModel.setSizeToFrame();
-					newModel = tileModel;
-					break;
-				case BitmapTextModel.TYPE:
-					newModel = new BitmapTextModel();
-					newModel.read(data, project);
-					break;
-				case DynamicBitmapTextModel.TYPE:
-					newModel = new DynamicBitmapTextModel();
-					newModel.read(data, project);
-					break;
-
-				default:
-					break;
-				}
-
-				if (newModel != null) {
-
-					var parent = ParentComponent.get_parent(model);
-					var siblings = ParentComponent.get_children(parent);
-					var index = siblings.indexOf(model);
-
-					ParentComponent.removeFromParent(model);
-					ParentComponent.addChild(parent, index, newModel);
-
-					getEditor().refreshOutline_basedOnId();
-
-					getEditor().updatePropertyPagesContentWithSelection_basedOnId();
-
-					getEditor().setDirty(true);
-				}
-
-			}
-
-			if (i > 0) {
-				var after = WorldSnapshotOperation.takeSnapshot(getEditor());
-				getEditor().executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + _toType));
-			}
-
+			SceneUI.morphObjectsToNewType(getEditor(), getModels(), _toType);
 		}
+
 	}
 
 	@SuppressWarnings({ "unused", "boxing" })
@@ -279,7 +201,7 @@ public class EditorSection extends ScenePropertySection {
 		}, models);
 
 		listenFloat(_transpScale, value -> {
-			
+
 			models.stream().forEach(model -> EditorComponent.set_editorTransparency(model, value));
 
 			getEditor().setDirty(true);

@@ -55,6 +55,11 @@
             id="phasereditor.scene.ui.originTool"
             name="Show Origin Tool">
       </command>
+      <command
+            categoryId="phasereditor.scene.ui.category"
+            id="phasereditor.scene.ui.resizeTileSprite"
+            name="Resize Tile Sprite">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -106,6 +111,18 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.scene.ui.editor.handlers.ResizeTileSpriteHandler"
+            commandId="phasereditor.scene.ui.resizeTileSprite">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.scene.ui.SceneEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -132,6 +149,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="O">
+      </key>
+      <key
+            commandId="phasereditor.scene.ui.resizeTileSprite"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="L">
       </key>
    </extension>
 
