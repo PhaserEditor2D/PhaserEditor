@@ -771,8 +771,8 @@ public class SceneObjectRenderer {
 		return parentToLocal(model, xy[0], xy[1]);
 	}
 
-	public float[] localToScene(ObjectModel model, float[] scenePoint) {
-		return localToScene(model, scenePoint[0], scenePoint[1]);
+	public float[] localToScene(ObjectModel model, float[] localPoint) {
+		return localToScene(model, localPoint[0], localPoint[1]);
 	}
 
 	public float globalScaleX(ObjectModel model) {

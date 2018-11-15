@@ -69,6 +69,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -89,7 +90,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
-	private boolean _interactiveToolsDragging_renderFlag;
 	private boolean _transformLocalCoords;
 
 	public SceneCanvas(Composite parent, int style) {
@@ -285,8 +285,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		// I dont know why the line width affects the transform in angles of 45.5.
 		e.gc.setLineWidth(1);
 
-		_interactiveToolsDragging_renderFlag = isInteractiveDragging();
-
 		renderBackground(e);
 
 		var calc = calc();
@@ -339,7 +337,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private void renderSelection(GC gc) {
 
-		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
+		// var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
+		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_WHITE);
 
 		for (var obj : _selection) {
 			if (obj instanceof ObjectModel) {
@@ -364,28 +363,40 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					}
 				}
 
-				if (bounds != null) {
+				{
+
+					// paint selection borders
+
+					var size = _renderer.getObjectSize(model);
+
+					var p0 = _renderer.localToScene(model, 0, 0);
+					var p1 = _renderer.localToScene(model, size[0], 0);
+					var p2 = _renderer.localToScene(model, size[0], size[1]);
+					var p3 = _renderer.localToScene(model, 0, size[1]);
+
 					gc.setForeground(selectionColor);
-					gc.drawPolygon(new int[] { (int) bounds[0], (int) bounds[1], (int) bounds[2], (int) bounds[3],
-							(int) bounds[4], (int) bounds[5], (int) bounds[6], (int) bounds[7] });
 
-					if (!_interactiveToolsDragging_renderFlag) {
-						var name = EditorComponent.get_editorName(model);
+					drawCorner(gc, p0, p1);
+					drawCorner(gc, p1, p2);
+					drawCorner(gc, p2, p3);
+					drawCorner(gc, p3, p0);
 
-						var x = bounds[0];
-						var y = bounds[1];
-
-						gc.setAlpha(150);
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-						gc.drawText(name, (int) x - 1, (int) y - 21, true);
-
-						gc.setAlpha(255);
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-						gc.drawText(name, (int) x, (int) y - 20, true);
-					}
 				}
 			}
 		}
+	}
+
+	private static void drawCorner(GC gc, float[] p1, float[] p2) {
+		var vector = new float[] { p2[0] - p1[0], p2[1] - p1[1] };
+
+		var d = PhaserEditorUI.distance(0, 0, vector[0], vector[1]);
+		vector[0] /= d;
+		vector[1] /= d;
+		var len = d * 0.2;
+
+		gc.drawLine((int) p1[0], (int) p1[1], (int) (p1[0] + vector[0] * len), (int) (p1[1] + vector[1] * len));
+
+		gc.drawLine((int) p2[0], (int) p2[1], (int) (p2[0] - vector[0] * len), (int) (p2[1] - vector[1] * len));
 	}
 
 	private void renderBackground(PaintEvent e) {
