@@ -367,6 +367,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					// paint selection borders
 
+					gc.setForeground(selectionColor);
+
 					var size = _renderer.getObjectSize(model);
 
 					var p0 = _renderer.localToScene(model, 0, 0);
@@ -374,12 +376,29 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					var p2 = _renderer.localToScene(model, size[0], size[1]);
 					var p3 = _renderer.localToScene(model, 0, size[1]);
 
-					gc.setForeground(selectionColor);
-
 					drawCorner(gc, p0, p1);
 					drawCorner(gc, p1, p2);
 					drawCorner(gc, p2, p3);
 					drawCorner(gc, p3, p0);
+
+					if (!isInteractiveDragging()) {
+
+						gc.setAlpha(150);
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+
+						var dxy = PhaserEditorUI.distance(0, 0, size[0], size[1]) * 0.05f;
+
+						p0 = _renderer.localToScene(model, -dxy, -dxy);
+						p1 = _renderer.localToScene(model, size[0] + dxy, -dxy);
+						p2 = _renderer.localToScene(model, size[0] + dxy, size[1] + dxy);
+						p3 = _renderer.localToScene(model, -dxy, size[1] + dxy);
+
+						drawCorner(gc, p0, p1);
+						drawCorner(gc, p1, p2);
+						drawCorner(gc, p2, p3);
+						drawCorner(gc, p3, p0);
+						gc.setAlpha(255);
+					}
 
 				}
 			}
