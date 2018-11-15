@@ -41,6 +41,7 @@ import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
  */
 public class SceneUI {
 	
+	
 	public static void morphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
 		
 		var before = WorldSnapshotOperation.takeSnapshot(editor);

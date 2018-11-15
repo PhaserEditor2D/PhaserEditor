@@ -69,6 +69,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.ColorUtil;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ZoomCanvas;
 
@@ -179,6 +180,16 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		return new float[] { modelX, modelY };
 	}
 
+	public float[] modelToView(int x, int y) {
+		var calc = calc();
+
+		var viewX = calc.modelToViewX(x) + Y_LABEL_WIDTH;
+		var viewY = calc.modelToViewY(y) + X_LABELS_HEIGHT;
+
+		return new float[] { viewX, viewY };
+	}
+
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
 
@@ -338,7 +349,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private void renderSelection(GC gc) {
 
 		// var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
-		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_WHITE);
+		var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var obj : _selection) {
 			if (obj instanceof ObjectModel) {
@@ -383,8 +394,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					if (!isInteractiveDragging()) {
 
-						gc.setAlpha(150);
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 
 						var dxy = PhaserEditorUI.distance(0, 0, size[0], size[1]) * 0.05f;
 
@@ -397,7 +407,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 						drawCorner(gc, p1, p2);
 						drawCorner(gc, p2, p3);
 						drawCorner(gc, p3, p0);
-						gc.setAlpha(255);
 					}
 
 				}

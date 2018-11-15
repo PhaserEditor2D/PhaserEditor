@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.interactive.AngleLineTool;
 import phasereditor.scene.ui.editor.interactive.AngleTool;
@@ -78,25 +79,141 @@ public class TransformSection extends ScenePropertySection {
 
 		manager.add(new Separator());
 
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_LEFT)) {
-			//
-		});
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_CENTER)) {
-			//
-		});
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_RIGHT)) {
-			//
-		});
+		manager.add(new AlignAction(AlignValue.LEFT));
+		manager.add(new AlignAction(AlignValue.HORIZONTAL_CENTER));
+		manager.add(new AlignAction(AlignValue.RIGHT));
 
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_TOP)) {
-			//
-		});
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_MIDDLE)) {
-			//
-		});
-		manager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_ALIGN_BOTTOM)) {
-			//
-		});
+		manager.add(new AlignAction(AlignValue.TOP));
+		manager.add(new AlignAction(AlignValue.VERTICAL_CENTER));
+		manager.add(new AlignAction(AlignValue.BOTTOM));
+	}
+
+	public enum AlignValue {
+		LEFT, RIGHT, TOP, BOTTOM, HORIZONTAL_CENTER, VERTICAL_CENTER
+	}
+
+	class AlignAction extends Action {
+		private AlignValue _value;
+
+		public AlignAction(AlignValue value) {
+			super();
+			_value = value;
+
+			String icon = null;
+
+			switch (_value) {
+			case LEFT:
+				icon = IMG_ALIGN_LEFT;
+				break;
+			case RIGHT:
+				icon = IMG_ALIGN_RIGHT;
+				break;
+			case TOP:
+				icon = IMG_ALIGN_TOP;
+				break;
+			case BOTTOM:
+				icon = IMG_ALIGN_BOTTOM;
+				break;
+			case HORIZONTAL_CENTER:
+				icon = IMG_ALIGN_CENTER;
+				break;
+			case VERTICAL_CENTER:
+				icon = IMG_ALIGN_MIDDLE;
+				break;
+			default:
+				break;
+			}
+
+			setImageDescriptor(EditorSharedImages.getImageDescriptor(icon));
+
+		}
+
+		@Override
+		public void run() {
+
+			var scene = getScene();
+			var rend = scene.getSceneRenderer();
+
+			var minX = Float.MAX_VALUE;
+			var maxX = Float.MIN_VALUE;
+			var minY = Float.MAX_VALUE;
+			var maxY = Float.MIN_VALUE;
+
+			var models = getModels();
+
+			if (models.size() == 1) {
+
+				var sm = getEditor().getSceneModel();
+
+				var p1 = scene.modelToView(sm.getBorderX(), sm.getBorderY());
+				var p2 = scene.modelToView(sm.getBorderX() + sm.getBorderWidth(),
+						sm.getBorderY() + sm.getBorderHeight());
+
+				minX = p1[0];
+				maxX = p2[0];
+				minY = p1[1];
+				maxY = p2[1];
+
+			} else {
+				for (var model : models) {
+					var parent = ParentComponent.get_parent(model);
+					
+					var point = rend.localToScene(parent, TransformComponent.get_x(model), TransformComponent.get_y(model));
+
+					minX = Math.min(minX, point[0]);
+					maxX = Math.max(maxX, point[0]);
+					minY = Math.min(minY, point[1]);
+					maxY = Math.max(maxY, point[1]);
+				}
+			}
+
+			var fminX = minX;
+			var fmaxX = maxX;
+			var fminY = minY;
+			var fmaxY = maxY;
+
+			wrapOperation(() -> {
+
+				for (var model : models) {
+
+					var parent = ParentComponent.get_parent(model);
+
+					switch (_value) {
+					case LEFT:
+						TransformComponent.set_x(model, rend.sceneToLocal(parent, fminX, 0)[0]);
+						break;
+					case RIGHT:
+						TransformComponent.set_x(model, rend.sceneToLocal(parent, fmaxX, 0)[0]);
+						break;
+					case HORIZONTAL_CENTER:
+						TransformComponent.set_x(model, rend.sceneToLocal(parent, (fmaxX + fminX) / 2, 0)[0]);
+						break;
+					case TOP:
+						TransformComponent.set_y(model, rend.sceneToLocal(parent, 0, fminY)[1]);
+						break;
+					case BOTTOM:
+						TransformComponent.set_y(model, rend.sceneToLocal(parent, 0, fmaxY)[1]);
+						break;
+					case VERTICAL_CENTER:
+						TransformComponent.set_y(model, rend.sceneToLocal(parent, 0, (fmaxY + fminY) / 2)[1]);
+						break;
+					default:
+						break;
+					}
+				}
+
+			}, getModels());
+
+			var editor = getEditor();
+
+			editor.setDirty(true);
+
+			scene.redraw();
+
+			editor.updatePropertyPagesContentWithSelection_basedOnId();
+
+		}
+
 	}
 
 	@SuppressWarnings("unused")
