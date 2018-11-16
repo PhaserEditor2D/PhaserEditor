@@ -69,7 +69,6 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
-import phasereditor.ui.ColorUtil;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ZoomCanvas;
 
@@ -189,7 +188,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		return new float[] { viewX, viewY };
 	}
 
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
 
@@ -348,31 +346,32 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private void renderSelection(GC gc) {
 
-		// var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
-		var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
+		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
+		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var obj : _selection) {
 			if (obj instanceof ObjectModel) {
 				var model = (ObjectModel) obj;
 
-				var bounds = _renderer.getObjectBounds(model);
-
-				if (obj instanceof ParentComponent) {
-					if (!ParentComponent.get_children(model).isEmpty()) {
-						var childrenBounds = _renderer.getObjectChildrenBounds(model);
-
-						if (childrenBounds != null) {
-
-							var merge = SceneObjectRenderer.joinBounds(bounds, childrenBounds);
-
-							gc.setForeground(selectionColor);
-
-							gc.drawPolygon(new int[] { (int) merge[0], (int) merge[1], (int) merge[2], (int) merge[3],
-									(int) merge[4], (int) merge[5], (int) merge[6], (int) merge[7] });
-						}
-
-					}
-				}
+				// var bounds = _renderer.getObjectBounds(model);
+				//
+				// if (obj instanceof ParentComponent) {
+				// if (!ParentComponent.get_children(model).isEmpty()) {
+				// var childrenBounds = _renderer.getObjectChildrenBounds(model);
+				//
+				// if (childrenBounds != null) {
+				//
+				// var merge = SceneObjectRenderer.joinBounds(bounds, childrenBounds);
+				//
+				// gc.setForeground(selectionColor);
+				//
+				// gc.drawPolygon(new int[] { (int) merge[0], (int) merge[1], (int) merge[2],
+				// (int) merge[3],
+				// (int) merge[4], (int) merge[5], (int) merge[6], (int) merge[7] });
+				// }
+				//
+				// }
+				// }
 
 				{
 
@@ -394,7 +393,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					if (!isInteractiveDragging()) {
 
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 						var dxy = PhaserEditorUI.distance(0, 0, size[0], size[1]) * 0.05f;
 

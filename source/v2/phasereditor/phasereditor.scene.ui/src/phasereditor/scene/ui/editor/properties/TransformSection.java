@@ -157,8 +157,9 @@ public class TransformSection extends ScenePropertySection {
 			} else {
 				for (var model : models) {
 					var parent = ParentComponent.get_parent(model);
-					
-					var point = rend.localToScene(parent, TransformComponent.get_x(model), TransformComponent.get_y(model));
+
+					var point = rend.localToScene(parent, TransformComponent.get_x(model),
+							TransformComponent.get_y(model));
 
 					minX = Math.min(minX, point[0]);
 					maxX = Math.max(maxX, point[0]);
@@ -353,11 +354,7 @@ public class TransformSection extends ScenePropertySection {
 				if (isChecked()) {
 					setInteractiveTools(
 
-							new AngleTool(getEditor(), 1),
-
-							new AngleTool(getEditor(), 2),
-
-							new AngleTool(getEditor(), 3),
+							new AngleTool(getEditor()),
 
 							new AngleLineTool(getEditor(), true),
 

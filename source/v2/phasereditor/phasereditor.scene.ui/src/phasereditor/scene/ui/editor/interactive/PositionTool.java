@@ -166,24 +166,25 @@ public class PositionTool extends InteractiveTool {
 
 		// paint
 
-		if (_changeX && _changeY) {
-			fillRect(gc, globalX, globalY, globalAngle, BOX,
-					SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
-		} else if (doPaint()) {
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		if (doPaint()) {
+			if (_changeX && _changeY) {
+				fillRect(gc, globalX, globalY, globalAngle, BOX,
+						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+			} else {
+				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-			var color = SWTResourceManager
-					.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+				var color = SWTResourceManager
+						.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
 
-			gc.setBackground(color);
-			gc.setForeground(color);
+				gc.setBackground(color);
+				gc.setForeground(color);
 
-			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
+				gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
 
-			fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+				fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+			}
 		}
-
 	}
 
 	@Override
@@ -360,9 +361,9 @@ public class PositionTool extends InteractiveTool {
 
 				model.put("initial-model-x", x);
 				model.put("initial-model-y", y);
-				
+
 				var parent = ParentComponent.get_parent(model);
-				
+
 				model.put("initial-scene-xy", renderer.localToScene(parent, x, y));
 			}
 		}

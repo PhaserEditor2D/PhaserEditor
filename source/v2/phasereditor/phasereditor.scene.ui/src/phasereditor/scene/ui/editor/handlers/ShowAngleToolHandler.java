@@ -11,11 +11,7 @@ public class ShowAngleToolHandler extends ShowInteractiveToolHander {
 	protected InteractiveTool[] createTools(SceneEditor editor) {
 		return new InteractiveTool[] {
 
-				new AngleTool(editor, 1),
-
-				new AngleTool(editor, 2),
-
-				new AngleTool(editor, 3),
+				new AngleTool(editor),
 
 				new AngleLineTool(editor, true),
 

@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor.interactive;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.ObjectModel;
@@ -41,22 +40,17 @@ import phasereditor.ui.PhaserEditorUI;
  */
 @SuppressWarnings("boxing")
 public class AngleTool extends InteractiveTool {
-	private static RGB[] COLORS = { null, ColorUtil.RED.rgb, ColorUtil.GREEN.rgb, ColorUtil.BLUE.rgb };
 
 	private static final int BOX = 14;
 	private int _centerX;
 	private int _centerY;
-	private int _order;
 	private boolean _hightlights;
-
-	private int _radius;
+	public static int RADIUS = 100;
 
 	private float[] _cursorStart;
 
-	public AngleTool(SceneEditor editor, int order) {
+	public AngleTool(SceneEditor editor) {
 		super(editor);
-		_order = order;
-		_radius = _order * 50;
 	}
 
 	@Override
@@ -104,9 +98,9 @@ public class AngleTool extends InteractiveTool {
 
 		if (doPaint()) {
 
-			gc.setForeground(SWTResourceManager.getColor(_hightlights ? ColorUtil.WHITE.rgb : COLORS[_order]));
+			gc.setForeground(SWTResourceManager.getColor(_hightlights ? ColorUtil.WHITE.rgb : ColorUtil.BLUEVIOLET.rgb));
 
-			gc.drawOval(_centerX - _radius, _centerY - _radius, _radius * 2, _radius * 2);
+			gc.drawOval(_centerX - RADIUS, _centerY - RADIUS, RADIUS * 2, RADIUS * 2);
 		}
 	}
 
@@ -119,7 +113,7 @@ public class AngleTool extends InteractiveTool {
 
 		var d = PhaserEditorUI.distance(sceneX, sceneY, _centerX, _centerY);
 
-		var diff = Math.abs(d - _radius);
+		var diff = Math.abs(d - RADIUS);
 
 		return _hightlights = diff < 10;
 	}
