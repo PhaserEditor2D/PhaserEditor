@@ -58,6 +58,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
@@ -91,6 +92,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _transformLocalCoords;
+	private boolean _isInteractiveDragging;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -291,6 +293,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
+
+		_isInteractiveDragging = isInteractiveDragging();
+
 		// I dont know why the line width affects the transform in angles of 45.5.
 		e.gc.setLineWidth(1);
 
@@ -353,62 +358,73 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			if (obj instanceof ObjectModel) {
 				var model = (ObjectModel) obj;
 
-				// var bounds = _renderer.getObjectBounds(model);
-				//
-				// if (obj instanceof ParentComponent) {
-				// if (!ParentComponent.get_children(model).isEmpty()) {
-				// var childrenBounds = _renderer.getObjectChildrenBounds(model);
-				//
-				// if (childrenBounds != null) {
-				//
-				// var merge = SceneObjectRenderer.joinBounds(bounds, childrenBounds);
-				//
-				// gc.setForeground(selectionColor);
-				//
-				// gc.drawPolygon(new int[] { (int) merge[0], (int) merge[1], (int) merge[2],
-				// (int) merge[3],
-				// (int) merge[4], (int) merge[5], (int) merge[6], (int) merge[7] });
-				// }
-				//
-				// }
-				// }
+				gc.setForeground(selectionColor);
 
-				{
+				var size = _renderer.getObjectSize(model);
 
-					// paint selection borders
+				var p0 = _renderer.localToScene(model, 0, 0);
+				var p1 = _renderer.localToScene(model, size[0], 0);
+				var p2 = _renderer.localToScene(model, size[0], size[1]);
+				var p3 = _renderer.localToScene(model, 0, size[1]);
 
-					gc.setForeground(selectionColor);
+				drawCorner(gc, p0, p1);
+				drawCorner(gc, p1, p2);
+				drawCorner(gc, p2, p3);
+				drawCorner(gc, p3, p0);
 
-					var size = _renderer.getObjectSize(model);
+				if (!_isInteractiveDragging) {
 
-					var p0 = _renderer.localToScene(model, 0, 0);
-					var p1 = _renderer.localToScene(model, size[0], 0);
-					var p2 = _renderer.localToScene(model, size[0], size[1]);
-					var p3 = _renderer.localToScene(model, 0, size[1]);
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+
+					var dxy = PhaserEditorUI.distance(0, 0, size[0], size[1]) * 0.05f;
+
+					p0 = _renderer.localToScene(model, -dxy, -dxy);
+					p1 = _renderer.localToScene(model, size[0] + dxy, -dxy);
+					p2 = _renderer.localToScene(model, size[0] + dxy, size[1] + dxy);
+					p3 = _renderer.localToScene(model, -dxy, size[1] + dxy);
 
 					drawCorner(gc, p0, p1);
 					drawCorner(gc, p1, p2);
 					drawCorner(gc, p2, p3);
 					drawCorner(gc, p3, p0);
 
-					if (!isInteractiveDragging()) {
+					{
+						dxy *= 4;
 
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-
-						var dxy = PhaserEditorUI.distance(0, 0, size[0], size[1]) * 0.05f;
-
-						p0 = _renderer.localToScene(model, -dxy, -dxy);
+						p0 = _renderer.localToScene(model, 0, -dxy);
 						p1 = _renderer.localToScene(model, size[0] + dxy, -dxy);
 						p2 = _renderer.localToScene(model, size[0] + dxy, size[1] + dxy);
-						p3 = _renderer.localToScene(model, -dxy, size[1] + dxy);
+						p3 = _renderer.localToScene(model, 0, size[1] + dxy);
+						
+						var angle = _renderer.globalAngle(model);
 
-						drawCorner(gc, p0, p1);
-						drawCorner(gc, p1, p2);
-						drawCorner(gc, p2, p3);
-						drawCorner(gc, p3, p0);
+						var p = p0;
+
+						var flipX = model instanceof FlipComponent && FlipComponent.get_flipX(model);
+						var flipY = model instanceof FlipComponent && FlipComponent.get_flipY(model);
+
+						if (flipX && flipY) {
+							p = p2;
+						} else if (flipX) {
+							p = p1;
+						} else if (flipY) {
+							p = p3;
+						}
+
+						var tx = new Transform(gc.getDevice());
+						tx.translate(p[0], p[1]);
+						tx.rotate(angle);
+
+						gc.setTransform(tx);
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+						gc.drawText(" " + EditorComponent.get_editorName(model), 0, 0, true);
+
+						gc.setTransform(null);
+
+						tx.dispose();
 					}
-
 				}
+
 			}
 		}
 	}
