@@ -21,10 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -37,6 +44,8 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -53,6 +62,7 @@ public class EditorSection extends ScenePropertySection {
 	private Button _typeBtn;
 	private Action _fieldAction;
 	private Scale _transpScale;
+	private List<OrderAction> _orderActions;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -65,6 +75,8 @@ public class EditorSection extends ScenePropertySection {
 
 	@Override
 	public Control createContent(Composite parent) {
+
+		createActions();
 
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
@@ -83,16 +95,7 @@ public class EditorSection extends ScenePropertySection {
 
 			var toolbar = new ToolBarManager();
 
-			toolbar.add(_fieldAction = new Action("Assign to a property.", IAction.AS_CHECK_BOX) {
-				{
-					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PROPERTY));
-				}
-
-				@Override
-				public void run() {
-					update_editorField();
-				}
-			});
+			toolbar.add(_fieldAction);
 
 			toolbar.createControl(row);
 		}
@@ -117,7 +120,189 @@ public class EditorSection extends ScenePropertySection {
 			_transpScale.setMinimum(100);
 		}
 
+		{
+			label(comp, "Order", "*(Editor) The display depth order.");
+
+			var manager = new ToolBarManager();
+
+			for (var action : _orderActions) {
+				manager.add(action);
+			}
+
+			var toolbar = manager.createControl(comp);
+			toolbar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
+
 		return comp;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		for (var action : _orderActions) {
+			manager.add(action);
+		}
+
+		manager.add(new Separator());
+
+		manager.add(_fieldAction);
+	}
+
+	private void createActions() {
+		_orderActions = new ArrayList<>();
+		_orderActions.add(new OrderAction(IMG_DEPTH_UP));
+		_orderActions.add(new OrderAction(IMG_DEPTH_DOWN));
+		_orderActions.add(new OrderAction(IMG_DEPTH_TOP));
+		_orderActions.add(new OrderAction(IMG_DEPTH_BOTTOM));
+
+		_fieldAction = new Action("Assign to a property.", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PROPERTY));
+			}
+
+			@Override
+			public void run() {
+				update_editorField();
+			}
+		};
+	}
+
+	class OrderAction extends Action {
+		private String _icon;
+
+		public OrderAction(String icon) {
+			setImageDescriptor(EditorSharedImages.getImageDescriptor(icon));
+			_icon = icon;
+		}
+
+		@SuppressWarnings({ "incomplete-switch", "boxing" })
+		@Override
+		public void run() {
+			// first, check all models are from the same parent
+
+			ObjectModel parent = null;
+
+			var models = getModels();
+
+			for (var model : models) {
+				var parent2 = ParentComponent.get_parent(model);
+				if (parent == null) {
+					parent = parent2;
+				} else {
+					if (parent2 != parent) {
+
+						MessageDialog.openInformation(getEditor().getEditorSite().getShell(), "Order Action",
+								"Cannot change the order of objects with different parents.");
+						return;
+					}
+				}
+			}
+
+			var children = ParentComponent.get_children(parent);
+
+			var canMove = true;
+
+			// compute if all the objects can be moved
+
+			for (var model : models) {
+
+				var size = children.size();
+				var index = children.indexOf(model);
+
+				switch (_icon) {
+				case IMG_DEPTH_UP:
+				case IMG_DEPTH_TOP:
+					if (index + 1 == size) {
+						canMove = false;
+					}
+					break;
+				case IMG_DEPTH_DOWN:
+				case IMG_DEPTH_BOTTOM:
+					if (index - 1 < 0) {
+						canMove = false;
+					}
+					break;
+				}
+			}
+
+			// just move the objects if all the objects can be moved
+
+			if (!canMove) {
+				return;
+			}
+
+			var modelIndexMap = new HashMap<ObjectModel, Integer>();
+			var modelSet = new HashSet<>(models);
+
+			var top = children.size() - 1;
+			var bottom = 0;
+
+			for (int i = 0; i < children.size(); i++) {
+
+				var model = children.get(_icon == IMG_DEPTH_TOP ? children.size() - i - 1 : i);
+
+				if (!modelSet.contains(model)) {
+					continue;
+				}
+
+				var index = children.indexOf(model);
+				var next = index + 1;
+				var prev = index - 1;
+
+				switch (_icon) {
+				case IMG_DEPTH_UP:
+					modelIndexMap.put(model, next);
+					break;
+				case IMG_DEPTH_DOWN:
+					modelIndexMap.put(model, prev);
+					break;
+				case IMG_DEPTH_TOP:
+					modelIndexMap.put(model, top);
+					top--;
+					break;
+				case IMG_DEPTH_BOTTOM:
+					modelIndexMap.put(model, bottom);
+					bottom++;
+					break;
+				default:
+					break;
+				}
+			}
+
+			var newChildren = new ArrayList<ObjectModel>();
+
+			for (var i = 0; i < children.size(); i++) {
+				newChildren.add(null);
+			}
+
+			for (var model : models) {
+				var index = modelIndexMap.get(model);
+				newChildren.set(index, model);
+			}
+
+			var newIndex = 0;
+
+			for (var model : children) {
+
+				if (modelSet.contains(model)) {
+					continue;
+				}
+
+				while (newChildren.get(newIndex) != null) {
+					newIndex++;
+				}
+				newChildren.set(newIndex, model);
+			}
+			
+			var fparent = parent;
+			
+			wrapOperation(() -> {
+				ParentComponent.set_children(fparent, newChildren);
+			}, List.of(parent));
+
+			getEditor().setDirty(true);
+			getEditor().refreshOutline();
+
+		}
 	}
 
 	protected void update_editorField() {

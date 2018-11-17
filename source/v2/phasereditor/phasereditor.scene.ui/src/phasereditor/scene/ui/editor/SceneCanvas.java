@@ -416,7 +416,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 						tx.rotate(angle);
 
 						gc.setTransform(tx);
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 						gc.drawText(" " + EditorComponent.get_editorName(model), 0, 0, true);
 
 						gc.setTransform(null);

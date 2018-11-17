@@ -121,6 +121,10 @@ public interface IEditorSharedImages {
 	String IMG_ALIGN_TOP = "icons/shape_align_top.png";
 	String IMG_ALIGN_MIDDLE = "icons/shape_align_middle.png";
 	String IMG_ALIGN_BOTTOM = "icons/shape_align_bottom.png";
+	String IMG_DEPTH_UP = "icons/depth-up.png";
+	String IMG_DEPTH_DOWN = "icons/depth-down.png";
+	String IMG_DEPTH_TOP = "icons/depth-top.png";
+	String IMG_DEPTH_BOTTOM = "icons/depth-bottom.png";
 	String IMG_ARROW_REFRESH = "icons/arrow_refresh.png";
 	String IMG_SHOW_SUB_TYPES = "icons/sub_co.png";
 	String IMG_SHOW_SUPER_TYPES = "icons/super_co.png";
