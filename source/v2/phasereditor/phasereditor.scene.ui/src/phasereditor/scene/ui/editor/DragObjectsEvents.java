@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 
 /**
  * @author arian
@@ -48,7 +48,7 @@ public class DragObjectsEvents {
 	private int _startX;
 	private int _startY;
 	private List<ObjectModel> _objects;
-	private JSONObject _beforeData;
+	private List<JSONObject> _beforeData;
 
 	public DragObjectsEvents(SceneCanvas scene) {
 		_scene = scene;
@@ -58,11 +58,11 @@ public class DragObjectsEvents {
 
 		_scene.getEditor().updatePropertyPagesContentWithSelection();
 
+		var afterData = SingleObjectSnapshotOperation.takeSnapshot(_objects);
+
+		_scene.getEditor().executeOperation(new SingleObjectSnapshotOperation(_beforeData, afterData, "Move objects"));
+		
 		_objects = null;
-
-		var afterData = WorldSnapshotOperation.takeSnapshot(_scene.getEditor());
-
-		_scene.getEditor().executeOperation(new WorldSnapshotOperation(_beforeData, afterData, "Move objects"));
 	}
 
 	public void update(MouseEvent e) {
@@ -105,8 +105,6 @@ public class DragObjectsEvents {
 
 	public void start(MouseEvent e) {
 
-		_beforeData = WorldSnapshotOperation.takeSnapshot(_scene.getEditor());
-
 		_startX = e.x;
 		_startY = e.y;
 
@@ -117,6 +115,8 @@ public class DragObjectsEvents {
 				Arrays.stream(selection.toArray()).map(obj -> (ObjectModel) obj).collect(toList())
 
 		);
+
+		_beforeData = SingleObjectSnapshotOperation.takeSnapshot(_objects);
 
 		for (var model : _objects) {
 			if (model instanceof TransformComponent) {

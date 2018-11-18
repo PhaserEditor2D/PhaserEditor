@@ -35,7 +35,7 @@ import phasereditor.scene.ui.editor.SceneEditor;
  * @author arian
  *
  */
-public class SceneSnapshotOperation extends AbstractOperation {
+public class ScenePropertiesSnapshotOperation extends AbstractOperation {
 
 	public static JSONObject takeSnapshot(SceneEditor editor) {
 		var data = new JSONObject();
@@ -48,7 +48,7 @@ public class SceneSnapshotOperation extends AbstractOperation {
 	private JSONObject _beforeData;
 	private JSONObject _afterData;
 
-	public SceneSnapshotOperation(JSONObject before, JSONObject after, String label) {
+	public ScenePropertiesSnapshotOperation(JSONObject before, JSONObject after, String label) {
 		super(label);
 
 		_beforeData = before;

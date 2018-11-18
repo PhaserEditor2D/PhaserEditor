@@ -22,6 +22,7 @@
 package phasereditor.scene.core;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
@@ -57,6 +58,21 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 			}
 		}
 		return null;
+	}
+
+	public List<ObjectModel> findByIds(List<String> ids) {
+		var result = new ArrayList<ObjectModel>();
+
+		for (var id : ids) {
+			
+			var obj = findById(id);
+			
+			if (obj != null) {
+				result.add(obj);
+			}
+		}
+
+		return result;
 	}
 
 	@Override

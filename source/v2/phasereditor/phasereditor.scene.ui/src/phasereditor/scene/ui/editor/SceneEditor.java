@@ -42,7 +42,7 @@ import phasereditor.ui.SelectionProviderImpl;
 public class SceneEditor extends EditorPart {
 
 	private SceneModel _model;
-	private SceneCanvas _sceneCanvas;
+	private SceneCanvas _scene;
 	private SceneOutlinePage _outline;
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
@@ -167,15 +167,15 @@ public class SceneEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_sceneCanvas = new SceneCanvas(parent, SWT.NONE);
+		_scene = new SceneCanvas(parent, SWT.NONE);
 
-		_sceneCanvas.init(this);
+		_scene.init(this);
 
 	}
 
 	@Override
 	public void setFocus() {
-		_sceneCanvas.setFocus();
+		_scene.setFocus();
 	}
 
 	public SceneModel getSceneModel() {
@@ -212,7 +212,7 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public SceneCanvas getScene() {
-		return _sceneCanvas;
+		return _scene;
 	}
 
 	public void removeOutline() {
@@ -281,18 +281,18 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public void setSelection(StructuredSelection selection) {
-		getScene().setSelection_from_external(selection);
+		_scene.setSelection_from_external(selection);
 
 		if (_outline != null) {
-			_outline.setSelection_from_external(selection);
 			refreshOutline_basedOnId();
+			_outline.setSelection_from_external(selection);
 		}
 
 		for (var page : _propertyPages) {
 			page.selectionChanged(this, selection);
 		}
 
-		_sceneCanvas.redraw();
+		_scene.redraw();
 	}
 
 	public void updatePropertyPagesContentWithSelection() {
@@ -315,6 +315,17 @@ public class SceneEditor extends EditorPart {
 
 		getSite().getSelectionProvider().setSelection(sel);
 	}
-	
-	
+
+	public void refreshSelectionBaseOnId() {
+		var ids = new ArrayList<String>();
+
+		for (var obj : _scene.getSelection()) {
+			ids.add(((ObjectModel) obj).getId());
+		}
+
+		var models = getSceneModel().getRootObject().findByIds(ids);
+
+		setSelection(new StructuredSelection(models));
+	}
+
 }

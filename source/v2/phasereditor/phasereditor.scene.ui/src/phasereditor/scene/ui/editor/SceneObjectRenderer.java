@@ -820,7 +820,7 @@ public class SceneObjectRenderer {
 
 		return sceneToLocal(matrix, sceneX, sceneY);
 	}
-	
+
 	@SuppressWarnings("static-method")
 	public float[] sceneToLocal(float[] matrix, float sceneX, float sceneY) {
 		var tx = new Transform(Display.getDefault(), matrix);
@@ -835,7 +835,6 @@ public class SceneObjectRenderer {
 
 		return point;
 	}
-
 
 	public Transform getObjectTransform(ObjectModel model) {
 		var matrix = _modelMatrixMap.get(model);

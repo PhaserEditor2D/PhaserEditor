@@ -19,7 +19,7 @@ public class ResizeTileSpriteHandler extends AbstractHandler {
 		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
 
 		SceneCanvas scene = editor.getScene();
-		SceneUI.morphObjectsToNewType(editor, scene.getSelection(), TileSpriteModel.TYPE);
+		SceneUI.action_MorphObjectsToNewType(editor, scene.getSelection(), TileSpriteModel.TYPE);
 
 		if (scene.hasInteractiveTool(TileSizeTool.class)) {
 			scene.setInteractiveTools();

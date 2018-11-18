@@ -123,11 +123,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 			}
 		}
 
-		if (editor.getOutline() != null) {
-			editor.refreshOutline_basedOnId();
-		}
-
-		editor.updatePropertyPagesContentWithSelection();
+		editor.refreshSelectionBaseOnId();
 
 		canvas.redraw();
 

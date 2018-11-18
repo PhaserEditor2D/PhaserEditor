@@ -21,39 +21,35 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
-import phasereditor.ui.properties.FormPropertyPage;
+import static phasereditor.ui.IEditorSharedImages.IMG_DEPTH_BOTTOM;
+import static phasereditor.ui.IEditorSharedImages.IMG_DEPTH_DOWN;
+import static phasereditor.ui.IEditorSharedImages.IMG_DEPTH_TOP;
+import static phasereditor.ui.IEditorSharedImages.IMG_DEPTH_UP;
+
+import org.eclipse.jface.action.Action;
+
+import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseDesignSection extends ScenePropertySection {
+public class JFaceOrderAction extends Action {
+	private OrderAction _action;
+	
+	private static String[] ICON_MAP = {
+			IMG_DEPTH_UP, IMG_DEPTH_DOWN, IMG_DEPTH_TOP, IMG_DEPTH_BOTTOM
+	};
 
-	public BaseDesignSection(String name, FormPropertyPage page) {
-		super(name, page);
+	public JFaceOrderAction(SceneEditor editor, OrderActionValue order) {
+		setImageDescriptor(EditorSharedImages.getImageDescriptor(ICON_MAP[order.ordinal()]));
+		_action = new OrderAction(editor, order);
 	}
-
+	
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	public void run() {
+		_action.run();
 	}
-	
-	protected void wrapOperation(Runnable run) {
-		var editor = getEditor();
-
-		var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		run.run();
-
-		var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
-	}
-	
-
 }

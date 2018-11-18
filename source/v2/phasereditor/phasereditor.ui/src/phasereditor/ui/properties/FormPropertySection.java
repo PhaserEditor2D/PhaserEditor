@@ -55,7 +55,7 @@ import phasereditor.ui.IEditorSharedImages;
  *
  */
 public abstract class FormPropertySection<T> implements IEditorSharedImages {
-	private List<T> _models;
+	public List<T> _models;
 	private String _name;
 
 	public FormPropertySection(String name) {

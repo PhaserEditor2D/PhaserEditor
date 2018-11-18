@@ -19,41 +19,39 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.scene.ui.editor.handlers;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
-import phasereditor.ui.properties.FormPropertyPage;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.properties.OrderAction;
+import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseDesignSection extends ScenePropertySection {
-
-	public BaseDesignSection(String name, FormPropertyPage page) {
-		super(name, page);
-	}
+public class ChangeObjectsOrderHandler extends AbstractHandler {
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		var cmd = event.getCommand().getId();
+
+		var index = cmd.indexOf("_");
+
+		var name = cmd.substring(index + 1);
+
+		var order = OrderActionValue.valueOf(name);
+
+		var action = new OrderAction((SceneEditor) HandlerUtil.getActiveEditor(event), order);
+
+		action.run();
+
+		return null;
 	}
-	
-	protected void wrapOperation(Runnable run) {
-		var editor = getEditor();
-
-		var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		run.run();
-
-		var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
-	}
-	
 
 }
