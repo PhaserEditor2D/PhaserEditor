@@ -92,7 +92,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _transformLocalCoords;
-	private boolean _isInteractiveDragging;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -294,8 +293,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	@Override
 	protected void customPaintControl(PaintEvent e) {
 
-		_isInteractiveDragging = isInteractiveDragging();
-
 		// I dont know why the line width affects the transform in angles of 45.5.
 		e.gc.setLineWidth(1);
 
@@ -372,7 +369,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				drawCorner(gc, p2, p3);
 				drawCorner(gc, p3, p0);
 
-				if (!_isInteractiveDragging) {
+				if (_interactiveTools.isEmpty()) {
 
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
@@ -386,38 +383,37 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					drawCorner(gc, p0, p1);
 					drawCorner(gc, p1, p2);
 					drawCorner(gc, p2, p3);
-					drawCorner(gc, p3, p0);
+					var vector_30 = drawCorner(gc, p3, p0);
 
 					{
-						dxy *= 4;
 
-						p0 = _renderer.localToScene(model, 0, -dxy);
-						p1 = _renderer.localToScene(model, size[0] + dxy, -dxy);
-						p2 = _renderer.localToScene(model, size[0] + dxy, size[1] + dxy);
-						p3 = _renderer.localToScene(model, 0, size[1] + dxy);
-						
+						var flipX = FlipComponent.get_flipX(model);
+						var flipY = FlipComponent.get_flipY(model);
+
 						var angle = _renderer.globalAngle(model);
 
 						var p = p0;
+						var vector = vector_30;
 
-						var flipX = model instanceof FlipComponent && FlipComponent.get_flipX(model);
-						var flipY = model instanceof FlipComponent && FlipComponent.get_flipY(model);
-
-						if (flipX && flipY) {
-							p = p2;
-						} else if (flipX) {
-							p = p1;
-						} else if (flipY) {
-							p = p3;
-						}
+						var str = " " + EditorComponent.get_editorName(model);
+						var strSize = gc.textExtent(str);
 
 						var tx = new Transform(gc.getDevice());
 						tx.translate(p[0], p[1]);
+						tx.translate(vector[0] * 20, vector[1] * 20);
 						tx.rotate(angle);
+
+						if (flipX) {
+							tx.translate(-strSize.x, 0);
+						}
+
+						if (flipY) {
+							tx.translate(0, -strSize.y);
+						}
 
 						gc.setTransform(tx);
 						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-						gc.drawText(" " + EditorComponent.get_editorName(model), 0, 0, true);
+						gc.drawText(str, 0, 0, true);
 
 						gc.setTransform(null);
 
@@ -429,7 +425,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 	}
 
-	private static void drawCorner(GC gc, float[] p1, float[] p2) {
+	private static float[] drawCorner(GC gc, float[] p1, float[] p2) {
 		var vector = new float[] { p2[0] - p1[0], p2[1] - p1[1] };
 
 		var d = PhaserEditorUI.distance(0, 0, vector[0], vector[1]);
@@ -440,6 +436,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		gc.drawLine((int) p1[0], (int) p1[1], (int) (p1[0] + vector[0] * len), (int) (p1[1] + vector[1] * len));
 
 		gc.drawLine((int) p2[0], (int) p2[1], (int) (p2[0] - vector[0] * len), (int) (p2[1] - vector[1] * len));
+
+		return vector;
 	}
 
 	private void renderBackground(PaintEvent e) {
