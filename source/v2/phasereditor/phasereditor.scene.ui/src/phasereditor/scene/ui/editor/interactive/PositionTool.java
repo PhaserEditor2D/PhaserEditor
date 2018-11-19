@@ -168,9 +168,8 @@ public class PositionTool extends InteractiveTool {
 
 		if (doPaint()) {
 			if (_changeX && _changeY) {
-				var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
-				var darkColor = _hightlights ? color
-						: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+				var color = SWTResourceManager.getColor(SWT.COLOR_YELLOW);
+				var darkColor = _hightlights ? color : SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW);
 
 				drawRect(gc, globalX, globalY, globalAngle, BOX, color, darkColor);
 			} else {

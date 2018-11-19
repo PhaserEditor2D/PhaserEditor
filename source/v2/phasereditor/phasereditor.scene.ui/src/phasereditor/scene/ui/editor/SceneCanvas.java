@@ -92,6 +92,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _transformLocalCoords;
+	private boolean _interactiveToolsDragging;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -292,6 +293,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
+		_interactiveToolsDragging = isInteractiveDragging();
 
 		// I dont know why the line width affects the transform in angles of 45.5.
 		e.gc.setLineWidth(1);
@@ -364,21 +366,21 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				var p2 = _renderer.localToScene(model, size[0], size[1]);
 				var p3 = _renderer.localToScene(model, 0, size[1]);
 
-//				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
-//				gc.setLineWidth(3);
-//
-//				drawCorner(gc, p0, p1);
-//				drawCorner(gc, p1, p2);
-//				drawCorner(gc, p2, p3);
-//				drawCorner(gc, p3, p0);
-//
-//				gc.setForeground(selectionColor);
-//				gc.setLineWidth(1);
-//
-//				drawCorner(gc, p0, p1);
-//				drawCorner(gc, p1, p2);
-//				drawCorner(gc, p2, p3);
-//				drawCorner(gc, p3, p0);
+				// gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+				// gc.setLineWidth(3);
+				//
+				// drawCorner(gc, p0, p1);
+				// drawCorner(gc, p1, p2);
+				// drawCorner(gc, p2, p3);
+				// drawCorner(gc, p3, p0);
+				//
+				// gc.setForeground(selectionColor);
+				// gc.setLineWidth(1);
+				//
+				// drawCorner(gc, p0, p1);
+				// drawCorner(gc, p1, p2);
+				// drawCorner(gc, p2, p3);
+				// drawCorner(gc, p3, p0);
 
 				var points = new int[] {
 
@@ -392,14 +394,16 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				};
 
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
-				gc.setLineWidth(3);
-				gc.drawPolygon(points);
-				gc.setLineWidth(1);
+				if (!_interactiveToolsDragging) {
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+					gc.setLineWidth(3);
+					gc.drawPolygon(points);
+					gc.setLineWidth(1);
+				}
 				gc.setForeground(selectionColor);
 				gc.drawPolygon(points);
 
-				if (_interactiveTools.isEmpty()) {
+				if (!_interactiveToolsDragging) {
 
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
