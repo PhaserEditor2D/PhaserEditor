@@ -168,21 +168,19 @@ public class PositionTool extends InteractiveTool {
 
 		if (doPaint()) {
 			if (_changeX && _changeY) {
-				fillRect(gc, globalX, globalY, globalAngle, BOX,
-						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+				var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+				var darkColor = _hightlights ? color
+						: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+
+				drawRect(gc, globalX, globalY, globalAngle, BOX, color, darkColor);
 			} else {
-				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+				var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+				var darkColor = _hightlights ? color
+						: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
 
-				var color = SWTResourceManager
-						.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+				drawLine(gc, centerGlobalX, centerGlobalY, globalX, globalY, color, darkColor);
 
-				gc.setBackground(color);
-				gc.setForeground(color);
-
-				gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
-
-				fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+				drawArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color, darkColor);
 			}
 		}
 	}

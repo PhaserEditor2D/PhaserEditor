@@ -94,7 +94,7 @@ public class OriginTool extends InteractiveTool {
 			centerGlobalY += globalXY[1];
 
 			globalAngle += renderer.globalAngle(model);
-			
+
 			var flipX = 1;
 			var flipY = 1;
 
@@ -145,21 +145,24 @@ public class OriginTool extends InteractiveTool {
 		// paint
 
 		if (_changeX && _changeY) {
-			fillCircle(gc, globalX, globalY, BOX,
-					SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+			
+			var color = SWTResourceManager.getColor(SWT.COLOR_YELLOW);
+
+			var darkColor = _hightlights ? color
+					: SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW);
+			
+			drawCircle(gc, globalX, globalY, BOX,
+					color, darkColor);
 		} else if (doPaint()) {
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-			var color = SWTResourceManager
-					.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+			var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
 
-			gc.setBackground(color);
-			gc.setForeground(color);
+			var darkColor = _hightlights ? color
+					: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+			
+			drawLine(gc, centerGlobalX, centerGlobalY, globalX, globalY, color, darkColor);
 
-			gc.drawLine(centerGlobalX, centerGlobalY, globalX, globalY);
-
-			fillArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+			drawArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color, darkColor);
 		}
 
 	}
@@ -233,9 +236,9 @@ public class OriginTool extends InteractiveTool {
 				TransformComponent.set_y(model, (float) model.get("initial-y") + dy);
 
 				model.setDirty(true);
-				
+
 			}
-			
+
 			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}

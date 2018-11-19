@@ -1398,4 +1398,16 @@ public class PhaserEditorUI {
 	public static float angle(float[] a, float[] b) {
 		return angle(a[0], a[1], b[0], b[1]);
 	}
+
+	public static float[] vector(float[] p1, float[] p2) {
+		var vector = new float[] { p2[0] - p1[0], p2[1] - p1[1] };
+
+		var d = PhaserEditorUI.distance(0, 0, vector[0], vector[1]);
+		vector[0] /= d;
+		vector[1] /= d;
+
+		
+		return vector;
+	}
+	
 }

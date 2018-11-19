@@ -106,19 +106,33 @@ public abstract class InteractiveTool {
 		return !getScene().isInteractiveDragging();
 	}
 
-	protected static void fillArrow(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
+	protected static void drawLine(GC gc, float x1, float y1, float x2, float y2, Color color, Color darkColor) {
+		gc.setLineWidth(3);
+		gc.setForeground(darkColor);
+		gc.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+		
+		gc.setLineWidth(1);
+		gc.setForeground(color);
+		gc.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+	}
+
+	protected static void drawArrow(GC gc, int x, int y, float globalAngle, int size, Color color, Color darkColor) {
 		var tx = new Transform(gc.getDevice());
 
-		tx.translate(globalX, globalY);
+		tx.translate(x, y);
 		tx.rotate(globalAngle);
 		tx.translate(0, -size / 2);
 
 		gc.setTransform(tx);
 
+		var points = new int[] { -1, -1, size + 2, size / 2, -1, size + 2 };
+
+		gc.setBackground(darkColor);
+		gc.fillPolygon(points);
+
+		points = new int[] { 0, 0, size, size / 2, 0, size };
+
 		gc.setBackground(color);
-
-		var points = new int[] { 0, 0, size, size / 2, 0, size };
-
 		gc.fillPolygon(points);
 
 		gc.setTransform(null);
@@ -127,17 +141,19 @@ public abstract class InteractiveTool {
 
 	}
 
-	protected static void fillRect(GC gc, int globalX, int globalY, float globalAngle, int size, Color color) {
+	protected static void drawRect(GC gc, int x, int y, float globalAngle, int size, Color color, Color darkColor) {
 
 		var tx = new Transform(gc.getDevice());
 
-		tx.translate(globalX, globalY);
+		tx.translate(x, y);
 		tx.rotate(globalAngle);
 
 		gc.setTransform(tx);
 
-		gc.setBackground(color);
+		gc.setBackground(darkColor);
+		gc.fillRectangle(-size / 2 - 1, -size / 2 - 1, size + 2, size + 2);
 
+		gc.setBackground(color);
 		gc.fillRectangle(-size / 2, -size / 2, size, size);
 
 		gc.setTransform(null);
@@ -145,13 +161,15 @@ public abstract class InteractiveTool {
 		tx.dispose();
 	}
 
-	protected static void fillCircle(GC gc, int globalX, int globalY, int size, Color color) {
+	protected static void drawCircle(GC gc, int x, int y, int size, Color color, Color darkColor) {
 		var tx = new Transform(gc.getDevice());
-		tx.translate(globalX, globalY);
+		tx.translate(x, y);
 		gc.setTransform(tx);
 
-		gc.setBackground(color);
+		gc.setBackground(darkColor);
+		gc.fillOval(-size / 2 - 1, -size / 2 - 1, size + 2, size + 2);
 
+		gc.setBackground(color);
 		gc.fillOval(-size / 2, -size / 2, size, size);
 
 		gc.setTransform(null);

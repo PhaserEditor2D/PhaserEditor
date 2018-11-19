@@ -115,19 +115,19 @@ public class ScaleTool extends InteractiveTool {
 
 		if (doPaint()) {
 			if (_changeX && _changeY) {
-				fillRect(gc, globalX, globalY, globalAngle, BOX,
-						SWTResourceManager.getColor(_hightlights ? SWT.COLOR_WHITE : SWT.COLOR_YELLOW));
+				var color = SWTResourceManager.getColor(SWT.COLOR_YELLOW);
+				var darkColor = _hightlights ? color : SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW);
+
+				drawRect(gc, globalX, globalY, globalAngle, BOX, color, darkColor);
 			} else {
 				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
-				var color = SWTResourceManager
-						.getColor(_hightlights ? SWT.COLOR_WHITE : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
+				var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+				var darkColor = _hightlights ? color
+						: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
 
-				gc.setBackground(color);
-				gc.setForeground(color);
-
-				fillRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color);
+				drawRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color, darkColor);
 			}
 		}
 

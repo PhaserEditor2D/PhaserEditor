@@ -94,7 +94,7 @@ public class AngleTool extends InteractiveTool {
 
 		// paint
 
-		fillCircle(gc, globalX, globalY, BOX, SWTResourceManager.getColor(SWT.COLOR_BLUE));
+		drawCircle(gc, globalX, globalY, BOX, SWTResourceManager.getColor(SWT.COLOR_BLUE), SWTResourceManager.getColor(SWT.COLOR_DARK_BLUE));
 
 		if (doPaint()) {
 

@@ -348,7 +348,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private void renderSelection(GC gc) {
 
-		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION);
+		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_GREEN);
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var obj : _selection) {
@@ -364,26 +364,46 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				var p2 = _renderer.localToScene(model, size[0], size[1]);
 				var p3 = _renderer.localToScene(model, 0, size[1]);
 
-				drawCorner(gc, p0, p1);
-				drawCorner(gc, p1, p2);
-				drawCorner(gc, p2, p3);
-				drawCorner(gc, p3, p0);
+//				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+//				gc.setLineWidth(3);
+//
+//				drawCorner(gc, p0, p1);
+//				drawCorner(gc, p1, p2);
+//				drawCorner(gc, p2, p3);
+//				drawCorner(gc, p3, p0);
+//
+//				gc.setForeground(selectionColor);
+//				gc.setLineWidth(1);
+//
+//				drawCorner(gc, p0, p1);
+//				drawCorner(gc, p1, p2);
+//				drawCorner(gc, p2, p3);
+//				drawCorner(gc, p3, p0);
+
+				var points = new int[] {
+
+						(int) p0[0], (int) p0[1],
+
+						(int) p1[0], (int) p1[1],
+
+						(int) p2[0], (int) p2[1],
+
+						(int) p3[0], (int) p3[1]
+
+				};
+
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+				gc.setLineWidth(3);
+				gc.drawPolygon(points);
+				gc.setLineWidth(1);
+				gc.setForeground(selectionColor);
+				gc.drawPolygon(points);
 
 				if (_interactiveTools.isEmpty()) {
 
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
-					var dxy = PhaserEditorUI.distance(0, 0, size[0], size[1]) * 0.05f;
-
-					p0 = _renderer.localToScene(model, -dxy, -dxy);
-					p1 = _renderer.localToScene(model, size[0] + dxy, -dxy);
-					p2 = _renderer.localToScene(model, size[0] + dxy, size[1] + dxy);
-					p3 = _renderer.localToScene(model, -dxy, size[1] + dxy);
-
-					drawCorner(gc, p0, p1);
-					drawCorner(gc, p1, p2);
-					drawCorner(gc, p2, p3);
-					var vector_30 = drawCorner(gc, p3, p0);
+					var vector = PhaserEditorUI.vector(p3, p0);
 
 					{
 
@@ -393,7 +413,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 						var angle = _renderer.globalAngle(model);
 
 						var p = p0;
-						var vector = vector_30;
 
 						var str = " " + EditorComponent.get_editorName(model);
 						var strSize = gc.textExtent(str);
@@ -412,6 +431,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 						}
 
 						gc.setTransform(tx);
+						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+						gc.drawText(str, 1, 1, true);
+
 						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 						gc.drawText(str, 0, 0, true);
 
@@ -425,6 +447,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static float[] drawCorner(GC gc, float[] p1, float[] p2) {
 		var vector = new float[] { p2[0] - p1[0], p2[1] - p1[1] };
 
@@ -434,7 +457,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var len = d * 0.2;
 
 		gc.drawLine((int) p1[0], (int) p1[1], (int) (p1[0] + vector[0] * len), (int) (p1[1] + vector[1] * len));
-
 		gc.drawLine((int) p2[0], (int) p2[1], (int) (p2[0] - vector[0] * len), (int) (p2[1] - vector[1] * len));
 
 		return vector;
