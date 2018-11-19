@@ -118,7 +118,8 @@ public class SceneObjectRenderer {
 				tx2.scale(scale, scale);
 			}
 
-			renderObject(gc, tx2, sceneModel.getRootObject());
+			// renderObject(gc, tx2, sceneModel.getDisplayList());
+			renderChildren(gc, tx2, sceneModel.getDisplayList());
 
 		} finally {
 			tx2.dispose();
@@ -147,7 +148,7 @@ public class SceneObjectRenderer {
 		var newTx = new Transform(gc.getDevice());
 		gc.setTransform(newTx);
 
-		debugObject(gc, model.getRootObject());
+		debugObject(gc, model.getDisplayList());
 
 		gc.setTransform(oldTx);
 
@@ -504,10 +505,10 @@ public class SceneObjectRenderer {
 	public Image getTileSpriteTextImage(TileSpriteModel model) {
 		Image image;
 
-		if (model.isDirty()) {
+		if (EditorComponent.get_editorDirty(model)) {
 			image = createTileSpriteTexture(model);
 
-			model.setDirty(false);
+			EditorComponent.set_editorDirty(model, false);
 
 			var old = _imageCacheMap.put(model, image);
 
@@ -661,10 +662,10 @@ public class SceneObjectRenderer {
 	public Image getBitmapTextImage(BitmapTextModel model) {
 		Image image;
 
-		if (model.isDirty()) {
+		if (EditorComponent.get_editorDirty(model)) {
 			image = createBitmapTextImage(model);
 
-			model.setDirty(false);
+			EditorComponent.set_editorDirty(model, false);
 
 			var old = _imageCacheMap.put(model, image);
 
@@ -780,7 +781,7 @@ public class SceneObjectRenderer {
 
 		var parent = ParentComponent.get_parent(model);
 
-		if (parent == null) {
+		if (parent == null || !TransformComponent.is(parent)) {
 			return _canvas.getScale() * scale;
 		}
 
@@ -792,7 +793,7 @@ public class SceneObjectRenderer {
 
 		var parent = ParentComponent.get_parent(model);
 
-		if (parent == null) {
+		if (parent == null || !TransformComponent.is(parent)) {
 			return _canvas.getScale() * scale;
 		}
 
@@ -800,6 +801,10 @@ public class SceneObjectRenderer {
 	}
 
 	public float globalAngle(ObjectModel model) {
+		if (!TransformComponent.is(model)) {
+			return 0;
+		}
+		
 		var angle = TransformComponent.get_angle(model);
 
 		var parent = ParentComponent.get_parent(model);

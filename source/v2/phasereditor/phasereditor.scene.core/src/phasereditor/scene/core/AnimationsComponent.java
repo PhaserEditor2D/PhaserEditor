@@ -40,6 +40,10 @@ public interface AnimationsComponent {
 		obj.put("autoPlayAnimKey", autoPlayAnimKey);
 	}
 	
+	static boolean is(Object model) {
+		return model instanceof AnimationsComponent;
+	}
+	
 	static void init(ObjectModel model) {
 		set_autoPlayAnimKey(model, autoPlayAnimKey_default);
 	}

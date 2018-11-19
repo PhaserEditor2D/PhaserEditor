@@ -162,7 +162,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 			var sel = _viewer.getStructuredSelection().toArray();
 
-			ObjectModel pasteParent = getEditor().getSceneModel().getRootObject();
+			ObjectModel pasteParent = getEditor().getSceneModel().getDisplayList();
 
 			if (sel.length == 1) {
 				if (sel[0] instanceof ObjectModel) {
@@ -362,7 +362,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		_viewer.refresh();
 
-		var root = _editor.getSceneModel().getRootObject();
+		var root = _editor.getSceneModel().getDisplayList();
 
 		var expanded = expandedIds.stream().map(id -> root.findById(id)).filter(o -> o != null).toArray();
 

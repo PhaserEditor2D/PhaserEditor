@@ -306,7 +306,7 @@ public class SceneEditor extends EditorPart {
 
 		var selectedIds = Arrays.stream(selectedElems).map(e -> ((ObjectModel) e).getId()).collect(toList());
 
-		var root = getSceneModel().getRootObject();
+		var root = getSceneModel().getDisplayList();
 
 		var newSelectedElems = selectedIds.stream().map(id -> root.findById(id)).filter(o -> o != null).toArray();
 
@@ -323,7 +323,7 @@ public class SceneEditor extends EditorPart {
 			ids.add(((ObjectModel) obj).getId());
 		}
 
-		var models = getSceneModel().getRootObject().findByIds(ids);
+		var models = getSceneModel().getDisplayList().findByIds(ids);
 
 		setSelection(new StructuredSelection(models));
 	}

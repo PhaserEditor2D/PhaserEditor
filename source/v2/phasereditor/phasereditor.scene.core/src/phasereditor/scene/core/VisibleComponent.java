@@ -40,6 +40,10 @@ public interface VisibleComponent {
 		obj.put("visible", visible);
 	}
 
+	static boolean is(Object model) {
+		return model instanceof VisibleComponent;
+	}
+	
 	static void init(ObjectModel obj) {
 		set_visible(obj, visible_default);
 	}

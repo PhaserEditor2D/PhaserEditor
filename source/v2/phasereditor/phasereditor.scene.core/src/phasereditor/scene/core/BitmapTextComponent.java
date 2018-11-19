@@ -88,6 +88,10 @@ public interface BitmapTextComponent {
 	static void set_letterSpacing(ObjectModel obj, float letterSpacing) {
 		obj.put("letterSpacing", letterSpacing);
 	}
+	
+	static boolean is(Object model) {
+		return model instanceof BitmapTextComponent;
+	}
 
 	static void init(BitmapTextModel obj) {
 		set_font(obj, font_default);

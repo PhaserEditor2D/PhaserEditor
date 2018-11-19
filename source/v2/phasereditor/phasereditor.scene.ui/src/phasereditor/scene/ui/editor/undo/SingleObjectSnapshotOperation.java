@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
+import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 
@@ -109,14 +110,14 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 		for (var data : list) {
 			var id = data.getString("-id");
-			var model = sceneModel.getRootObject().findById(id);
+			var model = sceneModel.getDisplayList().findById(id);
 
 			if (model != null) {
 				model.read(data, project);
 
 				if (_dirtyModels) {
 					if (_filterDirtyModels == null || _filterDirtyModels.apply(model).booleanValue()) {
-						model.setDirty(true);
+						EditorComponent.set_editorDirty(model, true);
 					}
 
 				}

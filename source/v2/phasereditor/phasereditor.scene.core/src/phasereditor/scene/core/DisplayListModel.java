@@ -19,54 +19,18 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.outline;
-
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
-
-import phasereditor.scene.core.DisplayListModel;
-import phasereditor.scene.core.EditorComponent;
-import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.IEditorSharedImages;
+package phasereditor.scene.core;
 
 /**
  * @author arian
  *
  */
-public class OutlineLabelProvider2 extends LabelProvider implements IEditorSharedImages {
+public class DisplayListModel extends ParentModel {
+	public static final String TYPE = "DisplayList";
 
-	private SceneEditor _editor;
+	public DisplayListModel() {
+		super(TYPE);
 
-	public OutlineLabelProvider2(SceneEditor editor) {
-		_editor = editor;
-	}
-
-	public SceneEditor getEditor() {
-		return _editor;
-	}
-
-	@Override
-	public String getText(Object element) {
-		if (element instanceof DisplayListModel) {
-			return "Display List";
-		}
-		
-		if (element instanceof EditorComponent) {
-			return EditorComponent.get_editorName((ObjectModel) element);
-		}
-
-		return super.getText(element);
-	}
-
-	@Override
-	public Image getImage(Object element) {
-		
-		if (element instanceof DisplayListModel) {
-			return EditorSharedImages.getImage(IMG_MONITOR);
-		}
-		
-		return EditorSharedImages.getImage(IMG_SHAPE);
+		EditorComponent.set_editorName(this, "Display List");
 	}
 }

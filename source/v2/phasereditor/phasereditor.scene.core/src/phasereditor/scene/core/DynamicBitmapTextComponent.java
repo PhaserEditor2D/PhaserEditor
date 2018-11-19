@@ -42,7 +42,6 @@ public interface DynamicBitmapTextComponent {
 		obj.put("displayCallback", displayCallback);
 	}
 
-
 	// crop
 	static String cropWidth_name = "cropWidth";
 	static String cropHeight_name = "cropHeight";
@@ -65,9 +64,9 @@ public interface DynamicBitmapTextComponent {
 	static void set_cropHeight(ObjectModel obj, int cropHeight) {
 		obj.put("cropHeight", cropHeight);
 	}
-	
+
 	// scroll
-	
+
 	static String scrollX_name = "scrollX";
 	static String scrollY_name = "scrollY";
 
@@ -91,6 +90,10 @@ public interface DynamicBitmapTextComponent {
 	}
 
 	// init
+
+	static boolean is(Object model) {
+		return model instanceof DynamicBitmapTextComponent;
+	}
 
 	static void init(ObjectModel model) {
 		set_displayCallback(model, displayCallback_default);

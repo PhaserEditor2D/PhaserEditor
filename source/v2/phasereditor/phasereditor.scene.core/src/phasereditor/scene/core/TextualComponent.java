@@ -41,6 +41,10 @@ public interface TextualComponent {
 		obj.put("text", text);
 	}
 	
+	static boolean is(Object model) {
+		return model instanceof TextualComponent;
+	}
+	
 	static void init(ObjectModel obj) {
 		set_text(obj, text_default);
 	}

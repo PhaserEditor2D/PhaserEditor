@@ -69,47 +69,47 @@ public class ScenePropertyPage extends FormPropertyPage {
 			list.add(new AssetsSection(this));
 		}
 
-		if (obj instanceof EditorComponent) {
+		if (EditorComponent.is(obj)) {
 			list.add(new EditorSection(this));
 		}
 
-		if (obj instanceof TransformComponent) {
+		if (TransformComponent.is(obj)) {
 			list.add(new TransformSection(this));
 		}
 
-		if (obj instanceof OriginComponent) {
+		if (OriginComponent.is(obj)) {
 			list.add(new OriginSection(this));
 		}
 
-		if (obj instanceof FlipComponent) {
+		if (FlipComponent.is(obj)) {
 			list.add(new FlipSection(this));
 		}
 
-		if (obj instanceof VisibleComponent) {
+		if (VisibleComponent.is(obj)) {
 			list.add(new VisibleSection(this));
 		}
 
-		if (obj instanceof TextureComponent) {
+		if (TextureComponent.is(obj)) {
 			list.add(new TextureSection(this));
 		}
 
-		if (obj instanceof TileSpriteComponent) {
+		if (TileSpriteComponent.is(obj)) {
 			list.add(new TileSpriteSection(this));
 		}
 
-		if (obj instanceof TextualComponent) {
+		if (TextualComponent.is(obj)) {
 			list.add(new TextualSection(this));
 		}
 
-		if (obj instanceof BitmapTextComponent) {
+		if (BitmapTextComponent.is(obj)) {
 			list.add(new BitmapTextSection(this));
 		}
 
-		if (obj instanceof DynamicBitmapTextComponent) {
+		if (DynamicBitmapTextComponent.is(obj)) {
 			list.add(new DynamicBitmapTextSection(this));
 		}
 
-		if (obj instanceof AnimationsComponent) {
+		if (AnimationsComponent.is(obj)) {
 			list.add(new AnimationsSection(this));
 		}
 		

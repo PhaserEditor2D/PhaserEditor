@@ -26,6 +26,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
@@ -188,7 +189,7 @@ public class ScaleTool extends InteractiveTool {
 					TransformComponent.set_y(model, y);
 				}
 
-				model.setDirty(true);
+				EditorComponent.set_editorDirty(model, true);
 			}
 
 			getEditor().updatePropertyPagesContentWithSelection();

@@ -101,7 +101,7 @@ public class SceneCodeDomBuilder {
 	private MethodDeclDom buildCreateMethod(SceneModel sceneModel) {
 		var methodDecl = new MethodDeclDom("create");
 
-		var worldModel = sceneModel.getRootObject();
+		var worldModel = sceneModel.getDisplayList();
 		var fieldModels = new ArrayList<ObjectModel>();
 
 		for (var model : ParentComponent.get_children(worldModel)) {
@@ -617,7 +617,7 @@ public class SceneCodeDomBuilder {
 
 		Map<String, String[]> packSectionList = new HashMap<>();
 
-		model.getRootObject().visit(objModel -> {
+		model.getDisplayList().visit(objModel -> {
 			if (objModel instanceof TextureComponent) {
 				var frame = TextureComponent.get_frame(objModel);
 				if (frame != null) {

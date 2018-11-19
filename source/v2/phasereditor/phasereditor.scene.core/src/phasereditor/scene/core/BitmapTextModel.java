@@ -32,7 +32,7 @@ import phasereditor.bmpfont.core.BitmapFontModel;
  * @author arian
  *
  */
-public class BitmapTextModel extends ParentModel implements
+public class BitmapTextModel extends EditorObjectModel implements
 
 		OriginComponent,
 

@@ -21,18 +21,42 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.eclipse.core.resources.IProject;
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
  */
-public class WorldModel extends ParentModel implements TransformComponent {
-	public static final String TYPE = "World";
+public abstract class EditorObjectModel extends ParentModel implements EditorComponent {
 
-	public WorldModel() {
-		super(TYPE);
+	public EditorObjectModel(String type) {
+		super(type);
 
-		EditorComponent.set_editorName(this, "world");
-		TransformComponent.init(this);
-
+		EditorComponent.init(this);
 	}
+
+	@Override
+	public void write(JSONObject data) {
+
+		super.write(data);
+
+		data.put(editorName_name, EditorComponent.get_editorName(this));
+		data.put(editorField_name, EditorComponent.get_editorField(this));
+		data.put(editorClosed_name, EditorComponent.get_editorClosed(this), editorClosed_default);
+		data.put(editorTransparency_name, EditorComponent.get_editorTransparency(this), editorTransparency_default);
+	}
+
+	@Override
+	public void read(JSONObject data, IProject project) {
+
+		super.read(data, project);
+
+		EditorComponent.set_editorName(this, data.getString(editorName_name));
+		EditorComponent.set_editorField(this, data.optBoolean(editorField_name));
+		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));
+		EditorComponent.set_editorTransparency(this,
+				data.optFloat(editorTransparency_name, editorTransparency_default));
+	}
+
 }

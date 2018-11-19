@@ -60,7 +60,7 @@ public class SceneModel {
 
 	};
 
-	private ParentModel _rootObject;
+	private ParentModel _displayList;
 
 	private boolean _snapEnabled;
 	private int _snapWidth;
@@ -80,7 +80,7 @@ public class SceneModel {
 	private MethodUserCodeModel _createUserCode;
 
 	public SceneModel() {
-		_rootObject = new WorldModel();
+		_displayList = new DisplayListModel();
 
 		_snapEnabled = false;
 		_snapWidth = 16;
@@ -197,8 +197,8 @@ public class SceneModel {
 		return y;
 	}
 
-	public ParentModel getRootObject() {
-		return _rootObject;
+	public ParentModel getDisplayList() {
+		return _displayList;
 	}
 
 	public void write(JSONObject data) {
@@ -206,15 +206,17 @@ public class SceneModel {
 		data.put("-version", VERSION);
 
 		{
-			JSONObject rootData;
-			if (_rootObject == null) {
-				rootData = null;
+			// Display List
+			
+			JSONObject displayListData;
+			if (_displayList == null) {
+				displayListData = null;
 			} else {
-				rootData = new JSONObject();
-				_rootObject.write(rootData);
+				displayListData = new JSONObject();
+				_displayList.write(displayListData);
 			}
 
-			data.put("root", rootData);
+			data.put("displayList", displayListData);
 		}
 
 		writeProperties(data);
@@ -258,15 +260,15 @@ public class SceneModel {
 	}
 
 	public void read(JSONObject data, IProject project) {
-		var rootData = data.optJSONObject("root");
+		var displayListData = data.optJSONObject("displayList");
 
-		var type = rootData.getString("-type");
+		var type = displayListData.getString("-type");
 
 		ObjectModel model = createModel(type);
 
 		if (model != null) {
-			model.read(rootData, project);
-			_rootObject = (ParentModel) model;
+			model.read(displayListData, project);
+			_displayList = (ParentModel) model;
 		}
 
 		readProperties(data);
@@ -340,8 +342,8 @@ public class SceneModel {
 
 		switch (type) {
 
-		case WorldModel.TYPE:
-			return new WorldModel();
+		case DisplayListModel.TYPE:
+			return new DisplayListModel();
 
 		case SpriteModel.TYPE:
 			return new SpriteModel();

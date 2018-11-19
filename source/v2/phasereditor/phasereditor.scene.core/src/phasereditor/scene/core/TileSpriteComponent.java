@@ -105,6 +105,10 @@ public interface TileSpriteComponent {
 	}
 
 	// init
+	
+	static boolean is(Object model) {
+		return model instanceof TileSpriteComponent;
+	}
 
 	static void init(ObjectModel obj) {
 		set_tilePositionX(obj, tilePositionX_default);

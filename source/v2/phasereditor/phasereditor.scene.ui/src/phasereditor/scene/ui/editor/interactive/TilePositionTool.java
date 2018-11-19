@@ -26,6 +26,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TileSpriteComponent;
@@ -200,7 +201,7 @@ public class TilePositionTool extends InteractiveTool {
 					TileSpriteComponent.set_tilePositionY(model, tilePositionY);
 				}
 
-				model.setDirty(true);
+				EditorComponent.set_editorDirty(model, true);
 			}
 
 			getEditor().updatePropertyPagesContentWithSelection();

@@ -65,6 +65,10 @@ public interface OriginComponent {
 		obj.put("originY", originY);
 	}
 
+	static boolean is(Object model) {
+		return model instanceof OriginComponent;
+	}
+	
 	static void init(ObjectModel obj) {
 		set_originX(obj, originX_default(obj));
 		set_originY(obj, originY_default(obj));

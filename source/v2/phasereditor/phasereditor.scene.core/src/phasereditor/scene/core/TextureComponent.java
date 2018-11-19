@@ -39,6 +39,10 @@ public interface TextureComponent {
 		obj.put("frame", frame);
 	}
 	
+	static boolean is(Object model) {
+		return model instanceof TextureComponent;
+	}
+	
 	static void init(ObjectModel obj) {
 		set_frame(obj, null);
 	}

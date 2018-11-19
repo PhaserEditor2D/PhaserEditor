@@ -52,6 +52,10 @@ public interface FlipComponent {
 		obj.put("flipY", flipY);
 	}
 	
+	static boolean is(Object model) {
+		return model instanceof FlipComponent;
+	}
+	
 	static void init(ObjectModel obj) {
 		set_flipX(obj, flipX_default);
 		set_flipY(obj, flipY_default);

@@ -28,6 +28,7 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
@@ -237,7 +238,7 @@ public class PositionTool extends InteractiveTool {
 						TransformComponent.set_x(model, modelX);
 						TransformComponent.set_y(model, modelY);
 
-						model.setDirty(true);
+						EditorComponent.set_editorDirty(model, true);
 
 					}
 
@@ -284,8 +285,7 @@ public class PositionTool extends InteractiveTool {
 						TransformComponent.set_x(model, modelX);
 						TransformComponent.set_y(model, modelY);
 
-						model.setDirty(true);
-
+						EditorComponent.set_editorDirty(model, true);
 					}
 
 				}
@@ -331,7 +331,7 @@ public class PositionTool extends InteractiveTool {
 						TransformComponent.set_x(model, modelX);
 						TransformComponent.set_y(model, modelY);
 
-						model.setDirty(true);
+						EditorComponent.set_editorDirty(model, true);
 					}
 				}
 			}

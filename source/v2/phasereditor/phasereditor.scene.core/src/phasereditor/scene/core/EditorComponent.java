@@ -27,6 +27,21 @@ package phasereditor.scene.core;
  */
 @SuppressWarnings("boxing")
 public interface EditorComponent {
+	
+	// editorDirty
+
+	static String editorDirty_name = "editorDirty";
+
+	static boolean editorDirty_default = true;
+
+	static boolean get_editorDirty(ObjectModel obj) {
+		return (boolean) obj.get("editorDirty");
+	}
+
+	static void set_editorDirty(ObjectModel obj, boolean editorDirty) {
+		obj.put("editorDirty", editorDirty);
+	}
+	
 	// editorShow
 
 	static String editorShow_name = "editorShow";
@@ -96,8 +111,14 @@ public interface EditorComponent {
 	static void set_editorTransparency(ObjectModel obj, float editorTransparency) {
 		obj.put("editorTransparency", editorTransparency);
 	}
+	
+	
+	static boolean is(Object model) {
+		return model instanceof EditorComponent;
+	}
 
 	static void init(ObjectModel obj) {
+		set_editorDirty(obj, editorDirty_default);
 		set_editorName(obj, editorName_default);
 		set_editorField(obj, editorField_default);
 		set_editorShow(obj, editorShow_default);

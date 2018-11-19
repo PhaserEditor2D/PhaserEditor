@@ -58,6 +58,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.EditorObjectModel;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
@@ -193,7 +194,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
 
-		var nameComputer = new NameComputer(_sceneModel.getRootObject());
+		var nameComputer = new NameComputer(_sceneModel.getDisplayList());
 
 		var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
@@ -251,7 +252,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		for (var model : newModels) {
-			ParentComponent.addChild(_sceneModel.getRootObject(), model);
+			ParentComponent.addChild(_sceneModel.getDisplayList(), model);
 		}
 
 		var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
@@ -354,7 +355,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var obj : _selection) {
-			if (obj instanceof ObjectModel) {
+			if (obj instanceof EditorObjectModel) {
 				var model = (ObjectModel) obj;
 
 				gc.setForeground(selectionColor);
@@ -400,6 +401,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					gc.drawPolygon(points);
 					gc.setLineWidth(1);
 				}
+				
 				gc.setForeground(selectionColor);
 				gc.drawPolygon(points);
 
@@ -704,12 +706,13 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	ObjectModel pickObject(int x, int y) {
-		return pickObject(_sceneModel.getRootObject(), x, y);
+		return pickObject(_sceneModel.getDisplayList(), x, y);
 	}
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
 		if (model instanceof ParentComponent) {
-			if (EditorComponent.get_editorClosed(model) /* || groupModel.isPrefabInstance() */) {
+			if (model instanceof EditorComponent
+					&& EditorComponent.get_editorClosed(model) /* || groupModel.isPrefabInstance() */) {
 
 				var polygon = _renderer.getObjectChildrenBounds(model);
 
@@ -920,7 +923,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void selectAll() {
 		var list = new ArrayList<ObjectModel>();
 
-		var root = getEditor().getSceneModel().getRootObject();
+		var root = getEditor().getSceneModel().getDisplayList();
 
 		root.visitChildren(model -> list.add(model));
 
@@ -998,7 +1001,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	public void paste() {
 
-		var root = getEditor().getSceneModel().getRootObject();
+		var root = getEditor().getSceneModel().getDisplayList();
 
 		paste(root, true);
 	}
@@ -1054,7 +1057,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		// set new id and editorName
 
-		var nameComputer = new NameComputer(_sceneModel.getRootObject());
+		var nameComputer = new NameComputer(_sceneModel.getDisplayList());
 
 		float[] offsetPoint;
 

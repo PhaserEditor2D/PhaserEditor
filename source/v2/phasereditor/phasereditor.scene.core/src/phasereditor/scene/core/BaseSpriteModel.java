@@ -32,7 +32,7 @@ import phasereditor.assetpack.core.IAssetKey;
  * @author arian
  *
  */
-public abstract class BaseSpriteModel extends ParentModel implements FlipComponent,
+public abstract class BaseSpriteModel extends EditorObjectModel implements FlipComponent,
 
 		OriginComponent,
 

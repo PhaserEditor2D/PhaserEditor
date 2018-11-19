@@ -96,7 +96,7 @@ public class WorldSnapshotOperation extends AbstractOperation {
 
 		model.read(data, project);
 
-		var selectedItems = selectedIds.stream().map(id -> model.getRootObject().findById(id))
+		var selectedItems = selectedIds.stream().map(id -> model.getDisplayList().findById(id))
 				.filter(obj -> obj != null).toArray();
 
 		editor.setSelection(new StructuredSelection(selectedItems));

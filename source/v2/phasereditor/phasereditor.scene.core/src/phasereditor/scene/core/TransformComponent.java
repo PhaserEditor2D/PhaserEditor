@@ -92,6 +92,10 @@ public interface TransformComponent {
 		obj.put("angle", angle);
 	}
 
+	static boolean is(Object model) {
+		return model instanceof TransformComponent;
+	}
+	
 	static void init(ObjectModel obj) {
 		set_angle(obj, angle_default);
 		set_scaleX(obj, scaleX_default);
