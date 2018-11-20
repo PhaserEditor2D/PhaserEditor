@@ -70,7 +70,7 @@ public class SceneCodeDomBuilder {
 
 	private static String varname(ObjectModel model) {
 
-		var name = VariableComponent.get_gameObjectEditorName(model);
+		var name = VariableComponent.get_variableName(model);
 
 		var id = JSCodeUtils.id(name);
 
@@ -127,7 +127,7 @@ public class SceneCodeDomBuilder {
 
 			var assignToVar = false;
 
-			if (VariableComponent.get_gameObjectEditorField(model)) {
+			if (VariableComponent.get_variableField(model)) {
 				assignToVar = true;
 				fieldModels.add(model);
 			}

@@ -90,9 +90,9 @@ public class ScenePropertyPage extends FormPropertyPage {
 			list.add(new FlipSection(this));
 		}
 
-		if (VisibleComponent.is(obj)) {
-			list.add(new VisibleSection(this));
-		}
+//		if (VisibleComponent.is(obj)) {
+//			list.add(new VisibleSection(this));
+//		}
 
 		if (TextureComponent.is(obj)) {
 			list.add(new TextureSection(this));

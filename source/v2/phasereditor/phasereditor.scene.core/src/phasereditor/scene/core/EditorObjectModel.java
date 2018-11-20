@@ -48,8 +48,8 @@ public abstract class EditorObjectModel extends ParentModel implements
 
 		super.write(data);
 
-		data.put(gameObjectEditorName_name, VariableComponent.get_gameObjectEditorName(this));
-		data.put(gameObjectEditorField_name, VariableComponent.get_gameObjectEditorField(this));
+		data.put(variableName_name, VariableComponent.get_variableName(this));
+		data.put(variableField_name, VariableComponent.get_variableField(this));
 
 		data.put(gameObjectEditorClosed_name, GameObjectEditorComponent.get_gameObjectEditorClosed(this),
 				editorClosed_default);
@@ -62,8 +62,8 @@ public abstract class EditorObjectModel extends ParentModel implements
 
 		super.read(data, project);
 
-		VariableComponent.set_gameObjectEditorName(this, data.getString(gameObjectEditorName_name));
-		VariableComponent.set_editorField(this, data.optBoolean(gameObjectEditorField_name));
+		VariableComponent.set_variableName(this, data.getString(variableName_name));
+		VariableComponent.set_variableField(this, data.optBoolean(variableField_name));
 
 		GameObjectEditorComponent.set_gameObjectEditorClosed(this,
 				data.optBoolean(gameObjectEditorClosed_name, editorClosed_default));

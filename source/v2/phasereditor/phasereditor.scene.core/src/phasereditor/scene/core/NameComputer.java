@@ -37,7 +37,7 @@ public class NameComputer {
 
 		_names = new HashSet<>();
 		_world.visit(model -> {
-			_names.add(VariableComponent.get_gameObjectEditorName(model));
+			_names.add(VariableComponent.get_variableName(model));
 		});
 	}
 

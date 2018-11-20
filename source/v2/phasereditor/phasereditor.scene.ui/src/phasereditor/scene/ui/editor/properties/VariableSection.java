@@ -77,20 +77,9 @@ public class VariableSection extends ScenePropertySection {
 		{
 			label(comp, "Var Name", "*(Editor) The name of the variable used in the generated code.");
 
-			var row = new Composite(comp, 0);
-			row.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			var gl = new GridLayout(2, false);
-			gl.marginWidth = gl.marginHeight = 0;
-			row.setLayout(gl);
-
-			_editorNameText = new Text(row, SWT.BORDER);
+			_editorNameText = new Text(comp, SWT.BORDER);
 			_editorNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			var toolbar = new ToolBarManager();
-
-			toolbar.add(_fieldAction);
-
-			toolbar.createControl(row);
 		}
 
 		return comp;
@@ -245,7 +234,7 @@ public class VariableSection extends ScenePropertySection {
 
 			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
-			VariableComponent.set_editorField(model, _fieldAction.isChecked());
+			VariableComponent.set_variableField(model, _fieldAction.isChecked());
 
 			editor.setDirty(true);
 
@@ -275,14 +264,14 @@ public class VariableSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		_editorNameText.setText(
-				flatValues_to_String(models.stream().map(model -> VariableComponent.get_gameObjectEditorName(model))));
+		_editorNameText
+				.setText(flatValues_to_String(models.stream().map(model -> VariableComponent.get_variableName(model))));
 
-		_fieldAction.setChecked(flatValues_to_boolean(
-				models.stream().map(model -> VariableComponent.get_gameObjectEditorField(model))));
+		_fieldAction.setChecked(
+				flatValues_to_boolean(models.stream().map(model -> VariableComponent.get_variableField(model))));
 
 		listen(_editorNameText, value -> {
-			models.stream().forEach(model -> VariableComponent.set_gameObjectEditorName(model, value));
+			models.stream().forEach(model -> VariableComponent.set_variableName(model, value));
 
 			getEditor().setDirty(true);
 			getEditor().refreshOutline();

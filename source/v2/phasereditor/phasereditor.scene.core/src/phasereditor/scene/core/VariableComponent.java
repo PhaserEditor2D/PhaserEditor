@@ -30,30 +30,30 @@ public interface VariableComponent {
 
 	// editorName
 
-	static String gameObjectEditorName_name = "gameObjectEditorName";
+	static String variableName_name = "variableName";
 
-	static String gameObjectEditorName_default = "unnamed";
+	static String variableName_default = "unnamed";
 
-	static String get_gameObjectEditorName(ObjectModel obj) {
-		return (String) obj.get("gameObjectEditorName");
+	static String get_variableName(ObjectModel obj) {
+		return (String) obj.get("variableName");
 	}
 
-	static void set_gameObjectEditorName(ObjectModel obj, String editorName) {
-		obj.put("gameObjectEditorName", editorName);
+	static void set_variableName(ObjectModel obj, String editorName) {
+		obj.put("variableName", editorName);
 	}
 
 	// editorField
 
-	static String gameObjectEditorField_name = "gameObjectEditorField";
+	static String variableField_name = "variableField";
 
-	static boolean gameObjectEditorField_default = false;
+	static boolean variableField_default = false;
 
-	static boolean get_gameObjectEditorField(ObjectModel obj) {
-		return (boolean) obj.get("gameObjectEditorField");
+	static boolean get_variableField(ObjectModel obj) {
+		return (boolean) obj.get("variableField");
 	}
 
-	static void set_editorField(ObjectModel obj, boolean editorField) {
-		obj.put("gameObjectEditorField", editorField);
+	static void set_variableField(ObjectModel obj, boolean editorField) {
+		obj.put("variableField", editorField);
 	}
 
 	// utils
@@ -63,7 +63,7 @@ public interface VariableComponent {
 	}
 
 	static void init(ObjectModel obj) {
-		set_gameObjectEditorName(obj, gameObjectEditorName_default);
-		set_editorField(obj, gameObjectEditorField_default);
+		set_variableName(obj, variableName_default);
+		set_variableField(obj, variableField_default);
 	}
 }

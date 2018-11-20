@@ -213,7 +213,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var name = nameComputer.newName(frame.getKey());
 
-				VariableComponent.set_gameObjectEditorName(sprite, name);
+				VariableComponent.set_variableName(sprite, name);
 
 				TransformComponent.set_x(sprite, modelX);
 				TransformComponent.set_y(sprite, modelY);
@@ -230,7 +230,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var name = nameComputer.newName(asset.getKey());
 
-				VariableComponent.set_gameObjectEditorName(textModel, name);
+				VariableComponent.set_variableName(textModel, name);
 
 				TransformComponent.set_x(textModel, modelX);
 				TransformComponent.set_y(textModel, modelY);
@@ -427,7 +427,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					var p = p0;
 
-					var str = " " + VariableComponent.get_gameObjectEditorName(model);
+					var str = " " + VariableComponent.get_variableName(model);
 					var strSize = gc.textExtent(str);
 
 					var tx = new Transform(gc.getDevice());
@@ -1101,11 +1101,11 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			model.visit(model2 -> {
 				model2.setId(UUID.randomUUID().toString());
 
-				var name = VariableComponent.get_gameObjectEditorName(model2);
+				var name = VariableComponent.get_variableName(model2);
 
 				name = nameComputer.newName(name);
 
-				VariableComponent.set_gameObjectEditorName(model2, name);
+				VariableComponent.set_variableName(model2, name);
 			});
 
 			if (model instanceof TransformComponent) {

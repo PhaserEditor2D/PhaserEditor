@@ -61,7 +61,7 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 		}
 
 		if (element instanceof GameObjectEditorComponent) {
-			return VariableComponent.get_gameObjectEditorName((ObjectModel) element);
+			return VariableComponent.get_variableName((ObjectModel) element);
 		}
 
 		if (element instanceof GroupComponent) {
