@@ -42,6 +42,10 @@ public interface GroupComponent {
 
 	// init
 
+	static boolean is(Object model) {
+		return model instanceof GroupComponent;
+	}
+	
 	static void init(GroupModel model) {
 		set_name(model, name_default);
 	}

@@ -82,6 +82,8 @@ public class GroupListSnapshotOperation extends AbstractOperation {
 
 		editor.refreshOutline_basedOnId();
 
+		editor.updatePropertyPagesContentWithSelection();
+
 		editor.getScene().redraw();
 
 		editor.setDirty(true);

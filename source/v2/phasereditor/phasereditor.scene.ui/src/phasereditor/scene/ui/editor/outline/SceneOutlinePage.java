@@ -59,6 +59,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
@@ -75,7 +76,7 @@ import phasereditor.ui.TreeCanvasViewer;
  */
 public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
-	private SceneEditor _editor;
+	protected SceneEditor _editor;
 	private FilteredTreeCanvas _filterTree;
 	protected TreeCanvasViewer _viewer;
 
@@ -161,12 +162,14 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 			}
 
 		};
+		
 		_viewer.getCanvas().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				revealSelectedObjectInScene();
 			}
 		});
+		
 		_viewer.setInput(_editor.getSceneModel());
 
 		var scene = _editor.getScene();
@@ -228,7 +231,14 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				var group = new GroupModel(groups);
 
 				GroupComponent.set_name(group, value);
+
+				var before = GroupListSnapshotOperation.takeSnapshot(_editor);
+
 				ParentComponent.get_children(groups).add(group);
+
+				var after = GroupListSnapshotOperation.takeSnapshot(_editor);
+
+				editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
 
 				refresh();
 
