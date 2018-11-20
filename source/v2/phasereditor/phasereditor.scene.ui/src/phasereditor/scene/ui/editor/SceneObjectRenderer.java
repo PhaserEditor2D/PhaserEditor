@@ -649,6 +649,27 @@ public class SceneObjectRenderer {
 		return new float[] { 0, 0 };
 	}
 
+	public float[] getLocalPointAtOrigin(ObjectModel model) {
+		if (OriginComponent.is(model)) {
+			var size = getObjectSize(model);
+			return new float[] {
+
+					OriginComponent.get_originX(model) * size[0],
+
+					OriginComponent.get_originY(model) * size[1]
+
+			};
+		}
+
+		return new float[] { 0, 0 };
+
+	}
+
+	public float[] getScenePointAtOrigin(ObjectModel model) {
+		var local = getLocalPointAtOrigin(model);
+		return localToScene(model, local);
+	}
+
 	private float[] getBitmapTextSize(BitmapTextModel model) {
 
 		var image = getBitmapTextImage(model);
@@ -804,7 +825,7 @@ public class SceneObjectRenderer {
 		if (!TransformComponent.is(model)) {
 			return 0;
 		}
-		
+
 		var angle = TransformComponent.get_angle(model);
 
 		var parent = ParentComponent.get_parent(model);

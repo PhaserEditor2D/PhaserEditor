@@ -49,7 +49,6 @@ public class TileScaleTool extends InteractiveTool {
 	private int _initialGlobalX;
 	private boolean _changeX;
 	private boolean _changeY;
-	private boolean _hightlights;
 
 	public TileScaleTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);

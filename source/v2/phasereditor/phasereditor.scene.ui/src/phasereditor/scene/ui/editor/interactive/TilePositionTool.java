@@ -50,7 +50,6 @@ public class TilePositionTool extends InteractiveTool {
 	private int _initialGlobalX;
 	private boolean _changeX;
 	private boolean _changeY;
-	private boolean _hightlights;
 
 	public TilePositionTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);

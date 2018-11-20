@@ -48,7 +48,6 @@ public class TileSizeTool extends InteractiveTool {
 	private int _initialGlobalX;
 	private boolean _changeX;
 	private boolean _changeY;
-	private boolean _hightlights;
 
 	public TileSizeTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);

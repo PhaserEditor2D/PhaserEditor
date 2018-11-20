@@ -42,16 +42,22 @@ public abstract class InteractiveTool {
 
 	private SceneEditor _editor;
 	protected boolean _dragging;
+	protected boolean _hightlights;
 
 	public InteractiveTool(SceneEditor editor) {
 		super();
 		_editor = editor;
+		_hightlights = false;
 	}
 
 	protected abstract boolean canEdit(ObjectModel model);
 
 	public boolean isDragging() {
 		return _dragging;
+	}
+	
+	public boolean isHightlights() {
+		return _hightlights;
 	}
 
 	public SceneEditor getEditor() {

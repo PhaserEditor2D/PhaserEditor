@@ -44,7 +44,6 @@ public class AngleTool extends InteractiveTool {
 	private static final int BOX = 14;
 	private int _centerX;
 	private int _centerY;
-	private boolean _hightlights;
 	public static int RADIUS = 100;
 
 	private float[] _cursorStart;

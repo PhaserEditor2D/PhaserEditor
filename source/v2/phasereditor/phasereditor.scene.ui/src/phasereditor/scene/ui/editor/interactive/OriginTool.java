@@ -50,7 +50,6 @@ public class OriginTool extends InteractiveTool {
 	private int _globalY;
 	private boolean _changeX;
 	private boolean _changeY;
-	private boolean _hightlights;
 
 	public OriginTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);

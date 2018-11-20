@@ -1406,8 +1406,33 @@ public class PhaserEditorUI {
 		vector[0] /= d;
 		vector[1] /= d;
 
-		
 		return vector;
 	}
-	
+
+	/**
+	 * Rotates the Vector2 by 90 degrees in the specified direction, where >= 0 is
+	 * counter-clockwise and < 0 is clockwise.
+	 */
+	public static float[] rotate90(float[] vector, int dir) {
+		var result = new float[] { vector[0], vector[1] };
+
+		var x = vector[0];
+		var y = vector[1];
+
+		if (dir >= 0) {
+			result[0] = -y;
+			result[1] = x;
+		} else {
+			result[0] = y;
+			result[1] = -x;
+		}
+
+		return result;
+	}
+
+	public static float[] unitarianVector(float[] vector) {
+		var d = distance(0, 0, vector[0], vector[1]);
+		return new float[] { vector[0] / d, vector[1] / d };
+	}
+
 }

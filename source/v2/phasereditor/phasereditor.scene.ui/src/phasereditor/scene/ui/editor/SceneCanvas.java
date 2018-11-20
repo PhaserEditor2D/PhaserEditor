@@ -89,7 +89,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _transformLocalCoords;
-	private boolean _interactiveToolsDragging;
+	private boolean _interactiveToolsHightlights;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -285,7 +285,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
-		_interactiveToolsDragging = isInteractiveDragging();
+		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.
 		e.gc.setLineWidth(1);
@@ -384,23 +384,40 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			};
 
-			if (!_interactiveToolsDragging) {
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
-				gc.setLineWidth(3);
+			if (_interactiveToolsHightlights) {
+
+				// draw thin border
+
+				gc.setForeground(selectionColor);
 				gc.drawPolygon(points);
-				gc.setLineWidth(1);
-			}
 
-			gc.setForeground(selectionColor);
-			gc.drawPolygon(points);
+			} else {
 
-			if (!_interactiveToolsDragging) {
-
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-
-				var vector = PhaserEditorUI.vector(p3, p0);
-
+				// draw lines to children
 				{
+					gc.setAlpha(200);
+					gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+					renderLinesToChildren(gc, model);
+					gc.setAlpha(255);
+				}
+
+				// draw bold border
+				{
+
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+					gc.setLineWidth(3);
+					gc.drawPolygon(points);
+					gc.setLineWidth(1);
+					gc.setForeground(selectionColor);
+					gc.drawPolygon(points);
+				}
+
+				// draw objects name
+				{
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+
+					var vector = PhaserEditorUI.vector(p3, p0);
 
 					var flipX = FlipComponent.get_flipX(model);
 					var flipY = FlipComponent.get_flipY(model);
@@ -437,6 +454,43 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					tx.dispose();
 				}
 			}
+		}
+	}
+
+	private void renderLinesToChildren(GC gc, ObjectModel parent) {
+		if (ParentComponent.is(parent)) {
+			float[] parentPoint = _renderer.getScenePointAtOrigin(parent);
+
+			var children = ParentComponent.get_children(parent);
+
+			for (var child : children) {
+
+				var childPoint = _renderer.getScenePointAtOrigin(child);
+
+				var vector = PhaserEditorUI.vector(parentPoint, childPoint);
+				var leftVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, -1));
+				var rightVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, 1));
+				
+				var n = 3;
+				var points = new int[] {
+						
+						(int) (parentPoint[0] + leftVector[0] * n), 
+						(int) (parentPoint[1] + leftVector[1] * n),
+						
+						(int) (parentPoint[0] + rightVector[0] * n),
+						(int) (parentPoint[1] + rightVector[1] * n),
+						
+						(int) (childPoint[0]),
+						(int) (childPoint[1])
+						
+				};
+				
+				gc.fillPolygon(points);
+				gc.drawPolygon(points);
+						
+				renderLinesToChildren(gc, child);
+			}
+
 		}
 	}
 
@@ -919,37 +973,36 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	public void copy() {
 
-		var sel = new StructuredSelection(
-				filterChidlren(_editor.getSelectionList())
+		var sel = new StructuredSelection(filterChidlren(_editor.getSelectionList())
 
-						.stream().map(model -> {
+				.stream().map(model -> {
 
-							var data = new JSONObject();
+					var data = new JSONObject();
 
-							data.put(SCENE_COPY_STAMP, true);
+					data.put(SCENE_COPY_STAMP, true);
 
-							model.write(data);
+					model.write(data);
 
-							// convert the local position to a global position
+					// convert the local position to a global position
 
-							if (model instanceof TransformComponent) {
+					if (model instanceof TransformComponent) {
 
-								var parent = ParentComponent.get_parent(model);
+						var parent = ParentComponent.get_parent(model);
 
-								var globalPoint = new float[] { 0, 0 };
+						var globalPoint = new float[] { 0, 0 };
 
-								if (parent != null) {
-									globalPoint = _renderer.localToScene(parent, TransformComponent.get_x(model),
-											TransformComponent.get_y(model));
-								}
+						if (parent != null) {
+							globalPoint = _renderer.localToScene(parent, TransformComponent.get_x(model),
+									TransformComponent.get_y(model));
+						}
 
-								data.put(TransformComponent.x_name, globalPoint[0]);
-								data.put(TransformComponent.y_name, globalPoint[1]);
-							}
+						data.put(TransformComponent.x_name, globalPoint[0]);
+						data.put(TransformComponent.y_name, globalPoint[1]);
+					}
 
-							return data;
+					return data;
 
-						}).toArray());
+				}).toArray());
 
 		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 		transfer.setSelection(sel);
@@ -1217,6 +1270,17 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		for (var elem : _interactiveTools) {
 			if (elem.isDragging()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isInteractiveHightlights() {
+
+		for (var elem : _interactiveTools) {
+			if (elem.isHightlights()) {
 				return true;
 			}
 		}

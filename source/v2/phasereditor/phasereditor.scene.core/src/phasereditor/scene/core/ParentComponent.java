@@ -95,6 +95,10 @@ public interface ParentComponent {
 		return isDescendentOf(get_parent(child), parent);
 	}
 
+	static boolean is(Object model) {
+		return model instanceof ParentComponent;
+	}
+
 	static void init(ObjectModel obj) {
 		set_parent(obj, parent_default);
 		set_children(obj, new ArrayList<>());

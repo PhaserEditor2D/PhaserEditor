@@ -46,7 +46,6 @@ public class ScaleTool extends InteractiveTool {
 	private int _globalY;
 	private boolean _changeX;
 	private boolean _changeY;
-	private boolean _hightlights;
 
 	public ScaleTool(SceneEditor editor, boolean changeX, boolean changeY) {
 		super(editor);

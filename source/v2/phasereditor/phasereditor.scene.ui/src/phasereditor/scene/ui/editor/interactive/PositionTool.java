@@ -51,7 +51,6 @@ public class PositionTool extends InteractiveTool {
 	private int _globalY;
 	private boolean _changeX;
 	private boolean _changeY;
-	private boolean _hightlights;
 	private float[] _arrowPoint;
 	private float[] _startDragCursorPoint;
 	private float[] _centerPoint;
