@@ -164,13 +164,19 @@ public class EditorSection extends ScenePropertySection {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
+		manager.add(_fieldAction);
+
+		manager.add(new Separator());
+
 		for (var action : _orderActions) {
 			manager.add(action);
 		}
 
 		manager.add(new Separator());
 
-		manager.add(_fieldAction);
+		manager.add(_addToGroupAction);
+		manager.add(_removeFromGroupAction);
+
 	}
 
 	private void createActions() {
@@ -360,11 +366,25 @@ public class EditorSection extends ScenePropertySection {
 				models.stream().map(model -> (int) (EditorComponent.get_editorTransparency(model) * 100)), 100));
 		{
 
-			var str = ParentComponent.get_children(getEditor().getSceneModel().getGroupsModel()).stream()
-					.filter(group -> ParentComponent.get_children(group).containsAll(models))
+			var groups = ParentComponent.get_children(getEditor().getSceneModel().getGroupsModel());
+
+			var str = groups.stream().filter(group -> ParentComponent.get_children(group).containsAll(models))
 					.map(group -> GroupComponent.get_name(group)).collect(Collectors.joining(","));
 
 			_groupsLabel.setText("[" + str + "]");
+
+			_removeFromGroupAction.setEnabled(str.length() > 2);
+
+			_addToGroupAction.setEnabled(groups.stream().filter(group -> {
+				// do not include groups that contains one of the selected models
+				var children = ParentComponent.get_children(group);
+				for (var model : getModels()) {
+					if (children.contains(model)) {
+						return false;
+					}
+				}
+				return true;
+			}).count() > 0);
 
 		}
 
