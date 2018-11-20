@@ -21,36 +21,43 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
-import java.util.HashSet;
-
 /**
  * @author arian
  *
  */
-public class NameComputer {
-	private ObjectModel _world;
-	private HashSet<String> _names;
+@SuppressWarnings("boxing")
+public interface VariableComponent {
 
-	public NameComputer(ObjectModel world) {
-		super();
-		_world = world;
+	// editorName
 
-		_names = new HashSet<>();
-		_world.visit(model -> {
-			_names.add(VariableComponent.get_gameObjectEditorName(model));
-		});
+	static String gameObjectEditorName_name = "gameObjectEditorName";
+
+	static String gameObjectEditorName_default = "unnamed";
+
+	static String get_gameObjectEditorName(ObjectModel obj) {
+		return (String) obj.get("gameObjectEditorName");
 	}
 
-	public String newName(String baseName) {
-		if (!_names.contains(baseName)) {
-			return baseName;
-		}
+	static void set_gameObjectEditorName(ObjectModel obj, String editorName) {
+		obj.put("gameObjectEditorName", editorName);
+	}
 
-		for (int i = 1; true; i++) {
-			var name = baseName + "_" + i;
-			if (!_names.contains(name)) {
-				return name;
-			}
-		}
+	// editorField
+
+	static String gameObjectEditorField_name = "gameObjectEditorField";
+
+	static boolean gameObjectEditorField_default = false;
+
+	static boolean get_gameObjectEditorField(ObjectModel obj) {
+		return (boolean) obj.get("gameObjectEditorField");
+	}
+
+	static void set_editorField(ObjectModel obj, boolean editorField) {
+		obj.put("gameObjectEditorField", editorField);
+	}
+	
+	static void init(ObjectModel obj) {
+		set_gameObjectEditorName(obj, gameObjectEditorName_default);
+		set_editorField(obj, gameObjectEditorField_default);
 	}
 }

@@ -70,33 +70,7 @@ public interface GameObjectEditorComponent {
 		obj.put("gameObjectEditorClosed", editorClosed);
 	}
 
-	// editorName
-
-	static String gameObjectEditorName_name = "gameObjectEditorName";
-
-	static String gameObjectEditorName_default = "unnamed";
-
-	static String get_gameObjectEditorName(ObjectModel obj) {
-		return (String) obj.get("gameObjectEditorName");
-	}
-
-	static void set_gameObjectEditorName(ObjectModel obj, String editorName) {
-		obj.put("gameObjectEditorName", editorName);
-	}
-
-	// editorField
-
-	static String gameObjectEditorField_name = "gameObjectEditorField";
-
-	static boolean gameObjectEditorField_default = false;
-
-	static boolean get_gameObjectEditorField(ObjectModel obj) {
-		return (boolean) obj.get("gameObjectEditorField");
-	}
-
-	static void set_editorField(ObjectModel obj, boolean editorField) {
-		obj.put("gameObjectEditorField", editorField);
-	}
+	
 
 	// editorTransparency
 
@@ -120,8 +94,6 @@ public interface GameObjectEditorComponent {
 
 	static void init(ObjectModel obj) {
 		set_gameObjectEditorDirty(obj, gameObjectEditorDirty_default);
-		set_gameObjectEditorName(obj, gameObjectEditorName_default);
-		set_editorField(obj, gameObjectEditorField_default);
 		set_gameObjectEditorShow(obj, gemeObjectEditorShow_default);
 		set_gameObjectEditorClosed(obj, editorClosed_default);
 		set_gameObjectEditorTransparency(obj, gameObjectEditorTransparency_default);

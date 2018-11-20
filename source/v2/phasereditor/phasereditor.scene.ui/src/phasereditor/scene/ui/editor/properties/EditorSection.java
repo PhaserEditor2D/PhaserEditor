@@ -50,6 +50,7 @@ import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
@@ -337,7 +338,7 @@ public class EditorSection extends ScenePropertySection {
 
 			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
-			GameObjectEditorComponent.set_editorField(model, _fieldAction.isChecked());
+			VariableComponent.set_editorField(model, _fieldAction.isChecked());
 
 			editor.setDirty(true);
 
@@ -393,10 +394,10 @@ public class EditorSection extends ScenePropertySection {
 		var models = getModels();
 
 		_editorNameText
-				.setText(flatValues_to_String(models.stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorName(model))));
+				.setText(flatValues_to_String(models.stream().map(model -> VariableComponent.get_gameObjectEditorName(model))));
 
 		_fieldAction.setChecked(
-				flatValues_to_boolean(models.stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorField(model))));
+				flatValues_to_boolean(models.stream().map(model -> VariableComponent.get_gameObjectEditorField(model))));
 
 		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 
@@ -427,7 +428,7 @@ public class EditorSection extends ScenePropertySection {
 		}
 
 		listen(_editorNameText, value -> {
-			models.stream().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorName(model, value));
+			models.stream().forEach(model -> VariableComponent.set_gameObjectEditorName(model, value));
 
 			getEditor().setDirty(true);
 			getEditor().refreshOutline();

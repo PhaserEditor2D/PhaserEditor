@@ -31,6 +31,6 @@ public class DisplayListModel extends ParentModel {
 	public DisplayListModel() {
 		super(TYPE);
 
-		GameObjectEditorComponent.set_gameObjectEditorName(this, "Display List");
+		VariableComponent.set_gameObjectEditorName(this, "Display List");
 	}
 }

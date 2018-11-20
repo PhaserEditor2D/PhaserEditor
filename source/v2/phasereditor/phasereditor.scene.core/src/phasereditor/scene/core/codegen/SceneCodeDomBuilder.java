@@ -36,7 +36,6 @@ import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
-import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
@@ -49,6 +48,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MethodCallDom;
@@ -70,7 +70,7 @@ public class SceneCodeDomBuilder {
 
 	private static String varname(ObjectModel model) {
 
-		var name = GameObjectEditorComponent.get_gameObjectEditorName(model);
+		var name = VariableComponent.get_gameObjectEditorName(model);
 
 		var id = JSCodeUtils.id(name);
 
@@ -127,7 +127,7 @@ public class SceneCodeDomBuilder {
 
 			var assignToVar = false;
 
-			if (GameObjectEditorComponent.get_gameObjectEditorField(model)) {
+			if (VariableComponent.get_gameObjectEditorField(model)) {
 				assignToVar = true;
 				fieldModels.add(model);
 			}
