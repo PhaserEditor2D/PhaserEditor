@@ -34,6 +34,7 @@ import org.json.JSONObject;
  *
  */
 public abstract class ParentModel extends ObjectModel implements ParentComponent {
+
 	public ParentModel(String type) {
 		super(type);
 
@@ -64,9 +65,9 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		var result = new ArrayList<ObjectModel>();
 
 		for (var id : ids) {
-			
+
 			var obj = findById(id);
-			
+
 			if (obj != null) {
 				result.add(obj);
 			}
@@ -87,12 +88,9 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		for (int i = 0; i < childrenData.length(); i++) {
 			var objData = childrenData.getJSONObject(i);
 
-			var type = objData.getString("-type");
-
-			ObjectModel childModel = SceneModel.createModel(type);
+			var childModel = readChild(project, objData);
 
 			if (childModel != null) {
-				childModel.read(objData, project);
 				children.add(childModel);
 			}
 		}
@@ -101,6 +99,20 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		for (var child : children) {
 			ParentComponent.set_parent(child, this);
 		}
+	}
+
+	@SuppressWarnings("static-method")
+	protected ObjectModel readChild(IProject project, JSONObject childData) {
+		var type = childData.getString("-type");
+
+		ObjectModel childModel = SceneModel.createModel(type);
+
+		if (childModel != null) {
+			childModel.read(childData, project);
+		}
+
+		return childModel;
+
 	}
 
 	@Override
@@ -117,8 +129,13 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 			var objData = new JSONObject();
 			childrenData.put(objData);
 
-			obj.write(objData);
+			writeChild(obj, objData);
 		}
+	}
+
+	@SuppressWarnings("static-method")
+	protected void writeChild(ObjectModel obj, JSONObject data) {
+		obj.write(data);
 	}
 
 	public void visitChildren(Consumer<ObjectModel> visitor) {

@@ -112,6 +112,8 @@ public interface EditorComponent {
 		obj.put("editorTransparency", editorTransparency);
 	}
 	
+	// utils
+	
 	
 	static boolean is(Object model) {
 		return model instanceof EditorComponent;

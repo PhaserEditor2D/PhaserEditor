@@ -26,6 +26,8 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.scene.core.DisplayListModel;
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GroupComponent;
+import phasereditor.scene.core.GroupsModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.EditorSharedImages;
@@ -52,9 +54,17 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 		if (element instanceof DisplayListModel) {
 			return "Display List";
 		}
-		
+
+		if (element instanceof GroupsModel) {
+			return "Groups";
+		}
+
 		if (element instanceof EditorComponent) {
 			return EditorComponent.get_editorName((ObjectModel) element);
+		}
+
+		if (element instanceof GroupComponent) {
+			return GroupComponent.get_name((ObjectModel) element);
 		}
 
 		return super.getText(element);
@@ -62,11 +72,19 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 
 	@Override
 	public Image getImage(Object element) {
-		
+
 		if (element instanceof DisplayListModel) {
 			return EditorSharedImages.getImage(IMG_MONITOR);
 		}
+
+		if (element instanceof GroupsModel) {
+			return EditorSharedImages.getImage(IMG_SCENE_GROUP);
+		}
 		
+		if (element instanceof GroupComponent) {
+			return EditorSharedImages.getImage(IMG_SCENE_GROUP);
+		}
+
 		return EditorSharedImages.getImage(IMG_SHAPE);
 	}
 }

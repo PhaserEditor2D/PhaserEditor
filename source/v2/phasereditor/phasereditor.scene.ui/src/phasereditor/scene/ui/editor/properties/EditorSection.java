@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -37,10 +38,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GroupComponent;
+import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -59,6 +66,9 @@ public class EditorSection extends ScenePropertySection {
 	private Action _fieldAction;
 	private Scale _transpScale;
 	private List<JFaceOrderAction> _orderActions;
+	private IAction _addToGroupAction;
+	private IAction _removeFromGroupAction;
+	private Label _groupsLabel;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -129,6 +139,26 @@ public class EditorSection extends ScenePropertySection {
 			toolbar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 
+		{
+			label(comp, "Groups", "*(Editor) The object's groups.");
+
+			var rightComp = new Composite(comp, 0);
+			rightComp.setLayout(new GridLayout(2, false));
+			rightComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			_groupsLabel = new Label(rightComp, 0);
+			_groupsLabel.setText("[group1, group2]");
+			_groupsLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			var manager = new ToolBarManager();
+
+			manager.add(_addToGroupAction);
+			manager.add(_removeFromGroupAction);
+
+			manager.createControl(rightComp);
+
+		}
+
 		return comp;
 	}
 
@@ -162,6 +192,99 @@ public class EditorSection extends ScenePropertySection {
 				update_editorField();
 			}
 		};
+
+		_addToGroupAction = new Action("Add this object to a group.",
+				EditorSharedImages.getImageDescriptor(IMG_ADD_TO_GROUP)) {
+			@Override
+			public void runWithEvent(Event event) {
+				var manager = new MenuManager();
+
+				var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
+				groups.stream().filter(group -> {
+
+					// do not include groups that contains one of the selected models
+
+					var children = ParentComponent.get_children(group);
+					for (var model : getModels()) {
+						if (children.contains(model)) {
+							return false;
+						}
+					}
+					return true;
+				}).forEach(group -> {
+					manager.add(
+							new Action(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(IMG_ADD)) {
+
+								@Override
+								public void run() {
+
+									addObjectsToGroup(group);
+
+								}
+
+							});
+				});
+
+				var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
+				menu.setVisible(true);
+			}
+
+		};
+
+		_removeFromGroupAction = new Action("Remove this object from a group.",
+				EditorSharedImages.getImageDescriptor(IMG_REMOVE_FROM_GROUP)) {
+
+			@Override
+			public void runWithEvent(Event event) {
+				var manager = new MenuManager();
+
+				var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
+
+				groups.stream().filter(group -> {
+
+					// just accepts the groups that contains all the selected objects.
+
+					return ParentComponent.get_children(group).containsAll(getModels());
+				}).forEach(group -> {
+					manager.add(new Action(GroupComponent.get_name(group),
+							EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+
+						@Override
+						public void run() {
+
+							removeObjectsFromGroup(group);
+
+						}
+					});
+				});
+
+				var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
+				menu.setVisible(true);
+			}
+
+		};
+	}
+
+	protected void addObjectsToGroup(ObjectModel group) {
+		ParentComponent.get_children(group).addAll(getModels());
+
+		var editor = getEditor();
+
+		editor.setDirty(true);
+		editor.getScene().redraw();
+		editor.refreshOutline();
+		editor.updatePropertyPagesContentWithSelection();
+	}
+
+	protected void removeObjectsFromGroup(ObjectModel group) {
+		ParentComponent.get_children(group).removeAll(getModels());
+
+		var editor = getEditor();
+
+		editor.setDirty(true);
+		editor.getScene().redraw();
+		editor.refreshOutline();
+		editor.updatePropertyPagesContentWithSelection();
 	}
 
 	protected void update_editorField() {
@@ -235,6 +358,15 @@ public class EditorSection extends ScenePropertySection {
 
 		_transpScale.setSelection(flatValues_to_int(
 				models.stream().map(model -> (int) (EditorComponent.get_editorTransparency(model) * 100)), 100));
+		{
+
+			var str = ParentComponent.get_children(getEditor().getSceneModel().getGroupsModel()).stream()
+					.filter(group -> ParentComponent.get_children(group).containsAll(models))
+					.map(group -> GroupComponent.get_name(group)).collect(Collectors.joining(","));
+
+			_groupsLabel.setText("[" + str + "]");
+
+		}
 
 		listen(_editorNameText, value -> {
 			models.stream().forEach(model -> EditorComponent.set_editorName(model, value));

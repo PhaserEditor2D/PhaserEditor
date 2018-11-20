@@ -22,16 +22,20 @@
 package phasereditor.scene.ui.editor.outline;
 
 import static java.util.stream.Collectors.toList;
+import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
@@ -45,6 +49,10 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.core.GroupComponent;
+import phasereditor.scene.core.GroupModel;
+import phasereditor.scene.core.GroupsModel;
+import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TextureComponent;
@@ -52,10 +60,12 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -145,6 +155,9 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 					item.setKeywords(type);
 				}
 
+				if (data instanceof GroupsModel) {
+					item.setActions(List.of(new CreateNewGroupAction()));
+				}
 			}
 
 		};
@@ -177,6 +190,53 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		init_DND();
 	}
 
+	class CreateNewGroupAction extends TreeCanvasItemAction {
+		public CreateNewGroupAction() {
+			super(EditorSharedImages.getImage(IMG_ADD), "Add new group");
+		}
+
+		@Override
+		public void run(MouseEvent event) {
+			var editor = getEditor();
+			
+			var sceneModel = editor.getSceneModel();
+
+			var groups = sceneModel.getGroupsModel();
+
+			var nameComputer = new NameComputer(groups);
+			var initialName = nameComputer.newName("group");
+
+			var dlg = new InputDialog(event.widget.getDisplay().getActiveShell(), "Create Group",
+					"Enter the name of the new group:", initialName, new IInputValidator() {
+
+						@Override
+						public String isValid(String newText) {
+
+							for (var group : ParentComponent.get_children(groups)) {
+								if (GroupComponent.get_name(group).equals(newText)) {
+									return "That name is used.";
+								}
+							}
+
+							return null;
+						}
+					});
+
+			if (dlg.open() == Window.OK) {
+				var value = dlg.getValue();
+
+				var group = new GroupModel(groups);
+
+				GroupComponent.set_name(group, value);
+				ParentComponent.get_children(groups).add(group);
+
+				refresh();
+				
+				editor.setDirty(true);
+			}
+		}
+	}
+
 	protected void revealSelectedObjectInScene() {
 		var obj = _viewer.getCanvas().getUtils().getOverObject();
 		if (obj != null && obj instanceof ObjectModel) {
@@ -201,13 +261,13 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				var models = Arrays.stream(array).filter(obj -> obj instanceof ObjectModel)
 						.map(obj -> (ObjectModel) obj).collect(toList());
 
-				return performSectionDrop(models);
+				return performSelectionDrop(models);
 			}
 
 		});
 	}
 
-	boolean performSectionDrop(List<ObjectModel> models) {
+	boolean performSelectionDrop(List<ObjectModel> models) {
 		var utils = _viewer.getCanvas().getUtils();
 
 		int location = utils.getDropLocation();

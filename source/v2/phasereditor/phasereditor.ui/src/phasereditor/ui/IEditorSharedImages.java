@@ -39,12 +39,13 @@ public interface IEditorSharedImages {
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";
 	String IMG_GENERIC_ELEMENT = "icons/generic_element.png";
 	String IMG_IMAGES = "icons/images.png";
-	String IMG_NEW_ATLAS= "icons/atlas_add.png";
+	String IMG_NEW_ATLAS = "icons/atlas_add.png";
 	String IMG_IMAGE = "icons/image.png";
 	String IMG_ASSET_FOLDER = "icons/folder_brick.png";
 	String IMG_ASSET_KEY = "icons/brick.png";
 	String IMG_ASSET_ELEM_KEY = IMG_GENERIC_ELEMENT;
 	String IMG_ASSET_GROUP = "icons/bullet_blue.png";
+	String IMG_BULLET_BLUE = "icons/bullet_blue.png";
 	String IMG_BULLET_GREEN = "icons/bullet_green.png";
 	String IMG_LINK = "icons/link.png";
 	String IMG_METHPUB_OBJ = "icons/methpub_obj.png";
@@ -89,15 +90,15 @@ public interface IEditorSharedImages {
 	String IMG_FONT_MINUS = "icons/font_shrink.png";
 	String IMG_TEXT_ABC = "icons/text_abc.png";
 	String IMG_GOTO_SOURCE = "icons/source.png";
-	
+
 	String IMG_TEXT_ALIGN_LEFT = "icons/text_align_left.png";
 	String IMG_TEXT_ALIGN_CENTER = "icons/text_align_center.png";
 	String IMG_TEXT_ALIGN_RIGHT = "icons/text_align_right.png";
-	
+
 	String IMG_TILED = "icons/tiled.png";
 	String IMG_SHAPE_FLIP_HORIZONTAL = "icons/shape_flip_horizontal.png";
 	String IMG_SHAPE_FLIP_VERTICAL = "icons/shape_flip_vertical.png";
-	
+
 	String IMG_ARROW_ROTATE_CLOCKWISE = "icons/arrow_rotate_clockwise_blue.png";
 	String IMG_ARROW_ROTATE_ANTICLOCKWISE = "icons/arrow_rotate_anticlockwise_blue.png";
 	String IMG_ASTERISK = "icons/asterisk.png";
@@ -128,9 +129,10 @@ public interface IEditorSharedImages {
 	String IMG_ARROW_REFRESH = "icons/arrow_refresh.png";
 	String IMG_SHOW_SUB_TYPES = "icons/sub_co.png";
 	String IMG_SHOW_SUPER_TYPES = "icons/super_co.png";
-	
-	
-	
+	String IMG_SCENE_GROUP = "icons/basket.png";
+	String IMG_ADD_TO_GROUP = "icons/basket-put.png";
+	String IMG_REMOVE_FROM_GROUP = "icons/basket-remove.png";
+
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";
 	String IMG_ENUM = "icons/enum.png";
@@ -142,9 +144,9 @@ public interface IEditorSharedImages {
 	String IMG_PROPERTY = "icons/property.png";
 	String IMG_VARIABLE = "icons/variable.png";
 	String IMG_EDIT = "icons/pencil.png";
-	
+
 	// blender
-	
+
 	String IMG_BULLET_EXPAND = "icons/blender_ICON_DISCLOSURE_TRI_RIGHT.png"; // "icons/bullet_toggle_plus.png";
-	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; //"icons/bullet_toggle_minus.png";
+	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; // "icons/bullet_toggle_minus.png";
 }

@@ -60,7 +60,8 @@ public class SceneModel {
 
 	};
 
-	private ParentModel _displayList;
+	private DisplayListModel _displayList;
+	private GroupsModel _groupsModel;
 
 	private boolean _snapEnabled;
 	private int _snapWidth;
@@ -81,6 +82,7 @@ public class SceneModel {
 
 	public SceneModel() {
 		_displayList = new DisplayListModel();
+		_groupsModel = new GroupsModel(this);
 
 		_snapEnabled = false;
 		_snapWidth = 16;
@@ -201,13 +203,17 @@ public class SceneModel {
 		return _displayList;
 	}
 
+	public GroupsModel getGroupsModel() {
+		return _groupsModel;
+	}
+
 	public void write(JSONObject data) {
 		data.put("-app", "Scene Editor - " + LicCore.PRODUCT_NAME);
 		data.put("-version", VERSION);
 
 		{
 			// Display List
-			
+
 			JSONObject displayListData;
 			if (_displayList == null) {
 				displayListData = null;
@@ -217,6 +223,16 @@ public class SceneModel {
 			}
 
 			data.put("displayList", displayListData);
+		}
+
+		{
+			// Groups
+
+			JSONObject groupsData;
+			groupsData = new JSONObject();
+			_groupsModel.write(groupsData);
+
+			data.put("groups", groupsData);
 		}
 
 		writeProperties(data);
@@ -233,7 +249,7 @@ public class SceneModel {
 			read(data, file.getProject());
 		}
 	}
-	
+
 	public void save(IFile file, IProgressMonitor monitor) throws Exception {
 		JSONObject data = new JSONObject();
 
@@ -260,18 +276,23 @@ public class SceneModel {
 	}
 
 	public void read(JSONObject data, IProject project) {
-		var displayListData = data.optJSONObject("displayList");
+		{
+			var displayListData = data.optJSONObject("displayList");
 
-		var type = displayListData.getString("-type");
+			_displayList = new DisplayListModel();
+			_displayList.read(displayListData, project);
 
-		ObjectModel model = createModel(type);
-
-		if (model != null) {
-			model.read(displayListData, project);
-			_displayList = (ParentModel) model;
+			readProperties(data);
 		}
 
-		readProperties(data);
+		{
+			var groupsData = data.optJSONObject("groups");
+
+			_groupsModel = new GroupsModel(this);
+			if (groupsData != null) {
+				_groupsModel.read(groupsData, project);
+			}
+		}
 	}
 
 	public void writeProperties(JSONObject data) {
@@ -341,9 +362,6 @@ public class SceneModel {
 	public static ObjectModel createModel(String type) {
 
 		switch (type) {
-
-		case DisplayListModel.TYPE:
-			return new DisplayListModel();
 
 		case SpriteModel.TYPE:
 			return new SpriteModel();

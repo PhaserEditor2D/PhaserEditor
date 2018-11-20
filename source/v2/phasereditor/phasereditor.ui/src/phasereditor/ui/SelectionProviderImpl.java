@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.out;
+
 import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -63,6 +65,8 @@ public class SelectionProviderImpl implements ISelectionProvider {
 
 	@Override
 	public void setSelection(ISelection selection) {
+		out.println("set selection " + selection);
+		
 		_selection = selection;
 		if (_autoFireSelectionChanged) {
 			fireSelectionChanged();
