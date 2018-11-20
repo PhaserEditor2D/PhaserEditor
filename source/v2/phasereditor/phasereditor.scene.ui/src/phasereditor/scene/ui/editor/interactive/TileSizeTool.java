@@ -26,7 +26,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
@@ -168,7 +168,7 @@ public class TileSizeTool extends InteractiveTool {
 					TileSpriteComponent.set_height(model, height);
 				}
 
-				EditorComponent.set_editorDirty(model, true);
+				GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 			}
 
 			getEditor().updatePropertyPagesContentWithSelection();

@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import phasereditor.scene.core.DisplayListModel;
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.GroupsModel;
 import phasereditor.scene.core.ObjectModel;
@@ -59,8 +59,8 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 			return "Groups";
 		}
 
-		if (element instanceof EditorComponent) {
-			return EditorComponent.get_editorName((ObjectModel) element);
+		if (element instanceof GameObjectEditorComponent) {
+			return GameObjectEditorComponent.get_gameObjectEditorName((ObjectModel) element);
 		}
 
 		if (element instanceof GroupComponent) {

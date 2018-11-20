@@ -28,12 +28,12 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public abstract class EditorObjectModel extends ParentModel implements EditorComponent {
+public abstract class EditorObjectModel extends ParentModel implements GameObjectEditorComponent {
 
 	public EditorObjectModel(String type) {
 		super(type);
 
-		EditorComponent.init(this);
+		GameObjectEditorComponent.init(this);
 	}
 
 	@Override
@@ -41,10 +41,10 @@ public abstract class EditorObjectModel extends ParentModel implements EditorCom
 
 		super.write(data);
 
-		data.put(editorName_name, EditorComponent.get_editorName(this));
-		data.put(editorField_name, EditorComponent.get_editorField(this));
-		data.put(editorClosed_name, EditorComponent.get_editorClosed(this), editorClosed_default);
-		data.put(editorTransparency_name, EditorComponent.get_editorTransparency(this), editorTransparency_default);
+		data.put(gameObjectEditorName_name, GameObjectEditorComponent.get_gameObjectEditorName(this));
+		data.put(gameObjectEditorField_name, GameObjectEditorComponent.get_gameObjectEditorField(this));
+		data.put(gameObjectEditorClosed_name, GameObjectEditorComponent.get_gameObjectEditorClosed(this), editorClosed_default);
+		data.put(gameObjectEditorTransparency_name, GameObjectEditorComponent.get_gameObjectEditorTransparency(this), gameObjectEditorTransparency_default);
 	}
 
 	@Override
@@ -52,11 +52,11 @@ public abstract class EditorObjectModel extends ParentModel implements EditorCom
 
 		super.read(data, project);
 
-		EditorComponent.set_editorName(this, data.getString(editorName_name));
-		EditorComponent.set_editorField(this, data.optBoolean(editorField_name));
-		EditorComponent.set_editorClosed(this, data.optBoolean(editorClosed_name, editorClosed_default));
-		EditorComponent.set_editorTransparency(this,
-				data.optFloat(editorTransparency_name, editorTransparency_default));
+		GameObjectEditorComponent.set_gameObjectEditorName(this, data.getString(gameObjectEditorName_name));
+		GameObjectEditorComponent.set_editorField(this, data.optBoolean(gameObjectEditorField_name));
+		GameObjectEditorComponent.set_gameObjectEditorClosed(this, data.optBoolean(gameObjectEditorClosed_name, editorClosed_default));
+		GameObjectEditorComponent.set_gameObjectEditorTransparency(this,
+				data.optFloat(gameObjectEditorTransparency_name, gameObjectEditorTransparency_default));
 	}
 
 }

@@ -27,7 +27,7 @@ import java.util.List;
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SceneModel;
@@ -69,7 +69,7 @@ public class ScenePropertyPage extends FormPropertyPage {
 			list.add(new AssetsSection(this));
 		}
 
-		if (EditorComponent.is(obj)) {
+		if (GameObjectEditorComponent.is(obj)) {
 			list.add(new EditorSection(this));
 		}
 

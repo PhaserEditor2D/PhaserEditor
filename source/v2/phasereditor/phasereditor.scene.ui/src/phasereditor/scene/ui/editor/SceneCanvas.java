@@ -55,7 +55,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
@@ -212,7 +212,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var name = nameComputer.newName(frame.getKey());
 
-				EditorComponent.set_editorName(sprite, name);
+				GameObjectEditorComponent.set_gameObjectEditorName(sprite, name);
 
 				TransformComponent.set_x(sprite, modelX);
 				TransformComponent.set_y(sprite, modelY);
@@ -229,7 +229,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var name = nameComputer.newName(asset.getKey());
 
-				EditorComponent.set_editorName(textModel, name);
+				GameObjectEditorComponent.set_gameObjectEditorName(textModel, name);
 
 				TransformComponent.set_x(textModel, modelX);
 				TransformComponent.set_y(textModel, modelY);
@@ -426,7 +426,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					var p = p0;
 
-					var str = " " + EditorComponent.get_editorName(model);
+					var str = " " + GameObjectEditorComponent.get_gameObjectEditorName(model);
 					var strSize = gc.textExtent(str);
 
 					var tx = new Transform(gc.getDevice());
@@ -752,8 +752,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
 		if (model instanceof ParentComponent) {
-			if (model instanceof EditorComponent
-					&& EditorComponent.get_editorClosed(model) /* || groupModel.isPrefabInstance() */) {
+			if (model instanceof GameObjectEditorComponent
+					&& GameObjectEditorComponent.get_gameObjectEditorClosed(model) /* || groupModel.isPrefabInstance() */) {
 
 				var polygon = _renderer.getObjectChildrenBounds(model);
 
@@ -1100,11 +1100,11 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			model.visit(model2 -> {
 				model2.setId(UUID.randomUUID().toString());
 
-				var name = EditorComponent.get_editorName(model2);
+				var name = GameObjectEditorComponent.get_gameObjectEditorName(model2);
 
 				name = nameComputer.newName(name);
 
-				EditorComponent.set_editorName(model2, name);
+				GameObjectEditorComponent.set_gameObjectEditorName(model2, name);
 			});
 
 			if (model instanceof TransformComponent) {

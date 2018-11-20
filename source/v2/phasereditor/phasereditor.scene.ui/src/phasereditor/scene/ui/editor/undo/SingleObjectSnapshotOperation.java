@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 
@@ -117,7 +117,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 				if (_dirtyModels) {
 					if (_filterDirtyModels == null || _filterDirtyModels.apply(model).booleanValue()) {
-						EditorComponent.set_editorDirty(model, true);
+						GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 					}
 
 				}

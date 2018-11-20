@@ -36,7 +36,7 @@ import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
@@ -70,7 +70,7 @@ public class SceneCodeDomBuilder {
 
 	private static String varname(ObjectModel model) {
 
-		var name = EditorComponent.get_editorName(model);
+		var name = GameObjectEditorComponent.get_gameObjectEditorName(model);
 
 		var id = JSCodeUtils.id(name);
 
@@ -127,7 +127,7 @@ public class SceneCodeDomBuilder {
 
 			var assignToVar = false;
 
-			if (EditorComponent.get_editorField(model)) {
+			if (GameObjectEditorComponent.get_gameObjectEditorField(model)) {
 				assignToVar = true;
 				fieldModels.add(model);
 			}

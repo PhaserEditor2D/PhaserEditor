@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ObjectModel;
@@ -78,7 +78,7 @@ public class EditorSection extends ScenePropertySection {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof EditorComponent;
+		return obj instanceof GameObjectEditorComponent;
 	}
 
 	@Override
@@ -337,7 +337,7 @@ public class EditorSection extends ScenePropertySection {
 
 			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
 
-			EditorComponent.set_editorField(model, _fieldAction.isChecked());
+			GameObjectEditorComponent.set_editorField(model, _fieldAction.isChecked());
 
 			editor.setDirty(true);
 
@@ -393,15 +393,15 @@ public class EditorSection extends ScenePropertySection {
 		var models = getModels();
 
 		_editorNameText
-				.setText(flatValues_to_String(models.stream().map(model -> EditorComponent.get_editorName(model))));
+				.setText(flatValues_to_String(models.stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorName(model))));
 
 		_fieldAction.setChecked(
-				flatValues_to_boolean(models.stream().map(model -> EditorComponent.get_editorField(model))));
+				flatValues_to_boolean(models.stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorField(model))));
 
 		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 
 		_transpScale.setSelection(flatValues_to_int(
-				models.stream().map(model -> (int) (EditorComponent.get_editorTransparency(model) * 100)), 100));
+				models.stream().map(model -> (int) (GameObjectEditorComponent.get_gameObjectEditorTransparency(model) * 100)), 100));
 		{
 
 			var groups = ParentComponent.get_children(getEditor().getSceneModel().getGroupsModel());
@@ -427,7 +427,7 @@ public class EditorSection extends ScenePropertySection {
 		}
 
 		listen(_editorNameText, value -> {
-			models.stream().forEach(model -> EditorComponent.set_editorName(model, value));
+			models.stream().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorName(model, value));
 
 			getEditor().setDirty(true);
 			getEditor().refreshOutline();
@@ -436,7 +436,7 @@ public class EditorSection extends ScenePropertySection {
 
 		listenFloat(_transpScale, value -> {
 
-			models.stream().forEach(model -> EditorComponent.set_editorTransparency(model, value));
+			models.stream().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
 
 			getEditor().setDirty(true);
 		}, models);

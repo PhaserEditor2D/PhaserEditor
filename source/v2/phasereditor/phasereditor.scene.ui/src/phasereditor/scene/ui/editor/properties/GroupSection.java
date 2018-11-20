@@ -19,38 +19,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core;
+package phasereditor.scene.ui.editor.properties;
 
-import java.util.HashSet;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import phasereditor.scene.core.GroupComponent;
+import phasereditor.ui.properties.FormPropertyPage;
 
 /**
  * @author arian
  *
  */
-public class NameComputer {
-	private ObjectModel _world;
-	private HashSet<String> _names;
+public class GroupSection extends ScenePropertySection {
 
-	public NameComputer(ObjectModel world) {
-		super();
-		_world = world;
-
-		_names = new HashSet<>();
-		_world.visit(model -> {
-			_names.add(GameObjectEditorComponent.get_gameObjectEditorName(model));
-		});
+	public GroupSection(FormPropertyPage page) {
+		super("Group", page);
 	}
 
-	public String newName(String baseName) {
-		if (!_names.contains(baseName)) {
-			return baseName;
-		}
-
-		for (int i = 1; true; i++) {
-			var name = baseName + "_" + i;
-			if (!_names.contains(name)) {
-				return name;
-			}
-		}
+	@Override
+	public boolean canEdit(Object obj) {
+		return obj instanceof GroupComponent;
 	}
+
+	@Override
+	public Control createContent(Composite parent) {
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	public void update_UI_from_Model() {
+		
+	}
+
 }

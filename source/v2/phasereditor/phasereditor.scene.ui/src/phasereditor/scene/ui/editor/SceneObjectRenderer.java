@@ -42,7 +42,7 @@ import phasereditor.scene.core.BaseSpriteModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
@@ -241,12 +241,12 @@ public class SceneObjectRenderer {
 
 	private void renderObject(GC gc, Transform tx, ObjectModel model) {
 
-		if (!EditorComponent.get_editorShow(model)) {
+		if (!GameObjectEditorComponent.get_gameObjectEditorShow(model)) {
 			return;
 		}
 
 		var alpha = gc.getAlpha();
-		var transp = EditorComponent.get_editorTransparency(model);
+		var transp = GameObjectEditorComponent.get_gameObjectEditorTransparency(model);
 
 		{
 
@@ -505,10 +505,10 @@ public class SceneObjectRenderer {
 	public Image getTileSpriteTextImage(TileSpriteModel model) {
 		Image image;
 
-		if (EditorComponent.get_editorDirty(model)) {
+		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model)) {
 			image = createTileSpriteTexture(model);
 
-			EditorComponent.set_editorDirty(model, false);
+			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
 
 			var old = _imageCacheMap.put(model, image);
 
@@ -683,10 +683,10 @@ public class SceneObjectRenderer {
 	public Image getBitmapTextImage(BitmapTextModel model) {
 		Image image;
 
-		if (EditorComponent.get_editorDirty(model)) {
+		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model)) {
 			image = createBitmapTextImage(model);
 
-			EditorComponent.set_editorDirty(model, false);
+			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
 
 			var old = _imageCacheMap.put(model, image);
 

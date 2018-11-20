@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.scene.core.EditorComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -98,7 +98,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		if (dirtyModels) {
 			models.forEach(model -> {
 				if (filterDirtyModels == null || filterDirtyModels.apply(model).booleanValue()) {
-					EditorComponent.set_editorDirty(model, true);
+					GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 				}
 			});
 
