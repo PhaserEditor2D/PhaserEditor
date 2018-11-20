@@ -48,7 +48,7 @@ public class SelectionEvents {
 
 		var pick = _scene.pickObject(e.x, e.y);
 
-		var list = new ArrayList<>(_scene._selection);
+		var list = new ArrayList<>(_scene.getEditor().getSelectionList());
 
 		if (pick == null) {
 			fireUpdateSelection = !list.isEmpty();

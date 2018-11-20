@@ -50,7 +50,7 @@ public class OrderAction {
 
 	@SuppressWarnings({ "incomplete-switch", "boxing" })
 	public void run() {
-		var models = _editor.getScene().getSelection().stream().filter(o -> o instanceof ObjectModel)
+		var models = _editor.getSelectionList().stream().filter(o -> o instanceof ObjectModel)
 				.map(o -> (ObjectModel) o).collect(toList());
 		// first, check all models are from the same parent
 

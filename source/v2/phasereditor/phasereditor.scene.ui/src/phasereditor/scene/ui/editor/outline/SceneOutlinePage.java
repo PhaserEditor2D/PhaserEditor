@@ -430,8 +430,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	}
 
 	public void setSelection_from_external(StructuredSelection sel) {
-		_viewer.getCanvas().getUtils().setSelection(sel, false);
 		_viewer.getCanvas().reveal(sel.toArray());
+		_viewer.getCanvas().getUtils().setSelection(sel, false);
 	}
 
 }

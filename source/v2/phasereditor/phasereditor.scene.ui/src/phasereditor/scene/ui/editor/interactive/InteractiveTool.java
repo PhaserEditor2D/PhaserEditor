@@ -70,7 +70,7 @@ public abstract class InteractiveTool {
 
 		var list = new ArrayList<ObjectModel>();
 
-		for (var obj : getEditor().getScene().getSelection()) {
+		for (var obj : getEditor().getSelectionList()) {
 			if (obj instanceof ObjectModel && canEdit((ObjectModel) obj)) {
 				list.add((ObjectModel) obj);
 			}

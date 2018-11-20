@@ -21,14 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import static java.lang.System.out;
-
 import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -41,11 +40,13 @@ public class SelectionProviderImpl implements ISelectionProvider {
 	private ListenerList<ISelectionChangedListener> _selectionListeners;
 	private ISelection _selection;
 	private boolean _autoFireSelectionChanged;
+	private List<Object> _selectionList;
 
 	public SelectionProviderImpl(boolean autoFireSelectionChanged) {
 		_selectionListeners = new ListenerList<>();
 		_autoFireSelectionChanged = autoFireSelectionChanged;
 		_selection = StructuredSelection.EMPTY;
+		_selectionList = List.of();
 	}
 
 	@Override
@@ -63,14 +64,19 @@ public class SelectionProviderImpl implements ISelectionProvider {
 		_selectionListeners.remove(listener);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setSelection(ISelection selection) {
-		out.println("set selection " + selection);
-		
 		_selection = selection;
+		_selectionList = ((IStructuredSelection) selection).toList();
+
 		if (_autoFireSelectionChanged) {
 			fireSelectionChanged();
 		}
+	}
+
+	public List<Object> getSelectionList() {
+		return _selectionList;
 	}
 
 	public void setSelectionList(List<?> list) {
@@ -87,11 +93,11 @@ public class SelectionProviderImpl implements ISelectionProvider {
 			l.selectionChanged(e);
 		}
 	}
-	
+
 	public boolean isAutoFireSelectionChanged() {
 		return _autoFireSelectionChanged;
 	}
-	
+
 	public void setAutoFireSelectionChanged(boolean autoFireSelectionChanged) {
 		_autoFireSelectionChanged = autoFireSelectionChanged;
 	}

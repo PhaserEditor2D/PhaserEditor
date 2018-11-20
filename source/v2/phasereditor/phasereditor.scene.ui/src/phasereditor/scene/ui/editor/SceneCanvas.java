@@ -87,7 +87,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private SceneObjectRenderer _renderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
-	List<Object> _selection;
 	private SceneModel _sceneModel;
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
@@ -97,8 +96,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
-
-		_selection = new ArrayList<>();
 
 		addPaintListener(this);
 
@@ -354,7 +351,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_GREEN);
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
-		for (var obj : _selection) {
+		for (var obj : _editor.getSelectionList()) {
 			if (obj instanceof EditorObjectModel) {
 				var model = (ObjectModel) obj;
 
@@ -401,7 +398,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					gc.drawPolygon(points);
 					gc.setLineWidth(1);
 				}
-				
+
 				gc.setForeground(selectionColor);
 				gc.drawPolygon(points);
 
@@ -802,8 +799,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	void setSelection_from_internal(List<Object> list) {
 		var sel = new StructuredSelection(list);
 
-		_selection = list;
-
 		_editor.getEditorSite().getSelectionProvider().setSelection(sel);
 
 		if (_editor.getOutline() != null) {
@@ -889,13 +884,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		return ((hits & 1) != 0);
 	}
 
-	public void setSelection_from_external(IStructuredSelection selection) {
-
-		_selection = new ArrayList<>(List.of(selection.toArray()));
-
-		redraw();
-	}
-
 	public void reveal(ObjectModel model) {
 		var objBounds = _renderer.getObjectBounds(model);
 
@@ -935,7 +923,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void delete() {
 		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
 
-		for (var obj : _selection) {
+		for (var obj : _editor.getSelectionList()) {
 			var model = (ObjectModel) obj;
 
 			ParentComponent.removeFromParent(model);
@@ -955,7 +943,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void copy() {
 
 		var sel = new StructuredSelection(
-				filterChidlren(_selection.stream().map(o -> (ObjectModel) o).collect(toList()))
+				filterChidlren(_editor.getSelectionList().stream().map(o -> (ObjectModel) o).collect(toList()))
 
 						.stream().map(model -> {
 
@@ -1241,7 +1229,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		var obj = pickObject(e.x, e.y);
 
-		if (_selection.contains(obj)) {
+		if (_editor.getSelectionList().contains(obj)) {
 			_dragObjectsEvents.start(e);
 		}
 	}
@@ -1255,9 +1243,5 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		return false;
-	}
-
-	public List<Object> getSelection() {
-		return _selection;
 	}
 }

@@ -1,5 +1,6 @@
 package phasereditor.scene.ui.editor;
 
+import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -61,13 +62,20 @@ public class SceneEditor extends EditorPart {
 		}
 	};
 	private UndoRedoActionGroup _undoRedoGroup;
+	protected SelectionProviderImpl _selectionProvider;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				getScene().setSelection_from_external(event.getStructuredSelection());
+				out.println("outliner selection changed");
+
+				_selectionProvider.setAutoFireSelectionChanged(false);
+				_selectionProvider.setSelection(event.getSelection());
+				_selectionProvider.setAutoFireSelectionChanged(true);
+
+				getScene().redraw();
 			}
 		};
 		_propertyPages = new ArrayList<>();
@@ -129,7 +137,9 @@ public class SceneEditor extends EditorPart {
 		setSite(site);
 		setInput(input);
 
-		site.setSelectionProvider(new SelectionProviderImpl(true));
+		_selectionProvider = new SelectionProviderImpl(true);
+
+		site.setSelectionProvider(_selectionProvider);
 
 		registerUndoActions();
 
@@ -281,8 +291,6 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public void setSelection(StructuredSelection selection) {
-		_scene.setSelection_from_external(selection);
-
 		if (_outline != null) {
 			refreshOutline_basedOnId();
 			_outline.setSelection_from_external(selection);
@@ -311,6 +319,7 @@ public class SceneEditor extends EditorPart {
 		var newSelectedElems = selectedIds.stream().map(id -> root.findById(id)).filter(o -> o != null).toArray();
 
 		var sel = new StructuredSelection(newSelectedElems);
+		
 		setSelection(sel);
 
 		getSite().getSelectionProvider().setSelection(sel);
@@ -319,13 +328,17 @@ public class SceneEditor extends EditorPart {
 	public void refreshSelectionBaseOnId() {
 		var ids = new ArrayList<String>();
 
-		for (var obj : _scene.getSelection()) {
+		for (var obj : getSelectionList()) {
 			ids.add(((ObjectModel) obj).getId());
 		}
 
 		var models = getSceneModel().getDisplayList().findByIds(ids);
 
 		setSelection(new StructuredSelection(models));
+	}
+
+	public List<Object> getSelectionList() {
+		return _selectionProvider.getSelectionList();
 	}
 
 }
