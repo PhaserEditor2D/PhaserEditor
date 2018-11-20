@@ -69,6 +69,7 @@ public class EditorSection extends ScenePropertySection {
 	private IAction _addToGroupAction;
 	private IAction _removeFromGroupAction;
 	private Label _groupsLabel;
+	private Action _moveToGroupAction;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -269,6 +270,57 @@ public class EditorSection extends ScenePropertySection {
 			}
 
 		};
+		
+		_moveToGroupAction = new Action("Add this object to a group.",
+				EditorSharedImages.getImageDescriptor(IMG_ADD_TO_GROUP)) {
+			@Override
+			public void runWithEvent(Event event) {
+				var manager = new MenuManager();
+
+				var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
+				groups.stream().filter(group -> {
+
+					// do not include groups that contains one of the selected models
+
+					var children = ParentComponent.get_children(group);
+					for (var model : getModels()) {
+						if (children.contains(model)) {
+							return false;
+						}
+					}
+					return true;
+				}).forEach(group -> {
+					manager.add(
+							new Action(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(IMG_ADD)) {
+
+								@Override
+								public void run() {
+
+									moveObjectsToGroup(group);
+
+								}
+
+
+							});
+				});
+
+				var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
+				menu.setVisible(true);
+			}
+
+		};
+	}
+	
+	protected void moveObjectsToGroup(ObjectModel group) {
+		ParentComponent.get_children(group).removeAll(getModels());
+		ParentComponent.get_children(group).addAll(getModels());
+
+		var editor = getEditor();
+
+		editor.setDirty(true);
+		editor.getScene().redraw();
+		editor.refreshOutline();
+		editor.updatePropertyPagesContentWithSelection();
 	}
 
 	protected void addObjectsToGroup(ObjectModel group) {

@@ -102,4 +102,14 @@ public class SelectionProviderImpl implements ISelectionProvider {
 		_autoFireSelectionChanged = autoFireSelectionChanged;
 	}
 
+	public void setSilentSelection(StructuredSelection selection) {
+		if (_autoFireSelectionChanged) {
+			_autoFireSelectionChanged = false;
+			setSelection(selection);
+			_autoFireSelectionChanged = true;
+		} else {
+			setSelection(selection);
+		}
+	}
+
 }

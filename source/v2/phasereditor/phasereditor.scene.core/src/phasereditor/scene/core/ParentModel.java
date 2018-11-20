@@ -96,8 +96,15 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		}
 
 		ParentComponent.set_children(this, children);
+
 		for (var child : children) {
-			ParentComponent.set_parent(child, this);
+			// Set the parent only if it is not present, if it is a fresh model.There are
+			// cases where the child is taken from other place and it has its parent, like
+			// when they are added to a group.
+			if (ParentComponent.get_parent(child) == null) {
+
+				ParentComponent.set_parent(child, this);
+			}
 		}
 	}
 

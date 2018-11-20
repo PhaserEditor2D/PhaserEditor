@@ -300,6 +300,8 @@ public class SceneEditor extends EditorPart {
 			page.selectionChanged(this, selection);
 		}
 
+		_selectionProvider.setSilentSelection(selection);
+		
 		_scene.redraw();
 	}
 
@@ -321,8 +323,6 @@ public class SceneEditor extends EditorPart {
 		var sel = new StructuredSelection(newSelectedElems);
 		
 		setSelection(sel);
-
-		getSite().getSelectionProvider().setSelection(sel);
 	}
 
 	public void refreshSelectionBaseOnId() {

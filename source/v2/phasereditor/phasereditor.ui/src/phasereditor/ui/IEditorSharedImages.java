@@ -131,6 +131,7 @@ public interface IEditorSharedImages {
 	String IMG_SHOW_SUPER_TYPES = "icons/super_co.png";
 	String IMG_SCENE_GROUP = "icons/basket.png";
 	String IMG_ADD_TO_GROUP = "icons/basket-put.png";
+	String IMG_MOVE_TO_GROUP = "icons/basket-go.png";
 	String IMG_REMOVE_FROM_GROUP = "icons/basket-remove.png";
 
 	// lsp4e
