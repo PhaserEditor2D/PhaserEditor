@@ -411,9 +411,9 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		_viewer.refresh();
 
-		var root = _editor.getSceneModel().getDisplayList();
-
-		var expanded = expandedIds.stream().map(id -> root.findById(id)).filter(o -> o != null).toArray();
+		var expanded = _viewer.getCanvas().getItems().stream().map(item -> item.getData())
+				.filter(data -> data instanceof ObjectModel && expandedIds.contains(((ObjectModel) data).getId()))
+				.toArray();
 
 		_viewer.setExpandedElements(expanded);
 	}

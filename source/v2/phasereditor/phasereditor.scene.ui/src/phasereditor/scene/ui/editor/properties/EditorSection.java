@@ -46,12 +46,14 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.scene.core.EditorComponent;
 import phasereditor.scene.core.GroupComponent;
+import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
+import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
@@ -69,7 +71,6 @@ public class EditorSection extends ScenePropertySection {
 	private IAction _addToGroupAction;
 	private IAction _removeFromGroupAction;
 	private Label _groupsLabel;
-	private Action _moveToGroupAction;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -180,6 +181,131 @@ public class EditorSection extends ScenePropertySection {
 
 	}
 
+	abstract class GroupMenuAction extends Action {
+
+		public GroupMenuAction(String text, String icon) {
+			super(text);
+
+			setImageDescriptor(EditorSharedImages.getImageDescriptor(icon));
+		}
+
+		@SuppressWarnings({ "cast", "rawtypes", "unchecked" })
+		@Override
+		public void runWithEvent(Event event) {
+
+			var manager = new MenuManager();
+
+			var editor = getEditor();
+
+			var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
+
+			fillMenu(manager, editor, (List<GroupModel>) (List) groups);
+
+			var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
+			menu.setVisible(true);
+
+		}
+
+		protected abstract void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups);
+	}
+
+	abstract class GroupAction extends Action {
+
+		private GroupModel _group;
+
+		public GroupAction(GroupModel group, String icon) {
+
+			super(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(icon));
+
+			_group = group;
+		}
+
+		@Override
+		public void runWithEvent(Event event) {
+			var editor = getEditor();
+
+			var before = GroupListSnapshotOperation.takeSnapshot(editor);
+
+			var groupChildren = ParentComponent.get_children(_group);
+
+			performGroupOperation(groupChildren);
+
+			var after = GroupListSnapshotOperation.takeSnapshot(editor);
+
+			editor.executeOperation(new GroupListSnapshotOperation(before, after, getText()));
+
+			editor.setDirty(true);
+			editor.getScene().redraw();
+			editor.refreshOutline();
+
+			editor.updatePropertyPagesContentWithSelection();
+
+		}
+
+		protected abstract void performGroupOperation(List<ObjectModel> groupChildren);
+	}
+
+	class AddToGroupMenuAction extends GroupMenuAction {
+
+		public AddToGroupMenuAction() {
+			super("Add selected objects to a group.", IMG_ADD_TO_GROUP);
+		}
+
+		@Override
+		protected void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups) {
+
+			groups.stream().filter(group -> {
+
+				// do not include groups that contains one of the selected models
+
+				var children = ParentComponent.get_children(group);
+				for (var model : getModels()) {
+					if (children.contains(model)) {
+						return false;
+					}
+				}
+				return true;
+			}).forEach(group -> {
+				manager.add(new GroupAction(group, IMG_ADD) {
+
+					@Override
+					protected void performGroupOperation(List<ObjectModel> groupChildren) {
+						groupChildren.addAll(getModels());
+					}
+
+				});
+			});
+
+		}
+	}
+
+	class RemoveFromGroupMenuAction extends GroupMenuAction {
+
+		public RemoveFromGroupMenuAction() {
+			super("Remove selcted objects from a group.", IMG_REMOVE_FROM_GROUP);
+		}
+
+		@Override
+		protected void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups) {
+			groups.stream().filter(group -> {
+
+				// just accepts the groups that contains all the selected objects.
+
+				return ParentComponent.get_children(group).containsAll(getModels());
+			}).forEach(group -> {
+				manager.add(new GroupAction(group, IMG_DELETE) {
+
+					@Override
+					protected void performGroupOperation(List<ObjectModel> groupChildren) {
+						groupChildren.removeAll(getModels());
+					}
+
+				});
+			});
+		}
+
+	}
+
 	private void createActions() {
 		var editor = getEditor();
 
@@ -200,149 +326,9 @@ public class EditorSection extends ScenePropertySection {
 			}
 		};
 
-		_addToGroupAction = new Action("Add this object to a group.",
-				EditorSharedImages.getImageDescriptor(IMG_ADD_TO_GROUP)) {
-			@Override
-			public void runWithEvent(Event event) {
-				var manager = new MenuManager();
+		_addToGroupAction = new AddToGroupMenuAction();
 
-				var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
-				groups.stream().filter(group -> {
-
-					// do not include groups that contains one of the selected models
-
-					var children = ParentComponent.get_children(group);
-					for (var model : getModels()) {
-						if (children.contains(model)) {
-							return false;
-						}
-					}
-					return true;
-				}).forEach(group -> {
-					manager.add(
-							new Action(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(IMG_ADD)) {
-
-								@Override
-								public void run() {
-
-									addObjectsToGroup(group);
-
-								}
-
-							});
-				});
-
-				var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
-				menu.setVisible(true);
-			}
-
-		};
-
-		_removeFromGroupAction = new Action("Remove this object from a group.",
-				EditorSharedImages.getImageDescriptor(IMG_REMOVE_FROM_GROUP)) {
-
-			@Override
-			public void runWithEvent(Event event) {
-				var manager = new MenuManager();
-
-				var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
-
-				groups.stream().filter(group -> {
-
-					// just accepts the groups that contains all the selected objects.
-
-					return ParentComponent.get_children(group).containsAll(getModels());
-				}).forEach(group -> {
-					manager.add(new Action(GroupComponent.get_name(group),
-							EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
-
-						@Override
-						public void run() {
-
-							removeObjectsFromGroup(group);
-
-						}
-					});
-				});
-
-				var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
-				menu.setVisible(true);
-			}
-
-		};
-		
-		_moveToGroupAction = new Action("Add this object to a group.",
-				EditorSharedImages.getImageDescriptor(IMG_ADD_TO_GROUP)) {
-			@Override
-			public void runWithEvent(Event event) {
-				var manager = new MenuManager();
-
-				var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
-				groups.stream().filter(group -> {
-
-					// do not include groups that contains one of the selected models
-
-					var children = ParentComponent.get_children(group);
-					for (var model : getModels()) {
-						if (children.contains(model)) {
-							return false;
-						}
-					}
-					return true;
-				}).forEach(group -> {
-					manager.add(
-							new Action(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(IMG_ADD)) {
-
-								@Override
-								public void run() {
-
-									moveObjectsToGroup(group);
-
-								}
-
-
-							});
-				});
-
-				var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
-				menu.setVisible(true);
-			}
-
-		};
-	}
-	
-	protected void moveObjectsToGroup(ObjectModel group) {
-		ParentComponent.get_children(group).removeAll(getModels());
-		ParentComponent.get_children(group).addAll(getModels());
-
-		var editor = getEditor();
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
-		editor.refreshOutline();
-		editor.updatePropertyPagesContentWithSelection();
-	}
-
-	protected void addObjectsToGroup(ObjectModel group) {
-		ParentComponent.get_children(group).addAll(getModels());
-
-		var editor = getEditor();
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
-		editor.refreshOutline();
-		editor.updatePropertyPagesContentWithSelection();
-	}
-
-	protected void removeObjectsFromGroup(ObjectModel group) {
-		ParentComponent.get_children(group).removeAll(getModels());
-
-		var editor = getEditor();
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
-		editor.refreshOutline();
-		editor.updatePropertyPagesContentWithSelection();
+		_removeFromGroupAction = new RemoveFromGroupMenuAction();
 	}
 
 	protected void update_editorField() {
