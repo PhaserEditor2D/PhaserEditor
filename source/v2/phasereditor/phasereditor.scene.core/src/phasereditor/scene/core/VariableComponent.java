@@ -55,7 +55,13 @@ public interface VariableComponent {
 	static void set_editorField(ObjectModel obj, boolean editorField) {
 		obj.put("gameObjectEditorField", editorField);
 	}
-	
+
+	// utils
+
+	static boolean is(Object obj) {
+		return obj instanceof VariableComponent;
+	}
+
 	static void init(ObjectModel obj) {
 		set_gameObjectEditorName(obj, gameObjectEditorName_default);
 		set_editorField(obj, gameObjectEditorField_default);

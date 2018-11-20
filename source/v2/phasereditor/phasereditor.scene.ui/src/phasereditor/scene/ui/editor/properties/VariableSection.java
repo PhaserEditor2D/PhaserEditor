@@ -21,26 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
@@ -48,28 +41,24 @@ import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
-import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class EditorSection extends ScenePropertySection {
+public class VariableSection extends ScenePropertySection {
 
-	private Button _typeBtn;
-	private Scale _transpScale;
-	private List<JFaceOrderAction> _orderActions;
-	private IAction _addToGroupAction;
-	private IAction _removeFromGroupAction;
-	private Label _groupsLabel;
+	private Text _editorNameText;
+	private Action _fieldAction;
 
-	public EditorSection(ScenePropertyPage page) {
-		super("Editor", page);
+	public VariableSection(ScenePropertyPage page) {
+		super("Variable", page);
 	}
 
 	@Override
@@ -86,56 +75,22 @@ public class EditorSection extends ScenePropertySection {
 		comp.setLayout(new GridLayout(2, false));
 
 		{
-			label(comp, "Type", "*(Editor) The Phaser type of this object." +
+			label(comp, "Var Name", "*(Editor) The name of the variable used in the generated code.");
 
-					"\n\nClick on the next button to morhp to other type.");
+			var row = new Composite(comp, 0);
+			row.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			var gl = new GridLayout(2, false);
+			gl.marginWidth = gl.marginHeight = 0;
+			row.setLayout(gl);
 
-			_typeBtn = new Button(comp, SWT.NONE);
-			_typeBtn.setToolTipText("Click to morph to other type.");
-			_typeBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_typeBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
-		}
+			_editorNameText = new Text(row, SWT.BORDER);
+			_editorNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		{
-			label(comp, "Transparency", "*(Editor) Transparency of the object when is renderer in the editor.");
+			var toolbar = new ToolBarManager();
 
-			_transpScale = new Scale(comp, 0);
-			_transpScale.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			_transpScale.setMinimum(0);
-			_transpScale.setMinimum(100);
-		}
+			toolbar.add(_fieldAction);
 
-		{
-			label(comp, "Order", "*(Editor) The display depth order.");
-
-			var manager = new ToolBarManager();
-
-			for (var action : _orderActions) {
-				manager.add(action);
-			}
-
-			var toolbar = manager.createControl(comp);
-			toolbar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
-
-		{
-			label(comp, "Groups", "*(Editor) The object's groups.");
-
-			var rightComp = new Composite(comp, 0);
-			rightComp.setLayout(new GridLayout(2, false));
-			rightComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			_groupsLabel = new Label(rightComp, 0);
-			_groupsLabel.setText("[group1, group2]");
-			_groupsLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			var manager = new ToolBarManager();
-
-			manager.add(_addToGroupAction);
-			manager.add(_removeFromGroupAction);
-
-			manager.createControl(rightComp);
-
+			toolbar.createControl(row);
 		}
 
 		return comp;
@@ -143,15 +98,7 @@ public class EditorSection extends ScenePropertySection {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		for (var action : _orderActions) {
-			manager.add(action);
-		}
-
-		manager.add(new Separator());
-
-		manager.add(_addToGroupAction);
-		manager.add(_removeFromGroupAction);
-
+		manager.add(_fieldAction);
 	}
 
 	abstract class GroupMenuAction extends Action {
@@ -280,17 +227,32 @@ public class EditorSection extends ScenePropertySection {
 	}
 
 	private void createActions() {
-		var editor = getEditor();
+		_fieldAction = new Action("Assign to a property.", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PROPERTY));
+			}
 
-		_orderActions = new ArrayList<>();
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.UP));
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.DOWN));
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.TOP));
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.BOTTOM));
+			@Override
+			public void run() {
+				update_editorField();
+			}
+		};
+	}
 
-		_addToGroupAction = new AddToGroupMenuAction();
+	protected void update_editorField() {
+		getModels().forEach(model -> {
+			SceneEditor editor = getEditor();
 
-		_removeFromGroupAction = new RemoveFromGroupMenuAction();
+			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+
+			VariableComponent.set_editorField(model, _fieldAction.isChecked());
+
+			editor.setDirty(true);
+
+			var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+
+			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set variables field flag."));
+		});
 	}
 
 	class MorphAction extends Action {
@@ -308,71 +270,23 @@ public class EditorSection extends ScenePropertySection {
 
 	}
 
-	@SuppressWarnings({ "unused", "boxing" })
-	private void populateTypeList(SelectionEvent e) {
-		var models = getModels();
-
-		var manager = new MenuManager();
-
-		for (var type : SceneModel.GAME_OBJECT_TYPES) {
-
-			var allow = models.stream()
-
-					.map(m -> m.allowMorphTo(type))
-
-					.reduce(true, (a, b) -> a && b);
-
-			if (allow) {
-				manager.add(new MorphAction(type));
-			}
-		}
-
-		if (manager.getSize() > 0) {
-			var menu = manager.createContextMenu(_typeBtn);
-			menu.setVisible(true);
-		}
-	}
-
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
+		_editorNameText.setText(
+				flatValues_to_String(models.stream().map(model -> VariableComponent.get_gameObjectEditorName(model))));
 
-		_transpScale.setSelection(flatValues_to_int(
-				models.stream()
-						.map(model -> (int) (GameObjectEditorComponent.get_gameObjectEditorTransparency(model) * 100)),
-				100));
-		{
+		_fieldAction.setChecked(flatValues_to_boolean(
+				models.stream().map(model -> VariableComponent.get_gameObjectEditorField(model))));
 
-			var groups = ParentComponent.get_children(getEditor().getSceneModel().getGroupsModel());
-
-			var str = groups.stream().filter(group -> ParentComponent.get_children(group).containsAll(models))
-					.map(group -> GroupComponent.get_name(group)).collect(Collectors.joining(","));
-
-			_groupsLabel.setText("[" + str + "]");
-
-			_removeFromGroupAction.setEnabled(str.length() > 2);
-
-			_addToGroupAction.setEnabled(groups.stream().filter(group -> {
-				// do not include groups that contains one of the selected models
-				var children = ParentComponent.get_children(group);
-				for (var model : getModels()) {
-					if (children.contains(model)) {
-						return false;
-					}
-				}
-				return true;
-			}).count() > 0);
-
-		}
-
-		listenFloat(_transpScale, value -> {
-
-			models.stream().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
+		listen(_editorNameText, value -> {
+			models.stream().forEach(model -> VariableComponent.set_gameObjectEditorName(model, value));
 
 			getEditor().setDirty(true);
+			getEditor().refreshOutline();
+
 		}, models);
 	}
 

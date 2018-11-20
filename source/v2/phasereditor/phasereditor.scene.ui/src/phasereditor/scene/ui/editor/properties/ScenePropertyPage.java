@@ -35,6 +35,7 @@ import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -67,6 +68,10 @@ public class ScenePropertyPage extends FormPropertyPage {
 			list.add(new CompilerSection(this));
 			list.add(new DisplaySection(this));
 			list.add(new AssetsSection(this));
+		}
+
+		if (VariableComponent.is(obj)) {
+			list.add(new VariableSection(this));
 		}
 
 		if (GameObjectEditorComponent.is(obj)) {
@@ -112,11 +117,10 @@ public class ScenePropertyPage extends FormPropertyPage {
 		if (AnimationsComponent.is(obj)) {
 			list.add(new AnimationsSection(this));
 		}
-		
-		
-//		if (obj instanceof SpriteModel) {
-//			list.add(new EmptyBodySection(this));
-//		}
+
+		// if (obj instanceof SpriteModel) {
+		// list.add(new EmptyBodySection(this));
+		// }
 
 		return list;
 
