@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +56,6 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.EditorComponent;
-import phasereditor.scene.core.EditorObjectModel;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
@@ -188,7 +185,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		return new float[] { viewX, viewY };
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void selectionDropped(int x, int y, Object[] data) {
 
 		var nameComputer = new NameComputer(_sceneModel.getDisplayList());
@@ -256,11 +252,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		_editor.executeOperation(new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
 
-		setSelection_from_internal((List) newModels);
-
-		redraw();
-
 		_editor.refreshOutline();
+
+		_editor.setSelection(newModels);
 
 		_editor.setDirty(true);
 
@@ -351,101 +345,97 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_GREEN);
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
-		for (var obj : _editor.getSelectionList()) {
-			if (obj instanceof EditorObjectModel) {
-				var model = (ObjectModel) obj;
+		for (var model : _editor.getSelectionList()) {
 
-				gc.setForeground(selectionColor);
+			gc.setForeground(selectionColor);
 
-				var size = _renderer.getObjectSize(model);
+			var size = _renderer.getObjectSize(model);
 
-				var p0 = _renderer.localToScene(model, 0, 0);
-				var p1 = _renderer.localToScene(model, size[0], 0);
-				var p2 = _renderer.localToScene(model, size[0], size[1]);
-				var p3 = _renderer.localToScene(model, 0, size[1]);
+			var p0 = _renderer.localToScene(model, 0, 0);
+			var p1 = _renderer.localToScene(model, size[0], 0);
+			var p2 = _renderer.localToScene(model, size[0], size[1]);
+			var p3 = _renderer.localToScene(model, 0, size[1]);
 
-				// gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
-				// gc.setLineWidth(3);
-				//
-				// drawCorner(gc, p0, p1);
-				// drawCorner(gc, p1, p2);
-				// drawCorner(gc, p2, p3);
-				// drawCorner(gc, p3, p0);
-				//
-				// gc.setForeground(selectionColor);
-				// gc.setLineWidth(1);
-				//
-				// drawCorner(gc, p0, p1);
-				// drawCorner(gc, p1, p2);
-				// drawCorner(gc, p2, p3);
-				// drawCorner(gc, p3, p0);
+			// gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+			// gc.setLineWidth(3);
+			//
+			// drawCorner(gc, p0, p1);
+			// drawCorner(gc, p1, p2);
+			// drawCorner(gc, p2, p3);
+			// drawCorner(gc, p3, p0);
+			//
+			// gc.setForeground(selectionColor);
+			// gc.setLineWidth(1);
+			//
+			// drawCorner(gc, p0, p1);
+			// drawCorner(gc, p1, p2);
+			// drawCorner(gc, p2, p3);
+			// drawCorner(gc, p3, p0);
 
-				var points = new int[] {
+			var points = new int[] {
 
-						(int) p0[0], (int) p0[1],
+					(int) p0[0], (int) p0[1],
 
-						(int) p1[0], (int) p1[1],
+					(int) p1[0], (int) p1[1],
 
-						(int) p2[0], (int) p2[1],
+					(int) p2[0], (int) p2[1],
 
-						(int) p3[0], (int) p3[1]
+					(int) p3[0], (int) p3[1]
 
-				};
+			};
 
-				if (!_interactiveToolsDragging) {
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
-					gc.setLineWidth(3);
-					gc.drawPolygon(points);
-					gc.setLineWidth(1);
-				}
-
-				gc.setForeground(selectionColor);
+			if (!_interactiveToolsDragging) {
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+				gc.setLineWidth(3);
 				gc.drawPolygon(points);
+				gc.setLineWidth(1);
+			}
 
-				if (!_interactiveToolsDragging) {
+			gc.setForeground(selectionColor);
+			gc.drawPolygon(points);
+
+			if (!_interactiveToolsDragging) {
+
+				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+
+				var vector = PhaserEditorUI.vector(p3, p0);
+
+				{
+
+					var flipX = FlipComponent.get_flipX(model);
+					var flipY = FlipComponent.get_flipY(model);
+
+					var angle = _renderer.globalAngle(model);
+
+					var p = p0;
+
+					var str = " " + EditorComponent.get_editorName(model);
+					var strSize = gc.textExtent(str);
+
+					var tx = new Transform(gc.getDevice());
+					tx.translate(p[0], p[1]);
+					tx.translate(vector[0] * 20, vector[1] * 20);
+					tx.rotate(angle);
+
+					if (flipX) {
+						tx.translate(-strSize.x, 0);
+					}
+
+					if (flipY) {
+						tx.translate(0, -strSize.y);
+					}
+
+					gc.setTransform(tx);
+					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+					gc.drawText(str, 1, 1, true);
 
 					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+					gc.drawText(str, 0, 0, true);
 
-					var vector = PhaserEditorUI.vector(p3, p0);
+					gc.setTransform(null);
 
-					{
-
-						var flipX = FlipComponent.get_flipX(model);
-						var flipY = FlipComponent.get_flipY(model);
-
-						var angle = _renderer.globalAngle(model);
-
-						var p = p0;
-
-						var str = " " + EditorComponent.get_editorName(model);
-						var strSize = gc.textExtent(str);
-
-						var tx = new Transform(gc.getDevice());
-						tx.translate(p[0], p[1]);
-						tx.translate(vector[0] * 20, vector[1] * 20);
-						tx.rotate(angle);
-
-						if (flipX) {
-							tx.translate(-strSize.x, 0);
-						}
-
-						if (flipY) {
-							tx.translate(0, -strSize.y);
-						}
-
-						gc.setTransform(tx);
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-						gc.drawText(str, 1, 1, true);
-
-						gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-						gc.drawText(str, 0, 0, true);
-
-						gc.setTransform(null);
-
-						tx.dispose();
-					}
+					tx.dispose();
 				}
-
 			}
 		}
 	}
@@ -796,16 +786,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		return false;
 	}
 
-	void setSelection_from_internal(List<Object> list) {
-		var sel = new StructuredSelection(list);
-
-		_editor.getEditorSite().getSelectionProvider().setSelection(sel);
-
-		if (_editor.getOutline() != null) {
-			_editor.getOutline().setSelection_from_external(sel);
-		}
-	}
-
 	private static boolean hitsPolygon(int x, int y, float[] polygon) {
 		if (polygon == null) {
 			return false;
@@ -907,7 +887,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		redraw();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void selectAll() {
 		var list = new ArrayList<ObjectModel>();
 
@@ -915,35 +894,33 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		root.visitChildren(model -> list.add(model));
 
-		setSelection_from_internal((List) list);
-
-		redraw();
+		_editor.setSelection(list);
 	}
 
 	public void delete() {
 		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
 
-		for (var obj : _editor.getSelectionList()) {
-			var model = (ObjectModel) obj;
-
+		for (var model : _editor.getSelectionList()) {
 			ParentComponent.removeFromParent(model);
 		}
 
-		redraw();
+		_editor.refreshOutline();
 
 		_editor.setDirty(true);
 
-		_editor.setSelection(StructuredSelection.EMPTY);
+		_editor.setSelection(List.of());
 
 		var afterData = WorldSnapshotOperation.takeSnapshot(_editor);
 
 		_editor.executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Delete objects"));
+
+		redraw();
 	}
 
 	public void copy() {
 
 		var sel = new StructuredSelection(
-				filterChidlren(_editor.getSelectionList().stream().map(o -> (ObjectModel) o).collect(toList()))
+				filterChidlren(_editor.getSelectionList())
 
 						.stream().map(model -> {
 
@@ -1109,7 +1086,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			ParentComponent.addChild(parent, model);
 		}
 
-		editor.setSelection(new StructuredSelection(pasteModels));
+		editor.refreshOutline();
+
+		editor.setSelection(pasteModels);
 
 		editor.setDirty(true);
 

@@ -22,10 +22,10 @@
 package phasereditor.scene.core.codegen;
 
 import phasereditor.project.core.codegen.BaseCodeGenerator;
-import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
+import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
 import phasereditor.scene.core.codedom.RawCode;
 import phasereditor.scene.core.codedom.UnitDom;

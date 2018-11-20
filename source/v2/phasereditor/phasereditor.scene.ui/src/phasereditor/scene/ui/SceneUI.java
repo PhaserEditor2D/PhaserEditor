@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -40,28 +41,23 @@ import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
  *
  */
 public class SceneUI {
-	
-	
+
 	public static void action_MorphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
-		
 		var before = WorldSnapshotOperation.takeSnapshot(editor);
 
-		int i = 0;
-
+		var newModels = new ArrayList<ObjectModel>();
 		var project = editor.getEditorInput().getFile().getProject();
 
 		for (var obj : models) {
 			if (!(obj instanceof ObjectModel)) {
 				continue;
 			}
-			
+
 			var model = (ObjectModel) obj;
 
 			if (model.getType().equals(morphToType)) {
 				continue;
 			}
-
-			i++;
 
 			var data = new JSONObject();
 			model.write(data);
@@ -105,16 +101,23 @@ public class SceneUI {
 				ParentComponent.removeFromParent(model);
 				ParentComponent.addChild(parent, index, newModel);
 
-				editor.refreshOutline_basedOnId();
+				newModels.add(newModel);
 
-				editor.updatePropertyPagesContentWithSelection_basedOnId();
-
-				editor.setDirty(true);
 			}
 
 		}
 
-		if (i > 0) {
+		if (!newModels.isEmpty()) {
+
+			editor.refreshOutline_basedOnId();
+
+			editor.setSelection(newModels);
+
+			// we do this because the Properties window is active (not the editor)
+			editor.updatePropertyPagesContentWithSelection();
+
+			editor.setDirty(true);
+
 			var after = WorldSnapshotOperation.takeSnapshot(editor);
 			editor.executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + morphToType));
 		}

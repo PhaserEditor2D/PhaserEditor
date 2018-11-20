@@ -198,7 +198,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		@Override
 		public void run(MouseEvent event) {
 			var editor = getEditor();
-			
+
 			var sceneModel = editor.getSceneModel();
 
 			var groups = sceneModel.getGroupsModel();
@@ -231,7 +231,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				ParentComponent.get_children(groups).add(group);
 
 				refresh();
-				
+
 				editor.setDirty(true);
 			}
 		}
@@ -364,24 +364,13 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				refresh();
 
-				renderer.addPostPaintAction(() -> {
-					var sel = new StructuredSelection(newDrops.toArray());
+				_editor.setSelection(newDrops);
 
-					_viewer.setSelection(sel, true);
+				var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
-					for (var page : _editor.getPropertyPages()) {
-						page.selectionChanged(_editor, sel);
-					}
-
-					var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
-
-					_editor.executeOperation(
-							new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
-				});
+				_editor.executeOperation(new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
 
 				_editor.setDirty(true);
-
-				_editor.getScene().redraw();
 
 			}
 		}

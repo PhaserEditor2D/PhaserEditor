@@ -70,9 +70,9 @@ public abstract class InteractiveTool {
 
 		var list = new ArrayList<ObjectModel>();
 
-		for (var obj : getEditor().getSelectionList()) {
-			if (obj instanceof ObjectModel && canEdit((ObjectModel) obj)) {
-				list.add((ObjectModel) obj);
+		for (var model : getEditor().getSelectionList()) {
+			if (canEdit(model)) {
+				list.add(model);
 			}
 		}
 
@@ -110,7 +110,7 @@ public abstract class InteractiveTool {
 		gc.setLineWidth(3);
 		gc.setForeground(darkColor);
 		gc.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
-		
+
 		gc.setLineWidth(1);
 		gc.setForeground(color);
 		gc.drawLine((int) x1, (int) y1, (int) x2, (int) y2);

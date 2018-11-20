@@ -4,7 +4,6 @@ import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -17,7 +16,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -290,18 +288,22 @@ public class SceneEditor extends EditorPart {
 		}
 	}
 
-	public void setSelection(StructuredSelection selection) {
+	public void setSelectionFromIdList(List<String> objectIdList) {
+		var models = _model.getDisplayList().findByIds(objectIdList);
+		setSelection(models);
+	}
+
+	public void setSelection(List<ObjectModel> models) {
+		_setSelection(new StructuredSelection(models));
+	}
+
+	private void _setSelection(StructuredSelection selection) {
+		_selectionProvider.setSelection(selection);
+
 		if (_outline != null) {
-			refreshOutline_basedOnId();
 			_outline.setSelection_from_external(selection);
 		}
 
-		for (var page : _propertyPages) {
-			page.selectionChanged(this, selection);
-		}
-
-		_selectionProvider.setSilentSelection(selection);
-		
 		_scene.redraw();
 	}
 
@@ -311,34 +313,25 @@ public class SceneEditor extends EditorPart {
 		}
 	}
 
-	public void updatePropertyPagesContentWithSelection_basedOnId() {
-		var selectedElems = ((IStructuredSelection) getSite().getSelectionProvider().getSelection()).toArray();
-
-		var selectedIds = Arrays.stream(selectedElems).map(e -> ((ObjectModel) e).getId()).collect(toList());
-
-		var root = getSceneModel().getDisplayList();
-
-		var newSelectedElems = selectedIds.stream().map(id -> root.findById(id)).filter(o -> o != null).toArray();
-
-		var sel = new StructuredSelection(newSelectedElems);
-		
-		setSelection(sel);
+	public List<String> getSelectionIdList() {
+		return getSelectionList().stream().map(o -> o.getId()).collect(toList());
 	}
 
 	public void refreshSelectionBaseOnId() {
 		var ids = new ArrayList<String>();
 
 		for (var obj : getSelectionList()) {
-			ids.add(((ObjectModel) obj).getId());
+			ids.add(obj.getId());
 		}
 
 		var models = getSceneModel().getDisplayList().findByIds(ids);
 
-		setSelection(new StructuredSelection(models));
+		setSelection(models);
 	}
 
-	public List<Object> getSelectionList() {
-		return _selectionProvider.getSelectionList();
+	@SuppressWarnings({ "cast", "rawtypes", "unchecked" })
+	public List<ObjectModel> getSelectionList() {
+		return (List<ObjectModel>) (List) _selectionProvider.getSelectionList();
 	}
 
 }

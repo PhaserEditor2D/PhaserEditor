@@ -21,21 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.undo;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.json.JSONObject;
 
-import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 
 /**
@@ -89,17 +82,15 @@ public class WorldSnapshotOperation extends AbstractOperation {
 		var model = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
 
-		List<?> currentSelection = ((IStructuredSelection) editor.getEditorSite().getSelectionProvider().getSelection())
-				.toList();
-
-		var selectedIds = currentSelection.stream().map(obj -> ((ObjectModel) obj).getId()).collect(toList());
+		var selectionIds = editor.getSelectionIdList();
 
 		model.read(data, project);
 
-		var selectedItems = selectedIds.stream().map(id -> model.getDisplayList().findById(id))
-				.filter(obj -> obj != null).toArray();
+		editor.refreshOutline_basedOnId();
 
-		editor.setSelection(new StructuredSelection(selectedItems));
+		editor.setSelectionFromIdList(selectionIds);
+
+		editor.getScene().redraw();
 
 		editor.setDirty(true);
 	}

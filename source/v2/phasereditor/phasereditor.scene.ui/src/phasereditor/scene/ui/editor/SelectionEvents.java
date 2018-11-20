@@ -32,12 +32,11 @@ import org.eclipse.swt.events.MouseEvent;
  */
 public class SelectionEvents {
 	private SceneCanvas _scene;
-	
+
 	public SelectionEvents(SceneCanvas scene) {
 		super();
 		_scene = scene;
 	}
-
 
 	public void updateSelection(MouseEvent e) {
 		if (e.button != 1) {
@@ -69,9 +68,7 @@ public class SelectionEvents {
 		}
 
 		if (fireUpdateSelection) {
-			_scene.setSelection_from_internal(list);
-
-			_scene.redraw();
+			_scene.getEditor().setSelection(list);
 		}
 	}
 }

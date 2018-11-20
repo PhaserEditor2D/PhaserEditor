@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,8 +48,8 @@ public class OrderAction {
 
 	@SuppressWarnings({ "incomplete-switch", "boxing" })
 	public void run() {
-		var models = _editor.getSelectionList().stream().filter(o -> o instanceof ObjectModel)
-				.map(o -> (ObjectModel) o).collect(toList());
+		var models = _editor.getSelectionList();
+		
 		// first, check all models are from the same parent
 
 		ObjectModel parent = null;

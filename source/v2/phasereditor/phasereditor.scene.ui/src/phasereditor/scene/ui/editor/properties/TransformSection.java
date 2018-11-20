@@ -211,7 +211,7 @@ public class TransformSection extends ScenePropertySection {
 
 			scene.redraw();
 
-			editor.updatePropertyPagesContentWithSelection_basedOnId();
+			editor.updatePropertyPagesContentWithSelection();
 
 		}
 
