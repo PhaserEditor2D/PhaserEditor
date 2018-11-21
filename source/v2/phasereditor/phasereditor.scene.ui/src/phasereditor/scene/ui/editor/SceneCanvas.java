@@ -347,7 +347,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var model : _editor.getSelectionList()) {
-			
+
 			if (!TransformComponent.is(model)) {
 				continue;
 			}
@@ -475,24 +475,21 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				var vector = PhaserEditorUI.vector(parentPoint, childPoint);
 				var leftVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, -1));
 				var rightVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, 1));
-				
+
 				var n = 3;
 				var points = new int[] {
-						
-						(int) (parentPoint[0] + leftVector[0] * n), 
-						(int) (parentPoint[1] + leftVector[1] * n),
-						
-						(int) (parentPoint[0] + rightVector[0] * n),
-						(int) (parentPoint[1] + rightVector[1] * n),
-						
-						(int) (childPoint[0]),
-						(int) (childPoint[1])
-						
+
+						(int) (parentPoint[0] + leftVector[0] * n), (int) (parentPoint[1] + leftVector[1] * n),
+
+						(int) (parentPoint[0] + rightVector[0] * n), (int) (parentPoint[1] + rightVector[1] * n),
+
+						(int) (childPoint[0]), (int) (childPoint[1])
+
 				};
-				
+
 				gc.fillPolygon(points);
 				gc.drawPolygon(points);
-						
+
 				renderLinesToChildren(gc, child);
 			}
 
@@ -757,8 +754,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
 		if (model instanceof ParentComponent) {
-			if (model instanceof GameObjectEditorComponent
-					&& GameObjectEditorComponent.get_gameObjectEditorClosed(model) /* || groupModel.isPrefabInstance() */) {
+			if (model instanceof GameObjectEditorComponent && GameObjectEditorComponent
+					.get_gameObjectEditorClosed(model) /* || groupModel.isPrefabInstance() */) {
 
 				var polygon = _renderer.getObjectChildrenBounds(model);
 
@@ -959,8 +956,14 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public void delete() {
 		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
 
-		for (var model : _editor.getSelectionList()) {
+		var selection = _editor.getSelectionList();
+
+		for (var model : selection) {
 			ParentComponent.removeFromParent(model);
+		}
+
+		for (var group : _editor.getSceneModel().getGroupsModel().getGroups()) {
+			group.getChildren().removeAll(selection);
 		}
 
 		_editor.refreshOutline();
