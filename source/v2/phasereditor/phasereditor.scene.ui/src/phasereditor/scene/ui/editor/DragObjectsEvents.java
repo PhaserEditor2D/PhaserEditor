@@ -68,6 +68,7 @@ public class DragObjectsEvents {
 	public void update(MouseEvent e) {
 
 		_scene.getEditor().setDirty(true);
+		var sceneModel = _scene.getEditor().getSceneModel();
 
 		var cursorX = e.x;
 		var cursorY = e.y;
@@ -91,8 +92,11 @@ public class DragObjectsEvents {
 
 				var localPoint = renderer.sceneToLocal(parent, sceneX, sceneY);
 
-				TransformComponent.set_x(model, localPoint[0]);
-				TransformComponent.set_y(model, localPoint[1]);
+				var x = sceneModel.snapValueX(localPoint[0]);
+				var y = sceneModel.snapValueY(localPoint[1]);
+				
+				TransformComponent.set_x(model, x);
+				TransformComponent.set_y(model, y);
 			}
 		}
 
