@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class GroupModel extends ParentModel implements
+public class GroupModel extends VariableModel implements
 
 		GroupComponent
 
@@ -42,24 +42,13 @@ public class GroupModel extends ParentModel implements
 		_groups = groups;
 
 		GroupComponent.init(this);
+		
+		// by default, the groups are created as fields.
+		VariableComponent.set_variableField(this, true);
 	}
 
 	public GroupsModel getGroups() {
 		return _groups;
-	}
-
-	@Override
-	public void read(JSONObject data, IProject project) {
-		super.read(data, project);
-
-		GroupComponent.set_name(this, data.optString(name_name));
-	}
-
-	@Override
-	public void write(JSONObject data) {
-		super.write(data);
-
-		data.put(name_name, GroupComponent.get_name(this));
 	}
 
 	@Override

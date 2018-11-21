@@ -36,7 +36,6 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
-import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;

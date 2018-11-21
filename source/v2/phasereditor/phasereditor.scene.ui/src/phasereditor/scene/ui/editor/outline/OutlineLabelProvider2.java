@@ -65,7 +65,7 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 		}
 
 		if (element instanceof GroupComponent) {
-			return GroupComponent.get_name((ObjectModel) element);
+			return VariableComponent.get_variableName((ObjectModel) element);
 		}
 
 		return super.getText(element);

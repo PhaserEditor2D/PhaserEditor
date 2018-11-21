@@ -34,12 +34,14 @@ public class MethodCallDom {
 	private String _contextExpr;
 	private List<String> _args;
 	private String _returnToVar;
+	private boolean _declareReturnToVar;
 
 	public MethodCallDom(String methodName, String contextExpr) {
 		super();
 		_methodName = methodName;
 		_contextExpr = contextExpr;
 		_args = new ArrayList<>();
+		_declareReturnToVar = true;
 	}
 	
 	public String getReturnToVar() {
@@ -48,6 +50,14 @@ public class MethodCallDom {
 	
 	public void setReturnToVar(String returnToVar) {
 		_returnToVar = returnToVar;
+	}
+	
+	public void setDeclareReturnToVar(boolean declareReturnToVar) {
+		_declareReturnToVar = declareReturnToVar;
+	}
+	
+	public boolean isDeclareReturnToVar() {
+		return _declareReturnToVar;
 	}
 
 	public void arg(String expr) {

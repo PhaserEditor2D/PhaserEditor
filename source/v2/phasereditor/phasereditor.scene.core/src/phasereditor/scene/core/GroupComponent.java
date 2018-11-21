@@ -26,27 +26,14 @@ package phasereditor.scene.core;
  *
  */
 public interface GroupComponent {
-	// name
-
-	static String name_name = "name";
-
-	static String name_default = null;
-
-	static String get_name(ObjectModel obj) {
-		return (String) obj.get("name");
-	}
-
-	static void set_name(ObjectModel obj, String name) {
-		obj.put("name", name);
-	}
-
 	// init
 
 	static boolean is(Object model) {
 		return model instanceof GroupComponent;
 	}
 	
+	@SuppressWarnings("unused")
 	static void init(GroupModel model) {
-		set_name(model, name_default);
+		//
 	}
 }

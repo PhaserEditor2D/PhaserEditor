@@ -21,11 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
@@ -33,55 +28,33 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class GroupsModel extends ParentModel {
+public abstract class VariableModel extends ParentModel implements
 
-	public static final String TYPE = "Groups";
-	private SceneModel _sceneModel;
+		VariableComponent
 
-	public GroupsModel(SceneModel sceneModel) {
-		super(TYPE);
-		
-		_sceneModel = sceneModel;
-	}
-	
-	public SceneModel getSceneModel() {
-		return _sceneModel;
+{
+
+	public VariableModel(String type) {
+
+		super(type);
+
+		VariableComponent.init(this);
 	}
 
 	@Override
-	protected ObjectModel readChild(IProject project, JSONObject childData) {
-		var model = new GroupModel(this);
+	public void read(JSONObject data, IProject project) {
+		super.read(data, project);
 
-		model.read(childData, project);
-
-		return model;
+		VariableComponent.set_variableName(this, data.getString(variableName_name));
+		VariableComponent.set_variableField(this, data.optBoolean(variableField_name));
 	}
 
-	public List<GroupModel> getGroupsOf(ObjectModel model) {
-		var result = new ArrayList<GroupModel>();
-		
-		for(var group : getGroups()) {
-			if (group.getChildren().contains(model)) {
-				result.add(group);
-			}
-		}
-		
-		return result;
-	}
-	
-	@SuppressWarnings("all")
-	public List<GroupModel> getGroups() {
-		return (List<GroupModel>) (List) super.getChildren();
-	}
+	@Override
+	public void write(JSONObject data) {
+		super.write(data);
 
-	public Set<ObjectModel> buildHasGroupSet() {
-		var set = new HashSet<ObjectModel>();
-		
-		for(var group : getGroups()) {
-			set.addAll(group.getChildren());
-		}
-		
-		return set;
+		data.put(variableName_name, VariableComponent.get_variableName(this));
+		data.put(variableField_name, VariableComponent.get_variableField(this));
 	}
 
 }

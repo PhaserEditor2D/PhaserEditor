@@ -82,9 +82,9 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 		section("/* START-USER-CODE */", "/* END-USER-CODE */", "\n\n\t// Write your code here.\n\n\t");
 
 		closeIndent("}");
-		
+
 		line();
-		
+
 		section("/* END OF COMPILED CODE */", "\n\n// You can write more code here\n");
 	}
 
@@ -139,7 +139,9 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 
 	private void generateMethodCall(MethodCallDom call) {
 		if (call.getReturnToVar() != null) {
-			append("var ");
+			if (call.isDeclareReturnToVar()) {
+				append("var ");
+			}
 			append(call.getReturnToVar());
 			append(" = ");
 		}

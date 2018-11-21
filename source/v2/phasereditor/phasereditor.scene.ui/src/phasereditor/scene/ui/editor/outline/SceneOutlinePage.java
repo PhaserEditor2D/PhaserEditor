@@ -49,7 +49,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.BitmapTextModel;
-import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.GroupsModel;
 import phasereditor.scene.core.NameComputer;
@@ -58,6 +57,7 @@ import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
@@ -216,7 +216,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 						public String isValid(String newText) {
 
 							for (var group : ParentComponent.get_children(groups)) {
-								if (GroupComponent.get_name(group).equals(newText)) {
+								if (VariableComponent.get_variableName(group).equals(newText)) {
 									return "That name is used.";
 								}
 							}
@@ -230,7 +230,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				var group = new GroupModel(groups);
 
-				GroupComponent.set_name(group, value);
+				VariableComponent.set_variableName(group, value);
 
 				var before = GroupListSnapshotOperation.takeSnapshot(_editor);
 

@@ -67,6 +67,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label,
 			boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
+		
 		super(label);
 
 		_beforeData = beforeData;
@@ -110,7 +111,12 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 		for (var data : list) {
 			var id = data.getString("-id");
+			
 			var model = sceneModel.getDisplayList().findById(id);
+			
+			if (model == null) {
+				model = sceneModel.getGroupsModel().findById(id);
+			}
 
 			if (model != null) {
 				model.read(data, project);
@@ -127,6 +133,8 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 		editor.refreshOutline_basedOnId();
 		
 		editor.setSelectionFromIdList(selectionIds);
+		
+		editor.updatePropertyPagesContentWithSelection();
 
 		editor.setDirty(true);
 	}

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core.codegen;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,10 +39,10 @@ import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
+import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
@@ -101,10 +103,11 @@ public class SceneCodeDomBuilder {
 	private MethodDeclDom buildCreateMethod(SceneModel sceneModel) {
 		var methodDecl = new MethodDeclDom("create");
 
-		var worldModel = sceneModel.getDisplayList();
 		var fieldModels = new ArrayList<ObjectModel>();
 
-		for (var model : ParentComponent.get_children(worldModel)) {
+		var hasGroupSet = sceneModel.getGroupsModel().buildHasGroupSet();
+
+		for (var model : sceneModel.getDisplayList().getChildren()) {
 			MethodCallDom methodCall = null;
 
 			if (model instanceof TileSpriteModel) {
@@ -126,6 +129,10 @@ public class SceneCodeDomBuilder {
 			}
 
 			var assignToVar = false;
+
+			if (hasGroupSet.contains(model)) {
+				assignToVar = true;
+			}
 
 			if (VariableComponent.get_variableField(model)) {
 				assignToVar = true;
@@ -169,6 +176,8 @@ public class SceneCodeDomBuilder {
 
 		}
 
+		buildGroups(sceneModel, methodDecl);
+
 		for (var model : fieldModels) {
 			var local = varname(model);
 
@@ -197,6 +206,42 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private void buildGroups(SceneModel sceneModel, MethodDeclDom methodDecl) {
+
+		var instructions = methodDecl.getInstructions();
+
+		var len = instructions.size();
+
+		for (var group : sceneModel.getGroupsModel().getGroups()) {
+			var groupName = varname(group);
+
+			var methodCall = buildCreateGroup(methodDecl, group);
+
+			if (VariableComponent.get_variableField(group)) {
+				var fieldName = JSCodeUtils.fieldOf(groupName);
+				methodCall.setReturnToVar("this." + fieldName);
+				methodCall.setDeclareReturnToVar(false);
+			} else {
+				methodCall.setReturnToVar(groupName);
+			}
+		}
+
+		if (instructions.size() > len) {
+			instructions.add(new RawCode(""));
+		}
+	}
+
+	@SuppressWarnings("static-method")
+	private MethodCallDom buildCreateGroup(MethodDeclDom methodDecl, GroupModel group) {
+		var call = new MethodCallDom("group", "this.add");
+
+		var array = group.getChildren().stream().map(model -> varname(model)).collect(joining(", "));
+		call.arg("[ " + array + " ]");
+		methodDecl.getInstructions().add(call);
+
+		return call;
 	}
 
 	@SuppressWarnings("static-method")

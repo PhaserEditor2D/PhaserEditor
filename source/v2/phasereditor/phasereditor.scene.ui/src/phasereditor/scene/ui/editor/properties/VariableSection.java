@@ -21,30 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolItem;
 
-import phasereditor.scene.core.GameObjectEditorComponent;
-import phasereditor.scene.core.GroupComponent;
-import phasereditor.scene.core.GroupModel;
-import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.VariableComponent;
-import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
@@ -63,7 +51,7 @@ public class VariableSection extends ScenePropertySection {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof GameObjectEditorComponent;
+		return obj instanceof VariableComponent;
 	}
 
 	@Override
@@ -88,131 +76,6 @@ public class VariableSection extends ScenePropertySection {
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 		manager.add(_fieldAction);
-	}
-
-	abstract class GroupMenuAction extends Action {
-
-		public GroupMenuAction(String text, String icon) {
-			super(text);
-
-			setImageDescriptor(EditorSharedImages.getImageDescriptor(icon));
-		}
-
-		@SuppressWarnings({ "cast", "rawtypes", "unchecked" })
-		@Override
-		public void runWithEvent(Event event) {
-
-			var manager = new MenuManager();
-
-			var editor = getEditor();
-
-			var groups = ParentComponent.get_children(editor.getSceneModel().getGroupsModel());
-
-			fillMenu(manager, editor, (List<GroupModel>) (List) groups);
-
-			var menu = manager.createContextMenu(((ToolItem) event.widget).getParent());
-			menu.setVisible(true);
-
-		}
-
-		protected abstract void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups);
-	}
-
-	abstract class GroupAction extends Action {
-
-		private GroupModel _group;
-
-		public GroupAction(GroupModel group, String icon) {
-
-			super(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(icon));
-
-			_group = group;
-		}
-
-		@Override
-		public void runWithEvent(Event event) {
-			var editor = getEditor();
-
-			var before = GroupListSnapshotOperation.takeSnapshot(editor);
-
-			var groupChildren = ParentComponent.get_children(_group);
-
-			performGroupOperation(groupChildren);
-
-			var after = GroupListSnapshotOperation.takeSnapshot(editor);
-
-			editor.executeOperation(new GroupListSnapshotOperation(before, after, getText()));
-
-			editor.setDirty(true);
-			editor.getScene().redraw();
-			editor.refreshOutline();
-
-			editor.updatePropertyPagesContentWithSelection();
-
-		}
-
-		protected abstract void performGroupOperation(List<ObjectModel> groupChildren);
-	}
-
-	class AddToGroupMenuAction extends GroupMenuAction {
-
-		public AddToGroupMenuAction() {
-			super("Add selected objects to a group.", IMG_ADD_TO_GROUP);
-		}
-
-		@Override
-		protected void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups) {
-
-			groups.stream().filter(group -> {
-
-				// do not include groups that contains one of the selected models
-
-				var children = ParentComponent.get_children(group);
-				for (var model : getModels()) {
-					if (children.contains(model)) {
-						return false;
-					}
-				}
-				return true;
-			}).forEach(group -> {
-				manager.add(new GroupAction(group, IMG_ADD) {
-
-					@Override
-					protected void performGroupOperation(List<ObjectModel> groupChildren) {
-						groupChildren.addAll(getModels());
-					}
-
-				});
-			});
-
-		}
-	}
-
-	class RemoveFromGroupMenuAction extends GroupMenuAction {
-
-		public RemoveFromGroupMenuAction() {
-			super("Remove selcted objects from a group.", IMG_REMOVE_FROM_GROUP);
-		}
-
-		@Override
-		protected void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups) {
-			groups.stream().filter(group -> {
-
-				// just accepts the groups that contains all the selected objects.
-
-				return ParentComponent.get_children(group).containsAll(getModels());
-			}).forEach(group -> {
-				manager.add(new GroupAction(group, IMG_DELETE) {
-
-					@Override
-					protected void performGroupOperation(List<ObjectModel> groupChildren) {
-						groupChildren.removeAll(getModels());
-					}
-
-				});
-			});
-		}
-
 	}
 
 	private void createActions() {
@@ -244,21 +107,6 @@ public class VariableSection extends ScenePropertySection {
 		});
 	}
 
-	class MorphAction extends Action {
-		private String _toType;
-
-		public MorphAction(String toType) {
-			super("Morph To " + toType);
-			_toType = toType;
-		}
-
-		@Override
-		public void run() {
-			SceneUI.action_MorphObjectsToNewType(getEditor(), getModels(), _toType);
-		}
-
-	}
-
 	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
@@ -271,6 +119,7 @@ public class VariableSection extends ScenePropertySection {
 				flatValues_to_boolean(models.stream().map(model -> VariableComponent.get_variableField(model))));
 
 		listen(_editorNameText, value -> {
+			
 			models.stream().forEach(model -> VariableComponent.set_variableName(model, value));
 
 			getEditor().setDirty(true);

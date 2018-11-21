@@ -347,6 +347,10 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var model : _editor.getSelectionList()) {
+			
+			if (!TransformComponent.is(model)) {
+				continue;
+			}
 
 			gc.setForeground(selectionColor);
 

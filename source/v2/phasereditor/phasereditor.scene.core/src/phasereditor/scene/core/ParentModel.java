@@ -152,5 +152,9 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 			child.visit(visitor);
 		}
 	}
+	
+	public List<ObjectModel> getChildren() {
+		return ParentComponent.get_children(this);
+	}
 
 }

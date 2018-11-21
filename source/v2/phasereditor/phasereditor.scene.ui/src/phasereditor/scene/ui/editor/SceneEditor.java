@@ -1,6 +1,5 @@
 package phasereditor.scene.ui.editor;
 
-import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -67,8 +66,6 @@ public class SceneEditor extends EditorPart {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				out.println("outliner selection changed");
-
 				_selectionProvider.setAutoFireSelectionChanged(false);
 				_selectionProvider.setSelection(event.getSelection());
 				_selectionProvider.setAutoFireSelectionChanged(true);

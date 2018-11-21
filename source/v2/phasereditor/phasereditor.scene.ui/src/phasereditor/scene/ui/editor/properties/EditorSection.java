@@ -44,11 +44,11 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
-import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
@@ -188,7 +188,7 @@ public class EditorSection extends ScenePropertySection {
 
 		public GroupAction(GroupModel group, String icon) {
 
-			super(GroupComponent.get_name(group), EditorSharedImages.getImageDescriptor(icon));
+			super(VariableComponent.get_variableName(group), EditorSharedImages.getImageDescriptor(icon));
 
 			_group = group;
 		}
@@ -349,7 +349,7 @@ public class EditorSection extends ScenePropertySection {
 			var groups = ParentComponent.get_children(getEditor().getSceneModel().getGroupsModel());
 
 			var str = groups.stream().filter(group -> ParentComponent.get_children(group).containsAll(models))
-					.map(group -> GroupComponent.get_name(group)).collect(Collectors.joining(","));
+					.map(group -> VariableComponent.get_variableName(group)).collect(Collectors.joining(","));
 
 			_groupsLabel.setText("[" + str + "]");
 
