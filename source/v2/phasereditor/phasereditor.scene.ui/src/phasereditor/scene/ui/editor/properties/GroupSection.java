@@ -24,8 +24,10 @@ package phasereditor.scene.ui.editor.properties;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -33,6 +35,7 @@ import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.ui.editor.outline.SceneObjectsViewer;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvas;
@@ -45,6 +48,7 @@ import phasereditor.ui.properties.FormPropertyPage;
 public class GroupSection extends ScenePropertySection {
 
 	private GroupChildrenViewer _childrenViewer;
+	private Button _selectInSceneButton;
 
 	public GroupSection(FormPropertyPage page) {
 		super("Group", page);
@@ -72,7 +76,31 @@ public class GroupSection extends ScenePropertySection {
 			_childrenViewer = new GroupChildrenViewer(filteredTree.getTree());
 		}
 
+		{
+			_selectInSceneButton = new Button(comp, 0);
+			_selectInSceneButton.setText("Select In Scene");
+			_selectInSceneButton.setImage(EditorSharedImages.getImage(IMG_BULLET_GO));
+			_selectInSceneButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			_selectInSceneButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				selectInScene();
+			}));
+
+			_childrenViewer.addSelectionChangedListener(e -> {
+				updateSelectButton();
+			});
+		}
+
 		return comp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void selectInScene() {
+		getEditor().setSelection(_childrenViewer.getStructuredSelection().toList());
+		getEditor().updatePropertyPagesContentWithSelection();
+	}
+
+	private void updateSelectButton() {
+		_selectInSceneButton.setEnabled(!_childrenViewer.getStructuredSelection().isEmpty());
 	}
 
 	class GroupChildrenViewer extends SceneObjectsViewer {
@@ -96,6 +124,7 @@ public class GroupSection extends ScenePropertySection {
 	@Override
 	public void update_UI_from_Model() {
 		_childrenViewer.updateWithModels();
+		updateSelectButton();
 	}
 
 }

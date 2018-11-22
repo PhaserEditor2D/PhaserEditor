@@ -90,6 +90,7 @@ public interface IEditorSharedImages {
 	String IMG_FONT_MINUS = "icons/font_shrink.png";
 	String IMG_TEXT_ABC = "icons/text_abc.png";
 	String IMG_GOTO_SOURCE = "icons/source.png";
+	String IMG_BULLET_GO = "icons/bullet-go.png";
 
 	String IMG_TEXT_ALIGN_LEFT = "icons/text_align_left.png";
 	String IMG_TEXT_ALIGN_CENTER = "icons/text_align_center.png";
@@ -130,9 +131,9 @@ public interface IEditorSharedImages {
 	String IMG_SHOW_SUB_TYPES = "icons/sub_co.png";
 	String IMG_SHOW_SUPER_TYPES = "icons/super_co.png";
 	String IMG_SCENE_GROUP = "icons/basket.png";
-	String IMG_ADD_TO_GROUP = "icons/basket-put.png";
+	String IMG_ADD_TO_GROUP = "icons/basket-add.png";
 	String IMG_MOVE_TO_GROUP = "icons/basket-go.png";
-	String IMG_REMOVE_FROM_GROUP = "icons/basket-remove.png";
+	String IMG_REMOVE_FROM_GROUP = "icons/basket-delete.png";
 
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";
