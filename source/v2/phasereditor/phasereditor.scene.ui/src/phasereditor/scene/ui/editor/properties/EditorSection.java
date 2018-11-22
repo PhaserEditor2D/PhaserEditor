@@ -30,6 +30,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -45,6 +48,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.GroupModel;
+import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
@@ -188,7 +192,8 @@ public class EditorSection extends ScenePropertySection {
 
 		public GroupAction(GroupModel group, String icon) {
 
-			super(VariableComponent.get_variableName(group), EditorSharedImages.getImageDescriptor(icon));
+			super(VariableComponent.get_variableName(group) + " (" + group.getChildren().size() + ")",
+					EditorSharedImages.getImageDescriptor(icon));
 
 			_group = group;
 		}
@@ -247,6 +252,63 @@ public class EditorSection extends ScenePropertySection {
 					}
 
 				});
+			});
+
+			manager.add(new Separator());
+			manager.add(new Action("Add To New Group", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
+				@Override
+				public void run() {
+					
+					var sceneModel = editor.getSceneModel();
+
+					var groupsModel = sceneModel.getGroupsModel();
+					
+					var nameComputer = new NameComputer(groupsModel);
+					
+					var initialName = nameComputer.newName("group");
+
+					var dlg = new InputDialog(editor.getSite().getShell(), "Create Group", "Enter the name of the new Group:",
+							initialName, new IInputValidator() {
+
+								@Override
+								public String isValid(String newText) {
+
+									for (var group : ParentComponent.get_children(groupsModel)) {
+										if (VariableComponent.get_variableName(group).equals(newText)) {
+											return "That name is used.";
+										}
+									}
+
+									return null;
+								}
+							});
+
+					if (dlg.open() == Window.OK) {
+						var value = dlg.getValue();
+
+						var group = new GroupModel(groupsModel);
+
+						VariableComponent.set_variableName(group, value);
+
+						var before = GroupListSnapshotOperation.takeSnapshot(editor);
+
+						groupsModel.getChildren().add(group);
+						group.getChildren().addAll(getModels());
+
+						var after = GroupListSnapshotOperation.takeSnapshot(editor);
+
+						editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
+
+						editor.refreshOutline();
+
+						editor.setDirty(true);
+						
+						update_UI_from_Model();
+						
+					}
+					
+					
+				}
 			});
 
 		}
@@ -354,17 +416,6 @@ public class EditorSection extends ScenePropertySection {
 			_groupsLabel.setText("[" + str + "]");
 
 			_removeFromGroupAction.setEnabled(str.length() > 2);
-
-			_addToGroupAction.setEnabled(groups.stream().filter(group -> {
-				// do not include groups that contains one of the selected models
-				var children = ParentComponent.get_children(group);
-				for (var model : getModels()) {
-					if (children.contains(model)) {
-						return false;
-					}
-				}
-				return true;
-			}).count() > 0);
 
 		}
 

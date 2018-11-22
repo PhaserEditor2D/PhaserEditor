@@ -122,5 +122,5 @@ public class SceneUI {
 			editor.executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + morphToType));
 		}
 	}
-
+	
 }

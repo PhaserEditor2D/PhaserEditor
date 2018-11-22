@@ -165,8 +165,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 			var nameComputer = new NameComputer(groups);
 			var initialName = nameComputer.newName("group");
 
-			var dlg = new InputDialog(event.widget.getDisplay().getActiveShell(), "Create Group",
-					"Enter the name of the new group:", initialName, new IInputValidator() {
+			var dlg = new InputDialog(editor.getSite().getShell(), "Create Group", "Enter the name of the new Group:",
+					initialName, new IInputValidator() {
 
 						@Override
 						public String isValid(String newText) {
@@ -188,11 +188,11 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				VariableComponent.set_variableName(group, value);
 
-				var before = GroupListSnapshotOperation.takeSnapshot(_editor);
+				var before = GroupListSnapshotOperation.takeSnapshot(editor);
 
 				ParentComponent.get_children(groups).add(group);
 
-				var after = GroupListSnapshotOperation.takeSnapshot(_editor);
+				var after = GroupListSnapshotOperation.takeSnapshot(editor);
 
 				editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
 
