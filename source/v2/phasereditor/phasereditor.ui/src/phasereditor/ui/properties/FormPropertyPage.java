@@ -124,9 +124,11 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			var newSection = sectionMap.get(row.getSection().getClass());
 
 			if (newSection == null) {
-				row.setVisible(false);
 				var gd = (GridData) row.getLayoutData();
 				gd.heightHint = 0;
+				gd.grabExcessVerticalSpace = false;
+				gd.verticalAlignment = SWT.TOP;
+				row.setVisible(false);
 			}
 		}
 
@@ -143,7 +145,13 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 				if (oldSection.getClass() == section.getClass()) {
 					row.setVisible(true);
 					var gd = (GridData) row.getLayoutData();
-					gd.heightHint = -1;
+					gd.heightHint = SWT.DEFAULT;
+					
+					if (section.isFillSpace()) {
+						gd.grabExcessVerticalSpace = true;
+						gd.verticalAlignment = SWT.FILL;
+					}
+					
 					oldSection.setModels(models);
 					oldSection.update_UI_from_Model();
 					createNew = false;
@@ -166,6 +174,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 	public class RowComp extends Composite {
 
 		private FormPropertySection _section;
+		boolean _collapsed = false;
 
 		public RowComp(Composite parent, FormPropertySection section) {
 			super(parent, SWT.NONE);
@@ -177,10 +186,10 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 				gl.marginWidth = 0;
 				gl.marginHeight = 0;
 				setLayout(gl);
-				setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+				setLayoutData(createControlGridData());
 			}
 
-			var sectionId = section.getClass().getSimpleName();
+			var sectionId = getSectionId(section);
 
 			var collapsed = _collapsedSectionsIds.contains(sectionId);
 
@@ -201,7 +210,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
 
 			var control = section.createContent(this);
-			control.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+			control.setLayoutData(createControlGridData());
 
 			var toolbarManager = new ToolBarManager();
 			section.fillToolbar(toolbarManager);
@@ -225,7 +234,6 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			sep.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 			var expandListener = new MouseAdapter() {
-				boolean _collapsed = false;
 
 				@Override
 				public void mouseUp(MouseEvent e) {
@@ -238,8 +246,11 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 					control.setVisible(!_collapsed);
 
-					var gd = (GridData) control.getLayoutData();
-					gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
+					{
+						var gd = createControlGridData();
+						gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
+						control.setLayoutData(gd);
+					}
 
 					control.requestLayout();
 
@@ -258,8 +269,17 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			collapseBtn.addMouseListener(expandListener);
 		}
 
+		private String getSectionId(FormPropertySection section) {
+			return section.getClass().getSimpleName();
+		}
+
 		public FormPropertySection getSection() {
 			return _section;
+		}
+
+		GridData createControlGridData() {
+			var expands = _section.isFillSpace() && !_collapsed;
+			return new GridData(SWT.FILL, expands ? SWT.FILL : SWT.TOP, true, expands);
 		}
 
 	}

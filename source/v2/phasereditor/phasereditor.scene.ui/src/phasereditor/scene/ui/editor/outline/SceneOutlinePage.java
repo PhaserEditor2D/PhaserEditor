@@ -47,15 +47,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
-import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.GroupsModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
-import phasereditor.scene.core.TextureComponent;
-import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -63,8 +59,6 @@ import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
-import phasereditor.ui.FrameData;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 import phasereditor.ui.TreeCanvasDropAdapter;
@@ -111,65 +105,27 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	@Override
 	public void createControl(Composite parent) {
 		_filterTree = new FilteredTreeCanvas(parent, SWT.NONE);
-		_viewer = new TreeCanvasViewer(_filterTree.getTree(), new SceneOutlineContentProvider(),
-				new OutlineLabelProvider2(_editor)) {
+		_viewer = new SceneObjectsViewer(_filterTree.getTree(), getEditor(), new SceneOutlineContentProvider()) {
 
 			@Override
-			protected void setItemIconProperties(TreeCanvasItem item) {
-				super.setItemIconProperties(item);
+			protected void setItemProperties(TreeCanvasItem item) {
+				super.setItemProperties(item);
 
 				var data = item.getData();
-
-				var sceneRenderer = getEditor().getScene().getSceneRenderer();
-
-				if (data instanceof TextureComponent) {
-					var frame = TextureComponent.get_frame((ObjectModel) data);
-					var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
-					if (renderer != null) {
-						item.setRenderer(renderer);
-					}
-				}
-
-				if (data instanceof BitmapTextModel) {
-					var model = (BitmapTextModel) data;
-
-					var image = sceneRenderer.getBitmapTextImage(model);
-
-					if (image != null) {
-						item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
-					}
-				}
-
-				if (data instanceof TileSpriteModel) {
-					var model = (TileSpriteModel) data;
-
-					var image = sceneRenderer.getTileSpriteTextImage(model);
-
-					if (image != null) {
-						item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
-					}
-				}
-
-				if (data instanceof ObjectModel) {
-					var model = (ObjectModel) data;
-					var type = model.getType();
-					item.setKeywords(type);
-				}
 
 				if (data instanceof GroupsModel) {
 					item.setActions(List.of(new CreateNewGroupAction()));
 				}
 			}
-
 		};
-		
+
 		_viewer.getCanvas().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				revealSelectedObjectInScene();
 			}
 		});
-		
+
 		_viewer.setInput(_editor.getSceneModel());
 
 		var scene = _editor.getScene();

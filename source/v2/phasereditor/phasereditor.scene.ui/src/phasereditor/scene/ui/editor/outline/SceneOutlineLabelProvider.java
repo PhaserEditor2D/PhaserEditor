@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Image;
 import phasereditor.scene.core.DisplayListModel;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.GroupComponent;
+import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.GroupsModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.VariableComponent;
@@ -38,11 +39,11 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-public class OutlineLabelProvider2 extends LabelProvider implements IEditorSharedImages {
+public class SceneOutlineLabelProvider extends LabelProvider implements IEditorSharedImages {
 
 	private SceneEditor _editor;
 
-	public OutlineLabelProvider2(SceneEditor editor) {
+	public SceneOutlineLabelProvider(SceneEditor editor) {
 		_editor = editor;
 	}
 
@@ -65,7 +66,9 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 		}
 
 		if (element instanceof GroupComponent) {
-			return VariableComponent.get_variableName((ObjectModel) element);
+			var group = (GroupModel) element;
+			var name = VariableComponent.get_variableName(group);
+			return name + " (" + group.getChildren().size() + ")";
 		}
 
 		return super.getText(element);
@@ -81,7 +84,7 @@ public class OutlineLabelProvider2 extends LabelProvider implements IEditorShare
 		if (element instanceof GroupsModel) {
 			return EditorSharedImages.getImage(IMG_SCENE_GROUP);
 		}
-		
+
 		if (element instanceof GroupComponent) {
 			return EditorSharedImages.getImage(IMG_SCENE_GROUP);
 		}

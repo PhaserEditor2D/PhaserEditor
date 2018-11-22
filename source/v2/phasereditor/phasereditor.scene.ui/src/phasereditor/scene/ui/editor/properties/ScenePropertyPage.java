@@ -29,6 +29,7 @@ import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.GameObjectEditorComponent;
+import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.TextualComponent;
@@ -89,9 +90,9 @@ public class ScenePropertyPage extends FormPropertyPage {
 			list.add(new FlipSection(this));
 		}
 
-//		if (VisibleComponent.is(obj)) {
-//			list.add(new VisibleSection(this));
-//		}
+		// if (VisibleComponent.is(obj)) {
+		// list.add(new VisibleSection(this));
+		// }
 
 		if (TextureComponent.is(obj)) {
 			list.add(new TextureSection(this));
@@ -115,6 +116,10 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		if (AnimationsComponent.is(obj)) {
 			list.add(new AnimationsSection(this));
+		}
+
+		if (GroupComponent.is(obj)) {
+			list.add(new GroupSection(this));
 		}
 
 		// if (obj instanceof SpriteModel) {

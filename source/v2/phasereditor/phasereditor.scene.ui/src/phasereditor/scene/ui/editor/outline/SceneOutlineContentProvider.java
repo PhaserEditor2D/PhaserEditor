@@ -27,6 +27,7 @@ import java.util.Collections;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
@@ -69,6 +70,11 @@ public class SceneOutlineContentProvider implements ITreeContentProvider {
 					sceneModel.getGroupsModel()
 			
 			};
+		}
+		
+		if (parent instanceof GroupModel) {
+			// do not show the children of groups.
+			return new Object[0];
 		}
 
 		if (parent instanceof ParentComponent) {

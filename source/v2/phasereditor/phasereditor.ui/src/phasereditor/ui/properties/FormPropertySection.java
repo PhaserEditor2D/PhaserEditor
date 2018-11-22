@@ -57,10 +57,20 @@ import phasereditor.ui.IEditorSharedImages;
 public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	public List<T> _models;
 	private String _name;
+	private boolean _fillSpace;
 
 	public FormPropertySection(String name) {
 		_name = name;
 		_models = new ArrayList<>();
+		_fillSpace = false;
+	}
+	
+	public boolean isFillSpace() {
+		return _fillSpace;
+	}
+	
+	public void setFillSpace(boolean fillSpace) {
+		_fillSpace = fillSpace;
 	}
 
 	public String getName() {

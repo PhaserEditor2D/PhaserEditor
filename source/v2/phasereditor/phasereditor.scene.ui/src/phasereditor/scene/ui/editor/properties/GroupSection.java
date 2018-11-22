@@ -21,10 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.ArrayList;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.scene.core.GroupComponent;
+import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
+import phasereditor.scene.ui.editor.outline.SceneObjectsViewer;
+import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.TreeArrayContentProvider;
+import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
@@ -33,8 +44,11 @@ import phasereditor.ui.properties.FormPropertyPage;
  */
 public class GroupSection extends ScenePropertySection {
 
+	private GroupChildrenViewer _childrenViewer;
+
 	public GroupSection(FormPropertyPage page) {
 		super("Group", page);
+		setFillSpace(true);
 	}
 
 	@Override
@@ -44,15 +58,44 @@ public class GroupSection extends ScenePropertySection {
 
 	@Override
 	public Control createContent(Composite parent) {
-		
-		
-		
-		return null;
+
+		Composite comp = new Composite(parent, SWT.NONE);
+		comp.setLayout(new GridLayout(1, false));
+
+		{
+			label(comp, "Children:", "Phaser.GameObjects.Group.children");
+
+			var filteredTree = new FilteredTreeCanvas(comp, 0);
+			var gd = new GridData(GridData.FILL_BOTH);
+			filteredTree.setLayoutData(gd);
+
+			_childrenViewer = new GroupChildrenViewer(filteredTree.getTree());
+		}
+
+		return comp;
+	}
+
+	class GroupChildrenViewer extends SceneObjectsViewer {
+
+		public GroupChildrenViewer(TreeCanvas canvas) {
+			super(canvas, getEditor(), new TreeArrayContentProvider());
+		}
+
+		public void updateWithModels() {
+			var list = new ArrayList<ObjectModel>();
+
+			for (var group : getModels()) {
+				list.addAll(ParentComponent.get_children(group));
+			}
+
+			setInput(list);
+		}
+
 	}
 
 	@Override
 	public void update_UI_from_Model() {
-		
+		_childrenViewer.updateWithModels();
 	}
 
 }
