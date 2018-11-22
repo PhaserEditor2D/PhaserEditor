@@ -134,6 +134,7 @@ public interface IEditorSharedImages {
 	String IMG_ADD_TO_GROUP = "icons/basket-add.png";
 	String IMG_MOVE_TO_GROUP = "icons/basket-go.png";
 	String IMG_REMOVE_FROM_GROUP = "icons/basket-delete.png";
+	String IMG_SELECT_GROUP = "icons/basket-go.png";
 
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";

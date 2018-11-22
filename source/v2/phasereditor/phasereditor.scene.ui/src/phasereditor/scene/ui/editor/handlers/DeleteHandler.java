@@ -9,7 +9,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.GroupModel;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 
@@ -28,16 +27,21 @@ public class DeleteHandler extends AbstractHandler {
 
 			for (var obj : editor.getSelectionList()) {
 				var group = (GroupModel) obj;
-				ParentComponent.removeFromParent(group);
+				group.getChildren().clear();
+				editor.getSceneModel().getGroupsModel().getChildren().remove(group);
 			}
-
-			editor.refreshOutline_basedOnId();
-			
-			editor.setSelection(List.of());
 
 			var after = GroupListSnapshotOperation.takeSnapshot(editor);
 
 			editor.executeOperation(new GroupListSnapshotOperation(before, after, "Delete groups."));
+
+			editor.refreshOutline();
+
+			editor.setSelection(List.of());
+			
+			editor.updatePropertyPagesContentWithSelection();
+			
+			editor.setDirty(true);
 
 		} else {
 			editor.getScene().delete();

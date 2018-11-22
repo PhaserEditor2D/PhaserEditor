@@ -71,6 +71,7 @@ public class EditorSection extends ScenePropertySection {
 	private IAction _addToGroupAction;
 	private IAction _removeFromGroupAction;
 	private Label _groupsLabel;
+	private SelectGroupMenuAction _selectGroupAction;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -137,6 +138,7 @@ public class EditorSection extends ScenePropertySection {
 
 			manager.add(_addToGroupAction);
 			manager.add(_removeFromGroupAction);
+			manager.add(_selectGroupAction);
 
 			manager.createControl(rightComp);
 
@@ -155,6 +157,7 @@ public class EditorSection extends ScenePropertySection {
 
 		manager.add(_addToGroupAction);
 		manager.add(_removeFromGroupAction);
+		manager.add(_selectGroupAction);
 
 	}
 
@@ -190,10 +193,10 @@ public class EditorSection extends ScenePropertySection {
 
 		private GroupModel _group;
 
-		public GroupAction(GroupModel group, String icon) {
+		public GroupAction(GroupModel group, String prefix, String icon) {
 
-			super(VariableComponent.get_variableName(group) + " (" + group.getChildren().size() + ")",
-					EditorSharedImages.getImageDescriptor(icon));
+			super(prefix + " \"" + VariableComponent.get_variableName(group) + "\" (" + group.getChildren().size()
+					+ ")", EditorSharedImages.getImageDescriptor(icon));
 
 			_group = group;
 		}
@@ -244,7 +247,7 @@ public class EditorSection extends ScenePropertySection {
 				}
 				return true;
 			}).forEach(group -> {
-				manager.add(new GroupAction(group, IMG_ADD) {
+				manager.add(new GroupAction(group, "Add To ", IMG_ADD) {
 
 					@Override
 					protected void performGroupOperation(List<ObjectModel> groupChildren) {
@@ -258,17 +261,17 @@ public class EditorSection extends ScenePropertySection {
 			manager.add(new Action("Add To New Group", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
 				@Override
 				public void run() {
-					
+
 					var sceneModel = editor.getSceneModel();
 
 					var groupsModel = sceneModel.getGroupsModel();
-					
+
 					var nameComputer = new NameComputer(groupsModel);
-					
+
 					var initialName = nameComputer.newName("group");
 
-					var dlg = new InputDialog(editor.getSite().getShell(), "Create Group", "Enter the name of the new Group:",
-							initialName, new IInputValidator() {
+					var dlg = new InputDialog(editor.getSite().getShell(), "Create Group",
+							"Enter the name of the new Group:", initialName, new IInputValidator() {
 
 								@Override
 								public String isValid(String newText) {
@@ -302,12 +305,11 @@ public class EditorSection extends ScenePropertySection {
 						editor.refreshOutline();
 
 						editor.setDirty(true);
-						
+
 						update_UI_from_Model();
-						
+
 					}
-					
-					
+
 				}
 			});
 
@@ -328,7 +330,7 @@ public class EditorSection extends ScenePropertySection {
 
 				return ParentComponent.get_children(group).containsAll(getModels());
 			}).forEach(group -> {
-				manager.add(new GroupAction(group, IMG_DELETE) {
+				manager.add(new GroupAction(group, "Remove From ", IMG_DELETE) {
 
 					@Override
 					protected void performGroupOperation(List<ObjectModel> groupChildren) {
@@ -336,6 +338,63 @@ public class EditorSection extends ScenePropertySection {
 					}
 
 				});
+			});
+
+			manager.add(new Separator());
+			manager.add(
+					new Action("Remove From All Groups", EditorSharedImages.getImageDescriptor(IMG_REMOVE_FROM_GROUP)) {
+						@Override
+						public void run() {
+							var before = GroupListSnapshotOperation.takeSnapshot(editor);
+
+							for (var group : groups) {
+								group.getChildren().removeAll(getModels());
+							}
+
+							var after = GroupListSnapshotOperation.takeSnapshot(editor);
+
+							editor.executeOperation(new GroupListSnapshotOperation(before, after, getText()));
+
+							editor.setDirty(true);
+							editor.getScene().redraw();
+							editor.refreshOutline();
+
+							editor.updatePropertyPagesContentWithSelection();
+						}
+					});
+		}
+
+	}
+
+	class SelectGroupMenuAction extends GroupMenuAction {
+
+		public SelectGroupMenuAction() {
+			super("Select Group", IMG_SELECT_GROUP);
+		}
+
+		@Override
+		protected void fillMenu(MenuManager manager, SceneEditor editor, List<GroupModel> groups) {
+			for (var group : groups) {
+				manager.add(new Action("Select '" + VariableComponent.get_variableName(group) + "'",
+						EditorSharedImages.getImageDescriptor(IMG_SELECT_GROUP)) {
+					@Override
+					public void run() {
+						getEditor().setSelection(List.of(group));
+						getEditor().updatePropertyPagesContentWithSelection();
+					}
+				});
+			}
+
+			manager.add(new Separator());
+
+			manager.add(new Action("Select All Groups", EditorSharedImages.getImageDescriptor(IMG_SELECT_GROUP)) {
+
+				@SuppressWarnings("all")
+				@Override
+				public void run() {
+					getEditor().setSelection((List) groups);
+					getEditor().updatePropertyPagesContentWithSelection();
+				}
 			});
 		}
 
@@ -351,8 +410,8 @@ public class EditorSection extends ScenePropertySection {
 		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.BOTTOM));
 
 		_addToGroupAction = new AddToGroupMenuAction();
-
 		_removeFromGroupAction = new RemoveFromGroupMenuAction();
+		_selectGroupAction = new SelectGroupMenuAction();
 	}
 
 	class MorphAction extends Action {
@@ -416,6 +475,8 @@ public class EditorSection extends ScenePropertySection {
 			_groupsLabel.setText("[" + str + "]");
 
 			_removeFromGroupAction.setEnabled(str.length() > 2);
+
+			_selectGroupAction.setEnabled(_removeFromGroupAction.isEnabled());
 
 		}
 
