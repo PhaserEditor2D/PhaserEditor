@@ -303,6 +303,8 @@ public class EditorSection extends ScenePropertySection {
 						editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
 
 						editor.refreshOutline();
+						
+						editor.updatePropertyPagesContentWithSelection();
 
 						editor.setDirty(true);
 

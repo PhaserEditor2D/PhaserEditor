@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.outline;
 
 import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,6 +197,14 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
 
+				//TODO: just for now, we should fix the bug of clicking on a TreeCanvas action.
+				swtRun( () -> {
+					editor.setSelection(List.of(group));
+					
+					editor.updatePropertyPagesContentWithSelection();
+				});
+				
+								
 				refresh();
 
 				editor.setDirty(true);
