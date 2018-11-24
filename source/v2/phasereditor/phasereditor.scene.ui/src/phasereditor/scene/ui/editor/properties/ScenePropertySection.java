@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
@@ -61,6 +64,43 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 	public SceneCanvas getScene() {
 		return getEditor().getScene();
+	}
+
+	@SuppressWarnings({ "static-method" })
+	protected void listen(SourceViewer viewer, Consumer<String> listener) {
+		var control = viewer.getControl();
+
+		var oldListener = control.getData("-prop-listener");
+		if (oldListener != null) {
+			control.removeFocusListener((FocusListener) oldListener);
+		}
+
+		var controlListener = new FocusListener() {
+			private String _initial;
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				fireChanged();
+			}
+
+			private void fireChanged() {
+				var value = viewer.getDocument().get();
+
+				if (!value.equals(_initial)) {
+					listener.accept(value);
+					_initial = value;
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				_initial = viewer.getDocument().get();
+			}
+		};
+
+		control.addFocusListener(controlListener);
+		control.setData("-prop-listener", controlListener);
+
 	}
 
 	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models) {

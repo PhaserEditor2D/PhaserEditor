@@ -174,7 +174,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 	}
 
-	IFile findFile(TexturePackerEditorFrame frame) {
+	public IFile findFile(TexturePackerEditorFrame frame) {
 		String regionName = frame.getRegionFilename();
 
 		for (IFile file : _model.getImageFiles()) {
@@ -548,7 +548,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 								}
 
 								TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename,
-										region.index);
+										region.index, newEditorPage);
 
 								frame.setName(PhaserEditorUI.getNameFromFilename(regionFilename));
 								frame.setFrameX(region.left);
@@ -1076,7 +1076,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		if (adapter == IPropertySheetPage.class) {
-			return new TexturePackerPGridPage(this);
+			// return new TexturePackerPGridPage(this);
+			return new TexturePackerPropertyPage(this);
 		}
 
 		if (adapter.equals(IContextProvider.class)) {

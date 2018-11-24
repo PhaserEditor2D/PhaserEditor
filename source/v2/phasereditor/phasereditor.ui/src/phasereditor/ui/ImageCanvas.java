@@ -232,9 +232,13 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		}
 
 		ZoomCalculator calc = calc();
-		calc.fit(getBounds());
+		calc.fit(getFitArea());
 
 		setScaleAndOffset(calc);
+	}
+	
+	protected Rectangle getFitArea() {
+		return getBounds();
 	}
 
 	protected void setScaleAndOffset(ZoomCalculator calc) {
@@ -314,6 +318,10 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 
 	public FrameData getFrameData() {
 		return _frameData;
+	}
+	
+	public void setFrameData(FrameData frameData) {
+		_frameData = frameData;
 	}
 
 	private void setImage(Image image) {

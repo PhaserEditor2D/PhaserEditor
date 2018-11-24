@@ -21,29 +21,48 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editor;
 
-import phasereditor.atlas.core.AtlasFrame;
+import java.util.ArrayList;
+import java.util.List;
+
+import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class TexturePackerEditorFrame extends AtlasFrame {
+public class TexturePackerPropertyPage extends FormPropertyPage {
 
-	private String _regionFilename;
-	private EditorPage _page;
+	private TexturePackerEditor _editor;
 
-	public TexturePackerEditorFrame(String regionFilename, int regionIndex, EditorPage page) {
-		super(regionIndex);
-		_regionFilename = regionFilename;
-		_page = page;
+	public TexturePackerPropertyPage(TexturePackerEditor editor) {
+		super();
+		_editor = editor;
 	}
 
-	public String getRegionFilename() {
-		return _regionFilename;
+	@Override
+	protected Object getDefaultModel() {
+		return _editor.getModel();
 	}
 
-	public EditorPage getPage() {
-		return _page;
+	@SuppressWarnings("rawtypes")
+	@Override
+	protected List<FormPropertySection> createSections(Object obj) {
+		var list = new ArrayList<FormPropertySection>();
+
+		if (obj instanceof TexturePackerEditorModel) {
+			list.add(new SettingsSection(_editor));
+		}
+
+		if (obj instanceof EditorPage) {
+			list.add(new PageSection(_editor));
+		}
+
+		if (obj instanceof TexturePackerEditorFrame) {
+			list.add(new FrameSection(_editor));
+		}
+
+		return list;
 	}
 
 }

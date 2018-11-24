@@ -21,29 +21,24 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editor;
 
-import phasereditor.atlas.core.AtlasFrame;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class TexturePackerEditorFrame extends AtlasFrame {
+public abstract class TexturePackerSection<T> extends FormPropertySection<T> {
 
-	private String _regionFilename;
-	private EditorPage _page;
+	private TexturePackerEditor _editor;
 
-	public TexturePackerEditorFrame(String regionFilename, int regionIndex, EditorPage page) {
-		super(regionIndex);
-		_regionFilename = regionFilename;
-		_page = page;
+	public TexturePackerSection(String name, TexturePackerEditor editor) {
+		super(name);
+
+		_editor = editor;
 	}
 
-	public String getRegionFilename() {
-		return _regionFilename;
-	}
-
-	public EditorPage getPage() {
-		return _page;
+	public TexturePackerEditor getEditor() {
+		return _editor;
 	}
 
 }

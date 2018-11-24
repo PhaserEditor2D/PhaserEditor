@@ -147,7 +147,7 @@ public class TexturePackerEditorModel implements IAdaptable {
 
 							String regionFilename = jsonFrame.getString("regionFilename");
 							int regionIndex = jsonFrame.getInt("regionIndex");
-							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename, regionIndex);
+							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename, regionIndex, page);
 							AtlasFrame.updateFrameFromJSON(frame, jsonFrame);
 							frame.setName(jsonFrame.getString("name"));
 
