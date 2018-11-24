@@ -53,84 +53,6 @@
       </editor>
    </extension>
    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=org.eclipse.ui.workbench.navigate">
-         <toolbar
-               id="phasereditor.atlas.ui.maintoolbar"
-               label="Texture Packer">
-            <command
-                  commandId="phasereditor.atlas.ui.editor.buildatlas"
-                  icon="platform:/plugin/phasereditor.ui/icons/cog.png"
-                  style="push">
-               <visibleWhen>
-                  <with
-                        variable="activeEditorId">
-                     <equals
-                           value="phasereditor.atlas.ui.editor.TexturePackerEditor">
-                     </equals>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="phasereditor.atlas.ui.atlasEditorSettings"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="activeEditorId">
-                     <equals
-                           value="phasereditor.atlas.ui.editor.TexturePackerEditor">
-                     </equals>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.eclipse.ui.edit.delete"
-                  style="push"
-                  tooltip="Delete selected frames.">
-               <visibleWhen
-                     checkEnabled="true">
-                  <with
-                        variable="activeEditorId">
-                     <equals
-                           value="phasereditor.atlas.ui.editor.TexturePackerEditor">
-                     </equals>
-                  </with>
-               </visibleWhen>
-            </command>
-         </toolbar>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:phasereditor.atlas.ui.editor.TexturePackerEditor">
-         <command
-               commandId="phasereditor.atlas.ui.editor.buildatlas"
-               icon="platform:/plugin/phasereditor.ui/icons/cog.png"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.atlas.ui.atlasEditorSettings"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activeEditorId">
-                  <equals
-                        value="phasereditor.atlas.ui.editor.TexturePackerEditor">
-                  </equals>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.eclipse.ui.edit.delete"
-               style="push"
-               tooltip="Delete selected frames.">
-         </command>
-      </menuContribution>
-   </extension>
-   <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="phasereditor.atlas.ui.editor.handlers.DeleteAtlasSelectionHandler"
@@ -162,28 +84,6 @@
             </with>
          </activeWhen>
       </handler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.atlas.ui.editor.handlers.BuildAtlasHandler"
-            id="phasereditor.atlas.ui.editor.buildatlas"
-            name="Build Atlas">
-      </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.atlas.ui.editor.handlers.ShowTexturePackerEditorSettingsHandler"
-            id="phasereditor.atlas.ui.atlasEditorSettings"
-            name="Show Texture Packer settings">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commandImages">
-      <image
-            commandId="phasereditor.atlas.ui.atlasEditorSettings"
-            icon="platform:/plugin/phasereditor.ui/icons/wrench.png">
-      </image>
    </extension>
 
 
