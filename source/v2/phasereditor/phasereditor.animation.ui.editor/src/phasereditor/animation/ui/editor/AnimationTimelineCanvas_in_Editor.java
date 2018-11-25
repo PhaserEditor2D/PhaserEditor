@@ -27,12 +27,13 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.animation.ui.AnimationTimelineCanvas;
+import phasereditor.assetpack.core.animations.AnimationModel;
 
 /**
  * @author arian
  *
  */
-public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<AnimationModel_in_Editor> {
+public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<AnimationModel> {
 
 	private AnimationsEditor _editor;
 

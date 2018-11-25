@@ -30,15 +30,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.animation.ui.editor.AnimationModel_in_Editor;
 import phasereditor.animation.ui.editor.AnimationsEditor;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
  *
  */
-public class AnimationSection extends BaseAnimationSection<AnimationModel_in_Editor> {
+public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 	private Label _computedDurationLabel;
 	private Text _durationText;
@@ -58,7 +58,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel_in_Edi
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AnimationModel_in_Editor;
+		return obj instanceof AnimationModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -363,15 +363,6 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel_in_Edi
 			editor.getTimelineCanvas().redraw();
 			editor.setDirty();
 		});
-	}
-
-	private void restartPlayback() {
-		var editor = getEditor();
-		
-		if (!editor.isStopped()) {
-			editor.getStopAction().run();
-			editor.getPlayAction().run();
-		}
 	}
 
 	private void updateTotalDuration() {

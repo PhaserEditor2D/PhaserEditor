@@ -23,6 +23,7 @@ package phasereditor.animation.ui.editor;
 
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 
 /**
@@ -43,8 +44,8 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 	}
 
 	@Override
-	public AnimationModel_in_Editor createAnimation(JSONObject jsonData) {
-		return new AnimationModel_in_Editor(this, jsonData);
+	public AnimationModel createAnimation(JSONObject jsonData) {
+		return new AnimationModel(this, jsonData);
 	}
 	
 }

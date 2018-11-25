@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.animation.ui.editor.AnimationFrameModel_in_Editor;
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.inspect.core.InspectCore;
@@ -39,7 +38,7 @@ import phasereditor.inspect.core.InspectCore;
  *
  */
 @SuppressWarnings("boxing")
-public class AnimationFrameDurationSection extends BaseAnimationSection<AnimationFrameModel_in_Editor> {
+public class AnimationFrameDurationSection extends BaseAnimationSection<AnimationFrameModel> {
 
 	private Text _durationText;
 	private Label _computedDurationLabel;
@@ -50,7 +49,7 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AnimationFrameModel_in_Editor;
+		return obj instanceof AnimationFrameModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -80,7 +79,29 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 
 		update_UI_from_Model();
 
+		registerListeners();
+
 		return comp;
+	}
+
+	private void registerListeners() {
+		listenInt(_durationText, value -> {
+			getModels().stream().forEach(model -> {
+
+				model.setDuration(value);
+				var animation = model.getAnimation();
+				animation.buildTimeline();
+
+			});
+
+			updateTotalDuration();
+
+			var editor = getEditor();
+			editor.getTimelineCanvas().redraw();
+			editor.setDirty();
+			restartPlayback();
+
+		});
 	}
 
 	@Override
@@ -89,26 +110,7 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 
 		// duration
 
-		_durationText.setText(
-				flatValues_to_String(models.stream().map(model -> ((AnimationFrameModel) model).getDuration())));
-
-		listenInt(_durationText, value -> {
-			models.stream().forEach(model -> {
-
-				model.setDuration(value);
-
-				var animation = model.getAnimation();
-				var editor = animation.getEditor();
-
-				animation.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
-			});
-
-			updateTotalDuration();
-
-		});
+		_durationText.setText(flatValues_to_String(models.stream().map(model -> model.getDuration())));
 
 		// computed duration
 
@@ -119,7 +121,7 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 		{
 			var total = 0;
 			for (var model : getModels()) {
-				total += ((AnimationFrameModel) model).getComputedDuration();
+				total += model.getComputedDuration();
 			}
 			_computedDurationLabel.setText("Real duration: " + total);
 		}

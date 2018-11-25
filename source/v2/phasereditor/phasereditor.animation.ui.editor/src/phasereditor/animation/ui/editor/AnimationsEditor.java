@@ -84,6 +84,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
@@ -245,16 +246,16 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		disableToolbar();
 
-		AnimationModel_in_Editor anim = null;
+		AnimationModel anim = null;
 
 		if (!_model.getAnimations().isEmpty()) {
-			anim = (AnimationModel_in_Editor) _model.getAnimations().get(0);
+			anim = _model.getAnimations().get(0);
 		}
 
 		if (_initialAnimtionKey != null) {
 			var opt = _model.getAnimations().stream().filter(a -> a.getKey().equals(_initialAnimtionKey)).findFirst();
 			if (opt.isPresent()) {
-				anim = (AnimationModel_in_Editor) opt.get();
+				anim = opt.get();
 			}
 		}
 
@@ -313,7 +314,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	protected final void openNewAnimationDialog(List<AnimationFrameModel_in_Editor> frames) {
+	protected final void openNewAnimationDialog(List<AnimationFrameModel> frames) {
 
 		String initialName = "untitled";
 
@@ -332,7 +333,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		if (dlg.open() == Window.OK) {
 
-			var anim = new AnimationModel_in_Editor(getModel());
+			var anim = new AnimationModel(getModel());
 
 			anim.setKey(dlg.getValue());
 			if (frames != null) {
@@ -482,7 +483,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				Workbench.getInstance().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
 			@Override
 			public void run() {
-				var anim = (AnimationModel_in_Editor) getAnimationCanvas().getModel();
+				var anim = getAnimationCanvas().getModel();
 				if (anim != null) {
 					deleteAnimations(List.of(anim));
 				}
@@ -510,7 +511,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				if (dlg.open() == Window.OK) {
 					var selected = dlg.getSelected();
 					if (selected != null) {
-						selectAnimation((AnimationModel_in_Editor) selected);
+						selectAnimation(selected);
 					}
 				}
 			}
@@ -656,12 +657,12 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	protected void outliner_selectionChanged(SelectionChangedEvent event) {
 		var elem = event.getStructuredSelection().getFirstElement();
-		var anim = (AnimationModel_in_Editor) elem;
+		var anim = (AnimationModel) elem;
 		loadAnimation(anim);
 		getEditorSite().getSelectionProvider().setSelection(event.getStructuredSelection());
 	}
 
-	public void selectAnimation(AnimationModel_in_Editor anim) {
+	public void selectAnimation(AnimationModel anim) {
 		StructuredSelection selection = anim == null ? StructuredSelection.EMPTY : new StructuredSelection(anim);
 
 		if (_outliner == null) {
@@ -677,7 +678,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	protected void loadAnimation(AnimationModel_in_Editor anim) {
+	protected void loadAnimation(AnimationModel anim) {
 		if (anim == null) {
 			for (var btn : _playbackActions) {
 				btn.setChecked(false);
@@ -854,7 +855,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_timelineCanvas.setModel(_timelineCanvas.getModel());
 	}
 
-	public void deleteAnimations(List<AnimationModel_in_Editor> animations) {
+	public void deleteAnimations(List<AnimationModel> animations) {
 		_model.getAnimations().removeAll(animations);
 
 		if (_outliner != null) {
@@ -864,13 +865,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (animations.contains(_animCanvas.getModel())) {
 			var anim = _model.getAnimations().isEmpty() ? null : _model.getAnimations().get(0);
 
-			selectAnimation((AnimationModel_in_Editor) anim);
+			selectAnimation(anim);
 		}
 
 		setDirty();
 	}
 
-	public void deleteFrames(List<AnimationFrameModel_in_Editor> frames) {
+	public void deleteFrames(List<AnimationFrameModel> frames) {
 
 		boolean running = !_animCanvas.isStopped();
 
@@ -961,7 +962,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		for (var group : result) {
-			var anim = new AnimationModel_in_Editor(_model);
+			var anim = new AnimationModel(_model);
 
 			_model.getAnimation(group.getPrefix());
 
@@ -971,7 +972,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			for (var frame : group.getAssets()) {
 
-				var animFrame = new AnimationFrameModel_in_Editor(anim);
+				var animFrame = new AnimationFrameModel(anim);
 				animFrame.setFrameAsset((IAssetFrameModel) frame);
 				animFrame.setTextureKey(frame.getAsset().getKey());
 
@@ -1000,7 +1001,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (openFirstAnim) {
 
 			if (!_model.getAnimations().isEmpty()) {
-				var anim = (AnimationModel_in_Editor) _model.getAnimations().get(0);
+				var anim = _model.getAnimations().get(0);
 				selectAnimation(anim);
 			}
 

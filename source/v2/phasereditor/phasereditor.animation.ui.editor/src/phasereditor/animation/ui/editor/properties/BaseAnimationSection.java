@@ -41,5 +41,14 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 	public AnimationsEditor getEditor() {
 		return _editor;
 	}
+	
+	protected void restartPlayback() {
+		var editor = getEditor();
+		
+		if (!editor.isStopped()) {
+			editor.getStopAction().run();
+			editor.getPlayAction().run();
+		}
+	}
 
 }

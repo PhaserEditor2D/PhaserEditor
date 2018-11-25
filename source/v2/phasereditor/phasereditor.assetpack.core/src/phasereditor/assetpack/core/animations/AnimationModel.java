@@ -191,9 +191,8 @@ public class AnimationModel implements IAdaptable {
 		return _totalDuration;
 	}
 
-	@SuppressWarnings("static-method")
 	public AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
-		return new AnimationFrameModel(jsonData);
+		return new AnimationFrameModel(this, jsonData);
 	}
 
 	public String getKey() {
@@ -288,6 +287,7 @@ public class AnimationModel implements IAdaptable {
 		if (adapter == IPersistableElement.class) {
 			return (T) this;
 		}
+		
 		return null;
 	}
 

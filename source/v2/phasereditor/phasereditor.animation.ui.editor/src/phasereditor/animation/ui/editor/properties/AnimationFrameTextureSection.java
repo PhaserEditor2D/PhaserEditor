@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
-import phasereditor.animation.ui.editor.AnimationFrameModel_in_Editor;
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -41,7 +40,7 @@ import phasereditor.inspect.core.InspectCore;
  * @author arian
  *
  */
-public class AnimationFrameTextureSection extends BaseAnimationSection<AnimationFrameModel_in_Editor> {
+public class AnimationFrameTextureSection extends BaseAnimationSection<AnimationFrameModel> {
 
 	private SingleFrameCanvas _frameCanvas;
 	private Label _frameLabel;
@@ -52,7 +51,7 @@ public class AnimationFrameTextureSection extends BaseAnimationSection<Animation
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AnimationFrameModel_in_Editor;
+		return obj instanceof AnimationFrameModel;
 	}
 
 	@Override
@@ -85,7 +84,7 @@ public class AnimationFrameTextureSection extends BaseAnimationSection<Animation
 		var models = getModels();
 
 		var frame = (IAssetFrameModel) flatValues_to_Object(
-				models.stream().map(model -> ((AnimationFrameModel) model).getFrameAsset()));
+				models.stream().map(model -> model.getFrameAsset()));
 
 		if (frame == null) {
 			_frameLabel.setText("Frame");

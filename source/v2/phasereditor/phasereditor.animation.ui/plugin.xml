@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="phasereditor.assetpack.core.animations.AnimationModel"
+            class="phasereditor.animation.ui.AnimationAdapterFactory">
+         <adapter
+               type="phasereditor.ui.views.IPreviewFactory">
+         </adapter>
+      </factory>
+   </extension>
    
    
 </plugin>
