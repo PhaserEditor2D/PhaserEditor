@@ -49,6 +49,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 	private Button _showOnStartBtn;
 	private Button _hideOnCompleteBtn;
 	private Button _skipMissedFramesBtn;
+	private Text _repeatDelayText;
+	private Button _yoyoCheckBox;
 
 	public AnimationSection() {
 		super("Animation");
@@ -134,6 +136,26 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 			_repeatText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
+		// repeatDelay
+
+		{
+			var label = new Label(comp, SWT.NONE);
+			label.setText("Repeat Delay");
+			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
+
+			_repeatDelayText = new Text(comp, SWT.BORDER);
+			_repeatDelayText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		}
+
+		// yoyo
+
+		{
+			_yoyoCheckBox = new Button(comp, SWT.CHECK);
+			_yoyoCheckBox.setText("Yoyo");
+			_yoyoCheckBox.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
+			_yoyoCheckBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		}
+
 		{
 			var sep = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL);
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -179,6 +201,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 
 		update_UI_from_Model();
 
+		registerListeners();
+
 		return comp;
 	}
 
@@ -187,12 +211,35 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		// key
-
 		_keyText.setText(flatValues_to_String(models.stream().map(model -> model.getKey())));
+		_keyText.setEditable(models.size() == 1);
+
+		_frameRateText.setText(flatValues_to_String(models.stream().map(model -> model.getFrameRate())));
+
+		_durationText.setText(flatValues_to_String(models.stream().map(model -> model.getDuration())));
+		updateTotalDuration();
+
+		_delayText.setText(flatValues_to_String(models.stream().map(model -> model.getDelay())));
+
+		_repeatText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeat())));
+
+		_repeatDelayText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeatDelay())));
+		
+		_yoyoCheckBox.setSelection(flatValues_to_boolean(models.stream().map(model -> model.isYoyo())));
+		
+		_showOnStartBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isShowOnStart())));
+
+		_hideOnCompleteBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isHideOnComplete())));
+
+		_skipMissedFramesBtn
+				.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isSkipMissedFrames())));
+	}
+
+	@SuppressWarnings("boxing")
+	private void registerListeners() {
 
 		listen(_keyText, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 
 				model.setKey(value);
 
@@ -206,14 +253,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 			});
 		});
 
-		_keyText.setEditable(models.size() == 1);
-
-		// frameRate
-
-		_frameRateText.setText(flatValues_to_String(models.stream().map(model -> model.getFrameRate())));
-
 		listenFloat(_frameRateText, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 
 				model.setFrameRate(value);
 
@@ -226,12 +267,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 			});
 		});
 
-		// duration
-
-		_durationText.setText(flatValues_to_String(models.stream().map(model -> model.getDuration())));
-
 		listenInt(_durationText, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 
 				model.setDuration(value);
 
@@ -247,14 +284,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 
 		});
 
-		updateTotalDuration();
-
-		// delay
-
-		_delayText.setText(flatValues_to_String(models.stream().map(model -> model.getDelay())));
-
 		listenInt(_delayText, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 
 				model.setDelay(value);
 
@@ -267,12 +298,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 			});
 		});
 
-		// repeat
-
-		_repeatText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeat())));
-
 		listenInt(_repeatText, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 
 				model.setRepeat(value);
 
@@ -284,13 +311,31 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 				editor.setDirty();
 			});
 		});
+		
+		listenInt(_repeatDelayText, value -> {
+			getModels().forEach(model -> {
 
-		// showOnStart
+				model.setRepeatDelay(value);
 
-		_showOnStartBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isShowOnStart())));
+				var editor = model.getEditor();
+
+				editor.setDirty();
+			});
+		});
+		
+		listen(_yoyoCheckBox, value -> {
+			getModels().forEach(model -> {
+
+				model.setYoyo(value);
+
+				var editor = model.getEditor();
+
+				editor.setDirty();
+			});
+		});
 
 		listen(_showOnStartBtn, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 
 				model.setShowOnStart(value);
 
@@ -303,12 +348,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 			});
 		});
 
-		// hideOnComplete
-
-		_hideOnCompleteBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isHideOnComplete())));
-
 		listen(_hideOnCompleteBtn, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 				model.setHideOnComplete(value);
 
 				var editor = model.getEditor();
@@ -320,13 +361,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 			});
 		});
 
-		// skipMissedFrames
-
-		_skipMissedFramesBtn
-				.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isSkipMissedFrames())));
-
 		listen(_skipMissedFramesBtn, value -> {
-			models.stream().forEach(model -> {
+			getModels().forEach(model -> {
 				model.setSkipMissedFrames(value);
 
 				var editor = model.getEditor();
