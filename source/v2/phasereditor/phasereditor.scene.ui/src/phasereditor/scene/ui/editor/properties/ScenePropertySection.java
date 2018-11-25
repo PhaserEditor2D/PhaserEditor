@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
@@ -60,6 +61,10 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 	public SceneEditor getEditor() {
 		return ((ScenePropertyPage) _page).getEditor();
+	}
+	
+	public AssetFinder getAssetFinder() {
+		return getEditor().getScene().getAssetFinder();
 	}
 
 	public SceneCanvas getScene() {

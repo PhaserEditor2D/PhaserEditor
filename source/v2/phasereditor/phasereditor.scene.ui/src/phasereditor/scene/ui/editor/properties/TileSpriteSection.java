@@ -296,7 +296,7 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		for (var obj : getModels()) {
 			var model = (TileSpriteModel) obj;
-			var frame = TextureComponent.get_frame(model);
+			var frame = TextureComponent.get_frame(model, getEditor().getScene().getAssetFinder());
 			if (frame != null) {
 				var fd = frame.getFrameData();
 				if (fd != null) {

@@ -51,9 +51,10 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 		var data = item.getData();
 
 		var sceneRenderer = _editor.getScene().getSceneRenderer();
+		var finder = _editor.getScene().getAssetFinder();
 
 		if (data instanceof TextureComponent) {
-			var frame = TextureComponent.get_frame((ObjectModel) data);
+			var frame = TextureComponent.get_frame((ObjectModel) data, finder);
 			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
 			if (renderer != null) {
 				item.setRenderer(renderer);

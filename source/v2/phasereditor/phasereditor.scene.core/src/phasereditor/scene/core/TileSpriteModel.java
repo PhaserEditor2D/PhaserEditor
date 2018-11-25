@@ -24,6 +24,8 @@ package phasereditor.scene.core;
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetFinder;
+
 /**
  * @author arian
  *
@@ -72,8 +74,8 @@ public class TileSpriteModel extends BaseSpriteModel implements
 		data.put(height_name, TileSpriteComponent.get_height(this), height_default);
 	}
 
-	public void setSizeToFrame() {
-		var frame = TextureComponent.get_frame(this);
+	public void setSizeToFrame(AssetFinder finder) {
+		var frame = TextureComponent.get_frame(this, finder);
 
 		if (frame == null) {
 

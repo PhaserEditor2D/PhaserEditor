@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
@@ -62,6 +63,10 @@ public abstract class InteractiveTool {
 
 	public SceneEditor getEditor() {
 		return _editor;
+	}
+	
+	public AssetFinder getAssetFinder() {
+		return getEditor().getScene().getAssetFinder();
 	}
 
 	public SceneCanvas getScene() {

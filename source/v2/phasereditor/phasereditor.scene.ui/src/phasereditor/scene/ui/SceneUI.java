@@ -76,7 +76,7 @@ public class SceneUI {
 			case TileSpriteModel.TYPE:
 				var tileModel = new TileSpriteModel();
 				tileModel.read(data, project);
-				tileModel.setSizeToFrame();
+				tileModel.setSizeToFrame(editor.getScene().getAssetFinder());
 				newModel = tileModel;
 				break;
 			case BitmapTextModel.TYPE:

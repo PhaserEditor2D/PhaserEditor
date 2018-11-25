@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -65,9 +66,11 @@ import phasereditor.scene.core.codedom.UnitDom;
 public class SceneCodeDomBuilder {
 
 	private IFile _file;
+	private AssetFinder _finder;
 
 	public SceneCodeDomBuilder(IFile file) {
 		_file = file;
+		_finder = new AssetFinder(file.getProject());
 	}
 
 	private static String varname(ObjectModel model) {
@@ -80,6 +83,8 @@ public class SceneCodeDomBuilder {
 	}
 
 	public UnitDom build(SceneModel model) {
+
+		_finder.build();
 
 		var unit = new UnitDom();
 
@@ -588,14 +593,13 @@ public class SceneCodeDomBuilder {
 		return true;
 	}
 
-	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateSprite(MethodDeclDom methodDecl, SpriteModel model) {
 		var call = new MethodCallDom("sprite", "this.add");
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
 
-		var frame = TextureComponent.get_frame(model);
+		var frame = TextureComponent.get_frame(model, _finder);
 
 		buildTextureArguments(call, frame);
 
@@ -604,14 +608,13 @@ public class SceneCodeDomBuilder {
 		return call;
 	}
 
-	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateImage(MethodDeclDom methodDecl, ImageModel model) {
 		var call = new MethodCallDom("image", "this.add");
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
 
-		var frame = TextureComponent.get_frame(model);
+		var frame = TextureComponent.get_frame(model, _finder);
 
 		buildTextureArguments(call, frame);
 
@@ -620,7 +623,6 @@ public class SceneCodeDomBuilder {
 		return call;
 	}
 
-	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateTileSprite(MethodDeclDom methodDecl, TileSpriteModel model) {
 
 		var call = new MethodCallDom("tileSprite", "this.add");
@@ -631,7 +633,7 @@ public class SceneCodeDomBuilder {
 		call.arg(TileSpriteComponent.get_width(model));
 		call.arg(TileSpriteComponent.get_height(model));
 
-		var frame = TextureComponent.get_frame(model);
+		var frame = TextureComponent.get_frame(model, _finder);
 
 		buildTextureArguments(call, frame);
 
@@ -655,7 +657,6 @@ public class SceneCodeDomBuilder {
 		}
 	}
 
-	@SuppressWarnings("static-method")
 	private MethodDeclDom buildPreloadMethod(SceneModel model) {
 
 		var preloadDom = new MethodDeclDom("preload");
@@ -664,7 +665,7 @@ public class SceneCodeDomBuilder {
 
 		model.getDisplayList().visit(objModel -> {
 			if (objModel instanceof TextureComponent) {
-				var frame = TextureComponent.get_frame(objModel);
+				var frame = TextureComponent.get_frame(objModel, _finder);
 				if (frame != null) {
 
 					var pack = ProjectCore.getAssetUrl(frame.getAsset().getPack().getFile());

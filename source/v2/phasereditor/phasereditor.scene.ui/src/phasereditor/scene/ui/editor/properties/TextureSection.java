@@ -129,7 +129,7 @@ public class TextureSection extends ScenePropertySection {
 		var models = getModels();
 
 		var frame = (IAssetFrameModel) flatValues_to_Object(
-				models.stream().map(model -> TextureComponent.get_frame(model)));
+				models.stream().map(model -> TextureComponent.get_frame(model, getAssetFinder())));
 
 		if (frame == null) {
 			_frameLabel.setText("Frame");

@@ -33,8 +33,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
@@ -68,6 +69,7 @@ public class SceneObjectRenderer {
 
 	private boolean _debug;
 	private List<Runnable> _postPaintActions;
+	private AssetFinder _finder;
 
 	public SceneObjectRenderer(SceneCanvas canvas) {
 		super();
@@ -81,6 +83,8 @@ public class SceneObjectRenderer {
 		_postPaintActions = new ArrayList<>();
 
 		_imageCacheMap = new HashMap<>();
+
+		_finder = canvas.getAssetFinder();
 	}
 
 	public void dispose() {
@@ -482,9 +486,10 @@ public class SceneObjectRenderer {
 
 		} else {
 
-			var frame = TextureComponent.get_frame(model);
+			var key = TextureComponent.get_textureKey(model);
+			var frame = TextureComponent.get_textureFrame(model);
 
-			renderTexture(gc, model, frame);
+			renderTexture(gc, model, key, frame);
 		}
 	}
 
@@ -523,7 +528,7 @@ public class SceneObjectRenderer {
 	}
 
 	private Image createTileSpriteTexture(TileSpriteModel model) {
-		var assetFrame = TextureComponent.get_frame(model);
+		var assetFrame = TextureComponent.get_frame(model, _finder);
 
 		var img = _canvas.loadImage(assetFrame.getImageFile());
 
@@ -639,7 +644,11 @@ public class SceneObjectRenderer {
 
 		} else if (model instanceof TextureComponent) {
 
-			var frame = TextureComponent.get_frame(model);
+			var frame = TextureComponent.get_frame(model, _finder);
+
+			if (frame == null) {
+				return new float[] { 0, 0 };
+			}
 
 			var fd = frame.getFrameData();
 
@@ -700,7 +709,19 @@ public class SceneObjectRenderer {
 		return image;
 	}
 
-	private void renderTexture(GC gc, ObjectModel model, IAssetFrameModel assetFrame) {
+	private void renderTexture(GC gc, ObjectModel model, String key, String frame) {
+
+		var assetFrame = TextureComponent.get_frame(model, _finder);
+
+		if (assetFrame == null) {
+			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+			gc.drawText("Missing Texture (" + key + "," + frame + ")", 0, 0);
+
+			setObjectBounds(gc, model, 0, 0, 0, 0);
+			return;
+		}
+
 		var img = loadImage(assetFrame.getImageFile());
 
 		var fd = assetFrame.getFrameData();

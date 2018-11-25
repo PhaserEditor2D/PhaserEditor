@@ -24,10 +24,6 @@ package phasereditor.scene.core;
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.IAssetKey;
-
 /**
  * @author arian
  *
@@ -78,15 +74,8 @@ public abstract class BaseSpriteModel extends EditorObjectModel implements FlipC
 
 		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 
-		{
-			IAssetKey assetKey = TextureComponent.get_frame(this);
-			if (assetKey == null) {
-				data.put(frame_name, (Object) null);
-			} else {
-				var ref = AssetPackCore.getAssetJSONReference(assetKey);
-				data.put(frame_name, ref);
-			}
-		}
+		data.put(textureKey_name, TextureComponent.get_textureKey(this), textureKey_default);
+		data.put(textureFrame_name, TextureComponent.get_textureFrame(this), textureFrame_default);
 	}
 
 	@Override
@@ -108,17 +97,8 @@ public abstract class BaseSpriteModel extends EditorObjectModel implements FlipC
 
 		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 
-		{
-			IAssetFrameModel frame = null;
-			var ref = data.optJSONObject(frame_name);
-			if (ref != null) {
-				var result = AssetPackCore.findAssetElement(project, ref);
-				if (result != null && result instanceof IAssetFrameModel) {
-					frame = (IAssetFrameModel) result;
-				}
-			}
-			TextureComponent.set_frame(this, frame);
-		}
+		TextureComponent.set_textureKey(this, data.optString(textureKey_name, textureKey_default));
+		TextureComponent.set_textureFrame(this, data.optString(textureFrame_name, textureFrame_default));
 
 	}
 

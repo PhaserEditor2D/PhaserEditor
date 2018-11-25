@@ -50,6 +50,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -91,6 +92,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _transformLocalCoords;
 	private boolean _interactiveToolsHightlights;
+	private AssetFinder _finder;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -266,7 +268,12 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_editor = editor;
 		_sceneModel = editor.getSceneModel();
 
+		_finder = new AssetFinder(getEditor().getProject());
 		_renderer = new SceneObjectRenderer(this);
+	}
+	
+	public AssetFinder getAssetFinder() {
+		return _finder;
 	}
 
 	public SceneEditor getEditor() {
@@ -286,6 +293,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
+		
+		_finder.build();
+		
 		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.
@@ -807,7 +817,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		if (img == null) {
 			if (model instanceof ImageModel || model instanceof SpriteModel) {
-				var frame = TextureComponent.get_frame(model);
+				var frame = TextureComponent.get_frame(model, _finder);
 
 				if (frame == null) {
 					return false;

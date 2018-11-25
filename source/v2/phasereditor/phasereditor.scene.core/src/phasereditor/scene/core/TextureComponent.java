@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 
 /**
@@ -28,22 +29,61 @@ import phasereditor.assetpack.core.IAssetFrameModel;
  *
  */
 public interface TextureComponent {
-	
-	static String frame_name = "frame";
-	
-	static IAssetFrameModel get_frame(ObjectModel obj) {
-		return (IAssetFrameModel) obj.get("frame");
+
+	// textureKey
+
+	static String textureKey_name = "textureKey";
+
+	static String textureKey_default = null;
+
+	static String get_textureKey(ObjectModel obj) {
+		return (String) obj.get("textureKey");
 	}
 
-	static void set_frame(ObjectModel obj, IAssetFrameModel frame) {
-		obj.put("frame", frame);
+	static void set_textureKey(ObjectModel obj, String textureKey) {
+		obj.put("textureKey", textureKey);
 	}
-	
+
+	// textureFrame
+
+	static String textureFrame_name = "textureFrame";
+
+	static String textureFrame_default = null;
+
+	static String get_textureFrame(ObjectModel obj) {
+		return (String) obj.get("textureFrame");
+	}
+
+	static void set_textureFrame(ObjectModel obj, String textureFrame) {
+		obj.put("textureFrame", textureFrame);
+	}
+
 	static boolean is(Object model) {
 		return model instanceof TextureComponent;
 	}
-	
+
+	// utils
+
+	static IAssetFrameModel get_frame(ObjectModel model, AssetFinder finder) {
+		var key = get_textureKey(model);
+
+		var frame = get_textureFrame(model);
+
+		return finder.findTexture(key, frame);
+	}
+
+	static void set_frame(ObjectModel model, IAssetFrameModel frame) {
+		if (frame == null) {
+			set_textureKey(model, null);
+			set_textureFrame(model, null);
+		} else {
+			set_textureKey(model, frame.getAsset().getKey());
+			set_textureFrame(model, frame.getKey());
+		}
+	}
+
 	static void init(ObjectModel obj) {
-		set_frame(obj, null);
+		set_textureKey(obj, textureKey_default);
+		set_textureFrame(obj, textureFrame_default);
 	}
 }
