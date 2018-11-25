@@ -47,7 +47,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 	private Button _stripWhitesapceYCheckbox;
 	private Button _useIndexesCheckbox;
 	private Button _gridCheckbox;
-	private Button _multiAtlasCheckbox;
+	//private Button _multiAtlasCheckbox;
 	private Button _debugCheckbox;
 
 	public SettingsSection(TexturePackerEditor editor) {
@@ -166,8 +166,8 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 					"\"If true, images are sorted by parsing the sufix of the file names\\r\\n(eg. animation_01.png, animation_02.png, ...)\"");
 			_gridCheckbox = createCheckboxRow(comp, "Grid Layout",
 					"If true, images are packed in a uniform grid, in order.");
-			_multiAtlasCheckbox = createCheckboxRow(comp, "Multi-atlas",
-					"If true, use the multiple atlas Phaser 3 JSON format\n(a single atlas JSON file for multiple textures).");
+//			_multiAtlasCheckbox = createCheckboxRow(comp, "Multi-atlas",
+//					"If true, use the multiple atlas Phaser 3 JSON format\n(a single atlas JSON file for multiple textures).");
 			_debugCheckbox = createCheckboxRow(comp, "Debug",
 					"If true, lines are drawn on the output pages\nto show the packed image bounds.");
 		}
@@ -252,10 +252,10 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 			getEditor().dirtify();
 		});
 
-		listen(_multiAtlasCheckbox, value -> {
-			model.getSettings().setMultiatlas(value);
-			getEditor().dirtify();
-		});
+//		listen(_multiAtlasCheckbox, value -> {
+//			model.getSettings().setMultiatlas(value);
+//			getEditor().dirtify();
+//		});
 
 		listen(_debugCheckbox, value -> {
 			model.getSettings().setDebug(value);
@@ -291,7 +291,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 
 		_useIndexesCheckbox.setSelection(model.getSettings().isUseIndexes());
 		_gridCheckbox.setSelection(model.getSettings().isGrid());
-		_multiAtlasCheckbox.setSelection(model.getSettings().isMultiatlas());
+//		_multiAtlasCheckbox.setSelection(model.getSettings().isMultiatlas());
 		_debugCheckbox.setSelection(model.getSettings().isDebug());
 	}
 
