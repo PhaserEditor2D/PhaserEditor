@@ -23,7 +23,6 @@ package phasereditor.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -42,32 +41,51 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
 		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
 
+		var area = getBounds();
+
 		var fd = getFrameData();
 
 		var x = getPanOffsetX();
 		var y = getOffsetY();
 		var scale = getScale();
 
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_FOREGROUND));
+		gc.setAlpha(150);
+		
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		gc.drawRectangle(dstX, dstY, dstW, dstH);
+		
+		gc.setForeground(getForeground());
 		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
+
+		gc.setLineStyle(SWT.LINE_DOT);
 
 		// sourceW
 		{
+
+			gc.drawLine(x, dstY + dstH, x, area.height);
+			gc.drawLine((int) (x + fd.srcSize.x * scale), dstY + dstH, (int) (x + fd.srcSize.x * scale), area.height);
+
 			var text = Integer.toString(fd.srcSize.x);
 			var size = gc.textExtent(text);
-			gc.drawText(text, (int) (x + fd.srcSize.x / 2 * scale - size.x / 2), (int) (y + fd.srcSize.y * scale),
-					true);
+			gc.drawText(text, (int) (x + fd.srcSize.x / 2 * scale - size.x / 2), area.height - size.y, true);
 		}
 
 		// sourceH
 		{
+
+			gc.drawLine((int) (x + fd.srcSize.x * scale), y, area.width, y);
+			gc.drawLine((int) (x + fd.srcSize.x * scale), (int) (y + fd.srcSize.y * scale), area.width,
+					(int) (y + fd.srcSize.y * scale));
+
 			var text = Integer.toString(fd.srcSize.y);
 			var size = gc.textExtent(text);
 
 			var tx = new Transform(gc.getDevice());
 
-			tx.translate(x + fd.srcSize.x * scale, y + fd.srcSize.y / 2 * scale);
-			tx.translate(size.y + 2, -size.x/2);
+			tx.translate(area.width, y + fd.srcSize.y / 2 * scale);
+
+			tx.translate(0, -size.x / 2);
+
 			tx.rotate(90);
 
 			gc.setTransform(tx);
@@ -78,24 +96,25 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 			tx.dispose();
 		}
 
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
-		gc.drawRectangle(dstX, dstY, dstW, dstH);
-
 		// spriteW
 		{
+			gc.drawLine(dstX + dstW, dstY, dstX + dstW, 0);
+
 			var text = Integer.toString(fd.dst.width);
 			var size = gc.textExtent(text);
-			gc.drawText(text, (int) (dstX + fd.dst.width / 2 * scale) - size.x / 2, dstY - size.y, true);
+			gc.drawText(text, (int) (dstX + fd.dst.width / 2 * scale) - size.x / 2, 0, true);
 		}
 
 		// spriteH
 		{
+			gc.drawLine(dstX, dstY + dstH, 0, dstY + dstH);
+
 			var text = Integer.toString(fd.dst.height);
 			var size = gc.textExtent(text);
 
 			var tx = new Transform(gc.getDevice());
-			tx.translate(dstX - size.y / 2, dstY + dstW / 2 + size.x / 2);
-			tx.translate(size.y/2, -	size.x);
+			tx.translate(0, dstY + dstW / 2 + size.x / 2);
+			tx.translate(size.y, -size.x);
 			tx.rotate(90);
 			gc.setTransform(tx);
 
@@ -107,8 +126,6 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 
 		// spriteX/Y
 		{
-			gc.setLineStyle(SWT.LINE_DOT);
-
 			gc.drawLine(dstX, dstY, dstX, 0);
 			gc.drawLine(x, dstY, x, 0);
 
@@ -132,25 +149,11 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 				gc.setTransform(null);
 				tx.dispose();
 			}
+		}	
 
-			gc.setLineStyle(SWT.LINE_SOLID);
-		}
+		gc.setAlpha(255);
+		gc.setLineStyle(SWT.LINE_SOLID);
 
-	}
-
-	@Override
-	protected Rectangle getFitArea() {
-		var b = getBounds();
-
-		if (b.width > 100) {
-			b.width -= 25;
-		}
-
-		if (b.height > 100) {
-			b.height -= 25;
-		}
-
-		return b;
 	}
 
 }
