@@ -158,7 +158,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	public void deleteSelection() {
 		if (_outliner != null) {
+			
 			Object[] sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
+			
 			if (sel.length > 0) {
 				List<IFile> toRemove = new ArrayList<>();
 				for (Object item : sel) {
@@ -169,7 +171,11 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 				_model.getImageFiles().removeAll(toRemove);
 
+				
 				build(true);
+				
+				selectSettings();
+
 			}
 		}
 	}
@@ -852,6 +858,30 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		_selectionProvider.setSelection(selection);
 	}
 
+	public void selectSettings() {
+		var empty = StructuredSelection.EMPTY;
+
+		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
+			var atlas = getAtlasCanvas(i);
+			atlas.setSelection(empty, false);
+		}
+
+		if (_tabsFolder.getSelectionIndex() != -1) {
+			getAtlasCanvas(_tabsFolder.getSelectionIndex()).redraw();
+		}
+
+		if (_outliner != null) {
+			_outliner.removeSelectionChangedListener(_outlinerSelectionListener);
+			_outliner.setSelection(empty);
+			_outliner.addSelectionChangedListener(_outlinerSelectionListener);
+		}
+
+		_selectionProvider.setSelection(empty);
+		
+		updatePropertyPagesWithSelection();
+
+	}
+
 	private void addMainTab() {
 		TabItem item = createTabItem();
 		item.setText(_model.getAtlasImageName(0));
@@ -1068,6 +1098,16 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 	}
 
+	private List<TexturePackerPropertyPage> _propertyPages = new ArrayList<>();
+
+	public void updatePropertyPagesWithSelection() {
+		var sel = _selectionProvider.getSelection();
+
+		for (var page : _propertyPages) {
+			page.selectionChanged(getEditorSite().getPart(), sel);
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
@@ -1077,7 +1117,18 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		if (adapter == IPropertySheetPage.class) {
 			// return new TexturePackerPGridPage(this);
-			return new TexturePackerPropertyPage(this);
+			var page = new TexturePackerPropertyPage(this) {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void dispose() {
+
+					_propertyPages.remove(this);
+
+					super.dispose();
+				}
+			};
+			_propertyPages.add(page);
+			return page;
 		}
 
 		if (adapter.equals(IContextProvider.class)) {
@@ -1154,6 +1205,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	private void selectTab(int i) {
 		_tabsFolder.setSelection(i);
 		repaintTab(i);
+	}
+
+	public AtlasCanvas getSelectedShownCanvas() {
+		return getAtlasCanvas(_tabsFolder.getSelectionIndex());
 	}
 
 	void repaintTab(int i) {

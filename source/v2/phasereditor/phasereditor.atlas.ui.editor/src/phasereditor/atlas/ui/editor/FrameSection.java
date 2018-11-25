@@ -22,6 +22,9 @@
 package phasereditor.atlas.ui.editor;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.ExplainFrameCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -53,6 +57,7 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 	private Text _imageFileSizeText;
 	private Text _frameNameText;
 	private ExplainFrameCanvas _frameCanvas;
+	private Action _deleteAction;
 
 	public FrameSection(TexturePackerEditor editor) {
 		super("Frame", editor);
@@ -66,9 +71,35 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 		return obj instanceof TexturePackerEditorFrame;
 	}
 
+	@Override
+	protected void createActions() {
+		super.createActions();
+
+		_deleteAction = new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+			@Override
+			public void run() {
+				getEditor().deleteSelection();
+			}
+		};
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+
+		manager.add(_deleteAction);
+
+		manager.add(new Separator());
+
+		super.fillToolbar(manager);
+
+	}
+
 	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
+
+		createActions();
+
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(5, false));
 
@@ -213,7 +244,7 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 			var page = model.getPage();
 
 			_frameCanvas.setFrameData(model.getFrameData());
-			_frameCanvas.setImageFile(page.getImageFile());
+			_frameCanvas.setImageFile(page.getImageFile(), page.getImage());
 		}
 	}
 

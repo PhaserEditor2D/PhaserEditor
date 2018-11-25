@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editor;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,8 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
-import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -44,7 +40,6 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 	private Text _minHeightText;
 	private Text _maxWidthText;
 	private Text _maxHeightText;
-	private Action _buildAction;
 	private Button _powerOfTwoButton;
 	private Text _paddingXText;
 	private Text _paddingYText;
@@ -64,6 +59,15 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 		return obj instanceof TexturePackerEditorModel;
 	}
 
+
+	@Override
+	protected void createActions() {
+		
+		super.createActions();
+		
+		getSettingsAction().setEnabled(false);
+	}
+	
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
@@ -160,7 +164,8 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 		{
 			_useIndexesCheckbox = createCheckboxRow(comp, "Use Indexes",
 					"\"If true, images are sorted by parsing the sufix of the file names\\r\\n(eg. animation_01.png, animation_02.png, ...)\"");
-			_gridCheckbox = createCheckboxRow(comp, "Grid Layout", "If true, images are packed in a uniform grid, in order.");
+			_gridCheckbox = createCheckboxRow(comp, "Grid Layout",
+					"If true, images are packed in a uniform grid, in order.");
 			_multiAtlasCheckbox = createCheckboxRow(comp, "Multi-atlas",
 					"If true, use the multiple atlas Phaser 3 JSON format\n(a single atlas JSON file for multiple textures).");
 			_debugCheckbox = createCheckboxRow(comp, "Debug",
@@ -180,20 +185,6 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 		btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 
 		return btn;
-	}
-
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		manager.add(_buildAction);
-	}
-
-	private void createActions() {
-		_buildAction = new Action("Build Atlas", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
-			@Override
-			public void run() {
-				getEditor().manuallyBuild();
-			}
-		};
 	}
 
 	@SuppressWarnings("boxing")

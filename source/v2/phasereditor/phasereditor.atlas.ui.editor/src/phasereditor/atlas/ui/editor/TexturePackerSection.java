@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editor;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
+
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -30,6 +34,8 @@ import phasereditor.ui.properties.FormPropertySection;
 public abstract class TexturePackerSection<T> extends FormPropertySection<T> {
 
 	private TexturePackerEditor _editor;
+	private Action _buildAction;
+	private Action _settingsAction;
 
 	public TexturePackerSection(String name, TexturePackerEditor editor) {
 		super(name);
@@ -39,6 +45,35 @@ public abstract class TexturePackerSection<T> extends FormPropertySection<T> {
 
 	public TexturePackerEditor getEditor() {
 		return _editor;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(_settingsAction);
+		manager.add(_buildAction);
+	}
+
+	protected void createActions() {
+		_buildAction = new Action("Build Atlas", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
+			@Override
+			public void run() {
+				getEditor().manuallyBuild();
+			}
+		};
+		_settingsAction = new Action("Settings", EditorSharedImages.getImageDescriptor(IMG_SETTINGS)) {
+			@Override
+			public void run() {
+				getEditor().selectSettings();
+			}
+		};
+	}
+
+	protected Action getBuildAction() {
+		return _buildAction;
+	}
+	
+	protected Action getSettingsAction() {
+		return _settingsAction;
 	}
 
 }
