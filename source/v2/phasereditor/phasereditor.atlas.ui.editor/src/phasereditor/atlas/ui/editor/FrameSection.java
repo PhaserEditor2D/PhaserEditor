@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.ExplainFrameCanvas;
+import phasereditor.ui.ExplainFrameDataCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -56,7 +56,7 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 	private Text _imageFileText;
 	private Text _imageFileSizeText;
 	private Text _frameNameText;
-	private ExplainFrameCanvas _frameCanvas;
+	private ExplainFrameDataCanvas _frameCanvas;
 	private Action _deleteAction;
 
 	public FrameSection(TexturePackerEditor editor) {
@@ -202,7 +202,7 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 		new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL)
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 
-		_frameCanvas = new ExplainFrameCanvas(comp, 0);
+		_frameCanvas = new ExplainFrameDataCanvas(comp, 0);
 		_frameCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 
 		return comp;

@@ -53,8 +53,7 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 		var list = new ArrayList<FormPropertySection>();
 
 		if (obj instanceof AnimationFrameModel) {
-			list.add(new AnimationFrameDurationSection(_editor));
-			list.add(new AnimationFrameTextureSection(_editor));
+			list.add(new AnimationFrameSection(_editor));
 		}
 
 		if (obj instanceof AnimationModel) {

@@ -32,9 +32,9 @@ import org.eclipse.wb.swt.SWTResourceManager;
  * @author arian
  *
  */
-public class ExplainFrameCanvas extends ImageCanvas {
+public class ExplainFrameDataCanvas extends ImageCanvas {
 
-	public ExplainFrameCanvas(Composite parent, int style) {
+	public ExplainFrameDataCanvas(Composite parent, int style) {
 		super(parent, style);
 	}
 
@@ -48,9 +48,7 @@ public class ExplainFrameCanvas extends ImageCanvas {
 		var y = getOffsetY();
 		var scale = getScale();
 
-		gc.setAlpha(150);
-
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_FOREGROUND));
 		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
 
 		// sourceW
@@ -68,8 +66,8 @@ public class ExplainFrameCanvas extends ImageCanvas {
 
 			var tx = new Transform(gc.getDevice());
 
-			tx.translate(x + fd.srcSize.x * scale, dstY + fd.srcSize.y / 2 * scale);
-			tx.translate(size.y + 2, -	size.x);
+			tx.translate(x + fd.srcSize.x * scale, y + fd.srcSize.y / 2 * scale);
+			tx.translate(size.y + 2, -size.x/2);
 			tx.rotate(90);
 
 			gc.setTransform(tx);
@@ -80,7 +78,7 @@ public class ExplainFrameCanvas extends ImageCanvas {
 			tx.dispose();
 		}
 
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
 		gc.drawRectangle(dstX, dstY, dstW, dstH);
 
 		// spriteW
@@ -137,8 +135,6 @@ public class ExplainFrameCanvas extends ImageCanvas {
 
 			gc.setLineStyle(SWT.LINE_SOLID);
 		}
-
-		gc.setAlpha(255);
 
 	}
 

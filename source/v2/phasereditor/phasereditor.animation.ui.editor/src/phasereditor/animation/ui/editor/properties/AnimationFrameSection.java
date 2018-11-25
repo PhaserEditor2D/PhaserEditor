@@ -30,21 +30,28 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.animation.ui.editor.AnimationsEditor;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.ui.ExplainFrameDataCanvas;
 
 /**
  * @author arian
  *
  */
 @SuppressWarnings("boxing")
-public class AnimationFrameDurationSection extends BaseAnimationSection<AnimationFrameModel> {
+public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameModel> {
 
 	private Text _durationText;
 	private Label _computedDurationLabel;
+	private ExplainFrameDataCanvas _frameCanvas;
+	private Label _frameLabel;
 
-	public AnimationFrameDurationSection(AnimationsEditor editor) {
-		super(editor, "Duration");
+	public AnimationFrameSection(AnimationsEditor editor) {
+		super(editor, "Animation Frame");
+
+		setFillSpace(true);
 	}
 
 	@Override
@@ -58,6 +65,8 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
+
+		// duration
 
 		{
 			var label = new Label(comp, SWT.NONE);
@@ -75,6 +84,25 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 			_computedDurationLabel.setToolTipText(
 					"The computed duration of the frame. It is the frameRate-based duration plus the extra duration set in the 'duration' property.\nNOTE: This is not part of the Phaser API.");
 
+		}
+
+		// texture
+
+		{
+			label(comp, "Frame", InspectCore.getPhaserHelp().getMemberHelp("AnimationFrameConfig.frame"),
+					new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		}
+
+		{
+			_frameCanvas = new ExplainFrameDataCanvas(comp, SWT.BORDER);
+			var gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+			_frameCanvas.setLayoutData(gd);
+		}
+
+		{
+			_frameLabel = new Label(comp, SWT.WRAP);
+			_frameLabel.setText("");
+			_frameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		}
 
 		update_UI_from_Model();
@@ -115,6 +143,47 @@ public class AnimationFrameDurationSection extends BaseAnimationSection<Animatio
 		// computed duration
 
 		updateTotalDuration();
+
+		// texture
+		{
+
+			var frame = (IAssetFrameModel) flatValues_to_Object(models.stream().map(model -> model.getFrameAsset()));
+
+			if (frame == null) {
+				_frameLabel.setText("Frame");
+				_frameCanvas.removeImage();
+			} else {
+
+				var file = frame.getImageFile();
+				var fd = frame.getFrameData();
+
+				// duration
+				{
+					var sb = new StringBuilder();
+					if (frame instanceof ImageAssetModel.Frame) {
+						sb.append("key: " + frame.getKey());
+					} else {
+						sb.append("key: " + frame.getAsset().getKey() + "\nframe: " + frame.getKey());
+					}
+
+					sb.append("\n");
+					sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
+					sb.append("\n");
+
+					if (file != null) {
+						sb.append("file: " + file.getName());
+					}
+
+					_frameLabel.setText(sb.toString());
+				}
+
+				// texture
+
+				_frameCanvas.setImageFile(file, fd);
+				_frameCanvas.resetZoom();
+			}
+
+		}
 	}
 
 	private void updateTotalDuration() {

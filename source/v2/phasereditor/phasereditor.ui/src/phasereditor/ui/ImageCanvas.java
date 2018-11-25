@@ -290,7 +290,12 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		_imageFile = file;
 		setImage(image);
 	}
-
+	
+	public void setImageFile(IFile file, FrameData fd) {
+		setFrameData(fd);
+		setImageFile(file);
+	}
+	
 	public final IFile getImageFile() {
 		return _imageFile;
 	}
