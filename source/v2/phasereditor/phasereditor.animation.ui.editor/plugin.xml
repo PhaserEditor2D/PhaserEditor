@@ -88,34 +88,6 @@
             </with>
          </activeWhen>
       </handler>
-      <handler
-            class="phasereditor.animation.ui.editor.handlers.QuickEditHandler"
-            commandId="phasereditor.ui.quickEdit">
-         <activeWhen>
-            <or>
-               <with
-                     variable="activePartId">
-                  <equals
-                        value="phasereditor.animation.ui.editor.AnimationsEditor">
-                  </equals>
-               </with>
-               <and>
-                  <with
-                        variable="activeEditorId">
-                     <equals
-                           value="phasereditor.animation.ui.editor.AnimationsEditor">
-                     </equals>
-                  </with>
-                  <with
-                        variable="activePartId">
-                     <equals
-                           value="org.eclipse.ui.views.ContentOutline">
-                     </equals>
-                  </with>
-               </and>
-            </or>
-         </activeWhen>
-      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

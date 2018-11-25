@@ -32,7 +32,6 @@ public class AnimationsEditorActionBarContributor extends EditorActionBarContrib
 
 		manager.add(_editor.getNewAction());
 		manager.add(_editor.getOutlineAction());
-		manager.add(_editor.getQuickEditAction());
 
 		manager.add(new Separator());
 

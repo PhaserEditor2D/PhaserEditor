@@ -24,10 +24,8 @@ package phasereditor.animation.ui.editor;
 import org.json.JSONObject;
 
 import phasereditor.animation.ui.AnimationModelPreviewFactory;
-import phasereditor.animation.ui.editor.properties.AnimationModel_in_Editor_PGridModel;
 import phasereditor.animation.ui.model.AnimationModel_Persistable;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.views.IPreviewFactory;
 
 /**
@@ -58,9 +56,7 @@ public class AnimationModel_in_Editor extends AnimationModel_Persistable {
 	@Override
 	public Object getAdapter(Class adapter) {
 
-		if (adapter == PGridModel.class) {
-			return new AnimationModel_in_Editor_PGridModel(this);
-		} else if (adapter == IPreviewFactory.class) {
+		if (adapter == IPreviewFactory.class) {
 			return new AnimationModelPreviewFactory();
 		}
 

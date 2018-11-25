@@ -76,7 +76,6 @@ import org.json.JSONObject;
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
-import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -94,8 +93,6 @@ import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.properties.PGrid;
-import phasereditor.ui.properties.QuickEditDialog;
 
 /**
  * @author arian
@@ -123,7 +120,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private Action _deleteAction;
 	private Action _newAction;
 	private Action _outlineAction;
-	private Action _quickEditAction;
 
 	public Action getPlayAction() {
 		return _playAction;
@@ -155,10 +151,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	public Action getOutlineAction() {
 		return _outlineAction;
-	}
-
-	public Action getQuickEditAction() {
-		return _quickEditAction;
 	}
 
 	public AnimationsEditor() {
@@ -289,7 +281,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		manager.add(getNewAction());
 		manager.add(getOutlineAction());
-		manager.add(getQuickEditAction());
 
 		manager.add(new Separator());
 
@@ -522,43 +513,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 						selectAnimation((AnimationModel_in_Editor) selected);
 					}
 				}
-			}
-		};
-
-		_quickEditAction = new Action("Quick Edit",
-				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_EDIT)) {
-
-			@Override
-			public void run() {
-
-				var sel = (IStructuredSelection) getEditorSite().getSelectionProvider().getSelection();
-
-				if (sel.isEmpty()) {
-					return;
-				}
-
-				var model = AnimationsPGridPage.createModelWithSelection_public(sel);
-
-				var dlg = new QuickEditDialog(getEditorSite().getShell()) {
-					@Override
-					protected PGrid createPGrid(Composite container) {
-						var grid = new PGrid(container, SWT.NONE, false, true);
-
-						grid.setOnChanged(() -> {
-
-							gridPropertyChanged();
-
-							QuickEditDialog.regreshAllPGridPropertyViews();
-
-						});
-
-						return grid;
-					}
-				};
-				dlg.setModel(model);
-
-				dlg.open();
-
 			}
 		};
 

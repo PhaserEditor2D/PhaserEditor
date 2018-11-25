@@ -21,18 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONObject;
 
-import phasereditor.animation.ui.editor.properties.AnimationFrameModel_in_Editor_PGridModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian
  *
  */
-public class AnimationFrameModel_in_Editor extends AnimationFrameModel implements IAdaptable {
+public class AnimationFrameModel_in_Editor extends AnimationFrameModel {
 
 
 	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim) {
@@ -46,15 +43,6 @@ public class AnimationFrameModel_in_Editor extends AnimationFrameModel implement
 	@Override
 	public AnimationModel_in_Editor getAnimation() {
 		return (AnimationModel_in_Editor) super.getAnimation();
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == PGridModel.class) {
-			return new AnimationFrameModel_in_Editor_PGridModel(getAnimation(), this);
-		}
-		return null;
 	}
 
 }
