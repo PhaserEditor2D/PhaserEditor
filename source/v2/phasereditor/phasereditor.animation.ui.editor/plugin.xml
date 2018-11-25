@@ -4,8 +4,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="phasereditor.animation.ui.editor.AnimationsEditor"
-            contributorClass="phasereditor.animation.ui.editor.AnimationsEditorActionBarContributor"
+            class="phasereditor.animation.ui.editor.AnimationsEditor"            
             icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
             id="phasereditor.animation.ui.editor.AnimationsEditor"
             name="Animations Editor">
