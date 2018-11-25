@@ -30,24 +30,24 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.animation.ui.editor.AnimationFrameModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AnimationFrameTextureSection extends FormPropertySection<AnimationFrameModel_in_Editor> {
+public class AnimationFrameTextureSection extends BaseAnimationSection<AnimationFrameModel_in_Editor> {
 
 	private SingleFrameCanvas _frameCanvas;
 	private Label _frameLabel;
 
-	public AnimationFrameTextureSection() {
-		super("Texture");
+	public AnimationFrameTextureSection(AnimationsEditor editor) {
+		super(editor, "Texture");
 	}
 
 	@Override

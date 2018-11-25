@@ -31,14 +31,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.animation.ui.editor.AnimationModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AnimationSection extends FormPropertySection<AnimationModel_in_Editor> {
+public class AnimationSection extends BaseAnimationSection<AnimationModel_in_Editor> {
 
 	private Label _computedDurationLabel;
 	private Text _durationText;
@@ -52,8 +52,8 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 	private Text _repeatDelayText;
 	private Button _yoyoCheckBox;
 
-	public AnimationSection() {
-		super("Animation");
+	public AnimationSection(AnimationsEditor editor) {
+		super(editor, "Animation");
 	}
 
 	@Override
@@ -224,9 +224,9 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 		_repeatText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeat())));
 
 		_repeatDelayText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeatDelay())));
-		
+
 		_yoyoCheckBox.setSelection(flatValues_to_boolean(models.stream().map(model -> model.isYoyo())));
-		
+
 		_showOnStartBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isShowOnStart())));
 
 		_hideOnCompleteBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isHideOnComplete())));
@@ -243,136 +243,135 @@ public class AnimationSection extends FormPropertySection<AnimationModel_in_Edit
 
 				model.setKey(value);
 
-				var editor = model.getEditor();
-
 				model.buildTimeline();
 
-				editor.refreshOutline();
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+			editor.refreshOutline();
+			editor.getTimelineCanvas().redraw();
+			editor.setDirty();
 		});
 
 		listenFloat(_frameRateText, value -> {
 			getModels().forEach(model -> {
-
 				model.setFrameRate(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+
+			editor.getTimelineCanvas().redraw();
+			restartPlayback();
+			editor.setDirty();
+
+			update_UI_from_Model();
 		});
 
 		listenInt(_durationText, value -> {
 			getModels().forEach(model -> {
-
 				model.setDuration(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
 
 			updateTotalDuration();
+
+			var editor = getEditor();
+
+			editor.getTimelineCanvas().redraw();
+			restartPlayback();
+			editor.setDirty();
+
+			update_UI_from_Model();
 
 		});
 
 		listenInt(_delayText, value -> {
 			getModels().forEach(model -> {
-
 				model.setDelay(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+			editor.getTimelineCanvas().redraw();
+			restartPlayback();
+			editor.setDirty();
+
+			updateTotalDuration();
 		});
 
 		listenInt(_repeatText, value -> {
 			getModels().forEach(model -> {
-
 				model.setRepeat(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+			editor.getTimelineCanvas().redraw();
+			restartPlayback();
+			editor.setDirty();
 		});
-		
+
 		listenInt(_repeatDelayText, value -> {
 			getModels().forEach(model -> {
-
 				model.setRepeatDelay(value);
-
-				var editor = model.getEditor();
-
-				editor.setDirty();
 			});
+			
+			restartPlayback();
+			getEditor().setDirty();
 		});
-		
+
 		listen(_yoyoCheckBox, value -> {
 			getModels().forEach(model -> {
-
 				model.setYoyo(value);
-
-				var editor = model.getEditor();
-
-				editor.setDirty();
 			});
+
+			
+			restartPlayback();
+			getEditor().setDirty();
 		});
 
 		listen(_showOnStartBtn, value -> {
 			getModels().forEach(model -> {
-
 				model.setShowOnStart(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+			editor.getTimelineCanvas().redraw();
+			editor.setDirty();
 		});
 
 		listen(_hideOnCompleteBtn, value -> {
 			getModels().forEach(model -> {
 				model.setHideOnComplete(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+			editor.getTimelineCanvas().redraw();
+			editor.setDirty();
 		});
 
 		listen(_skipMissedFramesBtn, value -> {
 			getModels().forEach(model -> {
 				model.setSkipMissedFrames(value);
-
-				var editor = model.getEditor();
-
 				model.buildTimeline();
-
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
 			});
+
+			var editor = getEditor();
+			editor.getTimelineCanvas().redraw();
+			editor.setDirty();
 		});
+	}
+
+	private void restartPlayback() {
+		var editor = getEditor();
+		
+		if (!editor.isStopped()) {
+			editor.getStopAction().run();
+			editor.getPlayAction().run();
+		}
 	}
 
 	private void updateTotalDuration() {

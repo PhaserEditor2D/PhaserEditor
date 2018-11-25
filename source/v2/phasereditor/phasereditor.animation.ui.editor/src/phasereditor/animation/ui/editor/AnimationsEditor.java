@@ -630,6 +630,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	public boolean isDirty() {
 		return _dirty;
 	}
+	
+	public boolean isStopped() {
+		return _animCanvas.isStopped();
+	}
 
 	public void setDirty() {
 		_dirty = true;

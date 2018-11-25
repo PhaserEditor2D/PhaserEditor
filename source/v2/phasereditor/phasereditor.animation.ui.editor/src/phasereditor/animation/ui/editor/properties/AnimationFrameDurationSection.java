@@ -30,22 +30,22 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.animation.ui.editor.AnimationFrameModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
 @SuppressWarnings("boxing")
-public class AnimationFrameDurationSection extends FormPropertySection<AnimationFrameModel_in_Editor> {
+public class AnimationFrameDurationSection extends BaseAnimationSection<AnimationFrameModel_in_Editor> {
 
 	private Text _durationText;
 	private Label _computedDurationLabel;
 
-	public AnimationFrameDurationSection() {
-		super("Duration");
+	public AnimationFrameDurationSection(AnimationsEditor editor) {
+		super(editor, "Duration");
 	}
 
 	@Override

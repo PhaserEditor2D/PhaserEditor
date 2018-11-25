@@ -21,52 +21,25 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import phasereditor.animation.ui.editor.AnimationsEditor;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AnimationsPropertyPage extends FormPropertyPage {
+public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 
 	private AnimationsEditor _editor;
 
-	public AnimationsPropertyPage(AnimationsEditor editor) {
-		super();
+	public BaseAnimationSection(AnimationsEditor editor, String name) {
+		super(name);
+
 		_editor = editor;
 	}
 
 	public AnimationsEditor getEditor() {
 		return _editor;
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	protected List<FormPropertySection> createSections(Object obj) {
-		var list = new ArrayList<FormPropertySection>();
-
-		if (obj instanceof AnimationFrameModel) {
-			list.add(new AnimationFrameDurationSection(_editor));
-			list.add(new AnimationFrameTextureSection(_editor));
-		}
-
-		if (obj instanceof AnimationModel) {
-			list.add(new AnimationSection(_editor));
-		}
-
-		return list;
-	}
-
-	@Override
-	protected Object getDefaultModel() {
-		return null;
 	}
 
 }
