@@ -599,7 +599,7 @@ public class SceneCodeDomBuilder {
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
 
-		var frame = TextureComponent.get_frame(model, _finder);
+		var frame = getTexture(model);
 
 		buildTextureArguments(call, frame);
 
@@ -614,7 +614,7 @@ public class SceneCodeDomBuilder {
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
 
-		var frame = TextureComponent.get_frame(model, _finder);
+		var frame = getTexture(model);
 
 		buildTextureArguments(call, frame);
 
@@ -633,13 +633,26 @@ public class SceneCodeDomBuilder {
 		call.arg(TileSpriteComponent.get_width(model));
 		call.arg(TileSpriteComponent.get_height(model));
 
-		var frame = TextureComponent.get_frame(model, _finder);
+		var frame = getTexture(model);
 
 		buildTextureArguments(call, frame);
 
 		methodDecl.getInstructions().add(call);
 
 		return call;
+	}
+
+	private IAssetFrameModel getTexture(ObjectModel model) {
+		var frame = TextureComponent.utils_getTexture(model, _finder);
+
+		if (frame == null) {
+			// TODO: we should not generate code if there is any error, so it is missing a
+			// previous validation
+			throw new RuntimeException("Texture not found (" + TextureComponent.get_textureKey(model) + ","
+					+ TextureComponent.get_textureFrame(model) + ")");
+		}
+
+		return frame;
 	}
 
 	private static void buildTextureArguments(MethodCallDom call, IAssetFrameModel frame) {
@@ -665,14 +678,13 @@ public class SceneCodeDomBuilder {
 
 		model.getDisplayList().visit(objModel -> {
 			if (objModel instanceof TextureComponent) {
-				var frame = TextureComponent.get_frame(objModel, _finder);
-				if (frame != null) {
 
-					var pack = ProjectCore.getAssetUrl(frame.getAsset().getPack().getFile());
-					var section = frame.getAsset().getSection().getKey();
+				var frame = getTexture(objModel);
 
-					packSectionList.put(section + "-" + pack, new String[] { section, pack });
-				}
+				var pack = ProjectCore.getAssetUrl(frame.getAsset().getPack().getFile());
+				var section = frame.getAsset().getSection().getKey();
+
+				packSectionList.put(section + "-" + pack, new String[] { section, pack });
 			}
 		});
 

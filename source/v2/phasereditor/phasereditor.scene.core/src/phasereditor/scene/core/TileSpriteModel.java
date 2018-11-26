@@ -75,7 +75,7 @@ public class TileSpriteModel extends BaseSpriteModel implements
 	}
 
 	public void setSizeToFrame(AssetFinder finder) {
-		var frame = TextureComponent.get_frame(this, finder);
+		var frame = TextureComponent.utils_getTexture(this, finder);
 
 		if (frame == null) {
 

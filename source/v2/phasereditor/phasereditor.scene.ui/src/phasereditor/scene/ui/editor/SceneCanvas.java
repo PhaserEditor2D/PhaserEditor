@@ -220,7 +220,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				TransformComponent.set_x(sprite, modelX);
 				TransformComponent.set_y(sprite, modelY);
 
-				TextureComponent.set_frame(sprite, (IAssetFrameModel) obj);
+				TextureComponent.utils_setTexture(sprite, (IAssetFrameModel) obj);
 
 				newModels.add(sprite);
 
@@ -817,7 +817,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		if (img == null) {
 			if (model instanceof ImageModel || model instanceof SpriteModel) {
-				var frame = TextureComponent.get_frame(model, _finder);
+				var frame = TextureComponent.utils_getTexture(model, _finder);
 
 				if (frame == null) {
 					return false;

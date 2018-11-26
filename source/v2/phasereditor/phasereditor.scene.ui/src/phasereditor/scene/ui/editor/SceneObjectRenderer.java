@@ -528,7 +528,7 @@ public class SceneObjectRenderer {
 	}
 
 	private Image createTileSpriteTexture(TileSpriteModel model) {
-		var assetFrame = TextureComponent.get_frame(model, _finder);
+		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
 
 		var img = _canvas.loadImage(assetFrame.getImageFile());
 
@@ -644,7 +644,7 @@ public class SceneObjectRenderer {
 
 		} else if (model instanceof TextureComponent) {
 
-			var frame = TextureComponent.get_frame(model, _finder);
+			var frame = TextureComponent.utils_getTexture(model, _finder);
 
 			if (frame == null) {
 				return new float[] { 0, 0 };
@@ -711,7 +711,7 @@ public class SceneObjectRenderer {
 
 	private void renderTexture(GC gc, ObjectModel model, String key, String frame) {
 
-		var assetFrame = TextureComponent.get_frame(model, _finder);
+		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
 
 		if (assetFrame == null) {
 			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));

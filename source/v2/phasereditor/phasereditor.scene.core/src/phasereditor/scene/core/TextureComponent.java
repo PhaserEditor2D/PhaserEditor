@@ -64,7 +64,7 @@ public interface TextureComponent {
 
 	// utils
 
-	static IAssetFrameModel get_frame(ObjectModel model, AssetFinder finder) {
+	static IAssetFrameModel utils_getTexture(ObjectModel model, AssetFinder finder) {
 		var key = get_textureKey(model);
 
 		var frame = get_textureFrame(model);
@@ -72,7 +72,7 @@ public interface TextureComponent {
 		return finder.findTexture(key, frame);
 	}
 
-	static void set_frame(ObjectModel model, IAssetFrameModel frame) {
+	static void utils_setTexture(ObjectModel model, IAssetFrameModel frame) {
 		if (frame == null) {
 			set_textureKey(model, null);
 			set_textureFrame(model, null);

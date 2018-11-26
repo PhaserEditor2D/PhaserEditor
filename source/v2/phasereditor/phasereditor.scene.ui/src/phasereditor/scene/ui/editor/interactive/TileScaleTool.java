@@ -73,7 +73,7 @@ public class TileScaleTool extends InteractiveTool {
 		var globalAngle = 0f;
 
 		for (var model : getModels()) {
-			var frame = TextureComponent.get_frame(model, getAssetFinder());
+			var frame = TextureComponent.utils_getTexture(model, getAssetFinder());
 			var textureWidth = frame.getFrameData().srcSize.x;
 			var textureHeight = frame.getFrameData().srcSize.y;
 
@@ -171,7 +171,7 @@ public class TileScaleTool extends InteractiveTool {
 		if (_dragging && contains(e.x, e.y)) {
 
 			for (var model : getModels()) {
-				var frame = TextureComponent.get_frame(model, getAssetFinder());
+				var frame = TextureComponent.utils_getTexture(model, getAssetFinder());
 				var textureWidth = frame.getFrameData().srcSize.x;
 				var textureHeight = frame.getFrameData().srcSize.y;
 
