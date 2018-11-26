@@ -25,7 +25,6 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
- javafx.embed.swt,
  org.eclipse.wb.swt,
  org.pushingpixels.trident,
  org.pushingpixels.trident.callback,
@@ -39,6 +38,5 @@ Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
  phasereditor.ui.info,
  phasereditor.ui.properties,
  phasereditor.ui.views
-Bundle-ClassPath: lib/javafx-swt.jar,
- lib/trident-7.3-swt.jar,
+Bundle-ClassPath: lib/trident-7.3-swt.jar,
  .

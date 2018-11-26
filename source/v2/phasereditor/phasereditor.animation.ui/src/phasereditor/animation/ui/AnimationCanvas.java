@@ -38,7 +38,6 @@ import org.pushingpixels.trident.callback.TimelineCallback;
 import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 import org.pushingpixels.trident.ease.Linear;
 
-import javafx.embed.swt.FXCanvas;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.ImageCanvas;
@@ -52,7 +51,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	private AnimationModel _animModel;
 	private IndexTimeline _timeline;
 	private boolean _showProgress = true;
-	private static boolean _initFX;
 	protected Runnable _stepCallback;
 	protected Consumer<TimelineState> _playbackCallback;
 	private TimelineCallback _statusListener;
@@ -62,12 +60,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		super(parent, style);
 
 		addControlListener(this);
-
-		if (!_initFX) {
-			_initFX = true;
-			var temp = new FXCanvas(parent, SWT.NONE);
-			temp.dispose();
-		}
 
 		_showProgress = true;
 	}

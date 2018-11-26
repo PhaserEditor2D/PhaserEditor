@@ -91,9 +91,6 @@ public class GamePlayerEditor extends EditorPart {
 	}
 
 	private static IGameBrowser createBrowserImpl(Composite parent) {
-//		if (PhaserEditorUI.isLinux()) {
-//			return new JavaFXBrowser(parent, SWT.NONE);
-//		}
 		return new NativeBrowser(parent, SWT.NONE);
 	}
 

@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
-import javafx.scene.media.MediaPlayer;
 import phasereditor.assetpack.ui.preview.VideoPreviewComp;
 
 public class VideoResourceDialog extends Dialog {
@@ -116,10 +115,10 @@ public class VideoResourceDialog extends Dialog {
 
 	@Override
 	public boolean close() {
-		MediaPlayer player = _videoPlayer.getVideoCanvas().getMediaView().getMediaPlayer();
-		if (player != null) {
-			player.dispose();
-		}
+//		MediaPlayer player = _videoPlayer.getVideoCanvas().getMediaView().getMediaPlayer();
+//		if (player != null) {
+//			player.dispose();
+//		}
 		return super.close();
 	}
 

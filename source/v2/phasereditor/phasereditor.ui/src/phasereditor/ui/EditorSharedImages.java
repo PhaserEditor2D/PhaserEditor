@@ -21,16 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class EditorSharedImages implements IEditorSharedImages {
-	private static Map<String, javafx.scene.image.Image> _fxMap = new HashMap<>();
-
 	public static Image getImage(String path) {
 		Activator plugin = Activator.getDefault();
 		Image image = plugin.getImageRegistry().get(path);
@@ -43,14 +38,5 @@ public class EditorSharedImages implements IEditorSharedImages {
 
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, path);
-	}
-
-	public static javafx.scene.image.Image getFXImage(String path) {
-		if (_fxMap.containsKey(path)) {
-			return _fxMap.get(path);
-		}
-		javafx.scene.image.Image img = new javafx.scene.image.Image("platform:/plugin/phasereditor.ui/" + path);
-		_fxMap.put(path, img);
-		return img;
 	}
 }

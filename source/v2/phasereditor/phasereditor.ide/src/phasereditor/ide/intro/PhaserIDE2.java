@@ -40,28 +40,12 @@ public class PhaserIDE2 extends IDEApplication {
 
 		out.println("Starting Phaser IDE application " + LicCore.PRODUCT_VERSION);
 
-		javafx.application.Platform.setImplicitExit(false);
-
 		out.println("Starting license monitor");
 		LicCore.startMonitor();
 
 		out.println("Starting Eclipse application");
 		Object res = super.start(appContext);
 
-		try {
-			javafx.application.Platform.exit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return res;
 	}
-
-	@Override
-	public void stop() {
-		super.stop();
-
-		javafx.application.Platform.exit();
-	}
-
 }

@@ -28,23 +28,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import javafx.embed.swt.FXCanvas;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
-import javafx.scene.media.MediaView;
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.ui.AssetPackUI;
 
 /**
  * @author arian
  *
  */
 public class VideoCanvas extends Composite {
-	private FXCanvas _canvas;
-	private MediaView _mediaView;
+//	private FXCanvas _canvas;
+//	private MediaView _mediaView;
 	private boolean _autoPlay = true;
 	private IFile _file;
 
@@ -58,30 +50,30 @@ public class VideoCanvas extends Composite {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		_canvas = new FXCanvas(this, SWT.NONE);
+//		_canvas = new FXCanvas(this, SWT.NONE);
 
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
 		// video player
-		_mediaView = new MediaView();
-		BorderPane pane = new BorderPane(_mediaView);
-		pane.setStyle("-fx-background-color:black");
-		Scene scene = new Scene(pane);
-		_canvas.setScene(scene);
-		_mediaView.setPreserveRatio(true);
-		_mediaView.fitWidthProperty().bind(scene.widthProperty());
-		_mediaView.fitHeightProperty().bind(scene.heightProperty());
-
-		addDisposeListener(e -> {
-			if (_mediaView != null) {
-				MediaPlayer player = _mediaView.getMediaPlayer();
-				if (player != null) {
-					player.dispose();
-				}
-			}
-		});
+//		_mediaView = new MediaView();
+//		BorderPane pane = new BorderPane(_mediaView);
+//		pane.setStyle("-fx-background-color:black");
+//		Scene scene = new Scene(pane);
+//		_canvas.setScene(scene);
+//		_mediaView.setPreserveRatio(true);
+//		_mediaView.fitWidthProperty().bind(scene.widthProperty());
+//		_mediaView.fitHeightProperty().bind(scene.heightProperty());
+//
+//		addDisposeListener(e -> {
+//			if (_mediaView != null) {
+//				MediaPlayer player = _mediaView.getMediaPlayer();
+//				if (player != null) {
+//					player.dispose();
+//				}
+//			}
+//		});
 	}
 
 	public void setAutoPlay(boolean autoPlay) {
@@ -92,34 +84,34 @@ public class VideoCanvas extends Composite {
 		return _autoPlay;
 	}
 
-	public MediaView getMediaView() {
-		return _mediaView;
-	}
+//	public MediaView getMediaView() {
+//		return _mediaView;
+//	}
 
 	public void setVideoFile(IFile file) {
-		_file = file;
-		try {
-			MediaPlayer player = _mediaView.getMediaPlayer();
-			if (player != null) {
-				if (player.getStatus() == Status.PLAYING) {
-					player.stop();
-				}
-				player.dispose();
-			}
-
-			if (file == null) {
-				return;
-			}
-
-			String source = file.getLocationURI().toURL().toString();
-			Media media = new Media(source);
-			player = new MediaPlayer(media);
-			player.setAutoPlay(_autoPlay);
-			player.setCycleCount(MediaPlayer.INDEFINITE);
-			_mediaView.setMediaPlayer(player);
-		} catch (Exception e) {
-			AssetPackUI.showError(e);
-		}
+//		_file = file;
+//		try {
+//			MediaPlayer player = _mediaView.getMediaPlayer();
+//			if (player != null) {
+//				if (player.getStatus() == Status.PLAYING) {
+//					player.stop();
+//				}
+//				player.dispose();
+//			}
+//
+//			if (file == null) {
+//				return;
+//			}
+//
+//			String source = file.getLocationURI().toURL().toString();
+//			Media media = new Media(source);
+//			player = new MediaPlayer(media);
+//			player.setAutoPlay(_autoPlay);
+//			player.setCycleCount(MediaPlayer.INDEFINITE);
+//			_mediaView.setMediaPlayer(player);
+//		} catch (Exception e) {
+//			AssetPackUI.showError(e);
+//		}
 	}
 
 	public IFile getVideoFile() {
