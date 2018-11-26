@@ -430,13 +430,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			@Override
 			public void run() {
 				AnimationCanvas canvas = getAnimationCanvas();
-				var transition = canvas.getTransition();
-				if (transition == null) {
+				var timeline = canvas.getTimeline();
+				if (timeline == null) {
 					canvas.play();
 				} else {
-					switch (transition.getState()) {
+					switch (timeline.getState()) {
 					case SUSPENDED:
-						transition.resume();
+						timeline.resume();
 						break;
 					case IDLE:
 						canvas.play();

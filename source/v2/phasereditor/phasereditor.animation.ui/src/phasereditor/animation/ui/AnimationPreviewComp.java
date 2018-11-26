@@ -233,13 +233,13 @@ public class AnimationPreviewComp extends SashForm {
 			@Override
 			public void run() {
 				AnimationCanvas canvas = getAnimationCanvas();
-				var transition = canvas.getTransition();
-				if (transition == null) {
+				var timeline = canvas.getTimeline();
+				if (timeline == null) {
 					canvas.play();
 				} else {
-					switch (transition.getState()) {
+					switch (timeline.getState()) {
 					case SUSPENDED:
-						transition.play();
+						timeline.play();
 						break;
 					case IDLE:
 						canvas.play();

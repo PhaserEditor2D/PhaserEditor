@@ -50,7 +50,7 @@ import phasereditor.ui.ImageCanvas;
 public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	private AnimationModel _animModel;
-	private IndexTimeline _transition;
+	private IndexTimeline _timeline;
 	private boolean _showProgress = true;
 	private static boolean _initFX;
 	protected Runnable _stepCallback;
@@ -73,21 +73,21 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	public void play() {
-		if (_transition != null) {
-			_transition.end();
+		if (_timeline != null) {
+			_timeline.end();
 		}
 		startNewAnimation();
 	}
 
 	public void stop() {
-		if (_transition != null) {
-			_transition.end();
+		if (_timeline != null) {
+			_timeline.end();
 		}
 	}
 
 	public void pause() {
-		if (_transition != null) {
-			_transition.suspend();
+		if (_timeline != null) {
+			_timeline.suspend();
 		}
 	}
 
@@ -107,8 +107,8 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		_playbackCallback = playbackCallback;
 	}
 
-	public IndexTimeline getTransition() {
-		return _transition;
+	public IndexTimeline getTimeline() {
+		return _timeline;
 	}
 
 	public AnimationModel getModel() {
@@ -122,8 +122,8 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	public void setModel(AnimationModel model, boolean autoPlay) {
 		_animModel = model;
 
-		if (_transition != null) {
-			_transition.end();
+		if (_timeline != null) {
+			_timeline.end();
 		}
 
 		if (_animModel == null || _animModel.getFrames().isEmpty()) {
@@ -153,21 +153,21 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			};
 		}
 
-		if (_transition != null) {
-			_transition.removeCallback(_statusListener);
+		if (_timeline != null) {
+			_timeline.removeCallback(_statusListener);
 		}
 
 		_animModel.buildTimeline();
 
-		_transition = new IndexTimeline(_animModel.getComputedTotalDuration());
+		_timeline = new IndexTimeline(_animModel.getComputedTotalDuration());
 
-		_transition.setInitialDelay(_animModel.getDelay());
+		_timeline.setInitialDelay(_animModel.getDelay());
 		// _transition.setAutoReverse(_animModel.isYoyo());
 		// _transition.setCycleCount(_animModel.getRepeat());
-		_transition.addCallback(_statusListener);
+		_timeline.addCallback(_statusListener);
 
 		var repeatBehavior = _animModel.isYoyo() ? RepeatBehavior.REVERSE : RepeatBehavior.LOOP;
-		_transition.playLoop(_animModel.getRepeat(), repeatBehavior);
+		_timeline.playLoop(_animModel.getRepeat(), repeatBehavior);
 	}
 
 	public void showFrame(int index) {
@@ -277,7 +277,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void paintProgressLine(PaintEvent e) {
-		if (_transition != null) {
+		if (_timeline != null) {
 
 			e.gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
 			e.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_RED));
@@ -286,8 +286,8 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 			if (_animModel != null) {
 
-				if (_transition.getState() != TimelineState.IDLE) {
-					double frac = _transition.getFraction();
+				if (_timeline.getState() != TimelineState.IDLE) {
+					double frac = _timeline.getFraction();
 					int x = (int) (frac * e.width);
 					e.gc.drawLine(0, e.height - 5, x, e.height - 5);
 				}
@@ -321,7 +321,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	public boolean isStopped() {
-		return _transition == null || _transition.getState() == TimelineState.IDLE;
+		return _timeline == null || _timeline.getState() == TimelineState.IDLE;
 	}
 
 	public void playOrPause() {
@@ -329,18 +329,18 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			return;
 		}
 
-		if (_transition == null) {
+		if (_timeline == null) {
 			play();
 			return;
 		}
 
-		switch (_transition.getState()) {
+		switch (_timeline.getState()) {
 		case PLAYING_FORWARD:
 		case PLAYING_REVERSE:
-			_transition.suspend();
+			_timeline.suspend();
 			break;
 		case SUSPENDED:
-			_transition.resume();
+			_timeline.resume();
 			break;
 		case IDLE:
 			play();

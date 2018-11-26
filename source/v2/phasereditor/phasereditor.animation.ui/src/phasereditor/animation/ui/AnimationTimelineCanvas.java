@@ -360,14 +360,14 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		{
 			// update scroll form animation progress
-			var transition = _animCanvas.getTransition();
+			var timeline = _animCanvas.getTimeline();
 
-			if (transition != null) {
+			if (timeline != null) {
 
-				var state = transition.getState();
+				var state = timeline.getState();
 
 				if (state != TimelineState.IDLE) {
-					var frac = transition.getFraction();
+					var frac = timeline.getFraction();
 					var direction = state == TimelineState.PLAYING_FORWARD ? 1 : -1;
 					scrollTo(frac, direction);
 				}
@@ -480,7 +480,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			gc.setLineWidth(lw);
 		}
 
-		var transition = _animCanvas.getTransition();
+		var transition = _animCanvas.getTimeline();
 		if (transition != null && transition.getState() != TimelineState.IDLE) {
 			var frac = transition.getFraction();
 			var x = (int) (_fullWidth * frac);
