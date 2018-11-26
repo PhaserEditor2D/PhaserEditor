@@ -54,6 +54,9 @@ import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
@@ -207,7 +210,39 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				obj = ((ImageAssetModel) obj).getFrame();
 			}
 
-			if (obj instanceof IAssetFrameModel) {
+			if (obj instanceof AnimationModel) {
+				var animFrames = ((AnimationModel) obj).getFrames();
+				if (!animFrames.isEmpty()) {
+					obj = animFrames.get(0);
+				}
+			}
+
+			if (obj instanceof AnimationFrameModel) {
+				var animFrame = (AnimationFrameModel) obj;
+				var textureFrame = animFrame.getFrameName() == null ? null : animFrame.getFrameName() + "";
+				var textureKey = animFrame.getTextureKey();
+
+				var texture = _finder.findTexture(textureKey, textureFrame);
+
+				if (texture != null) {
+					var sprite = new SpriteModel();
+
+					var name = nameComputer.newName(textureFrame == null ? textureKey : textureFrame);
+
+					VariableComponent.set_variableName(sprite, name);
+
+					TransformComponent.set_x(sprite, modelX);
+					TransformComponent.set_y(sprite, modelY);
+
+					TextureComponent.set_textureKey(sprite, textureKey);
+					TextureComponent.set_textureFrame(sprite, textureFrame);
+
+					AnimationsComponent.set_autoPlayAnimKey(sprite, animFrame.getAnimation().getKey());
+
+					newModels.add(sprite);
+
+				}
+			} else if (obj instanceof IAssetFrameModel) {
 
 				var frame = (IAssetFrameModel) obj;
 
@@ -271,7 +306,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_finder = new AssetFinder(getEditor().getProject());
 		_renderer = new SceneObjectRenderer(this);
 	}
-	
+
 	public AssetFinder getAssetFinder() {
 		return _finder;
 	}
@@ -293,9 +328,9 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
-		
+
 		_finder.build();
-		
+
 		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.

@@ -61,7 +61,7 @@ import phasereditor.ui.BaseImageCanvas;
  *
  */
 public class SceneObjectRenderer {
-	private SceneCanvas _canvas;
+	private SceneCanvas _scene;
 	private Map<ObjectModel, float[]> _modelMatrixMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
 	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
@@ -71,10 +71,10 @@ public class SceneObjectRenderer {
 	private List<Runnable> _postPaintActions;
 	private AssetFinder _finder;
 
-	public SceneObjectRenderer(SceneCanvas canvas) {
+	public SceneObjectRenderer(SceneCanvas scene) {
 		super();
 
-		_canvas = canvas;
+		_scene = scene;
 
 		_modelMatrixMap = new HashMap<>();
 		_modelChildrenBoundsMap = new HashMap<>();
@@ -84,7 +84,7 @@ public class SceneObjectRenderer {
 
 		_imageCacheMap = new HashMap<>();
 
-		_finder = canvas.getAssetFinder();
+		_finder = scene.getAssetFinder();
 	}
 
 	public void dispose() {
@@ -114,9 +114,9 @@ public class SceneObjectRenderer {
 		try {
 
 			{
-				int dx = _canvas.getOffsetX();
-				int dy = _canvas.getOffsetY();
-				float scale = _canvas.getScale();
+				int dx = _scene.getOffsetX();
+				int dy = _scene.getOffsetY();
+				float scale = _scene.getScale();
 
 				tx2.translate(dx, dy);
 				tx2.scale(scale, scale);
@@ -494,13 +494,13 @@ public class SceneObjectRenderer {
 	}
 
 	private Image createImage(int width, int height) {
-		var temp = new Image(_canvas.getDisplay(), 1, 1);
+		var temp = new Image(_scene.getDisplay(), 1, 1);
 		var tempData = temp.getImageData();
 
 		var data = new ImageData(width, height, tempData.depth, tempData.palette);
 		data.alphaData = new byte[width * height];
 
-		var img = new Image(_canvas.getDisplay(), data);
+		var img = new Image(_scene.getDisplay(), data);
 
 		temp.dispose();
 
@@ -530,7 +530,7 @@ public class SceneObjectRenderer {
 	private Image createTileSpriteTexture(TileSpriteModel model) {
 		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
 
-		var img = _canvas.loadImage(assetFrame.getImageFile());
+		var img = _scene.loadImage(assetFrame.getImageFile());
 
 		var fd = assetFrame.getFrameData();
 
@@ -624,7 +624,7 @@ public class SceneObjectRenderer {
 	}
 
 	private Image loadImage(IFile file) {
-		return _canvas.loadImage(file);
+		return _scene.loadImage(file);
 	}
 
 	public float[] getObjectSize(ObjectModel model) {
@@ -824,7 +824,7 @@ public class SceneObjectRenderer {
 		var parent = ParentComponent.get_parent(model);
 
 		if (parent == null || !TransformComponent.is(parent)) {
-			return _canvas.getScale() * scale;
+			return _scene.getScale() * scale;
 		}
 
 		return scale * globalScaleX(parent);
@@ -836,7 +836,7 @@ public class SceneObjectRenderer {
 		var parent = ParentComponent.get_parent(model);
 
 		if (parent == null || !TransformComponent.is(parent)) {
-			return _canvas.getScale() * scale;
+			return _scene.getScale() * scale;
 		}
 
 		return scale * globalScaleY(parent);
