@@ -32,9 +32,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.pushingpixels.trident.Timeline.TimelineState;
 
-import javafx.animation.Animation.Status;
-import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -146,17 +145,18 @@ public class AnimationPreviewComp extends SashForm {
 		return _timelineCanvas;
 	}
 
-	private void animationStatusChanged(Status status) {
+	private void animationStatusChanged(TimelineState status) {
 
 		out.println("status: " + status);
 
 		switch (status) {
-		case RUNNING:
+		case PLAYING_FORWARD:
+		case PLAYING_REVERSE:
 			_playAction.setChecked(true);
 			_pauseAction.setChecked(false);
 			_stopAction.setChecked(false);
 			break;
-		case STOPPED:
+		case IDLE:
 			// TODO: do we really want to do this? it breaks the animation, it looks like
 			// the first frame is actually the last frame of the animation.
 			//
@@ -170,7 +170,7 @@ public class AnimationPreviewComp extends SashForm {
 			_playAction.setChecked(false);
 			_pauseAction.setChecked(false);
 			break;
-		case PAUSED:
+		case SUSPENDED:
 			_playAction.setChecked(false);
 			_pauseAction.setChecked(true);
 			break;
@@ -233,15 +233,15 @@ public class AnimationPreviewComp extends SashForm {
 			@Override
 			public void run() {
 				AnimationCanvas canvas = getAnimationCanvas();
-				IndexTransition transition = canvas.getTransition();
+				var transition = canvas.getTransition();
 				if (transition == null) {
 					canvas.play();
 				} else {
-					switch (transition.getStatus()) {
-					case PAUSED:
+					switch (transition.getState()) {
+					case SUSPENDED:
 						transition.play();
 						break;
-					case STOPPED:
+					case IDLE:
 						canvas.play();
 						break;
 					default:

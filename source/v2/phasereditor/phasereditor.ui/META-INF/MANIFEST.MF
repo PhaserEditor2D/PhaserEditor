@@ -27,6 +27,11 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
  javafx.embed.swt,
  org.eclipse.wb.swt,
+ org.pushingpixels.trident,
+ org.pushingpixels.trident.callback,
+ org.pushingpixels.trident.ease,
+ org.pushingpixels.trident.interpolator,
+ org.pushingpixels.trident.swt,
  phasereditor.ui,
  phasereditor.ui.animations,
  phasereditor.ui.editors,
@@ -35,4 +40,5 @@ Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
  phasereditor.ui.properties,
  phasereditor.ui.views
 Bundle-ClassPath: lib/javafx-swt.jar,
+ lib/trident-7.3-swt.jar,
  .

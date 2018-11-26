@@ -72,10 +72,9 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.pushingpixels.trident.Timeline.TimelineState;
 
-import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
-import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -364,17 +363,18 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_deleteAction.setEnabled(false);
 	}
 
-	private void animationStatusChanged(Status status) {
+	private void animationStatusChanged(TimelineState status) {
 
 		out.println("status: " + status);
 
 		switch (status) {
-		case RUNNING:
+		case PLAYING_FORWARD:
+		case PLAYING_REVERSE:
 			_playAction.setChecked(true);
 			_pauseAction.setChecked(false);
 			_stopAction.setChecked(false);
 			break;
-		case STOPPED:
+		case IDLE:
 			// TODO: do we really want to do this? it breaks the animation, it looks like
 			// the first frame is actually the last frame of the animation.
 			//
@@ -388,7 +388,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			_playAction.setChecked(false);
 			_pauseAction.setChecked(false);
 			break;
-		case PAUSED:
+		case SUSPENDED:
 			_playAction.setChecked(false);
 			_pauseAction.setChecked(true);
 			break;
@@ -430,15 +430,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			@Override
 			public void run() {
 				AnimationCanvas canvas = getAnimationCanvas();
-				IndexTransition transition = canvas.getTransition();
+				var transition = canvas.getTransition();
 				if (transition == null) {
 					canvas.play();
 				} else {
-					switch (transition.getStatus()) {
-					case PAUSED:
-						transition.play();
+					switch (transition.getState()) {
+					case SUSPENDED:
+						transition.resume();
 						break;
-					case STOPPED:
+					case IDLE:
 						canvas.play();
 						break;
 					default:

@@ -51,8 +51,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.pushingpixels.trident.Timeline.TimelineState;
 
-import javafx.animation.Animation.Status;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -105,15 +105,15 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		init_DND_Support();
 
 		initMouseSupport();
-		
+
 		_zoomWhenShiftPressed = true;
 
 	}
-	
+
 	public boolean isZoomWhenShiftPressed() {
 		return _zoomWhenShiftPressed;
 	}
-	
+
 	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
 		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
@@ -361,10 +361,17 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		{
 			// update scroll form animation progress
 			var transition = _animCanvas.getTransition();
-			if (transition != null && transition.getStatus() != Status.STOPPED) {
-				var frac = transition.getFraction();
 
-				scrollTo(frac, transition.getRate());
+			if (transition != null) {
+
+				var state = transition.getState();
+
+				if (state != TimelineState.IDLE) {
+					var frac = transition.getFraction();
+					var direction = state == TimelineState.PLAYING_FORWARD ? 1 : -1;
+					scrollTo(frac, direction);
+				}
+
 			}
 		}
 
@@ -474,7 +481,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		}
 
 		var transition = _animCanvas.getTransition();
-		if (transition != null && transition.getStatus() != Status.STOPPED) {
+		if (transition != null && transition.getState() != TimelineState.IDLE) {
 			var frac = transition.getFraction();
 			var x = (int) (_fullWidth * frac);
 			gc.drawLine(x, 0, x, e.height);
@@ -484,12 +491,12 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			_updateScroll = false;
 			updateScroll();
 		}
-		
+
 		tx.dispose();
 
 	}
 
-	private void scrollTo(double frac, double rate) {
+	private void scrollTo(double frac, int direction) {
 
 		var x = (int) (_fullWidth * frac);
 
@@ -508,7 +515,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		var b = getClientArea();
 
-		if (rate > 0) {
+		if (direction > 0) {
 			_origin = -x + b.width / 2;
 		} else {
 			_origin = -x - b.width / 2;
@@ -569,7 +576,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 				return;
 			}
 		}
-		
+
 		if (e.count < 0) {
 			_widthFactor -= 0.2;
 		} else {
@@ -680,7 +687,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		if (assetFrame != null) {
 
 			var img = loadImage(assetFrame.getImageFile());
-			
+
 			if (img != null) {
 				FrameData fd = assetFrame.getFrameData();
 				PhaserEditorUI.set_DND_Image(event, img, fd.src);

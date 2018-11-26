@@ -30,14 +30,15 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.Timeline.RepeatBehavior;
+import org.pushingpixels.trident.Timeline.TimelineState;
+import org.pushingpixels.trident.callback.RunOnUIThread;
+import org.pushingpixels.trident.callback.TimelineCallback;
+import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
+import org.pushingpixels.trident.ease.Linear;
 
-import javafx.animation.Animation.Status;
-import javafx.animation.Interpolator;
-import javafx.animation.Transition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swt.FXCanvas;
-import javafx.util.Duration;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.ImageCanvas;
@@ -49,12 +50,12 @@ import phasereditor.ui.ImageCanvas;
 public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	private AnimationModel _animModel;
-	private IndexTransition _transition;
+	private IndexTimeline _transition;
 	private boolean _showProgress = true;
 	private static boolean _initFX;
 	protected Runnable _stepCallback;
-	protected Consumer<Status> _playbackCallback;
-	private ChangeListener<? super Status> _statusListener;
+	protected Consumer<TimelineState> _playbackCallback;
+	private TimelineCallback _statusListener;
 	private int _currentFrame;
 
 	public AnimationCanvas(Composite parent, int style) {
@@ -73,20 +74,20 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	public void play() {
 		if (_transition != null) {
-			_transition.stop();
+			_transition.end();
 		}
 		startNewAnimation();
 	}
 
 	public void stop() {
 		if (_transition != null) {
-			_transition.stop();
+			_transition.end();
 		}
 	}
 
 	public void pause() {
 		if (_transition != null) {
-			_transition.pause();
+			_transition.suspend();
 		}
 	}
 
@@ -98,15 +99,15 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		_stepCallback = stepCallback;
 	}
 
-	public Consumer<Status> getPlaybackCallback() {
+	public Consumer<TimelineState> getPlaybackCallback() {
 		return _playbackCallback;
 	}
 
-	public void setPlaybackCallback(Consumer<Status> playbackCallback) {
+	public void setPlaybackCallback(Consumer<TimelineState> playbackCallback) {
 		_playbackCallback = playbackCallback;
 	}
 
-	public IndexTransition getTransition() {
+	public IndexTimeline getTransition() {
 		return _transition;
 	}
 
@@ -122,7 +123,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		_animModel = model;
 
 		if (_transition != null) {
-			_transition.stop();
+			_transition.end();
 		}
 
 		if (_animModel == null || _animModel.getFrames().isEmpty()) {
@@ -141,31 +142,32 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	private void startNewAnimation() {
 		if (_statusListener == null) {
-			_statusListener = new ChangeListener<>() {
-
+			_statusListener = new TimelineCallbackAdapter() {
 				@Override
-				public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
+				public void onTimelineStateChanged(TimelineState oldState, TimelineState newState,
+						float durationFraction, float timelinePosition) {
 					if (_playbackCallback != null) {
-						_playbackCallback.accept(newValue);
+						_playbackCallback.accept(newState);
 					}
 				}
 			};
 		}
 
 		if (_transition != null) {
-			_transition.statusProperty().removeListener(_statusListener);
+			_transition.removeCallback(_statusListener);
 		}
 
 		_animModel.buildTimeline();
 
-		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
+		_transition = new IndexTimeline(_animModel.getComputedTotalDuration());
 
-		_transition.setDelay(Duration.millis(_animModel.getDelay()));
-		_transition.setAutoReverse(_animModel.isYoyo());
-		_transition.setCycleCount(_animModel.getRepeat());
-		_transition.statusProperty().addListener(_statusListener);
+		_transition.setInitialDelay(_animModel.getDelay());
+		// _transition.setAutoReverse(_animModel.isYoyo());
+		// _transition.setCycleCount(_animModel.getRepeat());
+		_transition.addCallback(_statusListener);
 
-		_transition.play();
+		var repeatBehavior = _animModel.isYoyo() ? RepeatBehavior.REVERSE : RepeatBehavior.LOOP;
+		_transition.playLoop(_animModel.getRepeat(), repeatBehavior);
 	}
 
 	public void showFrame(int index) {
@@ -186,31 +188,50 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 
 		_currentFrame = index;
-		
+
 		if (!isDisposed()) {
 			redraw();
 		}
 	}
-	
+
 	public int getCurrentFrame() {
 		return _currentFrame;
 	}
 
-	public class IndexTransition extends Transition {
-
+	@RunOnUIThread
+	public class IndexTimeline extends Timeline implements TimelineCallback {
 		private int _currentIndex;
-		private double _currentFraction;
+		private float _currentFraction;
 
-		public IndexTransition(Duration duration) {
-			super();
-			setCycleDuration(duration);
-			setInterpolator(Interpolator.LINEAR);
+		public IndexTimeline(long duration) {
+			super(AnimationCanvas.this);
+			
+			setDuration(duration);
+			setEase(new Linear());
+
+			addCallback(this);
+
 			_currentIndex = -1;
 		}
 
+		public int getCurrentIndex() {
+			return _currentIndex;
+		}
+
+		public float getFraction() {
+			return _currentFraction;
+		}
+
 		@Override
-		protected void interpolate(double frac) {
-			_currentFraction = frac;
+		public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
+				float timelinePosition) {
+			//
+		}
+
+		@Override
+		public void onTimelinePulse(float durationFraction, float timelinePosition) {
+			_currentFraction = timelinePosition;
+
 			int index = 0;
 
 			AnimationModel animModel = getModel();
@@ -223,7 +244,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 			for (int i = 0; i < frames.size(); i++) {
 				var frame = frames.get(i);
-				if (frac > frame.getComputedFraction()) {
+				if (timelinePosition > frame.getComputedFraction()) {
 					index = i;
 				} else {
 					break;
@@ -241,14 +262,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 					_stepCallback.run();
 				}
 			}
-		}
-
-		public int getCurrentIndex() {
-			return _currentIndex;
-		}
-
-		public double getFraction() {
-			return _currentFraction;
 		}
 	}
 
@@ -273,7 +286,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 			if (_animModel != null) {
 
-				if (_transition.getStatus() != Status.STOPPED) {
+				if (_transition.getState() != TimelineState.IDLE) {
 					double frac = _transition.getFraction();
 					int x = (int) (frac * e.width);
 					e.gc.drawLine(0, e.height - 5, x, e.height - 5);
@@ -308,7 +321,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	public boolean isStopped() {
-		return _transition == null || _transition.getStatus() == Status.STOPPED;
+		return _transition == null || _transition.getState() == TimelineState.IDLE;
 	}
 
 	public void playOrPause() {
@@ -321,14 +334,15 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			return;
 		}
 
-		switch (_transition.getStatus()) {
-		case RUNNING:
-			_transition.pause();
+		switch (_transition.getState()) {
+		case PLAYING_FORWARD:
+		case PLAYING_REVERSE:
+			_transition.suspend();
 			break;
-		case PAUSED:
-			_transition.play();
+		case SUSPENDED:
+			_transition.resume();
 			break;
-		case STOPPED:
+		case IDLE:
 			play();
 			break;
 		default:
