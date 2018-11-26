@@ -21,8 +21,8 @@ import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.scene.ui.SceneUI;
 
 @SuppressWarnings("hiding")
 public class IDEStartup implements IStartup {
@@ -156,7 +156,7 @@ public class IDEStartup implements IStartup {
 		_used.add(new WeakReference<>(viewer));
 
 		AssetPackUI.installAssetTooltips(viewer);
-		CanvasUI.installCanvasTooltips(viewer);
+		SceneUI.installCanvasTooltips(viewer);
 	}
 
 }

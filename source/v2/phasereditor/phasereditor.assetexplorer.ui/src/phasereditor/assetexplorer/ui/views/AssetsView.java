@@ -71,9 +71,6 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
-import phasereditor.canvas.core.CanvasFile;
-import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
@@ -103,7 +100,6 @@ public class AssetsView extends ViewPart {
 	public static String ROOT = "root";
 	public static String ANIMATIONS_NODE = "Animations Files";
 	public static String ATLAS_NODE = "Texture Packer Files";
-	public static String CANVAS_NODE = "Canvas Files";
 	public static String PACK_NODE = "Pack Files";
 	public static String PROJECTS_NODE = "Other Projects";
 
@@ -148,8 +144,6 @@ public class AssetsView extends ViewPart {
 			// _treeCanvasAdapter.expandToLevel(3);
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
-		} else if (elem instanceof CanvasFile) {
-			file = ((CanvasFile) elem).getFile();
 		} else if (elem instanceof AtlasData) {
 			file = ((AtlasData) elem).getFile();
 		} else if (elem instanceof AnimationsModel) {
@@ -188,7 +182,6 @@ public class AssetsView extends ViewPart {
 		// tooltips
 
 		AssetPackUI.installAssetTooltips(_treeCanvas, _treeCanvas.getUtils());
-		CanvasUI.installCanvasTooltips(_treeCanvas, _treeCanvas.getUtils());
 
 		// undo context
 
@@ -430,8 +423,6 @@ public class AssetsView extends ViewPart {
 				} else if (obj instanceof AssetPackModel) {
 					AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
 					toExpand.add(newPack);
-				} else if (obj instanceof CanvasType) {
-					toExpand.add(obj);
 				} else {
 					toExpand.add(obj);
 				}

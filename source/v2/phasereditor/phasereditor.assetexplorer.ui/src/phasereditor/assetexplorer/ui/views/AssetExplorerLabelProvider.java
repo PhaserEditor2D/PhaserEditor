@@ -26,9 +26,6 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.canvas.core.CanvasFile;
-import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -39,43 +36,13 @@ class AssetExplorerLabelProvider extends LabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof CanvasFile) {
-			return ((CanvasFile) element).getFile().getName();
-		}
-
-		if (element instanceof CanvasType) {
-			switch ((CanvasType) element) {
-			case SPRITE:
-				return "Sprites";
-			case GROUP:
-				return "Groups";
-			case STATE:
-				return "States";
-
-			default:
-				break;
-			}
-		}
-
 		return AssetLabelProvider.GLOBAL_16.getText(element);
 	}
 
 	@Override
 	public Image getImage(Object element) {
-		if (element == AssetsView.CANVAS_NODE) {
-			return AssetLabelProvider.getFolderImage();
-		}
-
 		if (element == AssetsView.PACK_NODE) {
 			return AssetLabelProvider.getFolderImage();
-		}
-
-		if (element instanceof CanvasType) {
-			return AssetLabelProvider.getFolderImage();
-		}
-
-		if (element instanceof CanvasFile) {
-			return CanvasUI.getCanvasFileIcon((CanvasFile) element, AssetLabelProvider.GLOBAL_16);
 		}
 
 		if (element instanceof NewWizardLancher) {

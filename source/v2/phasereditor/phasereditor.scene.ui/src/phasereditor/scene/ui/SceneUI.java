@@ -24,6 +24,7 @@ package phasereditor.scene.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.ui.navigator.CommonViewer;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.BitmapTextModel;
@@ -121,6 +122,10 @@ public class SceneUI {
 			var after = WorldSnapshotOperation.takeSnapshot(editor);
 			editor.executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + morphToType));
 		}
+	}
+
+	public static void installCanvasTooltips(CommonViewer viewer) {
+		//TODO:
 	}
 	
 }

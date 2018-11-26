@@ -33,9 +33,6 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.atlas.core.AtlasCore;
-import phasereditor.canvas.core.CanvasCore;
-import phasereditor.canvas.core.CanvasFile;
-import phasereditor.canvas.core.CanvasType;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
@@ -70,8 +67,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 			return new Object[] {
 
-					AssetsView.CANVAS_NODE,
-
 					AssetsView.ANIMATIONS_NODE,
 
 					AssetsView.ATLAS_NODE,
@@ -105,16 +100,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
 		}
 
-		if (parent == AssetsView.CANVAS_NODE) {
-			List<Object> list = new ArrayList<>();
-
-			list.add(CanvasType.SPRITE);
-			list.add(CanvasType.GROUP);
-			list.add(CanvasType.STATE);
-
-			return list.toArray();
-		}
-
 		if (parent == AssetsView.PACK_NODE) {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
@@ -135,23 +120,23 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-		if (parent instanceof CanvasType) {
-			List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
-
-			List<CanvasFile> list = new ArrayList<>();
-
-			for (CanvasFile cfile : cfiles) {
-				if (cfile.getType() == parent) {
-					list.add(cfile);
-				}
-			}
-
-			list.sort((a, b) -> {
-				return a.getFile().getName().compareTo(b.getFile().getName());
-			});
-
-			return list.toArray();
-		}
+//		if (parent instanceof CanvasType) {
+//			List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
+//
+//			List<CanvasFile> list = new ArrayList<>();
+//
+//			for (CanvasFile cfile : cfiles) {
+//				if (cfile.getType() == parent) {
+//					list.add(cfile);
+//				}
+//			}
+//
+//			list.sort((a, b) -> {
+//				return a.getFile().getName().compareTo(b.getFile().getName());
+//			});
+//
+//			return list.toArray();
+//		}
 
 		if (parent instanceof AssetPackModel) {
 			return ((AssetPackModel) parent).getSections().toArray();
