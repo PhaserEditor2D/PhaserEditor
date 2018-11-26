@@ -529,6 +529,10 @@ public class SceneObjectRenderer {
 
 	private Image createTileSpriteTexture(TileSpriteModel model) {
 		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
+		
+		if (assetFrame == null) {
+			return null;
+		}
 
 		var img = _scene.loadImage(assetFrame.getImageFile());
 
