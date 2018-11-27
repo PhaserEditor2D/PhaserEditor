@@ -18,6 +18,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
@@ -25,6 +27,8 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -40,6 +44,8 @@ import phasereditor.ui.SelectionProviderImpl;
 public class SceneEditor extends EditorPart {
 
 	public static final String ID = "phasereditor.scene.ui.SceneEditor";
+	private static String OBJECTS_CONTEXT = "phasereditor.scene.ui.objects";
+
 	private SceneModel _model;
 	private SceneCanvas _scene;
 	private SceneOutlinePage _outline;
@@ -62,6 +68,7 @@ public class SceneEditor extends EditorPart {
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
 	private boolean _builtFitstTime;
+	private IContextActivation _objectsContextActivation;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -76,6 +83,19 @@ public class SceneEditor extends EditorPart {
 			}
 		};
 		_propertyPages = new ArrayList<>();
+	}
+
+	private IContextService getContextService() {
+		IContextService service = getSite().getWorkbenchWindow().getWorkbench().getService(IContextService.class);
+		return service;
+	}
+
+	public void activateObjectsContext() {
+		_objectsContextActivation = getContextService().activateContext(OBJECTS_CONTEXT);
+	}
+
+	public void deactivateObjectsContext() {
+		getContextService().deactivateContext(_objectsContextActivation);
 	}
 
 	@Override
@@ -177,6 +197,19 @@ public class SceneEditor extends EditorPart {
 		_scene = new SceneCanvas(parent, SWT.NONE);
 
 		_scene.init(this);
+		
+		_scene.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				deactivateObjectsContext();
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				activateObjectsContext();
+			}
+		});
 
 	}
 
@@ -208,6 +241,19 @@ public class SceneEditor extends EditorPart {
 					super.createControl(parent);
 
 					addSelectionChangedListener(_outlinerSelectionListener);
+					
+					getViewer().getCanvas().addFocusListener(new FocusListener() {
+						
+						@Override
+						public void focusLost(FocusEvent e) {
+							deactivateObjectsContext();
+						}
+						
+						@Override
+						public void focusGained(FocusEvent e) {
+							activateObjectsContext();
+						}
+					});
 				}
 			};
 

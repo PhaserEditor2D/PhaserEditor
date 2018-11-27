@@ -163,55 +163,55 @@
          point="org.eclipse.ui.bindings">
       <key
             commandId="phasereditor.scene.ui.positionTool"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M">
       </key>
       <key
             commandId="phasereditor.scene.ui.scaleTool"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="S">
       </key>
       <key
             commandId="phasereditor.scene.ui.angleTool"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="N">
       </key>
       <key
             commandId="phasereditor.scene.ui.originTool"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="O">
       </key>
       <key
             commandId="phasereditor.scene.ui.resizeTileSprite"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="L">
       </key>
       <key
             commandId="phasereditor.scene.ui.order_UP"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_UP">
       </key>
       <key
             commandId="phasereditor.scene.ui.order_DOWN"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_DOWN">
       </key>
       <key
             commandId="phasereditor.scene.ui.order_TOP"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="HOME">
       </key>
       <key
             commandId="phasereditor.scene.ui.order_BOTTOM"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.scene.ui.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="END">
       </key>
@@ -241,6 +241,16 @@
                   </equals>
                </with>
             </and>
+            <with
+                  variable="activeContexts">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <equals
+                        value="phasereditor.scene.ui.objects">
+                  </equals>
+               </iterate>
+            </with>
          </or>
       </definition>
    </extension>
@@ -251,6 +261,15 @@
             id="phasereditor.scene.ui.build.SceneEditorProjectBuildParticipant"
             order="1000">
       </participant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="The scene objects context, like the scene or the outline."
+            id="phasereditor.scene.ui.objects"
+            name="Objects Context"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
    </extension>
 
 </plugin>

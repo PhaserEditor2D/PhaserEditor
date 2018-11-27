@@ -149,6 +149,10 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		init_DND();
 	}
+	
+	public TreeCanvasViewer getViewer() {
+		return _viewer;
+	}
 
 	class CreateNewGroupAction extends TreeCanvasItemAction {
 		public CreateNewGroupAction() {

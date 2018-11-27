@@ -117,7 +117,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		_transformLocalCoords = true;
 	}
-
+	
 	public boolean isTransformLocalCoords() {
 		return _transformLocalCoords;
 	}
