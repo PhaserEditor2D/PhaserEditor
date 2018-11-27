@@ -55,7 +55,7 @@ import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
 public class BuildExamplesCache extends Application {
-	
+
 	Path _wsPath;
 	Path _examplesProjectPath;
 	Path _metadataProjectPath;
@@ -68,7 +68,7 @@ public class BuildExamplesCache extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		
+
 		// init cache
 
 		_cacheFolder = Paths.get(System.getProperty("user.home") + "/.phasereditor_dev/examples-cache");
@@ -143,7 +143,7 @@ public class BuildExamplesCache extends Application {
 			_currentExample = _examples.removeFirst();
 
 			Path exampleFile = _currentExample.getFilePath();
-			
+
 			_currentExample.addMapping(_examplesPath.relativize(exampleFile), exampleFile.getFileName().toString());
 
 			Path path = exampleFile;
@@ -170,14 +170,14 @@ public class BuildExamplesCache extends Application {
 	private void examplesProcessingDone() throws Exception {
 		out.println("DONE!");
 
-		// saveCache();
+		saveCache();
 
 		exit(0);
 	}
 
 	void addExampleMapping(String url) throws IOException {
-		 String url2 = decodeUrl(url);
-		
+		String url2 = decodeUrl(url);
+
 		out.println("- Catching asset: " + url2);
 
 		_currentExample.addMapping(Paths.get(url2), url2);

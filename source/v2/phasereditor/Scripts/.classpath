@@ -7,6 +7,5 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.json"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/phasereditor.inspect.core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
