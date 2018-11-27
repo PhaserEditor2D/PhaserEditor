@@ -55,7 +55,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 
 	@Override
 	protected void setItemIconProperties(TreeCanvasItem item) {
-		var elem = item.getData();
+//		var elem = item.getData();
 
 //		if (elem instanceof CanvasFile) {
 //			var file = ((CanvasFile) elem).getFile();
@@ -68,7 +68,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 //
 //			item.setLabel(file.getName());
 //		} else {
-//			super.setItemIconProperties(item);
+			super.setItemIconProperties(item);
 //		}
 //
 //		if (elem == AssetsView.CANVAS_NODE
