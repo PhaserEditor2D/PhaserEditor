@@ -33,8 +33,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -187,8 +185,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		createActions();
 
-		createContextMenus();
-
 		getEditorSite().setSelectionProvider(new ISelectionProvider() {
 
 			private ISelection _selection;
@@ -263,32 +259,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		init_DND_Support();
-	}
-
-	private void createContextMenus() {
-		var manager = new MenuManager();
-
-		manager.add(getPlayAction());
-		manager.add(getPauseAction());
-		manager.add(getStopAction());
-
-		manager.add(new Separator());
-
-		manager.add(getZoom_1_1_action());
-		manager.add(getZoom_fitWindow_action());
-
-		manager.add(new Separator());
-
-		manager.add(getNewAction());
-		manager.add(getOutlineAction());
-
-		manager.add(new Separator());
-
-		manager.add(getDeleteAction());
-
-		var menu = manager.createContextMenu(_animCanvas);
-
-		_animCanvas.setMenu(menu);
 	}
 
 	private void init_DND_Support() {
