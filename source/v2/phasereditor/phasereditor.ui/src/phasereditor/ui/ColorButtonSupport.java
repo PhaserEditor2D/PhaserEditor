@@ -37,8 +37,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Control;
 
-import javafx.scene.paint.Color;
-
 /**
  * @author arian
  *
@@ -153,11 +151,6 @@ public abstract class ColorButtonSupport {
 		return data;
 	}
 
-	public static RGB toRGB(String hexcolor) {
-		Color c = Color.valueOf(hexcolor);
-		return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
-	}
-	
 	public static String getHexString(RGB rgb) {
 		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
 	}

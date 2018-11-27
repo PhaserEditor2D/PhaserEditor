@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.core.build;
+package phasereditor.scripts;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -55,6 +55,7 @@ import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
 public class BuildExamplesCache extends Application {
+	
 	Path _wsPath;
 	Path _examplesProjectPath;
 	Path _metadataProjectPath;
@@ -67,7 +68,7 @@ public class BuildExamplesCache extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
+		
 		// init cache
 
 		_cacheFolder = Paths.get(System.getProperty("user.home") + "/.phasereditor_dev/examples-cache");
@@ -92,7 +93,7 @@ public class BuildExamplesCache extends Application {
 
 		_examples = new LinkedList<>();
 
-		for (var c : model.getExamplesCategories()) {
+		for (PhaserExampleCategoryModel c : model.getExamplesCategories()) {
 			visitCategory(c);
 		}
 
@@ -169,13 +170,13 @@ public class BuildExamplesCache extends Application {
 	private void examplesProcessingDone() throws Exception {
 		out.println("DONE!");
 
-		saveCache();
+		// saveCache();
 
 		exit(0);
 	}
 
 	void addExampleMapping(String url) throws IOException {
-		var url2 = decodeUrl(url);
+		 String url2 = decodeUrl(url);
 		
 		out.println("- Catching asset: " + url2);
 
@@ -196,7 +197,7 @@ public class BuildExamplesCache extends Application {
 		if (Files.exists(cacheFile)) {
 			List<String> urls = Files.readAllLines(cacheFile);
 
-			for (var url : new HashSet<>(urls)) {
+			for (String url : new HashSet<>(urls)) {
 				url = decodeUrl(url);
 				out.println("* Restore asset: " + url);
 				_currentExample.addMapping(Paths.get(url), url);
@@ -232,7 +233,7 @@ public class BuildExamplesCache extends Application {
 		model.saveCache(cache);
 
 		// verify
-		var newModel = new PhaserExamplesRepoModel(_examplesProjectPath);
+		PhaserExamplesRepoModel newModel = new PhaserExamplesRepoModel(_examplesProjectPath);
 		newModel.loadCache(cache);
 
 		out.println("\n\n\n\n\n\n\n\n");
@@ -243,11 +244,11 @@ public class BuildExamplesCache extends Application {
 	}
 
 	private void visitCategory(PhaserExampleCategoryModel category) {
-		for (var example : category.getTemplates()) {
+		for (PhaserExampleModel example : category.getTemplates()) {
 			visitExample(example);
 		}
 
-		for (var subcategory : category.getSubCategories()) {
+		for (PhaserExampleCategoryModel subcategory : category.getSubCategories()) {
 			visitCategory(subcategory);
 		}
 	}
@@ -264,7 +265,7 @@ public class BuildExamplesCache extends Application {
 				String msg = record.getMessage();
 				int i = msg.indexOf("http://127.0.0.1:8080/assets");
 				if (i > 0) {
-					var url = msg.substring(i + "http://127.0.0.1:8080".length() + 1);
+					String url = msg.substring(i + "http://127.0.0.1:8080".length() + 1);
 					try {
 						addExampleMapping(url);
 					} catch (IOException e) {
