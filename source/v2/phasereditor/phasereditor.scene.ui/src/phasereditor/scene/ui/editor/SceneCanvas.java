@@ -38,6 +38,8 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DragDetectEvent;
 import org.eclipse.swt.events.DragDetectListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -116,6 +118,15 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_interactiveTools = new ArrayList<>();
 
 		_transformLocalCoords = true;
+		
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.character == SWT.ESC) {
+					getEditor().setSelection(List.of());
+				}
+			}
+		});
 	}
 	
 	public boolean isTransformLocalCoords() {
