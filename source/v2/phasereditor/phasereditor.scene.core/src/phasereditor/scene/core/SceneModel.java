@@ -66,7 +66,7 @@ public class SceneModel {
 	private boolean _snapEnabled;
 	private int _snapWidth;
 	private int _snapHeight;
-
+	
 	private RGB _backgroundColor;
 	private RGB _foregroundColor;
 	private static final RGB DEF_FG_RGB = ColorUtil.WHITESMOKE.rgb;
@@ -98,8 +98,9 @@ public class SceneModel {
 
 		_preloadUserCode = new MethodUserCodeModel("preload");
 		_createUserCode = new MethodUserCodeModel("create");
+		
 	}
-
+	
 	public MethodUserCodeModel getPreloadUserCode() {
 		return _preloadUserCode;
 	}

@@ -55,6 +55,7 @@ import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -142,7 +143,57 @@ public class SceneObjectRenderer {
 			}
 		}
 
+		gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+
+		for (var model : sceneModel.getDisplayList().getChildren()) {
+			renderBones(gc, model, false);
+		}
+
 		_postPaintActions.clear();
+	}
+
+	private void renderBones(GC gc, ObjectModel parent, boolean forceRender) {
+		var modelRender = GameObjectEditorComponent.get_gameObjectEditorShowBones(parent);
+		
+		if (ParentComponent.is(parent)) {
+			
+			var children = ParentComponent.get_children(parent);
+			
+			if (forceRender || modelRender) {
+				float[] parentPoint = getScenePointAtOrigin(parent);
+
+				for (var child : children) {
+
+					var childPoint = getScenePointAtOrigin(child);
+
+					var vector = PhaserEditorUI.vector(parentPoint, childPoint);
+					var leftVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, -1));
+					var rightVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, 1));
+
+					var n = 3;
+					var points = new int[] {
+
+							(int) (parentPoint[0] + leftVector[0] * n), (int) (parentPoint[1] + leftVector[1] * n),
+
+							(int) (parentPoint[0] + rightVector[0] * n), (int) (parentPoint[1] + rightVector[1] * n),
+
+							(int) (childPoint[0]), (int) (childPoint[1])
+
+					};
+
+					gc.fillPolygon(points);
+					gc.drawPolygon(points);
+
+					renderBones(gc, child, true);
+				}
+
+			}
+			
+			for(var child : children) {
+				renderBones(gc, child, false);
+			}
+		}
 	}
 
 	private void startDebug(GC gc, SceneModel model) {
@@ -529,7 +580,7 @@ public class SceneObjectRenderer {
 
 	private Image createTileSpriteTexture(TileSpriteModel model) {
 		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
-		
+
 		if (assetFrame == null) {
 			return null;
 		}

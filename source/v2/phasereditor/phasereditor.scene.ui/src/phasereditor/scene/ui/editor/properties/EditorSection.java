@@ -72,6 +72,7 @@ public class EditorSection extends ScenePropertySection {
 	private IAction _removeFromGroupAction;
 	private Label _groupsLabel;
 	private SelectGroupMenuAction _selectGroupAction;
+	private Action _showBonesAction;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -152,6 +153,10 @@ public class EditorSection extends ScenePropertySection {
 		for (var action : _orderActions) {
 			manager.add(action);
 		}
+
+		manager.add(new Separator());
+
+		manager.add(_showBonesAction);
 
 		manager.add(new Separator());
 
@@ -303,7 +308,7 @@ public class EditorSection extends ScenePropertySection {
 						editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
 
 						editor.refreshOutline();
-						
+
 						editor.updatePropertyPagesContentWithSelection();
 
 						editor.setDirty(true);
@@ -414,6 +419,28 @@ public class EditorSection extends ScenePropertySection {
 		_addToGroupAction = new AddToGroupMenuAction();
 		_removeFromGroupAction = new RemoveFromGroupMenuAction();
 		_selectGroupAction = new SelectGroupMenuAction();
+
+		_showBonesAction = new Action("Show/Hide Bones", IAction.AS_CHECK_BOX) {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_BONE));
+			}
+
+			@Override
+			public void run() {
+
+				var value = isChecked();
+
+				wrapOperation(() -> {
+					getModels().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorShowBones(model, value));
+
+					update_UI_from_Model();
+
+					getEditor().setDirty(true);
+
+				}, getModels());
+			}
+		};
 	}
 
 	class MorphAction extends Action {
@@ -481,6 +508,10 @@ public class EditorSection extends ScenePropertySection {
 			_selectGroupAction.setEnabled(_removeFromGroupAction.isEnabled());
 
 		}
+
+		boolean b = flatValues_to_boolean(
+				getModels().stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));
+		_showBonesAction.setChecked(b);
 
 		listenFloat(_transpScale, value -> {
 

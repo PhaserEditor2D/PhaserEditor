@@ -49,6 +49,8 @@ public abstract class EditorObjectModel extends VariableModel implements
 				editorClosed_default);
 		data.put(gameObjectEditorTransparency_name, GameObjectEditorComponent.get_gameObjectEditorTransparency(this),
 				gameObjectEditorTransparency_default);
+		data.put(gameObjectEditorShowBones_name, GameObjectEditorComponent.get_gameObjectEditorShowBones(this),
+				gameObjectEditorShowBones_default);
 	}
 
 	@Override
@@ -60,6 +62,8 @@ public abstract class EditorObjectModel extends VariableModel implements
 				data.optBoolean(gameObjectEditorClosed_name, editorClosed_default));
 		GameObjectEditorComponent.set_gameObjectEditorTransparency(this,
 				data.optFloat(gameObjectEditorTransparency_name, gameObjectEditorTransparency_default));
+		GameObjectEditorComponent.set_gameObjectEditorShowBones(this,
+				data.optBoolean(gameObjectEditorShowBones_name, gameObjectEditorShowBones_default));
 	}
 
 }

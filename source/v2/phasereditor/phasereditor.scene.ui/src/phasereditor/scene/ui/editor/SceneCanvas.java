@@ -470,15 +470,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 			} else {
 
-				// draw lines to children
-				{
-					gc.setAlpha(200);
-					gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-					renderLinesToChildren(gc, model);
-					gc.setAlpha(255);
-				}
-
 				// draw bold border
 				{
 
@@ -531,40 +522,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					tx.dispose();
 				}
 			}
-		}
-	}
-
-	private void renderLinesToChildren(GC gc, ObjectModel parent) {
-		if (ParentComponent.is(parent)) {
-			float[] parentPoint = _renderer.getScenePointAtOrigin(parent);
-
-			var children = ParentComponent.get_children(parent);
-
-			for (var child : children) {
-
-				var childPoint = _renderer.getScenePointAtOrigin(child);
-
-				var vector = PhaserEditorUI.vector(parentPoint, childPoint);
-				var leftVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, -1));
-				var rightVector = PhaserEditorUI.unitarianVector(PhaserEditorUI.rotate90(vector, 1));
-
-				var n = 3;
-				var points = new int[] {
-
-						(int) (parentPoint[0] + leftVector[0] * n), (int) (parentPoint[1] + leftVector[1] * n),
-
-						(int) (parentPoint[0] + rightVector[0] * n), (int) (parentPoint[1] + rightVector[1] * n),
-
-						(int) (childPoint[0]), (int) (childPoint[1])
-
-				};
-
-				gc.fillPolygon(points);
-				gc.drawPolygon(points);
-
-				renderLinesToChildren(gc, child);
-			}
-
 		}
 	}
 

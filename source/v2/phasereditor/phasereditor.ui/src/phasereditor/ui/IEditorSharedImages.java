@@ -152,4 +152,5 @@ public interface IEditorSharedImages {
 
 	String IMG_BULLET_EXPAND = "icons/blender_ICON_DISCLOSURE_TRI_RIGHT.png"; // "icons/bullet_toggle_plus.png";
 	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; // "icons/bullet_toggle_minus.png";
+	String IMG_BONE = "icons/ICON_BONE_DATA.png";
 }

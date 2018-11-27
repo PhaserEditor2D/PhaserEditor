@@ -70,8 +70,6 @@ public interface GameObjectEditorComponent {
 		obj.put("gameObjectEditorClosed", editorClosed);
 	}
 
-	
-
 	// editorTransparency
 
 	static String gameObjectEditorTransparency_name = "gameObjectEditorTransparency";
@@ -86,6 +84,20 @@ public interface GameObjectEditorComponent {
 		obj.put("gameObjectEditorTransparency", gameObjectEditorTransparency);
 	}
 
+	// gameObjectEditorShowBones
+
+	static String gameObjectEditorShowBones_name = "gameObjectEditorShowBones";
+
+	static boolean gameObjectEditorShowBones_default = false;
+
+	static boolean get_gameObjectEditorShowBones(ObjectModel obj) {
+		return (boolean) obj.get("gameObjectEditorShowBones");
+	}
+
+	static void set_gameObjectEditorShowBones(ObjectModel obj, boolean gameObjectEditorShowBones) {
+		obj.put("gameObjectEditorShowBones", gameObjectEditorShowBones);
+	}
+	
 	// utils
 
 	static boolean is(Object model) {
@@ -97,5 +109,6 @@ public interface GameObjectEditorComponent {
 		set_gameObjectEditorShow(obj, gemeObjectEditorShow_default);
 		set_gameObjectEditorClosed(obj, editorClosed_default);
 		set_gameObjectEditorTransparency(obj, gameObjectEditorTransparency_default);
+		set_gameObjectEditorShowBones(obj, gameObjectEditorShowBones_default);
 	}
 }
