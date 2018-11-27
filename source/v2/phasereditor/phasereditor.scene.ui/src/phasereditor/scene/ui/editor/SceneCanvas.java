@@ -118,7 +118,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_interactiveTools = new ArrayList<>();
 
 		_transformLocalCoords = true;
-		
+
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -128,7 +128,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 			}
 		});
 	}
-	
+
 	public boolean isTransformLocalCoords() {
 		return _transformLocalCoords;
 	}
@@ -825,6 +825,13 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	}
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
+
+		if (model instanceof GameObjectEditorComponent) {
+			if (GameObjectEditorComponent.get_gameObjectEditorTransparency(model) == 0) {
+				return null;
+			}
+		}
+
 		if (model instanceof ParentComponent) {
 			if (model instanceof GameObjectEditorComponent && GameObjectEditorComponent
 					.get_gameObjectEditorClosed(model) /* || groupModel.isPrefabInstance() */) {
