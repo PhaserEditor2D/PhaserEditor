@@ -39,6 +39,7 @@ import phasereditor.ui.SelectionProviderImpl;
 
 public class SceneEditor extends EditorPart {
 
+	public static final String ID = "phasereditor.scene.ui.SceneEditor";
 	private SceneModel _model;
 	private SceneCanvas _scene;
 	private SceneOutlinePage _outline;
@@ -60,6 +61,7 @@ public class SceneEditor extends EditorPart {
 	};
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
+	private boolean _builtFitstTime;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -329,6 +331,21 @@ public class SceneEditor extends EditorPart {
 	@SuppressWarnings({ "cast", "rawtypes", "unchecked" })
 	public List<ObjectModel> getSelectionList() {
 		return (List<ObjectModel>) (List) _selectionProvider.getSelectionList();
+	}
+
+	public void build() {
+		_builtFitstTime = true;
+
+		_scene.redraw();
+
+		updatePropertyPagesContentWithSelection();
+
+		refreshOutline();
+
+	}
+
+	boolean isBuiltFirstTime() {
+		return _builtFitstTime;
 	}
 
 }

@@ -244,5 +244,13 @@
          </or>
       </definition>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.scene.ui.build.SceneEditorProjectBuildParticipant"
+            id="phasereditor.scene.ui.build.SceneEditorProjectBuildParticipant"
+            order="1000">
+      </participant>
+   </extension>
 
 </plugin>
