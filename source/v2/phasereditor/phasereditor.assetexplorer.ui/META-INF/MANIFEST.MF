@@ -4,7 +4,6 @@ Bundle-Name: Phaser Editor - Asset Explorer
 Bundle-SymbolicName: phasereditor.assetexplorer.ui;singleton:=true
 Bundle-Version: 1.5.0.20180307
 Bundle-Vendor: Arian Fornaris
-Bundle-RequiredExecutionEnvironment: JavaSE-9
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide;bundle-version="3.10.2",

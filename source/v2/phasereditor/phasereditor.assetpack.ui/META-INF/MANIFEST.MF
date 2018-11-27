@@ -35,7 +35,6 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.lic;bundle-version="1.4.4",
  org.eclipse.ui.views;bundle-version="3.9.100",
  phasereditor.animation.ui;bundle-version="2.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui,
  phasereditor.assetpack.ui.editors,

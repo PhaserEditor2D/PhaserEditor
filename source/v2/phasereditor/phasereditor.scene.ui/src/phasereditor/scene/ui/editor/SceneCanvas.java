@@ -329,6 +329,22 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	@Override
 	protected void customPaintControl(PaintEvent e) {
 
+		if (!getEditor().isBuiltFirstTime()) {
+
+			renderBackground(e);
+
+			var calc = calc();
+
+			renderGrid(e, calc);
+
+			var str = "Waiting for project builders...";
+			var size = e.gc.stringExtent(str);
+
+			e.gc.drawText(str, e.width / 2 - size.x / 2, e.height / 2 - size.y / 2);
+
+			return;
+		}
+
 		_finder.build();
 
 		_interactiveToolsHightlights = isInteractiveHightlights();

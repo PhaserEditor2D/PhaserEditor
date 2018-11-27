@@ -4,6 +4,5 @@ Bundle-Name: Phaser Editor - Phaser Examples Resources
 Bundle-SymbolicName: phasereditor.resources.phaser.examples;singleton:=true
 Bundle-Version: 1.3.0.20161130
 Bundle-Vendor: Arian Fornaris
-Bundle-RequiredExecutionEnvironment: JavaSE-9
 Eclipse-BundleShape: dir
 Automatic-Module-Name: phasereditor.resources.phaser.examples

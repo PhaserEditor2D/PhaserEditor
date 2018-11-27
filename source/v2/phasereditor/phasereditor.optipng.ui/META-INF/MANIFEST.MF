@@ -11,6 +11,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.navigator;bundle-version="3.5.401",
  phasereditor.optipng.core,
  phasereditor.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.optipng.ui

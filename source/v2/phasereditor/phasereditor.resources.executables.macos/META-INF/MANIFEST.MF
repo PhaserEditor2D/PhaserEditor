@@ -4,6 +4,5 @@ Bundle-Name: Phaser Editor - Executables MacOS Resources
 Bundle-SymbolicName: phasereditor.resources.executables.macos
 Bundle-Version: 1.4.0.20170412
 Fragment-Host: phasereditor.resources.executables;bundle-version="1.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-Vendor: Arian Fornaris
 Eclipse-PlatformFilter: (osgi.os=macosx)

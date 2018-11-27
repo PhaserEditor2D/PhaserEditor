@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.json,
  phasereditor.audio.core,
  phasereditor.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audiosprite.core
 Automatic-Module-Name: phasereditor.audiosprite.core
