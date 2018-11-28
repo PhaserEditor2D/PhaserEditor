@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.ui,
  phasereditor.project.core,
  phasereditor.libgdx,
- org.json
+ phasereditor.org.json
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audiosprite.ui,
  phasereditor.audiosprite.ui.wizards

@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.9.1",
  phasereditor.ui,
- org.json,
+ phasereditor.org.json,
  phasereditor.libgdx,
  phasereditor.project.core,
  phasereditor.inspect.core;bundle-version="1.4.0"

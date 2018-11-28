@@ -8,7 +8,7 @@ Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  phasereditor.inspect.core,
- org.json,
+ phasereditor.org.json,
  phasereditor.ui;bundle-version="1.5.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.chains.core
