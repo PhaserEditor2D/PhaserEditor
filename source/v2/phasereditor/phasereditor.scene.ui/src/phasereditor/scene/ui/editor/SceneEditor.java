@@ -159,7 +159,7 @@ public class SceneEditor extends EditorPart {
 
 		site.setSelectionProvider(_selectionProvider);
 
-		registerUndoActions();
+		registerUndoRedoActions();
 
 		IFileEditorInput fileInput = (IFileEditorInput) input;
 
@@ -310,14 +310,15 @@ public class SceneEditor extends EditorPart {
 		_propertyPages.remove(page);
 	}
 
-	private void registerUndoActions() {
+	private void registerUndoRedoActions() {
 		var site = getEditorSite();
 
 		_undoRedoGroup = new UndoRedoActionGroup(site, undoContext, true);
 
 		var actionBars = site.getActionBars();
+		
 		_undoRedoGroup.fillActionBars(actionBars);
-
+		
 		actionBars.updateActionBars();
 	}
 	

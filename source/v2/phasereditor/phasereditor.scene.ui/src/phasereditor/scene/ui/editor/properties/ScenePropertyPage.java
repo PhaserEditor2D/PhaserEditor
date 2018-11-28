@@ -24,6 +24,8 @@ package phasereditor.scene.ui.editor.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Composite;
+
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
@@ -57,6 +59,17 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 	public SceneEditor getEditor() {
 		return _editor;
+	}
+	
+	@Override
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		
+		registerUndoRedoActions();
+	}
+
+	private void registerUndoRedoActions() {
+		_editor.getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 	}
 
 	@Override

@@ -103,7 +103,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		return _editor;
 	}
 
-	private void registerUndoActions() {
+	private void registerUndoRedoActions() {
 		_editor.getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 	}
 
@@ -153,7 +153,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		init_DND();
 
-		registerUndoActions();
+		registerUndoRedoActions();
 	}
 
 	public TreeCanvasViewer getViewer() {
