@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import static java.lang.System.out;
+
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -53,13 +55,18 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
+		
+		out.println("Starting project.core...");
+		
 		WorkspaceJob job = new WorkspaceJob("Initial project build") {
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
+				out.println("Iniatial project build job...");
+				
 				if (!PhaserProjectBuilder.isStartedFirstTime()) {
-					ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+					 ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
 				}
 
 				return Status.OK_STATUS;

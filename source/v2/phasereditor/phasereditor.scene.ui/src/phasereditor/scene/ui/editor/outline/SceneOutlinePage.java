@@ -262,7 +262,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				// avoid dropping on descendents
 
 				for (var model : models) {
-					if (ParentComponent.isDescendentOf(newParent, model)) {
+					if (ParentComponent.utils_isDescendentOf(newParent, model)) {
 						continue;
 					}
 
@@ -289,11 +289,11 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 						for (int j = i + 1; j < list.size(); j++) {
 							var a = list.get(i);
 							var b = list.get(j);
-							if (ParentComponent.isDescendentOf(a, b)) {
+							if (ParentComponent.utils_isDescendentOf(a, b)) {
 								newDrops.remove(a);
 							}
 
-							if (ParentComponent.isDescendentOf(b, a)) {
+							if (ParentComponent.utils_isDescendentOf(b, a)) {
 								newDrops.remove(b);
 							}
 						}
@@ -321,8 +321,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 						// move to the new parent
 
-						ParentComponent.removeFromParent(model);
-						ParentComponent.addChild(newParent, model);
+						ParentComponent.utils_removeFromParent(model);
+						ParentComponent.utils_addChild(newParent, model);
 
 						renderer.addPostPaintAction(() -> {
 
@@ -336,8 +336,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 						});
 					} else {
 						// move to the new parent
-						ParentComponent.removeFromParent(model);
-						ParentComponent.addChild(newParent, model);
+						ParentComponent.utils_removeFromParent(model);
+						ParentComponent.utils_addChild(newParent, model);
 					}
 				}
 

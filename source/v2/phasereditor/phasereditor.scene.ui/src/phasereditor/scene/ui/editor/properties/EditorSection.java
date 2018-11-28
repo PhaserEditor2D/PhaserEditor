@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.ToolItem;
 
+import phasereditor.scene.core.ContainerModel;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.NameComputer;
@@ -65,7 +66,7 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class EditorSection extends ScenePropertySection {
 
-	private Button _typeBtn;
+	private Button _typeButton;
 	private Scale _transpScale;
 	private List<JFaceOrderAction> _orderActions;
 	private IAction _addToGroupAction;
@@ -73,6 +74,10 @@ public class EditorSection extends ScenePropertySection {
 	private Label _groupsLabel;
 	private SelectGroupMenuAction _selectGroupAction;
 	private Action _showBonesAction;
+	private Button _parentButton;
+	private SelectContainerAction _selectContainerAction;
+	private CreateContainerAction _createContainerAction;
+	private RemoveFromParentAction _removeFromParentAction;
 
 	public EditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -96,10 +101,10 @@ public class EditorSection extends ScenePropertySection {
 
 					"\n\nClick on the next button to morhp to other type.");
 
-			_typeBtn = new Button(comp, SWT.NONE);
-			_typeBtn.setToolTipText("Click to morph to other type.");
-			_typeBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_typeBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
+			_typeButton = new Button(comp, SWT.NONE);
+			_typeButton.setToolTipText("Click to morph to other type.");
+			_typeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			_typeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
 		}
 
 		{
@@ -110,6 +115,15 @@ public class EditorSection extends ScenePropertySection {
 			_transpScale.setMinimum(0);
 			_transpScale.setMinimum(100);
 		}
+
+		// TODO: No containers for now!
+		// {
+		// label(comp, "Parent", "*(Editor) The object parent.");
+		// _parentButton = new Button(comp, 0);
+		// _parentButton.setText("<Display List>");
+		// _parentButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// _parentButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateParentMenu));
+		// }
 
 		{
 			label(comp, "Order", "*(Editor) The display depth order.");
@@ -407,6 +421,94 @@ public class EditorSection extends ScenePropertySection {
 
 	}
 
+	class ShowBonesAction extends Action {
+
+		public ShowBonesAction() {
+			super("Show/Hide Bones", IAction.AS_CHECK_BOX);
+			setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_BONE));
+		}
+
+		@Override
+		public void run() {
+
+			var value = isChecked();
+
+			wrapOperation(() -> {
+				getModels().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorShowBones(model, value));
+
+				update_UI_from_Model();
+
+				getEditor().setDirty(true);
+
+			}, getModels());
+		}
+	}
+
+	class SelectContainerAction extends Action {
+		public SelectContainerAction() {
+			super("Select Container", EditorSharedImages.getImageDescriptor(IMG_BULLET_GO));
+		}
+	}
+
+	class CreateContainerAction extends Action {
+		public CreateContainerAction() {
+			super("Create Container", EditorSharedImages.getImageDescriptor(IMG_ADD));
+		}
+
+		@Override
+		public void runWithEvent(Event event) {
+			var editor = getEditor();
+
+			var displayList = editor.getSceneModel().getDisplayList();
+
+			var computer = new NameComputer(displayList);
+
+			var initialName = computer.newName("container");
+
+			var shell = event.display.getActiveShell();
+
+			var dlg = new InputDialog(shell, "Create Container", "Enter the name of the new Container:", initialName,
+					new IInputValidator() {
+						@Override
+						public String isValid(String newText) {
+							return null;
+						}
+					});
+
+			if (dlg.open() == Window.OK) {
+				var container = new ContainerModel();
+
+				var name = dlg.getValue();
+
+				VariableComponent.set_variableName(container, name);
+
+				for (var child : getModels()) {
+					ParentComponent.utils_moveChild(container, child);
+				}
+
+				ParentComponent.utils_addChild(displayList, container);
+
+				getScene().redraw();
+
+				editor.setDirty(true);
+
+				editor.refreshOutline();
+
+				if (editor.getOutline() != null) {
+					editor.getOutline().getViewer().getCanvas().reveal(getModels().toArray());
+				}
+
+				update_UI_from_Model();
+			}
+		}
+	}
+
+	class RemoveFromParentAction extends Action {
+		public RemoveFromParentAction() {
+			super("Remove From Parent", EditorSharedImages.getImageDescriptor(IMG_DELETE));
+		}
+	}
+
 	private void createActions() {
 		var editor = getEditor();
 
@@ -420,27 +522,11 @@ public class EditorSection extends ScenePropertySection {
 		_removeFromGroupAction = new RemoveFromGroupMenuAction();
 		_selectGroupAction = new SelectGroupMenuAction();
 
-		_showBonesAction = new Action("Show/Hide Bones", IAction.AS_CHECK_BOX) {
+		_showBonesAction = new ShowBonesAction();
 
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_BONE));
-			}
-
-			@Override
-			public void run() {
-
-				var value = isChecked();
-
-				wrapOperation(() -> {
-					getModels().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorShowBones(model, value));
-
-					update_UI_from_Model();
-
-					getEditor().setDirty(true);
-
-				}, getModels());
-			}
-		};
+		_selectContainerAction = new SelectContainerAction();
+		_createContainerAction = new CreateContainerAction();
+		_removeFromParentAction = new RemoveFromParentAction();
 	}
 
 	class MorphAction extends Action {
@@ -456,6 +542,16 @@ public class EditorSection extends ScenePropertySection {
 			SceneUI.action_MorphObjectsToNewType(getEditor(), getModels(), _toType);
 		}
 
+	}
+
+	@SuppressWarnings("unused")
+	private void populateParentMenu(SelectionEvent e) {
+		var manager = new MenuManager();
+		manager.add(_selectContainerAction);
+		manager.add(_createContainerAction);
+		manager.add(new Separator());
+		manager.add(_removeFromParentAction);
+		manager.createContextMenu(_parentButton).setVisible(true);
 	}
 
 	@SuppressWarnings({ "unused", "boxing" })
@@ -478,7 +574,7 @@ public class EditorSection extends ScenePropertySection {
 		}
 
 		if (manager.getSize() > 0) {
-			var menu = manager.createContextMenu(_typeBtn);
+			var menu = manager.createContextMenu(_typeButton);
 			menu.setVisible(true);
 		}
 	}
@@ -488,7 +584,7 @@ public class EditorSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		_typeBtn.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
+		_typeButton.setText(flatValues_to_String(models.stream().map(model -> model.getType())));
 
 		_transpScale.setSelection(flatValues_to_int(
 				models.stream()
@@ -508,6 +604,13 @@ public class EditorSection extends ScenePropertySection {
 			_selectGroupAction.setEnabled(_removeFromGroupAction.isEnabled());
 
 		}
+
+		// TODO: Well, no containers for now
+		// {
+		// _parentButton.setText(flatValues_to_String(getModels().stream()
+		// .map(model ->
+		// VariableComponent.get_variableName(ParentComponent.get_parent(model)))));
+		// }
 
 		boolean b = flatValues_to_boolean(
 				getModels().stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));

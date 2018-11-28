@@ -99,8 +99,8 @@ public class SceneUI {
 				var siblings = ParentComponent.get_children(parent);
 				var index = siblings.indexOf(model);
 
-				ParentComponent.removeFromParent(model);
-				ParentComponent.addChild(parent, index, newModel);
+				ParentComponent.utils_removeFromParent(model);
+				ParentComponent.utils_addChild(parent, index, newModel);
 
 				newModels.add(newModel);
 

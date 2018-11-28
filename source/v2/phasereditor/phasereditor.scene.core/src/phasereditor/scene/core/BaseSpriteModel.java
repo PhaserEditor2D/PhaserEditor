@@ -28,13 +28,11 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public abstract class BaseSpriteModel extends EditorObjectModel implements FlipComponent,
+public abstract class BaseSpriteModel extends TransformModel implements FlipComponent,
 
 		OriginComponent,
 
 		TextureComponent,
-
-		TransformComponent,
 
 		VisibleComponent
 
@@ -48,8 +46,6 @@ public abstract class BaseSpriteModel extends EditorObjectModel implements FlipC
 		OriginComponent.init(this);
 
 		TextureComponent.init(this);
-
-		TransformComponent.init(this);
 
 		VisibleComponent.init(this);
 
@@ -65,12 +61,6 @@ public abstract class BaseSpriteModel extends EditorObjectModel implements FlipC
 
 		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
 		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
-
-		data.put(x_name, TransformComponent.get_x(this), x_default);
-		data.put(y_name, TransformComponent.get_y(this), y_default);
-		data.put(scaleX_name, TransformComponent.get_scaleX(this), scaleX_default);
-		data.put(scaleY_name, TransformComponent.get_scaleY(this), scaleY_default);
-		data.put(angle_name, TransformComponent.get_angle(this), angle_default);
 
 		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 
@@ -88,12 +78,6 @@ public abstract class BaseSpriteModel extends EditorObjectModel implements FlipC
 
 		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, OriginComponent.originX_default(this)));
 		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, OriginComponent.originY_default(this)));
-
-		TransformComponent.set_x(this, (float) data.optDouble(x_name, x_default));
-		TransformComponent.set_y(this, (float) data.optDouble(y_name, y_default));
-		TransformComponent.set_scaleX(this, (float) data.optDouble(scaleX_name, scaleX_default));
-		TransformComponent.set_scaleY(this, (float) data.optDouble(scaleY_name, scaleY_default));
-		TransformComponent.set_angle(this, (float) data.optDouble(angle_name, angle_default));
 
 		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 

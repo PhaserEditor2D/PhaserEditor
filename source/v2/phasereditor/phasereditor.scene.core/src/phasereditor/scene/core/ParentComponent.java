@@ -58,32 +58,37 @@ public interface ParentComponent {
 
 	// utils
 
-	static void removeFromParent(ObjectModel child) {
+	static void utils_removeFromParent(ObjectModel child) {
 		var parent = get_parent(child);
 		if (parent != null) {
-			removeChild(parent, child);
+			utils_removeChild(parent, child);
 		}
 	}
 
-	static void addChild(ObjectModel parent, ObjectModel child) {
+	static void utils_addChild(ObjectModel parent, ObjectModel child) {
 		var children = get_children(parent);
 		children.add(child);
 		set_parent(child, parent);
 	}
 
-	static void addChild(ObjectModel parent, int index, ObjectModel child) {
+	static void utils_moveChild(ObjectModel newParent, ObjectModel child) {
+		utils_removeFromParent(child);
+		utils_addChild(newParent, child);
+	}
+
+	static void utils_addChild(ObjectModel parent, int index, ObjectModel child) {
 		var children = get_children(parent);
 		children.add(index, child);
 		set_parent(child, parent);
 	}
 
-	static void removeChild(ObjectModel parent, ObjectModel child) {
+	static void utils_removeChild(ObjectModel parent, ObjectModel child) {
 		var children = get_children(parent);
 		children.remove(child);
 		set_parent(child, null);
 	}
 
-	static boolean isDescendentOf(ObjectModel child, ObjectModel parent) {
+	static boolean utils_isDescendentOf(ObjectModel child, ObjectModel parent) {
 		if (child == null) {
 			return false;
 		}
@@ -92,7 +97,7 @@ public interface ParentComponent {
 			return true;
 		}
 
-		return isDescendentOf(get_parent(child), parent);
+		return utils_isDescendentOf(get_parent(child), parent);
 	}
 
 	static boolean is(Object model) {

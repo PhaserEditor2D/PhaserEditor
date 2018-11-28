@@ -28,15 +28,15 @@ import java.util.HashSet;
  *
  */
 public class NameComputer {
-	private ObjectModel _world;
+	private ObjectModel _scope;
 	private HashSet<String> _names;
 
-	public NameComputer(ObjectModel world) {
+	public NameComputer(ObjectModel scope) {
 		super();
-		_world = world;
+		_scope = scope;
 
 		_names = new HashSet<>();
-		_world.visit(model -> {
+		_scope.visit(model -> {
 			_names.add(VariableComponent.get_variableName(model));
 		});
 	}

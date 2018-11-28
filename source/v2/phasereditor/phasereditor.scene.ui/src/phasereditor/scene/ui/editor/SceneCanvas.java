@@ -294,7 +294,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		for (var model : newModels) {
-			ParentComponent.addChild(_sceneModel.getDisplayList(), model);
+			ParentComponent.utils_addChild(_sceneModel.getDisplayList(), model);
 		}
 
 		var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
@@ -487,9 +487,6 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 					var vector = PhaserEditorUI.vector(p3, p0);
 
-					var flipX = FlipComponent.get_flipX(model);
-					var flipY = FlipComponent.get_flipY(model);
-
 					var angle = _renderer.globalAngle(model);
 
 					var p = p0;
@@ -502,12 +499,19 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					tx.translate(vector[0] * 20, vector[1] * 20);
 					tx.rotate(angle);
 
-					if (flipX) {
-						tx.translate(-strSize.x, 0);
-					}
+					if (FlipComponent.is(model)) {
 
-					if (flipY) {
-						tx.translate(0, -strSize.y);
+						var flipX = FlipComponent.get_flipX(model);
+						var flipY = FlipComponent.get_flipY(model);
+
+						if (flipX) {
+							tx.translate(-strSize.x, 0);
+						}
+
+						if (flipY) {
+							tx.translate(0, -strSize.y);
+						}
+
 					}
 
 					gc.setTransform(tx);
@@ -995,7 +999,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var selection = _editor.getSelectionList();
 
 		for (var model : selection) {
-			ParentComponent.removeFromParent(model);
+			ParentComponent.utils_removeFromParent(model);
 		}
 
 		for (var group : _editor.getSceneModel().getGroupsModel().getGroups()) {
@@ -1180,7 +1184,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		// add to the root object
 
 		for (var model : pasteModels) {
-			ParentComponent.addChild(parent, model);
+			ParentComponent.utils_addChild(parent, model);
 		}
 
 		editor.refreshOutline();
@@ -1202,7 +1206,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				if (i != j) {
 					var a = models.get(i);
 					var b = models.get(j);
-					if (ParentComponent.isDescendentOf(a, b)) {
+					if (ParentComponent.utils_isDescendentOf(a, b)) {
 						result.remove(a);
 					}
 				}

@@ -32,11 +32,9 @@ import phasereditor.bmpfont.core.BitmapFontModel;
  * @author arian
  *
  */
-public class BitmapTextModel extends EditorObjectModel implements
+public class BitmapTextModel extends TransformModel implements
 
 		OriginComponent,
-
-		TransformComponent,
 
 		VisibleComponent,
 
@@ -61,7 +59,6 @@ public class BitmapTextModel extends EditorObjectModel implements
 		OriginComponent.set_originX(this, 0);
 		OriginComponent.set_originY(this, 0);
 
-		TransformComponent.init(this);
 		VisibleComponent.init(this);
 		TextualComponent.init(this);
 		BitmapTextComponent.init(this);
@@ -73,12 +70,6 @@ public class BitmapTextModel extends EditorObjectModel implements
 
 		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
 		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
-
-		data.put(x_name, TransformComponent.get_x(this), x_default);
-		data.put(y_name, TransformComponent.get_y(this), y_default);
-		data.put(scaleX_name, TransformComponent.get_scaleX(this), scaleX_default);
-		data.put(scaleY_name, TransformComponent.get_scaleY(this), scaleY_default);
-		data.put(angle_name, TransformComponent.get_angle(this), angle_default);
 
 		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 
@@ -107,12 +98,6 @@ public class BitmapTextModel extends EditorObjectModel implements
 		// origin default at 0,0
 		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, 0));
 		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, 0));
-
-		TransformComponent.set_x(this, (float) data.optDouble(x_name, x_default));
-		TransformComponent.set_y(this, (float) data.optDouble(y_name, y_default));
-		TransformComponent.set_scaleX(this, (float) data.optDouble(scaleX_name, scaleX_default));
-		TransformComponent.set_scaleY(this, (float) data.optDouble(scaleY_name, scaleY_default));
-		TransformComponent.set_angle(this, (float) data.optDouble(angle_name, angle_default));
 
 		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 

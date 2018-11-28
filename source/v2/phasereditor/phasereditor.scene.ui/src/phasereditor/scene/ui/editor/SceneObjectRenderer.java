@@ -42,6 +42,8 @@ import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.scene.core.BaseSpriteModel;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.core.ContainerComponent;
+import phasereditor.scene.core.ContainerModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.GameObjectEditorComponent;
@@ -155,11 +157,11 @@ public class SceneObjectRenderer {
 
 	private void renderBones(GC gc, ObjectModel parent, boolean forceRender) {
 		var modelRender = GameObjectEditorComponent.get_gameObjectEditorShowBones(parent);
-		
+
 		if (ParentComponent.is(parent)) {
-			
+
 			var children = ParentComponent.get_children(parent);
-			
+
 			if (forceRender || modelRender) {
 				float[] parentPoint = getScenePointAtOrigin(parent);
 
@@ -189,8 +191,8 @@ public class SceneObjectRenderer {
 				}
 
 			}
-			
-			for(var child : children) {
+
+			for (var child : children) {
 				renderBones(gc, child, false);
 			}
 		}
@@ -359,10 +361,16 @@ public class SceneObjectRenderer {
 
 		// origin
 
-		if (model instanceof OriginComponent) {
+		if (model instanceof OriginComponent || model instanceof ContainerComponent) {
 
-			var originX = OriginComponent.get_originX(model);
-			var originY = OriginComponent.get_originY(model);
+			// default origin for container
+			var originX = 0.5f;
+			var originY = 0.5f;
+
+			if (model instanceof OriginComponent) {
+				originX = OriginComponent.get_originX(model);
+				originY = OriginComponent.get_originY(model);
+			}
 
 			var size = getObjectSize(model);
 
@@ -681,16 +689,15 @@ public class SceneObjectRenderer {
 	private Image loadImage(IFile file) {
 		return _scene.loadImage(file);
 	}
-
+	
 	public float[] getObjectSize(ObjectModel model) {
-
-		// TODO: implement the rest of the models
 
 		if (model instanceof BitmapTextModel) {
 
 			return getBitmapTextSize((BitmapTextModel) model);
 
 		} else if (model instanceof TileSpriteModel) {
+
 			return new float[] {
 
 					(int) TileSpriteComponent.get_width(model),
@@ -708,9 +715,24 @@ public class SceneObjectRenderer {
 			var fd = frame.getFrameData();
 
 			return new float[] { fd.srcSize.x, fd.srcSize.y };
+
+		} else if (model instanceof ContainerModel) {
+
+			return getContainerSize((ContainerModel) model);
+
 		}
 
 		return new float[] { 0, 0 };
+	}
+
+	private float[] getContainerSize(ContainerModel model) {
+
+		var bounds = getObjectBounds(model);
+
+		var w = bounds[2] - bounds[0];
+		var h = bounds[3] - bounds[1];
+
+		return new float[] { w, h };
 	}
 
 	public float[] getLocalPointAtOrigin(ObjectModel model) {
