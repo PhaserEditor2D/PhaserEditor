@@ -51,12 +51,14 @@ public class SceneModel {
 			SpriteModel.TYPE,
 
 			ImageModel.TYPE,
-
+			
 			TileSpriteModel.TYPE,
 
 			BitmapTextModel.TYPE,
 
-			DynamicBitmapTextModel.TYPE
+			DynamicBitmapTextModel.TYPE,
+			
+			ContainerModel.TYPE
 
 	};
 
@@ -363,6 +365,8 @@ public class SceneModel {
 	public static ObjectModel createModel(String type) {
 
 		switch (type) {
+		case ContainerModel.TYPE:
+			return new ContainerModel();
 
 		case SpriteModel.TYPE:
 			return new SpriteModel();

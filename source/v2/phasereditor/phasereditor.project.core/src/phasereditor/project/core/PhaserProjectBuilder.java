@@ -42,7 +42,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	private static HashMap<IProject, Runnable> _actions = new HashMap<>();
 	private static boolean _registeredProjectDeleteListener = false;
-	private static boolean _startedFirstTime;
+	private static boolean _startedFirstTime = false;
+	private static boolean _startupOnInitializeFinished = false;
 
 	public PhaserProjectBuilder() {
 		if (!_registeredProjectDeleteListener) {
@@ -87,6 +88,10 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	public static boolean isStartedFirstTime() {
 		return _startedFirstTime;
 	}
+	
+	public static boolean isStartupFinished() {
+		return _startupOnInitializeFinished;
+	}
 
 	@Override
 	protected void startupOnInitialize() {
@@ -114,6 +119,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		out.println("PhaserProjectBuilder.startupOnInitialize (done) [" + project.getName() + "]");
 
+		_startupOnInitializeFinished = true;
+		
 	}
 
 	@Override

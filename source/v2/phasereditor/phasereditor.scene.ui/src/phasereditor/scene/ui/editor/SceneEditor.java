@@ -34,6 +34,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
+import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCompiler;
 import phasereditor.scene.core.SceneModel;
@@ -67,7 +68,6 @@ public class SceneEditor extends EditorPart {
 	};
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
-	private boolean _builtFitstTime;
 	private IContextActivation _objectsContextActivation;
 
 	public SceneEditor() {
@@ -82,6 +82,7 @@ public class SceneEditor extends EditorPart {
 				getScene().redraw();
 			}
 		};
+		
 		_propertyPages = new ArrayList<>();
 	}
 
@@ -380,18 +381,16 @@ public class SceneEditor extends EditorPart {
 	}
 
 	public void build() {
-		_builtFitstTime = true;
-
 		_scene.redraw();
 
 		updatePropertyPagesContentWithSelection();
 
 		refreshOutline();
-
 	}
 
-	boolean isBuiltFirstTime() {
-		return _builtFitstTime;
+	@SuppressWarnings("static-method")
+	boolean isWaitingForProjectBuilders() {
+		return !PhaserProjectBuilder.isStartupFinished();
 	}
 
 }
