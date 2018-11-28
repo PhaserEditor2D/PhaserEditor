@@ -21,7 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -66,6 +65,7 @@ public class SceneEditor extends EditorPart {
 			return "SCENE_EDITOR_CONTEXT";
 		}
 	};
+	
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
 	private IContextActivation _objectsContextActivation;
@@ -311,14 +311,18 @@ public class SceneEditor extends EditorPart {
 	}
 
 	private void registerUndoActions() {
-		IEditorSite site = getEditorSite();
+		var site = getEditorSite();
 
 		_undoRedoGroup = new UndoRedoActionGroup(site, undoContext, true);
 
-		IActionBars actionBars = site.getActionBars();
+		var actionBars = site.getActionBars();
 		_undoRedoGroup.fillActionBars(actionBars);
 
 		actionBars.updateActionBars();
+	}
+	
+	public UndoRedoActionGroup getUndoRedoGroup() {
+		return _undoRedoGroup;
 	}
 
 	public void executeOperation(IUndoableOperation operation) {

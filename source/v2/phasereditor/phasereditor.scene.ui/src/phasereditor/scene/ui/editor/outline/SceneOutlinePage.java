@@ -103,6 +103,10 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		return _editor;
 	}
 
+	private void registerUndoActions() {
+		_editor.getUndoRedoGroup().fillActionBars(getSite().getActionBars());
+	}
+
 	@Override
 	public void createControl(Composite parent) {
 		_filterTree = new FilteredTreeCanvas(parent, SWT.NONE);
@@ -148,8 +152,10 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 		});
 
 		init_DND();
+
+		registerUndoActions();
 	}
-	
+
 	public TreeCanvasViewer getViewer() {
 		return _viewer;
 	}
@@ -201,14 +207,13 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 				editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
 
-				//TODO: just for now, we should fix the bug of clicking on a TreeCanvas action.
-				swtRun( () -> {
+				// TODO: just for now, we should fix the bug of clicking on a TreeCanvas action.
+				swtRun(() -> {
 					editor.setSelection(List.of(group));
-					
+
 					editor.updatePropertyPagesContentWithSelection();
 				});
-				
-								
+
 				refresh();
 
 				editor.setDirty(true);
