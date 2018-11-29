@@ -31,6 +31,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -91,11 +92,18 @@ public class SceneObjectRenderer {
 	}
 
 	public void dispose() {
+		disposeImageCache();
+	}
+
+	private void disposeImageCache() {
 		for (var image : _imageCacheMap.values()) {
+			
 			if (!image.isDisposed()) {
 				image.dispose();
 			}
 		}
+		
+		_imageCacheMap = new HashMap<>();
 	}
 
 	public Image getModelImageFromCache(Object model) {
@@ -410,42 +418,52 @@ public class SceneObjectRenderer {
 
 		setObjectTransform(gc, tx, model);
 
+		model.updateSizeFromBitmapFont(_finder);
+
 		var image = getBitmapTextImage(model);
+		
+		Rectangle bounds;
+		
+		if (image == null) {
+			bounds = new Rectangle(0, 0, 0, 0);
+		} else {
 
-		Transform tx2 = null;
+			Transform tx2 = null;
 
-		if (model instanceof DynamicBitmapTextComponent) {
-			// crop it
+			if (model instanceof DynamicBitmapTextComponent) {
+				// crop it
 
-			var cropWidth = DynamicBitmapTextComponent.get_cropWidth(model);
-			var cropHeight = DynamicBitmapTextComponent.get_cropHeight(model);
+				var cropWidth = DynamicBitmapTextComponent.get_cropWidth(model);
+				var cropHeight = DynamicBitmapTextComponent.get_cropHeight(model);
 
-			// if the text is not cropped, then it will be scrolled here
+				// if the text is not cropped, then it will be scrolled here
 
-			if (cropWidth == 0 || cropHeight == 0) {
+				if (cropWidth == 0 || cropHeight == 0) {
 
-				var scrollX = DynamicBitmapTextComponent.get_scrollX(model);
-				var scrollY = DynamicBitmapTextComponent.get_scrollY(model);
+					var scrollX = DynamicBitmapTextComponent.get_scrollX(model);
+					var scrollY = DynamicBitmapTextComponent.get_scrollY(model);
 
-				tx2 = newTx(gc, tx);
-				tx2.translate(-scrollX, -scrollY);
+					tx2 = newTx(gc, tx);
+					tx2.translate(-scrollX, -scrollY);
 
-				setObjectTransform(gc, tx2, model);
+					setObjectTransform(gc, tx2, model);
+				}
 			}
+
+			gc.drawImage(image, 0, 0);
+
+			if (tx2 != null) {
+				tx2.dispose();
+			}
+
+			bounds = image.getBounds();
 		}
-
-		gc.drawImage(image, 0, 0);
-
-		if (tx2 != null) {
-			tx2.dispose();
-		}
-
-		var b = image.getBounds();
-		setObjectBounds(gc, model, 0, 0, b.width, b.height);
+		
+		setObjectBounds(gc, model, 0, 0, bounds.width, bounds.height);
 	}
 
 	private Image createBitmapTextImage(BitmapTextModel textModel) {
-		var fontModel = textModel.getFontModel();
+		var fontModel = textModel.getFontModel(_finder);
 
 		if (fontModel == null) {
 			return null;
@@ -464,7 +482,7 @@ public class SceneObjectRenderer {
 
 		BaseImageCanvas.prepareGC(gc2);
 
-		var asset = BitmapTextComponent.get_font(textModel);
+		var asset = BitmapTextComponent.utils_getFont(textModel, _finder);
 
 		var fontTexture = loadImage(asset.getTextureFile());
 
@@ -689,7 +707,7 @@ public class SceneObjectRenderer {
 	private Image loadImage(IFile file) {
 		return _scene.loadImage(file);
 	}
-	
+
 	public float[] getObjectSize(ObjectModel model) {
 
 		if (model instanceof BitmapTextModel) {
@@ -759,6 +777,10 @@ public class SceneObjectRenderer {
 	private float[] getBitmapTextSize(BitmapTextModel model) {
 
 		var image = getBitmapTextImage(model);
+
+		if (image == null) {
+			return new float[] { 0, 0 };
+		}
 
 		var b = image.getBounds();
 

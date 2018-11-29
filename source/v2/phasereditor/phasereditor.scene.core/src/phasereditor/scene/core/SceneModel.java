@@ -51,13 +51,13 @@ public class SceneModel {
 			SpriteModel.TYPE,
 
 			ImageModel.TYPE,
-			
+
 			TileSpriteModel.TYPE,
 
 			BitmapTextModel.TYPE,
 
 			DynamicBitmapTextModel.TYPE,
-			
+
 			ContainerModel.TYPE
 
 	};
@@ -68,7 +68,7 @@ public class SceneModel {
 	private boolean _snapEnabled;
 	private int _snapWidth;
 	private int _snapHeight;
-	
+
 	private RGB _backgroundColor;
 	private RGB _foregroundColor;
 	private static final RGB DEF_FG_RGB = ColorUtil.WHITESMOKE.rgb;
@@ -100,9 +100,9 @@ public class SceneModel {
 
 		_preloadUserCode = new MethodUserCodeModel("preload");
 		_createUserCode = new MethodUserCodeModel("create");
-		
+
 	}
-	
+
 	public MethodUserCodeModel getPreloadUserCode() {
 		return _preloadUserCode;
 	}
@@ -249,6 +249,7 @@ public class SceneModel {
 			}
 			InputStreamReader reader = new InputStreamReader(contents, charset);
 			JSONObject data = new JSONObject(new JSONTokener(reader));
+
 			read(data, file.getProject());
 		}
 	}

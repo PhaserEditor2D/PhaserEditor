@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 
 /**
@@ -29,19 +30,6 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
  */
 @SuppressWarnings("boxing")
 public interface BitmapTextComponent {
-	// font
-
-	static String font_name = "font";
-
-	static BitmapFontAssetModel font_default = null;
-
-	static BitmapFontAssetModel get_font(ObjectModel obj) {
-		return (BitmapFontAssetModel) obj.get("font");
-	}
-
-	static void set_font(ObjectModel obj, BitmapFontAssetModel font) {
-		obj.put("font", font);
-	}
 
 	// fontSize
 
@@ -74,7 +62,7 @@ public interface BitmapTextComponent {
 	static void set_align(ObjectModel obj, int align) {
 		obj.put("align", align);
 	}
-	
+
 	// letterSpacing
 
 	static String letterSpacing_name = "letterSpacing";
@@ -88,13 +76,45 @@ public interface BitmapTextComponent {
 	static void set_letterSpacing(ObjectModel obj, float letterSpacing) {
 		obj.put("letterSpacing", letterSpacing);
 	}
+
+	// fontAssetKey
+
+	static String fontAssetKey_name = "fontAssetKey";
+
+	static String fontAssetKey_default = null;
+
+	static String get_fontAssetKey(ObjectModel obj) {
+		return (String) obj.get("fontAssetKey");
+	}
+
+	static void set_fontAssetKey(ObjectModel obj, String fontAssetKey) {
+		obj.put("fontAssetKey", fontAssetKey);
+	}
+
+	// utils
+
+	static BitmapFontAssetModel utils_getFont(ObjectModel obj, AssetFinder finder) {
+		var key = get_fontAssetKey(obj);
+
+		var asset = finder.findAssetKey(key);
+
+		if (asset instanceof BitmapFontAssetModel) {
+			return (BitmapFontAssetModel) asset;
+		}
+
+		return null;
+	}
+
+	static void utils_setFont(ObjectModel obj, BitmapFontAssetModel fontAsset) {
+		set_fontAssetKey(obj, fontAsset.getKey());
+	}
 	
 	static boolean is(Object model) {
 		return model instanceof BitmapTextComponent;
 	}
 
 	static void init(BitmapTextModel obj) {
-		set_font(obj, font_default);
+		set_fontAssetKey(obj, fontAssetKey_default);
 		set_fontSize(obj, fontSize_default);
 		set_align(obj, align_default);
 		set_letterSpacing(obj, letterSpacing_default);

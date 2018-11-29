@@ -283,10 +283,10 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 				TransformComponent.set_x(textModel, modelX);
 				TransformComponent.set_y(textModel, modelY);
 
-				BitmapTextComponent.set_font(textModel, asset);
+				BitmapTextComponent.utils_setFont(textModel, asset);
 				TextualComponent.set_text(textModel, "BitmapText");
 
-				textModel.updateSizeFromBitmapFont();
+				textModel.updateSizeFromBitmapFont(getAssetFinder());
 
 				newModels.add(textModel);
 
@@ -328,6 +328,10 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 	public SceneObjectRenderer getSceneRenderer() {
 		return _renderer;
+	}
+	
+	public SceneModel getModel() {
+		return _editor.getSceneModel();
 	}
 
 	@Override

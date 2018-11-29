@@ -24,8 +24,7 @@ package phasereditor.scene.core;
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.bmpfont.core.BitmapFontModel;
 
 /**
@@ -75,16 +74,7 @@ public class BitmapTextModel extends TransformModel implements
 
 		data.put(text_name, TextualComponent.get_text(this), text_default);
 
-		{
-			var fontModel = BitmapTextComponent.get_font(this);
-
-			if (fontModel == null) {
-				data.put(font_name, (Object) null);
-			} else {
-				var ref = AssetPackCore.getAssetJSONReference(fontModel);
-				data.put(font_name, ref);
-			}
-		}
+		data.put(fontAssetKey_name, BitmapTextComponent.get_fontAssetKey(this));
 
 		data.put(fontSize_name, BitmapTextComponent.get_fontSize(this), fontSize_default);
 		data.put(align_name, BitmapTextComponent.get_align(this), align_default);
@@ -103,47 +93,32 @@ public class BitmapTextModel extends TransformModel implements
 
 		TextualComponent.set_text(this, data.optString(text_name, text_default));
 
+		BitmapTextComponent.set_fontAssetKey(this, data.optString(fontAssetKey_name, fontAssetKey_default));
 		BitmapTextComponent.set_align(this, data.optInt(align_name, align_default));
 		BitmapTextComponent.set_fontSize(this, data.optInt(fontSize_name, fontSize_default));
 		BitmapTextComponent.set_letterSpacing(this, data.optFloat(letterSpacing_name, letterSpacing_default));
 
-		{
-			BitmapFontAssetModel fontAsset = null;
-			var ref = data.optJSONObject(font_name);
-
-			if (ref != null) {
-				var result = AssetPackCore.findAssetElement(project, ref);
-				if (result != null && result instanceof BitmapFontAssetModel) {
-					fontAsset = (BitmapFontAssetModel) result;
-				}
-			}
-
-			BitmapTextComponent.set_font(this, fontAsset);
-		}
-
-		updateSizeFromBitmapFont();
-
 	}
 
-	public void updateSizeFromBitmapFont() {
-		
-		var model = getFontModel();
-		
-		if (model != null) {
-			
-			if (BitmapTextComponent.get_fontSize(this) == fontSize_default) {
+	public void updateSizeFromBitmapFont(AssetFinder finder) {
+		if (BitmapTextComponent.get_fontSize(this) == fontSize_default) {
+
+			var model = getFontModel(finder);
+
+			if (model != null) {
 				BitmapTextComponent.set_fontSize(this, model.getInfoSize());
 			}
+
 		}
 	}
 
-	public BitmapFontModel getFontModel() {
-		var fontAsset = BitmapTextComponent.get_font(this);
+	public BitmapFontModel getFontModel(AssetFinder finder) {
+		var fontAsset = BitmapTextComponent.utils_getFont(this, finder);
 
 		if (fontAsset != null) {
-			
+
 			var model = fontAsset.getFontModel();
-			
+
 			return model;
 		}
 

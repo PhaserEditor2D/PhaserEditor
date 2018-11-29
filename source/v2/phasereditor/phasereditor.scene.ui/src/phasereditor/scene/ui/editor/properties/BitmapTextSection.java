@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.scene.core.BitmapTextComponent;
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -85,21 +86,21 @@ public class BitmapTextSection extends ScenePropertySection {
 				getModels().forEach(model -> {
 					BitmapTextComponent.set_align(model, _align);
 				});
-				
+
 			}, getModels(), true);
 
 			getEditor().setDirty(true);
 			getEditor().getScene().redraw();
-			
+
 			updateAlignActionsState();
 		}
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		
+
 		createActions();
-		
+
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
 
@@ -169,7 +170,7 @@ public class BitmapTextSection extends ScenePropertySection {
 					var asset = (BitmapFontAssetModel) dlg.getResult();
 
 					for (var obj : getModels()) {
-						BitmapTextComponent.set_font(obj, asset);
+						BitmapTextComponent.utils_setFont(obj, asset);
 					}
 
 				}, getModels(), true);
@@ -236,16 +237,20 @@ public class BitmapTextSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		String flatValues_to_String = flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_fontSize(model)));
-		
-		_fontSizeText
-				.setText(flatValues_to_String);
+		getModels().forEach(model -> ((BitmapTextModel) model).updateSizeFromBitmapFont(getAssetFinder()));
+
+		String flatValues_to_String = flatValues_to_String(
+				models.stream().map(model -> BitmapTextComponent.get_fontSize(model)));
+
+		_fontSizeText.setText(flatValues_to_String);
 
 		_letterSpacingText.setText(
 				flatValues_to_String(models.stream().map(model -> BitmapTextComponent.get_letterSpacing(model))));
 
 		_fontNameBtn.setText(flatValues_to_String(models.stream().map(model -> {
-			var asset = BitmapTextComponent.get_font(model);
+
+			var asset = BitmapTextComponent.utils_getFont(model, getAssetFinder());
+
 			return asset == null ? "<null>" : asset.getKey();
 		})));
 

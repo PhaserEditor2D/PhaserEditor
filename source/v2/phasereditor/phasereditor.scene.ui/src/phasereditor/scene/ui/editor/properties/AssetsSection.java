@@ -22,12 +22,15 @@
 package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -56,9 +59,21 @@ public class AssetsSection extends ScenePropertySection {
 			var btn = new Button(comp, 0);
 			btn.setText("Rebuild Image Cache");
 			btn.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::rebuildImageCache));
 		}
 
 		return comp;
+	}
+	
+	@SuppressWarnings("unused")
+	private void rebuildImageCache(SelectionEvent e) {
+		var scene = getScene();
+		
+		scene.getModel().getDisplayList().visit(m -> {
+			GameObjectEditorComponent.set_gameObjectEditorDirty(m, true);
+		});
+		
+		scene.redraw();
 	}
 
 	@Override

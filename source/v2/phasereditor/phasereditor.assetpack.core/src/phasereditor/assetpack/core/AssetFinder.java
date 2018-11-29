@@ -59,6 +59,10 @@ public class AssetFinder {
 		}
 	}
 
+	public IAssetKey findAssetKey(String key) {
+		return findAssetKey(key, null);
+	}
+	
 	public IAssetKey findAssetKey(String key, String frame) {
 		if (key == null) {
 			return null;

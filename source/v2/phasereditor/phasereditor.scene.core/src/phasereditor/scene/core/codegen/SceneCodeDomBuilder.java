@@ -499,9 +499,8 @@ public class SceneCodeDomBuilder {
 		return true;
 	}
 
-	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model) {
-
+		
 		var methodName = model instanceof DynamicBitmapTextModel ? "dynamicBitmapText" : "bitmapText";
 
 		var call = new MethodCallDom(methodName, "this.add");
@@ -509,7 +508,7 @@ public class SceneCodeDomBuilder {
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
 
-		var asset = BitmapTextComponent.get_font(model);
+		var asset = BitmapTextComponent.utils_getFont(model, _finder);
 
 		if (asset == null) {
 			call.arg("null");
@@ -517,6 +516,8 @@ public class SceneCodeDomBuilder {
 			call.argLiteral(asset.getKey());
 		}
 
+		model.updateSizeFromBitmapFont(_finder);
+		
 		call.argLiteral(TextualComponent.get_text(model));
 		call.arg(BitmapTextComponent.get_fontSize(model));
 		call.arg(BitmapTextComponent.get_align(model));

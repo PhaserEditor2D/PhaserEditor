@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public abstract class ObjectModel  {
+public abstract class ObjectModel {
 
 	private Map<String, Object> _map;
 	private String _id;
