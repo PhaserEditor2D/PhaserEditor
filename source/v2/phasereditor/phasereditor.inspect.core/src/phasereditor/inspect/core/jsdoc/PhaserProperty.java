@@ -24,6 +24,8 @@ package phasereditor.inspect.core.jsdoc;
 import org.json.JSONObject;
 
 public class PhaserProperty extends PhaserVariable {
+	private static final long serialVersionUID = 1L;
+	
 	private boolean _readOnly;
 
 	public PhaserProperty(JSONObject json) {

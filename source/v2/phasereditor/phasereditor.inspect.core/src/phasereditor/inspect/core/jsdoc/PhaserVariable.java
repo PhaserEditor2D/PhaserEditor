@@ -24,6 +24,9 @@ package phasereditor.inspect.core.jsdoc;
 import org.json.JSONObject;
 
 public abstract class PhaserVariable extends PhaserMember implements ITypeMember{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private Object _defaultValue;
 	private boolean _optional;
 	private String[] _types;

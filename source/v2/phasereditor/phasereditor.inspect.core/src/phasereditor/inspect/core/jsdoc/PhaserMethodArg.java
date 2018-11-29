@@ -25,6 +25,8 @@ import org.json.JSONObject;
 
 public class PhaserMethodArg extends PhaserVariable {
 
+	private static final long serialVersionUID = 1L;
+
 	public PhaserMethodArg(JSONObject json) {
 		super(json);
 	}

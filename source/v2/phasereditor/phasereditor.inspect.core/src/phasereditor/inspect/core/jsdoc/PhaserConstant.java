@@ -25,6 +25,8 @@ import org.json.JSONObject;
 
 public class PhaserConstant extends PhaserVariable {
 
+	private static final long serialVersionUID = 1L;
+
 	public PhaserConstant(JSONObject json) {
 		super(json);
 	}

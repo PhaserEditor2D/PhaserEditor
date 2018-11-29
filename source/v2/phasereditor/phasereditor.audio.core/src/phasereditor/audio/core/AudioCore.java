@@ -61,7 +61,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.FileUtils;
 
 /**
@@ -415,7 +414,7 @@ public class AudioCore {
 		
 		try {
 			String filename = file.getPersistentProperty(WAVEFORM_FILENAME_KEY);
-			Path dir = ProjectCore.getUserCacheFolder().resolve("waves");
+			Path dir = InspectCore.getUserCacheFolder().resolve("waves");
 			Path path;
 			if (filename == null) {
 				filename = UUID.randomUUID().toString() + ".png";
@@ -512,7 +511,7 @@ public class AudioCore {
 		try {
 			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
 			
-			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
+			Path dir = InspectCore.getUserCacheFolder().resolve("snapshots");
 			Path path;
 			if (filename == null) {
 				filename = UUID.randomUUID().toString() + ".jpg";

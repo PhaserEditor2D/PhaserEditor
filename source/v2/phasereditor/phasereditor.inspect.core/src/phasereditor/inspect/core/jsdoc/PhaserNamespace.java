@@ -37,6 +37,8 @@ import org.json.JSONObject;
  */
 public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 
+	private static final long serialVersionUID = 1L;
+
 	private List<PhaserNamespace> _namespaces;
 
 	private List<PhaserType> _types;

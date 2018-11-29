@@ -28,6 +28,7 @@ import java.io.File;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -98,7 +99,7 @@ import org.eclipse.core.runtime.CoreException;
  * @author JSON.org
  * @version 2014-05-03
  */
-public class JSONObject {
+public class JSONObject implements Serializable {
 
 	// --- start Arian modifications ---
 
@@ -256,7 +257,7 @@ public class JSONObject {
 	 * JSONObject.NULL is equivalent to the value that JavaScript calls null, whilst
 	 * Java's null is equivalent to the value that JavaScript calls undefined.
 	 */
-	private static final class Null {
+	private static final class Null implements Serializable {
 
 		/**
 		 * There is only intended to be a single instance of the NULL object, so the

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,7 +29,9 @@ import java.util.List;
  * @author arian
  *
  */
-public class PhaserGlobalScope {
+public class PhaserGlobalScope implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private List<IPhaserMember> _members;
 	private HashSet<IPhaserMember> _set;
 

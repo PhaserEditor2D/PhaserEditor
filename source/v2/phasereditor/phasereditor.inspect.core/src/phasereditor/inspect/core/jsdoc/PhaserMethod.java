@@ -29,6 +29,9 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class PhaserMethod extends PhaserMember implements ITypeMember {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private List<PhaserMethodArg> _args;
 	private Map<String, PhaserVariable> _argsMap;
 	private String[] _returnTypes;

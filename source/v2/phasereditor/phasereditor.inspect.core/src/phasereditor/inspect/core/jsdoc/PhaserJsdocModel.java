@@ -27,9 +27,11 @@ import static java.lang.System.out;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,22 +48,52 @@ import org.json.JSONTokener;
 
 import phasereditor.inspect.core.InspectCore;
 
-public class PhaserJsdocModel {
-	private static PhaserJsdocModel _instance;
+public class PhaserJsdocModel implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private transient static PhaserJsdocModel _instance;
 
 	public synchronized static PhaserJsdocModel getInstance() {
 		if (_instance == null) {
-			long t = currentTimeMillis();
-
-			Path docsJsonFile = InspectCore
-					.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/phaser3-docs/json/phaser.json")
-					.toAbsolutePath().normalize();
-			Path srcFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/src");
-
 			try {
+				var srcFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+						"phaser-master/src");
+
+				var t = currentTimeMillis();
+
+				Path docsJsonFile = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN,
+						"phaser-custom/phaser3-docs/json/phaser.json").toAbsolutePath().normalize();
+
+				var size = Files.getLastModifiedTime(docsJsonFile).toMillis();
+
+				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json." + size + ".binary");
+
+				if (Files.exists(cacheFile)) {
+					try (var input = new ObjectInputStream(Files.newInputStream(cacheFile))) {
+						_instance = (PhaserJsdocModel) input.readObject();
+						_instance._srcFolder = srcFolder;
+
+						out.println("Read cached docs..." + (currentTimeMillis() - t) + "ms");
+
+						return _instance;
+					} catch (IOException | ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+
 				_instance = new PhaserJsdocModel(srcFolder, docsJsonFile);
+
+				var t2 = currentTimeMillis();
+
+				try (var serilizer = new ObjectOutputStream(Files.newOutputStream(cacheFile))) {
+					serilizer.writeObject(_instance);
+				}
+
+				out.println("Write phaser.jsdoc cache in " + (currentTimeMillis() - t2) + "ms");
+
 				out.println("Build Phaser JSDoc " + (currentTimeMillis() - t) + "ms");
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
@@ -74,7 +106,7 @@ public class PhaserJsdocModel {
 	private List<IPhaserMember> _rootNamespaces;
 	private Set<String> _elementsWithMembers;
 
-	private Path _srcFolder;
+	private transient Path _srcFolder;
 	private PhaserGlobalScope _globalScope;
 
 	public PhaserJsdocModel(Path srcFolder, Path docsJsonFile) throws IOException {
@@ -702,11 +734,11 @@ public class PhaserJsdocModel {
 		int endIndex = path.length();
 		if (beginIndex > endIndex) {
 			// the case of src/Phaser.js
-			member.setFile(Paths.get(meta.getString("filename")));
+			member.setFile(meta.getString("filename"));
 		} else {
 			String dir = path.substring(beginIndex, endIndex);
 			path = dir + "/" + meta.getString("filename");
-			member.setFile(Paths.get(path));
+			member.setFile(path);
 		}
 	}
 

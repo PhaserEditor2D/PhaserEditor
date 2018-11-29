@@ -25,6 +25,7 @@ package org.json;
  */
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
@@ -77,7 +78,7 @@ import java.util.Map;
  * @author JSON.org
  * @version 2014-05-03
  */
-public class JSONArray /* arian */ {
+public class JSONArray implements Serializable /* arian */ {
 
 	// arian
 	

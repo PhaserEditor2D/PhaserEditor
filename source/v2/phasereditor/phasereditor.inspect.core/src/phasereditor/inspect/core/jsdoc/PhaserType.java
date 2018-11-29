@@ -30,6 +30,9 @@ import java.util.Set;
 import org.json.JSONObject;
 
 public class PhaserType extends PhaserNamespace implements ITypeMember {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public static final String PRIVATE = "private";
 	public static final String PROTECTED = "protected";
 	public static final String PUBLIC = "public";

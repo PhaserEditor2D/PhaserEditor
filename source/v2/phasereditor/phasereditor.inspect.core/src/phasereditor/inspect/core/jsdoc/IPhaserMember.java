@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 
 import org.json.JSONObject;
@@ -28,7 +29,7 @@ import org.json.JSONObject;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.ISourceLocation;
 
-public interface IPhaserMember extends ISourceLocation {
+public interface IPhaserMember extends ISourceLocation, Serializable {
 	public String getName();
 	
 	public String getHelp();
@@ -39,9 +40,9 @@ public interface IPhaserMember extends ISourceLocation {
 
 	public void setOffset(int offset);
 
-	public Path getFile();
+	public String getFile();
 
-	public void setFile(Path file);
+	public void setFile(String filename);
 
 	public boolean isStatic();
 	

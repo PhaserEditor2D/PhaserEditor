@@ -54,9 +54,9 @@ public class Activator extends AbstractUIPlugin {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				
+
 				InspectCore.getPhaserHelp();
-				
+
 				return Status.OK_STATUS;
 			}
 		}.schedule();

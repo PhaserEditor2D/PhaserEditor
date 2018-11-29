@@ -21,20 +21,22 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
-import java.nio.file.Path;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONObject;
 
 public abstract class PhaserMember implements IPhaserMember, IAdaptable {
+
+	private static final long serialVersionUID = 2L;
+
 	private String _name;
 	private String _help;
 	private int _line;
 	private int _offset;
-	private Path _file;
 	private boolean _static;
-	private JSONObject _json;
+	private transient JSONObject _json;
 	private IMemberContainer _container;
+
+	private String _filename;
 
 	public PhaserMember(JSONObject json) {
 		_static = false;
@@ -73,13 +75,13 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 	}
 
 	@Override
-	public Path getFile() {
-		return _file;
+	public String getFile() {
+		return _filename;
 	}
 
 	@Override
-	public void setFile(Path file) {
-		_file = file;
+	public void setFile(String filename) {
+		_filename = filename;
 	}
 
 	@Override
@@ -128,7 +130,7 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName() + ":" + getClass().getSimpleName();
