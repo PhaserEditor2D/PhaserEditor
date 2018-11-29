@@ -128,7 +128,6 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		_key = key;
 		_type = type;
 		_section = section;
-		_help = getHelp(_type);
 		_lastUsedFiles = new IFile[0];
 	}
 
@@ -181,6 +180,9 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public String getHelp() {
+		if (_help == null) {
+			_help = getHelp(_type);
+		}
 		return _help;
 	}
 

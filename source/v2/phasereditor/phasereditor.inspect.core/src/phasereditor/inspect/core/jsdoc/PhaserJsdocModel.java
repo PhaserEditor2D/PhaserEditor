@@ -52,6 +52,7 @@ public class PhaserJsdocModel {
 	public synchronized static PhaserJsdocModel getInstance() {
 		if (_instance == null) {
 			long t = currentTimeMillis();
+
 			Path docsJsonFile = InspectCore
 					.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/phaser3-docs/json/phaser.json")
 					.toAbsolutePath().normalize();
@@ -59,7 +60,7 @@ public class PhaserJsdocModel {
 
 			try {
 				_instance = new PhaserJsdocModel(srcFolder, docsJsonFile);
-				out.println("Build Phaser JSDoc " + (currentTimeMillis() - t));
+				out.println("Build Phaser JSDoc " + (currentTimeMillis() - t) + "ms");
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
@@ -639,8 +640,8 @@ public class PhaserJsdocModel {
 		String kind = obj.getString("kind");
 
 		String longname = obj.getString("longname");
-		
- 		var hasMembers = _elementsWithMembers.contains(longname);
+
+		var hasMembers = _elementsWithMembers.contains(longname);
 		var isEnum = obj.optBoolean("isEnum");
 
 		if (kind.equals("class") || kind.equals("member") && hasMembers && !isEnum) {

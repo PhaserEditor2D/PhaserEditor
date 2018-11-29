@@ -25,11 +25,11 @@ import static java.lang.System.out;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -55,24 +55,25 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		
 		out.println("Starting project.core...");
-		
-		WorkspaceJob job = new WorkspaceJob("Initial project build") {
+
+		new Job("Inital projects build") {
 
 			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			protected IStatus run(IProgressMonitor monitor) {
 
-				out.println("Iniatial project build job...");
-				
 				if (!PhaserProjectBuilder.isStartedFirstTime()) {
-					 ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+					try {
+						ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
 				}
 
 				return Status.OK_STATUS;
 			}
-		};
-		job.schedule();
+		}.schedule();
+
 	}
 
 	/*
