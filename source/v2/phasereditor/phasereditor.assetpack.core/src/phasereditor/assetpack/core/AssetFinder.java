@@ -97,4 +97,12 @@ public class AssetFinder {
 		return frame + "@" + key;
 	}
 
+	public AssetFinder snapshot() {
+		var finder = new AssetFinder(_project);
+		
+		finder._map = new HashMap<>(_map);
+		
+		return finder;
+	}
+
 }

@@ -361,7 +361,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		_finder.build();
-
+		
 		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.

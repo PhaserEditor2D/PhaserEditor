@@ -74,6 +74,7 @@ public class SceneObjectRenderer {
 	private boolean _debug;
 	private List<Runnable> _postPaintActions;
 	private AssetFinder _finder;
+	private AssetFinder _lastFinderSnapshot;
 
 	public SceneObjectRenderer(SceneCanvas scene) {
 		super();
@@ -89,6 +90,7 @@ public class SceneObjectRenderer {
 		_imageCacheMap = new HashMap<>();
 
 		_finder = scene.getAssetFinder();
+		_lastFinderSnapshot = _finder;
 	}
 
 	public void dispose() {
@@ -97,12 +99,12 @@ public class SceneObjectRenderer {
 
 	private void disposeImageCache() {
 		for (var image : _imageCacheMap.values()) {
-			
+
 			if (!image.isDisposed()) {
 				image.dispose();
 			}
 		}
-		
+
 		_imageCacheMap = new HashMap<>();
 	}
 
@@ -114,7 +116,7 @@ public class SceneObjectRenderer {
 		_postPaintActions.add(action);
 	}
 
-	public void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
+	void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
 
 		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
@@ -161,6 +163,8 @@ public class SceneObjectRenderer {
 		}
 
 		_postPaintActions.clear();
+
+		_lastFinderSnapshot = _finder.snapshot();
 	}
 
 	private void renderBones(GC gc, ObjectModel parent, boolean forceRender) {
@@ -421,9 +425,9 @@ public class SceneObjectRenderer {
 		model.updateSizeFromBitmapFont(_finder);
 
 		var image = getBitmapTextImage(model);
-		
+
 		Rectangle bounds;
-		
+
 		if (image == null) {
 			bounds = new Rectangle(0, 0, 0, 0);
 		} else {
@@ -458,7 +462,7 @@ public class SceneObjectRenderer {
 
 			bounds = image.getBounds();
 		}
-		
+
 		setObjectBounds(gc, model, 0, 0, bounds.width, bounds.height);
 	}
 
@@ -587,7 +591,7 @@ public class SceneObjectRenderer {
 	public Image getTileSpriteTextImage(TileSpriteModel model) {
 		Image image;
 
-		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model)) {
+		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
 			image = createTileSpriteTexture(model);
 
 			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
@@ -791,7 +795,8 @@ public class SceneObjectRenderer {
 	public Image getBitmapTextImage(BitmapTextModel model) {
 		Image image;
 
-		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model)) {
+		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_bitmapFontChanged(model)) {
+
 			image = createBitmapTextImage(model);
 
 			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
@@ -995,5 +1000,24 @@ public class SceneObjectRenderer {
 	 */
 	public float[] getObjectMatrix(ObjectModel model) {
 		return _modelMatrixMap.get(model);
+	}
+
+	private boolean asset_textureChanged(ObjectModel model) {
+		return assetChanged(TextureComponent.get_textureKey(model), TextureComponent.get_textureKey(model));
+	}
+
+	private boolean asset_bitmapFontChanged(ObjectModel model) {
+		return assetChanged(BitmapTextComponent.get_fontAssetKey(model));
+	}
+
+	private boolean assetChanged(String key) {
+		return assetChanged(key, null);
+	}
+
+	private boolean assetChanged(String key, String frame) {
+		var asset1 = _lastFinderSnapshot.findAssetKey(key, frame);
+		var asset2 = _finder.findAssetKey(key, frame);
+
+		return asset1 == null || asset2 == null || asset1 != asset2;
 	}
 }

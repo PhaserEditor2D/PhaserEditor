@@ -74,6 +74,8 @@ public class AssetsSection extends ScenePropertySection {
 		});
 		
 		scene.redraw();
+		
+		getEditor().refreshOutline();
 	}
 
 	@Override
