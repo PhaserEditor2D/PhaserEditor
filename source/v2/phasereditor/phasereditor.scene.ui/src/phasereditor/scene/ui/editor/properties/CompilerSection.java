@@ -26,10 +26,10 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
@@ -44,8 +44,12 @@ import phasereditor.ui.properties.FormPropertyPage;
  */
 public class CompilerSection extends BaseDesignSection {
 
-	private UserCodeBeforeAfterCodeComp _createComp;
-	private UserCodeBeforeAfterCodeComp _preloadComp;
+	private Button _autoLoadAssetsButton;
+	private Text _preloadNameText;
+	private Text _createNameText;
+	private Button _generateEventsButton;
+	private Text _superClassNameText;
+	private Button _onlyGenerateMethodsButton;
 
 	public CompilerSection(FormPropertyPage page) {
 		super("Compiler", page);
@@ -60,37 +64,53 @@ public class CompilerSection extends BaseDesignSection {
 	public Control createContent(Composite parent) {
 
 		var comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(1, false));
+		comp.setLayout(new GridLayout(2, false));
 
 		{
-			// user code
+			_autoLoadAssetsButton = new Button(comp, SWT.CHECK);
+			_autoLoadAssetsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+			_autoLoadAssetsButton.setText("Generate Assets Loading");
+			_autoLoadAssetsButton.setToolTipText(
 
-			label(comp, "User Code:", "*The user code to be inserted in the JavaScript file.");
+					"Generate a preload method that loads all the assets used in this scene."
 
-			var tabFolder = new TabFolder(comp, SWT.NONE);
-			var gd = new GridData(GridData.FILL_BOTH);
-			gd.heightHint = 300;
-			tabFolder.setLayoutData(gd);
-			tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+			);
+		}
 
-			{
+		{
+			_generateEventsButton = new Button(comp, SWT.CHECK);
+			_generateEventsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+			_generateEventsButton.setText("Generate Method Events");
+			_generateEventsButton.setToolTipText(
 
-				var item = new TabItem(tabFolder, SWT.NONE);
-				var codeComp = new UserCodeBeforeAfterCodeComp(tabFolder, SWT.NONE, "create");
-				item.setControl(codeComp);
-				item.setText("Create Method");
-				_createComp = codeComp;
-			}
+					"Insert events at the start and the end of the methods."
 
-			{
+			);
+		}
 
-				var item = new TabItem(tabFolder, SWT.NONE);
-				var codeComp = new UserCodeBeforeAfterCodeComp(tabFolder, SWT.NONE, "preload");
-				item.setControl(codeComp);
-				item.setText("Preload Method");
-				_preloadComp = codeComp;
-			}
+		{
+			_onlyGenerateMethodsButton = new Button(comp, SWT.CHECK);
+			_onlyGenerateMethodsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+			_onlyGenerateMethodsButton.setText("Only Generate Methods");
+			_onlyGenerateMethodsButton.setToolTipText("Generate plain methods, without a containing class.");
+		}
 
+		{
+			label(comp, "Super Class", "*The name of the super class.");
+			_superClassNameText = new Text(comp, SWT.BORDER);
+			_superClassNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
+
+		{
+			label(comp, "Preload Method", "*The name of the preload method.");
+			_preloadNameText = new Text(comp, SWT.BORDER);
+			_preloadNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
+
+		{
+			label(comp, "Create Method", "*The name of the create method.");
+			_createNameText = new Text(comp, SWT.BORDER);
+			_createNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 
 		return comp;
@@ -125,40 +145,52 @@ public class CompilerSection extends BaseDesignSection {
 		});
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var model = getEditor().getSceneModel();
 
-		var preload = model.getPreloadUserCode();
-		var create = model.getCreateUserCode();
+		_autoLoadAssetsButton.setSelection(model.isAutoLoadAssets());
+		_generateEventsButton.setSelection(model.isGenerateMethodEvents());
+		_onlyGenerateMethodsButton.setSelection(model.isOnlyGenerateMethods());
 
-		_preloadComp.setBeforeText(preload.getBeforeCode());
-		_preloadComp.setAfterText(preload.getAfterCode());
+		_superClassNameText.setText(model.getSuperClassName());
+		_preloadNameText.setText(model.getPreloadMethodName());
+		_createNameText.setText(model.getCreateMethodName());
 
-		_createComp.setBeforeText(create.getBeforeCode());
-		_createComp.setAfterText(create.getAfterCode());
-
-		listen(_preloadComp.getBeforeTextViewer(), value -> {
+		listen(_onlyGenerateMethodsButton, value -> {
 			wrapOperation(() -> {
-				preload.setBeforeCode(value);
+				model.setOnlyGenerateMethods(value);
 			});
 		});
 
-		listen(_preloadComp.getAfterTextViewer(), value -> {
+		listen(_autoLoadAssetsButton, value -> {
 			wrapOperation(() -> {
-				preload.setAfterCode(value);
+				model.setAutoLoadAssets(value);
 			});
 		});
 
-		listen(_createComp.getBeforeTextViewer(), value -> {
+		listen(_generateEventsButton, value -> {
 			wrapOperation(() -> {
-				create.setBeforeCode(value);
+				model.setGenerateMethodEvents(value);
 			});
 		});
 
-		listen(_createComp.getAfterTextViewer(), value -> {
+		listen(_superClassNameText, value -> {
 			wrapOperation(() -> {
-				create.setAfterCode(value);
+				model.setSuperClassName(value);
+			});
+		});
+
+		listen(_preloadNameText, value -> {
+			wrapOperation(() -> {
+				model.setPreloadMethodName(value);
+			});
+		});
+
+		listen(_createNameText, value -> {
+			wrapOperation(() -> {
+				model.setCreateMethodName(value);
 			});
 		});
 

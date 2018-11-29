@@ -69,6 +69,13 @@ public class SceneModel {
 	private int _snapWidth;
 	private int _snapHeight;
 
+	private boolean _autoLoadAssets;
+	private boolean _generateMethodEvents;
+	private boolean _onlyGenerateMethods;
+	private String _superClassName;
+	private String _preloadMethodName;
+	private String _createMethodName;
+
 	private RGB _backgroundColor;
 	private RGB _foregroundColor;
 	private static final RGB DEF_FG_RGB = ColorUtil.WHITESMOKE.rgb;
@@ -78,9 +85,6 @@ public class SceneModel {
 	private int _borderY;
 	private int _borderWidth;
 	private int _borderHeight;
-
-	private MethodUserCodeModel _preloadUserCode;
-	private MethodUserCodeModel _createUserCode;
 
 	public SceneModel() {
 		_displayList = new DisplayListModel();
@@ -98,17 +102,61 @@ public class SceneModel {
 		_borderWidth = 800;
 		_borderHeight = 600;
 
-		_preloadUserCode = new MethodUserCodeModel("preload");
-		_createUserCode = new MethodUserCodeModel("create");
+		_autoLoadAssets = true;
+		_generateMethodEvents = false;
+		_onlyGenerateMethods = false;
 
+		_preloadMethodName = "preload";
+		_createMethodName = "create";
+		_superClassName = "Phaser.Scene";
+	}
+	
+	public boolean isOnlyGenerateMethods() {
+		return _onlyGenerateMethods;
+	}
+	
+	public void setOnlyGenerateMethods(boolean onlyGenerateMethods) {
+		_onlyGenerateMethods = onlyGenerateMethods;
 	}
 
-	public MethodUserCodeModel getPreloadUserCode() {
-		return _preloadUserCode;
+	public String getSuperClassName() {
+		return _superClassName;
 	}
 
-	public MethodUserCodeModel getCreateUserCode() {
-		return _createUserCode;
+	public void setSuperClassName(String superClassName) {
+		_superClassName = superClassName;
+	}
+
+	public String getCreateMethodName() {
+		return _createMethodName;
+	}
+
+	public void setCreateMethodName(String createMethodName) {
+		_createMethodName = createMethodName;
+	}
+
+	public String getPreloadMethodName() {
+		return _preloadMethodName;
+	}
+
+	public void setPreloadMethodName(String preloadMethodName) {
+		_preloadMethodName = preloadMethodName;
+	}
+
+	public boolean isGenerateMethodEvents() {
+		return _generateMethodEvents;
+	}
+
+	public void setGenerateMethodEvents(boolean generateMethodEvents) {
+		_generateMethodEvents = generateMethodEvents;
+	}
+
+	public boolean isAutoLoadAssets() {
+		return _autoLoadAssets;
+	}
+
+	public void setAutoLoadAssets(boolean autoLoadAssets) {
+		_autoLoadAssets = autoLoadAssets;
 	}
 
 	public int getBorderY() {
@@ -319,10 +367,12 @@ public class SceneModel {
 		}
 
 		{
-			var userCodeData = new JSONObject();
-			_preloadUserCode.write(userCodeData);
-			_createUserCode.write(userCodeData);
-			data.put("userCode", userCodeData);
+			data.put("autoLoadAssets", _autoLoadAssets, true);
+			data.put("generateMethodEvents", _generateMethodEvents, false);
+			data.put("onlyGenerateMethods", _onlyGenerateMethods, false);
+			data.put("superClassName", _superClassName, "Phaser.Scene");
+			data.put("preloadMethodName", _preloadMethodName, "preload");
+			data.put("createMethodName", _createMethodName, "create");
 		}
 	}
 
@@ -346,11 +396,12 @@ public class SceneModel {
 		}
 
 		{
-			var userCodeData = data.optJSONObject("userCode");
-			if (userCodeData != null) {
-				_preloadUserCode.read(userCodeData);
-				_createUserCode.read(userCodeData);
-			}
+			_autoLoadAssets = data.optBoolean("autoLoadAssets", true);
+			_generateMethodEvents = data.optBoolean("generateMethodEvents", false);
+			_onlyGenerateMethods = data.optBoolean("onlyGenerateMethods", false);
+			_superClassName = data.optString("superClassName", "Phaser.Scene");
+			_preloadMethodName = data.optString("preloadMethodName", "preload");
+			_createMethodName = data.optString("createMethodName", "create");
 		}
 	}
 

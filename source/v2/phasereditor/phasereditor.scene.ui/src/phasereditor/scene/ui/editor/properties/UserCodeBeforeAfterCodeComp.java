@@ -53,9 +53,9 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 	 */
 	public UserCodeBeforeAfterCodeComp(Composite parent, int style, String methodName) {
 		super(parent, style);
-		
+
 		setBackgroundMode(SWT.INHERIT_FORCE);
-		
+
 		setLayout(new GridLayout(1, true));
 
 		Label lblMethodName = new Label(this, SWT.NONE);

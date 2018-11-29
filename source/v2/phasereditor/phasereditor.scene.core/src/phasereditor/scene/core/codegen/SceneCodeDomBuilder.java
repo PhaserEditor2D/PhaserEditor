@@ -54,6 +54,7 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
+import phasereditor.scene.core.codedom.MemberDeclDom;
 import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
 import phasereditor.scene.core.codedom.RawCode;
@@ -86,27 +87,39 @@ public class SceneCodeDomBuilder {
 
 		_finder.build();
 
-		var unit = new UnitDom();
+		var methods = new ArrayList<MemberDeclDom>();
 
-		var clsName = _file.getFullPath().removeFileExtension().lastSegment();
-
-		var clsDom = new ClassDeclDom(clsName);
-		clsDom.setSuperClass("Phaser.Scene");
-
-		var preloadDom = buildPreloadMethod(model);
+		if (model.isAutoLoadAssets()) {
+			var preloadDom = buildPreloadMethod(model);
+			methods.add(preloadDom);
+		}
 
 		var createDom = buildCreateMethod(model);
+		methods.add(createDom);
 
-		clsDom.getMembers().add(preloadDom);
-		clsDom.getMembers().add(createDom);
+		var unit = new UnitDom();
 
-		unit.getElements().add(clsDom);
+		if (model.isOnlyGenerateMethods()) {
+
+			unit.getElements().addAll(methods);
+
+		} else {
+
+			var clsName = _file.getFullPath().removeFileExtension().lastSegment();
+
+			var clsDom = new ClassDeclDom(clsName);
+
+			clsDom.setSuperClass(model.getSuperClassName());
+			clsDom.getMembers().addAll(methods);
+
+			unit.getElements().add(clsDom);
+		}
 
 		return unit;
 	}
 
 	private MethodDeclDom buildCreateMethod(SceneModel sceneModel) {
-		var methodDecl = new MethodDeclDom("create");
+		var methodDecl = new MethodDeclDom(sceneModel.getCreateMethodName());
 
 		var fieldModels = new ArrayList<ObjectModel>();
 
@@ -176,9 +189,6 @@ public class SceneCodeDomBuilder {
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(varname(model));
 			}
-
-			methodDecl.getInstructions().add(new RawCode(""));
-
 		}
 
 		buildGroups(sceneModel, methodDecl);
@@ -194,20 +204,9 @@ public class SceneCodeDomBuilder {
 			methodDecl.getInstructions().add(instr);
 		}
 
-		{
-			var userCode = sceneModel.getCreateUserCode();
-
-			var before = userCode.getBeforeCode();
-
-			if (before.length() > 0) {
-				methodDecl.getInstructions().add(0, new RawCode(before));
-			}
-
-			var after = userCode.getAfterCode();
-
-			if (after.length() > 0) {
-				methodDecl.getInstructions().add(new RawCode(after));
-			}
+		if (sceneModel.isGenerateMethodEvents()) {
+			methodDecl.getInstructions().add(0, new RawCode("\nthis.events.emit('-precreate');\n "));
+			methodDecl.getInstructions().add(new RawCode("\nthis.events.emit('-postcreate');\n "));
 		}
 
 		return methodDecl;
@@ -500,7 +499,7 @@ public class SceneCodeDomBuilder {
 	}
 
 	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model) {
-		
+
 		var methodName = model instanceof DynamicBitmapTextModel ? "dynamicBitmapText" : "bitmapText";
 
 		var call = new MethodCallDom(methodName, "this.add");
@@ -517,7 +516,7 @@ public class SceneCodeDomBuilder {
 		}
 
 		model.updateSizeFromBitmapFont(_finder);
-		
+
 		call.argLiteral(TextualComponent.get_text(model));
 		call.arg(BitmapTextComponent.get_fontSize(model));
 		call.arg(BitmapTextComponent.get_align(model));
@@ -673,7 +672,7 @@ public class SceneCodeDomBuilder {
 
 	private MethodDeclDom buildPreloadMethod(SceneModel model) {
 
-		var preloadDom = new MethodDeclDom("preload");
+		var preloadDom = new MethodDeclDom(model.getPreloadMethodName());
 
 		Map<String, String[]> packSectionList = new HashMap<>();
 
@@ -700,20 +699,9 @@ public class SceneCodeDomBuilder {
 
 		}
 
-		{
-			var userCode = model.getPreloadUserCode();
-
-			var before = userCode.getBeforeCode();
-
-			if (before.length() > 0) {
-				preloadDom.getInstructions().add(0, new RawCode(before));
-			}
-
-			var after = userCode.getAfterCode();
-
-			if (after.length() > 0) {
-				preloadDom.getInstructions().add(new RawCode(after));
-			}
+		if (model.isGenerateMethodEvents()) {
+			preloadDom.getInstructions().add(0, new RawCode("\nthis.events.emit('-prepreload');\n "));
+			preloadDom.getInstructions().add(new RawCode("\nthis.events.emit('-postpreload');\n "));
 		}
 
 		return preloadDom;

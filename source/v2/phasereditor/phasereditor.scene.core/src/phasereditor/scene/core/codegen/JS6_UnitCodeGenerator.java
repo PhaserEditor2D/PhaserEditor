@@ -45,11 +45,18 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 	@Override
 	protected void internalGenerate() {
 
+		sectionStart("/* START OF COMPILED CODE */", "\n// You can write more code here\n\n");
+		
+		line();
+		line();
+		
 		for (var elem : _unit.getElements()) {
 
 			generateUnitElement(elem);
 
 		}
+		
+		section("/* END OF COMPILED CODE */", "\n\n// You can write more code here\n");
 
 	}
 
@@ -59,6 +66,13 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 
 			generateClass((ClassDeclDom) elem);
 
+		} else if (elem instanceof MethodDeclDom) {
+
+			line();
+			
+			generateMethodDecl((MethodDeclDom) elem, true);
+
+			line();
 		}
 	}
 
@@ -84,20 +98,21 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 		closeIndent("}");
 
 		line();
-
-		section("/* END OF COMPILED CODE */", "\n\n// You can write more code here\n");
 	}
 
 	private void generateMemberDecl(MemberDeclDom memberDecl) {
 
 		if (memberDecl instanceof MethodDeclDom) {
-			generateMethodDecl((MethodDeclDom) memberDecl);
+			generateMethodDecl((MethodDeclDom) memberDecl, false);
 		}
 
 	}
 
-	private void generateMethodDecl(MethodDeclDom methodDecl) {
-
+	private void generateMethodDecl(MethodDeclDom methodDecl, boolean function) {
+		if (function) {
+			append("function ");
+		}
+		
 		append(methodDecl.getName() + "() ");
 
 		line("{");

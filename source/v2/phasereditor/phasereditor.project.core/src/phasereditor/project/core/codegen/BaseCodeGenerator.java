@@ -52,13 +52,27 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	public int length() {
 		return _sb.length();
 	}
+	public String getSectionContent(String closeTag, String defaultContent) {
+		var j = _replace.indexOf(closeTag);
+		
+		var size = _replace.length();
+		
+		if (size > 0 && j != -1) {
+			String section = _replace.substring(0, j);
+			return section;
+		}
 
+		return defaultContent;
+	}
+	
 	public String getSectionContent(String openTag, String closeTag, String defaultContent) {
 		int i = _replace.indexOf(openTag);
 		int j = _replace.indexOf(closeTag);
+		
 		if (j == -1) {
 			j = _replace.length();
 		}
+		
 		if (i != -1 && j != -1) {
 			String section = _replace.substring(i + openTag.length(), j);
 			return section;
@@ -78,6 +92,11 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		}
 	}
 
+	public void sectionStart(String endTag, String defaultContent) {
+		append(getSectionContent(endTag, defaultContent));
+		append(endTag);
+	}
+	
 	public void section(String openTag, String defaultContent) {
 		append(openTag);
 		append(getSectionContent(openTag, "papa(--o^^o--)pig", defaultContent));
@@ -85,13 +104,6 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 
 	public void section(String openTag, String closeTag, String defaultContent) {
 		String content = getSectionContent(openTag, closeTag, defaultContent);
-
-		if (openTag.equals("/* --- pre-init-begin --- */") || openTag.equals("/* --- post-init-begin --- */")) {
-			String content2 = content.trim();
-			if (content2.length() == 0 || (content2.startsWith("//") && !content2.contains("\n"))) {
-				return;
-			}
-		}
 
 		append(openTag);
 		append(content);

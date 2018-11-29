@@ -78,9 +78,9 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		if (obj instanceof SceneModel) {
 			list.add(new SnappingSection(this));
-			list.add(new CompilerSection(this));
 			list.add(new DisplaySection(this));
 			list.add(new AssetsSection(this));
+			list.add(new CompilerSection(this));
 		}
 
 		if (VariableComponent.is(obj)) {
