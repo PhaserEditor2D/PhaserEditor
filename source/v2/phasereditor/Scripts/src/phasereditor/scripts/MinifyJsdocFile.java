@@ -76,6 +76,7 @@ public class MinifyJsdocFile {
 				JSONObject meta = entry.optJSONObject("meta");
 				if (meta != null) {
 					meta.remove("code");
+					meta.remove("vars");
 					entry.put("meta", meta);
 				}
 

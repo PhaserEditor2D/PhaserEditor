@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -45,6 +49,17 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		new Job("Building Phaser documentation model.") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				
+				InspectCore.getPhaserHelp();
+				
+				return Status.OK_STATUS;
+			}
+		}.schedule();
 
 		InspectCore.getPreferenceStore().setDefault(InspectCore.PREF_BUILTIN_PHASER_VERSION, true);
 		InspectCore.getPreferenceStore().setDefault(InspectCore.PREF_USER_PHASER_VERSION_PATH,

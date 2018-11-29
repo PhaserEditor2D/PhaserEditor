@@ -119,7 +119,9 @@ public class PhaserJsdocModel {
 		}
 
 		try (InputStream input = Files.newInputStream(docsJsonFile)) {
+			var t = currentTimeMillis();
 			JSONObject jsonDoc = new JSONObject(new JSONTokener(input));
+			out.println("Read phaser.json file in " + (currentTimeMillis() - t) + "ms");
 			JSONArray jsdocElements = jsonDoc.getJSONArray("docs");
 
 			// printElementKinds(jsdocElements);
