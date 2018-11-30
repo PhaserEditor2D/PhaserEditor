@@ -19,41 +19,25 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.ui.properties;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
-import phasereditor.ui.properties.FormPropertyPage;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseDesignSection extends ScenePropertySection {
+public abstract class TextToFloatListener extends TextListener {
 
-	public BaseDesignSection(String name, FormPropertyPage page) {
-		super(name, page);
+	public TextToFloatListener(Text widget) {
+		super(widget);
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	protected void accept(String value) {
+		accept(Float.parseFloat(value));
 	}
-	
-	@Override
-	protected void wrapOperation(Runnable run) {
-		var editor = getEditor();
 
-		var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
+	protected abstract void accept(float value);
 
-		run.run();
-
-		var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
-	}
-	
 }

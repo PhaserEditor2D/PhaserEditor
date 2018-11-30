@@ -19,41 +19,38 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.ui.properties;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
-import phasereditor.ui.properties.FormPropertyPage;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Button;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseDesignSection extends ScenePropertySection {
+public abstract class CheckListener implements SelectionListener {
 
-	public BaseDesignSection(String name, FormPropertyPage page) {
-		super(name, page);
+	private Button _button;
+	
+	
+	
+	public CheckListener(Button button) {
+		super();
+		_button = button;
+		_button.addSelectionListener(this);
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	public void widgetSelected(SelectionEvent e) {
+		accept(_button.getSelection());
 	}
-	
+
+	protected abstract void accept(boolean value);
+
 	@Override
-	protected void wrapOperation(Runnable run) {
-		var editor = getEditor();
-
-		var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		run.run();
-
-		var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
+	public void widgetDefaultSelected(SelectionEvent e) {
+		//
 	}
-	
+
 }

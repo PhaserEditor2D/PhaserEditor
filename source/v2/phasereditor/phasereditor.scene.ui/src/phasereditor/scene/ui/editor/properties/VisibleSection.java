@@ -47,7 +47,7 @@ public class VisibleSection extends ScenePropertySection {
 		return obj instanceof VisibleComponent;
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "unused", "synthetic-access" })
 	@Override
 	public Control createContent(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NONE);
@@ -58,15 +58,19 @@ public class VisibleSection extends ScenePropertySection {
 		_visibleBtn.setText("Visible");
 		_visibleBtn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 		_visibleBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.visible"));
-		listen(_visibleBtn, value -> {
+		new SceneCheckListener(_visibleBtn) {
 
-			getModels().forEach(model -> VisibleComponent.set_visible(model, value));
+			
+			@Override
+			protected void accept2(boolean value) {
+				getModels().forEach(model -> VisibleComponent.set_visible(model, value));
 
-			_visibleBtn.setGrayed(false);
-			_visibleBtn.setSelection(value);
+				_visibleBtn.setGrayed(false);
+				_visibleBtn.setSelection(value);
 
-			getEditor().setDirty(true);
-		});
+				getEditor().setDirty(true);
+			}
+		};
 
 		return comp;
 	}

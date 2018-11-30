@@ -22,12 +22,8 @@
 package phasereditor.scene.ui.editor.properties;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
@@ -41,8 +37,10 @@ import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
+import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
+import phasereditor.ui.properties.ScaleListener;
 
 /**
  * @author arian
@@ -76,141 +74,85 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		return getScene().getModel();
 	}
 
-	@SuppressWarnings({ "static-method" })
-	protected void listen(SourceViewer viewer, Consumer<String> listener) {
-		var control = viewer.getControl();
+	protected abstract class SceneText extends phasereditor.ui.properties.TextListener {
 
-		var oldListener = control.getData("-prop-listener");
-		if (oldListener != null) {
-			control.removeFocusListener((FocusListener) oldListener);
+		protected boolean dirtyModels;
+		protected Function<ObjectModel, Boolean> filterDirtyModels;
+
+		public SceneText(Text widget) {
+			super(widget);
+
+			dirtyModels = false;
+			filterDirtyModels = null;
 		}
 
-		var controlListener = new FocusListener() {
-			private String _initial;
+		@Override
+		protected void accept(String value) {
+			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+		}
 
-			@Override
-			public void focusLost(FocusEvent e) {
-				fireChanged();
-			}
-
-			private void fireChanged() {
-				var value = viewer.getDocument().get();
-
-				if (!value.equals(_initial)) {
-					listener.accept(value);
-					_initial = value;
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				_initial = viewer.getDocument().get();
-			}
-		};
-
-		control.addFocusListener(controlListener);
-		control.setData("-prop-listener", controlListener);
+		protected abstract void accept2(String value);
 
 	}
 
-	@Override
-	protected void listenFloat(Text text, Consumer<Float> listener) {
-		listenFloat(text, listener, false);
+	protected abstract class SceneTextToFloat extends phasereditor.ui.properties.TextToFloatListener {
+
+		protected boolean dirtyModels;
+		protected Function<ObjectModel, Boolean> filterDirtyModels;
+
+		public SceneTextToFloat(Text widget) {
+			super(widget);
+
+			dirtyModels = false;
+			filterDirtyModels = null;
+		}
+
+		@Override
+		protected void accept(float value) {
+			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+		}
+
+		protected abstract void accept2(float value);
+
 	}
 
-	protected void listenFloat(Text text, Consumer<Float> listener, boolean dirtyModels) {
-		listenFloat(text, listener, dirtyModels, null);
+	protected abstract class SceneTextToInt extends phasereditor.ui.properties.TextToIntListener {
+
+		protected boolean dirtyModels;
+		protected Function<ObjectModel, Boolean> filterDirtyModels;
+
+		public SceneTextToInt(Text widget) {
+			super(widget);
+
+			dirtyModels = false;
+			filterDirtyModels = null;
+		}
+
+		@Override
+		protected void accept(int value) {
+			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+		}
+
+		protected abstract void accept2(int value);
+
 	}
 
-	protected void listenFloat(Text text, Consumer<Float> listener, boolean dirtyModels,
+	private static void dirtyModels(ScenePropertySection section, List<ObjectModel> models, boolean dirtyModels,
 			Function<ObjectModel, Boolean> filterDirtyModels) {
 
-		super.listenFloat(text, value -> {
-			var models = getModels();
-			
-			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			listener.accept(value);
-
-			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData,
-					"Change object property", dirtyModels, filterDirtyModels));
-
-			dirtyModels(models, dirtyModels, filterDirtyModels);
-
-			getScene().redraw();
-
-		});
-	}
-
-	private void dirtyModels(List<ObjectModel> models, boolean dirtyModels,
-			Function<ObjectModel, Boolean> filterDirtyModels) {
-
-		if (dirtyModels) {
+		if (dirtyModels || filterDirtyModels != null) {
 			models.forEach(model -> {
 				if (filterDirtyModels == null || filterDirtyModels.apply(model).booleanValue()) {
 					GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 				}
 			});
 
-			var editor = getEditor();
+			var editor = section.getEditor();
 
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
 		}
-	}
-
-	@Override
-	protected void listenInt(Text text, Consumer<Integer> listener) {
-		listenInt(text, listener, false);
-	}
-
-	protected void listenInt(Text text, Consumer<Integer> listener, boolean dirtyModels) {
-		super.listenInt(text, value -> {
-			
-			var models = getModels();
-			
-			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			listener.accept(value);
-
-			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", dirtyModels));
-
-			dirtyModels(models, dirtyModels, null);
-
-			getScene().redraw();
-		});
-	}
-
-	@Override
-	protected void listen(Text text, Consumer<String> listener) {
-		listen(text, listener, false);
-	}
-
-	protected void listen(Text text, Consumer<String> listener, boolean dirtyModels) {
-		super.listen(text, value -> {
-			
-			var models = getModels();
-
-			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			listener.accept(value);
-
-			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", dirtyModels));
-
-			dirtyModels(models, dirtyModels, null);
-
-			getScene().redraw();
-
-		});
 	}
 
 	protected void wrapOperation(Runnable run) {
@@ -221,11 +163,10 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		wrapOperation(run, dirtyModels, null);
 	}
 
-	protected void wrapOperation(Runnable run, boolean dirtyModels,
-			Function<ObjectModel, Boolean> filterDirtyModels) {
-		
+	protected void wrapOperation(Runnable run, boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
+
 		var models = getModels();
-		
+
 		var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 		run.run();
@@ -235,45 +176,43 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property",
 				dirtyModels, filterDirtyModels));
 
-		dirtyModels(models, dirtyModels, null);
+		dirtyModels(this, models, dirtyModels, filterDirtyModels);
 
 		getScene().redraw();
 
 	}
 
-	@Override
-	protected void listen(Button check, Consumer<Boolean> listener) {
-		super.listen(check, value -> {
-			var models = getModels();
-			
-			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
+	protected abstract class SceneCheckListener extends CheckListener {
+		protected boolean dirtyModels;
+		protected Function<ObjectModel, Boolean> filterDirtyModels;
 
-			listener.accept(value);
+		public SceneCheckListener(Button button) {
+			super(button);
+		}
 
-			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
+		@Override
+		protected void accept(boolean value) {
+			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+		}
 
-			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+		protected abstract void accept2(boolean value);
 
-			getScene().redraw();
-		});
 	}
 
-	protected void listenFloat(Scale scale, Consumer<Float> listener, List<ObjectModel> models) {
-		super.listenFloat(scale, value -> {
+	protected abstract class SceneScaleListener extends ScaleListener {
+		protected boolean dirtyModels;
+		protected Function<ObjectModel, Boolean> filterDirtyModels;
 
-			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
+		public SceneScaleListener(Scale scale) {
+			super(scale);
+		}
 
-			listener.accept(value);
+		@Override
+		protected void accept(float value) {
+			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+		}
 
-			var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
-
-			getEditor().executeOperation(
-					new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
-
-			getScene().redraw();
-
-		});
+		protected abstract void accept2(float value);
 	}
 
 	@Override

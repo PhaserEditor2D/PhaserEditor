@@ -217,7 +217,7 @@ public class TransformSection extends ScenePropertySection {
 
 	}
 
-	@SuppressWarnings({ "unused", "boxing" })
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -241,19 +241,30 @@ public class TransformSection extends ScenePropertySection {
 
 			_xText = new Text(comp, SWT.BORDER);
 			_xText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_xText, value -> {
-				getModels().forEach(model -> TransformComponent.set_x(model, value));
-				getEditor().setDirty(true);
-			});
+
+			new SceneTextToFloat(_xText) {
+
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TransformComponent.set_x(model, value));
+					getEditor().setDirty(true);
+				}
+			};
 
 			label(comp, "Y", "Phaser.GameObjects.Sprite.y");
 
 			_yText = new Text(comp, SWT.BORDER);
 			_yText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_yText, value -> {
-				getModels().forEach(model -> TransformComponent.set_y(model, value));
-				getEditor().setDirty(true);
-			});
+
+			new SceneTextToFloat(_yText) {
+
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TransformComponent.set_y(model, value));
+					getEditor().setDirty(true);
+
+				}
+			};
 
 		}
 
@@ -270,19 +281,29 @@ public class TransformSection extends ScenePropertySection {
 
 			_scaleXText = new Text(comp, SWT.BORDER);
 			_scaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_scaleXText, value -> {
-				getModels().forEach(model -> TransformComponent.set_scaleX(model, value));
-				getEditor().setDirty(true);
-			});
+			new SceneTextToFloat(_scaleXText) {
+
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TransformComponent.set_scaleX(model, value));
+					getEditor().setDirty(true);
+				}
+
+			};
 
 			label(comp, "Y", "Phaser.GameObjects.Sprite.scaleY");
 
 			_scaleYText = new Text(comp, SWT.BORDER);
 			_scaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_scaleYText, value -> {
-				getModels().forEach(model -> TransformComponent.set_scaleY(model, value));
-				getEditor().setDirty(true);
-			});
+			new SceneTextToFloat(_scaleYText) {
+
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TransformComponent.set_scaleY(model, value));
+					getEditor().setDirty(true);
+				}
+
+			};
 		}
 
 		{
@@ -298,10 +319,14 @@ public class TransformSection extends ScenePropertySection {
 
 			_angleText = new Text(comp, SWT.BORDER);
 			_angleText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-			listenFloat(_angleText, value -> {
-				getModels().forEach(model -> TransformComponent.set_angle(model, value));
-				getEditor().setDirty(true);
-			});
+			new SceneTextToFloat(_angleText) {
+
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TransformComponent.set_angle(model, value));
+					getEditor().setDirty(true);
+				}
+			};
 
 			new Label(comp, SWT.NONE);
 			new Label(comp, SWT.NONE);

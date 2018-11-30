@@ -96,7 +96,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -131,18 +131,20 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			_fontSizeText = new Text(comp, SWT.BORDER);
 			_fontSizeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenInt(_fontSizeText, value -> {
+			new SceneTextToInt(_fontSizeText) {
+				{
+					dirtyModels = true;
+				}
 
-				wrapOperation(() -> {
+				@Override
+				protected void accept2(int value) {
 					getModels().stream().forEach(model -> {
 						BitmapTextComponent.set_fontSize(model, value);
 					});
 
-				}, true);
-
-				getEditor().setDirty(true);
-
-			});
+					getEditor().setDirty(true);
+				}
+			};
 		}
 
 		{
@@ -150,17 +152,21 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			_letterSpacingText = new Text(comp, SWT.BORDER);
 			_letterSpacingText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_letterSpacingText, value -> {
+			new SceneTextToFloat(_letterSpacingText) {
+				{
+					dirtyModels = true;
+				}
 
-				wrapOperation(() -> {
+				@Override
+				protected void accept2(float value) {
 					getModels().stream().forEach(model -> {
 						BitmapTextComponent.set_letterSpacing(model, value);
 					});
-				},  true);
 
-				getEditor().setDirty(true);
+					getEditor().setDirty(true);
 
-			});
+				}
+			};
 		}
 
 		return comp;
@@ -224,7 +230,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 				getEditor().setDirty(true);
 
-			},  true);
+			}, true);
 
 		}
 	}

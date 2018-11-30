@@ -230,6 +230,9 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 
 		_imageFileText.setText(flatValues_to_String(models.stream().map(model -> {
 			var file = getEditor().findFile(model);
+			if (file == null) {
+				return null;
+			}
 			return file.getFullPath().toPortableString();
 		})));
 		_imageFileSizeText.setText(flatValues_to_String(models.stream().map(model -> {

@@ -36,7 +36,9 @@ import org.eclipse.ui.ide.IDE;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
@@ -60,7 +62,7 @@ public class CompilerSection extends BaseDesignSection {
 		return obj instanceof SceneModel;
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -76,11 +78,15 @@ public class CompilerSection extends BaseDesignSection {
 					"Generate a preload method that loads all the assets used in this scene."
 
 			);
-			listen(_autoLoadAssetsButton, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setAutoLoadAssets(value);
-				});
-			});
+			new CheckListener(_autoLoadAssetsButton) {
+
+				@Override
+				protected void accept(boolean value) {
+					wrapOperation(() -> {
+						getScene().getModel().setAutoLoadAssets(value);
+					});
+				}
+			};
 		}
 
 		{
@@ -92,11 +98,15 @@ public class CompilerSection extends BaseDesignSection {
 					"Insert events at the start and the end of the methods."
 
 			);
-			listen(_generateEventsButton, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setGenerateMethodEvents(value);
-				});
-			});
+			new CheckListener(_generateEventsButton) {
+
+				@Override
+				protected void accept(boolean value) {
+					wrapOperation(() -> {
+						getScene().getModel().setGenerateMethodEvents(value);
+					});
+				}
+			};
 		}
 
 		{
@@ -104,44 +114,61 @@ public class CompilerSection extends BaseDesignSection {
 			_onlyGenerateMethodsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 			_onlyGenerateMethodsButton.setText("Only Generate Methods");
 			_onlyGenerateMethodsButton.setToolTipText("Generate plain methods, without a containing class.");
-			listen(_onlyGenerateMethodsButton, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setOnlyGenerateMethods(value);
-				});
-			});
+			new CheckListener(_onlyGenerateMethodsButton) {
+
+				@Override
+				protected void accept(boolean value) {
+					wrapOperation(() -> {
+						getScene().getModel().setOnlyGenerateMethods(value);
+					});
+				}
+			};
 		}
 
 		{
 			label(comp, "Super Class", "*The name of the super class.");
 			_superClassNameText = new Text(comp, SWT.BORDER);
 			_superClassNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listen(_superClassNameText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setSuperClassName(value);
-				});
-			});
+			new TextListener(_superClassNameText) {
+
+				@Override
+				protected void accept(String value) {
+					wrapOperation(() -> {
+						getScene().getModel().setSuperClassName(value);
+					});
+				}
+			};
 		}
 
 		{
 			label(comp, "Preload Method", "*The name of the preload method.");
 			_preloadNameText = new Text(comp, SWT.BORDER);
 			_preloadNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listen(_preloadNameText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setPreloadMethodName(value);
-				});
-			});
+			new TextListener(_preloadNameText) {
+
+				@Override
+				protected void accept(String value) {
+					wrapOperation(() -> {
+						getScene().getModel().setPreloadMethodName(value);
+					});
+				}
+			};
 		}
 
 		{
 			label(comp, "Create Method", "*The name of the create method.");
 			_createNameText = new Text(comp, SWT.BORDER);
 			_createNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listen(_createNameText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setCreateMethodName(value);
-				});
-			});
+			new TextListener(_createNameText) {
+
+				@Override
+				protected void accept(String value) {
+					wrapOperation(() -> {
+						getScene().getModel().setCreateMethodName(value);
+					});
+				}
+
+			};
 		}
 
 		return comp;

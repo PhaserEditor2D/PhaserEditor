@@ -90,7 +90,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		return obj instanceof GameObjectEditorComponent;
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -117,12 +117,17 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			_transpScale.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			_transpScale.setMinimum(0);
 			_transpScale.setMinimum(100);
-			listenFloat(_transpScale, value -> {
-				getModels().stream()
-						.forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
+			new SceneScaleListener(_transpScale) {
 
-				getEditor().setDirty(true);
-			}, getModels());
+				@Override
+				protected void accept2(float value) {
+					getModels().stream()
+							.forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
+
+					getEditor().setDirty(true);
+				}
+			};
+
 		}
 
 		// TODO: No containers for now!

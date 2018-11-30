@@ -24,27 +24,15 @@ package phasereditor.ui.properties;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.ui.IEditorSharedImages;
@@ -149,167 +137,6 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	protected static boolean flatValues_to_boolean(Stream<Boolean> values) {
 		Boolean value = flatValues_to_Boolean(values);
 		return value != null && value.booleanValue();
-	}
-
-	@SuppressWarnings({ "boxing", "static-method" })
-	protected void listen(Button check, Consumer<Boolean> listener) {
-
-		var oldListener = check.getData("-prop-listener");
-		if (oldListener != null) {
-			check.removeSelectionListener((SelectionListener) oldListener);
-		}
-
-		var newListener = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				listener.accept(check.getSelection());
-			}
-		};
-
-		check.addSelectionListener(newListener);
-
-		check.setData("-prop-listener", newListener);
-	}
-
-	@SuppressWarnings("static-method")
-	protected void listen(Text text, Consumer<String> listener) {
-
-		class TextListener implements FocusListener, KeyListener {
-			private String _initial;
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				fireChanged();
-			}
-
-			private void fireChanged() {
-				var value = text.getText();
-
-				if (!value.equals(_initial)) {
-					listener.accept(value);
-					_initial = value;
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				_initial = text.getText();
-				e.display.asyncExec(text::selectAll);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				//
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.character == SWT.LF || e.character == SWT.CR || e.character == 13) {
-					fireChanged();
-				}
-			}
-		}
-
-		var oldListener = text.getData("-prop-listener");
-		if (oldListener != null) {
-			text.removeFocusListener((FocusListener) oldListener);
-			text.removeKeyListener((KeyListener) oldListener);
-		}
-
-		var textListener = new TextListener();
-
-		text.addFocusListener(textListener);
-		text.addKeyListener(textListener);
-
-		text.setData("-prop-listener", textListener);
-	}
-
-	@SuppressWarnings({ "boxing" })
-	protected void listenFloat(Text text, Consumer<Float> listener) {
-		listen(text, str -> {
-
-			try {
-				float value = Float.parseFloat(str);
-
-				listener.accept(value);
-			} catch (NumberFormatException e) {
-				// noting
-			}
-
-		});
-	}
-
-	@SuppressWarnings({ "boxing" })
-	protected void listenInt(Text text, Consumer<Integer> listener) {
-		listen(text, str -> {
-
-			try {
-				var value = Integer.parseInt(str);
-
-				listener.accept(value);
-			} catch (NumberFormatException e) {
-				// noting
-			}
-
-		});
-	}
-
-	@SuppressWarnings("boxing")
-	class ScaleListener extends MouseAdapter implements SelectionListener {
-
-		private Consumer<Float> _listener;
-		private int _value;
-		private int _initial;
-
-		public ScaleListener(Consumer<Float> listener) {
-			super();
-			_listener = listener;
-			_initial = -1;
-		}
-
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			_value = ((Scale) e.widget).getSelection();
-		}
-
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-			_initial = ((Scale) e.widget).getSelection();
-		}
-
-		@Override
-		public void mouseDown(MouseEvent e) {
-			//
-		}
-
-		@Override
-		public void mouseUp(MouseEvent e) {
-			applyValue();
-		}
-
-		private void applyValue() {
-			if (_value != _initial) {
-				_initial = _value;
-				_listener.accept((float) _value / 100);
-			}
-		}
-
-	}
-
-	protected void listenFloat(Scale scale, Consumer<Float> listener) {
-		@SuppressWarnings("unchecked")
-		var oldListener = (ScaleListener) scale.getData("-prop-listener");
-
-		if (oldListener != null) {
-			scale.removeSelectionListener(oldListener);
-			scale.removeMouseListener(oldListener);
-		}
-
-		var scaleListener = new ScaleListener(listener);
-
-		scale.addSelectionListener(scaleListener);
-		scale.addMouseListener(scaleListener);
-		scale.setData("-prop-listener", scaleListener);
 	}
 
 	protected static <T> void setValues_to_Text(Text text, List<T> models, Function<T, Object> get) {

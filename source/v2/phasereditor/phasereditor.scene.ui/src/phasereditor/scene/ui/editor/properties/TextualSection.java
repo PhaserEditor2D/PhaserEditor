@@ -48,6 +48,7 @@ public class TextualSection extends ScenePropertySection {
 		return obj instanceof TextualComponent;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -59,15 +60,17 @@ public class TextualSection extends ScenePropertySection {
 		var gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 100;
 		_textText.setLayoutData(gd);
-		listen(_textText, value -> {
+		new SceneText(_textText) {
 
-			getModels().stream().forEach(model -> {
-				TextualComponent.set_text(model, value);
-			});
-			
-			getEditor().setDirty(true);
+			@Override
+			protected void accept2(String value) {
+				getModels().stream().forEach(model -> {
+					TextualComponent.set_text(model, value);
+				});
 
-		}, true);
+				getEditor().setDirty(true);
+			}
+		};
 
 		return comp;
 	}
@@ -76,8 +79,7 @@ public class TextualSection extends ScenePropertySection {
 	public void update_UI_from_Model() {
 		var models = getModels();
 
-		_textText.setText(
-				flatValues_to_String(models.stream().map(model -> TextualComponent.get_text(model))));
+		_textText.setText(flatValues_to_String(models.stream().map(model -> TextualComponent.get_text(model))));
 	}
 
 }

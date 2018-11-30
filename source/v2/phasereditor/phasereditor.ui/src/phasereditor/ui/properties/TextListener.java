@@ -19,41 +19,64 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.ui.properties;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
-import phasereditor.ui.properties.FormPropertyPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseDesignSection extends ScenePropertySection {
+public abstract class TextListener implements FocusListener, KeyListener {
 
-	public BaseDesignSection(String name, FormPropertyPage page) {
-		super(name, page);
+	private String _initial;
+	private Text _text;
+
+	public TextListener(Text widget) {
+		_text = widget;
+		
+		widget.addFocusListener(this);
+		widget.addKeyListener(this);
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	public void focusLost(FocusEvent e) {
+		fireChanged();
 	}
-	
+
+	private void fireChanged() {
+		var value = _text.getText();
+
+		if (!value.equals(_initial)) {
+			
+			accept(value);
+			
+			_initial = value;
+		}
+	}
+
 	@Override
-	protected void wrapOperation(Runnable run) {
-		var editor = getEditor();
-
-		var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		run.run();
-
-		var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
+	public void focusGained(FocusEvent e) {
+		_initial = _text.getText();
+		e.display.asyncExec(_text::selectAll);
 	}
-	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		//
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.character == SWT.LF || e.character == SWT.CR || e.character == 13) {
+			fireChanged();
+		}
+	}
+
+	protected abstract void accept(String value);
 }

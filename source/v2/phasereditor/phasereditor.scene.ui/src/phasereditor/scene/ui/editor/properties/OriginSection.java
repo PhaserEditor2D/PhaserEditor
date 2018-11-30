@@ -185,7 +185,7 @@ public class OriginSection extends ScenePropertySection {
 		};
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "boxing", "unused", "synthetic-access" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -206,27 +206,46 @@ public class OriginSection extends ScenePropertySection {
 
 		_originXText = new Text(comp, SWT.BORDER);
 		_originXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		listenFloat(_originXText, value -> {
-			getModels().forEach(model -> {
-				OriginComponent.set_originX(model, value);
-			});
 
-			updateActions_UI_from_Model();
-			getEditor().setDirty(true);
-		}, true, model -> model instanceof DynamicBitmapTextComponent);
+		new SceneTextToFloat(_originXText) {
+			{
+				filterDirtyModels = model -> model instanceof DynamicBitmapTextComponent;
+			}
+
+			@Override
+			protected void accept2(float value) {
+				getModels().forEach(model -> {
+					OriginComponent.set_originX(model, value);
+				});
+
+				updateActions_UI_from_Model();
+				getEditor().setDirty(true);
+
+			}
+
+		};
 
 		label(comp, "Y", "Phaser.GameObjects.Sprite.originY");
 
 		_originYText = new Text(comp, SWT.BORDER);
 		_originYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		listenFloat(_originYText, value -> {
-			getModels().forEach(model -> {
-				OriginComponent.set_originY(model, value);
-			});
+		new SceneTextToFloat(_originYText) {
 
-			updateActions_UI_from_Model();
-			getEditor().setDirty(true);
-		}, true, model -> model instanceof DynamicBitmapTextComponent);
+			{
+				filterDirtyModels = model -> model instanceof DynamicBitmapTextComponent;
+			}
+
+			@Override
+			protected void accept2(float value) {
+				getModels().forEach(model -> {
+					OriginComponent.set_originY(model, value);
+				});
+
+				updateActions_UI_from_Model();
+				getEditor().setDirty(true);
+
+			}
+		};
 
 		return comp;
 	}

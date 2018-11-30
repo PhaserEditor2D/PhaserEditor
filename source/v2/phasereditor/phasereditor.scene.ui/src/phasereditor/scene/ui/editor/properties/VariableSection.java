@@ -54,6 +54,7 @@ public class VariableSection extends ScenePropertySection {
 		return obj instanceof VariableComponent;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -67,14 +68,16 @@ public class VariableSection extends ScenePropertySection {
 
 			_editorNameText = new Text(comp, SWT.BORDER);
 			_editorNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listen(_editorNameText, value -> {
+			new SceneText(_editorNameText) {
 
-				getModels().stream().forEach(model -> VariableComponent.set_variableName(model, value));
+				@Override
+				protected void accept2(String value) {
+					getModels().stream().forEach(model -> VariableComponent.set_variableName(model, value));
 
-				getEditor().setDirty(true);
-				getEditor().refreshOutline();
-
-			});
+					getEditor().setDirty(true);
+					getEditor().refreshOutline();
+				}
+			};
 		}
 
 		return comp;

@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.ui.properties.TextToIntListener;
 
 /**
  * @author arian
@@ -50,7 +51,7 @@ public class DisplaySection extends BaseDesignSection {
 		super("Display", page);
 	}
 
-	@SuppressWarnings({ "unused", "boxing" })
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, SWT.NONE);
@@ -65,21 +66,30 @@ public class DisplaySection extends BaseDesignSection {
 
 			_borderXText = new Text(comp, SWT.BORDER);
 			_borderXText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listenInt(_borderXText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setBorderX(value);
-				});
-			});
+			new TextToIntListener(_borderXText) {
+
+				@Override
+				protected void accept(int value) {
+					wrapOperation(() -> {
+						getScene().getModel().setBorderX(value);
+					});
+				}
+			};
 
 			label(comp, "Y", "*The border Y.");
 
 			_borderYText = new Text(comp, SWT.BORDER);
 			_borderYText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listenInt(_borderYText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setBorderY(value);
-				});
-			});
+			new TextToIntListener(_borderYText) {
+
+				@Override
+				protected void accept(int value) {
+					wrapOperation(() -> {
+						getScene().getModel().setBorderY(value);
+					});
+
+				}
+			};
 
 			// border size
 
@@ -89,21 +99,31 @@ public class DisplaySection extends BaseDesignSection {
 
 			_borderWidthText = new Text(comp, SWT.BORDER);
 			_borderWidthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listenInt(_borderWidthText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setBorderWidth(value);
-				});
-			});
+			new TextToIntListener(_borderWidthText) {
+
+				@Override
+				protected void accept(int value) {
+					wrapOperation(() -> {
+						getScene().getModel().setBorderWidth(value);
+					});
+				}
+			};
 
 			label(comp, "Height", "*The border height.");
 
 			_borderHeightText = new Text(comp, SWT.BORDER);
 			_borderHeightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listenInt(_borderHeightText, value -> {
-				wrapOperation(() -> {
-					getScene().getModel().setBorderHeight(value);
-				});
-			});
+
+			new TextToIntListener(_borderHeightText) {
+
+				@Override
+				protected void accept(int value) {
+					wrapOperation(() -> {
+						getScene().getModel().setBorderHeight(value);
+					});
+				}
+			};
+
 		}
 
 		{

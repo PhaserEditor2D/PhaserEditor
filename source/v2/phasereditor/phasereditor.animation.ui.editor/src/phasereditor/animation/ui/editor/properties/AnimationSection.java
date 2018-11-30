@@ -33,6 +33,10 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.ui.properties.CheckListener;
+import phasereditor.ui.properties.TextListener;
+import phasereditor.ui.properties.TextToFloatListener;
+import phasereditor.ui.properties.TextToIntListener;
 
 /**
  * @author arian
@@ -61,7 +65,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		return obj instanceof AnimationModel;
 	}
 
-	@SuppressWarnings({ "unused", "boxing" })
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -77,20 +81,24 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 			_keyText = new Text(comp, SWT.BORDER);
 			_keyText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listen(_keyText, value -> {
-				getModels().forEach(model -> {
+			new TextListener(_keyText) {
 
-					model.setKey(value);
+				@Override
+				protected void accept(String value) {
+					getModels().forEach(model -> {
 
-					model.buildTimeline();
+						model.setKey(value);
 
-				});
+						model.buildTimeline();
 
-				var editor = getEditor();
-				editor.refreshOutline();
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
-			});
+					});
+
+					var editor = getEditor();
+					editor.refreshOutline();
+					editor.getTimelineCanvas().redraw();
+					editor.setDirty();
+				}
+			};
 
 			var sep = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL);
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -108,21 +116,24 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 			_frameRateText = new Text(comp, SWT.BORDER);
 			_frameRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new TextToFloatListener(_frameRateText) {
 
-			listenFloat(_frameRateText, value -> {
-				getModels().forEach(model -> {
-					model.setFrameRate(value);
-					model.buildTimeline();
-				});
+				@Override
+				protected void accept(float value) {
+					getModels().forEach(model -> {
+						model.setFrameRate(value);
+						model.buildTimeline();
+					});
 
-				var editor = getEditor();
+					var editor = getEditor();
 
-				editor.getTimelineCanvas().redraw();
-				restartPlayback();
-				editor.setDirty();
+					editor.getTimelineCanvas().redraw();
+					restartPlayback();
+					editor.setDirty();
 
-				update_UI_from_Model();
-			});
+					update_UI_from_Model();
+				}
+			};
 		}
 
 		// duration
@@ -140,23 +151,29 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			_computedDurationLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			_computedDurationLabel.setToolTipText(
 					"A computed duration based on the duration plus all the extra frame's durations.\\nNOTE: This is not part of the Phaser API.");
-			listenInt(_durationText, value -> {
-				getModels().forEach(model -> {
-					model.setDuration(value);
-					model.buildTimeline();
-				});
+			new TextToIntListener(_durationText) {
 
-				updateTotalDuration();
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setDuration(value);
+						model.buildTimeline();
+					});
 
-				var editor = getEditor();
+					updateTotalDuration();
 
-				editor.getTimelineCanvas().redraw();
-				restartPlayback();
-				editor.setDirty();
+					var editor = getEditor();
 
-				update_UI_from_Model();
+					editor.getTimelineCanvas().redraw();
+					restartPlayback();
+					editor.setDirty();
 
-			});
+					update_UI_from_Model();
+
+				}
+			};
+
 		}
 
 		// delay
@@ -168,19 +185,25 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 			_delayText = new Text(comp, SWT.BORDER);
 			_delayText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenInt(_delayText, value -> {
-				getModels().forEach(model -> {
-					model.setDelay(value);
-					model.buildTimeline();
-				});
 
-				var editor = getEditor();
-				editor.getTimelineCanvas().redraw();
-				restartPlayback();
-				editor.setDirty();
+			new TextToIntListener(_delayText) {
 
-				updateTotalDuration();
-			});
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setDelay(value);
+						model.buildTimeline();
+					});
+
+					var editor = getEditor();
+					editor.getTimelineCanvas().redraw();
+					restartPlayback();
+					editor.setDirty();
+
+					updateTotalDuration();
+				}
+			};
 		}
 
 		// repeat
@@ -192,17 +215,22 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 			_repeatText = new Text(comp, SWT.BORDER);
 			_repeatText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenInt(_repeatText, value -> {
-				getModels().forEach(model -> {
-					model.setRepeat(value);
-					model.buildTimeline();
-				});
+			new TextToIntListener(_repeatText) {
 
-				var editor = getEditor();
-				editor.getTimelineCanvas().redraw();
-				restartPlayback();
-				editor.setDirty();
-			});
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setRepeat(value);
+						model.buildTimeline();
+					});
+
+					var editor = getEditor();
+					editor.getTimelineCanvas().redraw();
+					restartPlayback();
+					editor.setDirty();
+
+				}
+			};
 		}
 
 		// repeatDelay
@@ -214,14 +242,19 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 			_repeatDelayText = new Text(comp, SWT.BORDER);
 			_repeatDelayText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenInt(_repeatDelayText, value -> {
-				getModels().forEach(model -> {
-					model.setRepeatDelay(value);
-				});
+			new TextToIntListener(_repeatDelayText) {
 
-				restartPlayback();
-				getEditor().setDirty();
-			});
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setRepeatDelay(value);
+					});
+
+					restartPlayback();
+					getEditor().setDirty();
+
+				}
+			};
 		}
 
 		// yoyo
@@ -231,14 +264,18 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			_yoyoCheckBox.setText("Yoyo");
 			_yoyoCheckBox.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
 			_yoyoCheckBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-			listen(_yoyoCheckBox, value -> {
-				getModels().forEach(model -> {
-					model.setYoyo(value);
-				});
+			new CheckListener(_yoyoCheckBox) {
 
-				restartPlayback();
-				getEditor().setDirty();
-			});
+				@Override
+				protected void accept(boolean value) {
+					getModels().forEach(model -> {
+						model.setYoyo(value);
+					});
+
+					restartPlayback();
+					getEditor().setDirty();
+				}
+			};
 		}
 
 		{
@@ -258,16 +295,20 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
 			_showOnStartBtn.setLayoutData(gd);
-			listen(_showOnStartBtn, value -> {
-				getModels().forEach(model -> {
-					model.setShowOnStart(value);
-					model.buildTimeline();
-				});
+			new CheckListener(_showOnStartBtn) {
 
-				var editor = getEditor();
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
-			});
+				@Override
+				protected void accept(boolean value) {
+					getModels().forEach(model -> {
+						model.setShowOnStart(value);
+						model.buildTimeline();
+					});
+
+					var editor = getEditor();
+					editor.getTimelineCanvas().redraw();
+					editor.setDirty();
+				}
+			};
 		}
 
 		// hideOnComplete
@@ -280,16 +321,20 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
 			_hideOnCompleteBtn.setLayoutData(gd);
-			listen(_hideOnCompleteBtn, value -> {
-				getModels().forEach(model -> {
-					model.setHideOnComplete(value);
-					model.buildTimeline();
-				});
+			new CheckListener(_hideOnCompleteBtn) {
 
-				var editor = getEditor();
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
-			});
+				@Override
+				protected void accept(boolean value) {
+					getModels().forEach(model -> {
+						model.setHideOnComplete(value);
+						model.buildTimeline();
+					});
+
+					var editor = getEditor();
+					editor.getTimelineCanvas().redraw();
+					editor.setDirty();
+				}
+			};
 		}
 
 		// skipMissedFrames
@@ -302,16 +347,20 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
 			_skipMissedFramesBtn.setLayoutData(gd);
-			listen(_skipMissedFramesBtn, value -> {
-				getModels().forEach(model -> {
-					model.setSkipMissedFrames(value);
-					model.buildTimeline();
-				});
+			new CheckListener(_skipMissedFramesBtn) {
 
-				var editor = getEditor();
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
-			});
+				@Override
+				protected void accept(boolean value) {
+					getModels().forEach(model -> {
+						model.setSkipMissedFrames(value);
+						model.buildTimeline();
+					});
+
+					var editor = getEditor();
+					editor.getTimelineCanvas().redraw();
+					editor.setDirty();
+				}
+			};
 
 		}
 

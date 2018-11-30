@@ -106,13 +106,18 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_widthText = new Text(comp2, SWT.BORDER);
 			_widthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_widthText, value -> {
+			new SceneTextToFloat(_widthText) {
+				{
+					dirtyModels = true;
+				}
 
-				getModels().forEach(model -> TileSpriteComponent.set_width(model, value));
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TileSpriteComponent.set_width(model, value));
 
-				getEditor().setDirty(true);
-
-			}, true);
+					getEditor().setDirty(true);
+				}
+			};
 
 			var manager = new ToolBarManager();
 
@@ -137,13 +142,19 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_heightText = new Text(comp2, SWT.BORDER);
 			_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_heightText, value -> {
 
-				getModels().forEach(model -> TileSpriteComponent.set_height(model, value));
+			new SceneTextToFloat(_heightText) {
+				{
+					dirtyModels = true;
+				}
 
-				getEditor().setDirty(true);
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TileSpriteComponent.set_height(model, value));
 
-			}, true);
+					getEditor().setDirty(true);
+				}
+			};
 
 			var manager = new ToolBarManager();
 			manager.add(_resetTextureHeightAction);
@@ -167,13 +178,18 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tilePositionXText = new Text(comp, SWT.BORDER);
 			_tilePositionXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_tilePositionXText, value -> {
+			new SceneTextToFloat(_tilePositionXText) {
+				{
+					dirtyModels = true;
+				}
 
-				getModels().forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
 
-				getEditor().setDirty(true);
-
-			}, true);
+					getEditor().setDirty(true);
+				}
+			};
 		}
 
 		{
@@ -182,13 +198,21 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tilePositionYText = new Text(comp, SWT.BORDER);
 			_tilePositionYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_tilePositionYText, value -> {
 
-				getModels().forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
+			new SceneTextToFloat(_tilePositionYText) {
 
-				getEditor().setDirty(true);
+				{
+					dirtyModels = true;
+				}
 
-			}, true);
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
+
+					getEditor().setDirty(true);
+				}
+			};
+
 		}
 
 		// tileScale
@@ -209,13 +233,18 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tileScaleXText = new Text(comp, SWT.BORDER);
 			_tileScaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_tileScaleXText, value -> {
+			new SceneTextToFloat(_tileScaleXText) {
+				{
+					dirtyModels = true;
+				}
 
-				getModels().forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
 
-				getEditor().setDirty(true);
-
-			}, true);
+					getEditor().setDirty(true);
+				}
+			};
 		}
 
 		{
@@ -224,13 +253,19 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tileScaleYText = new Text(comp, SWT.BORDER);
 			_tileScaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenFloat(_tileScaleYText, value -> {
+			new SceneTextToFloat(_tileScaleYText) {
+				{
+					dirtyModels = true;
+				}
 
-				getModels().forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
 
-				getEditor().setDirty(true);
+					getEditor().setDirty(true);
 
-			}, true);
+				}
+			};
 		}
 
 		return comp;

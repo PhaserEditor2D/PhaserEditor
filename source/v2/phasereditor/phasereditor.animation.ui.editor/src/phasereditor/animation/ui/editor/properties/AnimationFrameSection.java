@@ -35,6 +35,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.ExplainFrameDataCanvas;
+import phasereditor.ui.properties.TextToIntListener;
 
 /**
  * @author arian
@@ -75,23 +76,28 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 
 			_durationText = new Text(comp, SWT.BORDER);
 			_durationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			listenInt(_durationText, value -> {
-				getModels().stream().forEach(model -> {
+			new TextToIntListener(_durationText) {
 
-					model.setDuration(value);
-					var animation = model.getAnimation();
-					animation.buildTimeline();
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void accept(int value) {
+					getModels().stream().forEach(model -> {
 
-				});
+						model.setDuration(value);
+						var animation = model.getAnimation();
+						animation.buildTimeline();
 
-				updateTotalDuration();
+					});
 
-				var editor = getEditor();
-				editor.getTimelineCanvas().redraw();
-				editor.setDirty();
-				restartPlayback();
+					updateTotalDuration();
 
-			});
+					var editor = getEditor();
+					editor.getTimelineCanvas().redraw();
+					editor.setDirty();
+					restartPlayback();
+
+				}
+			};
 		}
 
 		{

@@ -29,7 +29,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.ui.properties.TextToIntListener;
 
 /**
  * @author arian
@@ -45,7 +47,7 @@ public class SnappingSection extends BaseDesignSection {
 		super("Snapping", page);
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, SWT.NONE);
@@ -56,11 +58,15 @@ public class SnappingSection extends BaseDesignSection {
 			_enabledBtn = new Button(comp, SWT.CHECK);
 			_enabledBtn.setText("Enabled");
 			_enabledBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-			listen(_enabledBtn, value -> {
-				wrapOperation(() -> {
-					getSceneModel().setSnapEnabled(value);
-				});
-			});
+			new CheckListener(_enabledBtn) {
+				
+				@Override
+				protected void accept(boolean value) {
+					wrapOperation(() -> {
+						getSceneModel().setSnapEnabled(value);
+					});					
+				}
+			};
 		}
 
 		{
@@ -72,21 +78,30 @@ public class SnappingSection extends BaseDesignSection {
 
 			_widthText = new Text(comp, SWT.BORDER);
 			_widthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listenInt(_widthText, value -> {
-				wrapOperation(() -> {
-					getSceneModel().setSnapWidth(value);
-				});
-			});
+			new TextToIntListener(_widthText) {
+
+				@Override
+				protected void accept(int value) {
+					wrapOperation(() -> {
+						getSceneModel().setSnapWidth(value);
+					});
+
+				}
+			};
 
 			label(comp, "Height", "*The snapping height.");
 
 			_heightText = new Text(comp, SWT.BORDER);
 			_heightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			listenInt(_heightText, value -> {
-				wrapOperation(() -> {
-					getSceneModel().setSnapHeight(value);
-				});
-			});
+			new TextToIntListener(_heightText) {
+
+				@Override
+				protected void accept(int value) {
+					wrapOperation(() -> {
+						getSceneModel().setSnapHeight(value);
+					});
+				}
+			};
 		}
 
 		return comp;

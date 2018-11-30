@@ -19,41 +19,58 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.ui.properties;
 
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
-import phasereditor.ui.properties.FormPropertyPage;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Scale;
 
 /**
  * @author arian
  *
  */
-public abstract class BaseDesignSection extends ScenePropertySection {
+public abstract class ScaleListener extends MouseAdapter implements SelectionListener {
 
-	public BaseDesignSection(String name, FormPropertyPage page) {
-		super(name, page);
+	private int _value;
+	private int _initial;
+	private Scale _scale;
+
+	public ScaleListener(Scale scale) {
+		super();
+		_scale = scale;
+		_scale.addSelectionListener(this);
+		_scale.addMouseListener(this);
+		_initial = -1;
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	public void widgetSelected(SelectionEvent e) {
+		_value = ((Scale) e.widget).getSelection();
 	}
-	
+
 	@Override
-	protected void wrapOperation(Runnable run) {
-		var editor = getEditor();
-
-		var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		run.run();
-
-		var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
-
-		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
-
-		editor.setDirty(true);
-		editor.getScene().redraw();
+	public void widgetDefaultSelected(SelectionEvent e) {
+		_initial = ((Scale) e.widget).getSelection();
 	}
-	
+
+	@Override
+	public void mouseDown(MouseEvent e) {
+		//
+	}
+
+	@Override
+	public void mouseUp(MouseEvent e) {
+		applyValue();
+	}
+
+	private void applyValue() {
+		if (_value != _initial) {
+			_initial = _value;
+			accept((float) _value / 100);
+		}
+	}
+
+	protected abstract void accept(float value);
 }
