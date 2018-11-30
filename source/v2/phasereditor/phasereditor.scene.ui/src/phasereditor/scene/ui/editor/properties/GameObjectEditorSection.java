@@ -58,13 +58,14 @@ import phasereditor.scene.ui.SceneUI;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class EditorSection extends ScenePropertySection {
+public class GameObjectEditorSection extends ScenePropertySection {
 
 	private Button _typeButton;
 	private Scale _transpScale;
@@ -78,8 +79,9 @@ public class EditorSection extends ScenePropertySection {
 	private SelectContainerAction _selectContainerAction;
 	private CreateContainerAction _createContainerAction;
 	private RemoveFromParentAction _removeFromParentAction;
+	private Button _snapButton;
 
-	public EditorSection(ScenePropertyPage page) {
+	public GameObjectEditorSection(ScenePropertyPage page) {
 		super("Editor", page);
 	}
 
@@ -104,7 +106,7 @@ public class EditorSection extends ScenePropertySection {
 			_typeButton = new Button(comp, SWT.NONE);
 			_typeButton.setToolTipText("Click to morph to other type.");
 			_typeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_typeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
+
 		}
 
 		{
@@ -158,6 +160,16 @@ public class EditorSection extends ScenePropertySection {
 			manager.createControl(rightComp);
 
 		}
+
+		{
+			// snap
+			label(comp, "Snapping", "*Set the size of the selected objects as snapping values.");
+			_snapButton = new Button(comp, 0);
+			_snapButton.setText("");
+			_snapButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
+
+		registerListeners();
 
 		return comp;
 	}
@@ -612,16 +624,87 @@ public class EditorSection extends ScenePropertySection {
 		// VariableComponent.get_variableName(ParentComponent.get_parent(model)))));
 		// }
 
-		boolean b = flatValues_to_boolean(
-				getModels().stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));
-		_showBonesAction.setChecked(b);
+		{
+			boolean b = flatValues_to_boolean(
+					getModels().stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));
+			_showBonesAction.setChecked(b);
+		}
+
+		{
+			var snap = computeSelectionSnap();
+			if (snap != null) {
+				_snapButton.setText(snap[0] + " x " + snap[1]);
+			}
+		}
+
+	}
+
+	@SuppressWarnings("boxing")
+	private void registerListeners() {
+		_typeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
 
 		listenFloat(_transpScale, value -> {
 
-			models.stream().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
+			getModels().stream()
+					.forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
 
 			getEditor().setDirty(true);
-		}, models);
+		}, getModels());
+
+		_snapButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+
+			var scene = getScene();
+
+			var sceneModel = scene.getModel();
+
+			var snap = computeSelectionSnap();
+
+			if (snap != null) {
+
+				var before = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
+
+				sceneModel.setSnapEnabled(true);
+				sceneModel.setSnapWidth(snap[0]);
+				sceneModel.setSnapHeight(snap[1]);
+
+				var after = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
+				
+				getEditor().executeOperation(
+						new ScenePropertiesSnapshotOperation(before, after, "Change snapping with selection."));
+
+				update_UI_from_Model();
+
+			}
+
+			scene.redraw();
+
+		}));
+
+	}
+
+	private int[] computeSelectionSnap() {
+		var renderer = getScene().getSceneRenderer();
+
+		var w = Integer.MAX_VALUE;
+		var h = Integer.MAX_VALUE;
+		var set = false;
+
+		for (var model : getModels()) {
+			var size = renderer.getObjectSize(model);
+			if (size != null) {
+				if (size[0] > 0 && size[1] > 0) {
+
+					w = (int) Math.min(w, size[0]);
+					h = (int) Math.min(h, size[1]);
+
+					if (w != 0 && h != 0) {
+						set = true;
+					}
+				}
+			}
+		}
+
+		return set ? new int[] { w, h } : null;
 	}
 
 }

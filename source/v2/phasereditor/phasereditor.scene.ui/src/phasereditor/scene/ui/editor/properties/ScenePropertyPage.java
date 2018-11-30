@@ -88,7 +88,7 @@ public class ScenePropertyPage extends FormPropertyPage {
 		}
 
 		if (GameObjectEditorComponent.is(obj)) {
-			list.add(new EditorSection(this));
+			list.add(new GameObjectEditorSection(this));
 		}
 
 		if (TransformComponent.is(obj)) {
