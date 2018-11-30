@@ -90,6 +90,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		return obj instanceof GameObjectEditorComponent;
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -106,7 +107,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			_typeButton = new Button(comp, SWT.NONE);
 			_typeButton.setToolTipText("Click to morph to other type.");
 			_typeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
+			_typeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
 		}
 
 		{
@@ -116,6 +117,12 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			_transpScale.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			_transpScale.setMinimum(0);
 			_transpScale.setMinimum(100);
+			listenFloat(_transpScale, value -> {
+				getModels().stream()
+						.forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
+
+				getEditor().setDirty(true);
+			}, getModels());
 		}
 
 		// TODO: No containers for now!
@@ -167,9 +174,35 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			_snapButton = new Button(comp, 0);
 			_snapButton.setText("");
 			_snapButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
+			_snapButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 
-		registerListeners();
+				var scene = getScene();
+
+				var sceneModel = scene.getModel();
+
+				var snap = computeSelectionSnap();
+
+				if (snap != null) {
+
+					var before = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
+
+					sceneModel.setSnapEnabled(true);
+					sceneModel.setSnapWidth(snap[0]);
+					sceneModel.setSnapHeight(snap[1]);
+
+					var after = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
+
+					getEditor().executeOperation(
+							new ScenePropertiesSnapshotOperation(before, after, "Change snapping with selection."));
+
+					update_UI_from_Model();
+
+				}
+
+				scene.redraw();
+
+			}));
+		}
 
 		return comp;
 	}
@@ -451,8 +484,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 				update_UI_from_Model();
 
 				getEditor().setDirty(true);
-
-			}, getModels());
+			});
 		}
 	}
 
@@ -636,49 +668,6 @@ public class GameObjectEditorSection extends ScenePropertySection {
 				_snapButton.setText(snap[0] + " x " + snap[1]);
 			}
 		}
-
-	}
-
-	@SuppressWarnings("boxing")
-	private void registerListeners() {
-		_typeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::populateTypeList));
-
-		listenFloat(_transpScale, value -> {
-
-			getModels().stream()
-					.forEach(model -> GameObjectEditorComponent.set_gameObjectEditorTransparency(model, value));
-
-			getEditor().setDirty(true);
-		}, getModels());
-
-		_snapButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-
-			var scene = getScene();
-
-			var sceneModel = scene.getModel();
-
-			var snap = computeSelectionSnap();
-
-			if (snap != null) {
-
-				var before = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
-
-				sceneModel.setSnapEnabled(true);
-				sceneModel.setSnapWidth(snap[0]);
-				sceneModel.setSnapHeight(snap[1]);
-
-				var after = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
-				
-				getEditor().executeOperation(
-						new ScenePropertiesSnapshotOperation(before, after, "Change snapping with selection."));
-
-				update_UI_from_Model();
-
-			}
-
-			scene.redraw();
-
-		}));
 
 	}
 

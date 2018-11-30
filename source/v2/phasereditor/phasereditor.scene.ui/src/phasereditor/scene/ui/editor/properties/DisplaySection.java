@@ -50,7 +50,7 @@ public class DisplaySection extends BaseDesignSection {
 		super("Display", page);
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "boxing" })
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, SWT.NONE);
@@ -65,11 +65,21 @@ public class DisplaySection extends BaseDesignSection {
 
 			_borderXText = new Text(comp, SWT.BORDER);
 			_borderXText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listenInt(_borderXText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setBorderX(value);
+				});
+			});
 
 			label(comp, "Y", "*The border Y.");
 
 			_borderYText = new Text(comp, SWT.BORDER);
 			_borderYText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listenInt(_borderYText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setBorderY(value);
+				});
+			});
 
 			// border size
 
@@ -79,11 +89,21 @@ public class DisplaySection extends BaseDesignSection {
 
 			_borderWidthText = new Text(comp, SWT.BORDER);
 			_borderWidthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listenInt(_borderWidthText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setBorderWidth(value);
+				});
+			});
 
 			label(comp, "Height", "*The border height.");
 
 			_borderHeightText = new Text(comp, SWT.BORDER);
 			_borderHeightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listenInt(_borderHeightText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setBorderHeight(value);
+				});
+			});
 		}
 
 		{
@@ -119,7 +139,6 @@ public class DisplaySection extends BaseDesignSection {
 		return comp;
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var sceneModel = getEditor().getSceneModel();
@@ -131,30 +150,6 @@ public class DisplaySection extends BaseDesignSection {
 
 		_bgColorSelector.setColorValue(sceneModel.getBackgroundColor());
 		_fgColorSelector.setColorValue(sceneModel.getForegroundColor());
-
-		listenInt(_borderXText, value -> {
-			wrapOperation(() -> {
-				sceneModel.setBorderX(value);
-			});
-		});
-
-		listenInt(_borderYText, value -> {
-			wrapOperation(() -> {
-				sceneModel.setBorderY(value);
-			});
-		});
-
-		listenInt(_borderWidthText, value -> {
-			wrapOperation(() -> {
-				sceneModel.setBorderWidth(value);
-			});
-		});
-
-		listenInt(_borderHeightText, value -> {
-			wrapOperation(() -> {
-				sceneModel.setBorderHeight(value);
-			});
-		});
 	}
 
 }

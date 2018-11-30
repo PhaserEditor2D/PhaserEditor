@@ -70,7 +70,6 @@ public class AnimationsSection extends ScenePropertySection {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
 
-		
 		_animCanvas = new AnimationPreviewComp(comp, 0);
 		{
 			var gd = new GridData(GridData.FILL_BOTH);
@@ -78,7 +77,7 @@ public class AnimationsSection extends ScenePropertySection {
 			gd.heightHint = 200;
 			_animCanvas.setLayoutData(gd);
 		}
-		
+
 		_browseBtn = new Button(comp, 0);
 		_browseBtn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		_browseBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
@@ -89,20 +88,19 @@ public class AnimationsSection extends ScenePropertySection {
 		_clearBtn.setText("Clear");
 		_clearBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> clearAnimation()));
 
-
 		return comp;
 	}
 
 	private void clearAnimation() {
 
 		wrapOperation(() -> {
-			
+
 			getModels().forEach(model -> AnimationsComponent.set_autoPlayAnimKey(model, null));
-			
-		}, getModels());
+
+		});
 
 		getEditor().setDirty(true);
-		
+
 		update_UI_from_Model();
 	}
 
@@ -119,8 +117,8 @@ public class AnimationsSection extends ScenePropertySection {
 				getModels().forEach(model -> {
 					AnimationsComponent.set_autoPlayAnimKey(model, anim.getKey());
 				});
-			}, getModels());
-				
+			});
+
 			getEditor().setDirty(true);
 
 			update_UI_from_Model();
@@ -169,7 +167,7 @@ public class AnimationsSection extends ScenePropertySection {
 		_animCanvas.setVisible(found != null);
 		{
 			var gd = (GridData) _animCanvas.getLayoutData();
-			gd.heightHint = found == null? 0 : 200;
+			gd.heightHint = found == null ? 0 : 200;
 		}
 		_animCanvas.setModel(found);
 

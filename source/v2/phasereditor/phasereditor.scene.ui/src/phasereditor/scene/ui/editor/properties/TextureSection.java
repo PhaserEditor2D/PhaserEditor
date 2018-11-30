@@ -103,7 +103,7 @@ public class TextureSection extends ScenePropertySection {
 				}
 			}
 		}
-		
+
 		var dlg = new QuickSelectAssetDialog(getEditor().getEditorSite().getShell());
 		dlg.setTitle("Select Texture");
 
@@ -116,8 +116,8 @@ public class TextureSection extends ScenePropertySection {
 				getModels().forEach(model -> {
 					TextureComponent.utils_setTexture(model, frame);
 				});
-			}, getModels(), true);
-				
+			}, true);
+
 			getEditor().setDirty(true);
 
 			update_UI_from_Model();
@@ -136,7 +136,7 @@ public class TextureSection extends ScenePropertySection {
 			_frameBtn.setText("Select Texture");
 		} else {
 			var sb = new StringBuilder();
-			
+
 			if (frame instanceof ImageAssetModel.Frame) {
 				sb.append(frame.getKey());
 			} else {
@@ -144,11 +144,11 @@ public class TextureSection extends ScenePropertySection {
 			}
 
 			_frameBtn.setText(sb.toString());
-			
+
 			var fd = frame.getFrameData();
 
 			sb.setLength(0);
-			
+
 			sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
 
 			IFile file = frame.getImageFile();
@@ -158,8 +158,7 @@ public class TextureSection extends ScenePropertySection {
 			}
 
 			_frameLabel.setText(sb.toString());
-			
-			
+
 		}
 
 		_frameCanvas.setModel(frame);

@@ -106,6 +106,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_widthText = new Text(comp2, SWT.BORDER);
 			_widthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_widthText, value -> {
+
+				getModels().forEach(model -> TileSpriteComponent.set_width(model, value));
+
+				getEditor().setDirty(true);
+
+			}, true);
 
 			var manager = new ToolBarManager();
 
@@ -130,6 +137,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_heightText = new Text(comp2, SWT.BORDER);
 			_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_heightText, value -> {
+
+				getModels().forEach(model -> TileSpriteComponent.set_height(model, value));
+
+				getEditor().setDirty(true);
+
+			}, true);
 
 			var manager = new ToolBarManager();
 			manager.add(_resetTextureHeightAction);
@@ -153,6 +167,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tilePositionXText = new Text(comp, SWT.BORDER);
 			_tilePositionXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_tilePositionXText, value -> {
+
+				getModels().forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
+
+				getEditor().setDirty(true);
+
+			}, true);
 		}
 
 		{
@@ -161,6 +182,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tilePositionYText = new Text(comp, SWT.BORDER);
 			_tilePositionYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_tilePositionYText, value -> {
+
+				getModels().forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
+
+				getEditor().setDirty(true);
+
+			}, true);
 		}
 
 		// tileScale
@@ -181,6 +209,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tileScaleXText = new Text(comp, SWT.BORDER);
 			_tileScaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_tileScaleXText, value -> {
+
+				getModels().forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
+
+				getEditor().setDirty(true);
+
+			}, true);
 		}
 
 		{
@@ -189,6 +224,13 @@ public class TileSpriteSection extends ScenePropertySection {
 
 			_tileScaleYText = new Text(comp, SWT.BORDER);
 			_tileScaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_tileScaleYText, value -> {
+
+				getModels().forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
+
+				getEditor().setDirty(true);
+
+			}, true);
 		}
 
 		return comp;
@@ -342,22 +384,6 @@ public class TileSpriteSection extends ScenePropertySection {
 		_tilePositionYText.setText(
 				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tilePositionY(model))));
 
-		listenFloat(_tilePositionXText, value -> {
-
-			models.forEach(model -> TileSpriteComponent.set_tilePositionX(model, value));
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
-		listenFloat(_tilePositionYText, value -> {
-
-			models.forEach(model -> TileSpriteComponent.set_tilePositionY(model, value));
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
 		// tileScale
 
 		_tileScaleXText
@@ -365,42 +391,10 @@ public class TileSpriteSection extends ScenePropertySection {
 		_tileScaleYText
 				.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tileScaleY(model))));
 
-		listenFloat(_tileScaleXText, value -> {
-
-			models.forEach(model -> TileSpriteComponent.set_tileScaleX(model, value));
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
-		listenFloat(_tileScaleYText, value -> {
-
-			models.forEach(model -> TileSpriteComponent.set_tileScaleY(model, value));
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
 		// size
 
 		_widthText.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_width(model))));
 		_heightText.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_height(model))));
-
-		listenFloat(_widthText, value -> {
-
-			models.forEach(model -> TileSpriteComponent.set_width(model, value));
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
-		listenFloat(_heightText, value -> {
-
-			models.forEach(model -> TileSpriteComponent.set_height(model, value));
-
-			getEditor().setDirty(true);
-
-		}, models, true);
 
 		updateActions();
 

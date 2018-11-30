@@ -45,6 +45,7 @@ public class SnappingSection extends BaseDesignSection {
 		super("Snapping", page);
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, SWT.NONE);
@@ -55,6 +56,11 @@ public class SnappingSection extends BaseDesignSection {
 			_enabledBtn = new Button(comp, SWT.CHECK);
 			_enabledBtn.setText("Enabled");
 			_enabledBtn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+			listen(_enabledBtn, value -> {
+				wrapOperation(() -> {
+					getSceneModel().setSnapEnabled(value);
+				});
+			});
 		}
 
 		{
@@ -66,17 +72,26 @@ public class SnappingSection extends BaseDesignSection {
 
 			_widthText = new Text(comp, SWT.BORDER);
 			_widthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listenInt(_widthText, value -> {
+				wrapOperation(() -> {
+					getSceneModel().setSnapWidth(value);
+				});
+			});
 
 			label(comp, "Height", "*The snapping height.");
 
 			_heightText = new Text(comp, SWT.BORDER);
 			_heightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listenInt(_heightText, value -> {
+				wrapOperation(() -> {
+					getSceneModel().setSnapHeight(value);
+				});
+			});
 		}
 
 		return comp;
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var sceneModel = getEditor().getSceneModel();
@@ -84,24 +99,6 @@ public class SnappingSection extends BaseDesignSection {
 		_enabledBtn.setSelection(sceneModel.isSnapEnabled());
 		_widthText.setText(Integer.toString(sceneModel.getSnapWidth()));
 		_heightText.setText(Integer.toString(sceneModel.getSnapHeight()));
-
-		listen(_enabledBtn, value -> {
-			wrapOperation(() -> {
-				sceneModel.setSnapEnabled(value);
-			});
-		});
-
-		listenInt(_widthText, value -> {
-			wrapOperation(() -> {
-				sceneModel.setSnapWidth(value);
-			});
-		});
-
-		listenInt(_heightText, value -> {
-			wrapOperation(() -> {
-				sceneModel.setSnapHeight(value);
-			});
-		});
 
 	}
 

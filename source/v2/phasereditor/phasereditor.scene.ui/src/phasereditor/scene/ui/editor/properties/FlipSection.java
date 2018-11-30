@@ -73,7 +73,7 @@ public class FlipSection extends ScenePropertySection {
 
 						wrapOperation(() -> {
 							getModels().forEach(model -> FlipComponent.set_flipX(model, value));
-						}, getModels());
+						});
 					}
 				});
 
@@ -90,7 +90,7 @@ public class FlipSection extends ScenePropertySection {
 
 						wrapOperation(() -> {
 							getModels().forEach(model -> FlipComponent.set_flipY(model, value));
-						}, getModels());
+						});
 					}
 				});
 

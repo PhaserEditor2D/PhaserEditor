@@ -126,8 +126,8 @@ public class OriginSection extends ScenePropertySection {
 
 				OriginSection.this.update_UI_from_Model();
 
-			}, getModels(), true, model -> model instanceof DynamicBitmapTextComponent);
-			
+			}, true, model -> model instanceof DynamicBitmapTextComponent);
+
 			getEditor().setDirty(true);
 
 		}
@@ -137,9 +137,9 @@ public class OriginSection extends ScenePropertySection {
 	public void fillToolbar(ToolBarManager manager) {
 
 		manager.add(_originToolAction);
-		
+
 		manager.add(new Separator());
-		
+
 		for (var action : _originPresetActions) {
 			manager.add(action);
 		}
@@ -185,6 +185,7 @@ public class OriginSection extends ScenePropertySection {
 		};
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -205,11 +206,27 @@ public class OriginSection extends ScenePropertySection {
 
 		_originXText = new Text(comp, SWT.BORDER);
 		_originXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		listenFloat(_originXText, value -> {
+			getModels().forEach(model -> {
+				OriginComponent.set_originX(model, value);
+			});
+
+			updateActions_UI_from_Model();
+			getEditor().setDirty(true);
+		}, true, model -> model instanceof DynamicBitmapTextComponent);
 
 		label(comp, "Y", "Phaser.GameObjects.Sprite.originY");
 
 		_originYText = new Text(comp, SWT.BORDER);
 		_originYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		listenFloat(_originYText, value -> {
+			getModels().forEach(model -> {
+				OriginComponent.set_originY(model, value);
+			});
+
+			updateActions_UI_from_Model();
+			getEditor().setDirty(true);
+		}, true, model -> model instanceof DynamicBitmapTextComponent);
 
 		return comp;
 	}
@@ -226,24 +243,6 @@ public class OriginSection extends ScenePropertySection {
 		_originYText.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY(model))));
 
 		updateActions_UI_from_Model();
-
-		listenFloat(_originXText, value -> {
-			models.forEach(model -> {
-				OriginComponent.set_originX(model, value);
-			});
-
-			updateActions_UI_from_Model();
-			getEditor().setDirty(true);
-		}, models, true, model -> model instanceof DynamicBitmapTextComponent);
-
-		listenFloat(_originYText, value -> {
-			models.forEach(model -> {
-				OriginComponent.set_originY(model, value);
-			});
-
-			updateActions_UI_from_Model();
-			getEditor().setDirty(true);
-		}, models, true, model -> model instanceof DynamicBitmapTextComponent);
 
 	}
 

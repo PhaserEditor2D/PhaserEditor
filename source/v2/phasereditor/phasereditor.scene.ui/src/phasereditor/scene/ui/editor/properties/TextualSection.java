@@ -59,6 +59,15 @@ public class TextualSection extends ScenePropertySection {
 		var gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 100;
 		_textText.setLayoutData(gd);
+		listen(_textText, value -> {
+
+			getModels().stream().forEach(model -> {
+				TextualComponent.set_text(model, value);
+			});
+			
+			getEditor().setDirty(true);
+
+		}, true);
 
 		return comp;
 	}
@@ -69,16 +78,6 @@ public class TextualSection extends ScenePropertySection {
 
 		_textText.setText(
 				flatValues_to_String(models.stream().map(model -> TextualComponent.get_text(model))));
-
-		listen(_textText, value -> {
-
-			models.stream().forEach(model -> {
-				TextualComponent.set_text(model, value);
-			});
-			
-			getEditor().setDirty(true);
-
-		}, models, true);
 	}
 
 }

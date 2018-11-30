@@ -56,6 +56,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 		return obj instanceof DynamicBitmapTextModel;
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -69,6 +70,10 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 			_displayCallbackText = new Text(comp, SWT.BORDER);
 			_displayCallbackText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			listen(_displayCallbackText, value -> {
+				getModels().forEach(model -> DynamicBitmapTextComponent.set_displayCallback(model, value));
+				getEditor().setDirty(true);
+			});
 		}
 
 		{
@@ -88,11 +93,27 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 			_cropWidthText = new Text(comp, SWT.BORDER);
 			_cropWidthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenInt(_cropWidthText, value -> {
+				getModels().forEach(model -> {
+					DynamicBitmapTextComponent.set_cropWidth(model, value);
+				});
+
+				getEditor().setDirty(true);
+
+			}, true);
 
 			label(comp, "Height", "Phaser.GameObjects.DynamicBitmapText.cropHeight");
 
 			_cropHeightText = new Text(comp, SWT.BORDER);
 			_cropHeightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenInt(_cropHeightText, value -> {
+				getModels().forEach(model -> {
+					DynamicBitmapTextComponent.set_cropHeight(model, value);
+				});
+
+				getEditor().setDirty(true);
+
+			}, true);
 		}
 
 		{
@@ -112,17 +133,32 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 			_scrollXText = new Text(comp, SWT.BORDER);
 			_scrollXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_scrollXText, value -> {
+				getModels().forEach(model -> {
+					DynamicBitmapTextComponent.set_scrollX(model, value);
+				});
+
+				getEditor().setDirty(true);
+
+			}, true);
 
 			label(comp, "Y", "Phaser.GameObjects.DynamicBitmapText.scrollY");
 
 			_scrollYText = new Text(comp, SWT.BORDER);
 			_scrollYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_scrollYText, value -> {
+				getModels().forEach(model -> {
+					DynamicBitmapTextComponent.set_scrollY(model, value);
+				});
+
+				getEditor().setDirty(true);
+
+			}, true);
 		}
 
 		return comp;
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var models = getModels();
@@ -134,48 +170,6 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 
 		setValues_to_Text(_scrollXText, models, DynamicBitmapTextComponent::get_scrollX);
 		setValues_to_Text(_scrollYText, models, DynamicBitmapTextComponent::get_scrollY);
-
-		listen(_displayCallbackText, value -> {
-			models.forEach(model -> DynamicBitmapTextComponent.set_displayCallback(model, value));
-			getEditor().setDirty(true);
-
-		}, models);
-
-		listenInt(_cropWidthText, value -> {
-			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_cropWidth(model, value);
-			});
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
-		listenInt(_cropHeightText, value -> {
-			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_cropHeight(model, value);
-			});
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
-		listenFloat(_scrollXText, value -> {
-			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_scrollX(model, value);
-			});
-
-			getEditor().setDirty(true);
-
-		}, models, true);
-
-		listenFloat(_scrollYText, value -> {
-			models.forEach(model -> {
-				DynamicBitmapTextComponent.set_scrollY(model, value);
-			});
-
-			getEditor().setDirty(true);
-
-		}, models, true);
 
 	}
 

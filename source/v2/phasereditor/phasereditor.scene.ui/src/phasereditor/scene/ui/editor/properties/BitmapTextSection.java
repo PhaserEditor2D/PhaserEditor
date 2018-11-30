@@ -87,7 +87,7 @@ public class BitmapTextSection extends ScenePropertySection {
 					BitmapTextComponent.set_align(model, _align);
 				});
 
-			}, getModels(), true);
+			}, true);
 
 			getEditor().setDirty(true);
 			getEditor().getScene().redraw();
@@ -96,6 +96,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -130,7 +131,18 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			_fontSizeText = new Text(comp, SWT.BORDER);
 			_fontSizeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenInt(_fontSizeText, value -> {
 
+				wrapOperation(() -> {
+					getModels().stream().forEach(model -> {
+						BitmapTextComponent.set_fontSize(model, value);
+					});
+
+				}, true);
+
+				getEditor().setDirty(true);
+
+			});
 		}
 
 		{
@@ -138,7 +150,17 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			_letterSpacingText = new Text(comp, SWT.BORDER);
 			_letterSpacingText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			listenFloat(_letterSpacingText, value -> {
 
+				wrapOperation(() -> {
+					getModels().stream().forEach(model -> {
+						BitmapTextComponent.set_letterSpacing(model, value);
+					});
+				},  true);
+
+				getEditor().setDirty(true);
+
+			});
 		}
 
 		return comp;
@@ -173,7 +195,7 @@ public class BitmapTextSection extends ScenePropertySection {
 						BitmapTextComponent.utils_setFont(obj, asset);
 					}
 
-				}, getModels(), true);
+				}, true);
 
 				editor.setDirty(true);
 			}
@@ -202,7 +224,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 				getEditor().setDirty(true);
 
-			}, getModels(), true);
+			},  true);
 
 		}
 	}
@@ -255,31 +277,6 @@ public class BitmapTextSection extends ScenePropertySection {
 		})));
 
 		updateAlignActionsState();
-
-		listenInt(_fontSizeText, value -> {
-
-			wrapOperation(() -> {
-				getModels().stream().forEach(model -> {
-					BitmapTextComponent.set_fontSize(model, value);
-				});
-
-			}, getModels(), true);
-
-			getEditor().setDirty(true);
-
-		});
-
-		listenFloat(_letterSpacingText, value -> {
-
-			wrapOperation(() -> {
-				getModels().stream().forEach(model -> {
-					BitmapTextComponent.set_letterSpacing(model, value);
-				});
-			}, getModels(), true);
-
-			getEditor().setDirty(true);
-
-		});
 
 	}
 

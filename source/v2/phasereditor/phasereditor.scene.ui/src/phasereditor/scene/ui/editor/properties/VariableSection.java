@@ -67,7 +67,14 @@ public class VariableSection extends ScenePropertySection {
 
 			_editorNameText = new Text(comp, SWT.BORDER);
 			_editorNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listen(_editorNameText, value -> {
 
+				getModels().stream().forEach(model -> VariableComponent.set_variableName(model, value));
+
+				getEditor().setDirty(true);
+				getEditor().refreshOutline();
+
+			});
 		}
 
 		return comp;
@@ -117,15 +124,6 @@ public class VariableSection extends ScenePropertySection {
 
 		_fieldAction.setChecked(
 				flatValues_to_boolean(models.stream().map(model -> VariableComponent.get_variableField(model))));
-
-		listen(_editorNameText, value -> {
-			
-			models.stream().forEach(model -> VariableComponent.set_variableName(model, value));
-
-			getEditor().setDirty(true);
-			getEditor().refreshOutline();
-
-		}, models);
 	}
 
 }

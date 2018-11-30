@@ -60,6 +60,7 @@ public class CompilerSection extends BaseDesignSection {
 		return obj instanceof SceneModel;
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -75,6 +76,11 @@ public class CompilerSection extends BaseDesignSection {
 					"Generate a preload method that loads all the assets used in this scene."
 
 			);
+			listen(_autoLoadAssetsButton, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setAutoLoadAssets(value);
+				});
+			});
 		}
 
 		{
@@ -86,6 +92,11 @@ public class CompilerSection extends BaseDesignSection {
 					"Insert events at the start and the end of the methods."
 
 			);
+			listen(_generateEventsButton, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setGenerateMethodEvents(value);
+				});
+			});
 		}
 
 		{
@@ -93,24 +104,44 @@ public class CompilerSection extends BaseDesignSection {
 			_onlyGenerateMethodsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 			_onlyGenerateMethodsButton.setText("Only Generate Methods");
 			_onlyGenerateMethodsButton.setToolTipText("Generate plain methods, without a containing class.");
+			listen(_onlyGenerateMethodsButton, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setOnlyGenerateMethods(value);
+				});
+			});
 		}
 
 		{
 			label(comp, "Super Class", "*The name of the super class.");
 			_superClassNameText = new Text(comp, SWT.BORDER);
 			_superClassNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listen(_superClassNameText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setSuperClassName(value);
+				});
+			});
 		}
 
 		{
 			label(comp, "Preload Method", "*The name of the preload method.");
 			_preloadNameText = new Text(comp, SWT.BORDER);
 			_preloadNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listen(_preloadNameText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setPreloadMethodName(value);
+				});
+			});
 		}
 
 		{
 			label(comp, "Create Method", "*The name of the create method.");
 			_createNameText = new Text(comp, SWT.BORDER);
 			_createNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			listen(_createNameText, value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setCreateMethodName(value);
+				});
+			});
 		}
 
 		return comp;
@@ -145,7 +176,6 @@ public class CompilerSection extends BaseDesignSection {
 		});
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void update_UI_from_Model() {
 		var model = getEditor().getSceneModel();
@@ -157,42 +187,6 @@ public class CompilerSection extends BaseDesignSection {
 		_superClassNameText.setText(model.getSuperClassName());
 		_preloadNameText.setText(model.getPreloadMethodName());
 		_createNameText.setText(model.getCreateMethodName());
-
-		listen(_onlyGenerateMethodsButton, value -> {
-			wrapOperation(() -> {
-				model.setOnlyGenerateMethods(value);
-			});
-		});
-
-		listen(_autoLoadAssetsButton, value -> {
-			wrapOperation(() -> {
-				model.setAutoLoadAssets(value);
-			});
-		});
-
-		listen(_generateEventsButton, value -> {
-			wrapOperation(() -> {
-				model.setGenerateMethodEvents(value);
-			});
-		});
-
-		listen(_superClassNameText, value -> {
-			wrapOperation(() -> {
-				model.setSuperClassName(value);
-			});
-		});
-
-		listen(_preloadNameText, value -> {
-			wrapOperation(() -> {
-				model.setPreloadMethodName(value);
-			});
-		});
-
-		listen(_createNameText, value -> {
-			wrapOperation(() -> {
-				model.setCreateMethodName(value);
-			});
-		});
 
 	}
 

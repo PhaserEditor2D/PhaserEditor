@@ -36,6 +36,7 @@ import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
@@ -62,13 +63,17 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	public SceneEditor getEditor() {
 		return ((ScenePropertyPage) _page).getEditor();
 	}
-	
+
 	public AssetFinder getAssetFinder() {
 		return getEditor().getScene().getAssetFinder();
 	}
 
 	public SceneCanvas getScene() {
 		return getEditor().getScene();
+	}
+
+	public SceneModel getSceneModel() {
+		return getScene().getModel();
 	}
 
 	@SuppressWarnings({ "static-method" })
@@ -108,19 +113,21 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 	}
 
-	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models) {
-		listenFloat(text, listener, models, false);
+	@Override
+	protected void listenFloat(Text text, Consumer<Float> listener) {
+		listenFloat(text, listener, false);
 	}
 
-	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models, boolean dirtyModels) {
-		listenFloat(text, listener, models, dirtyModels, null);
+	protected void listenFloat(Text text, Consumer<Float> listener, boolean dirtyModels) {
+		listenFloat(text, listener, dirtyModels, null);
 	}
 
-	protected void listenFloat(Text text, Consumer<Float> listener, List<ObjectModel> models, boolean dirtyModels,
+	protected void listenFloat(Text text, Consumer<Float> listener, boolean dirtyModels,
 			Function<ObjectModel, Boolean> filterDirtyModels) {
 
 		super.listenFloat(text, value -> {
-
+			var models = getModels();
+			
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
@@ -148,20 +155,23 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 			});
 
 			var editor = getEditor();
-			
+
 			if (editor.getOutline() != null) {
 				editor.refreshOutline_basedOnId();
 			}
 		}
 	}
 
-	protected void listenInt(Text text, Consumer<Integer> listener, List<ObjectModel> models) {
-		listenInt(text, listener, models, false);
+	@Override
+	protected void listenInt(Text text, Consumer<Integer> listener) {
+		listenInt(text, listener, false);
 	}
 
-	protected void listenInt(Text text, Consumer<Integer> listener, List<ObjectModel> models, boolean dirtyModels) {
+	protected void listenInt(Text text, Consumer<Integer> listener, boolean dirtyModels) {
 		super.listenInt(text, value -> {
-
+			
+			var models = getModels();
+			
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
@@ -177,12 +187,15 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		});
 	}
 
-	protected void listen(Text text, Consumer<String> listener, List<ObjectModel> models) {
-		listen(text, listener, models, false);
+	@Override
+	protected void listen(Text text, Consumer<String> listener) {
+		listen(text, listener, false);
 	}
 
-	protected void listen(Text text, Consumer<String> listener, List<ObjectModel> models, boolean dirtyModels) {
+	protected void listen(Text text, Consumer<String> listener, boolean dirtyModels) {
 		super.listen(text, value -> {
+			
+			var models = getModels();
 
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
@@ -200,23 +213,27 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		});
 	}
 
-	protected void wrapOperation(Runnable run, List<ObjectModel> models) {
-		wrapOperation(run, models, false, null);
+	protected void wrapOperation(Runnable run) {
+		wrapOperation(run, false, null);
 	}
-	
-	protected void wrapOperation(Runnable run, List<ObjectModel> models, boolean dirtyModels) {
-		wrapOperation(run, models, dirtyModels, null);
+
+	protected void wrapOperation(Runnable run, boolean dirtyModels) {
+		wrapOperation(run, dirtyModels, null);
 	}
-	
-	protected void wrapOperation(Runnable run, List<ObjectModel> models, boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
+
+	protected void wrapOperation(Runnable run, boolean dirtyModels,
+			Function<ObjectModel, Boolean> filterDirtyModels) {
+		
+		var models = getModels();
+		
 		var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 		run.run();
 
 		var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-		getEditor().executeOperation(
-				new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", dirtyModels, filterDirtyModels));
+		getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property",
+				dirtyModels, filterDirtyModels));
 
 		dirtyModels(models, dirtyModels, null);
 
@@ -224,9 +241,11 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 	}
 
-	protected void listen(Button check, Consumer<Boolean> listener, List<ObjectModel> models) {
+	@Override
+	protected void listen(Button check, Consumer<Boolean> listener) {
 		super.listen(check, value -> {
-
+			var models = getModels();
+			
 			var beforeData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 			listener.accept(value);
@@ -266,7 +285,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		return InspectCore.getPhaserHelp().getMemberHelp(helpHint);
 	}
-	
+
 	protected void setInteractiveTools(InteractiveTool... tools) {
 		getEditor().getScene().setInteractiveTools(tools);
 	}
