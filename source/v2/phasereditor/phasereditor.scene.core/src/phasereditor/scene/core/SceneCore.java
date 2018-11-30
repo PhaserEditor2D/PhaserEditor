@@ -22,6 +22,7 @@
 package phasereditor.scene.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author arian
@@ -35,5 +36,13 @@ public class SceneCore {
 		// for now it only compiles to JavaScript.
 
 		return sceneFile.getProject().getFile(path.removeFileExtension().addFileExtension("js"));
+	}
+
+	public static void compileScene(SceneModel model, IFile sceneFile, IProgressMonitor monitor) throws Exception {
+
+		var compiler = new SceneCompiler(sceneFile, model);
+
+		compiler.compile(monitor);
+
 	}
 }

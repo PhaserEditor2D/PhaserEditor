@@ -35,7 +35,7 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.core.SceneCompiler;
+import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
@@ -65,7 +65,7 @@ public class SceneEditor extends EditorPart {
 			return "SCENE_EDITOR_CONTEXT";
 		}
 	};
-	
+
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
 	private IContextActivation _objectsContextActivation;
@@ -82,7 +82,7 @@ public class SceneEditor extends EditorPart {
 				getScene().redraw();
 			}
 		};
-		
+
 		_propertyPages = new ArrayList<>();
 	}
 
@@ -120,9 +120,8 @@ public class SceneEditor extends EditorPart {
 
 	void generateCode(IProgressMonitor monitor) {
 		try {
-			var compiler = new SceneCompiler(getEditorInput().getFile(), getSceneModel());
 
-			compiler.compile(monitor);
+			SceneCore.compileScene(getSceneModel(), getEditorInput().getFile(), monitor);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,14 +197,14 @@ public class SceneEditor extends EditorPart {
 		_scene = new SceneCanvas(parent, SWT.NONE);
 
 		_scene.init(this);
-		
+
 		_scene.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				deactivateObjectsContext();
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				activateObjectsContext();
@@ -242,14 +241,14 @@ public class SceneEditor extends EditorPart {
 					super.createControl(parent);
 
 					addSelectionChangedListener(_outlinerSelectionListener);
-					
+
 					getViewer().getCanvas().addFocusListener(new FocusListener() {
-						
+
 						@Override
 						public void focusLost(FocusEvent e) {
 							deactivateObjectsContext();
 						}
-						
+
 						@Override
 						public void focusGained(FocusEvent e) {
 							activateObjectsContext();
@@ -316,12 +315,12 @@ public class SceneEditor extends EditorPart {
 		_undoRedoGroup = new UndoRedoActionGroup(site, undoContext, true);
 
 		var actionBars = site.getActionBars();
-		
+
 		_undoRedoGroup.fillActionBars(actionBars);
-		
+
 		actionBars.updateActionBars();
 	}
-	
+
 	public UndoRedoActionGroup getUndoRedoGroup() {
 		return _undoRedoGroup;
 	}

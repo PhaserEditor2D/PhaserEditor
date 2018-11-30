@@ -438,4 +438,13 @@ public class SceneModel {
 
 		return null;
 	}
+
+	public JSONObject toJSON() {
+		
+		JSONObject data = new JSONObject();
+		
+		write(data);
+		
+		return data;
+	}
 }

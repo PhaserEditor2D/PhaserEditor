@@ -271,5 +271,64 @@
             parentId="org.eclipse.ui.contexts.window">
       </context>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="phasereditor.scene.ui.wizardCategory"
+            name="Scene"
+            parentCategory="phasereditor.ui.wizardCategory">
+      </category>
+      <wizard
+            category="phasereditor.scene.ui.wizardCategory"
+            class="phasereditor.scene.ui.wizards.NewSceneFileWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            icon="platform:/plugin/phasereditor.ui/icons/new_canvas.png"
+            id="phasereditor.scene.ui.wizards.NewSceneFileWizard"
+            name="Scene File">
+         <description>
+            Creates a new Scene file.
+         </description>
+         <keywordReference
+               id="phasereditor.scene.ui.keywordCanvas">
+         </keywordReference>
+         <keywordReference
+               id="phasereditor.scene.ui.keywordPrefab">
+         </keywordReference>
+         <keywordReference
+               id="phasereditor.scene.ui.keywordScene">
+         </keywordReference>
+         <keywordReference
+               id="phasereditor.scene.ui.keywordSprite">
+         </keywordReference>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="phasereditor.scene.ui.keywordScene"
+            label="Scene">
+      </keyword>
+      <keyword
+            id="phasereditor.scene.ui.keywordSprite"
+            label="Sprite">
+      </keyword>
+      <keyword
+            id="phasereditor.scene.ui.keywordCanvas"
+            label="Canvas">
+      </keyword>
+      <keyword
+            id="phasereditor.scene.ui.keywordPrefab"
+            label="Prefab">
+      </keyword>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <newWizardShortcut
+               id="phasereditor.scene.ui.wizards.NewSceneFileWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>

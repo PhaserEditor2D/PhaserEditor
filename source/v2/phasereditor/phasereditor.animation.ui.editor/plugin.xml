@@ -123,6 +123,7 @@
   <extension
          point="org.eclipse.ui.newWizards">
       <wizard
+            category="phasereditor.ui.wizardCategory"
             class="phasereditor.animation.ui.editor.wizards.NewAnimationsFileWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
             icon="platform:/plugin/phasereditor.ui/icons/new_frame-animation.png"
