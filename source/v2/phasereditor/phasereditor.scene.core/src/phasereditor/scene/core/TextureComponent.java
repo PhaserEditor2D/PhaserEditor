@@ -69,7 +69,9 @@ public interface TextureComponent {
 
 		var frame = get_textureFrame(model);
 
-		return finder.findTexture(key, frame);
+		var asset = finder.findTexture(key, frame);
+		
+		return asset;
 	}
 
 	static void utils_setTexture(ObjectModel model, IAssetFrameModel frame) {

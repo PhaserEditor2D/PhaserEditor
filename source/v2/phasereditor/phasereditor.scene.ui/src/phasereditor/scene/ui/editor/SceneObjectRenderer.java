@@ -1017,7 +1017,9 @@ public class SceneObjectRenderer {
 	private boolean assetChanged(String key, String frame) {
 		var asset1 = _lastFinderSnapshot.findAssetKey(key, frame);
 		var asset2 = _finder.findAssetKey(key, frame);
-
-		return asset1 == null || asset2 == null || asset1 != asset2;
+		
+		var b = asset1 == null || asset2 == null || asset1 != asset2;
+		
+		return b;
 	}
 }

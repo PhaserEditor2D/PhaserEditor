@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -329,7 +331,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 	public SceneObjectRenderer getSceneRenderer() {
 		return _renderer;
 	}
-	
+
 	public SceneModel getModel() {
 		return _editor.getSceneModel();
 	}
@@ -340,6 +342,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 		_renderer.dispose();
 	}
+
+	private boolean _rendered;
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
@@ -361,7 +365,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		}
 
 		_finder.build();
-		
+
 		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.
@@ -387,6 +391,18 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		renderLabels(e, calc);
 
 		tx.dispose();
+
+		if (!_rendered) {
+			swtRun(() -> {
+				_editor.refreshOutline();
+			});
+		}
+
+		_rendered = true;
+	}
+
+	public boolean isRendered() {
+		return _rendered;
 	}
 
 	private void renderInteractiveElements(GC gc) {

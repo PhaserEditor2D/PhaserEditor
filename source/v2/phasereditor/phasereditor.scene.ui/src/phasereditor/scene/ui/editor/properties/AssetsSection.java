@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -67,15 +66,7 @@ public class AssetsSection extends ScenePropertySection {
 	
 	@SuppressWarnings("unused")
 	private void rebuildImageCache(SelectionEvent e) {
-		var scene = getScene();
-		
-		scene.getModel().getDisplayList().visit(m -> {
-			GameObjectEditorComponent.set_gameObjectEditorDirty(m, true);
-		});
-		
-		scene.redraw();
-		
-		getEditor().refreshOutline();
+		getEditor().rebuildImageCache();
 	}
 
 	@Override

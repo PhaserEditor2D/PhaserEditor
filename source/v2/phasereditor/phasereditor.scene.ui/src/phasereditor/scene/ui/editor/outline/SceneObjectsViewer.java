@@ -48,18 +48,14 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		super.setItemIconProperties(item);
 
+		if (!_editor.getScene().isRendered()) {
+			return;
+		}
+
 		var data = item.getData();
 
 		var sceneRenderer = _editor.getScene().getSceneRenderer();
 		var finder = _editor.getScene().getAssetFinder();
-
-		if (data instanceof TextureComponent) {
-			var frame = TextureComponent.utils_getTexture((ObjectModel) data, finder);
-			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
-			if (renderer != null) {
-				item.setRenderer(renderer);
-			}
-		}
 
 		if (data instanceof BitmapTextModel) {
 			var model = (BitmapTextModel) data;
@@ -78,6 +74,14 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 
 			if (image != null) {
 				item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
+			}
+		}
+
+		if (data instanceof TextureComponent) {
+			var frame = TextureComponent.utils_getTexture((ObjectModel) data, finder);
+			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
+			if (renderer != null) {
+				item.setRenderer(renderer);
 			}
 		}
 

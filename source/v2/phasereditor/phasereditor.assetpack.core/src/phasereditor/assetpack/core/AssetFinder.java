@@ -64,6 +64,7 @@ public class AssetFinder {
 	}
 	
 	public IAssetKey findAssetKey(String key, String frame) {
+		
 		if (key == null) {
 			return null;
 		}
@@ -75,7 +76,7 @@ public class AssetFinder {
 		} else {
 			assetKey = _map.get(hashKey(key, frame));
 		}
-
+		
 		return assetKey;
 	}
 

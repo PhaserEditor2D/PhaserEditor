@@ -34,6 +34,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import phasereditor.project.core.PhaserProjectBuilder;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
@@ -386,15 +387,26 @@ public class SceneEditor extends EditorPart {
 
 	public void build() {
 		_scene.redraw();
-
+		
 		updatePropertyPagesContentWithSelection();
 
 		refreshOutline();
 	}
 
 	@SuppressWarnings("static-method")
-	boolean isWaitingForProjectBuilders() {
-		return !PhaserProjectBuilder.isStartupFinished();
+	public boolean isWaitingForProjectBuilders() {
+		boolean b = !PhaserProjectBuilder.isStartupFinished();
+		return b;
+	}
+
+	public void rebuildImageCache() {
+		_scene.getModel().getDisplayList().visit(m -> {
+			GameObjectEditorComponent.set_gameObjectEditorDirty(m, true);
+		});
+
+		_scene.redraw();
+
+		refreshOutline();
 	}
 
 }
