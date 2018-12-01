@@ -93,12 +93,13 @@ public class TileSpriteModel extends BaseSpriteModel implements
 
 	@Override
 	public boolean allowMorphTo(String type) {
-
-		if (SpriteModel.TYPE.equals(type)) {
+		switch (type) {
+		case SpriteModel.TYPE:
+		case ImageModel.TYPE:
 			return true;
+		default:
+			return false;
 		}
-
-		return false;
 	}
 
 }
