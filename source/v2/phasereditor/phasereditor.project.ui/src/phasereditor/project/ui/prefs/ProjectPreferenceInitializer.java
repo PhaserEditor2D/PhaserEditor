@@ -16,6 +16,6 @@ public class ProjectPreferenceInitializer extends AbstractPreferenceInitializer 
 		IPreferenceStore store = ProjectUI.getPreferenceStore();
 		store.setDefault(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_WIDTH, 800);
 		store.setDefault(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_HEIGHT, 600);
-		store.setDefault(ProjectUI.PREF_PROP_PROJECT_WIZARD_LANGUAJE, SourceLang.JAVA_SCRIPT.name());
+		store.setDefault(ProjectUI.PREF_PROP_PROJECT_WIZARD_LANGUAJE, SourceLang.JAVA_SCRIPT_6.name());
 	}
 }

@@ -26,9 +26,7 @@ package phasereditor.project.core.codegen;
  *
  */
 public enum SourceLang {
-	JAVA_SCRIPT("js", "JavaScript 5"),
-	JAVA_SCRIPT_6("js", "JavaScript 6"),
-	TYPE_SCRIPT("ts", "TypeScript");
+	JAVA_SCRIPT("js", "JavaScript 5"), JAVA_SCRIPT_6("js", "JavaScript 6"), TYPE_SCRIPT("ts", "TypeScript");
 
 	private String _ext;
 	private String _displayName;
@@ -41,7 +39,7 @@ public enum SourceLang {
 	public String getExtension() {
 		return _ext;
 	}
-	
+
 	public String getDisplayName() {
 		return _displayName;
 	}

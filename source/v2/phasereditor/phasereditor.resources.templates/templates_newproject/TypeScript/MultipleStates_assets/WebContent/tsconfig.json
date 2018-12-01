@@ -1,9 +1,0 @@
-{
-    "compileOnSave" : true,
-    "compilerOptions": {
-        "target": "es5"                
-    },
-    "exclude": [
-        "lib/**"
-    ]
-}

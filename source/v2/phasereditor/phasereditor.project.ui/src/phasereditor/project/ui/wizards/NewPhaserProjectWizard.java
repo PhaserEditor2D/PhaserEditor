@@ -23,7 +23,6 @@ package phasereditor.project.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -114,38 +113,44 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
+		var params = new HashMap<String, String>();
+
 		IProject project = _projectPage.getProjectHandle();
 
-		String width = _settingsPage.getWidthText().getText();
-		String height = _settingsPage.getHeightText().getText();
-		String renderer = _settingsPage.getRendererCombo().getText();
-		boolean transparent = _settingsPage.getTransparentBtn().getSelection();
-		boolean antialias = _settingsPage.getAntialiasBtn().getSelection();
+		params.put("title", project.getName());
+
+		boolean pixelArt = _settingsPage.getPixelArtBtn().getSelection();
+
+		var renderConfig = new JSONObject();
+		renderConfig.put("pixelArt", pixelArt);
+
+		var config = new JSONObject();
+
+		config.put("title", project.getName());
+		config.put("width", Integer.parseInt(_settingsPage.getWidthText().getText()));
+		config.put("height", Integer.parseInt(_settingsPage.getHeightText().getText()));
+		config.put("type", _settingsPage.getTypeCombo().getText());
+
 		JSONObject physicsConfig = new JSONObject();
 
 		if (_settingsPage.getArcadeBtn().getSelection()) {
-			physicsConfig.put("arcade", true);
-		}
-
-		if (_settingsPage.getBox2dBtn().getSelection()) {
-			physicsConfig.put("box2d", true);
+			physicsConfig.put("default", "arcade");
 		}
 
 		if (_settingsPage.getMatterBtn().getSelection()) {
-			physicsConfig.put("matter", true);
+			physicsConfig.put("default", "matter");
 		}
 
-		if (_settingsPage.getP2Btn().getSelection()) {
-			physicsConfig.put("p2", true);
+		if (!physicsConfig.isEmpty()) {
+			config.put("pysics", physicsConfig);
 		}
 
-		if (_settingsPage.getNinjaBtn().getSelection()) {
-			physicsConfig.put("ninja", true);
+		{
+			String str = config.toString(8);
+			str = str.substring(0, str.length() - 2) + "}";
+			params.put("config", str);
 		}
 
-		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
-		boolean singleState = _settingsPage.getSingleStateBtn().getSelection();
-		boolean hasAssets = _settingsPage.getIncludeAssets().getSelection();
 		SourceLang lang = _settingsPage.getSourceLang();
 
 		try {
@@ -165,50 +170,8 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 						monitor.worked(1);
 
 						TemplateModel template;
-						Map<String, String> values = new HashMap<>();
 
-						values.put("title", project.getName());
-						values.put("game.width", width);
-						values.put("game.height", height);
-						values.put("game.renderer", renderer);
-
-						boolean hasExtraParams = transparent || !antialias || !physicsConfig.isEmpty();
-
-						StringBuilder gameParams = new StringBuilder();
-
-						String templId = "";
-
-						if (simplestProject) {
-							templId = "phasereditor.project.simplest";
-						} else {
-
-							if (hasExtraParams) {
-								gameParams.append(", '', null");
-							}
-
-							if (singleState) {
-								templId = "phasereditor.project.singleState";
-							} else {
-								// multiple states
-								templId = "phasereditor.project.multipleStates";
-							}
-						}
-
-						if (hasExtraParams) {
-							String p1 = ", " + Boolean.toString(transparent);
-							String p2 = ", " + Boolean.toString(antialias);
-							String p3 = ", " + physicsConfig.toString();
-
-							if (!physicsConfig.isEmpty()) {
-								gameParams.append(p1 + p2 + p3);
-							} else if (!antialias) {
-								gameParams.append(p1 + p2);
-							} else if (transparent) {
-								gameParams.append(p1);
-							}
-						}
-
-						values.put("game.extra", gameParams.toString());
+						var templId = "phasereditor.project.simplest";
 
 						if (lang == SourceLang.JAVA_SCRIPT_6) {
 							templId += ".js6";
@@ -216,13 +179,9 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 							templId += ".typescript";
 						}
 
-						if (hasAssets) {
-							templId += ".assets";
-						}
-
 						template = InspectCore.getProjectTemplates().findById(templId);
 
-						ProjectCore.configureNewPhaserProject(project, template, values, lang, monitor);
+						ProjectCore.configureNewPhaserProject(project, template, params, lang, monitor);
 						monitor.worked(1);
 
 						getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);

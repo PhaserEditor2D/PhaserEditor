@@ -57,19 +57,10 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 
 	private Text _widthText;
 	private Text _heightText;
-	private Button _transparentBtn;
-	private Combo _rendererCombo;
-	private Button _antialiasBtn;
+	private Combo _typeCombo;
+	private Button _pixelArtBtn;
 	private Button _arcadeBtn;
-	private Button _ninjaBtn;
-	private Button _p2Btn;
-	private Button _box2dBtn;
 	private Button _matterBtn;
-	private Button _simplestBtn;
-	private Button _singleStateBtn;
-	private Button _multipleStatesBtn;
-	private Button _includeAssets;
-	private Group _group;
 	private Label _label;
 	private ComboViewer _comboLang;
 
@@ -115,78 +106,42 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblRenderer = new Label(grpGame, SWT.NONE);
-		lblRenderer.setText("renderer:");
+		lblRenderer.setText("type:");
 
-		_rendererCombo = new Combo(grpGame, SWT.READ_ONLY);
-		_rendererCombo.setItems(new String[] { "Phaser.AUTO", "Phaser.WEBGL", "Phaser.CANVAS", "Phaser.HEADLESS" });
-		_rendererCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-		_rendererCombo.select(0);
+		_typeCombo = new Combo(grpGame, SWT.READ_ONLY);
+		_typeCombo.setItems(new String[] { "AUTO", "WEBGL", "CANVAS", "HEADLESS" });
+		_typeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		_typeCombo.select(0);
 
-		_transparentBtn = new Button(grpGame, SWT.CHECK);
-		_transparentBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
-		_transparentBtn.setText("transparent");
-
-		_antialiasBtn = new Button(grpGame, SWT.CHECK);
-		_antialiasBtn.setSelection(true);
-		_antialiasBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
-		_antialiasBtn.setSize(79, 20);
-		_antialiasBtn.setText("antialias");
+		_pixelArtBtn = new Button(grpGame, SWT.CHECK);
+		_pixelArtBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
+		_pixelArtBtn.setSize(79, 20);
+		_pixelArtBtn.setText("pixelArt");
 
 		Label lblPhysicsconfig = new Label(grpGame, SWT.NONE);
 		lblPhysicsconfig.setText("physicsConfig:");
 
-		Composite composite = new Composite(grpGame, SWT.NONE);
-		composite.setLayout(new GridLayout(5, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+		var physicsGroup = new Group(grpGame, SWT.NONE);
+		physicsGroup.setLayout(new GridLayout(5, false));
+		physicsGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
 
-		_arcadeBtn = new Button(composite, SWT.CHECK);
+
+		_arcadeBtn = new Button(physicsGroup, SWT.RADIO);
 		_arcadeBtn.setText("arcade");
 
-		_ninjaBtn = new Button(composite, SWT.CHECK);
-		_ninjaBtn.setText("ninja");
-
-		_p2Btn = new Button(composite, SWT.CHECK);
-		_p2Btn.setText("p2");
-
-		_box2dBtn = new Button(composite, SWT.CHECK);
-		_box2dBtn.setText("box2d");
-
-		_matterBtn = new Button(composite, SWT.CHECK);
+		_matterBtn = new Button(physicsGroup, SWT.RADIO);
 		_matterBtn.setText("matter");
 
-		Group grpProjectStructure = new Group(container, SWT.NONE);
-		grpProjectStructure.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		grpProjectStructure.setText("Project Structure");
-		grpProjectStructure.setLayout(new GridLayout(1, false));
+		Group codeGroup = new Group(container, SWT.NONE);
+		codeGroup.setLayout(new GridLayout(2, false));
+		codeGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		codeGroup.setText("Code");
 
-		_simplestBtn = new Button(grpProjectStructure, SWT.RADIO);
-		_simplestBtn.setText("Simplest (global preload, update, create functions).");
-
-		_singleStateBtn = new Button(grpProjectStructure, SWT.RADIO);
-		_singleStateBtn.setSelection(true);
-		_singleStateBtn.setText("Single state (easy to add more states).");
-
-		_multipleStatesBtn = new Button(grpProjectStructure, SWT.RADIO);
-		_multipleStatesBtn.setText("Multiple states with Preloader (for larger games).");
-
-		Group grpAssets = new Group(container, SWT.NONE);
-		grpAssets.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		grpAssets.setText("Assets");
-		grpAssets.setLayout(new GridLayout(1, false));
-
-		_includeAssets = new Button(grpAssets, SWT.CHECK);
-		_includeAssets.setText("Include demo assets.");
-
-		_group = new Group(container, SWT.NONE);
-		_group.setLayout(new GridLayout(2, false));
-		_group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_group.setText("Code");
-
-		_label = new Label(_group, SWT.NONE);
+		_label = new Label(codeGroup, SWT.NONE);
 		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		_label.setText("Language: ");
 
-		_comboLang = new ComboViewer(_group, SWT.READ_ONLY);
+		_comboLang = new ComboViewer(codeGroup, SWT.READ_ONLY);
 		Combo combo = _comboLang.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		_comboLang.setContentProvider(new ArrayContentProvider());
@@ -201,7 +156,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		_widthText.setText(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_WIDTH));
 		_heightText.setText(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_HEIGHT));
 
-		_comboLang.setInput(SourceLang.values());
+		_comboLang.setInput(new Object[] { SourceLang.JAVA_SCRIPT_6 });
 		_comboLang.setSelection(new StructuredSelection(
 				SourceLang.valueOf(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_LANGUAJE))));
 	}
@@ -218,52 +173,20 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		return _heightText;
 	}
 
-	public Button getTransparentBtn() {
-		return _transparentBtn;
+	public Combo getTypeCombo() {
+		return _typeCombo;
 	}
 
-	public Combo getRendererCombo() {
-		return _rendererCombo;
-	}
-
-	public Button getAntialiasBtn() {
-		return _antialiasBtn;
+	public Button getPixelArtBtn() {
+		return _pixelArtBtn;
 	}
 
 	public Button getArcadeBtn() {
 		return _arcadeBtn;
 	}
 
-	public Button getNinjaBtn() {
-		return _ninjaBtn;
-	}
-
-	public Button getP2Btn() {
-		return _p2Btn;
-	}
-
-	public Button getBox2dBtn() {
-		return _box2dBtn;
-	}
-
 	public Button getMatterBtn() {
 		return _matterBtn;
-	}
-
-	public Button getSimplestBtn() {
-		return _simplestBtn;
-	}
-
-	public Button getSingleStateBtn() {
-		return _singleStateBtn;
-	}
-
-	public Button getMultipleStatesBtn() {
-		return _multipleStatesBtn;
-	}
-
-	public Button getIncludeAssets() {
-		return _includeAssets;
 	}
 
 	public SourceLang getSourceLang() {
