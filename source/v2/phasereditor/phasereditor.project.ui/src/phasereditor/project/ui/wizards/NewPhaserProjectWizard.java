@@ -21,16 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui.wizards;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -147,54 +148,50 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 		{
 			String str = config.toString(8);
-			str = str.substring(0, str.length() - 2) + "}";
+			for(var type : new String[] {"AUTO", "WEBGL", "CANVAS", "HEADLESS"}) {
+				str = str.replace("\"Phaser." + type + "\"", "Phaser." + type);
+			}
+			str = str.substring(0, str.length() - 2) + "\n\t}";
 			params.put("config", str);
 		}
 
 		SourceLang lang = _settingsPage.getSourceLang();
 
-		try {
+		IWorkingSet[] workingSets = _projectPage.getSelectedWorkingSets();
 
-			IWorkingSet[] workingSets = _projectPage.getSelectedWorkingSets();
+		new WorkspaceJob("Creating Phaser Project") {
 
-			getContainer().run(true, false, new IRunnableWithProgress() {
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-				@Override
-				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					try {
-						monitor.beginTask("Creating project", 4);
-						project.create(monitor);
-						monitor.worked(1);
+				monitor.beginTask("Creating project", 4);
+				project.create(monitor);
+				monitor.worked(1);
 
-						project.open(monitor);
-						monitor.worked(1);
+				project.open(monitor);
+				monitor.worked(1);
 
-						TemplateModel template;
+				TemplateModel template;
 
-						var templId = "phasereditor.project.simplest";
+				var templId = "phasereditor.project.simplest";
 
-						if (lang == SourceLang.JAVA_SCRIPT_6) {
-							templId += ".js6";
-						} else if (lang == SourceLang.TYPE_SCRIPT) {
-							templId += ".typescript";
-						}
-
-						template = InspectCore.getProjectTemplates().findById(templId);
-
-						ProjectCore.configureNewPhaserProject(project, template, params, lang, monitor);
-						monitor.worked(1);
-
-						getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
-						monitor.worked(1);
-
-					} catch (CoreException e) {
-						throw new RuntimeException(e);
-					}
+				if (lang == SourceLang.JAVA_SCRIPT_6) {
+					templId += ".js6";
+				} else if (lang == SourceLang.TYPE_SCRIPT) {
+					templId += ".typescript";
 				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+
+				template = InspectCore.getProjectTemplates().findById(templId);
+
+				ProjectCore.configureNewPhaserProject(project, template, params, lang, monitor);
+				monitor.worked(1);
+
+				getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
+				monitor.worked(1);
+
+				return Status.OK_STATUS;
+			}
+		}.schedule();
 
 		return true;
 	}

@@ -53,7 +53,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -61,6 +60,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.inspect.core.IProjectTemplate;
@@ -223,7 +223,9 @@ public class ProjectCore {
 
 	public static void configureNewPhaserProject(IProject project, IProjectTemplate template,
 			Map<String, String> paramValues, SourceLang lang, IProgressMonitor monitor) throws CoreException {
-		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
+		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> {
+			openTemplateMainFileInEditor(project, template);
+		});
 
 		IFolder webContentFolder = project.getFolder("WebContent");
 		webContentFolder.create(true, true, monitor);
@@ -323,10 +325,11 @@ public class ProjectCore {
 		IFile file = template.getOpenFile(webContentFolder);
 		if (file != null) {
 			out.println("Opening project main file: " + file);
-			Display.getDefault().asyncExec(new Runnable() {
+			new UIJob(PlatformUI.getWorkbench().getDisplay(), "Opening project main file") {
 
 				@Override
-				public void run() {
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+
 					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 					IWorkbenchPage page = window.getActivePage();
 					try {
@@ -350,8 +353,10 @@ public class ProjectCore {
 							}
 						}
 					}
+
+					return Status.OK_STATUS;
 				}
-			});
+			}.schedule(500);
 		}
 	}
 

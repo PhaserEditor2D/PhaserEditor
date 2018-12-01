@@ -109,7 +109,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		lblRenderer.setText("type:");
 
 		_typeCombo = new Combo(grpGame, SWT.READ_ONLY);
-		_typeCombo.setItems(new String[] { "AUTO", "WEBGL", "CANVAS", "HEADLESS" });
+		_typeCombo.setItems(new String[] { "Phaser.AUTO", "Phaser.WEBGL", "Phaser.CANVAS", "Phaser.HEADLESS" });
 		_typeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		_typeCombo.select(0);
 

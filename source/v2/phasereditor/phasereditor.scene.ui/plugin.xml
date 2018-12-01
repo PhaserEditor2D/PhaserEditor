@@ -330,5 +330,14 @@
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="phaser.new.other"
+            type="new"
+            wizardId="phasereditor.scene.ui.wizards.NewSceneFileWizard">
+         <enablement></enablement>
+      </commonWizard>
+   </extension>
 
 </plugin>
