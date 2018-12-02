@@ -34,6 +34,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
 import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
+import phasereditor.animation.ui.AnimationsAssetTreeCanvasItemRenderer;
+import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
@@ -85,7 +87,9 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			item.setRenderer(imageRenderer);
 		}
 
-		if (elem instanceof AnimationModel) {
+		if (elem instanceof AnimationsAssetModel) {
+			item.setRenderer(new AnimationsAssetTreeCanvasItemRenderer(item));
+		} else if (elem instanceof AnimationModel) {
 			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
 		} else if (elem instanceof AudioAssetModel) {
 			item.setRenderer(new AudioTreeCanvasItemRenderer(item));
@@ -191,7 +195,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 				keywords.add("bitmap");
 				keywords.add("text");
 			}
-			
+
 		}
 
 		if (elem instanceof AnimationsModel || elem instanceof AnimationModel) {
