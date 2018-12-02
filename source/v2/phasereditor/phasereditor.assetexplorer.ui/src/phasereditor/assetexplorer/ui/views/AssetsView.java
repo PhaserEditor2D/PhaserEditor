@@ -373,7 +373,7 @@ public class AssetsView extends ViewPart {
 
 		IProject currentProject = _contentProvider.getProjectInContent();
 
-		if (currentProject != null && project != currentProject) {
+		if (currentProject != null && project != currentProject && currentProject.exists()) {
 			out.println("  Skip refresh.");
 			return;
 		}

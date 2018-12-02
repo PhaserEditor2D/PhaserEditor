@@ -1,7 +1,11 @@
 {
-  "section": {"files": []},
+  "section1": {"files": [{
+    "type": "animation",
+    "key": "animations",
+    "url": "assets/animations.json"
+  }]},
   "meta": {
-    "generated": "1543678523151",
+    "generated": "1543777820621",
     "app": "Phaser Editor",
     "url": "https://phasereditor2d.com",
     "version": "1.0",
