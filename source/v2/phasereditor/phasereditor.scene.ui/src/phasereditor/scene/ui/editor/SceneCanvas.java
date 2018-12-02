@@ -1184,6 +1184,8 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var x = TransformComponent.get_x(model);
 				var y = TransformComponent.get_y(model);
+				
+				var sceneModel = getModel();
 
 				if (placeAtCursorPosition) {
 
@@ -1192,15 +1194,15 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 					// };
 					// }
 
-					TransformComponent.set_x(model, x - offsetPoint[0]);
-					TransformComponent.set_y(model, y - offsetPoint[1]);
+					TransformComponent.set_x(model, sceneModel.snapValueX(x - offsetPoint[0]));
+					TransformComponent.set_y(model, sceneModel.snapValueY(y - offsetPoint[1]));
 
 				} else {
 
 					var point = _renderer.sceneToLocal(parent, x, y);
 
-					TransformComponent.set_x(model, point[0]);
-					TransformComponent.set_y(model, point[1]);
+					TransformComponent.set_x(model, sceneModel.snapValueX(point[0]));
+					TransformComponent.set_y(model, sceneModel.snapValueY(point[1]));
 				}
 			}
 		}
