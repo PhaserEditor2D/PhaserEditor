@@ -215,6 +215,10 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		var modelX = calc.viewToModelX(x) - Y_LABEL_WIDTH;
 		var modelY = calc.viewToModelY(y) - X_LABELS_HEIGHT;
 
+		var sceneModel = getModel();
+		modelX = sceneModel.snapValueX(modelX);
+		modelY = sceneModel.snapValueY(modelY);
+
 		var newModels = new ArrayList<ObjectModel>();
 
 		for (var obj : data) {
