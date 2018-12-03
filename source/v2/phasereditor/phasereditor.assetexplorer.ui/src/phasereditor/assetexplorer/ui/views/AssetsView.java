@@ -183,10 +183,6 @@ public class AssetsView extends ViewPart {
 			getViewSite().registerContextMenu(manager, _treeCanvas.getUtils());
 		}
 
-		// tooltips
-
-		AssetPackUI.installAssetTooltips(_treeCanvas, _treeCanvas.getUtils());
-
 		// undo context
 
 		IUndoContext undoContext = WorkspaceUndoUtil.getWorkspaceUndoContext();

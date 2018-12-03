@@ -25,6 +25,7 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,6 +39,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
@@ -45,24 +47,36 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 
+import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
+
 import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.ui.ImagePreviewComp;
+import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
+import phasereditor.scene.core.SceneCore;
+import phasereditor.scene.core.SceneFile;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.ISceneObjectRendererContext;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.CanvasUtilsInformationControlProvider;
+import phasereditor.ui.TreeCanvasViewer;
 
 /**
  * @author arian
@@ -165,8 +179,69 @@ public class SceneUI {
 		}
 	}
 
-	public static void installCanvasTooltips(CommonViewer viewer) {
-		// TODO:
+	public static void installSceneTooltips(CommonViewer viewer) {
+		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), getSceneTooltipsCreators(),
+				false);
+	}
+
+	public static void installSceneTooltips(TreeCanvasViewer viewer) {
+		Tooltips.install(viewer.getControl(), new CanvasUtilsInformationControlProvider(viewer.getTree().getUtils()),
+				getSceneTooltipsCreators(), false);
+	}
+
+	private static List<ICustomInformationControlCreator> getSceneTooltipsCreators() {
+		List<ICustomInformationControlCreator> creators = new ArrayList<>();
+
+		creators.add(new ICustomInformationControlCreator() {
+
+			@Override
+			public IInformationControl createInformationControl(Shell parent) {
+				var control = new ExternalImageFileInformationControl(parent) {
+
+					@Override
+					protected ImagePreviewComp createContent2(Composite parentComp) {
+						ImagePreviewComp preview = super.createContent2(parentComp);
+						preview.destroyResolutionLabel();
+						return preview;
+					}
+
+					@Override
+					public File getFileToDisplay(Object model) {
+						IFile file = null;
+						if (model instanceof SceneFile) {
+							file = ((SceneFile) model).getFile();
+						} else if (model instanceof IFile) {
+							var data = SceneCore.getSceneFileDataCache().getFileData((IFile) model);
+							file = data.getFile();
+						}
+
+						if (file != null) {
+							Path path = getSceneScreenshotFile(file, false);
+							return path.toFile();
+						}
+
+						return super.getFileToDisplay(model);
+					}
+				};
+				return control;
+			}
+
+			@Override
+			public boolean isSupported(Object info) {
+				if (info instanceof SceneFile) {
+					return true;
+				}
+
+				if (info instanceof IFile) {
+					var data = SceneCore.getSceneFileDataCache().getFileData((IFile) info);
+					if (data != null) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+		return creators;
 	}
 
 	public static void clearSceneScreenshot(IFile file) {
@@ -312,9 +387,9 @@ public class SceneUI {
 				if (max > maxSize) {
 					scale = (float) maxSize / max;
 				}
-				
+
 				context.setScale(scale);
-				
+
 				width *= scale;
 				height *= scale;
 

@@ -60,13 +60,16 @@ import phasereditor.ui.TreeCanvasViewer;
  */
 public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 
-	public AssetsTreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider,
+	public AssetsTreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
-		super(canvas, contentProvider, labelProvider);
+		
+		super(tree, contentProvider, labelProvider);
+		
+		AssetPackUI.installAssetTooltips(tree, tree.getUtils());
 	}
 
-	public AssetsTreeCanvasViewer(TreeCanvas canvas) {
-		super(canvas);
+	public AssetsTreeCanvasViewer(TreeCanvas tree) {
+		this(tree, null, null);
 	}
 
 	@Override

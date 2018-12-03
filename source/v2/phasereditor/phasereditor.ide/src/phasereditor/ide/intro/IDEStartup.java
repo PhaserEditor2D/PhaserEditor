@@ -156,7 +156,7 @@ public class IDEStartup implements IStartup {
 		_used.add(new WeakReference<>(viewer));
 
 		AssetPackUI.installAssetTooltips(viewer);
-		SceneUI.installCanvasTooltips(viewer);
+		SceneUI.installSceneTooltips(viewer);
 	}
 
 }

@@ -59,6 +59,8 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 	public AssetExplorerTreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
 		super(canvas, contentProvider, labelProvider);
+		
+		SceneUI.installSceneTooltips(this);
 	}
 
 	@Override

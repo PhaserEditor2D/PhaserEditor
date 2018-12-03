@@ -52,9 +52,9 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		this(canvas, null, null);
 	}
 
-	public TreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
+	public TreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
 		super();
-		_tree = canvas;
+		_tree = tree;
 		_contentProvider = contentProvider;
 		_labelProvider = labelProvider;
 	}
