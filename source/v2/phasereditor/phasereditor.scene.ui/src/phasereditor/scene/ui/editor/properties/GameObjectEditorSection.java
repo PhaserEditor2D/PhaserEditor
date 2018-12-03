@@ -544,7 +544,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 				editor.refreshOutline();
 
 				if (editor.getOutline() != null) {
-					editor.getOutline().getViewer().getCanvas().reveal(getModels().toArray());
+					editor.getOutline().getViewer().getTree().reveal(getModels().toArray());
 				}
 
 				update_UI_from_Model();

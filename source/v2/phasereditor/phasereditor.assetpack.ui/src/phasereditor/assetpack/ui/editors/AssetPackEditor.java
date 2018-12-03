@@ -664,7 +664,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 				@Override
 				public boolean performDrop(Object data) {
-					FrameCanvasUtils utils = viewer.getCanvas().getUtils();
+					FrameCanvasUtils utils = viewer.getTree().getUtils();
 					int _target = utils.getDropIndex();
 					int feedback = utils.getDropLocation();
 
@@ -776,14 +776,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				var section = (AssetSectionModel) event.getStructuredSelection().getFirstElement();
 				getTypesComp().getViewer().setInput(section);
 
-				List<TreeCanvasItem> items = getTypesComp().getViewer().getCanvas().getVisibleItems();
+				List<TreeCanvasItem> items = getTypesComp().getViewer().getTree().getVisibleItems();
 				var group = _lastSelectedTypeMap.getOrDefault(section,
 						(AssetGroupModel) (items.isEmpty() ? null : items.get(0).getData()));
 				if (group != null) {
 					getTypesComp().getViewer().setSelection(new StructuredSelection(group));
 				}
 
-				if (getSectionsComp().getViewer().getCanvas().isFocusControl()) {
+				if (getSectionsComp().getViewer().getTree().isFocusControl()) {
 					if (getOutliner() != null) {
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
@@ -807,7 +807,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 				getAssetsComp().getViewer().setInput(input);
 
-				if (getTypesComp().getViewer().getCanvas().isFocusControl()) {
+				if (getTypesComp().getViewer().getTree().isFocusControl()) {
 					if (getOutliner() != null) {
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
@@ -819,7 +819,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				if (getAssetsComp().getViewer().getCanvas().isFocusControl()) {
+				if (getAssetsComp().getViewer().getTree().isFocusControl()) {
 					if (getOutliner() != null) {
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
@@ -828,7 +828,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		});
 
 		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(
-				_sectionsComp.getViewer().getCanvas().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
+				_sectionsComp.getViewer().getTree().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
 
 		recoverEditingPoint();
 
@@ -970,7 +970,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
-					if (!viewer.getCanvas().isFocusControl()) {
+					if (!viewer.getTree().isFocusControl()) {
 						return;
 					}
 
@@ -1000,7 +1000,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 			});
 
-			AssetPackUI.installAssetTooltips(viewer.getCanvas(), viewer.getCanvas().getUtils());
+			AssetPackUI.installAssetTooltips(viewer.getTree(), viewer.getTree().getUtils());
 
 			viewer.setInput(getModel());
 

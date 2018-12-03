@@ -22,61 +22,23 @@
 package phasereditor.scene.core;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import phasereditor.project.core.FileDataCache;
 
 /**
  * @author arian
  *
  */
-public class SceneCore {
-
-	private static SceneFileDataCache _fileDataCache;
-
-	public static IFile getSceneSourceCodeFile(IFile sceneFile) {
-		var path = sceneFile.getProjectRelativePath();
-
-		// for now it only compiles to JavaScript.
-
-		return sceneFile.getProject().getFile(path.removeFileExtension().addFileExtension("js"));
+public class SceneFile {
+	private IFile _file;
+	
+	public SceneFile(IFile file) {
+		_file = file;
 	}
 
-	public static void compileScene(SceneModel model, IFile sceneFile, IProgressMonitor monitor) throws Exception {
-
-		var compiler = new SceneCompiler(sceneFile, model);
-
-		compiler.compile(monitor);
-
+	public IFile getFile() {
+		return _file;
 	}
-
-	public static FileDataCache<SceneFile> getSceneFileDataCache() {
-		if (_fileDataCache == null) {
-			_fileDataCache = new SceneFileDataCache();
-		}
-
-		return _fileDataCache;
-	}
-
-	public static boolean isSceneFile(IFile file) {
-
-		try {
-
-			if (!file.getFileExtension().equals("scene")) {
-				return false;
-			}
-
-			var desc = file.getContentDescription();
-			if (desc != null) {
-				var contentType = desc.getContentType();
-				if (contentType != null) {
-					return contentType.getId().equals(SceneContentTypeDescriber.CONTENT_TYPE_ID);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return false;
+	
+	public void setFile(IFile file) {
+		_file = file;
 	}
 }

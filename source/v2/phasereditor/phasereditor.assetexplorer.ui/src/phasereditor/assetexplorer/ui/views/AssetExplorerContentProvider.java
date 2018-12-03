@@ -33,6 +33,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.atlas.core.AtlasCore;
+import phasereditor.scene.core.SceneCore;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
@@ -67,11 +68,13 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 			return new Object[] {
 
+					AssetsView.SCENES_NODE,
+
 					AssetsView.ANIMATIONS_NODE,
 
-					AssetsView.ATLAS_NODE,
-
 					AssetsView.PACK_NODE,
+
+					AssetsView.ATLAS_NODE,
 
 					AssetsView.PROJECTS_NODE
 
@@ -120,23 +123,28 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-//		if (parent instanceof CanvasType) {
-//			List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
-//
-//			List<CanvasFile> list = new ArrayList<>();
-//
-//			for (CanvasFile cfile : cfiles) {
-//				if (cfile.getType() == parent) {
-//					list.add(cfile);
-//				}
-//			}
-//
-//			list.sort((a, b) -> {
-//				return a.getFile().getName().compareTo(b.getFile().getName());
-//			});
-//
-//			return list.toArray();
-//		}
+		if (parent == AssetsView.SCENES_NODE) {
+			return SceneCore.getSceneFileDataCache().getProjectData(activeProjet).toArray();
+		}
+
+		// if (parent instanceof CanvasType) {
+		// List<CanvasFile> cfiles =
+		// CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
+		//
+		// List<CanvasFile> list = new ArrayList<>();
+		//
+		// for (CanvasFile cfile : cfiles) {
+		// if (cfile.getType() == parent) {
+		// list.add(cfile);
+		// }
+		// }
+		//
+		// list.sort((a, b) -> {
+		// return a.getFile().getName().compareTo(b.getFile().getName());
+		// });
+		//
+		// return list.toArray();
+		// }
 
 		if (parent instanceof AssetPackModel) {
 			return ((AssetPackModel) parent).getSections().toArray();

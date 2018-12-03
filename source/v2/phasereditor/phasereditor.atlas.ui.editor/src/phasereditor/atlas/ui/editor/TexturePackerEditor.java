@@ -1078,14 +1078,14 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					if (element instanceof TexturePackerEditorFrame) {
 						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 						IFile file = findFile(frame);
-						var img = getCanvas().loadImage(file);
+						var img = getTree().loadImage(file);
 						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
 					}
 
 					if (element instanceof TexturePackerEditorFrame) {
 						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 						IFile file = findFile(frame);
-						var img = getCanvas().loadImage(file);
+						var img = getTree().loadImage(file);
 						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
 					}
 

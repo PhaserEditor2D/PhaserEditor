@@ -104,7 +104,7 @@ public class ListCanvasDialog extends SelectionDialog {
 		fTableViewer.setContentProvider(fContentProvider);
 		fTableViewer.setLabelProvider(fLabelProvider);
 		fTableViewer.setInput(fInput);
-		fTableViewer.getCanvas().addMouseListener(new MouseAdapter() {
+		fTableViewer.getTree().addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {

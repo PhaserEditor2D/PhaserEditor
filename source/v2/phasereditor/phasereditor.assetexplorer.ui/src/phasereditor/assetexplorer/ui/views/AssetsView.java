@@ -71,6 +71,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
+import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
@@ -101,6 +102,7 @@ public class AssetsView extends ViewPart {
 	public static String ANIMATIONS_NODE = "Animations Files";
 	public static String ATLAS_NODE = "Texture Packer Files";
 	public static String PACK_NODE = "Pack Files";
+	public static String SCENES_NODE = "Scene Files";
 	public static String PROJECTS_NODE = "Other Projects";
 
 	public AssetsView() {
@@ -148,6 +150,8 @@ public class AssetsView extends ViewPart {
 			file = ((AtlasData) elem).getFile();
 		} else if (elem instanceof AnimationsModel) {
 			file = ((AnimationsModel) elem).getFile();
+		} else if (elem instanceof SceneFile) {
+			file = ((SceneFile) elem).getFile();
 		} else if (elem instanceof NewWizardLancher) {
 			((NewWizardLancher) elem).openWizard(provider.getProjectInContent());
 		}

@@ -21,9 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.json.JSONObject;
 
@@ -126,6 +128,11 @@ public class SceneUI {
 
 	public static void installCanvasTooltips(CommonViewer viewer) {
 		//TODO:
+	}
+
+	public static Path getSceneScreenshotFile(IFile file, boolean b) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

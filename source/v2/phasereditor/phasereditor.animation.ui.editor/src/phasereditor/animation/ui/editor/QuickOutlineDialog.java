@@ -85,20 +85,20 @@ public class QuickOutlineDialog extends Dialog implements MouseListener {
 	}
 
 	private void afterCreateWidgets() {
-		_viewer.getCanvas().addMouseListener(this);
+		_viewer.getTree().addMouseListener(this);
 		_viewer.setInput(getModel());
 		
-		AssetPackUI.installAssetTooltips(_viewer.getCanvas(), _viewer.getCanvas().getUtils());
+		AssetPackUI.installAssetTooltips(_viewer.getTree(), _viewer.getTree().getUtils());
 
 		if (_selected != null) {
-			_viewer.getCanvas().getUtils().setSelectionObject(_selected);
+			_viewer.getTree().getUtils().setSelectionObject(_selected);
 		}
 	}
 
 	@Override
 	protected void okPressed() {
 
-		TreeCanvas canvas = _viewer.getCanvas();
+		TreeCanvas canvas = _viewer.getTree();
 		List<Object> selection = canvas.getUtils().getSelectedObjects();
 		if (selection.isEmpty()) {
 			if (canvas.getVisibleItems().size() == 1) {

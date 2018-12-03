@@ -155,7 +155,7 @@ public class ImageResourceDialog extends Dialog {
 			_listViewer.setInput(_input);
 		}
 
-		_listViewer.getCanvas().addMouseListener(new MouseAdapter() {
+		_listViewer.getTree().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				okPressed();

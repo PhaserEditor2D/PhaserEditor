@@ -243,7 +243,7 @@ public class SceneEditor extends EditorPart {
 
 					addSelectionChangedListener(_outlinerSelectionListener);
 
-					getViewer().getCanvas().addFocusListener(new FocusListener() {
+					getViewer().getTree().addFocusListener(new FocusListener() {
 
 						@Override
 						public void focusLost(FocusEvent e) {

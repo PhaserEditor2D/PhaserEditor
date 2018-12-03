@@ -47,7 +47,7 @@ public class NewSceneFileWizard extends Wizard implements INewWizard {
 	private NewPage_AssetPackSection _assetPackPage;
 
 	public NewSceneFileWizard() {
-		setWindowTitle("New Animations File");
+		setWindowTitle("New Scene File");
 	}
 
 	@Override

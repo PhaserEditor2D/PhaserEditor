@@ -551,7 +551,7 @@ public class AssetPackUI {
 	}
 	
 	public static void installAssetTooltips(TreeCanvasViewer viewer) {
-		installAssetTooltips(viewer.getCanvas(), viewer.getCanvas().getUtils());
+		installAssetTooltips(viewer.getTree(), viewer.getTree().getUtils());
 	}
 	
 	public static void installAssetTooltips(FilteredFrameGrid frameGrid) {

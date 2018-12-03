@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -36,15 +37,20 @@ class AssetExplorerLabelProvider extends LabelProvider {
 
 	@Override
 	public String getText(Object element) {
+		
+		if (element instanceof SceneFile) {
+			return ((SceneFile) element).getFile().getName();
+		}
+
 		return AssetLabelProvider.GLOBAL_16.getText(element);
 	}
 
 	@Override
 	public Image getImage(Object element) {
-		if (element == AssetsView.PACK_NODE) {
-			return AssetLabelProvider.getFolderImage();
+		if (element instanceof SceneFile) {
+			return getCanvasImage();
 		}
-
+		
 		if (element instanceof NewWizardLancher) {
 			return EditorSharedImages.getImage(IEditorSharedImages.IMG_ADD);
 		}

@@ -13,5 +13,13 @@
             priority="normal">
       </content-type>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.scene.core.SceneFileDataBuilderParticipant"
+            id="phasereditor.scene.core.sceneFilesParticipant"
+            order="2">
+      </participant>
+   </extension>
 
 </plugin>

@@ -46,7 +46,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	private ITreeContentProvider _contentProvider;
 	private LabelProvider _labelProvider;
 	private Object _input;
-	private TreeCanvas _canvas;
+	private TreeCanvas _tree;
 
 	public TreeCanvasViewer(TreeCanvas canvas) {
 		this(canvas, null, null);
@@ -54,7 +54,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	public TreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
 		super();
-		_canvas = canvas;
+		_tree = canvas;
 		_contentProvider = contentProvider;
 		_labelProvider = labelProvider;
 	}
@@ -83,30 +83,30 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 			}
 		}
 
-		_canvas.setRoots(roots);
+		_tree.setRoots(roots);
 
 	}
 
 	public void expandToLevel(Object elem, int level) {
-		_canvas.expandToLevel(elem, level);
+		_tree.expandToLevel(elem, level);
 	}
 
 	protected void refreshLabels() {
-		for (var item : _canvas.getItems()) {
+		for (var item : _tree.getItems()) {
 			setItemProperties(item);
 		}
 	}
 
-	public TreeCanvas getCanvas() {
-		return _canvas;
+	public TreeCanvas getTree() {
+		return _tree;
 	}
 
 	public Control getControl() {
-		return _canvas;
+		return _tree;
 	}
 
 	private TreeCanvasItem buildItem(Object elem) {
-		var item = new TreeCanvasItem(getCanvas());
+		var item = new TreeCanvasItem(getTree());
 		item.setData(elem);
 
 		refreshItem(item);
@@ -153,12 +153,12 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		_canvas.getUtils().addSelectionChangedListener(listener);
+		_tree.getUtils().addSelectionChangedListener(listener);
 	}
 
 	@Override
 	public ISelection getSelection() {
-		return _canvas.getUtils().getSelection();
+		return _tree.getUtils().getSelection();
 	}
 
 	public IStructuredSelection getStructuredSelection() {
@@ -167,7 +167,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		_canvas.getUtils().removeSelectionChangedListener(listener);
+		_tree.getUtils().removeSelectionChangedListener(listener);
 	}
 
 	@Override
@@ -176,41 +176,41 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	public void setSelection(ISelection selection, boolean reveal) {
-		_canvas.getUtils().setSelection(selection);
+		_tree.getUtils().setSelection(selection);
 
 		if (reveal) {
-			_canvas.reveal(((IStructuredSelection) selection).toArray());
+			_tree.reveal(((IStructuredSelection) selection).toArray());
 		}
 
-		_canvas.redraw();
+		_tree.redraw();
 	}
 
 	public void addDragSupport(int operations, Transfer[] transferTypes, DragSourceListener listener) {
-		_canvas.addDragSupport(operations, transferTypes, listener);
+		_tree.addDragSupport(operations, transferTypes, listener);
 	}
 
 	public void addDropSupport(int operations, Transfer[] transferTypes, final DropTargetListener listener) {
-		_canvas.addDropSupport(operations, transferTypes, listener);
+		_tree.addDropSupport(operations, transferTypes, listener);
 	}
 
 	public Object[] getExpandedElements() {
-		List<Object> list = _canvas.getExpandedObjects();
+		List<Object> list = _tree.getExpandedObjects();
 		return list.toArray(new Object[list.size()]);
 	}
 
 	public void setExpandedElements(Object[] elems) {
-		_canvas.setExpandedObjects(List.of(elems));
+		_tree.setExpandedObjects(List.of(elems));
 	}
 
 	public void expandAll() {
-		_canvas.expandAll();
+		_tree.expandAll();
 	}
 
 	public void setCheckedElements(Object[] elements) {
-		_canvas.setCheckedElements(elements);
+		_tree.setCheckedElements(elements);
 	}
 
 	public Object[] getCheckedElements() {
-		return _canvas.getCheckedElements();
+		return _tree.getCheckedElements();
 	}
 }

@@ -124,7 +124,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 			}
 		};
 
-		_viewer.getCanvas().addMouseListener(new MouseAdapter() {
+		_viewer.getTree().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				revealSelectedObjectInScene();
@@ -135,7 +135,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		var scene = _editor.getScene();
 
-		_viewer.getCanvas().setEditActions(scene::copy, scene::cut, () -> {
+		_viewer.getTree().setEditActions(scene::copy, scene::cut, () -> {
 
 			var sel = _viewer.getStructuredSelection().toArray();
 
@@ -222,7 +222,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	}
 
 	protected void revealSelectedObjectInScene() {
-		var obj = _viewer.getCanvas().getUtils().getOverObject();
+		var obj = _viewer.getTree().getUtils().getOverObject();
 		if (obj != null && obj instanceof ObjectModel) {
 			_editor.getScene().reveal((ObjectModel) obj);
 		}
@@ -252,7 +252,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	}
 
 	boolean performSelectionDrop(List<ObjectModel> models) {
-		var utils = _viewer.getCanvas().getUtils();
+		var utils = _viewer.getTree().getUtils();
 
 		int location = utils.getDropLocation();
 		var targetObj = utils.getDropObject();
@@ -395,7 +395,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		_viewer.refresh();
 
-		var expanded = _viewer.getCanvas().getItems().stream().map(item -> item.getData())
+		var expanded = _viewer.getTree().getItems().stream().map(item -> item.getData())
 				.filter(data -> data instanceof ObjectModel && expandedIds.contains(((ObjectModel) data).getId()))
 				.toArray();
 
@@ -403,8 +403,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	}
 
 	public void setSelection_from_external(StructuredSelection sel) {
-		_viewer.getCanvas().reveal(sel.toArray());
-		_viewer.getCanvas().getUtils().setSelection(sel, false);
+		_viewer.getTree().reveal(sel.toArray());
+		_viewer.getTree().getUtils().setSelection(sel, false);
 	}
 
 }

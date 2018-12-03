@@ -120,7 +120,7 @@ public abstract class TreeCanvasDropAdapter extends DropTargetAdapter {
 	private boolean selectFeedbackEnabled = true;
 
 	protected TreeCanvasDropAdapter(TreeCanvasViewer viewer) {
-		this(viewer.getCanvas());
+		this(viewer.getTree());
 	}
 
 	/**
