@@ -253,6 +253,10 @@ public class SceneUI {
 			return _scale;
 		}
 
+		public void setScale(float scale) {
+			_scale = scale;
+		}
+
 		@Override
 		public Device getDisplay() {
 			return _device;
@@ -285,8 +289,7 @@ public class SceneUI {
 	public static Image makeSceneScreenshot_SWTImage(IFile file, int maxSize) {
 		try {
 			var display = PlatformUI.getWorkbench().getDisplay();
-			
-			
+
 			var model = new SceneModel();
 			model.read(file);
 
@@ -296,14 +299,34 @@ public class SceneUI {
 			Image img = null;
 
 			try (var context = new OfflineSceneRendererContext(finder, display, 1)) {
+
 				var renderer = new SceneObjectRenderer(context);
-				img = renderer.createImage(model.getBorderWidth(), model.getBorderHeight());
+
+				// just for now, until we do a better job with position and dimension
+				// computations
+				var width = model.getBorderWidth();
+				var height = model.getBorderHeight();
+
+				var max = Math.max(width, height);
+				var scale = 1f;
+				if (max > maxSize) {
+					scale = (float) maxSize / max;
+				}
+				
+				context.setScale(scale);
+				
+				width *= scale;
+				height *= scale;
+
+				img = renderer.createImage(width, height);
+
 				var gc = new GC(img);
 				var tx = new Transform(gc.getDevice());
-				
-				display.syncExec( () -> {
+
+				display.syncExec(() -> {
 					renderer.renderScene(gc, tx, model);
-				} );
+				});
+
 			}
 
 			return img;
@@ -317,9 +340,9 @@ public class SceneUI {
 		long t = currentTimeMillis();
 
 		var image = makeSceneScreenshot_SWTImage(file, SCENE_SCREENSHOT_SIZE);
-		
+
 		var loader = new ImageLoader();
-		
+
 		try {
 			Files.createDirectories(writeTo.getParent());
 			loader.data = new ImageData[] { image.getImageData() };
