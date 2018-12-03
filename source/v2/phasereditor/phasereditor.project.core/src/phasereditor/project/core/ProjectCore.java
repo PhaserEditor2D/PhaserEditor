@@ -23,7 +23,10 @@ package phasereditor.project.core;
 
 import static java.lang.System.out;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -464,4 +467,49 @@ public class ProjectCore {
 		}
 		return touched[0];
 	}
+	public enum OS {
+		WINDOWS, LINUX, MAC
+	}
+	private static OS _os;
+	private static java.nio.file.Path _userFolderPath;
+
+	public static OS getOS() {
+		if (_os == null) {
+			String osname = System.getProperty("os.name").toLowerCase();
+			if (osname.contains("windows")) {
+				_os = OS.WINDOWS;
+			} else if (osname.contains("mac")) {
+				_os = OS.MAC;
+			} else {
+				_os = OS.LINUX;
+			}
+		}
+		return _os;
+	}
+	
+	public static java.nio.file.Path getUserCacheFolder() {
+		if (_userFolderPath == null) {
+			String home = System.getProperty("user.home");
+			java.nio.file.Path homePath = Paths.get(home);
+
+			java.nio.file.Path dir;
+			if (getOS() == OS.MAC) {
+				dir = homePath.resolve("Library/Caches/com.phasereditor2d");
+			} else {
+				dir = homePath.resolve(".phasereditor");
+			}
+			_userFolderPath = dir;
+		}
+
+		try {
+
+			Files.createDirectories(_userFolderPath);
+
+			return _userFolderPath;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
 }

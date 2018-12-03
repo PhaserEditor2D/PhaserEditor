@@ -261,6 +261,11 @@
             id="phasereditor.scene.ui.build.SceneEditorProjectBuildParticipant"
             order="1000">
       </participant>
+      <participant
+            handler="phasereditor.scene.ui.build.SceneScreenshotBuildParticipant"
+            id="phasereditor.scene.ui.build.SceneScreenshotBuildParticipant"
+            order="3">
+      </participant>
    </extension>
    <extension
          point="org.eclipse.ui.contexts">

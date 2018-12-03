@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor;
+package phasereditor.scene.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -57,6 +58,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.ui.editor.ISceneObjectRendererContext;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -65,7 +67,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class SceneObjectRenderer {
-	private SceneCanvas _scene;
+	private ISceneObjectRendererContext _rendererContext;
 	private Map<ObjectModel, float[]> _modelMatrixMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
 	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
@@ -76,10 +78,10 @@ public class SceneObjectRenderer {
 	private AssetFinder _finder;
 	private AssetFinder _lastFinderSnapshot;
 
-	public SceneObjectRenderer(SceneCanvas scene) {
+	public SceneObjectRenderer(ISceneObjectRendererContext rendererContext) {
 		super();
 
-		_scene = scene;
+		_rendererContext = rendererContext;
 
 		_modelMatrixMap = new HashMap<>();
 		_modelChildrenBoundsMap = new HashMap<>();
@@ -89,7 +91,7 @@ public class SceneObjectRenderer {
 
 		_imageCacheMap = new HashMap<>();
 
-		_finder = scene.getAssetFinder();
+		_finder = rendererContext.getAssetFinder();
 		_lastFinderSnapshot = _finder;
 	}
 
@@ -116,7 +118,7 @@ public class SceneObjectRenderer {
 		_postPaintActions.add(action);
 	}
 
-	void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
+	public void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
 
 		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
@@ -127,9 +129,10 @@ public class SceneObjectRenderer {
 		try {
 
 			{
-				int dx = _scene.getOffsetX();
-				int dy = _scene.getOffsetY();
-				float scale = _scene.getScale();
+
+				int dx = _rendererContext.getOffsetX();
+				int dy = _rendererContext.getOffsetY();
+				float scale = _rendererContext.getScale();
 
 				tx2.translate(dx, dy);
 				tx2.scale(scale, scale);
@@ -574,14 +577,16 @@ public class SceneObjectRenderer {
 		}
 	}
 
-	private Image createImage(int width, int height) {
-		var temp = new Image(_scene.getDisplay(), 1, 1);
+	public Image createImage(int width, int height) {
+		Device display = _rendererContext.getDisplay();
+		
+		var temp = new Image(display, 1, 1);
 		var tempData = temp.getImageData();
 
 		var data = new ImageData(width, height, tempData.depth, tempData.palette);
 		data.alphaData = new byte[width * height];
 
-		var img = new Image(_scene.getDisplay(), data);
+		var img = new Image(display, data);
 
 		temp.dispose();
 
@@ -615,7 +620,7 @@ public class SceneObjectRenderer {
 			return null;
 		}
 
-		var img = _scene.loadImage(assetFrame.getImageFile());
+		var img = _rendererContext.loadImage(assetFrame.getImageFile());
 
 		var fd = assetFrame.getFrameData();
 
@@ -709,7 +714,7 @@ public class SceneObjectRenderer {
 	}
 
 	private Image loadImage(IFile file) {
-		return _scene.loadImage(file);
+		return _rendererContext.loadImage(file);
 	}
 
 	public float[] getObjectSize(ObjectModel model) {
@@ -928,7 +933,7 @@ public class SceneObjectRenderer {
 		var parent = ParentComponent.get_parent(model);
 
 		if (parent == null || !TransformComponent.is(parent)) {
-			return _scene.getScale() * scale;
+			return _rendererContext.getScale() * scale;
 		}
 
 		return scale * globalScaleX(parent);
@@ -940,7 +945,7 @@ public class SceneObjectRenderer {
 		var parent = ParentComponent.get_parent(model);
 
 		if (parent == null || !TransformComponent.is(parent)) {
-			return _scene.getScale() * scale;
+			return _rendererContext.getScale() * scale;
 		}
 
 		return scale * globalScaleY(parent);
@@ -1017,9 +1022,9 @@ public class SceneObjectRenderer {
 	private boolean assetChanged(String key, String frame) {
 		var asset1 = _lastFinderSnapshot.findAssetKey(key, frame);
 		var asset2 = _finder.findAssetKey(key, frame);
-		
+
 		var b = asset1 == null || asset2 == null || asset1 != asset2;
-		
+
 		return b;
 	}
 }

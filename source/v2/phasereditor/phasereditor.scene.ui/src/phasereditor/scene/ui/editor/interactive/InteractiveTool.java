@@ -31,9 +31,9 @@ import org.eclipse.swt.graphics.Transform;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.ui.SceneObjectRenderer;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.SceneObjectRenderer;
 
 /**
  * @author arian

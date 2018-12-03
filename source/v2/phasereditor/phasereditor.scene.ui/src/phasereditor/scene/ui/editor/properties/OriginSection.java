@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.SceneObjectRenderer;
+import phasereditor.scene.ui.SceneObjectRenderer;
 import phasereditor.scene.ui.editor.interactive.OriginTool;
 import phasereditor.ui.EditorSharedImages;
 

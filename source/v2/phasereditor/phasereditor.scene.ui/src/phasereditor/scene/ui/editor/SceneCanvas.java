@@ -75,6 +75,7 @@ import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
+import phasereditor.scene.ui.SceneObjectRenderer;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
@@ -84,7 +85,8 @@ import phasereditor.ui.ZoomCanvas;
  * @author arian
  *
  */
-public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveListener, DragDetectListener {
+public class SceneCanvas extends ZoomCanvas
+		implements MouseListener, MouseMoveListener, DragDetectListener, ISceneObjectRendererContext {
 
 	private static final String SCENE_COPY_STAMP = "--scene--copy--stamp--";
 	public static final int X_LABELS_HEIGHT = 18;
@@ -324,6 +326,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 		_renderer = new SceneObjectRenderer(this);
 	}
 
+	@Override
 	public AssetFinder getAssetFinder() {
 		return _finder;
 	}
@@ -1184,7 +1187,7 @@ public class SceneCanvas extends ZoomCanvas implements MouseListener, MouseMoveL
 
 				var x = TransformComponent.get_x(model);
 				var y = TransformComponent.get_y(model);
-				
+
 				var sceneModel = getModel();
 
 				if (placeAtCursorPosition) {
