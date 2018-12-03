@@ -39,7 +39,7 @@ import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.PhaserEditorUI;
 
-public class AtlasAssetFramePreviewComp extends SingleFrameCanvas {
+public class AtlasAssetFramePreviewComp extends ExplainAssetFrameCanvas {
 	static final Object NO_SELECTION = "none";
 
 	public AtlasAssetFramePreviewComp(Composite parent, int style) {

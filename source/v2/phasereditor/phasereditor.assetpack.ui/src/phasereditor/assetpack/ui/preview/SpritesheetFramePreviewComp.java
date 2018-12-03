@@ -43,7 +43,7 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class SpritesheetFramePreviewComp extends SingleFrameCanvas {
+public class SpritesheetFramePreviewComp extends ExplainAssetFrameCanvas {
 
 	public SpritesheetFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
