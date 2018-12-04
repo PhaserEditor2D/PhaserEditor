@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -61,7 +62,7 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 			try {
 				var pack = getEditor().getModel();
 				var urlFile = pack.getFileFromUrl(getUrl());
-				List<IFile> imageFiles = pack.discoverImageFiles();
+				List<IFile> imageFiles = discoverImages(pack);
 				String result = AssetPackUI.browseImageUrl(pack, dialogName, urlFile, imageFiles,
 						e.display.getActiveShell());
 
@@ -77,6 +78,10 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 				e1.printStackTrace();
 				throw new RuntimeException(e1);
 			}
+		}
+
+		protected List<IFile> discoverImages(AssetPackModel pack) throws CoreException {
+			return pack.discoverImageFiles();
 		}
 
 		protected abstract void setUrl(String url);
