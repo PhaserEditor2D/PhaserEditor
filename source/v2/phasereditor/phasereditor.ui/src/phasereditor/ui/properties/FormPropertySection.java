@@ -45,11 +45,21 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	public List<T> _models;
 	private String _name;
 	private boolean _fillSpace;
+	private List<Runnable> _updates;
 
 	public FormPropertySection(String name) {
 		_name = name;
 		_models = new ArrayList<>();
 		_fillSpace = false;
+		_updates = new ArrayList<>();
+	}
+	
+	public List<Runnable> getUpdates() {
+		return _updates;
+	}
+	
+	public void addUpdate(Runnable update) {
+		_updates.add(update);
 	}
 
 	public boolean isFillSpace() {
@@ -173,10 +183,21 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 
 	public abstract Control createContent(Composite parent);
 
-	public abstract void update_UI_from_Model();
+	public void user_update_UI_from_Model() {
+		// nothing by default, now you can use updaters
+	}
 
 	@SuppressWarnings("unused")
 	public void fillToolbar(ToolBarManager manager) {
 		// nothing
+	}
+
+	public final void update_UI_from_Model() {
+		
+		for(var update : _updates) {
+			update.run();
+		}
+		
+		user_update_UI_from_Model();
 	}
 }

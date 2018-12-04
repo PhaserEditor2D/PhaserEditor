@@ -200,7 +200,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 					getEditor().executeOperation(
 							new ScenePropertiesSnapshotOperation(before, after, "Change snapping with selection."));
 
-					update_UI_from_Model();
+					user_update_UI_from_Model();
 
 				}
 
@@ -377,7 +377,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 						editor.setDirty(true);
 
-						update_UI_from_Model();
+						user_update_UI_from_Model();
 
 					}
 
@@ -486,7 +486,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			wrapOperation(() -> {
 				getModels().forEach(model -> GameObjectEditorComponent.set_gameObjectEditorShowBones(model, value));
 
-				update_UI_from_Model();
+				user_update_UI_from_Model();
 
 				getEditor().setDirty(true);
 			});
@@ -547,7 +547,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 					editor.getOutline().getViewer().getTree().reveal(getModels().toArray());
 				}
 
-				update_UI_from_Model();
+				user_update_UI_from_Model();
 			}
 		}
 	}
@@ -630,7 +630,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 	@SuppressWarnings("boxing")
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		_typeButton.setText(flatValues_to_String(models.stream().map(model -> model.getType())));

@@ -127,13 +127,13 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 			_frameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		}
 
-		update_UI_from_Model();
+		user_update_UI_from_Model();
 
 		return comp;
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		// duration

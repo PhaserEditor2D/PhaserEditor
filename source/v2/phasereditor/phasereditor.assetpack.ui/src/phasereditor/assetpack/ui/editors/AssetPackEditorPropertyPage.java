@@ -19,53 +19,52 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.properties;
+package phasereditor.assetpack.ui.editors;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import java.util.ArrayList;
+import java.util.List;
 
-import phasereditor.scene.core.SceneModel;
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AssetsSection extends ScenePropertySection {
+public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
-	public AssetsSection(FormPropertyPage page) {
-		super("Assets", page);
+	private AssetPackEditor _editor;
+
+	public AssetPackEditorPropertyPage(AssetPackEditor editor) {
+		super();
+		_editor = editor;
+	}
+
+	public AssetPackEditor getEditor() {
+		return _editor;
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof SceneModel;
+	protected Object getDefaultModel() {
+		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Control createContent(Composite parent) {
+	protected List<FormPropertySection> createSections(Object obj) {
+		var list = new ArrayList<FormPropertySection>();
 
-		var comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(1, false));
-
-		{
-			var btn = new Button(comp, 0);
-			btn.setText("Rebuild Image Cache");
-			btn.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::rebuildImageCache));
+		if (obj instanceof AssetModel) {
+			list.add(new KeySection(this));
 		}
 
-		return comp;
+		if (obj instanceof ImageAssetModel) {
+			list.add(new ImageSection(this));
+		}
+
+		return list;
 	}
-	
-	@SuppressWarnings("unused")
-	private void rebuildImageCache(SelectionEvent e) {
-		getEditor().rebuildImageCache();
-	}
+
 }

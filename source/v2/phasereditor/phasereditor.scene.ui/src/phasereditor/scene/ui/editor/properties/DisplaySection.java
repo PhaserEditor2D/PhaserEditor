@@ -160,7 +160,7 @@ public class DisplaySection extends BaseDesignSection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var sceneModel = getEditor().getSceneModel();
 
 		_borderXText.setText(Integer.toString(sceneModel.getBorderX()));

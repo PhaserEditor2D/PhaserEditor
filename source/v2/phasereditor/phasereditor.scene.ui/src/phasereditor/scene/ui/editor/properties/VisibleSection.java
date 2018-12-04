@@ -77,7 +77,7 @@ public class VisibleSection extends ScenePropertySection {
 
 	@Override
 	@SuppressWarnings("boxing")
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		var value = flatValues_to_Boolean(models.stream().map(model -> VisibleComponent.get_visible(model)));

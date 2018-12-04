@@ -409,7 +409,7 @@ public class TileSpriteSection extends ScenePropertySection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		// tilePosition

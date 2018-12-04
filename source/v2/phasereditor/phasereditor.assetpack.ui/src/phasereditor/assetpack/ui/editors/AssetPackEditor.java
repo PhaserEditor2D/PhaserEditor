@@ -110,7 +110,6 @@ import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
@@ -1023,7 +1022,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySheetPage.class) {
 			out.println("AssetPackEditor: create new propety page.");
-			return new PGridPage(true);
+			// return new PGridPage(true);
+			return new AssetPackEditorPropertyPage(this);
 		}
 
 		if (adapter == IContentOutlinePage.class) {

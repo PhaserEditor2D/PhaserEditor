@@ -108,7 +108,7 @@ public class SnappingSection extends BaseDesignSection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var sceneModel = getEditor().getSceneModel();
 
 		_enabledBtn.setSelection(sceneModel.isSnapEnabled());

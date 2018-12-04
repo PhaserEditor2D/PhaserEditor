@@ -292,7 +292,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 
 		var model = getModel();
 

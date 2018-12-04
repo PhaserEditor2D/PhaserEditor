@@ -210,7 +210,7 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 
 	@SuppressWarnings("boxing")
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		_frameNameText.setText(flatValues_to_String(models.stream().map(model -> model.getName())));

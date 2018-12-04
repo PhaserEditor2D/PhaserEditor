@@ -186,7 +186,7 @@ public class DynamicBitmapTextSection extends ScenePropertySection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		setValues_to_Text(_displayCallbackText, models, DynamicBitmapTextComponent::get_displayCallback);

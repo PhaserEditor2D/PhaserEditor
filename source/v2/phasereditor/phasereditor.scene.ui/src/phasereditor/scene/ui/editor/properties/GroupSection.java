@@ -122,7 +122,7 @@ public class GroupSection extends ScenePropertySection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		_childrenViewer.updateWithModels();
 		updateSelectButton();
 	}

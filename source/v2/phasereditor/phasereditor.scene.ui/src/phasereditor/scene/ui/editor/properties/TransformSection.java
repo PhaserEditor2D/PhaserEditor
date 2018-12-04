@@ -434,7 +434,7 @@ public class TransformSection extends ScenePropertySection {
 
 	@Override
 	@SuppressWarnings("boxing")
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 
 		var models = getModels();
 

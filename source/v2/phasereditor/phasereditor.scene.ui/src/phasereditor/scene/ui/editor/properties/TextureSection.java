@@ -120,12 +120,12 @@ public class TextureSection extends ScenePropertySection {
 
 			getEditor().setDirty(true);
 
-			update_UI_from_Model();
+			user_update_UI_from_Model();
 		}
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		var frame = (IAssetFrameModel) flatValues_to_Object(

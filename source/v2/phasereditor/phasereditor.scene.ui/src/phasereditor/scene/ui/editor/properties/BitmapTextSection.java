@@ -226,7 +226,7 @@ public class BitmapTextSection extends ScenePropertySection {
 					BitmapTextComponent.set_fontSize(model, size + (_plus ? 2 : -2));
 				}
 
-				update_UI_from_Model();
+				user_update_UI_from_Model();
 
 				getEditor().setDirty(true);
 
@@ -262,7 +262,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 	@SuppressWarnings("boxing")
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		getModels().forEach(model -> ((BitmapTextModel) model).updateSizeFromBitmapFont(getAssetFinder()));

@@ -124,7 +124,7 @@ public class OriginSection extends ScenePropertySection {
 					TransformComponent.set_y(model, TransformComponent.get_y(model) + dy);
 				});
 
-				OriginSection.this.update_UI_from_Model();
+				OriginSection.this.user_update_UI_from_Model();
 
 			}, true, model -> model instanceof DynamicBitmapTextComponent);
 
@@ -252,7 +252,7 @@ public class OriginSection extends ScenePropertySection {
 
 	@Override
 	@SuppressWarnings("boxing")
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 
 		var models = getModels();
 

@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.ui.IMemento;
@@ -192,14 +193,13 @@ public final class AssetPackModel {
 	public static class BuildProblem {
 		private IStatus status;
 		private AssetModel _asset;
-		
-		
+
 		public BuildProblem(IStatus status, AssetModel asset) {
 			super();
 			this.status = status;
 			_asset = asset;
 		}
-		
+
 		public IStatus getStatus() {
 			return status;
 		}
@@ -208,7 +208,7 @@ public final class AssetPackModel {
 			return _asset;
 		}
 	}
-	
+
 	public List<BuildProblem> build() {
 		out.println("Build asset pack " + getFile().getLocation());
 
@@ -218,7 +218,7 @@ public final class AssetPackModel {
 			for (AssetModel model : section.getAssets()) {
 				var list = new ArrayList<IStatus>();
 				model.build(list);
-				for(var status : list) {
+				for (var status : list) {
 					problems.add(new BuildProblem(status, model));
 				}
 			}
@@ -228,7 +228,7 @@ public final class AssetPackModel {
 			for (AssetModel model : section.getAssets()) {
 				var list = new ArrayList<IStatus>();
 				model.buildSecondPass(list);
-				for(var status : list) {
+				for (var status : list) {
 					problems.add(new BuildProblem(status, model));
 				}
 			}
@@ -818,5 +818,21 @@ public final class AssetPackModel {
 			}
 		}
 		return false;
+	}
+
+	public IFile getFileFromUrl(String url) {
+		if (url == null || url.length() == 0) {
+			return null;
+		}
+
+		IContainer webContentFolder = getWebContentFolder();
+		IFile file = webContentFolder.getFile(new Path(url));
+
+		if (!file.exists()) {
+			return null;
+		}
+
+		return file;
+
 	}
 }

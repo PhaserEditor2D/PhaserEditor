@@ -58,7 +58,7 @@ public class EmptyBodySection extends ScenePropertySection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		// TODO Auto-generated method stub
 	}
 

@@ -101,7 +101,7 @@ public class AnimationsSection extends ScenePropertySection {
 
 		getEditor().setDirty(true);
 
-		update_UI_from_Model();
+		user_update_UI_from_Model();
 	}
 
 	private void selectAnimation() {
@@ -121,7 +121,7 @@ public class AnimationsSection extends ScenePropertySection {
 
 			getEditor().setDirty(true);
 
-			update_UI_from_Model();
+			user_update_UI_from_Model();
 		}
 	}
 
@@ -143,7 +143,7 @@ public class AnimationsSection extends ScenePropertySection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		AnimationModel found = null;

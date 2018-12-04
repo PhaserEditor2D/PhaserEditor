@@ -19,92 +19,56 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.ui.editor;
+package phasereditor.assetpack.ui.editors;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.atlas.ui.AtlasCanvas;
-import phasereditor.ui.PhaserEditorUI;
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class PageSection extends TexturePackerSection<EditorPage> {
+public class KeySection extends BaseAssetPackEditorSection<AssetModel> {
 
-	private Text _tabNameText;
-	private Text _imageFileText;
-	private Text _imageSizeText;
-	private Text _imageFileLengthText;
-
-	public PageSection(TexturePackerEditor editor) {
-		super("Packer Page", editor);
+	public KeySection(AssetPackEditorPropertyPage page) {
+		super(page, "Key");
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof EditorPage;
+		return obj instanceof AssetModel;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
-		
-		createActions();
-		
-		
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
 
-		_tabNameText = createRow(comp, "Tab Name");
-
-		_imageSizeText = createRow(comp, "Image Size");
-
-		_imageFileText = createRow(comp, "Image File");
-
-		_imageFileLengthText = createRow(comp, "Image File Size");
-
-		return comp;
-	}
-
-	private Text createRow(Composite comp, String label) {
-		label(comp, label, null);
+		label(comp, "Key", "*Phaser");
 
 		var text = new Text(comp, SWT.BORDER);
-
-		text.setEditable(false);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		new TextListener(text) {
 
-		return text;
-	}
-
-	@Override
-	public void user_update_UI_from_Model() {
-		var page = getModels().get(0);
-
-		_tabNameText.setText(page.getName());
-
-		_imageFileText.setText(page.getImageFile().getProjectRelativePath().toPortableString());
-
-		_imageFileLengthText
-				.setText(PhaserEditorUI.getFileHumanSize(page.getImageFile().getLocation().toFile().length()));
-
-		{
-			var text = "";
-			AtlasCanvas canvas = getEditor().getAtlasCanvas(page.getIndex());
-			Image img = canvas.getImage();
-			if (img != null) {
-				var b = img.getBounds();
-				text = b.width + " x " + b.height;
+			@Override
+			protected void accept(String value) {
+				getModels().forEach(model -> model.setKey(value));
 			}
-			_imageSizeText.setText(text);
-		}
+		};
+		
+		addUpdate(() -> {
+			text.setText(flatValues_to_String(getModels().stream().map(model -> model.getKey())));
+		});
 
+		return comp;
 	}
 
 }

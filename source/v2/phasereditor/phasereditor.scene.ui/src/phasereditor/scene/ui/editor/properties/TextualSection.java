@@ -76,7 +76,7 @@ public class TextualSection extends ScenePropertySection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		_textText.setText(flatValues_to_String(models.stream().map(model -> TextualComponent.get_text(model))));

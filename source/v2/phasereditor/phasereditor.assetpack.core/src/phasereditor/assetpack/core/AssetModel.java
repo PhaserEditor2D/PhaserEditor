@@ -211,18 +211,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public IFile getFileFromUrl(String url) {
-		if (url == null || url.length() == 0) {
-			return null;
-		}
-
-		IContainer webContentFolder = getPack().getWebContentFolder();
-		IFile file = webContentFolder.getFile(new Path(url));
-
-		if (!file.exists()) {
-			return null;
-		}
-
-		return file;
+		return getPack().getFileFromUrl(url);
 	}
 
 	public IFolder getFolderFromUrl(String url) {

@@ -204,7 +204,7 @@ public class CompilerSection extends BaseDesignSection {
 	}
 
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var model = getEditor().getSceneModel();
 
 		_autoLoadAssetsButton.setSelection(model.isAutoLoadAssets());

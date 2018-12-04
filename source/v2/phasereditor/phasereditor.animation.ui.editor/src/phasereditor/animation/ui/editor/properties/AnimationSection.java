@@ -135,7 +135,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					restartPlayback();
 					editor.setDirty();
 
-					update_UI_from_Model();
+					user_update_UI_from_Model();
 				}
 			};
 		}
@@ -173,7 +173,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					restartPlayback();
 					editor.setDirty();
 
-					update_UI_from_Model();
+					user_update_UI_from_Model();
 
 				}
 			};
@@ -368,14 +368,14 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 		}
 
-		update_UI_from_Model();
+		user_update_UI_from_Model();
 
 		return comp;
 	}
 
 	@SuppressWarnings("boxing")
 	@Override
-	public void update_UI_from_Model() {
+	public void user_update_UI_from_Model() {
 		var models = getModels();
 
 		_keyText.setText(flatValues_to_String(models.stream().map(model -> model.getKey())));
