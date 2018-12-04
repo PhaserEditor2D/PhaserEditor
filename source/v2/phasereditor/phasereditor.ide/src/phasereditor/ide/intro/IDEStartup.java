@@ -135,7 +135,9 @@ public class IDEStartup implements IStartup {
 
 	static void processWindow(IWorkbenchWindow window) {
 
-		// addWindowStyles(window);
+		if ("1".equals(System.getProperty("phasereditor.theme"))) {
+			addWindowStyles(window);
+		}
 
 		if (window.getActivePage() != null) {
 			processPage(window.getActivePage());
@@ -257,7 +259,6 @@ public class IDEStartup implements IStartup {
 
 	}
 
-	@SuppressWarnings("unused")
 	private static void addWindowStyles(IWorkbenchWindow window) {
 		var shell = window.getShell();
 
