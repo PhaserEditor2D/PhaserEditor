@@ -3,9 +3,7 @@
       id="phasereditor.reflection"
       label="Phaser Editor - Reflection"
       version="1.4.0.20170412"
-      provider-name="Arian Fornaris"
-      license-feature="org.eclipse.platform"
-      license-feature-version="4.8.0.v20180611-0656">
+      provider-name="Arian Fornaris">
 
    <description url="https://phasereditor2d.com">
       Phaser and Phaser Editor metadata inspector.

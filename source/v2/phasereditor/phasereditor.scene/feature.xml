@@ -3,9 +3,7 @@
       id="phasereditor.scene"
       label="Phaser Editor - Scene Editor"
       version="2.0.0"
-      provider-name="Arian Fornaris"
-      license-feature="org.eclipse.platform"
-      license-feature-version="4.8.0.v20180611-0656">
+      provider-name="Arian Fornaris">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]

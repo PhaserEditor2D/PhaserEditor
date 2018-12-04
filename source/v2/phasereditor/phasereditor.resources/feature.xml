@@ -3,9 +3,7 @@
       id="phasereditor.resources"
       label="Phaser Editor - Resources"
       version="1.5.0.20180307"
-      provider-name="Arian Fornairs"
-      license-feature="org.eclipse.platform"
-      license-feature-version="4.8.0.v20180611-0656">
+      provider-name="Arian Fornairs">
 
    <description url="https://phasereditor2d.com">
       Resources used by Phaser Editor.

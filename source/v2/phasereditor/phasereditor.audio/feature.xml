@@ -3,9 +3,7 @@
       id="phasereditor.audio"
       label="Phaser Editor - Audio"
       version="1.4.0.20170412"
-      provider-name="Arian Fornaris"
-      license-feature="org.eclipse.platform"
-      license-feature-version="4.8.0.v20180611-0656">
+      provider-name="Arian Fornaris">
 
    <description url="https://phasereditor2d.com">
       Audio player and related.

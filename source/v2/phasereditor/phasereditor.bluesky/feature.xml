@@ -18,15 +18,15 @@
    </license>
 
    <includes
-         id="org.eclipse.bluesky.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.mylyn.commons"
          version="0.0.0"/>
 
    <includes
          id="org.eclipse.mylyn.commons.notifications"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.wildwebdeveloper.feature"
          version="0.0.0"/>
 
    <plugin
