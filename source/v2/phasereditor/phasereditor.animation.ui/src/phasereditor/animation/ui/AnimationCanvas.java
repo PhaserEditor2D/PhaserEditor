@@ -169,16 +169,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			return;
 		}
 
-		var animationFrame = animationFrames.get(index);
-		var textureFrame = animationFrame.getFrameAsset();
-		if (textureFrame == null) {
-			_image = null;
-			_frameData = null;
-		} else {
-			_image = loadImage(textureFrame.getImageFile());
-			_frameData = textureFrame.getFrameData();
-		}
-
 		_currentFrame = index;
 
 		if (!isDisposed()) {
@@ -197,7 +187,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 		public IndexTimeline(long duration) {
 			super(AnimationCanvas.this);
-			
+
 			setDuration(duration);
 			setEase(new Linear());
 
@@ -259,13 +249,35 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
+		_frameData = null;
+		_image = null;
+		
+		var finder = getModel().getAnimations().createAndBuildFinder();
+
+		var frames = getModel().getFrames();
+
+		if (_currentFrame < frames.size()) {
+
+			var frame = frames.get(_currentFrame);
+
+			var texture = frame.getAssetFrame(finder);
+
+			if (texture == null) {
+				_image = null;
+				_frameData = null;
+			} else {
+				_image = loadImage(texture.getImageFile());
+				_frameData = texture.getFrameData();
+			}
+
+		}
+
 		super.customPaintControl(e);
 
 		if (_showProgress) {
 
 			paintProgressLine(e);
 		}
-
 	}
 
 	private void paintProgressLine(PaintEvent e) {

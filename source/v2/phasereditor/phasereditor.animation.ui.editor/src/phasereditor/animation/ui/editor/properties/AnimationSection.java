@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.animation.ui.editor.AnimationsEditor;
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.CheckListener;
@@ -56,8 +56,12 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 	private Text _repeatDelayText;
 	private Button _yoyoCheckBox;
 
-	public AnimationSection(AnimationsEditor editor) {
-		super(editor, "Animation");
+	public AnimationSection(AnimationsPropertyPage page) {
+		super(page, "Animation");
+	}
+
+	public AssetFinder getFinder() {
+		return _finder;
 	}
 
 	@Override

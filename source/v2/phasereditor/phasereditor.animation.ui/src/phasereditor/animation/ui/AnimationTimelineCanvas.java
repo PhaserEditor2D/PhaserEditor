@@ -53,6 +53,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.pushingpixels.trident.Timeline.TimelineState;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -255,12 +256,10 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			} else if (obj instanceof AnimationFrameModel) {
 				AnimationFrameModel anim = (AnimationFrameModel) obj;
 				alienFrame = getModel().createAnimationFrame(anim.toJSON());
-				alienFrame.setFrameAsset(anim.getFrameAsset());
 			}
 
 			if (frame != null) {
 				alienFrame = getModel().createAnimationFrame();
-				alienFrame.setFrameAsset(frame);
 				alienFrame.setTextureKey(frame.getAsset().getKey());
 
 				if (frame.getAsset() instanceof ImageAssetModel) {
@@ -357,6 +356,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			e.gc.drawText(msg, x, y);
 			return;
 		}
+		
+		var finder = _model.createAndBuildFinder();
 
 		{
 			// update scroll form animation progress
@@ -396,7 +397,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		for (int i = 0; i < frames.size(); i++) {
 			var animFrame = frames.get(i);
 
-			var frame = animFrame.getFrameAsset();
+			var frame = animFrame.getAssetFrame(finder);
 
 			if (frame == null) {
 				continue;
@@ -412,7 +413,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 			var animFrame = frames.get(i);
 
-			var frame = animFrame.getFrameAsset();
+			var frame = animFrame.getAssetFrame(finder);
 
 			if (frame == null) {
 				continue;
@@ -683,7 +684,10 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			return;
 		}
 
-		IAssetFrameModel assetFrame = frame.getFrameAsset();
+		var finder = _model.createAndBuildFinder();
+		
+		IAssetFrameModel assetFrame = frame.getAssetFrame(finder);
+		
 		if (assetFrame != null) {
 
 			var img = loadImage(assetFrame.getImageFile());

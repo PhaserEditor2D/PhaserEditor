@@ -23,9 +23,7 @@ package phasereditor.assetpack.core;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
@@ -50,7 +48,7 @@ public class AnimationsAssetModel extends AssetModel {
 
 	public AnimationsAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
-		
+
 		_url = jsonData.optString("url", null);
 		_dataKey = jsonData.optString("dataKey", null);
 	}
@@ -64,7 +62,7 @@ public class AnimationsAssetModel extends AssetModel {
 
 		List<IFile> list = new ArrayList<>();
 		list.add(getUrlFile());
-		
+
 		if (_animationsModel != null) {
 			var files = _animationsModel.computeUsedFiles();
 			list.addAll(files);
@@ -178,40 +176,18 @@ public class AnimationsAssetModel extends AssetModel {
 		}
 
 		public void build(List<IStatus> problems) {
-			for (var anim : getAnimations()) {
-				Map<String, IAssetFrameModel> cache = new HashMap<>();
 
+			var finder = new AssetFinder(getPack().getFile().getProject());
+
+			for (var anim : getAnimations()) {
 				for (var animFrame : anim.getFrames()) {
 
-					var textureKey = animFrame.getTextureKey();
-					var frameName = animFrame.getFrameName();
-
-					var cacheKey = frameName + "@" + textureKey;
-					var frame = cache.get(cacheKey);
-
-					if (frame != null) {
-						animFrame.setFrameAsset(frame);
-						continue;
-					}
-
-					frame = getPack().findFrame(textureKey, frameName);
+					var frame = animFrame.getAssetFrame(finder);
 
 					if (frame == null) {
-						var packs = AssetPackCore.getAssetPackModels(getPack().getFile().getProject());
-						for (var pack : packs) {
-							frame = pack.findFrame(textureKey, frameName);
-						}
+						problems.add(errorStatus("Cannot find the frame '" + animFrame.getFrameName()
+								+ "' in the texture '" + animFrame.getTextureKey() + "'."));
 					}
-
-					if (frame == null) {
-						problems.add(errorStatus(
-								"Cannot find the frame '" + frameName + "' in the texture '" + textureKey + "'."));
-					} else {
-						cache.put(cacheKey, frame);
-					}
-
-					animFrame.setFrameAsset(frame);
-
 				}
 			}
 

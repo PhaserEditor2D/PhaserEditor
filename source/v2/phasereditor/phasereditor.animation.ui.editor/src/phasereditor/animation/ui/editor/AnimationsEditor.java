@@ -943,7 +943,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			for (var frame : group.getAssets()) {
 
 				var animFrame = new AnimationFrameModel(anim);
-				animFrame.setFrameAsset((IAssetFrameModel) frame);
 				animFrame.setTextureKey(frame.getAsset().getKey());
 
 				if (frame.getAsset() instanceof ImageAssetModel) {

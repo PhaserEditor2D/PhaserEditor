@@ -151,7 +151,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			}
 		} else if (element instanceof AnimationFrameModel) {
 			AnimationFrameModel animFrame = (AnimationFrameModel) element;
-			var assetFrame = animFrame.getFrameAsset();
+			var assetFrame = animFrame.getAssetFrame(animFrame.createAndBuildFinder());
 
 			if (assetFrame != null) {
 				file = assetFrame.getImageFile();

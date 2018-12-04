@@ -19,6 +19,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import phasereditor.animation.ui.model.AnimationsModel_Persistable;
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
@@ -133,7 +134,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 				IWorkbenchPage page = window.getActivePage();
 				IViewReference[] refs = page.getViewReferences();
 
-				buildPreviewViews(delta, refs);
+				buildPreviewViews(project, delta, refs);
 
 				PackDelta packDelta = AssetPackBuildParticipant.getData(env);
 
@@ -195,7 +196,11 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		}
 	}
 
-	private static void buildPreviewViews(IResourceDelta delta, IViewReference[] refs) {
+	private static void buildPreviewViews(IProject project, IResourceDelta delta, IViewReference[] refs) {
+		
+		var finder = new AssetFinder(project);
+		finder.build();
+		
 		for (IViewReference ref : refs) {
 			if (ref.getId().equals(PreviewView.ID)) {
 				PreviewView view = (PreviewView) ref.getView(false);
@@ -211,7 +216,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 						updateAssetPreview(delta, view, (IAssetKey) elem);
 						continue;
 					} else if (elem instanceof AnimationModel) {
-						updateAnimationPreview(delta, view, (AnimationModel) elem);
+						updateAnimationPreview(finder, delta, view, (AnimationModel) elem);
 						continue;
 					}
 				}
@@ -242,9 +247,9 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		}
 	}
 
-	private static void updateAnimationPreview(IResourceDelta delta, PreviewView view, AnimationModel oldAnim) {
-
-		var files = oldAnim.computeUsedFiles();
+	private static void updateAnimationPreview(AssetFinder finder, IResourceDelta delta, PreviewView view, AnimationModel oldAnim) {
+		
+		var files = oldAnim.computeUsedFiles(finder);
 
 		boolean touched = ProjectCore.areFilesAffectedByDelta(delta, files);
 

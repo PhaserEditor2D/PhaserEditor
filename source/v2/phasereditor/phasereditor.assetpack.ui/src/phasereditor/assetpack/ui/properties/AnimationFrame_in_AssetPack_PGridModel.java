@@ -38,7 +38,7 @@ public class AnimationFrame_in_AssetPack_PGridModel extends PGridModel {
 	public AnimationFrame_in_AssetPack_PGridModel(AnimationFrameModel frameModel) {
 		super();
 
-		_id = frameModel.getTextureKey() + "." + frameModel.getFrameAsset();
+		_id = frameModel.getTextureKey() + "." + frameModel.getFrameName();
 
 		addSection("AnimationFrameConfig",
 

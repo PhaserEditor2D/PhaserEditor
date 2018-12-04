@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
@@ -49,8 +48,8 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 	private ExplainFrameDataCanvas _frameCanvas;
 	private Label _frameLabel;
 
-	public AnimationFrameSection(AnimationsEditor editor) {
-		super(editor, "Animation Frame");
+	public AnimationFrameSection(AnimationsPropertyPage page) {
+		super(page, "Animation Frame");
 
 		setFillSpace(true);
 	}
@@ -148,7 +147,8 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 		// texture
 		{
 
-			var frame = (IAssetFrameModel) flatValues_to_Object(models.stream().map(model -> model.getFrameAsset()));
+			var frame = (IAssetFrameModel) flatValues_to_Object(
+					models.stream().map(model -> model.getAssetFrame(_finder)));
 
 			if (frame == null) {
 				_frameLabel.setText("Frame");

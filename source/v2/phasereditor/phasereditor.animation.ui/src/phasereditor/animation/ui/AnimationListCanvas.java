@@ -105,8 +105,13 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			private IAssetFrameModel findAssetFor(int index) {
 				IAssetFrameModel frame = null;
 				Image image = null;
-				for (var f : _animations.get(index).getFrames()) {
-					frame = f.getFrameAsset();
+
+				var animModel = _animations.get(index);
+
+				var finder = animModel.createAndBuildFinder();
+
+				for (var f : animModel.getFrames()) {
+					frame = f.getAssetFrame(finder);
 					if (frame != null) {
 						image = loadImage(frame.getImageFile());
 						if (image != null) {
@@ -188,6 +193,8 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		for (int i = 0; i < _animations.size(); i++) {
 			var anim = _animations.get(i);
 
+			var finder = anim.createAndBuildFinder();
+
 			if (_utils.isSelectedIndex(i)) {
 				gc.setBackground(PhaserEditorUI.getListSelectionColor());
 				gc.setForeground(PhaserEditorUI.getListSelectionTextColor());
@@ -207,7 +214,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 				for (int j = 0; j < frames.size(); j++) {
 					var frame = frames.get(j);
 
-					IAssetFrameModel asset = frame.getFrameAsset();
+					IAssetFrameModel asset = frame.getAssetFrame(finder);
 
 					if (asset != null) {
 						var file = asset.getImageFile();
@@ -233,7 +240,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 				IAssetFrameModel frame = null;
 				Image image = null;
 				for (var f : anim.getFrames()) {
-					frame = f.getFrameAsset();
+					frame = f.getAssetFrame(finder);
 					if (frame != null) {
 						image = loadImage(frame.getImageFile());
 						if (image != null) {

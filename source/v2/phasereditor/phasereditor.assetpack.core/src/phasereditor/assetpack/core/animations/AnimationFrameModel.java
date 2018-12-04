@@ -21,12 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core.animations;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 
 public class AnimationFrameModel {
-	private IAssetFrameModel _frame;
 	private String _textureKey;
 	private Object _frameName;
 	private int _duration;
@@ -59,6 +61,14 @@ public class AnimationFrameModel {
 	public AnimationModel getAnimation() {
 		return _animation;
 	}
+	
+	public IFile getFile() {
+		return _animation.getAnimations().getFile();
+	}
+	
+	public IProject getProject() {
+		return getFile().getProject();
+	}
 
 	public JSONObject toJSON() {
 		var jsonData = new JSONObject();
@@ -72,14 +82,6 @@ public class AnimationFrameModel {
 		jsonData.put("duration", _duration, 0);
 
 		return jsonData;
-	}
-
-	public IAssetFrameModel getFrameAsset() {
-		return _frame;
-	}
-
-	public void setFrameAsset(IAssetFrameModel frame) {
-		_frame = frame;
 	}
 
 	public Object getFrameName() {
@@ -120,5 +122,13 @@ public class AnimationFrameModel {
 
 	public void setComputedDuration(int computedDuration) {
 		_computedDuration = computedDuration;
+	}
+
+	public IAssetFrameModel getAssetFrame(AssetFinder finder) {
+		return finder.findTexture(_textureKey, _frameName + "");
+	}
+
+	public AssetFinder createAndBuildFinder() {
+		return _animation.createAndBuildFinder();
 	}
 }

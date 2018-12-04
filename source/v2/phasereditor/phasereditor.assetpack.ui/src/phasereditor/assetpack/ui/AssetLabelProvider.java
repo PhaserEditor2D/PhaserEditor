@@ -136,7 +136,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof IResource) {
 			return _workbenchLabelProvider.getImage(element);
 		}
-
+		
 		{
 			// the simple image assets
 
@@ -298,12 +298,12 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			}
 
 			var frame = frames.get((int) (frames.size() * 0.3));
-			return getImage(frame.getFrameAsset());
+			return getImage(frame.getAssetFrame(frame.createAndBuildFinder()));
 		}
 
 		if (element instanceof AnimationFrameModel) {
-			AnimationFrameModel frame = (AnimationFrameModel) element;
-			return getImage(frame.getFrameAsset());
+			var frame = (AnimationFrameModel) element;
+			return getImage(frame.getAssetFrame(frame.createAndBuildFinder()));
 		}
 
 		// Keep this at the end!!!

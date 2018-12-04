@@ -22,10 +22,8 @@
 package phasereditor.assetpack.core.animations;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -34,8 +32,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.AssetFinder;
 
 public class AnimationModel implements IAdaptable {
 
@@ -152,7 +149,11 @@ public class AnimationModel implements IAdaptable {
 	public AnimationsModel getAnimations() {
 		return _animations;
 	}
-
+	
+	public AssetFinder createAndBuildFinder() {
+		return _animations.createAndBuildFinder();
+	}
+	
 	public void buildTimeline() {
 		// recompute duration from the frame rate
 		setFrameRate(_frameRate);
@@ -292,49 +293,17 @@ public class AnimationModel implements IAdaptable {
 	}
 
 	public void build() {
-		Map<String, IAssetFrameModel> cache = new HashMap<>();
-
-		for (var animFrame : _frames) {
-
-			var textureKey = animFrame.getTextureKey();
-			var frameName = animFrame.getFrameName();
-
-			var cacheKey = frameName + "@" + textureKey;
-			var frame = cache.get(cacheKey);
-
-			if (frame != null) {
-				animFrame.setFrameAsset(frame);
-				continue;
-			}
-
-			IFile file = getAnimations().getFile();
-			var packs = AssetPackCore.getAssetPackModels(file.getProject());
-			for (var pack : packs) {
-				frame = pack.findFrame(textureKey, frameName);
-				if (frame != null) {
-					break;
-				}
-			}
-
-			if (frame != null) {
-				cache.put(cacheKey, frame);
-			}
-
-			animFrame.setFrameAsset(frame);
-
-		}
-
 		buildTimeline();
 	}
 
-	public Set<IFile> computeUsedFiles() {
+	public Set<IFile> computeUsedFiles(AssetFinder finder) {
 		var result = new HashSet<IFile>();
 
 		var mainFile = getAnimations().getFile();
 		result.add(mainFile);
 
 		for (var animFrame : getFrames()) {
-			var assetFrame = animFrame.getFrameAsset();
+			var assetFrame = animFrame.getAssetFrame(finder);
 			if (assetFrame != null) {
 				var files = assetFrame.getAsset().computeUsedFiles();
 				for (var file : files) {
