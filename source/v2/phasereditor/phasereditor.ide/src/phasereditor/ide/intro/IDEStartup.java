@@ -35,10 +35,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.ui.SceneUI;
+import phasereditor.ui.ColorUtil;
+import phasereditor.ui.TreeCanvas;
 
 @SuppressWarnings("hiding")
 public class IDEStartup implements IStartup {
@@ -184,15 +187,16 @@ public class IDEStartup implements IStartup {
 	private static class PaintControlListener implements ControlListener, PaintListener {
 
 		private Color _textBG;
+		private Color _listBG;
 
 		public PaintControlListener() {
-			_textBG = new Color(Display.getDefault(), 30, 30, 30);
+			_textBG = SWTResourceManager.getColor(30, 30, 30);
+			_listBG = SWTResourceManager.getColor(5, 5, 5);
 		}
 
 		@Override
 		public void controlMoved(ControlEvent e) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
@@ -210,7 +214,7 @@ public class IDEStartup implements IStartup {
 					var control = (Control) widget;
 
 					control.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-					control.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+					control.setForeground(SWTResourceManager.getColor(200, 200, 200));
 
 					if (widget instanceof CTabFolder) {
 						var folder = (CTabFolder) widget;
@@ -226,12 +230,19 @@ public class IDEStartup implements IStartup {
 					} else if (widget instanceof Label) {
 						var label = (Label) widget;
 						if ((label.getFont().getFontData()[0].getStyle() & SWT.BOLD) == SWT.BOLD) {
-							label.setForeground(display.getSystemColor(SWT.COLOR_YELLOW));
+							label.setForeground(SWTResourceManager.getColor(ColorUtil.DARKORANGE.rgb));
+						}
+
+						if ((label.getStyle() & SWT.SEPARATOR) == SWT.SEPARATOR) {
+							label.setBackground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
 						}
 					} else if (widget instanceof Text) {
 						var text = (Text) widget;
-						text.setForeground(display.getSystemColor(SWT.COLOR_GREEN));
+						text.setForeground(SWTResourceManager.getColor(ColorUtil.GREEN.rgb));
 						text.setBackground(_textBG);
+					} else if (widget instanceof TreeCanvas) {
+						var tree = (TreeCanvas)widget;
+						tree.setBackground(_listBG);
 					}
 				}
 
@@ -261,8 +272,6 @@ public class IDEStartup implements IStartup {
 
 	private static void addWindowStyles(IWorkbenchWindow window) {
 		var shell = window.getShell();
-
-		var display = shell.getDisplay();
 
 		var listener = new PaintControlListener();
 		shell.addControlListener(listener);
