@@ -15,6 +15,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.RGBA;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -199,18 +200,35 @@ public class IDEStartup implements IStartup {
 		private Color _textFG;
 		private Color _folderBG;
 
+		
+		private static Color rgb(String hex) {
+			return rgb(ColorUtil.web(hex));
+		}
+		
+		private static Color rgb(RGBA rgba) {
+			return SWTResourceManager.getColor(rgba.rgb);
+		}
+
+		private static Color rgb(int swt) {
+			return SWTResourceManager.getColor(swt);
+		}
+
+		private static Color rgb(int r, int g, int b) {
+			return SWTResourceManager.getColor(r, g, b);
+		}
+
 		@SuppressWarnings("unused")
 		public PaintControlListener() {
 			// spaceship
 
-			var darkGray = SWTResourceManager.getColor(52, 52, 52);
-			var darkGray2 = SWTResourceManager.getColor(72, 72, 72);
-			var lightGray = SWTResourceManager.getColor(86, 86, 85);
-			var darkWhite = SWTResourceManager.getColor(170, 170, 170);
-			var black = SWTResourceManager.getColor(0, 0, 0);
-			var blue = SWTResourceManager.getColor(89, 128, 183);
-			var green = SWTResourceManager.getColor(0, 65, 58);
-			var white = SWTResourceManager.getColor(255, 255, 255);
+			var darkGray = rgb(52, 52, 52);
+			var darkGray2 = rgb(72, 72, 72);
+			var lightGray = rgb(86, 86, 85);
+			var darkWhite = rgb(170, 170, 170);
+			var black = rgb(0, 0, 0);
+			var blue = rgb(89, 128, 183);
+			var green = rgb(0, 65, 58);
+			var white = rgb(255, 255, 255);
 
 			_BG = lightGray;
 			_FG = black;
@@ -227,18 +245,35 @@ public class IDEStartup implements IStartup {
 
 			// black
 
-			_BG = SWTResourceManager.getColor(0, 0, 0);
-			_FG = SWTResourceManager.getColor(200, 200, 200);
-			_textBG = SWTResourceManager.getColor(30, 30, 30);
-			_textFG = SWTResourceManager.getColor(SWT.COLOR_GREEN);
-			_listBG = SWTResourceManager.getColor(5, 5, 5);
-			_folderSelectionFG = SWTResourceManager.getColor(SWT.COLOR_RED);
-			_folderSelectionBG = SWTResourceManager.getColor(SWT.COLOR_BLACK);
-			_folderFG = SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY);
+			_BG = rgb(0, 0, 0);
+			_FG = rgb(200, 200, 200);
+			_textBG = rgb(30, 30, 30);
+			_textFG = rgb(SWT.COLOR_GREEN);
+			_listBG = rgb(5, 5, 5);
+			_folderSelectionFG = rgb(SWT.COLOR_RED);
+			_folderSelectionBG = rgb(SWT.COLOR_BLACK);
+			_folderFG = rgb(SWT.COLOR_DARK_GRAY);
 			_folderBG = _BG;
-			_buttonFG = SWTResourceManager.getColor(SWT.COLOR_RED);
-			_separatorColor = SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY);
-			_boldLabelFG = SWTResourceManager.getColor(ColorUtil.LIGHTBLUE.rgb);
+			_buttonFG = rgb(SWT.COLOR_RED);
+			_separatorColor = rgb(SWT.COLOR_DARK_GRAY);
+			_boldLabelFG = rgb(ColorUtil.LIGHTBLUE);
+
+			// soyuz
+
+			{
+				_BG = rgb(ColorUtil.web("#D5CCC3"));
+				_FG = rgb(0, 0, 0);
+				_textBG = rgb("#E0D9D1");
+				_textFG = _FG;
+				_listBG = _BG;
+				_folderSelectionFG = _FG;
+				_folderSelectionBG = _textBG;
+				_folderFG = _FG;
+				_folderBG = _BG;
+				_buttonFG = _FG;
+				_separatorColor =  rgb("#E0D9D1");
+				_boldLabelFG = _FG;
+			}
 		}
 
 		@Override
@@ -285,7 +320,7 @@ public class IDEStartup implements IStartup {
 					} else if (widget instanceof Text) {
 						var text = (Text) widget;
 						text.setForeground(_textFG);
-						// text.setBackground(_textBG);
+						text.setBackground(_textBG);
 					} else if (widget instanceof TreeCanvas) {
 						var tree = (TreeCanvas) widget;
 						tree.setBackground(_listBG);
