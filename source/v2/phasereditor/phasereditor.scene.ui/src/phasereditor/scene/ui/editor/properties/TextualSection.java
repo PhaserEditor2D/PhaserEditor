@@ -37,8 +37,6 @@ import phasereditor.ui.properties.FormPropertyPage;
  */
 public class TextualSection extends ScenePropertySection {
 
-	private Text _textText;
-
 	public TextualSection(FormPropertyPage page) {
 		super("Text", page);
 	}
@@ -56,12 +54,16 @@ public class TextualSection extends ScenePropertySection {
 
 		comp.setLayout(new GridLayout(1, false));
 
-		_textText = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		Text text = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
 		var gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 100;
-		_textText.setLayoutData(gd);
-		new SceneText(_textText) {
+		text.setLayoutData(gd);
+		new SceneText(text) {
 
+			{
+				dirtyModels = true;
+			}
+			
 			@Override
 			protected void accept2(String value) {
 				getModels().stream().forEach(model -> {
@@ -71,15 +73,10 @@ public class TextualSection extends ScenePropertySection {
 				getEditor().setDirty(true);
 			}
 		};
+		text.setText(flatValues_to_String(getModels().stream().map(model -> TextualComponent.get_text(model))));
 
 		return comp;
 	}
 
-	@Override
-	public void user_update_UI_from_Model() {
-		var models = getModels();
-
-		_textText.setText(flatValues_to_String(models.stream().map(model -> TextualComponent.get_text(model))));
-	}
 
 }
