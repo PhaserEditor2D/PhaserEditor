@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
+import java.util.List;
+
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,8 +36,11 @@ import org.eclipse.ui.ISharedImages;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.ui.preview.SpritesheetAssetPreviewComp;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
+import phasereditor.ui.properties.TextToIntListener;
 
 /**
  * @author arian
@@ -42,15 +48,22 @@ import phasereditor.ui.properties.TextListener;
  */
 public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAssetModel> {
 
+	private SpritesheetAssetPreviewComp _preview;
+
 	public SpritesheetSection(AssetPackEditorPropertyPage page) {
 		super(page, "Sprite Sheet");
 
-		setFillSpace(isFillSpace());
+		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof SpritesheetAssetModel;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		_preview.createToolBar(manager);
 	}
 
 	@SuppressWarnings("unused")
@@ -86,7 +99,11 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setUrl(url));
+					getModels().forEach(model -> {
+						model.setUrl(url);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -132,6 +149,136 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected String getUrl() {
 					return flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()));
 				}
+			});
+		}
+
+		// frameWidth
+		{
+			label(comp, "Frame Width",
+					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.frameWidth"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setFrameWidth(value);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
+				}
+			};
+			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getFrameWidth));
+		}
+
+		// frameHeight
+		{
+			label(comp, "Frame Height",
+					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.frameHeight"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setFrameHeight(value);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
+				}
+			};
+			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getFrameHeight));
+		}
+
+		// startFrame
+		{
+			label(comp, "Start Frame",
+					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.startFrame"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setStartFrame(value);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
+				}
+			};
+			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getStartFrame));
+		}
+
+		// endFrame
+		{
+			label(comp, "End Frame",
+					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.endFrame"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setEndFrame(value);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
+				}
+			};
+			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getEndFrame));
+		}
+
+		// spacing
+		{
+			label(comp, "Spacing",
+					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.spacing"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setSpacing(value);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
+				}
+			};
+			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getSpacing));
+		}
+
+		// margin
+		{
+			label(comp, "Margin",
+					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.margin"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModels().forEach(model -> {
+						model.setMargin(value);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
+				}
+			};
+			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getMargin));
+		}
+
+		// preview
+		{
+			_preview = new SpritesheetAssetPreviewComp(comp, SWT.BORDER);
+			_preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+			addUpdate(() -> {
+				var model = flatValues_to_Object(getModels().stream());
+				_preview.setModel((SpritesheetAssetModel) model);
 			});
 		}
 

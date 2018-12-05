@@ -26,6 +26,7 @@ import java.util.List;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -67,6 +68,10 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		if (obj instanceof SvgAssetModel) {
 			list.add(new SvgSection(this));
+		}
+		
+		if (obj instanceof SpritesheetAssetModel) {
+			list.add(new SpritesheetSection(this));
 		}
 
 		return list;

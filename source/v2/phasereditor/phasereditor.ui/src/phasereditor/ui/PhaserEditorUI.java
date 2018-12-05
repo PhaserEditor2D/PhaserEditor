@@ -385,7 +385,7 @@ public class PhaserEditorUI {
 	public static Color getListTextColor() {
 		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
 	}
-	
+
 	public static Color getListBackgroundColor() {
 		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
 	}
@@ -1329,12 +1329,12 @@ public class PhaserEditorUI {
 	public static void paintListItemBackground(GC gc, int i, int x, int y, int w, int h) {
 		if (i % 2 == 0) {
 			gc.setBackground(PhaserEditorUI.getListTextColor());
-//			gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
+			// gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
 		} else {
 			gc.setBackground(PhaserEditorUI.getListBackgroundColor());
-//			gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
+			// gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
 		}
-		
+
 		gc.setAlpha(10);
 		gc.fillRectangle(x, y, w, h);
 		gc.setAlpha(255);

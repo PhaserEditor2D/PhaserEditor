@@ -202,7 +202,7 @@ public class SpritesheetAssetModel extends AssetModel {
 		validateUrl(problems, "url", _url);
 
 		_imageSize = null;
-		
+
 		buildFrames();
 	}
 
@@ -315,8 +315,10 @@ public class SpritesheetAssetModel extends AssetModel {
 				}
 
 				if (i >= start) {
-					FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
-					list.add(frame);
+					if (x + w <= b.width && y + h <= b.height) {
+						FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
+						list.add(frame);
+					}
 				}
 
 				column++;
