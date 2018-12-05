@@ -53,7 +53,7 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 	public AssetPackEditor getEditor() {
 		return _page.getEditor();
 	}
-	
+
 	protected abstract class AbstractBrowseImageListener extends SelectionAdapter {
 		protected String dialogName = "";
 
@@ -66,13 +66,10 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 				String result = AssetPackUI.browseImageUrl(pack, dialogName, urlFile, imageFiles,
 						e.display.getActiveShell());
 
-				if (result == null) {
-					result = getUrl();
+				if (result != null) {
+					setUrl(result);
+					update_UI_from_Model();
 				}
-
-				setUrl(result);
-				
-				update_UI_from_Model();
 
 			} catch (CoreException e1) {
 				e1.printStackTrace();
@@ -83,6 +80,37 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 		protected List<IFile> discoverImages(AssetPackModel pack) throws CoreException {
 			return pack.discoverImageFiles();
 		}
+
+		protected abstract void setUrl(String url);
+
+		protected abstract String getUrl();
+
+	}
+
+	protected abstract class AbstractBrowseFileListener extends SelectionAdapter {
+		protected String dialogName = "";
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			var pack = getEditor().getModel();
+
+			IFile urlFile = pack.getFileFromUrl(getUrl());
+
+			try {
+				var files = discoverFiles(pack);
+
+				String result = AssetPackUI.browseAssetFile(pack, dialogName, urlFile, files,
+						getEditor().getEditorSite().getShell(), null);
+
+				if (result != null) {
+					setUrl(result);
+				}
+			} catch (CoreException e1) {
+				e1.printStackTrace();
+			}
+		}
+
+		protected abstract List<IFile> discoverFiles(AssetPackModel pack) throws CoreException;
 
 		protected abstract void setUrl(String url);
 

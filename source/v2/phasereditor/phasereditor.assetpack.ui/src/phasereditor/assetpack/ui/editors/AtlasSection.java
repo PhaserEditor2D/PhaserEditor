@@ -21,7 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,26 +36,35 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.ui.preview.AtlasAssetPreviewComp;
+import phasereditor.atlas.core.AtlasCore;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
+public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 
-	public ImageSection(AssetPackEditorPropertyPage page) {
-		super(page, "Image");
+	private AtlasAssetPreviewComp _preview;
+
+	public AtlasSection(AssetPackEditorPropertyPage page) {
+		super(page, "Atlas");
 		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof ImageAssetModel;
+		return obj instanceof AtlasAssetModel;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		_preview.createToolBar(manager);
 	}
 
 	@SuppressWarnings("unused")
@@ -61,8 +74,10 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 		comp.setLayout(new GridLayout(3, false));
 
 		{
-			// url
-			label(comp, "URL", AssetModel.getHelp(AssetType.image, "url"));
+
+			// textureURL
+
+			label(comp, "Texture URL", AssetModel.getHelp(AssetType.atlas, "textureURL"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -70,40 +85,101 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setUrl(value));
+					getModels().forEach(model -> model.setTextureURL(value));
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getUrl()))));
+			addUpdate(() -> text
+					.setText(flatValues_to_String(getModels().stream().map(model -> model.getTextureFile()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
 			btn.addSelectionListener(new AbstractBrowseImageListener() {
 
 				{
-					dialogName = "URL";
+					dialogName = "Texture URL";
 				}
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setUrl(url));
+					getModels().forEach(model -> {
+						model.setTextureURL(url);
+						model.build(List.of());
+					});
+					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
 				@Override
 				protected String getUrl() {
-					return flatValues_to_String(getModels().stream().map(model -> model.getUrl()));
+					return flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()));
 				}
 
 			});
 		}
 
 		{
-			var canvas = new ImageCanvas(comp, SWT.BORDER);
-			canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-			addUpdate(() -> {
-				var file = flatValues_to_Object(getModels().stream().map(model -> model.getUrlFile()));
-				canvas.setImageFile((IFile) file);
+			// url
+
+			var atlasType = getModels().get(0).getType();
+
+			label(comp, "Atlas URL", AssetModel.getHelp(AssetType.atlas, "atlasURL"));
+
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new TextListener(text) {
+
+				@Override
+				protected void accept(String value) {
+					getModels().forEach(model -> model.setAtlasURL(value));
+				}
+			};
+
+			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getAtlasURL()))));
+
+			var btn = new Button(comp, 0);
+			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
+			btn.addSelectionListener(new AbstractBrowseFileListener() {
+
+				{
+					dialogName = "Atlas URL (" + atlasType + ")";
+				}
+
+				@Override
+				protected void setUrl(String url) {
+					getModels().forEach(model -> {
+						model.setTextureURL(url);
+
+						var file = model.getFileFromUrl(url);
+						if (file != null) {
+							String format;
+							try {
+								format = AtlasCore.getAtlasFormat(file);
+								if (format != null) {
+									model.setFormat(format);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+
+						model.build(List.of());
+					});
+
+					update_UI_from_Model();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected String getUrl() {
+					return flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()));
+				}
+
+				@Override
+				protected List<IFile> discoverFiles(AssetPackModel pack) throws CoreException {
+					return pack.discoverAtlasFiles(atlasType);
+				}
+
 			});
 		}
 
@@ -121,7 +197,8 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
+			addUpdate(
+					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
@@ -141,6 +218,15 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 				protected String getUrl() {
 					return flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()));
 				}
+			});
+		}
+
+		{
+			// preview
+			_preview = new AtlasAssetPreviewComp(comp, SWT.BORDER);
+			_preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+			addUpdate(() -> {
+				_preview.setModel((AtlasAssetModel) flatValues_to_Object(getModels().stream()));
 			});
 		}
 

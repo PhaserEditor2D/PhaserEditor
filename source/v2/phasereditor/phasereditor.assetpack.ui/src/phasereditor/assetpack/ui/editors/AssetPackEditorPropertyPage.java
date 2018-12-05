@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -77,6 +78,10 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		if (obj instanceof IAssetFrameModel) {
 			list.add(new FrameSection(this));
+		}
+
+		if (obj instanceof AtlasAssetModel) {
+			list.add(new AtlasSection(this));
 		}
 
 		return list;
