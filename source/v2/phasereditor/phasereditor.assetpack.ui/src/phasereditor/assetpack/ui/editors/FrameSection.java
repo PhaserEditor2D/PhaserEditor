@@ -21,65 +21,38 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.SvgAssetModel;
-import phasereditor.ui.properties.FormPropertyPage;
-import phasereditor.ui.properties.FormPropertySection;
+import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
 
 /**
  * @author arian
  *
  */
-public class AssetPackEditorPropertyPage extends FormPropertyPage {
+public class FrameSection extends BaseAssetPackEditorSection<IAssetFrameModel> {
 
-	private AssetPackEditor _editor;
-
-	public AssetPackEditorPropertyPage(AssetPackEditor editor) {
-		super();
-		_editor = editor;
-	}
-
-	public AssetPackEditor getEditor() {
-		return _editor;
+	public FrameSection(AssetPackEditorPropertyPage page) {
+		super(page, "Texture Frame");
+		setFillSpace(true);
 	}
 
 	@Override
-	protected Object getDefaultModel() {
-		return null;
+	public boolean canEdit(Object obj) {
+		return obj instanceof IAssetFrameModel;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	protected List<FormPropertySection> createSections(Object obj) {
-		var list = new ArrayList<FormPropertySection>();
-
-		if (obj instanceof AssetModel) {
-			list.add(new KeySection(this));
-		}
-
-		if (obj instanceof ImageAssetModel) {
-			list.add(new ImageSection(this));
-		}
-
-		if (obj instanceof SvgAssetModel) {
-			list.add(new SvgSection(this));
-		}
-
-		if (obj instanceof SpritesheetAssetModel) {
-			list.add(new SpritesheetSection(this));
-		}
-
-		if (obj instanceof IAssetFrameModel) {
-			list.add(new FrameSection(this));
-		}
-
-		return list;
+	public Control createContent(Composite parent) {
+		var preview = new ExplainAssetFrameCanvas(parent, 0);
+		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
+		addUpdate(() -> {
+			var model = (IAssetFrameModel) flatValues_to_Object(getModels().stream());
+			preview.setModel(model);
+		});
+		return preview;
 	}
 
 }

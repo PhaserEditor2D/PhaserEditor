@@ -119,9 +119,15 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				gc.fillRectangle(r2);
 				gc.setAlpha(255);
 			}
-			
-			var frame = _spritesheet.getFrames().get(i++);
-			PhaserEditorUI.paintListItemBackground(gc, frame.getColumn() + frame.getRow(), r2);
+
+			{
+				var frames = _spritesheet.getFrames();
+				if (i < frames.size()) {
+					var frame = frames.get(i);
+					PhaserEditorUI.paintListItemBackground(gc, frame.getColumn() + frame.getRow(), r2);
+				}
+			}
+			i++;
 		}
 	}
 
