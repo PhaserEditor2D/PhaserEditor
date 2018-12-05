@@ -188,10 +188,57 @@ public class IDEStartup implements IStartup {
 
 		private Color _textBG;
 		private Color _listBG;
+		private Color _BG;
+		private Color _FG;
+		private Color _folderSelectionFG;
+		private Color _folderFG;
+		private Color _folderSelectionBG;
+		private Color _buttonFG;
+		private Color _separatorColor;
+		private Color _boldLabelFG;
+		private Color _textFG;
+		private Color _folderBG;
 
+		@SuppressWarnings("unused")
 		public PaintControlListener() {
+			// spaceship
+
+			var darkGray = SWTResourceManager.getColor(52, 52, 52);
+			var darkGray2 = SWTResourceManager.getColor(72, 72, 72);
+			var lightGray = SWTResourceManager.getColor(86, 86, 85);
+			var darkWhite = SWTResourceManager.getColor(170, 170, 170);
+			var black = SWTResourceManager.getColor(0, 0, 0);
+			var blue = SWTResourceManager.getColor(89, 128, 183);
+			var green = SWTResourceManager.getColor(0, 65, 58);
+			var white = SWTResourceManager.getColor(255, 255, 255);
+
+			_BG = lightGray;
+			_FG = black;
+			_textBG = darkGray;
+			_textFG = white;
+			_listBG = _BG;
+			_folderSelectionFG = white;
+			_folderSelectionBG = lightGray;
+			_folderFG = _FG;
+			_folderBG = _BG;
+			_buttonFG = white;
+			_separatorColor = _FG;
+			_boldLabelFG = black;
+
+			// black
+
+			_BG = SWTResourceManager.getColor(0, 0, 0);
+			_FG = SWTResourceManager.getColor(200, 200, 200);
 			_textBG = SWTResourceManager.getColor(30, 30, 30);
+			_textFG = SWTResourceManager.getColor(SWT.COLOR_GREEN);
 			_listBG = SWTResourceManager.getColor(5, 5, 5);
+			_folderSelectionFG = SWTResourceManager.getColor(SWT.COLOR_RED);
+			_folderSelectionBG = SWTResourceManager.getColor(SWT.COLOR_BLACK);
+			_folderFG = SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY);
+			_folderBG = _BG;
+			_buttonFG = SWTResourceManager.getColor(SWT.COLOR_RED);
+			_separatorColor = SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY);
+			_boldLabelFG = SWTResourceManager.getColor(ColorUtil.LIGHTBLUE.rgb);
 		}
 
 		@Override
@@ -208,40 +255,39 @@ public class IDEStartup implements IStartup {
 			if (widget.getData("-colors-set") == null) {
 				widget.setData("-colors-set", "on");
 
-				var display = widget.getDisplay();
-
 				if (widget instanceof Control) {
 					var control = (Control) widget;
 
-					control.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-					control.setForeground(SWTResourceManager.getColor(200, 200, 200));
+					control.setBackground(_BG);
+					control.setForeground(_FG);
 
 					if (widget instanceof CTabFolder) {
 						var folder = (CTabFolder) widget;
 						folder.setBorderVisible(false);
-						folder.setSelectionBackground(display.getSystemColor(SWT.COLOR_BLACK));
-						folder.setSelectionForeground(display.getSystemColor(SWT.COLOR_RED));
-						folder.setForeground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
+						folder.setSelectionBackground(_folderSelectionBG);
+						folder.setSelectionForeground(_folderSelectionFG);
+						folder.setBackground(_folderBG);
+						folder.setForeground(_folderFG);
 						folder.setSimple(true);
 						folder.setRenderer(new MyCTabFolderRenderer(folder));
 					} else if (widget instanceof Button) {
 						var button = (Button) widget;
-						button.setForeground(display.getSystemColor(SWT.COLOR_RED));
+						button.setForeground(_buttonFG);
 					} else if (widget instanceof Label) {
 						var label = (Label) widget;
 						if ((label.getFont().getFontData()[0].getStyle() & SWT.BOLD) == SWT.BOLD) {
-							label.setForeground(SWTResourceManager.getColor(ColorUtil.DARKORANGE.rgb));
+							label.setForeground(_boldLabelFG);
 						}
 
 						if ((label.getStyle() & SWT.SEPARATOR) == SWT.SEPARATOR) {
-							label.setBackground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
+							label.setBackground(_separatorColor);
 						}
 					} else if (widget instanceof Text) {
 						var text = (Text) widget;
-						text.setForeground(SWTResourceManager.getColor(ColorUtil.GREEN.rgb));
-						text.setBackground(_textBG);
+						text.setForeground(_textFG);
+						// text.setBackground(_textBG);
 					} else if (widget instanceof TreeCanvas) {
-						var tree = (TreeCanvas)widget;
+						var tree = (TreeCanvas) widget;
 						tree.setBackground(_listBG);
 					}
 				}
