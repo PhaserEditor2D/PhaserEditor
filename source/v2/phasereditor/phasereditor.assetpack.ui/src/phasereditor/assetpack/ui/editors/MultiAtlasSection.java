@@ -38,9 +38,8 @@ import org.eclipse.ui.ISharedImages;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.ui.preview.AtlasAssetPreviewComp;
-import phasereditor.atlas.core.AtlasCore;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.preview.MultiAtlasAssetPreviewComp;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -48,36 +47,37 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
+public class MultiAtlasSection extends BaseAssetPackEditorSection<MultiAtlasAssetModel> {
 
-	private AtlasAssetPreviewComp _preview;
+	private MultiAtlasAssetPreviewComp _preview;
 
-	public AtlasSection(AssetPackEditorPropertyPage page) {
-		super(page, "Atlas");
+	public MultiAtlasSection(AssetPackEditorPropertyPage page) {
+		super(page, "Multi Atlas");
+
 		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AtlasAssetModel;
+		return obj instanceof MultiAtlasAssetModel;
 	}
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		_preview.createToolBar(manager);
+		_preview.fillToolBar(manager);
 	}
 
 	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
+
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(3, false));
 
 		{
+			// atlasURL
 
-			// textureURL
-
-			label(comp, "Texture URL", AssetModel.getHelp(AssetType.atlas, "textureURL"));
+			label(comp, "Atlas URL", "*" + AssetModel.getHelp(AssetType.multiatlas, "atlasURL"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -85,152 +85,76 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setTextureURL(value));
-				}
-			};
-
-			addUpdate(() -> text
-					.setText(flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()))));
-
-			var btn = new Button(comp, 0);
-			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
-			btn.addSelectionListener(new AbstractBrowseImageListener() {
-
-				{
-					dialogName = "Texture URL";
-				}
-
-				@Override
-				protected void setUrl(String url) {
 					getModels().forEach(model -> {
-						model.setTextureURL(url);
+						model.setUrl(value);
 						model.build(null);
 					});
+					getEditor().refresh();
 					update_UI_from_Model();
-				}
-
-				@SuppressWarnings("synthetic-access")
-				@Override
-				protected String getUrl() {
-					return flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()));
-				}
-
-			});
-		}
-
-		{
-			// url
-
-			var atlasType = getModels().get(0).getType();
-
-			label(comp, "Atlas URL", AssetModel.getHelp(AssetType.atlas, "atlasURL"));
-
-			var text = new Text(comp, SWT.BORDER);
-			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			new TextListener(text) {
-
-				@Override
-				protected void accept(String value) {
-					getModels().forEach(model -> model.setAtlasURL(value));
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getAtlasURL()))));
+			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getUrl()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
 			btn.addSelectionListener(new AbstractBrowseFileListener() {
 
 				{
-					dialogName = "Atlas URL (" + atlasType + ")";
+					dialogName = "Atlas URL";
 				}
 
 				@Override
 				protected void setUrl(String url) {
 					getModels().forEach(model -> {
-						model.setAtlasURL(url);
-
-						var file = model.getFileFromUrl(url);
-						if (file != null) {
-							String format;
-							try {
-								format = AtlasCore.getAtlasFormat(file);
-								if (format != null) {
-									model.setFormat(format);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-
+						model.setUrl(url);
 						model.build(null);
 					});
 
+					getEditor().refresh();
 					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
 				@Override
 				protected String getUrl() {
-					return flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()));
+					return flatValues_to_String(getModels().stream().map(model -> model.getUrl()));
 				}
 
 				@Override
 				protected List<IFile> discoverFiles(AssetPackModel pack) throws CoreException {
-					return pack.discoverAtlasFiles(atlasType);
+					return pack.discoverAtlasFiles(AssetType.multiatlas);
 				}
 
 			});
 		}
 
 		{
-			// normal map
-			label(comp, "Normal Map", AssetModel.getHelp(AssetType.image, "normalMap"));
-
+			label(comp, "Path", "Phaser.Loader.FileTypes.MultiAtlasFileConfig.path");
 			var text = new Text(comp, SWT.BORDER);
-			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setNormalMap(value));
+					getModels().forEach(model -> {
+						model.setPath(value);
+						model.build(null);
+					});
+
+					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
-
-			addUpdate(
-					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
-
-			var btn = new Button(comp, 0);
-			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
-			btn.addSelectionListener(new AbstractBrowseImageListener() {
-
-				{
-					dialogName = "normalMap";
-				}
-
-				@Override
-				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setNormalMap(url));
-				}
-
-				@SuppressWarnings("synthetic-access")
-				@Override
-				protected String getUrl() {
-					return flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()));
-				}
-			});
+			addUpdate(() -> setValues_to_Text(text, getModels(), MultiAtlasAssetModel::getPath));
 		}
 
 		{
-			// preview
-			_preview = new AtlasAssetPreviewComp(comp, SWT.BORDER);
+			_preview = new MultiAtlasAssetPreviewComp(comp, SWT.BORDER);
 			_preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-			addUpdate(() -> {
-				_preview.setModel((AtlasAssetModel) flatValues_to_Object(getModels().stream()));
-			});
+			addUpdate(() -> _preview.setModel((MultiAtlasAssetModel) flatValues_to_Object(getModels().stream())));
 		}
 
 		return comp;
 	}
-
 }

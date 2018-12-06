@@ -101,7 +101,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void setUrl(String url) {
 					getModels().forEach(model -> {
 						model.setUrl(url);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}
@@ -164,7 +164,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setFrameWidth(value);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}
@@ -184,7 +184,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setFrameHeight(value);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}
@@ -204,7 +204,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setStartFrame(value);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}
@@ -224,7 +224,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setEndFrame(value);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}
@@ -244,7 +244,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setSpacing(value);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}
@@ -264,7 +264,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setMargin(value);
-						model.build(List.of());
+						model.build(null);
 					});
 					update_UI_from_Model();
 				}

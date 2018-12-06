@@ -63,7 +63,7 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 				var pack = getEditor().getModel();
 				var urlFile = pack.getFileFromUrl(getUrl());
 				List<IFile> imageFiles = discoverImages(pack);
-				String result = AssetPackUI.browseImageUrl(pack, dialogName, urlFile, imageFiles,
+				var result = AssetPackUI.browseImageUrl(pack, dialogName, urlFile, imageFiles,
 						e.display.getActiveShell());
 
 				if (result != null) {

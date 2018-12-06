@@ -137,7 +137,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 					if (path == null) {
 						path = "";
 					} else {
-						if (!path.endsWith("/")) {
+						if (path.length() > 0 && !path.endsWith("/")) {
 							path += "/";
 						}
 					}
@@ -157,10 +157,9 @@ public class MultiAtlasAssetModel extends AssetModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		// sort list
-		
-		
+
 		_frames = AssetPackCore.sortAssets(list);
 	}
 

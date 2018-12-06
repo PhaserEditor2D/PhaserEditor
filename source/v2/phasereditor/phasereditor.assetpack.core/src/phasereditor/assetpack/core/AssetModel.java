@@ -316,7 +316,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	public final void build(List<IStatus> problems) {
 		_lastUsedFiles = computeUsedFiles();
 
-		internalBuild(problems);
+		internalBuild(problems == null ? new ArrayList<>() : problems);
 
 	}
 

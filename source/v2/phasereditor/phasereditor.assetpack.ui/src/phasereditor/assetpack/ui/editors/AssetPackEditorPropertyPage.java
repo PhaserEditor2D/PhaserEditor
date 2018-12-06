@@ -28,6 +28,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -82,6 +83,10 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		if (obj instanceof AtlasAssetModel) {
 			list.add(new AtlasSection(this));
+		}
+
+		if (obj instanceof MultiAtlasAssetModel) {
+			list.add(new MultiAtlasSection(this));
 		}
 
 		return list;

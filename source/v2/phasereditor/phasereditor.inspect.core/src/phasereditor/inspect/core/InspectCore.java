@@ -275,4 +275,8 @@ public class InspectCore {
 	public static boolean isWindowsOS() {
 		return Platform.getOS().toLowerCase().contains("win");
 	}
+
+	public static String phaserHelp(String memberFullName) {
+		return getPhaserHelp().getMemberHelp(memberFullName);
+	}
 }
