@@ -168,6 +168,11 @@
                            id="phasereditor.ide.theme.dark"
                            label="Phaser Editor Dark">
                      </theme>
+                     <theme
+                           basestylesheeturi="css/phasereditor_very_dark.css"
+                           id="phasereditor.ide.theme.verydark"
+                           label="Phaser Editor Very Dark">
+                     </theme>
                   </extension>
                   <extension
                         point="org.eclipse.ui.startup">

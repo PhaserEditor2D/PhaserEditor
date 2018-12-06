@@ -200,6 +200,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 				gl.marginWidth = 0;
 				gl.marginHeight = 0;
 				header.setLayout(gl);
+				header.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionHeader");
 			}
 
 			var collapseBtn = new Label(header, SWT.NONE);
@@ -208,6 +209,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			var title = new Label(header, SWT.NONE);
 			title.setText(section.getName());
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
+			title.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionTitle");
 
 			var control = section.createContent(this);
 			control.setLayoutData(createControlGridData());
