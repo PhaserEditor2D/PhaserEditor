@@ -363,7 +363,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
-				((AtlasAssetPreviewComp) preview).createToolBar(toolbar);
+				((AtlasAssetPreviewComp) preview).fillToolBar(toolbar);
 			}
 		};
 	}

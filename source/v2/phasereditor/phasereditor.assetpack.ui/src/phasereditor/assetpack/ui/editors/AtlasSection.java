@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,7 +38,6 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.ui.preview.AtlasAssetPreviewComp;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
@@ -50,21 +48,13 @@ import phasereditor.ui.properties.TextListener;
  */
 public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 
-	private AtlasAssetPreviewComp _preview;
-
 	public AtlasSection(AssetPackEditorPropertyPage page) {
 		super(page, "Atlas");
-		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof AtlasAssetModel;
-	}
-
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		_preview.createToolBar(manager);
 	}
 
 	@SuppressWarnings("unused")
@@ -232,15 +222,6 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 				protected String getUrl() {
 					return flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()));
 				}
-			});
-		}
-
-		{
-			// preview
-			_preview = new AtlasAssetPreviewComp(comp, SWT.BORDER);
-			_preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-			addUpdate(() -> {
-				_preview.setModel((AtlasAssetModel) flatValues_to_Object(getModels().stream()));
 			});
 		}
 

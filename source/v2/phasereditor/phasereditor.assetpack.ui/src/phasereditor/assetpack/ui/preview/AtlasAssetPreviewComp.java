@@ -129,7 +129,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		return _atlasCanvas;
 	}
 
-	public void createToolBar(IToolBarManager toolbar) {
+	public void fillToolBar(IToolBarManager toolbar) {
 
 		_tilesAction = new Action("Tiles", IAction.AS_CHECK_BOX) {
 			{

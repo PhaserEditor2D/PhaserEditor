@@ -98,8 +98,12 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 			list.add(new SingleFrameSection(this));
 		}
 
-		if (obj instanceof IAssetFrameModel) {
+		if (ManyTexturesSection.canEdit2(obj)) {
 			list.add(new ManyTexturesSection(this));
+		}
+
+		if (obj instanceof AtlasAssetModel) {
+			list.add(new SingleAtlasPreviewSection(this));
 		}
 
 		if (obj instanceof AnimationModel) {
