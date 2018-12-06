@@ -25,8 +25,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -35,9 +33,9 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.preview.AssetFramesProvider;
 import phasereditor.ui.FrameGridCanvas;
-import phasereditor.ui.IFrameProvider;
 
 /**
  * @author arian
@@ -62,7 +60,7 @@ public class ManyTexturesSection extends BaseAssetPackEditorSection<IAssetKey> {
 
 	public static boolean canEdit2(Object obj) {
 		return obj instanceof IAssetFrameModel || obj instanceof AtlasAssetModel || obj instanceof MultiAtlasAssetModel
-				|| obj instanceof ImageAssetModel;
+				|| obj instanceof SpritesheetAssetModel || obj instanceof ImageAssetModel;
 	}
 
 	@Override
@@ -80,39 +78,4 @@ public class ManyTexturesSection extends BaseAssetPackEditorSection<IAssetKey> {
 
 		return comp;
 	}
-
-	class FramesProvider implements IFrameProvider {
-
-		@Override
-		public int getFrameCount() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public Rectangle getFrameRectangle(int index) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public IFile getFrameImageFile(int index) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Object getFrameObject(int index) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getFrameLabel(int index) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-	}
-
 }
