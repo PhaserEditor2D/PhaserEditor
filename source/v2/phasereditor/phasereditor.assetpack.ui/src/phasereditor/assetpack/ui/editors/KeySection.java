@@ -61,6 +61,7 @@ public class KeySection extends BaseAssetPackEditorSection<AssetModel> {
 			@Override
 			protected void accept(String value) {
 				getModels().forEach(model -> model.setKey(value));
+				getEditor().refresh();
 			}
 		};
 		

@@ -70,7 +70,12 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setUrl(value));
+					getModels().forEach(model -> {
+						model.setUrl(value);
+						model.build(null);
+					});
+					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 
@@ -86,7 +91,12 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setUrl(url));
+					getModels().forEach(model -> {
+						model.setUrl(url);
+						model.build(null);
+					});
+					update_UI_from_Model();
+					getEditor().refresh();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -121,7 +131,8 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
+			addUpdate(
+					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));

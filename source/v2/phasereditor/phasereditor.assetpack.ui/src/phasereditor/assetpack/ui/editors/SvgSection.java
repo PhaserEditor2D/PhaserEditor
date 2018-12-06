@@ -79,6 +79,7 @@ public class SvgSection extends BaseAssetPackEditorSection<SvgAssetModel> {
 				@Override
 				protected void accept(String value) {
 					getModels().forEach(model -> model.setUrl(value));
+					getEditor().refresh();
 				}
 			};
 
@@ -95,6 +96,7 @@ public class SvgSection extends BaseAssetPackEditorSection<SvgAssetModel> {
 				@Override
 				protected void setUrl(String url) {
 					getModels().forEach(model -> model.setUrl(url));
+					getEditor().refresh();
 				}
 
 				@SuppressWarnings("synthetic-access")

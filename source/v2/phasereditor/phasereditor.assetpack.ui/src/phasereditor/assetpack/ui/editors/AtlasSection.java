@@ -85,12 +85,17 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setTextureURL(value));
+					getModels().forEach(model -> {
+						model.setTextureURL(value);
+						model.build(null);
+					});
+					getEditor().refresh();
+					update_UI_from_Model();
 				}
 			};
 
-			addUpdate(() -> text
-					.setText(flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()))));
+			addUpdate(
+					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
@@ -106,6 +111,7 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 						model.setTextureURL(url);
 						model.build(null);
 					});
+					getEditor().refresh();
 					update_UI_from_Model();
 				}
 
@@ -131,7 +137,12 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setAtlasURL(value));
+					getModels().forEach(model -> {
+						model.setAtlasURL(value);
+						model.build(null);
+					});
+					getEditor().refresh();
+					update_UI_from_Model();
 				}
 			};
 
@@ -166,6 +177,7 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 						model.build(null);
 					});
 
+					getEditor().refresh();
 					update_UI_from_Model();
 				}
 
@@ -193,7 +205,9 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setNormalMap(value));
+					getModels().forEach(model -> {
+						model.setNormalMap(value);
+					});
 				}
 			};
 

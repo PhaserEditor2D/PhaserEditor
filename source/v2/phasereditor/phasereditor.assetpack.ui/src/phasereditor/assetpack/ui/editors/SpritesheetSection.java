@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
-import java.util.List;
-
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -83,7 +81,12 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setUrl(value));
+					getModels().forEach(model -> {
+						model.setUrl(value);
+						model.build(null);
+					});
+					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 
@@ -104,6 +107,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -167,6 +171,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getFrameWidth));
@@ -187,6 +192,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getFrameHeight));
@@ -207,6 +213,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getStartFrame));
@@ -227,6 +234,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getEndFrame));
@@ -247,6 +255,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getSpacing));
@@ -267,6 +276,7 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 						model.build(null);
 					});
 					update_UI_from_Model();
+					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getMargin));
