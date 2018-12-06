@@ -1,0 +1,54 @@
+.MPartStack {
+	swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');
+	swt-selected-tab-fill:  #4f4f4f #303030 100% 100%;
+	swt-unselected-tabs-color: #4f4f4f; 
+	swt-outer-keyline-color: #404040;
+	swt-inner-keyline-color: #404040;
+	swt-tab-outline: #404040;
+	padding: 0px 2px 2px;
+	swt-shadow-visible: false;
+	swt-mru-visible: false;
+	color: '#org-eclipse-ui-workbench-INACTIVE_TAB_TEXT_COLOR';
+}
+
+.MPartStack.active.noFocus {
+	swt-selected-tab-fill: #4f4f4f #202020 100% 100%;
+}
+
+.MPartStack.active {
+	swt-selected-tab-fill: #3f3f3f #303030 100% 100%;
+}
+
+.MPartStack.active.noFocus > CTabItem:selected {
+	color: #dddddd;
+}
+
+Composite, Tree, Table, Label, .Canvas, .MToolBar {
+	background-color: #202020;
+	color: #dddddd;
+}
+
+Button {
+	background-color: #909090;
+	color: black;
+}
+
+Text {
+	background-color: #2f2f2f;
+	color: lightgray;
+}
+
+
+Table,
+Tree {
+	swt-header-background-color: #4f4f4f;
+}
+
+CTabItem {
+	color: #eeeeee;
+}
+
+CTabItem:selected {
+	background-color: #4f4f4f;
+	color: #ffffff;
+}

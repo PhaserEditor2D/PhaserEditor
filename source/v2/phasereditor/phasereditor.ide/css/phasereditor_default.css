@@ -1,0 +1,16 @@
+Composite, Tree, Table, Canvas, Label {
+	background-color: #d3d3d3;
+}
+
+Text {
+	background-color: #E8E8E8;
+}
+
+Table,
+Tree {
+	swt-header-background-color: #E8E8E8;
+}
+
+CTabItem:selected {
+	background-color: #E8E8E8;
+}

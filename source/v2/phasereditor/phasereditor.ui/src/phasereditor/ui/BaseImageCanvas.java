@@ -79,6 +79,8 @@ public class BaseImageCanvas extends Canvas {
 	public BaseImageCanvas(Composite parent, int style) {
 		super(parent, style);
 
+		setData("org.eclipse.e4.ui.css.CssClassName", "Canvas");
+		
 		_disableCanche = false;
 
 		_gobalCanvases.add(this);
@@ -95,7 +97,7 @@ public class BaseImageCanvas extends Canvas {
 			public void paintControl(PaintEvent e) {
 				Shell shell = e.display.getActiveShell();
 				if (shell != null) {
-					setForeground(shell.getForeground());
+					//setForeground(shell.getForeground());
 				}
 			}
 		});

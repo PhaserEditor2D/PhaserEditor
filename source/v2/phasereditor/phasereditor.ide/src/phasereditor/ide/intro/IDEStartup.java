@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IPageListener;
@@ -274,6 +275,7 @@ public class IDEStartup implements IStartup {
 				_separatorColor =  rgb("#E0D9D1");
 				_boldLabelFG = _FG;
 			}
+			
 		}
 
 		@Override

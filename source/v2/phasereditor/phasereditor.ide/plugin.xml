@@ -159,9 +159,14 @@
                   <extension
                         point="org.eclipse.e4.ui.css.swt.theme">
                      <theme
-                           basestylesheeturi="css/phasereditor_win.css"
-                           id="phasereditor.ide.theme.win"
-                           label="Phaser Editor">
+                           basestylesheeturi="css/phasereditor_default.css"
+                           id="phasereditor.ide.theme.light"
+                           label="Phaser Editor Light">
+                     </theme>
+                     <theme
+                           basestylesheeturi="css/phasereditor_dark.css"
+                           id="phasereditor.ide.theme.dark"
+                           label="Phaser Editor Dark">
                      </theme>
                   </extension>
                   <extension
