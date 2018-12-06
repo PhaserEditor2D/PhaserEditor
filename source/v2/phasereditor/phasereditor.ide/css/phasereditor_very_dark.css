@@ -28,9 +28,10 @@ Composite, Tree, Table, Label, .Canvas, .MToolBar {
 	color: #dddddd;
 }
 
-.Canvas, Tree, Table {
-	background-color: #101010;
+.Canvas, Tree {
+	background-color: gradient linear #202020 #101010;
 }
+
 
 Button {
 	background-color: #000000;
