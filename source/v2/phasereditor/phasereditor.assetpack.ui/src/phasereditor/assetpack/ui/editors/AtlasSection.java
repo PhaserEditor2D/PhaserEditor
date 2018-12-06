@@ -125,7 +125,7 @@ public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
 		}
 
 		{
-			// url
+			// atlasURL
 
 			var atlasType = getModels().get(0).getType();
 

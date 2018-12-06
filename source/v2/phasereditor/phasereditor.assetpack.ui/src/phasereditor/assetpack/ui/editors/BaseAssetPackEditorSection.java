@@ -44,6 +44,12 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 		super(name);
 
 		_page = page;
+
+	}
+
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
 	}
 
 	public AssetPackEditorPropertyPage getPage() {

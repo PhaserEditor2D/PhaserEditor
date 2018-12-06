@@ -24,6 +24,7 @@ package phasereditor.assetpack.ui.editors;
 import java.util.ArrayList;
 import java.util.List;
 
+import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -31,6 +32,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -77,16 +79,32 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 			list.add(new SpritesheetSection(this));
 		}
 
-		if (obj instanceof IAssetFrameModel) {
-			list.add(new FrameSection(this));
-		}
-
 		if (obj instanceof AtlasAssetModel) {
 			list.add(new AtlasSection(this));
 		}
 
 		if (obj instanceof MultiAtlasAssetModel) {
 			list.add(new MultiAtlasSection(this));
+		}
+
+		if (obj instanceof AnimationsAssetModel) {
+			list.add(new AnimationsSection(this));
+			list.add(new SinlgeAnimationsPreviewSection(this));
+		}
+
+		// -- general sections --
+
+		if (obj instanceof IAssetFrameModel) {
+			list.add(new SingleFrameSection(this));
+		}
+
+		if (obj instanceof IAssetFrameModel) {
+			list.add(new ManyTexturesSection(this));
+		}
+
+		if (obj instanceof AnimationModel) {
+			list.add(new ManyAnimationsPreviewSection(this));
+			list.add(new SingleAnimationPreviewSection(this));
 		}
 
 		return list;

@@ -19,19 +19,35 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.preview;
+package phasereditor.assetpack.ui.editors;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
+import static java.util.stream.Collectors.toList;
+
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import phasereditor.assetpack.core.AnimationsAssetModel;
 
 /**
  * @author arian
  *
  */
-public class AtlasAssetFramesProvider extends AssetFramesProvider {
+public class SinlgeAnimationsPreviewSection extends BaseAssetPackEditorSection<AnimationsAssetModel> {
 
+	public SinlgeAnimationsPreviewSection(AssetPackEditorPropertyPage page) {
+		super(page, "Animations Preview");
+		setFillSpace(true);
+	}
 
-	public AtlasAssetFramesProvider(AtlasAssetModel asset) {
-		super(asset.getSubElements());
+	@Override
+	public boolean canEdit(Object obj) {
+		return obj instanceof AnimationsAssetModel;
+	}
+
+	@Override
+	public Control createContent(Composite parent) {
+		return ManyAnimationsPreviewSection.createAnimationsViewer(this, parent,
+				() -> getModels().stream().flatMap(model -> model.getSubElements().stream()).collect(toList()));
 	}
 
 }

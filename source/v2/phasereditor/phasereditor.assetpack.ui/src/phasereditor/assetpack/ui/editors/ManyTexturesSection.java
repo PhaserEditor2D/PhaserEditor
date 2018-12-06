@@ -21,22 +21,30 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
+import phasereditor.assetpack.ui.preview.AssetFramesProvider;
+import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.IFrameProvider;
 
 /**
  * @author arian
  *
  */
-public class FrameSection extends BaseAssetPackEditorSection<IAssetFrameModel> {
+public class ManyTexturesSection extends BaseAssetPackEditorSection<IAssetFrameModel> {
 
-	public FrameSection(AssetPackEditorPropertyPage page) {
-		super(page, "Texture Frame");
+	public ManyTexturesSection(AssetPackEditorPropertyPage page) {
+		super(page, "Textures Preview");
 		setFillSpace(true);
+	}
+	
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number > 1;
 	}
 
 	@Override
@@ -46,13 +54,46 @@ public class FrameSection extends BaseAssetPackEditorSection<IAssetFrameModel> {
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new ExplainAssetFrameCanvas(parent, 0);
-		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
+		var comp = new FrameGridCanvas(parent, 0, true);
 		addUpdate(() -> {
-			var model = (IAssetFrameModel) flatValues_to_Object(getModels().stream());
-			preview.setModel(model);
+			comp.loadFrameProvider(new AssetFramesProvider(getModels()));
 		});
-		return preview;
+
+		return comp;
+	}
+
+	class FramesProvider implements IFrameProvider {
+
+		@Override
+		public int getFrameCount() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public Rectangle getFrameRectangle(int index) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IFile getFrameImageFile(int index) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Object getFrameObject(int index) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getFrameLabel(int index) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 }

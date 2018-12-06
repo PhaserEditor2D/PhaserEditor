@@ -19,19 +19,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.preview;
+package phasereditor.assetpack.ui.editors;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
 
 /**
  * @author arian
  *
  */
-public class AtlasAssetFramesProvider extends AssetFramesProvider {
+public class SingleFrameSection extends BaseAssetPackEditorSection<IAssetFrameModel> {
 
+	public SingleFrameSection(AssetPackEditorPropertyPage page) {
+		super(page, "Texture Preview");
+		setFillSpace(true);
+	}
 
-	public AtlasAssetFramesProvider(AtlasAssetModel asset) {
-		super(asset.getSubElements());
+	@Override
+	public boolean canEdit(Object obj) {
+		return obj instanceof IAssetFrameModel;
+	}
+
+	@Override
+	public Control createContent(Composite parent) {
+		var preview = new ExplainAssetFrameCanvas(parent, 0);
+		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
+		addUpdate(() -> {
+			var model = (IAssetFrameModel) flatValues_to_Object(getModels().stream());
+			preview.setModel(model);
+		});
+		return preview;
 	}
 
 }

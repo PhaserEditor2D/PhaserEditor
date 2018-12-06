@@ -104,12 +104,18 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 		for (var section : allSections) {
 			var accept = true;
-			for (var model : models) {
-				if (!section.canEdit(model)) {
-					accept = false;
-					break;
+			
+			if (!section.supportThisNumberOfModels(models.length)) {
+				accept = false;
+			} else {
+				for (var model : models) {
+					if (!section.canEdit(model)) {
+						accept = false;
+						break;
+					}
 				}
 			}
+			
 			if (accept) {
 				uniqueSections.add(section);
 				sectionMap.put(section.getClass(), section);
@@ -146,12 +152,12 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 					row.setVisible(true);
 					var gd = (GridData) row.getLayoutData();
 					gd.heightHint = SWT.DEFAULT;
-					
+
 					if (section.isFillSpace()) {
 						gd.grabExcessVerticalSpace = true;
 						gd.verticalAlignment = SWT.FILL;
 					}
-					
+
 					oldSection.setModels(models);
 					oldSection.update_UI_from_Model();
 					createNew = false;

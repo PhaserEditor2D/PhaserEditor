@@ -21,17 +21,58 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Rectangle;
+
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.ui.IFrameProvider;
 
 /**
  * @author arian
  *
  */
-public class AtlasAssetFramesProvider extends AssetFramesProvider {
+public class AssetFramesProvider implements IFrameProvider {
+	private List<? extends IAssetFrameModel> _frames;
 
-
-	public AtlasAssetFramesProvider(AtlasAssetModel asset) {
-		super(asset.getSubElements());
+	public AssetFramesProvider(List<? extends IAssetFrameModel> frames) {
+		super();
+		_frames = frames;
 	}
 
+	@Override
+	public int getFrameCount() {
+		return _frames.size();
+	}
+
+	@Override
+	public Rectangle getFrameRectangle(int index) {
+		return getFrameObject(index).getFrameData().src;
+	}
+
+	@Override
+	public IFile getFrameImageFile(int index) {
+		return _frames.get(index).getImageFile();
+	}
+
+	@Override
+	public String getFrameTooltip(int index) {
+		var rect = getFrameRectangle(index);
+		return rect.width + "x" + rect.height;
+	}
+
+	@Override
+	public IAssetFrameModel getFrameObject(int index) {
+		return _frames.get(index);
+	}
+
+	@Override
+	public String getFrameLabel(int index) {
+		var frame = _frames.get(index);
+		if (frame == null) {
+			return null;
+		}
+		return frame.getKey();
+	}
 }

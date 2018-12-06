@@ -179,6 +179,11 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		return null;
 	}
 
+	@SuppressWarnings({ "unused", "static-method" })
+	public boolean supportThisNumberOfModels(int number) {
+		return true;
+	}
+	
 	public abstract boolean canEdit(Object obj);
 
 	public abstract Control createContent(Composite parent);
