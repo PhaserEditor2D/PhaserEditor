@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -28,7 +30,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import com.phasereditor2d.json.JSONUtils;
+
 import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -122,5 +127,45 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 
 		protected abstract String getUrl();
 
+	}
+
+	abstract class AbstractBrowseAudioFilesListener extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+
+			var pack = getEditor().getModel();
+
+			try {
+				var currentFiles = getUrls().stream()
+
+						.map(url -> pack.getFileFromUrl(url))
+
+						.filter(f -> f != null)
+
+						.collect(toList());
+
+				var shell = getEditor().getEditorSite().getShell();
+
+				var json = AssetPackUI.browseAudioUrl(pack, currentFiles, pack.discoverAudioFiles(), shell, null);
+
+				if (json == null) {
+					return;
+				}
+
+				var urls = AudioAssetModel.parseUrlsJSONArray(json);
+
+				var result = JSONUtils.<String>toList(urls);
+
+				setUrls(result);
+
+			} catch (CoreException e1) {
+				e1.printStackTrace();
+				throw new RuntimeException(e1);
+			}
+		}
+
+		protected abstract void setUrls(List<String> value);
+
+		protected abstract List<String> getUrls();
 	}
 }

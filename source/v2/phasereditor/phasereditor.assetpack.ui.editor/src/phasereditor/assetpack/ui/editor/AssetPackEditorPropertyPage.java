@@ -66,6 +66,8 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		list.add(new MultiAtlasSection(this));
 
 		list.add(new AnimationsSection(this));
+		
+		list.add(new AudioSection(this));
 
 		list.addAll(super.createSections());
 

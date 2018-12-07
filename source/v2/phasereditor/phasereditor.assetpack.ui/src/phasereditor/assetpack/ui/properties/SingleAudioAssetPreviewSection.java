@@ -21,47 +21,59 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.assetpack.core.AudioAssetModel;
+import phasereditor.audiosprite.ui.GdxMusicControl;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AssetsPropertyPage extends FormPropertyPage {
+public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAssetModel> {
 
-	@Override
-	protected Object getDefaultModel() {
-		return null;
+	public SingleAudioAssetPreviewSection() {
+		super("Audio Preview");
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections() {
-		var list = new ArrayList<FormPropertySection<?>>();
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
+	}
 
-		// list.add(new AssetFilesSection());
+	@Override
+	public boolean canEdit(Object obj) {
+		return obj instanceof AudioAssetModel;
+	}
 
-		list.add(new SingleSpritesheetPreviewSection());
+	@Override
+	public Control createContent(Composite parent) {
+		var comp = new Composite(parent, 0);
+		comp.setLayout(new GridLayout());
 
-		list.add(new SingleFramePreviewSection());
+		var preview = new GdxMusicControl(comp, 0);
+		var gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.heightHint = 200;
+		preview.setLayoutData(gd);
 
-		list.add(new ManyTexturesPreviewSection());
+		addUpdate(() -> {
+			var model = getModels().get(0);
+			model.getUrls().stream()
 
-		list.add(new SingleAtlasPreviewSection());
+					.findFirst()
 
-		list.add(new SingleMultiAtlasPreviewSection());
+					.ifPresentOrElse(
 
-		list.add(new ManyAnimationsPreviewSection());
+							(url) -> preview.load(model.getFileFromUrl(url)),
 
-		list.add(new ManyAnimationPreviewSection());
-		list.add(new SingleAnimationPreviewSection());
-
-		list.add(new SingleAudioAssetPreviewSection());
-
-		return list;
+							() -> preview.load(null));
+		});
+		return comp;
 	}
 
 }
