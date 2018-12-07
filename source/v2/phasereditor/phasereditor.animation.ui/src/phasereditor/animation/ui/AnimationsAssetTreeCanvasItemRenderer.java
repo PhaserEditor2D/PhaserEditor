@@ -92,8 +92,9 @@ public class AnimationsAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 
 					var img = canvas.loadImage(file);
 					if (img != null) {
-						Rectangle area = new Rectangle((int) (x + j * imgSize * 0.5), y + 5, imgSize, imgSize);
-
+						var scale = 1 + (start - j) * 0.15;
+						Rectangle area = new Rectangle((int) (x + j * imgSize * 0.5), y + 5, (int) (imgSize * scale),
+								(int) (imgSize * scale));
 						if (area.x > e.width) {
 							break;
 						}
