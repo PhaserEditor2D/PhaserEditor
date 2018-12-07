@@ -51,7 +51,7 @@ public class ManyTexturesSection extends BaseAssetPackEditorSection<IAssetKey> {
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
 		return number > 1;
-	}
+	}    
 
 	@Override
 	public boolean canEdit(Object obj) {

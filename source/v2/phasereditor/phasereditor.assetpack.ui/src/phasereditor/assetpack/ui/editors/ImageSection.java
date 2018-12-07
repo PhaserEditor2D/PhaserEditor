@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,7 +34,6 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.properties.TextListener;
 
 /**
@@ -46,7 +44,6 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 
 	public ImageSection(AssetPackEditorPropertyPage page) {
 		super(page, "Image");
-		setFillSpace(true);
 	}
 
 	@Override
@@ -105,15 +102,6 @@ public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
 					return flatValues_to_String(getModels().stream().map(model -> model.getUrl()));
 				}
 
-			});
-		}
-
-		{
-			var canvas = new ImageCanvas(comp, SWT.BORDER);
-			canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-			addUpdate(() -> {
-				var file = flatValues_to_Object(getModels().stream().map(model -> model.getUrlFile()));
-				canvas.setImageFile((IFile) file);
 			});
 		}
 

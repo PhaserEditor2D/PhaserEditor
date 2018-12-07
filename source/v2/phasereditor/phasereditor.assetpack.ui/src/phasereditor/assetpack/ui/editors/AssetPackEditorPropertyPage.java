@@ -27,7 +27,6 @@ import java.util.List;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -94,7 +93,7 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		// -- general sections --
 
-		if (obj instanceof IAssetFrameModel) {
+		if (SingleFrameSection.canEdit2(obj)) {
 			list.add(new SingleFrameSection(this));
 		}
 

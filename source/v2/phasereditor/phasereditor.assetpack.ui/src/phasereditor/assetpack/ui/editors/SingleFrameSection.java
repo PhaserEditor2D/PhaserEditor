@@ -21,18 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
 
 /**
  * @author arian
  *
  */
-public class SingleFrameSection extends BaseAssetPackEditorSection<IAssetFrameModel> {
+public class SingleFrameSection extends BaseAssetPackEditorSection<IAssetKey> {
 
 	public SingleFrameSection(AssetPackEditorPropertyPage page) {
 		super(page, "Texture Preview");
@@ -41,16 +44,23 @@ public class SingleFrameSection extends BaseAssetPackEditorSection<IAssetFrameMo
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof IAssetFrameModel;
+		return canEdit2(obj);
+	}
+
+	public static boolean canEdit2(Object obj) {
+		return obj instanceof IAssetFrameModel || obj instanceof ImageAssetModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new ExplainAssetFrameCanvas(parent, 0);
+		var preview = new ExplainAssetFrameCanvas(parent, SWT.BORDER);
 		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
 		addUpdate(() -> {
-			var model = (IAssetFrameModel) flatValues_to_Object(getModels().stream());
-			preview.setModel(model);
+			var model = getModels().get(0);
+			if (model instanceof ImageAssetModel) {
+				model = ((ImageAssetModel) model).getFrame();
+			}
+			preview.setModel((IAssetFrameModel) model);
 		});
 		return preview;
 	}

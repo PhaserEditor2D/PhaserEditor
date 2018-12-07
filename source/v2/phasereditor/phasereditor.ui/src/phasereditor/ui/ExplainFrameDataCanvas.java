@@ -48,15 +48,7 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 		var x = getPanOffsetX();
 		var y = getOffsetY();
 		var scale = getScale();
-
-		gc.setAlpha(150);
 		
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		gc.drawRectangle(dstX, dstY, dstW, dstH);
-		
-		gc.setForeground(getForeground());
-		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
-
 		gc.setLineStyle(SWT.LINE_DOT);
 
 		// sourceW
@@ -98,11 +90,13 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 
 		// spriteW
 		{
-			gc.drawLine(dstX + dstW, dstY, dstX + dstW, 0);
+			if (fd.dst.width > 0) {
+				gc.drawLine(dstX + dstW, dstY, dstX + dstW, 0);
 
-			var text = Integer.toString(fd.dst.width);
-			var size = gc.textExtent(text);
-			gc.drawText(text, (int) (dstX + fd.dst.width / 2 * scale) - size.x / 2, 0, true);
+				var text = Integer.toString(fd.dst.width);
+				var size = gc.textExtent(text);
+				gc.drawText(text, (int) (dstX + fd.dst.width / 2 * scale) - size.x / 2, 0, true);
+			}
 		}
 
 		// spriteH
@@ -113,8 +107,7 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 			var size = gc.textExtent(text);
 
 			var tx = new Transform(gc.getDevice());
-			tx.translate(0, dstY + dstW / 2 + size.x / 2);
-			tx.translate(size.y, -size.x);
+			tx.translate(size.y, dstY + dstH / 2 - size.x / 2);
 			tx.rotate(90);
 			gc.setTransform(tx);
 
@@ -132,13 +125,13 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 			gc.drawLine(0, dstY, dstX, dstY);
 			gc.drawLine(0, y, dstX, y);
 
-			{
+			if (fd.dst.x != 0) {
 				var txt = Integer.toString(fd.dst.x);
 				var size = gc.textExtent(txt);
 				gc.drawText(txt, (dstX + x) / 2 - size.x / 2, 0, true);
 			}
 
-			{
+			if (fd.dst.y != 0) {
 				var txt = Integer.toString(fd.dst.y);
 				var size = gc.textExtent(txt);
 				var tx = new Transform(gc.getDevice());
@@ -149,10 +142,16 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 				gc.setTransform(null);
 				tx.dispose();
 			}
-		}	
+		}
 
-		gc.setAlpha(255);
 		gc.setLineStyle(SWT.LINE_SOLID);
+		
+		gc.setForeground(getForeground());
+		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
+		
+		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		gc.drawRectangle(dstX, dstY, dstW, dstH);
+		
 
 	}
 
