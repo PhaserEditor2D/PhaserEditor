@@ -64,7 +64,6 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
-import phasereditor.assetexplorer.ui.views.properties.AssetsPropertyPage;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -72,6 +71,7 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
+import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.FilteredTreeCanvas;

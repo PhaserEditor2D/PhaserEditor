@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetexplorer.ui.views.properties;
+package phasereditor.assetpack.ui.properties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,6 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.ui.properties.ManyAnimationPreviewSection;
-import phasereditor.assetpack.ui.properties.ManyAnimationsPreviewSection;
-import phasereditor.assetpack.ui.properties.ManyTexturesPreviewSection;
-import phasereditor.assetpack.ui.properties.SingleAnimationPreviewSection;
-import phasereditor.assetpack.ui.properties.SingleAtlasPreviewSection;
-import phasereditor.assetpack.ui.properties.SingleFramePreviewSection;
-import phasereditor.assetpack.ui.properties.SingleMultiAtlasPreviewSection;
-import phasereditor.assetpack.ui.properties.SingleSpritesheetPreviewSection;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
