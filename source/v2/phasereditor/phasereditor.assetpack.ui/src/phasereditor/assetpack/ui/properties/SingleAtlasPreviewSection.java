@@ -19,50 +19,55 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetpack.ui.properties;
 
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.ui.preview.AtlasAssetPreviewComp;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class SingleFrameSection extends BaseAssetPackEditorSection<IAssetKey> {
+public class SingleAtlasPreviewSection extends FormPropertySection<AtlasAssetModel> {
 
-	public SingleFrameSection(AssetPackEditorPropertyPage page) {
-		super(page, "Texture Preview");
+	private AtlasAssetPreviewComp _preview;
+
+	public SingleAtlasPreviewSection() {
+		super("Atlas Preview");
 		setFillSpace(true);
+	}
+	
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return canEdit2(obj);
-	}
-
-	public static boolean canEdit2(Object obj) {
-		return obj instanceof IAssetFrameModel || obj instanceof ImageAssetModel;
+		return obj instanceof AtlasAssetModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new ExplainAssetFrameCanvas(parent, SWT.BORDER);
+		var preview = new AtlasAssetPreviewComp(parent, SWT.BORDER);
 		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
-		addUpdate(() -> {
-			var model = getModels().get(0);
-			if (model instanceof ImageAssetModel) {
-				model = ((ImageAssetModel) model).getFrame();
-			}
-			preview.setModel((IAssetFrameModel) model);
-		});
+		addUpdate(() -> preview.setModel(getModels().get(0)));
+		_preview = preview;
 		return preview;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		super.fillToolbar(manager);
+
+		_preview.fillToolBar(manager);
 	}
 
 }

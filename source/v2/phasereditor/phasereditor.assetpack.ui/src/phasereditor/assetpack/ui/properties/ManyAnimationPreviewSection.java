@@ -19,49 +19,60 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetpack.ui.properties;
 
-import org.eclipse.jface.action.ToolBarManager;
+import java.util.List;
+import java.util.function.Supplier;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.ui.preview.AtlasAssetPreviewComp;
+import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.TreeArrayContentProvider;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class SingleAtlasPreviewSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
+public class ManyAnimationPreviewSection extends FormPropertySection<AnimationModel> {
 
-	private AtlasAssetPreviewComp _preview;
-
-	public SingleAtlasPreviewSection(AssetPackEditorPropertyPage page) {
-		super(page, "Atlas Preview");
+	public ManyAnimationPreviewSection() {
+		super("Animations Preview");
 		setFillSpace(true);
 	}
 
 	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number > 1;
+	}
+
+	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AtlasAssetModel;
+		return obj instanceof AnimationModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new AtlasAssetPreviewComp(parent, SWT.BORDER);
-		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
-		addUpdate(() -> preview.setModel(getModels().get(0)));
-		_preview = preview;
-		return preview;
+		return createAnimationsViewer(this, parent, () -> getModels());
 	}
 
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		super.fillToolbar(manager);
-
-		_preview.fillToolBar(manager);
+	public static FilteredTreeCanvas createAnimationsViewer(FormPropertySection<?> section, Composite parent,
+			Supplier<List<AnimationModel>> input) {
+		// preview
+		var tree = new FilteredTreeCanvas(parent, SWT.BORDER);
+		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		var viewer = new AssetsTreeCanvasViewer(tree.getTree(), new TreeArrayContentProvider(),
+				AssetLabelProvider.GLOBAL_16);
+		section.addUpdate(() -> {
+			viewer.setInput(input.get());
+		});
+		return tree;
 	}
 
 }

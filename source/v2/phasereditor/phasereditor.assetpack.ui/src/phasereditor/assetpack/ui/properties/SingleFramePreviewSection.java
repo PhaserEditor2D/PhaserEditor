@@ -19,39 +19,34 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetpack.ui.properties;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.preview.AssetFramesProvider;
-import phasereditor.ui.FrameGridCanvas;
+import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class ManyTexturesSection extends BaseAssetPackEditorSection<IAssetKey> {
+public class SingleFramePreviewSection extends FormPropertySection<IAssetKey> {
 
-	public ManyTexturesSection(AssetPackEditorPropertyPage page) {
-		super(page, "Textures Preview");
+	public SingleFramePreviewSection() {
+		super("Texture Preview");
 		setFillSpace(true);
 	}
-
+	
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
-		return number > 1;
-	}    
+		return number == 1;
+	}
 
 	@Override
 	public boolean canEdit(Object obj) {
@@ -59,23 +54,21 @@ public class ManyTexturesSection extends BaseAssetPackEditorSection<IAssetKey> {
 	}
 
 	public static boolean canEdit2(Object obj) {
-		return obj instanceof IAssetFrameModel || obj instanceof AtlasAssetModel || obj instanceof MultiAtlasAssetModel
-				|| obj instanceof SpritesheetAssetModel || obj instanceof ImageAssetModel;
+		return obj instanceof IAssetFrameModel || obj instanceof ImageAssetModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		var comp = new FrameGridCanvas(parent, 0, true);
+		var preview = new ExplainAssetFrameCanvas(parent, SWT.BORDER);
+		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
 		addUpdate(() -> {
-			List<? extends IAssetFrameModel> frames = getModels().stream().flatMap(obj -> {
-				if (obj instanceof IAssetFrameModel) {
-					return List.of(obj).stream();
-				}
-				return obj.getAsset().getSubElements().stream();
-			}).map(o -> (IAssetFrameModel) o).collect(toList());
-			comp.loadFrameProvider(new AssetFramesProvider(frames));
+			var model = getModels().get(0);
+			if (model instanceof ImageAssetModel) {
+				model = ((ImageAssetModel) model).getFrame();
+			}
+			preview.setModel((IAssetFrameModel) model);
 		});
-
-		return comp;
+		return preview;
 	}
+
 }

@@ -32,6 +32,13 @@ import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.properties.ManyAnimationPreviewSection;
+import phasereditor.assetpack.ui.properties.ManyAnimationsPreviewSection;
+import phasereditor.assetpack.ui.properties.ManyTexturesPreviewSection;
+import phasereditor.assetpack.ui.properties.SingleAnimationPreviewSection;
+import phasereditor.assetpack.ui.properties.SingleAtlasPreviewSection;
+import phasereditor.assetpack.ui.properties.SingleFramePreviewSection;
+import phasereditor.assetpack.ui.properties.SingleSpritesheetPreviewSection;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -76,7 +83,6 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		if (obj instanceof SpritesheetAssetModel) {
 			list.add(new SpritesheetSection(this));
-			list.add(new SingleSpritesheetPreviewSection());
 		}
 
 		if (obj instanceof AtlasAssetModel) {
@@ -89,26 +95,33 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		if (obj instanceof AnimationsAssetModel) {
 			list.add(new AnimationsSection(this));
-			list.add(new SinlgeAnimationsPreviewSection(this));
 		}
 
-		// -- general sections --
+		// Preview sections
 
-		if (SingleFrameSection.canEdit2(obj)) {
-			list.add(new SingleFrameSection(this));
+		if (obj instanceof SpritesheetAssetModel) {
+			list.add(new SingleSpritesheetPreviewSection());
+		}
+		
+		if (SingleFramePreviewSection.canEdit2(obj)) {
+			list.add(new SingleFramePreviewSection());
 		}
 
-		if (ManyTexturesSection.canEdit2(obj)) {
-			list.add(new ManyTexturesSection(this));
+		if (ManyTexturesPreviewSection.canEdit2(obj)) {
+			list.add(new ManyTexturesPreviewSection());
 		}
 
 		if (obj instanceof AtlasAssetModel) {
-			list.add(new SingleAtlasPreviewSection(this));
+			list.add(new SingleAtlasPreviewSection());
+		}
+
+		if (obj instanceof AnimationsAssetModel) {
+			list.add(new ManyAnimationsPreviewSection());
 		}
 
 		if (obj instanceof AnimationModel) {
-			list.add(new ManyAnimationsPreviewSection(this));
-			list.add(new SingleAnimationPreviewSection(this));
+			list.add(new ManyAnimationPreviewSection());
+			list.add(new SingleAnimationPreviewSection());
 		}
 
 		return list;

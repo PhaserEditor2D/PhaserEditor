@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetpack.ui.properties;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,18 +27,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class SinlgeAnimationsPreviewSection extends BaseAssetPackEditorSection<AnimationsAssetModel> {
+public class ManyAnimationsPreviewSection extends FormPropertySection<AnimationsAssetModel> {
 
-	public SinlgeAnimationsPreviewSection(AssetPackEditorPropertyPage page) {
-		super(page, "Animations Preview");
+	public ManyAnimationsPreviewSection() {
+		super("Animations Preview");
+		
 		setFillSpace(true);
 	}
-
+	
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof AnimationsAssetModel;
@@ -46,7 +48,7 @@ public class SinlgeAnimationsPreviewSection extends BaseAssetPackEditorSection<A
 
 	@Override
 	public Control createContent(Composite parent) {
-		return ManyAnimationsPreviewSection.createAnimationsViewer(this, parent,
+		return ManyAnimationPreviewSection.createAnimationsViewer(this, parent,
 				() -> getModels().stream().flatMap(model -> model.getSubElements().stream()).collect(toList()));
 	}
 

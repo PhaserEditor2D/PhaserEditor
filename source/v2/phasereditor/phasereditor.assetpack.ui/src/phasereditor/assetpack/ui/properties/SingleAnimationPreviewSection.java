@@ -19,28 +19,27 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetpack.ui.properties;
 
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.preview.SpritesheetAssetPreviewComp;
+import phasereditor.animation.ui.AnimationPreviewComp;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class SingleSpritesheetPreviewSection extends FormPropertySection<SpritesheetAssetModel> {
+public class SingleAnimationPreviewSection extends FormPropertySection<AnimationModel> {
 
-	private SpritesheetAssetPreviewComp _preview;
+	private AnimationPreviewComp _preview;
 
-	public SingleSpritesheetPreviewSection() {
-		super("Sprite Sheet Preview");
+	public SingleAnimationPreviewSection() {
+		super("Animation Preview");
 
 		setFillSpace(true);
 	}
@@ -49,24 +48,29 @@ public class SingleSpritesheetPreviewSection extends FormPropertySection<Sprites
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
 	}
-	
+
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof SpritesheetAssetModel;
+		return obj instanceof AnimationModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new SpritesheetAssetPreviewComp(parent, SWT.BORDER);
-		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
-		addUpdate(() -> preview.setModel(getModels().get(0)));
-		_preview = preview;
-		return preview;
+		_preview = new AnimationPreviewComp(parent, 0);
+		_preview.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		addUpdate(() -> {
+			_preview.setModel(getModels().get(0));
+		});
+
+		return _preview;
 	}
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		_preview.fillToolBar(manager);
+		super.fillToolbar(manager);
+
+		_preview.createToolBar(manager);
 	}
 
 }

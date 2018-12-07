@@ -19,31 +19,34 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetpack.ui.properties;
+
+import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.function.Supplier;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
-import phasereditor.ui.FilteredTreeCanvas;
-import phasereditor.ui.TreeArrayContentProvider;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.ui.preview.AssetFramesProvider;
+import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class ManyAnimationsPreviewSection extends BaseAssetPackEditorSection<AnimationModel> {
+public class ManyTexturesPreviewSection extends FormPropertySection<IAssetKey> {
 
-	public ManyAnimationsPreviewSection(AssetPackEditorPropertyPage page) {
-		super(page, "Animations Preview");
+	public ManyTexturesPreviewSection() {
+		super("Textures Preview");
+
 		setFillSpace(true);
 	}
 
@@ -54,25 +57,27 @@ public class ManyAnimationsPreviewSection extends BaseAssetPackEditorSection<Ani
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AnimationModel;
+		return canEdit2(obj);
+	}
+
+	public static boolean canEdit2(Object obj) {
+		return obj instanceof IAssetFrameModel || obj instanceof AtlasAssetModel || obj instanceof MultiAtlasAssetModel
+				|| obj instanceof SpritesheetAssetModel || obj instanceof ImageAssetModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
-		return createAnimationsViewer(this, parent, () -> getModels());
-	}
-
-	public static FilteredTreeCanvas createAnimationsViewer(FormPropertySection<?> section, Composite parent,
-			Supplier<List<AnimationModel>> input) {
-		// preview
-		var tree = new FilteredTreeCanvas(parent, SWT.BORDER);
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		var viewer = new AssetsTreeCanvasViewer(tree.getTree(), new TreeArrayContentProvider(),
-				AssetLabelProvider.GLOBAL_16);
-		section.addUpdate(() -> {
-			viewer.setInput(input.get());
+		var comp = new FrameGridCanvas(parent, 0, true);
+		addUpdate(() -> {
+			List<? extends IAssetFrameModel> frames = getModels().stream().flatMap(obj -> {
+				if (obj instanceof IAssetFrameModel) {
+					return List.of(obj).stream();
+				}
+				return obj.getAsset().getSubElements().stream();
+			}).map(o -> (IAssetFrameModel) o).collect(toList());
+			comp.loadFrameProvider(new AssetFramesProvider(frames));
 		});
-		return tree;
-	}
 
+		return comp;
+	}
 }
