@@ -71,7 +71,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.FilteredTreeCanvas;
@@ -158,7 +158,7 @@ public class AssetsView extends ViewPart {
 			}
 		}
 
-		AssetPackUI.openElementInEditor(elem);
+		AssetPackUIEditor.openElementInEditor(elem);
 	}
 
 	private void afterCreateWidgets() {

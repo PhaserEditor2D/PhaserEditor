@@ -75,7 +75,7 @@ import phasereditor.project.core.ProjectCore;
  */
 public class AssetPackCore {
 
-	public static final String ASSET_EDITOR_ID = "phasereditor.assetpack.editor";
+	public static final String ASSET_EDITOR_ID = "phasereditor.assetpack.ui.editor.AssetPackEditor";
 	public static final String ASSET_EDITOR_GOTO_MARKER_ATTR = "gotoMarker";
 
 	private static final Set<String> _imageExtensions;

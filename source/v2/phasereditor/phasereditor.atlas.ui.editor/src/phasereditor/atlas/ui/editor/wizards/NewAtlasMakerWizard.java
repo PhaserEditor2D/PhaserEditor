@@ -38,7 +38,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.ui.wizards.NewPage_AssetPackSection;
+import phasereditor.assetpack.ui.editor.wizards.NewPage_AssetPackSection;
 import phasereditor.project.core.ProjectCore;
 
 public class NewAtlasMakerWizard extends Wizard implements INewWizard {

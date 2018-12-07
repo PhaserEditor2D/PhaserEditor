@@ -21,11 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import static java.lang.System.arraycopy;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -36,31 +33,19 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.IFontProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
-import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
-import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
@@ -68,19 +53,15 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
 import phasereditor.animation.ui.AnimationInformationControl;
-import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -89,7 +70,6 @@ import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.preview.AnimationFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AssetFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
@@ -109,14 +89,6 @@ import phasereditor.assetpack.ui.preview.TilemapJSONAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoAssetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
-import phasereditor.assetpack.ui.refactorings.AssetDeleteProcessor;
-import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
-import phasereditor.assetpack.ui.refactorings.AssetMoveProcessor;
-import phasereditor.assetpack.ui.refactorings.AssetMoveWizard;
-import phasereditor.assetpack.ui.refactorings.AssetRenameProcessor;
-import phasereditor.assetpack.ui.refactorings.AssetRenameWizard;
-import phasereditor.assetpack.ui.refactorings.AssetSectionRenameProcessor;
-import phasereditor.assetpack.ui.refactorings.BaseAssetRenameProcessor;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.project.core.ProjectCore;
@@ -126,7 +98,6 @@ import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.ListCanvasDialog;
-import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -135,160 +106,11 @@ public class AssetPackUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
-	public static List<AssetPackEditor> findOpenAssetPackEditors(IFile assetPackFile) {
-		List<AssetPackEditor> result = new ArrayList<>();
-		List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(assetPackFile);
-		for (IEditorPart editor : editors) {
-			if (editor instanceof AssetPackEditor) {
-				var packEditor = (AssetPackEditor) editor;
-				result.add(packEditor);
-			}
-		}
-		return result;
-	}
+	
 
-	public static void launchMoveWizard(AssetSectionModel section, IStructuredSelection selection) {
-		Object[] selarray = selection.toArray();
+	
 
-		AssetModel[] assets = new AssetModel[selarray.length];
-
-		arraycopy(selarray, 0, assets, 0, selarray.length);
-
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
-
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
-
-		AssetMoveWizard wizard = new AssetMoveWizard(
-				new MoveRefactoring(new AssetMoveProcessor(section, assets, editor)));
-
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Move Assets");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void launchRenameWizard(Object element) {
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
-
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
-
-		BaseAssetRenameProcessor processor;
-		if (element instanceof AssetModel) {
-			processor = new AssetRenameProcessor((AssetModel) element, editor);
-		} else {
-			processor = new AssetSectionRenameProcessor((AssetSectionModel) element, editor);
-		}
-
-		AssetRenameWizard wizard = new AssetRenameWizard(new RenameRefactoring(processor));
-
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Rename Asset");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
-	}
-
-	public static void launchDeleteWizard(Object[] selection) {
-
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
-
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
-
-		AssetDeleteWizard wizard = new AssetDeleteWizard(
-				new DeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
-
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Delete Asset");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static List<AssetModel> findAssetResourceReferencesInEditors(IFile assetFile) {
-		List<AssetModel> list = new ArrayList<>();
-
-		PhaserEditorUI.forEachEditor(editor -> {
-			if (editor instanceof AssetPackEditor) {
-				AssetPackModel pack = ((AssetPackEditor) editor).getModel();
-				list.addAll(AssetPackCore.findAssetResourceReferencesInPack(assetFile, pack));
-			}
-		});
-
-		return list;
-	}
-
-	public static List<AssetModel> findAssetResourceReferences(IFile file) {
-		List<AssetModel> list1 = AssetPackCore.findAssetResourceReferencesInProject(file);
-		List<AssetModel> list2 = AssetPackUI.findAssetResourceReferencesInEditors(file);
-		List<AssetModel> result = new ArrayList<>();
-
-		Set<String> used = new HashSet<>();
-
-		Consumer<AssetModel> consumer = (asset) -> {
-			String id = AssetPackCore.getAssetStringReference(asset);
-			if (!used.contains(id)) {
-				used.add(id);
-				result.add(asset);
-			}
-		};
-
-		list1.stream().forEach(consumer);
-		list2.stream().forEach(consumer);
-
-		return result;
-	}
-
-	/**
-	 * Open the given element in an asset pack editor.
-	 * 
-	 * @param elem
-	 *            An asset pack element (section, group, asset, etc..)
-	 */
-	public static boolean openElementInEditor(Object elem) {
-		if (elem == null) {
-			return false;
-		}
-
-		AssetPackModel pack = null;
-		if (elem instanceof AssetModel) {
-			pack = ((AssetModel) elem).getPack();
-		} else if (elem instanceof AssetGroupModel) {
-			pack = ((AssetGroupModel) elem).getSection().getPack();
-		} else if (elem instanceof AssetSectionModel) {
-			pack = ((AssetSectionModel) elem).getPack();
-		} else if (elem instanceof AssetPackModel) {
-			pack = (AssetPackModel) elem;
-		} else if (elem instanceof IAssetElementModel) {
-			pack = ((IAssetKey) elem).getAsset().getPack();
-		} else {
-			return false;
-		}
-
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		try {
-			AssetPackEditor editor = (AssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()),
-					AssetPackEditor.ID);
-			if (editor != null) {
-				JSONObject ref = pack.getAssetJSONRefrence(elem);
-				Object elem2 = editor.getModel().getElementFromJSONReference(ref);
-				if (elem2 != null) {
-					editor.revealElement(elem2);
-				}
-			}
-		} catch (PartInitException e) {
-			throw new RuntimeException(e);
-		}
-
-		return true;
-	}
+	
 
 	public static String browseAssetFile(AssetPackModel packModel, String objectName, IFile curFile, List<IFile> files,
 			Shell shell, Consumer<String> action) {

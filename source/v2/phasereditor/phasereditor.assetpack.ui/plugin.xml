@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-	<extension
-         point="org.eclipse.ui.editors">
-      <!--
-      <editor
-            class="phasereditor.assetpack.ui.editors.AssetPackEditor_deprecated"
-            default="false"
-            icon="platform:/plugin/phasereditor.ui/icons/box.png"
-            id="phasereditor.assetpack.editor_deprecated"
-            name="Asset Pack Editor (deprecated)">
-         <contentTypeBinding
-               contentTypeId="phasereditor.assetpack.contentType">
-         </contentTypeBinding>
-      </editor>
-      -->
-      <editor
-            class="phasereditor.assetpack.ui.editors.AssetPackEditor"
-            default="false"
-            icon="platform:/plugin/phasereditor.ui/icons/box.png"
-            id="phasereditor.assetpack.editor"
-            name="Asset Pack Editor">
-         <contentTypeBinding
-               contentTypeId="phasereditor.assetpack.contentType">
-         </contentTypeBinding>
-      </editor>
-   </extension>
+	
 	<extension
          point="org.eclipse.core.runtime.adapters">
       <factory
@@ -69,15 +45,7 @@
       </factory>
    </extension>
    <extension
-         point="org.eclipse.ui.views">
-   </extension>
-   <extension
          point="org.eclipse.ui.commands">
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            id="phasereditor.assetpack.shownInEditor"
-            name="Edit In Asset Pack Editor">
-      </command>
       <command
             id="phasereditor.assetpack.ui.findAssetReferences"
             name="Find Asset References">
@@ -111,41 +79,7 @@
             </with>
          </activeWhen>
       </handler>
-      <handler
-            class="phasereditor.assetpack.ui.handlers.EditInPackEditorHandler"
-            commandId="phasereditor.assetpack.shownInEditor">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <and>
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                     <or>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetSectionModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetPackModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetGroupModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.IAssetElementModel">
-                        </instanceof>
-                     </or>
-                  </iterate>
-                  <count
-                        value="1">
-                  </count>
-               </and>
-            </with>
-         </activeWhen>
-      </handler>
+      
       <handler
             class="phasereditor.assetpack.ui.handlers.FindAssetReferencesHandler"
             commandId="phasereditor.assetpack.ui.findAssetReferences">
@@ -194,105 +128,10 @@
             </with>
          </enabledWhen>
       </handler>
-      <handler
-            class="phasereditor.assetpack.ui.handlers.DeleteAssetHandler"
-            commandId="org.eclipse.ui.edit.delete">
-         <enabledWhen>
-         	<and>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="phasereditor.assetpack.core.AssetModel">
-                     </instanceof>
-                     <instanceof
-                           value="phasereditor.assetpack.core.AssetSectionModel">
-                     </instanceof>
-                     <instanceof
-                           value="phasereditor.assetpack.core.AssetGroupModel">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </with>
-            <with
-                  variable="activeEditorId">
-               <equals
-                     value="phasereditor.assetpack.editor">
-               </equals>
-            </with>
-            </and>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="phasereditor.assetpack.ui.handlers.RenameAssetHandler"
-            commandId="org.eclipse.ui.edit.rename">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false">
-                     <or>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetSectionModel">
-                        </instanceof>
-                     </or>
-                  </iterate>
-               </and>
-            </with>
-         </enabledWhen>
-         <activeWhen>
-            <with
-                  variable="selection">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false">
-                     <or>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetSectionModel">
-                        </instanceof>
-                     </or>
-                  </iterate>
-               </and>
-            </with>
-         </activeWhen>
-      </handler>
+     
+     
    </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            category="phasereditor.ui.wizardCategory"
-            class="phasereditor.assetpack.ui.wizards.NewAssetPackWizard"
-            finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/box_add.png"
-            id="phasereditor.assetpack.ui.wizards.new"
-            name="Asset Pack File">
-      </wizard>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="*">
-         <newWizardShortcut
-               id="phasereditor.assetpack.ui.wizards.new">
-         </newWizardShortcut>
-      </perspectiveExtension>
-   </extension>
+   
    
     <extension
          point="org.eclipse.ui.navigator.viewer">
@@ -304,17 +143,7 @@
             </contentExtension>
          </includes>
       </viewerContentBinding>
-   </extension>
-   <extension
-         id="phasereditor.project.ui.commonWizards"
-         point="org.eclipse.ui.navigator.navigatorContent">
-      <commonWizard
-            menuGroupId="phaser.new.other"
-            type="new"
-            wizardId="phasereditor.assetpack.ui.wizards.new">
-         <enablement></enablement>
-      </commonWizard>
-   </extension>
+   </extension>   
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
@@ -332,44 +161,6 @@
             label="Asset References"
             searchResultClass="phasereditor.assetpack.ui.search.SearchAssetResult">
       </viewPage>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
-      <deleteParticipant
-            class="phasereditor.assetpack.ui.refactorings.AssetFileDeleteParticipant"
-            id="phasereditor.assetpack.ui.assetFileDeleteParticipant"
-            name="Asset File Delete Participant">
-         <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof></enablement>
-      </deleteParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.renameParticipants">
-      <renameParticipant
-            class="phasereditor.assetpack.ui.refactorings.AssetFileRenameParticipant"
-            id="phasereditor.assetpack.ui.assetFileRenameParticipant"
-            name="Asset File Rename Participant">
-         <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof>
-         </enablement>
-      </renameParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.moveParticipants">
-      <moveParticipant
-            class="phasereditor.assetpack.ui.refactorings.AssetFileMoveParticipant"
-            id="phasereditor.assetpack.ui.assetFileMoveParticipant"
-            name="Asset File Move Participant">
-         <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof>
-         </enablement>
-      </moveParticipant>
    </extension>
    
 </plugin>

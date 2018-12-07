@@ -9,10 +9,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -20,14 +17,11 @@ import org.eclipse.ui.PlatformUI;
 
 import phasereditor.animation.ui.model.AnimationsModel_Persistable;
 import phasereditor.assetpack.core.AssetFinder;
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.views.PreviewView;
@@ -144,56 +138,57 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		});
 	}
 
+	@SuppressWarnings("unused")
 	private static void buildAssetPackEditors(IResourceDelta delta, PackDelta packDelta, IWorkbenchPage page) {
 
 		// all of this is shit, we should check only for resource delta and
 		// renamed pack files.
 
-		IEditorReference[] refs = page.getEditorReferences();
-		for (IEditorReference ref : refs) {
-			if (ref.getId().equals(AssetPackEditor.ID)) {
-				AssetPackEditor editor = (AssetPackEditor) ref.getEditor(false);
-				if (editor != null) {
-					IFile curFile = editor.getEditorInput().getFile();
-					try {
-
-						// handle a rename or deletion
-
-						delta.accept(d -> {
-							int kind = d.getKind();
-							if (kind == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
-								IPath movedTo = d.getMovedToPath();
-								if (movedTo == null) {
-									page.closeEditor(editor, true);
-								} else {
-									IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(movedTo);
-									editor.handleFileRename(newFile);
-								}
-							}
-							return true;
-						});
-
-						// update content
-
-						boolean refresh = false;
-						AssetPackModel pack = editor.getModel();
-						for (AssetModel asset : packDelta.getAssets()) {
-							if (asset.getPack().getFile().equals(pack.getFile())) {
-								refresh = true;
-								break;
-							}
-						}
-
-						if (refresh) {
-							editor.refresh();
-						}
-
-					} catch (CoreException e) {
-						AssetPackUI.logError(e);
-					}
-				}
-			}
-		}
+//		IEditorReference[] refs = page.getEditorReferences();
+//		for (IEditorReference ref : refs) {
+//			if (ref.getId().equals(AssetPackEditor.ID)) {
+//				AssetPackEditor editor = (AssetPackEditor) ref.getEditor(false);
+//				if (editor != null) {
+//					IFile curFile = editor.getEditorInput().getFile();
+//					try {
+//
+//						// handle a rename or deletion
+//
+//						delta.accept(d -> {
+//							int kind = d.getKind();
+//							if (kind == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
+//								IPath movedTo = d.getMovedToPath();
+//								if (movedTo == null) {
+//									page.closeEditor(editor, true);
+//								} else {
+//									IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(movedTo);
+//									editor.handleFileRename(newFile);
+//								}
+//							}
+//							return true;
+//						});
+//
+//						// update content
+//
+//						boolean refresh = false;
+//						AssetPackModel pack = editor.getModel();
+//						for (AssetModel asset : packDelta.getAssets()) {
+//							if (asset.getPack().getFile().equals(pack.getFile())) {
+//								refresh = true;
+//								break;
+//							}
+//						}
+//
+//						if (refresh) {
+//							editor.refresh();
+//						}
+//
+//					} catch (CoreException e) {
+//						AssetPackUI.logError(e);
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private static void buildPreviewViews(IProject project, IResourceDelta delta, IViewReference[] refs) {

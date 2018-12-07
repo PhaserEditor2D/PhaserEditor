@@ -37,9 +37,6 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.animation.ui;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui,
- phasereditor.assetpack.ui.editors,
  phasereditor.assetpack.ui.preview,
- phasereditor.assetpack.ui.properties,
- phasereditor.assetpack.ui.refactorings,
- phasereditor.assetpack.ui.wizards
+ phasereditor.assetpack.ui.properties
 Automatic-Module-Name: phasereditor.assetpack.ui

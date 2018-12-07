@@ -39,7 +39,7 @@
                tooltip="Show the selection in the Preview window.">
          </command>
          <command
-               commandId="phasereditor.assetpack.shownInEditor"
+               commandId="phasereditor.assetpack.ui.editor.shownInEditor"
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
                style="push"
                tooltip="Edit selected object.">
@@ -59,7 +59,7 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.assetpack.shownInEditor"
+               commandId="phasereditor.assetpack.ui.editor.shownInEditor"
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
                style="push"
                tooltip="Edit selected object.">

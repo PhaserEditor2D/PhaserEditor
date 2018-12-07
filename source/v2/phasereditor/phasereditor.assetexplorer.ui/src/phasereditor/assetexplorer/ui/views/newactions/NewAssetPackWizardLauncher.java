@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.INewWizard;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.ui.wizards.NewAssetPackWizard;
+import phasereditor.assetpack.ui.editor.wizards.NewAssetPackWizard;
 
 /**
  * @author arian

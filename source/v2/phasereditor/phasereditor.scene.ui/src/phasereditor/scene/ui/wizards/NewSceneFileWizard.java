@@ -35,7 +35,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
 import phasereditor.assetpack.core.ScriptAssetModel;
-import phasereditor.assetpack.ui.wizards.NewPage_AssetPackSection;
+import phasereditor.assetpack.ui.editor.wizards.NewPage_AssetPackSection;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
 
