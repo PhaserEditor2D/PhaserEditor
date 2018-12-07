@@ -199,7 +199,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_textureAction.setChecked(control == _sheetCanvas);
 	}
 
-	public void createToolBar(IToolBarManager toolbar) {
+	public void fillToolBar(IToolBarManager toolbar) {
 
 		_tilesAction = new Action("Tiles", IAction.AS_CHECK_BOX) {
 			{

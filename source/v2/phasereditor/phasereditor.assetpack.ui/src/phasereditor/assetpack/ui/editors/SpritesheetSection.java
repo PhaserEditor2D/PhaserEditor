@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,7 +33,6 @@ import org.eclipse.ui.ISharedImages;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.preview.SpritesheetAssetPreviewComp;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
@@ -46,22 +44,13 @@ import phasereditor.ui.properties.TextToIntListener;
  */
 public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAssetModel> {
 
-	private SpritesheetAssetPreviewComp _preview;
-
 	public SpritesheetSection(AssetPackEditorPropertyPage page) {
 		super(page, "Sprite Sheet");
-
-		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof SpritesheetAssetModel;
-	}
-
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		_preview.createToolBar(manager);
 	}
 
 	@SuppressWarnings("unused")
@@ -280,16 +269,6 @@ public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAs
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getMargin));
-		}
-
-		// preview
-		{
-			_preview = new SpritesheetAssetPreviewComp(comp, SWT.BORDER);
-			_preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-			addUpdate(() -> {
-				var model = flatValues_to_Object(getModels().stream());
-				_preview.setModel((SpritesheetAssetModel) model);
-			});
 		}
 
 		return comp;

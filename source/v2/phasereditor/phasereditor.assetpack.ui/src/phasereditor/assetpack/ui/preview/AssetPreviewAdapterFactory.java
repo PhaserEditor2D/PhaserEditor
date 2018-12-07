@@ -498,7 +498,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;
-				comp.createToolBar(toolbar);
+				comp.fillToolBar(toolbar);
 			}
 
 			@Override

@@ -76,6 +76,7 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 
 		if (obj instanceof SpritesheetAssetModel) {
 			list.add(new SpritesheetSection(this));
+			list.add(new SingleSpritesheetPreviewSection());
 		}
 
 		if (obj instanceof AtlasAssetModel) {
