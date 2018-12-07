@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -47,6 +48,10 @@ public class AssetsPropertyPage extends FormPropertyPage {
 	protected List<FormPropertySection<?>> createSections(Object obj) {
 		var list = new ArrayList<FormPropertySection<?>>();
 
+		if (obj instanceof AssetModel) {
+			list.add(new AssetFilesSection());
+		}
+		
 		if (obj instanceof SpritesheetAssetModel) {
 			list.add(new SingleSpritesheetPreviewSection());
 		}

@@ -23,6 +23,7 @@ package phasereditor.assetpack.core;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -60,7 +61,7 @@ public class AnimationsAssetModel extends AssetModel {
 	@Override
 	public IFile[] computeUsedFiles() {
 
-		List<IFile> list = new ArrayList<>();
+		var list = new LinkedHashSet<IFile>();
 		list.add(getUrlFile());
 
 		if (_animationsModel != null) {
