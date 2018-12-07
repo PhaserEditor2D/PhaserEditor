@@ -50,10 +50,6 @@ public class SingleFramePreviewSection extends FormPropertySection<IAssetKey> {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return canEdit2(obj);
-	}
-
-	public static boolean canEdit2(Object obj) {
 		return obj instanceof IAssetFrameModel || obj instanceof ImageAssetModel;
 	}
 

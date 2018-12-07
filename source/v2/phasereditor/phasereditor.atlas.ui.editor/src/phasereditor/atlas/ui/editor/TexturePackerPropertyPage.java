@@ -46,20 +46,14 @@ public class TexturePackerPropertyPage extends FormPropertyPage {
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections(Object obj) {
+	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		if (obj instanceof TexturePackerEditorModel) {
-			list.add(new SettingsSection(_editor));
-		}
+		list.add(new SettingsSection(_editor));
 
-		if (obj instanceof EditorPage) {
-			list.add(new PageSection(_editor));
-		}
+		list.add(new PageSection(_editor));
 
-		if (obj instanceof TexturePackerEditorFrame) {
-			list.add(new FrameSection(_editor));
-		}
+		list.add(new FrameSection(_editor));
 
 		return list;
 	}

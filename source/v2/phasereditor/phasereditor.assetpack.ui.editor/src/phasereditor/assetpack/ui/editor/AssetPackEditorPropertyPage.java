@@ -24,13 +24,6 @@ package phasereditor.assetpack.ui.editor;
 import java.util.ArrayList;
 import java.util.List;
 
-import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -57,39 +50,25 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections(Object obj) {
+	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		if (obj instanceof AssetModel) {
-			list.add(new KeySection(this));
-		}
+		list.add(new KeySection(this));
 
-		if (obj instanceof ImageAssetModel) {
-			list.add(new ImageSection(this));
-		}
+		list.add(new ImageSection(this));
 
-		if (obj instanceof SvgAssetModel) {
-			list.add(new SvgSection(this));
-		}
+		list.add(new SvgSection(this));
 
-		if (obj instanceof SpritesheetAssetModel) {
-			list.add(new SpritesheetSection(this));
-		}
+		list.add(new SpritesheetSection(this));
 
-		if (obj instanceof AtlasAssetModel) {
-			list.add(new AtlasSection(this));
-		}
+		list.add(new AtlasSection(this));
 
-		if (obj instanceof MultiAtlasAssetModel) {
-			list.add(new MultiAtlasSection(this));
-		}
+		list.add(new MultiAtlasSection(this));
 
-		if (obj instanceof AnimationsAssetModel) {
-			list.add(new AnimationsSection(this));
-		}
+		list.add(new AnimationsSection(this));
 
-		list.addAll(super.createSections(obj));
-		
+		list.addAll(super.createSections());
+
 		return list;
 	}
 

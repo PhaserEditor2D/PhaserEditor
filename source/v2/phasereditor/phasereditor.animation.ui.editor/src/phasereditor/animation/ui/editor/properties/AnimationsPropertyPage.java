@@ -29,8 +29,6 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.AssetFinder;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -66,16 +64,11 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections(Object obj) {
+	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		if (obj instanceof AnimationFrameModel) {
-			list.add(new AnimationFrameSection(this));
-		}
-
-		if (obj instanceof AnimationModel) {
-			list.add(new AnimationSection(this));
-		}
+		list.add(new AnimationFrameSection(this));
+		list.add(new AnimationSection(this));
 
 		return list;
 	}

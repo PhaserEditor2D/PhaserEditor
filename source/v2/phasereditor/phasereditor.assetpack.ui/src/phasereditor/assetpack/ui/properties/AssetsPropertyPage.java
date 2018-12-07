@@ -24,12 +24,6 @@ package phasereditor.assetpack.ui.properties;
 import java.util.ArrayList;
 import java.util.List;
 
-import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -45,41 +39,26 @@ public class AssetsPropertyPage extends FormPropertyPage {
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections(Object obj) {
+	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		if (obj instanceof AssetModel) {
-			list.add(new AssetFilesSection());
-		}
-		
-		if (obj instanceof SpritesheetAssetModel) {
-			list.add(new SingleSpritesheetPreviewSection());
-		}
+		list.add(new AssetFilesSection());
 
-		if (SingleFramePreviewSection.canEdit2(obj)) {
-			list.add(new SingleFramePreviewSection());
-		}
+		list.add(new SingleSpritesheetPreviewSection());
 
-		if (ManyTexturesPreviewSection.canEdit2(obj)) {
-			list.add(new ManyTexturesPreviewSection());
-		}
+		list.add(new SingleFramePreviewSection());
 
-		if (obj instanceof AtlasAssetModel) {
-			list.add(new SingleAtlasPreviewSection());
-		}
+		list.add(new ManyTexturesPreviewSection());
 
-		if (obj instanceof MultiAtlasAssetModel) {
-			list.add(new SingleMultiAtlasPreviewSection());
-		}
+		list.add(new SingleAtlasPreviewSection());
 
-		if (obj instanceof AnimationsAssetModel) {
-			list.add(new ManyAnimationsPreviewSection());
-		}
+		list.add(new SingleMultiAtlasPreviewSection());
 
-		if (obj instanceof AnimationModel) {
-			list.add(new ManyAnimationPreviewSection());
-			list.add(new SingleAnimationPreviewSection());
-		}
+		list.add(new ManyAnimationsPreviewSection());
+
+		list.add(new ManyAnimationPreviewSection());
+		list.add(new SingleAnimationPreviewSection());
+
 		return list;
 	}
 

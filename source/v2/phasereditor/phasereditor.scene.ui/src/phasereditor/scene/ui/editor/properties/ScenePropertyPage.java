@@ -26,19 +26,6 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.scene.core.AnimationsComponent;
-import phasereditor.scene.core.BitmapTextComponent;
-import phasereditor.scene.core.DynamicBitmapTextComponent;
-import phasereditor.scene.core.FlipComponent;
-import phasereditor.scene.core.GameObjectEditorComponent;
-import phasereditor.scene.core.GroupComponent;
-import phasereditor.scene.core.OriginComponent;
-import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.TextualComponent;
-import phasereditor.scene.core.TextureComponent;
-import phasereditor.scene.core.TileSpriteComponent;
-import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -59,11 +46,11 @@ public class ScenePropertyPage extends FormPropertyPage {
 	public SceneEditor getEditor() {
 		return _editor;
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		
+
 		registerUndoRedoActions();
 	}
 
@@ -72,71 +59,41 @@ public class ScenePropertyPage extends FormPropertyPage {
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections(Object obj) {
+	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		if (obj instanceof SceneModel) {
-			list.add(new SnappingSection(this));
-			list.add(new DisplaySection(this));
-			list.add(new AssetsSection(this));
-			list.add(new CompilerSection(this));
-		}
+		list.add(new SnappingSection(this));
+		list.add(new DisplaySection(this));
+		list.add(new AssetsSection(this));
+		list.add(new CompilerSection(this));
 
-		if (VariableComponent.is(obj)) {
-			list.add(new VariableSection(this));
-		}
+		list.add(new VariableSection(this));
 
-		if (GameObjectEditorComponent.is(obj)) {
-			list.add(new GameObjectEditorSection(this));
-		}
+		list.add(new GameObjectEditorSection(this));
 
-		if (TransformComponent.is(obj)) {
-			list.add(new TransformSection(this));
-		}
+		list.add(new TransformSection(this));
 
-		if (OriginComponent.is(obj)) {
-			list.add(new OriginSection(this));
-		}
+		list.add(new OriginSection(this));
 
-		if (FlipComponent.is(obj)) {
-			list.add(new FlipSection(this));
-		}
+		list.add(new FlipSection(this));
 
-		// if (VisibleComponent.is(obj)) {
 		// list.add(new VisibleSection(this));
-		// }
 
-		if (TextureComponent.is(obj)) {
-			list.add(new TextureSection(this));
-		}
+		list.add(new TextureSection(this));
 
-		if (TileSpriteComponent.is(obj)) {
-			list.add(new TileSpriteSection(this));
-		}
+		list.add(new TileSpriteSection(this));
 
-		if (TextualComponent.is(obj)) {
-			list.add(new TextualSection(this));
-		}
+		list.add(new TextualSection(this));
 
-		if (BitmapTextComponent.is(obj)) {
-			list.add(new BitmapTextSection(this));
-		}
+		list.add(new BitmapTextSection(this));
 
-		if (DynamicBitmapTextComponent.is(obj)) {
-			list.add(new DynamicBitmapTextSection(this));
-		}
+		list.add(new DynamicBitmapTextSection(this));
 
-		if (AnimationsComponent.is(obj)) {
-			list.add(new AnimationsSection(this));
-		}
+		list.add(new AnimationsSection(this));
 
-		if (GroupComponent.is(obj)) {
-			list.add(new GroupSection(this));
-		}
+		list.add(new GroupSection(this));
 
-		// if (obj instanceof SpriteModel) {
 		// list.add(new EmptyBodySection(this));
-		// }
 
 		return list;
 

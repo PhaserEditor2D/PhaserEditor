@@ -24,8 +24,7 @@ package phasereditor.ui.properties;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,14 +60,16 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	Composite _sectionsContainer;
 	private ScrolledComposite _scrolledCompo;
+	private List<FormPropertySection<?>> _sections;
 
 	public FormPropertyPage() {
 		super();
+
+		_sections = createSections();
 	}
 
 	protected abstract Object getDefaultModel();
 
-	@SuppressWarnings({ "unused" })
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
@@ -81,94 +82,27 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			}
 		}
 
-		// create all candidate sections
-		var allSections = new ArrayList<FormPropertySection>();
-		{
-			var clsMap = new HashMap<Object, FormPropertySection>();
-			for (var model : models) {
-				var objSections = createSections(model);
-
-				for (var section : objSections) {
-					if (!clsMap.containsKey(section.getClass())) {
-						clsMap.put(section.getClass(), section);
-						allSections.add(section);
-					}
-				}
-			}
-		}
-
-		// pick only unique sections
-
-		var uniqueSections = new ArrayList<FormPropertySection>();
-		var sectionMap = new HashMap<>();
-
-		for (var section : allSections) {
-			var accept = true;
-			
-			if (!section.supportThisNumberOfModels(models.length)) {
-				accept = false;
-			} else {
-				for (var model : models) {
-					if (!section.canEdit(model)) {
-						accept = false;
-						break;
-					}
-				}
-			}
-			
-			if (accept) {
-				uniqueSections.add(section);
-				sectionMap.put(section.getClass(), section);
-			}
-		}
-
-		// hide all rows with irrelevant sections
-
 		for (var control : _sectionsContainer.getChildren()) {
+
 			var row = (RowComp) control;
 
-			var newSection = sectionMap.get(row.getSection().getClass());
+			FormPropertySection section = row.getSection();
+			var canEdit =
 
-			if (newSection == null) {
-				var gd = (GridData) row.getLayoutData();
-				gd.heightHint = 0;
-				gd.grabExcessVerticalSpace = false;
-				gd.verticalAlignment = SWT.TOP;
-				row.setVisible(false);
-			}
-		}
+					section.supportThisNumberOfModels(models.length)
 
-		// create the missing rows, or update current rows
+							&& Arrays.stream(models).allMatch(model -> section.canEdit(model));
 
-		for (var section : uniqueSections) {
-			var createNew = true;
-
-			for (var control : _sectionsContainer.getChildren()) {
-				var row = (RowComp) control;
-
-				var oldSection = row.getSection();
-
-				if (oldSection.getClass() == section.getClass()) {
-					row.setVisible(true);
-					var gd = (GridData) row.getLayoutData();
-					gd.heightHint = SWT.DEFAULT;
-
-					if (section.isFillSpace()) {
-						gd.grabExcessVerticalSpace = true;
-						gd.verticalAlignment = SWT.FILL;
-					}
-
-					oldSection.setModels(models);
-					oldSection.update_UI_from_Model();
-					createNew = false;
-					break;
-				}
-			}
-
-			if (createNew) {
+			if (canEdit) {
 				section.setModels(models);
-				new RowComp(_sectionsContainer, section);
+				
+				if (!row.isCreated()) {
+					row.createContents();
+				}
+				section.update_UI_from_Model();
 			}
+
+			row.updateRowLayout(canEdit);
 
 		}
 
@@ -181,21 +115,52 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 		private FormPropertySection _section;
 		boolean _collapsed = false;
+		private boolean _created;
 
 		public RowComp(Composite parent, FormPropertySection section) {
-			super(parent, SWT.NONE);
+			super(parent, 0);
 
 			_section = section;
+			_created = false;
 
-			{
-				var gl = new GridLayout(1, false);
-				gl.marginWidth = 0;
-				gl.marginHeight = 0;
-				setLayout(gl);
-				setLayoutData(createControlGridData());
+			setLayout(new GridLayout(1, false));
+		}
+
+		public void updateRowLayout(boolean visible) {
+			setVisible(visible);
+
+			var gd = new GridData();
+
+			if (visible) {
+				gd.horizontalAlignment = SWT.FILL;
+				gd.grabExcessHorizontalSpace = true;
+
+				if (_section.isFillSpace()) {
+					gd.verticalAlignment = SWT.FILL;
+					gd.grabExcessVerticalSpace = true;
+				}
+			} else {
+				gd.heightHint = 0;
+				gd.exclude = true;
 			}
 
-			var sectionId = getSectionId(section);
+			setLayoutData(gd);
+
+			requestLayout();
+		}
+
+		public GridData createControlGridData() {
+			var expands = _section.isFillSpace() && !_collapsed;
+			var gd = new GridData(SWT.FILL, expands ? SWT.FILL : SWT.TOP, true, expands);
+			return gd;
+		}
+
+		public boolean isCreated() {
+			return _created;
+		}
+
+		void createContents() {
+			var sectionId = getSectionId(_section);
 
 			var collapsed = _collapsedSectionsIds.contains(sectionId);
 
@@ -213,16 +178,16 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			collapseBtn.setImage(EditorSharedImages.getImage(collapsed ? IMG_BULLET_EXPAND : IMG_BULLET_COLLAPSE));
 
 			var title = new Label(header, SWT.NONE);
-			title.setText(section.getName());
+			title.setText(_section.getName());
 			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
 			title.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionTitle");
 
-			var control = section.createContent(this);
+			var control = _section.createContent(this);
 			control.setLayoutData(createControlGridData());
 			control.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionBody");
 
 			var toolbarManager = new ToolBarManager();
-			section.fillToolbar(toolbarManager);
+			_section.fillToolbar(toolbarManager);
 			var toolbar = toolbarManager.createControl(header);
 			{
 				toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
@@ -232,7 +197,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 				}
 			}
 
-			section.update_UI_from_Model();
+			_section.update_UI_from_Model();
 
 			if (collapsed) {
 				((GridData) control.getLayoutData()).heightHint = 0;
@@ -269,6 +234,8 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 						_collapsedSectionsIds.remove(sectionId);
 					}
 
+					_sectionsContainer.requestLayout();
+					_sectionsContainer.layout();
 					updateScrolledComposite();
 
 				}
@@ -276,6 +243,8 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 			title.addMouseListener(expandListener);
 			collapseBtn.addMouseListener(expandListener);
+
+			_created = true;
 		}
 
 		private String getSectionId(FormPropertySection section) {
@@ -285,17 +254,11 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		public FormPropertySection getSection() {
 			return _section;
 		}
-
-		GridData createControlGridData() {
-			var expands = _section.isFillSpace() && !_collapsed;
-			return new GridData(SWT.FILL, expands ? SWT.FILL : SWT.TOP, true, expands);
-		}
-
 	}
 
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
 
-	protected abstract List<FormPropertySection<?>> createSections(Object obj);
+	protected abstract List<FormPropertySection<?>> createSections();
 
 	@Override
 	public void createControl(Composite parent) {
@@ -305,6 +268,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		_scrolledCompo = new ScrolledComposite(parent, SWT.V_SCROLL);
 		_sectionsContainer = new Composite(_scrolledCompo, SWT.NONE);
 		_sectionsContainer.setBackgroundMode(SWT.INHERIT_FORCE);
+
+		createSectionsUI();
+
 		var layout = new GridLayout(1, false);
 		layout.verticalSpacing = 0;
 		_sectionsContainer.setLayout(layout);
@@ -315,6 +281,13 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		_scrolledCompo.addControlListener(ControlListener.controlResizedAdapter(e -> {
 			updateScrolledComposite();
 		}));
+	}
+
+	private void createSectionsUI() {
+		for (var section : _sections) {
+			var row = new RowComp(_sectionsContainer, section);
+			row.setVisible(false);
+		}
 	}
 
 	void updateScrolledComposite() {

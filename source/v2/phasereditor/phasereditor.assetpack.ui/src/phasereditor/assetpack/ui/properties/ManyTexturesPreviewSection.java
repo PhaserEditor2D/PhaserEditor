@@ -57,10 +57,6 @@ public class ManyTexturesPreviewSection extends FormPropertySection<IAssetKey> {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return canEdit2(obj);
-	}
-
-	public static boolean canEdit2(Object obj) {
 		return obj instanceof IAssetFrameModel || obj instanceof AtlasAssetModel || obj instanceof MultiAtlasAssetModel
 				|| obj instanceof SpritesheetAssetModel || obj instanceof ImageAssetModel;
 	}

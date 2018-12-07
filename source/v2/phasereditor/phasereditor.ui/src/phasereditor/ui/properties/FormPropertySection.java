@@ -53,11 +53,11 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		_fillSpace = false;
 		_updates = new ArrayList<>();
 	}
-	
+
 	public List<Runnable> getUpdates() {
 		return _updates;
 	}
-	
+
 	public void addUpdate(Runnable update) {
 		_updates.add(update);
 	}
@@ -183,7 +183,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	public boolean supportThisNumberOfModels(int number) {
 		return true;
 	}
-	
+
 	public abstract boolean canEdit(Object obj);
 
 	public abstract Control createContent(Composite parent);
@@ -198,11 +198,13 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	}
 
 	public final void update_UI_from_Model() {
-		
-		for(var update : _updates) {
-			update.run();
+		if (!getModels().isEmpty()) {
+
+			for (var update : _updates) {
+				update.run();
+			}
+
+			user_update_UI_from_Model();
 		}
-		
-		user_update_UI_from_Model();
 	}
 }
