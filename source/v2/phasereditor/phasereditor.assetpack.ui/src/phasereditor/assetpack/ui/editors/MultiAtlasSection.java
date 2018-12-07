@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,7 +38,6 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.ui.preview.MultiAtlasAssetPreviewComp;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -49,22 +47,13 @@ import phasereditor.ui.properties.TextListener;
  */
 public class MultiAtlasSection extends BaseAssetPackEditorSection<MultiAtlasAssetModel> {
 
-	private MultiAtlasAssetPreviewComp _preview;
-
 	public MultiAtlasSection(AssetPackEditorPropertyPage page) {
 		super(page, "Multi Atlas");
-
-		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof MultiAtlasAssetModel;
-	}
-
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		_preview.fillToolBar(manager);
 	}
 
 	@SuppressWarnings("unused")
@@ -147,12 +136,6 @@ public class MultiAtlasSection extends BaseAssetPackEditorSection<MultiAtlasAsse
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), MultiAtlasAssetModel::getPath));
-		}
-
-		{
-			_preview = new MultiAtlasAssetPreviewComp(comp, SWT.BORDER);
-			_preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-			addUpdate(() -> _preview.setModel((MultiAtlasAssetModel) flatValues_to_Object(getModels().stream())));
 		}
 
 		return comp;

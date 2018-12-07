@@ -26,6 +26,7 @@ import java.util.List;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.properties.ManyAnimationPreviewSection;
@@ -34,6 +35,7 @@ import phasereditor.assetpack.ui.properties.ManyTexturesPreviewSection;
 import phasereditor.assetpack.ui.properties.SingleAnimationPreviewSection;
 import phasereditor.assetpack.ui.properties.SingleAtlasPreviewSection;
 import phasereditor.assetpack.ui.properties.SingleFramePreviewSection;
+import phasereditor.assetpack.ui.properties.SingleMultiAtlasPreviewSection;
 import phasereditor.assetpack.ui.properties.SingleSpritesheetPreviewSection;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -69,6 +71,10 @@ public class AssetsPropertyPage extends FormPropertyPage {
 			list.add(new SingleAtlasPreviewSection());
 		}
 
+		if (obj instanceof MultiAtlasAssetModel) {
+			list.add(new SingleMultiAtlasPreviewSection());
+		}
+
 		if (obj instanceof AnimationsAssetModel) {
 			list.add(new ManyAnimationsPreviewSection());
 		}
@@ -77,7 +83,6 @@ public class AssetsPropertyPage extends FormPropertyPage {
 			list.add(new ManyAnimationPreviewSection());
 			list.add(new SingleAnimationPreviewSection());
 		}
-
 		return list;
 	}
 
