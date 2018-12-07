@@ -47,7 +47,6 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
-@SuppressWarnings("rawtypes")
 public class ScenePropertyPage extends FormPropertyPage {
 
 	private SceneEditor _editor;
@@ -73,8 +72,8 @@ public class ScenePropertyPage extends FormPropertyPage {
 	}
 
 	@Override
-	protected List<FormPropertySection> createSections(Object obj) {
-		List<FormPropertySection> list = new ArrayList<>();
+	protected List<FormPropertySection<?>> createSections(Object obj) {
+		var list = new ArrayList<FormPropertySection<?>>();
 
 		if (obj instanceof SceneModel) {
 			list.add(new SnappingSection(this));

@@ -45,10 +45,9 @@ public class TexturePackerPropertyPage extends FormPropertyPage {
 		return _editor.getModel();
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	protected List<FormPropertySection> createSections(Object obj) {
-		var list = new ArrayList<FormPropertySection>();
+	protected List<FormPropertySection<?>> createSections(Object obj) {
+		var list = new ArrayList<FormPropertySection<?>>();
 
 		if (obj instanceof TexturePackerEditorModel) {
 			list.add(new SettingsSection(_editor));

@@ -39,6 +39,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui,
  phasereditor.assetpack.ui.editors,
  phasereditor.assetpack.ui.preview,
+ phasereditor.assetpack.ui.properties,
  phasereditor.assetpack.ui.refactorings,
  phasereditor.assetpack.ui.wizards
 Automatic-Module-Name: phasereditor.assetpack.ui

@@ -65,10 +65,9 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 		return _finder;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	protected List<FormPropertySection> createSections(Object obj) {
-		var list = new ArrayList<FormPropertySection>();
+	protected List<FormPropertySection<?>> createSections(Object obj) {
+		var list = new ArrayList<FormPropertySection<?>>();
 
 		if (obj instanceof AnimationFrameModel) {
 			list.add(new AnimationFrameSection(this));

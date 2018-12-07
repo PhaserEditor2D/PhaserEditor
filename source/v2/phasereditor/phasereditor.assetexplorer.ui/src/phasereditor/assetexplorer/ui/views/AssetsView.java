@@ -60,9 +60,11 @@ import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
+import phasereditor.assetexplorer.ui.views.properties.AssetsPropertyPage;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -77,17 +79,9 @@ import phasereditor.ui.TreeCanvas;
 
 @SuppressWarnings({ "synthetic-access", "boxing" })
 public class AssetsView extends ViewPart {
-	/**
-	 * 
-	 */
 	private static final String CANVAS_STATE_KEY = "canvasState";
-	/**
-	 * 
-	 */
 	private static final String FILTER_TEXT_KEY = "filterText";
-	/**
-	 * 
-	 */
+
 	private static final String EXPANDED_INDEXES_KEY = "expandedIndexes";
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	private AssetExplorerContentProvider _contentProvider;
@@ -363,7 +357,12 @@ public class AssetsView extends ViewPart {
 					return context;
 				}
 			};
+		} else if (adapter.equals(IPropertySheetPage.class)) {
+
+			return new AssetsPropertyPage();
+
 		}
+
 		return super.getAdapter(adapter);
 	}
 

@@ -19,18 +19,14 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editors;
+package phasereditor.assetexplorer.ui.views.properties;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.properties.ManyAnimationPreviewSection;
 import phasereditor.assetpack.ui.properties.ManyAnimationsPreviewSection;
@@ -46,18 +42,7 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
-public class AssetPackEditorPropertyPage extends FormPropertyPage {
-
-	private AssetPackEditor _editor;
-
-	public AssetPackEditorPropertyPage(AssetPackEditor editor) {
-		super();
-		_editor = editor;
-	}
-
-	public AssetPackEditor getEditor() {
-		return _editor;
-	}
+public class AssetsPropertyPage extends FormPropertyPage {
 
 	@Override
 	protected Object getDefaultModel() {
@@ -68,40 +53,10 @@ public class AssetPackEditorPropertyPage extends FormPropertyPage {
 	protected List<FormPropertySection<?>> createSections(Object obj) {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		if (obj instanceof AssetModel) {
-			list.add(new KeySection(this));
-		}
-
-		if (obj instanceof ImageAssetModel) {
-			list.add(new ImageSection(this));
-		}
-
-		if (obj instanceof SvgAssetModel) {
-			list.add(new SvgSection(this));
-		}
-
-		if (obj instanceof SpritesheetAssetModel) {
-			list.add(new SpritesheetSection(this));
-		}
-
-		if (obj instanceof AtlasAssetModel) {
-			list.add(new AtlasSection(this));
-		}
-
-		if (obj instanceof MultiAtlasAssetModel) {
-			list.add(new MultiAtlasSection(this));
-		}
-
-		if (obj instanceof AnimationsAssetModel) {
-			list.add(new AnimationsSection(this));
-		}
-
-		// Preview sections
-
 		if (obj instanceof SpritesheetAssetModel) {
 			list.add(new SingleSpritesheetPreviewSection());
 		}
-		
+
 		if (SingleFramePreviewSection.canEdit2(obj)) {
 			list.add(new SingleFramePreviewSection());
 		}

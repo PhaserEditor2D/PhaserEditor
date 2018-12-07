@@ -295,7 +295,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
 
-	protected abstract List<FormPropertySection> createSections(Object obj);
+	protected abstract List<FormPropertySection<?>> createSections(Object obj);
 
 	@Override
 	public void createControl(Composite parent) {
