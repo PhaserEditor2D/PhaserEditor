@@ -24,7 +24,7 @@ package phasereditor.assetpack.ui.preview;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.audiosprite.ui.GdxMusicControl;
+import phasereditor.audio.ui.GdxMusicControl;
 
 public class GdxAutoMusicControl extends GdxMusicControl {
 

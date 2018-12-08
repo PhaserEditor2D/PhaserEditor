@@ -44,8 +44,8 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.audiosprite.core.AudioSpriteCore;
-import phasereditor.audiosprite.ui.GdxMusicControl;
 
 public class AudioSpriteAssetPreviewComp extends Composite {
 

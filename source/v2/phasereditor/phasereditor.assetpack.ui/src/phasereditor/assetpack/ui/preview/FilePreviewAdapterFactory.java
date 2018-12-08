@@ -33,7 +33,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.ImagePreviewComp;
-import phasereditor.audiosprite.ui.GdxMusicControl;
+import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 
 @SuppressWarnings("rawtypes")

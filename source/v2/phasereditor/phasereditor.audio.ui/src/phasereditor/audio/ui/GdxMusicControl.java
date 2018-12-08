@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.audiosprite.ui;
+package phasereditor.audio.ui;
 
 import static phasereditor.ui.PhaserEditorUI.paintPreviewMessage;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
@@ -64,7 +64,7 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 	private Music _music;
 	protected boolean _playing;
 	private OnCompletionListener _musicListener;
-	protected Canvas _canvas;
+	private Canvas _canvas;
 	private Image _wavesImage;
 	private IFile _file;
 	private Label _label;
@@ -248,6 +248,10 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		return _music;
 	}
 
+	public Canvas getCanvas() {
+		return _canvas;
+	}
+
 	public IFile getFile() {
 		return _file;
 	}
@@ -321,7 +325,7 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 						@Override
 						public void run() {
 							updateButton();
-							_canvas.redraw();
+							getCanvas().redraw();
 						}
 					});
 				} catch (SWTException e) {
@@ -368,7 +372,7 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 						e.printStackTrace();
 					}
 					loadWavsImage(n - 1);
-					swtRun(_canvas::redraw);
+					swtRun(getCanvas()::redraw);
 				}
 			}).start();
 		}

@@ -2,20 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="phasereditor.audiosprite.ui.AudioSpriteEditor"
-            default="false"
-            extensions="json"
-            icon="platform:/plugin/phasereditor.ui/icons/audiosprite.png"
-            id="phasereditor.audiosprite.ui.editor"
-            name="Audio Sprite Editor">
-         <contentTypeBinding
-               contentTypeId="phasereditor.core.contenttype.audiosprite">
-         </contentTypeBinding>
-      </editor>
-   </extension>
-   <extension
          point="org.eclipse.ui.newWizards">
       <wizard
             category="phasereditor.ui.wizardCategory"

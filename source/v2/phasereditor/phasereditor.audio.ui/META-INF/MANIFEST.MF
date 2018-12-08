@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Audio UI
+Bundle-SymbolicName: phasereditor.audio.ui
+Bundle-Version: 2.0.0
+Bundle-Activator: phasereditor.audio.ui.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.13.100",
+ phasereditor.ui;bundle-version="1.5.0",
+ phasereditor.libgdx;bundle-version="1.3.0",
+ phasereditor.audio.core;bundle-version="1.4.0"
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: phasereditor.audio.ui
+Export-Package: phasereditor.audio.ui

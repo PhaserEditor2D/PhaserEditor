@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.audiosprite.ui;
+package phasereditor.audiosprite.ui.editor;
 
 import static phasereditor.ui.PhaserEditorUI.pickFileWithoutExtension;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
@@ -69,9 +69,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.wb.swt.ResourceManager;
 
+import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.audiosprite.core.AudioSprite;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.audiosprite.core.AudioSpritesModel;
+import phasereditor.audiosprite.ui.UpdateAudioSpritesJob;
 
 public class AudioSpriteEditorComp extends Composite {
 	public static final String PROP_DIRTY = "dirty";
@@ -128,7 +130,7 @@ public class AudioSpriteEditorComp extends Composite {
 		sashForm_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_musicControl = new GdxMusicControl(sashForm_1, SWT.NONE);
-		_musicControl._canvas.addKeyListener(new KeyAdapter() {
+		_musicControl.getCanvas().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				handleKey(e);

@@ -55,7 +55,7 @@ import phasereditor.animation.ui.AnimationModelPreviewFactory;
 import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.audiosprite.ui.GdxMusicControl;
+import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 
 public class AssetPreviewAdapterFactory implements IAdapterFactory {

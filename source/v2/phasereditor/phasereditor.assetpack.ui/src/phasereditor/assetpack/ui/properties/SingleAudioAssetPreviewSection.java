@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.audiosprite.ui.GdxMusicControl;
+import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
