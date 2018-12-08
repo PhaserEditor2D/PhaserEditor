@@ -91,6 +91,7 @@ import phasereditor.assetpack.ui.preview.VideoAssetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audio.core.AudioCore;
+import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.CanvasUtilsInformationControlProvider;
 import phasereditor.ui.FilteredFrameGrid;

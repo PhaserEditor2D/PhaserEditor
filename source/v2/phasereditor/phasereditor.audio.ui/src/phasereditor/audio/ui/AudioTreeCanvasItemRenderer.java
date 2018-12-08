@@ -19,13 +19,12 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui;
+package phasereditor.audio.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 
-import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.FrameData;
@@ -47,29 +46,23 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		var data = _item.getData();
 
-		IFile audioFile;
-		_label = "";
+		_audioFile = getAudioFile(data);
+		_label = getAudioLabel(data);
+	}
 
-		if (data instanceof AudioAssetModel) {
-			var asset = (AudioAssetModel) data;
+	protected String getAudioLabel(Object data) {
+		var file = getAudioFile(data);
 
-			_label = asset.getKey();
-
-			audioFile = null;
-
-			for (var url : asset.getUrls()) {
-				audioFile = asset.getFileFromUrl(url);
-				if (audioFile != null) {
-					break;
-				}
-			}
-
-		} else {
-			audioFile = (IFile) data;
-			_label = audioFile.getName();
+		if (file == null) {
+			return "";
 		}
-		
-		_audioFile = audioFile;
+
+		return file.getName();
+	}
+
+	@SuppressWarnings("static-method")
+	protected IFile getAudioFile(Object data) {
+		return (IFile) data;
 	}
 
 	public String getLabel() {
@@ -88,7 +81,7 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			var imgPath = AudioCore.getSoundWavesFile(_audioFile, false);
 			_image = canvas.loadImage(imgPath.toFile());
 		}
-		
+
 		var gc = e.gc;
 
 		int rowHeight = computeRowHeight(canvas);

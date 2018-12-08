@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui;
+package phasereditor.audio.ui;
 
 import static java.util.stream.Collectors.toList;
 
@@ -43,12 +43,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvas;
-import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvasViewer;
 
 public class AudioResourceDialog extends Dialog {
 	TreeCanvasViewer _filesViewer;
