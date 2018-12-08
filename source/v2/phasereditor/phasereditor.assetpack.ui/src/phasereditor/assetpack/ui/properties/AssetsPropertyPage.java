@@ -60,6 +60,8 @@ public class AssetsPropertyPage extends FormPropertyPage {
 		list.add(new SingleAnimationPreviewSection());
 
 		list.add(new SingleAudioAssetPreviewSection());
+		
+		list.add(new SingleAudioSpritePreviewSection());
 
 		return list;
 	}

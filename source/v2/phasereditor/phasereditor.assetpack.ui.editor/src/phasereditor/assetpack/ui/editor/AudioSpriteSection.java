@@ -24,6 +24,8 @@ package phasereditor.assetpack.ui.editor;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,35 +36,94 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
+import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class AudioSection extends BaseAssetPackEditorSection<AudioAssetModel> {
+public class AudioSpriteSection extends BaseAssetPackEditorSection<AudioSpriteAssetModel> {
 
-	public AudioSection(AssetPackEditorPropertyPage page) {
-		super(page, "Audio");
+	public AudioSpriteSection(AssetPackEditorPropertyPage page) {
+		super(page, "Audio Sprite");
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj.getClass() == AudioAssetModel.class;
+		return obj instanceof AudioSpriteAssetModel;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(3, false));
 
 		{
+			// jsonURL
 
-			// urls
+			label(comp, "JSON URL", AssetModel.getHelp(AssetType.audioSprite, "jsonURL"));
 
-			label(comp, "URLs", AssetModel.getHelp(AssetType.audio, "urls"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new TextListener(text) {
+
+				@Override
+				protected void accept(String value) {
+					getModels().forEach(model -> {
+						model.setJsonURL(value);
+						model.build(null);
+					});
+					getEditor().refresh();
+					update_UI_from_Model();
+				}
+			};
+
+			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getJsonURL()))));
+
+			var btn = new Button(comp, 0);
+			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
+			btn.addSelectionListener(new AbstractBrowseFileListener() {
+
+				{
+					dialogName = "JSON URL";
+				}
+
+				@Override
+				protected void setUrl(String url) {
+					getModels().forEach(model -> {
+						model.setJsonURL(url);
+						model.build(null);
+					});
+
+					getEditor().refresh();
+					update_UI_from_Model();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected String getUrl() {
+					return flatValues_to_String(getModels().stream().map(model -> model.getJsonURL()));
+				}
+
+				@Override
+				protected List<IFile> discoverFiles(AssetPackModel pack) throws CoreException {
+					return pack.discoverAudioSpriteFiles();
+				}
+
+			});
+		}		
+		
+		{
+
+			// audioURL
+
+			label(comp, "Audio URL", AssetModel.getHelp(AssetType.audioSprite, "audioURL"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -91,10 +152,11 @@ public class AudioSection extends BaseAssetPackEditorSection<AudioAssetModel> {
 			});
 
 		}
-
+		
 		return comp;
 	}
-
+	
+	
 	private static String urlsToString(AudioAssetModel model) {
 		return "[" + model.getUrls().stream().collect(Collectors.joining(",")) + "]";
 	}

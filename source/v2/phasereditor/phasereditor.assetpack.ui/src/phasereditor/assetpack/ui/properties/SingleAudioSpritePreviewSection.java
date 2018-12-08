@@ -27,18 +27,18 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.audiosprite.ui.GdxMusicControl;
+import phasereditor.assetpack.core.AudioSpriteAssetModel;
+import phasereditor.assetpack.ui.preview.AudioSpriteAssetPreviewComp;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAssetModel> {
+public class SingleAudioSpritePreviewSection extends FormPropertySection<AudioSpriteAssetModel> {
 
-	public SingleAudioAssetPreviewSection() {
-		super("Audio Preview");
+	public SingleAudioSpritePreviewSection() {
+		super("Audio Sprite Preview");
 	}
 
 	@Override
@@ -48,31 +48,21 @@ public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAss
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj.getClass() == AudioAssetModel.class;
+		return obj instanceof AudioSpriteAssetModel;
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout());
-
-		var preview = new GdxMusicControl(comp, 0);
+		comp.setLayout(new GridLayout(1, false));
+		
+		var preview = new AudioSpriteAssetPreviewComp(comp, 0);
 		var gd = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gd.heightHint = 200;
+		gd.heightHint = 300;
 		preview.setLayoutData(gd);
 
-		addUpdate(() -> {
-			var model = getModels().get(0);
-			model.getUrls().stream()
+		addUpdate(() -> preview.setModel(getModels().get(0)));
 
-					.findFirst()
-
-					.ifPresentOrElse(
-
-							(url) -> preview.load(model.getFileFromUrl(url)),
-
-							() -> preview.load(null));
-		});
 		return comp;
 	}
 
