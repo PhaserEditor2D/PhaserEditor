@@ -39,6 +39,7 @@ import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
+import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -60,11 +61,10 @@ import phasereditor.ui.TreeCanvasViewer;
  */
 public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 
-	public AssetsTreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider,
-			LabelProvider labelProvider) {
-		
+	public AssetsTreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
+
 		super(tree, contentProvider, labelProvider);
-		
+
 		AssetPackUI.installAssetTooltips(tree, tree.getUtils());
 	}
 
@@ -94,6 +94,10 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			item.setRenderer(new AnimationsAssetTreeCanvasItemRenderer(item));
 		} else if (elem instanceof AnimationModel) {
 			item.setRenderer(new AnimationTreeCanvasItemRenderer(item));
+		} else if (elem instanceof AudioSpriteAssetModel) {
+			item.setRenderer(new AudioSpriteAssetTreeCanvasItemRenderer(item));
+		} else if (elem instanceof AudioSpriteAssetModel.AssetAudioSprite) {
+			item.setRenderer(new Sprite_AudioSpriteAssetTreeCanvasRenderer(item));
 		} else if (elem instanceof AudioAssetModel) {
 			item.setRenderer(new AudioAssetTreeCanvasItemRenderer(item));
 		} else if (elem instanceof BitmapFontAssetModel) {

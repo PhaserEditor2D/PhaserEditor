@@ -494,6 +494,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public void setImageSize(int imageSize) {
 		_imageSize = imageSize;
 	}
+	
+	public int getOrigin() {
+		return _origin;
+	}
 
 	public List<TreeCanvasItem> getRoots() {
 		return _roots;

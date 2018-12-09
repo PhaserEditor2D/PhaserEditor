@@ -43,6 +43,11 @@ public class SingleMultiAtlasPreviewSection extends FormPropertySection<MultiAtl
 		super("Multi Atlas Preview");
 		setFillSpace(true);
 	}
+	
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
+	}
 
 	@Override
 	public boolean canEdit(Object obj) {

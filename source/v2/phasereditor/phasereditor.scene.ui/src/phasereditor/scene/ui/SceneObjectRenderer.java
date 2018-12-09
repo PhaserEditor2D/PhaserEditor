@@ -158,8 +158,8 @@ public class SceneObjectRenderer {
 			}
 		}
 
-		gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
+		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
 
 		for (var model : sceneModel.getDisplayList().getChildren()) {
 			renderBones(gc, model, false);
