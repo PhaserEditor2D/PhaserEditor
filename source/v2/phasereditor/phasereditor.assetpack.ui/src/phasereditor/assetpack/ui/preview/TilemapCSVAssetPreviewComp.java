@@ -40,7 +40,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IMemento;
 import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.assetpack.core.TilemapAssetModel;
@@ -150,15 +149,6 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 
 	public void setModel(TilemapAssetModel model) {
 		_tilemapCanvas.setModel(model);
-		
-	}
-
-	public void initState(IMemento memento) {
-		_tilemapCanvas.initState(memento);
-	}
-
-	public void saveState(IMemento memento) {
-		_tilemapCanvas.saveState(memento);
 	}
 
 	public void fillToolBar(IToolBarManager toolbar) {

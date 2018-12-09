@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -52,6 +53,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
@@ -84,6 +86,7 @@ public class AssetPackCore {
 	private static final Set<String> _videoExtensions;
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	public static final String ASSET_PACK_PROBLEM_ID = "phasereditor.assetpack.core.problem";
+	private static final QualifiedName TILEMAP_TILESET_KEY = new QualifiedName("phasereditor2d.com", "tilemapCSV.data");
 
 	static {
 		_imageExtensions = new HashSet<>();
@@ -99,6 +102,67 @@ public class AssetPackCore {
 
 		_shaderExtensions = new HashSet<>();
 		_shaderExtensions.addAll(Arrays.asList("vert", "frag", "tesc", "tese", "geom", "comp"));
+	}
+
+	public static void saveCSVTilemapData(TilemapAssetModel tilemapAsset, ImageAssetModel imageModel, int tileWidth,
+			int tileHeight) throws CoreException {
+		
+		var file = tilemapAsset.getUrlFile();
+		
+		if (file != null) {
+			var data = new JSONObject();
+
+			if (imageModel != null) {
+				data.put("tilesetKey", imageModel.getKey());
+			}
+
+			data.put("tileWidth", tileWidth);
+			data.put("tileHeight", tileHeight);
+
+			file.setPersistentProperty(TILEMAP_TILESET_KEY, data.toString());
+		}
+	}
+
+	public static class TilemapCSVData {
+		public ImageAssetModel imageModel;
+		public int tileWidth;
+		public int tileHeight;
+	}
+
+	public static Optional<TilemapCSVData> loadCSVTilemapData(TilemapAssetModel tilemapAsset) {
+		var file = tilemapAsset.getUrlFile();
+
+		if (file != null) {
+			try {
+				var str = file.getPersistentProperty(TILEMAP_TILESET_KEY);
+				
+				out.println("load " + file.getName() + " " + str);
+
+				if (str != null) {
+					var data = new JSONObject(str);
+
+					var result = new TilemapCSVData();
+
+					var finder = new AssetFinder(tilemapAsset.getPack().getFile().getProject());
+					finder.build();
+
+					var key = data.optString("tilesetKey");
+					if (key != null) {
+						result.imageModel = finder.findImage(key);
+					}
+					result.tileWidth = data.getInt("tileWidth");
+					result.tileHeight = data.getInt("tileHeight");
+
+					return Optional.of(result);
+				}
+
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return Optional.empty();
 	}
 
 	public static List<AssetModel> findAssetResourceReferencesInProject(IFile assetFile) {

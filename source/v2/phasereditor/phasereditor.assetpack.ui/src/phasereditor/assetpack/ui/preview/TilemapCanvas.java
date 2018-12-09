@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -58,10 +59,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IMemento;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -82,10 +80,6 @@ import phasereditor.ui.ZoomCanvas;
 public class TilemapCanvas extends ZoomCanvas
 		implements MouseMoveListener, MouseListener, KeyListener, ISelectionProvider {
 
-	private static final String MEMENTO_IMAGE_KEY = "phasereditor.assetpack.ui.tilemap.csv.image";
-	private static final String MEMENTO_TILE_WIDTH = "phasereditor.assetpack.ui.tilemap.csv.tileWidth";
-	private static final String MEMENTO_TILE_HEIGHT = "phasereditor.assetpack.ui.tilemap.csv.tileHeight";
-
 	private TilemapAssetModel _model;
 	private Point _imageSize = new Point(1, 1);
 	private int _tileWidth;
@@ -94,7 +88,6 @@ public class TilemapCanvas extends ZoomCanvas
 	protected ImageAssetModel _imageModel;
 	private BufferedImage _tileSetImage2;
 	private Image _renderImage;
-	private String _initialImageRef;
 	private int _mouseX;
 	private int _mouseY;
 	private List<Point> _selectedCells;
@@ -135,13 +128,17 @@ public class TilemapCanvas extends ZoomCanvas
 	}
 
 	public void setModel(TilemapAssetModel model) {
-		if (model != null) {
-			model.buildTilemap();
-		}
+
+		_imageModel = null;
+		_tileWidth = 32;
+		_tileHeight = 32;
+
+		disposeImages();
 
 		_model = model;
 
 		int[][] map = _model == null ? null : _model.getCsvData();
+
 		if (map != null) {
 			int max = 0;
 			for (int i = 0; i < map.length; i++) {
@@ -155,25 +152,30 @@ public class TilemapCanvas extends ZoomCanvas
 			updateImageSize();
 		}
 
-		if (_initialImageRef != null) {
-			if (model != null) {
-				try {
-					JSONObject obj = new JSONObject(new JSONTokener(_initialImageRef));
-					Object asset = AssetPackCore.findAssetElement(model.getPack().getFile().getProject(), obj);
-					if (asset instanceof ImageAssetModel) {
-						_imageModel = (ImageAssetModel) asset;
-						buildTilesetImage();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			_initialImageRef = null;
-		}
-
 		buildMapImage();
 
+		if (model != null) {
+			var optData = AssetPackCore.loadCSVTilemapData(model);
+
+			if (optData.isPresent()) {
+				var data = optData.get();
+				_tileWidth = data.tileWidth;
+				_tileHeight = data.tileHeight;
+				_imageModel = data.imageModel;
+
+				setImageModel(_imageModel);
+			}
+		}
+
 		resetZoom();
+	}
+
+	void saveData() {
+		try {
+			AssetPackCore.saveCSVTilemapData(_model, _imageModel, _tileWidth, _tileHeight);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	void updateImageSize() {
@@ -195,6 +197,10 @@ public class TilemapCanvas extends ZoomCanvas
 		buildMapImage();
 
 		redraw();
+	}
+
+	public ImageAssetModel getImageModel() {
+		return _imageModel;
 	}
 
 	private void buildTilesetImage() {
@@ -276,8 +282,14 @@ public class TilemapCanvas extends ZoomCanvas
 	@Override
 	public void dispose() {
 		super.dispose();
+
+		disposeImages();
+	}
+
+	private void disposeImages() {
 		if (_renderImage != null) {
 			_renderImage.dispose();
+			_renderImage = null;
 		}
 	}
 
@@ -453,14 +465,21 @@ public class TilemapCanvas extends ZoomCanvas
 								return null;
 							}
 						});
+
 				if (dlg.open() == Window.OK) {
+
 					String result = dlg.getValue();
 					String[] tuple = result.split("x");
+
 					setTileWidth(Integer.parseInt(tuple[0]));
 					setTileHeight(Integer.parseInt(tuple[1]));
+
 					updateImageSize();
 					buildMapImage();
+
 					redraw();
+
+					saveData();
 				}
 			}
 		};
@@ -488,10 +507,14 @@ public class TilemapCanvas extends ZoomCanvas
 						return assetKey instanceof ImageAssetModel;
 					}
 				});
+
 				dlg.setProject(model.getPack().getFile().getProject());
+
 				if (dlg.open() == Window.OK) {
 					ImageAssetModel image = (ImageAssetModel) dlg.getSelection().getFirstElement();
 					setImageModel(image);
+
+					saveData();
 				}
 			}
 		};
@@ -511,34 +534,6 @@ public class TilemapCanvas extends ZoomCanvas
 
 	public void setTileHeight(int tileHeight) {
 		_tileHeight = tileHeight;
-	}
-
-	public void initState(IMemento memento) {
-		_initialImageRef = memento.getString(MEMENTO_IMAGE_KEY);
-
-		{
-			Integer value = memento.getInteger(MEMENTO_TILE_WIDTH);
-			_tileWidth = value == null ? _tileWidth : value.intValue();
-		}
-
-		{
-			Integer value = memento.getInteger(MEMENTO_TILE_HEIGHT);
-			_tileHeight = value == null ? _tileHeight : value.intValue();
-		}
-
-		if (_initialImageRef != null) {
-			setModel(_model);
-		}
-	}
-
-	public void saveState(IMemento memento) {
-		if (_imageModel != null) {
-			JSONObject ref = AssetPackCore.getAssetJSONReference(_imageModel);
-			memento.putString(MEMENTO_IMAGE_KEY, ref.toString());
-		}
-
-		memento.putInteger(MEMENTO_TILE_WIDTH, _tileWidth);
-		memento.putInteger(MEMENTO_TILE_HEIGHT, _tileHeight);
 	}
 
 	@Override

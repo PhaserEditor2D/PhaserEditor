@@ -80,6 +80,16 @@ public class AssetFinder {
 		return assetKey;
 	}
 
+	public ImageAssetModel findImage(String key) {
+		var texture = findTexture(key, key);
+		
+		if (texture != null && texture.getAsset() instanceof ImageAssetModel) {
+			return (ImageAssetModel) texture.getAsset();
+		}
+		
+		return null;
+	}
+	
 	public IAssetFrameModel findTexture(String key, String frame) {
 		var assetKey = findAssetKey(key, frame);
 

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import static java.lang.System.out;
+
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,9 +58,13 @@ public class TilemapCSVPreviewSection extends FormPropertySection<TilemapAssetMo
 
 	@Override
 	public Control createContent(Composite parent) {
+		
+		out.println(getClass().getSimpleName() + " -> createContent()");
+		
 		var preview = new TilemapCSVAssetPreviewComp(parent, 0);
 		
 		addUpdate(() -> {
+			out.println("addUpdate");
 			preview.setModel(getModels().get(0));
 		});
 

@@ -301,16 +301,6 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				((TilemapCSVAssetPreviewComp) preview).fillToolBar(toolbar);
 			}
-
-			@Override
-			public void initPreviewControl(Control preview, IMemento memento) {
-				((TilemapCSVAssetPreviewComp) preview).initState(memento);
-			}
-
-			@Override
-			public void savePreviewControl(Control preview, IMemento memento) {
-				((TilemapCSVAssetPreviewComp) preview).saveState(memento);
-			}
 		};
 	}
 
