@@ -72,6 +72,8 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		list.add(new AudioSection(this));
 
 		list.add(new AudioSpriteSection(this));
+		
+		list.add(new TilemapSection(this));
 
 		list.addAll(super.createSections());
 

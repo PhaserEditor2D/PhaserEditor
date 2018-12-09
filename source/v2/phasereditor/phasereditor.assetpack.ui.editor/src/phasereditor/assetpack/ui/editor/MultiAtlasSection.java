@@ -45,7 +45,7 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class MultiAtlasSection extends BaseAssetPackEditorSection<MultiAtlasAssetModel> {
+public class MultiAtlasSection extends AssetPackEditorSection<MultiAtlasAssetModel> {
 
 	public MultiAtlasSection(AssetPackEditorPropertyPage page) {
 		super(page, "Multi Atlas");

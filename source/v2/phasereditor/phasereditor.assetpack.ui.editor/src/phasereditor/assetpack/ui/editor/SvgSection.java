@@ -47,7 +47,7 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class SvgSection extends BaseAssetPackEditorSection<SvgAssetModel> {
+public class SvgSection extends AssetPackEditorSection<SvgAssetModel> {
 
 	public SvgSection(AssetPackEditorPropertyPage page) {
 		super(page, "SVG");

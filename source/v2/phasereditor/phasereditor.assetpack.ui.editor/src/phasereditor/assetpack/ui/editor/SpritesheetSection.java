@@ -42,7 +42,7 @@ import phasereditor.ui.properties.TextToIntListener;
  * @author arian
  *
  */
-public class SpritesheetSection extends BaseAssetPackEditorSection<SpritesheetAssetModel> {
+public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetModel> {
 
 	public SpritesheetSection(AssetPackEditorPropertyPage page) {
 		super(page, "Sprite Sheet");

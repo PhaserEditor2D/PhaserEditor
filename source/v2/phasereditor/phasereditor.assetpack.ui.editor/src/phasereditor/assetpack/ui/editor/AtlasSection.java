@@ -46,7 +46,7 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class AtlasSection extends BaseAssetPackEditorSection<AtlasAssetModel> {
+public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 	public AtlasSection(AssetPackEditorPropertyPage page) {
 		super(page, "Atlas");

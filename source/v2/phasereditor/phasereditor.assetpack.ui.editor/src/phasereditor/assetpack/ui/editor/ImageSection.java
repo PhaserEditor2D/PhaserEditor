@@ -40,7 +40,7 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class ImageSection extends BaseAssetPackEditorSection<ImageAssetModel> {
+public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 	public ImageSection(AssetPackEditorPropertyPage page) {
 		super(page, "Image");

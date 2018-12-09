@@ -47,7 +47,7 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class AudioSpriteSection extends BaseAssetPackEditorSection<AudioSpriteAssetModel> {
+public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetModel> {
 
 	public AudioSpriteSection(AssetPackEditorPropertyPage page) {
 		super(page, "Audio Sprite");

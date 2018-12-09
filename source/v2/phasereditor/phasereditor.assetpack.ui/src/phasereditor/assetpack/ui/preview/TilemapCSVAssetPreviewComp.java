@@ -150,6 +150,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 
 	public void setModel(TilemapAssetModel model) {
 		_tilemapCanvas.setModel(model);
+		
 	}
 
 	public void initState(IMemento memento) {
@@ -160,7 +161,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 		_tilemapCanvas.saveState(memento);
 	}
 
-	public void createToolBar(IToolBarManager toolbar) {
+	public void fillToolBar(IToolBarManager toolbar) {
 		_tilemapCanvas.createToolBar(toolbar);
 	}
 

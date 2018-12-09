@@ -299,7 +299,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
-				((TilemapCSVAssetPreviewComp) preview).createToolBar(toolbar);
+				((TilemapCSVAssetPreviewComp) preview).fillToolBar(toolbar);
 			}
 
 			@Override

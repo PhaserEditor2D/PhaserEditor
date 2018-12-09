@@ -19,57 +19,57 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editor;
+package phasereditor.assetpack.ui.properties;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.ui.properties.TextListener;
+import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.assetpack.ui.preview.TilemapCSVAssetPreviewComp;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class KeySection extends AssetPackEditorSection<AssetModel> {
+public class TilemapCSVPreviewSection extends FormPropertySection<TilemapAssetModel> {
 
-	public KeySection(AssetPackEditorPropertyPage page) {
-		super(page, "Key");
+	private TilemapCSVAssetPreviewComp _preview;
+
+	public TilemapCSVPreviewSection() {
+		super("Tilemap CSV Preview");
+
+		setFillSpace(true);
+	}
+
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AssetModel;
+		return obj instanceof TilemapAssetModel && ((TilemapAssetModel) obj).getType() == AssetType.tilemapCSV;
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
-		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(2, false));
-
-		label(comp, "Key", "The asset key");
-
-		var text = new Text(comp, SWT.BORDER);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		new TextListener(text) {
-
-			@Override
-			protected void accept(String value) {
-				getModels().forEach(model -> model.setKey(value));
-				getEditor().refresh();
-			}
-		};
-
+		var preview = new TilemapCSVAssetPreviewComp(parent, 0);
+		
 		addUpdate(() -> {
-			text.setText(flatValues_to_String(getModels().stream().map(model -> model.getKey())));
+			preview.setModel(getModels().get(0));
 		});
 
-		return comp;
+		_preview = preview;
+
+		return preview;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		_preview.fillToolBar(manager);
 	}
 
 }

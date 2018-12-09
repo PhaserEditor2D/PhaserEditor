@@ -45,7 +45,7 @@ import phasereditor.ui.properties.TextListener;
  * @author arian
  *
  */
-public class AnimationsSection extends BaseAssetPackEditorSection<AnimationsAssetModel> {
+public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetModel> {
 
 	public AnimationsSection(AssetPackEditorPropertyPage page) {
 		super(page, "Animations");

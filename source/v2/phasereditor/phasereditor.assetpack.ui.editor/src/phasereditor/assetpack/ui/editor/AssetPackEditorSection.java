@@ -33,7 +33,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import com.phasereditor2d.json.JSONUtils;
 
 import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
+import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -41,11 +43,11 @@ import phasereditor.ui.properties.FormPropertySection;
  * @author arian
  *
  */
-public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<T> {
+public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> {
 
 	private AssetPackEditorPropertyPage _page;
 
-	public BaseAssetPackEditorSection(AssetPackEditorPropertyPage page, String name) {
+	public AssetPackEditorSection(AssetPackEditorPropertyPage page, String name) {
 		super(name);
 
 		_page = page;
@@ -167,5 +169,37 @@ public abstract class BaseAssetPackEditorSection<T> extends FormPropertySection<
 		protected abstract void setUrls(List<String> value);
 
 		protected abstract List<String> getUrls();
+	}
+
+	protected class BrowseTilemapFileListener extends AbstractBrowseFileListener {
+		private AssetType _tilemapType;
+
+		public BrowseTilemapFileListener(AssetType tilemapType) {
+			_tilemapType = tilemapType;
+			dialogName = _tilemapType.name();
+		}
+
+		@Override
+		protected List<IFile> discoverFiles(AssetPackModel pack) throws CoreException {
+			return pack.discoverTilemapFiles(_tilemapType);
+		}
+
+		@Override
+		protected void setUrl(String url) {
+			getModels().forEach(obj -> {
+				var model = (TilemapAssetModel) obj;
+				model.setUrl(url);
+				model.build(null);
+			});
+
+			update_UI_from_Model();
+			getEditor().refresh();
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		protected String getUrl() {
+			return flatValues_to_String(getModels().stream().map(obj -> ((TilemapAssetModel) obj).getUrl()));
+		}
 	}
 }

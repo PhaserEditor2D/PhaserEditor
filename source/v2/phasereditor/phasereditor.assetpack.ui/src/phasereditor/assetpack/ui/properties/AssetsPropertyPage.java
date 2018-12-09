@@ -63,7 +63,8 @@ public class AssetsPropertyPage extends FormPropertyPage {
 		list.add(new SingleAudioAssetPreviewSection());
 		list.add(new SingleAudioSpritePreviewSection());
 		list.add(new SingleAudioSpriteAssetElementPreviewSection());
-		
+
+		list.add(new TilemapCSVPreviewSection());
 
 		return list;
 	}
