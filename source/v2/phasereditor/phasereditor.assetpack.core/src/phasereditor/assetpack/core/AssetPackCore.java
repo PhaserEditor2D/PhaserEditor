@@ -136,9 +136,10 @@ public class AssetPackCore {
 			try {
 				var str = file.getPersistentProperty(TILEMAP_TILESET_KEY);
 				
-				out.println("load " + file.getName() + " " + str);
+				out.println("Get CSV info " + file.getName() + " " + str + "...");
 
 				if (str != null) {
+					
 					var data = new JSONObject(str);
 
 					var result = new TilemapCSVData();

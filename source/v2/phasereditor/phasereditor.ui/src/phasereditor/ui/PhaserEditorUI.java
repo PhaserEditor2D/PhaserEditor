@@ -90,6 +90,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -1442,6 +1443,21 @@ public class PhaserEditorUI {
 	public static float[] unitarianVector(float[] vector) {
 		var d = distance(0, 0, vector[0], vector[1]);
 		return new float[] { vector[0] / d, vector[1] / d };
+	}
+
+	public static Image createSWTImage(Device device, int width, int height) {
+		
+		var temp = new Image(device, 1, 1);
+		var tempData = temp.getImageData();
+
+		var data = new ImageData(width, height, tempData.depth, tempData.palette);
+		data.alphaData = new byte[width * height];
+
+		var img = new Image(device, data);
+
+		temp.dispose();
+		
+		return img;
 	}
 
 }

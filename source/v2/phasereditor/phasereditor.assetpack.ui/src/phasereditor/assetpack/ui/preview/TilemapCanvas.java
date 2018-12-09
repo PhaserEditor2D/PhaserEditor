@@ -21,15 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.imageio.ImageIO;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
@@ -86,13 +87,15 @@ public class TilemapCanvas extends ZoomCanvas
 	private int _tileHeight;
 	private Color[] _colors;
 	protected ImageAssetModel _imageModel;
-	private BufferedImage _tileSetImage2;
+	private Image _tileSetImage;
 	private Image _renderImage;
 	private int _mouseX;
 	private int _mouseY;
 	private List<Point> _selectedCells;
 	private int _mouseMapX;
 	private int _mouseMapY;
+	private boolean _buildingImage;
+	private static ExecutorService _pool;
 
 	public TilemapCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -148,11 +151,8 @@ public class TilemapCanvas extends ZoomCanvas
 			}
 
 			generateColors(max);
-
 			updateImageSize();
 		}
-
-		buildMapImage();
 
 		if (model != null) {
 			var optData = AssetPackCore.loadCSVTilemapData(model);
@@ -163,6 +163,7 @@ public class TilemapCanvas extends ZoomCanvas
 				_tileHeight = data.tileHeight;
 				_imageModel = data.imageModel;
 
+				updateImageSize();
 				setImageModel(_imageModel);
 			}
 		}
@@ -195,8 +196,6 @@ public class TilemapCanvas extends ZoomCanvas
 		buildTilesetImage();
 
 		buildMapImage();
-
-		redraw();
 	}
 
 	public ImageAssetModel getImageModel() {
@@ -205,78 +204,96 @@ public class TilemapCanvas extends ZoomCanvas
 
 	private void buildTilesetImage() {
 		if (_imageModel == null) {
-			_tileSetImage2 = null;
+			_tileSetImage = null;
 		} else {
-			try {
-				_tileSetImage2 = ImageIO.read(_imageModel.getUrlFile().getLocation().toFile());
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
+			_tileSetImage = loadImage(_imageModel.getUrlFile());
 		}
 	}
 
 	void buildMapImage() {
-		if (_model != null && _tileSetImage2 != null) {
+		_buildingImage = true;
+		redraw();
 
-			int[][] map = _model.getCsvData();
-
-			if (map != null && map.length > 0) {
-
-				Point size = getImageSize();
-
-				int mapWidth = size.x;
-				int mapHeight = size.y;
-
-				BufferedImage mapImage = new BufferedImage(mapWidth, mapHeight, BufferedImage.TYPE_INT_ARGB);
-
-				Graphics2D gc = mapImage.createGraphics();
-
-				for (int i = 0; i < map.length; i++) {
-					int[] row = map[i];
-
-					for (int j = 0; j < row.length; j++) {
-
-						int frame = map[i][j];
-
-						if (frame < 0) {
-							continue;
-						}
-
-						int w = getTileWidth();
-						int h = getTileHeight();
-						int x = j * getTileWidth();
-						int y = i * getTileHeight();
-
-						int srcX = frame * _tileWidth % _tileSetImage2.getWidth();
-						int srcY = frame * _tileWidth / _tileSetImage2.getWidth() * _tileHeight;
-
-						try {
-							gc.drawImage(_tileSetImage2, x, y, x + w, y + h, srcX, srcY, srcX + _tileWidth,
-									srcY + _tileHeight, null);
-						} catch (IllegalArgumentException e) {
-							gc.drawString("Invalid parameters. Please check the tiles size.", 10, 10);
-						}
-					}
-				}
-
-				try {
-					Image old = _renderImage;
-
-					_renderImage = PhaserEditorUI.image_Swing_To_SWT(mapImage);
-
-					if (old != null) {
-						old.dispose();
-					}
-
-				} catch (IOException e) {
-					e.printStackTrace();
-					throw new RuntimeException(e);
-				}
-
-				return;
-			}
+		if (_pool == null) {
+			_pool = Executors.newCachedThreadPool();
 		}
+
+		_pool.execute(this::buildImageMap2);
+	}
+
+	private void buildImageMap2() {
+		try {
+			if (_model != null && _tileSetImage != null) {
+
+				var t = currentTimeMillis();
+
+				int[][] map = _model.getCsvData();
+
+				if (map != null && map.length > 0) {
+
+					Point size = getImageSize();
+
+					int mapWidth = size.x;
+					int mapHeight = size.y;
+
+					var t2 = currentTimeMillis();
+
+					var mapImage = PhaserEditorUI.createSWTImage(getDisplay(), mapWidth, mapHeight);
+
+					out.println(
+							"Created buffer " + mapWidth + "," + mapHeight + ": " + (currentTimeMillis() - t2 + "ms"));
+
+					var bounds = _tileSetImage.getBounds();
+
+					var gc = new GC(mapImage);
+
+					for (int i = 0; i < map.length; i++) {
+						int[] row = map[i];
+
+						for (int j = 0; j < row.length; j++) {
+
+							int frame = map[i][j];
+
+							if (frame < 0) {
+								continue;
+							}
+
+							int w = getTileWidth();
+							int h = getTileHeight();
+							int x = j * getTileWidth();
+							int y = i * getTileHeight();
+
+							int srcX = frame * _tileWidth % bounds.width;
+							int srcY = frame * _tileWidth / bounds.width * _tileHeight;
+
+							try {
+								gc.drawImage(_tileSetImage, srcX, srcY, _tileWidth, _tileHeight, x, y, w, h);
+							} catch (IllegalArgumentException e) {
+								gc.drawString("Invalid parameters. Please check the tiles size.", 10, 10);
+							}
+						}
+					}
+
+					gc.dispose();
+
+					if (_renderImage != null) {
+						_renderImage.dispose();
+					}
+
+					_renderImage = mapImage;
+
+					out.println("Building CSV tilemap image done: " + (currentTimeMillis() - t));
+				}
+			}
+		} finally {
+
+			_buildingImage = false;
+
+		}
+
+		swtRun(() -> {
+			resetZoom();
+		});
 	}
 
 	@Override
@@ -309,7 +326,13 @@ public class TilemapCanvas extends ZoomCanvas
 	@Override
 	public void customPaintControl(PaintEvent e) {
 		GC gc = e.gc;
-		gc.setAdvanced(true);
+
+		if (_buildingImage) {
+			var str = "Building tilemap image...";
+			var extent = gc.stringExtent(str);
+			gc.drawText(str, e.width / 2 - extent.x / 2, e.height / 2 - extent.y / 2);
+			return;
+		}
 
 		if (_model != null) {
 
@@ -341,12 +364,10 @@ public class TilemapCanvas extends ZoomCanvas
 							int x = (int) (j * getTileWidth() * scale + offX);
 							int y = (int) (i * getTileHeight() * scale + offY);
 
-							if (_tileSetImage2 == null) {
-								// paint map with colors
-								Color c = _colors[frame % _colors.length];
-								gc.setBackground(c);
-								gc.fillRectangle(x, y, w + 1, h + 1);
-							}
+							// paint map with colors
+							Color c = _colors[frame % _colors.length];
+							gc.setBackground(c);
+							gc.fillRectangle(x, y, w + 1, h + 1);
 						}
 					}
 				} else {

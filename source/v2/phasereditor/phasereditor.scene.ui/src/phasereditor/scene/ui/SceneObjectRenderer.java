@@ -28,10 +28,8 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
@@ -100,6 +98,7 @@ public class SceneObjectRenderer {
 	}
 
 	private void disposeImageCache() {
+		
 		for (var image : _imageCacheMap.values()) {
 
 			if (!image.isDisposed()) {
@@ -578,19 +577,7 @@ public class SceneObjectRenderer {
 	}
 
 	public Image createImage(int width, int height) {
-		Device display = _rendererContext.getDisplay();
-		
-		var temp = new Image(display, 1, 1);
-		var tempData = temp.getImageData();
-
-		var data = new ImageData(width, height, tempData.depth, tempData.palette);
-		data.alphaData = new byte[width * height];
-
-		var img = new Image(display, data);
-
-		temp.dispose();
-
-		return img;
+		return PhaserEditorUI.createSWTImage(_rendererContext.getDisplay(), width, height);
 	}
 
 	public Image getTileSpriteTextImage(TileSpriteModel model) {
