@@ -398,9 +398,9 @@ public class SceneUI {
 				var gc = new GC(img);
 				var tx = new Transform(gc.getDevice());
 
-				display.syncExec(() -> {
+				//display.syncExec(() -> {
 					renderer.renderScene(gc, tx, model);
-				});
+				//});
 
 			}
 

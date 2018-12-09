@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -58,6 +59,7 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.ISceneObjectRendererContext;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.ColorUtil;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -75,6 +77,11 @@ public class SceneObjectRenderer {
 	private List<Runnable> _postPaintActions;
 	private AssetFinder _finder;
 	private AssetFinder _lastFinderSnapshot;
+	
+	private Color _COLOR_RED;
+	private Color _COLOR_BLUE;
+	private Color _COLOR_BLACK;
+	private Color _COLOR_WHITE;
 
 	public SceneObjectRenderer(ISceneObjectRendererContext rendererContext) {
 		super();
@@ -118,7 +125,11 @@ public class SceneObjectRenderer {
 	}
 
 	public void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
-
+		_COLOR_BLACK = SWTResourceManager.getColor(ColorUtil.BLACK.rgb);
+		_COLOR_BLUE = SWTResourceManager.getColor(ColorUtil.BLUE.rgb);
+		_COLOR_RED = SWTResourceManager.getColor(ColorUtil.RED.rgb);
+		_COLOR_WHITE = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
+		
 		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
 		_modelChildrenBoundsMap = new HashMap<>();
@@ -157,8 +168,8 @@ public class SceneObjectRenderer {
 			}
 		}
 
-		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
+		gc.setBackground(_COLOR_WHITE);
+		gc.setForeground(_COLOR_BLACK);
 
 		for (var model : sceneModel.getDisplayList().getChildren()) {
 			renderBones(gc, model, false);
@@ -226,14 +237,14 @@ public class SceneObjectRenderer {
 	}
 
 	private void debugObject(GC gc, ObjectModel model) {
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_RED));
+		gc.setForeground(_COLOR_RED);
 
 		if (model instanceof ParentComponent) {
 			for (var model2 : ParentComponent.get_children(model)) {
 				debugObject(gc, model2);
 			}
 
-			gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLUE));
+			gc.setForeground(_COLOR_BLUE);
 		}
 
 		var bounds = _modelBoundsMap.get(model);
