@@ -32,9 +32,9 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class Sprite_AudioSpriteAssetTreeCanvasRenderer extends AudioSpriteAssetTreeCanvasItemRenderer {
+public class AudioSpriteAssetElementTreeCanvasRenderer extends AudioSpriteAssetTreeCanvasItemRenderer {
 
-	public Sprite_AudioSpriteAssetTreeCanvasRenderer(TreeCanvasItem item) {
+	public AudioSpriteAssetElementTreeCanvasRenderer(TreeCanvasItem item) {
 		super(item);
 	}
 
@@ -50,13 +50,15 @@ public class Sprite_AudioSpriteAssetTreeCanvasRenderer extends AudioSpriteAssetT
 		var b = getImage().getBounds();
 		var srcX = sprite.getStart() / duration * b.width;
 		var srcWidth = sprite.getEnd() / duration * b.width - srcX;
-		
-		gc.drawImage(getImage(), (int) srcX, 0, (int) srcWidth, b.height, dstX, dstY + 2, dstWidth, dstHeight - 2);
+
+		var dstY2 = dstY + 5;
+		var dstHeight2 = dstHeight;
+		gc.drawImage(getImage(), (int) srcX, 0, (int) srcWidth, b.height, dstX, dstY2, dstWidth, dstHeight2);
 
 		gc.setAlpha(100);
 		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
 		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
-		gc.fillGradientRectangle(dstX, dstY + 2, dstWidth, dstHeight - 2, false);
+		gc.fillGradientRectangle(dstX, dstY2, dstWidth, dstHeight2, false);
 		gc.setAlpha(255);
 	}
 

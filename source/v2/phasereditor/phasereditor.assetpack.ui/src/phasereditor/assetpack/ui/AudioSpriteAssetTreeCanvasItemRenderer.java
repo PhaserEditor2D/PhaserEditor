@@ -88,7 +88,7 @@ public class AudioSpriteAssetTreeCanvasItemRenderer extends AudioAssetTreeCanvas
 			var srcWidth = srcX2 - srcX1;
 
 			var dstHeight2 = dstHeight - deltaDepth * i;
-			var dstY2 = dstY + (dstHeight - dstHeight2) / 2;
+			var dstY2 = dstY + (dstHeight - dstHeight2) / 2 + 5;
 
 			gc.setAlpha(255 - deltaAlpha * i);
 

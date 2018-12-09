@@ -97,7 +97,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		} else if (elem instanceof AudioSpriteAssetModel) {
 			item.setRenderer(new AudioSpriteAssetTreeCanvasItemRenderer(item));
 		} else if (elem instanceof AudioSpriteAssetModel.AssetAudioSprite) {
-			item.setRenderer(new Sprite_AudioSpriteAssetTreeCanvasRenderer(item));
+			item.setRenderer(new AudioSpriteAssetElementTreeCanvasRenderer(item));
 		} else if (elem instanceof AudioAssetModel) {
 			item.setRenderer(new AudioAssetTreeCanvasItemRenderer(item));
 		} else if (elem instanceof BitmapFontAssetModel) {

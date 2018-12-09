@@ -24,6 +24,8 @@ package phasereditor.assetpack.ui.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.ui.properties.AssetKeySection;
 import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -74,6 +76,18 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		list.addAll(super.createSections());
 
 		return list;
+	}
+
+	@Override
+	protected void createAssetKeySection(ArrayList<FormPropertySection<?>> list) {
+
+		list.add(new AssetKeySection() {
+			@Override
+			public boolean canEdit(Object obj) {
+				return obj instanceof IAssetElementModel;
+			}
+		});
+
 	}
 
 }

@@ -42,6 +42,7 @@ public class AssetsPropertyPage extends FormPropertyPage {
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
+		createAssetKeySection(list);
 		// list.add(new AssetFilesSection());
 
 		list.add(new SingleSpritesheetPreviewSection());
@@ -60,10 +61,16 @@ public class AssetsPropertyPage extends FormPropertyPage {
 		list.add(new SingleAnimationPreviewSection());
 
 		list.add(new SingleAudioAssetPreviewSection());
-		
 		list.add(new SingleAudioSpritePreviewSection());
+		list.add(new SingleAudioSpriteAssetElementPreviewSection());
+		
 
 		return list;
+	}
+
+	@SuppressWarnings("static-method")
+	protected void createAssetKeySection(ArrayList<FormPropertySection<?>> list) {
+		list.add(new AssetKeySection());
 	}
 
 }
