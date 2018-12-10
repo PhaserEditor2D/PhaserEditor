@@ -127,8 +127,6 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 			_frameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		}
 
-		user_update_UI_from_Model();
-
 		return comp;
 	}
 
@@ -148,7 +146,7 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 		{
 
 			var frame = (IAssetFrameModel) flatValues_to_Object(
-					models.stream().map(model -> model.getAssetFrame(_finder)));
+					models.stream().map(model -> model.getAssetFrame(getAssetFinder())));
 
 			if (frame == null) {
 				_frameLabel.setText("Frame");

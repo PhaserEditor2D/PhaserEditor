@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.CheckListener;
@@ -58,10 +57,6 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 	public AnimationSection(AnimationsPropertyPage page) {
 		super(page, "Animation");
-	}
-
-	public AssetFinder getFinder() {
-		return _finder;
 	}
 
 	@Override

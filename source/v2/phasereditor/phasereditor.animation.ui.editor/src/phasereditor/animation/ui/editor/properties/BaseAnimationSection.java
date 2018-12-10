@@ -33,38 +33,39 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 
-	private AnimationsEditor _editor;
-	protected final AssetFinder _finder;
+	private AnimationsPropertyPage _page;
 
 	public BaseAnimationSection(AnimationsPropertyPage page, String name) {
 		super(name);
+		_page = page;
+	}
 
-		_editor = page.getEditor();
-		_finder = page.getAssetFinder();
-	}
-	
 	public AnimationsEditor getEditor() {
-		return _editor;
+		return _page.getEditor();
 	}
-	
+
+	public AssetFinder getAssetFinder() {
+		return _page.getAssetFinder();
+	}
+
 	protected void restartPlayback() {
 		var editor = getEditor();
-		
+
 		if (!editor.isStopped()) {
 			editor.getStopAction().run();
 			editor.getPlayAction().run();
 		}
 	}
-	
+
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 		var editor = getEditor();
-		
+
 		manager.add(editor.getPlayAction());
 		manager.add(editor.getPauseAction());
 		manager.add(editor.getStopAction());
 		manager.add(new Separator());
 		manager.add(editor.getDeleteAction());
 	}
-	
+
 }
