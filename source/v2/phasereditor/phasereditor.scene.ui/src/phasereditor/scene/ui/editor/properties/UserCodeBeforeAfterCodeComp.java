@@ -34,7 +34,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.tm4e.core.grammar.IGrammar;
 import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
 import org.eclipse.tm4e.ui.text.TMPresentationReconciler;
-import org.eclipse.wb.swt.SWTResourceManager;
+
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -59,7 +60,7 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 		setLayout(new GridLayout(1, true));
 
 		Label lblMethodName = new Label(this, SWT.NONE);
-		lblMethodName.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.BOLD));
+		lblMethodName.setFont(SwtRM.getFont("Monospace", 11, SWT.BOLD));
 		lblMethodName.setText(methodName + "() { ");
 
 		_beforeTextViewer = createViewer(this);
@@ -67,16 +68,16 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Label lblMiddle = new Label(this, SWT.NONE);
-		lblMiddle.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+		lblMiddle.setForeground(SwtRM.getColor(SWT.COLOR_DARK_GREEN));
 		lblMiddle.setText("// ... generated code ... //");
-		lblMiddle.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.NORMAL));
+		lblMiddle.setFont(SwtRM.getFont("Monospace", 11, SWT.NORMAL));
 
 		_afterTextViewer = createViewer(this);
 		StyledText styledText_1 = _afterTextViewer.getTextWidget();
 		styledText_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Label lblMethodEnd = new Label(this, SWT.NONE);
-		lblMethodEnd.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.BOLD));
+		lblMethodEnd.setFont(SwtRM.getFont("Monospace", 11, SWT.BOLD));
 		lblMethodEnd.setText("}");
 
 	}

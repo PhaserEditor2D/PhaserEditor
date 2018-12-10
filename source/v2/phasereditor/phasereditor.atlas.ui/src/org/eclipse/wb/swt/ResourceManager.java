@@ -49,6 +49,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.osgi.framework.Bundle;
 
+import phasereditor.ui.SwtRM;
+
 /**
  * Utility class for managing OS resources associated with SWT/JFace controls
  * such as colors, fonts, images, etc.
@@ -65,7 +67,7 @@ import org.osgi.framework.Bundle;
  * @author Dan Rubel
  */
 @SuppressWarnings("all")
-public class ResourceManager extends SWTResourceManager {
+public class ResourceManager extends SwtRM {
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Image
@@ -208,7 +210,7 @@ public class ResourceManager extends SWTResourceManager {
 	 * Dispose all of the cached images.
 	 */
 	public static void disposeImages() {
-		SWTResourceManager.disposeImages();
+		SwtRM.disposeImages();
 		// dispose ImageDescriptor images
 		{
 			for (Iterator<Image> I = m_descriptorImageMap.values().iterator(); I.hasNext();) {

@@ -51,7 +51,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
@@ -79,6 +78,7 @@ import phasereditor.scene.ui.SceneObjectRenderer;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -431,10 +431,10 @@ public class SceneCanvas extends ZoomCanvas
 
 		gc.setAlpha(150);
 
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		gc.setForeground(SwtRM.getColor(SWT.COLOR_BLACK));
 		gc.drawRectangle(view.x + 1, view.y + 1, view.width, view.height);
 
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		gc.setForeground(SwtRM.getColor(SWT.COLOR_WHITE));
 		gc.drawRectangle(view);
 
 		gc.setAlpha(255);
@@ -442,7 +442,7 @@ public class SceneCanvas extends ZoomCanvas
 
 	private void renderSelection(GC gc) {
 
-		var selectionColor = SWTResourceManager.getColor(SWT.COLOR_GREEN);
+		var selectionColor = SwtRM.getColor(SWT.COLOR_GREEN);
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var model : _editor.getSelectionList()) {
@@ -500,7 +500,7 @@ public class SceneCanvas extends ZoomCanvas
 				// draw bold border
 				{
 
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+					gc.setForeground(SwtRM.getColor(SWT.COLOR_DARK_GREEN));
 					gc.setLineWidth(3);
 					gc.drawPolygon(points);
 					gc.setLineWidth(1);
@@ -510,7 +510,7 @@ public class SceneCanvas extends ZoomCanvas
 
 				// draw objects name
 				{
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+					gc.setForeground(SwtRM.getColor(SWT.COLOR_WHITE));
 
 					var vector = PhaserEditorUI.vector(p3, p0);
 
@@ -542,10 +542,10 @@ public class SceneCanvas extends ZoomCanvas
 					}
 
 					gc.setTransform(tx);
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+					gc.setForeground(SwtRM.getColor(SWT.COLOR_BLACK));
 					gc.drawText(str, 1, 1, true);
 
-					gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+					gc.setForeground(SwtRM.getColor(SWT.COLOR_WHITE));
 					gc.drawText(str, 0, 0, true);
 
 					gc.setTransform(null);
@@ -581,11 +581,11 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	private Color getGridColor() {
-		return SWTResourceManager.getColor(_sceneModel.getForegroundColor());
+		return SwtRM.getColor(_sceneModel.getForegroundColor());
 	}
 
 	private Color getBackgroundColor() {
-		return SWTResourceManager.getColor(_sceneModel.getBackgroundColor());
+		return SwtRM.getColor(_sceneModel.getBackgroundColor());
 	}
 
 	private void renderGrid(PaintEvent e, ZoomCalculator calc) {

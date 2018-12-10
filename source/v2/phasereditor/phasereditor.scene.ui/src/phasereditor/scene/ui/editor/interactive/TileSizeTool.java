@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor.interactive;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
@@ -33,6 +32,7 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -106,11 +106,11 @@ public class TileSizeTool extends InteractiveTool {
 		// paint
 
 		if (doPaint()) {
-			var color = SWTResourceManager
+			var color = SwtRM
 					.getColor(_changeX && _changeY ? SWT.COLOR_YELLOW : (_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN));
 
 			var darkColor = _hightlights ? color
-					: SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW);
+					: SwtRM.getColor(SWT.COLOR_DARK_YELLOW);
 
 			drawRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color, darkColor);
 		}

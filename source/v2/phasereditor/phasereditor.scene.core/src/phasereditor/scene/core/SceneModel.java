@@ -36,7 +36,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.lic.LicCore;
-import phasereditor.ui.ColorUtil;
+import phasereditor.ui.Colors;
 
 /**
  * @author arian
@@ -78,8 +78,8 @@ public class SceneModel {
 
 	private RGB _backgroundColor;
 	private RGB _foregroundColor;
-	private static final RGB DEF_FG_RGB = ColorUtil.WHITESMOKE.rgb;
-	private static final RGB DEF_BG_RGB = ColorUtil.LIGHTGRAY.rgb;
+	private static final RGB DEF_FG_RGB = Colors.WHITESMOKE.rgb;
+	private static final RGB DEF_BG_RGB = Colors.LIGHTGRAY.rgb;
 
 	private int _borderX;
 	private int _borderY;

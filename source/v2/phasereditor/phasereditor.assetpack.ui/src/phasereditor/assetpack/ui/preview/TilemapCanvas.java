@@ -60,18 +60,19 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.ui.SelectTextureDialog;
 import phasereditor.assetpack.ui.TextureListContentProvider;
+import phasereditor.ui.Colors;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -126,7 +127,7 @@ public class TilemapCanvas extends ZoomCanvas
 		_colors = new Color[n];
 		for (int i = 0; i < n; i++) {
 			java.awt.Color c = java.awt.Color.getHSBColor((float) i / (float) n, 0.85f, 1.0f);
-			_colors[i] = SWTResourceManager.getColor(c.getRed(), c.getGreen(), c.getBlue());
+			_colors[i] = Colors.color(c.getRed(), c.getGreen(), c.getBlue());
 		}
 	}
 

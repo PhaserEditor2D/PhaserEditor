@@ -44,7 +44,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
@@ -99,6 +98,7 @@ import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.ListCanvasDialog;
+import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -312,7 +312,7 @@ public class AssetPackUI {
 				if (usedFiles.contains(element)) {
 					return font;
 				}
-				font = SWTResourceManager.getBoldFont(font);
+				font = SwtRM.getBoldFont(font);
 				return font;
 			}
 

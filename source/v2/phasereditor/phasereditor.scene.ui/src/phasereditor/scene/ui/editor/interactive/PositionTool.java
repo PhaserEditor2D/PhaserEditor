@@ -26,7 +26,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
@@ -37,6 +36,7 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -168,14 +168,14 @@ public class PositionTool extends InteractiveTool {
 
 		if (doPaint()) {
 			if (_changeX && _changeY) {
-				var color = SWTResourceManager.getColor(SWT.COLOR_YELLOW);
-				var darkColor = _hightlights ? color : SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW);
+				var color = SwtRM.getColor(SWT.COLOR_YELLOW);
+				var darkColor = _hightlights ? color : SwtRM.getColor(SWT.COLOR_DARK_YELLOW);
 
 				drawRect(gc, globalX, globalY, globalAngle, BOX, color, darkColor);
 			} else {
-				var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+				var color = SwtRM.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
 				var darkColor = _hightlights ? color
-						: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+						: SwtRM.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
 
 				drawLine(gc, centerGlobalX, centerGlobalY, globalX, globalY, color, darkColor);
 

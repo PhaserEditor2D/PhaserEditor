@@ -53,12 +53,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.wb.swt.ResourceManager;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
 
 import phasereditor.audio.core.AudioCore;
+import phasereditor.ui.RM;
 
 public class GdxMusicControl extends Composite implements DisposeListener, MouseMoveListener, MouseTrackListener {
 	private Music _music;
@@ -123,8 +123,8 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 	}
 
 	private void createActions() {
-		_imgStop = ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/control_stop.png");
-		_imgPlay = ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/control_play.png");
+		_imgStop = RM.getPluginImageDescriptor("phasereditor.ui", "icons/control_stop.png");
+		_imgPlay = RM.getPluginImageDescriptor("phasereditor.ui", "icons/control_play.png");
 
 		_playAction = new Action("play", _imgPlay) {
 			@Override

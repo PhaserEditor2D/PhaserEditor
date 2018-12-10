@@ -59,10 +59,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.SwtRM;
 
 public class PreviewView extends ViewPart implements IShowInTarget {
 
@@ -92,7 +92,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		_previewContainer.setLayout(sl_previewContainer);
 
 		_noPreviewComp = new Composite(_previewContainer, SWT.NONE);
-		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		_noPreviewComp.setBackground(SwtRM.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		// _noPreviewComp = new Canvas(_previewContainer, SWT.NO_BACKGROUND |
 		// SWT.DOUBLE_BUFFERED);
 		// _noPreviewComp.addPaintListener(new PaintListener() {

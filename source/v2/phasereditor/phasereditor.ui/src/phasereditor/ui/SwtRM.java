@@ -8,7 +8,7 @@
  * Contributors:
  *    Google, Inc. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wb.swt;
+package phasereditor.ui;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Dan Rubel
  */
 @SuppressWarnings("all")
-public class SWTResourceManager {
+public class SwtRM {
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Color

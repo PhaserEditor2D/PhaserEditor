@@ -23,7 +23,6 @@ package phasereditor.ui;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -59,7 +58,7 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			var extent = gc.textExtent(label);
 
 			if (_item.isHeader()) {
-				gc.setFont(SWTResourceManager.getBoldFont(canvas.getFont()));
+				gc.setFont(SwtRM.getBoldFont(canvas.getFont()));
 			}
 
 			if (_item.isParentByNature() && _item.getChildren().isEmpty()) {

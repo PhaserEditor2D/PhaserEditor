@@ -44,7 +44,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.inspect.core.IProjectTemplateCategory;
@@ -57,6 +56,7 @@ import phasereditor.inspect.ui.TemplateContentProvider;
 import phasereditor.inspect.ui.TemplateLabelProvider;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.RM;
 import phasereditor.webrun.ui.WebRunUI;
 
 public class PhaserTemplateWizardPage extends WizardPage {
@@ -136,7 +136,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 
 		_playItem = new ToolItem(toolBar, SWT.NONE);
-		_playItem.setDisabledImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/d/world.png"));
+		_playItem.setDisabledImage(RM.getPluginImage("phasereditor.ui", "icons/d/world.png"));
 		_playItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -144,7 +144,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 			}
 		});
 		_playItem.setToolTipText("Play in a browser");
-		_playItem.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/world.png"));
+		_playItem.setImage(RM.getPluginImage("phasereditor.ui", "icons/world.png"));
 
 		_filteredTree = new FilteredTree2(bottomComp, SWT.BORDER, new PatternFilter2(), 1);
 		_treeViewer = _filteredTree.getViewer();

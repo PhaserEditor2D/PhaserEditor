@@ -46,10 +46,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -179,7 +179,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 			var title = new Label(header, SWT.NONE);
 			title.setText(_section.getName());
-			title.setFont(SWTResourceManager.getBoldFont(title.getFont()));
+			title.setFont(SwtRM.getBoldFont(title.getFont()));
 			title.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionTitle");
 
 			var control = _section.createContent(this);

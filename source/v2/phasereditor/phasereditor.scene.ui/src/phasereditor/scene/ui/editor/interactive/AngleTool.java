@@ -24,15 +24,15 @@ package phasereditor.scene.ui.editor.interactive;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
-import phasereditor.ui.ColorUtil;
+import phasereditor.ui.Colors;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -93,11 +93,11 @@ public class AngleTool extends InteractiveTool {
 
 		// paint
 
-		drawCircle(gc, globalX, globalY, BOX, SWTResourceManager.getColor(SWT.COLOR_BLUE), SWTResourceManager.getColor(SWT.COLOR_DARK_BLUE));
+		drawCircle(gc, globalX, globalY, BOX, SwtRM.getColor(SWT.COLOR_BLUE), SwtRM.getColor(SWT.COLOR_DARK_BLUE));
 
 		if (doPaint()) {
 
-			gc.setForeground(SWTResourceManager.getColor(_hightlights ? ColorUtil.WHITE.rgb : ColorUtil.BLUEVIOLET.rgb));
+			gc.setForeground(SwtRM.getColor(_hightlights ? Colors.WHITE.rgb : Colors.BLUEVIOLET.rgb));
 
 			gc.drawOval(_centerX - RADIUS, _centerY - RADIUS, RADIUS * 2, RADIUS * 2);
 		}

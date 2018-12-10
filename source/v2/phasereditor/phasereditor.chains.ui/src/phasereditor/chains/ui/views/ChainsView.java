@@ -78,7 +78,6 @@ import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
 import org.eclipse.tm4e.ui.TMUIPlugin;
 import org.eclipse.tm4e.ui.themes.ITheme;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.chains.core.ChainItem;
 import phasereditor.chains.core.ChainsCore;
@@ -93,6 +92,7 @@ import phasereditor.inspect.ui.handlers.ShowPhaserJsdocHandler;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 public class ChainsView extends ViewPart implements IPropertyChangeListener {
 	public static final String ID = "phasereditor.chains.ui.views.chains";
@@ -170,7 +170,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		_font = JFaceResources.getFont(JFaceResources.DEFAULT_FONT);
 
 		FontData fd = _font.getFontData()[0];
-		_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
+		_italic = SwtRM.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
 
 		_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 

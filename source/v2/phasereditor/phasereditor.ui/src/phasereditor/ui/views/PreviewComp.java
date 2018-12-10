@@ -28,7 +28,8 @@ import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.wb.swt.SWTResourceManager;
+
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -47,7 +48,7 @@ public class PreviewComp extends Composite {
 		this.setLayout(sl_previewContainer);
 
 		_noPreviewComp = new Composite(this, SWT.NONE);
-		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		_noPreviewComp.setBackground(SwtRM.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		_noPreviewComp.setLayout(new GridLayout(1, false));
 	}
 

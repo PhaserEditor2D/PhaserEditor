@@ -46,9 +46,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -82,7 +82,7 @@ public class PGrid extends Composite {
 		_tree = _treeViewer.getTree();
 
 		if (!PhaserEditorUI.isMacPlatform()) {
-			_tree.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+			_tree.setBackground(SwtRM.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		}
 
 		_tree.addControlListener(new ControlAdapter() {

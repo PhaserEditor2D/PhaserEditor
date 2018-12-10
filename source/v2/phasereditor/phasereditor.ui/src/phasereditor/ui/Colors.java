@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.RGBA;
 
 /**
@@ -32,12 +34,24 @@ import org.eclipse.swt.graphics.RGBA;
  *
  */
 @SuppressWarnings("all")
-public class ColorUtil {
+public class Colors {
 
-	public static RGBA web(String colorString) {
-		return web(colorString, 1);
+	public static Color color(String webColor) {
+		return SwtRM.getColor(rgb(webColor).rgb);
 	}
-	
+
+	public static Color color(int r, int g, int b) {
+		return SwtRM.getColor(r, g, b);
+	}
+
+	public static Color color(RGB rgb) {
+		return SwtRM.getColor(rgb);
+	}
+
+	public static RGBA rgb(String webColor) {
+		return rgb(webColor, 1);
+	}
+
 	/**
 	 * Creates an RGB color specified with an HTML or CSS attribute string.
 	 *
@@ -151,7 +165,7 @@ public class ColorUtil {
 	 *             if {@code colorString} specifies an unsupported color name or
 	 *             contains an illegal numeric value
 	 */
-	public static RGBA web(String colorString, double opacity) {
+	public static RGBA rgb(String colorString, double opacity) {
 		if (colorString == null) {
 			throw new NullPointerException("The color components or name must be specified");
 		}

@@ -36,9 +36,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.ui.RM;
 
 /**
  * @author arian
@@ -82,7 +82,7 @@ public class VideoPreviewComp extends Composite {
 //				}
 			}
 		});
-		_controlButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/control_play.png"));
+		_controlButton.setImage(RM.getPluginImage("phasereditor.ui", "icons/control_play.png"));
 
 		_link = new Link(composite, SWT.NONE);
 		_link.addMouseListener(new MouseAdapter() {

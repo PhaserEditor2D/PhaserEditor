@@ -40,9 +40,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.ui.RM;
 
 /**
  * @author arian
@@ -93,7 +93,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 				_selectedFramesText.setSelection(0, 0);
 			}
 		});
-		btnNewButton_1.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/copy_edit.png"));
+		btnNewButton_1.setImage(RM.getPluginImage("org.eclipse.ui", "/icons/full/etool16/copy_edit.png"));
 
 		Button btnNewButton_2 = new Button(composite, SWT.NONE);
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
@@ -103,7 +103,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 			}
 		});
 		btnNewButton_2.setToolTipText("Paste tile indexes.");
-		btnNewButton_2.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/paste_edit.png"));
+		btnNewButton_2.setImage(RM.getPluginImage("org.eclipse.ui", "/icons/full/etool16/paste_edit.png"));
 
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.setToolTipText("Select all entered tile indexes in the map.");
@@ -113,7 +113,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 				loadSelectedFramesFromText();
 			}
 		});
-		btnNewButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/accept.png"));
+		btnNewButton.setImage(RM.getPluginImage("phasereditor.ui", "icons/accept.png"));
 
 		afterCreateWidgets();
 

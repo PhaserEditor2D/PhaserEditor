@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor.interactive;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
@@ -34,6 +33,7 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -134,18 +134,18 @@ public class TilePositionTool extends InteractiveTool {
 		// paint
 
 		if (_changeX && _changeY) {
-			var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+			var color = SwtRM.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
 			var darkColor = _hightlights ? color
-					: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+					: SwtRM.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
 
 			drawRect(gc, globalX, _globalY, globalAngle, BOX, color, darkColor);
 		} else if (doPaint()) {
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+			gc.setBackground(SwtRM.getColor(SWT.COLOR_BLACK));
+			gc.setForeground(SwtRM.getColor(SWT.COLOR_BLACK));
 
-			var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+			var color = SwtRM.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
 			var darkColor = _hightlights ? color
-					: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+					: SwtRM.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
 
 			drawLine(gc, centerGlobalX, centerGlobalY, globalX, globalY, color, darkColor);
 

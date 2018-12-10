@@ -25,7 +25,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * @author arian
@@ -149,7 +148,7 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 		gc.setForeground(getForeground());
 		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
 		
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		gc.setForeground(SwtRM.getColor(SWT.COLOR_RED));
 		gc.drawRectangle(dstX, dstY, dstW, dstH);
 		
 

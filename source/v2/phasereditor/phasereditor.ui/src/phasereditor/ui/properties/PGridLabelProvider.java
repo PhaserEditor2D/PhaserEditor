@@ -27,7 +27,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.wb.swt.SWTResourceManager;
+
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -90,7 +91,7 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 	}
 
 	protected Font getBoldFont() {
-		return SWTResourceManager.getBoldFont(_viewer.getControl().getFont());
+		return SwtRM.getBoldFont(_viewer.getControl().getFont());
 	}
 
 	public static RGB darker(RGB rgb, double factor) {

@@ -118,7 +118,6 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.ImageCanvas.ZoomCalculator;
 import phasereditor.ui.views.PreviewView;
@@ -175,9 +174,9 @@ public class PhaserEditorUI {
 
 		{
 			RGB rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR));
-			_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SwtRM.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1));
-			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SwtRM.getColor(rgb);
 		}
 
 		{
@@ -190,19 +189,19 @@ public class PhaserEditorUI {
 		{
 			RGB rgb = StringConverter
 					.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR));
-			_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SwtRM.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR));
-			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(rgb);
 		}
 
 		{
 			RGB rgb = StringConverter
 					.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR));
-			_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SwtRM.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR));
-			_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = SwtRM.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR));
-			_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = SWTResourceManager.getColor(rgb);
+			_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = SwtRM.getColor(rgb);
 		}
 
 		getPreferenceStore().addPropertyChangeListener(event -> {
@@ -214,10 +213,10 @@ public class PhaserEditorUI {
 				_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = (String) event.getNewValue();
 				break;
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR:
-				_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1:
-				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// spritesheet
@@ -231,24 +230,24 @@ public class PhaserEditorUI {
 						.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SWTResourceManager
+				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SwtRM
 						.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// tilemap
 
 			case PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SWTResourceManager
+				_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SwtRM
 						.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 			default:
 				break;
@@ -688,7 +687,7 @@ public class PhaserEditorUI {
 						int start = intRangesCorrectSize[i];
 						int length = intRangesCorrectSize[++i];
 						StyleRange myStyledRange = new StyleRange(start, length, null, null);
-						myStyledRange.font = SWTResourceManager.getBoldFont(cell.getFont());
+						myStyledRange.font = SwtRM.getBoldFont(cell.getFont());
 						styleRange.add(myStyledRange);
 					}
 					cell.setStyleRanges(styleRange.toArray(new StyleRange[styleRange.size()]));
@@ -1137,7 +1136,7 @@ public class PhaserEditorUI {
 
 		if (fg != null) {
 
-			target.setForeground(SWTResourceManager.getColor(fg));
+			target.setForeground(SwtRM.getColor(fg));
 
 			return;
 		}

@@ -8,7 +8,7 @@
  * Contributors:
  *    Google, Inc. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wb.swt;
+package phasereditor.ui;
 
 import java.io.File;
 import java.io.InputStream;
@@ -43,7 +43,7 @@ import org.osgi.framework.Bundle;
  * @author Dan Rubel
  */
 @SuppressWarnings("all")
-public class ResourceManager extends SWTResourceManager {
+public class RM extends SwtRM {
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Image
@@ -172,7 +172,7 @@ public class ResourceManager extends SWTResourceManager {
 	 * Dispose all of the cached images.
 	 */
 	public static void disposeImages() {
-		SWTResourceManager.disposeImages();
+		SwtRM.disposeImages();
 		// dispose ImageDescriptor images
 		{
 			for (Iterator<Image> I = m_descriptorImageMap.values().iterator(); I.hasNext();) {

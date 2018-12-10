@@ -32,7 +32,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
+
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -74,7 +75,7 @@ public class TextDialog extends Dialog {
 		_text = new Text(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
 		_text.setTabs(4);
 		_text.setFont(
-				SWTResourceManager.getFont("Courier New", _text.getFont().getFontData()[0].getHeight(), SWT.NORMAL));
+				SwtRM.getFont("Courier New", _text.getFont().getFontData()[0].getHeight(), SWT.NORMAL));
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_text.setText(_initText == null ? "{\n}" : _initText);

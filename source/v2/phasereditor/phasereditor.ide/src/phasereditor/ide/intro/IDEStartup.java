@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IPageListener;
@@ -37,12 +36,12 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.ui.SceneUI;
-import phasereditor.ui.ColorUtil;
+import phasereditor.ui.Colors;
+import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeCanvas;
 
 @SuppressWarnings("hiding")
@@ -201,21 +200,16 @@ public class IDEStartup implements IStartup {
 		private Color _textFG;
 		private Color _folderBG;
 
-		
 		private static Color rgb(String hex) {
-			return rgb(ColorUtil.web(hex));
-		}
-		
-		private static Color rgb(RGBA rgba) {
-			return SWTResourceManager.getColor(rgba.rgb);
+			return Colors.color(hex);
 		}
 
-		private static Color rgb(int swt) {
-			return SWTResourceManager.getColor(swt);
+		private static Color rgb(RGBA rgba) {
+			return Colors.color(rgba.rgb);
 		}
 
 		private static Color rgb(int r, int g, int b) {
-			return SWTResourceManager.getColor(r, g, b);
+			return SwtRM.getColor(r, g, b);
 		}
 
 		@SuppressWarnings("unused")
@@ -249,20 +243,20 @@ public class IDEStartup implements IStartup {
 			_BG = rgb(0, 0, 0);
 			_FG = rgb(200, 200, 200);
 			_textBG = rgb(30, 30, 30);
-			_textFG = rgb(SWT.COLOR_GREEN);
+			_textFG = rgb(Colors.GREEN);
 			_listBG = rgb(5, 5, 5);
-			_folderSelectionFG = rgb(SWT.COLOR_RED);
-			_folderSelectionBG = rgb(SWT.COLOR_BLACK);
-			_folderFG = rgb(SWT.COLOR_DARK_GRAY);
+			_folderSelectionFG = rgb(Colors.RED);
+			_folderSelectionBG = rgb(Colors.BLACK);
+			_folderFG = rgb(Colors.DARKGRAY);
 			_folderBG = _BG;
-			_buttonFG = rgb(SWT.COLOR_RED);
-			_separatorColor = rgb(SWT.COLOR_DARK_GRAY);
-			_boldLabelFG = rgb(ColorUtil.LIGHTBLUE);
+			_buttonFG = rgb(Colors.RED);
+			_separatorColor = rgb(Colors.DARKGRAY);
+			_boldLabelFG = rgb(Colors.LIGHTBLUE);
 
 			// soyuz
 
 			{
-				_BG = rgb(ColorUtil.web("#D5CCC3"));
+				_BG = rgb(Colors.rgb("#D5CCC3"));
 				_FG = rgb(0, 0, 0);
 				_textBG = rgb("#E0D9D1");
 				_textFG = _FG;
@@ -272,10 +266,10 @@ public class IDEStartup implements IStartup {
 				_folderFG = _FG;
 				_folderBG = _BG;
 				_buttonFG = _FG;
-				_separatorColor =  rgb("#E0D9D1");
+				_separatorColor = rgb("#E0D9D1");
 				_boldLabelFG = _FG;
 			}
-			
+
 		}
 
 		@Override

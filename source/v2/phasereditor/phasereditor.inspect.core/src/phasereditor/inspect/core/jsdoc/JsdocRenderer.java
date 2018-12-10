@@ -33,11 +33,11 @@ import org.eclipse.mylyn.wikitext.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * Class to render JSDoc comments.
@@ -58,8 +58,8 @@ public class JsdocRenderer {
 	}
 
 	public static String wrapDocBody(String doc) {
-		return wrapDocBody(doc, SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB(),
-				SWTResourceManager.getColor(SWT.COLOR_BLACK).getRGB());
+		return wrapDocBody(doc, SwtRM.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB(),
+				SwtRM.getColor(SWT.COLOR_BLACK).getRGB());
 	}
 
 	public static String wrapDocBody(String doc, RGB bg, RGB fg) {

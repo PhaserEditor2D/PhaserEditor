@@ -67,13 +67,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.audio.ui.GdxMusicControl;
 import phasereditor.audiosprite.core.AudioSprite;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.audiosprite.core.AudioSpritesModel;
 import phasereditor.audiosprite.ui.UpdateAudioSpritesJob;
+import phasereditor.ui.RM;
 
 public class AudioSpriteEditorComp extends Composite {
 	public static final String PROP_DIRTY = "dirty";
@@ -317,7 +317,7 @@ public class AudioSpriteEditorComp extends Composite {
 	}
 
 	private void createActions() {
-		_addAction = new Action("add", ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/add.png")) {
+		_addAction = new Action("add", RM.getPluginImageDescriptor("phasereditor.ui", "icons/add.png")) {
 			@Override
 			public void run() {
 				addSprite();
@@ -325,7 +325,7 @@ public class AudioSpriteEditorComp extends Composite {
 		};
 
 		_removeAction = new Action("remove",
-				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/delete.png")) {
+				RM.getPluginImageDescriptor("phasereditor.ui", "icons/delete.png")) {
 			@Override
 			public void run() {
 				deleteSprite();

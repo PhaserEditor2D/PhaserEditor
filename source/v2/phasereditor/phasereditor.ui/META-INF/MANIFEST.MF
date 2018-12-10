@@ -24,7 +24,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem;bundle-version="1.7.100"
 Bundle-ActivationPolicy: lazy
 Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
- org.eclipse.wb.swt,
  org.pushingpixels.trident,
  org.pushingpixels.trident.callback,
  org.pushingpixels.trident.ease,

@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor.interactive;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
@@ -33,6 +32,7 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -115,17 +115,17 @@ public class ScaleTool extends InteractiveTool {
 
 		if (doPaint()) {
 			if (_changeX && _changeY) {
-				var color = SWTResourceManager.getColor(SWT.COLOR_YELLOW);
-				var darkColor = _hightlights ? color : SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW);
+				var color = SwtRM.getColor(SWT.COLOR_YELLOW);
+				var darkColor = _hightlights ? color : SwtRM.getColor(SWT.COLOR_DARK_YELLOW);
 
 				drawRect(gc, globalX, globalY, globalAngle, BOX, color, darkColor);
 			} else {
-				gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-				gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+				gc.setBackground(SwtRM.getColor(SWT.COLOR_BLACK));
+				gc.setForeground(SwtRM.getColor(SWT.COLOR_BLACK));
 
-				var color = SWTResourceManager.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
+				var color = SwtRM.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
 				var darkColor = _hightlights ? color
-						: SWTResourceManager.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+						: SwtRM.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
 
 				drawRect(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color, darkColor);
 			}

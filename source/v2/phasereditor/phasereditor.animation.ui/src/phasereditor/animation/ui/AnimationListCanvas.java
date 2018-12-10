@@ -38,7 +38,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
@@ -48,6 +47,7 @@ import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -184,7 +184,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		tx.translate(0, _origin.y);
 		gc.setTransform(tx);
 
-		Font boldFont = SWTResourceManager.getBoldFont(getFont());
+		Font boldFont = SwtRM.getBoldFont(getFont());
 
 		int textHeight = gc.stringExtent("M").y;
 

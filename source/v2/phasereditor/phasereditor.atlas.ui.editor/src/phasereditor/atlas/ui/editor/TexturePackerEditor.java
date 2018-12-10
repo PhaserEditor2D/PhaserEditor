@@ -94,7 +94,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -111,6 +110,7 @@ import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
 import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -143,7 +143,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		_container.setLayout(new FillLayout());
 
 		_tabsFolder = new TabFolder(_container, SWT.BOTTOM);
-		_tabsFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		_tabsFolder.setBackground(SwtRM.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 
 		_tabsFolder.setSelection(0);
 

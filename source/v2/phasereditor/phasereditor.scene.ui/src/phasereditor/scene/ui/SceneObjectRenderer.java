@@ -34,7 +34,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
@@ -59,8 +58,9 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.ISceneObjectRendererContext;
 import phasereditor.ui.BaseImageCanvas;
-import phasereditor.ui.ColorUtil;
+import phasereditor.ui.Colors;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -125,10 +125,10 @@ public class SceneObjectRenderer {
 	}
 
 	public void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
-		_COLOR_BLACK = SWTResourceManager.getColor(ColorUtil.BLACK.rgb);
-		_COLOR_BLUE = SWTResourceManager.getColor(ColorUtil.BLUE.rgb);
-		_COLOR_RED = SWTResourceManager.getColor(ColorUtil.RED.rgb);
-		_COLOR_WHITE = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
+		_COLOR_BLACK = SwtRM.getColor(Colors.BLACK.rgb);
+		_COLOR_BLUE = SwtRM.getColor(Colors.BLUE.rgb);
+		_COLOR_RED = SwtRM.getColor(Colors.RED.rgb);
+		_COLOR_WHITE = SwtRM.getColor(Colors.WHITE.rgb);
 		
 		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
@@ -821,8 +821,8 @@ public class SceneObjectRenderer {
 		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
 
 		if (assetFrame == null) {
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
-			gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+			gc.setForeground(SwtRM.getColor(SWT.COLOR_YELLOW));
+			gc.setBackground(SwtRM.getColor(SWT.COLOR_RED));
 			gc.drawText("Missing Texture (" + key + "," + frame + ")", 0, 0);
 
 			setObjectBounds(gc, model, 0, 0, 0, 0);
