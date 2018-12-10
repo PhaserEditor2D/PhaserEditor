@@ -47,6 +47,10 @@ public class Colors {
 	public static Color color(RGB rgb) {
 		return SwtRM.getColor(rgb);
 	}
+	
+	public static Color color(RGBA rgba) {
+		return color(rgba.rgb);
+	}
 
 	public static RGBA rgb(String webColor) {
 		return rgb(webColor, 1);

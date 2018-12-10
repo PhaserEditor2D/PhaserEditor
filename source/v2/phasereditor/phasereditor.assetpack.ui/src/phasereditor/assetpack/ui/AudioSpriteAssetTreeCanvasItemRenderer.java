@@ -21,11 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.audio.core.AudioCore;
+import phasereditor.ui.Colors;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 /**
@@ -96,8 +96,8 @@ public class AudioSpriteAssetTreeCanvasItemRenderer extends AudioAssetTreeCanvas
 					dstHeight2);
 
 			gc.setAlpha(50);
-			gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
-			gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
+			gc.setForeground(Colors.color(Colors.WHITE));
+			gc.setBackground(Colors.color(Colors.BLACK));
 			gc.fillGradientRectangle(lastDstX, dstY2, (int) dstWidth2, dstHeight2, false);
 			gc.setAlpha(255);
 

@@ -77,8 +77,8 @@ import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.SceneObjectRenderer;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.Colors;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.SwtRM;
 import phasereditor.ui.ZoomCanvas;
 
 /**
@@ -431,10 +431,10 @@ public class SceneCanvas extends ZoomCanvas
 
 		gc.setAlpha(150);
 
-		gc.setForeground(SwtRM.getColor(SWT.COLOR_BLACK));
+		gc.setForeground(Colors.color(Colors.BLACK));
 		gc.drawRectangle(view.x + 1, view.y + 1, view.width, view.height);
 
-		gc.setForeground(SwtRM.getColor(SWT.COLOR_WHITE));
+		gc.setForeground(Colors.color(Colors.WHITE));
 		gc.drawRectangle(view);
 
 		gc.setAlpha(255);
@@ -442,7 +442,7 @@ public class SceneCanvas extends ZoomCanvas
 
 	private void renderSelection(GC gc) {
 
-		var selectionColor = SwtRM.getColor(SWT.COLOR_GREEN);
+		var selectionColor = Colors.color(Colors.LIGHTGREEN);
 		// var selectionColor = SWTResourceManager.getColor(ColorUtil.WHITE.rgb);
 
 		for (var model : _editor.getSelectionList()) {
@@ -460,7 +460,7 @@ public class SceneCanvas extends ZoomCanvas
 			var p2 = _renderer.localToScene(model, size[0], size[1]);
 			var p3 = _renderer.localToScene(model, 0, size[1]);
 
-			// gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+			// gc.setForeground(SWTResourceManager.getColor(Colors.DARK_GREEN));
 			// gc.setLineWidth(3);
 			//
 			// drawCorner(gc, p0, p1);
@@ -500,7 +500,7 @@ public class SceneCanvas extends ZoomCanvas
 				// draw bold border
 				{
 
-					gc.setForeground(SwtRM.getColor(SWT.COLOR_DARK_GREEN));
+					gc.setForeground(Colors.color(Colors.DARKGREEN));
 					gc.setLineWidth(3);
 					gc.drawPolygon(points);
 					gc.setLineWidth(1);
@@ -510,7 +510,7 @@ public class SceneCanvas extends ZoomCanvas
 
 				// draw objects name
 				{
-					gc.setForeground(SwtRM.getColor(SWT.COLOR_WHITE));
+					gc.setForeground(Colors.color(Colors.WHITE));
 
 					var vector = PhaserEditorUI.vector(p3, p0);
 
@@ -542,10 +542,10 @@ public class SceneCanvas extends ZoomCanvas
 					}
 
 					gc.setTransform(tx);
-					gc.setForeground(SwtRM.getColor(SWT.COLOR_BLACK));
+					gc.setForeground(Colors.color(Colors.BLACK));
 					gc.drawText(str, 1, 1, true);
 
-					gc.setForeground(SwtRM.getColor(SWT.COLOR_WHITE));
+					gc.setForeground(Colors.color(Colors.WHITE));
 					gc.drawText(str, 0, 0, true);
 
 					gc.setTransform(null);
@@ -581,11 +581,11 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	private Color getGridColor() {
-		return SwtRM.getColor(_sceneModel.getForegroundColor());
+		return Colors.color(_sceneModel.getForegroundColor());
 	}
 
 	private Color getBackgroundColor() {
-		return SwtRM.getColor(_sceneModel.getBackgroundColor());
+		return Colors.color(_sceneModel.getBackgroundColor());
 	}
 
 	private void renderGrid(PaintEvent e, ZoomCalculator calc) {

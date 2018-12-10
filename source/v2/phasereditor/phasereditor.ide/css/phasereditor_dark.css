@@ -1,54 +1,81 @@
-.MPartStack {
-	swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');
-	swt-selected-tab-fill:  #4f4f4f #303030 100% 100%;
-	swt-unselected-tabs-color: #4f4f4f; 
-	swt-outer-keyline-color: #404040;
-	swt-inner-keyline-color: #404040;
-	swt-tab-outline: #404040;
-	padding: 0px 2px 2px;
-	swt-shadow-visible: false;
-	swt-mru-visible: false;
-	color: '#org-eclipse-ui-workbench-INACTIVE_TAB_TEXT_COLOR';
+.MTrimmedWindow {
+    background-color: #040404;
+    color: #f0f0f0;
+}
+#org-eclipse-ui-main-toolbar  Text {
+	background-color: #202020;
+	color: #f0f0f0;
 }
 
-.MPartStack.active.noFocus {
-	swt-selected-tab-fill: #4f4f4f #202020 100% 100%;
+.MPartStack {
+	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.intro.MyTabRendering');	
+	swt-selected-tab-fill:  #343434;
+	swt-unselected-tabs-color: #565656; 
+	swt-unselected-hot-tab-color-background: #5A5A5A;
+	swt-outer-keyline-color: #565656;
+	swt-inner-keyline-color: #565656;
+	swt-tab-outline: #565656;
+	padding: 5px 5px 5px 5px;
+	swt-shadow-visible: false;
+	swt-mru-visible: true;
+	swt-simple: true;
+	color: #cccccc;
 }
 
 .MPartStack.active {
-	swt-selected-tab-fill: #3f3f3f #303030 100% 100%;
+	swt-selected-tab-fill: #343434;
 }
 
-.MPartStack.active.noFocus > CTabItem:selected {
-	color: #dddddd;
+.MPartStack CTabItem:selected {
+	color: #ffffff;
 }
 
-Composite, Tree, Table, Label, .Canvas, .MToolBar {
-	background-color: #202020;
-	color: #dddddd;
-}
-
-Button {
-	background-color: #909090;
-	color: black;
-}
-
-Text {
-	background-color: #2f2f2f;
-	color: lightgray;
-}
-
-
-Table,
-Tree {
-	swt-header-background-color: #4f4f4f;
-}
-
-CTabItem {
+.MPart.active Composite, 
+.MPart.active Tree, 
+.MPart.active Table, 
+.MPart.active Canvas, 
+.MPart.active .Canvas, 
+.MPart.active Label, 
+.MPart.active TabFolder, 
+.MPart.active TabItem {
+	background-color: #363636;
 	color: #eeeeee;
 }
 
-CTabItem:selected {
-	background-color: #4f4f4f;
-	color: #ffffff;
+.MPart Composite,
+.MPart Tree,
+.MPart Table,
+.MPart Canvas,
+.MPart .Canvas,
+.MPart Label,
+.MPart TabFolder,
+.MPart TabItem {
+	background-color: #343434;
+	color: #c5c5c5;
 }
+
+.MPart Label[style~='SWT.SEPARATOR'] {
+	background-color: #666666;
+}
+
+.MPart Text {
+	background-color: #262626;
+	color: #eeeeee;
+}
+
+.MPart.active Text {
+	background-color: #666666;
+}
+
+.MPart Button {
+	color: #eeeeee;
+}
+
+.MPart Table, .MPart Tree {
+	swt-header-background-color: #d4d4d4;
+}
+
+
+
+
+

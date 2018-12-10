@@ -23,8 +23,6 @@
 }
 
 
-
-
 .MPart.active Composite, 
 .MPart.active Tree, 
 .MPart.active Table, 
@@ -36,7 +34,14 @@
 	color: #000000;
 }
 
-.MPart Composite, .MPart Tree, .MPart Table, .MPart Canvas, .MPart .Canvas, .MPart Label, .MPart TabFolder, .MPart TabItem {
+.MPart Composite,
+.MPart Tree,
+.MPart Table,
+.MPart Canvas,
+.MPart .Canvas,
+.MPart Label,
+.MPart TabFolder,
+.MPart TabItem {
 	background-color: #e8e8e8;
 }
 

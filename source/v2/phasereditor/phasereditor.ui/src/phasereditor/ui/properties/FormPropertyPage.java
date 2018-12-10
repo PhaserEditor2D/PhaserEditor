@@ -120,6 +120,8 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 		public RowComp(Composite parent, FormPropertySection section) {
 			super(parent, 0);
 
+			this.setData("org.eclipse.e4.ui.css.CssClassName", "FormSection");
+			
 			_section = section;
 			_created = false;
 
