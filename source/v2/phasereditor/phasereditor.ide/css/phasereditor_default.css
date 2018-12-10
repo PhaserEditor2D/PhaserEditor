@@ -1,16 +1,43 @@
-Composite, Tree, Table, Canvas, Label {
-	background-color: #d3d3d3;
+.MTrimmedWindow {
+    background-color: #d4d4d4;
 }
 
-Text {
-	background-color: #E8E8E8;
+.MPartStack {
+	swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');
+	swt-selected-tab-fill:  #e8e8e8;
+	swt-unselected-tabs-color: #d4d4d4; 
+	swt-outer-keyline-color: #d4d4d4;
+	swt-inner-keyline-color: #d4d4d4;
+	swt-tab-outline: #d4d4d4;
+	padding: 5px 5px 5px 5px;
+	swt-shadow-visible: false;
+	swt-mru-visible: false;
+	color: black;
 }
 
-Table,
-Tree {
-	swt-header-background-color: #E8E8E8;
+.MPartStack.active {
+	swt-selected-tab-fill: #f2f2f2;
 }
 
-CTabItem:selected {
-	background-color: #E8E8E8;
+.MPart.active Composite, 
+.MPart.active Tree, 
+.MPart.active Table, 
+.MPart.active Canvas, 
+.MPart.active Label, 
+.MPart.active TabFolder, 
+.MPart.active TabItem {
+	background-color: #f0f0f0;
 }
+
+.MPart Composite, .MPart Tree, .MPart Table, .MPart Canvas, .MPart .Canvas, .MPart Label, .MPart TabFolder, .MPart TabItem {
+	background-color: #e8e8e8;
+}
+
+.MPart Text {
+	background-color: #d4d4d4;
+}
+
+.MPart Table, .MPart Tree {
+	swt-header-background-color: #d4d4d4;
+}
+
