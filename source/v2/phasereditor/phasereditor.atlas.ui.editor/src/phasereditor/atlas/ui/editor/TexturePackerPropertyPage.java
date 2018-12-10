@@ -49,13 +49,17 @@ public class TexturePackerPropertyPage extends FormPropertyPage {
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		list.add(new SettingsSection(_editor));
+		list.add(new SettingsSection(this));
 
-		list.add(new PageSection(_editor));
+		list.add(new PageSection(this));
 
-		list.add(new FrameSection(_editor));
+		list.add(new FrameSection(this));
 
 		return list;
+	}
+
+	public TexturePackerEditor getEditor() {
+		return _editor;
 	}
 
 }

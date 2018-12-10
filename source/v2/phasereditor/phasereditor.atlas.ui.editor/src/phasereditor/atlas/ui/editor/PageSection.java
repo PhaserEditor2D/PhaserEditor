@@ -43,8 +43,8 @@ public class PageSection extends TexturePackerSection<EditorPage> {
 	private Text _imageSizeText;
 	private Text _imageFileLengthText;
 
-	public PageSection(TexturePackerEditor editor) {
-		super("Packer Page", editor);
+	public PageSection(TexturePackerPropertyPage page) {
+		super("Packer Page", page);
 	}
 
 	@Override
@@ -54,10 +54,9 @@ public class PageSection extends TexturePackerSection<EditorPage> {
 
 	@Override
 	public Control createContent(Composite parent) {
-		
+
 		createActions();
-		
-		
+
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
 

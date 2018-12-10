@@ -59,8 +59,8 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 	private ExplainFrameDataCanvas _frameCanvas;
 	private Action _deleteAction;
 
-	public FrameSection(TexturePackerEditor editor) {
-		super("Frame", editor);
+	public FrameSection(TexturePackerPropertyPage page) {
+		super("Frame", page);
 
 		setFillSpace(true);
 

@@ -53,8 +53,8 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 	// private Button _multiAtlasCheckbox;
 	private Button _debugCheckbox;
 
-	public SettingsSection(TexturePackerEditor editor) {
-		super("Packer Settings", editor);
+	public SettingsSection(TexturePackerPropertyPage page) {
+		super("Packer Settings", page);
 	}
 
 	@Override

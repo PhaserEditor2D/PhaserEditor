@@ -33,18 +33,22 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public abstract class TexturePackerSection<T> extends FormPropertySection<T> {
 
-	private TexturePackerEditor _editor;
 	private Action _buildAction;
 	private Action _settingsAction;
+	private TexturePackerPropertyPage _page;
 
-	public TexturePackerSection(String name, TexturePackerEditor editor) {
+	public TexturePackerSection(String name, TexturePackerPropertyPage page) {
 		super(name);
-
-		_editor = editor;
+		
+		_page = page;
+	}
+	
+	public TexturePackerPropertyPage getPage() {
+		return _page;
 	}
 
 	public TexturePackerEditor getEditor() {
-		return _editor;
+		return _page.getEditor();
 	}
 
 	@Override
