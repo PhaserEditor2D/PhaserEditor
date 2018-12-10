@@ -265,9 +265,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			{
 				GridLayout layout = new GridLayout(1, false);
-				//layout.marginWidth = 0;
-				//layout.marginHeight = 0;
-				//layout.verticalSpacing = 2;
+				layout.marginWidth = 0;
+				layout.marginHeight = 0;
+				layout.verticalSpacing = 2;
 				setLayout(layout);
 			}
 

@@ -11,7 +11,8 @@
 	swt-outer-keyline-color: #d4d4d4;
 	swt-inner-keyline-color: #d4d4d4;
 	swt-tab-outline: #d4d4d4;
-	padding: 5px 5px 5px 5px;
+	/*padding: 5px 5px 5px 5px;*/
+	padding: 0px;
 	swt-shadow-visible: false;
 	swt-mru-visible: true;
 	swt-simple: true;
