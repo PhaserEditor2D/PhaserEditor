@@ -43,18 +43,6 @@ import phasereditor.ui.properties.TextToIntListener;
  */
 public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
-	private Label _computedDurationLabel;
-	private Text _durationText;
-	private Text _keyText;
-	private Text _frameRateText;
-	private Text _delayText;
-	private Text _repeatText;
-	private Button _showOnStartBtn;
-	private Button _hideOnCompleteBtn;
-	private Button _skipMissedFramesBtn;
-	private Text _repeatDelayText;
-	private Button _yoyoCheckBox;
-
 	public AnimationSection(AnimationsPropertyPage page) {
 		super(page, "Animation");
 	}
@@ -64,7 +52,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		return obj instanceof AnimationModel;
 	}
 
-	@SuppressWarnings({ "unused" })
+	@SuppressWarnings({ "unused", "boxing" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -78,9 +66,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Key");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.key"));
 
-			_keyText = new Text(comp, SWT.BORDER);
-			_keyText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new TextListener(_keyText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new TextListener(text) {
 
 				@Override
 				protected void accept(String value) {
@@ -99,6 +87,11 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 				}
 			};
 
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getKey())));
+				text.setEditable(getModels().size() == 1);
+			});
+
 			var sep = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL);
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
@@ -113,9 +106,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Frame Rate");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.frameRate"));
 
-			_frameRateText = new Text(comp, SWT.BORDER);
-			_frameRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new TextToFloatListener(_frameRateText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new TextToFloatListener(text) {
 
 				@Override
 				protected void accept(float value) {
@@ -133,6 +126,10 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					user_update_UI_from_Model();
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getFrameRate())));
+			});
 		}
 
 		// duration
@@ -142,25 +139,27 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Duration");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationFrameConfig.duration"));
 
-			_durationText = new Text(comp, SWT.BORDER);
-			_durationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var durationText = new Text(comp, SWT.BORDER);
+			durationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			addUpdate(() -> {
+				durationText.setText(flatValues_to_String(getModels().stream().map(model -> model.getDuration())));
+			});
+
+			// computed duration
 
 			new Label(comp, SWT.NONE);
-			_computedDurationLabel = new Label(comp, SWT.NONE);
-			_computedDurationLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_computedDurationLabel.setToolTipText(
+			var computedLabel = new Label(comp, SWT.NONE);
+			computedLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			computedLabel.setToolTipText(
 					"A computed duration based on the duration plus all the extra frame's durations.\\nNOTE: This is not part of the Phaser API.");
-			new TextToIntListener(_durationText) {
+			new TextToIntListener(durationText) {
 
-				@SuppressWarnings("synthetic-access")
 				@Override
 				protected void accept(int value) {
 					getModels().forEach(model -> {
 						model.setDuration(value);
 						model.buildTimeline();
 					});
-
-					updateTotalDuration();
 
 					var editor = getEditor();
 
@@ -173,6 +172,14 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 				}
 			};
 
+			addUpdate(() -> {
+				var total = 0;
+				for (var model : getModels()) {
+					total += model.getComputedTotalDuration();
+				}
+				computedLabel.setText("Real duration: " + total);
+			});
+
 		}
 
 		// delay
@@ -182,12 +189,11 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Delay");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.delay"));
 
-			_delayText = new Text(comp, SWT.BORDER);
-			_delayText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			new TextToIntListener(_delayText) {
+			new TextToIntListener(text) {
 
-				@SuppressWarnings("synthetic-access")
 				@Override
 				protected void accept(int value) {
 					getModels().forEach(model -> {
@@ -200,9 +206,13 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					restartPlayback();
 					editor.setDirty();
 
-					updateTotalDuration();
+					update_UI_from_Model();
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getDelay())));
+			});
 		}
 
 		// repeat
@@ -212,9 +222,10 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Repeat");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeat"));
 
-			_repeatText = new Text(comp, SWT.BORDER);
-			_repeatText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new TextToIntListener(_repeatText) {
+			// here
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new TextToIntListener(text) {
 
 				@Override
 				protected void accept(int value) {
@@ -230,6 +241,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				}
 			};
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getRepeat())));
+			});
 		}
 
 		// repeatDelay
@@ -239,9 +253,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Repeat Delay");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
 
-			_repeatDelayText = new Text(comp, SWT.BORDER);
-			_repeatDelayText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new TextToIntListener(_repeatDelayText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new TextToIntListener(text) {
 
 				@Override
 				protected void accept(int value) {
@@ -254,16 +268,20 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				}
 			};
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getRepeatDelay())));
+
+			});
 		}
 
 		// yoyo
 
 		{
-			_yoyoCheckBox = new Button(comp, SWT.CHECK);
-			_yoyoCheckBox.setText("Yoyo");
-			_yoyoCheckBox.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
-			_yoyoCheckBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-			new CheckListener(_yoyoCheckBox) {
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setText("Yoyo");
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new CheckListener(btn) {
 
 				@Override
 				protected void accept(boolean value) {
@@ -275,6 +293,10 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					getEditor().setDirty();
 				}
 			};
+
+			addUpdate(() -> {
+				btn.setSelection(flatValues_to_boolean(getModels().stream().map(model -> model.isYoyo())));
+			});
 		}
 
 		{
@@ -288,13 +310,13 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		// showOnStart
 
 		{
-			_showOnStartBtn = new Button(comp, SWT.CHECK);
-			_showOnStartBtn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.showOnStart"));
-			_showOnStartBtn.setText("Show On Start");
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.showOnStart"));
+			btn.setText("Show On Start");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
-			_showOnStartBtn.setLayoutData(gd);
-			new CheckListener(_showOnStartBtn) {
+			btn.setLayoutData(gd);
+			new CheckListener(btn) {
 
 				@Override
 				protected void accept(boolean value) {
@@ -308,19 +330,22 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					editor.setDirty();
 				}
 			};
+
+			addUpdate(() -> {
+				btn.setSelection(flatValues_to_Boolean(getModels().stream().map(model -> model.isShowOnStart())));
+			});
 		}
 
 		// hideOnComplete
 
 		{
-			_hideOnCompleteBtn = new Button(comp, SWT.CHECK);
-			_hideOnCompleteBtn
-					.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.hideOnComplete"));
-			_hideOnCompleteBtn.setText("Hide On Complete");
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.hideOnComplete"));
+			btn.setText("Hide On Complete");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
-			_hideOnCompleteBtn.setLayoutData(gd);
-			new CheckListener(_hideOnCompleteBtn) {
+			btn.setLayoutData(gd);
+			new CheckListener(btn) {
 
 				@Override
 				protected void accept(boolean value) {
@@ -334,19 +359,22 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					editor.setDirty();
 				}
 			};
+
+			addUpdate(() -> {
+				btn.setSelection(flatValues_to_Boolean(getModels().stream().map(model -> model.isHideOnComplete())));
+			});
 		}
 
 		// skipMissedFrames
 
 		{
-			_skipMissedFramesBtn = new Button(comp, SWT.CHECK);
-			_skipMissedFramesBtn
-					.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.skipMissedFrames"));
-			_skipMissedFramesBtn.setText("Skip Missed Frames");
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.skipMissedFrames"));
+			btn.setText("Skip Missed Frames");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
-			_skipMissedFramesBtn.setLayoutData(gd);
-			new CheckListener(_skipMissedFramesBtn) {
+			btn.setLayoutData(gd);
+			new CheckListener(btn) {
 
 				@Override
 				protected void accept(boolean value) {
@@ -361,50 +389,13 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 				}
 			};
 
-		}
+			addUpdate(() -> {
+				btn.setSelection(flatValues_to_Boolean(getModels().stream().map(model -> model.isSkipMissedFrames())));
+			});
 
-		user_update_UI_from_Model();
+		}
 
 		return comp;
-	}
-
-	@SuppressWarnings("boxing")
-	@Override
-	public void user_update_UI_from_Model() {
-		var models = getModels();
-
-		_keyText.setText(flatValues_to_String(models.stream().map(model -> model.getKey())));
-		_keyText.setEditable(models.size() == 1);
-
-		_frameRateText.setText(flatValues_to_String(models.stream().map(model -> model.getFrameRate())));
-
-		_durationText.setText(flatValues_to_String(models.stream().map(model -> model.getDuration())));
-		updateTotalDuration();
-
-		_delayText.setText(flatValues_to_String(models.stream().map(model -> model.getDelay())));
-
-		_repeatText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeat())));
-
-		_repeatDelayText.setText(flatValues_to_String(models.stream().map(model -> model.getRepeatDelay())));
-
-		_yoyoCheckBox.setSelection(flatValues_to_boolean(models.stream().map(model -> model.isYoyo())));
-
-		_showOnStartBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isShowOnStart())));
-
-		_hideOnCompleteBtn.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isHideOnComplete())));
-
-		_skipMissedFramesBtn
-				.setSelection(flatValues_to_Boolean(models.stream().map(model -> model.isSkipMissedFrames())));
-	}
-
-	private void updateTotalDuration() {
-		{
-			var total = 0;
-			for (var model : getModels()) {
-				total += model.getComputedTotalDuration();
-			}
-			_computedDurationLabel.setText("Real duration: " + total);
-		}
 	}
 
 }
