@@ -72,7 +72,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private boolean _showCheckbox;
 
 	public TreeCanvas(Composite parent, int style) {
-		super(parent, style | SWT.V_SCROLL);
+		super(parent, style | SWT.V_SCROLL | SWT.INHERIT_FORCE);
 
 		_indentSize = 16;
 		_imageSize = 48;
@@ -348,7 +348,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					gc.fillRectangle(0, y, e.width, rowHeight);
 				}
 
-				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
+//				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
 			}
 
 			// render item

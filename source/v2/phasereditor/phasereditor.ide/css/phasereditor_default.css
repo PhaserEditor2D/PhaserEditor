@@ -27,6 +27,7 @@
 .MPart.active Tree, 
 .MPart.active Table, 
 .MPart.active Canvas, 
+.MPart.active .Canvas, 
 .MPart.active Label, 
 .MPart.active TabFolder, 
 .MPart.active TabItem {
@@ -46,7 +47,7 @@
 }
 
 .MPart Text {
-	background-color: #d4d4d4;
+	background-color: #e0e0e0;
 }
 
 .MPart Table, .MPart Tree {
