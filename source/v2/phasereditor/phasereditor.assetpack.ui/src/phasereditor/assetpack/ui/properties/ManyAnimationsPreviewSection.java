@@ -43,7 +43,7 @@ public class ManyAnimationsPreviewSection extends FormPropertySection<Animations
 	
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
-		return number > 1;
+		return number > 0;
 	}
 	
 	@Override

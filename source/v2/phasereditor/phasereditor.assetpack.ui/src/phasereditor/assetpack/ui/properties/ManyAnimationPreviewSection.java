@@ -65,7 +65,7 @@ public class ManyAnimationPreviewSection extends FormPropertySection<AnimationMo
 	public static FilteredTreeCanvas createAnimationsViewer(FormPropertySection<?> section, Composite parent,
 			Supplier<List<AnimationModel>> input) {
 		// preview
-		var tree = new FilteredTreeCanvas(parent, SWT.BORDER);
+		var tree = new FilteredTreeCanvas(parent, SWT.NONE);
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		var viewer = new AssetsTreeCanvasViewer(tree.getTree(), new TreeArrayContentProvider(),
 				AssetLabelProvider.GLOBAL_16);
