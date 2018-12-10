@@ -375,6 +375,22 @@ public final class AssetPackModel {
 		return AssetPackCore.discoverFiles(getDiscoverFolder(), filter);
 	}
 
+	public List<IFile> discoverBitmapFontFiles() throws CoreException {
+		var isFontFile = new Function<IFile, Boolean>() {
+
+			@Override
+			public Boolean apply(IFile f) {
+				String ext = f.getFileExtension();
+				if (ext != null && (ext.equals("xml") || ext.equals("fnt"))) {
+					return Boolean.TRUE;
+				}
+				return Boolean.FALSE;
+			}
+		};
+
+		return discoverFiles(isFontFile);
+	}
+
 	@SuppressWarnings("boxing")
 	public List<IFile> discoverFilesWithContentType(String... contentTypes) throws CoreException {
 		return AssetPackCore.discoverFiles(getDiscoverFolder(), f -> {

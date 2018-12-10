@@ -21,59 +21,51 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.ui.preview.BitmapFontAssetPreviewComp;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AssetsPropertyPage extends FormPropertyPage {
+public class BitmapFontPreviewSection extends FormPropertySection<BitmapFontAssetModel> {
 
-	@Override
-	protected Object getDefaultModel() {
-		return null;
+	public BitmapFontPreviewSection() {
+		super("Bitmap Font Preview");
 	}
 
 	@Override
-	protected List<FormPropertySection<?>> createSections() {
-		var list = new ArrayList<FormPropertySection<?>>();
-
-		createAssetKeySection(list);
-		// list.add(new AssetFilesSection());
-
-		list.add(new SingleSpritesheetPreviewSection());
-
-		list.add(new SingleFramePreviewSection());
-
-		list.add(new ManyTexturesPreviewSection());
-
-		list.add(new SingleAtlasPreviewSection());
-
-		list.add(new SingleMultiAtlasPreviewSection());
-
-		list.add(new ManyAnimationsPreviewSection());
-
-		list.add(new ManyAnimationPreviewSection());
-		list.add(new SingleAnimationPreviewSection());
-
-		list.add(new SingleAudioAssetPreviewSection());
-		list.add(new SingleAudioSpritePreviewSection());
-		list.add(new SingleAudioSpriteAssetElementPreviewSection());
-
-		list.add(new TilemapCSVPreviewSection());
-
-		list.add(new BitmapFontPreviewSection());
-
-		return list;
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
 	}
 
-	@SuppressWarnings("static-method")
-	protected void createAssetKeySection(ArrayList<FormPropertySection<?>> list) {
-		list.add(new AssetKeySection());
+	@Override
+	public boolean canEdit(Object obj) {
+		return obj instanceof BitmapFontAssetModel;
+	}
+
+	@Override
+	public Control createContent(Composite parent) {
+		var comp = new Composite(parent, 0);
+		comp.setLayout(new GridLayout(1, false));
+
+		var preview = new BitmapFontAssetPreviewComp(comp, 0);
+		var gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.heightHint = 300;
+		preview.setLayoutData(gd);
+
+		addUpdate(() -> {
+			preview.setModel(getModels().get(0));
+		});
+
+		return comp;
 	}
 
 }
