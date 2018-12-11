@@ -46,7 +46,7 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
-@SuppressWarnings({ "synthetic-access" })
+@SuppressWarnings({ })
 public class FrameGridCanvas extends BaseImageCanvas
 		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 

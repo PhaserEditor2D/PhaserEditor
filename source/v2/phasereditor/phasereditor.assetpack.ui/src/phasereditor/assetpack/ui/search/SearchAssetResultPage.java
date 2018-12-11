@@ -147,7 +147,6 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 			_replaceAll = replaceAll;
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void run() {
 			TextureDialog dlg = new TextureDialog(getSite().getShell());

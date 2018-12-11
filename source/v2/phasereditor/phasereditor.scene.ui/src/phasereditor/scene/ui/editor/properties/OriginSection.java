@@ -185,7 +185,7 @@ public class OriginSection extends ScenePropertySection {
 		};
 	}
 
-	@SuppressWarnings({ "boxing", "unused", "synthetic-access" })
+	@SuppressWarnings({ "boxing", "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 

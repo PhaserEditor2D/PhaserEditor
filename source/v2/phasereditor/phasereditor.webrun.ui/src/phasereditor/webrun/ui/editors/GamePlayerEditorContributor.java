@@ -121,7 +121,6 @@ public class GamePlayerEditorContributor extends EditorActionBarContributor {
 			menu = new Menu(dropdown.getParent().getShell());
 			menu.addMenuListener(new MenuListener() {
 
-				@SuppressWarnings("synthetic-access")
 				@Override
 				public void menuShown(MenuEvent e) {
 					GamePlayerEditor editor = getEditor();

@@ -46,7 +46,6 @@ import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-@SuppressWarnings("synthetic-access")
 public class AtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 

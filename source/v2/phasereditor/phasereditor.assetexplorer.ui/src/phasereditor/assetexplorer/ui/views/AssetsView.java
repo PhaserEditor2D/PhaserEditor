@@ -77,7 +77,7 @@ import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
-@SuppressWarnings({ "synthetic-access", "boxing" })
+@SuppressWarnings({ "boxing" })
 public class AssetsView extends ViewPart {
 	private static final String CANVAS_STATE_KEY = "canvasState";
 	private static final String FILTER_TEXT_KEY = "filterText";

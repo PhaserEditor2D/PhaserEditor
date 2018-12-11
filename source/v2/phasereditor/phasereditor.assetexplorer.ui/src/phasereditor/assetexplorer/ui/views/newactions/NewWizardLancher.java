@@ -51,7 +51,6 @@ public abstract class NewWizardLancher {
 		return _label;
 	}
 
-	@SuppressWarnings("static-method")
 	public int compare_getNewerFile(IResource a, IResource b) {
 		return -Long.compare(a.getLocalTimeStamp(), b.getLocalTimeStamp());
 	}

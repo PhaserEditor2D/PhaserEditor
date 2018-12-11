@@ -101,7 +101,7 @@ public class GamePlayerEditorInput implements IEditorInput {
 	public IPersistableElement getPersistable() {
 		return new IPersistableElement() {
 			
-			@SuppressWarnings({ "synthetic-access", "boxing" })
+			@SuppressWarnings({ "boxing" })
 			@Override
 			public void saveState(IMemento memento) {
 				memento.putString("phasereditor.webrun.ui.gameplayer.project", _project.getName());

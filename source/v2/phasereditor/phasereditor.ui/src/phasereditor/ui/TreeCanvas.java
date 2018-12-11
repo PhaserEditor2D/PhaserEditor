@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-@SuppressWarnings({ "synthetic-access", "boxing" })
+@SuppressWarnings({ "boxing" })
 public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
 	public static final int ACTION_SPACE = 2;
 	public static final int ACTION_PADDING = 2;

@@ -21,7 +21,7 @@ import org.eclipse.ui.part.EditorPart;
 
 import phasereditor.webrun.ui.GamePlayerEditorInput;
 
-@SuppressWarnings({ "boxing", "synthetic-access" })
+@SuppressWarnings({ "boxing" })
 public class GamePlayerEditor extends EditorPart {
 
 	public static final String ID = "phasereditor.webrun.ui.gameplayer";

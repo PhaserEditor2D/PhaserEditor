@@ -47,7 +47,7 @@ public class VisibleSection extends ScenePropertySection {
 		return obj instanceof VisibleComponent;
 	}
 
-	@SuppressWarnings({ "unused", "synthetic-access" })
+	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NONE);

@@ -72,7 +72,6 @@ class WebBrowserInformationControl extends AbstractInformationControl implements
 		browser.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 
 		browser.addProgressListener(new ProgressAdapter() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void completed(ProgressEvent event) {
 				isCompleted = true;
@@ -134,7 +133,6 @@ class WebBrowserInformationControl extends AbstractInformationControl implements
 
 		// Make sure the display wakes from sleep after timeout:
 		display.timerExec(100, new Runnable() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void run() {
 				isCompleted = true;

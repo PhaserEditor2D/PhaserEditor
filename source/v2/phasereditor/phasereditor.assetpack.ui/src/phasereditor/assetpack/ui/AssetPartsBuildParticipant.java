@@ -117,7 +117,6 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		swtRun(new Runnable() {
 
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void run() {
 				if (PlatformUI.getWorkbench().isClosing()) {

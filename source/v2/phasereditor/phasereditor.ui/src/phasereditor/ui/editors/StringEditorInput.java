@@ -31,7 +31,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
 
-@SuppressWarnings("synthetic-access")
 public class StringEditorInput implements IStorageEditorInput {
 
 	private final String _inputString;

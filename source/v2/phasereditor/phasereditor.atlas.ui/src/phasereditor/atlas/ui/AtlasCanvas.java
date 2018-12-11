@@ -45,7 +45,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 	private Rectangle[] _framesRects;
 	private FrameCanvasUtils _utils;
 
-	@SuppressWarnings("synthetic-access")
 	public AtlasCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style);
 

@@ -953,7 +953,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	public void manuallyBuild() {
 		build(true, new Runnable() {
 
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void run() {
 				if (MessageDialog.openConfirm(getSite().getShell(), "Build Atlas",
@@ -1118,7 +1117,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		if (adapter == IPropertySheetPage.class) {
 			// return new TexturePackerPGridPage(this);
 			var page = new TexturePackerPropertyPage(this) {
-				@SuppressWarnings("synthetic-access")
 				@Override
 				public void dispose() {
 

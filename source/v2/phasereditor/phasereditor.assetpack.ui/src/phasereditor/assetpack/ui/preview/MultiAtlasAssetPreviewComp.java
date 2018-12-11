@@ -39,7 +39,6 @@ import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-@SuppressWarnings("synthetic-access")
 public class MultiAtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 
