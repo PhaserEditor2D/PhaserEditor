@@ -110,7 +110,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		{
 			// normal map
-			label(comp, "Normal Map", AssetModel.getHelp(AssetType.spritesheet, "normalMap"));
+			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.SpriteSheetFileConfig.normalMap"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

@@ -32,20 +32,24 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class HtmlAssetModel extends AssetModel {
+public class HtmlTextureAssetModel extends AssetModel {
 	private String _url;
 	private int _width;
 	private int _height;
 
-	public HtmlAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
+	public HtmlTextureAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		
 		_url = jsonData.optString("url", null);
-		_width = jsonData.optInt("width");
-		_height = jsonData.optInt("height");
+		_width = jsonData.optInt("width", 512);
+		_height = jsonData.optInt("height", 512);
 	}
 
-	public HtmlAssetModel(String key, AssetSectionModel section) throws JSONException {
-		super(key, AssetType.html, section);
+	public HtmlTextureAssetModel(String key, AssetSectionModel section) throws JSONException {
+		super(key, AssetType.htmlTexture, section);
+
+		_width = 512;
+		_height = 512;
 	}
 
 	@Override
@@ -58,8 +62,8 @@ public class HtmlAssetModel extends AssetModel {
 		super.writeParameters(obj);
 
 		obj.put("url", _url);
-		obj.put("width", _width);
-		obj.put("height", _height);
+		obj.put("width", _width, 512);
+		obj.put("height", _height, 512);
 	}
 
 	public String getUrl() {
@@ -79,11 +83,11 @@ public class HtmlAssetModel extends AssetModel {
 		_height = height;
 		firePropertyChange("height");
 	}
-	
+
 	public int getWidth() {
 		return _width;
 	}
-	
+
 	public void setWidth(int width) {
 		_width = width;
 		firePropertyChange("width");

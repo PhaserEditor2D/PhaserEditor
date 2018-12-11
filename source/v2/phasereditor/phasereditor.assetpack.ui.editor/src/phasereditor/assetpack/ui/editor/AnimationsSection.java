@@ -65,7 +65,7 @@ public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetMod
 		{
 			// url
 
-			label(comp, "URL", "*" + AssetModel.getHelp(AssetType.animation, "url"));
+			label(comp, "URL", AssetModel.getHelp(AssetType.animation, "url"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

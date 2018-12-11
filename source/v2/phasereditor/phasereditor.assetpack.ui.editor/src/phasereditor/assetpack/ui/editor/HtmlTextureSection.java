@@ -38,7 +38,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.HtmlAssetModel;
+import phasereditor.assetpack.core.HtmlTextureAssetModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 import phasereditor.ui.properties.TextToIntListener;
@@ -47,9 +47,9 @@ import phasereditor.ui.properties.TextToIntListener;
  * @author arian
  *
  */
-public class HtmlSection extends AssetPackEditorSection<HtmlAssetModel> {
+public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetModel> {
 
-	public HtmlSection(AssetPackEditorPropertyPage page) {
+	public HtmlTextureSection(AssetPackEditorPropertyPage page) {
 		super(page, "HTML");
 	}
 
@@ -60,7 +60,7 @@ public class HtmlSection extends AssetPackEditorSection<HtmlAssetModel> {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof HtmlAssetModel;
+		return obj instanceof HtmlTextureAssetModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -72,7 +72,7 @@ public class HtmlSection extends AssetPackEditorSection<HtmlAssetModel> {
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(AssetType.html, "url"));
+			label(comp, "URL", AssetModel.getHelp(AssetType.htmlTexture, "url"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -131,7 +131,7 @@ public class HtmlSection extends AssetPackEditorSection<HtmlAssetModel> {
 
 		// width
 		{
-			label(comp, "Width", AssetModel.getHelp(AssetType.html, "width"));
+			label(comp, "Width", AssetModel.getHelp(AssetType.htmlTexture, "width"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -147,12 +147,12 @@ public class HtmlSection extends AssetPackEditorSection<HtmlAssetModel> {
 					getEditor().refresh();
 				}
 			};
-			addUpdate(() -> setValues_to_Text(text, getModels(), HtmlAssetModel::getWidth));
+			addUpdate(() -> setValues_to_Text(text, getModels(), HtmlTextureAssetModel::getWidth));
 		}
 
 		// height
 		{
-			label(comp, "Height", AssetModel.getHelp(AssetType.html, "height"));
+			label(comp, "Height", AssetModel.getHelp(AssetType.htmlTexture, "height"));
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {
@@ -167,7 +167,7 @@ public class HtmlSection extends AssetPackEditorSection<HtmlAssetModel> {
 					getEditor().refresh();
 				}
 			};
-			addUpdate(() -> setValues_to_Text(text, getModels(), HtmlAssetModel::getHeight));
+			addUpdate(() -> setValues_to_Text(text, getModels(), HtmlTextureAssetModel::getHeight));
 		}
 
 		return comp;

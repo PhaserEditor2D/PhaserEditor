@@ -79,7 +79,7 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 
 		list.add(new BitmapFontSection(this));
 
-		list.add(new HtmlSection(this));
+		list.add(new HtmlTextureSection(this));
 		
 		for (var factory : AssetFactory.getFactories()) {
 			if (factory instanceof AbstractFileAssetFactory) {

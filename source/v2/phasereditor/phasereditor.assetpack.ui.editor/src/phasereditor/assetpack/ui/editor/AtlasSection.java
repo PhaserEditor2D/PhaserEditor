@@ -39,6 +39,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.atlas.core.AtlasCore;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -187,7 +188,7 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 		{
 			// normal map
-			label(comp, "Normal Map", AssetModel.getHelp(AssetType.image, "normalMap"));
+			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.AtlasJSONFileConfig.normalMap"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

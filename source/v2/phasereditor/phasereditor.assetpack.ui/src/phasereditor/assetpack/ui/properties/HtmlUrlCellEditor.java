@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.HtmlAssetModel;
+import phasereditor.assetpack.core.HtmlTextureAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 
 /**
@@ -41,9 +41,9 @@ import phasereditor.assetpack.ui.AssetPackUI;
  */
 public class HtmlUrlCellEditor extends DialogCellEditor {
 
-	private HtmlAssetModel _asset;
+	private HtmlTextureAssetModel _asset;
 
-	public HtmlUrlCellEditor(Composite parent, HtmlAssetModel asset) {
+	public HtmlUrlCellEditor(Composite parent, HtmlTextureAssetModel asset) {
 		super(parent);
 		_asset = asset;
 	}

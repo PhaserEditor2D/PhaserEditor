@@ -28,14 +28,14 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.HtmlAssetModel;
+import phasereditor.assetpack.core.HtmlTextureAssetModel;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class HtmlPreviewSection extends FormPropertySection<HtmlAssetModel> {
+public class HtmlPreviewSection extends FormPropertySection<HtmlTextureAssetModel> {
 
 	public HtmlPreviewSection() {
 		super("HTML Preview");
@@ -44,7 +44,7 @@ public class HtmlPreviewSection extends FormPropertySection<HtmlAssetModel> {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof HtmlAssetModel;
+		return obj instanceof HtmlTextureAssetModel;
 	}
 
 	@Override

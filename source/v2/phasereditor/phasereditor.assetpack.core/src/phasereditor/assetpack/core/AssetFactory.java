@@ -278,7 +278,6 @@ public abstract class AssetFactory {
 				return new BinaryAssetModel(jsonData, section);
 			}
 
-
 			@Override
 			protected AbstractFileAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new BinaryAssetModel(key, section);
@@ -343,7 +342,7 @@ public abstract class AssetFactory {
 			}
 		});
 
-		cache(new HtmlAssetFactory());
+		cache(new HtmlTextureAssetFactory());
 	}
 
 	private static void cache(AssetFactory factory) {
@@ -413,8 +412,7 @@ public abstract class AssetFactory {
 	public abstract AssetModel createAsset(String key, AssetSectionModel section) throws Exception;
 
 	public abstract AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception;
-	
-	
+
 	public static class MultiAtlasAssetFactory extends AssetFactory {
 
 		public MultiAtlasAssetFactory() {
@@ -513,21 +511,21 @@ public abstract class AssetFactory {
 		}
 	}
 
-	public static class HtmlAssetFactory extends AssetFactory {
+	public static class HtmlTextureAssetFactory extends AssetFactory {
 
-		protected HtmlAssetFactory() {
-			super(AssetType.html);
+		protected HtmlTextureAssetFactory() {
+			super(AssetType.htmlTexture);
 		}
 
 		@Override
 		public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
-			return new HtmlAssetModel(jsonData, section);
+			return new HtmlTextureAssetModel(jsonData, section);
 		}
 
 		@Override
 		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 			AssetPackModel pack = section.getPack();
-			HtmlAssetModel asset = new HtmlAssetModel(key, section);
+			HtmlTextureAssetModel asset = new HtmlTextureAssetModel(key, section);
 			List<IFile> files = pack.discoverTextFiles(new String[] { "html" });
 			IFile file = pack.pickFile(files);
 			if (file != null) {
@@ -560,7 +558,7 @@ public abstract class AssetFactory {
 			}
 			return asset;
 		}
-		
+
 		public String[] getExtensions() {
 			return _exts;
 		}
@@ -585,4 +583,3 @@ public abstract class AssetFactory {
 	}
 
 }
-

@@ -38,6 +38,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -119,7 +120,7 @@ public class MultiAtlasSection extends AssetPackEditorSection<MultiAtlasAssetMod
 		}
 
 		{
-			label(comp, "Path", "Phaser.Loader.FileTypes.MultiAtlasFileConfig.path");
+			label(comp, "Path", InspectCore.phaserHelp("Phaser.Loader.FileTypes.MultiAtlasFileConfig.path"));
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {
