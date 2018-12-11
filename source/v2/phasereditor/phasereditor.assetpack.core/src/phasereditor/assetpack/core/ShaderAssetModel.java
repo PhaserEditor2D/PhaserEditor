@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class ShaderAssetModel extends SimpleFileAssetModel {
+public class ShaderAssetModel extends AbstractFileAssetModel {
 
 	
 	public ShaderAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {

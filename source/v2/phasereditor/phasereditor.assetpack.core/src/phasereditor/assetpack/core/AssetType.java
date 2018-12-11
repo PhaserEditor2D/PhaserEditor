@@ -37,63 +37,62 @@ import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 
 public enum AssetType implements IAssetPackEelement, IAdaptable {
-	image("png"),
+	image("png", "Image"),
 
-	svg("svg"),
+	svg("svg", "SVG Image"),
 	
-	spritesheet("png"),
+	spritesheet("png", "Sprite-Sheet"),
 
-	atlas("json"),
+	atlas("json", "Atlas"),
 
-	atlasXML("xml"),
+	atlasXML("xml", "Atlas (XML)"),
 
-	unityAtlas("meta"),
+	unityAtlas("meta", "Atlas (Unity)"),
 	
-	multiatlas("json"),
+	multiatlas("json", "Atlas (Multi)"),
 
-	animation("json"),
+	animation("json", "Animations"),
 
-	audio("mp3"),
+	audio("mp3", "Audio"),
 
-	audioSprite("json"),
+	audioSprite("json", "Audio Sprite"),
 
-	video("mp4"),
+	video("mp4", "Video"),
 
-	tilemapCSV("csv"),
+	tilemapCSV("csv", "Tilemap (CSV)"),
 
-	tilemapTiledJSON("json"),
+	tilemapTiledJSON("json", "Tilemap (Tiled)"),
 
-	tilemapImpact("json"),
+	tilemapImpact("json", "Tilemap (Impact)"),
 	
-	bitmapFont("xml"), 
+	bitmapFont("xml", "Bitmap Font"), 
 	
-	physics("json"), 
+	physics("json", "Physics"), 
 	
-	text("txt"), 
+	text("txt", "Text File"), 
 	
-	json("json"), 
+	json("json", "JSON File"), 
 	
-	xml("xml"), 
+	xml("xml", "XML File"), 
 	
-	script("js"),
+	script("js", "JavaScript File"),
 	
-	plugin("js"),
+	plugin("js", "Phaser Plugin File"),
 	
-	scenePlugin("js"),
+	scenePlugin("js", "Phaser Scene Plugin"),
 	
-	html("html"),
+	html("html", "HTML File"),
 	
-	glsl("glsl"), 
+	glsl("glsl", "Shader File"), 
 	
-	binary("dat");
+	binary("dat", "Binary File");
 
-	private AssetType(String fileExt) {
+	
+	private AssetType(String fileExt, String capitalName) {
 		_fileExt = fileExt;
+		_capitalName = capitalName;
 	}
-
-	public String capitalName() {
-		return name().substring(0, 1).toUpperCase() + name().substring(1);
-	}
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -146,10 +145,16 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 		return getMethodMap().get(this);
 	}
 
-	private String _fileExt;
+	private final String _fileExt;
+	private final String _capitalName;
+
 
 	public String getFileExtension() {
 		return _fileExt;
+	}
+	
+	public String getCapitalName() {
+		return _capitalName;
 	}
 
 }

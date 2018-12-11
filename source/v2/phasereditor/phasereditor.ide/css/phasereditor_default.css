@@ -31,7 +31,8 @@
 .MPart.active .Canvas, 
 .MPart.active Label, 
 .MPart.active TabFolder, 
-.MPart.active TabItem {
+.MPart.active TabItem,
+.MPart.active Browser {
 	background-color: #f0f0f0;
 	color: #000000;
 }
@@ -43,7 +44,8 @@
 .MPart .Canvas,
 .MPart Label,
 .MPart TabFolder,
-.MPart TabItem {
+.MPart TabItem,
+.MPart Browser {
 	background-color: #e8e8e8;
 }
 

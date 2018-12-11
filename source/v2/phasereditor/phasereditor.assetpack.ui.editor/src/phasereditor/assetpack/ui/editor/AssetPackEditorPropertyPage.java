@@ -24,6 +24,8 @@ package phasereditor.assetpack.ui.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import phasereditor.assetpack.core.AssetFactory;
+import phasereditor.assetpack.core.AssetFactory.AbstractFileAssetFactory;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.ui.properties.AssetKeySection;
 import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
@@ -72,10 +74,16 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		list.add(new AudioSection(this));
 
 		list.add(new AudioSpriteSection(this));
-		
+
 		list.add(new TilemapSection(this));
-		
+
 		list.add(new BitmapFontSection(this));
+
+		for (var factory : AssetFactory.getFactories()) {
+			if (factory instanceof AbstractFileAssetFactory) {
+				list.add(new FileSection(this, factory.getType()));
+			}
+		}
 
 		list.addAll(super.createSections());
 

@@ -28,21 +28,17 @@ import org.eclipse.core.runtime.IStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SimpleFileAssetModel extends AssetModel {
+public abstract class AbstractFileAssetModel extends AssetModel {
 
 	private String _url;
 
-	public SimpleFileAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
+	public AbstractFileAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
 		_url = jsonDoc.optString("url", null);
 	}
 
-	protected SimpleFileAssetModel(String key, AssetType type, AssetSectionModel section) throws JSONException {
+	protected AbstractFileAssetModel(String key, AssetType type, AssetSectionModel section) throws JSONException {
 		super(key, type, section);
-	}
-
-	public SimpleFileAssetModel(String key, AssetSectionModel section) throws JSONException {
-		this(key, AssetType.text, section);
 	}
 
 	@Override

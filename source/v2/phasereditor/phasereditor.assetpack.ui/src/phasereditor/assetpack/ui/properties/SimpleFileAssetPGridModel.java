@@ -24,16 +24,16 @@ package phasereditor.assetpack.ui.properties;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.SimpleFileAssetModel;
+import phasereditor.assetpack.core.AbstractFileAssetModel;
 import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian
  *
  */
-public class SimpleFileAssetPGridModel extends BaseAssetPGridModel<SimpleFileAssetModel> {
+public class SimpleFileAssetPGridModel extends BaseAssetPGridModel<AbstractFileAssetModel> {
 
-	public SimpleFileAssetPGridModel(SimpleFileAssetModel asset) {
+	public SimpleFileAssetPGridModel(AbstractFileAssetModel asset) {
 		super(asset);
 
 		String title = "";

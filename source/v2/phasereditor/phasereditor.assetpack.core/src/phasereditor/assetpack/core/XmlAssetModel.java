@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class XmlAssetModel extends SimpleFileAssetModel {
+public class XmlAssetModel extends AbstractFileAssetModel {
 
 	public XmlAssetModel(JSONObject jsonDef, AssetSectionModel section)
 			throws JSONException {

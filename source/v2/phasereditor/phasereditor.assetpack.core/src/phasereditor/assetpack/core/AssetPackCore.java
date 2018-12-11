@@ -429,7 +429,7 @@ public class AssetPackCore {
 		return list;
 	}
 
-	public static List<IFile> discoverTextFiles(IContainer folder) throws CoreException {
+	public static List<IFile> discoverSimpleFiles(IContainer folder) throws CoreException {
 		return discoverFiles(folder, new Function<IFile, Boolean>() {
 
 			@Override

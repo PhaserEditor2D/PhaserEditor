@@ -72,7 +72,6 @@ import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.SwtRM;
 import phasereditor.ui.ZoomCanvas;
 
 /**

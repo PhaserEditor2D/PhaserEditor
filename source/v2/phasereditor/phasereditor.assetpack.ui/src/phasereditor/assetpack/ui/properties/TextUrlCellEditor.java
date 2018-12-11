@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.SimpleFileAssetModel;
+import phasereditor.assetpack.core.AbstractFileAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 
 /**
@@ -41,9 +41,9 @@ import phasereditor.assetpack.ui.AssetPackUI;
  */
 public class TextUrlCellEditor extends DialogCellEditor {
 
-	private SimpleFileAssetModel _asset;
+	private AbstractFileAssetModel _asset;
 
-	public TextUrlCellEditor(Composite parent, SimpleFileAssetModel asset) {
+	public TextUrlCellEditor(Composite parent, AbstractFileAssetModel asset) {
 		super(parent);
 		_asset = asset;
 	}
@@ -54,7 +54,7 @@ public class TextUrlCellEditor extends DialogCellEditor {
 		try {
 			AssetPackModel pack = _asset.getPack();
 			IFile urlFile = _asset.getFileFromUrl(_asset.getUrl());
-			List<IFile> files = AssetPackCore.discoverTextFiles(pack.getWebContentFolder());
+			List<IFile> files = AssetPackCore.discoverSimpleFiles(pack.getWebContentFolder());
 			AssetType type = _asset.getType();
 			String[] exts = {};
 			switch (type) {
