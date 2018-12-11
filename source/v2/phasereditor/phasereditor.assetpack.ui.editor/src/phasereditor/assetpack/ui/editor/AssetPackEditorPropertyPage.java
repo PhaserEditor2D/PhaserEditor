@@ -87,6 +87,8 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 
 		list.add(new PluginSection(this));
 
+		list.add(new ScenePluginSection(this));
+
 		list.addAll(super.createSections());
 
 		return list;

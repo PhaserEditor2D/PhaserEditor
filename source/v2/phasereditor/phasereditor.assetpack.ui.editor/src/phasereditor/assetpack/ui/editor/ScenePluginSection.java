@@ -38,24 +38,23 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.PluginAssetModel;
+import phasereditor.assetpack.core.ScenePluginAssetModel;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
+public class ScenePluginSection extends AssetPackEditorSection<ScenePluginAssetModel> {
 
-	public PluginSection(AssetPackEditorPropertyPage page) {
-		super(page, "Plugin");
+	public ScenePluginSection(AssetPackEditorPropertyPage page) {
+		super(page, "Scene Plugin");
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof PluginAssetModel;
+		return obj instanceof ScenePluginAssetModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -67,7 +66,7 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(AssetType.plugin, "url"));
+			label(comp, "URL", AssetModel.getHelp(AssetType.scenePlugin, "url"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -125,40 +124,40 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 		}
 
 		{
-			// start
-			var btn = new Button(comp, SWT.CHECK);
-			btn.setText("Start");
-			btn.setToolTipText(AssetModel.getHelp(AssetType.plugin, "start"));
-			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			new CheckListener(btn) {
-
-				@Override
-				protected void accept(boolean value) {
-					getModels().get(0).setStart(value);
-				}
-			};
-
-			addUpdate(() -> {
-				btn.setSelection(getModels().get(0).isStart());
-			});
-		}
-
-		{
-			// mapping
-			label(comp, "Mapping", AssetModel.getHelp(AssetType.plugin, "mapping"));
+			// systemKey
+			label(comp, "System Key", AssetModel.getHelp(AssetType.scenePlugin, "systemKey"));
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {
 
 				@Override
 				protected void accept(String value) {
-					getModels().get(0).setMapping(value.trim().length() == 0 ? null : value);
+					getModels().get(0).setSystemKey(value.trim().length() == 0 ? null : value);
 				}
 			};
 
 			addUpdate(() -> {
-				var mapping = getModels().get(0).getMapping();
-				text.setText(mapping == null ? "" : mapping);
+				var key = getModels().get(0).getSystemKey();
+				text.setText(key == null ? "" : key);
+			});
+		}
+
+		{
+			// sceneKey
+			label(comp, "Scene Key", AssetModel.getHelp(AssetType.scenePlugin, "sceneKey"));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextListener(text) {
+
+				@Override
+				protected void accept(String value) {
+					getModels().get(0).setSceneKey(value.trim().length() == 0 ? null : value);
+				}
+			};
+
+			addUpdate(() -> {
+				var key = getModels().get(0).getSceneKey();
+				text.setText(key == null ? "" : key);
 			});
 		}
 
