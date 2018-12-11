@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.scene"
+      id="phasereditor.scene.features"
       label="Phaser Editor - Scene Editor"
       version="2.0.0"
       provider-name="Arian Fornaris">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.bluesky"
+      id="phasereditor.bluesky.features"
       label="Phaser Editor - Blue Sky Support"
       version="2.0.0.20180410"
       provider-name="Arian Fornaris">

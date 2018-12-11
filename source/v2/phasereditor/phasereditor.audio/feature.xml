@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.audio"
+      id="phasereditor.audio.features"
       label="Phaser Editor - Audio"
       version="1.4.0.20170412"
       provider-name="Arian Fornaris">

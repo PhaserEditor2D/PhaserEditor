@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.audiosprite"
+      id="phasereditor.audiosprite.features"
       label="Phaser Editor - AudioSprite"
       version="1.4.3.20171102"
       provider-name="Arian Fornaris">

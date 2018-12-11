@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.help.guide"
+      id="phasereditor.help.features"
       label="Phaser Editor - Documentation"
       version="1.5.0.20180307"
       provider-name="Arian Fornaris">

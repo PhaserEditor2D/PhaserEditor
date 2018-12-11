@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.core"
+      id="phasereditor.core.features"
       label="Phaser Editor - Core"
       version="1.5.0.20180307"
       provider-name="Arian Fornaris">
