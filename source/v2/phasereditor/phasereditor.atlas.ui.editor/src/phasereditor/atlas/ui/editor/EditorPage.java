@@ -26,18 +26,11 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-
-import phasereditor.atlas.ui.AtlasCanvas;
-import phasereditor.ui.properties.PGridInfoProperty;
-import phasereditor.ui.properties.PGridModel;
-import phasereditor.ui.properties.PGridSection;
 
 public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements IAdaptable {
 	private static final long serialVersionUID = 1L;
 	private int _index;
 	private TexturePackerEditorModel _model;
-	private PGridModel _gridModel;
 	private Image _image;
 	private IFile _imageFile;
 
@@ -72,42 +65,7 @@ public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements I
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (adapter == PGridModel.class) {
-			if (_gridModel == null) {
-				_gridModel = createGridModel();
-			}
-			return _gridModel;
-		}
 		return null;
-	}
-
-	private PGridModel createGridModel() {
-		PGridModel model = new PGridModel();
-
-		PGridSection section = new PGridSection("tab");
-		model.getSections().add(section);
-
-		section.add(new PGridInfoProperty("name", this::getName));
-
-		section = new PGridSection("texture");
-		model.getSections().add(section);
-
-		section.add(new PGridInfoProperty("size", () -> {
-			AtlasCanvas canvas = _model.getEditor().getAtlasCanvas(_index);
-			Image img = canvas.getImage();
-			if (img == null) {
-				return "";
-			}
-			Rectangle b = img.getBounds();
-			return b.width + "," + b.height;
-		}));
-
-		section = new PGridSection("file");
-		model.getSections().add(section);
-
-		section.add(new PGridInfoProperty("filename", () -> _model.getAtlasImageName(getIndex())));
-
-		return model;
 	}
 
 	public void setImage(Image img) {

@@ -79,6 +79,8 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 
 		list.add(new BitmapFontSection(this));
 
+		list.add(new HtmlSection(this));
+		
 		for (var factory : AssetFactory.getFactories()) {
 			if (factory instanceof AbstractFileAssetFactory) {
 				list.add(new FileSection(this, factory.getType()));
@@ -86,9 +88,8 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		}
 
 		list.add(new PluginSection(this));
-
 		list.add(new ScenePluginSection(this));
-
+		
 		list.addAll(super.createSections());
 
 		return list;

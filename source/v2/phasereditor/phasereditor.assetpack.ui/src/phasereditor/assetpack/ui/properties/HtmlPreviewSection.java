@@ -21,41 +21,57 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
-import java.util.function.Supplier;
+import java.net.MalformedURLException;
 
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.properties.PGridInfoProperty;
-import phasereditor.ui.properties.PGridModel;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import phasereditor.assetpack.core.HtmlAssetModel;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AnimationFrame_in_AssetPack_PGridModel extends PGridModel {
-	private String _id;
+public class HtmlPreviewSection extends FormPropertySection<HtmlAssetModel> {
 
-	public AnimationFrame_in_AssetPack_PGridModel(AnimationFrameModel frameModel) {
-		super();
-
-		_id = frameModel.getTextureKey() + "." + frameModel.getFrameName();
-
-		addSection("AnimationFrameConfig",
-
-				prop("textureKey", frameModel::getTextureKey),
-
-				prop("frame", frameModel::getFrameName),
-
-				prop("duration", frameModel::getDuration)
-
-		);
+	public HtmlPreviewSection() {
+		super("HTML Preview");
+		setFillSpace(true);
 	}
 
-	private PGridInfoProperty prop(String field, Supplier<Object> getter) {
-		return new PGridInfoProperty(_id, field, help(field), getter);
+	@Override
+	public boolean canEdit(Object obj) {
+		return obj instanceof HtmlAssetModel;
 	}
 
-	private static String help(String field) {
-		return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Animations.AnimationFrame." + field);
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
 	}
+
+	@Override
+	public Control createContent(Composite parent) {
+
+		var browser = new Browser(parent, SWT.BORDER);
+
+		addUpdate(() -> {
+			var model = getModels().get(0);
+			var file = model.getUrlFile();
+			if (file == null) {
+				browser.setText("");
+			} else {
+				try {
+					browser.setUrl(file.getLocationURI().toURL().toString());
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		return browser;
+	}
+
 }

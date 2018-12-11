@@ -19,52 +19,13 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.properties;
-
-import java.util.List;
-
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.swt.widgets.Composite;
-
-import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.ui.properties.PGridProperty;
-import phasereditor.ui.properties.PGridSection;
+package phasereditor.assetpack.core;
 
 /**
  * @author arian
  *
  */
-public class AudioAssetPGridModel extends BaseAssetPGridModel<AudioAssetModel> {
-
-	public AudioAssetPGridModel(AudioAssetModel asset) {
-		super(asset);
-
-		var section = new PGridSection("Audio", createKeyProperty(),
-				new PGridProperty<List<String>>("urls", "urls", getAsset().getHelp("urls")) {
-
-					@Override
-					public List<String> getValue() {
-						return getAsset().getUrls();
-					}
-
-					@Override
-					public void setValue(List<String> value, boolean notify) {
-						getAsset().setUrls(value);
-					}
-
-					@Override
-					public boolean isModified() {
-						return true;
-					}
-
-					@Override
-					public CellEditor createCellEditor(Composite parent, Object element) {
-						return new AudioUrlsCellEditor(getAsset(), parent);
-					}
-				});
-
-		getSections().add(section);
-
-	}
-
+public interface IEditableKey  {
+	public String getKey();
+	public void setKey(String key);
 }

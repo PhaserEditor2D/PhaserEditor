@@ -28,14 +28,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.IEditableKey;
 import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class KeySection extends AssetPackEditorSection<AssetModel> {
+public class KeySection extends AssetPackEditorSection<IEditableKey> {
 
 	public KeySection(AssetPackEditorPropertyPage page) {
 		super(page, "Key");
@@ -43,7 +43,7 @@ public class KeySection extends AssetPackEditorSection<AssetModel> {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AssetModel;
+		return obj instanceof IEditableKey;
 	}
 
 	@SuppressWarnings("unused")

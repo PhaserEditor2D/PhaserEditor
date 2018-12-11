@@ -47,7 +47,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 	public SpritesheetSection(AssetPackEditorPropertyPage page) {
 		super(page, "Sprite Sheet");
 	}
-
+	
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof SpritesheetAssetModel;

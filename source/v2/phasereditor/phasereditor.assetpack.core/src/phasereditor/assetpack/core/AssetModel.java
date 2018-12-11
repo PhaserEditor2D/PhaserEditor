@@ -48,7 +48,7 @@ import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
 import phasereditor.project.core.ProjectCore;
 
-public abstract class AssetModel implements IAssetKey, IAdaptable {
+public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable {
 
 	@Override
 	public boolean isSharedVersion() {
@@ -160,6 +160,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		return getPack().getName() + "." + getSection().getKey() + "." + _key;
 	}
 
+	@Override
 	public void setKey(String key) {
 		setKey(key, true);
 	}

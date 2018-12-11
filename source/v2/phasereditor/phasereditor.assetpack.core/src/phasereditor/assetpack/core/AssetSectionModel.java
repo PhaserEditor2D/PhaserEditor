@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
+public class AssetSectionModel implements IAdaptable, IAssetPackEelement, IEditableKey {
 	private JSONArray _definition;
 	private String _key;
 	private List<AssetModel> _assets;
@@ -99,10 +99,12 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 		this.addAsset(_assets.size(), asset, notify);
 	}
 
+	@Override
 	public String getKey() {
 		return _key;
 	}
 
+	@Override
 	public void setKey(String key) {
 		setKey(key, true);
 	}

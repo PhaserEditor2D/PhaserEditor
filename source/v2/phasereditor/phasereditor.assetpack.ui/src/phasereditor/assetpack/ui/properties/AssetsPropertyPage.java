@@ -68,6 +68,8 @@ public class AssetsPropertyPage extends FormPropertyPage {
 
 		list.add(new BitmapFontPreviewSection());
 
+		list.add(new HtmlPreviewSection());
+
 		return list;
 	}
 

@@ -69,6 +69,8 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	
 	physics("json", "Physics"), 
 	
+	html("html", "HTML File"),
+	
 	text("txt", "Text File"), 
 	
 	json("json", "JSON File"), 
@@ -80,8 +82,6 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	plugin("js", "Phaser Plugin File"),
 	
 	scenePlugin("js", "Phaser Scene Plugin"),
-	
-	html("html", "HTML File"),
 	
 	glsl("glsl", "Shader File"), 
 	

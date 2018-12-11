@@ -30,9 +30,6 @@ import org.json.JSONObject;
 import org.w3c.dom.Element;
 
 import phasereditor.ui.FrameData;
-import phasereditor.ui.properties.PGridInfoProperty;
-import phasereditor.ui.properties.PGridModel;
-import phasereditor.ui.properties.PGridSection;
 
 public class AtlasFrame implements IAdaptable {
 	private String _name;
@@ -48,7 +45,6 @@ public class AtlasFrame implements IAdaptable {
 	private int _sourceH;
 	private boolean _bottomUp;
 	private int _index;
-	private PGridModel _propGridModel;
 
 	public static AtlasFrame fromXMLItem(int index, Element node) {
 		AtlasFrame fi = new AtlasFrame(index);
@@ -286,44 +282,7 @@ public class AtlasFrame implements IAdaptable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (adapter == PGridModel.class) {
-
-			if (_propGridModel == null) {
-				_propGridModel = createPropertyGridModel();
-			}
-
-			return _propGridModel;
-		}
 		return null;
-	}
-
-	protected PGridModel createPropertyGridModel() {
-		PGridModel model = new PGridModel();
-
-		PGridSection section = new PGridSection("Frame");
-		model.getSections().add(section);
-
-		section.add(new PGridInfoProperty("Name", this::getName));
-		section.add(new PGridInfoProperty("Frame X", this::getFrameX));
-		section.add(new PGridInfoProperty("Frame Y", this::getFrameY));
-		section.add(new PGridInfoProperty("Frame Width", this::getFrameW));
-		section.add(new PGridInfoProperty("Frame Height", this::getFrameH));
-
-		section = new PGridSection("Sprite");
-		model.getSections().add(section);
-
-		section.add(new PGridInfoProperty("Sprite X", this::getSpriteX));
-		section.add(new PGridInfoProperty("Sprite Y", this::getSpriteY));
-		section.add(new PGridInfoProperty("Sprite Width", this::getSpriteW));
-		section.add(new PGridInfoProperty("Sprite Height", this::getSpriteH));
-
-		section = new PGridSection("Source");
-		model.getSections().add(section);
-
-		section.add(new PGridInfoProperty("Source Width", this::getSourceW));
-		section.add(new PGridInfoProperty("Source Height", this::getSourceH));
-
-		return model;
 	}
 
 }
