@@ -22,7 +22,6 @@
 package phasereditor.assetpack.ui.properties;
 
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,7 +55,7 @@ public class SingleAtlasPreviewSection extends FormPropertySection<AtlasAssetMod
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new AtlasAssetPreviewComp(parent, SWT.BORDER);
+		var preview = new AtlasAssetPreviewComp(parent, 0);
 		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
 		addUpdate(() -> preview.setModel(getModels().get(0)));
 		_preview = preview;

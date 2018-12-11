@@ -22,7 +22,6 @@
 package phasereditor.assetpack.ui.properties;
 
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -57,7 +56,7 @@ public class SingleMultiAtlasPreviewSection extends FormPropertySection<MultiAtl
 	@Override
 	public Control createContent(Composite parent) {
 
-		_preview = new MultiAtlasAssetPreviewComp(parent, SWT.BORDER);
+		_preview = new MultiAtlasAssetPreviewComp(parent, 0);
 		_preview.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		addUpdate(() -> _preview.setModel((MultiAtlasAssetModel) flatValues_to_Object(getModels().stream())));
