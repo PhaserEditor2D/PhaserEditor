@@ -19,40 +19,30 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.handlers;
+package phasereditor.scene.ui;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
 
-import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.interactive.InteractiveTool;
+import phasereditor.assetpack.core.AssetFinder;
 
 /**
  * @author arian
  *
  */
-public abstract class ShowInteractiveToolHander extends AbstractHandler {
+public interface ISceneObjectRendererContext {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public AssetFinder getAssetFinder();
 
-		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
+	public int getOffsetX();
 
-		var scene = editor.getScene();
+	public int getOffsetY();
 
-		if (scene.hasInteractiveTool(getToolClass())) {
-			scene.setInteractiveTools();
-		} else {
-			scene.setInteractiveTools(createTools(editor));
-		}
+	public float getScale();
 
-		return null;
-	}
+	public Device getDisplay();
 
-	protected abstract InteractiveTool[] createTools(SceneEditor editor);
-
-	protected abstract Class<?> getToolClass();
+	public Image loadImage(IFile imageFile);
 
 }

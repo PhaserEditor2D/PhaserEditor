@@ -56,7 +56,6 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.ISceneObjectRendererContext;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.Colors;
 import phasereditor.ui.PhaserEditorUI;

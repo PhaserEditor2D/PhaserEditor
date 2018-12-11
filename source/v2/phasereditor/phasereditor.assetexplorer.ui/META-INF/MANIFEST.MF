@@ -35,5 +35,6 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.atlas.ui.editor;bundle-version="2.0.0",
  phasereditor.scene.core;bundle-version="2.0.0",
  phasereditor.scene.ui;bundle-version="2.0.0",
- phasereditor.assetpack.ui.editor;bundle-version="2.0.0"
+ phasereditor.assetpack.ui.editor;bundle-version="2.0.0",
+ phasereditor.scene.ui.editor;bundle-version="2.0.0"
 Automatic-Module-Name: phasereditor.assetexplorer.ui

@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.json.JSONObject;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
@@ -62,19 +61,9 @@ import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.ui.ImagePreviewComp;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.project.core.ProjectCore;
-import phasereditor.scene.core.BitmapTextModel;
-import phasereditor.scene.core.DynamicBitmapTextModel;
-import phasereditor.scene.core.ImageModel;
-import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.SpriteModel;
-import phasereditor.scene.core.TileSpriteModel;
-import phasereditor.scene.ui.editor.ISceneObjectRendererContext;
-import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.CanvasUtilsInformationControlProvider;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -98,86 +87,7 @@ public class SceneUI {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}
 
-	public static void action_MorphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
-		var before = WorldSnapshotOperation.takeSnapshot(editor);
-
-		var newModels = new ArrayList<ObjectModel>();
-		var project = editor.getEditorInput().getFile().getProject();
-
-		for (var obj : models) {
-			if (!(obj instanceof ObjectModel)) {
-				continue;
-			}
-
-			var model = (ObjectModel) obj;
-
-			if (model.getType().equals(morphToType)) {
-				continue;
-			}
-
-			var data = new JSONObject();
-			model.write(data);
-
-			ObjectModel newModel = null;
-
-			switch (morphToType) {
-			case SpriteModel.TYPE:
-				newModel = new SpriteModel();
-				newModel.read(data, project);
-				break;
-			case ImageModel.TYPE:
-				newModel = new ImageModel();
-				newModel.read(data, project);
-				break;
-			case TileSpriteModel.TYPE:
-				var tileModel = new TileSpriteModel();
-				tileModel.read(data, project);
-				tileModel.setSizeToFrame(editor.getScene().getAssetFinder());
-				newModel = tileModel;
-				break;
-			case BitmapTextModel.TYPE:
-				newModel = new BitmapTextModel();
-				newModel.read(data, project);
-				break;
-			case DynamicBitmapTextModel.TYPE:
-				newModel = new DynamicBitmapTextModel();
-				newModel.read(data, project);
-				break;
-
-			default:
-				break;
-			}
-
-			if (newModel != null) {
-
-				var parent = ParentComponent.get_parent(model);
-				var siblings = ParentComponent.get_children(parent);
-				var index = siblings.indexOf(model);
-
-				ParentComponent.utils_removeFromParent(model);
-				ParentComponent.utils_addChild(parent, index, newModel);
-
-				newModels.add(newModel);
-
-			}
-
-		}
-
-		if (!newModels.isEmpty()) {
-
-			editor.refreshOutline_basedOnId();
-
-			editor.setSelection(newModels);
-
-			// we do this because the Properties window is active (not the editor)
-			editor.updatePropertyPagesContentWithSelection();
-
-			editor.setDirty(true);
-
-			var after = WorldSnapshotOperation.takeSnapshot(editor);
-			editor.executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + morphToType));
-		}
-	}
+	
 
 	public static void installSceneTooltips(CommonViewer viewer) {
 		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), getSceneTooltipsCreators(),

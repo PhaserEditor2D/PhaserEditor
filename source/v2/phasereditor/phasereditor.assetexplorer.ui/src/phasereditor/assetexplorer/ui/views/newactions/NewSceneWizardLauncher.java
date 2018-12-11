@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.INewWizard;
 
 import phasereditor.scene.core.SceneCore;
-import phasereditor.scene.ui.wizards.NewSceneFileWizard;
+import phasereditor.scene.ui.editor.wizards.NewSceneFileWizard;
 
 /**
  * @author arian
