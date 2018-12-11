@@ -53,6 +53,11 @@ public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> {
 		_page = page;
 
 	}
+	
+	@Override
+	protected String getHelp(String helpHint) {
+		return helpHint;
+	}
 
 	@Override
 	public boolean supportThisNumberOfModels(int number) {

@@ -34,37 +34,28 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AbstractFileAssetModel;
-import phasereditor.assetpack.core.AssetFactory;
-import phasereditor.assetpack.core.AssetFactory.AbstractFileAssetFactory;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.PluginAssetModel;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class FileSection extends AssetPackEditorSection<AbstractFileAssetModel> {
+public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 
-	private AssetType _type;
-
-	public FileSection(AssetPackEditorPropertyPage page, AssetType type) {
-		super(page, type.getCapitalName());
-
-		_type = type;
+	public PluginSection(AssetPackEditorPropertyPage page) {
+		super(page, "Plugin");
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof AbstractFileAssetModel && ((AbstractFileAssetModel) obj).getType() == _type;
-	}
-
-	public AssetType getType() {
-		return _type;
+		return obj instanceof PluginAssetModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -76,7 +67,7 @@ public class FileSection extends AssetPackEditorSection<AbstractFileAssetModel> 
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(_type, "url"));
+			label(comp, "URL", AssetModel.getHelp(AssetType.plugin, "url"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -125,13 +116,49 @@ public class FileSection extends AssetPackEditorSection<AbstractFileAssetModel> 
 
 					List<IFile> files = AssetPackCore.discoverSimpleFiles(pack.getDiscoverFolder());
 
-					String[] exts = ((AbstractFileAssetFactory) AssetFactory.getFactory(getType())).getExtensions();
-
-					AssetPackCore.sortFilesByExtension(files, exts);
+					AssetPackCore.sortFilesByExtension(files, "js");
 
 					return files;
 				}
 
+			});
+		}
+
+		{
+			// start
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setText("Start");
+			btn.setToolTipText(AssetModel.getHelp(AssetType.plugin, "start"));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			new CheckListener(btn) {
+
+				@Override
+				protected void accept(boolean value) {
+					getModels().get(0).setStart(value);
+				}
+			};
+
+			addUpdate(() -> {
+				btn.setSelection(getModels().get(0).isStart());
+			});
+		}
+
+		{
+			// mapping
+			label(comp, "Mapping", AssetModel.getHelp(AssetType.plugin));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new TextListener(text) {
+
+				@Override
+				protected void accept(String value) {
+					getModels().get(0).setMapping(value.trim().length() == 0 ? null : value);
+				}
+			};
+
+			addUpdate(() -> {
+				var mapping = getModels().get(0).getMapping();
+				text.setText(mapping == null ? "" : mapping);
 			});
 		}
 
