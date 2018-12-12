@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,30 +21,62 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.FrameGridCanvas;
-import phasereditor.ui.info.BaseInformationControl;
+import phasereditor.assetpack.core.MultiAtlasAssetModel.Frame;
+import phasereditor.ui.IFrameProvider;
 
-public class MultiAtlasAssetInformationControl extends BaseInformationControl {
+/**
+ * @author arian
+ *
+ */
+public class MultiAtlasAssetFrameProvider implements IFrameProvider {
 
-	public MultiAtlasAssetInformationControl(Shell parentShell) {
-		super(parentShell);
+	private List<Frame> _frames;
+
+	public MultiAtlasAssetFrameProvider(MultiAtlasAssetModel model) {
+		super();
+		_frames = new ArrayList<>(model.getSubElements());
 	}
 
 	@Override
-	protected Control createContent2(Composite parentComp) {
-		return new FrameGridCanvas(parentComp, SWT.NONE, false);
+	public String getFrameTooltip(int index) {
+		return null;
 	}
 
 	@Override
-	protected void updateContent(Control control, Object model) {
-		var asset = (MultiAtlasAssetModel) model;
-		var comp = (FrameGridCanvas) control;
-		comp.loadFrameProvider(new MultiAtlasAssetFrameProvider(asset));
+	public Rectangle getFrameRectangle(int index) {
+		return getFrameObject(index).getFrameData().src;
+	}
+
+	@Override
+	public IFile getFrameImageFile(int index) {
+		var frame = getFrameObject(index);
+		var file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
+		return file;
+	}
+
+	@Override
+	public int getFrameCount() {
+		return _frames.size();
+	}
+
+	@Override
+	public MultiAtlasAssetModel.Frame getFrameObject(int index) {
+		return _frames.get(index);
+	}
+
+	@Override
+	public String getFrameLabel(int index) {
+		var frame = _frames.get(index);
+		if (frame == null) {
+			return null;
+		}
+		return frame.getKey();
 	}
 }

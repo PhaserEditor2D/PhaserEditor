@@ -19,64 +19,37 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.preview;
+package phasereditor.ui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
-
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel.Frame;
-import phasereditor.ui.IFrameProvider;
 
 /**
  * @author arian
  *
  */
-public class MultiAtlasFrameProvider implements IFrameProvider {
+public class FrameCellRenderer implements ICanvasCellRenderer {
+	private File _imageFile;
+	private FrameData _fd;
 
-	private List<Frame> _frames;
+	public FrameCellRenderer(IFile imageFile, FrameData fd) {
+		this(imageFile == null ? null : imageFile.getLocation().toFile(), fd);
+	}
 
-	public MultiAtlasFrameProvider(MultiAtlasAssetModel model) {
-		super();
-		_frames = new ArrayList<>(model.getSubElements());
+	public FrameCellRenderer(File imageFile, FrameData fd) {
+		_imageFile = imageFile;
+		_fd = fd;
 	}
 
 	@Override
-	public String getFrameTooltip(int index) {
-		return null;
-	}
-
-	@Override
-	public Rectangle getFrameRectangle(int index) {
-		return getFrameObject(index).getFrameData().src;
-	}
-
-	@Override
-	public IFile getFrameImageFile(int index) {
-		var frame = getFrameObject(index);
-		var file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
-		return file;
-	}
-
-	@Override
-	public int getFrameCount() {
-		return _frames.size();
-	}
-
-	@Override
-	public MultiAtlasAssetModel.Frame getFrameObject(int index) {
-		return _frames.get(index);
-	}
-
-	@Override
-	public String getFrameLabel(int index) {
-		var frame = _frames.get(index);
-		if (frame == null) {
-			return null;
+	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+		if (_imageFile != null) {
+			PhaserEditorUI.paintScaledImageInArea(gc, canvas.loadImage(_imageFile), _fd,
+					new Rectangle(x, y, width, height));
 		}
-		return frame.getKey();
 	}
+
 }

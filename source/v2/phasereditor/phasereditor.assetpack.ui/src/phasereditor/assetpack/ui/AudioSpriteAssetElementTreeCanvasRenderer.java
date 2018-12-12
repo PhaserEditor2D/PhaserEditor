@@ -22,7 +22,6 @@
 package phasereditor.assetpack.ui;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
@@ -51,15 +50,7 @@ public class AudioSpriteAssetElementTreeCanvasRenderer extends AudioSpriteAssetT
 		var srcX = sprite.getStart() / duration * b.width;
 		var srcWidth = sprite.getEnd() / duration * b.width - srcX;
 
-		var dstY2 = dstY + 5;
-		var dstHeight2 = dstHeight;
-		gc.drawImage(getImage(), (int) srcX, 0, (int) srcWidth, b.height, dstX, dstY2, dstWidth, dstHeight2);
-
-		gc.setAlpha(100);
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
-		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
-		gc.fillGradientRectangle(dstX, dstY2, dstWidth, dstHeight2, false);
-		gc.setAlpha(255);
+		gc.drawImage(getImage(), (int) srcX, 0, (int) srcWidth, b.height, dstX, dstY, dstWidth, dstHeight);
 	}
 
 	@Override

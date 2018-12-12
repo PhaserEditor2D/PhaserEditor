@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,32 +19,31 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.preview;
+package phasereditor.ui;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.FrameGridCanvas;
-import phasereditor.ui.info.BaseInformationControl;
+/**
+ * @author arian
+ *
+ */
+public class IconCellRenderer implements ICanvasCellRenderer {
+	private Image _icon;
 
-public class MultiAtlasAssetInformationControl extends BaseInformationControl {
-
-	public MultiAtlasAssetInformationControl(Shell parentShell) {
-		super(parentShell);
+	public IconCellRenderer(Image icon) {
+		_icon = icon;
 	}
 
 	@Override
-	protected Control createContent2(Composite parentComp) {
-		return new FrameGridCanvas(parentComp, SWT.NONE, false);
+	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+		if (_icon == null) {
+			return;
+		}
+
+		var b = _icon.getBounds();
+
+		gc.drawImage(_icon, 0, 0, b.width, b.height, x +(width - b.width) / 2, y + (height - b.height) / 2, b.width, b.height);
 	}
 
-	@Override
-	protected void updateContent(Control control, Object model) {
-		var asset = (MultiAtlasAssetModel) model;
-		var comp = (FrameGridCanvas) control;
-		comp.loadFrameProvider(new MultiAtlasAssetFrameProvider(asset));
-	}
 }

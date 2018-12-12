@@ -45,7 +45,6 @@ public class AnimationsAssetModel extends AssetModel {
 	private String _url;
 	private String _dataKey;
 	private AnimationsModel_in_AssetPack _animationsModel;
-	private List<AnimationModel_in_AssetPack> _animations;
 
 	public AnimationsAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
@@ -107,7 +106,6 @@ public class AnimationsAssetModel extends AssetModel {
 		validateUrl(problems, "url", _url);
 
 		_animationsModel = null;
-		_animations = List.of();
 
 		IFile file = getUrlFile();
 
@@ -132,7 +130,6 @@ public class AnimationsAssetModel extends AssetModel {
 				_animationsModel = new AnimationsModel_in_AssetPack(file, jsonData, _dataKey);
 				_animationsModel.setFile(file);
 				_animationsModel.build(problems);
-				_animations = _animationsModel.getAnimations_in_AssetPack();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -149,11 +146,15 @@ public class AnimationsAssetModel extends AssetModel {
 
 	@Override
 	public List<AnimationModel_in_AssetPack> getSubElements() {
+		return getAnimationsModel().getAnimations_in_AssetPack();
+	}
+	
+	public AnimationsModel_in_AssetPack getAnimationsModel() {
 		if (_animationsModel == null) {
 			build(new ArrayList<>());
 		}
-
-		return _animations;
+		
+		return _animationsModel;
 	}
 
 	public class AnimationsModel_in_AssetPack extends AnimationsModel {

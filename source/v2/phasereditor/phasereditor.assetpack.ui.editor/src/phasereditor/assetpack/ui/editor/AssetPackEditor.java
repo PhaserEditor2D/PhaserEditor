@@ -72,6 +72,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IEditorInput;
@@ -161,6 +163,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private AssetPackEditorOutlinePage _outliner;
 
+	private PackEditorCanvas _canvas;
+
 	public AssetPackEditorOutlinePage getOutliner() {
 		return _outliner;
 	}
@@ -185,6 +189,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
+
+		_canvas.redraw();
 	}
 
 	public void saveEditingPoint() {
@@ -1192,7 +1198,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_container = new Composite(parent, SWT.NONE);
+
+		var tabFolder = new TabFolder(parent, SWT.BORDER);
+		var tabItem1 = new TabItem(tabFolder, 0);
+		tabItem1.setText("Old");
+
+		_container = new Composite(tabFolder, SWT.NONE);
+		tabItem1.setControl(_container);
 		_container.setLayout(new FillLayout());
 
 		SashForm mainSash = new SashForm(_container, SWT.NONE);
@@ -1204,6 +1216,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_assetsComp = new AssetsComp(mainSash);
 
 		mainSash.setWeights(new int[] { 1, 1, 1 });
+
+		var tabItem2 = new TabItem(tabFolder, 0);
+		tabItem2.setText("New");
+
+		_canvas = new PackEditorCanvas(tabFolder, 0);
+		tabItem2.setControl(_canvas);
 
 		afterCreateWidgets();
 	}
@@ -1274,6 +1292,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				_sectionsComp.getViewer().getTree().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
 
 		recoverEditingPoint();
+
+		_canvas.setModel(_model);
 
 		swtRun(this::refresh);
 

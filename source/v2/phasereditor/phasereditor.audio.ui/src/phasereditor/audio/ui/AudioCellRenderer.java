@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,32 +19,43 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.preview;
+package phasereditor.audio.ui;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.GC;
 
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.FrameGridCanvas;
-import phasereditor.ui.info.BaseInformationControl;
+import phasereditor.audio.core.AudioCore;
+import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.ICanvasCellRenderer;
 
-public class MultiAtlasAssetInformationControl extends BaseInformationControl {
+/**
+ * @author arian
+ *
+ */
+public class AudioCellRenderer implements ICanvasCellRenderer {
 
-	public MultiAtlasAssetInformationControl(Shell parentShell) {
-		super(parentShell);
+	private IFile _audioFile;
+	private int _padding;
+
+	public AudioCellRenderer(IFile audioFile, int padding) {
+		_audioFile = audioFile;
+		_padding = padding;
 	}
 
 	@Override
-	protected Control createContent2(Composite parentComp) {
-		return new FrameGridCanvas(parentComp, SWT.NONE, false);
+	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+		var imgFile = AudioCore.getSoundWavesFile(_audioFile).toFile();
+		
+		var img = canvas.loadImage(imgFile);
+
+		var b = img.getBounds();
+		
+		gc.setAlpha(150);
+		
+		gc.drawImage(img, 0, 0, b.width, b.height, x + _padding, y + _padding, width - _padding * 2,
+				height - _padding * 2);
+		
+		gc.setAlpha(255);
 	}
 
-	@Override
-	protected void updateContent(Control control, Object model) {
-		var asset = (MultiAtlasAssetModel) model;
-		var comp = (FrameGridCanvas) control;
-		comp.loadFrameProvider(new MultiAtlasAssetFrameProvider(asset));
-	}
 }

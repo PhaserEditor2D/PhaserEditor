@@ -21,59 +21,81 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.GC;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.audio.core.AudioCore;
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.ICanvasCellRenderer;
 
 /**
  * @author arian
  *
  */
-public class AudioSpriteAssetTreeCanvasItemRenderer extends AudioAssetTreeCanvasItemRenderer {
-
+public class AudioSpriteAssetCellRenderer implements ICanvasCellRenderer {
+	private AudioSpriteAssetModel _model;
 	private double _duration;
+	private IFile _audioFile;
+	private int _padding;
 
-	public AudioSpriteAssetTreeCanvasItemRenderer(TreeCanvasItem item) {
-		super(item);
+	public AudioSpriteAssetCellRenderer(AudioSpriteAssetModel model, int padding) {
+		_model = model;
 
-		var file = getAudioFile(item.getData());
-		if (file == null) {
+		for (var url : _model.getUrls()) {
+			var file = _model.getFileFromUrl(url);
+			if (file != null) {
+				_audioFile = file;
+				break;
+			}
+		}
+
+		if (_audioFile == null) {
 			_duration = 0;
 		} else {
-			_duration = AudioCore.getSoundDuration(file);
+			_duration = AudioCore.getSoundDuration(_audioFile);
 		}
+
+		_padding = padding;
 	}
 
-	public double getDuration() {
-		return _duration;
-	}
-
+	@SuppressWarnings("all")
 	@Override
-	protected void renderImage(GC gc, int dstX, int dstY, int dstWidth, int dstHeight) {
+	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
 		if (_duration == 0) {
 			return;
 		}
 
-		var asset = (AudioSpriteAssetModel) _item.getData();
+		x += _padding;
+		y += _padding;
+		width -= _padding * 2;
+		height -= _padding * 2;
 
-		var sprites = asset.getSpriteMap();
+		var sprites = _model.getSpriteMap();
 
-		var b = getImage().getBounds();
+		var imgFile = AudioCore.getSoundWavesFile(_audioFile);
+
+		var img = canvas.loadImage(imgFile.toFile());
+
+		if (img == null) {
+			return;
+		}
+
+		var b = img.getBounds();
 
 		var count = sprites.size();
 		var spacing = 3;
 
-		if (spacing * count > dstWidth / 3) {
+		if (spacing * count > width / 3) {
 			spacing = 0;
 		}
 
-		var dstWidth2 = dstWidth / (double) count - spacing;
+		var dstWidth2 = width / (double) count - spacing;
 
-		var lastDstX = dstX;
+		var lastDstX = x;
 
 		gc.setAlpha(150);
+		
 		for (var sprite : sprites) {
 
 			var startFactor = sprite.getStart() / _duration;
@@ -83,12 +105,11 @@ public class AudioSpriteAssetTreeCanvasItemRenderer extends AudioAssetTreeCanvas
 			var srcX2 = endFactor * b.width;
 			var srcWidth = srcX2 - srcX1;
 
-			gc.drawImage(getImage(), (int) srcX1, 0, (int) srcWidth, b.height, lastDstX, dstY, (int) dstWidth2,
-					dstHeight);
+			gc.drawImage(img, (int) srcX1, 0, (int) srcWidth, b.height, lastDstX, y, (int) dstWidth2, height);
 
 			lastDstX += dstWidth2 + spacing;
 		}
-		gc.setAlpha(255);
+		gc.setAlpha(150);
 	}
 
 }

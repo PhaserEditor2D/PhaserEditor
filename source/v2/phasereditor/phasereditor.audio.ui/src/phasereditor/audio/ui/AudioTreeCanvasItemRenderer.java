@@ -22,7 +22,6 @@
 package phasereditor.audio.ui;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -97,7 +96,9 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			if (_image != null) {
 				int w = e.width - x - 5;
 				if (w > 0) {
+					gc.setAlpha(150);
 					renderImage(gc, x, y, w, imgHeight);
+					gc.setAlpha(255);
 				}
 			}
 
@@ -114,12 +115,6 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		gc.drawImage(_image, 0, 0, _image.getBounds().width, _image.getBounds().height, dstX, dstY + 5, dstWidth,
 				dstHeight);
-
-		gc.setAlpha(100);
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
-		gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
-		gc.fillGradientRectangle(dstX, dstY + 5, dstWidth, dstHeight, false);
-		gc.setAlpha(255);
 	}
 
 	@Override

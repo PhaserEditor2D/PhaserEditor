@@ -35,13 +35,10 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.json.JSONObject;
 
@@ -90,17 +87,6 @@ public class BaseImageCanvas extends Canvas {
 		addDisposeListener(this::widgetDisposed);
 
 		parent.setBackgroundMode(SWT.INHERIT_FORCE);
-
-		addPaintListener(new PaintListener() {
-
-			@Override
-			public void paintControl(PaintEvent e) {
-				Shell shell = e.display.getActiveShell();
-				if (shell != null) {
-					//setForeground(shell.getForeground());
-				}
-			}
-		});
 
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 	}

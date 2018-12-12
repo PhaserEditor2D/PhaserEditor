@@ -81,9 +81,9 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	
 	script("js", "JavaScript File"),
 	
-	plugin("js", "Phaser Plugin File"),
+	plugin("js", "Plugin File"),
 	
-	scenePlugin("js", "Phaser Scene Plugin"),
+	scenePlugin("js", "Scene Plugin"),
 	
 	glsl("glsl", "Shader File"), 
 	
