@@ -49,8 +49,6 @@ Copyright (c) Arian Fornaris 2015-2017
    </configIni>
 
    <launcherArgs>
-      <programArgs>-cssTheme none
-      </programArgs>
       <vmArgs>-Dosgi.requiredJavaVersion=10 -Declipse.p2.unsignedPolicy=allow --add-modules=ALL-SYSTEM
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
