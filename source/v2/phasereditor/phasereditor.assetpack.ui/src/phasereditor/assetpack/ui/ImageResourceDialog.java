@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.dialogs.Dialog;
@@ -142,6 +144,7 @@ public class ImageResourceDialog extends Dialog {
 	private ImagePreviewComp _imagePreviewCanvas;
 	private IResource _initial;
 	private String _objectName;
+	private List<Object> _multiSelection;
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -212,14 +215,20 @@ public class ImageResourceDialog extends Dialog {
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void okPressed() {
 		_selection = ((IStructuredSelection) _listViewer.getSelection()).getFirstElement();
+		_multiSelection = ((IStructuredSelection) _listViewer.getSelection()).toList();
 		super.okPressed();
 	}
 
 	public Object getSelection() {
 		return _selection;
+	}
+	
+	public List<Object> getMultipleSelection() {
+		return _multiSelection;
 	}
 
 	public ImagePreviewComp getPreview() {

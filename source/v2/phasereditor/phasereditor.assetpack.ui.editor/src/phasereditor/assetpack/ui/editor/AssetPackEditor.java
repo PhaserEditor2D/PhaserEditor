@@ -27,6 +27,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
@@ -92,12 +94,31 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.AudioAssetModel;
+import phasereditor.assetpack.core.AudioSpriteAssetModel;
+import phasereditor.assetpack.core.BinaryAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.JsonAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.PhysicsAssetModel;
+import phasereditor.assetpack.core.ScriptAssetModel;
+import phasereditor.assetpack.core.ShaderAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.TextAssetModel;
+import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.assetpack.core.XmlAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.assetpack.ui.ImageResourceDialog;
+import phasereditor.atlas.core.AtlasCore;
+import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
@@ -731,17 +752,442 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				AssetFactory factory = AssetFactory.getFactory(initialType);
 
 				if (factory != null) {
-					AssetType type = factory.getType();
-					AssetPackModel pack = getModel();
-					String key = pack.createKey(type.name());
-					AssetModel asset = factory.createAsset(key, section);
-					executeOperation(new AddAssetOperation(section, asset));
+					var assets = openNewAssetListDialog(section, factory);
+
+					if (!assets.isEmpty()) {
+
+						var op = new CompositeOperation();
+
+						for (AssetModel asset : assets) {
+							op.add(new AddAssetOperation(section, asset));
+						}
+
+						executeOperation(op);
+
+						_assetsComp.getViewer().setSelection(new StructuredSelection(assets), true);
+					}
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	private List<AssetModel> openNewAssetListDialog(AssetSectionModel section, AssetFactory factory) throws Exception {
+		AssetType type = factory.getType();
+
+		switch (type) {
+
+		case image:
+			return openNewImageListDialog(section);
+		case audio:
+			return openNewAudioListDialog(section);
+		case atlas:
+		case atlasXML:
+		case unityAtlas:
+		case multiatlas:
+			return openNewAtlasListDialog(section);
+		case audioSprite:
+			return openNewAusiospriteListDialog(section);
+		case binary:
+			return openNewBinaryListDialog(section);
+		case bitmapFont:
+			return openNewBitmapFontListDialog(section);
+		case json:
+			return openNewJsonListDialog(section);
+		case physics:
+			return openNewPhysicsListDialog(section);
+		case script:
+			return openNewScriptListDialog(section);
+		case glsl:
+			return openNewShaderListDialog(section);
+		case spritesheet:
+			return openNewSpritesheetListDialog(section);
+		case text:
+			return openNewTextListDialog(section);
+		case tilemapCSV:
+		case tilemapTiledJSON:
+		case tilemapImpact:
+			return openNewTilemapListDialog(section, type);
+		case xml:
+			return openNewXmlListDialog(section);
+
+		case animation:
+			break;
+		case html:
+			break;
+		case htmlTexture:
+			break;
+		case plugin:
+			break;
+		case scenePlugin:
+			break;
+		case svg:
+			break;
+		case video:
+			break;
+		default:
+			break;
+		}
+
+		return Collections.emptyList();
+	}
+
+	private List<AssetModel> openNewXmlListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+
+		var xmlFiles = pack.discoverTextFiles("xml");
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "xml", xmlFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new XmlAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewTilemapListDialog(AssetSectionModel section, AssetType type) throws Exception {
+		AssetPackModel pack = getModel();
+		var tilemapFiles = pack.discoverTilemapFiles(type);
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "tilemap", tilemapFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var factory = AssetFactory.getFactory(type);
+			var asset = (TilemapAssetModel) factory.createAsset(pack.createKey(file), section);
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewTextListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> textFiles = pack.discoverFiles(f -> Boolean.TRUE);
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "text", textFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new TextAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewSpritesheetListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> imageFiles = pack.discoverImageFiles();
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
+
+		var shell = getEditorSite().getShell();
+		var dlg = new ImageResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(imageFiles);
+		dlg.setObjectName("spritesheet");
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+			for (Object obj : dlg.getMultipleSelection()) {
+				IFile file = (IFile) obj;
+				var asset = new SpritesheetAssetModel(pack.createKey(file), section);
+				asset.setUrl(asset.getUrlFromFile(file));
+				list.add(asset);
+			}
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewShaderListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("vert", "frag", "tesc", "tese", "geom", "comp");
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "shader", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new ShaderAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewScriptListDialog(AssetSectionModel section) throws CoreException {
+
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("js");
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "script", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new ScriptAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+
+	}
+
+	private List<AssetModel> openNewPhysicsListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("json");
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "physics", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new PhysicsAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewJsonListDialog(AssetSectionModel section) throws CoreException {
+
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverTextFiles("json");
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "json", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new JsonAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+			list.add(asset);
+		}
+
+		return list;
+
+	}
+
+	private List<AssetModel> openNewBitmapFontListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> jsonFiles = pack.discoverBitmapFontFiles();
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "bitmapFont", jsonFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new BitmapFontAssetModel(pack.createKey(file), section);
+			asset.setFontDataURL(asset.getUrlFromFile(file));
+
+			var textureFile = file.getProject()
+					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("png"));
+			if (textureFile.exists()) {
+				asset.setTextureURL(asset.getUrlFromFile(textureFile));
+			}
+
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewBinaryListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> binaryFiles = pack.discoverFiles(f -> Boolean.TRUE);
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "binary", binaryFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new BinaryAssetModel(pack.createKey(file), section);
+			asset.setUrl(asset.getUrlFromFile(file));
+
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewAusiospriteListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> audiospriteFiles = pack.discoverAudioSpriteFiles();
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "audiosprite", audiospriteFiles, shell);
+
+		for (IFile file : selectedFiles) {
+			var asset = new AudioSpriteAssetModel(pack.createKey(file), section);
+			asset.setJsonURL(asset.getUrlFromFile(file));
+
+			List<IFile> files = pack.pickAudioFiles();
+			if (!files.isEmpty()) {
+				asset.setKey(pack.createKey(files.get(0)));
+				List<String> urls = asset.getUrlsFromFiles(files);
+				asset.setUrls(urls);
+			}
+
+			list.add(asset);
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewAtlasListDialog(AssetSectionModel section) throws Exception {
+		AssetPackModel pack = getModel();
+
+		var fileTypeMap = new HashMap<IFile, AssetType>();
+
+		for (var type : new AssetType[] { AssetType.atlas, AssetType.multiatlas, AssetType.atlasXML,
+				AssetType.unityAtlas }) {
+			for (var file : pack.discoverAtlasFiles(type)) {
+				fileTypeMap.put(file, type);
+			}
+		}
+
+		var atlasFiles = new ArrayList<>(fileTypeMap.keySet());
+
+		var shell = getEditorSite().getShell();
+
+		var list = new ArrayList<AssetModel>();
+
+		var selectedFiles = AssetPackUI.browseManyAssetFile(pack, "Atlas (Multi, JSON, XML, Unity)", atlasFiles, shell);
+
+		for (IFile file : selectedFiles) {
+
+			var key = pack.createKey(file);
+
+			var textureFile = file.getProject()
+					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("png"));
+
+			var type = fileTypeMap.get(file);
+
+			if (type == AssetType.atlas || type == AssetType.atlasXML || type == AssetType.unityAtlas) {
+				var asset = new AtlasAssetModel(type, key, section);
+				asset.setAtlasURL(asset.getUrlFromFile(file));
+
+				var format = AtlasCore.getAtlasFormat(file);
+
+				if (format != null) {
+					asset.setFormat(format);
+				}
+
+				if (textureFile.exists()) {
+					asset.setTextureURL(asset.getUrlFromFile(textureFile));
+				}
+				list.add(asset);
+			} else {
+				var asset = new MultiAtlasAssetModel(key, section);
+				list.add(asset);
+			}
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewAudioListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+
+		List<IFile> audioFiles = pack.discoverAudioFiles();
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(audioFiles);
+
+		var shell = getEditorSite().getShell();
+		var dlg = new AudioResourceDialog(shell, false);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(audioFiles);
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+
+			Map<String, List<String>> filesMap = new HashMap<>();
+
+			for (IFile file : dlg.getSelection()) {
+				String prefix = file.getFullPath().removeFileExtension().toPortableString();
+
+				if (!filesMap.containsKey(prefix)) {
+					filesMap.put(prefix, new ArrayList<>());
+				}
+
+				filesMap.get(prefix).add(ProjectCore.getAssetUrl(file));
+			}
+
+			for (var entry : filesMap.entrySet()) {
+				var path = new Path(entry.getKey());
+				var asset = new AudioAssetModel(pack.createKey(path.lastSegment()), section);
+				asset.setUrls(entry.getValue());
+				list.add(asset);
+			}
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewImageListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> imageFiles = pack.discoverImageFiles();
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
+
+		var shell = getEditorSite().getShell();
+		ImageResourceDialog dlg = new ImageResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(imageFiles);
+		dlg.setObjectName("");
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+			for (Object obj : dlg.getMultipleSelection()) {
+				IFile file = (IFile) obj;
+				var asset = new ImageAssetModel(pack.createKey(file), section);
+				asset.setUrl(asset.getUrlFromFile(file));
+				list.add(asset);
+			}
+		}
+
+		return list;
 	}
 
 	@Override

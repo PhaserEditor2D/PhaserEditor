@@ -32,6 +32,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -98,6 +99,7 @@ import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.ListCanvasDialog;
+import phasereditor.ui.ListSelectionDialog2;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
@@ -109,7 +111,26 @@ public class AssetPackUI {
 
 	
 
-	
+	public static List<IFile> browseManyAssetFile(AssetPackModel packModel, String objectName, List<IFile> files,
+			Shell shell) {
+
+		Set<IFile> usedFiles = packModel.sortFilesByNotUsed(files);
+
+		var dlg = new ListSelectionDialog2(shell, files, new ArrayContentProvider(),
+				createFilesLabelProvider(usedFiles, shell),
+				"Select the " + objectName + " path. Those in bold are not used.");
+		dlg.setTitle(objectName);
+
+		List<IFile> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK && dlg.getResult().length > 0) {
+			for (Object obj : dlg.getResult()) {
+				list.add((IFile) obj);
+			}
+		}
+
+		return list;
+	}
 
 	
 
@@ -290,7 +311,7 @@ public class AssetPackUI {
 		return "";
 	}
 
-	private static LabelProvider createFilesLabelProvider(Set<IFile> usedFiles, Shell shell) {
+	public static LabelProvider createFilesLabelProvider(Set<IFile> usedFiles, Shell shell) {
 		class FilesLabelProvider extends LabelProvider implements IFontProvider {
 
 			private WorkbenchLabelProvider _baseLabels = new WorkbenchLabelProvider();

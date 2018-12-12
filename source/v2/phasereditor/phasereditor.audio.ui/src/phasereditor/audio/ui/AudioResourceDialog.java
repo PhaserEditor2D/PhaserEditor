@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -50,18 +51,24 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 
 public class AudioResourceDialog extends Dialog {
-	TreeCanvasViewer _filesViewer;
-	private TreeCanvas _treeCanvas;
+	private TreeCanvasViewer _filesViewer;
+	protected TreeCanvas _treeCanvas;
 	private FilteredTreeCanvas _filteredCanvas;
+	private boolean _checkox;
 
 	/**
 	 * Create the dialog.
 	 * 
 	 * @param parentShell
 	 */
-	public AudioResourceDialog(Shell parentShell) {
+	public AudioResourceDialog(Shell parentShell, boolean checkbox) {
 		super(parentShell);
 		setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
+		_checkox = checkbox;
+	}
+
+	public AudioResourceDialog(Shell parentShell) {
+		this(parentShell, true);
 	}
 
 	/**
@@ -91,7 +98,7 @@ public class AudioResourceDialog extends Dialog {
 
 		_filteredCanvas = new FilteredTreeCanvas(composite_1, SWT.BORDER);
 		_treeCanvas = _filteredCanvas.getTree();
-		_treeCanvas.setShowCheckbox(true);
+		_treeCanvas.setShowCheckbox(_checkox);
 		_filesViewer = createViewer();
 		_filesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -120,13 +127,13 @@ public class AudioResourceDialog extends Dialog {
 			@Override
 			protected void setItemProperties(TreeCanvasItem item) {
 				super.setItemProperties(item);
-				
+
 				var renderer = new AudioTreeCanvasItemRenderer(item);
-				
+
 				renderer.setLabel(item.getLabel());
-				
+
 				item.setRenderer(renderer);
-				
+
 			}
 		};
 	}
@@ -155,11 +162,21 @@ public class AudioResourceDialog extends Dialog {
 	private void afterCreateWidgets() {
 		_filesViewer.setLabelProvider(_labelProvider);
 		_filesViewer.setInput(_allFiles);
-		_filesViewer.setCheckedElements(_initialFiles.toArray());
+		if (_checkox) {
+			_filesViewer.setCheckedElements(_initialFiles.toArray());
+		} else {
+			_filesViewer.setSelection(new StructuredSelection(_initialFiles), true);
+		}
 	}
 
 	public List<IFile> getSelection() {
-		return Arrays.stream(_filesViewer.getCheckedElements()).map(e -> (IFile) e).collect(toList());
+		return Arrays.stream(_checkox ?
+
+				_filesViewer.getCheckedElements()
+
+				: _filesViewer.getStructuredSelection().toArray()
+
+		).map(e -> (IFile) e).collect(toList());
 	}
 
 	public void setInitialFiles(List<IFile> selectedFiles) {

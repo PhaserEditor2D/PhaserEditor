@@ -53,7 +53,6 @@ public class AddAssetOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		_section.addAsset(_asset, true);
 		editor.refresh();
-		editor.revealElement(_asset);
 		return Status.OK_STATUS;
 	}
 
