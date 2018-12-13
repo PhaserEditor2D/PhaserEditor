@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -162,7 +161,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private AssetPackEditorOutlinePage _outliner;
 
-	private PackEditorCanvas _canvas;
+	private PackEditorCanvas _assetsCanvas;
 
 	public AssetPackEditorOutlinePage getOutliner() {
 		return _outliner;
@@ -189,7 +188,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			_outliner.refresh();
 		}
 
-		_canvas.redraw();
+		_assetsCanvas.redraw();
 	}
 
 	public void saveEditingPoint() {
@@ -1219,8 +1218,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		var tabItem2 = new TabItem(tabFolder, 0);
 		tabItem2.setText("New");
 
-		_canvas = new PackEditorCanvas(tabFolder, 0);
-		tabItem2.setControl(_canvas);
+		_assetsCanvas = new PackEditorCanvas(tabFolder, 0);
+		tabItem2.setControl(_assetsCanvas);
 
 		afterCreateWidgets();
 	}
@@ -1287,14 +1286,27 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 		});
 
-//		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(
-//				_sectionsComp.getViewer().getTree().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
-		
-		getEditorSite().setSelectionProvider(_canvas.getUtils());
+		// getEditorSite().setSelectionProvider(new ComplexSelectionProvider(
+		// _sectionsComp.getViewer().getTree().getUtils(), _typesComp.getViewer(),
+		// _assetsComp.getViewer()));
+
+		_assetsCanvas.getUtils().addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (_assetsCanvas.isFocusControl()) {
+					if (getOutliner() != null) {
+						getOutliner().revealAndSelect(event.getStructuredSelection());
+					}
+				}
+			}
+		});
+
+		getEditorSite().setSelectionProvider(_assetsCanvas.getUtils());
 
 		recoverEditingPoint();
 
-		_canvas.setModel(_model);
+		_assetsCanvas.setModel(_model);
 
 		swtRun(this::refresh);
 
@@ -1432,35 +1444,18 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			viewer.addSelectionChangedListener(_listener = new ISelectionChangedListener() {
 
+				@SuppressWarnings("unchecked")
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
 					if (!viewer.getTree().isFocusControl()) {
 						return;
 					}
 
-					Set<Object> clousure = new HashSet<>();
+					ISelection sel = new StructuredSelection(event.getStructuredSelection().toList().stream()
+							.filter(o -> o instanceof AssetModel).toArray());
 
-					for (var elem : event.getStructuredSelection().toList()) {
-						clousure.add(elem);
-						if (elem instanceof IAssetKey) {
-							AssetModel asset = ((IAssetKey) elem).getAsset();
-							clousure.addAll(List.of(asset, asset.getGroup(), asset.getSection()));
-						} else if (elem instanceof AssetGroupModel) {
-							clousure.add(((AssetGroupModel) elem).getSection());
-						}
-					}
-
-					ISelection sel = new StructuredSelection(clousure.toArray());
-					getSectionsComp().getViewer().setSelection(sel);
-					getTypesComp().getViewer().setSelection(sel);
-
-					for (var elem : clousure) {
-						if (elem instanceof IAssetKey) {
-							getAssetsComp().getViewer().expandToLevel(((IAssetKey) elem).getAsset(), 1);
-						}
-					}
-
-					getAssetsComp().getViewer().setSelection(event.getSelection());
+					getAssetsCanvas().getUtils().setSelection(sel);
+					getAssetsCanvas().redraw();
 				}
 			});
 
@@ -1532,6 +1527,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			super.setInput(new FileEditorInput(file));
 			setPartName(_model.getName());
 		});
+	}
+
+	public PackEditorCanvas getAssetsCanvas() {
+		return _assetsCanvas;
 	}
 
 }
