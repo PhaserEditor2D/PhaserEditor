@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.editor;
 
 import static java.lang.System.arraycopy;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -154,7 +155,7 @@ public class AssetPackUIEditor {
 
 		return list;
 	}
-	
+
 	public static List<AssetModel> findAssetResourceReferences(IFile file) {
 		List<AssetModel> list1 = AssetPackCore.findAssetResourceReferencesInProject(file);
 		List<AssetModel> list2 = findAssetResourceReferencesInEditors(file);
@@ -175,7 +176,7 @@ public class AssetPackUIEditor {
 
 		return result;
 	}
-	
+
 	/**
 	 * Open the given element in an asset pack editor.
 	 * 
@@ -210,7 +211,7 @@ public class AssetPackUIEditor {
 				JSONObject ref = pack.getAssetJSONRefrence(elem);
 				Object elem2 = editor.getModel().getElementFromJSONReference(ref);
 				if (elem2 != null) {
-					editor.revealElement(elem2);
+					swtRun(() -> editor.revealElement(elem2));
 				}
 			}
 		} catch (PartInitException e) {

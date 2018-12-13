@@ -74,6 +74,12 @@ public abstract class ScrollUtils {
 
 		_canvas.redraw();
 	}
+	
+	public void scrollTo(int y) {
+		_canvas.getVerticalBar().setSelection(y);
+		_origin.y = -y;
+		_canvas.redraw();
+	}
 
 	public Point getOrigin() {
 		return _origin;

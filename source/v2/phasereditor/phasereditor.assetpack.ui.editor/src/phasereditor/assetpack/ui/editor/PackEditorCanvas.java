@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.editor;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import static phasereditor.ui.IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,7 +269,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		if (_model == null) {
 			return;
 		}
-		
+
 		prepareGC(gc);
 
 		gc.setAlpha(5);
@@ -391,6 +392,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 				}
 
 				{
+
 					int assetX = ASSETS_MARGIN_X;
 					int assetY = y;
 					int bottom = y;
@@ -664,7 +666,20 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	}
 
 	public void reveal(AssetModel asset) {
-		// TODO: missing
+		_collapsed.remove(asset.getSection());
+		_collapsed.remove(asset.getGroup());
+
+		updateScroll();
+
+		swtRun(() -> {
+			for (var info : _renderInfoList) {
+				if (info.asset == asset) {
+					_scrollUtils.scrollTo(info.bounds.y);
+					return;
+				}
+			}
+		});
+
 	}
 
 	private Point _modelPointer = new Point(-10_000, -10_000);
