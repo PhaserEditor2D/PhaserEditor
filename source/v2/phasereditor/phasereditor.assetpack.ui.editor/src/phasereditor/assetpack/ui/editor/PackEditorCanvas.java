@@ -83,8 +83,7 @@ import phasereditor.ui.SwtRM;
  * @author arian
  *
  */
-public class PackEditorCanvas extends BaseImageCanvas
-		implements PaintListener, MouseWheelListener, MouseListener, MouseMoveListener {
+public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener, MouseMoveListener {
 
 	private static final int MIN_ROW_HEIGHT = 48;
 	private AssetPackModel _model;
@@ -102,7 +101,6 @@ public class PackEditorCanvas extends BaseImageCanvas
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
-		addMouseListener(this);
 		addMouseMoveListener(this);
 
 		_utils = new Utils();
@@ -156,6 +154,39 @@ public class PackEditorCanvas extends BaseImageCanvas
 		@Override
 		public Image get_DND_Image(int index) {
 			return null;
+		}
+
+		@Override
+		public void mouseUp(MouseEvent e) {
+			var hit = false;
+
+			var modelPointer = _utils.viewToModel(e.x, e.y);
+
+			for (var entry : _collapseIconBoundsMap.entrySet()) {
+				if (entry.getKey().contains(modelPointer)) {
+					var obj = entry.getValue();
+					if (_collapsed.contains(obj)) {
+						_collapsed.remove(obj);
+					} else {
+						_collapsed.add(obj);
+					}
+					hit = true;
+				}
+			}
+
+			for (var action : _actions) {
+				if (action.getBounds().contains(_modelPointer)) {
+					action.run();
+					hit = true;
+					break;
+				}
+			}
+
+			if (hit) {
+				redraw();
+			} else {
+				super.mouseUp(e);
+			}
 		}
 	}
 
@@ -262,13 +293,10 @@ public class PackEditorCanvas extends BaseImageCanvas
 					}
 					var menu = manager.createContextMenu(PackEditorCanvas.this);
 					menu.setVisible(true);
-
 					// _editor.openAddAssetButtonDialog(section, null);
 				}, ASSETS_MARGIN_X - 40, y);
 
-				var hover = action.getBounds().contains(_modelPointer);
-				action.paint(gc, hover);
-
+				action.paint(gc, action.getBounds().contains(_modelPointer));
 				actions.add(action);
 
 				y += ROW_HEIGHT;
@@ -312,6 +340,15 @@ public class PackEditorCanvas extends BaseImageCanvas
 
 					renderCollapseIcon(group, gc, collapsed, x, y2);
 					gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(type), x, y + 3);
+
+					var action = new IconAction(IMG_ADD, () -> {
+
+						_editor.openAddAssetDialog(section, type);
+
+					}, ASSETS_MARGIN_X - 40, y + 5);
+
+					action.paint(gc, action.getBounds().contains(_modelPointer));
+					actions.add(action);
 
 					// y += ROW_HEIGHT;
 
@@ -502,45 +539,6 @@ public class PackEditorCanvas extends BaseImageCanvas
 		}
 
 		redraw();
-	}
-
-	@Override
-	public void mouseDoubleClick(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseDown(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseUp(MouseEvent e) {
-		var redraw = false;
-
-		var modelPointer = _utils.viewToModel(e.x, e.y);
-
-		for (var entry : _collapseIconBoundsMap.entrySet()) {
-			if (entry.getKey().contains(modelPointer)) {
-				var obj = entry.getValue();
-				if (_collapsed.contains(obj)) {
-					_collapsed.remove(obj);
-				} else {
-					_collapsed.add(obj);
-				}
-				redraw = true;
-			}
-		}
-
-		for (var action : _actions) {
-			if (action.getBounds().contains(_modelPointer)) {
-				action.run();
-			}
-		}
-
-		if (redraw) {
-			redraw();
-		}
 	}
 
 	public void reveal(AssetModel asset) {

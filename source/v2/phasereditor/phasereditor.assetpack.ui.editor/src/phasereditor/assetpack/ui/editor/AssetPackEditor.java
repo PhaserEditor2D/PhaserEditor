@@ -330,10 +330,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						section.addAsset(asset, false);
 					}
 
-					_model.setDirty(true);
-
 					_assetsCanvas.getUtils().setSelectionList(assets);
 					_assetsCanvas.redraw();
+					
+					_model.setDirty(true);
+
 				}
 			}
 
