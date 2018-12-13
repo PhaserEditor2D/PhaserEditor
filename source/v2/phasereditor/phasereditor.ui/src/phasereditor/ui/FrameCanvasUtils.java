@@ -65,6 +65,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	 */
 	private int _dropLocation;
 	private int _dropIndex;
+	private boolean _filterInputWhenSetSelection;
 
 	public FrameCanvasUtils(Canvas canvas, boolean initDND) {
 		super(true);
@@ -74,6 +75,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		_overObject = null;
 		_dropObject = null;
 		_dropIndex = -1;
+
+		_filterInputWhenSetSelection = true;
 
 		_selectedObjects = new ArrayList<>();
 
@@ -240,6 +243,14 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		super.setSelection(new StructuredSelection(getSelectedObjects()));
 	}
 
+	public boolean isFilterInputWhenSetSelection() {
+		return _filterInputWhenSetSelection;
+	}
+
+	public void setFilterInputWhenSetSelection(boolean filterInputWhenSetSelection) {
+		_filterInputWhenSetSelection = filterInputWhenSetSelection;
+	}
+
 	public void setSelection(ISelection sel, boolean fireChanged) {
 		var b = isAutoFireSelectionChanged();
 		setAutoFireSelectionChanged(fireChanged);
@@ -253,13 +264,17 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			var selArray = ((IStructuredSelection) sel).toArray();
 			var list = new ArrayList<>();
 
-			for (var obj : selArray) {
-				for (int i = 0; i < getFramesCount(); i++) {
-					var frameObj = getFrameObject(i);
-					if (obj == frameObj) {
-						list.add(obj);
+			if (_filterInputWhenSetSelection) {
+				for (var obj : selArray) {
+					for (int i = 0; i < getFramesCount(); i++) {
+						var frameObj = getFrameObject(i);
+						if (obj == frameObj) {
+							list.add(obj);
+						}
 					}
 				}
+			} else {
+				list.addAll(List.of(selArray));
 			}
 
 			_selectedObjects = list;
