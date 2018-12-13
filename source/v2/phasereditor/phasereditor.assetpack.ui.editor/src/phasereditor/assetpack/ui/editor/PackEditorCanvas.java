@@ -106,6 +106,7 @@ public class PackEditorCanvas extends BaseImageCanvas
 		addMouseMoveListener(this);
 
 		_utils = new Utils();
+		_utils.setFilterInputWhenSetSelection(false);
 
 		_editor = editor;
 		_imageSize = 96;

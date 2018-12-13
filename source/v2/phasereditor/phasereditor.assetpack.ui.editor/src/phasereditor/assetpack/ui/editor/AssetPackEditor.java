@@ -331,7 +331,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					}
 
 					_model.setDirty(true);
+
 					_assetsCanvas.getUtils().setSelectionList(assets);
+					_assetsCanvas.redraw();
 				}
 			}
 
@@ -806,8 +808,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		@Override
 		protected TreeCanvasViewer createViewer() {
-			return new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getTree(), new AssetsContentProvider(true),
+			var viewer = new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getTree(), new AssetsContentProvider(true),
 					AssetLabelProvider.GLOBAL_16);
+			viewer.getTree().getUtils().setFilterInputWhenSetSelection(false);
+			return viewer;
 		}
 
 		public void revealAndSelect(IStructuredSelection selection) {
