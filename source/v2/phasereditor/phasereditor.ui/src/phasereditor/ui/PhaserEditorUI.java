@@ -1379,6 +1379,17 @@ public class PhaserEditorUI {
 		}
 	}
 
+	public static void paintIconHoverBackground(GC gc, Canvas canvas, int btnSize, Rectangle btnArea) {
+		gc.setAlpha(20);
+		gc.setBackground(canvas.getForeground());
+		gc.fillRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
+				btnSize / 2);
+		gc.setAlpha(40);
+		gc.drawRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
+				btnSize / 2);
+		gc.setAlpha(255);
+	}
+	
 	public static float distance(float[] a, float[] b) {
 		return distance(a[0], a[1], b[0], b[1]);
 	}

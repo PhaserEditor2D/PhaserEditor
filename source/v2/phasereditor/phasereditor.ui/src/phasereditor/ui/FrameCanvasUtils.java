@@ -70,7 +70,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		super(true);
 
 		_canvas = canvas;
-		
+
 		_overObject = null;
 		_dropObject = null;
 		_dropIndex = -1;
@@ -483,5 +483,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		_dropObject = null;
 		_dropIndex = -1;
 		_canvas.redraw();
+	}
+
+	public IStructuredSelection getStructuredSelection() {
+		return (IStructuredSelection) getSelection();
 	}
 }

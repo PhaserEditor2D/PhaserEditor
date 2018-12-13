@@ -348,7 +348,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					gc.fillRectangle(0, y, e.width, rowHeight);
 				}
 
-//				PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
+				// PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width,
+				// rowHeight));
 			}
 
 			// render item
@@ -402,14 +403,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 						action._hitArea = btnArea;
 
 						if (action == _overAction) {
-							gc.setAlpha(20);
-							gc.setBackground(getForeground());
-							gc.fillRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
-									btnSize / 2);
-							gc.setAlpha(40);
-							gc.drawRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
-									btnSize / 2);
-							gc.setAlpha(255);
+							PhaserEditorUI.paintIconHoverBackground(gc, this, btnSize, btnArea);
 						} else {
 							// gc.setAlpha(120);
 						}
@@ -494,7 +488,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public void setImageSize(int imageSize) {
 		_imageSize = imageSize;
 	}
-	
+
 	public int getOrigin() {
 		return _origin;
 	}

@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
+import static phasereditor.ui.IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,9 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -70,13 +76,15 @@ import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
  *
  */
-public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener, MouseListener {
+public class PackEditorCanvas extends BaseImageCanvas
+		implements PaintListener, MouseWheelListener, MouseListener, MouseMoveListener {
 
 	private static final int MIN_ROW_HEIGHT = 48;
 	private AssetPackModel _model;
@@ -87,16 +95,19 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	private Font _boldFont;
 	private List<AssetRenderInfo> _renderInfoList;
 	private FrameCanvasUtils _utils;
+	private AssetPackEditor _editor;
 
-	public PackEditorCanvas(Composite parent, int style) {
+	public PackEditorCanvas(AssetPackEditor editor, Composite parent, int style) {
 		super(parent, style);
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);
+		addMouseMoveListener(this);
 
 		_utils = new Utils();
 
+		_editor = editor;
 		_imageSize = 96;
 		_collapsed = new HashSet<>();
 		_collapseIconBoundsMap = new HashMap<>();
@@ -153,6 +164,39 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	private static int MARGIN_X = 30;
 	private static int ASSETS_MARGIN_X = 200;
 
+	private List<IconAction> _actions;
+
+	private class IconAction {
+		private Image _image;
+		private Runnable _run;
+		private int _x;
+		private int _y;
+		private Rectangle _bounds;
+
+		public IconAction(String icon, Runnable run, int x, int y) {
+			_image = EditorSharedImages.getImage(icon);
+			_x = x;
+			_y = y;
+			_bounds = new Rectangle(x, y, 16, 16);
+			_run = run;
+		}
+
+		public void run() {
+			_run.run();
+		}
+
+		public Rectangle getBounds() {
+			return _bounds;
+		}
+
+		public void paint(GC gc, boolean hover) {
+			if (hover) {
+				PhaserEditorUI.paintIconHoverBackground(gc, PackEditorCanvas.this, 16, _bounds);
+			}
+			gc.drawImage(_image, _x, _y);
+		}
+	}
+
 	static class AssetRenderInfo {
 		public AssetModel asset;
 		public Rectangle bounds;
@@ -160,9 +204,9 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 	@Override
 	public void paintControl(PaintEvent e) {
-
 		_collapseIconBoundsMap = new HashMap<>();
 		var renderInfoList = new ArrayList<AssetRenderInfo>();
+		var actions = new ArrayList<IconAction>();
 
 		var gc = e.gc;
 
@@ -170,9 +214,11 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			return;
 		}
 
-		gc.setAlpha(10);
+		gc.setAlpha(5);
 		gc.setBackground(getForeground());
-		gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 10, e.height);
+		gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 20, e.height);
+		gc.setAlpha(10);
+		gc.drawLine(ASSETS_MARGIN_X - 20, 0, ASSETS_MARGIN_X - 20, e.height);
 		gc.setAlpha(255);
 
 		var font = gc.getFont();
@@ -190,10 +236,39 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 				var collapsed = isCollapsed(section);
 
 				gc.setFont(_boldFont);
-				gc.drawText(section.getKey(), x, y, true);
+
+				gc.drawText(section.getKey(), x + 20, y, true);
+
 				renderCollapseIcon(section, gc, collapsed, x, y);
 
+				gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(section), x, y);
+
 				gc.setFont(font);
+
+				var action = new IconAction(IMG_ADD, () -> {
+
+					var manager = new MenuManager();
+					for (var type : AssetType.values()) {
+						if (AssetType.isTypeSupported(type.name())) {
+							manager.add(new Action(type.getCapitalName(),
+									EditorSharedImages.getImageDescriptor(IMG_TYPE_VARIABLE_OBJ)) {
+								@Override
+								public void run() {
+									_editor.openAddAssetDialog(section, type);
+								}
+							});
+						}
+					}
+					var menu = manager.createContextMenu(PackEditorCanvas.this);
+					menu.setVisible(true);
+
+					// _editor.openAddAssetButtonDialog(section, null);
+				}, ASSETS_MARGIN_X - 40, y);
+
+				var hover = action.getBounds().contains(_modelPointer);
+				action.paint(gc, hover);
+
+				actions.add(action);
 
 				y += ROW_HEIGHT;
 
@@ -226,15 +301,16 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 					var y2 = y + ROW_HEIGHT / 2 - size.y / 2 - 3;
 
-					gc.drawText(title, x, y2, true);
+					gc.drawText(title, x + 20, y2, true);
 
 					var count = section.getGroup(type).getAssets().size();
 
 					gc.setAlpha(100);
-					gc.drawText(" (" + count + ")", x + size.x, y2, true);
+					gc.drawText(" (" + count + ")", x + size.x + 20, y2, true);
 					gc.setAlpha(255);
 
 					renderCollapseIcon(group, gc, collapsed, x, y2);
+					gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(type), x, y + 3);
 
 					// y += ROW_HEIGHT;
 
@@ -330,9 +406,10 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		}
 
 		_renderInfoList = renderInfoList;
+		_actions = actions;
 
 	}
-	
+
 	private boolean isCollapsed(Object obj) {
 		return _collapsed.contains(obj);
 	}
@@ -354,7 +431,9 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		var path = collapsed ? IEditorSharedImages.IMG_BULLET_EXPAND : IEditorSharedImages.IMG_BULLET_COLLAPSE;
 		var icon = EditorSharedImages.getImage(path);
 		gc.drawImage(icon, x - 20, y);
-		_collapseIconBoundsMap.put(new Rectangle(0, y - 5, ASSETS_MARGIN_X, 16 + 5), obj);
+		var bounds = new Rectangle(0, y - 5, ASSETS_MARGIN_X - 45, 16 + 10);
+		_collapseIconBoundsMap.put(bounds, obj);
+		// gc.drawRectangle(bounds);
 	}
 
 	private ICanvasCellRenderer getAssetRenderer(AssetModel asset) {
@@ -402,7 +481,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	public void setModel(AssetPackModel model) {
 		_model = model;
 	}
-	
+
 	public FrameCanvasUtils getUtils() {
 		return _utils;
 	}
@@ -437,8 +516,11 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	@Override
 	public void mouseUp(MouseEvent e) {
 		var redraw = false;
+
+		var modelPointer = _utils.viewToModel(e.x, e.y);
+
 		for (var entry : _collapseIconBoundsMap.entrySet()) {
-			if (entry.getKey().contains(e.x, e.y)) {
+			if (entry.getKey().contains(modelPointer)) {
 				var obj = entry.getValue();
 				if (_collapsed.contains(obj)) {
 					_collapsed.remove(obj);
@@ -449,8 +531,26 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			}
 		}
 
+		for (var action : _actions) {
+			if (action.getBounds().contains(_modelPointer)) {
+				action.run();
+			}
+		}
+
 		if (redraw) {
 			redraw();
 		}
+	}
+
+	public void reveal(AssetModel asset) {
+		// TODO: missing
+	}
+
+	private Point _modelPointer = new Point(-10_000, -10_000);
+
+	@Override
+	public void mouseMove(MouseEvent e) {
+		_modelPointer = _utils.viewToModel(e.x, e.y);
+		redraw();
 	}
 }
