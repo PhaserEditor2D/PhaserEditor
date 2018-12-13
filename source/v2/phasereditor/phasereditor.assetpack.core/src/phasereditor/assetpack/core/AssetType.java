@@ -53,25 +53,27 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 
 	animation("json", "Animations"),
 
-	audio("mp3", "Audio"),
-
-	audioSprite("json", "Audio Sprite"),
-
-	video("mp4", "Video"),
-
+	bitmapFont("xml", "Bitmap Font"), 
+	
 	tilemapCSV("csv", "Tilemap (CSV)"),
 
 	tilemapTiledJSON("json", "Tilemap (Tiled)"),
 
 	tilemapImpact("json", "Tilemap (Impact)"),
 	
-	bitmapFont("xml", "Bitmap Font"), 
-	
+	audio("mp3", "Audio"),
+
+	audioSprite("json", "Audio Sprite"),
+
+	video("mp4", "Video"),
+
 	physics("json", "Physics"), 
 	
 	htmlTexture("html", "HTML Texture"),
 	
 	html("html", "HTML File"),
+
+	glsl("glsl", "Shader File"), 
 	
 	text("txt", "Text File"), 
 	
@@ -84,8 +86,6 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	plugin("js", "Plugin File"),
 	
 	scenePlugin("js", "Scene Plugin"),
-	
-	glsl("glsl", "Shader File"), 
 	
 	binary("dat", "Binary File");
 

@@ -121,7 +121,6 @@ import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
-import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
@@ -1288,8 +1287,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 		});
 
-		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(
-				_sectionsComp.getViewer().getTree().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
+//		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(
+//				_sectionsComp.getViewer().getTree().getUtils(), _typesComp.getViewer(), _assetsComp.getViewer()));
+		
+		getEditorSite().setSelectionProvider(_canvas.getUtils());
 
 		recoverEditingPoint();
 

@@ -36,6 +36,8 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -48,17 +50,20 @@ import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AudioSpriteAssetCellRenderer;
+import phasereditor.assetpack.ui.BitmapFontAssetCellRenderer;
 import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
-import phasereditor.audio.core.AudioCore;
 import phasereditor.audio.ui.AudioCellRenderer;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.Colors;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameCellRenderer;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCellRenderer;
@@ -80,6 +85,8 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	private Set<Object> _collapsed;
 	private Map<Rectangle, Object> _collapseIconBoundsMap;
 	private Font _boldFont;
+	private List<AssetRenderInfo> _renderInfoList;
+	private FrameCanvasUtils _utils;
 
 	public PackEditorCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -88,10 +95,56 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		addMouseWheelListener(this);
 		addMouseListener(this);
 
+		_utils = new Utils();
+
 		_imageSize = 96;
 		_collapsed = new HashSet<>();
 		_collapseIconBoundsMap = new HashMap<>();
 		_boldFont = SwtRM.getBoldFont(getFont());
+
+		_renderInfoList = new ArrayList<>();
+	}
+
+	class Utils extends FrameCanvasUtils {
+
+		public Utils() {
+			super(PackEditorCanvas.this, false);
+		}
+
+		@Override
+		public int getFramesCount() {
+			return _renderInfoList.size();
+		}
+
+		@Override
+		public Rectangle get_DND_Image_SrcFrame(int index) {
+			return null;
+		}
+
+		@Override
+		public Rectangle getSelectionFrameArea(int index) {
+			return _renderInfoList.get(index).bounds;
+		}
+
+		@Override
+		public Point viewToModel(int x, int y) {
+			return new Point(x, y + _origin);
+		}
+
+		@Override
+		public Point modelToView(int x, int y) {
+			return new Point(x, y - _origin);
+		}
+
+		@Override
+		public Object getFrameObject(int index) {
+			return _renderInfoList.get(index).asset;
+		}
+
+		@Override
+		public Image get_DND_Image(int index) {
+			return null;
+		}
 	}
 
 	private static int ROW_HEIGHT = 30;
@@ -100,10 +153,16 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	private static int MARGIN_X = 30;
 	private static int ASSETS_MARGIN_X = 200;
 
+	static class AssetRenderInfo {
+		public AssetModel asset;
+		public Rectangle bounds;
+	}
+
 	@Override
 	public void paintControl(PaintEvent e) {
 
 		_collapseIconBoundsMap = new HashMap<>();
+		var renderInfoList = new ArrayList<AssetRenderInfo>();
 
 		var gc = e.gc;
 
@@ -128,7 +187,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			x = MARGIN_X;
 
 			{
-				var collapsed = _collapsed.contains(section);
+				var collapsed = isCollapsed(section);
 
 				gc.setFont(_boldFont);
 				gc.drawText(section.getKey(), x, y, true);
@@ -138,7 +197,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 				y += ROW_HEIGHT;
 
-				if (collapsed) {
+				if (isCollapsed(section)) {
 					continue;
 				}
 			}
@@ -160,7 +219,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 				}
 
 				{
-					var collapsed = _collapsed.contains(group);
+					var collapsed = isCollapsed(group);
 
 					var title = type.getCapitalName();
 					var size = gc.stringExtent(title);
@@ -201,6 +260,13 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
 						}
 
+						{
+							var info = new AssetRenderInfo();
+							info.asset = asset;
+							info.bounds = bounds;
+							renderInfoList.add(info);
+						}
+
 						bottom = Math.max(bottom, bounds.y + bounds.height);
 
 						// gc.setAlpha(20);
@@ -208,20 +274,26 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 						// gc.fillRectangle(bounds);
 						// gc.setAlpha(255);
 
+						if (_utils.isSelected(asset)) {
+							gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+							gc.fillRectangle(bounds);
+						}
+
 						var renderer = getAssetRenderer(asset);
 
 						if (renderer != null) {
 							renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
 						}
 
-						gc.setAlpha(30);
-						gc.setForeground(getForeground());
-						if (isFullRowAsset(asset)) {
+						if (_utils.getOverObject() == asset) {
+							gc.setForeground(Colors.color(Colors.BLACK));
 							gc.drawRectangle(bounds);
 						} else {
+							gc.setAlpha(30);
+							gc.setForeground(getForeground());
 							gc.drawRectangle(bounds);
+							gc.setAlpha(255);
 						}
-						gc.setAlpha(255);
 
 						var key = asset.getKey();
 
@@ -257,6 +329,12 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			}
 		}
 
+		_renderInfoList = renderInfoList;
+
+	}
+	
+	private boolean isCollapsed(Object obj) {
+		return _collapsed.contains(obj);
 	}
 
 	private static int sortValue(AssetSectionModel section, AssetType type) {
@@ -308,6 +386,8 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			return null;
 		} else if (asset instanceof AudioSpriteAssetModel) {
 			return new AudioSpriteAssetCellRenderer((AudioSpriteAssetModel) asset, 5);
+		} else if (asset instanceof BitmapFontAssetModel) {
+			return new BitmapFontAssetCellRenderer((BitmapFontAssetModel) asset);
 		}
 
 		else {
@@ -321,6 +401,10 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 	public void setModel(AssetPackModel model) {
 		_model = model;
+	}
+	
+	public FrameCanvasUtils getUtils() {
+		return _utils;
 	}
 
 	@Override
@@ -369,5 +453,4 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			redraw();
 		}
 	}
-
 }
