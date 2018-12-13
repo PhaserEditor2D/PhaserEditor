@@ -35,7 +35,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -45,6 +44,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.animation.ui.AnimationsCellRender;
@@ -77,6 +77,7 @@ import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.ScrollUtils;
 import phasereditor.ui.SwtRM;
 
 /**
@@ -88,23 +89,25 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	private static final int MIN_ROW_HEIGHT = 48;
 	private AssetPackModel _model;
 	private int _imageSize;
-	private int _origin;
 	private Set<Object> _collapsed;
 	private Map<Rectangle, Object> _collapseIconBoundsMap;
 	private Font _boldFont;
 	private List<AssetRenderInfo> _renderInfoList;
 	private FrameCanvasUtils _utils;
 	private AssetPackEditor _editor;
+	private MyScrollUtils _scrollUtils;
 
 	public PackEditorCanvas(AssetPackEditor editor, Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.V_SCROLL);
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
 		addMouseMoveListener(this);
 
-		_utils = new Utils();
+		_utils = new MyFrameUtils();
 		_utils.setFilterInputWhenSetSelection(false);
+
+		_scrollUtils = new MyScrollUtils();
 
 		_editor = editor;
 		_imageSize = 96;
@@ -115,9 +118,21 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		_renderInfoList = new ArrayList<>();
 	}
 
-	class Utils extends FrameCanvasUtils {
+	class MyScrollUtils extends ScrollUtils {
 
-		public Utils() {
+		public MyScrollUtils() {
+			super(PackEditorCanvas.this);
+		}
+
+		@Override
+		public Rectangle computeScrollArea() {
+			return PackEditorCanvas.this.computeScrollArea();
+		}
+	}
+
+	class MyFrameUtils extends FrameCanvasUtils {
+
+		public MyFrameUtils() {
 			super(PackEditorCanvas.this, false);
 		}
 
@@ -138,12 +153,12 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 		@Override
 		public Point viewToModel(int x, int y) {
-			return new Point(x, y + _origin);
+			return new Point(x, y - _scrollUtils.getOrigin().y);
 		}
 
 		@Override
 		public Point modelToView(int x, int y) {
-			return new Point(x, y - _origin);
+			return new Point(x, y + _scrollUtils.getOrigin().y);
 		}
 
 		@Override
@@ -162,18 +177,6 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 			var modelPointer = _utils.viewToModel(e.x, e.y);
 
-			for (var entry : _collapseIconBoundsMap.entrySet()) {
-				if (entry.getKey().contains(modelPointer)) {
-					var obj = entry.getValue();
-					if (_collapsed.contains(obj)) {
-						_collapsed.remove(obj);
-					} else {
-						_collapsed.add(obj);
-					}
-					hit = true;
-				}
-			}
-
 			for (var action : _actions) {
 				if (action.getBounds().contains(_modelPointer)) {
 					action.run();
@@ -182,19 +185,37 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 				}
 			}
 
+			{
+				for (var entry : _collapseIconBoundsMap.entrySet()) {
+					if (entry.getKey().contains(modelPointer)) {
+						var obj = entry.getValue();
+						if (_collapsed.contains(obj)) {
+							_collapsed.remove(obj);
+						} else {
+							_collapsed.add(obj);
+						}
+						hit = true;
+					}
+				}
+			}
+
 			if (hit) {
-				redraw();
+				updateScroll();
 			} else {
 				super.mouseUp(e);
 			}
 		}
 	}
 
+	public void updateScroll() {
+		_scrollUtils.updateScroll();
+	}
+
 	private static int ROW_HEIGHT = 30;
 	private static int ASSET_SPACING_X = 10;
 	private static int ASSET_SPACING_Y = 30;
 	private static int MARGIN_X = 30;
-	private static int ASSETS_MARGIN_X = 200;
+	private static int ASSETS_MARGIN_X = 240;
 
 	private List<IconAction> _actions;
 
@@ -235,23 +256,34 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	}
 
 	@Override
-	public void paintControl(PaintEvent e) {
+	public void paintControl(PaintEvent event) {
 		_collapseIconBoundsMap = new HashMap<>();
+
 		var renderInfoList = new ArrayList<AssetRenderInfo>();
 		var actions = new ArrayList<IconAction>();
 
-		var gc = e.gc;
+		var gc = event.gc;
+		var clientArea = getClientArea();
 
 		if (_model == null) {
 			return;
 		}
+		
+		prepareGC(gc);
 
 		gc.setAlpha(5);
 		gc.setBackground(getForeground());
-		gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 20, e.height);
+		gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 20, clientArea.height);
 		gc.setAlpha(10);
-		gc.drawLine(ASSETS_MARGIN_X - 20, 0, ASSETS_MARGIN_X - 20, e.height);
+		gc.drawLine(ASSETS_MARGIN_X - 20, 0, ASSETS_MARGIN_X - 20, clientArea.height);
 		gc.setAlpha(255);
+
+		{
+			Transform tx = new Transform(getDisplay());
+			tx.translate(0, _scrollUtils.getOrigin().y);
+			gc.setTransform(tx);
+			tx.dispose();
+		}
 
 		var font = gc.getFont();
 
@@ -369,7 +401,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 						Rectangle bounds;
 
 						if (isFullRowAsset(asset)) {
-							bounds = new Rectangle(assetX, assetY, e.width - assetX - 10, _imageSize);
+							bounds = new Rectangle(assetX, assetY, clientArea.width - assetX - 10, _imageSize);
 						} else {
 							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
 						}
@@ -396,7 +428,11 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 						var renderer = getAssetRenderer(asset);
 
 						if (renderer != null) {
-							renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
+							try {
+								renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
+							} catch (Exception e2) {
+								e2.printStackTrace();
+							}
 						}
 
 						if (_utils.getOverObject() == asset) {
@@ -422,7 +458,9 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 						}
 
 						if (key2.length() < key.length()) {
-							key2 = key2.substring(0, key2.length() - 2) + "..";
+							if (key2.length() > 2) {
+								key2 = key2.substring(0, key2.length() - 2) + "..";
+							}
 						}
 
 						gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
@@ -430,7 +468,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 						assetX += bounds.width + ASSET_SPACING_X;
 
 						if (asset != last) {
-							if (assetX + _imageSize > e.width - 5) {
+							if (assetX + _imageSize > clientArea.width - 5) {
 								assetX = ASSETS_MARGIN_X;
 								assetY += _imageSize + ASSET_SPACING_Y;
 							}
@@ -446,6 +484,86 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		_renderInfoList = renderInfoList;
 		_actions = actions;
 
+	}
+
+	public Rectangle computeScrollArea() {
+		var gc = new GC(this);
+		var e = getClientArea();
+
+		try {
+
+			if (_model == null) {
+				return new Rectangle(0, 0, 0, 0);
+			}
+
+			var y = 10;
+
+			for (var section : _model.getSections()) {
+
+				y += ROW_HEIGHT;
+
+				if (isCollapsed(section)) {
+					continue;
+				}
+
+				var types = new ArrayList<>(List.of(AssetType.values()));
+
+				types.sort((a, b) -> {
+					var a1 = sortValue(section, a);
+					var b1 = sortValue(section, b);
+					return Long.compare(a1, b1);
+				});
+
+				for (var type : types) {
+					var group = section.getGroup(type);
+					var assets = group.getAssets();
+
+					if (assets.isEmpty()) {
+						continue;
+					}
+
+					if (isCollapsed(group)) {
+						y += ROW_HEIGHT;
+						continue;
+					}
+
+					int assetX = ASSETS_MARGIN_X;
+					int assetY = y;
+					int bottom = y;
+
+					var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
+					for (var asset : assets) {
+
+						Rectangle bounds;
+
+						if (isFullRowAsset(asset)) {
+							bounds = new Rectangle(assetX, assetY, e.width - assetX - 10, _imageSize);
+						} else {
+							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
+						}
+
+						bottom = Math.max(bottom, bounds.y + bounds.height);
+
+						assetX += bounds.width + ASSET_SPACING_X;
+
+						if (asset != last) {
+							if (assetX + _imageSize > e.width - 5) {
+								assetX = ASSETS_MARGIN_X;
+								assetY += _imageSize + ASSET_SPACING_Y;
+							}
+						}
+					} // end of assets loop
+
+					y = bottom + ASSET_SPACING_Y;
+
+					y += 10;
+				}
+			}
+
+			return new Rectangle(0, y, e.width, y);
+		} finally {
+			gc.dispose();
+		}
 	}
 
 	private boolean isCollapsed(Object obj) {
@@ -530,6 +648,8 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			return;
 		}
 
+		var before = _imageSize;
+
 		var f = e.count < 0 ? 0.8 : 1.2;
 
 		_imageSize = (int) (_imageSize * f);
@@ -538,7 +658,9 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			_imageSize = MIN_ROW_HEIGHT;
 		}
 
-		redraw();
+		if (_imageSize != before) {
+			updateScroll();
+		}
 	}
 
 	public void reveal(AssetModel asset) {
