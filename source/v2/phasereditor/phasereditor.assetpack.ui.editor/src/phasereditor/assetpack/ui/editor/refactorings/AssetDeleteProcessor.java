@@ -127,12 +127,14 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		CompositeChange change = new CompositeChange("Delete assets") {
-			
+
 			@SuppressWarnings("hiding")
 			@Override
 			public Change perform(IProgressMonitor pm) throws CoreException {
 				Change c = super.perform(pm);
-				swtRun( ()-> _editor.refresh() );
+
+				swtRun(() -> _editor.build());
+
 				return c;
 			}
 		};

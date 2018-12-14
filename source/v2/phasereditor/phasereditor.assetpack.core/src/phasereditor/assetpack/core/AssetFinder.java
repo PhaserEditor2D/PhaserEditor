@@ -21,7 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,18 +40,23 @@ public class AssetFinder {
 
 	private Map<String, IAssetKey> _map;
 	private IProject _project;
-	private AssetPackModel[] _extraPacks;
+	private AssetPackModel[] _contextPacks;
 
-	public AssetFinder(IProject project, AssetPackModel... extraPacks) {
+	public AssetFinder(IProject project, AssetPackModel... contextPacks) {
 		_project = project;
-		_extraPacks = extraPacks;
+		_contextPacks = contextPacks;
 
 		_map = new HashMap<>();
 	}
 
 	public void build() {
-		var packs = new ArrayList<>(AssetPackCore.getAssetPackModels(_project));
-		packs.addAll(List.of(_extraPacks));
+		var contextFiles = Arrays.stream(_contextPacks).map(p -> p.getFile()).collect(toSet());
+		
+		var sharedPacks = AssetPackCore.getAssetPackModels(_project).stream()
+				.filter(p -> !contextFiles.contains(p.getFile())).collect(toList());
+		
+		var packs = new ArrayList<>(List.of(_contextPacks));
+		packs.addAll(sharedPacks);
 
 		_map = new HashMap<>();
 
@@ -67,9 +76,9 @@ public class AssetFinder {
 	public IAssetKey findAssetKey(String key) {
 		return findAssetKey(key, null);
 	}
-	
+
 	public IAssetKey findAssetKey(String key, String frame) {
-		
+
 		if (key == null) {
 			return null;
 		}
@@ -81,20 +90,20 @@ public class AssetFinder {
 		} else {
 			assetKey = _map.get(hashKey(key, frame));
 		}
-		
+
 		return assetKey;
 	}
 
 	public ImageAssetModel findImage(String key) {
 		var texture = findTexture(key, key);
-		
+
 		if (texture != null && texture.getAsset() instanceof ImageAssetModel) {
 			return (ImageAssetModel) texture.getAsset();
 		}
-		
+
 		return null;
 	}
-	
+
 	public IAssetFrameModel findTexture(String key, String frame) {
 		var assetKey = findAssetKey(key, frame);
 
@@ -115,9 +124,9 @@ public class AssetFinder {
 
 	public AssetFinder snapshot() {
 		var finder = new AssetFinder(_project);
-		
+
 		finder._map = new HashMap<>(_map);
-		
+
 		return finder;
 	}
 

@@ -81,7 +81,7 @@ public class DeleteAssetChange extends Change {
 						AssetModel asset = section.findAsset(_asset.getKey());
 						if (asset != null) {
 							section.removeAsset(asset, false);
-							packEditor.refresh();
+							packEditor.build();
 						}
 					}
 				}
