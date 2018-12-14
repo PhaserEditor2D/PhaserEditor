@@ -128,6 +128,7 @@ public class AudioResourceDialog extends Dialog {
 			protected void setItemProperties(TreeCanvasItem item) {
 				super.setItemProperties(item);
 
+				
 				var renderer = new AudioTreeCanvasItemRenderer(item);
 
 				renderer.setLabel(item.getLabel());
@@ -149,7 +150,7 @@ public class AudioResourceDialog extends Dialog {
 	private List<IFile> _allFiles;
 	private LabelProvider _labelProvider;
 	private GdxMusicControl _audioPlayer;
-	private List<IFile> _initialFiles;
+	private List<IFile> _initialFiles = List.of();
 
 	public void setInput(List<IFile> files) {
 		_allFiles = files;
