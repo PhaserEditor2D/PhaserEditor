@@ -326,7 +326,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					_model.build();
 
 					_assetsCanvas.getUtils().setSelectionList(assets);
-					_assetsCanvas.redraw();
+					if (!assets.isEmpty()) {
+						_assetsCanvas.reveal(assets.get(0));
+					} else {
+						_assetsCanvas.redraw();
+					}
 
 					_model.setDirty(true);
 
@@ -547,6 +551,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private List<AssetModel> openNewAusiospriteListDialog(AssetSectionModel section) throws CoreException {
 		AssetPackModel pack = getModel();
+
 		List<IFile> audiospriteFiles = pack.discoverAudioSpriteFiles();
 
 		var shell = getEditorSite().getShell();
@@ -555,19 +560,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "audiosprite", audiospriteFiles, shell);
 
-		for (IFile file : selectedFiles) {
-			var asset = new AudioSpriteAssetModel(pack.createKey(file), section);
-			asset.setJsonURL(asset.getUrlFromFile(file));
-
-			List<IFile> files = pack.pickAudioFiles();
-			if (!files.isEmpty()) {
-				asset.setKey(pack.createKey(files.get(0)));
-				List<String> urls = asset.getUrlsFromFiles(files);
-				asset.setUrls(urls);
-			}
-
-			list.add(asset);
-		}
+		create_Assets_from_Files_and_add_to_List(list, section, AssetType.audioSprite, selectedFiles);
 
 		return list;
 	}
