@@ -186,6 +186,7 @@ public class AnimationsAssetModel extends AssetModel {
 		public void build(List<IStatus> problems) {
 
 			var finder = new AssetFinder(getPack().getFile().getProject());
+			finder.build();
 
 			for (var anim : getAnimations()) {
 				for (var animFrame : anim.getFrames()) {
