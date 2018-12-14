@@ -223,5 +223,13 @@
          </enablement>
       </moveParticipant>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.assetpack.ui.editor.build.AssetPackEditorProjectBuildParticipant"
+            id="phasereditor.assetpack.ui.editor.participant1"
+            order="phasereditor.assetpack.ui.editor.participant1">
+      </participant>
+   </extension>
 
 </plugin>

@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
-import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -961,6 +960,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			revealElement(section);
 		}
+	}
+
+	public void build() {
+		getModel().build();
+		refresh();
 	}
 
 }

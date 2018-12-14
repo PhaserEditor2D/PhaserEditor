@@ -175,7 +175,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 							addElementsToSection.accept(section);
 
-							editor.refresh();
+							editor.build();
 
 							pack.setDirty(false);
 						}

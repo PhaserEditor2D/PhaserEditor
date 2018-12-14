@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.atlas.core;bundle-version="1.4.0",
  phasereditor.inspect.core;bundle-version="1.4.0",
  phasereditor.audio.ui;bundle-version="2.0.0",
- phasereditor.audio.core;bundle-version="1.4.0"
+ phasereditor.audio.core;bundle-version="1.4.0",
+ phasereditor.project.ui;bundle-version="1.5.0"
 Automatic-Module-Name: phasereditor.assetpack.ui.editor
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui.editor,
