@@ -90,6 +90,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TextAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.XmlAssetModel;
+import phasereditor.assetpack.core.AssetFactory.MultiAtlasAssetFactory;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -327,6 +328,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					for (var asset : assets) {
 						section.addAsset(asset, false);
 					}
+
+					_model.build();
 
 					_assetsCanvas.getUtils().setSelectionList(assets);
 					_assetsCanvas.redraw();
@@ -609,6 +612,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			var type = fileTypeMap.get(file);
 
+			var factory = AssetFactory.getFactory(type);
+
 			if (type == AssetType.atlas || type == AssetType.atlasXML || type == AssetType.unityAtlas) {
 				var asset = new AtlasAssetModel(type, key, section);
 				asset.setAtlasURL(asset.getUrlFromFile(file));
@@ -624,7 +629,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 				list.add(asset);
 			} else {
-				var asset = new MultiAtlasAssetModel(key, section);
+				var asset = ((MultiAtlasAssetFactory) factory).createAsset(key, section, file);
 				list.add(asset);
 			}
 		}

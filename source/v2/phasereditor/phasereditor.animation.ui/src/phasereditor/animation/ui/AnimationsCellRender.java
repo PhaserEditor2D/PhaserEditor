@@ -43,11 +43,13 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 
 	private AnimationsModel _model;
 	private int _padding;
+	private AssetFinder _finder;
 
-	public AnimationsCellRender(AnimationsModel model, int padding) {
+	public AnimationsCellRender(AnimationsModel model, int padding, AssetFinder finder) {
 		super();
 		_model = model;
 		_padding = padding;
+		_finder = finder;
 	}
 
 	@SuppressWarnings("all")
@@ -59,8 +61,6 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 		height = height - _padding * 2;
 
 		var animsModel = _model.getAnimations();
-		var finder = new AssetFinder(_model.getFile().getProject());
-		finder.build();
 
 		var frames = new ArrayList<AnimationFrameModel>();
 
@@ -82,7 +82,7 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 			for (int j = start + 2; j >= start; j--) {
 				var frame = frames.get(j);
 
-				IAssetFrameModel asset = frame.getAssetFrame(finder);
+				IAssetFrameModel asset = frame.getAssetFrame(_finder);
 
 				if (asset != null) {
 					var file = asset.getImageFile();

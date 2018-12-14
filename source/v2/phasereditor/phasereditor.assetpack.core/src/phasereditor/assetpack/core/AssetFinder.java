@@ -21,7 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -34,15 +36,18 @@ public class AssetFinder {
 
 	private Map<String, IAssetKey> _map;
 	private IProject _project;
+	private AssetPackModel[] _extraPacks;
 
-	public AssetFinder(IProject project) {
+	public AssetFinder(IProject project, AssetPackModel... extraPacks) {
 		_project = project;
+		_extraPacks = extraPacks;
 
 		_map = new HashMap<>();
 	}
 
 	public void build() {
-		var packs = AssetPackCore.getAssetPackModels(_project);
+		var packs = new ArrayList<>(AssetPackCore.getAssetPackModels(_project));
+		packs.addAll(List.of(_extraPacks));
 
 		_map = new HashMap<>();
 

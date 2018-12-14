@@ -436,9 +436,18 @@ public abstract class AssetFactory {
 		@Override
 		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 			AssetPackModel pack = section.getPack();
-			var asset = new MultiAtlasAssetModel(key, section);
 
 			IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
+			
+			var asset = createAsset(key, section, file);
+
+			return asset;
+		}
+
+		public MultiAtlasAssetModel createAsset(String key, AssetSectionModel section, IFile file) {
+			var pack = section.getPack();
+			
+			var asset = new MultiAtlasAssetModel(key, section);
 
 			if (file != null) {
 				asset.setKey(pack.createKey(file));
@@ -446,7 +455,6 @@ public abstract class AssetFactory {
 				asset.setPath(ProjectCore.getAssetUrl(file.getProject(), file.getParent().getFullPath()));
 				asset.build(new ArrayList<>());
 			}
-
 			return asset;
 		}
 

@@ -50,6 +50,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.animation.ui.AnimationsCellRender;
 import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
@@ -258,6 +259,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 	@Override
 	public void paintControl(PaintEvent event) {
+
 		_collapseIconBoundsMap = new HashMap<>();
 
 		var renderInfoList = new ArrayList<AssetRenderInfo>();
@@ -269,6 +271,9 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		if (_model == null) {
 			return;
 		}
+
+		var finder = new AssetFinder(getModel().getFile().getProject(), getModel());
+		finder.build();
 
 		prepareGC(gc);
 
@@ -425,7 +430,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 							gc.fillRectangle(bounds);
 						}
 
-						var renderer = getAssetRenderer(asset);
+						var renderer = getAssetRenderer(asset, finder);
 
 						if (renderer != null) {
 							try {
@@ -592,7 +597,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		// gc.drawRectangle(bounds);
 	}
 
-	private ICanvasCellRenderer getAssetRenderer(AssetModel asset) {
+	private ICanvasCellRenderer getAssetRenderer(AssetModel asset, AssetFinder finder) {
 		if (asset instanceof ImageAssetModel) {
 			var asset2 = (ImageAssetModel) asset;
 			return new FrameCellRenderer(asset2.getUrlFile(), asset2.getFrame().getFrameData());
@@ -609,7 +614,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			return new FrameGridCellRenderer(new MultiAtlasAssetFrameProvider(asset2));
 		} else if (asset instanceof AnimationsAssetModel) {
 			var asset2 = (AnimationsAssetModel) asset;
-			return new AnimationsCellRender(asset2.getAnimationsModel(), 5);
+			return new AnimationsCellRender(asset2.getAnimationsModel(), 5, finder);
 		} else if (asset.getClass() == AudioAssetModel.class) {
 			var asset2 = (AudioAssetModel) asset;
 			for (var url : asset2.getUrls()) {
