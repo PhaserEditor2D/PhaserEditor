@@ -74,29 +74,23 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.JsonAssetModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.ShaderAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TextAssetModel;
-import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.XmlAssetModel;
-import phasereditor.assetpack.core.AssetFactory.MultiAtlasAssetFactory;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.assetpack.ui.ImageResourceDialog;
-import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
@@ -375,12 +369,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "tilemap", tilemapFiles, shell);
 
-		for (IFile file : selectedFiles) {
-			var factory = AssetFactory.getFactory(type);
-			var asset = (TilemapAssetModel) factory.createAsset(pack.createKey(file), section);
-			asset.setUrl(ProjectCore.getAssetUrl(file));
-			list.add(asset);
-		}
+		create_Assets_from_Files_and_add_to_List(list, section, type, selectedFiles);
 
 		return list;
 	}
@@ -604,34 +593,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		var selectedFiles = AssetPackUI.browseManyAssetFile(pack, "Atlas (Multi, JSON, XML, Unity)", atlasFiles, shell);
 
 		for (IFile file : selectedFiles) {
-
-			var key = pack.createKey(file);
-
-			var textureFile = file.getProject()
-					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("png"));
-
 			var type = fileTypeMap.get(file);
-
-			var factory = AssetFactory.getFactory(type);
-
-			if (type == AssetType.atlas || type == AssetType.atlasXML || type == AssetType.unityAtlas) {
-				var asset = new AtlasAssetModel(type, key, section);
-				asset.setAtlasURL(asset.getUrlFromFile(file));
-
-				var format = AtlasCore.getAtlasFormat(file);
-
-				if (format != null) {
-					asset.setFormat(format);
-				}
-
-				if (textureFile.exists()) {
-					asset.setTextureURL(asset.getUrlFromFile(textureFile));
-				}
-				list.add(asset);
-			} else {
-				var asset = ((MultiAtlasAssetFactory) factory).createAsset(key, section, file);
-				list.add(asset);
-			}
+			create_Asset_from_File_and_add_to_List(list, section, type, file);
 		}
 
 		return list;
@@ -676,6 +639,23 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return list;
 	}
 
+	private static void create_Asset_from_File_and_add_to_List(List<AssetModel> list, AssetSectionModel section,
+			AssetType type, IFile file) {
+		try {
+			list.add(AssetFactory.getFactory(type).createAsset(section, file));
+		} catch (Exception e) {
+			AssetPackUI.logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static void create_Assets_from_Files_and_add_to_List(List<AssetModel> list, AssetSectionModel section,
+			AssetType type, List<IFile> files) {
+		for (var file : files) {
+			create_Asset_from_File_and_add_to_List(list, section, type, file);
+		}
+	}
+
 	private List<AssetModel> openNewImageListDialog(AssetSectionModel section) throws CoreException {
 		AssetPackModel pack = getModel();
 		List<IFile> imageFiles = pack.discoverImageFiles();
@@ -693,9 +673,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		if (dlg.open() == Window.OK) {
 			for (Object obj : dlg.getMultipleSelection()) {
 				IFile file = (IFile) obj;
-				var asset = new ImageAssetModel(pack.createKey(file), section);
-				asset.setUrl(asset.getUrlFromFile(file));
-				list.add(asset);
+				create_Asset_from_File_and_add_to_List(list, section, AssetType.image, file);
 			}
 		}
 

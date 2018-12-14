@@ -88,27 +88,32 @@ public class AssetPackCore {
 	public static final String ASSET_PACK_PROBLEM_ID = "phasereditor.assetpack.core.problem";
 	private static final QualifiedName TILEMAP_TILESET_KEY = new QualifiedName("phasereditor2d.com", "tilemapCSV.data");
 
+	public static final String[] IMAGE_EXTS = { "png", "jpg", "jpeg", "gif", "bmp" };
+	public static final String[] AUDIO_EXTS = { "wav", "ogg", "mp3", "flac", "wma", "au" };
+	public static final String[] VIDEO_EXTS = { "mp4", "ogv", "webm", "flv", "wmv", "avi", "mpg" };
+	public static final String[] SHADER_EXTS = { "vert", "frag", "tesc", "tese", "geom", "comp" };
+
 	static {
 		_imageExtensions = new HashSet<>();
-		_imageExtensions.addAll(Arrays.asList("png", "jpg", "jpeg", "gif", "bmp"));
+		_imageExtensions.addAll(Arrays.asList(IMAGE_EXTS));
 
 		_audioExtensions = new HashSet<>();
 		// TODO: missing audio extensions
-		_audioExtensions.addAll(Arrays.asList("wav", "ogg", "mp3", "flac", "wma", "au", "webm"));
+		_audioExtensions.addAll(Arrays.asList(AUDIO_EXTS));
 
 		_videoExtensions = new HashSet<>();
 		// TODO: missing video extensions
-		_videoExtensions.addAll(Arrays.asList("mp4", "ogv", "webm", "flv", "wmv", "avi", "mpg"));
+		_videoExtensions.addAll(Arrays.asList(VIDEO_EXTS));
 
 		_shaderExtensions = new HashSet<>();
-		_shaderExtensions.addAll(Arrays.asList("vert", "frag", "tesc", "tese", "geom", "comp"));
+		_shaderExtensions.addAll(Arrays.asList(SHADER_EXTS));
 	}
 
 	public static void saveCSVTilemapData(TilemapAssetModel tilemapAsset, ImageAssetModel imageModel, int tileWidth,
 			int tileHeight) throws CoreException {
-		
+
 		var file = tilemapAsset.getUrlFile();
-		
+
 		if (file != null) {
 			var data = new JSONObject();
 
@@ -135,11 +140,11 @@ public class AssetPackCore {
 		if (file != null) {
 			try {
 				var str = file.getPersistentProperty(TILEMAP_TILESET_KEY);
-				
+
 				out.println("Get CSV info " + file.getName() + " " + str + "...");
 
 				if (str != null) {
-					
+
 					var data = new JSONObject(str);
 
 					var result = new TilemapCSVData();

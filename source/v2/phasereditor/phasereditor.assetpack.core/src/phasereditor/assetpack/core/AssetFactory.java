@@ -26,13 +26,11 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.project.core.ProjectCore;
-import phasereditor.ui.PhaserEditorUI;
 
 public abstract class AssetFactory {
 
@@ -44,14 +42,10 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.image) {
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				ImageAssetModel asset = new ImageAssetModel(key, section);
-				IFile file = pack.pickImageFile();
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-				}
+				ImageAssetModel asset = new ImageAssetModel(pack.createKey(file), section);
+				asset.setUrl(ProjectCore.getAssetUrl(file));
 				return asset;
 			}
 
@@ -63,14 +57,13 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.svg) {
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				var asset = new SvgAssetModel(key, section);
-				IFile file = pack.pickSvgFile();
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-				}
+
+				var asset = new SvgAssetModel(pack.createKey(file), section);
+
+				asset.setUrl(ProjectCore.getAssetUrl(file));
+
 				return asset;
 			}
 
@@ -82,14 +75,12 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.animation) {
 			@Override
-			public AnimationsAssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AnimationsAssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				var asset = new AnimationsAssetModel(key, section);
-				IFile file = pack.pickFile(pack.discoverAnimationsFiles());
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-				}
+				var asset = new AnimationsAssetModel(pack.createKey(file), section);
+
+				asset.setUrl(ProjectCore.getAssetUrl(file));
+
 				return asset;
 			}
 
@@ -106,14 +97,13 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				SpritesheetAssetModel asset = new SpritesheetAssetModel(key, section);
-				IFile file = pack.pickImageFile();
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-				}
+
+				SpritesheetAssetModel asset = new SpritesheetAssetModel(pack.createKey(file), section);
+
+				asset.setUrl(ProjectCore.getAssetUrl(file));
+
 				return asset;
 			}
 		});
@@ -126,10 +116,14 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				AudioAssetModel asset = new AudioAssetModel(key, section);
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
+
 				AssetPackModel pack = section.getPack();
+
+				AudioAssetModel asset = new AudioAssetModel(pack.createKey(file), section);
+
 				initAudioFiles(asset, pack);
+
 				return asset;
 			}
 		});
@@ -142,10 +136,13 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				VideoAssetModel asset = new VideoAssetModel(key, section);
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
+
+				VideoAssetModel asset = new VideoAssetModel(pack.createKey(file), section);
+
 				initVideoFiles(asset, pack);
+
 				return asset;
 			}
 		});
@@ -158,21 +155,13 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				AudioSpriteAssetModel asset = new AudioSpriteAssetModel(key, section);
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				// pick an audiosprite json file
-				IFile file = pack.pickAudioSpriteFile();
-				if (file == null) {
-					// there is not any audiosprite file, then try with an
-					// audio file
-					initAudioFiles(asset, pack);
-				} else {
-					// ok, there is an audiosprite json file, use it.
-					asset.setKey(pack.createKey(file));
-					asset.setJsonURLFile(file);
-					asset.setUrlsFromJsonResources();
-				}
+				AudioSpriteAssetModel asset = new AudioSpriteAssetModel(pack.createKey(file), section);
+
+				asset.setJsonURLFile(file);
+				asset.setUrlsFromJsonResources();
+
 				return asset;
 			}
 		});
@@ -190,20 +179,18 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				BitmapFontAssetModel asset = new BitmapFontAssetModel(key, section);
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				IFile file = pack.pickBitmapFontFile();
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setFontDataURL(ProjectCore.getAssetUrl(file));
+				BitmapFontAssetModel asset = new BitmapFontAssetModel(pack.createKey(file), section);
 
-					String name = PhaserEditorUI.getNameFromFilename(file.getName());
-					IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
-					if (imgFile.exists()) {
-						asset.setTextureURL(asset.getUrlFromFile(imgFile));
-					}
+				asset.setFontDataURL(ProjectCore.getAssetUrl(file));
+
+				IFile imgFile = discoverSiblingWithExtensions(file, AssetPackCore.IMAGE_EXTS);
+
+				if (imgFile.exists()) {
+					asset.setTextureURL(asset.getUrlFromFile(imgFile));
 				}
+
 				pack.pickFile(null);
 
 				return asset;
@@ -217,9 +204,9 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				// TODO: discover physics files
-				return new PhysicsAssetModel(key, section);
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
+				var pack = section.getPack();
+				return new PhysicsAssetModel(pack.createKey(file), section);
 			}
 		});
 
@@ -319,15 +306,10 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
-				var asset = new PluginAssetModel(key, section);
-				List<IFile> files = pack.discoverTextFiles(new String[] { "js" });
-				IFile file = pack.pickFile(files);
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-				}
+				var asset = new PluginAssetModel(pack.createKey(file), section);
+				asset.setUrl(ProjectCore.getAssetUrl(file));
 				return asset;
 			}
 		});
@@ -340,18 +322,17 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 				AssetPackModel pack = section.getPack();
+
+				var key = pack.createKey(file);
+
 				var asset = new ScenePluginAssetModel(key, section);
-				List<IFile> files = pack.discoverTextFiles(new String[] { "js" });
-				IFile file = pack.pickFile(files);
-				if (file != null) {
-					String newKey = pack.createKey(file);
-					asset.setKey(newKey);
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-					asset.setSystemKey("plugin" + newKey.substring(0, 1).toUpperCase() + newKey.substring(1));
-					asset.setSceneKey(newKey);
-				}
+
+				asset.setUrl(ProjectCore.getAssetUrl(file));
+				asset.setSystemKey("plugin" + key.substring(0, 1).toUpperCase() + key.substring(1));
+				asset.setSceneKey(key);
+
 				return asset;
 			}
 		});
@@ -423,7 +404,7 @@ public abstract class AssetFactory {
 	 * @return The new asset.
 	 * @throws Exception
 	 */
-	public abstract AssetModel createAsset(String key, AssetSectionModel section) throws Exception;
+	public abstract AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception;
 
 	public abstract AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception;
 
@@ -434,27 +415,15 @@ public abstract class AssetFactory {
 		}
 
 		@Override
-		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-			AssetPackModel pack = section.getPack();
-
-			IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
-			
-			var asset = createAsset(key, section, file);
-
-			return asset;
-		}
-
-		public MultiAtlasAssetModel createAsset(String key, AssetSectionModel section, IFile file) {
+		public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 			var pack = section.getPack();
-			
-			var asset = new MultiAtlasAssetModel(key, section);
 
-			if (file != null) {
-				asset.setKey(pack.createKey(file));
-				asset.setUrl(ProjectCore.getAssetUrl(file));
-				asset.setPath(ProjectCore.getAssetUrl(file.getProject(), file.getParent().getFullPath()));
-				asset.build(new ArrayList<>());
-			}
+			var asset = new MultiAtlasAssetModel(pack.createKey(file), section);
+
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+			asset.setPath(ProjectCore.getAssetUrl(file.getProject(), file.getParent().getFullPath()));
+			asset.build(new ArrayList<>());
+
 			return asset;
 		}
 
@@ -476,16 +445,11 @@ public abstract class AssetFactory {
 		}
 
 		@Override
-		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 			AssetPackModel pack = section.getPack();
-			TilemapAssetModel asset = new TilemapAssetModel(key, getType(), section);
+			TilemapAssetModel asset = new TilemapAssetModel(pack.createKey(file), getType(), section);
 
-			IFile file = pack.pickTilemapFile(getType());
-
-			if (file != null) {
-				asset.setKey(pack.createKey(file));
-				asset.setUrl(ProjectCore.getAssetUrl(file));
-			}
+			asset.setUrl(ProjectCore.getAssetUrl(file));
 
 			return asset;
 		}
@@ -503,34 +467,63 @@ public abstract class AssetFactory {
 		}
 
 		@Override
-		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-			AssetPackModel pack = section.getPack();
-			AtlasAssetModel asset = new AtlasAssetModel(getType(), key, section);
+		public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
+			var pack = section.getPack();
+			var asset = new AtlasAssetModel(getType(), pack.createKey(file), section);
 
-			IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
+			var format = AtlasCore.getAtlasFormat(file);
 
-			if (file == null) {
-				file = pack.pickImageFile();
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setTextureURL(ProjectCore.getAssetUrl(file));
-				}
-			} else {
-				asset.setKey(pack.createKey(file));
-				String format = AtlasCore.getAtlasFormat(file);
-				if (format != null) {
-					asset.setFormat(format);
-				}
-				asset.setAtlasURL(ProjectCore.getAssetUrl(file));
-				String name = PhaserEditorUI.getNameFromFilename(file.getName());
-				IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
-				if (imgFile.exists()) {
-					asset.setTextureURL(asset.getUrlFromFile(imgFile));
-				}
+			if (format != null) {
+				asset.setFormat(format);
+			}
+
+			asset.setAtlasURL(ProjectCore.getAssetUrl(file));
+
+			var imgFile = discoverSiblingWithExtensions(file, AssetPackCore.IMAGE_EXTS);
+
+			if (imgFile.exists()) {
+				asset.setTextureURL(asset.getUrlFromFile(imgFile));
 			}
 
 			return asset;
 		}
+	}
+
+	private static IFile discoverSiblingWithExtensions(IFile file, String... exts) {
+		var project = file.getProject();
+		var filepath = file.getProjectRelativePath();
+
+		var sibling = file;
+
+		// try by replacing the extension
+
+		for (var ext : exts) {
+			sibling = project.getFile(filepath.removeFileExtension().addFileExtension(ext));
+
+			if (sibling.exists()) {
+				return sibling;
+			}
+		}
+
+		// try by removing the extension
+
+		sibling = project.getFile(filepath.removeFileExtension());
+
+		if (sibling.exists()) {
+			return sibling;
+		}
+
+		// try by adding the extension
+
+		for (var ext : exts) {
+			sibling = project.getFile(filepath.addFileExtension(ext));
+
+			if (sibling.exists()) {
+				return sibling;
+			}
+		}
+
+		return sibling;
 	}
 
 	public static class HtmlTextureAssetFactory extends AssetFactory {
@@ -545,15 +538,12 @@ public abstract class AssetFactory {
 		}
 
 		@Override
-		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 			AssetPackModel pack = section.getPack();
-			HtmlTextureAssetModel asset = new HtmlTextureAssetModel(key, section);
-			List<IFile> files = pack.discoverTextFiles(new String[] { "html" });
-			IFile file = pack.pickFile(files);
-			if (file != null) {
-				asset.setKey(pack.createKey(file));
-				asset.setUrl(ProjectCore.getAssetUrl(file));
-			}
+			HtmlTextureAssetModel asset = new HtmlTextureAssetModel(pack.createKey(file), section);
+
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+
 			return asset;
 		}
 
@@ -569,15 +559,14 @@ public abstract class AssetFactory {
 		}
 
 		@Override
-		public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
 			AssetPackModel pack = section.getPack();
-			AbstractFileAssetModel asset = makeAsset(key, section);
-			List<IFile> files = pack.discoverTextFiles(_exts);
-			IFile file = pack.pickFile(files);
-			if (file != null) {
-				asset.setKey(pack.createKey(file));
-				asset.setUrl(ProjectCore.getAssetUrl(file));
-			}
+
+			AbstractFileAssetModel asset = makeAsset(pack.createKey(file), section);
+
+			asset.setKey(pack.createKey(file));
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+
 			return asset;
 		}
 
