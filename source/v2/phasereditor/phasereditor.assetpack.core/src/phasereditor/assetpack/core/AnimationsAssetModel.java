@@ -146,7 +146,13 @@ public class AnimationsAssetModel extends AssetModel {
 
 	@Override
 	public List<AnimationModel_in_AssetPack> getSubElements() {
-		return getAnimationsModel().getAnimations_in_AssetPack();
+		var animationsModel = getAnimationsModel();
+		
+		if (animationsModel == null) {
+			return List.of();
+		}
+		
+		return animationsModel.getAnimations_in_AssetPack();
 	}
 	
 	public AnimationsModel_in_AssetPack getAnimationsModel() {

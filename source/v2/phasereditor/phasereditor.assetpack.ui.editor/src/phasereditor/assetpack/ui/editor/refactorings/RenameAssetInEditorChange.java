@@ -58,7 +58,7 @@ public class RenameAssetInEditorChange extends BaseRenameAssetInEditorChange {
 				if (asset != null) {
 					asset.setKey(_newName, true);
 					_editor.refresh();
-					_editor.updateAssetEditor();
+					_editor.updatePropertyPages();
 				}
 			}
 

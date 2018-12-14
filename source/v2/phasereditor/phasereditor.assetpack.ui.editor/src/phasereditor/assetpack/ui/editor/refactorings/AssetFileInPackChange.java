@@ -91,7 +91,7 @@ public class AssetFileInPackChange extends Change {
 							asset.fileChanged(_oldFile, _newFile);
 						});
 						packEditor.refresh();
-						packEditor.updateAssetEditor();
+						packEditor.updatePropertyPages();
 					}
 				}
 			}

@@ -56,7 +56,7 @@ public class RenameAssetSectionInEditorChange extends BaseRenameAssetInEditorCha
 			if (section != null) {
 				section.setKey(_newName, true);
 				_editor.refresh();
-				_editor.updateAssetEditor();
+				_editor.updatePropertyPages();
 			}
 
 		});

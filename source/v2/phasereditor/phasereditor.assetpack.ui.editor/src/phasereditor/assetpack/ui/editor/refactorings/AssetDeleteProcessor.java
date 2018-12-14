@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor.refactorings;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -124,7 +126,16 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		CompositeChange change = new CompositeChange("Delete assets");
+		CompositeChange change = new CompositeChange("Delete assets") {
+			
+			@SuppressWarnings("hiding")
+			@Override
+			public Change perform(IProgressMonitor pm) throws CoreException {
+				Change c = super.perform(pm);
+				swtRun( ()-> _editor.refresh() );
+				return c;
+			}
+		};
 
 		for (Object elem : _elements) {
 

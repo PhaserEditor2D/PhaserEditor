@@ -100,7 +100,7 @@ public class RenameAssetSectionInFileChange extends Change {
 		if (section != null) {
 			section.setKey(_newName, false);
 			editor.refresh();
-			editor.updateAssetEditor();
+			editor.updatePropertyPages();
 		}
 	}
 

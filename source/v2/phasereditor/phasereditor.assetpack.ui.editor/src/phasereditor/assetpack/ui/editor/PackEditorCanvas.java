@@ -374,14 +374,14 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 					renderCollapseIcon(group, gc, collapsed, x, y2);
 					gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(type), x, y + 3);
 
-					var action = new IconAction(IMG_ADD, () -> {
-
-						_editor.openAddAssetDialog(section, type);
-
-					}, ASSETS_MARGIN_X - 40, y + 5);
-
-					action.paint(gc, action.getBounds().contains(_modelPointer));
-					actions.add(action);
+//					var action = new IconAction(IMG_ADD, () -> {
+//
+//						_editor.openAddAssetDialog(section, type);
+//
+//					}, ASSETS_MARGIN_X - 40, y + 5);
+//
+//					action.paint(gc, action.getBounds().contains(_modelPointer));
+//					actions.add(action);
 
 					// y += ROW_HEIGHT;
 

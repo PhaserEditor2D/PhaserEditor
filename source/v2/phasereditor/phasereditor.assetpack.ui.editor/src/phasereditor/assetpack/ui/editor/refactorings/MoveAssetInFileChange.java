@@ -114,7 +114,7 @@ public class MoveAssetInFileChange extends Change {
 		}
 		
 		editor.refresh();
-		editor.updateAssetEditor();
+		editor.updatePropertyPages();
 	}
 
 	@Override

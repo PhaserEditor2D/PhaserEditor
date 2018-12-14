@@ -44,6 +44,12 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		_editor = editor;
 	}
 
+	@Override
+	public void dispose() {
+		_editor.getPropertyPageList().remove(this);
+		super.dispose();
+	}
+	
 	public AssetPackEditor getEditor() {
 		return _editor;
 	}

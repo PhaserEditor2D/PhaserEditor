@@ -80,7 +80,7 @@ public class MoveAssetInEditorChange extends Change {
 			}
 
 			_editor.refresh();
-			_editor.updateAssetEditor();
+			_editor.updatePropertyPages();
 			_editor.revealElement(asset);
 		});
 

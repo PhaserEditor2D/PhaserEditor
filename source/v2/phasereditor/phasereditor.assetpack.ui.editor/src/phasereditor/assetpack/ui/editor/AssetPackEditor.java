@@ -26,6 +26,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,11 +50,9 @@ import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -332,7 +331,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					_assetsCanvas.getUtils().setSelectionList(assets);
 					_assetsCanvas.redraw();
-					
+
 					_model.setDirty(true);
 
 				}
@@ -834,11 +833,21 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						return;
 					}
 
-					ISelection sel = new StructuredSelection(event.getStructuredSelection().toList().stream()
-							.filter(o -> o instanceof AssetModel).toArray());
+					var list = event.getStructuredSelection().toList().stream()
 
-					getAssetsCanvas().getUtils().setSelection(sel);
-					getAssetsCanvas().redraw();
+							.filter(o -> o instanceof IAssetKey)
+
+							.map(o -> ((IAssetKey) o).getAsset())
+
+							.toArray();
+
+					getAssetsCanvas().getUtils().setSelectionList(Arrays.asList(list));
+
+					if (list.length > 0) {
+						getAssetsCanvas().reveal((AssetModel) list[0]);
+					} else {
+						getAssetsCanvas().redraw();
+					}
 				}
 			});
 
@@ -860,13 +869,25 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
+	private List<AssetPackEditorPropertyPage> _propertyPageList = new ArrayList<>();
+
+	List<AssetPackEditorPropertyPage> getPropertyPageList() {
+		return _propertyPageList;
+	}
+
+	public void updatePropertyPages() {
+		for (var page : _propertyPageList) {
+			page.selectionChanged(this, getSite().getSelectionProvider().getSelection());
+		}
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySheetPage.class) {
-			out.println("AssetPackEditor: create new propety page.");
-			// return new PGridPage(true);
-			return new AssetPackEditorPropertyPage(this);
+			var page = new AssetPackEditorPropertyPage(this);
+			_propertyPageList.add(page);
+			return page;
 		}
 
 		if (adapter == IContentOutlinePage.class) {
@@ -898,10 +919,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		return super.getAdapter(adapter);
-	}
-
-	public void updateAssetEditor() {
-		// TODO: What to do here? Maybe update all the properties.
 	}
 
 	public void handleFileRename(IFile file) {

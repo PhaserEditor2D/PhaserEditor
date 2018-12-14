@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
-import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
@@ -81,14 +80,12 @@ public class DeleteAssetInEditorChange extends Change {
 		AssetSectionModel section = _asset.getPack().findSection(_asset.getSection().getKey());
 		_index = section.getAssets().indexOf(_asset);
 
-		boolean[] reveal = { false };
+		// Display.getDefault().syncExec(() -> {
+		section.removeAsset(_asset, true);
+		// _editor.refresh();
+		// });
 
-		Display.getDefault().syncExec(() -> {
-			section.removeAsset(_asset, true);
-			_editor.refresh();
-		});
-
-		return new AddAssetInEditorChange(_asset, reveal[0], _index, _editor);
+		return new AddAssetInEditorChange(_asset, _index, _editor);
 	}
 
 	@Override

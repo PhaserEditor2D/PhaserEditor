@@ -104,7 +104,7 @@ public class RenameAssetInFileChange extends Change {
 			AssetModel asset = section.findAsset(_initialName);
 			asset.setKey(_newName, false);
 			editor.refresh();
-			editor.updateAssetEditor();
+			editor.updatePropertyPages();
 		}
 	}
 
