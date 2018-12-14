@@ -224,16 +224,6 @@ public final class AssetPackModel {
 			}
 		}
 
-		for (AssetSectionModel section : _sections) {
-			for (AssetModel model : section.getAssets()) {
-				var list = new ArrayList<IStatus>();
-				model.buildSecondPass(list);
-				for (var status : list) {
-					problems.add(new BuildProblem(status, model));
-				}
-			}
-		}
-
 		return problems;
 	}
 

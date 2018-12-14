@@ -129,7 +129,6 @@ public class AnimationsAssetModel extends AssetModel {
 
 				_animationsModel = new AnimationsModel_in_AssetPack(file, jsonData, _dataKey);
 				_animationsModel.setFile(file);
-				_animationsModel.build(problems);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -138,28 +137,21 @@ public class AnimationsAssetModel extends AssetModel {
 	}
 
 	@Override
-	public void buildSecondPass(List<IStatus> problems) {
-		if (_animationsModel != null) {
-			_animationsModel.build(problems);
-		}
-	}
-
-	@Override
 	public List<AnimationModel_in_AssetPack> getSubElements() {
 		var animationsModel = getAnimationsModel();
-		
+
 		if (animationsModel == null) {
 			return List.of();
 		}
-		
+
 		return animationsModel.getAnimations_in_AssetPack();
 	}
-	
+
 	public AnimationsModel_in_AssetPack getAnimationsModel() {
 		if (_animationsModel == null) {
 			build(new ArrayList<>());
 		}
-		
+
 		return _animationsModel;
 	}
 
@@ -183,24 +175,6 @@ public class AnimationsAssetModel extends AssetModel {
 			return _animations_in_AssetPack;
 		}
 
-		public void build(List<IStatus> problems) {
-
-			var finder = new AssetFinder(getPack().getFile().getProject(), getPack());
-			finder.build();
-
-			for (var anim : getAnimations()) {
-				for (var animFrame : anim.getFrames()) {
-
-					var frame = animFrame.getAssetFrame(finder);
-
-					if (frame == null) {
-						problems.add(errorStatus("Cannot find the frame '" + animFrame.getFrameName()
-								+ "' in the texture '" + animFrame.getTextureKey() + "'."));
-					}
-				}
-			}
-
-		}
 	}
 
 	public class AnimationModel_in_AssetPack extends AnimationModel implements IAssetElementModel {

@@ -321,17 +321,6 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 
 	}
 
-	/**
-	 * A second pass build. Asset models that uses other assets should link them in
-	 * a second pass because at a first pass it is possible the assets are not
-	 * ready.
-	 * 
-	 * @param problems
-	 */
-	public void buildSecondPass(List<IStatus> problems) {
-		// nothing
-	}
-
 	protected abstract void internalBuild(List<IStatus> problems);
 
 	protected void validateUrlAndData(List<IStatus> problems, String urlParam, String url, String dataParam,
