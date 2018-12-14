@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -75,17 +76,9 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.assetpack.core.AudioSpriteAssetModel;
-import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.JsonAssetModel;
-import phasereditor.assetpack.core.PhysicsAssetModel;
-import phasereditor.assetpack.core.ScriptAssetModel;
-import phasereditor.assetpack.core.ShaderAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.TextAssetModel;
-import phasereditor.assetpack.core.XmlAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -239,8 +232,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return false;
 	}
 
+	@SuppressWarnings("boxing")
 	private List<AssetModel> openNewAssetListDialog(AssetSectionModel section, AssetFactory factory) throws Exception {
 		AssetType type = factory.getType();
+
+		var pack = getModel();
 
 		switch (type) {
 
@@ -254,39 +250,90 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		case multiatlas:
 			return openNewAtlasListDialog(section);
 		case audioSprite:
-			return openNewAusiospriteListDialog(section);
+			return openNewAudioSpriteListDialog(section);
 		case binary:
-			return openNewBinaryListDialog(section);
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return getModel().discoverFiles(f -> true);
+				} catch (CoreException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		case json:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return getModel().discoverJsonFiles();
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
+		case physics:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverJsonFiles();
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
+		case glsl:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverTextFiles(AssetPackCore.SHADER_EXTS);
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
+		case text:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverFiles(f -> Boolean.TRUE);
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
+		case xml:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverTextFiles("xml");
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
+		case htmlTexture:
+		case html:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverTextFiles("html");
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
+		case script:
+		case plugin:
+		case scenePlugin:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverTextFiles("js");
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
 		case bitmapFont:
 			return openNewBitmapFontListDialog(section);
-		case json:
-			return openNewJsonListDialog(section);
-		case physics:
-			return openNewPhysicsListDialog(section);
-		case script:
-			return openNewScriptListDialog(section);
-		case glsl:
-			return openNewShaderListDialog(section);
 		case spritesheet:
 			return openNewSpritesheetListDialog(section);
-		case text:
-			return openNewTextListDialog(section);
 		case tilemapCSV:
 		case tilemapTiledJSON:
 		case tilemapImpact:
 			return openNewTilemapListDialog(section, type);
-		case xml:
-			return openNewXmlListDialog(section);
-
 		case animation:
-			break;
-		case html:
-			break;
-		case htmlTexture:
-			break;
-		case plugin:
-			break;
-		case scenePlugin:
 			break;
 		case svg:
 			break;
@@ -343,26 +390,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
-	private List<AssetModel> openNewXmlListDialog(AssetSectionModel section) throws CoreException {
-		AssetPackModel pack = getModel();
-
-		var xmlFiles = pack.discoverTextFiles("xml");
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "xml", xmlFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new XmlAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-			list.add(asset);
-		}
-
-		return list;
-	}
-
 	private List<AssetModel> openNewTilemapListDialog(AssetSectionModel section, AssetType type) throws Exception {
 		AssetPackModel pack = getModel();
 		var tilemapFiles = pack.discoverTilemapFiles(type);
@@ -374,25 +401,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "tilemap", tilemapFiles, shell);
 
 		create_Assets_from_Files_and_add_to_List(list, section, type, selectedFiles);
-
-		return list;
-	}
-
-	private List<AssetModel> openNewTextListDialog(AssetSectionModel section) throws CoreException {
-		AssetPackModel pack = getModel();
-		List<IFile> textFiles = pack.discoverFiles(f -> Boolean.TRUE);
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "text", textFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new TextAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-			list.add(asset);
-		}
 
 		return list;
 	}
@@ -423,86 +431,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return list;
 	}
 
-	private List<AssetModel> openNewShaderListDialog(AssetSectionModel section) throws CoreException {
-		AssetPackModel pack = getModel();
-		List<IFile> jsonFiles = pack.discoverTextFiles("vert", "frag", "tesc", "tese", "geom", "comp");
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "shader", jsonFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new ShaderAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-			list.add(asset);
-		}
-
-		return list;
-	}
-
-	private List<AssetModel> openNewScriptListDialog(AssetSectionModel section) throws CoreException {
-
-		AssetPackModel pack = getModel();
-		List<IFile> jsonFiles = pack.discoverTextFiles("js");
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "script", jsonFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new ScriptAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-			list.add(asset);
-		}
-
-		return list;
-
-	}
-
-	private List<AssetModel> openNewPhysicsListDialog(AssetSectionModel section) throws CoreException {
-		AssetPackModel pack = getModel();
-		List<IFile> jsonFiles = pack.discoverTextFiles("json");
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "physics", jsonFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new PhysicsAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-			list.add(asset);
-		}
-
-		return list;
-	}
-
-	private List<AssetModel> openNewJsonListDialog(AssetSectionModel section) throws CoreException {
-
-		AssetPackModel pack = getModel();
-		List<IFile> jsonFiles = pack.discoverTextFiles("json");
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "json", jsonFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new JsonAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-			list.add(asset);
-		}
-
-		return list;
-
-	}
-
 	private List<AssetModel> openNewBitmapFontListDialog(AssetSectionModel section) throws CoreException {
 		AssetPackModel pack = getModel();
 		List<IFile> jsonFiles = pack.discoverBitmapFontFiles();
@@ -529,27 +457,24 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return list;
 	}
 
-	private List<AssetModel> openNewBinaryListDialog(AssetSectionModel section) throws CoreException {
-		AssetPackModel pack = getModel();
-		List<IFile> binaryFiles = pack.discoverFiles(f -> Boolean.TRUE);
+	private List<AssetModel> openNewSimpleFileListDialog(AssetSectionModel section, AssetType type,
+			Supplier<List<IFile>> discoverFiles) {
+		var pack = getModel();
+
+		var dialogFiles = discoverFiles.get();
 
 		var shell = getEditorSite().getShell();
 
-		List<AssetModel> list = new ArrayList<>();
+		var list = new ArrayList<AssetModel>();
 
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "binary", binaryFiles, shell);
+		var selectedFiles = AssetPackUI.browseManyAssetFile(pack, type.getCapitalName(), dialogFiles, shell);
 
-		for (IFile file : selectedFiles) {
-			var asset = new BinaryAssetModel(pack.createKey(file), section);
-			asset.setUrl(asset.getUrlFromFile(file));
-
-			list.add(asset);
-		}
+		create_Assets_from_Files_and_add_to_List(list, section, type, selectedFiles);
 
 		return list;
 	}
 
-	private List<AssetModel> openNewAusiospriteListDialog(AssetSectionModel section) throws CoreException {
+	private List<AssetModel> openNewAudioSpriteListDialog(AssetSectionModel section) throws CoreException {
 		AssetPackModel pack = getModel();
 
 		List<IFile> audiospriteFiles = pack.discoverAudioSpriteFiles();
@@ -643,8 +568,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private static void create_Assets_from_Files_and_add_to_List(List<AssetModel> list, AssetSectionModel section,
-			AssetType type, List<IFile> files) {
-		for (var file : files) {
+			AssetType type, List<IFile> selectedFiles) {
+		for (var file : selectedFiles) {
 			create_Asset_from_File_and_add_to_List(list, section, type, file);
 		}
 	}
