@@ -21,24 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.assetpack.ui.editor.AssetPackEditor;
 import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
 
 /**
  * @author arian
  *
  */
-public class DeleteAssetHandler extends AbstractHandler{
+public class DeleteAssetHandler extends RefactoringHandler {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		AssetPackUIEditor.launchDeleteWizard(HandlerUtil.getCurrentStructuredSelection(event).toArray());
-		
+	protected Object execute(ExecutionEvent event, AssetPackEditor editor) {
+		AssetPackUIEditor.launchDeleteWizard(HandlerUtil.getCurrentStructuredSelection(event).toArray(), editor);
 		return null;
 	}
 

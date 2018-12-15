@@ -70,12 +70,19 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 			protected void accept(String value) {
 				getModels().forEach(model -> model.setKey(value));
 				getEditor().refresh();
+
 			}
 		};
 
 		addUpdate(() -> {
-			text.setText( "[" +  getModels().stream().map(m -> m.getKey()).collect(joining(",")) +  "]" );
-			text.setEditable(getModels().size() == 1);
+			var size = getModels().size();
+			
+			if (size == 1) {
+				text.setText(getModels().get(0).getKey());
+			} else {
+				text.setText("[" + getModels().stream().map(m -> m.getKey()).collect(joining(",")) + "]");
+			}
+			text.setEditable(size == 1);
 		});
 
 		return comp;
@@ -83,7 +90,12 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		manager.add(getEditor().getDeleteSelectionAction());
+		
+		var editor = getEditor();
+		
+		manager.add(editor.getRenameSelectionAction());
+		manager.add(editor.getDeleteSelectionAction());
+		
 	}
 
 }

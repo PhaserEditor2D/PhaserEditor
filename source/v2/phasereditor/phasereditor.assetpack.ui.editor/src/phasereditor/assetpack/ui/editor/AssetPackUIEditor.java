@@ -38,7 +38,6 @@ import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
@@ -78,17 +77,12 @@ public class AssetPackUIEditor {
 		return result;
 	}
 
-	public static void launchMoveWizard(AssetSectionModel section, IStructuredSelection selection) {
+	public static void launchMoveWizard(AssetSectionModel section, IStructuredSelection selection, AssetPackEditor editor) {
 		Object[] selarray = selection.toArray();
 
 		AssetModel[] assets = new AssetModel[selarray.length];
 
 		arraycopy(selarray, 0, assets, 0, selarray.length);
-
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
-
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
 		AssetMoveWizard wizard = new AssetMoveWizard(
 				new MoveRefactoring(new AssetMoveProcessor(section, assets, editor)));
@@ -101,13 +95,9 @@ public class AssetPackUIEditor {
 		}
 	}
 
-	public static void launchRenameWizard(Object element) {
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
-
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
-
+	public static void launchRenameWizard(Object element, AssetPackEditor editor) {
 		BaseAssetRenameProcessor processor;
+		
 		if (element instanceof AssetModel) {
 			processor = new AssetRenameProcessor((AssetModel) element, editor);
 		} else {
@@ -118,20 +108,14 @@ public class AssetPackUIEditor {
 
 		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
 		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Rename Asset");
+			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Rename Element");
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
 
 	}
 
-	public static void launchDeleteWizard(Object[] selection) {
-
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
-
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
-
+	public static void launchDeleteWizard(Object[] selection, AssetPackEditor editor) {
 		AssetDeleteWizard wizard = new AssetDeleteWizard(
 				new DeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
 

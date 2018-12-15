@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.editor;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_DELETE;
+import static phasereditor.ui.IEditorSharedImages.IMG_RENAME;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -616,6 +617,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private Action _deleteSelectionAction;
 
+	private Action _renameSelectionAction;
+
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -646,17 +649,29 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void createActions() {
-		_deleteSelectionAction = new Action("Delete selection", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+		_deleteSelectionAction = new Action("Delete selection (Refactoring)", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
 			@Override
 			public void run() {
 				var selection = getSelection();
-				AssetPackUIEditor.launchDeleteWizard(selection);
+				AssetPackUIEditor.launchDeleteWizard(selection, AssetPackEditor.this);
+			}
+		};
+		
+		_renameSelectionAction = new Action("Rename object (Refactoring)", EditorSharedImages.getImageDescriptor(IMG_RENAME)) {
+			@Override
+			public void run() {
+				var selection = getSelection();
+				AssetPackUIEditor.launchRenameWizard(selection[0], AssetPackEditor.this);
 			}
 		};
 	}
 
 	public Action getDeleteSelectionAction() {
 		return _deleteSelectionAction;
+	}
+	
+	public Action getRenameSelectionAction() {
+		return _renameSelectionAction;
 	}
 
 	@Override
@@ -733,10 +748,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	}
 
-	class AssetPackEditorOutlinePage extends FilteredTreeCanvasContentOutlinePage {
+	public class AssetPackEditorOutlinePage extends FilteredTreeCanvasContentOutlinePage {
 		private ISelectionChangedListener _listener;
 
 		public AssetPackEditorOutlinePage() {
+		}
+		
+		public AssetPackEditor getEditor() {
+			return AssetPackEditor.this;
 		}
 
 		@Override
@@ -866,8 +885,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return _assetsCanvas;
 	}
 
-	private void onClickedRenameButton() {
-		AssetPackUIEditor.launchRenameWizard(getSelection()[0]);
+	public void launchRenameWizard() {
+		AssetPackUIEditor.launchRenameWizard(getSelection()[0], this);
 	}
 
 	private void onClickedAddSectionButton() {
