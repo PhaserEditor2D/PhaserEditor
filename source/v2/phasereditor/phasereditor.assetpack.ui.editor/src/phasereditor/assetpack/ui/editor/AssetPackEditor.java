@@ -76,14 +76,13 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.assetpack.ui.ImageResourceDialog;
+import phasereditor.assetpack.ui.SvgResourceDialog;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
@@ -326,7 +325,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 			});
 		case bitmapFont:
-			return openNewBitmapFontListDialog(section);
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverBitmapFontFiles();
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
 		case spritesheet:
 			return openNewSpritesheetListDialog(section);
 		case tilemapCSV:
@@ -334,9 +340,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		case tilemapImpact:
 			return openNewTilemapListDialog(section, type);
 		case animation:
-			break;
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverAnimationsFiles();
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
 		case svg:
-			break;
+			return openNewSvgListDialog(section);
 		case video:
 			break;
 		default:
@@ -415,43 +428,15 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		var dlg = new ImageResourceDialog(shell);
 		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
 		dlg.setInput(imageFiles);
-		dlg.setObjectName("spritesheet");
+		dlg.setObjectName(AssetType.spritesheet.getCapitalName());
 
 		List<AssetModel> list = new ArrayList<>();
 
 		if (dlg.open() == Window.OK) {
 			for (Object obj : dlg.getMultipleSelection()) {
 				IFile file = (IFile) obj;
-				var asset = new SpritesheetAssetModel(pack.createKey(file), section);
-				asset.setUrl(asset.getUrlFromFile(file));
-				list.add(asset);
+				create_Asset_from_File_and_add_to_List(list, section, AssetType.spritesheet, file);
 			}
-		}
-
-		return list;
-	}
-
-	private List<AssetModel> openNewBitmapFontListDialog(AssetSectionModel section) throws CoreException {
-		AssetPackModel pack = getModel();
-		List<IFile> jsonFiles = pack.discoverBitmapFontFiles();
-
-		var shell = getEditorSite().getShell();
-
-		List<AssetModel> list = new ArrayList<>();
-
-		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "bitmapFont", jsonFiles, shell);
-
-		for (IFile file : selectedFiles) {
-			var asset = new BitmapFontAssetModel(pack.createKey(file), section);
-			asset.setFontDataURL(asset.getUrlFromFile(file));
-
-			var textureFile = file.getProject()
-					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("png"));
-			if (textureFile.exists()) {
-				asset.setTextureURL(asset.getUrlFromFile(textureFile));
-			}
-
-			list.add(asset);
 		}
 
 		return list;
@@ -592,6 +577,30 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			for (Object obj : dlg.getMultipleSelection()) {
 				IFile file = (IFile) obj;
 				create_Asset_from_File_and_add_to_List(list, section, AssetType.image, file);
+			}
+		}
+
+		return list;
+	}
+
+	private List<AssetModel> openNewSvgListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		List<IFile> imageFiles = pack.discoverFiles(f -> f.getFileExtension().equals("svg"));
+
+		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
+
+		var shell = getEditorSite().getShell();
+		var dlg = new SvgResourceDialog(shell);
+		dlg.setLabelProvider(AssetPackUI.createFilesLabelProvider(usedFiles, shell));
+		dlg.setInput(imageFiles);
+		dlg.setObjectName(AssetType.svg.getCapitalName());
+
+		List<AssetModel> list = new ArrayList<>();
+
+		if (dlg.open() == Window.OK) {
+			for (Object obj : dlg.getMultipleSelection()) {
+				IFile file = (IFile) obj;
+				create_Asset_from_File_and_add_to_List(list, section, AssetType.svg, file);
 			}
 		}
 
