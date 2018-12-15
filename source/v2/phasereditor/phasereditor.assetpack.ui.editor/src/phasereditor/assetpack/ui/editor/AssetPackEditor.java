@@ -165,7 +165,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
-	public void recoverEditingPoint() {
+	private void recoverEditingPoint() {
 		AssetPackModel pack = getModel();
 		IFile file = pack.getFile();
 		try {

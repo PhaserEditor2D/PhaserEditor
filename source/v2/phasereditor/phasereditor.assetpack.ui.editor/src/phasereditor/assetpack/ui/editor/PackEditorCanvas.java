@@ -32,6 +32,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -59,6 +64,7 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -78,6 +84,7 @@ import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
+import phasereditor.ui.LoadingCellRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ScrollUtils;
 import phasereditor.ui.SwtRM;
@@ -98,6 +105,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	private FrameCanvasUtils _utils;
 	private AssetPackEditor _editor;
 	private MyScrollUtils _scrollUtils;
+	private boolean _loadingImagesInBackground;
 
 	public PackEditorCanvas(AssetPackEditor editor, Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
@@ -118,6 +126,8 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		_boldFont = SwtRM.getBoldFont(getFont());
 
 		_renderInfoList = new ArrayList<>();
+
+		_loadingImagesInBackground = true;
 	}
 
 	class MyScrollUtils extends ScrollUtils {
@@ -598,6 +608,11 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 	}
 
 	private ICanvasCellRenderer getAssetRenderer(AssetModel asset, AssetFinder finder) {
+
+		if (_loadingImagesInBackground) {
+			return new LoadingCellRenderer();
+		}
+
 		if (asset instanceof ImageAssetModel) {
 			var asset2 = (ImageAssetModel) asset;
 			return new FrameCellRenderer(asset2.getUrlFile(), asset2.getFrame().getFrameData());
@@ -641,6 +656,46 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 	public void setModel(AssetPackModel model) {
 		_model = model;
+
+		loadImagesInBackground();
+	}
+
+	private void loadImagesInBackground() {
+
+		var files = new ArrayList<IFile>();
+
+		for (var asset : _model.getAssets()) {
+			for (var elem : asset.getSubElements()) {
+				if (elem instanceof IAssetFrameModel) {
+					var file = ((IAssetFrameModel) elem).getImageFile();
+					files.add(file);
+				}
+			}
+		}
+
+		var job = new Job("Loading Pack Editor images") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				monitor.beginTask("Loadng Pack Editor images", files.size());
+
+				for (var file : files) {
+
+					loadImage(file);
+
+					monitor.worked(1);
+				}
+
+				_loadingImagesInBackground = false;
+
+				swtRun(() -> {
+					redraw();
+				});
+
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 	}
 
 	public FrameCanvasUtils getUtils() {
