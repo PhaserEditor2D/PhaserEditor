@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_DELETE;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -48,11 +49,13 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -86,6 +89,7 @@ import phasereditor.assetpack.ui.SvgResourceDialog;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -148,13 +152,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return;
 		}
 
-		var sel = (IStructuredSelection) getEditorSite().getSelectionProvider().getSelection();
+		var sel = getSelection();
 
-		if (sel == null) {
+		if (sel.length == 0) {
 			return;
 		}
 
-		Object elem = sel.getFirstElement();
+		Object elem = sel[0];
 		if (elem != null) {
 			IFile file = pack.getFile();
 			try {
@@ -583,6 +587,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return list;
 	}
 
+	@SuppressWarnings("boxing")
 	private List<AssetModel> openNewSvgListDialog(AssetSectionModel section) throws CoreException {
 		AssetPackModel pack = getModel();
 		List<IFile> imageFiles = pack.discoverFiles(f -> f.getFileExtension().equals("svg"));
@@ -609,8 +614,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	Map<AssetSectionModel, AssetGroupModel> _lastSelectedTypeMap = new HashMap<>();
 
+	private Action _deleteSelectionAction;
+
 	@Override
 	public void createPartControl(Composite parent) {
+
+		createActions();
+
 		_assetsCanvas = new PackEditorCanvas(this, parent, 0);
 
 		_assetsCanvas.getUtils().addSelectionChangedListener(new ISelectionChangedListener() {
@@ -635,9 +645,23 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	}
 
+	private void createActions() {
+		_deleteSelectionAction = new Action("Delete selection", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+			@Override
+			public void run() {
+				var selection = getSelection();
+				AssetPackUIEditor.launchDeleteWizard(selection);
+			}
+		};
+	}
+
+	public Action getDeleteSelectionAction() {
+		return _deleteSelectionAction;
+	}
+
 	@Override
 	public ShowInContext getShowInContext() {
-		return new ShowInContext(getEditorInput(), getEditorSite().getSelectionProvider().getSelection());
+		return new ShowInContext(getEditorInput(), new StructuredSelection(getSelection()));
 	}
 
 	@Override
@@ -842,13 +866,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return _assetsCanvas;
 	}
 
-	private void onClickedDeleteButton() {
-		Object[] selection = _assetsCanvas.getUtils().getSelectionList().toArray();
-		AssetPackUIEditor.launchDeleteWizard(selection);
-	}
-
 	private void onClickedRenameButton() {
-		AssetPackUIEditor.launchRenameWizard(_assetsCanvas.getUtils().getStructuredSelection().getFirstElement());
+		AssetPackUIEditor.launchRenameWizard(getSelection()[0]);
 	}
 
 	private void onClickedAddSectionButton() {
@@ -875,6 +894,18 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public void build() {
 		getModel().build();
 		refresh();
+	}
+
+	private Object[] getSelection() {
+		var sel = (IStructuredSelection) getSite().getSelectionProvider().getSelection();
+
+		if (sel.isEmpty()) {
+			if (_outliner != null) {
+				return ((IStructuredSelection) _outliner.getSelection()).toArray();
+			}
+		}
+
+		return sel.toArray();
 	}
 
 }

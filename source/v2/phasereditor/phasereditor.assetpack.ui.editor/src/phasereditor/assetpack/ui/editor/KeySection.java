@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static java.util.stream.Collectors.joining;
+
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,6 +49,11 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 		return obj instanceof IEditableKey;
 	}
 
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number > 0;
+	}
+
 	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
@@ -66,10 +74,16 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 		};
 
 		addUpdate(() -> {
-			text.setText(flatValues_to_String(getModels().stream().map(model -> model.getKey())));
+			text.setText( "[" +  getModels().stream().map(m -> m.getKey()).collect(joining(",")) +  "]" );
+			text.setEditable(getModels().size() == 1);
 		});
 
 		return comp;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(getEditor().getDeleteSelectionAction());
 	}
 
 }

@@ -133,7 +133,11 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 			public Change perform(IProgressMonitor pm) throws CoreException {
 				Change c = super.perform(pm);
 
-				swtRun(() -> _editor.build());
+				swtRun(() -> {
+					if (_editor != null) {
+						_editor.build();
+					}
+				});
 
 				return c;
 			}
