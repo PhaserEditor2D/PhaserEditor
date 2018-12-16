@@ -145,10 +145,10 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 
 		gc.setLineStyle(SWT.LINE_SOLID);
 		
-		gc.setForeground(getForeground());
+		
 		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
 		
-		gc.setForeground(SwtRM.getColor(SWT.COLOR_RED));
+		gc.setForeground(Colors.color(Colors.RED));
 		gc.drawRectangle(dstX, dstY, dstW, dstH);
 		
 

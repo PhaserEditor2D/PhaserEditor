@@ -187,6 +187,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			var control = _section.createContent(this);
 			control.setLayoutData(createControlGridData());
 			control.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionBody");
+			if (control instanceof Composite) {
+				((Composite) control).setBackgroundMode(SWT.INHERIT_FORCE);
+			}
 
 			var toolbarManager = new ToolBarManager();
 			_section.fillToolbar(toolbarManager);

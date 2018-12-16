@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.properties;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -42,7 +43,7 @@ public class SingleFramePreviewSection extends FormPropertySection<IAssetKey> {
 		super("Texture Preview");
 		setFillSpace(true);
 	}
-	
+
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
@@ -55,7 +56,9 @@ public class SingleFramePreviewSection extends FormPropertySection<IAssetKey> {
 
 	@Override
 	public Control createContent(Composite parent) {
-		var preview = new ExplainAssetFrameCanvas(parent, SWT.BORDER);
+		var comp = new Composite(parent, 0);
+		comp.setLayout(new GridLayout(1, false));
+		var preview = new ExplainAssetFrameCanvas(comp, SWT.BORDER);
 		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
 		addUpdate(() -> {
 			var model = getModels().get(0);
@@ -64,7 +67,7 @@ public class SingleFramePreviewSection extends FormPropertySection<IAssetKey> {
 			}
 			preview.setModel((IAssetFrameModel) model);
 		});
-		return preview;
+		return comp;
 	}
 
 }
