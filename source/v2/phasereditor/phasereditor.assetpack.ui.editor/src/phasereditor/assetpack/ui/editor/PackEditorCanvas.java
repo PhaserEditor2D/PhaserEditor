@@ -63,6 +63,7 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AudioSpriteAssetCellRenderer;
@@ -70,6 +71,7 @@ import phasereditor.assetpack.ui.BitmapFontAssetCellRenderer;
 import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
 import phasereditor.audio.ui.AudioCellRenderer;
+import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameCanvasUtils;
@@ -638,11 +640,27 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			return new AudioSpriteAssetCellRenderer((AudioSpriteAssetModel) asset, 5);
 		} else if (asset instanceof BitmapFontAssetModel) {
 			return new BitmapFontAssetCellRenderer((BitmapFontAssetModel) asset);
+		} else if (asset instanceof ScriptAssetModel) {
+			var file = ((ScriptAssetModel) asset).getUrlFile();
+			if (file != null) {
+				var file2 = file.getProject()
+						.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
+				if (file2.exists()) {
+					var screenPath = SceneUI.getSceneScreenshotFile(file2, false);
+					if (screenPath != null) {
+						var screenFile = screenPath.toFile();
+						if (screenFile.exists()) {
+							var img = loadImage(screenFile);
+							if (img != null) {
+								return new FrameCellRenderer(screenFile, FrameData.fromImage(img));
+							}
+						}
+					}
+				}
+			}
 		}
 
-		else {
-			return new IconCellRenderer(AssetLabelProvider.GLOBAL_64.getImage(asset));
-		}
+		return new IconCellRenderer(AssetLabelProvider.GLOBAL_64.getImage(asset));
 	}
 
 	public AssetPackModel getModel() {
