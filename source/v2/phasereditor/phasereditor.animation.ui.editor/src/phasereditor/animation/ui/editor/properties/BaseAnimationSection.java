@@ -23,8 +23,8 @@ package phasereditor.animation.ui.editor.properties;
 
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+
 import phasereditor.animation.ui.editor.AnimationsEditor;
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -42,10 +42,6 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 
 	public AnimationsEditor getEditor() {
 		return _page.getEditor();
-	}
-
-	public AssetFinder getAssetFinder() {
-		return _page.getAssetFinder();
 	}
 
 	protected void restartPlayback() {

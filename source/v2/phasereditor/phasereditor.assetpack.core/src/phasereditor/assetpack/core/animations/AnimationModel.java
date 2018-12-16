@@ -32,8 +32,6 @@ import org.eclipse.ui.IPersistableElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetFinder;
-
 public class AnimationModel implements IAdaptable {
 
 	private String _key;
@@ -149,11 +147,7 @@ public class AnimationModel implements IAdaptable {
 	public AnimationsModel getAnimations() {
 		return _animations;
 	}
-	
-	public AssetFinder createAndBuildFinder() {
-		return _animations.createAndBuildFinder();
-	}
-	
+
 	public void buildTimeline() {
 		// recompute duration from the frame rate
 		setFrameRate(_frameRate);
@@ -288,7 +282,7 @@ public class AnimationModel implements IAdaptable {
 		if (adapter == IPersistableElement.class) {
 			return (T) this;
 		}
-		
+
 		return null;
 	}
 
@@ -296,14 +290,15 @@ public class AnimationModel implements IAdaptable {
 		buildTimeline();
 	}
 
-	public Set<IFile> computeUsedFiles(AssetFinder finder) {
+	public Set<IFile> computeUsedFiles() {
+
 		var result = new HashSet<IFile>();
 
 		var mainFile = getAnimations().getFile();
 		result.add(mainFile);
 
 		for (var animFrame : getFrames()) {
-			var assetFrame = animFrame.getAssetFrame(finder);
+			var assetFrame = animFrame.getAssetFrame();
 			if (assetFrame != null) {
 				var files = assetFrame.getAsset().computeUsedFiles();
 				for (var file : files) {

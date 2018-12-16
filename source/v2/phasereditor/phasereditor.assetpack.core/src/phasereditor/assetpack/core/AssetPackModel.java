@@ -40,6 +40,7 @@ import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -286,6 +287,14 @@ public final class AssetPackModel {
 	 */
 	public IFile getFile() {
 		return _file;
+	}
+
+	public IProject getProject() {
+		return _file.getProject();
+	}
+	
+	public AssetFinder getGlobalFinder() {
+		return AssetPackCore.getAssetFinder(getProject());
 	}
 
 	public void setFile(IFile file) {

@@ -28,7 +28,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
@@ -51,8 +50,6 @@ public class AnimationsAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 	public void render(PaintEvent e, int index, int x, int y) {
 		var animAssetModel = (AnimationsAssetModel) _item.getData();
 		var animsModel = animAssetModel.getSubElements();
-		var finder = new AssetFinder(animAssetModel.getPack().getFile().getProject());
-		finder.build();
 
 		var frames = new ArrayList<AnimationFrameModel>();
 
@@ -83,7 +80,7 @@ public class AnimationsAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 			for (int j = start + 2; j >= start; j--) {
 				var frame = frames.get(j);
 
-				IAssetFrameModel asset = frame.getAssetFrame(finder);
+				IAssetFrameModel asset = frame.getAssetFrame();
 
 				if (asset != null) {
 					var file = asset.getImageFile();

@@ -30,6 +30,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 
 import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -71,7 +72,7 @@ public class SceneCodeDomBuilder {
 
 	public SceneCodeDomBuilder(IFile file) {
 		_file = file;
-		_finder = new AssetFinder(file.getProject());
+		_finder = AssetPackCore.getAssetFinder(file.getProject());
 	}
 
 	private static String varname(ObjectModel model) {
@@ -84,8 +85,6 @@ public class SceneCodeDomBuilder {
 	}
 
 	public UnitDom build(SceneModel model) {
-
-		_finder.build();
 
 		var methods = new ArrayList<MemberDeclDom>();
 

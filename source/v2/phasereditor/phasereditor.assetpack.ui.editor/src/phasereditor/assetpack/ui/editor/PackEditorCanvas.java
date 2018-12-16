@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.animation.ui.AnimationsCellRender;
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
@@ -294,9 +293,6 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 				return;
 			}
 
-			var finder = new AssetFinder(getModel().getFile().getProject(), getModel());
-			finder.build();
-
 			prepareGC(gc);
 
 			gc.setAlpha(5);
@@ -441,7 +437,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 								gc.fillRectangle(bounds);
 							}
 
-							var renderer = getAssetRenderer(asset, finder);
+							var renderer = getAssetRenderer(asset);
 
 							if (renderer != null) {
 								try {
@@ -606,7 +602,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		// gc.drawRectangle(bounds);
 	}
 
-	private ICanvasCellRenderer getAssetRenderer(AssetModel asset, AssetFinder finder) {
+	private ICanvasCellRenderer getAssetRenderer(AssetModel asset) {
 
 		if (_loadingImagesInBackground) {
 			return new LoadingCellRenderer();
@@ -628,7 +624,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 			return new FrameGridCellRenderer(new MultiAtlasAssetFrameProvider(asset2));
 		} else if (asset instanceof AnimationsAssetModel) {
 			var asset2 = (AnimationsAssetModel) asset;
-			return new AnimationsCellRender(asset2.getAnimationsModel(), 5, finder);
+			return new AnimationsCellRender(asset2.getAnimationsModel(), 5);
 		} else if (asset.getClass() == AudioAssetModel.class) {
 			var asset2 = (AudioAssetModel) asset;
 			for (var url : asset2.getUrls()) {

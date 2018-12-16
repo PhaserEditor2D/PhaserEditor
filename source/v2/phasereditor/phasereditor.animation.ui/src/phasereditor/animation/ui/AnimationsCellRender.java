@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
@@ -43,13 +42,11 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 
 	private AnimationsModel _model;
 	private int _padding;
-	private AssetFinder _finder;
 
-	public AnimationsCellRender(AnimationsModel model, int padding, AssetFinder finder) {
+	public AnimationsCellRender(AnimationsModel model, int padding) {
 		super();
 		_model = model;
 		_padding = padding;
-		_finder = finder;
 	}
 
 	@SuppressWarnings("all")
@@ -82,7 +79,7 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 			for (int j = start + 2; j >= start; j--) {
 				var frame = frames.get(j);
 
-				IAssetFrameModel asset = frame.getAssetFrame(_finder);
+				IAssetFrameModel asset = frame.getAssetFrame();
 
 				if (asset != null) {
 					var file = asset.getImageFile();

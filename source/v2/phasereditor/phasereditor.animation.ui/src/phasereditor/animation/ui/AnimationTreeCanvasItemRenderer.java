@@ -50,8 +50,6 @@ public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer 
 	public void render(PaintEvent e, int index, int x, int y) {
 		var anim = (AnimationModel) _item.getData();
 		
-		var finder = anim.createAndBuildFinder();
-		
 		var canvas = _item.getCanvas();
 
 		var gc = e.gc;
@@ -68,7 +66,7 @@ public class AnimationTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer 
 		for (int j = 0; j < frames.size(); j++) {
 			var frame = frames.get(j);
 
-			IAssetFrameModel asset = frame.getAssetFrame(finder);
+			IAssetFrameModel asset = frame.getAssetFrame();
 
 			if (asset != null) {
 				var file = asset.getImageFile();

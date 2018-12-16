@@ -58,6 +58,7 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
 import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.ImagePreviewComp;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.project.core.ProjectCore;
@@ -278,8 +279,7 @@ public class SceneUI {
 			var model = new SceneModel();
 			model.read(file);
 
-			var finder = new AssetFinder(file.getProject());
-			finder.build();
+			var finder = AssetPackCore.getAssetFinder(file.getProject());
 
 			Image img = null;
 

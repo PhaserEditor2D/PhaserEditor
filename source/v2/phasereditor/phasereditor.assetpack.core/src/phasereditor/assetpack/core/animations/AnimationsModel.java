@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.core.AssetPackCore;
 
 /**
  * @author arian
@@ -81,18 +82,6 @@ public class AnimationsModel {
 	public AnimationsModel(IFile file, String dataKey) throws Exception {
 		this(JSONObject.read(file), dataKey);
 		_file = file;
-	}
-
-	public AssetFinder createFinder(boolean build) {
-		var finder = new AssetFinder(_file.getProject());
-		if (build) {
-			finder.build();
-		}
-		return finder;
-	}
-
-	public AssetFinder createAndBuildFinder() {
-		return createFinder(true);
 	}
 
 	public String getDataKey() {
@@ -165,17 +154,21 @@ public class AnimationsModel {
 
 	public Set<IFile> computeUsedFiles() {
 		var result = new HashSet<IFile>();
-		var finder = createAndBuildFinder();
 
 		if (_file != null) {
 			result.add(_file);
 		}
 
+		
 		for (var anim : _animations) {
-			var animFiles = anim.computeUsedFiles(finder);
+			var animFiles = anim.computeUsedFiles();
 			result.addAll(animFiles);
 		}
 
 		return result;
+	}
+
+	public AssetFinder getFinder() {
+		return AssetPackCore.getAssetFinder(_file.getProject());
 	}
 }

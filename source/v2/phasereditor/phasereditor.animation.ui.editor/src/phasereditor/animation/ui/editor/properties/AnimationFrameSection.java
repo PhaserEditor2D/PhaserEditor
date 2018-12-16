@@ -130,7 +130,7 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 				{
 
 					var frame = (IAssetFrameModel) flatValues_to_Object(
-							getModels().stream().map(model -> model.getAssetFrame(getAssetFinder())));
+							getModels().stream().map(model -> model.getAssetFrame()));
 
 					if (frame == null) {
 						canvas.removeImage();
@@ -155,7 +155,7 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 				{
 
 					var frame = (IAssetFrameModel) flatValues_to_Object(
-							getModels().stream().map(model -> model.getAssetFrame(getAssetFinder())));
+							getModels().stream().map(model -> model.getAssetFrame()));
 
 					if (frame == null) {
 						_frameLabel.setText("Frame");

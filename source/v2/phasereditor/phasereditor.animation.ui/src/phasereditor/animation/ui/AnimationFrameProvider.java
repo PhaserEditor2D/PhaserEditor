@@ -24,7 +24,6 @@ package phasereditor.animation.ui;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Rectangle;
 
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.IFrameProvider;
@@ -36,12 +35,10 @@ import phasereditor.ui.IFrameProvider;
 public class AnimationFrameProvider implements IFrameProvider {
 
 	private AnimationModel _model;
-	private AssetFinder _finder;
 
 	public AnimationFrameProvider(AnimationModel model) {
 		super();
 		_model = model;
-		_finder = model.createAndBuildFinder();
 	}
 
 	@Override
@@ -51,7 +48,7 @@ public class AnimationFrameProvider implements IFrameProvider {
 
 	@Override
 	public Rectangle getFrameRectangle(int index) {
-		var frame = getFrameObject(index).getAssetFrame(_finder);
+		var frame = getFrameObject(index).getAssetFrame();
 
 		if (frame == null) {
 			return null;
@@ -62,7 +59,7 @@ public class AnimationFrameProvider implements IFrameProvider {
 
 	@Override
 	public IFile getFrameImageFile(int index) {
-		var frame = getFrameObject(index).getAssetFrame(_finder);
+		var frame = getFrameObject(index).getAssetFrame();
 
 		if (frame == null) {
 			return null;
@@ -83,7 +80,7 @@ public class AnimationFrameProvider implements IFrameProvider {
 
 	@Override
 	public String getFrameLabel(int index) {
-		var frame = getFrameObject(index).getAssetFrame(_finder);
+		var frame = getFrameObject(index).getAssetFrame();
 		if (frame == null) {
 			return null;
 		}

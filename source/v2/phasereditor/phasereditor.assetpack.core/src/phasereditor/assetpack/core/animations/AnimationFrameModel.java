@@ -25,7 +25,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.IAssetFrameModel;
 
 public class AnimationFrameModel {
@@ -124,11 +123,8 @@ public class AnimationFrameModel {
 		_computedDuration = computedDuration;
 	}
 
-	public IAssetFrameModel getAssetFrame(AssetFinder finder) {
+	public IAssetFrameModel getAssetFrame() {
+		var finder = getAnimation().getAnimations().getFinder();
 		return finder.findTexture(_textureKey, _frameName + "");
-	}
-
-	public AssetFinder createAndBuildFinder() {
-		return _animation.createAndBuildFinder();
 	}
 }

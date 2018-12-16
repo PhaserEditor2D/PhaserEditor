@@ -24,11 +24,7 @@ package phasereditor.animation.ui.editor.properties;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IWorkbenchPart;
-
 import phasereditor.animation.ui.editor.AnimationsEditor;
-import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -39,28 +35,14 @@ import phasereditor.ui.properties.FormPropertySection;
 public class AnimationsPropertyPage extends FormPropertyPage {
 
 	private AnimationsEditor _editor;
-	private AssetFinder _finder;
 
 	public AnimationsPropertyPage(AnimationsEditor editor) {
 		super();
 		_editor = editor;
-		_finder = _editor.getModel().createFinder(false);
 	}
 
 	public AnimationsEditor getEditor() {
 		return _editor;
-	}
-
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-
-		_finder.build();
-
-		super.selectionChanged(part, selection);
-	}
-
-	public AssetFinder getAssetFinder() {
-		return _finder;
 	}
 
 	@Override

@@ -1065,7 +1065,7 @@ public class AssetPackCore {
 		finder.build();
 	}
 
-	public static AssetFinder getProjectAssetFinder(IProject project) {
+	public static AssetFinder getAssetFinder(IProject project) {
 		synchronized (_filePackMap) {
 			AssetFinder finder = _finderProjectMap.get(project);
 			if (finder == null) {

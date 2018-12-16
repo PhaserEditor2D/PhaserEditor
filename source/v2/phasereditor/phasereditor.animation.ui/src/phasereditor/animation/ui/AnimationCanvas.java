@@ -266,7 +266,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void setFrameTexture() {
-		var finder = getModel().getAnimations().createAndBuildFinder();
 
 		var frames = getModel().getFrames();
 
@@ -274,7 +273,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 			var frame = frames.get(_currentFrame);
 
-			var texture = frame.getAssetFrame(finder);
+			var texture = frame.getAssetFrame();
 
 			if (texture == null) {
 				_image = null;

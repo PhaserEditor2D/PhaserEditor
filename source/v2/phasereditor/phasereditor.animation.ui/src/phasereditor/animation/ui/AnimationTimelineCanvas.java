@@ -356,8 +356,6 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			return;
 		}
 		
-		var finder = _model.createAndBuildFinder();
-
 		{
 			// update scroll form animation progress
 			var timeline = _animCanvas.getTimeline();
@@ -396,7 +394,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 		for (int i = 0; i < frames.size(); i++) {
 			var animFrame = frames.get(i);
 
-			var frame = animFrame.getAssetFrame(finder);
+			var frame = animFrame.getAssetFrame();
 
 			if (frame == null) {
 				continue;
@@ -412,7 +410,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 			var animFrame = frames.get(i);
 
-			var frame = animFrame.getAssetFrame(finder);
+			var frame = animFrame.getAssetFrame();
 
 			if (frame == null) {
 				continue;
@@ -683,9 +681,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			return;
 		}
 
-		var finder = _model.createAndBuildFinder();
-		
-		IAssetFrameModel assetFrame = frame.getAssetFrame(finder);
+		IAssetFrameModel assetFrame = frame.getAssetFrame();
 		
 		if (assetFrame != null) {
 
