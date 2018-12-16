@@ -243,6 +243,8 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
+		} finally {
+			AssetPackCore.rebuildFinder(project);
 		}
 	}
 

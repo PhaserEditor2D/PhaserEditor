@@ -51,10 +51,10 @@ public class AssetFinder {
 
 	public void build() {
 		var contextFiles = Arrays.stream(_contextPacks).map(p -> p.getFile()).collect(toSet());
-		
+
 		var sharedPacks = AssetPackCore.getAssetPackModels(_project).stream()
 				.filter(p -> !contextFiles.contains(p.getFile())).collect(toList());
-		
+
 		var packs = new ArrayList<>(List.of(_contextPacks));
 		packs.addAll(sharedPacks);
 

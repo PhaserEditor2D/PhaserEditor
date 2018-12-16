@@ -611,7 +611,8 @@ public class AssetPackCore {
 		}
 	}
 
-	protected static Map<IFile, AssetPackModel> _filePackMap = new HashMap<>();
+	private static Map<IFile, AssetPackModel> _filePackMap = new HashMap<>();
+	private static Map<IProject, AssetFinder> _finderProjectMap = new HashMap<>();
 	private static AnimationsFileDataCache _animationsFileCache;
 
 	public static List<AssetPackModel> getAssetPackModels(IProject project) {
@@ -673,7 +674,7 @@ public class AssetPackCore {
 		}
 	}
 
-	public static void discoverAssetPackModels(IProject project) {
+	static void discoverAssetPackModels(IProject project) {
 		if (!project.isAccessible()) {
 			return;
 		}
@@ -699,6 +700,12 @@ public class AssetPackCore {
 		} catch (CoreException e) {
 			logError(e);
 		}
+		
+		synchronized (_filePackMap) {
+			var finder = new AssetFinder(project);
+			finder.build();
+			_finderProjectMap.put(project, finder);
+		}
 	}
 
 	public static AssetPackModel getAssetPackModel(IFile file) throws Exception {
@@ -718,6 +725,8 @@ public class AssetPackCore {
 				try {
 					model = new AssetPackModel(file);
 					_filePackMap.put(file, model);
+					
+					rebuildFinder(file.getProject());
 
 					return model;
 				} catch (Exception e) {
@@ -736,6 +745,9 @@ public class AssetPackCore {
 			if (file.exists()) {
 				AssetPackModel model = new AssetPackModel(file);
 				_filePackMap.put(file, model);
+
+				rebuildFinder(file.getProject());
+
 				return model;
 			}
 
@@ -755,6 +767,7 @@ public class AssetPackCore {
 		for (AssetPackModel pack : list) {
 			removeAssetPackModel(pack);
 		}
+		_finderProjectMap.put(project, new AssetFinder(project));
 	}
 
 	public static void moveAssetPackModel(IFile newFile, AssetPackModel model) {
@@ -1040,5 +1053,30 @@ public class AssetPackCore {
 	public static <T extends IAssetKey> List<T> sortAssets(List<T> assets) {
 		return assets.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
 				.collect(toList());
+	}
+
+	static void rebuildFinder(IProject project) {
+		var finder = _finderProjectMap.get(project);
+		
+		if (finder == null) {
+			_finderProjectMap.put(project, finder = new AssetFinder(project));
+		}
+		
+		finder.build();
+	}
+
+	public static AssetFinder getProjectAssetFinder(IProject project) {
+		synchronized (_filePackMap) {
+			AssetFinder finder = _finderProjectMap.get(project);
+			if (finder == null) {
+				out.println("There is something wrong, the finder is not created for this project."
+						+ "Let's create one to prevent an error propagation.");
+				finder = new AssetFinder(project);
+				finder.build();
+				_finderProjectMap.put(project, finder);
+			}
+
+			return finder;
+		}
 	}
 }
