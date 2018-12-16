@@ -229,6 +229,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					if (item._toggleHitArea != null) {
 
 						if (item._toggleHitArea.contains(modelPoint)) {
+							
 							toggleItem(item);
 
 							return;
@@ -239,13 +240,16 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 						if (item._checkHitArea.contains(modelPoint)) {
 							item._checked = !item._checked;
+							
 							redraw();
+							
 							return;
 						}
 					}
 
 					if (_overAction != null) {
 						_overAction.run(e);
+						return;
 					}
 				}
 
