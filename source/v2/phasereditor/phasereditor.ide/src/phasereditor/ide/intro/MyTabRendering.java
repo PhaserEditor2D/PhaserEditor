@@ -511,8 +511,8 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 		// Changed: Arian Fornaris
 		//gc.drawPolyline(tmpPoints);
 		gc.setAlpha(80);
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLUE));
-		gc.drawLine(bounds.x, bounds.y, bounds.x + bounds.width, bounds.y);
+		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_LIST_SELECTION));
+		gc.drawLine(bounds.x - 2, bounds.y, bounds.x + bounds.width, bounds.y);
 		gc.setAlpha(255);
 		
 		Rectangle rect = null;
