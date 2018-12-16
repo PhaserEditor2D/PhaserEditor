@@ -787,8 +787,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					AssetLabelProvider.GLOBAL_16) {
 
 				@Override
-				protected void setItemIconProperties(TreeCanvasItem item) {
-					super.setItemIconProperties(item);
+				protected void setItemProperties(TreeCanvasItem item) {
+					super.setItemProperties(item);
 
 					if (item.getData() instanceof AssetSectionModel) {
 						var section = (AssetSectionModel) item.getData();

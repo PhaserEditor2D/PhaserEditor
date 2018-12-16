@@ -93,7 +93,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 
 	protected void refreshLabels() {
 		for (var item : _tree.getItems()) {
-			setItemProperties(item);
+			setItemProperties_priv(item);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	private void refreshItem(TreeCanvasItem item) {
-		setItemProperties(item);
+		setItemProperties_priv(item);
 
 		var children = _contentProvider.getChildren(item.getData());
 
@@ -125,6 +125,11 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		}
 	}
 
+	private void setItemProperties_priv(TreeCanvasItem item) {
+		item.setActions(new ArrayList<>());
+		setItemProperties(item);
+	}
+	
 	protected void setItemProperties(TreeCanvasItem item) {
 		item.setLabel(_labelProvider.getText(item.getData()));
 
