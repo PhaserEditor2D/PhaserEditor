@@ -889,9 +889,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		AssetPackUIEditor.launchRenameWizard(getSelection()[0], this);
 	}
 
-	private void onClickedAddSectionButton() {
-		AssetPackModel model = getModel();
-		InputDialog dlg = new InputDialog(getSite().getShell(), "New Section", "Enter the section key:",
+	public void launchAddSectionDialog() {
+		var model = getModel();
+		var dlg = new InputDialog(getSite().getShell(), "New Section", "Enter the section key:",
 				model.createKey("section"), new IInputValidator() {
 
 					@Override
@@ -903,6 +903,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			var sectionName = dlg.getValue();
 
 			var section = new AssetSectionModel(sectionName, model);
+			model.addSection(section, true);
 
 			refresh();
 

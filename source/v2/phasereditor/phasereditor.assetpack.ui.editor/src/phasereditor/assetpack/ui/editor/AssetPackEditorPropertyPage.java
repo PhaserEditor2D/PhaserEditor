@@ -49,19 +49,21 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		_editor.getPropertyPageList().remove(this);
 		super.dispose();
 	}
-	
+
 	public AssetPackEditor getEditor() {
 		return _editor;
 	}
 
 	@Override
 	protected Object getDefaultModel() {
-		return null;
+		return getEditor().getModel();
 	}
 
 	@Override
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
+
+		list.add(new PackSection(this));
 
 		list.add(new KeySection(this));
 
@@ -86,7 +88,7 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		list.add(new BitmapFontSection(this));
 
 		list.add(new HtmlTextureSection(this));
-		
+
 		for (var factory : AssetFactory.getFactories()) {
 			if (factory instanceof AbstractFileAssetFactory) {
 				list.add(new FileSection(this, factory.getType()));
@@ -95,7 +97,7 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 
 		list.add(new PluginSection(this));
 		list.add(new ScenePluginSection(this));
-		
+
 		list.addAll(super.createSections());
 
 		return list;
