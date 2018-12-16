@@ -72,7 +72,6 @@ import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
 import phasereditor.audio.ui.AudioCellRenderer;
 import phasereditor.ui.BaseImageCanvas;
-import phasereditor.ui.Colors;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameCellRenderer;
@@ -437,11 +436,9 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 						}
 
 						if (_utils.getOverObject() == asset) {
-							gc.setForeground(Colors.color(Colors.BLACK));
 							gc.drawRectangle(bounds);
 						} else {
 							gc.setAlpha(30);
-							gc.setForeground(getForeground());
 							gc.drawRectangle(bounds);
 							gc.setAlpha(255);
 						}
