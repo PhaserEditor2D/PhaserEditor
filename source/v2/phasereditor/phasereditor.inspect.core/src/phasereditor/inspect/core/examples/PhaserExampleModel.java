@@ -81,7 +81,7 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 		_mainFilePath = mainFilePath;
 		_fullname = category.getFullName() + " / " + _name;
 	}
-	
+
 	public String getFullName() {
 		return _fullname;
 	}
@@ -128,6 +128,14 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 				Path phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
 						"phaser-master/typescript/");
 				copy(phaserBuildFolder.resolve("phaser.d.ts"), folder.getFile("typings/phaser.d.ts"), monitor);
+			}
+
+			{
+				// copy jsconfig.json
+				Path phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN,
+						"phaser-custom/");
+				Path jsconfig = phaserCustomFolder.resolve("examples/examples-jsconfig.json");
+				copy(jsconfig, folder.getFile("jsconfig.json"), monitor);
 			}
 
 			{
@@ -210,12 +218,12 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 	public PhaserExampleCategoryModel getCategory() {
 		return _category;
 	}
-	
+
 	@Override
 	public Path getFilePath() {
 		return getMainFilePath();
 	}
-	
+
 	@Override
 	public int getLine() {
 		return -1;
