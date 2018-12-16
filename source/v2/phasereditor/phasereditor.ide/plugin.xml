@@ -110,8 +110,6 @@
             A perspective to learn and experiment with Phaser.
          </description>
       </perspective>
-   </extension>   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
    </extension>
                   <extension
                         point="org.eclipse.e4.ui.css.swt.theme">
