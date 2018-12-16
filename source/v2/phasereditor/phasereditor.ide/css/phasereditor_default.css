@@ -57,3 +57,55 @@
 	swt-header-background-color: #d4d4d4;
 }
 
+
+/* Forms */
+
+
+Form, FormHeading {
+	background-color: #e8e8e8;
+	background: #e8e8e8;
+	background-image: #e8e8e8;
+	color: #000000;
+}
+
+Form {
+	/* Bug 465148: Additional styling for the Form */
+	text-background-color: #e0e0e0;
+
+	tb-toggle-hover-color: #505050;
+	tb-toggle-color: #505050;
+	h-hover-full-color: #505050;
+	h-hover-light-color: #505050;
+	h-bottom-keyline-2-color: #eaeaea;
+	h-bottom-keyline-1-color: #eaeaea;
+}
+
+
+
+Section {
+	background-color: #e8e8e8;
+	swt-background-mode: 'force';
+  	color: #000000;
+  	background-color-titlebar: #e0e0e0;
+  	background-color-gradient-titlebar: #e0e0e0;
+  	border-color-titlebar: #e0e0e0;
+}
+
+TabbedPropertyTitle > CLabel{
+	color: #000000;
+}
+
+TabbedPropertyTitle {
+	swt-backgroundGradientStart-color:  #eaeaea;
+	swt-backgroundGradientEnd-color:    #eaeaea;
+	swt-backgroundBottomKeyline1-color: #eaeaea;
+	swt-backgroundBottomKeyline2-color: #eaeaea;
+}
+
+TabbedPropertyList {
+	swt-tabAreaBackground-color : #e8e8e8;
+	swt-tabBackground-color     : #e8e8e8;
+	swt-tabNormalShadow-color   : #e8e8e8;             /* color of shadow lines around the tabs */
+	swt-tabDarkShadow-color     : #e8e8e8; /* line color of the tiny scroll triangle (at top / at bottom) */
+	color                       : #000000; /* text color in the tab / tab area */
+}
