@@ -1,5 +1,5 @@
 .MTrimmedWindow {
-    background-color: #040404;
+    background-color: #565656;
     color: #f0f0f0;
 }
 #org-eclipse-ui-main-toolbar  Text {
@@ -37,7 +37,8 @@
 .MPart.active .Canvas, 
 .MPart.active Label, 
 .MPart.active TabFolder, 
-.MPart.active TabItem {
+.MPart.active TabItem,
+.MPart.active Form {
 	background-color: #363636;
 	color: #eeeeee;
 }
@@ -49,7 +50,8 @@
 .MPart .Canvas,
 .MPart Label,
 .MPart TabFolder,
-.MPart TabItem {
+.MPart TabItem,
+.MPart Form {
 	background-color: #343434;
 	color: #c5c5c5;
 }
@@ -58,7 +60,7 @@
 	background-color: #666666;
 }
 
-.MPart Text {
+.MPart Text, .MPart StyledText {
 	background-color: #262626;
 	color: #eeeeee;
 }
@@ -74,6 +76,63 @@
 .MPart Table, .MPart Tree {
 	swt-header-background-color: #d4d4d4;
 }
+
+/* Forms */
+
+
+Form, FormHeadingm {
+	background-color: #363636;
+	background: #363636;
+	background-image: #363636;
+	color: #c5c5c5;
+}
+
+Form {
+	/* Bug 465148: Additional styling for the Form */
+	text-background-color: #363636;
+
+	tb-toggle-hover-color: #c5c5c5;
+	tb-toggle-color: #c5c5c5;
+	h-hover-full-color: #c5c5c5;
+	h-hover-light-color: #c5c5c5;
+	h-bottom-keyline-2-color: #363636;
+	h-bottom-keyline-1-color: #363636;
+}
+
+ScrolledFormText,
+FormText {
+    background-color: #666666;
+    color: #f0f0f0;
+}
+
+Section {
+	background-color: #363636;
+	swt-background-mode: 'force';
+  	color: #c5c5c5;
+  	background-color-titlebar: #303030;
+  	background-color-gradient-titlebar: #363636;
+  	border-color-titlebar: #363636;
+}
+
+TabbedPropertyTitle > CLabel{
+	color: #c5c5c5;
+}
+
+TabbedPropertyTitle {
+	swt-backgroundGradientStart-color:  #363636;
+	swt-backgroundGradientEnd-color:    #363636;
+	swt-backgroundBottomKeyline1-color: #363636;
+	swt-backgroundBottomKeyline2-color: #363636;
+}
+
+TabbedPropertyList {
+	swt-tabAreaBackground-color : #363636;
+	swt-tabBackground-color     : #363636;
+	swt-tabNormalShadow-color   : #363636;             /* color of shadow lines around the tabs */
+	swt-tabDarkShadow-color     : #363636; /* line color of the tiny scroll triangle (at top / at bottom) */
+	color                       : #f0f0f0; /* text color in the tab / tab area */
+}
+
 
 
 
