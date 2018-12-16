@@ -22,7 +22,6 @@
 package phasereditor.assetpack.ui.editor;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
-import static phasereditor.ui.IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
@@ -37,8 +36,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -327,18 +324,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 				var action = new IconAction(IMG_ADD, () -> {
 
-					var manager = new MenuManager();
-					for (var type : AssetType.values()) {
-						if (AssetType.isTypeSupported(type.name())) {
-							manager.add(new Action(type.getCapitalName(),
-									EditorSharedImages.getImageDescriptor(IMG_TYPE_VARIABLE_OBJ)) {
-								@Override
-								public void run() {
-									_editor.openAddAssetDialog(section, type);
-								}
-							});
-						}
-					}
+					var manager = _editor.createAddAssetMenu(section);
 					var menu = manager.createContextMenu(PackEditorCanvas.this);
 					menu.setVisible(true);
 					// _editor.openAddAssetButtonDialog(section, null);

@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.editor;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_DELETE;
 import static phasereditor.ui.IEditorSharedImages.IMG_RENAME;
+import static phasereditor.ui.IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -51,6 +52,7 @@ import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -58,6 +60,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -93,6 +96,8 @@ import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 
 /**
  * @author arian
@@ -234,6 +239,22 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
+	}
+
+	MenuManager createAddAssetMenu(AssetSectionModel section) {
+		var manager = new MenuManager();
+		for (var type : AssetType.values()) {
+			if (AssetType.isTypeSupported(type.name())) {
+				manager.add(new Action(type.getCapitalName(),
+						EditorSharedImages.getImageDescriptor(IMG_TYPE_VARIABLE_OBJ)) {
+					@Override
+					public void run() {
+						openAddAssetDialog(section, type);
+					}
+				});
+			}
+		}
+		return manager;
 	}
 
 	@SuppressWarnings("boxing")
@@ -649,15 +670,17 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void createActions() {
-		_deleteSelectionAction = new Action("Delete selection (Refactoring)", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+		_deleteSelectionAction = new Action("Delete selection (Refactoring)",
+				EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
 			@Override
 			public void run() {
 				var selection = getSelection();
 				AssetPackUIEditor.launchDeleteWizard(selection, AssetPackEditor.this);
 			}
 		};
-		
-		_renameSelectionAction = new Action("Rename object (Refactoring)", EditorSharedImages.getImageDescriptor(IMG_RENAME)) {
+
+		_renameSelectionAction = new Action("Rename object (Refactoring)",
+				EditorSharedImages.getImageDescriptor(IMG_RENAME)) {
 			@Override
 			public void run() {
 				var selection = getSelection();
@@ -669,7 +692,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public Action getDeleteSelectionAction() {
 		return _deleteSelectionAction;
 	}
-	
+
 	public Action getRenameSelectionAction() {
 		return _renameSelectionAction;
 	}
@@ -753,7 +776,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		public AssetPackEditorOutlinePage() {
 		}
-		
+
 		public AssetPackEditor getEditor() {
 			return AssetPackEditor.this;
 		}
@@ -761,7 +784,27 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		@Override
 		protected TreeCanvasViewer createViewer() {
 			var viewer = new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getTree(), new AssetsContentProvider(true),
-					AssetLabelProvider.GLOBAL_16);
+					AssetLabelProvider.GLOBAL_16) {
+
+				@Override
+				protected void setItemIconProperties(TreeCanvasItem item) {
+					super.setItemIconProperties(item);
+
+					if (item.getData() instanceof AssetSectionModel) {
+						var section = (AssetSectionModel) item.getData();
+						item.getActions()
+								.add(new TreeCanvasItemAction(EditorSharedImages.getImage(IMG_ADD), "Add assets") {
+
+									@Override
+									public void run(MouseEvent event) {
+										var manager = createAddAssetMenu(section);
+										var menu = manager.createContextMenu(getTreeViewer().getControl());
+										menu.setVisible(true);
+									}
+								});
+					}
+				}
+			};
 			viewer.getTree().getUtils().setFilterInputWhenSetSelection(false);
 			return viewer;
 		}
