@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.editor;
 
 import static java.util.stream.Collectors.joining;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -39,6 +40,8 @@ import phasereditor.ui.properties.TextListener;
  *
  */
 public class KeySection extends AssetPackEditorSection<IEditableKey> {
+
+	private Action _renameAction;
 
 	public KeySection(AssetPackEditorPropertyPage page) {
 		super(page, "Key");
@@ -76,7 +79,7 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 
 		addUpdate(() -> {
 			var size = getModels().size();
-			
+
 			if (size == 1) {
 				text.setText(getModels().get(0).getKey());
 			} else {
@@ -85,17 +88,27 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 			text.setEditable(size == 1);
 		});
 
+		addUpdate(() -> {
+			_renameAction.setEnabled(getModels().size() == 1);
+		});
+
 		return comp;
 	}
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		
+
 		var editor = getEditor();
-		
-		manager.add(editor.getRenameSelectionAction());
+
+		var renameSelectionAction = editor.getRenameSelectionAction();
+		_renameAction = new Action("Rename (Refactoring)", renameSelectionAction.getImageDescriptor()) {
+			@Override
+			public void run() {
+				renameSelectionAction.run();
+			}
+		};
+		manager.add(_renameAction);
 		manager.add(editor.getDeleteSelectionAction());
-		
 	}
 
 }
