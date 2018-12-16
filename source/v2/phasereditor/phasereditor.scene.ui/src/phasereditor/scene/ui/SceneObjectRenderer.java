@@ -21,13 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
+import static phasereditor.ui.Colors.BLACK;
+import static phasereditor.ui.Colors.BLUE;
+import static phasereditor.ui.Colors.RED;
+import static phasereditor.ui.Colors.WHITE;
+import static phasereditor.ui.Colors.YELLOW;
+import static phasereditor.ui.Colors.color;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -57,9 +63,7 @@ import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseImageCanvas;
-import phasereditor.ui.Colors;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
@@ -76,7 +80,7 @@ public class SceneObjectRenderer {
 	private List<Runnable> _postPaintActions;
 	private AssetFinder _finder;
 	private AssetFinder _lastFinderSnapshot;
-	
+
 	private Color _COLOR_RED;
 	private Color _COLOR_BLUE;
 	private Color _COLOR_BLACK;
@@ -104,7 +108,7 @@ public class SceneObjectRenderer {
 	}
 
 	private void disposeImageCache() {
-		
+
 		for (var image : _imageCacheMap.values()) {
 
 			if (!image.isDisposed()) {
@@ -124,11 +128,11 @@ public class SceneObjectRenderer {
 	}
 
 	public void renderScene(GC gc, Transform tx, SceneModel sceneModel) {
-		_COLOR_BLACK = SwtRM.getColor(Colors.BLACK.rgb);
-		_COLOR_BLUE = SwtRM.getColor(Colors.BLUE.rgb);
-		_COLOR_RED = SwtRM.getColor(Colors.RED.rgb);
-		_COLOR_WHITE = SwtRM.getColor(Colors.WHITE.rgb);
-		
+		_COLOR_BLACK = color(BLACK);
+		_COLOR_BLUE = color(BLUE);
+		_COLOR_RED = color(RED);
+		_COLOR_WHITE = color(WHITE);
+
 		_modelMatrixMap = new HashMap<>();
 		_modelBoundsMap = new HashMap<>();
 		_modelChildrenBoundsMap = new HashMap<>();
@@ -820,8 +824,8 @@ public class SceneObjectRenderer {
 		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
 
 		if (assetFrame == null) {
-			gc.setForeground(SwtRM.getColor(SWT.COLOR_YELLOW));
-			gc.setBackground(SwtRM.getColor(SWT.COLOR_RED));
+			gc.setForeground(color(YELLOW));
+			gc.setBackground(color(RED));
 			gc.drawText("Missing Texture (" + key + "," + frame + ")", 0, 0);
 
 			setObjectBounds(gc, model, 0, 0, 0, 0);
