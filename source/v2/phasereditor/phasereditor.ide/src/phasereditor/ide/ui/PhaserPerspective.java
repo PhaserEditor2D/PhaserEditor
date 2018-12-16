@@ -35,14 +35,14 @@ public class PhaserPerspective implements IPerspectiveFactory {
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		layout.addView("org.eclipse.ui.views.ContentOutline", IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
-		layout.addView("org.eclipse.ui.views.PropertySheet", IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(IPageLayout.ID_PROP_SHEET, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
 		layout.addView(ASSETS_VIEW, IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
 		var folder = layout.createFolder("bottomViews", IPageLayout.LEFT, 0.5f, ASSETS_VIEW);
 		folder.addView(ProjectExplorer.VIEW_ID);
 		folder.addView(PREVIEW_VIEW);
 		folder.addView(JsdocView.ID);
-		folder.addView("org.eclipse.ui.views.ProblemView");
+		folder.addView(IPageLayout.ID_PROBLEM_VIEW);
 		
 		
 //		layout.addView(ProjectExplorer.VIEW_ID, IPageLayout.LEFT, 0.3f, IPageLayout.ID_EDITOR_AREA);
