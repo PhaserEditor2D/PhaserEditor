@@ -971,4 +971,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return sel.toArray();
 	}
 
+	public void clearSelection() {
+		if (_outliner!= null) {
+			_outliner.setSelection(StructuredSelection.EMPTY);
+			_assetsCanvas.getUtils().setSelectionList(List.of());
+		}
+	}
+
 }

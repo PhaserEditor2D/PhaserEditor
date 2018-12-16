@@ -28,6 +28,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.AssetPackModel;
 
@@ -46,16 +47,30 @@ public class PackSection extends AssetPackEditorSection<AssetPackModel> {
 		return obj instanceof AssetPackModel;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(1, false));
 
-		var btn = new Button(comp, 0);
-		btn.setText("Add Section");
-		btn.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+		{
+			var btn = new Button(comp, 0);
+			btn.setText("Add Section");
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			btn.addSelectionListener(
+					SelectionListener.widgetSelectedAdapter(e -> getEditor().launchAddSectionDialog()));
+		}
 
-		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().launchAddSectionDialog()));
+		{
+			new Label(comp, 0);
+		}
+		
+		{
+			var btn = new Button(comp, 0);
+			btn.setText("Rebuild");
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().build()));
+		}
 
 		return comp;
 	}

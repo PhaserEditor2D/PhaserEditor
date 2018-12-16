@@ -135,6 +135,7 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 
 				swtRun(() -> {
 					if (_editor != null) {
+						_editor.clearSelection();
 						_editor.build();
 					}
 				});
