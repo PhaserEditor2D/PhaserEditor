@@ -181,6 +181,12 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 		@Override
 		public void mouseUp(MouseEvent e) {
+
+			if (_model != null && _model.getSections().isEmpty()) {
+				_editor.launchAddSectionDialog();
+				return;
+			}
+
 			var hit = false;
 
 			var modelPointer = _utils.viewToModel(e.x, e.y);
@@ -274,214 +280,224 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		var gc = event.gc;
 		var clientArea = getClientArea();
 
-		if (_model == null) {
-			return;
-		}
+		try {
 
-		var finder = new AssetFinder(getModel().getFile().getProject(), getModel());
-		finder.build();
-
-		prepareGC(gc);
-
-		gc.setAlpha(5);
-		gc.setBackground(getForeground());
-		gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 20, clientArea.height);
-		gc.setAlpha(10);
-		gc.drawLine(ASSETS_MARGIN_X - 20, 0, ASSETS_MARGIN_X - 20, clientArea.height);
-		gc.setAlpha(255);
-
-		{
-			Transform tx = new Transform(getDisplay());
-			tx.translate(0, _scrollUtils.getOrigin().y);
-			gc.setTransform(tx);
-			tx.dispose();
-		}
-
-		var font = gc.getFont();
-
-		var x = MARGIN_X;
-		var y = 10;
-
-		// paint objects
-
-		for (var section : _model.getSections()) {
-
-			x = MARGIN_X;
-
-			{
-				var collapsed = isCollapsed(section);
-
-				gc.setFont(_boldFont);
-
-				gc.drawText(section.getKey(), x + 20, y, true);
-
-				renderCollapseIcon(section, gc, collapsed, x, y);
-
-				gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(section), x, y);
-
-				gc.setFont(font);
-
-				var action = new IconAction(IMG_ADD, () -> {
-
-					var manager = _editor.createAddAssetMenu(section);
-					var menu = manager.createContextMenu(PackEditorCanvas.this);
-					menu.setVisible(true);
-					// _editor.openAddAssetButtonDialog(section, null);
-				}, ASSETS_MARGIN_X - 40, y);
-
-				action.paint(gc, action.getBounds().contains(_modelPointer));
-				actions.add(action);
-
-				y += ROW_HEIGHT;
-
-				if (isCollapsed(section)) {
-					continue;
-				}
+			if (_model == null) {
+				return;
 			}
 
-			var types = new ArrayList<>(List.of(AssetType.values()));
+			if (_model.getSections().isEmpty()) {
+				var str = "Click to add a Section";
+				var size = gc.textExtent(str);
+				var b = getClientArea();
+				gc.drawText(str, b.width / 2 - size.x / 2, b.height / 2 - size.y / 2, true);
+				return;
+			}
 
-			types.sort((a, b) -> {
-				var a1 = sortValue(section, a);
-				var b1 = sortValue(section, b);
-				return Long.compare(a1, b1);
-			});
+			var finder = new AssetFinder(getModel().getFile().getProject(), getModel());
+			finder.build();
 
-			for (var type : types) {
-				var group = section.getGroup(type);
-				var assets = group.getAssets();
+			prepareGC(gc);
 
-				if (assets.isEmpty()) {
-					continue;
-				}
+			gc.setAlpha(5);
+			gc.setBackground(getForeground());
+			gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 20, clientArea.height);
+			gc.setAlpha(10);
+			gc.drawLine(ASSETS_MARGIN_X - 20, 0, ASSETS_MARGIN_X - 20, clientArea.height);
+			gc.setAlpha(255);
+
+			{
+				Transform tx = new Transform(getDisplay());
+				tx.translate(0, _scrollUtils.getOrigin().y);
+				gc.setTransform(tx);
+				tx.dispose();
+			}
+
+			var font = gc.getFont();
+
+			var x = MARGIN_X;
+			var y = 10;
+
+			// paint objects
+
+			for (var section : _model.getSections()) {
+
+				x = MARGIN_X;
 
 				{
-					var collapsed = isCollapsed(group);
+					var collapsed = isCollapsed(section);
 
-					var title = type.getCapitalName();
-					var size = gc.stringExtent(title);
+					gc.setFont(_boldFont);
 
-					var y2 = y + ROW_HEIGHT / 2 - size.y / 2 - 3;
+					gc.drawText(section.getKey(), x + 20, y, true);
 
-					gc.drawText(title, x + 20, y2, true);
+					renderCollapseIcon(section, gc, collapsed, x, y);
 
-					var count = section.getGroup(type).getAssets().size();
+					gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(section), x, y);
 
-					gc.setAlpha(100);
-					gc.drawText(" (" + count + ")", x + size.x + 20, y2, true);
-					gc.setAlpha(255);
-
-					renderCollapseIcon(group, gc, collapsed, x, y2);
-					gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(type), x, y + 3);
+					gc.setFont(font);
 
 					var action = new IconAction(IMG_ADD, () -> {
 
-						_editor.openAddAssetDialog(section, type);
-
-					}, ASSETS_MARGIN_X - 40, y + 5);
+						var manager = _editor.createAddAssetMenu(section);
+						var menu = manager.createContextMenu(PackEditorCanvas.this);
+						menu.setVisible(true);
+						// _editor.openAddAssetButtonDialog(section, null);
+					}, ASSETS_MARGIN_X - 40, y);
 
 					action.paint(gc, action.getBounds().contains(_modelPointer));
 					actions.add(action);
 
-					if (collapsed) {
-						y += ROW_HEIGHT;
+					y += ROW_HEIGHT;
+
+					if (isCollapsed(section)) {
 						continue;
 					}
 				}
 
-				{
+				var types = new ArrayList<>(List.of(AssetType.values()));
 
-					int assetX = ASSETS_MARGIN_X;
-					int assetY = y;
-					int bottom = y;
+				types.sort((a, b) -> {
+					var a1 = sortValue(section, a);
+					var b1 = sortValue(section, b);
+					return Long.compare(a1, b1);
+				});
 
-					var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
-					for (var asset : assets) {
+				for (var type : types) {
+					var group = section.getGroup(type);
+					var assets = group.getAssets();
 
-						Rectangle bounds;
+					if (assets.isEmpty()) {
+						continue;
+					}
 
-						if (isFullRowAsset(asset)) {
-							bounds = new Rectangle(assetX, assetY, clientArea.width - assetX - 10, _imageSize);
-						} else {
-							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
+					{
+						var collapsed = isCollapsed(group);
+
+						var title = type.getCapitalName();
+						var size = gc.stringExtent(title);
+
+						var y2 = y + ROW_HEIGHT / 2 - size.y / 2 - 3;
+
+						gc.drawText(title, x + 20, y2, true);
+
+						var count = section.getGroup(type).getAssets().size();
+
+						gc.setAlpha(100);
+						gc.drawText(" (" + count + ")", x + size.x + 20, y2, true);
+						gc.setAlpha(255);
+
+						renderCollapseIcon(group, gc, collapsed, x, y2);
+						gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(type), x, y + 3);
+
+						var action = new IconAction(IMG_ADD, () -> {
+
+							_editor.openAddAssetDialog(section, type);
+
+						}, ASSETS_MARGIN_X - 40, y + 5);
+
+						action.paint(gc, action.getBounds().contains(_modelPointer));
+						actions.add(action);
+
+						if (collapsed) {
+							y += ROW_HEIGHT;
+							continue;
 						}
+					}
 
-						{
-							var info = new AssetRenderInfo();
-							info.asset = asset;
-							info.bounds = bounds;
-							renderInfoList.add(info);
-						}
+					{
 
-						bottom = Math.max(bottom, bounds.y + bounds.height);
+						int assetX = ASSETS_MARGIN_X;
+						int assetY = y;
+						int bottom = y;
 
-						// gc.setAlpha(20);
-						// gc.setBackground(Colors.color(0, 0, 0));
-						// gc.fillRectangle(bounds);
-						// gc.setAlpha(255);
+						var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
+						for (var asset : assets) {
 
-						if (_utils.isSelected(asset)) {
-							gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-							gc.fillRectangle(bounds);
-						}
+							Rectangle bounds;
 
-						var renderer = getAssetRenderer(asset, finder);
-
-						if (renderer != null) {
-							try {
-								renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
-							} catch (Exception e2) {
-								e2.printStackTrace();
+							if (isFullRowAsset(asset)) {
+								bounds = new Rectangle(assetX, assetY, clientArea.width - assetX - 10, _imageSize);
+							} else {
+								bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
 							}
-						}
 
-						if (_utils.getOverObject() == asset) {
-							gc.drawRectangle(bounds);
-						} else {
-							gc.setAlpha(30);
-							gc.drawRectangle(bounds);
-							gc.setAlpha(255);
-						}
-
-						var key = asset.getKey();
-
-						var key2 = key;
-
-						for (int i = key.length(); i > 0; i--) {
-							key2 = key.substring(0, i);
-							var size = gc.textExtent(key2);
-							if (size.x < bounds.width) {
-								break;
+							{
+								var info = new AssetRenderInfo();
+								info.asset = asset;
+								info.bounds = bounds;
+								renderInfoList.add(info);
 							}
-						}
 
-						if (key2.length() < key.length()) {
-							if (key2.length() > 2) {
-								key2 = key2.substring(0, key2.length() - 2) + "..";
+							bottom = Math.max(bottom, bounds.y + bounds.height);
+
+							// gc.setAlpha(20);
+							// gc.setBackground(Colors.color(0, 0, 0));
+							// gc.fillRectangle(bounds);
+							// gc.setAlpha(255);
+
+							if (_utils.isSelected(asset)) {
+								gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+								gc.fillRectangle(bounds);
 							}
-						}
 
-						gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
+							var renderer = getAssetRenderer(asset, finder);
 
-						assetX += bounds.width + ASSET_SPACING_X;
-
-						if (asset != last) {
-							if (assetX + _imageSize > clientArea.width - 5) {
-								assetX = ASSETS_MARGIN_X;
-								assetY += _imageSize + ASSET_SPACING_Y;
+							if (renderer != null) {
+								try {
+									renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
+								} catch (Exception e2) {
+									e2.printStackTrace();
+								}
 							}
-						}
-					} // end of assets loop
 
-					y = bottom + ASSET_SPACING_Y;
-				} // end of not collapsed types
-				y += 10;
+							if (_utils.getOverObject() == asset) {
+								gc.drawRectangle(bounds);
+							} else {
+								gc.setAlpha(30);
+								gc.drawRectangle(bounds);
+								gc.setAlpha(255);
+							}
+
+							var key = asset.getKey();
+
+							var key2 = key;
+
+							for (int i = key.length(); i > 0; i--) {
+								key2 = key.substring(0, i);
+								var size = gc.textExtent(key2);
+								if (size.x < bounds.width) {
+									break;
+								}
+							}
+
+							if (key2.length() < key.length()) {
+								if (key2.length() > 2) {
+									key2 = key2.substring(0, key2.length() - 2) + "..";
+								}
+							}
+
+							gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
+
+							assetX += bounds.width + ASSET_SPACING_X;
+
+							if (asset != last) {
+								if (assetX + _imageSize > clientArea.width - 5) {
+									assetX = ASSETS_MARGIN_X;
+									assetY += _imageSize + ASSET_SPACING_Y;
+								}
+							}
+						} // end of assets loop
+
+						y = bottom + ASSET_SPACING_Y;
+					} // end of not collapsed types
+					y += 10;
+				}
 			}
+		} finally {
+			_renderInfoList = renderInfoList;
+			_actions = actions;
 		}
-
-		_renderInfoList = renderInfoList;
-		_actions = actions;
-
 	}
 
 	public Rectangle computeScrollArea() {
