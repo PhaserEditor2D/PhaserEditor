@@ -740,8 +740,6 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		_collapsed.remove(asset.getSection());
 		_collapsed.remove(asset.getGroup());
 
-		updateScroll();
-
 		swtRun(() -> {
 			for (var info : _renderInfoList) {
 				if (info.asset == asset) {
