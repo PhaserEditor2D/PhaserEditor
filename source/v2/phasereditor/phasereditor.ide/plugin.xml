@@ -112,49 +112,6 @@
       </perspective>
    </extension>   <extension
          point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="phasereditor.ide.ui.perspective">
-         <view
-               id="phasereditor.chains.ui.views.chains"
-               minimized="false"
-               ratio="0.6"
-               relationship="bottom"
-               relative="org.eclipse.ui.editorss">
-         </view>
-         <view
-               id="phasereditor.inspect.ui.jsdoc"
-               minimized="false"
-               relationship="stack"
-               relative="phasereditor.chains.ui.views.chains">
-         </view>
-         <view
-               id="org.eclipse.ui.views.ProblemView"
-               minimized="false"
-               relationship="stack"
-               relative="phasereditor.inspect.ui.jsdoc">
-         </view>
-         <view
-               id="org.eclipse.egit.ui.RepositoriesView"
-               minimized="false"
-               relationship="stack"
-               relative="org.eclipse.ui.views.ProblemView">
-         </view>
-         <viewShortcut
-               id="phasereditor.ui.preview">
-         </viewShortcut>
-         <viewShortcut
-               id="org.eclipse.ui.navigator.ProjectExplorer">
-         </viewShortcut>
-         <viewShortcut
-               id="phasereditor.chains.ui.views.chains">
-         </viewShortcut>
-         <showInPart
-               id="phasereditor.ui.preview">
-         </showInPart>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="phasereditor.ide.ui.labs">
-      </perspectiveExtension>
    </extension>
                   <extension
                         point="org.eclipse.e4.ui.css.swt.theme">
