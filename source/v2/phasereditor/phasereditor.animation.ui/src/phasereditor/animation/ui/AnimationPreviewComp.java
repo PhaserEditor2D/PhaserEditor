@@ -29,6 +29,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -63,6 +64,8 @@ public class AnimationPreviewComp extends SashForm {
 		_animationCanvas = new AnimationCanvas(this, SWT.BORDER);
 		_timelineCanvas = new AnimationTimelineCanvas<>(this, SWT.BORDER);
 		_timelineCanvas.setAnimationCanvas(_animationCanvas);
+
+		addControlListener(ControlListener.controlResizedAdapter(e -> _animationCanvas.resetZoom()));
 
 		setWeights(new int[] { 2, 1 });
 

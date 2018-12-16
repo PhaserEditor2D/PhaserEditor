@@ -226,17 +226,19 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
 
-	protected void fitWindow() {
+	protected boolean fitWindow() {
 		if (_image == null) {
-			return;
+			return false;
 		}
 
-		ZoomCalculator calc = calc();
+		var calc = calc();
 		calc.fit(getFitArea());
 
 		setScaleAndOffset(calc);
+
+		return true;
 	}
-	
+
 	protected Rectangle getFitArea() {
 		return getBounds();
 	}
@@ -290,12 +292,12 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		_imageFile = file;
 		setImage(image);
 	}
-	
+
 	public void setImageFile(IFile file, FrameData fd) {
 		setFrameData(fd);
 		setImageFile(file);
 	}
-	
+
 	public final IFile getImageFile() {
 		return _imageFile;
 	}
@@ -324,7 +326,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public FrameData getFrameData() {
 		return _frameData;
 	}
-	
+
 	public void setFrameData(FrameData frameData) {
 		_frameData = frameData;
 	}
@@ -348,6 +350,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	@Override
 	public void resetZoom() {
 		_fitWindow = true;
+
 		redraw();
 	}
 
@@ -366,8 +369,9 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	@Override
 	public final void paintControl(PaintEvent e) {
 		if (_fitWindow) {
-			_fitWindow = false;
-			fitWindow();
+			if (fitWindow()) {
+				_fitWindow = false;
+			}
 		}
 
 		prepareGC(e.gc);

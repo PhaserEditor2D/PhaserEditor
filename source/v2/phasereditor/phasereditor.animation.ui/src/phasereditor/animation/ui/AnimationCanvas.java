@@ -124,6 +124,9 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 
 		showFrame(0);
+		
+		// this is needed to get the right zoom
+		setFrameTexture();
 
 		resetZoom();
 
@@ -252,6 +255,17 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		_frameData = null;
 		_image = null;
 		
+		setFrameTexture();
+
+		super.customPaintControl(e);
+
+		if (_showProgress) {
+
+			paintProgressLine(e);
+		}
+	}
+
+	private void setFrameTexture() {
 		var finder = getModel().getAnimations().createAndBuildFinder();
 
 		var frames = getModel().getFrames();
@@ -270,13 +284,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 				_frameData = texture.getFrameData();
 			}
 
-		}
-
-		super.customPaintControl(e);
-
-		if (_showProgress) {
-
-			paintProgressLine(e);
 		}
 	}
 
