@@ -32,6 +32,15 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes { /* pseudo att
 	swt-selected-tab-fill: #f2f2f2;
 }
 
+#org-eclipse-e4-ui-compatibility-editor Canvas {
+    background-color: #e8e8e8;
+}
+
+#org-eclipse-e4-ui-compatibility-editor.active Canvas {
+    background-color: #f0f0f0;
+    color: #000000;
+}
+
 
 .MPart.active Composite, 
 .MPart.active Tree, 
