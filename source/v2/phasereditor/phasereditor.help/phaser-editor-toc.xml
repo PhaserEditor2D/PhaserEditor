@@ -2,30 +2,10 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Phaser Editor Guide">
-   <topic label="Quick Start">
+   <topic href="html/whats-new/empty.html" label="Quick Start">
       <anchor id="quick-start"/>
    </topic>
   
-   <topic label="What&apos;s New">
-      <topic label="Topic">
-      </topic>
-    <topic href="html/whats-new/What&apos;s new in v1.5.0.html" label="What&apos;s new in Phaser Editor v1.5.0">
-    </topic>
-    <topic href="html/whats-new/What&apos;s new in v1.4.3.html" label="What&apos;s new in Phaser Editor v1.4.3">
-    </topic>
-      <topic href="html/whats-new/What&apos;s new in v1.4.2.html" label="What&apos;s new in Phaser Editor v1.4.2">
-      </topic>
-      <topic href="html/whats-new/What&apos;s new in v1.4.0.html" label="What&apos;s new in Phaser Editor v1.4.0">
-      </topic>
-       <topic href="html/whats-new/What&apos;s new in v1.3.0.html" label="What&apos;s new in Phaser Editor v1.3.0">
-	   </topic>
-	   <topic href="html/whats-new/What&apos;s new in v1.2.1.html" label="What&apos;s new in Phaser Editor v1.2.1">
-	   </topic>
-	   <topic href="html/whats-new/What&apos;s new in v1.2.0.html" label="What&apos;s new in Phaser Editor v1.2.0">
-	   </topic>
-	   <topic href="html/whats-new/What&apos;s new in v1.1.3.html" label="What&apos;s new in Phaser Editor v1.1.3">
-	   </topic>
-	   <topic href="html/whats-new/Whats new - Phaser Editor Blog.htm" label="What&apos;s new in Phaser Editor v1.1.2">
-	   </topic>
+   <topic href="html/whats-new/empty.html" label="What&apos;s New">
    </topic>
 </toc>
