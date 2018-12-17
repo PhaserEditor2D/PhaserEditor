@@ -162,5 +162,11 @@
             searchResultClass="phasereditor.assetpack.ui.search.SearchAssetResult">
       </viewPage>
    </extension>
+   <extension
+         point="org.eclipse.ui.propertiesView">
+      <excludeSources
+            id="org.eclipse.ui.navigator.ProjectExplorer">
+      </excludeSources>
+   </extension>
    
 </plugin>
