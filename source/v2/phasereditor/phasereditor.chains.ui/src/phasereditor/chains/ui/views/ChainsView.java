@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.ui.views;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ import org.eclipse.tm4e.core.grammar.IToken;
 import org.eclipse.tm4e.core.grammar.ITokenizeLineResult;
 import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
 import org.eclipse.tm4e.ui.TMUIPlugin;
+import org.eclipse.tm4e.ui.internal.themes.ThemeManager;
 import org.eclipse.tm4e.ui.themes.ITheme;
 import org.eclipse.ui.part.ViewPart;
 
@@ -84,14 +86,12 @@ import phasereditor.chains.core.ChainsCore;
 import phasereditor.chains.core.ChainsModel;
 import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
-import phasereditor.chains.ui.ChainsUI;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 import phasereditor.inspect.ui.handlers.RunPhaserExampleHandler;
 import phasereditor.inspect.ui.handlers.ShowPhaserJsdocHandler;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SwtRM;
 
 public class ChainsView extends ViewPart implements IPropertyChangeListener {
@@ -133,7 +133,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 				text = ((PhaserExampleModel) match.item).getFullName();
 			}
 
-			cell.setBackground(_theme.getEditorBackground());
+			// cell.setBackground(_theme.getEditorBackground());
 			cell.setStyleRanges(match.styles);
 			cell.setText(text);
 			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_GAME_CONTROLLER));
@@ -152,10 +152,10 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 
 		private void updateChainLabel(ViewerCell cell) {
 			Match match = (Match) cell.getElement();
-			
+
 			ChainItem chain = (ChainItem) match.item;
-			
-			cell.setBackground(_theme.getEditorBackground());
+
+			// cell.setBackground(_theme.getEditorBackground());
 			cell.setForeground(_theme.getEditorForeground());
 			cell.setText(match.toString());
 			cell.setStyleRanges(match.styles);
@@ -178,8 +178,13 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		_qualifierColor = JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR);
 		_matchBorderColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
 
+		out.println("Is dark Eclipse theme: " + ThemeManager.getInstance().isDarkEclipseTheme());
+
 		_grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
 		_theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
+		out.println("TM4 theme : " + _theme.getId() + " " + _theme.getName());
+		
+		queryTextModified();
 	}
 
 	/**
@@ -262,6 +267,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 	private Action _showChainsAction;
 	private Action _showExamplesAction;
 	private IPreferenceChangeListener _tmPrefsListener;
+	private IPropertyChangeListener _jfaceListener;
 
 	protected void queryTextModified() {
 
@@ -289,7 +295,8 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 			}
 		}.schedule();
 
-		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _viewer);
+		// PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(),
+		// _viewer);
 		// InspectUI.installJsdocTooltips(_chainsViewer);
 
 		getViewSite().setSelectionProvider(_viewer);
@@ -307,9 +314,25 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 			}
 		};
 
+		_jfaceListener = new IPropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				switch (event.getProperty()) {
+				case JFacePreferences.DECORATIONS_COLOR:
+				case JFacePreferences.QUALIFIER_COLOR:
+				case JFacePreferences.COUNTER_COLOR:
+					updateFromPreferencesChange();
+					break;
+				default:
+					break;
+				}
+			}
+		};
+
 		getTMPreferencesNode().addPreferenceChangeListener(_tmPrefsListener);
 		getE4CSSThemePreferencesNode().addPreferenceChangeListener(_tmPrefsListener);
-		JFaceResources.getColorRegistry().addListener(this);
+		JFaceResources.getColorRegistry().addListener(_jfaceListener);
 	}
 
 	private static IEclipsePreferences getTMPreferencesNode() {
@@ -325,7 +348,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 
 		getTMPreferencesNode().removePreferenceChangeListener(_tmPrefsListener);
 		getE4CSSThemePreferencesNode().removePreferenceChangeListener(_tmPrefsListener);
-		JFaceResources.getColorRegistry().removeListener(this);
+		JFaceResources.getColorRegistry().removeListener(_jfaceListener);
 
 		super.dispose();
 	}
@@ -484,7 +507,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 					returnTypeRange = new StyleRange(index, len, _decorationsColor, null);
 				}
 			}
-			
+
 			{
 				int index = chain.getDeclTypeIndex();
 				if (index > 0) {
@@ -571,9 +594,9 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		try {
 			ITokenizeLineResult result;
 
-//			synchronized (_grammar) {
-				result = _grammar.tokenizeLine(line);
-//			}
+			// synchronized (_grammar) {
+			result = _grammar.tokenizeLine(line);
+			// }
 
 			for (IToken token : result.getTokens()) {
 				for (String scope : token.getScopes()) {
@@ -595,18 +618,19 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 
 			}
 		} catch (Exception e) {
-			//TODO: there are problems with parallel parsing, we should test it in Photon.
+			// TODO: there are problems with parallel parsing, we should test it in Photon.
 			// e.printStackTrace();
 		}
 	}
 
-	protected void updateFromPreferencesChange() {
+	private void updateFromPreferencesChange() {
 		updateStyleValues();
 		_viewer.refresh();
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
+		out.println(event.getProperty());
 		updateFromPreferencesChange();
 	}
 }
