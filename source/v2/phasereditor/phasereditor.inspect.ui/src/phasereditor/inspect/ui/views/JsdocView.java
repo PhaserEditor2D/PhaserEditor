@@ -12,7 +12,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tm4e.ui.TMUIPlugin;
 import org.eclipse.tm4e.ui.themes.ITheme;
@@ -142,10 +141,11 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	private void setHtml(String html) {
 		ITheme theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
 
-		Color bg = theme.getEditorBackground();
-		Color fg = theme.getEditorForeground();
+		// Color bg = theme.getEditorBackground();
+		var bg = _browser.getParent().getBackground();
+		var fg = theme.getEditorForeground();
 
-		String html2 = JsdocRenderer.wrapDocBody(html, bg.getRGB(), fg.getRGB());
+		var html2 = JsdocRenderer.wrapDocBody(html, bg.getRGB(), fg.getRGB());
 
 		_browser.setText(html2);
 	}
