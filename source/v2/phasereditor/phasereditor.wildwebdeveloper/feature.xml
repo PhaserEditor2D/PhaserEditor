@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.bluesky.features"
+      id="phasereditor.wildwebdeveloper.features"
       label="Phaser Editor - Blue Sky Support"
       version="2.0.0.20180410"
       provider-name="Arian Fornaris">
@@ -149,16 +149,16 @@
          unpack="false"/>
 
    <plugin
-         id="phasereditor.bluesky.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.wildwebdeveloper"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.wildwebdeveloper.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

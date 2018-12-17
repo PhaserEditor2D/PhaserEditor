@@ -280,7 +280,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="phasereditor.atlas.features" version="1.5.0.20180307"/>
       <feature id="phasereditor.audio.features" version="1.4.0.20170412"/>
       <feature id="phasereditor.audiosprite.features" version="1.4.3.20171102"/>
-      <feature id="phasereditor.bluesky.features" version="2.0.0.20180410"/>
       <feature id="phasereditor.bmpfont.features" version="1.5.0.20180307"/>
       <feature id="phasereditor.chains.features" version="1.5.0.20180307"/>
       <feature id="phasereditor.core.features" version="1.5.0.20180307"/>
@@ -294,6 +293,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="phasereditor.resources.features" version="1.5.0.20180307"/>
       <feature id="phasereditor.scene.features" version="2.0.0"/>
       <feature id="phasereditor.webrun.features" version="1.5.0.20180307"/>
+      <feature id="phasereditor.wildwebdeveloper.features" version="2.0.0.20180410"/>
    </features>
 
    <configurations>
