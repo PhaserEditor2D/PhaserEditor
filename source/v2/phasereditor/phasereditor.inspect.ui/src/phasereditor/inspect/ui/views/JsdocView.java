@@ -1,5 +1,7 @@
 package phasereditor.inspect.ui.views;
 
+import static java.lang.System.out;
+
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -15,6 +17,7 @@ import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tm4e.ui.TMUIPlugin;
 import org.eclipse.tm4e.ui.themes.ITheme;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
@@ -49,8 +52,59 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 		setHtml("Select an element in the workbbench.");
 
 		getViewSite().setSelectionProvider(new SelectionProviderImpl(true));
+		getViewSite().getPage().addPartListener(createPartListener());
 
 		initActionBars();
+	}
+
+	private IPartListener createPartListener() {
+		return new IPartListener() {
+
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				updateBackground();
+			}
+
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				updateBackground();
+			}
+
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				getViewSite().getPage().removePartListener(this);
+			}
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				updateBackground();
+			}
+
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				updateBackground();
+			}
+		};
+	}
+
+	protected void updateBackground() {
+		var fg = TMUIPlugin.getThemeManager().getThemeForScope("source.js").getEditorForeground().getRGB();
+		var bg = _browser.getParent().getBackground().getRGB();
+		var script = "document.getElementsByTagName('html')[0].setAttribute('style', 'background:rgb(" +
+
+				bg.red + "," +
+
+				bg.green + "," +
+
+				bg.blue + ");color:rgb(" +
+
+				fg.red + "," +
+
+				fg.green + "," +
+
+				fg.blue + ")');";
+		_browser.execute(script);
+		out.println(script);
 	}
 
 	private void initActionBars() {

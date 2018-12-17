@@ -68,11 +68,11 @@ public class JsdocRenderer {
 
 		StringBuilder html = new StringBuilder();
 
-		html.append("<html><body style='background:" + bgcolor + ";color:" + fgcolor + "'>");
+		html.append("<html style='background:" + bgcolor + ";color:" + fgcolor + "'><body>");
 		html.append("<style>");
-		html.append("a { color: " + fgcolor +";font-weight: bold;}");
+		html.append("a { color: " + fgcolor + ";font-weight: bold;}");
 		html.append("</style>");
-		
+
 		html.append(doc);
 		html.append("</body></html>");
 		return html.toString();
@@ -154,7 +154,7 @@ public class JsdocRenderer {
 		if (member == null) {
 			return "";
 		}
-		
+
 		if (member instanceof PhaserType) {
 			return renderType((PhaserType) member);
 		}
