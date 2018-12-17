@@ -60,20 +60,30 @@
 	background-color: #666666;
 }
 
-.MPart Text, .MPart StyledText {
+.MPart Text,
+.MPart StyledText,
+.MPart ScrolledFormText,
+.MPart FormText {
 	background-color: #262626;
 	color: #eeeeee;
 }
 
-.MPart.active Text {
+.MPart.active Text,
+.MPart.active ScrolledFormText,
+.MPart.active FormText {
 	background-color: #666666;
 }
 
-.MPart Button {
-	color: #eeeeee;
+.MPart Button,
+Form Button {
+	background-color: #313131;
+	color: #ffffff;
 }
 
-.MPart Table, .MPart Tree {
+.MPart Table,
+.MPart Tree,
+Form Table,
+Form Tree {
 	swt-header-background-color: #d4d4d4;
 }
 
@@ -99,11 +109,7 @@ Form {
 	h-bottom-keyline-1-color: #363636;
 }
 
-ScrolledFormText,
-FormText {
-    background-color: #666666;
-    color: #f0f0f0;
-}
+
 
 Section {
 	background-color: #363636;

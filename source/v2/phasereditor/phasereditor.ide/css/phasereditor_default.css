@@ -1,3 +1,12 @@
+IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes { /* pseudo attribute added to allow contributions without replacing this node, see Bug 466075 */
+	preferences:
+		'AbstractTextEditor.Color.Background.SystemDefault=false'
+		'AbstractTextEditor.Color.SelectionForeground.SystemDefault=false'
+		'AbstractTextEditor.Color.SelectionBackground.SystemDefault=false'
+		'AbstractTextEditor.Color.Background=245,245,245'
+		'currentLineColor=222, 232, 244'
+}
+
 .MTrimmedWindow {
     background-color: #d4d4d4;
 }
@@ -55,6 +64,14 @@
 
 .MPart Table, .MPart Tree {
 	swt-header-background-color: #d4d4d4;
+}
+
+#org-eclipse-ui-editorss StyledText {
+	background-color: #e8e8e8;
+}
+
+#org-eclipse-ui-editorss StyledText {
+	background-color: inherit;
 }
 
 
