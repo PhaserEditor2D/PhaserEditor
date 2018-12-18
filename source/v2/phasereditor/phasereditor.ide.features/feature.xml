@@ -3,14 +3,16 @@
       id="phasereditor.ide.features"
       label="Phaser Editor IDE"
       version="2.0.0.20181220"
-      provider-name="Arian Fornaris">
+      provider-name="Arian Fornaris"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.1.v20180423-1114">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://phasereditor2d.com">
+      Phaser Editor 2D plugins.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://phasereditor2d.com">
+      Copyright (c) Arian Fornaris 2016-2019
    </copyright>
 
    <license url="http://www.example.com/license">

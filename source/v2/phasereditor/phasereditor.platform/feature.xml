@@ -3,14 +3,16 @@
       id="phasereditor.platform.features"
       label="Phaser Editor - Eclipse Platform"
       version="2.0.0.20181220"
-      provider-name="Arian Fornaris">
+      provider-name="Arian Fornaris"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.1.v20180423-1114">
 
    <description url="https://phasereditor2d.com">
-      Eclipse platform plugins used by Phaser Editor.
+      Eclipse Platform plugins used by Phaser Editor 2D.
    </description>
 
-   <copyright url="http://eclipse.org">
-      Eclipse.org Copyright
+   <copyright url="http://phasereditor2d.com">
+      Copyright (c) Arian Fornaris 2016-2019
    </copyright>
 
    <license url="https://opensource.org/licenses/MIT">
