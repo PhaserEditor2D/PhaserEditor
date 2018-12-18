@@ -85,7 +85,7 @@ Copyright (c) Arian Fornaris 2015-2018
         <text>
    Eclipse Public License -v 1.0
 
-Copyright (c) 2015, 2016 Arian Fornaris
+Copyright (c) 2015, 2019 Arian Fornaris
 
 
 THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT&apos;S ACCEPTANCE OF THIS AGREEMENT.
@@ -279,25 +279,9 @@ This Agreement is governed by the laws of the State of New York and the intellec
    <features>
       <feature id="org.eclipse.egit"/>
       <feature id="org.eclipse.jgit"/>
-      <feature id="phasereditor.animations.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.assets.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.atlas.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.audio.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.audiosprite.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.bmpfont.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.chains.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.core.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.help.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.help.phaser.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.inspect.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.launcher.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.libgdx.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.optipng.features" version="2.0.0.20181220"/>
       <feature id="phasereditor.platform.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.resources.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.scene.features" version="2.0.0.20181220"/>
-      <feature id="phasereditor.webrun.features" version="2.0.0.20181220"/>
       <feature id="phasereditor.wildwebdeveloper.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.ide.features" version="2.0.0.20181220"/>
    </features>
 
    <configurations>
