@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Phaser Editor - BlueSky Support Core
+Bundle-Name: Phaser Editor - Wild Web Developer Support Core
 Bundle-SymbolicName: phasereditor.wildwebdeveloper.core;singleton:=true
 Bundle-Version: 2.0.0.20181220
 Bundle-Activator: phasereditor.wildwebdeveloper.core.Activator
