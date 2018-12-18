@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Chains UI
 Bundle-SymbolicName: phasereditor.chains.ui;singleton:=true
-Bundle-Version: 1.5.0.20180307
+Bundle-Version: 2.0.0.20181220
 Bundle-Activator: phasereditor.chains.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
@@ -15,13 +15,13 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  phasereditor.inspect.core,
  phasereditor.ui,
  phasereditor.org.json,
- phasereditor.webrun.ui;bundle-version="1.4.0",
- org.eclipse.ui.editors;bundle-version="3.11.0",
+ phasereditor.webrun.ui;bundle-version="2.0.0",
+ org.eclipse.ui.editors;bundle-version="2.0.0",
  phasereditor.inspect.ui;bundle-version="2.0.0",
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0",
- phasereditor.project.ui;bundle-version="1.5.0"
+ phasereditor.project.ui;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.chains.ui
 

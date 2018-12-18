@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Audio Core
 Bundle-SymbolicName: phasereditor.audio.core;singleton:=true
-Bundle-Version: 1.4.0.20170412
+Bundle-Version: 2.0.0.20181220
 Bundle-Activator: phasereditor.audio.core.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.org.json,
  phasereditor.libgdx,
  phasereditor.project.core,
- phasereditor.inspect.core;bundle-version="1.4.0"
+ phasereditor.inspect.core;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audio.core
 Automatic-Module-Name: phasereditor.audio.core

@@ -5,7 +5,7 @@
          point="org.eclipse.core.runtime.adapters">
       <factory
             adaptableType="org.eclipse.lsp4j.SymbolInformation"
-            class="phasereditor.bluesky.core.JsdocAdapterFactory">
+            class="phasereditor.wildwebdeveloper.core.JsdocAdapterFactory">
          <adapter
                type="phasereditor.inspect.core.jsdoc.IJsdocProvider">
          </adapter>

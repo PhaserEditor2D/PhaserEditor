@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.scene.features"
       label="Phaser Editor - Scene Editor"
-      version="2.0.0"
+      version="2.0.0.20181220"
       provider-name="Arian Fornaris">
 
    <description url="http://www.example.com/description">

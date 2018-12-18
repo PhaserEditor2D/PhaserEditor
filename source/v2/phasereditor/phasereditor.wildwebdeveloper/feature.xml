@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.wildwebdeveloper.features"
       label="Phaser Editor - Blue Sky Support"
-      version="2.0.0.20180410"
+      version="2.0.0.20181220"
       provider-name="Arian Fornaris">
 
    <description url="http://www.example.com/description">

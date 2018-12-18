@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - BitmapFont Core
 Bundle-SymbolicName: phasereditor.bmpfont.core;singleton:=true
-Bundle-Version: 1.5.0.20180307
+Bundle-Version: 2.0.0.20181220
 Bundle-Vendor: Arian Fornaris
 Export-Package: phasereditor.bmpfont.core
 Require-Bundle: org.eclipse.core.contenttype;bundle-version="3.6.0",
  org.eclipse.core.runtime;bundle-version="3.13.0",
  org.eclipse.core.resources;bundle-version="3.12.0",
- phasereditor.org.json;bundle-version="1.4.0"
+ phasereditor.org.json;bundle-version="2.0.0"
 Automatic-Module-Name: phasereditor.bmpfont.core

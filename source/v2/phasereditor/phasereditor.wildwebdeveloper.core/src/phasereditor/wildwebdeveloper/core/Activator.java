@@ -1,4 +1,4 @@
-package phasereditor.bluesky.core;
+package phasereditor.wildwebdeveloper.core;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

@@ -85,7 +85,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 	private String _nextFilterText;
 
 	public FrameGridCanvas(Composite parent, int style, boolean initDND) {
-		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
+		super(parent, style | SWT.V_SCROLL);
 
 		_renderImageSrcFrames = List.of();
 		_images = List.of();

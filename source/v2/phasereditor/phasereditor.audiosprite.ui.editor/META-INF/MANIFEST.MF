@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Audio Sprite Editor
 Bundle-SymbolicName: phasereditor.audiosprite.ui.editor;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.0.20181220
 Bundle-Activator: phasereditor.audiosprite.ui.editor.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -10,10 +10,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources;bundle-version="3.13.100",
  org.eclipse.ui.ide;bundle-version="3.14.100",
  org.eclipse.help;bundle-version="3.8.200",
- phasereditor.audiosprite.core;bundle-version="1.4.0",
- phasereditor.audiosprite.ui;bundle-version="1.4.3",
- phasereditor.org.json;bundle-version="1.4.0",
- phasereditor.ui;bundle-version="1.5.0",
+ phasereditor.audiosprite.core;bundle-version="2.0.0",
+ phasereditor.audiosprite.ui;bundle-version="2.0.0",
+ phasereditor.org.json;bundle-version="2.0.0",
+ phasereditor.ui;bundle-version="2.0.0",
  phasereditor.audio.ui;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.audiosprite.ui.editor

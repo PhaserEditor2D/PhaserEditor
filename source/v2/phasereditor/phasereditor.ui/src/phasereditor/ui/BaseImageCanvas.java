@@ -74,7 +74,7 @@ public class BaseImageCanvas extends Canvas {
 	}
 
 	public BaseImageCanvas(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.NO_REDRAW_RESIZE);
 
 		setData("org.eclipse.e4.ui.css.CssClassName", "Canvas");
 		

@@ -1,4 +1,4 @@
-package phasereditor.bluesky.core;
+package phasereditor.wildwebdeveloper.core;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.lsp4j.SymbolInformation;

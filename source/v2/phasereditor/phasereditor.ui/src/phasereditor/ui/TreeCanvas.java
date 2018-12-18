@@ -72,7 +72,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private boolean _showCheckbox;
 
 	public TreeCanvas(Composite parent, int style) {
-		super(parent, style | SWT.V_SCROLL | SWT.INHERIT_FORCE);
+		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_indentSize = 16;
 		_imageSize = 48;

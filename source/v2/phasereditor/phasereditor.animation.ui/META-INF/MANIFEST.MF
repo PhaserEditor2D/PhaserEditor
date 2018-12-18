@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Animation UI
 Bundle-SymbolicName: phasereditor.animation.ui;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.0.20181220
 Bundle-Activator: phasereditor.animation.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -12,12 +12,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide;bundle-version="3.14.0",
  org.eclipse.ui.navigator;bundle-version="3.7.100",
  org.eclipse.core.resources;bundle-version="3.13.0",
- phasereditor.org.json;bundle-version="1.4.0",
- phasereditor.assetpack.core;bundle-version="1.5.0",
- phasereditor.ui;bundle-version="1.5.0",
- phasereditor.project.core;bundle-version="1.5.0",
- phasereditor.atlas.core;bundle-version="1.4.0",
- phasereditor.inspect.core;bundle-version="1.4.0",
+ phasereditor.org.json;bundle-version="2.0.0",
+ phasereditor.assetpack.core;bundle-version="2.0.0",
+ phasereditor.ui;bundle-version="2.0.0",
+ phasereditor.project.core;bundle-version="2.0.0",
+ phasereditor.atlas.core;bundle-version="2.0.0",
+ phasereditor.inspect.core;bundle-version="2.0.0",
  org.eclipse.jface.text;bundle-version="3.13.0"
 Automatic-Module-Name: phasereditor.animation.ui
 Bundle-ActivationPolicy: lazy

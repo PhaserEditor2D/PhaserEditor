@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - BlueSky Support Core
 Bundle-SymbolicName: phasereditor.wildwebdeveloper.core;singleton:=true
-Bundle-Version: 2.0.0.20180619
-Bundle-Activator: phasereditor.bluesky.core.Activator
+Bundle-Version: 2.0.0.20181220
+Bundle-Activator: phasereditor.wildwebdeveloper.core.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.lsp4j,
- phasereditor.inspect.core;bundle-version="1.4.0",
+ phasereditor.inspect.core;bundle-version="2.0.0",
  org.eclipse.lsp4e
-Automatic-Module-Name: phasereditor.bluesky.core
+Automatic-Module-Name: phasereditor.wildwebdeveloper.core
 Bundle-ActivationPolicy: lazy

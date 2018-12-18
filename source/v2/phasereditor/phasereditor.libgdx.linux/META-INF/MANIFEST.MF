@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - LibGDX Linux
 Bundle-SymbolicName: phasereditor.libgdx.linux;singleton:=true
-Bundle-Version: 1.3.0.20161130
+Bundle-Version: 2.0.0.20181220
 Bundle-Vendor: Arian Fornaris
 Fragment-Host: phasereditor.libgdx
 Eclipse-BundleShape: dir

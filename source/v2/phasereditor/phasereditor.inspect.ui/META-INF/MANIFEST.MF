@@ -2,17 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Inspect UI
 Bundle-SymbolicName: phasereditor.inspect.ui;singleton:=true
-Bundle-Version: 2.0.0.20180619
+Bundle-Version: 2.0.0.20181220
 Bundle-Activator: phasereditor.inspect.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- phasereditor.inspect.core;bundle-version="1.4.0",
- phasereditor.ui;bundle-version="1.5.0",
+ phasereditor.inspect.core;bundle-version="2.0.0",
+ phasereditor.ui;bundle-version="2.0.0",
  org.eclipse.jface.text;bundle-version="3.12.2",
  org.eclipse.ui.editors;bundle-version="3.11.0",
  org.eclipse.ui.ide;bundle-version="3.13.1",
- phasereditor.webrun.ui;bundle-version="1.5.0",
+ phasereditor.webrun.ui;bundle-version="2.0.0",
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0"

@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.0.0.20180408" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.0.0.20181220" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 1.5.0.20180307
+         Phaser Editor 2D - v2.0.0.20181220
 
-Supports Phaser v2.6.2 (built-in)
+Supports Phaser v3.15.1 (built-in)
 
 Powered by:
 
 PhaserJS - http://phaser.io
-Eclipse - http://eclipse.org
-Libgdx - http://libgdx.badlogicgames.com
+Eclipse IDE - http://eclipse.org
+Java - http://java.com
+LibGDX - http://libgdx.badlogicgames.com
 FFMpeg - http://ffmpeg.org
 OptiPNG - http://optipng.sourceforge.net
-Java 8 - http://java.com
-Game Mechanics Explorer - http://gamemechanicexplorer.com
-How To Draw Funny Cartoons - http://how-to-draw-funny-cartoons.com
-Fam Fam Fam slick icons - http://famfamfam.com
+VSCode - http://code.visualstudio.com
+Fam Fam Fam icons - http://famfamfam.com
+Toke Game Art - https://tokegameart.net
 
 Developed by:
 
-Arian Fornaris (@boniatillo_com)
+Arian Fornaris (https://twitter.com/boniatillo_com)
+
 
 Thanks:
 
@@ -35,13 +36,16 @@ Grethel Naranjo, Ernesto Gutierrez - http://rvirtual.uci.cu
 Vertex Group - University of Informatic Sciences - UCI
 Havana Games  - http://globalgamejam.org/2016/games/life-cuco
 
-Keep in touch with the Phaser Editor community: 
+Keep in touch with the Phaser Editor 2D community: 
 
-https://phasereditor2d.com
+https://PhaserEditor2D.com
+https://github.com/PhaserEditor2D/PhaserEditor
 https://twitter.com/PhaserEditor2D
 https://facebook.com/PhaserEditor2D
 
-Copyright (c) Arian Fornaris 2015-2017
+developers@phasereditor2d.com
+
+Copyright (c) Arian Fornaris 2015-2018
       </text>
    </aboutInfo>
 
@@ -275,25 +279,25 @@ This Agreement is governed by the laws of the State of New York and the intellec
    <features>
       <feature id="org.eclipse.egit"/>
       <feature id="org.eclipse.jgit"/>
-      <feature id="phasereditor.animations.features" version="2.0.0"/>
-      <feature id="phasereditor.assets.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.atlas.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.audio.features" version="1.4.0.20170412"/>
-      <feature id="phasereditor.audiosprite.features" version="1.4.3.20171102"/>
-      <feature id="phasereditor.bmpfont.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.chains.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.core.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.help.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.help.phaser.features" version="1.3.0.20161130"/>
-      <feature id="phasereditor.inspect.features" version="1.4.0.20170412"/>
-      <feature id="phasereditor.launcher.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.libgdx.features" version="1.4.0.20170412"/>
-      <feature id="phasereditor.optipng.features" version="1.3.0.20161130"/>
-      <feature id="phasereditor.platform.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.resources.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.scene.features" version="2.0.0"/>
-      <feature id="phasereditor.webrun.features" version="1.5.0.20180307"/>
-      <feature id="phasereditor.wildwebdeveloper.features" version="2.0.0.20180410"/>
+      <feature id="phasereditor.animations.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.assets.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.atlas.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.audio.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.audiosprite.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.bmpfont.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.chains.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.core.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.help.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.help.phaser.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.inspect.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.launcher.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.libgdx.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.optipng.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.platform.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.resources.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.scene.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.webrun.features" version="2.0.0.20181220"/>
+      <feature id="phasereditor.wildwebdeveloper.features" version="2.0.0.20181220"/>
    </features>
 
    <configurations>
