@@ -238,7 +238,7 @@ public class TilemapCanvas extends ZoomCanvas
 
 					var t2 = currentTimeMillis();
 
-					var mapImage = PhaserEditorUI.createSWTImage(getDisplay(), mapWidth, mapHeight);
+					var mapImage = PhaserEditorUI.createTransparentSWTImage(getDisplay(), mapWidth, mapHeight);
 
 					out.println(
 							"Created buffer " + mapWidth + "," + mapHeight + ": " + (currentTimeMillis() - t2 + "ms"));

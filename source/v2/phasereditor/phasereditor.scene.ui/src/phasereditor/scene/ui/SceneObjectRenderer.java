@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
-import static java.lang.System.out;
 import static phasereditor.ui.Colors.BLACK;
 import static phasereditor.ui.Colors.BLUE;
 import static phasereditor.ui.Colors.RED;
@@ -599,8 +598,6 @@ public class SceneObjectRenderer {
 		Image image;
 
 		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
-			
-			out.println("getTileSpriteTextImage");
 			
 			image = createTileSpriteTexture(model);
 

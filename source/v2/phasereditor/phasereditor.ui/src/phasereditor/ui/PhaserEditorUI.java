@@ -230,8 +230,7 @@ public class PhaserEditorUI {
 						.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SwtRM
-						.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
 				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
@@ -240,8 +239,7 @@ public class PhaserEditorUI {
 			// tilemap
 
 			case PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SwtRM
-						.getColor(getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR:
 				_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
@@ -1382,14 +1380,12 @@ public class PhaserEditorUI {
 	public static void paintIconHoverBackground(GC gc, Canvas canvas, int btnSize, Rectangle btnArea) {
 		gc.setAlpha(20);
 		gc.setBackground(canvas.getForeground());
-		gc.fillRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
-				btnSize / 2);
+		gc.fillRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2, btnSize / 2);
 		gc.setAlpha(40);
-		gc.drawRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
-				btnSize / 2);
+		gc.drawRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2, btnSize / 2);
 		gc.setAlpha(255);
 	}
-	
+
 	public static float distance(float[] a, float[] b) {
 		return distance(a[0], a[1], b[0], b[1]);
 	}
@@ -1455,19 +1451,19 @@ public class PhaserEditorUI {
 		return new float[] { vector[0] / d, vector[1] / d };
 	}
 
-	public static Image createSWTImage(Device device, int width, int height) {
-		
-		var temp = new Image(device, 1, 1);
-		var tempData = temp.getImageData();
+	public static Image createTransparentSWTImage(Device device, int width, int height) {
 
-		var data = new ImageData(width, height, tempData.depth, tempData.palette);
-		data.alphaData = new byte[width * height];
+		var buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		var mem = new ByteArrayOutputStream(width * height * Integer.BYTES);
 
-		var img = new Image(device, data);
+		try {
+			ImageIO.write(buf, "png", mem);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		temp.dispose();
-		
-		return img;
+		var data = new ImageLoader().load(new ByteArrayInputStream(mem.toByteArray()));
+
+		return new Image(device, data[0]);
 	}
-
 }
