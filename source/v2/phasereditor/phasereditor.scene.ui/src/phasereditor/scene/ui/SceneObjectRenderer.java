@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
+import static java.lang.System.out;
 import static phasereditor.ui.Colors.BLACK;
 import static phasereditor.ui.Colors.BLUE;
 import static phasereditor.ui.Colors.RED;
@@ -591,13 +592,16 @@ public class SceneObjectRenderer {
 	}
 
 	public Image createImage(int width, int height) {
-		return PhaserEditorUI.createSWTImage(_rendererContext.getDisplay(), width, height);
+		return PhaserEditorUI.createTransparentSWTImage(_rendererContext.getDisplay(), width, height);
 	}
 
 	public Image getTileSpriteTextImage(TileSpriteModel model) {
 		Image image;
 
 		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
+			
+			out.println("getTileSpriteTextImage");
+			
 			image = createTileSpriteTexture(model);
 
 			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
@@ -1009,7 +1013,7 @@ public class SceneObjectRenderer {
 	}
 
 	private boolean asset_textureChanged(ObjectModel model) {
-		return assetChanged(TextureComponent.get_textureKey(model), TextureComponent.get_textureKey(model));
+		return assetChanged(TextureComponent.get_textureKey(model), TextureComponent.get_textureFrame(model));
 	}
 
 	private boolean asset_bitmapFontChanged(ObjectModel model) {
@@ -1023,7 +1027,7 @@ public class SceneObjectRenderer {
 	private boolean assetChanged(String key, String frame) {
 		var asset1 = _lastFinderSnapshot.findAssetKey(key, frame);
 		var asset2 = _finder.findAssetKey(key, frame);
-
+		
 		var b = asset1 == null || asset2 == null || asset1 != asset2;
 
 		return b;
