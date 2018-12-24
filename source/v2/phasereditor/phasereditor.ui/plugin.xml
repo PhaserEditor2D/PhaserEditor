@@ -142,9 +142,6 @@
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="phasereditor.ui.prefs.PreferenceInitializer">
-      </initializer>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -166,8 +163,5 @@
             commandId="phasereditor.ui.quickEdit"
             icon="icons/pencil.png">
       </image>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
    </extension>
 </plugin>

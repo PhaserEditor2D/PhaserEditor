@@ -168,7 +168,41 @@ public class PhaserEditorUI {
 	private PhaserEditorUI() {
 	}
 
-	public static void listenPreferences() {
+	public static void initPreferences() {
+
+		RGB _RED = new RGB(255, 0, 0);
+		RGB _BLUE = new RGB(0, 0, 255);
+		RGB _YELLOW = new RGB(255, 255, 0);
+//		RGB _GRAY = new RGB(192, 192, 192);
+
+		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
+		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
+
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_ANTIALIAS, false);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE,
+				PhaserEditorUI.PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR,
+				StringConverter.asString(new RGB(180, 180, 180)));
+
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1,
+				StringConverter.asString(PhaserEditorUI.getListTextColor().getRGB()));
+
+		// spritesheet
+
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES, true);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS, true);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR,
+				StringConverter.asString(_RED));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, StringConverter.asString(_YELLOW));
+
+		// tilemap
+
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR,
+				StringConverter.asString(_RED));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR, StringConverter.asString(_YELLOW));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR, StringConverter.asString(_BLUE));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH, 32);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT, 32);
 
 		_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE);
 
@@ -610,10 +644,8 @@ public class PhaserEditorUI {
 	 * 
 	 * http://www.vogella.com/tutorials/EclipseJFaceTableAdvanced/article.html
 	 * 
-	 * @param searchTerm
-	 *            can be null or empty. int[0] is returned in this case!
-	 * @param content
-	 *            a not-null string (can be empty!)
+	 * @param searchTerm can be null or empty. int[0] is returned in this case!
+	 * @param content    a not-null string (can be empty!)
 	 * @return an array of int pairs (index, length)
 	 */
 
@@ -1451,19 +1483,19 @@ public class PhaserEditorUI {
 		return new float[] { vector[0] / d, vector[1] / d };
 	}
 
+	/**
+	 * 
+	 * This always create a white image, with no transparency. Instead, use a
+	 * BufferedImage with the final content and then convert it to an SWT Image.
+	 * 
+	 * @param device
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	@Deprecated
 	public static Image createTransparentSWTImage(Device device, int width, int height) {
-
-		var buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		var mem = new ByteArrayOutputStream(width * height * Integer.BYTES);
-
-		try {
-			ImageIO.write(buf, "png", mem);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		var data = new ImageLoader().load(new ByteArrayInputStream(mem.toByteArray()));
-
-		return new Image(device, data[0]);
+		return new Image(device, width, height);
 	}
+
 }
