@@ -40,6 +40,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
+@Deprecated
 public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoomable {
 
 	protected Image _image;

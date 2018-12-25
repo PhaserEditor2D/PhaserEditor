@@ -260,12 +260,12 @@ public class VirtualImage {
 		return _finalFrameData;
 	}
 
-	public void paintImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstX, int dstY, int dstW, int dstH) {
+	public void paint(GC gc, int srcX, int srcY, int srcW, int srcH, int dstX, int dstY, int dstW, int dstH) {
 		var image = getImage();
 		gc.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
 	}
 
-	public void paintImage(GC gc, int x, int y) {
+	public void paint(GC gc, int x, int y) {
 		var image = getImage();
 		gc.drawImage(image, x, y);
 	}

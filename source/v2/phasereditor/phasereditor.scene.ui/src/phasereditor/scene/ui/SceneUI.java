@@ -47,7 +47,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
@@ -59,7 +58,6 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationP
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.ui.ImagePreviewComp;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
@@ -108,13 +106,6 @@ public class SceneUI {
 			@Override
 			public IInformationControl createInformationControl(Shell parent) {
 				var control = new ExternalImageFileInformationControl(parent) {
-
-					@Override
-					protected ImagePreviewComp createContent2(Composite parentComp) {
-						ImagePreviewComp preview = super.createContent2(parentComp);
-						preview.destroyResolutionLabel();
-						return preview;
-					}
 
 					@Override
 					public File getFileToDisplay(Object model) {

@@ -48,6 +48,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
+@Deprecated
 public class BaseImageCanvas extends Canvas {
 
 	private static Map<String, Image> _keyFileMap;

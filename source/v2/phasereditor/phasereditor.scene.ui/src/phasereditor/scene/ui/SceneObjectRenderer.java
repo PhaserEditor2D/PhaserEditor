@@ -853,7 +853,7 @@ public class SceneObjectRenderer {
 
 		var fd = assetFrame.getFrameData();
 		var virtualImage = AssetPackUI.getVirtualImage(assetFrame);
-		virtualImage.paintImage(gc, 0, 0);
+		virtualImage.paint(gc, 0, 0);
 
 		// var img = loadImage(assetFrame.getImageFile());
 		//

@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.ui.ImagePreviewComp;
+import phasereditor.ui.VirtualImageCanvas;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class ExternalImageFileInformationControl extends BaseInformationControl {
@@ -38,16 +38,17 @@ public class ExternalImageFileInformationControl extends BaseInformationControl 
 	}
 
 	@Override
-	protected ImagePreviewComp createContent2(Composite parentComp) {
-		return new ImagePreviewComp(parentComp, SWT.NONE);
+	protected VirtualImageCanvas createContent2(Composite parentComp) {
+		return new VirtualImageCanvas(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		ImagePreviewComp comp = (ImagePreviewComp) control;
-		comp.setImageFile(getFileToDisplay(model).getAbsolutePath());
+		var comp = (VirtualImageCanvas) control;
+		comp.setImageInfo(getFileToDisplay(model), null);
+		comp.redraw();
 	}
-	
+
 	@SuppressWarnings("static-method")
 	public File getFileToDisplay(Object model) {
 		return (File) model;

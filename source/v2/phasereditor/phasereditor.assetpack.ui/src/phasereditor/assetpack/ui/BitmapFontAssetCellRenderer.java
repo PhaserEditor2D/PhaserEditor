@@ -65,7 +65,7 @@ public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 							int srcH) {
 						Rectangle z = calc.imageToScreen(charX, charY, charW, charH);
 
-						image.paintImage(gc, srcX, srcY, srcW, srcH, x + z.x, y + z.y, z.width, z.height);
+						image.paint(gc, srcX, srcY, srcW, srcH, x + z.x, y + z.y, z.width, z.height);
 					}
 
 				});
