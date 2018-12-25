@@ -47,8 +47,10 @@ public class FrameCellRenderer implements ICanvasCellRenderer {
 	@Override
 	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
 		if (_imageFile != null) {
-			PhaserEditorUI.paintScaledImageInArea(gc, canvas.loadImage(_imageFile), _fd,
-					new Rectangle(x, y, width, height));
+			var image = VirtualImage.get(_imageFile, _fd);
+			if (image != null) {
+				image.paintScaledInArea(gc, new Rectangle(x, y, width, height));
+			}
 		}
 	}
 

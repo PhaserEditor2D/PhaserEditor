@@ -28,6 +28,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.ICanvasCellRenderer;
+import phasereditor.ui.VirtualImage;
 
 /**
  * @author arian
@@ -75,11 +76,14 @@ public class AudioSpriteAssetCellRenderer implements ICanvasCellRenderer {
 
 		var imgFile = AudioCore.getSoundWavesFile(_audioFile);
 
-		var img = canvas.loadImage(imgFile.toFile());
-
-		if (img == null) {
+		var virtualImage = VirtualImage.get(imgFile.toFile(), null);
+		
+		if (virtualImage == null) {
 			return;
 		}
+		
+		var img = virtualImage.getImage();
+
 
 		var b = img.getBounds();
 

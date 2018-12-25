@@ -32,7 +32,7 @@ import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.ICanvasCellRenderer;
-import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.VirtualImage;
 
 /**
  * @author arian
@@ -86,8 +86,8 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 					var fd = asset.getFrameData();
 					fd = adaptFrameData(fd);
 
-					var img = canvas.loadImage(file);
-					if (img != null) {
+					var virtualImage = VirtualImage.get(file, fd);
+					if (virtualImage != null) {
 						var scale = 1 + (start - j) * 0.15;
 						Rectangle area = new Rectangle((int) (x + j * imgSize * 0.5), y, (int) (imgSize * scale),
 								(int) (imgSize * scale));
@@ -97,7 +97,7 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 
 						var t = j % 3 + 1;
 						gc.setAlpha(105 + 150 / t);
-						PhaserEditorUI.paintScaledImageInArea(gc, img, fd, area);
+						virtualImage.paintScaledInArea(gc, area);
 					}
 				}
 			}

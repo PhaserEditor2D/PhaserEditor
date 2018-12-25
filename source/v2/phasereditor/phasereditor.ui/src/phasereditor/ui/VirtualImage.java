@@ -34,7 +34,9 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * @author arian
@@ -46,6 +48,7 @@ public class VirtualImage {
 	private FrameData _fd;
 	private Image _swtImage;
 	private BufferedImage _currentFileBufferedImage;
+	private FrameData _finalFrameData;
 
 	private static Map<String, VirtualImage> _keyVirtualImageMap = new HashMap<>();
 	private static Map<File, BufferedImage> _fileBufferedImageMap = new HashMap<>();
@@ -53,16 +56,17 @@ public class VirtualImage {
 	private static List<VirtualImage> _virtualImages = new ArrayList<>();
 	private static List<Image> _garbage = new ArrayList<>();
 
-	public static VirtualImage lookup(IFile file, FrameData fd) {
-		return lookup(file.getLocation().toFile(), fd);
+	public static VirtualImage get(IFile file, FrameData fd) {
+		return get(file.getLocation().toFile(), fd);
 	}
 
 	@SuppressWarnings("boxing")
-	public static VirtualImage lookup(File file, FrameData fd) {
+	public synchronized static VirtualImage get(File file, FrameData fd) {
 
 		out.println("\nVirtualImage.lookup() " + file + " " + fd);
 
 		try {
+
 			if (file == null || !file.exists()) {
 				return null;
 			}
@@ -98,7 +102,12 @@ public class VirtualImage {
 				if (isNewFile) {
 					out.println("New file, create a new virtual image.");
 					// create the new file buffer
-					_fileBufferedImageMap.put(file, ImageIO.read(file));
+					var buffer = ImageIO.read(file);
+					if (buffer == null) {
+						// it is not an image file!
+						return null;
+					}
+					_fileBufferedImageMap.put(file, buffer);
 
 					// create the virtual image
 					img = new VirtualImage(file, fd);
@@ -118,7 +127,12 @@ public class VirtualImage {
 					out.println("File modified: search for an already created virtual image.");
 					// The file changed, we need to recompute the buffered image. The SWT images of
 					// the virtual images are recomputed by demand
-					_fileBufferedImageMap.put(file, ImageIO.read(file));
+					var buffer = ImageIO.read(file);
+					if (buffer == null) {
+						// it is not an image!
+						return null;
+					}
+					_fileBufferedImageMap.put(file, buffer);
 					_fileModifiedMap.put(file, lastModified);
 
 					// not let's find the virtual image for that file and frame data
@@ -184,14 +198,14 @@ public class VirtualImage {
 	 * The SWT image. It is taken from the FrameData of the file texture, so it
 	 * should be painted complete, as it is.
 	 */
-	public Image getImage() {
+	public synchronized Image getImage() {
 
 		updateImages();
 
 		return _swtImage;
 	}
 
-	public BufferedImage getFileBufferedImage() {
+	public synchronized BufferedImage getFileBufferedImage() {
 		return _fileBufferedImageMap.get(_file);
 	}
 
@@ -228,12 +242,71 @@ public class VirtualImage {
 
 					_swtImage = PhaserEditorUI.image_Swing_To_SWT(buf);
 				}
+
+				_finalFrameData = FrameData.fromImage(_swtImage);
 			}
 
 			_currentFileBufferedImage = newFileBufferedImage;
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
+		}
+	}
+
+	public synchronized FrameData getFinalFrameData() {
+
+		updateImages();
+
+		return _finalFrameData;
+	}
+
+	public void paintImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstX, int dstY, int dstW, int dstH) {
+		var image = getImage();
+		gc.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+	}
+
+	public void paintImage(GC gc, int x, int y) {
+		var image = getImage();
+		gc.drawImage(image, x, y);
+	}
+
+	public void paintScaledInArea(GC gc, Rectangle renderArea) {
+		paintScaledInArea(gc, renderArea, true, true);
+	}
+
+	public void paintScaledInArea(GC gc, Rectangle renderArea, boolean dontTrimSpaces, boolean center) {
+
+		var image = getImage();
+		var fd = _finalFrameData;
+
+		int frameHeight = renderArea.height;
+		int frameWidth = renderArea.width;
+
+		double imgW = dontTrimSpaces ? fd.srcSize.x : fd.src.width;
+		double imgH = dontTrimSpaces ? fd.srcSize.y : fd.src.height;
+
+		// compute the right width
+		imgW = imgW * (frameHeight / imgH);
+		imgH = frameHeight;
+
+		// fix width if it goes beyond the area
+		if (imgW > frameWidth) {
+			imgH = imgH * (frameWidth / imgW);
+			imgW = frameWidth;
+		}
+
+		double scaleX = imgW / (dontTrimSpaces ? fd.srcSize.x : fd.src.width);
+		double scaleY = imgH / (dontTrimSpaces ? fd.srcSize.y : fd.src.height);
+
+		var imgX = renderArea.x + (center ? frameWidth / 2 - imgW / 2 : 0) + (dontTrimSpaces ? fd.dst.x : 0) * scaleX;
+		var imgY = renderArea.y + frameHeight / 2 - imgH / 2 + (dontTrimSpaces ? fd.dst.y : 0) * scaleY;
+
+		double imgDstW = (dontTrimSpaces ? fd.dst.width : fd.src.width) * scaleX;
+		double imgDstH = (dontTrimSpaces ? fd.dst.height : fd.src.height) * scaleY;
+
+		if (imgDstW > 0 && imgDstH > 0) {
+			gc.drawImage(image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY, (int) imgDstW,
+					(int) imgDstH);
 		}
 	}
 }

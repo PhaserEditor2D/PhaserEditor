@@ -22,7 +22,6 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
@@ -49,7 +48,7 @@ public class FrameGridCellRenderer implements ICanvasCellRenderer {
 		var size = (int) (Math.sqrt(width * height / frameCount) * 0.8);
 
 		var cols = width / size;
-		var rows = frameCount / cols + (frameCount % cols == 0? 0 : 1);
+		var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
 		var marginX = Math.max(0, (width - cols * size) / 2);
 		var marginY = Math.max(0, (height - rows * size) / 2);
 
@@ -62,15 +61,13 @@ public class FrameGridCellRenderer implements ICanvasCellRenderer {
 		for (var i = 0; i < frameCount; i++) {
 			var file = _provider.getFrameImageFile(i);
 			var src = _provider.getFrameRectangle(i);
-			var image = canvas.loadImage(file);
+			var fd = FrameData.fromSourceRectangle(src);
+			var image = VirtualImage.get(file, fd);
 
 			if (image != null) {
-				var fd = new FrameData(0);
-				fd.src = src;
-				fd.srcSize = new Point(src.width, src.height);
-				fd.dst = new Rectangle(0, 0, src.width, src.height);
-				PhaserEditorUI.paintScaledImageInArea(gc, image, fd,
-						new Rectangle(startX + itemX, startY + itemY, size, size));
+				// PhaserEditorUI.paintScaledImageInArea(gc, image, fd,
+				// new Rectangle(startX + itemX, startY + itemY, size, size));
+				image.paintScaledInArea(gc, new Rectangle(startX + itemX, startY + itemY, size, size));
 			}
 
 			itemX += size;

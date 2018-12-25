@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -44,6 +43,7 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
@@ -499,17 +499,16 @@ public class SceneObjectRenderer {
 		var width = metrics.getWidth();
 		var height = metrics.getHeight();
 
-		var buffer = createImage(width, height);
+		var buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-		GC gc2 = new GC(buffer);
+		var g2 = buffer.createGraphics();
 
-		BaseImageCanvas.prepareGC(gc2);
+		BaseImageCanvas.prepareGC(g2);
 
 		var asset = BitmapTextComponent.utils_getFont(textModel, _finder);
 
-		var fontTexture = loadImage(asset.getTextureFile());
-
-		Transform tx = null;
+		var virtualImage = VirtualImage.get(asset.getTextureFile(), null);
+		var fontTexture = virtualImage.getFileBufferedImage();
 
 		if (textModel instanceof DynamicBitmapTextComponent) {
 			// crop it
@@ -527,14 +526,12 @@ public class SceneObjectRenderer {
 				var cropX = width * originX;
 				var cropY = height * originY;
 
-				gc2.setClipping((int) cropX, (int) cropY, cropWidth, cropHeight);
+				g2.setClip((int) cropX, (int) cropY, cropWidth, cropHeight);
 
 				var scrollX = DynamicBitmapTextComponent.get_scrollX(textModel);
 				var scrollY = DynamicBitmapTextComponent.get_scrollY(textModel);
 
-				tx = new Transform(gc2.getDevice());
-				tx.translate(-scrollX, -scrollY);
-				gc2.setTransform(tx);
+				g2.translate(-scrollX, -scrollY);
 
 			}
 		}
@@ -547,7 +544,7 @@ public class SceneObjectRenderer {
 				@Override
 				public void render(char c, int x, int y, int width, int height, int srcX, int srcY, int srcW,
 						int srcH) {
-					gc2.drawImage(fontTexture, srcX, srcY, srcW, srcH, x, y, width, height);
+					g2.drawImage(fontTexture, x, y, x + width, y + height, srcX, srcY, srcX + srcW, srcY + srcH, null);
 				}
 			});
 
@@ -555,13 +552,16 @@ public class SceneObjectRenderer {
 			e.printStackTrace();
 		}
 
-		if (tx != null) {
-			tx.dispose();
+		g2.dispose();
+
+		try {
+			
+			return PhaserEditorUI.image_Swing_To_SWT(buffer);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
 		}
-
-		gc2.dispose();
-
-		return buffer;
 	}
 
 	private static RenderArgs createBitmapTextRenderArgs(BitmapTextModel textModel) {
@@ -629,7 +629,8 @@ public class SceneObjectRenderer {
 			return null;
 		}
 
-		var virtualImage = VirtualImage.lookup(assetFrame.getImageFile(), assetFrame.getFrameData());
+		var virtualImage = AssetPackUI.getVirtualImage(assetFrame);
+
 		var textureBufferedImage = virtualImage.getFileBufferedImage();
 
 		var fd = assetFrame.getFrameData();
@@ -734,10 +735,6 @@ public class SceneObjectRenderer {
 		var txElements = new float[6];
 		tx.getElements(txElements);
 		return new Transform(gc.getDevice(), txElements);
-	}
-
-	private Image loadImage(IFile file) {
-		return _rendererContext.loadImage(file);
 	}
 
 	public float[] getObjectSize(ObjectModel model) {
@@ -855,9 +852,8 @@ public class SceneObjectRenderer {
 		}
 
 		var fd = assetFrame.getFrameData();
-		var virtualImage = VirtualImage.lookup(assetFrame.getImageFile(), fd);
-		var img = virtualImage.getImage();
-		gc.drawImage(img, 0, 0);
+		var virtualImage = AssetPackUI.getVirtualImage(assetFrame);
+		virtualImage.paintImage(gc, 0, 0);
 
 		// var img = loadImage(assetFrame.getImageFile());
 		//

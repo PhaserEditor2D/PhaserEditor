@@ -56,7 +56,7 @@ public class FrameData implements Cloneable {
 		if (img == null) {
 			return null;
 		}
-		
+
 		var fd = new FrameData(0);
 
 		fd.src = img.getBounds();
@@ -70,5 +70,13 @@ public class FrameData implements Cloneable {
 	public String toString() {
 		return "[src=" + src + ", dst=" + dst + ", srcSize=" + srcSize + "]";
 	}
-	
+
+	public static FrameData fromSourceRectangle(Rectangle rect) {
+		var fd = new FrameData(0);
+		fd.srcSize = new Point(rect.width, rect.height);
+		fd.src = rect;
+		fd.dst = new Rectangle(0, 0, rect.width, rect.height);
+		return fd;
+	}
+
 }

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -66,6 +66,7 @@ import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AudioSpriteAssetCellRenderer;
 import phasereditor.assetpack.ui.BitmapFontAssetCellRenderer;
 import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
@@ -76,7 +77,6 @@ import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameCellRenderer;
-import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
@@ -616,8 +616,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		} else if (asset instanceof SpritesheetAssetModel) {
 			var asset2 = (SpritesheetAssetModel) asset;
 			var file = asset2.getUrlFile();
-			var image = loadImage(file);
-			return new FrameCellRenderer(file, FrameData.fromImage(image));
+			return new FrameCellRenderer(file, null);
 		} else if (asset instanceof AtlasAssetModel) {
 			var asset2 = (AtlasAssetModel) asset;
 			return new FrameGridCellRenderer(new AtlasAssetFramesProvider(asset2));
@@ -650,10 +649,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 					if (screenPath != null) {
 						var screenFile = screenPath.toFile();
 						if (screenFile.exists()) {
-							var img = loadImage(screenFile);
-							if (img != null) {
-								return new FrameCellRenderer(screenFile, FrameData.fromImage(img));
-							}
+							return new FrameCellRenderer(screenFile, null);
 						}
 					}
 				}
@@ -675,26 +671,29 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 	private void loadImagesInBackground() {
 
-		var files = new ArrayList<IFile>();
+		var frames = _model.getAssets().stream()
 
-		for (var asset : _model.getAssets()) {
-			for (var elem : asset.getSubElements()) {
-				if (elem instanceof IAssetFrameModel) {
-					var file = ((IAssetFrameModel) elem).getImageFile();
-					files.add(file);
-				}
-			}
-		}
+				.flatMap(a -> a.getSubElements().stream())
+
+				.filter(a -> a instanceof IAssetFrameModel)
+
+				.map(a -> (IAssetFrameModel) a)
+
+				.collect(toList());
 
 		var job = new Job("Loading Pack Editor images") {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				monitor.beginTask("Loadng Pack Editor images", files.size());
+				monitor.beginTask("Loading Pack Editor images", frames.size());
 
-				for (var file : files) {
+				for (var frame : frames) {
 
-					loadImage(file);
+					var image = AssetPackUI.getVirtualImage(frame);
+
+					if (image != null) {
+						image.getImage();
+					}
 
 					monitor.worked(1);
 				}

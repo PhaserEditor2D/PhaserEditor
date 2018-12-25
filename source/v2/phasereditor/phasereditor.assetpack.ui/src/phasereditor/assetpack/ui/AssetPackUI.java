@@ -103,13 +103,16 @@ import phasereditor.ui.ListSelectionDialog2;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.VirtualImage;
 
 public class AssetPackUI {
 
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
-	
+	public static VirtualImage getVirtualImage(IAssetFrameModel frame) {
+		return VirtualImage.get(frame.getImageFile(), frame.getFrameData());
+	}
 
 	public static List<IFile> browseManyAssetFile(AssetPackModel packModel, String objectName, List<IFile> files,
 			Shell shell) {
@@ -131,8 +134,6 @@ public class AssetPackUI {
 
 		return list;
 	}
-
-	
 
 	public static String browseAssetFile(AssetPackModel packModel, String objectName, IFile curFile, List<IFile> files,
 			Shell shell, Consumer<String> action) {
@@ -393,15 +394,15 @@ public class AssetPackUI {
 		}
 		return list;
 	}
-	
+
 	public static void installAssetTooltips(TreeCanvasViewer viewer) {
 		installAssetTooltips(viewer.getTree(), viewer.getTree().getUtils());
 	}
-	
+
 	public static void installAssetTooltips(FilteredFrameGrid frameGrid) {
 		installAssetTooltips(frameGrid.getCanvas());
 	}
-	
+
 	public static void installAssetTooltips(FrameGridCanvas canvas) {
 		Tooltips.install(canvas, new CanvasUtilsInformationControlProvider(canvas.getUtils()),
 				AssetPackUI.getInformationControlCreatorsForTooltips(), false);

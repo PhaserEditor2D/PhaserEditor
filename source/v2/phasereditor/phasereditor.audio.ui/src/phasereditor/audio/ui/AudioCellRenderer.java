@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.GC;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.ICanvasCellRenderer;
+import phasereditor.ui.VirtualImage;
 
 /**
  * @author arian
@@ -45,17 +46,21 @@ public class AudioCellRenderer implements ICanvasCellRenderer {
 	@Override
 	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
 		var imgFile = AudioCore.getSoundWavesFile(_audioFile).toFile();
-		
-		var img = canvas.loadImage(imgFile);
 
-		var b = img.getBounds();
+		var virtualImage = VirtualImage.get(imgFile, null);
 		
-		gc.setAlpha(150);
-		
-		gc.drawImage(img, 0, 0, b.width, b.height, x + _padding, y + _padding, width - _padding * 2,
-				height - _padding * 2);
-		
-		gc.setAlpha(255);
+		if (virtualImage != null) {
+			var img = virtualImage.getImage();
+
+			var b = img.getBounds();
+
+			gc.setAlpha(150);
+
+			gc.drawImage(img, 0, 0, b.width, b.height, x + _padding, y + _padding, width - _padding * 2,
+					height - _padding * 2);
+
+			gc.setAlpha(255);
+		}
 	}
 
 }
