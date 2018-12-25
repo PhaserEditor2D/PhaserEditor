@@ -42,7 +42,7 @@ public class VirtualImageCanvas extends ZoomCanvas {
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
-		var virtualImage = VirtualImage.get(_file, _fd);
+		var virtualImage = getVirtualImage();
 		if (virtualImage != null) {
 			var fd = virtualImage.getFinalFrameData();
 			var calc = calc();
@@ -54,7 +54,7 @@ public class VirtualImageCanvas extends ZoomCanvas {
 	@Override
 	protected Point getImageSize() {
 		if (_fd == null) {
-			var virtualImage = VirtualImage.get(_file, _fd);
+			var virtualImage = getVirtualImage();
 
 			if (virtualImage != null) {
 				return virtualImage.getFinalFrameData().srcSize;
@@ -64,10 +64,14 @@ public class VirtualImageCanvas extends ZoomCanvas {
 		return new Point(1, 1);
 	}
 
+	public VirtualImage getVirtualImage() {
+		return VirtualImage.get(_file, _fd);
+	}
+
 	public void setImageInfo(File file, FrameData fd) {
 		_file = file;
 		_fd = fd;
-		
+
 		resetZoom();
 	}
 
@@ -77,6 +81,18 @@ public class VirtualImageCanvas extends ZoomCanvas {
 
 	public FrameData getFrameData() {
 		return _fd;
+	}
+
+	public String getResolution() {
+		var image = getVirtualImage();
+
+		if (image == null) {
+			return "";
+		}
+
+		var size = image.getFinalFrameData().srcSize;
+
+		return size.x + " x " + size.y;
 	}
 
 }

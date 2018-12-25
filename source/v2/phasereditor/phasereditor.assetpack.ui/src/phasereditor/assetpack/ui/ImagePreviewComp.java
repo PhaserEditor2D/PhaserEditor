@@ -27,22 +27,18 @@ import java.nio.file.Path;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.VirtualImageCanvas;
 
 public class ImagePreviewComp extends Composite {
 	private Label _resolutionLabel;
-	private ImageCanvas _canvas;
-	private IFile _file;
-	private Rectangle _imageBounds;
+	private VirtualImageCanvas _canvas;
 
 	/**
 	 * Create the composite.
@@ -55,13 +51,13 @@ public class ImagePreviewComp extends Composite {
 
 		setLayout(new GridLayout(1, false));
 
-		_canvas = new ImageCanvas(this, SWT.NONE);
+		_canvas = new VirtualImageCanvas(this, SWT.NONE);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_resolutionLabel = new Label(this, SWT.CENTER);
 		GridData ld = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		_resolutionLabel.setLayoutData(ld);
-		
+
 	}
 
 	public void destroyResolutionLabel() {
@@ -70,56 +66,47 @@ public class ImagePreviewComp extends Composite {
 	}
 
 	public void setImageFile(IFile file) {
-		_file = file;
 		setImageFile(file == null ? null : file.getLocation().toFile().getAbsolutePath());
 	}
 
 	public void setImageFile(String filepath) {
 		if (filepath == null) {
-			_canvas.removeImage();
+
+			_canvas.setImageInfo(null, null);
+
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText("<No image>");
 			}
 		} else {
-			_canvas.setImageFile(filepath);
+			_canvas.setImageInfo(new File(filepath), null);
+
 			if (_resolutionLabel != null) {
 				String name = new File(filepath).getName();
 				if (name.length() > 20) {
 					name = name.substring(0, 20) + "...";
 				}
+
 				String text = name + " (" + _canvas.getResolution() + ")";
+
 				_resolutionLabel.setText(text);
 			}
-		}
-
-		_imageBounds = null;
-
-		Image img = _canvas.getImage();
-		
-		if (img != null) {
-			_imageBounds = img.getBounds();
-			String str = "Image Size: " + _imageBounds.width + "x" + _imageBounds.height + "\n";
-			if (_file == null) {
-				str += "File: " + filepath;
-			} else {
-				str += "File: " + _file.getProjectRelativePath().toPortableString();
-			}
-			setToolTipText(str);
 		}
 	}
 
 	public void loadImage(Path path, String label) {
 		if (path == null) {
-			_canvas.removeImage();
+			_canvas.setImageInfo(null, null);
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText("<No image>");
 			}
 		} else {
-			_canvas.loadImage(path.toAbsolutePath().toString());
+			_canvas.setImageInfo(path.toFile().getAbsoluteFile(), null);
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText(label + " (" + _canvas.getResolution() + ")");
 			}
 		}
+
+		_canvas.redraw();
 	}
 
 	public void createToolBar(IToolBarManager toolbar) {
