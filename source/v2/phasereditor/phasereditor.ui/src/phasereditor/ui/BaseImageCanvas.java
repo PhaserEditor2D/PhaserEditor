@@ -23,7 +23,9 @@ package phasereditor.ui;
 
 import static java.lang.System.out;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
@@ -55,11 +59,16 @@ public class BaseImageCanvas extends Canvas {
 	private boolean _disableCanche;
 	private static Set<Image> _globalGarbageImages;
 
+	private static Map<File, BufferedImage> _buffFileImageMap;
+	private static Map<File, Long> _buffFileTimeMap;
+
 	static {
 		_keyFileMap = new HashMap<>();
 		_fileImageMap = new HashMap<>();
 		_gobalCanvases = new ArrayList<>();
 		_globalGarbageImages = new HashSet<>();
+		_buffFileImageMap = new HashMap<>();
+		_buffFileTimeMap = new HashMap<>();
 	}
 
 	static class ImageRef {
@@ -77,7 +86,7 @@ public class BaseImageCanvas extends Canvas {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.NO_REDRAW_RESIZE);
 
 		setData("org.eclipse.e4.ui.css.CssClassName", "Canvas");
-		
+
 		_disableCanche = false;
 
 		_gobalCanvases.add(this);
@@ -115,6 +124,49 @@ public class BaseImageCanvas extends Canvas {
 		_gobalCanvases.remove(this);
 
 		this._references = new ArrayList<>();
+	}
+
+	public BufferedImage loadBufferedImage(IFile file) {
+		if (file == null) {
+			return null;
+		}
+
+		return loadBufferedImage(file.getLocation().toFile());
+	}
+
+	@SuppressWarnings({ "static-method", "boxing" })
+	public BufferedImage loadBufferedImage(File file) {
+		try {
+			if (file == null || !file.exists()) {
+				return null;
+			}
+
+			var img = _buffFileImageMap.get(file);
+
+			if (img == null) {
+				img = ImageIO.read(file);
+				_buffFileImageMap.put(file, img);
+				_buffFileTimeMap.put(file, file.lastModified());
+
+			} else {
+				var time = file.lastModified();
+				var curtime = _buffFileTimeMap.get(file);
+
+				if (time == curtime) {
+					return img;
+				}
+
+				img = ImageIO.read(file);
+
+				_buffFileImageMap.put(file, img);
+				_buffFileTimeMap.put(file, time);
+			}
+
+			return img;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	public Image loadImage(IFile file) {

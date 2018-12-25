@@ -65,4 +65,10 @@ public class FrameData implements Cloneable {
 
 		return fd;
 	}
+
+	@Override
+	public String toString() {
+		return "[src=" + src + ", dst=" + dst + ", srcSize=" + srcSize + "]";
+	}
+	
 }

@@ -28,6 +28,8 @@ import static phasereditor.ui.Colors.WHITE;
 import static phasereditor.ui.Colors.YELLOW;
 import static phasereditor.ui.Colors.color;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +66,7 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.VirtualImage;
 
 /**
  * @author arian
@@ -590,6 +593,10 @@ public class SceneObjectRenderer {
 		}
 	}
 
+	/**
+	 * We should use Java2D to create an empty image.
+	 */
+	@Deprecated
 	public Image createImage(int width, int height) {
 		return PhaserEditorUI.createTransparentSWTImage(_rendererContext.getDisplay(), width, height);
 	}
@@ -598,7 +605,7 @@ public class SceneObjectRenderer {
 		Image image;
 
 		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
-			
+
 			image = createTileSpriteTexture(model);
 
 			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
@@ -622,7 +629,8 @@ public class SceneObjectRenderer {
 			return null;
 		}
 
-		var img = _rendererContext.loadImage(assetFrame.getImageFile());
+		var virtualImage = VirtualImage.lookup(assetFrame.getImageFile(), assetFrame.getFrameData());
+		var textureBufferedImage = virtualImage.getFileBufferedImage();
 
 		var fd = assetFrame.getFrameData();
 
@@ -635,8 +643,8 @@ public class SceneObjectRenderer {
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
 
-		var buffer = createImage((int) width, (int) height);
-		var gc = new GC(buffer);
+		var buffer = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
+		var g2 = buffer.createGraphics();
 
 		double x = 0;
 		double y = 0;
@@ -663,15 +671,7 @@ public class SceneObjectRenderer {
 				var y2 = y;
 
 				while (y2 < height) {
-					gc.drawImage(img,
-
-							fd.src.x,
-
-							fd.src.y,
-
-							fd.src.width,
-
-							fd.src.height,
+					g2.drawImage(textureBufferedImage,
 
 							//
 
@@ -679,9 +679,23 @@ public class SceneObjectRenderer {
 
 							(int) (y2),
 
-							(int) (fd.dst.width * tileScaleX),
+							(int) (x + fd.dst.width * tileScaleX),
 
-							(int) (fd.dst.height * tileScaleY));
+							(int) (y2 + fd.dst.height * tileScaleY),
+
+							//
+
+							fd.src.x,
+
+							fd.src.y,
+
+							fd.src.x + fd.src.width,
+
+							fd.src.y + fd.src.height,
+
+							null
+
+					);
 
 					y2 += frameHeight;
 				}
@@ -690,9 +704,16 @@ public class SceneObjectRenderer {
 			}
 		}
 
-		gc.dispose();
+		g2.dispose();
 
-		return buffer;
+		try {
+
+			return PhaserEditorUI.image_Swing_To_SWT(buffer);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void renderTileSprite(GC gc, TileSpriteModel model) {
@@ -833,12 +854,18 @@ public class SceneObjectRenderer {
 			return;
 		}
 
-		var img = loadImage(assetFrame.getImageFile());
-
 		var fd = assetFrame.getFrameData();
+		var virtualImage = VirtualImage.lookup(assetFrame.getImageFile(), fd);
+		var img = virtualImage.getImage();
+		gc.drawImage(img, 0, 0);
 
-		gc.drawImage(img, fd.src.x, fd.src.y, fd.src.width, fd.src.height, fd.dst.x, fd.dst.y, fd.dst.width,
-				fd.dst.height);
+		// var img = loadImage(assetFrame.getImageFile());
+		//
+		// var fd = assetFrame.getFrameData();
+		//
+		// gc.drawImage(img, fd.src.x, fd.src.y, fd.src.width, fd.src.height, fd.dst.x,
+		// fd.dst.y, fd.dst.width,
+		// fd.dst.height);
 
 		setObjectBounds(gc, model, 0, 0, fd.srcSize.x, fd.srcSize.y);
 	}
@@ -1024,7 +1051,7 @@ public class SceneObjectRenderer {
 	private boolean assetChanged(String key, String frame) {
 		var asset1 = _lastFinderSnapshot.findAssetKey(key, frame);
 		var asset2 = _finder.findAssetKey(key, frame);
-		
+
 		var b = asset1 == null || asset2 == null || asset1 != asset2;
 
 		return b;

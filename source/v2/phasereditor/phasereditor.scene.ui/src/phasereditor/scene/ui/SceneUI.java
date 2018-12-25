@@ -269,7 +269,6 @@ public class SceneUI {
 				img.dispose();
 			}
 		}
-
 	}
 
 	public static Image makeSceneScreenshot_SWTImage(IFile file, int maxSize) {
