@@ -32,33 +32,33 @@ import org.eclipse.swt.widgets.Composite;
  * @author arian
  *
  */
-public class VirtualImageCanvas extends ZoomCanvas {
+public class ImageProxyCanvas extends ZoomCanvas {
 
 	private File _file;
 	private FrameData _fd;
 
-	public VirtualImageCanvas(Composite parent, int style) {
+	public ImageProxyCanvas(Composite parent, int style) {
 		super(parent, style);
 	}
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
-		var virtualImage = getVirtualImage();
-		if (virtualImage != null) {
-			var fd = virtualImage.getFinalFrameData();
+		var proxy = getProxy();
+		if (proxy != null) {
+			var fd = proxy.getFinalFrameData();
 			var calc = calc();
 			var area = calc.modelToView(0, 0, fd.dst.width, fd.dst.height);
-			virtualImage.paintScaledInArea(e.gc, area);
+			proxy.paintScaledInArea(e.gc, area);
 		}
 	}
 
 	@Override
 	protected Point getImageSize() {
 		if (_fd == null) {
-			var virtualImage = getVirtualImage();
+			var proxy = getProxy();
 
-			if (virtualImage != null) {
-				return virtualImage.getFinalFrameData().srcSize;
+			if (proxy != null) {
+				return proxy.getFinalFrameData().srcSize;
 			}
 		} else {
 			return _fd.srcSize;
@@ -67,8 +67,8 @@ public class VirtualImageCanvas extends ZoomCanvas {
 		return new Point(1, 1);
 	}
 
-	public VirtualImage getVirtualImage() {
-		return VirtualImage.get(_file, _fd);
+	public ImageProxy getProxy() {
+		return ImageProxy.get(_file, _fd);
 	}
 
 	public void setImageInfo(File file, FrameData fd) {
@@ -107,7 +107,7 @@ public class VirtualImageCanvas extends ZoomCanvas {
 	}
 
 	public String getResolution() {
-		var image = getVirtualImage();
+		var image = getProxy();
 
 		if (image == null) {
 			return "";

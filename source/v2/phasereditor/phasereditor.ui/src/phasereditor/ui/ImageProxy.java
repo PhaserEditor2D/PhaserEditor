@@ -40,7 +40,7 @@ import org.eclipse.swt.graphics.Rectangle;
  * @author arian
  *
  */
-public class VirtualImage {
+public class ImageProxy {
 
 	private File _file;
 	private FrameData _fd;
@@ -49,18 +49,18 @@ public class VirtualImage {
 	private FrameData _finalFrameData;
 	private float _scale;
 
-	private static Map<String, VirtualImage> _keyVirtualImageMap = new HashMap<>();
+	private static Map<String, ImageProxy> _keyProxyMap = new HashMap<>();
 	private static Map<File, BufferedImage> _fileBufferedImageMap = new HashMap<>();
 	private static Map<File, Long> _fileModifiedMap = new HashMap<>();
-	private static List<VirtualImage> _virtualImages = new ArrayList<>();
+	private static List<ImageProxy> _proxyList = new ArrayList<>();
 	private static List<Image> _garbage = new ArrayList<>();
 
-	public static VirtualImage get(IFile file, FrameData fd) {
+	public static ImageProxy get(IFile file, FrameData fd) {
 		return get(file.getLocation().toFile(), fd);
 	}
 
 	@SuppressWarnings("boxing")
-	public synchronized static VirtualImage get(File file, FrameData fd) {
+	public synchronized static ImageProxy get(File file, FrameData fd) {
 
 		try {
 
@@ -72,7 +72,7 @@ public class VirtualImage {
 
 			var key = computeKey(file, fd, lastModified);
 
-			var img = _keyVirtualImageMap.get(key);
+			var img = _keyProxyMap.get(key);
 
 			if (img == null) {
 
@@ -86,7 +86,7 @@ public class VirtualImage {
 				// check if it is requesting a new file
 
 				var isNewFile = true;
-				for (var cacheImage : _virtualImages) {
+				for (var cacheImage : _proxyList) {
 					if (cacheImage._file.equals(file)) {
 						isNewFile = false;
 						break;
@@ -103,11 +103,11 @@ public class VirtualImage {
 					_fileBufferedImageMap.put(file, buffer);
 
 					// create the virtual image
-					img = new VirtualImage(file, fd);
+					img = new ImageProxy(file, fd);
 
 					// add the virtual image to maps
-					_virtualImages.add(img);
-					_keyVirtualImageMap.put(key, img);
+					_proxyList.add(img);
+					_keyProxyMap.put(key, img);
 					_fileModifiedMap.put(file, lastModified);
 
 					return img;
@@ -128,9 +128,9 @@ public class VirtualImage {
 					_fileModifiedMap.put(file, lastModified);
 
 					// not let's find the virtual image for that file and frame data
-					for (var cacheImage : _virtualImages) {
+					for (var cacheImage : _proxyList) {
 						if (cacheImage.sameFileAndFrameData(file, fd)) {
-							_keyVirtualImageMap.put(key, cacheImage);
+							_keyProxyMap.put(key, cacheImage);
 							return cacheImage;
 						}
 					}
@@ -139,10 +139,10 @@ public class VirtualImage {
 				// so it looks that the key changed because it is requesting a new frame data
 				// inside an existant texture, so let's create a new virtual image
 				{
-					img = new VirtualImage(file, fd);
+					img = new ImageProxy(file, fd);
 					// add the virtual image to maps
-					_virtualImages.add(img);
-					_keyVirtualImageMap.put(key, img);
+					_proxyList.add(img);
+					_keyProxyMap.put(key, img);
 					_fileModifiedMap.put(file, lastModified);
 				}
 
@@ -178,7 +178,7 @@ public class VirtualImage {
 		return file.getAbsolutePath() + "$" + (fd == null ? "FULL" : fd.toString()) + "#" + lastModified;
 	}
 
-	public VirtualImage(File file, FrameData fd) {
+	public ImageProxy(File file, FrameData fd) {
 		_file = file;
 		_fd = fd;
 	}

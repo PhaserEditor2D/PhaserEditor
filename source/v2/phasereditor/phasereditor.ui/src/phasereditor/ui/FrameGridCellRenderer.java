@@ -62,7 +62,7 @@ public class FrameGridCellRenderer implements ICanvasCellRenderer {
 			var file = _provider.getFrameImageFile(i);
 			var src = _provider.getFrameRectangle(i);
 			var fd = FrameData.fromSourceRectangle(src);
-			var image = VirtualImage.get(file, fd);
+			var image = ImageProxy.get(file, fd);
 
 			if (image != null) {
 				// PhaserEditorUI.paintScaledImageInArea(gc, image, fd,

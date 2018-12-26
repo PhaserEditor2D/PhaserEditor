@@ -66,7 +66,7 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.VirtualImage;
+import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
@@ -507,8 +507,8 @@ public class SceneObjectRenderer {
 
 		var asset = BitmapTextComponent.utils_getFont(textModel, _finder);
 
-		var virtualImage = VirtualImage.get(asset.getTextureFile(), null);
-		var fontTexture = virtualImage.getFileBufferedImage();
+		var proxy = ImageProxy.get(asset.getTextureFile(), null);
+		var fontTexture = proxy.getFileBufferedImage();
 
 		if (textModel instanceof DynamicBitmapTextComponent) {
 			// crop it
@@ -629,9 +629,9 @@ public class SceneObjectRenderer {
 			return null;
 		}
 
-		var virtualImage = AssetPackUI.getVirtualImage(assetFrame);
+		var proxy = AssetPackUI.getImageProxy(assetFrame);
 
-		var textureBufferedImage = virtualImage.getFileBufferedImage();
+		var textureBufferedImage = proxy.getFileBufferedImage();
 
 		var fd = assetFrame.getFrameData();
 
@@ -852,8 +852,8 @@ public class SceneObjectRenderer {
 		}
 
 		var fd = assetFrame.getFrameData();
-		var virtualImage = AssetPackUI.getVirtualImage(assetFrame);
-		virtualImage.paint(gc, 0, 0);
+		var proxy = AssetPackUI.getImageProxy(assetFrame);
+		proxy.paint(gc, 0, 0);
 
 		setObjectBounds(gc, model, 0, 0, fd.srcSize.x, fd.srcSize.y);
 	}

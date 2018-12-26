@@ -47,7 +47,7 @@ public class FrameCellRenderer implements ICanvasCellRenderer {
 	@Override
 	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
 		if (_imageFile != null) {
-			var image = VirtualImage.get(_imageFile, _fd);
+			var image = ImageProxy.get(_imageFile, _fd);
 			if (image != null) {
 				image.paintScaledInArea(gc, new Rectangle(x, y, width, height));
 			}

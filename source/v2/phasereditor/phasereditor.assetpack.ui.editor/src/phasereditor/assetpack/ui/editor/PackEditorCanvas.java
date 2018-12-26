@@ -689,7 +689,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 
 				for (var frame : frames) {
 
-					var image = AssetPackUI.getVirtualImage(frame);
+					var image = AssetPackUI.getImageProxy(frame);
 
 					if (image != null) {
 						image.getImage();

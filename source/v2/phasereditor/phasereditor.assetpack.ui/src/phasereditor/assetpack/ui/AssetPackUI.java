@@ -103,15 +103,15 @@ import phasereditor.ui.ListSelectionDialog2;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.VirtualImage;
+import phasereditor.ui.ImageProxy;
 
 public class AssetPackUI {
 
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
-	public static VirtualImage getVirtualImage(IAssetFrameModel frame) {
-		return VirtualImage.get(frame.getImageFile(), frame.getFrameData());
+	public static ImageProxy getImageProxy(IAssetFrameModel frame) {
+		return ImageProxy.get(frame.getImageFile(), frame.getFrameData());
 	}
 
 	public static List<IFile> browseManyAssetFile(AssetPackModel packModel, String objectName, List<IFile> files,

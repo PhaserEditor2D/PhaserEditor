@@ -34,11 +34,11 @@ import org.eclipse.swt.widgets.Label;
 
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
-import phasereditor.ui.VirtualImageCanvas;
+import phasereditor.ui.ImageProxyCanvas;
 
 public class ImagePreviewComp extends Composite {
 	private Label _resolutionLabel;
-	private VirtualImageCanvas _canvas;
+	private ImageProxyCanvas _canvas;
 
 	/**
 	 * Create the composite.
@@ -51,7 +51,7 @@ public class ImagePreviewComp extends Composite {
 
 		setLayout(new GridLayout(1, false));
 
-		_canvas = new VirtualImageCanvas(this, SWT.NONE);
+		_canvas = new ImageProxyCanvas(this, SWT.NONE);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_resolutionLabel = new Label(this, SWT.CENTER);

@@ -30,7 +30,7 @@ import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.ImageCanvas.ZoomCalculator;
-import phasereditor.ui.VirtualImage;
+import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
@@ -46,7 +46,7 @@ public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 	@Override
 	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
 		var frame = _model.getFrame();
-		var image = VirtualImage.get(frame.getImageFile(), null);
+		var image = ImageProxy.get(frame.getImageFile(), null);
 		var model = _model.getFontModel();
 
 		if (image != null && model != null) {

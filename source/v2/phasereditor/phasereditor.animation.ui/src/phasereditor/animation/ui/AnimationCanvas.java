@@ -41,13 +41,13 @@ import org.pushingpixels.trident.ease.Linear;
 
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.VirtualImageCanvas;
+import phasereditor.ui.ImageProxyCanvas;
 
 /**
  * @author arian
  *
  */
-public class AnimationCanvas extends VirtualImageCanvas implements ControlListener {
+public class AnimationCanvas extends ImageProxyCanvas implements ControlListener {
 
 	private AnimationModel _animModel;
 	private IndexTimeline _timeline;
