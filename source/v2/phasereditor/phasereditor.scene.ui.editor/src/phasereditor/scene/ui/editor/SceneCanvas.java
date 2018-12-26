@@ -60,6 +60,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
@@ -880,16 +881,8 @@ public class SceneCanvas extends ZoomCanvas
 					return false;
 				}
 
-				img = loadImage(frame.getImageFile());
+				return hitsImage(imgX, imgY, frame);
 
-				if (img == null) {
-					return false;
-				}
-
-				var frameData = frame.getFrameData();
-
-				imgX = imgX + frameData.src.x - frameData.dst.x;
-				imgY = imgY + frameData.src.y - frameData.dst.y;
 			}
 		}
 
@@ -901,12 +894,22 @@ public class SceneCanvas extends ZoomCanvas
 
 			var data = img.getImageData();
 
-			var pixel = data.getAlpha(imgX, imgY);
+			var alpha = data.getAlpha(imgX, imgY);
 
-			return pixel != 0;
+			return alpha != 0;
 		}
 
 		return false;
+	}
+
+	private static boolean hitsImage(int x, int y, IAssetFrameModel frame) {
+		var proxy = AssetPackUI.getImageProxy(frame);
+
+		if (proxy == null) {
+			return false;
+		}
+
+		return proxy.hits(x, y);
 	}
 
 	private static boolean hitsPolygon(int x, int y, float[] polygon) {

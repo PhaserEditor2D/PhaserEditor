@@ -421,4 +421,22 @@ public class ImageProxy {
 	public Rectangle getBounds() {
 		return getFinalFrameData().src;
 	}
+
+	public boolean hits(int x, int y) {
+
+		var alpha = 0;
+
+		Rectangle b = getBounds();
+		
+		if (b.contains(x, y)) {
+			var img = getImage();
+
+			if (img != null) {
+				var data = img.getImageData();
+				alpha = data.getAlpha((int)( x * _scale),(int)( y * _scale));
+			}
+		}
+
+		return alpha != 0;
+	}
 }
