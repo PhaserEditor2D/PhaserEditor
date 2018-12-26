@@ -855,14 +855,6 @@ public class SceneObjectRenderer {
 		var virtualImage = AssetPackUI.getVirtualImage(assetFrame);
 		virtualImage.paint(gc, 0, 0);
 
-		// var img = loadImage(assetFrame.getImageFile());
-		//
-		// var fd = assetFrame.getFrameData();
-		//
-		// gc.drawImage(img, fd.src.x, fd.src.y, fd.src.width, fd.src.height, fd.dst.x,
-		// fd.dst.y, fd.dst.width,
-		// fd.dst.height);
-
 		setObjectBounds(gc, model, 0, 0, fd.srcSize.x, fd.srcSize.y);
 	}
 

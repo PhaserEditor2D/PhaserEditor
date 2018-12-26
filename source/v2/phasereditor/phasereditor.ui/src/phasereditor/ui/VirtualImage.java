@@ -47,6 +47,7 @@ public class VirtualImage {
 	private Image _swtImage;
 	private BufferedImage _currentFileBufferedImage;
 	private FrameData _finalFrameData;
+	private float _scale;
 
 	private static Map<String, VirtualImage> _keyVirtualImageMap = new HashMap<>();
 	private static Map<File, BufferedImage> _fileBufferedImageMap = new HashMap<>();
@@ -197,36 +198,107 @@ public class VirtualImage {
 		return _fileBufferedImageMap.get(_file);
 	}
 
-	private static int MAX_SIZE = 512;
+	private static int MAX_SIZE = 256;
+
+	class ResizeInfo {
+		public int width;
+		public int height;
+		public boolean changed;
+		public float scale_view_to_model;
+		public float scale_model_to_view;
+
+		public BufferedImage createImage(BufferedImage src, FrameData fd) {
+			var buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+			var g2 = buf.createGraphics();
+
+			g2.scale(scale_view_to_model, scale_view_to_model);
+
+			g2.drawImage(src,
+
+					fd.dst.x, fd.dst.y, fd.dst.x + fd.dst.width, fd.dst.y + fd.dst.height,
+
+					fd.src.x, fd.src.y, fd.src.x + fd.src.width, fd.src.y + fd.src.height,
+
+					null);
+
+			g2.dispose();
+
+			return buf;
+		}
+	}
+
+	private ResizeInfo resizeInfo(int w, int h) {
+
+		var info = new ResizeInfo();
+		info.scale_view_to_model = 1;
+		info.width = w;
+		info.height = h;
+		info.changed = false;
+
+		if (w > MAX_SIZE || h > MAX_SIZE) {
+			if (w > h) {
+				var ratio = (float) h / w;
+				info.width = MAX_SIZE;
+				info.height = (int) (info.width * ratio);
+				info.scale_view_to_model = (float) info.width / w;
+				info.scale_model_to_view = (float) w / info.width;
+				info.changed = true;
+			} else {
+				var ratio = (float) h / w;
+				info.height = MAX_SIZE;
+				info.width = (int) (info.height / ratio);
+				info.scale_view_to_model = (float) info.height / h;
+				info.scale_model_to_view = (float) h / info.height;
+				info.changed = true;
+			}
+		}
+
+		return info;
+	}
 
 	private void updateImages() {
 		try {
+
 			var newFileBufferedImage = _fileBufferedImageMap.get(_file);
 
 			if (_currentFileBufferedImage != newFileBufferedImage || _swtImage == null) {
+
+				_scale = 1;
 
 				if (_swtImage != null) {
 					_garbage.add(_swtImage);
 				}
 
-				if (_fd == null) {
-					_swtImage = PhaserEditorUI.image_Swing_To_SWT(newFileBufferedImage);
+				BufferedImage frameBufferedImage;
+
+				if (_fd == null || theFrameDataIsTheCompleteImage(newFileBufferedImage, _fd)) {
+					frameBufferedImage = newFileBufferedImage;
+
+					int width = frameBufferedImage.getWidth();
+					int height = frameBufferedImage.getHeight();
+
+					var resize = resizeInfo(width, height);
+
+					var fd = FrameData.fromSourceRectangle(new Rectangle(0, 0, width, height));
+
+					if (resize.changed) {
+						var temp = resize.createImage(frameBufferedImage, fd);
+						frameBufferedImage = temp;
+						_scale = resize.scale_view_to_model;
+					}
+
+					_finalFrameData = fd;
 				} else {
-					var buf = new BufferedImage(_fd.srcSize.x, _fd.srcSize.y, BufferedImage.TYPE_INT_ARGB);
-					var g2 = buf.createGraphics();
-					g2.drawImage(newFileBufferedImage,
+					var resize = resizeInfo(_fd.srcSize.x, _fd.srcSize.y);
 
-							_fd.dst.x, _fd.dst.y, _fd.dst.x + _fd.dst.width, _fd.dst.y + _fd.dst.height,
+					frameBufferedImage = resize.createImage(newFileBufferedImage, _fd);
 
-							_fd.src.x, _fd.src.y, _fd.src.x + _fd.src.width, _fd.src.y + _fd.src.height,
-
-							null);
-					g2.dispose();
-
-					_swtImage = PhaserEditorUI.image_Swing_To_SWT(buf);
+					_finalFrameData = FrameData.fromSourceRectangle(new Rectangle(0, 0, _fd.srcSize.x, _fd.srcSize.y));
 				}
 
-				_finalFrameData = FrameData.fromImage(_swtImage);
+				_swtImage = PhaserEditorUI.image_Swing_To_SWT(frameBufferedImage);
+
 			}
 
 			_currentFileBufferedImage = newFileBufferedImage;
@@ -234,6 +306,21 @@ public class VirtualImage {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static boolean theFrameDataIsTheCompleteImage(BufferedImage image, FrameData fd) {
+		var w = image.getWidth();
+		var h = image.getHeight();
+
+		var rect = new Rectangle(0, 0, w, h);
+
+		return fd.srcSize.x == w
+
+				&& fd.srcSize.y == h
+
+				&& fd.src.equals(rect)
+
+				&& fd.dst.equals(rect);
 	}
 
 	public synchronized FrameData getFinalFrameData() {
@@ -245,19 +332,29 @@ public class VirtualImage {
 
 	public void paint(GC gc, int srcX, int srcY, int srcW, int srcH, int dstX, int dstY, int dstW, int dstH) {
 		var image = getImage();
-		gc.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+		gc.drawImage(image,
+
+				(int) (srcX * _scale), (int) (srcY * _scale), (int) (srcW * _scale), (int) (srcH * _scale),
+
+				dstX, dstY, dstW, dstH);
 	}
 
 	public void paint(GC gc, int x, int y) {
 		var image = getImage();
-		gc.drawImage(image, x, y);
+		var b = image.getBounds();
+
+		gc.drawImage(image,
+
+				0, 0, b.width, b.height,
+
+				x, y, _finalFrameData.srcSize.x, _finalFrameData.srcSize.y);
 	}
 
 	public void paintScaledInArea(GC gc, Rectangle renderArea) {
-		paintScaledInArea(gc, renderArea, true, true);
+		paintScaledInArea(gc, renderArea, true);
 	}
 
-	public void paintScaledInArea(GC gc, Rectangle renderArea, boolean dontTrimSpaces, boolean center) {
+	public void paintScaledInArea(GC gc, Rectangle renderArea, boolean center) {
 
 		var image = getImage();
 		var fd = _finalFrameData;
@@ -265,8 +362,8 @@ public class VirtualImage {
 		int frameHeight = renderArea.height;
 		int frameWidth = renderArea.width;
 
-		double imgW = dontTrimSpaces ? fd.srcSize.x : fd.src.width;
-		double imgH = dontTrimSpaces ? fd.srcSize.y : fd.src.height;
+		double imgW = fd.src.width;
+		double imgH = fd.src.height;
 
 		// compute the right width
 		imgW = imgW * (frameHeight / imgH);
@@ -278,18 +375,18 @@ public class VirtualImage {
 			imgW = frameWidth;
 		}
 
-		double scaleX = imgW / (dontTrimSpaces ? fd.srcSize.x : fd.src.width);
-		double scaleY = imgH / (dontTrimSpaces ? fd.srcSize.y : fd.src.height);
+		double scaleX = imgW / fd.src.width;
+		double scaleY = imgH / fd.src.height;
 
-		var imgX = renderArea.x + (center ? frameWidth / 2 - imgW / 2 : 0) + (dontTrimSpaces ? fd.dst.x : 0) * scaleX;
-		var imgY = renderArea.y + frameHeight / 2 - imgH / 2 + (dontTrimSpaces ? fd.dst.y : 0) * scaleY;
+		var imgX = renderArea.x + (center ? frameWidth / 2 - imgW / 2 : 0);
+		var imgY = renderArea.y + frameHeight / 2 - imgH / 2;
 
-		double imgDstW = (dontTrimSpaces ? fd.dst.width : fd.src.width) * scaleX;
-		double imgDstH = (dontTrimSpaces ? fd.dst.height : fd.src.height) * scaleY;
+		double imgDstW = fd.src.width * scaleX;
+		double imgDstH = fd.src.height * scaleY;
 
 		if (imgDstW > 0 && imgDstH > 0) {
-			gc.drawImage(image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY, (int) imgDstW,
-					(int) imgDstH);
+			gc.drawImage(image, (int) (fd.src.x * _scale), (int) (fd.src.y * _scale), (int) (fd.src.width * _scale),
+					(int) (fd.src.height * _scale), (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 		}
 	}
 }
