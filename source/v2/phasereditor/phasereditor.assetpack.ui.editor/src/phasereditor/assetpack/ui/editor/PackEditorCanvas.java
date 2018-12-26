@@ -81,6 +81,7 @@ import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.LoadingCellRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ScrollUtils;
@@ -151,11 +152,6 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		}
 
 		@Override
-		public Rectangle get_DND_Image_SrcFrame(int index) {
-			return null;
-		}
-
-		@Override
 		public Rectangle getSelectionFrameArea(int index) {
 			return _renderInfoList.get(index).bounds;
 		}
@@ -176,7 +172,7 @@ public class PackEditorCanvas extends BaseImageCanvas implements PaintListener, 
 		}
 
 		@Override
-		public Image get_DND_Image(int index) {
+		public ImageProxy get_DND_Image(int index) {
 			return null;
 		}
 

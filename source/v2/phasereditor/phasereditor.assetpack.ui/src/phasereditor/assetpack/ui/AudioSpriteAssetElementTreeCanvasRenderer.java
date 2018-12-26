@@ -46,11 +46,12 @@ public class AudioSpriteAssetElementTreeCanvasRenderer extends AudioSpriteAssetT
 		}
 
 		var sprite = (AudioSpriteAssetModel.AssetAudioSprite) _item.getData();
-		var b = getImage().getBounds();
+		var proxy = getImageProxy();
+		var b = proxy.getFinalFrameData().src;
 		var srcX = sprite.getStart() / duration * b.width;
 		var srcWidth = sprite.getEnd() / duration * b.width - srcX;
 
-		gc.drawImage(getImage(), (int) srcX, 0, (int) srcWidth, b.height, dstX, dstY, dstWidth, dstHeight);
+		proxy.paint(gc, (int) srcX, 0, (int) srcWidth, b.height, dstX, dstY, dstWidth, dstHeight);
 	}
 
 	@Override

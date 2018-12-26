@@ -60,7 +60,8 @@ public class AudioSpriteAssetTreeCanvasItemRenderer extends AudioAssetTreeCanvas
 
 		var sprites = asset.getSpriteMap();
 
-		var b = getImage().getBounds();
+		var proxy = getImageProxy();
+		var b = proxy.getFinalFrameData().src;
 
 		var count = sprites.size();
 		var spacing = 3;
@@ -83,8 +84,7 @@ public class AudioSpriteAssetTreeCanvasItemRenderer extends AudioAssetTreeCanvas
 			var srcX2 = endFactor * b.width;
 			var srcWidth = srcX2 - srcX1;
 
-			gc.drawImage(getImage(), (int) srcX1, 0, (int) srcWidth, b.height, lastDstX, dstY, (int) dstWidth2,
-					dstHeight);
+			proxy.paint(gc, (int) srcX1, 0, (int) srcWidth, b.height, lastDstX, dstY, (int) dstWidth2, dstHeight);
 
 			lastDstX += dstWidth2 + spacing;
 		}

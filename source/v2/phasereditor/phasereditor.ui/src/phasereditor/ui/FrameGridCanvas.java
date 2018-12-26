@@ -110,11 +110,6 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable,
 			}
 
 			@Override
-			public Rectangle get_DND_Image_SrcFrame(int index) {
-				return _visibleRenderImageSrcFrames.get(index);
-			}
-
-			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				return _visibleRenderSelectionFrameAreas.get(index);
 			}
@@ -125,8 +120,8 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable,
 			}
 
 			@Override
-			public Image get_DND_Image(int index) {
-				return _visibleImages.get(index).getImage();
+			public ImageProxy get_DND_Image(int index) {
+				return _visibleImages.get(index);
 			}
 
 		};

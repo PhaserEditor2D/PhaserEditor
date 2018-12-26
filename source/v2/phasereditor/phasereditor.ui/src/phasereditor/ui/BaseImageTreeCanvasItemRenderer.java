@@ -22,17 +22,29 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
-public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
+/**
+ * @author arian
+ *
+ */
+public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
-	private Image _icon;
-
-	public IconTreeCanvasItemRenderer(TreeCanvasItem item, Image icon) {
+	public BaseImageTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);
-		_icon = icon;
+	}
+
+	@Override
+	public int computeRowHeight(TreeCanvas canvas) {
+
+		if (canvas.getImageSize() > 64) {
+			return canvas.getImageSize() + 32;
+		}
+
+		return canvas.getImageSize();
 	}
 
 	@Override
@@ -41,14 +53,14 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		var gc = e.gc;
 
-		int textX = x;
+		int imgSize = canvas.getImageSize();
+
+		var iconified = imgSize <= 64;
+
+		int textX = x + ICON_AND_TEXT_SPACE;
+		int textHeight = 16;
+
 		int rowHeight = computeRowHeight(canvas);
-
-		var iconBounds = _icon == null ? null : _icon.getBounds();
-
-		if (iconBounds != null) {
-			textX += iconBounds.width + ICON_AND_TEXT_SPACE;
-		}
 
 		// paint text
 
@@ -56,6 +68,8 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
 		if (label != null) {
 			var extent = gc.textExtent(label);
+
+			textHeight = extent.y;
 
 			if (_item.isHeader()) {
 				gc.setFont(SwtRM.getBoldFont(canvas.getFont()));
@@ -66,31 +80,28 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			}
 
 			gc.setAlpha((int) (255 * _item.getAlpha()));
-			gc.drawText(label, textX, y + (rowHeight - extent.y) / 2, true);
+
+			if (iconified) {
+				gc.drawText(label, textX + imgSize, y + (rowHeight - textHeight) / 2, true);
+			} else {
+				gc.drawText(label, textX, y + rowHeight - textHeight - 5, true);
+			}
 
 			gc.setAlpha(255);
 			gc.setFont(canvas.getFont());
 		}
 
-		if (iconBounds != null) {
+		// paint image
 
-			// paint icon
-
-			if (_item.isHeader()) {
-				gc.drawImage(_icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
-			} else {
-				gc.drawImage(_icon, x, y + (rowHeight - iconBounds.height) / 2);
-			}
+		Rectangle area = null;
+		if (iconified) {
+			area = new Rectangle(x + 2, y + 1, imgSize, rowHeight - 2);
+		} else {
+			area = new Rectangle(x + 2, y + 2, e.width - x - 5, rowHeight - textHeight - 10);
 		}
+
+		paintScaledInArea(gc, area, true);
 	}
 
-	@Override
-	public int computeRowHeight(TreeCanvas canvas) {
-		return TreeCanvas.MIN_ROW_HEIGHT;
-	}
-
-	@Override
-	public ImageProxy get_DND_Image() {
-		return null;
-	}
+	protected abstract void paintScaledInArea(GC gc, Rectangle area, boolean b);
 }

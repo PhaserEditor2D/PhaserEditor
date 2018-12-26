@@ -24,7 +24,6 @@ package phasereditor.animation.ui;
 import java.util.ArrayList;
 
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
@@ -32,7 +31,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.FrameData;
-import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -87,8 +86,9 @@ public class AnimationsAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 					var fd = asset.getFrameData();
 					fd = adaptFrameData(fd);
 
-					var img = canvas.loadImage(file);
-					if (img != null) {
+					var proxy = ImageProxy.get(file, fd);
+
+					if (proxy != null) {
 						var scale = 1 + (start - j) * 0.15;
 						Rectangle area = new Rectangle((int) (x + j * imgSize * 0.5), y + 5, (int) (imgSize * scale),
 								(int) (imgSize * scale));
@@ -98,7 +98,7 @@ public class AnimationsAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 
 						var t = j % 3 + 1;
 						gc.setAlpha(105 + 150 / t);
-						PhaserEditorUI.paintScaledImageInArea(gc, img, fd, area);
+						proxy.paintScaledInArea(gc, area);
 					}
 				}
 			}
@@ -123,13 +123,7 @@ public class AnimationsAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 	}
 
 	@Override
-	public Image get_DND_Image() {
+	public ImageProxy get_DND_Image() {
 		return null;
 	}
-
-	@Override
-	public FrameData get_DND_Image_FrameData() {
-		return null;
-	}
-
 }

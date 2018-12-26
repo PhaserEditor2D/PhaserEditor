@@ -24,11 +24,10 @@ package phasereditor.audio.ui;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
-import phasereditor.ui.FrameData;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -38,7 +37,7 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  */
 public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
-	private Image _image;
+	private ImageProxy _proxy;
 	private String _label;
 	private IFile _audioFile;
 
@@ -78,9 +77,9 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	public void render(PaintEvent e, int index, int x, int y) {
 		var canvas = _item.getCanvas();
 
-		if (_image == null) {
+		if (_proxy == null) {
 			var imgPath = AudioCore.getSoundWavesFile(_audioFile, false);
-			_image = canvas.loadImage(imgPath.toFile());
+			_proxy = ImageProxy.get(imgPath.toFile(), null);
 		}
 
 		var gc = e.gc;
@@ -93,7 +92,7 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 		int imgHeight = rowHeight - textOffset - 10;
 
 		if (imgHeight >= 16) {
-			if (_image != null) {
+			if (_proxy != null) {
 				int w = e.width - x - 5;
 				if (w > 0) {
 					gc.setAlpha(150);
@@ -106,15 +105,13 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			gc.drawText(_label, x + 5, y + rowHeight - textOffset, true);
 		}
 	}
-
-	public Image getImage() {
-		return _image;
+	
+	public ImageProxy getImageProxy() {
+		return _proxy;
 	}
 
 	protected void renderImage(GC gc, int dstX, int dstY, int dstWidth, int dstHeight) {
-
-		gc.drawImage(_image, 0, 0, _image.getBounds().width, _image.getBounds().height, dstX, dstY + 5, dstWidth,
-				dstHeight);
+		_proxy.paint(gc, dstX, dstY, dstWidth, dstHeight);
 	}
 
 	@Override
@@ -123,13 +120,7 @@ public class AudioTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 	}
 
 	@Override
-	public Image get_DND_Image() {
-		return _image;
+	public ImageProxy get_DND_Image() {
+		return _proxy;
 	}
-
-	@Override
-	public FrameData get_DND_Image_FrameData() {
-		return FrameData.fromImage(_image);
-	}
-
 }

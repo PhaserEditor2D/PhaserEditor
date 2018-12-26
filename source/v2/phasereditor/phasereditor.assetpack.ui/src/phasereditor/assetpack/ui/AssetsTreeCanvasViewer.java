@@ -24,14 +24,10 @@ package phasereditor.assetpack.ui;
 import static java.util.stream.Collectors.joining;
 
 import java.util.LinkedHashSet;
-import java.util.function.Supplier;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 
 import phasereditor.animation.ui.AnimationTreeCanvasItemRenderer;
 import phasereditor.animation.ui.AnimationsAssetTreeCanvasItemRenderer;
@@ -49,8 +45,8 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.ui.FrameData;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
@@ -105,71 +101,46 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		}
 	}
 
-	public static ImageTreeCanvasItemRenderer createImageRenderer(TreeCanvasItem item, Object element) {
+	public static ImageProxyTreeCanvasItemRenderer createImageRenderer(TreeCanvasItem item, Object element) {
 
-		IFile file = null;
-		FrameData fd = null;
+		ImageProxy proxy = null;
 
 		if (element instanceof IAssetFrameModel) {
+
 			var asset = (IAssetFrameModel) element;
-			file = asset.getImageFile();
-			if (file != null) {
-				fd = asset.getFrameData();
-			}
+			proxy = AssetPackUI.getImageProxy(asset);
+
 		} else if (element instanceof ImageAssetModel) {
+
 			var asset = (ImageAssetModel) element;
-			file = asset.getFrame().getImageFile();
-			if (file != null) {
-				fd = asset.getFrame().getFrameData();
-			}
+			proxy = AssetPackUI.getImageProxy(asset.getFrame());
+
 		} else if (element instanceof AtlasAssetModel) {
 			var asset = (AtlasAssetModel) element;
-			fd = new FrameData(0);
-			fd.src = asset.getImageSize();
-			if (fd.src != null) {
-				fd.dst = fd.src;
-				fd.srcSize = new Point(fd.src.width, fd.src.height);
-				file = asset.getTextureFile();
-			}
+			proxy = ImageProxy.get(asset.getTextureFile(), null);
 		} else if (element instanceof MultiAtlasAssetModel) {
 			var asset = (MultiAtlasAssetModel) element;
 			var frames = asset.getSubElements();
 			if (!frames.isEmpty()) {
 				var frame = frames.get(0);
-				file = frame.getImageFile();
-				if (file != null) {
-					var img = item.getCanvas().loadImage(file);
-					if (img != null) {
-						fd = FrameData.fromImage(img);
-					}
-				}
+				proxy = AssetPackUI.getImageProxy(frame);
 			}
 		} else if (element instanceof SpritesheetAssetModel) {
 			var asset = (SpritesheetAssetModel) element;
-			fd = new FrameData(0);
-			fd.src = asset.getImageSize();
-			if (fd.src != null) {
-				fd.dst = fd.src;
-				fd.srcSize = new Point(fd.src.width, fd.src.height);
-				file = asset.getUrlFile();
+			if (!asset.getFrames().isEmpty()) {
+				proxy = AssetPackUI.getImageProxy(asset.getFrames().get(0));
 			}
 		} else if (element instanceof AnimationFrameModel) {
 			AnimationFrameModel animFrame = (AnimationFrameModel) element;
 			var assetFrame = animFrame.getAssetFrame();
-
-			if (assetFrame != null) {
-				file = assetFrame.getImageFile();
-				if (file != null) {
-					fd = assetFrame.getFrameData();
-				}
-			}
+			proxy = AssetPackUI.getImageProxy(assetFrame);
 		}
 
-		if (file == null || fd == null) {
+		if (proxy == null) {
 			return null;
 		}
 
-		return new ImageTreeCanvasItemRenderer(item, new FileImageProvider(item.getCanvas(), file), fd);
+		return new ImageProxyTreeCanvasItemRenderer(item, proxy);
 	}
 
 	@SuppressWarnings("static-method")
@@ -217,22 +188,4 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			keywords.add("project");
 		}
 	}
-
-	static class FileImageProvider implements Supplier<Image> {
-
-		private TreeCanvas _canvas;
-		private IFile _file;
-
-		public FileImageProvider(TreeCanvas canvas, IFile file) {
-			_canvas = canvas;
-			_file = file;
-		}
-
-		@Override
-		public Image get() {
-			return _canvas.loadImage(_file);
-		}
-
-	}
-
 }

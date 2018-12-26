@@ -45,7 +45,8 @@ import phasereditor.scene.core.SceneFile;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
@@ -59,7 +60,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 	public AssetExplorerTreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
 		super(canvas, contentProvider, labelProvider);
-		
+
 		SceneUI.installSceneTooltips(this);
 	}
 
@@ -74,8 +75,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			if (imgFile == null) {
 				super.setItemIconProperties(item);
 			} else {
-				var img = getTree().loadImage(imgFile.toFile());
-				item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
+				item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(imgFile.toFile(), null)));
 			}
 
 			item.setLabel(file.getName());

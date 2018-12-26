@@ -33,10 +33,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.ImageProxy;
 
 public class ImageAssetPreviewComp extends Composite {
 
@@ -77,11 +79,6 @@ public class ImageAssetPreviewComp extends Composite {
 		_utils = new FrameCanvasUtils(_canvas, true) {
 
 			@Override
-			public Rectangle get_DND_Image_SrcFrame(int index) {
-				return getModel().getFrame().getFrameData().src;
-			}
-
-			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				var area = getCanvas().getImageRenderArea();
 				if (area == null) {
@@ -101,8 +98,11 @@ public class ImageAssetPreviewComp extends Composite {
 			}
 
 			@Override
-			public Image get_DND_Image(int index) {
-				return getCanvas().getImage();
+			public ImageProxy get_DND_Image(int index) {
+				if (getModel() == null) {
+					return null;
+				}
+				return AssetPackUI.getImageProxy(getModel().getFrame());
 			}
 
 			@Override

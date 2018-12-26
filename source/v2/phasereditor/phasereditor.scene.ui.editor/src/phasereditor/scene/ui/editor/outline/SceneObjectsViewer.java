@@ -29,7 +29,6 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.ui.FrameData;
 import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -63,7 +62,7 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 			var image = sceneRenderer.getBitmapTextImage(model);
 
 			if (image != null) {
-				item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
+				item.setRenderer(new ImageTreeCanvasItemRenderer(item, image));
 			}
 		}
 
@@ -73,7 +72,7 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 			var image = sceneRenderer.getTileSpriteTextImage(model);
 
 			if (image != null) {
-				item.setRenderer(new ImageTreeCanvasItemRenderer(item, image, FrameData.fromImage(image)));
+				item.setRenderer(new ImageTreeCanvasItemRenderer(item, image));
 			}
 		}
 

@@ -22,7 +22,6 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -31,27 +30,24 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class ImageTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRenderer {
+public class ImageProxyTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRenderer {
 
-	private Image _image;
+	private ImageProxy _image;
 
-	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image) {
+	public ImageProxyTreeCanvasItemRenderer(TreeCanvasItem item, ImageProxy image) {
 		super(item);
 		_image = image;
 	}
 
 	@Override
-	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
-		if (_image != null) {
-			PhaserEditorUI.paintScaledImageInArea(gc, _image, FrameData.fromImage(_image), area);
-		}
+	public ImageProxy get_DND_Image() {
+		return _image;
 	}
 
 	@Override
-	public ImageProxy get_DND_Image() {
-		// TODO: hum! at the end, we should eliminate this class and always use an
-		// ImageProxy. An ImageProxy that can be custom painted.
-		return null;
+	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
+		if (_image != null) {
+			_image.paintScaledInArea(gc, area, false);
+		}
 	}
-
 }

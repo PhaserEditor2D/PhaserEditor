@@ -29,7 +29,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -37,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasCanvas extends ImageCanvas implements ControlListener {
@@ -56,26 +56,20 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			public Point viewToModel(int x, int y) {
 				return new Point(x, y);
 			}
-			
+
 			@Override
 			public Point modelToView(int x, int y) {
 				return new Point(x, y);
 			}
-			
+
 			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				return _framesRects[index];
 			}
 
 			@Override
-			public Rectangle get_DND_Image_SrcFrame(int index) {
-				AtlasFrame frame = _frames.get(index);
-				return frame.getFrameData().src;
-			}
-
-			@Override
-			public Image get_DND_Image(int index) {
-				return getImage();
+			public ImageProxy get_DND_Image(int index) {
+				return null;
 			}
 
 			@Override
@@ -84,7 +78,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			}
 
 			@Override
-			public Object getFrameObject(int index) {
+			public AtlasFrame getFrameObject(int index) {
 				return _frames.get(index);
 			}
 		};
@@ -106,9 +100,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			int i = 0;
 			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
-				
+
 				var obj = _frames.get(i);
-				
+
 				boolean selected = _utils.isSelected(obj);
 
 				if (selected) {

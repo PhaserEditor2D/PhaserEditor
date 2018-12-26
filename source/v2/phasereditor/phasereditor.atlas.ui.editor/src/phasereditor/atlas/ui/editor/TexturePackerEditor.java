@@ -108,7 +108,8 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -1071,21 +1072,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 					if (element instanceof EditorPage) {
 						EditorPage page = (EditorPage) element;
-						item.setRenderer(new ImageTreeCanvasItemRenderer(item, page.getImage()));
+						item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(page.getImageFile(), null)));
 					}
 
 					if (element instanceof TexturePackerEditorFrame) {
 						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 						IFile file = findFile(frame);
-						var img = getTree().loadImage(file);
-						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
-					}
-
-					if (element instanceof TexturePackerEditorFrame) {
-						TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
-						IFile file = findFile(frame);
-						var img = getTree().loadImage(file);
-						item.setRenderer(new ImageTreeCanvasItemRenderer(item, img));
+						item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(file, null)));
 					}
 
 					if (element instanceof TexturePackerEditorModel) {

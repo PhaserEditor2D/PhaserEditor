@@ -140,20 +140,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 
 			@Override
-			public Rectangle get_DND_Image_SrcFrame(int index) {
-				var item = _visibleItems.get(index);
-
-				var renderer = item.getRenderer();
-
-				FrameData fd = renderer.get_DND_Image_FrameData();
-				if (fd != null) {
-					return fd.src;
-				}
-				return null;
-			}
-
-			@Override
-			public Image get_DND_Image(int index) {
+			public ImageProxy get_DND_Image(int index) {
 				var item = _visibleItems.get(index);
 
 				var renderer = item.getRenderer();

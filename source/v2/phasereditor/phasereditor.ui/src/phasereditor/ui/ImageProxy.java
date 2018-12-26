@@ -71,6 +71,11 @@ public class ImageProxy {
 	private static List<Image> _garbage = new ArrayList<>();
 
 	public static ImageProxy get(IFile file, FrameData fd) {
+		
+		if (file == null) {
+			return null;
+		}
+		
 		return get(file.getLocation().toFile(), fd);
 	}
 

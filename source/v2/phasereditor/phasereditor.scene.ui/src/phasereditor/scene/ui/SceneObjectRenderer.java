@@ -65,8 +65,8 @@ import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseImageCanvas;
-import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ImageProxy;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian

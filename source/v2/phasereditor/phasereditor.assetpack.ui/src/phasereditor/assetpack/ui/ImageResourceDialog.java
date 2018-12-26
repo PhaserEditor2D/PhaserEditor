@@ -46,7 +46,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.ui.FilteredTreeCanvas;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvasViewer;
@@ -115,9 +116,8 @@ public class ImageResourceDialog extends Dialog {
 				super.setItemProperties(item);
 
 				var file = (IFile) item.getData();
-				var image = item.getCanvas().loadImage(file);
 
-				item.setRenderer(new ImageTreeCanvasItemRenderer(item, image) {
+				item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(file, null)) {
 					@Override
 					public void render(PaintEvent e, int index, int x, int y) {
 						var oldFont = e.gc.getFont();
@@ -226,7 +226,7 @@ public class ImageResourceDialog extends Dialog {
 	public Object getSelection() {
 		return _selection;
 	}
-	
+
 	public List<Object> getMultipleSelection() {
 		return _multiSelection;
 	}

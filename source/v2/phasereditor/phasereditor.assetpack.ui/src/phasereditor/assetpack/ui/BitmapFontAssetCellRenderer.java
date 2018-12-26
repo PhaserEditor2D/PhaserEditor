@@ -25,12 +25,13 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
+import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.ICanvasCellRenderer;
-import phasereditor.ui.ImageCanvas.ZoomCalculator;
 import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ZoomCanvas.ZoomCalculator;
 
 /**
  * @author arian
@@ -46,10 +47,10 @@ public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 	@Override
 	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
 		var frame = _model.getFrame();
-		var image = ImageProxy.get(frame.getImageFile(), null);
+		var file = frame.getImageFile();
 		var model = _model.getFontModel();
 
-		if (image != null && model != null) {
+		if (file != null) {
 			var text = "abc123";// asset.getKey();
 
 			var metrics = model.metrics(text);
@@ -63,9 +64,12 @@ public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 					@Override
 					public void render(char c, int charX, int charY, int charW, int charH, int srcX, int srcY, int srcW,
 							int srcH) {
-						Rectangle z = calc.imageToScreen(charX, charY, charW, charH);
+						var z = calc.modelToView(charX, charY, charW, charH);
 
-						image.paint(gc, srcX, srcY, srcW, srcH, x + z.x, y + z.y, z.width, z.height);
+						var fd = FrameData.fromSourceRectangle(new Rectangle(srcX, srcY, srcW, srcH));
+						var proxy = ImageProxy.get(file, fd);
+
+						proxy.paint(gc, x + z.x, y + z.y, z.width, z.height);
 					}
 
 				});
