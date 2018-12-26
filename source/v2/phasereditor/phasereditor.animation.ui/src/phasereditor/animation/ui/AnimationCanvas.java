@@ -24,6 +24,7 @@ package phasereditor.animation.ui;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -40,13 +41,13 @@ import org.pushingpixels.trident.ease.Linear;
 
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.VirtualImageCanvas;
 
 /**
  * @author arian
  *
  */
-public class AnimationCanvas extends ImageCanvas implements ControlListener {
+public class AnimationCanvas extends VirtualImageCanvas implements ControlListener {
 
 	private AnimationModel _animModel;
 	private IndexTimeline _timeline;
@@ -119,12 +120,12 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 
 		if (_animModel == null || _animModel.getFrames().isEmpty()) {
-			setImageFile((IFile) null);
+			setImageInfo((File) null, null);
 			return;
 		}
 
 		showFrame(0);
-		
+
 		// this is needed to get the right zoom
 		setFrameTexture();
 
@@ -252,9 +253,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	@Override
 	protected void customPaintControl(PaintEvent e) {
-		_frameData = null;
-		_image = null;
-		
+
 		setFrameTexture();
 
 		super.customPaintControl(e);
@@ -276,11 +275,9 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			var texture = frame.getAssetFrame();
 
 			if (texture == null) {
-				_image = null;
-				_frameData = null;
+				setImageInfo((IFile) null, null, false);
 			} else {
-				_image = loadImage(texture.getImageFile());
-				_frameData = texture.getFrameData();
+				setImageInfo(texture.getImageFile(), texture.getFrameData(), false);
 			}
 
 		}

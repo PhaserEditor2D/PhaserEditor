@@ -85,7 +85,6 @@ public class AnimationPreviewComp extends SashForm {
 				}
 			}
 		});
-		_animationCanvas.setNoImageMessage("");
 		_animationCanvas.setStepCallback(_timelineCanvas::redraw);
 		_animationCanvas.setPlaybackCallback(this::animationStatusChanged);
 		_animationCanvas.addPaintListener(e -> {

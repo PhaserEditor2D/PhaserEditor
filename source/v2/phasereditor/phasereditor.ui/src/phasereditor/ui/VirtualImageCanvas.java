@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -59,6 +60,8 @@ public class VirtualImageCanvas extends ZoomCanvas {
 			if (virtualImage != null) {
 				return virtualImage.getFinalFrameData().srcSize;
 			}
+		} else {
+			return _fd.srcSize;
 		}
 
 		return new Point(1, 1);
@@ -69,10 +72,30 @@ public class VirtualImageCanvas extends ZoomCanvas {
 	}
 
 	public void setImageInfo(File file, FrameData fd) {
+		setImageInfo(file, fd, true);
+	}
+
+	public void setImageInfo(IFile file, FrameData fd) {
+		setImageInfo(file, fd, true);
+	}
+
+	public void setImageInfo(IFile file, FrameData fd, boolean resetZoom) {
+		setImageInfo(file == null ? null : file.getLocation().toFile(), fd, resetZoom);
+	}
+
+	public void setImageInfo(File file, FrameData fd, boolean resetZoom) {
 		_file = file;
 		_fd = fd;
 
-		resetZoom();
+		if (resetZoom) {
+			resetZoom();
+		}
+	}
+
+	public void clear() {
+		_file = null;
+		_fd = null;
+		redraw();
 	}
 
 	public File getFile() {

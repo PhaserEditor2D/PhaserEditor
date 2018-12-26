@@ -62,7 +62,7 @@ public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<A
 
 		super.selectionDropped(data);
 
-		if (_editor.getAnimationCanvas().getImage() == null) {
+		if (_editor.getAnimationCanvas().getFile() == null) {
 			if (!anim.getFrames().isEmpty()) {
 				_editor.getAnimationCanvas().showFrame(0);
 			}

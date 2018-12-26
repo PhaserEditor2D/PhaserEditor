@@ -225,7 +225,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				}
 			}
 		});
-		_animCanvas.setNoImageMessage("");
 		_animCanvas.setStepCallback(_timelineCanvas::redraw);
 		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
 		_animCanvas.addPaintListener(e -> {

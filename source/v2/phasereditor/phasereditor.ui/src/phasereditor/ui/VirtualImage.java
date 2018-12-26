@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import static java.lang.System.out;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -63,8 +61,6 @@ public class VirtualImage {
 	@SuppressWarnings("boxing")
 	public synchronized static VirtualImage get(File file, FrameData fd) {
 
-		out.println("\nVirtualImage.lookup() " + file + " " + fd);
-
 		try {
 
 			if (file == null || !file.exists()) {
@@ -74,13 +70,10 @@ public class VirtualImage {
 			var lastModified = file.lastModified();
 
 			var key = computeKey(file, fd, lastModified);
-			out.println("Key: " + key);
 
 			var img = _keyVirtualImageMap.get(key);
 
 			if (img == null) {
-
-				out.println("No registered virtual image.");
 
 				// There are these different reasons:
 				//
@@ -100,7 +93,6 @@ public class VirtualImage {
 				}
 
 				if (isNewFile) {
-					out.println("New file, create a new virtual image.");
 					// create the new file buffer
 					var buffer = ImageIO.read(file);
 					if (buffer == null) {
@@ -124,7 +116,6 @@ public class VirtualImage {
 
 				var cacheModified = _fileModifiedMap.get(file);
 				if (lastModified != cacheModified.longValue()) {
-					out.println("File modified: search for an already created virtual image.");
 					// The file changed, we need to recompute the buffered image. The SWT images of
 					// the virtual images are recomputed by demand
 					var buffer = ImageIO.read(file);
@@ -138,18 +129,15 @@ public class VirtualImage {
 					// not let's find the virtual image for that file and frame data
 					for (var cacheImage : _virtualImages) {
 						if (cacheImage.sameFileAndFrameData(file, fd)) {
-							out.println("Found!");
 							_keyVirtualImageMap.put(key, cacheImage);
 							return cacheImage;
 						}
 					}
-					out.println("Not found!");
 				}
 
 				// so it looks that the key changed because it is requesting a new frame data
 				// inside an existant texture, so let's create a new virtual image
 				{
-					out.println("Create new virtual image.");
 					img = new VirtualImage(file, fd);
 					// add the virtual image to maps
 					_virtualImages.add(img);
@@ -209,22 +197,17 @@ public class VirtualImage {
 		return _fileBufferedImageMap.get(_file);
 	}
 
+	private static int MAX_SIZE = 512;
+
 	private void updateImages() {
-		out.println("VirtualImage.updateImages():");
-		out.println("\t" + _file + " " + _fd);
 		try {
 			var newFileBufferedImage = _fileBufferedImageMap.get(_file);
 
 			if (_currentFileBufferedImage != newFileBufferedImage || _swtImage == null) {
 
-				out.println("Underlaying buffered image changed.");
-
 				if (_swtImage != null) {
-					out.println("Addd current SWT image to garbarge.");
 					_garbage.add(_swtImage);
 				}
-
-				out.println("Create new SWT image.");
 
 				if (_fd == null) {
 					_swtImage = PhaserEditorUI.image_Swing_To_SWT(newFileBufferedImage);

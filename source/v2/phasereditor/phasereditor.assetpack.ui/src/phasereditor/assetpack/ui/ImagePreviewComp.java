@@ -72,7 +72,7 @@ public class ImagePreviewComp extends Composite {
 	public void setImageFile(String filepath) {
 		if (filepath == null) {
 
-			_canvas.setImageInfo(null, null);
+			_canvas.clear();
 
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText("<No image>");
@@ -95,7 +95,9 @@ public class ImagePreviewComp extends Composite {
 
 	public void loadImage(Path path, String label) {
 		if (path == null) {
-			_canvas.setImageInfo(null, null);
+
+			_canvas.clear();
+
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText("<No image>");
 			}
