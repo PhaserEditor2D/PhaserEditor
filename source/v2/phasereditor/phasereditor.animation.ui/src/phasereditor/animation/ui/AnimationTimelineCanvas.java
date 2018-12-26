@@ -459,7 +459,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends Canvas
 				double imgDstW = fd.dst.width * scaleX;
 				double imgDstH = fd.dst.height * scaleY;
 
-				proxy.paint(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
+				proxy.paintScaledInArea(gc, new Rectangle((int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH), true);
 			}
 
 		}
