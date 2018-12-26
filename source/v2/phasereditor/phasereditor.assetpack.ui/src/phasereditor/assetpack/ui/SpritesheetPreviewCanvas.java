@@ -42,10 +42,12 @@ import org.eclipse.swt.widgets.Composite;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.ui.FrameData;
-import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
-public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveListener, KeyListener, MouseListener {
+public class SpritesheetPreviewCanvas extends ImageProxyCanvas
+		implements MouseMoveListener, KeyListener, MouseListener {
 
 	private SpritesheetAssetModel _spritesheet;
 	private List<FrameData> _rects;
@@ -77,8 +79,10 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	@Override
 	protected void customPaintControl(PaintEvent e) {
 
-		if (_spritesheet != null && _image != null) {
-			Rectangle imgBounds = _image.getBounds();
+		var proxy = getProxy();
+
+		if (proxy != null) {
+			var imgBounds = proxy.getFinalFrameData().src;
 			_rects = AssetPackUI.generateSpriteSheetRects(_spritesheet, imgBounds);
 		} else {
 			_rects = List.of();
@@ -110,7 +114,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			calc.imgWidth = fd.src.width;
 			calc.imgHeight = fd.src.height;
 
-			Rectangle r = calc.imageToScreen(fd.dst);
+			Rectangle r = calc.modelToView(fd.dst);
 			Rectangle r2 = new Rectangle(r.x, r.y, r.width + 1, r.height + 1);
 
 			if (_selectedFrames.contains(fd.index)) {
@@ -132,13 +136,13 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	}
 
 	@Override
-	protected void drawMore(GC gc, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		if (_spritesheet == null) {
-			return;
-		}
+	protected void paintProxy(PaintEvent e, ImageProxy proxy, Rectangle area) {
+		super.paintProxy(e, proxy, area);
+		
+		var gc = e.gc;
 
 		Rectangle canvasBounds = getBounds();
-		Rectangle imgBounds = _image.getBounds();
+		Rectangle imgBounds = proxy.getFinalFrameData().src;
 
 		boolean paintBorders = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesBorder();
 		boolean paintLabels = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesLabels();
@@ -156,7 +160,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				calc.imgWidth = fd.src.width;
 				calc.imgHeight = fd.src.height;
 
-				Rectangle r = calc.imageToScreen(fd.dst);
+				Rectangle r = calc.modelToView(fd.dst);
 
 				if (!fd.visible) {
 					gc.setAlpha(200);
@@ -179,7 +183,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 			if (paintBorders) {
 				// paint outer frame
-				Rectangle rect = calc.imageToScreen(imgBounds);
+				Rectangle rect = calc.modelToView(imgBounds);
 				gc.setAlpha(125);
 				gc.setForeground(borderColor);
 				gc.drawRectangle(rect.x, rect.y, rect.width, rect.height);
@@ -188,7 +192,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 			if (paintLabels) {
 				for (FrameData fd : _rects) {
-					Rectangle r = calc.imageToScreen(fd.dst);
+					Rectangle r = calc.modelToView(fd.dst);
 					if (r.width < 64 || r.height < 64) {
 						paintLabels = false;
 						break;
@@ -199,7 +203,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					for (FrameData fd : _rects) {
 						calc.imgWidth = fd.dst.width;
 						calc.imgHeight = fd.dst.height;
-						Rectangle r = calc.imageToScreen(fd.dst);
+						Rectangle r = calc.modelToView(fd.dst);
 
 						String label = Integer.toString(fd.index);
 						Point labelRect = gc.stringExtent(Integer.toString(fd.index));
@@ -285,7 +289,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				continue;
 			}
 
-			Rectangle r = calc.imageToScreen(fd.dst);
+			Rectangle r = calc.modelToView(fd.dst);
 			if (r.contains(e.x, e.y)) {
 				overFrame = fd.index;
 				break;
@@ -338,14 +342,16 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		_spritesheet = spritesheet;
 		_rects = null;
 		_selectedFrames = new ArrayList<>();
+		setImageInfo(spritesheet == null ? null : spritesheet.getUrlFile(), null);
 	}
 
 	public int getFrameCount() {
-		if (_image == null) {
+		var proxy = getProxy();
+		if (proxy == null) {
 			return 0;
 		}
 
-		List<FrameData> list = AssetPackUI.generateSpriteSheetRects(_spritesheet, _image.getBounds());
+		List<FrameData> list = AssetPackUI.generateSpriteSheetRects(_spritesheet, proxy.getBounds());
 
 		int count = 0;
 		for (var fd : list) {

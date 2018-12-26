@@ -25,7 +25,6 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -41,7 +40,6 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -91,11 +89,10 @@ public class SpritesheetAssetPreviewComp extends Composite {
 					return;
 				}
 
-				var frame = (SpritesheetAssetModel.FrameModel) ((StructuredSelection) sel).getFirstElement();
-
-				Image img = _sheetCanvas.loadImage(frame.getImageFile());
-				if (img != null) {
-					PhaserEditorUI.set_DND_Image(event, img, frame.getFrameData().src);
+				var proxy = _sheetCanvas.getProxy();
+				
+				if (proxy != null) {
+					PhaserEditorUI.set_DND_Image(event, proxy.getImage(), proxy.getBounds());
 				}
 
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
@@ -142,18 +139,14 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	public void setModel(SpritesheetAssetModel model) {
 		_model = model;
 
-		IFile imgFile = model.getUrlFile();
-
 		{
 			// sprite canvas
 			_sheetCanvas.setSpritesheet(model);
 
-			_sheetCanvas.setImageFile(imgFile);
-
 			String str = "Frames Size: " + model.getFrameWidth() + "x" + model.getFrameHeight();
-			if (_sheetCanvas.getImage() != null) {
+			if (_sheetCanvas.getFile() != null) {
 				str += "\n";
-				Rectangle b = _sheetCanvas.getImage().getBounds();
+				Rectangle b = _sheetCanvas.getProxy().getBounds();
 				str += "Image Size: " + b.width + "x" + b.height + "\n";
 				str += "Image URL: " + model.getUrl();
 			}

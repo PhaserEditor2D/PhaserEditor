@@ -24,13 +24,13 @@ package phasereditor.assetpack.ui.preview;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageProxyCanvas;
 
 /**
  * @author arian
  *
  */
-public class SingleFrameCanvas extends ImageCanvas {
+public class SingleFrameCanvas extends ImageProxyCanvas {
 
 	private IAssetFrameModel _model;
 
@@ -41,10 +41,9 @@ public class SingleFrameCanvas extends ImageCanvas {
 	public void setModel(IAssetFrameModel model) {
 		_model = model;
 		if (_model == null) {
-			removeImage();
+			clear();
 		} else {
-			_image = loadImage(model.getImageFile());
-			_frameData = model.getFrameData();
+			setImageInfo(model.getImageFile(), model.getFrameData());
 		}
 	}
 
