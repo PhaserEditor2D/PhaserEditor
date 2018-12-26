@@ -32,7 +32,6 @@ import phasereditor.ui.ExplainFrameDataCanvas;
  */
 public class ExplainAssetFrameCanvas extends ExplainFrameDataCanvas {
 
-	
 	private IAssetFrameModel _model;
 
 	public ExplainAssetFrameCanvas(Composite parent, int style) {
@@ -42,12 +41,11 @@ public class ExplainAssetFrameCanvas extends ExplainFrameDataCanvas {
 	public void setModel(IAssetFrameModel model) {
 		_model = model;
 		if (_model == null) {
-			removeImage();
+			clear();
 		} else {
-			_image = loadImage(model.getImageFile());
-			_frameData = model.getFrameData();
+			setImageInfo(model.getImageFile(), model.getFrameData(), false);
 		}
-		
+
 		resetZoom();
 	}
 

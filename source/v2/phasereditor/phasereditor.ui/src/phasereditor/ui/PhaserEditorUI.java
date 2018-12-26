@@ -939,6 +939,10 @@ public class PhaserEditorUI {
 		return new Rectangle(dstX, dstY, dstW, dstH);
 	}
 
+	public static void set_DND_Image(DragSourceEvent e, Image image) {
+		set_DND_Image(e, image, image.getBounds());
+	}
+	
 	public static void set_DND_Image(DragSourceEvent e, Image image, Rectangle src) {
 		if (image == null) {
 			return;

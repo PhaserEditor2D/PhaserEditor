@@ -26,6 +26,7 @@ import java.io.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -44,12 +45,18 @@ public class ImageProxyCanvas extends ZoomCanvas {
 	@Override
 	protected void customPaintControl(PaintEvent e) {
 		var proxy = getProxy();
+
 		if (proxy != null) {
 			var fd = proxy.getFinalFrameData();
 			var calc = calc();
 			var area = calc.modelToView(0, 0, fd.dst.width, fd.dst.height);
-			proxy.paintScaledInArea(e.gc, area);
+			paintProxy(e, proxy, area);
 		}
+	}
+
+	@SuppressWarnings("static-method")
+	protected void paintProxy(PaintEvent e, ImageProxy proxy, Rectangle area) {
+		proxy.paintScaledInArea(e.gc, area);
 	}
 
 	@Override

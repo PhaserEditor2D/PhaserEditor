@@ -22,7 +22,8 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 
@@ -30,42 +31,50 @@ import org.eclipse.swt.widgets.Composite;
  * @author arian
  *
  */
-public class ExplainFrameDataCanvas extends ImageCanvas {
+public class ExplainFrameDataCanvas extends ImageProxyCanvas {
 
 	public ExplainFrameDataCanvas(Composite parent, int style) {
 		super(parent, style);
 	}
 
 	@Override
-	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
+	protected void paintProxy(PaintEvent e, ImageProxy proxy, Rectangle dstArea) {
+		super.paintProxy(e, proxy, dstArea);
 
-		var area = getBounds();
+		var dstX = dstArea.x;
+		var dstY = dstArea.y;
+		var dstW = dstArea.width;
+		var dstH = dstArea.height;
+
+		var gc = e.gc;
+
+		var clientArea = getBounds();
 
 		var fd = getFrameData();
 
-		var x = getPanOffsetX();
+		var x = getOffsetX();
 		var y = getOffsetY();
 		var scale = getScale();
-		
+
 		gc.setLineStyle(SWT.LINE_DOT);
 
 		// sourceW
 		{
 
-			gc.drawLine(x, dstY + dstH, x, area.height);
-			gc.drawLine((int) (x + fd.srcSize.x * scale), dstY + dstH, (int) (x + fd.srcSize.x * scale), area.height);
+			gc.drawLine(x, dstY + dstH, x, clientArea.height);
+			gc.drawLine((int) (x + fd.srcSize.x * scale), dstY + dstH, (int) (x + fd.srcSize.x * scale),
+					clientArea.height);
 
 			var text = Integer.toString(fd.srcSize.x);
 			var size = gc.textExtent(text);
-			gc.drawText(text, (int) (x + fd.srcSize.x / 2 * scale - size.x / 2), area.height - size.y, true);
+			gc.drawText(text, (int) (x + fd.srcSize.x / 2 * scale - size.x / 2), clientArea.height - size.y, true);
 		}
 
 		// sourceH
 		{
 
-			gc.drawLine((int) (x + fd.srcSize.x * scale), y, area.width, y);
-			gc.drawLine((int) (x + fd.srcSize.x * scale), (int) (y + fd.srcSize.y * scale), area.width,
+			gc.drawLine((int) (x + fd.srcSize.x * scale), y, clientArea.width, y);
+			gc.drawLine((int) (x + fd.srcSize.x * scale), (int) (y + fd.srcSize.y * scale), clientArea.width,
 					(int) (y + fd.srcSize.y * scale));
 
 			var text = Integer.toString(fd.srcSize.y);
@@ -73,7 +82,7 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 
 			var tx = new Transform(gc.getDevice());
 
-			tx.translate(area.width, y + fd.srcSize.y / 2 * scale);
+			tx.translate(clientArea.width, y + fd.srcSize.y / 2 * scale);
 
 			tx.translate(0, -size.x / 2);
 
@@ -144,13 +153,11 @@ public class ExplainFrameDataCanvas extends ImageCanvas {
 		}
 
 		gc.setLineStyle(SWT.LINE_SOLID);
-		
-		
+
 		gc.drawRectangle(x, y, (int) (fd.srcSize.x * scale), (int) (fd.srcSize.y * scale));
-		
+
 		gc.setForeground(Colors.color(Colors.RED));
 		gc.drawRectangle(dstX, dstY, dstW, dstH);
-		
 
 	}
 

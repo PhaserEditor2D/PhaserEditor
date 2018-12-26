@@ -133,13 +133,12 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 							getModels().stream().map(model -> model.getAssetFrame()));
 
 					if (frame == null) {
-						canvas.removeImage();
+						canvas.clear();
 					} else {
 						var file = frame.getImageFile();
 						var fd = frame.getFrameData();
 
-						canvas.setImageFile(file, fd);
-						canvas.resetZoom();
+						canvas.setImageInfo(file, fd, true);
 					}
 
 				}

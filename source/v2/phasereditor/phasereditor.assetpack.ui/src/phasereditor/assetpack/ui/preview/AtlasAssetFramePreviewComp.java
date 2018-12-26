@@ -31,10 +31,8 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.ui.FrameData;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.PhaserEditorUI;
@@ -61,15 +59,11 @@ public class AtlasAssetFramePreviewComp extends ExplainAssetFrameCanvas {
 					return;
 				}
 
-				Image image = getImage();
-
-				FrameData fd = getFrameData();
+				var proxy = getProxy();
+				var image = proxy.getImage();
 
 				if (image != null) {
-					if (fd == null) {
-						fd = FrameData.fromImage(image);
-					}
-					PhaserEditorUI.set_DND_Image(event, image, fd.src);
+					PhaserEditorUI.set_DND_Image(event, image, image.getBounds());
 				}
 
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();

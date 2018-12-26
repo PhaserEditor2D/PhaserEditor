@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editor;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -241,13 +240,12 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 		})));
 
 		if (models.size() != 1) {
-			_frameCanvas.setImageFile((IFile) null);
+			_frameCanvas.clear();
 		} else {
 			var model = models.get(0);
 			var page = model.getPage();
 
-			_frameCanvas.setFrameData(model.getFrameData());
-			_frameCanvas.setImageFile(page.getImageFile(), page.getImage());
+			_frameCanvas.setImageInfo(page.getImageFile(), model.getFrameData());
 		}
 	}
 
