@@ -118,4 +118,9 @@ public class ImageProxyCanvas extends ZoomCanvas {
 		return size.x + " x " + size.y;
 	}
 
+	@Override
+	protected boolean hasImage() {
+		return getProxy() != null && getProxy().getImage() != null;
+	}
+
 }

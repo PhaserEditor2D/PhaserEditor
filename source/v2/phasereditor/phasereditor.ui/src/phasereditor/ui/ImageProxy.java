@@ -204,15 +204,14 @@ public class ImageProxy {
 		public int width;
 		public int height;
 		public boolean changed;
-		public float scale_view_to_model;
-		public float scale_model_to_view;
+		public float scale_view_to_proxy;
 
 		public BufferedImage createImage(BufferedImage src, FrameData fd) {
 			var buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 			var g2 = buf.createGraphics();
 
-			g2.scale(scale_view_to_model, scale_view_to_model);
+			g2.scale(scale_view_to_proxy, scale_view_to_proxy);
 
 			g2.drawImage(src,
 
@@ -231,7 +230,7 @@ public class ImageProxy {
 	private ResizeInfo resizeInfo(int w, int h) {
 
 		var info = new ResizeInfo();
-		info.scale_view_to_model = 1;
+		info.scale_view_to_proxy = 1;
 		info.width = w;
 		info.height = h;
 		info.changed = false;
@@ -241,15 +240,13 @@ public class ImageProxy {
 				var ratio = (float) h / w;
 				info.width = MAX_SIZE;
 				info.height = (int) (info.width * ratio);
-				info.scale_view_to_model = (float) info.width / w;
-				info.scale_model_to_view = (float) w / info.width;
+				info.scale_view_to_proxy = (float) info.width / w;
 				info.changed = true;
 			} else {
 				var ratio = (float) h / w;
 				info.height = MAX_SIZE;
 				info.width = (int) (info.height / ratio);
-				info.scale_view_to_model = (float) info.height / h;
-				info.scale_model_to_view = (float) h / info.height;
+				info.scale_view_to_proxy = (float) info.height / h;
 				info.changed = true;
 			}
 		}
@@ -285,7 +282,7 @@ public class ImageProxy {
 					if (resize.changed) {
 						var temp = resize.createImage(frameBufferedImage, fd);
 						frameBufferedImage = temp;
-						_scale = resize.scale_view_to_model;
+						_scale = resize.scale_view_to_proxy;
 					}
 
 					_finalFrameData = fd;
@@ -293,6 +290,8 @@ public class ImageProxy {
 					var resize = resizeInfo(_fd.srcSize.x, _fd.srcSize.y);
 
 					frameBufferedImage = resize.createImage(newFileBufferedImage, _fd);
+
+					_scale = resize.scale_view_to_proxy;
 
 					_finalFrameData = FrameData.fromSourceRectangle(new Rectangle(0, 0, _fd.srcSize.x, _fd.srcSize.y));
 				}
@@ -328,6 +327,17 @@ public class ImageProxy {
 		updateImages();
 
 		return _finalFrameData;
+	}
+
+	public void paint(GC gc, int dstX, int dstY, int dstW, int dstH) {
+		var image = getImage();
+		var b = image.getBounds();
+
+		gc.drawImage(image,
+
+				0, 0, b.width, b.height,
+
+				dstX, dstY, dstW, dstH);
 	}
 
 	public void paint(GC gc, int srcX, int srcY, int srcW, int srcH, int dstX, int dstY, int dstW, int dstH) {

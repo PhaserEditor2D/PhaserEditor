@@ -1364,4 +1364,9 @@ public class SceneCanvas extends ZoomCanvas
 
 		return false;
 	}
+
+	@Override
+	protected boolean hasImage() {
+		return true;
+	}
 }

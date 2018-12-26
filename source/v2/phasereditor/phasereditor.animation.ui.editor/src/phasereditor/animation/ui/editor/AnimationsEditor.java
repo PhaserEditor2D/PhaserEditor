@@ -370,7 +370,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_stopAction.setEnabled(_playAction.isChecked() || _pauseAction.isChecked());
 	}
 
-	public void gridPropertyChanged() {
+	public void dirtyPropertyChanged() {
 
 		setDirty();
 

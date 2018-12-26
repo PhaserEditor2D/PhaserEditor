@@ -208,7 +208,7 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 	}
 
 	public ZoomCanvas(Composite parent, int style) {
-		super(parent, style | SWT.DOUBLE_BUFFERED);
+		super(parent, style);
 		addPaintListener(this);
 		_preferredSize = new Point(0, 0);
 
@@ -245,8 +245,9 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 	@Override
 	public final void paintControl(PaintEvent e) {
 		if (_fitWindow) {
-			_fitWindow = false;
-			fitWindow();
+			if (fitWindow()) {
+				_fitWindow = false;
+			}
 		}
 		
 		prepareGC(e.gc);
@@ -259,12 +260,24 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 		// 
 	}
 
-	protected void fitWindow() {
-		ZoomCalculator calc = calc();
-		calc.fit(getBounds());
+	protected boolean fitWindow() {
+		if (!hasImage()) {
+			return false;
+		}
+
+		var calc = calc();
+		calc.fit(getFitArea());
 
 		setScaleAndOffset(calc);
+
+		return true;
 	}
+	
+	protected Rectangle getFitArea() {
+		return getBounds();
+	}
+
+	protected abstract boolean hasImage();
 
 	protected void setScaleAndOffset(ZoomCalculator calc) {
 		setScale(calc.scale);

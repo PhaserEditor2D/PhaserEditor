@@ -709,4 +709,9 @@ public class TilemapCanvas extends ZoomCanvas
 		_listenerList.forEach(l -> l.selectionChanged(new SelectionChangedEvent(this, selection)));
 	}
 
+	@Override
+	protected boolean hasImage() {
+		return _renderImage != null;
+	}
+
 }

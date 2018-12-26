@@ -49,6 +49,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.pushingpixels.trident.Timeline.TimelineState;
@@ -58,15 +59,15 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.BaseImageCanvas;
-import phasereditor.ui.FrameData;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImageCanvas
+public class AnimationTimelineCanvas<T extends AnimationModel> extends Canvas
 		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener, KeyListener {
 
 	private T _model;
@@ -355,7 +356,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			e.gc.drawText(msg, x, y);
 			return;
 		}
-		
+
 		{
 			// update scroll form animation progress
 			var timeline = _animCanvas.getTimeline();
@@ -375,7 +376,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		var gc = e.gc;
 
-		prepareGC(gc);
+		ImageProxyCanvas.prepareGC(gc);
 
 		Transform tx = new Transform(getDisplay());
 		tx.translate(_origin, 0);
@@ -416,8 +417,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 				continue;
 			}
 
-			var img = loadImage(frame.getImageFile());
-			FrameData fd = frame.getFrameData();
+			var fd = frame.getFrameData();
+			var proxy = ImageProxy.get(frame.getImageFile(), fd);
 
 			double frameX = getFrameX(animFrame);
 			double frameX2 = i + 1 < frames.size() ? getFrameX(frames.get(i + 1)) : _fullWidth;
@@ -458,8 +459,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 				double imgDstW = fd.dst.width * scaleX;
 				double imgDstH = fd.dst.height * scaleY;
 
-				gc.drawImage(img, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY,
-						(int) imgDstW, (int) imgDstH);
+				proxy.paint(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 			}
 
 		}
@@ -681,15 +681,14 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 			return;
 		}
 
-		IAssetFrameModel assetFrame = frame.getAssetFrame();
-		
+		var assetFrame = frame.getAssetFrame();
+
 		if (assetFrame != null) {
 
-			var img = loadImage(assetFrame.getImageFile());
+			var proxy = ImageProxy.get(assetFrame.getImageFile(), assetFrame.getFrameData());
 
-			if (img != null) {
-				FrameData fd = assetFrame.getFrameData();
-				PhaserEditorUI.set_DND_Image(event, img, fd.src);
+			if (proxy != null) {
+				PhaserEditorUI.set_DND_Image(event, proxy.getImage(), proxy.getImage().getBounds());
 			}
 		}
 
