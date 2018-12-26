@@ -24,7 +24,6 @@ package phasereditor.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -37,18 +36,18 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 
-import phasereditor.ui.ImageCanvas.ZoomCalculator;
+import phasereditor.ui.ZoomCanvas.ZoomCalculator;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings({ })
-public class FrameGridCanvas extends BaseImageCanvas
-		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
+@SuppressWarnings({})
+public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
 	private static int S = 5;
 
@@ -62,14 +61,11 @@ public class FrameGridCanvas extends BaseImageCanvas
 	private List<String> _labels;
 	private List<String> _visibleLabels;
 
-	private List<Image> _images;
-	private List<Image> _visibleImages;
+	private List<ImageProxy> _images;
+	private List<ImageProxy> _visibleImages;
 
 	private List<Object> _objects;
 	private List<Object> _visibleObjects;
-
-	private List<IFile> _files;
-	private List<IFile> _visibleFiles;
 
 	private int _frameSize;
 	private Rectangle _dst;
@@ -130,7 +126,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 			@Override
 			public Image get_DND_Image(int index) {
-				return _visibleImages.get(index);
+				return _visibleImages.get(index).getImage();
 			}
 
 		};
@@ -200,8 +196,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 		}
 
 		GC gc = e.gc;
-		
-		prepareGC(gc);
+
+		ImageProxyCanvas.prepareGC(gc);
 
 		computeRects();
 
@@ -211,7 +207,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		for (int i = 0; i < _visibleCount; i++) {
 			var obj = _visibleObjects.get(i);
-			var src = _visibleRenderImageSrcFrames.get(i);
 			var area = _visibleRenderSelectionFrameAreas.get(i);
 
 			var selected = _utils.isSelected(obj);
@@ -233,9 +228,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 				if (image != null) {
 					if (_listLayout) {
 						int y = dst.y + (_frameSize + S - dst.height) / 2;
-						gc.drawImage(image, src.x, src.y, src.width, src.height, dst.x, y, dst.width, dst.height);
+						image.paint(gc, dst.x, y, dst.width, dst.height);
 					} else {
-						gc.drawImage(image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
+						image.paint(gc, dst.x, dst.y, dst.width, dst.height);
 					}
 				}
 
@@ -272,7 +267,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 				i++;
 			}
 		}
-		
+
 		tx.dispose();
 
 	}
@@ -318,7 +313,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 			_visibleRenderImageSrcFrames = new ArrayList<>();
 			_visibleObjects = new ArrayList<>();
-			_visibleFiles = new ArrayList<>();
 			_visibleImages = new ArrayList<>();
 			_visibleLabels = new ArrayList<>();
 
@@ -337,7 +331,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 					continue;
 				}
 
-				ZoomCalculator c = new ZoomCalculator(src.width, src.height);
+				var c = new ZoomCalculator(src.width, src.height);
 				c.fit(_frameSize, _frameSize);
 
 				Rectangle dst = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (src.width * c.scale),
@@ -354,7 +348,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 				}
 
 				_visibleObjects.add(_objects.get(i));
-				_visibleFiles.add(_files.get(i));
 				_visibleImages.add(_images.get(i));
 				_visibleLabels.add(_labels.get(i));
 
@@ -425,14 +418,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 		return _utils;
 	}
 
-	public List<Image> getImages() {
-		return _images;
-	}
-
-	public List<Rectangle> getFrames() {
-		return _renderImageSrcFrames;
-	}
-
 	public int getFrameSize() {
 		return _frameSize;
 	}
@@ -466,23 +451,19 @@ public class FrameGridCanvas extends BaseImageCanvas
 		_total = provider.getFrameCount();
 
 		for (int i = 0; i < _total; i++) {
-			var frame = provider.getFrameRectangle(i);
-			var file = provider.getFrameImageFile(i);
-			var image = loadImage(file);
+			var proxy = provider.getFrameImageProxy(i);
 			var object = provider.getFrameObject(i);
 			var label = provider.getFrameLabel(i);
 
-			_renderImageSrcFrames.add(frame);
-			_images.add(image);
+			_renderImageSrcFrames.add(proxy.getFinalFrameData().src);
+			_images.add(proxy);
 			_objects.add(object);
-			_files.add(file);
 			_labels.add(label);
 
 		}
 
 		_visibleImages = _images;
 		_visibleObjects = _objects;
-		_visibleFiles = _files;
 		_visibleLabels = _labels;
 		_visibleCount = _total;
 
@@ -500,12 +481,10 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		_images = new ArrayList<>();
 		_objects = new ArrayList<>();
-		_files = new ArrayList<>();
 		_labels = new ArrayList<>();
 
 		_visibleImages = _images;
 		_visibleObjects = _objects;
-		_visibleFiles = _files;
 		_visibleLabels = _labels;
 		_visibleCount = 0;
 

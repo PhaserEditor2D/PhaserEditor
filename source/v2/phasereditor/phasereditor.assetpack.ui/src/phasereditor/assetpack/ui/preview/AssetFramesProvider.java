@@ -23,11 +23,10 @@ package phasereditor.assetpack.ui.preview;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
-
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.IFrameProvider;
+import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
@@ -47,19 +46,14 @@ public class AssetFramesProvider implements IFrameProvider {
 	}
 
 	@Override
-	public Rectangle getFrameRectangle(int index) {
-		return getFrameObject(index).getFrameData().src;
-	}
-
-	@Override
-	public IFile getFrameImageFile(int index) {
-		return _frames.get(index).getImageFile();
+	public ImageProxy getFrameImageProxy(int index) {
+		return AssetPackUI.getImageProxy(_frames.get(index));
 	}
 
 	@Override
 	public String getFrameTooltip(int index) {
-		var rect = getFrameRectangle(index);
-		return rect.width + "x" + rect.height;
+		var size = getFrameImageProxy(index).getFinalFrameData().srcSize;
+		return size.x + "x" + size.y;
 	}
 
 	@Override

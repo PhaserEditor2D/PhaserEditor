@@ -24,12 +24,11 @@ package phasereditor.assetpack.ui.preview;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
-
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel.Frame;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.IFrameProvider;
+import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
@@ -50,16 +49,10 @@ public class MultiAtlasAssetFrameProvider implements IFrameProvider {
 	}
 
 	@Override
-	public Rectangle getFrameRectangle(int index) {
-		return getFrameObject(index).getFrameData().src;
+	public ImageProxy getFrameImageProxy(int index) {
+		return AssetPackUI.getImageProxy(_frames.get(index));
 	}
-
-	@Override
-	public IFile getFrameImageFile(int index) {
-		var frame = getFrameObject(index);
-		var file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
-		return file;
-	}
+	
 
 	@Override
 	public int getFrameCount() {

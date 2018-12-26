@@ -21,11 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
-
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.IFrameProvider;
+import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
@@ -45,13 +44,8 @@ public class SpritesheetAssetFrameProvider implements IFrameProvider {
 	}
 
 	@Override
-	public Rectangle getFrameRectangle(int index) {
-		return getFrameObject(index).getFrameData().src;
-	}
-
-	@Override
-	public IFile getFrameImageFile(int index) {
-		return _model.getUrlFile();
+	public ImageProxy getFrameImageProxy(int index) {
+		return AssetPackUI.getImageProxy(getFrameObject(index));
 	}
 
 	@Override

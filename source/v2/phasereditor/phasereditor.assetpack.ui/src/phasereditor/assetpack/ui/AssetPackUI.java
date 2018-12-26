@@ -111,6 +111,10 @@ public class AssetPackUI {
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
 	public static ImageProxy getImageProxy(IAssetFrameModel frame) {
+		if (frame == null) {
+			return null;
+		}
+
 		return ImageProxy.get(frame.getImageFile(), frame.getFrameData());
 	}
 

@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
-
 public interface IFrameProvider {
 	IFrameProvider NULL = new IFrameProvider() {
 
@@ -33,12 +30,7 @@ public interface IFrameProvider {
 		}
 
 		@Override
-		public Rectangle getFrameRectangle(int index) {
-			return null;
-		}
-
-		@Override
-		public IFile getFrameImageFile(int index) {
+		public ImageProxy getFrameImageProxy(int index) {
 			return null;
 		}
 
@@ -60,9 +52,7 @@ public interface IFrameProvider {
 
 	public int getFrameCount();
 
-	public Rectangle getFrameRectangle(int index);
-
-	public IFile getFrameImageFile(int index);
+	public ImageProxy getFrameImageProxy(int index);
 
 	@SuppressWarnings("unused")
 	default String getFrameTooltip(int index) {

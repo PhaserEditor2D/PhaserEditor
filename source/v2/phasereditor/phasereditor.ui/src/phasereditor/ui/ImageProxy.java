@@ -42,6 +42,21 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public class ImageProxy {
 
+	private static int MAX_SIZE;
+
+	static {
+		MAX_SIZE = 512;
+		var str = System.getProperty("ImageProxy.MAX_SIZE");
+		if (str != null) {
+			try {
+				var size = Integer.parseInt(str);
+				MAX_SIZE = size;
+			} catch (Exception e) {
+				//
+			}
+		}
+	}
+
 	private File _file;
 	private FrameData _fd;
 	private Image _swtImage;
@@ -175,7 +190,7 @@ public class ImageProxy {
 	}
 
 	private static String computeKey(File file, FrameData fd, long lastModified) {
-		return file.getAbsolutePath() + "$" + (fd == null ? "FULL" : fd.toString()) + "#" + lastModified;
+		return file.getAbsolutePath() + "$" + (fd == null ? "FULL" : fd.src.toString()) + "#" + lastModified;
 	}
 
 	public ImageProxy(File file, FrameData fd) {
@@ -197,8 +212,6 @@ public class ImageProxy {
 	public synchronized BufferedImage getFileBufferedImage() {
 		return _fileBufferedImageMap.get(_file);
 	}
-
-	private static int MAX_SIZE = 256;
 
 	class ResizeInfo {
 		public int width;

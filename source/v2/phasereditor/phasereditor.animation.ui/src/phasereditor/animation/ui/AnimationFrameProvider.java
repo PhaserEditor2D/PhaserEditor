@@ -21,12 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
-
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.IFrameProvider;
+import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
@@ -47,25 +45,15 @@ public class AnimationFrameProvider implements IFrameProvider {
 	}
 
 	@Override
-	public Rectangle getFrameRectangle(int index) {
+	public ImageProxy getFrameImageProxy(int index) {
+
 		var frame = getFrameObject(index).getAssetFrame();
 
 		if (frame == null) {
 			return null;
 		}
 
-		return frame.getFrameData().src;
-	}
-
-	@Override
-	public IFile getFrameImageFile(int index) {
-		var frame = getFrameObject(index).getAssetFrame();
-
-		if (frame == null) {
-			return null;
-		}
-
-		return frame.getImageFile();
+		return ImageProxy.get(frame.getImageFile(), frame.getFrameData());
 	}
 
 	@Override
