@@ -52,8 +52,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
+
 		PhaserEditorUI.initPreferences();
+		ImageProxy.startGargabeCollector();
 	}
 
 	/*
@@ -67,8 +68,9 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-		
+
 		SwtRM.dispose();
+		ImageProxy.disposeAll();
 	}
 
 	/**

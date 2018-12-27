@@ -58,8 +58,7 @@ public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements I
 			int i2 = b.getIndex();
 			return Integer.compare(i1 == -1 ? Integer.MAX_VALUE : i1, i2 == -1 ? Integer.MAX_VALUE : i2);
 		});
-		
-		
+
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -85,6 +84,8 @@ public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements I
 	}
 
 	public void dispose() {
-		_image.dispose();
+		if (_image != null) {
+			_image.dispose();
+		}
 	}
 }

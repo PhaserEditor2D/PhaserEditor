@@ -21,13 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
@@ -68,7 +73,7 @@ public class ImageProxy {
 	private static Map<File, BufferedImage> _fileBufferedImageMap = new HashMap<>();
 	private static Map<File, Long> _fileModifiedMap = new HashMap<>();
 	private static List<ImageProxy> _proxyList = new ArrayList<>();
-	private static List<Image> _garbage = new ArrayList<>();
+	private static List<TrashItem> _trash = new ArrayList<>();
 
 	public static ImageProxy get(IFile file, FrameData fd) {
 
@@ -173,6 +178,101 @@ public class ImageProxy {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static class TrashItem {
+		public Image image;
+		public long time;
+		public File file;
+
+		public TrashItem(File file, Image image) {
+			this.image = image;
+			this.file = file;
+			time = currentTimeMillis();
+		}
+
+		@Override
+		public String toString() {
+			return file.getName() + " (" + time + ")";
+		}
+
+	}
+
+	public static void startGargabeCollector() {
+		new Thread("ImageProxy Garbage Collector") {
+
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					collectGarbage();
+
+				}
+			}
+		}.start();
+	}
+
+	public synchronized static void disposeAll() {
+		out.println("ImageProxy: disposing all images...");
+
+		for (var item : _trash) {
+			out.println("ImageProxy: disposing trash item " + item);
+			item.image.dispose();
+		}
+
+		for (var proxy : _proxyList) {
+			if (proxy._swtImage != null) {
+				out.println("ImageProxy: disposing alive image " + proxy._file.getName() + "#" + proxy._fd);
+				proxy._swtImage.dispose();
+			}
+		}
+	}
+
+	public synchronized static void collectGarbage() {
+
+		out.println("ImageProxy: collecting garbage...");
+
+		var t = currentTimeMillis();
+
+		var dispose = new ArrayList<TrashItem>();
+		var trash2 = new HashSet<TrashItem>();
+
+		for (var item : _trash) {
+			var dt = t - item.time;
+			if (TimeUnit.MILLISECONDS.toMinutes(dt) >= 1) {
+				dispose.add(item);
+			} else {
+				trash2.add(item);
+			}
+		}
+
+		for (var item : dispose) {
+			try {
+				out.println("ImageProxy: disposing " + item + ".");
+				item.image.dispose();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		_trash = new ArrayList<>(trash2);
+
+		// for (var proxy : _proxyList) {
+		// if (!proxy._file.exists() && proxy._swtImage != null) {
+		// out.println("ImageProxy: the file " + proxy._file.getName()
+		// + " as deleted, disposing its alive proxy image.");
+		// proxy._swtImage.dispose();
+		// proxy._swtImage = null;
+		// }
+		// }
+
+		out.println("done!");
+
 	}
 
 	private boolean sameFileAndFrameData(File file, FrameData fd) {
@@ -282,7 +382,9 @@ public class ImageProxy {
 				_scale = 1;
 
 				if (_swtImage != null) {
-					_garbage.add(_swtImage);
+					var item = new TrashItem(_file, _swtImage);
+					_trash.add(item);
+					out.println("ImageProxy: send to trash " + item);
 				}
 
 				BufferedImage frameBufferedImage;
@@ -420,7 +522,7 @@ public class ImageProxy {
 
 	public Rectangle getBounds() {
 		var fd = getFinalFrameData();
-		return fd == null? null : fd.src;
+		return fd == null ? null : fd.src;
 	}
 
 	public boolean hits(int x, int y) {
@@ -428,13 +530,13 @@ public class ImageProxy {
 		var alpha = 0;
 
 		Rectangle b = getBounds();
-		
+
 		if (b.contains(x, y)) {
 			var img = getImage();
 
 			if (img != null) {
 				var data = img.getImageData();
-				alpha = data.getAlpha((int)( x * _scale),(int)( y * _scale));
+				alpha = data.getAlpha((int) (x * _scale), (int) (y * _scale));
 			}
 		}
 

@@ -447,8 +447,8 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 			var proxy = provider.getFrameImageProxy(i);
 			var object = provider.getFrameObject(i);
 			var label = provider.getFrameLabel(i);
-
-			_renderImageSrcFrames.add(proxy.getFinalFrameData().src);
+			
+			_renderImageSrcFrames.add(proxy == null? null : proxy.getFinalFrameData().src);
 			_images.add(proxy);
 			_objects.add(object);
 			_labels.add(label);

@@ -1107,6 +1107,11 @@ public class PhaserEditorUI {
 	}
 
 	public static Rectangle getImageBounds(String filepath) {
+		
+		if (filepath == null) {
+			return new Rectangle(0, 0, 1, 1);
+		}
+		
 		try (FileImageInputStream input = new FileImageInputStream(new File(filepath))) {
 			ImageReader reader = ImageIO.getImageReaders(input).next();
 			reader.setInput(input);
@@ -1120,7 +1125,7 @@ public class PhaserEditorUI {
 	}
 
 	public static Rectangle getImageBounds(IFile file) {
-		return getImageBounds(file.getLocation().toPortableString());
+		return getImageBounds(file == null? null : file.getLocation().toPortableString());
 	}
 
 	public static String getUIIconURL(String icon) {
