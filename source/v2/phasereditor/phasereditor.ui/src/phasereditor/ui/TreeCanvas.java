@@ -42,7 +42,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.json.JSONObject;
@@ -52,7 +51,7 @@ import org.json.JSONObject;
  *
  */
 @SuppressWarnings({ "boxing" })
-public class TreeCanvas extends Canvas implements PaintListener, MouseWheelListener {
+public class TreeCanvas extends BaseCanvas implements PaintListener, MouseWheelListener {
 	public static final int ACTION_SPACE = 2;
 	public static final int ACTION_PADDING = 2;
 	public static final int MIN_ROW_HEIGHT = 20;
@@ -260,7 +259,7 @@ public class TreeCanvas extends Canvas implements PaintListener, MouseWheelListe
 
 		var gc = e.gc;
 
-		ImageProxyCanvas.prepareGC(gc);
+		prepareGC(gc);
 
 		{
 			int selectionStart = -1;

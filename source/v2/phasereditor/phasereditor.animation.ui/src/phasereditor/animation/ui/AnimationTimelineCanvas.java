@@ -49,7 +49,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.pushingpixels.trident.Timeline.TimelineState;
@@ -59,15 +58,15 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.ui.BaseCanvas;
 import phasereditor.ui.ImageProxy;
-import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-public class AnimationTimelineCanvas<T extends AnimationModel> extends Canvas
+public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanvas
 		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener, KeyListener {
 
 	private T _model;
@@ -376,7 +375,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends Canvas
 
 		var gc = e.gc;
 
-		ImageProxyCanvas.prepareGC(gc);
+		prepareGC(gc);
 
 		Transform tx = new Transform(getDisplay());
 		tx.translate(_origin, 0);
