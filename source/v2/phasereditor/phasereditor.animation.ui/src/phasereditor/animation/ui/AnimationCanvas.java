@@ -188,6 +188,7 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 	public class IndexTimeline extends Timeline implements TimelineCallback {
 		private int _currentIndex;
 		private float _currentFraction;
+		private TimelineState _currentState;
 
 		public IndexTimeline(long duration) {
 			super(AnimationCanvas.this);
@@ -211,11 +212,15 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 		@Override
 		public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
 				float timelinePosition) {
-			//
+			_currentState = newState;
 		}
 
 		@Override
 		public void onTimelinePulse(float durationFraction, float timelinePosition) {
+			if (_currentState == TimelineState.SUSPENDED) {
+				return;
+			}
+			
 			_currentFraction = timelinePosition;
 
 			int index = 0;
@@ -225,7 +230,7 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 			if (animModel == null) {
 				return;
 			}
-
+			
 			List<AnimationFrameModel> frames = animModel.getFrames();
 
 			for (int i = 0; i < frames.size(); i++) {
@@ -293,7 +298,9 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 
 			if (_animModel != null) {
 
-				if (_timeline.getState() != TimelineState.IDLE) {
+				var state = _timeline.getState();
+				
+				if (state != TimelineState.IDLE) {
 					double frac = _timeline.getFraction();
 					int x = (int) (frac * e.width);
 					e.gc.drawLine(0, e.height - 5, x, e.height - 5);

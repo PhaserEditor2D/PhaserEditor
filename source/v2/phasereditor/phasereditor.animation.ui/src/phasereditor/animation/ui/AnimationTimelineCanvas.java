@@ -364,7 +364,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 
 				var state = timeline.getState();
 
-				if (state != TimelineState.IDLE) {
+				if (state == TimelineState.PLAYING_FORWARD || state == TimelineState.PLAYING_REVERSE) {
 					var frac = timeline.getFraction();
 					var direction = state == TimelineState.PLAYING_FORWARD ? 1 : -1;
 					scrollTo(frac, direction);

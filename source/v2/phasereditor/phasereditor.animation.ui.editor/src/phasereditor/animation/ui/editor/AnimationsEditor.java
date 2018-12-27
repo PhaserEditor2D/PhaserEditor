@@ -408,7 +408,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 						timeline.resume();
 						break;
 					case IDLE:
-						canvas.play();
+						timeline.resume();
 						break;
 					default:
 						break;
