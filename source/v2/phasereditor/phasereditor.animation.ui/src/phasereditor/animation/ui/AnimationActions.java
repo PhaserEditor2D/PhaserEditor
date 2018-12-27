@@ -25,7 +25,7 @@ import static java.lang.System.out;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.pushingpixels.trident.Timeline.TimelineState;
 
 import phasereditor.assetpack.core.animations.AnimationModel;
@@ -168,7 +168,7 @@ public class AnimationActions {
 		_stopAction.setEnabled(_playAction.isChecked() || _pauseAction.isChecked());
 	}
 
-	public void fillToolbar(ToolBarManager manager) {
+	public void fillToolbar(IToolBarManager manager) {
 		manager.add(_playAction);
 		manager.add(_pauseAction);
 		manager.add(_stopAction);
