@@ -39,13 +39,13 @@ import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
-public class AtlasImageProxyCanvas extends ImageProxyCanvas implements ControlListener {
+public class AtlasCanvas_Managed extends ImageProxyCanvas implements ControlListener {
 
 	private List<? extends AtlasFrame> _frames;
 	private Rectangle[] _framesRects;
 	private FrameCanvasUtils _utils;
 
-	public AtlasImageProxyCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
+	public AtlasCanvas_Managed(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style);
 
 		addControlListener(this);

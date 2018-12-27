@@ -119,7 +119,7 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 
-import phasereditor.ui.ImageCanvas.ZoomCalculator;
+import phasereditor.ui.ZoomCanvas.ZoomCalculator;
 import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
@@ -173,7 +173,7 @@ public class PhaserEditorUI {
 		RGB _RED = new RGB(255, 0, 0);
 		RGB _BLUE = new RGB(0, 0, 255);
 		RGB _YELLOW = new RGB(255, 255, 0);
-//		RGB _GRAY = new RGB(192, 192, 192);
+		// RGB _GRAY = new RGB(192, 192, 192);
 
 		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
 		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
@@ -644,8 +644,10 @@ public class PhaserEditorUI {
 	 * 
 	 * http://www.vogella.com/tutorials/EclipseJFaceTableAdvanced/article.html
 	 * 
-	 * @param searchTerm can be null or empty. int[0] is returned in this case!
-	 * @param content    a not-null string (can be empty!)
+	 * @param searchTerm
+	 *            can be null or empty. int[0] is returned in this case!
+	 * @param content
+	 *            a not-null string (can be empty!)
 	 * @return an array of int pairs (index, length)
 	 */
 
@@ -942,7 +944,7 @@ public class PhaserEditorUI {
 	public static void set_DND_Image(DragSourceEvent e, Image image) {
 		set_DND_Image(e, image, image.getBounds());
 	}
-	
+
 	public static void set_DND_Image(DragSourceEvent e, Image image, Rectangle src) {
 		if (image == null) {
 			return;
@@ -1002,7 +1004,7 @@ public class PhaserEditorUI {
 		ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
 		calc.fit(newSize, newSize);
 
-		Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
+		Rectangle z = calc.modelToView(0, 0, src2.width, src2.height);
 
 		gc.setAlpha(alpha);
 		gc.drawImage(image, src2.x, src2.y, src2.width, src2.height, z.x, z.y, z.width, z.height);
@@ -1022,7 +1024,7 @@ public class PhaserEditorUI {
 			ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
 			calc.fit(newSize, newSize);
 
-			Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
+			Rectangle z = calc.modelToView(0, 0, src2.width, src2.height);
 
 			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
 					src2.y + src2.height, null);

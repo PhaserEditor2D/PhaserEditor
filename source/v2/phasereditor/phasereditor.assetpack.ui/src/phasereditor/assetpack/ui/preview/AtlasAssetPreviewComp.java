@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.atlas.ui.AtlasImageProxyCanvas;
+import phasereditor.atlas.ui.AtlasCanvas_Managed;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.IEditorSharedImages;
@@ -49,7 +49,7 @@ import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 public class AtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 
-	private AtlasImageProxyCanvas _atlasCanvas;
+	private AtlasCanvas_Managed _atlasCanvas;
 	private AtlasAssetModel _model;
 
 	private Action _textureAction;
@@ -69,7 +69,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		setLayout(new StackLayout());
 
-		_atlasCanvas = new AtlasImageProxyCanvas(this, SWT.NONE, true);
+		_atlasCanvas = new AtlasCanvas_Managed(this, SWT.NONE, true);
 		_atlasCanvas.setZoomWhenShiftPressed(false);
 		_filteredGrid = new FilteredFrameGrid(this, SWT.NONE, true);
 		AssetPackUI.installAssetTooltips(_filteredGrid);
@@ -124,7 +124,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		return _model;
 	}
 
-	public AtlasImageProxyCanvas getAtlasCanvas() {
+	public AtlasCanvas_Managed getAtlasCanvas() {
 		return _atlasCanvas;
 	}
 

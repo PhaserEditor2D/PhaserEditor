@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.atlas.ui.AtlasCanvas;
+import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -95,7 +95,7 @@ public class PageSection extends TexturePackerSection<EditorPage> {
 
 		{
 			var text = "";
-			AtlasCanvas canvas = getEditor().getAtlasCanvas(page.getIndex());
+			AtlasCanvas_Unmanaged canvas = getEditor().getAtlasCanvas(page.getIndex());
 			Image img = canvas.getImage();
 			if (img != null) {
 				var b = img.getBounds();

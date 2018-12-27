@@ -29,23 +29,25 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.ui.FrameCanvasUtils;
-import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.ZoomCanvas;
 
-public class AtlasCanvas extends ImageCanvas implements ControlListener {
+public class AtlasCanvas_Unmanaged extends ZoomCanvas implements ControlListener {
 
 	private List<? extends AtlasFrame> _frames;
 	private Rectangle[] _framesRects;
 	private FrameCanvasUtils _utils;
+	private Image _image;
 
-	public AtlasCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
+	public AtlasCanvas_Unmanaged(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style);
 
 		addControlListener(this);
@@ -92,39 +94,46 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 		generateFramesRects();
 
-		super.customPaintControl(e);
+		if (_image == null) {
+			return;
+		}
 
-		if (_image != null) {
-			GC gc = e.gc;
+		GC gc = e.gc;
 
-			int i = 0;
-			ZoomCalculator calc = calc();
-			for (Rectangle r : _framesRects) {
+		int i = 0;
 
-				var obj = _frames.get(i);
+		var calc = calc();
+		{
+			var b = _image.getBounds();
+			var dst = calc.modelToView(b);
+			gc.drawImage(_image, 0, 0, b.width, b.height, dst.x, dst.y, dst.width, dst.height);
+		}
 
-				boolean selected = _utils.isSelected(obj);
+		for (Rectangle r : _framesRects) {
 
-				if (selected) {
-					gc.setBackground(PhaserEditorUI.getListSelectionColor());
-					gc.fillRectangle(r);
+			var obj = _frames.get(i);
 
-					gc.setClipping(r);
-					Rectangle src = _image.getBounds();
-					Rectangle dst = calc.imageToScreen(src);
-					gc.drawImage(_image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
-					gc.setClipping((Rectangle) null);
+			boolean selected = _utils.isSelected(obj);
 
-					gc.drawRectangle(r);
+			if (selected) {
+				gc.setBackground(PhaserEditorUI.getListSelectionColor());
+				gc.fillRectangle(r);
 
-				}
+				gc.setClipping(r);
+				Rectangle src = _image.getBounds();
+				Rectangle dst = calc.modelToView(src);
+				gc.drawImage(_image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
+				gc.setClipping((Rectangle) null);
 
-				if (selected || _utils.isOver(obj)) {
-					gc.drawRectangle(r);
-				}
+				gc.drawRectangle(r);
 
-				i++;
 			}
+
+			if (selected || _utils.isOver(obj)) {
+				gc.drawRectangle(r);
+			}
+
+			i++;
 		}
 	}
 
@@ -137,7 +146,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 		int i = 0;
 		for (AtlasFrame item : _frames) {
 			Rectangle src = item.getFrameData().src;
-			Rectangle r = calc.imageToScreen(src);
+			Rectangle r = calc.modelToView(src);
 			_framesRects[i] = r;
 			i++;
 		}
@@ -189,5 +198,31 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 	public IStructuredSelection getSelection() {
 		return (IStructuredSelection) _utils.getSelection();
+	}
+
+	@Override
+	protected boolean hasImage() {
+		return _image != null;
+	}
+
+	@Override
+	protected Point getImageSize() {
+		if (_image == null) {
+			return new Point(1, 1);
+		}
+
+		var b = _image.getBounds();
+
+		return new Point(b.width, b.height);
+	}
+
+	public Image getImage() {
+		return _image;
+	}
+
+	public void setImage(Image image) {
+		_image = image;
+
+		resetZoom();
 	}
 }

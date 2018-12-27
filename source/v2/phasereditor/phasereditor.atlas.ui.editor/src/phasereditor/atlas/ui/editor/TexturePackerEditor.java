@@ -103,7 +103,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.Array;
 
 import phasereditor.atlas.core.SettingsBean;
-import phasereditor.atlas.ui.AtlasCanvas;
+import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
@@ -130,7 +130,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private MenuManager _menuManager;
 
-	private AtlasCanvas _canvasClicked;
+	private AtlasCanvas_Unmanaged _canvasClicked;
 
 	ISelectionChangedListener _outlinerSelectionListener;
 
@@ -194,8 +194,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		return null;
 	}
 
-	public AtlasCanvas getAtlasCanvas(int i) {
-		return (AtlasCanvas) _tabsFolder.getItem(i).getControl();
+	public AtlasCanvas_Unmanaged getAtlasCanvas(int i) {
+		return (AtlasCanvas_Unmanaged) _tabsFolder.getItem(i).getControl();
 	}
 
 	public TexturePackerContentOutlinePage getOutliner() {
@@ -805,8 +805,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			TabItem item = createTabItem();
 			item.setText(page.getName());
 
-			AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
-			canvas.setImageFile(page.getImageFile(), page.getImage());
+			AtlasCanvas_Unmanaged canvas = createAtlasCanvas(_tabsFolder);
+			canvas.setImage(page.getImage());
 			canvas.setFrames(new ArrayList<>(page));
 
 			item.setControl(canvas);
@@ -823,11 +823,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 	}
 
-	private AtlasCanvas createAtlasCanvas(Composite parent) {
-		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE, false);
+	private AtlasCanvas_Unmanaged createAtlasCanvas(Composite parent) {
+		AtlasCanvas_Unmanaged canvas = new AtlasCanvas_Unmanaged(parent, SWT.NONE, false);
 		canvas.setZoomWhenShiftPressed(false);
 		// we handle the cache
-		canvas.setDisableCanche(true);
 
 		ISelectionChangedListener listener = new ISelectionChangedListener() {
 
@@ -844,7 +843,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		return canvas;
 	}
 
-	protected void updateSelection_from_Canvas_to_Outliner(AtlasCanvas canvas) {
+	protected void updateSelection_from_Canvas_to_Outliner(AtlasCanvas_Unmanaged canvas) {
 		_canvasClicked = canvas;
 
 		var selection = canvas.getSelection();
@@ -886,8 +885,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	private void addMainTab() {
 		TabItem item = createTabItem();
 		item.setText(_model.getAtlasImageName(0));
-		AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
-		canvas.setNoImageMessage("(drop image files here)");
+		AtlasCanvas_Unmanaged canvas = createAtlasCanvas(_tabsFolder);
 		item.setControl(canvas);
 		selectTab(0);
 		canvas.setFocus();
@@ -1172,7 +1170,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
-			AtlasCanvas canvas = getAtlasCanvas(i);
+			AtlasCanvas_Unmanaged canvas = getAtlasCanvas(i);
 
 			canvas.setSelection(selection, false);
 
@@ -1198,12 +1196,12 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		repaintTab(i);
 	}
 
-	public AtlasCanvas getSelectedShownCanvas() {
+	public AtlasCanvas_Unmanaged getSelectedShownCanvas() {
 		return getAtlasCanvas(_tabsFolder.getSelectionIndex());
 	}
 
 	void repaintTab(int i) {
-		AtlasCanvas canvas = getAtlasCanvas(i);
+		AtlasCanvas_Unmanaged canvas = getAtlasCanvas(i);
 		if (canvas.getScale() == 0) {
 			canvas.resetZoom();
 		}
