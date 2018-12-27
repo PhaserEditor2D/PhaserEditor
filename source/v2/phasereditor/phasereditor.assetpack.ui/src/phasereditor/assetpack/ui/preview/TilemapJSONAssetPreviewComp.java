@@ -43,7 +43,7 @@ import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Layer;
 import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.core.TilemapAssetModel.Tileset;
-import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageProxyCanvas;
 
 public class TilemapJSONAssetPreviewComp extends Composite {
 	static class TilemapLabelProvider extends LabelProvider {
@@ -63,7 +63,7 @@ public class TilemapJSONAssetPreviewComp extends Composite {
 	private ComboViewer _layersViewer;
 	private ComboViewer _tilesetsViewer;
 	private Composite _composite;
-	private ImageCanvas _imageCanvas;
+	private ImageProxyCanvas _imageCanvas;
 	private TilemapAssetModel _model;
 
 	/**
@@ -113,7 +113,7 @@ public class TilemapJSONAssetPreviewComp extends Composite {
 		_tilesetsViewer.setLabelProvider(new TilemapLabelProvider());
 		_tilesetsViewer.setContentProvider(new ArrayContentProvider());
 
-		_imageCanvas = new ImageCanvas(this, SWT.NONE);
+		_imageCanvas = new ImageProxyCanvas(this, SWT.NONE);
 		_imageCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		afterCreateWidgets();
@@ -128,9 +128,9 @@ public class TilemapJSONAssetPreviewComp extends Composite {
 		Tileset tileset = (Tileset) ((IStructuredSelection) _tilesetsViewer.getSelection()).getFirstElement();
 		IFile file = null;
 		if (tileset != null) {
-			file = tileset.getImageFile();
+//			file = tileset.getImageFile();
 		}
-		_imageCanvas.setImageFile(file);
+		_imageCanvas.setImageInfo(file, null);
 	}
 
 	public TilemapAssetModel getModel() {
