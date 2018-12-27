@@ -71,7 +71,7 @@ public class BitmapFontAssetPreviewComp extends Composite {
 		_model = model;
 
 		if (model == null) {
-			_bitmapFontCanvas.setImageFile( (IFile) null);
+			_bitmapFontCanvas.clear();
 			return;
 		}
 
@@ -79,7 +79,7 @@ public class BitmapFontAssetPreviewComp extends Composite {
 		BitmapFontModel fontModel = model.getFontModel();
 
 		_bitmapFontCanvas.setModel(fontModel);
-		_bitmapFontCanvas.setImageFile(imgFile);
+		_bitmapFontCanvas.setImageInfo(imgFile, null);
 
 	}
 
