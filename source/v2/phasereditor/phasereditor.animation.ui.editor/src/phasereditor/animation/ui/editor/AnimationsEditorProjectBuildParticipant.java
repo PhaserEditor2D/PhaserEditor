@@ -7,6 +7,7 @@ import phasereditor.project.ui.build.BaseEditorBuildParticipant;
 public class AnimationsEditorProjectBuildParticipant extends BaseEditorBuildParticipant<AnimationsEditor> {
 
 	public AnimationsEditorProjectBuildParticipant() {
+		super(AnimationsEditor.ID);
 	}
 
 	@Override

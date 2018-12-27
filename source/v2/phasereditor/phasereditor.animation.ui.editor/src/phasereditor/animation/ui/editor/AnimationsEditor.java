@@ -540,35 +540,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	protected void loadAnimation(AnimationModel anim) {
-		_animationActions.setChecked(false);
-		_animationActions.setEnabled(false);
-
-		if (anim == null) {
-
-			_zoom_1_1_action.setEnabled(false);
-			_zoom_fitWindow_action.setEnabled(false);
-			_deleteAction.setEnabled(false);
-
-			_animCanvas.setModel(null);
-			_timelineCanvas.setModel(null);
-
-			return;
-		}
-
-		_animCanvas.setModel(anim, false);
-
-		_animationActions.getPlayAction().setEnabled(true);
-
-		if (_timelineCanvas.getModel() != anim) {
-			_timelineCanvas.setModel(anim);
-		}
-
-		_zoom_1_1_action.setEnabled(true);
-		_zoom_fitWindow_action.setEnabled(true);
-		_deleteAction.setEnabled(true);
-	}
-
 	class Outliner extends Page implements IContentOutlinePage, ISelectionChangedListener {
 		private FilteredTreeCanvas _filteredTreeCanvas;
 		private SelectionProviderImpl _selProvider;
@@ -698,8 +669,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void build() {
-		_animCanvas.stop();
-
 		_model.build();
 
 		if (_outliner != null) {
@@ -707,10 +676,41 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		AnimationModel model = _animCanvas.getModel();
+
 		if (model != null) {
 			_animCanvas.setModel(model, false);
 		}
+
 		_timelineCanvas.setModel(_timelineCanvas.getModel());
+	}
+
+	protected void loadAnimation(AnimationModel anim) {
+		_animationActions.setChecked(false);
+		_animationActions.setEnabled(false);
+
+		if (anim == null) {
+
+			_zoom_1_1_action.setEnabled(false);
+			_zoom_fitWindow_action.setEnabled(false);
+			_deleteAction.setEnabled(false);
+
+			_animCanvas.setModel(null);
+			_timelineCanvas.setModel(null);
+
+			return;
+		}
+
+		_animCanvas.setModel(anim, false);
+
+		_animationActions.getPlayAction().setEnabled(true);
+
+		if (_timelineCanvas.getModel() != anim) {
+			_timelineCanvas.setModel(anim);
+		}
+
+		_zoom_1_1_action.setEnabled(true);
+		_zoom_fitWindow_action.setEnabled(true);
+		_deleteAction.setEnabled(true);
 	}
 
 	public void deleteAnimations(List<AnimationModel> animations) {
