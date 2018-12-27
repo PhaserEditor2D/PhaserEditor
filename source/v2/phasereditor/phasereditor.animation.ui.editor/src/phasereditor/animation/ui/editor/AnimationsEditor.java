@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -70,8 +69,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pushingpixels.trident.Timeline.TimelineState;
 
+import phasereditor.animation.ui.AnimationActions;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
@@ -106,10 +105,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	Outliner _outliner;
 	ISelectionChangedListener _outlinerListener;
 	private AnimationTimelineCanvas_in_Editor _timelineCanvas;
-	private Action _playAction;
-	private Action _pauseAction;
-	private Action _stopAction;
-	private Action[] _playbackActions = { _playAction, _pauseAction, _stopAction };
 	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 	private boolean _dirty;
@@ -118,17 +113,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private Action _deleteAction;
 	private Action _newAction;
 	private Action _outlineAction;
+	private AnimationActions _animationActions;
 
-	public Action getPlayAction() {
-		return _playAction;
-	}
-
-	public Action getPauseAction() {
-		return _pauseAction;
-	}
-
-	public Action getStopAction() {
-		return _stopAction;
+	public AnimationActions getAnimationActions() {
+		return _animationActions;
 	}
 
 	public ImageCanvas_Zoom_1_1_Action getZoom_1_1_action() {
@@ -226,7 +214,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			}
 		});
 		_animCanvas.setStepCallback(_timelineCanvas::redraw);
-		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
+		_animCanvas.setPlaybackCallback(_animationActions::animationStatusChanged);
 		_animCanvas.addPaintListener(e -> {
 			if (_animCanvas.getModel() != null) {
 				e.gc.setAlpha(40);
@@ -235,7 +223,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			}
 		});
 		_animCanvas.setZoomWhenShiftPressed(false);
-		
+
 		_timelineCanvas.setZoomWhenShiftPressed(false);
 
 		disableToolbar();
@@ -323,51 +311,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	private void disableToolbar() {
-		for (var btn : _playbackActions) {
-			btn.setEnabled(false);
-		}
+		_animationActions.setEnabled(false);
 
 		_zoom_1_1_action.setEnabled(false);
 		_zoom_fitWindow_action.setEnabled(false);
 		_deleteAction.setEnabled(false);
-	}
-
-	private void animationStatusChanged(TimelineState status) {
-
-		out.println("status: " + status);
-
-		switch (status) {
-		case PLAYING_FORWARD:
-		case PLAYING_REVERSE:
-			_playAction.setChecked(true);
-			_pauseAction.setChecked(false);
-			_stopAction.setChecked(false);
-			break;
-		case IDLE:
-			// TODO: do we really want to do this? it breaks the animation, it looks like
-			// the first frame is actually the last frame of the animation.
-			//
-			// AnimationCanvas animCanvas = getAnimationCanvas();
-			// var anim = animCanvas.getModel();
-			// var frames = anim.getFrames();
-			//
-			// if (!frames.isEmpty()) {
-			// animCanvas.showFrame(0);
-			// }
-			_playAction.setChecked(false);
-			_pauseAction.setChecked(false);
-			break;
-		case SUSPENDED:
-			_playAction.setChecked(false);
-			_pauseAction.setChecked(true);
-			break;
-		default:
-			break;
-		}
-
-		_playAction.setEnabled(!_playAction.isChecked());
-		_pauseAction.setEnabled(_playAction.isChecked());
-		_stopAction.setEnabled(_playAction.isChecked() || _pauseAction.isChecked());
 	}
 
 	public void dirtyPropertyChanged() {
@@ -391,59 +339,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	private void createActions() {
 
-		_playAction = new Action("Play", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY));
-			}
-
-			@Override
-			public void run() {
-				AnimationCanvas canvas = getAnimationCanvas();
-				var timeline = canvas.getTimeline();
-				if (timeline == null) {
-					canvas.play();
-				} else {
-					switch (timeline.getState()) {
-					case SUSPENDED:
-						timeline.resume();
-						break;
-					case IDLE:
-						timeline.resume();
-						break;
-					default:
-						break;
-					}
-				}
-
-				getTimelineCanvas().redraw();
-				canvas.redraw();
-			}
-		};
-
-		_pauseAction = new Action("Pause", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PAUSE));
-			}
-
-			@Override
-			public void run() {
-				getAnimationCanvas().pause();
-				getTimelineCanvas().redraw();
-				getAnimationCanvas().redraw();
-			}
-
-		};
-
-		_stopAction = new Action("Stop", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_STOP)) {
-
-			@Override
-			public void run() {
-				getAnimationCanvas().stop();
-				getTimelineCanvas().redraw();
-				getAnimationCanvas().redraw();
-			}
-
-		};
+		_animationActions = new AnimationActions(_animCanvas, _timelineCanvas);
 
 		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animCanvas);
 		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animCanvas);
@@ -485,9 +381,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				}
 			}
 		};
-
-		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
-
 	}
 
 	@Override
@@ -554,7 +447,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	public boolean isDirty() {
 		return _dirty;
 	}
-	
+
 	public boolean isStopped() {
 		return _animCanvas.isStopped();
 	}
@@ -648,11 +541,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	protected void loadAnimation(AnimationModel anim) {
+		_animationActions.setChecked(false);
+		_animationActions.setEnabled(false);
+
 		if (anim == null) {
-			for (var btn : _playbackActions) {
-				btn.setChecked(false);
-				btn.setEnabled(false);
-			}
 
 			_zoom_1_1_action.setEnabled(false);
 			_zoom_fitWindow_action.setEnabled(false);
@@ -666,10 +558,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		_animCanvas.setModel(anim, false);
 
-		for (var btn : _playbackActions) {
-			btn.setChecked(false);
-			btn.setEnabled(btn == _playAction);
-		}
+		_animationActions.getPlayAction().setEnabled(true);
 
 		if (_timelineCanvas.getModel() != anim) {
 			_timelineCanvas.setModel(anim);

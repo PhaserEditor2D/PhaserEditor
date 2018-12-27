@@ -360,9 +360,6 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 		case PLAYING_REVERSE:
 			_timeline.suspend();
 			break;
-		case SUSPENDED:
-			_timeline.resume();
-			break;
 		case IDLE:
 			play();
 			break;

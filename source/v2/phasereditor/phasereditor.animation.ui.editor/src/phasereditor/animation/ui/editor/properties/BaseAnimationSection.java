@@ -48,8 +48,8 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 		var editor = getEditor();
 
 		if (!editor.isStopped()) {
-			editor.getStopAction().run();
-			editor.getPlayAction().run();
+			editor.getAnimationActions().getStopAction().run();
+			editor.getAnimationActions().getPlayAction().run();
 		}
 	}
 
@@ -57,10 +57,10 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 	public void fillToolbar(ToolBarManager manager) {
 		var editor = getEditor();
 
-		manager.add(editor.getPlayAction());
-		manager.add(editor.getPauseAction());
-		manager.add(editor.getStopAction());
+		editor.getAnimationActions().fillToolbar(manager);
+
 		manager.add(new Separator());
+
 		manager.add(editor.getDeleteAction());
 	}
 

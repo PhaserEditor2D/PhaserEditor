@@ -159,16 +159,6 @@ public class AnimationPreviewComp extends SashForm {
 			_stopAction.setChecked(false);
 			break;
 		case IDLE:
-			// TODO: do we really want to do this? it breaks the animation, it looks like
-			// the first frame is actually the last frame of the animation.
-			//
-			// AnimationCanvas animCanvas = getAnimationCanvas();
-			// var anim = animCanvas.getModel();
-			// var frames = anim.getFrames();
-			//
-			// if (!frames.isEmpty()) {
-			// animCanvas.showFrame(0);
-			// }
 			_playAction.setChecked(false);
 			_pauseAction.setChecked(false);
 			break;
@@ -264,6 +254,7 @@ public class AnimationPreviewComp extends SashForm {
 			@Override
 			public void run() {
 				getAnimationCanvas().pause();
+				
 				getTimelineCanvas().redraw();
 				getAnimationCanvas().redraw();
 			}
@@ -275,6 +266,7 @@ public class AnimationPreviewComp extends SashForm {
 			@Override
 			public void run() {
 				getAnimationCanvas().stop();
+				
 				getTimelineCanvas().redraw();
 				getAnimationCanvas().redraw();
 			}
