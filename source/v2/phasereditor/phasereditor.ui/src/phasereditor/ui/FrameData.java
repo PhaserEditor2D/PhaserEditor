@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.awt.image.BufferedImage;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -50,6 +52,10 @@ public class FrameData implements Cloneable {
 		fd.srcSize = new Point(srcSize.x, srcSize.y);
 
 		return fd;
+	}
+
+	public static FrameData fromImage(BufferedImage img) {
+		return fromSourceRectangle(new Rectangle(0, 0, img.getWidth(), img.getHeight()));
 	}
 
 	public static FrameData fromImage(Image img) {

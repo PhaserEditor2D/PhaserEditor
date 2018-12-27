@@ -867,14 +867,14 @@ public class SceneCanvas extends ZoomCanvas
 	private boolean hitsImage(int x, int y, ObjectModel model) {
 		var renderer = getSceneRenderer();
 
-		var img = renderer.getModelImageFromCache(model);
+		var scaledImage = renderer.getModelImageFromCache(model);
 
 		var xy = renderer.sceneToLocal(model, x, y);
 
 		var imgX = (int) xy[0];
 		var imgY = (int) xy[1];
 
-		if (img == null) {
+		if (scaledImage == null) {
 			if (model instanceof ImageModel || model instanceof SpriteModel) {
 				var frame = TextureComponent.utils_getTexture(model, _finder);
 
@@ -887,20 +887,11 @@ public class SceneCanvas extends ZoomCanvas
 			}
 		}
 
-		if (img == null) {
+		if (scaledImage == null) {
 			return false;
 		}
 
-		if (img.getBounds().contains(imgX, imgY)) {
-
-			var data = img.getImageData();
-
-			var alpha = data.getAlpha(imgX, imgY);
-
-			return alpha != 0;
-		}
-
-		return false;
+		return scaledImage.hits(imgX, imgY);
 	}
 
 	private static boolean hitsImage(int x, int y, IAssetFrameModel frame) {

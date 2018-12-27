@@ -47,19 +47,20 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public class ImageProxy {
 
-	private static int MAX_SIZE;
+	public final static int MAX_SIZE;
 
 	static {
-		MAX_SIZE = 512;
+		int maxSize = 512;
 		var str = System.getProperty("ImageProxy.MAX_SIZE");
 		if (str != null) {
 			try {
 				var size = Integer.parseInt(str);
-				MAX_SIZE = size;
+				maxSize = size;
 			} catch (Exception e) {
 				//
 			}
 		}
+		MAX_SIZE = maxSize;
 	}
 
 	private File _file;
@@ -205,7 +206,7 @@ public class ImageProxy {
 			public void run() {
 				while (true) {
 					try {
-						sleep(1000);
+						sleep(30_000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -318,60 +319,6 @@ public class ImageProxy {
 		return _fileBufferedImageMap.get(_file);
 	}
 
-	class ResizeInfo {
-		public int width;
-		public int height;
-		public boolean changed;
-		public float scale_view_to_proxy;
-
-		public BufferedImage createImage(BufferedImage src, FrameData fd) {
-			var buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-			var g2 = buf.createGraphics();
-
-			g2.scale(scale_view_to_proxy, scale_view_to_proxy);
-
-			g2.drawImage(src,
-
-					fd.dst.x, fd.dst.y, fd.dst.x + fd.dst.width, fd.dst.y + fd.dst.height,
-
-					fd.src.x, fd.src.y, fd.src.x + fd.src.width, fd.src.y + fd.src.height,
-
-					null);
-
-			g2.dispose();
-
-			return buf;
-		}
-	}
-
-	private ResizeInfo resizeInfo(int w, int h) {
-
-		var info = new ResizeInfo();
-		info.scale_view_to_proxy = 1;
-		info.width = w;
-		info.height = h;
-		info.changed = false;
-
-		if (w > MAX_SIZE || h > MAX_SIZE) {
-			if (w > h) {
-				var ratio = (float) h / w;
-				info.width = MAX_SIZE;
-				info.height = (int) (info.width * ratio);
-				info.scale_view_to_proxy = (float) info.width / w;
-				info.changed = true;
-			} else {
-				var ratio = (float) h / w;
-				info.height = MAX_SIZE;
-				info.width = (int) (info.height / ratio);
-				info.scale_view_to_proxy = (float) info.height / h;
-				info.changed = true;
-			}
-		}
-
-		return info;
-	}
-
 	private void updateImages() {
 		try {
 
@@ -395,7 +342,7 @@ public class ImageProxy {
 					int width = frameBufferedImage.getWidth();
 					int height = frameBufferedImage.getHeight();
 
-					var resize = resizeInfo(width, height);
+					var resize = ScaledImage.resizeInfo(width, height, MAX_SIZE);
 
 					var fd = FrameData.fromSourceRectangle(new Rectangle(0, 0, width, height));
 
@@ -407,7 +354,7 @@ public class ImageProxy {
 
 					_finalFrameData = fd;
 				} else {
-					var resize = resizeInfo(_fd.srcSize.x, _fd.srcSize.y);
+					var resize = ScaledImage.resizeInfo(_fd.srcSize.x, _fd.srcSize.y, MAX_SIZE);
 
 					frameBufferedImage = resize.createImage(newFileBufferedImage, _fd);
 

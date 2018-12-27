@@ -29,7 +29,6 @@ import static phasereditor.ui.Colors.YELLOW;
 import static phasereditor.ui.Colors.color;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +66,7 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseCanvas;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.ScaledImage;
 
 /**
  * @author arian
@@ -77,7 +77,7 @@ public class SceneObjectRenderer {
 	private Map<ObjectModel, float[]> _modelMatrixMap;
 	private Map<ObjectModel, float[]> _modelBoundsMap;
 	private Map<ObjectModel, float[]> _modelChildrenBoundsMap;
-	private Map<Object, Image> _imageCacheMap;
+	private Map<Object, ScaledImage> _imageCacheMap;
 
 	private boolean _debug;
 	private List<Runnable> _postPaintActions;
@@ -112,8 +112,8 @@ public class SceneObjectRenderer {
 
 	private void disposeImageCache() {
 
-		for (var image : _imageCacheMap.values()) {
-
+		for (var scaled : _imageCacheMap.values()) {
+			var image = scaled.getImage();
 			if (!image.isDisposed()) {
 				image.dispose();
 			}
@@ -122,7 +122,7 @@ public class SceneObjectRenderer {
 		_imageCacheMap = new HashMap<>();
 	}
 
-	public Image getModelImageFromCache(Object model) {
+	public ScaledImage getModelImageFromCache(Object model) {
 		return _imageCacheMap.get(model);
 	}
 
@@ -443,11 +443,11 @@ public class SceneObjectRenderer {
 
 		model.updateSizeFromBitmapFont(_finder);
 
-		var image = getBitmapTextImage(model);
+		var scaledImage = getBitmapTextImage(model);
 
 		Rectangle bounds;
 
-		if (image == null) {
+		if (scaledImage == null) {
 			bounds = new Rectangle(0, 0, 0, 0);
 		} else {
 
@@ -473,19 +473,19 @@ public class SceneObjectRenderer {
 				}
 			}
 
-			gc.drawImage(image, 0, 0);
+			scaledImage.paint(gc, 0, 0);
 
 			if (tx2 != null) {
 				tx2.dispose();
 			}
 
-			bounds = image.getBounds();
+			bounds = scaledImage.getBounds();
 		}
 
 		setObjectBounds(gc, model, 0, 0, bounds.width, bounds.height);
 	}
 
-	private Image createBitmapTextImage(BitmapTextModel textModel) {
+	private ScaledImage createBitmapTextImage(BitmapTextModel textModel) {
 		var fontModel = textModel.getFontModel(_finder);
 
 		if (fontModel == null) {
@@ -554,14 +554,11 @@ public class SceneObjectRenderer {
 
 		g2.dispose();
 
-		try {
-			
-			return PhaserEditorUI.image_Swing_To_SWT(buffer);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return createScaledImage(buffer);
+	}
+
+	private static ScaledImage createScaledImage(BufferedImage buffer) {
+		return ScaledImage.create(buffer, ImageProxy.MAX_SIZE);
 	}
 
 	private static RenderArgs createBitmapTextRenderArgs(BitmapTextModel textModel) {
@@ -601,28 +598,28 @@ public class SceneObjectRenderer {
 		return PhaserEditorUI.createTransparentSWTImage(_rendererContext.getDevice(), width, height);
 	}
 
-	public Image getTileSpriteTextImage(TileSpriteModel model) {
-		Image image;
+	public ScaledImage getTileSpriteTextImage(TileSpriteModel model) {
+		ScaledImage scaledImage;
 
 		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
 
-			image = createTileSpriteTexture(model);
+			scaledImage = createTileSpriteTexture(model);
 
 			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
 
-			var old = _imageCacheMap.put(model, image);
+			var old = _imageCacheMap.put(model, scaledImage);
 
 			if (old != null) {
 				old.dispose();
 			}
 		} else {
-			image = _imageCacheMap.get(model);
+			scaledImage = _imageCacheMap.get(model);
 		}
 
-		return image;
+		return scaledImage;
 	}
 
-	private Image createTileSpriteTexture(TileSpriteModel model) {
+	private ScaledImage createTileSpriteTexture(TileSpriteModel model) {
 		var assetFrame = TextureComponent.utils_getTexture(model, _finder);
 
 		if (assetFrame == null) {
@@ -707,24 +704,17 @@ public class SceneObjectRenderer {
 
 		g2.dispose();
 
-		try {
-
-			return PhaserEditorUI.image_Swing_To_SWT(buffer);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		return createScaledImage(buffer);
 	}
 
 	private void renderTileSprite(GC gc, TileSpriteModel model) {
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
 
-		var image = getTileSpriteTextImage(model);
+		var scaledImage = getTileSpriteTextImage(model);
 
-		if (image != null) {
-			gc.drawImage(image, 0, 0);
+		if (scaledImage != null) {
+			scaledImage.paint(gc, 0, 0);
 		}
 
 		setObjectBounds(gc, model, 0, 0, width, height);
@@ -817,25 +807,25 @@ public class SceneObjectRenderer {
 
 	}
 
-	public Image getBitmapTextImage(BitmapTextModel model) {
-		Image image;
+	public ScaledImage getBitmapTextImage(BitmapTextModel model) {
+		ScaledImage scaledImage;
 
 		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_bitmapFontChanged(model)) {
 
-			image = createBitmapTextImage(model);
+			scaledImage = createBitmapTextImage(model);
 
 			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
 
-			var old = _imageCacheMap.put(model, image);
+			var old = _imageCacheMap.put(model, scaledImage);
 
 			if (old != null) {
 				old.dispose();
 			}
 		} else {
-			image = _imageCacheMap.get(model);
+			scaledImage = _imageCacheMap.get(model);
 		}
 
-		return image;
+		return scaledImage;
 	}
 
 	private void renderTexture(GC gc, ObjectModel model, String key, String frame) {
