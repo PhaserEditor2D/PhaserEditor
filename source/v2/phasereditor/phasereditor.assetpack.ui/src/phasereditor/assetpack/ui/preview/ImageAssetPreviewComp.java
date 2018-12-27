@@ -24,7 +24,6 @@ package phasereditor.assetpack.ui.preview;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -35,14 +34,14 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FrameCanvasUtils;
-import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyCanvas;
 
 public class ImageAssetPreviewComp extends Composite {
 
-	private ImageCanvas _canvas;
+	private ImageProxyCanvas _canvas;
 	private Label _resolutionLabel;
 	private ImageAssetModel _model;
 	private FrameCanvasUtils _utils;
@@ -63,7 +62,7 @@ public class ImageAssetPreviewComp extends Composite {
 		gridLayout.horizontalSpacing = 0;
 		setLayout(gridLayout);
 
-		_canvas = new ImageCanvas(this, SWT.NONE);
+		_canvas = new ImageProxyCanvas(this, SWT.NONE);
 		_canvas.setPreferredSize(new Point(200, 200));
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
@@ -80,11 +79,13 @@ public class ImageAssetPreviewComp extends Composite {
 
 			@Override
 			public Rectangle getSelectionFrameArea(int index) {
-				var area = getCanvas().getImageRenderArea();
-				if (area == null) {
-					area = getCanvas().getImageDimension();
+				var proxy = _canvas.getProxy();
+
+				if (proxy == null) {
+					return null;
 				}
-				return area;
+
+				return proxy.getBounds();
 			}
 
 			@Override
@@ -124,12 +125,12 @@ public class ImageAssetPreviewComp extends Composite {
 	public void setModel(ImageAssetModel model) {
 		_model = model;
 		IFile file = model.getUrlFile();
-		_canvas.setImageFile(file);
+		_canvas.setImageInfo(file, null);
 		_resolutionLabel.setText(_canvas.getResolution());
 
-		Image img = _canvas.getImage();
-		if (img != null) {
-			Rectangle b = img.getBounds();
+		var proxy = _canvas.getProxy();
+		if (proxy != null) {
+			Rectangle b = proxy.getBounds();
 			String str = "Image Size: " + b.width + "x" + b.height + "\n";
 			str += "Image URL: " + model.getUrl();
 			setToolTipText(str);
@@ -141,7 +142,7 @@ public class ImageAssetPreviewComp extends Composite {
 		return _model;
 	}
 
-	public ImageCanvas getCanvas() {
+	public ImageProxyCanvas getCanvas() {
 		return _canvas;
 	}
 

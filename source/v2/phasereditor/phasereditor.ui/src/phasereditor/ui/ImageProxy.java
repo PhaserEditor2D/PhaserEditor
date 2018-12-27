@@ -419,7 +419,8 @@ public class ImageProxy {
 	}
 
 	public Rectangle getBounds() {
-		return getFinalFrameData().src;
+		var fd = getFinalFrameData();
+		return fd == null? null : fd.src;
 	}
 
 	public boolean hits(int x, int y) {
