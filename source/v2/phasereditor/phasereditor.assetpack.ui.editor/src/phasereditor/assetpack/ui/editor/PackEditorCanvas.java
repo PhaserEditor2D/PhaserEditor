@@ -48,7 +48,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.animation.ui.AnimationsCellRender;
@@ -74,6 +73,7 @@ import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
 import phasereditor.audio.ui.AudioCellRenderer;
 import phasereditor.scene.ui.SceneUI;
+import phasereditor.ui.BaseCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameCellRenderer;
@@ -82,7 +82,6 @@ import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
 import phasereditor.ui.ImageProxy;
-import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.LoadingCellRenderer;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ScrollUtils;
@@ -92,7 +91,7 @@ import phasereditor.ui.SwtRM;
  * @author arian
  *
  */
-public class PackEditorCanvas extends Canvas implements PaintListener, MouseWheelListener, MouseMoveListener {
+public class PackEditorCanvas extends BaseCanvas implements PaintListener, MouseWheelListener, MouseMoveListener {
 
 	private static final int MIN_ROW_HEIGHT = 48;
 	private AssetPackModel _model;
@@ -292,7 +291,7 @@ public class PackEditorCanvas extends Canvas implements PaintListener, MouseWhee
 				return;
 			}
 
-			ImageProxyCanvas.prepareGC(gc);
+			prepareGC(gc);
 
 			gc.setAlpha(5);
 			gc.setBackground(getForeground());
