@@ -1,41 +1,56 @@
 package phasereditor.scene.ui.editor.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.scene.core.TileSpriteModel;
-import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
+import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.interactive.TileSizeTool;
 
-public class ResizeTileSpriteHandler extends AbstractHandler {
+public class ResizeTileSpriteHandler extends ShowInteractiveToolHander {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
 
-		SceneCanvas scene = editor.getScene();
+		var morphing = editor.getSelectionList().stream()
+
+				.filter(model -> !(model instanceof TileSpriteModel))
+
+				.count() > 0;
+
 		SceneUIEditor.action_MorphObjectsToNewType(editor, editor.getSelectionList(), TileSpriteModel.TYPE);
 
-		if (scene.hasInteractiveTool(TileSizeTool.class)) {
-			scene.setInteractiveTools();
-		} else {
-			scene.setInteractiveTools(
+		if (morphing) {
 
-					new TileSizeTool(editor, true, false),
+			editor.getScene().setInteractiveTools(createTools(editor));
 
-					new TileSizeTool(editor, false, true),
-
-					new TileSizeTool(editor, true, true)
-
-			);
+			return null;
 		}
 
-		return null;
+		return super.execute(event);
+	}
+
+	@Override
+	protected InteractiveTool[] createTools(SceneEditor editor) {
+		return new InteractiveTool[] {
+
+				new TileSizeTool(editor, true, false),
+
+				new TileSizeTool(editor, false, true),
+
+				new TileSizeTool(editor, true, true)
+
+		};
+	}
+
+	@Override
+	protected Class<?> getToolClass() {
+		return TileSizeTool.class;
 	}
 
 }

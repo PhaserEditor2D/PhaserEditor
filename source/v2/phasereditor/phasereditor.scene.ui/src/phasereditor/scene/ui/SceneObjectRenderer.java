@@ -598,7 +598,7 @@ public class SceneObjectRenderer {
 		return PhaserEditorUI.createTransparentSWTImage(_rendererContext.getDevice(), width, height);
 	}
 
-	public ScaledImage getTileSpriteTextImage(TileSpriteModel model) {
+	public ScaledImage getTileSpriteImage(TileSpriteModel model) {
 		ScaledImage scaledImage;
 
 		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
@@ -711,7 +711,7 @@ public class SceneObjectRenderer {
 		var width = TileSpriteComponent.get_width(model);
 		var height = TileSpriteComponent.get_height(model);
 
-		var scaledImage = getTileSpriteTextImage(model);
+		var scaledImage = getTileSpriteImage(model);
 
 		if (scaledImage != null) {
 			scaledImage.paint(gc, 0, 0);
