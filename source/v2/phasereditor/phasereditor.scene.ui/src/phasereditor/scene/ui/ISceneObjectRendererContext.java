@@ -39,5 +39,5 @@ public interface ISceneObjectRendererContext {
 
 	public float getScale();
 
-	public Device getDisplay();
+	public Device getDevice();
 }

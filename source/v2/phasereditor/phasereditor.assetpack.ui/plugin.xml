@@ -25,13 +25,6 @@
                type="phasereditor.ui.views.IPreviewFactory">
          </adapter>
       </factory>
-      <factory
-            adaptableType="phasereditor.assetpack.core.IAssetPackEelement"
-            class="phasereditor.assetpack.ui.properties.AssetPGridAdapterFactory">
-         <adapter
-               type="phasereditor.ui.properties.PGridModel">
-         </adapter>
-      </factory>
    </extension>
    <extension
          point="org.eclipse.ui.elementFactories">

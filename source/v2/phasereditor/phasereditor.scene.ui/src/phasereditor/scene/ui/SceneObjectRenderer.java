@@ -66,7 +66,6 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseCanvas;
 import phasereditor.ui.ImageProxy;
-import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -504,7 +503,7 @@ public class SceneObjectRenderer {
 
 		var g2 = buffer.createGraphics();
 
-		ImageProxyCanvas.prepareGC(g2);
+		BaseCanvas.prepareGC(g2);
 
 		var asset = BitmapTextComponent.utils_getFont(textModel, _finder);
 
@@ -599,7 +598,7 @@ public class SceneObjectRenderer {
 	 */
 	@Deprecated
 	public Image createImage(int width, int height) {
-		return PhaserEditorUI.createTransparentSWTImage(_rendererContext.getDisplay(), width, height);
+		return PhaserEditorUI.createTransparentSWTImage(_rendererContext.getDevice(), width, height);
 	}
 
 	public Image getTileSpriteTextImage(TileSpriteModel model) {

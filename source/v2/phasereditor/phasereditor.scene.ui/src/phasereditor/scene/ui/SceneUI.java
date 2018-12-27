@@ -84,8 +84,6 @@ public class SceneUI {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}
 
-	
-
 	public static void installSceneTooltips(CommonViewer viewer) {
 		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), getSceneTooltipsCreators(),
 				false);
@@ -233,7 +231,7 @@ public class SceneUI {
 		}
 
 		@Override
-		public Device getDisplay() {
+		public Device getDevice() {
 			return _device;
 		}
 
@@ -274,14 +272,14 @@ public class SceneUI {
 				width *= scale;
 				height *= scale;
 
-				img = renderer.createImage(width, height);
+				img = new Image(context.getDevice(), width, height);
 
 				var gc = new GC(img);
 				var tx = new Transform(gc.getDevice());
 
-				//display.syncExec(() -> {
-					renderer.renderScene(gc, tx, model);
-				//});
+				// display.syncExec(() -> {
+				renderer.renderScene(gc, tx, model);
+				// });
 
 			}
 

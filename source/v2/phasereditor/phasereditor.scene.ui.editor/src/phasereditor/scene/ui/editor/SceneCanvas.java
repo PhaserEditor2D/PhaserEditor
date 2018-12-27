@@ -47,6 +47,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
@@ -781,7 +782,7 @@ public class SceneCanvas extends ZoomCanvas
 				String label = Integer.toString((int) modelY);
 				var labelExtent = gc.stringExtent(label);
 
-				var tx = new Transform(getDisplay());
+				var tx = new Transform(getDevice());
 
 				tx.translate(0, viewY + 5 + labelExtent.x);
 				tx.rotate(-90);
@@ -1371,5 +1372,10 @@ public class SceneCanvas extends ZoomCanvas
 	@Override
 	protected boolean hasImage() {
 		return true;
+	}
+
+	@Override
+	public Device getDevice() {
+		return getDisplay();
 	}
 }
