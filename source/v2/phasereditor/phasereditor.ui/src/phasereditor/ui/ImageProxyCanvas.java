@@ -47,9 +47,9 @@ public class ImageProxyCanvas extends ZoomCanvas {
 		var proxy = getProxy();
 
 		if (proxy != null) {
-			var fd = proxy.getFinalFrameData();
+			var b = proxy.getBounds();
 			var calc = calc();
-			var area = calc.modelToView(0, 0, fd.dst.width, fd.dst.height);
+			var area = calc.modelToView(0, 0, b.width, b.height);
 			paintProxy(e, proxy, area);
 		}
 	}

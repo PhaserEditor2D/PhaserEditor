@@ -416,8 +416,14 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 				continue;
 			}
 
-			var fd = frame.getFrameData();
-			var proxy = ImageProxy.get(frame.getImageFile(), fd);
+			ImageProxy proxy;
+			proxy = ImageProxy.get(frame.getImageFile(), frame.getFrameData());
+
+			if (proxy == null) {
+				continue;
+			}
+
+			var bounds = proxy.getBounds();
 
 			double frameX = getFrameX(animFrame);
 			double frameX2 = i + 1 < frames.size() ? getFrameX(frames.get(i + 1)) : _fullWidth;
@@ -435,8 +441,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 			}
 
 			if (frameHeight > 0) {
-				double imgW = fd.srcSize.x;
-				double imgH = fd.srcSize.y;
+				double imgW = bounds.width;
+				double imgH = bounds.height;
 
 				{
 					imgW = imgW * (frameHeight / imgH);
@@ -449,16 +455,18 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 					imgW = globalMinFrameWidth;
 				}
 
-				double scaleX = imgW / fd.srcSize.x;
-				double scaleY = imgH / fd.srcSize.y;
+				double scaleX = imgW / bounds.width;
+				double scaleY = imgH / bounds.height;
 
-				var imgX = frameX + frameWidth / 2 - imgW / 2 + fd.dst.x * scaleX;
-				var imgY = margin + frameHeight / 2 - imgH / 2 + fd.dst.y * scaleY;
+				var imgX = frameX + frameWidth / 2 - imgW / 2;
+				var imgY = margin + frameHeight / 2 - imgH / 2;
 
-				double imgDstW = fd.dst.width * scaleX;
-				double imgDstH = fd.dst.height * scaleY;
+				double imgDstW = bounds.width * scaleX;
+				double imgDstH = bounds.height * scaleY;
 
-				proxy.paintScaledInArea(gc, new Rectangle((int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH), true);
+				// proxy.paintScaledInArea(gc, new Rectangle((int) imgX, (int) imgY, (int)
+				// imgDstW, (int) imgDstH), false);
+				proxy.paint(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 			}
 
 		}
