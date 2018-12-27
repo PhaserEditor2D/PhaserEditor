@@ -470,7 +470,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		}
 
 		var proxy = get_DND_Image(index);
-		PhaserEditorUI.set_DND_Image(event, proxy.getImage());
+		if (proxy != null) {
+			PhaserEditorUI.set_DND_Image(event, proxy.getImage());
+		}
 
 		LocalSelectionTransfer.getTransfer().setSelection(sel);
 	}

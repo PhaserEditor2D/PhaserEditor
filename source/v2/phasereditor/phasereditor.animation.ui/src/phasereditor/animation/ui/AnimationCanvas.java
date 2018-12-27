@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import static java.lang.System.out;
+
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -217,10 +219,15 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 
 		@Override
 		public void onTimelinePulse(float durationFraction, float timelinePosition) {
+			if (isDisposed() || !isVisible()) {
+				out.println("AnimationCanvas: stop on hidden or disposed canvas.");
+				stop();
+			}
+
 			if (_currentState == TimelineState.SUSPENDED) {
 				return;
 			}
-			
+
 			_currentFraction = timelinePosition;
 
 			int index = 0;
@@ -230,7 +237,7 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 			if (animModel == null) {
 				return;
 			}
-			
+
 			List<AnimationFrameModel> frames = animModel.getFrames();
 
 			for (int i = 0; i < frames.size(); i++) {
@@ -299,7 +306,7 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 			if (_animModel != null) {
 
 				var state = _timeline.getState();
-				
+
 				if (state != TimelineState.IDLE) {
 					double frac = _timeline.getFraction();
 					int x = (int) (frac * e.width);
