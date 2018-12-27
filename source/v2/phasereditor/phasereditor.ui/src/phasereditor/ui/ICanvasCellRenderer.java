@@ -22,11 +22,12 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Canvas;
 
 /**
  * @author arian
  *
  */
 public interface  ICanvasCellRenderer {
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height);
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height);
 }

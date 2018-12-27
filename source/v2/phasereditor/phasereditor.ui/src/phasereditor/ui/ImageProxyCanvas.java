@@ -21,10 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.File;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -129,5 +133,20 @@ public class ImageProxyCanvas extends ZoomCanvas {
 	protected boolean hasImage() {
 		return getProxy() != null && getProxy().getImage() != null;
 	}
+	
+	public static void prepareGC(GC gc) {
+		if (!PhaserEditorUI.get_pref_Preview_Anitialias()) {
+			gc.setAntialias(SWT.OFF);
+			gc.setInterpolation(SWT.OFF);
+		}
+	}
+
+	public static void prepareGC(Graphics2D g2) {
+		if (PhaserEditorUI.get_pref_Preview_Anitialias()) {
+			g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		}
+	}
+
 
 }

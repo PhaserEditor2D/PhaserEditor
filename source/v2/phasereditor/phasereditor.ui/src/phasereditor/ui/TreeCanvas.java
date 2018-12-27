@@ -42,6 +42,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  *
  */
 @SuppressWarnings({ "boxing" })
-public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
+public class TreeCanvas extends Canvas implements PaintListener, MouseWheelListener {
 	public static final int ACTION_SPACE = 2;
 	public static final int ACTION_PADDING = 2;
 	public static final int MIN_ROW_HEIGHT = 20;
@@ -216,7 +217,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					if (item._toggleHitArea != null) {
 
 						if (item._toggleHitArea.contains(modelPoint)) {
-							
+
 							toggleItem(item);
 
 							return;
@@ -227,9 +228,9 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 						if (item._checkHitArea.contains(modelPoint)) {
 							item._checked = !item._checked;
-							
+
 							redraw();
-							
+
 							return;
 						}
 					}
@@ -259,7 +260,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		var gc = e.gc;
 
-		prepareGC(gc);
+		ImageProxyCanvas.prepareGC(gc);
 
 		{
 			int selectionStart = -1;
@@ -948,16 +949,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		requestUpdateScroll();
 	}
 
-	@Override
 	public void saveState(JSONObject jsonState) {
-		super.saveState(jsonState);
-
 		jsonState.put("TreeCanvas.imageSize", _imageSize);
 	}
 
-	@Override
 	public void restoreState(JSONObject jsonState) {
-		super.restoreState(jsonState);
 
 		_imageSize = jsonState.optInt("TreeCanvas.imageSize", 48);
 	}

@@ -25,11 +25,11 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.ImageProxy;
@@ -51,7 +51,7 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 
 	@SuppressWarnings("all")
 	@Override
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 		x = x + _padding;
 		y = y + _padding;
 		width = width - _padding * 2;

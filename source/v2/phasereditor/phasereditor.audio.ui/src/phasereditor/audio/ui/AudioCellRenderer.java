@@ -23,9 +23,9 @@ package phasereditor.audio.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Canvas;
 
 import phasereditor.audio.core.AudioCore;
-import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.ImageProxy;
 
@@ -44,7 +44,7 @@ public class AudioCellRenderer implements ICanvasCellRenderer {
 	}
 
 	@Override
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 		var imgFile = AudioCore.getSoundWavesFile(_audioFile).toFile();
 
 		var proxy = ImageProxy.get(imgFile, null);

@@ -34,9 +34,10 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListener, IZoomable {
+public abstract class ZoomCanvas extends Canvas implements PaintListener, IZoomable {
 
 	private Point _preferredSize;
 	private int _offsetX;
@@ -60,19 +61,19 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 		public float viewToModelWidth(float width) {
 			return width / scale;
 		}
-		
+
 		public float viewToModelHeight(float height) {
 			return height / scale;
 		}
-		
+
 		public float modelToViewWidth(float width) {
 			return width * scale;
 		}
-		
+
 		public float modelToViewHeight(float height) {
 			return height * scale;
 		}
-		
+
 		public float viewToModelX(float x) {
 			return (x - offsetX) / scale;
 		}
@@ -84,11 +85,11 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 		public float modelToViewX(float x) {
 			return offsetX + x * scale;
 		}
-		
+
 		public float modelToViewY(float y) {
 			return offsetY + y * scale;
 		}
-		
+
 		public Rectangle modelToView(float x, float y, float width, float height) {
 			return new Rectangle((int) (offsetX + x * scale), (int) (offsetY + y * scale), (int) (width * scale),
 					(int) (height * scale));
@@ -152,13 +153,13 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 
 		@Override
 		public void mouseScrolled(MouseEvent e) {
-			
+
 			if (isZoomWhenShiftPressed()) {
 				if ((e.stateMask & SWT.SHIFT) == 0) {
 					return;
 				}
 			}
-			
+
 			float zoom = (e.count < 0 ? 0.9f : 1.1f);
 
 			float oldScale = getScale();
@@ -229,15 +230,15 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 				//
 			}
 		});
-		
+
 		_zoomWhenShiftPressed = true;
 
 	}
-	
+
 	public boolean isZoomWhenShiftPressed() {
 		return _zoomWhenShiftPressed;
 	}
-	
+
 	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
 		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
@@ -249,15 +250,15 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 				_fitWindow = false;
 			}
 		}
-		
-		prepareGC(e.gc);
-		
+
+		ImageProxyCanvas.prepareGC(e.gc);
+
 		customPaintControl(e);
 	}
-	
+
 	@SuppressWarnings("unused")
 	protected void customPaintControl(PaintEvent e) {
-		// 
+		//
 	}
 
 	protected boolean fitWindow() {
@@ -272,7 +273,7 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 
 		return true;
 	}
-	
+
 	protected Rectangle getFitArea() {
 		return getBounds();
 	}
@@ -294,16 +295,15 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 		return _scale;
 	}
 
-
 	@Override
 	public void setPanOffsetX(int offsetX) {
 		_offsetX = offsetX;
 	}
-	
+
 	public int getOffsetX() {
 		return _offsetX;
 	}
-	
+
 	public void setOffsetX(int offsetX) {
 		_offsetX = offsetX;
 	}
@@ -324,7 +324,7 @@ public abstract class ZoomCanvas extends BaseImageCanvas implements PaintListene
 	}
 
 	protected abstract Point getImageSize();
-	
+
 	protected ZoomCalculator calc() {
 		Point size = getImageSize();
 		ZoomCalculator c = new ZoomCalculator(size.x, size.y);

@@ -30,9 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.core.resources.IFile;
@@ -239,26 +237,9 @@ public class SceneUI {
 			return _device;
 		}
 
-		private Map<IFile, Image> _map = new HashMap<>();
-
-		@Override
-		public Image loadImage(IFile imageFile) {
-			if (_map.containsKey(imageFile)) {
-				return _map.get(imageFile);
-			}
-
-			var img = new Image(_device, imageFile.getLocation().toPortableString());
-
-			_map.put(imageFile, img);
-
-			return img;
-		}
-
 		@Override
 		public void close() {
-			for (var img : _map.values()) {
-				img.dispose();
-			}
+			//
 		}
 	}
 

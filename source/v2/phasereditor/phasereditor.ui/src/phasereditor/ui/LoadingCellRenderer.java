@@ -22,6 +22,7 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Canvas;
 
 /**
  * @author arian
@@ -30,7 +31,7 @@ import org.eclipse.swt.graphics.GC;
 public class LoadingCellRenderer implements ICanvasCellRenderer {
 
 	@Override
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 		int center = x + width / 2;
 		int size = 4;
 		int half = size / 2;

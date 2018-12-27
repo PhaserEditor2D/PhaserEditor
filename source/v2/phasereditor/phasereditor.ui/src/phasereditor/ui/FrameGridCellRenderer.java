@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 
 /**
  * @author arian
@@ -38,7 +39,7 @@ public class FrameGridCellRenderer implements ICanvasCellRenderer {
 	}
 
 	@Override
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 		var frameCount = _provider.getFrameCount();
 
 		if (frameCount == 0) {

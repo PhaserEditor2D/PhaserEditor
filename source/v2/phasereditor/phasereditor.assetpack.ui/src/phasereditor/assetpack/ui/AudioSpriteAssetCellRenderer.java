@@ -23,10 +23,10 @@ package phasereditor.assetpack.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Canvas;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.audio.core.AudioCore;
-import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.ImageProxy;
 
@@ -62,7 +62,7 @@ public class AudioSpriteAssetCellRenderer implements ICanvasCellRenderer {
 
 	@SuppressWarnings("all")
 	@Override
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 		if (_duration == 0) {
 			return;
 		}

@@ -21,11 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
-import java.awt.image.BufferedImage;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.core.AssetFinder;
 
@@ -44,7 +40,4 @@ public interface ISceneObjectRendererContext {
 	public float getScale();
 
 	public Device getDisplay();
-
-	public Image loadImage(IFile imageFile);
-
 }

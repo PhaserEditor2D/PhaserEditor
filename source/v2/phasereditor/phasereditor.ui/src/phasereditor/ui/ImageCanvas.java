@@ -375,8 +375,6 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 			}
 		}
 
-		prepareGC(e.gc);
-
 		customPaintControl(e);
 	}
 

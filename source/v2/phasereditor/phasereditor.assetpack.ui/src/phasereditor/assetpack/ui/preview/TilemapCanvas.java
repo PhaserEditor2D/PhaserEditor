@@ -25,6 +25,8 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -71,6 +73,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ZoomCanvas;
 
@@ -87,7 +90,7 @@ public class TilemapCanvas extends ZoomCanvas
 	private int _tileHeight;
 	private Color[] _colors;
 	protected ImageAssetModel _imageModel;
-	private Image _tileSetImage;
+	private BufferedImage _tileSetImage;
 	private Image _renderImage;
 	private int _mouseX;
 	private int _mouseY;
@@ -206,7 +209,8 @@ public class TilemapCanvas extends ZoomCanvas
 		if (_imageModel == null) {
 			_tileSetImage = null;
 		} else {
-			_tileSetImage = loadImage(_imageModel.getUrlFile());
+			var proxy = ImageProxy.get(_imageModel.getUrlFile(), null);
+			_tileSetImage = proxy == null ? null : proxy.getFileBufferedImage();
 		}
 	}
 
@@ -238,14 +242,14 @@ public class TilemapCanvas extends ZoomCanvas
 
 					var t2 = currentTimeMillis();
 
-					var mapImage = PhaserEditorUI.createTransparentSWTImage(getDisplay(), mapWidth, mapHeight);
-
 					out.println(
 							"Created buffer " + mapWidth + "," + mapHeight + ": " + (currentTimeMillis() - t2 + "ms"));
 
-					var bounds = _tileSetImage.getBounds();
+					var bounds = new Rectangle(0, 0, _tileSetImage.getWidth(), _tileSetImage.getHeight());
 
-					var gc = new GC(mapImage);
+					var mapImage = new BufferedImage(mapWidth, mapHeight, BufferedImage.TYPE_INT_ARGB);
+
+					var gc = mapImage.createGraphics();
 
 					for (int i = 0; i < map.length; i++) {
 						int[] row = map[i];
@@ -267,7 +271,7 @@ public class TilemapCanvas extends ZoomCanvas
 							int srcY = frame * _tileWidth / bounds.width * _tileHeight;
 
 							try {
-								gc.drawImage(_tileSetImage, srcX, srcY, _tileWidth, _tileHeight, x, y, w, h);
+								gc.drawImage(_tileSetImage, x, y, x + w, y + h, srcX, srcY, srcX + _tileWidth, srcY + _tileHeight, null);
 							} catch (IllegalArgumentException e) {
 								gc.drawString("Invalid parameters. Please check the tiles size.", 10, 10);
 							}
@@ -276,11 +280,19 @@ public class TilemapCanvas extends ZoomCanvas
 
 					gc.dispose();
 
-					if (_renderImage != null) {
-						_renderImage.dispose();
-					}
+					var old = _renderImage;
+					
 
-					_renderImage = mapImage;
+					try {
+						_renderImage = PhaserEditorUI.image_Swing_To_SWT(mapImage);
+						
+						if (old != null) {
+							old.dispose();
+						}
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 
 					out.println("Building CSV tilemap image done: " + (currentTimeMillis() - t));
 				}

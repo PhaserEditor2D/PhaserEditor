@@ -66,6 +66,7 @@ import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -503,7 +504,7 @@ public class SceneObjectRenderer {
 
 		var g2 = buffer.createGraphics();
 
-		BaseImageCanvas.prepareGC(g2);
+		ImageProxyCanvas.prepareGC(g2);
 
 		var asset = BitmapTextComponent.utils_getFont(textModel, _finder);
 

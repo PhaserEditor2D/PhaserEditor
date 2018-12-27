@@ -23,11 +23,11 @@ package phasereditor.assetpack.ui;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
-import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.ImageProxy;
@@ -45,7 +45,7 @@ public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 	}
 
 	@Override
-	public void render(BaseImageCanvas canvas, GC gc, int x, int y, int width, int height) {
+	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 		var frame = _model.getFrame();
 		var file = frame.getImageFile();
 		var model = _model.getFontModel();
