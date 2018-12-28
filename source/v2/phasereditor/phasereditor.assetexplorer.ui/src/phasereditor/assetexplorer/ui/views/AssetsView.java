@@ -295,22 +295,17 @@ public class AssetsView extends ViewPart {
 	}
 
 	private void updatePartName() {
-		firePropertyChange(PROP_TITLE);
-	}
+		var name = "Assets";
 
-	@Override
-	public String getPartName() {
-		if (_contentProvider == null) {
-			return "Assets";
-		}
-		
-		var project = getProjectInContent();
+		if (_contentProvider != null) {
+			var project = getProjectInContent();
 
-		if (project == null || !project.exists()) {
-			return "Assets";
+			if (project != null && project.exists()) {
+				name = "Assets (" + project.getName() + ")";
+			}
 		}
 
-		return "Assets (" + project.getName() + ")";
+		setPartName(name);
 	}
 
 	public boolean isInitialStateRecovered() {
