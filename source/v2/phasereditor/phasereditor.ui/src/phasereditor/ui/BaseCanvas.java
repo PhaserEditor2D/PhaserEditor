@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 public class BaseCanvas extends Canvas {
 
 	public BaseCanvas(Composite parent, int style) {
-		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.NO_REDRAW_RESIZE);
+		super(parent, style | SWT.DOUBLE_BUFFERED);
 
 		setData("org.eclipse.e4.ui.css.CssClassName", "Canvas");
 
