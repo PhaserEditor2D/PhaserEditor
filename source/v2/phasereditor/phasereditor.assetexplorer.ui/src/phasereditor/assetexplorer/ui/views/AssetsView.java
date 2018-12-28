@@ -122,10 +122,22 @@ public class AssetsView extends ViewPart {
 		});
 
 		afterCreateWidgets();
+
+	}
+
+	public IProject getProjectInContent() {
+		return _contentProvider.getProjectInContent();
 	}
 
 	public TreeCanvas getTreeCanvas() {
 		return _treeCanvas;
+	}
+
+	public void forceToFocusOnProject(IProject project) {
+		_contentProvider.forceToFocuseOnProject(project);
+		_lastToken = project;
+		_viewer.refresh();
+		updatePartName();
 	}
 
 	private void handleDoubleClick(Object elem) {
@@ -134,10 +146,7 @@ public class AssetsView extends ViewPart {
 		var provider = _contentProvider;
 
 		if (elem instanceof IProject) {
-			provider.forceToFocuseOnProject((IProject) elem);
-			_lastToken = (IProject) elem;
-			_viewer.refresh();
-			// _treeCanvasAdapter.expandToLevel(3);
+			forceToFocusOnProject((IProject) elem);
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
 		} else if (elem instanceof AtlasData) {
@@ -281,6 +290,27 @@ public class AssetsView extends ViewPart {
 			_treeCanvas.setRedraw(true);
 		}
 
+		updatePartName();
+
+	}
+
+	private void updatePartName() {
+		firePropertyChange(PROP_TITLE);
+	}
+
+	@Override
+	public String getPartName() {
+		if (_contentProvider == null) {
+			return "Assets";
+		}
+		
+		var project = getProjectInContent();
+
+		if (project == null || !project.exists()) {
+			return "Assets";
+		}
+
+		return "Assets (" + project.getName() + ")";
 	}
 
 	public boolean isInitialStateRecovered() {
@@ -432,6 +462,8 @@ public class AssetsView extends ViewPart {
 		} finally {
 			_treeCanvas.setRedraw(true);
 		}
+
+		updatePartName();
 	}
 
 	@Override
@@ -479,5 +511,4 @@ public class AssetsView extends ViewPart {
 
 		// TODO: save all the mapping information of all the projects.
 	}
-
 }

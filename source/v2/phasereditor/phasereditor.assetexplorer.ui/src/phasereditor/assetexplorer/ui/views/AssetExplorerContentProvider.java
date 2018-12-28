@@ -161,7 +161,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		return _projectInContent;
 	}
 
-	public void forceToFocuseOnProject(IProject project) {
+	void forceToFocuseOnProject(IProject project) {
 		_forceToFocuseOnProject = project;
 	}
 

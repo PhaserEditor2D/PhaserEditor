@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 public interface IEditorSharedImages {
 	String IMG_NEW_PHASER_PROJECT = "icons/new_phaser_project.png";
+	String IMG_PHASER_PROJECT = "icons/phaser_project.png";
 	String IMG_GENERIC_EDITOR = "icons/generic_editor.png";
 	String IMG_CHECK_OFF = "icons/blender_ICON_CHECKBOX_DEHLT.png";
 	String IMG_CHECK_ON = "icons/blender_ICON_CHECKBOX_HLT.png";

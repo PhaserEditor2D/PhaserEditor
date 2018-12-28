@@ -19,6 +19,11 @@
             id="phasereditor.assetpack.ui.explorer.newview"
             name="Open New Window">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.assetexplorer.ui.switchProject"
+            name="Switch Project">
+      </command>
  </extension>
  <extension
          point="org.eclipse.ui.menus">
@@ -26,23 +31,18 @@
             allPopups="false"
             locationURI="toolbar:phasereditor.assetpack.views.assetExplorer?before=additions">
          <command
+               commandId="phasereditor.assetexplorer.ui.switchProject"
+               icon="platform:/plugin/phasereditor.ui/icons/phaser_project.png"
+               label="Switch Project"
+               style="push"
+               tooltip="Switch To Other Project">
+         </command>
+         <command
                commandId="org.eclipse.ui.project.cleanAction"
                icon="platform:/plugin/phasereditor.ui/icons/arrow_refresh.png"
                label="Re-build assets."
                style="push"
                tooltip="Re-build the internal representation of the assets.">
-         </command>
-         <command
-               commandId="phasereditor.ui.commands.showInPreview"
-               icon="platform:/plugin/phasereditor.ui/icons/monitor.png"
-               style="push"
-               tooltip="Show the selection in the Preview window.">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.ui.editor.shownInEditor"
-               icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
-               style="push"
-               tooltip="Edit selected object.">
          </command>
          <command
                commandId="phasereditor.assetpack.ui.explorer.newview" 
@@ -155,5 +155,12 @@
           id="phasereditor.assetexplorer.ui.participant"
           order="1000">
     </participant>
+ </extension>
+ <extension
+       point="org.eclipse.ui.handlers">
+    <handler
+          class="phasereditor.assetexplorer.ui.handlers.SwitchProjectHandler"
+          commandId="phasereditor.assetexplorer.ui.switchProject">
+    </handler>
  </extension>
 </plugin>
