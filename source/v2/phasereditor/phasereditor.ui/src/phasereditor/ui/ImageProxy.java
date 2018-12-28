@@ -306,7 +306,7 @@ public class ImageProxy {
 
 				"FULL" :
 
-				fd.src.x + "," + fd.src.y + "," + fd.src.width + "," + fd.src.height)
+				fd)
 
 				+ "#" + lastModified;
 	}
