@@ -122,7 +122,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getUrl()))));
+			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
