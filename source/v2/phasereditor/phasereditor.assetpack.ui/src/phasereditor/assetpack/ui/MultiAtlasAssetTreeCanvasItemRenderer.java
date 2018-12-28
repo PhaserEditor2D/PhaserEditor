@@ -2,23 +2,32 @@ package phasereditor.assetpack.ui;
 
 import static java.util.stream.Collectors.toList;
 
-import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.BaseTreeCanvasItemRenderer;
+import phasereditor.ui.BaseImageTreeCanvasItemRenderer;
 import phasereditor.ui.ImageProxy;
-import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
-public class MultiAtlasAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
+public class MultiAtlasAssetTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRenderer {
 
 	public MultiAtlasAssetTreeCanvasItemRenderer(TreeCanvasItem item) {
 		super(item);
 	}
 
 	@Override
-	public void render(PaintEvent e, int index, int x, int y) {
+	public ImageProxy get_DND_Image() {
+		return null;
+	}
+
+	@Override
+	protected boolean isIconified(int imgSize) {
+		return false;
+	}
+
+	@Override
+	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
 		var asset = (MultiAtlasAssetModel) _item.getData();
 		var frames = asset.getSubElements();
 		var proxies = frames.stream()
@@ -36,12 +45,12 @@ public class MultiAtlasAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 		var imageSize = _item.getCanvas().getImageSize();
 
 		var i = 0;
-		var x1 = x;
+		var x1 = area.x;
 
 		while (i < proxies.size()) {
 			var proxy = proxies.get(i);
 
-			var rect = proxy.paintScaledInArea(e.gc, new Rectangle(x1, y, imageSize, imageSize), false);
+			var rect = proxy.paintScaledInArea(gc, new Rectangle(x1, area.y, imageSize, imageSize), false);
 
 			if (rect == null) {
 				x1 += 2;
@@ -51,17 +60,6 @@ public class MultiAtlasAssetTreeCanvasItemRenderer extends BaseTreeCanvasItemRen
 
 			i++;
 		}
-
-	}
-
-	@Override
-	public int computeRowHeight(TreeCanvas canvas) {
-		return canvas.getImageSize();
-	}
-
-	@Override
-	public ImageProxy get_DND_Image() {
-		return null;
 	}
 
 }

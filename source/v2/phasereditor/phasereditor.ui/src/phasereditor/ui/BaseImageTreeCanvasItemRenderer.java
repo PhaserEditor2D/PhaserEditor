@@ -40,11 +40,13 @@ public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItem
 	@Override
 	public int computeRowHeight(TreeCanvas canvas) {
 
-		if (canvas.getImageSize() > 64) {
-			return canvas.getImageSize() + 32;
+		var imgSize = canvas.getImageSize();
+		
+		if (!isIconified(imgSize)) {
+			return imgSize + 32;
 		}
 
-		return canvas.getImageSize();
+		return imgSize;
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItem
 
 		int imgSize = canvas.getImageSize();
 
-		var iconified = imgSize <= 64;
+		var iconified = isIconified(imgSize);
 
 		int textX = x + ICON_AND_TEXT_SPACE;
 		int textHeight = 16;
@@ -101,6 +103,10 @@ public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItem
 		}
 
 		paintScaledInArea(gc, area, true);
+	}
+
+	protected boolean isIconified(int imgSize) {
+		return imgSize <= 64;
 	}
 
 	protected abstract void paintScaledInArea(GC gc, Rectangle area, boolean b);
