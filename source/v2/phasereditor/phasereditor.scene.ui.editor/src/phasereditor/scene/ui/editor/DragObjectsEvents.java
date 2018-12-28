@@ -55,12 +55,11 @@ public class DragObjectsEvents {
 	}
 
 	public void done() {
-
-		_scene.getEditor().updatePropertyPagesContentWithSelection();
-
 		var afterData = SingleObjectSnapshotOperation.takeSnapshot(_objects);
 
 		_scene.getEditor().executeOperation(new SingleObjectSnapshotOperation(_beforeData, afterData, "Move objects"));
+		
+		_scene.getEditor().updatePropertyPagesContentWithSelection();
 		
 		_objects = null;
 	}

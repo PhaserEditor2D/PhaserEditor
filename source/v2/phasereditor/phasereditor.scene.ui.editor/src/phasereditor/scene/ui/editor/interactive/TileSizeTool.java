@@ -171,7 +171,7 @@ public class TileSizeTool extends InteractiveTool {
 				GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 			}
 
-			getEditor().updatePropertyPagesContentWithSelection();
+//			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

@@ -203,7 +203,7 @@ public class TilePositionTool extends InteractiveTool {
 				GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 			}
 
-			getEditor().updatePropertyPagesContentWithSelection();
+//			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

@@ -335,7 +335,7 @@ public class PositionTool extends InteractiveTool {
 				}
 			}
 
-			getEditor().updatePropertyPagesContentWithSelection();
+//			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

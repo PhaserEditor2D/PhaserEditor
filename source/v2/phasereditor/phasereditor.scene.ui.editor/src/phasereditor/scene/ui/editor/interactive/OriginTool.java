@@ -239,7 +239,7 @@ public class OriginTool extends InteractiveTool {
 
 			}
 
-			getEditor().updatePropertyPagesContentWithSelection();
+//			getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

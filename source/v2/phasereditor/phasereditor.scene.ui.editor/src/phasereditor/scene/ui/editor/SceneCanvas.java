@@ -1276,6 +1276,8 @@ public class SceneCanvas extends ZoomCanvas
 			for (var elem : _interactiveTools) {
 				elem.mouseUp(e);
 			}
+
+			_editor.updatePropertyPagesContentWithSelection();
 		}
 
 		if (_dragDetected) {
