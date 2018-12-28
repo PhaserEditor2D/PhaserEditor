@@ -26,7 +26,6 @@ import static java.lang.System.out;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -122,7 +121,7 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 		}
 
 		if (_animModel == null || _animModel.getFrames().isEmpty()) {
-			setImageInfo((File) null, null);
+			setImageInfo((IFile) null, null);
 			return;
 		}
 
@@ -278,6 +277,10 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 
 	private void setFrameTexture() {
 
+		if (getModel() == null) {
+			return;
+		}
+		
 		var frames = getModel().getFrames();
 
 		if (_currentFrame < frames.size()) {
