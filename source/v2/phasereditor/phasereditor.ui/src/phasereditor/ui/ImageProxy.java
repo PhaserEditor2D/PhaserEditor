@@ -426,7 +426,9 @@ public class ImageProxy {
 
 		gc.drawImage(image,
 
-				_fd.dst.x, _fd.dst.y, _fd.dst.width, _fd.dst.height,
+				(int) (_fd.dst.x * _scale), (int) (_fd.dst.y * _scale),
+
+				(int) (_fd.dst.width * _scale), (int) (_fd.dst.height * _scale),
 
 				dstX, dstY, dstW, dstH);
 
@@ -508,7 +510,7 @@ public class ImageProxy {
 
 		return null;
 	}
-	
+
 	public Rectangle paintStripScaledInArea(GC gc, Rectangle renderArea, boolean center) {
 
 		var image = getImage();
@@ -517,7 +519,7 @@ public class ImageProxy {
 			return null;
 		}
 
-		var bounds = _fd == null? image.getBounds() : _fd.dst;
+		var bounds = _fd == null ? image.getBounds() : _fd.dst;
 
 		int renderHeight = renderArea.height;
 		int renderWidth = renderArea.width;
