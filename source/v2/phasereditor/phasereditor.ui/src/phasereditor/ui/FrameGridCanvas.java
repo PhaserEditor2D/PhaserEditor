@@ -52,7 +52,6 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 	private List<Rectangle> _visibleRenderSelectionFrameAreas;
 
 	private List<Rectangle> _renderImageSrcFrames;
-	private List<Rectangle> _visibleRenderImageSrcFrames;
 
 	private List<Rectangle> _visibleRenderImageDstFrames;
 
@@ -221,9 +220,9 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 				if (image != null) {
 					if (_listLayout) {
 						int y = dst.y + (_frameSize + S - dst.height) / 2;
-						image.paint(gc, dst.x, y, dst.width, dst.height);
+						image.paintStripScaledInArea(gc, new Rectangle(dst.x, y, dst.width, dst.height), true);
 					} else {
-						image.paint(gc, dst.x, dst.y, dst.width, dst.height);
+						image.paintStripScaledInArea(gc, new Rectangle(dst.x, dst.y, dst.width, dst.height), true);
 					}
 				}
 
@@ -304,7 +303,6 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 
 			_visibleRenderImageDstFrames = new ArrayList<>();
 
-			_visibleRenderImageSrcFrames = new ArrayList<>();
 			_visibleObjects = new ArrayList<>();
 			_visibleImages = new ArrayList<>();
 			_visibleLabels = new ArrayList<>();
@@ -331,7 +329,6 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 						(int) (src.height * c.scale));
 
 				_visibleRenderImageDstFrames.add(dst);
-				_visibleRenderImageSrcFrames.add(src);
 
 				x += S + _frameSize;
 
@@ -447,8 +444,8 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 			var proxy = provider.getFrameImageProxy(i);
 			var object = provider.getFrameObject(i);
 			var label = provider.getFrameLabel(i);
-			
-			_renderImageSrcFrames.add(proxy == null? null : proxy.getFinalFrameData().src);
+
+			_renderImageSrcFrames.add(proxy == null ? null : proxy.getFinalFrameData().src);
 			_images.add(proxy);
 			_objects.add(object);
 			_labels.add(label);

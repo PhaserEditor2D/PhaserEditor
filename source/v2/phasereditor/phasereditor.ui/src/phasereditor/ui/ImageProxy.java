@@ -415,6 +415,23 @@ public class ImageProxy {
 		return _finalFrameData;
 	}
 
+	public void paintStrip(GC gc, int dstX, int dstY, int dstW, int dstH) {
+
+		if (_fd == null) {
+			paint(gc, dstX, dstY, dstW, dstH);
+			return;
+		}
+
+		var image = getImage();
+
+		gc.drawImage(image,
+
+				_fd.dst.x, _fd.dst.y, _fd.dst.width, _fd.dst.height,
+
+				dstX, dstY, dstW, dstH);
+
+	}
+
 	public void paint(GC gc, int dstX, int dstY, int dstW, int dstH) {
 		var image = getImage();
 		var b = image.getBounds();
@@ -486,6 +503,48 @@ public class ImageProxy {
 
 		if (imgDstW > 0 && imgDstH > 0) {
 			paint(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
+			return new Rectangle((int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
+		}
+
+		return null;
+	}
+	
+	public Rectangle paintStripScaledInArea(GC gc, Rectangle renderArea, boolean center) {
+
+		var image = getImage();
+
+		if (image == null) {
+			return null;
+		}
+
+		var bounds = _fd == null? image.getBounds() : _fd.dst;
+
+		int renderHeight = renderArea.height;
+		int renderWidth = renderArea.width;
+
+		double imgW = bounds.width;
+		double imgH = bounds.height;
+
+		// compute the right width
+		imgW = imgW * (renderHeight / imgH);
+		imgH = renderHeight;
+
+		// fix width if it goes beyond the area
+		if (imgW > renderWidth) {
+			imgH = imgH * (renderWidth / imgW);
+			imgW = renderWidth;
+		}
+
+		double scale = imgW / bounds.width;
+
+		var imgX = renderArea.x + (center ? renderWidth / 2 - imgW / 2 : 0);
+		var imgY = renderArea.y + renderHeight / 2 - imgH / 2;
+
+		double imgDstW = bounds.width * scale;
+		double imgDstH = bounds.height * scale;
+
+		if (imgDstW > 0 && imgDstH > 0) {
+			paintStrip(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 			return new Rectangle((int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 		}
 
