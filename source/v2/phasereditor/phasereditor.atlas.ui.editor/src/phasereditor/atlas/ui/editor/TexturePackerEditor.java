@@ -159,9 +159,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	public void deleteSelection() {
 		if (_outliner != null) {
-			
+
 			Object[] sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
-			
+
 			if (sel.length > 0) {
 				List<IFile> toRemove = new ArrayList<>();
 				for (Object item : sel) {
@@ -172,9 +172,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 				_model.getImageFiles().removeAll(toRemove);
 
-				
 				build(true);
-				
+
 				selectSettings();
 
 			}
@@ -877,7 +876,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		_selectionProvider.setSelection(empty);
-		
+
 		updatePropertyPagesWithSelection();
 
 	}
@@ -1070,7 +1069,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 					if (element instanceof EditorPage) {
 						EditorPage page = (EditorPage) element;
-						item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(page.getImageFile(), null)));
+						item.setRenderer(
+								new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(page.getImageFile(), null)));
 					}
 
 					if (element instanceof TexturePackerEditorFrame) {
@@ -1202,8 +1202,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	void repaintTab(int i) {
 		AtlasCanvas_Unmanaged canvas = getAtlasCanvas(i);
-		if (canvas.getScale() == 0) {
-			canvas.resetZoom();
+		if (canvas != null) {
+			if (canvas.getScale() == 0) {
+				canvas.resetZoom();
+			}
 		}
 	}
 
