@@ -154,7 +154,7 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 			Color grayColor = display.getSystemColor(SWT.COLOR_DARK_GRAY);
 
 			if (img == null) {
-				paintPreviewMessage(gc, canvasRect, "waves image not found");
+				paintPreviewMessage(gc, canvasRect, "Waves image not found.");
 			} else {
 				Rectangle imgRect = img.getBounds();
 				gc.drawImage(img, 0, 0, imgRect.width, imgRect.height, 0, 0, canvasRect.width, canvasRect.height);

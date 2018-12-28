@@ -91,10 +91,11 @@ public class AnimationsCellRender implements ICanvasCellRenderer {
 						var scale = 1 + (start - j) * 0.15;
 						Rectangle area = new Rectangle((int) (x + j * imgSize * 0.5), y, (int) (imgSize * scale),
 								(int) (imgSize * scale));
-						if (area.x > width) {
-							break;
+						
+						if (area.x + area.width > x + width) {
+							continue;
 						}
-
+						
 						var t = j % 3 + 1;
 						gc.setAlpha(105 + 150 / t);
 						proxy.paintScaledInArea(gc, area);
