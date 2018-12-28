@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.out;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
@@ -43,6 +45,15 @@ public class BaseCanvas extends Canvas {
 		parent.setBackgroundMode(SWT.INHERIT_FORCE);
 
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
+
+		if ((style & SWT.V_SCROLL) == SWT.V_SCROLL) {
+			var bar = getVerticalBar();
+			var dpi = getDisplay().getDPI();
+			out.println("DPI: " + dpi);
+			var incr = dpi.y / 4;
+			bar.setIncrement(incr);
+			bar.setPageIncrement(incr);
+		}
 	}
 
 	public static void prepareGC(GC gc) {
