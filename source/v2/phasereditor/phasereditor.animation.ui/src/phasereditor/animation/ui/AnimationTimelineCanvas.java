@@ -100,6 +100,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 
 		addListener(SWT.Resize, e -> {
 			_updateScroll = true;
+			redraw();
 		});
 
 		init_DND_Support();
