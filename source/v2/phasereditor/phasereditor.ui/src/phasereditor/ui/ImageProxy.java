@@ -338,6 +338,9 @@ public class ImageProxy {
 
 	private void updateImages() {
 		try {
+			
+			// just to ensure we have the last mapping of the file and image!
+			get(_file, _fd);
 
 			var newFileBufferedImage = _fileBufferedImageMap.get(_file);
 
