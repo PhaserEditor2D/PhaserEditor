@@ -235,6 +235,44 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 		}
 
+		// Name
+
+		{
+			var title = new Label(comp, 0);
+			title.setText("Name");
+			title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+		}
+
+		{
+			label(comp, "Use parent's folder name",
+					"Use the folders name for a better naming strategy.\nTools like the Animations editor groups the frames by it's name.")
+							.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			new TextToIntListener(text) {
+
+				@Override
+				protected void accept(int value) {
+					getModel().getSettings().setIncludeNumberOfFolders(value);
+					getEditor().dirtify();
+				}
+			};
+
+			addUpdate(() -> {
+				try {
+					text.setText(Integer.toString(getModel().getSettings().getIncludeNumberOfFolders()));
+				} catch (Exception e) {
+					//
+				}
+			});
+		}
+
+		{
+			new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL)
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+		}
+
 		// Flags
 
 		{
@@ -289,6 +327,11 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 		btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 
 		return btn;
+	}
+
+	@Override
+	protected String getHelp(String helpHint) {
+		return helpHint;
 	}
 
 	@Override

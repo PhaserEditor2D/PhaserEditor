@@ -101,6 +101,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.StringBuilder;
 
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
@@ -556,7 +557,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 								TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename,
 										region.index, newEditorPage);
 
-								frame.setName(PhaserEditorUI.getNameFromFilename(regionFilename));
+								var frameName = computeFrameName(regionFilename);
+
+								frame.setName(frameName);
 								frame.setFrameX(region.left);
 								frame.setFrameY(region.top);
 								frame.setFrameW(region.width);
@@ -653,6 +656,24 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 				return Status.OK_STATUS;
 
+			}
+
+			private String computeFrameName(String filename) {
+				IPath path = new Path(filename);
+
+				var includeSegments = _model.getSettings().getIncludeNumberOfFolders() + 1;
+
+				includeSegments = Math.min(includeSegments, path.segmentCount() - 1);
+				
+				if (includeSegments < 1) {
+					includeSegments = 1;
+				}
+
+				path = path.removeFirstSegments(path.segmentCount() - includeSegments);
+
+				var frameName = path.removeFileExtension().toPortableString();
+
+				return frameName;
 			}
 
 		};

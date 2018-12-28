@@ -31,6 +31,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 public class SettingsBean extends Settings implements Cloneable {
 
 	public boolean multiatlas;
+	private int includeNumberOfFolders;
 
 	public SettingsBean() {
 		init();
@@ -139,6 +140,7 @@ public class SettingsBean extends Settings implements Cloneable {
 		// avoid scaleSuffix
 		atlasExtension = obj.optString("atlasExtension", ".atlas");
 		multiatlas = obj.optBoolean("multiatlas", true);
+		includeNumberOfFolders = obj.optInt("includeNumberOfFolders", 0);
 	}
 
 	public void write(JSONObject obj) {
@@ -179,6 +181,7 @@ public class SettingsBean extends Settings implements Cloneable {
 		// avoid scaleSuffix
 		obj.put("atlasExtension", atlasExtension);
 		obj.put("multiatlas", multiatlas);
+		obj.put("includeNumberOfFolders", includeNumberOfFolders);
 	}
 
 	public boolean isPot() {
@@ -468,13 +471,21 @@ public class SettingsBean extends Settings implements Cloneable {
 	public void setAtlasExtension(String atlasExtension) {
 		this.atlasExtension = atlasExtension;
 	}
-	
+
 	public boolean isMultiatlas() {
 		return multiatlas;
 	}
-	
+
 	public void setMultiatlas(boolean multiatlas) {
 		this.multiatlas = multiatlas;
+	}
+
+	public int getIncludeNumberOfFolders() {
+		return includeNumberOfFolders;
+	}
+
+	public void setIncludeNumberOfFolders(int includeNumberOfFolders) {
+		this.includeNumberOfFolders = includeNumberOfFolders;
 	}
 
 }
