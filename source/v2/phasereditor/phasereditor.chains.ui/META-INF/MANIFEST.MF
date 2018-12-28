@@ -24,4 +24,6 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  phasereditor.project.ui;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.chains.ui
+Export-Package: phasereditor.chains.ui,
+ phasereditor.chains.ui.views
 
