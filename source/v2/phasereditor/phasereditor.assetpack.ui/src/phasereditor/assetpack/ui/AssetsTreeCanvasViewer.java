@@ -98,6 +98,8 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			item.setRenderer(new AudioAssetTreeCanvasItemRenderer(item));
 		} else if (elem instanceof BitmapFontAssetModel) {
 			item.setRenderer(new BitmapFontTreeCanvasRenderer(item));
+		} else if (elem instanceof MultiAtlasAssetModel) {
+			item.setRenderer(new MultiAtlasAssetTreeCanvasItemRenderer(item));
 		}
 	}
 
@@ -118,13 +120,6 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		} else if (element instanceof AtlasAssetModel) {
 			var asset = (AtlasAssetModel) element;
 			proxy = ImageProxy.get(asset.getTextureFile(), null);
-		} else if (element instanceof MultiAtlasAssetModel) {
-			var asset = (MultiAtlasAssetModel) element;
-			var frames = asset.getSubElements();
-			if (!frames.isEmpty()) {
-				var frame = frames.get(0);
-				proxy = AssetPackUI.getImageProxy(frame);
-			}
 		} else if (element instanceof SpritesheetAssetModel) {
 			var asset = (SpritesheetAssetModel) element;
 			if (!asset.getFrames().isEmpty()) {

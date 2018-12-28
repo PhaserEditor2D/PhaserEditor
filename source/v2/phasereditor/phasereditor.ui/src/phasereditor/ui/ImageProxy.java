@@ -446,16 +446,16 @@ public class ImageProxy {
 				x, y, _finalFrameData.srcSize.x, _finalFrameData.srcSize.y);
 	}
 
-	public void paintScaledInArea(GC gc, Rectangle renderArea) {
-		paintScaledInArea(gc, renderArea, true);
+	public Rectangle paintScaledInArea(GC gc, Rectangle renderArea) {
+		return paintScaledInArea(gc, renderArea, true);
 	}
 
-	public void paintScaledInArea(GC gc, Rectangle renderArea, boolean center) {
+	public Rectangle paintScaledInArea(GC gc, Rectangle renderArea, boolean center) {
 
 		var image = getImage();
 
 		if (image == null) {
-			return;
+			return null;
 		}
 
 		var bounds = image.getBounds();
@@ -486,7 +486,10 @@ public class ImageProxy {
 
 		if (imgDstW > 0 && imgDstH > 0) {
 			paint(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
+			return new Rectangle((int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 		}
+
+		return null;
 	}
 
 	public Rectangle getBounds() {
