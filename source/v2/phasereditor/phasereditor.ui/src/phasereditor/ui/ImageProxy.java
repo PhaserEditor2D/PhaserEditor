@@ -37,6 +37,8 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -95,7 +97,7 @@ public class ImageProxy {
 				return null;
 			}
 
-			var lastModified = file.lastModified();
+			var lastModified = lastModified(file);
 
 			var key = computeKey(file, fd, lastModified);
 
@@ -267,14 +269,16 @@ public class ImageProxy {
 
 		_trash = new ArrayList<>(trash2);
 
-		// for (var proxy : _proxyList) {
-		// if (!proxy._file.exists() && proxy._swtImage != null) {
-		// out.println("ImageProxy: the file " + proxy._file.getName()
-		// + " as deleted, disposing its alive proxy image.");
-		// proxy._swtImage.dispose();
-		// proxy._swtImage = null;
-		// }
-		// }
+		for (var proxy : _proxyList) {
+			if (!proxy._file.exists() && proxy._swtImage != null) {
+				out.println("ImageProxy: the file " + proxy._file.getName()
+						+ " as deleted, disposing its alive proxy image.");
+				proxy._swtImage.dispose();
+				proxy._swtImage = null;
+				proxy._currentFileBufferedImage = null;
+				_fileBufferedImageMap.remove(proxy._file);
+			}
+		}
 
 		out.println("done!");
 
@@ -299,7 +303,16 @@ public class ImageProxy {
 		return false;
 	}
 
+	private static long lastModified(File file) {
+		var wsFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getAbsolutePath()));
+		if (wsFile == null) {
+			return file.lastModified();
+		}
+		return wsFile.getModificationStamp();
+	}
+
 	private static String computeKey(File file, FrameData fd, long lastModified) {
+
 		return file.getName() + ":" + file.hashCode() + "$" + (
 
 		fd == null ?
@@ -338,7 +351,19 @@ public class ImageProxy {
 
 	private void updateImages() {
 		try {
-			
+
+			if (!_file.exists()) {
+
+				if (_swtImage != null) {
+					sendToTrash();
+				}
+
+				_swtImage = null;
+				_currentFileBufferedImage = null;
+
+				return;
+			}
+
 			// just to ensure we have the last mapping of the file and image!
 			get(_file, _fd);
 
@@ -349,9 +374,7 @@ public class ImageProxy {
 				_scale = 1;
 
 				if (_swtImage != null) {
-					var item = new TrashItem(_file, _swtImage);
-					_trash.add(item);
-					out.println("ImageProxy: send to trash " + item);
+					sendToTrash();
 				}
 
 				BufferedImage frameBufferedImage;
@@ -394,6 +417,12 @@ public class ImageProxy {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void sendToTrash() {
+		var item = new TrashItem(_file, _swtImage);
+		_trash.add(item);
+		out.println("ImageProxy: send to trash " + item);
 	}
 
 	private static boolean theFrameDataIsTheCompleteImage(BufferedImage image, FrameData fd) {
@@ -439,6 +468,11 @@ public class ImageProxy {
 
 	public void paint(GC gc, int dstX, int dstY, int dstW, int dstH) {
 		var image = getImage();
+
+		if (image == null) {
+			return;
+		}
+
 		var b = image.getBounds();
 
 		gc.drawImage(image,
@@ -450,6 +484,11 @@ public class ImageProxy {
 
 	public void paint(GC gc, int srcX, int srcY, int srcW, int srcH, int dstX, int dstY, int dstW, int dstH) {
 		var image = getImage();
+
+		if (image == null) {
+			return;
+		}
+
 		gc.drawImage(image,
 
 				(int) (srcX * _scale), (int) (srcY * _scale), (int) (srcW * _scale), (int) (srcH * _scale),
@@ -459,6 +498,11 @@ public class ImageProxy {
 
 	public void paint(GC gc, int x, int y) {
 		var image = getImage();
+
+		if (image == null) {
+			return;
+		}
+
 		var b = image.getBounds();
 
 		gc.drawImage(image,
@@ -564,8 +608,11 @@ public class ImageProxy {
 	public boolean hits(int x, int y) {
 
 		var alpha = 0;
-
 		Rectangle b = getBounds();
+
+		if (b == null) {
+			return false;
+		}
 
 		if (b.contains(x, y)) {
 			var img = getImage();
