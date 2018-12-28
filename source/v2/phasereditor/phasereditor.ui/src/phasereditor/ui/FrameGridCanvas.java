@@ -318,6 +318,10 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 			for (int i = 0; i < _total; i++) {
 				var src = _renderImageSrcFrames.get(i);
 
+				if (src == null) {
+					continue;
+				}
+
 				if (!isVisible(i)) {
 					continue;
 				}
