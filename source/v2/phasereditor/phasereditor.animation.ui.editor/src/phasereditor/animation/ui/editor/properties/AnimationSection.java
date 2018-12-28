@@ -120,10 +120,12 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					var editor = getEditor();
 
 					editor.getTimelineCanvas().redraw();
+
 					restartPlayback();
+
 					editor.setDirty();
 
-					user_update_UI_from_Model();
+					update_UI_from_Model();
 				}
 			};
 
@@ -139,10 +141,11 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			label.setText("Duration");
 			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationFrameConfig.duration"));
 
-			var durationText = new Text(comp, SWT.BORDER);
-			durationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			
 			addUpdate(() -> {
-				durationText.setText(flatValues_to_String(getModels().stream().map(model -> model.getDuration())));
+				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getDuration())));
 			});
 
 			// computed duration
@@ -152,7 +155,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 			computedLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			computedLabel.setToolTipText(
 					"A computed duration based on the duration plus all the extra frame's durations.\\nNOTE: This is not part of the Phaser API.");
-			new TextToIntListener(durationText) {
+			new TextToIntListener(text) {
 
 				@Override
 				protected void accept(int value) {
@@ -167,7 +170,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 					restartPlayback();
 					editor.setDirty();
 
-					user_update_UI_from_Model();
+					update_UI_from_Model();
 
 				}
 			};

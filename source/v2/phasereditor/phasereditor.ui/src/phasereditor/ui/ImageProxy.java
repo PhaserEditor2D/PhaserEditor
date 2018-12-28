@@ -69,6 +69,7 @@ public class ImageProxy {
 	private BufferedImage _currentFileBufferedImage;
 	private FrameData _finalFrameData;
 	private float _scale;
+	private String _key;
 
 	private static Map<String, ImageProxy> _keyProxyMap = new HashMap<>();
 	private static Map<File, BufferedImage> _fileBufferedImageMap = new HashMap<>();
@@ -98,9 +99,9 @@ public class ImageProxy {
 
 			var key = computeKey(file, fd, lastModified);
 
-			var img = _keyProxyMap.get(key);
+			var proxy = _keyProxyMap.get(key);
 
-			if (img == null) {
+			if (proxy == null) {
 
 				// There are these different reasons:
 				//
@@ -129,14 +130,14 @@ public class ImageProxy {
 					_fileBufferedImageMap.put(file, buffer);
 
 					// create the virtual image
-					img = new ImageProxy(file, fd);
+					proxy = new ImageProxy(file, fd, key);
 
 					// add the virtual image to maps
-					_proxyList.add(img);
-					_keyProxyMap.put(key, img);
+					_proxyList.add(proxy);
+					_keyProxyMap.put(key, proxy);
 					_fileModifiedMap.put(file, lastModified);
 
-					return img;
+					return proxy;
 				}
 
 				// check if the file changed
@@ -153,11 +154,14 @@ public class ImageProxy {
 					_fileBufferedImageMap.put(file, buffer);
 					_fileModifiedMap.put(file, lastModified);
 
-					// not let's find the virtual image for that file and frame data
-					for (var cacheImage : _proxyList) {
-						if (cacheImage.sameFileAndFrameData(file, fd)) {
-							_keyProxyMap.put(key, cacheImage);
-							return cacheImage;
+					// let's find the virtual image for that file and frame data
+					for (var cachedProxy : _proxyList) {
+						if (cachedProxy.sameFileAndFrameData(file, fd)) {
+							// re-map the proxy
+							_keyProxyMap.remove(cachedProxy.getKey());
+							_keyProxyMap.put(key, cachedProxy);
+
+							return cachedProxy;
 						}
 					}
 				}
@@ -165,16 +169,16 @@ public class ImageProxy {
 				// so it looks that the key changed because it is requesting a new frame data
 				// inside an existant texture, so let's create a new virtual image
 				{
-					img = new ImageProxy(file, fd);
+					proxy = new ImageProxy(file, fd, key);
 					// add the virtual image to maps
-					_proxyList.add(img);
-					_keyProxyMap.put(key, img);
+					_proxyList.add(proxy);
+					_keyProxyMap.put(key, proxy);
 					_fileModifiedMap.put(file, lastModified);
 				}
 
 			}
 
-			return img;
+			return proxy;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -228,7 +232,7 @@ public class ImageProxy {
 
 		for (var proxy : _proxyList) {
 			if (proxy._swtImage != null) {
-				out.println("ImageProxy: disposing alive image " + proxy._file.getName() + "#" + proxy._fd);
+				out.println("ImageProxy: disposing alive image " + proxy.getKey());
 				proxy._swtImage.dispose();
 			}
 		}
@@ -296,12 +300,25 @@ public class ImageProxy {
 	}
 
 	private static String computeKey(File file, FrameData fd, long lastModified) {
-		return file.getAbsolutePath() + "$" + (fd == null ? "FULL" : fd.src.toString()) + "#" + lastModified;
+		return file.getName() + ":" + file.hashCode() + "$" + (
+
+		fd == null ?
+
+				"FULL" :
+
+				fd.src.x + "," + fd.src.y + "," + fd.src.width + "," + fd.src.height)
+
+				+ "#" + lastModified;
 	}
 
-	public ImageProxy(File file, FrameData fd) {
+	public ImageProxy(File file, FrameData fd, String key) {
 		_file = file;
 		_fd = fd;
+		_key = key;
+	}
+
+	public String getKey() {
+		return _key;
 	}
 
 	/**
@@ -358,7 +375,9 @@ public class ImageProxy {
 
 					frameBufferedImage = resize.createImage(newFileBufferedImage, _fd);
 
-					_scale = resize.scale_view_to_proxy;
+					if (resize.changed) {
+						_scale = resize.scale_view_to_proxy;
+					}
 
 					_finalFrameData = FrameData.fromSourceRectangle(new Rectangle(0, 0, _fd.srcSize.x, _fd.srcSize.y));
 				}
@@ -434,36 +453,39 @@ public class ImageProxy {
 	public void paintScaledInArea(GC gc, Rectangle renderArea, boolean center) {
 
 		var image = getImage();
-		var fd = _finalFrameData;
 
-		int frameHeight = renderArea.height;
-		int frameWidth = renderArea.width;
-
-		double imgW = fd.src.width;
-		double imgH = fd.src.height;
-
-		// compute the right width
-		imgW = imgW * (frameHeight / imgH);
-		imgH = frameHeight;
-
-		// fix width if it goes beyond the area
-		if (imgW > frameWidth) {
-			imgH = imgH * (frameWidth / imgW);
-			imgW = frameWidth;
+		if (image == null) {
+			return;
 		}
 
-		double scaleX = imgW / fd.src.width;
-		double scaleY = imgH / fd.src.height;
+		var bounds = image.getBounds();
 
-		var imgX = renderArea.x + (center ? frameWidth / 2 - imgW / 2 : 0);
-		var imgY = renderArea.y + frameHeight / 2 - imgH / 2;
+		int renderHeight = renderArea.height;
+		int renderWidth = renderArea.width;
 
-		double imgDstW = fd.src.width * scaleX;
-		double imgDstH = fd.src.height * scaleY;
+		double imgW = bounds.width;
+		double imgH = bounds.height;
+
+		// compute the right width
+		imgW = imgW * (renderHeight / imgH);
+		imgH = renderHeight;
+
+		// fix width if it goes beyond the area
+		if (imgW > renderWidth) {
+			imgH = imgH * (renderWidth / imgW);
+			imgW = renderWidth;
+		}
+
+		double scale = imgW / bounds.width;
+
+		var imgX = renderArea.x + (center ? renderWidth / 2 - imgW / 2 : 0);
+		var imgY = renderArea.y + renderHeight / 2 - imgH / 2;
+
+		double imgDstW = bounds.width * scale;
+		double imgDstH = bounds.height * scale;
 
 		if (imgDstW > 0 && imgDstH > 0) {
-			gc.drawImage(image, (int) (fd.src.x * _scale), (int) (fd.src.y * _scale), (int) (fd.src.width * _scale),
-					(int) (fd.src.height * _scale), (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
+			paint(gc, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
 		}
 	}
 
