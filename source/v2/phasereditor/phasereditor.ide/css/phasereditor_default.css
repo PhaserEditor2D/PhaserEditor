@@ -28,6 +28,7 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes { /* pseudo att
 	color: black;
 }
 
+
 .MPartStack.active {
 	swt-selected-tab-fill: #f2f2f2;
 }
@@ -42,19 +43,6 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes { /* pseudo att
 }
 
 
-.MPart.active Composite, 
-.MPart.active Tree, 
-.MPart.active Table, 
-.MPart.active Canvas, 
-.MPart.active .Canvas, 
-.MPart.active Label, 
-.MPart.active TabFolder, 
-.MPart.active TabItem,
-.MPart.active Browser {
-	background-color: #f0f0f0;
-	color: #000000;
-}
-
 .MPart Composite,
 .MPart Tree,
 .MPart Table,
@@ -63,9 +51,25 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes { /* pseudo att
 .MPart Label,
 .MPart TabFolder,
 .MPart TabItem,
-.MPart Browser {
+.MPart Browser
+{
 	background-color: #e8e8e8;
 }
+
+.MPart.active Composite, 
+/*.MPart.active Tree,*/ /* For certain reason this breaks the table focusing */
+.MPart.active Table, 
+.MPart.active Canvas,
+.MPart.active .Canvas, 
+.MPart.active Label, 
+.MPart.active TabFolder, 
+.MPart.active TabItem,
+.MPart.active Browser 
+{
+	background-color: #f0f0f0;
+}
+
+
 
 .MPart Text, .MPart StyledText {
 	background-color: #e0e0e0;
@@ -135,3 +139,5 @@ TabbedPropertyList {
 	swt-tabDarkShadow-color     : #e8e8e8; /* line color of the tiny scroll triangle (at top / at bottom) */
 	color                       : #000000; /* text color in the tab / tab area */
 }
+
+
