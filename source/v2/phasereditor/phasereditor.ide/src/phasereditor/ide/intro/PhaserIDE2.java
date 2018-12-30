@@ -23,6 +23,9 @@ package phasereditor.ide.intro;
 
 import static java.lang.System.out;
 
+import java.nio.file.Paths;
+
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.ui.internal.ide.application.IDEApplication;
 
@@ -42,6 +45,27 @@ public class PhaserIDE2 extends IDEApplication {
 
 		out.println("Starting license monitor");
 		LicCore.startMonitor();
+
+		{
+			var nodeJsLocation = System.getProperty("NodeJsLocation");
+			
+			if (nodeJsLocation == null) {
+				var eclipseHomeUrl = Platform.getInstallLocation().getURL();
+				var eclipseHomePath = eclipseHomeUrl.getPath();
+				var nodeJsPathname = "node/bin/node";
+				if (Platform.getOS().equals(Platform.OS_WIN32)) {
+					if (eclipseHomePath.startsWith("/")) {
+						eclipseHomePath = eclipseHomePath.substring(1);
+					}
+					nodeJsPathname = "node/node.exe";
+				}
+				var nodeJsPath = Paths.get(eclipseHomePath).resolve(nodeJsPathname);
+				nodeJsLocation = nodeJsPath.toString();
+				System.setProperty("NodeJsLocation", nodeJsPath.toString());
+			}
+			
+			out.println("Phaser Editor: NodeJS location = " + nodeJsLocation);
+		}
 
 		out.println("Starting Eclipse application");
 		Object res = super.start(appContext);
