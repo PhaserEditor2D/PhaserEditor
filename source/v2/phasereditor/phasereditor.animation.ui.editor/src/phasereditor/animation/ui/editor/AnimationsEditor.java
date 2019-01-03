@@ -83,6 +83,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.IEditorSharedImages;
@@ -114,6 +115,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private Action _newAction;
 	private Action _outlineAction;
 	private AnimationActions _animationActions;
+	private AnimationModel _initialAnimation;
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
@@ -228,24 +230,27 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		disableToolbar();
 
-		AnimationModel anim = null;
-
 		if (!_model.getAnimations().isEmpty()) {
-			anim = _model.getAnimations().get(0);
+			_initialAnimation = _model.getAnimations().get(0);
 		}
 
 		if (_initialAnimtionKey != null) {
 			var opt = _model.getAnimations().stream().filter(a -> a.getKey().equals(_initialAnimtionKey)).findFirst();
 			if (opt.isPresent()) {
-				anim = opt.get();
+				_initialAnimation = opt.get();
 			}
 		}
 
-		if (anim != null) {
-			loadAnimation(anim);
+		init_DND_Support();
+
+		if (PhaserProjectBuilder.isStartupFinished()) {
+
+			if (_initialAnimation != null) {
+				loadAnimation(_initialAnimation);
+				_initialAnimation = null;
+			}
 		}
 
-		init_DND_Support();
 	}
 
 	private void init_DND_Support() {
@@ -579,7 +584,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				});
 			}
 
-			_viewer.setInput(getModel());
+			// let's do this when the builders are ready, in the refresh method
+			// _viewer.setInput(getModel());
 
 			for (var l : _initialListeners) {
 				_filteredTreeCanvas.getUtils().addSelectionChangedListener(l);
@@ -663,7 +669,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		public void refresh() {
 			if (_filteredTreeCanvas != null) {
-				_viewer.refresh();
+				if (_viewer.getInput() == null) {
+					_viewer.setInput(getModel());
+				} else {
+					_viewer.refresh();
+				}
 			}
 		}
 	}
@@ -677,11 +687,12 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		AnimationModel model = _animCanvas.getModel();
 
-		if (model != null) {
-			_animCanvas.setModel(model, false);
+		if (_initialAnimation != null) {
+			model = _initialAnimation;
+			_initialAnimation = null;
 		}
 
-		_timelineCanvas.setModel(_timelineCanvas.getModel());
+		loadAnimation(model);
 	}
 
 	protected void loadAnimation(AnimationModel anim) {
