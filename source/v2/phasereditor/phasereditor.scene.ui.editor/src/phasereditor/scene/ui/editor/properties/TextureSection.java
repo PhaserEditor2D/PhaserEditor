@@ -155,14 +155,16 @@ public class TextureSection extends ScenePropertySection {
 			var frame = (IAssetFrameModel) dlg.getSingleResult();
 
 			wrapOperation(() -> {
+
 				getModels().forEach(model -> {
 					TextureComponent.utils_setTexture(model, frame);
 				});
+
 			}, true);
 
 			getEditor().setDirty(true);
 
-			user_update_UI_from_Model();
+			update_UI_from_Model();
 		}
 	}
 
