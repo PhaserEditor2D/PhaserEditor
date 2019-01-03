@@ -660,6 +660,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 			private String computeFrameName(String filename) {
 				IPath path = new Path(filename);
+				
+				path = path.setDevice(null);
 
 				var includeSegments = _model.getSettings().getIncludeNumberOfFolders() + 1;
 
