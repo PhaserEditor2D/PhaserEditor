@@ -111,7 +111,7 @@ public class AnimationsSection extends ScenePropertySection {
 		dlg.setInput(getAnimations());
 
 		if (dlg.open() == Window.OK) {
-			var anim = (AnimationModel) dlg.getResult();
+			var anim = (AnimationModel) dlg.getSingleResult();
 
 			wrapOperation(() -> {
 				getModels().forEach(model -> {

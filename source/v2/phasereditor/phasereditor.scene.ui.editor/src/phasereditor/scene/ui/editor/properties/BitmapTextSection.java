@@ -195,7 +195,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 				wrapOperation(() -> {
 
-					var asset = (BitmapFontAssetModel) dlg.getResult();
+					var asset = (BitmapFontAssetModel) dlg.getSingleResult();
 
 					for (var obj : getModels()) {
 						BitmapTextComponent.utils_setFont(obj, asset);

@@ -39,7 +39,7 @@ public class TreeCanvasDialog extends Dialog {
 	private FilteredTreeCanvas _filteredTree;
 	private TreeCanvasViewer _viewer;
 	private Object _input;
-	private Object _result;
+	private Object[] _result;
 	private String _title;
 
 	public TreeCanvasDialog(Shell shell) {
@@ -88,12 +88,33 @@ public class TreeCanvasDialog extends Dialog {
 		return _input;
 	}
 
-	public Object getResult() {
+	public Object[] getResult() {
 		return _result;
 	}
 
-	public void setResult(Object result) {
+	public void setResult(Object[] result) {
 		_result = result;
+	}
+	
+	public Object getSingleResult() {
+		
+		if (_result != null && _result.length > 0) {
+			return _result[0];
+		}
+		
+		return null;
+	}
+	
+	@Override
+	protected void cancelPressed() {
+		setResult(new Object[0]);
+		super.cancelPressed();
+	}
+	
+	@Override
+	protected void okPressed() {
+		setResult(_viewer.getStructuredSelection().toArray());
+		super.okPressed();
 	}
 
 	@Override

@@ -48,10 +48,6 @@ import phasereditor.scene.core.TextureComponent;
  */
 public class TextureSection extends ScenePropertySection {
 
-	private SingleFrameCanvas _frameCanvas;
-	private Label _frameLabel;
-	private Button _frameBtn;
-
 	public TextureSection(ScenePropertyPage page) {
 		super("Texture", page);
 	}
@@ -67,28 +63,74 @@ public class TextureSection extends ScenePropertySection {
 		comp.setLayout(new GridLayout(1, false));
 
 		{
-			_frameCanvas = new SingleFrameCanvas(comp, SWT.BORDER);
-			_frameCanvas.setToolTipText(getHelp("Phaser.GameObjects.Sprite.frame"));
+			var canvas = new SingleFrameCanvas(comp, SWT.BORDER);
+			canvas.setToolTipText(getHelp("Phaser.GameObjects.Sprite.frame"));
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.heightHint = 100;
 			gd.minimumWidth = 100;
-			_frameCanvas.setLayoutData(gd);
+			canvas.setLayoutData(gd);
+
+			addUpdate(() -> {
+				var frame = getFrame();
+				canvas.setModel(frame);
+				canvas.resetZoom();
+			});
 		}
 
 		{
-			_frameBtn = new Button(comp, 0);
-			_frameBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> selectFrame()));
-			_frameBtn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
+			Button btn = new Button(comp, 0);
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> selectFrame()));
+			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		{
-			_frameLabel = new Label(comp, SWT.WRAP);
-			_frameLabel.setText("Frame");
-			_frameLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			Label label = new Label(comp, SWT.WRAP);
+			label.setText("Frame");
+			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+			addUpdate(() -> {
+
+				var frame = getFrame();
+
+				if (frame == null) {
+					label.setText("Frame");
+					btn.setText("Select Texture");
+				} else {
+					var sb = new StringBuilder();
+
+					if (frame instanceof ImageAssetModel.Frame) {
+						sb.append(frame.getKey());
+					} else {
+						sb.append(frame.getKey() + " @ " + frame.getAsset().getKey());
+					}
+
+					btn.setText(sb.toString());
+
+					var fd = frame.getFrameData();
+
+					sb.setLength(0);
+
+					sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
+
+					IFile file = frame.getImageFile();
+
+					if (file != null) {
+						sb.append(" / file: " + file.getName());
+					}
+
+					label.setText(sb.toString());
+
+				}
+			});
 		}
 
 		return comp;
+	}
+
+	private IAssetFrameModel getFrame() {
+		var models = getModels();
+
+		var frame = (IAssetFrameModel) flatValues_to_Object(
+				models.stream().map(model -> TextureComponent.utils_getTexture(model, getAssetFinder())));
+		return frame;
 	}
 
 	private void selectFrame() {
@@ -110,7 +152,7 @@ public class TextureSection extends ScenePropertySection {
 		dlg.setInput(list);
 
 		if (dlg.open() == Window.OK) {
-			var frame = (IAssetFrameModel) dlg.getResult();
+			var frame = (IAssetFrameModel) dlg.getSingleResult();
 
 			wrapOperation(() -> {
 				getModels().forEach(model -> {
@@ -122,47 +164,6 @@ public class TextureSection extends ScenePropertySection {
 
 			user_update_UI_from_Model();
 		}
-	}
-
-	@Override
-	public void user_update_UI_from_Model() {
-		var models = getModels();
-
-		var frame = (IAssetFrameModel) flatValues_to_Object(
-				models.stream().map(model -> TextureComponent.utils_getTexture(model, getAssetFinder())));
-
-		if (frame == null) {
-			_frameLabel.setText("Frame");
-			_frameBtn.setText("Select Texture");
-		} else {
-			var sb = new StringBuilder();
-
-			if (frame instanceof ImageAssetModel.Frame) {
-				sb.append(frame.getKey());
-			} else {
-				sb.append(frame.getKey() + " @ " + frame.getAsset().getKey());
-			}
-
-			_frameBtn.setText(sb.toString());
-
-			var fd = frame.getFrameData();
-
-			sb.setLength(0);
-
-			sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
-
-			IFile file = frame.getImageFile();
-
-			if (file != null) {
-				sb.append(" / file: " + file.getName());
-			}
-
-			_frameLabel.setText(sb.toString());
-
-		}
-
-		_frameCanvas.setModel(frame);
-		_frameCanvas.resetZoom();
 	}
 
 }
