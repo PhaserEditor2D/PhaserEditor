@@ -28,7 +28,6 @@ import phasereditor.ui.ImageProxyCanvas;
 
 /**
  * @author arian
- *
  */
 public class SingleFrameCanvas extends ImageProxyCanvas {
 

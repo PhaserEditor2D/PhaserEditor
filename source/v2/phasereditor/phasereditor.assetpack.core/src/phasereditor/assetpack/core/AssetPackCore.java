@@ -700,11 +700,9 @@ public class AssetPackCore {
 		} catch (CoreException e) {
 			logError(e);
 		}
-		
+
 		synchronized (_filePackMap) {
-			var finder = new AssetFinder(project);
-			finder.build();
-			_finderProjectMap.put(project, finder);
+			rebuildFinder(project);
 		}
 	}
 
@@ -725,7 +723,7 @@ public class AssetPackCore {
 				try {
 					model = new AssetPackModel(file);
 					_filePackMap.put(file, model);
-					
+
 					rebuildFinder(file.getProject());
 
 					return model;
@@ -1057,23 +1055,25 @@ public class AssetPackCore {
 
 	static void rebuildFinder(IProject project) {
 		var finder = _finderProjectMap.get(project);
-		
+
 		if (finder == null) {
 			_finderProjectMap.put(project, finder = new AssetFinder(project));
 		}
-		
+
 		finder.build();
 	}
 
 	public static AssetFinder getAssetFinder(IProject project) {
 		synchronized (_filePackMap) {
 			AssetFinder finder = _finderProjectMap.get(project);
+
 			if (finder == null) {
-				out.println("There is something wrong, the finder is not created for this project."
-						+ "Let's create one to prevent an error propagation.");
-				finder = new AssetFinder(project);
-				finder.build();
-				_finderProjectMap.put(project, finder);
+				// it is possible the finder is requested before the initial run of the
+				// builders, so we can create them now, but we should emit a warning!
+
+				out.println("AssetPackCore: WARNING!!! A finder is requested before all the projects are built.");
+
+				rebuildFinder(project);
 			}
 
 			return finder;

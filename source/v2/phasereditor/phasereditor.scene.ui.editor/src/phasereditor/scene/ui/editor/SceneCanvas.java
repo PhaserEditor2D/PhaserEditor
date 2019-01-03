@@ -326,8 +326,7 @@ public class SceneCanvas extends ZoomCanvas
 		_editor = editor;
 		_sceneModel = editor.getSceneModel();
 
-		_finder = AssetPackCore.getAssetFinder(getEditor().getProject());
-		_renderer = new SceneObjectRenderer(this);
+		
 	}
 
 	@Override
@@ -375,6 +374,11 @@ public class SceneCanvas extends ZoomCanvas
 			return;
 		}
 
+		if (_renderer == null) {
+			_finder = AssetPackCore.getAssetFinder(getEditor().getProject());
+			_renderer = new SceneObjectRenderer(this);
+		}
+		
 		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.
