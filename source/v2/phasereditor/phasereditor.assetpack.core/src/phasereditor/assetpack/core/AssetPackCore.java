@@ -1053,7 +1053,7 @@ public class AssetPackCore {
 				.collect(toList());
 	}
 
-	static void rebuildFinder(IProject project) {
+	static AssetFinder rebuildFinder(IProject project) {
 		var finder = _finderProjectMap.get(project);
 
 		if (finder == null) {
@@ -1061,6 +1061,8 @@ public class AssetPackCore {
 		}
 
 		finder.build();
+		
+		return finder;
 	}
 
 	public static AssetFinder getAssetFinder(IProject project) {
@@ -1073,7 +1075,7 @@ public class AssetPackCore {
 
 				out.println("AssetPackCore: WARNING!!! A finder is requested before all the projects are built.");
 
-				rebuildFinder(project);
+				finder = rebuildFinder(project);
 			}
 
 			return finder;

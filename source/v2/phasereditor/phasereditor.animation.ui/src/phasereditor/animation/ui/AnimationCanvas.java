@@ -164,7 +164,13 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 		_timeline.addCallback(_statusListener);
 
 		var repeatBehavior = _animModel.isYoyo() ? RepeatBehavior.REVERSE : RepeatBehavior.LOOP;
-		_timeline.playLoop(_animModel.getRepeat(), repeatBehavior);
+		var repeat = _animModel.getRepeat();
+
+		if (repeat < 0) {
+			_timeline.playLoop(repeatBehavior);
+		} else {
+			_timeline.playLoop(repeat + 1, repeatBehavior);
+		}
 	}
 
 	public void showFrame(int index) {
@@ -280,7 +286,7 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 		if (getModel() == null) {
 			return;
 		}
-		
+
 		var frames = getModel().getFrames();
 
 		if (_currentFrame < frames.size()) {
