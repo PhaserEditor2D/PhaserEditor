@@ -111,7 +111,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		super("Phaser");
 		setTitle("New Phaser Project");
 		setDescription("Select a project template.");
-		_template = InspectCore.getGeneralTemplates().findById("phasereditor.demos.friend_of_cuco");
+		_template = InspectCore.getGeneralTemplates().findById("phasereditor.demos.flying_dragon");
 	}
 
 	@Override
