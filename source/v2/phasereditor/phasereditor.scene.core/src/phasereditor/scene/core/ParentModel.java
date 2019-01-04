@@ -21,8 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
@@ -152,9 +156,49 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 			child.visit(visitor);
 		}
 	}
-	
+
 	public List<ObjectModel> getChildren() {
 		return ParentComponent.get_children(this);
+	}
+
+	public static class LookupTable {
+		private Map<String, ObjectModel> _map;
+		private ParentModel _scope;
+
+		public LookupTable(ParentModel scope) {
+			_scope = scope;
+
+			_map = new HashMap<>();
+		}
+
+		public ObjectModel lookup(String id) {
+			var result = _map.get(id);
+
+			if (result == null) {
+				result = _scope.findById(id);
+				if (result != null) {
+					_map.put(id, result);
+				}
+			}
+
+			return result;
+		}
+	}
+	
+	public LookupTable lookupTable() {
+		return new LookupTable(this);
+	}
+
+	public void reconnectChildren(LookupTable table) {
+		var list = getChildren().stream()
+
+				.map(o -> table.lookup(o.getId()))
+
+				.filter(o -> o != null)
+
+				.collect(toList());
+
+		ParentComponent.set_children(this, new ArrayList<>(list));
 	}
 
 }

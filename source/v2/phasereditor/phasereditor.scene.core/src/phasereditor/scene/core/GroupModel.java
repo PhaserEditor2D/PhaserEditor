@@ -42,7 +42,7 @@ public class GroupModel extends VariableModel implements
 		_groups = groups;
 
 		GroupComponent.init(this);
-		
+
 		// by default, the groups are created as fields.
 		VariableComponent.set_variableField(this, true);
 	}

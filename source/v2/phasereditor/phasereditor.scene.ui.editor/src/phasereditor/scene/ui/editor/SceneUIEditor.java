@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,15 @@ public class SceneUIEditor {
 
 		var newModels = new ArrayList<ObjectModel>();
 		var project = editor.getEditorInput().getFile().getProject();
+
+		var groupsRoot = editor.getSceneModel().getGroupsModel();
+		var groups = models.stream()
+
+				.flatMap(model -> groupsRoot.getGroupsOf((ObjectModel) model).stream())
+
+				.distinct()
+
+				.collect(toList());
 
 		for (var obj : models) {
 			if (!(obj instanceof ObjectModel)) {
@@ -106,6 +117,12 @@ public class SceneUIEditor {
 		}
 
 		if (!newModels.isEmpty()) {
+
+			var table = editor.getSceneModel().getDisplayList().lookupTable();
+
+			for (var group : groups) {
+				group.reconnectChildren(table);
+			}
 
 			editor.refreshOutline_basedOnId();
 
