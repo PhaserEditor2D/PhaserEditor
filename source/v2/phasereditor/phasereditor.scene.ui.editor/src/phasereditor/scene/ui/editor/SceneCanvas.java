@@ -59,6 +59,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -246,11 +247,11 @@ public class SceneCanvas extends ZoomCanvas
 				var textureKey = animFrame.getTextureKey();
 
 				var texture = _finder.findTexture(textureKey, textureFrame);
-
+				
 				if (texture != null) {
 					var sprite = new SpriteModel();
 
-					var name = nameComputer.newName(textureFrame == null ? textureKey : textureFrame);
+					var name = nameComputer.newName(computeBaseName(texture));
 
 					VariableComponent.set_variableName(sprite, name);
 
@@ -271,7 +272,7 @@ public class SceneCanvas extends ZoomCanvas
 
 				var sprite = new ImageModel();
 
-				var name = nameComputer.newName(frame.getKey());
+				var name = nameComputer.newName(computeBaseName(frame));
 
 				VariableComponent.set_variableName(sprite, name);
 
@@ -320,6 +321,14 @@ public class SceneCanvas extends ZoomCanvas
 		_editor.setDirty(true);
 
 		_editor.getEditorSite().getPage().activate(_editor);
+	}
+
+	private static String computeBaseName(IAssetFrameModel texture) {
+		if (texture instanceof SpritesheetAssetModel.FrameModel) {
+			return texture.getAsset().getKey(); 
+		} 
+		
+		return texture.getKey();
 	}
 
 	public void init(SceneEditor editor) {
