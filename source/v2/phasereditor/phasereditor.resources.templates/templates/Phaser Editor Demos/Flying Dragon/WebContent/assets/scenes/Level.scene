@@ -1,0 +1,263 @@
+{
+  "-app": "Scene Editor - Phaser Editor v2.0.0",
+  "-version": 1,
+  "displayList": {
+    "-id": "b2e3901b-799d-4aa0-a9e8-10e62266d278",
+    "-type": "DisplayList",
+    "children": [
+      {
+        "-id": "aa508ef0-a7e9-4d67-889f-729cf02a45ff",
+        "-type": "Image",
+        "children": [],
+        "variableName": "sky",
+        "variableField": false,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "sky",
+        "textureFrame": "sky"
+      },
+      {
+        "-id": "90284571-d3b3-4051-aab4-d972edff517f",
+        "-type": "Image",
+        "children": [],
+        "variableName": "clouds_3",
+        "variableField": false,
+        "y": 163.44876098632812,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "clouds_3",
+        "textureFrame": "clouds_3"
+      },
+      {
+        "-id": "557f4693-1024-43ea-8546-5df7aef9ee33",
+        "-type": "Image",
+        "children": [],
+        "variableName": "rocks_2",
+        "variableField": false,
+        "y": 54.47615432739258,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "rocks_2",
+        "textureFrame": "rocks_2"
+      },
+      {
+        "-id": "07c97ecb-1377-4fa0-a19d-de388d5280f8",
+        "-type": "Image",
+        "children": [],
+        "variableName": "clouds_2",
+        "variableField": false,
+        "x": 15.882955551147461,
+        "y": -51.55659484863281,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "clouds_2",
+        "textureFrame": "clouds_2"
+      },
+      {
+        "-id": "7a601da8-c4ec-45c7-8e5b-d0f9b81b93b0",
+        "-type": "Image",
+        "children": [],
+        "variableName": "pines",
+        "variableField": false,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "pines",
+        "textureFrame": "pines"
+      },
+      {
+        "-id": "1844704d-677d-4ae3-96c1-458ae5bf5b86",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "dragon",
+        "variableField": true,
+        "x": 145.22865295410156,
+        "y": 80.51336669921875,
+        "textureKey": "dragon",
+        "textureFrame": "dragon/Idle_003",
+        "autoPlayAnimKey": "dragon - dragon/Moving Forward"
+      },
+      {
+        "-id": "89b58cb4-a3ea-4b25-ae11-ff9c12cc59fc",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "melon_1",
+        "variableField": false,
+        "x": 87.67389678955078,
+        "y": 718.5430908203125,
+        "textureKey": "Objects",
+        "textureFrame": "watermelon-1"
+      },
+      {
+        "-id": "436d327e-2869-4072-a69c-71923b59a968",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "melon_2",
+        "variableField": false,
+        "x": 167.67388916015625,
+        "y": 718.5430908203125,
+        "textureKey": "Objects",
+        "textureFrame": "watermelon-1"
+      },
+      {
+        "-id": "b0dd68a9-3a7a-4ba4-bda1-abf06f434a93",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "melon_3",
+        "variableField": false,
+        "x": 247.67388916015625,
+        "y": 718.5430908203125,
+        "textureKey": "Objects",
+        "textureFrame": "watermelon-1"
+      },
+      {
+        "-id": "a9855698-2ec7-4fba-b9bb-0ff68aecdfe4",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "bomb-1",
+        "variableField": false,
+        "x": 80,
+        "y": 660,
+        "originY": 1,
+        "textureKey": "Objects",
+        "textureFrame": "bomb-1"
+      },
+      {
+        "-id": "916b8127-8a20-4a9e-bea7-d5415041a024",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "bomb-1_1",
+        "variableField": false,
+        "x": 160,
+        "y": 660,
+        "originY": 1,
+        "textureKey": "Objects",
+        "textureFrame": "bomb-1"
+      },
+      {
+        "-id": "5682a5fc-88da-4e7e-bd5f-4dfae53095b5",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "bomb-1_2",
+        "variableField": false,
+        "x": 240,
+        "y": 660,
+        "originY": 1,
+        "textureKey": "Objects",
+        "textureFrame": "bomb-1"
+      },
+      {
+        "-id": "c0ae5a41-e738-4952-bace-bada14016535",
+        "-type": "Image",
+        "children": [],
+        "variableName": "fire_1",
+        "variableField": false,
+        "x": 435.4350891113281,
+        "y": 621.15966796875,
+        "angle": 90,
+        "textureKey": "Objects",
+        "textureFrame": "Fire"
+      },
+      {
+        "-id": "ddeeac31-147d-466b-85e6-1a717ae78920",
+        "-type": "Image",
+        "children": [],
+        "variableName": "fire_2",
+        "variableField": false,
+        "x": 515.4351196289062,
+        "y": 621.15966796875,
+        "angle": 90,
+        "textureKey": "Objects",
+        "textureFrame": "Fire"
+      },
+      {
+        "-id": "bc45df0b-7392-41ab-9a32-8edd8c7b3530",
+        "-type": "Image",
+        "children": [],
+        "variableName": "fire_3",
+        "variableField": false,
+        "x": 595.4351196289062,
+        "y": 621.15966796875,
+        "angle": 90,
+        "textureKey": "Objects",
+        "textureFrame": "Fire"
+      },
+      {
+        "-id": "aa60c6ea-ec10-4217-9386-db15b53fed2c",
+        "-type": "Image",
+        "children": [],
+        "variableName": "clouds_1",
+        "variableField": false,
+        "y": 156.84878540039062,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "clouds_1",
+        "textureFrame": "clouds_1"
+      }
+    ]
+  },
+  "groups": {
+    "-id": "8f603141-f6c0-4f64-b6ab-789e048e3955",
+    "-type": "Groups",
+    "children": [
+      {
+        "-id": "f953be5e-abbe-4f4a-a52f-a851af93ab14",
+        "children": [
+          {"-id": "b0dd68a9-3a7a-4ba4-bda1-abf06f434a93"},
+          {"-id": "436d327e-2869-4072-a69c-71923b59a968"},
+          {"-id": "89b58cb4-a3ea-4b25-ae11-ff9c12cc59fc"}
+        ],
+        "variableName": "melons",
+        "variableField": true
+      },
+      {
+        "-id": "f01bc8f1-ade1-4ba0-a6ad-85283753af7b",
+        "children": [
+          {"-id": "b0dd68a9-3a7a-4ba4-bda1-abf06f434a93"},
+          {"-id": "436d327e-2869-4072-a69c-71923b59a968"},
+          {"-id": "89b58cb4-a3ea-4b25-ae11-ff9c12cc59fc"},
+          {"-id": "a9855698-2ec7-4fba-b9bb-0ff68aecdfe4"},
+          {"-id": "916b8127-8a20-4a9e-bea7-d5415041a024"},
+          {"-id": "5682a5fc-88da-4e7e-bd5f-4dfae53095b5"}
+        ],
+        "variableName": "objects",
+        "variableField": true
+      },
+      {
+        "-id": "7b1dd9a0-7b61-4cd7-8a0a-8f0305847158",
+        "children": [
+          {"-id": "5682a5fc-88da-4e7e-bd5f-4dfae53095b5"},
+          {"-id": "916b8127-8a20-4a9e-bea7-d5415041a024"},
+          {"-id": "a9855698-2ec7-4fba-b9bb-0ff68aecdfe4"}
+        ],
+        "variableName": "bombs",
+        "variableField": true
+      },
+      {
+        "-id": "ca158dd5-301b-4fbb-abd1-a392a547cb78",
+        "children": [
+          {"-id": "bc45df0b-7392-41ab-9a32-8edd8c7b3530"},
+          {"-id": "ddeeac31-147d-466b-85e6-1a717ae78920"},
+          {"-id": "c0ae5a41-e738-4952-bace-bada14016535"}
+        ],
+        "variableName": "fire",
+        "variableField": true
+      },
+      {
+        "-id": "3e8282a8-8aa0-4b99-8927-6dbc4e8fffe1",
+        "children": [
+          {"-id": "aa60c6ea-ec10-4217-9386-db15b53fed2c"},
+          {"-id": "7a601da8-c4ec-45c7-8e5b-d0f9b81b93b0"},
+          {"-id": "07c97ecb-1377-4fa0-a19d-de388d5280f8"},
+          {"-id": "557f4693-1024-43ea-8546-5df7aef9ee33"},
+          {"-id": "90284571-d3b3-4051-aab4-d972edff517f"}
+        ],
+        "variableName": "parallax",
+        "variableField": true
+      }
+    ]
+  },
+  "snapWidth": 80,
+  "snapHeight": 62,
+  "borderHeight": 450,
+  "createMethodName": "_create"
+}

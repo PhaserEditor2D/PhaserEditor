@@ -1,0 +1,720 @@
+{
+  "version": 3,
+  "files": [
+    "Design/ui/Button Down.png",
+    "Design/ui/Button Flame.png",
+    "Design/ui/Button Up.png",
+    "Design/objects/Fire.png",
+    "Design/objects/bomb-1.png",
+    "Design/objects/bomb-2.png",
+    "Design/objects/bomb-3.png",
+    "Design/objects/bomb-4.png",
+    "Design/objects/bomb-5.png",
+    "Design/objects/bomb-6.png",
+    "Design/objects/bomb-7.png",
+    "Design/objects/bomb-8.png",
+    "Design/objects/watermelon-1.png",
+    "Design/objects/watermelon-2.png",
+    "Design/objects/watermelon-3.png",
+    "Design/objects/watermelon-4.png",
+    "Design/objects/watermelon-5.png",
+    "Design/objects/watermelon-6.png",
+    "Design/objects/watermelon-7.png",
+    "Design/objects/watermelon-8.png",
+    "Design/objects/burning-watermelon-4.png",
+    "Design/objects/burning-watermelon-5.png",
+    "Design/objects/burning-watermelon-6.png",
+    "Design/objects/burning-watermelon-7.png",
+    "Design/objects/burning-watermelon-8.png",
+    "Design/objects/burning-watermelon-1.png",
+    "Design/objects/burning-watermelon-2.png",
+    "Design/objects/burning-watermelon-3.png"
+  ],
+  "settings": {
+    "pot": false,
+    "paddingX": 2,
+    "paddingY": 2,
+    "edgePadding": true,
+    "duplicatePadding": false,
+    "rotation": false,
+    "minWidth": 16,
+    "minHeight": 16,
+    "maxWidth": 1024,
+    "maxHeight": 1024,
+    "square": false,
+    "stripWhitespaceX": true,
+    "stripWhitespaceY": true,
+    "alphaThreshold": 0,
+    "filterMin": "Nearest",
+    "filterMag": "Nearest",
+    "wrapX": "ClampToEdge",
+    "wrapY": "ClampToEdge",
+    "format": "RGBA8888",
+    "alias": true,
+    "outputFormat": "png",
+    "jpegQuality": 0.8999999761581421,
+    "ignoreBlankImages": true,
+    "fast": false,
+    "debug": false,
+    "silent": false,
+    "combineSubdirectories": false,
+    "flattenPaths": false,
+    "premultiplyAlpha": false,
+    "useIndexes": false,
+    "bleed": true,
+    "limitMemory": false,
+    "grid": false,
+    "atlasExtension": ".atlas",
+    "multiatlas": true,
+    "includeNumberOfFolders": 0
+  },
+  "pages": [{
+    "imageFile": "Objects.png",
+    "frames": [
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 513,
+          "y": 127,
+          "w": 50,
+          "h": 89
+        },
+        "spriteSourceSize": {
+          "x": 15,
+          "y": 6,
+          "w": 50,
+          "h": 89
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 100
+        },
+        "name": "Fire",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/Fire",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 639,
+          "y": 79,
+          "w": 69,
+          "h": 67
+        },
+        "spriteSourceSize": {
+          "x": 10,
+          "y": 7,
+          "w": 69,
+          "h": 67
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-1",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-1",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 574,
+          "y": 78,
+          "w": 63,
+          "h": 68
+        },
+        "spriteSourceSize": {
+          "x": 9,
+          "y": 7,
+          "w": 63,
+          "h": 68
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-2",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-2",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 616,
+          "y": 8,
+          "w": 60,
+          "h": 68
+        },
+        "spriteSourceSize": {
+          "x": 12,
+          "y": 6,
+          "w": 60,
+          "h": 68
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-3",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-3",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 636,
+          "y": 148,
+          "w": 61,
+          "h": 68
+        },
+        "spriteSourceSize": {
+          "x": 10,
+          "y": 6,
+          "w": 61,
+          "h": 68
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-4",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-4",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 565,
+          "y": 148,
+          "w": 69,
+          "h": 68
+        },
+        "spriteSourceSize": {
+          "x": 3,
+          "y": 7,
+          "w": 69,
+          "h": 68
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-5",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-5",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 678,
+          "y": 10,
+          "w": 61,
+          "h": 67
+        },
+        "spriteSourceSize": {
+          "x": 10,
+          "y": 7,
+          "w": 61,
+          "h": 67
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-6",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-6",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 553,
+          "y": 2,
+          "w": 61,
+          "h": 69
+        },
+        "spriteSourceSize": {
+          "x": 11,
+          "y": 6,
+          "w": 61,
+          "h": 69
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-7",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-7",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 699,
+          "y": 149,
+          "w": 62,
+          "h": 67
+        },
+        "spriteSourceSize": {
+          "x": 11,
+          "y": 7,
+          "w": 62,
+          "h": 67
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 80
+        },
+        "name": "bomb-8",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/bomb-8",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 491,
+          "y": 10,
+          "w": 60,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 4,
+          "y": 4,
+          "w": 60,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-1",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-1",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 373,
+          "y": 9,
+          "w": 54,
+          "h": 53
+        },
+        "spriteSourceSize": {
+          "x": 9,
+          "y": 3,
+          "w": 54,
+          "h": 53
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-2",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-2",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 817,
+          "y": 2,
+          "w": 19,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 31,
+          "y": 4,
+          "w": 19,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-3",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-3",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 317,
+          "y": 9,
+          "w": 54,
+          "h": 53
+        },
+        "spriteSourceSize": {
+          "x": 18,
+          "y": 3,
+          "w": 54,
+          "h": 53
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-4",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-4",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 710,
+          "y": 95,
+          "w": 59,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 16,
+          "y": 4,
+          "w": 59,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-5",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-5",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 771,
+          "y": 110,
+          "w": 54,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 17,
+          "y": 4,
+          "w": 54,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-6",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-6",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 796,
+          "y": 2,
+          "w": 19,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 31,
+          "y": 4,
+          "w": 19,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-7",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-7",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 741,
+          "y": 2,
+          "w": 53,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 10,
+          "y": 4,
+          "w": 53,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "burning-watermelon-8",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/burning-watermelon-8",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 429,
+          "y": 10,
+          "w": 60,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 4,
+          "y": 4,
+          "w": 60,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-1",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-1",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 205,
+          "y": 9,
+          "w": 54,
+          "h": 53
+        },
+        "spriteSourceSize": {
+          "x": 9,
+          "y": 3,
+          "w": 54,
+          "h": 53
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-2",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-2",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 819,
+          "y": 164,
+          "w": 19,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 31,
+          "y": 4,
+          "w": 19,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-3",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-3",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 261,
+          "y": 9,
+          "w": 54,
+          "h": 53
+        },
+        "spriteSourceSize": {
+          "x": 18,
+          "y": 3,
+          "w": 54,
+          "h": 53
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-4",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-4",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 513,
+          "y": 73,
+          "w": 59,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 16,
+          "y": 4,
+          "w": 59,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-5",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-5",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 763,
+          "y": 164,
+          "w": 54,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 17,
+          "y": 4,
+          "w": 54,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-6",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-6",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 827,
+          "y": 110,
+          "w": 19,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 31,
+          "y": 4,
+          "w": 19,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-7",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-7",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 771,
+          "y": 56,
+          "w": 53,
+          "h": 52
+        },
+        "spriteSourceSize": {
+          "x": 10,
+          "y": 4,
+          "w": 53,
+          "h": 52
+        },
+        "sourceSize": {
+          "w": 80,
+          "h": 62
+        },
+        "name": "watermelon-8",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/objects/watermelon-8",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 205,
+          "y": 64,
+          "w": 152,
+          "h": 152
+        },
+        "spriteSourceSize": {
+          "x": 4,
+          "y": 4,
+          "w": 152,
+          "h": 152
+        },
+        "sourceSize": {
+          "w": 160,
+          "h": 160
+        },
+        "name": "Button Down",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/ui/Button Down",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 15,
+          "w": 201,
+          "h": 201
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 201,
+          "h": 201
+        },
+        "sourceSize": {
+          "w": 201,
+          "h": 201
+        },
+        "name": "Button Flame",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/ui/Button Flame",
+        "regionIndex": -1
+      },
+      {
+        "trimmed": true,
+        "rotated": false,
+        "frame": {
+          "x": 359,
+          "y": 64,
+          "w": 152,
+          "h": 152
+        },
+        "spriteSourceSize": {
+          "x": 4,
+          "y": 4,
+          "w": 152,
+          "h": 152
+        },
+        "sourceSize": {
+          "w": 160,
+          "h": 160
+        },
+        "name": "Button Up",
+        "regionFilename": "G:/Phaser Editor/workspace/PhaserEditorDemo/Design/ui/Button Up",
+        "regionIndex": -1
+      }
+    ]
+  }]
+}

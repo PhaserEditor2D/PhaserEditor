@@ -1,0 +1,59 @@
+{
+  "-app": "Scene Editor - Phaser Editor v2.0.0",
+  "-version": 1,
+  "displayList": {
+    "-id": "1d8004cc-6386-432f-83d1-c234002be414",
+    "-type": "DisplayList",
+    "children": [
+      {
+        "-id": "0fe4b733-37f3-4981-9b3c-e26a7219e640",
+        "-type": "Image",
+        "children": [],
+        "variableName": "up",
+        "variableField": true,
+        "x": 640.5178833007812,
+        "y": 378.7536315917969,
+        "scaleX": 0.5,
+        "scaleY": 0.5,
+        "textureKey": "Objects",
+        "textureFrame": "Button Up"
+      },
+      {
+        "-id": "f914ee05-f0fa-4c54-ae4c-0c90cb45cb90",
+        "-type": "Image",
+        "children": [],
+        "variableName": "flame",
+        "variableField": true,
+        "x": 80,
+        "y": 378.7536315917969,
+        "scaleX": 0.40251636505126953,
+        "scaleY": 0.38301968574523926,
+        "textureKey": "Objects",
+        "textureFrame": "Button Flame"
+      },
+      {
+        "-id": "fdb64f81-cba0-4c97-bef2-9a65e6c95a33",
+        "-type": "Image",
+        "children": [],
+        "variableName": "down",
+        "variableField": true,
+        "x": 739.9390258789062,
+        "y": 378.7536315917969,
+        "scaleX": 0.5,
+        "scaleY": 0.5,
+        "textureKey": "Objects",
+        "textureFrame": "Button Down"
+      }
+    ]
+  },
+  "groups": {
+    "-id": "98888e9d-0e22-475d-941d-75744e133dd4",
+    "-type": "Groups",
+    "children": []
+  },
+  "snapWidth": 80,
+  "snapHeight": 80,
+  "borderHeight": 450,
+  "autoLoadAssets": false,
+  "createMethodName": "_create"
+}
