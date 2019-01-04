@@ -1,0 +1,41 @@
+{
+  "-app": "Scene Editor - Phaser Editor v2.0.0",
+  "-version": 1,
+  "displayList": {
+    "-id": "8d715559-399d-42e9-9525-4a1dc0336b31",
+    "-type": "DisplayList",
+    "children": [
+      {
+        "-id": "6b551c17-b088-4ccd-9d7b-b22ae9759bc4",
+        "-type": "Sprite",
+        "children": [],
+        "variableName": "player",
+        "variableField": true,
+        "x": 399.99993896484375,
+        "y": 300,
+        "angle": -10.210137367248535,
+        "textureKey": "character",
+        "textureFrame": "Jump Loop_000",
+        "autoPlayAnimKey": "character - Jump Loop"
+      },
+      {
+        "-id": "fbb538a5-04c3-4f8a-a59f-82592b6efedc",
+        "-type": "Image",
+        "children": [],
+        "variableName": "fruit",
+        "variableField": true,
+        "x": 371.2781982421875,
+        "y": 266.1902160644531,
+        "textureKey": "character",
+        "textureFrame": "fruit"
+      }
+    ]
+  },
+  "groups": {
+    "-id": "89eecac1-e75a-4225-a3ba-7ac59572410e",
+    "-type": "Groups",
+    "children": []
+  },
+  "autoLoadAssets": false,
+  "createMethodName": "_create"
+}

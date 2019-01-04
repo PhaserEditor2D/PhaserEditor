@@ -131,6 +131,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		config.put("width", Integer.parseInt(_settingsPage.getWidthText().getText()));
 		config.put("height", Integer.parseInt(_settingsPage.getHeightText().getText()));
 		config.put("type", _settingsPage.getTypeCombo().getText());
+		config.put("backgroundColor", "#88F");
 
 		JSONObject physicsConfig = new JSONObject();
 
@@ -143,7 +144,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		}
 
 		if (!physicsConfig.isEmpty()) {
-			config.put("pysics", physicsConfig);
+			config.put("physics", physicsConfig);
 		}
 
 		{

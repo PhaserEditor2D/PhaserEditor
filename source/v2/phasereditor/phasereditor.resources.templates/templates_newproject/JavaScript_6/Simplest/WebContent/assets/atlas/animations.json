@@ -1,0 +1,173 @@
+{
+  "anims": [
+    {
+      "key": "character - Idle",
+      "frameRate": 24,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "character",
+          "frame": "Idle_000"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_001"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_002"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_003"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_004"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_005"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_006"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_007"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_008"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_009"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_010"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_011"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_012"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_013"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_014"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_015"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_016"
+        },
+        {
+          "key": "character",
+          "frame": "Idle_017"
+        }
+      ]
+    },
+    {
+      "key": "character - Jump Loop",
+      "frameRate": 24,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "character",
+          "frame": "Jump Loop_000"
+        },
+        {
+          "key": "character",
+          "frame": "Jump Loop_001"
+        },
+        {
+          "key": "character",
+          "frame": "Jump Loop_002"
+        },
+        {
+          "key": "character",
+          "frame": "Jump Loop_003"
+        },
+        {
+          "key": "character",
+          "frame": "Jump Loop_004"
+        },
+        {
+          "key": "character",
+          "frame": "Jump Loop_005"
+        }
+      ]
+    },
+    {
+      "key": "character - Running",
+      "frameRate": 24,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "character",
+          "frame": "Running_000"
+        },
+        {
+          "key": "character",
+          "frame": "Running_001"
+        },
+        {
+          "key": "character",
+          "frame": "Running_002"
+        },
+        {
+          "key": "character",
+          "frame": "Running_003"
+        },
+        {
+          "key": "character",
+          "frame": "Running_004"
+        },
+        {
+          "key": "character",
+          "frame": "Running_005"
+        },
+        {
+          "key": "character",
+          "frame": "Running_006"
+        },
+        {
+          "key": "character",
+          "frame": "Running_007"
+        },
+        {
+          "key": "character",
+          "frame": "Running_008"
+        },
+        {
+          "key": "character",
+          "frame": "Running_009"
+        },
+        {
+          "key": "character",
+          "frame": "Running_010"
+        },
+        {
+          "key": "character",
+          "frame": "Running_011"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "Phaser Editor v2",
+    "contentType": "Phaser v3 Animations"
+  }
+}

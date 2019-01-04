@@ -1,11 +1,24 @@
 {
-  "section1": {"files": [{
-    "type": "animation",
-    "key": "animations",
-    "url": "assets/animations.json"
-  }]},
+  "section1": {"files": [
+    {
+      "type": "animation",
+      "key": "animations",
+      "url": "assets/atlas/animations.json"
+    },
+    {
+      "type": "multiatlas",
+      "key": "character",
+      "url": "assets/atlas/character.json",
+      "path": "assets/atlas"
+    },
+    {
+      "type": "script",
+      "key": "Level",
+      "url": "assets/scene/Level.js"
+    }
+  ]},
   "meta": {
-    "generated": "1543777820621",
+    "generated": "1546642640057",
     "app": "Phaser Editor",
     "url": "https://phasereditor2d.com",
     "version": "1.0",

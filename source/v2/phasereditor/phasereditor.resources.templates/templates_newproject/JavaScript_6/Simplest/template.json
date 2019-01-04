@@ -4,11 +4,11 @@
 		"email": "developers@phasereditor2d.com",
 		"website": "phasereditor2d.com",
 	},
-	"mainFile": "main.js",
+	"mainFile": "assets/scene/Level.scene",
 	"eval" : {
 		"index.html" : ["title"], 
 		"main.js" : ["title", "config"]
 	},
-	"description": "The simplest project structure",
+	"description": "A simple project structure.",
 	"id" : "phasereditor.project.simplest.js6"
 }
