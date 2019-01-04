@@ -169,7 +169,14 @@ public class AnimationCanvas extends ImageProxyCanvas implements ControlListener
 		if (repeat < 0) {
 			_timeline.playLoop(repeatBehavior);
 		} else {
-			_timeline.playLoop(repeat + 1, repeatBehavior);
+
+			repeat += 1;
+
+			if (_animModel.isYoyo()) {
+				repeat *= 2;
+			}
+
+			_timeline.playLoop(repeat, repeatBehavior);
 		}
 	}
 
