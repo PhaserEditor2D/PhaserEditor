@@ -50,8 +50,12 @@ public class PhaserMemberJsdocProvider implements IJsdocProvider {
 
 		String link2 = link;
 
-		link2 = link2.replace("about:blank", "");
-
+		if (link2.startsWith("about:blank")) {
+			link2 = link2.substring("about:blank".length());
+		} else if (link2.startsWith("about:")) {
+			link2 = link2.substring("about:".length());
+		}
+		
 		if (link2.startsWith("#")) {
 			IMemberContainer container;
 			if (_member instanceof IMemberContainer) {
