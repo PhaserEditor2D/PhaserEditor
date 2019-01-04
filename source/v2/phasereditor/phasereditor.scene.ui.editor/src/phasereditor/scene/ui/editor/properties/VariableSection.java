@@ -72,7 +72,17 @@ public class VariableSection extends ScenePropertySection {
 
 				@Override
 				protected void accept2(String value) {
-					getModels().stream().forEach(model -> VariableComponent.set_variableName(model, value));
+					int len = getModels().size();
+
+					if (len > 1) {
+						int i = 1;
+						for (var model : getModels()) {
+							VariableComponent.set_variableName(model, value + "_" + i);
+							i++;
+						}
+					} else {
+						getModels().stream().forEach(model -> VariableComponent.set_variableName(model, value));
+					}
 
 					getEditor().setDirty(true);
 					getEditor().refreshOutline();
