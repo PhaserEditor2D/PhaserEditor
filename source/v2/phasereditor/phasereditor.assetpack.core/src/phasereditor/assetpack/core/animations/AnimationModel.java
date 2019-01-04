@@ -131,7 +131,7 @@ public class AnimationModel implements IAdaptable {
 		jsonData.put("repeatDelay", _repeatDelay, 0);
 		jsonData.put("yoyo", _yoyo, false);
 		jsonData.put("showOnStart", _showOnStart, false);
-		jsonData.put("hideOnComplete", _hideOnComplete, true);
+		jsonData.put("hideOnComplete", _hideOnComplete, false);
 		jsonData.put("skipMissedFrames", _skipMissedFrames, true);
 
 		var jsonFrames = new JSONArray();
