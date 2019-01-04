@@ -584,8 +584,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				});
 			}
 
-			// let's do this when the builders are ready, in the refresh method
-			// _viewer.setInput(getModel());
+			if (PhaserProjectBuilder.isStartedFirstTime()) {
+				// if the builders are ready, then do this, else, do it on the first refresh.
+				_viewer.setInput(getModel());
+			}
 
 			for (var l : _initialListeners) {
 				_filteredTreeCanvas.getUtils().addSelectionChangedListener(l);
