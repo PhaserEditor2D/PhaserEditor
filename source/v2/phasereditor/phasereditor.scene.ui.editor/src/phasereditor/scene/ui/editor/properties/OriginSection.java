@@ -48,8 +48,6 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class OriginSection extends ScenePropertySection {
 
-	private Text _originXText;
-	private Text _originYText;
 	private List<OriginAction> _originPresetActions;
 	private Action _originToolAction;
 
@@ -124,7 +122,8 @@ public class OriginSection extends ScenePropertySection {
 					TransformComponent.set_y(model, TransformComponent.get_y(model) + dy);
 				});
 
-				OriginSection.this.user_update_UI_from_Model();
+				// update the position texts.
+				OriginSection.this.getEditor().updatePropertyPagesContentWithSelection();
 
 			}, true, model -> model instanceof DynamicBitmapTextComponent);
 
@@ -202,67 +201,69 @@ public class OriginSection extends ScenePropertySection {
 
 		label(comp, "Origin", "Phaser.GameObjects.Sprite.setOrigin");
 
-		label(comp, "X", "Phaser.GameObjects.Sprite.originX");
+		{
+			label(comp, "X", "Phaser.GameObjects.Sprite.originX");
 
-		_originXText = new Text(comp, SWT.BORDER);
-		_originXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		new SceneTextToFloat(_originXText) {
-			{
-				filterDirtyModels = model -> model instanceof DynamicBitmapTextComponent;
-			}
+			new SceneTextToFloat(text) {
+				{
+					filterDirtyModels = model -> model instanceof DynamicBitmapTextComponent;
+				}
 
-			@Override
-			protected void accept2(float value) {
-				getModels().forEach(model -> {
-					OriginComponent.set_originX(model, value);
-				});
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> {
+						OriginComponent.set_originX(model, value);
+					});
 
-				updateActions_UI_from_Model();
-				getEditor().setDirty(true);
+					update_UI_from_Model();
 
-			}
+					getEditor().setDirty(true);
 
-		};
+				}
 
-		label(comp, "Y", "Phaser.GameObjects.Sprite.originY");
+			};
 
-		_originYText = new Text(comp, SWT.BORDER);
-		_originYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		new SceneTextToFloat(_originYText) {
+			addUpdate(() -> {
+				text.setText(
+						flatValues_to_String(getModels().stream().map(model -> OriginComponent.get_originX(model))));
+			});
+		}
 
-			{
-				filterDirtyModels = model -> model instanceof DynamicBitmapTextComponent;
-			}
+		{
+			label(comp, "Y", "Phaser.GameObjects.Sprite.originY");
 
-			@Override
-			protected void accept2(float value) {
-				getModels().forEach(model -> {
-					OriginComponent.set_originY(model, value);
-				});
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new SceneTextToFloat(text) {
 
-				updateActions_UI_from_Model();
-				getEditor().setDirty(true);
+				{
+					filterDirtyModels = model -> model instanceof DynamicBitmapTextComponent;
+				}
 
-			}
-		};
+				@Override
+				protected void accept2(float value) {
+					getModels().forEach(model -> {
+						OriginComponent.set_originY(model, value);
+					});
+
+					update_UI_from_Model();
+
+					getEditor().setDirty(true);
+
+				}
+			};
+			addUpdate(() -> {
+				text.setText(
+						flatValues_to_String(getModels().stream().map(model -> OriginComponent.get_originY(model))));
+			});
+		}
+
+		addUpdate(this::updateActions_UI_from_Model);
 
 		return comp;
-	}
-
-	@Override
-	@SuppressWarnings("boxing")
-	public void user_update_UI_from_Model() {
-
-		var models = getModels();
-
-		// origin
-
-		_originXText.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originX(model))));
-		_originYText.setText(flatValues_to_String(models.stream().map(model -> OriginComponent.get_originY(model))));
-
-		updateActions_UI_from_Model();
-
 	}
 
 	private void updateActions_UI_from_Model() {
