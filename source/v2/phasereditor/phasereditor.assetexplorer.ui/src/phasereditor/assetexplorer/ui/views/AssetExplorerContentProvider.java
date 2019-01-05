@@ -31,6 +31,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.scene.core.SceneCore;
@@ -152,6 +153,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 		if (parent instanceof AssetsContentProvider.Container) {
 			return ((Container) parent).children;
+		}
+
+		if (parent instanceof AnimationModel) {
+			return new Object[0];
 		}
 
 		return super.getChildren(parent);
