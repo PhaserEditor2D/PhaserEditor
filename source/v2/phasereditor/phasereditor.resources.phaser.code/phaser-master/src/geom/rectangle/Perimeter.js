@@ -5,14 +5,14 @@
  */
 
 /**
- * Calculates the perimeter of a Rectangle.
+ * [description]
  *
  * @function Phaser.Geom.Rectangle.Perimeter
  * @since 3.0.0
  *
- * @param {Phaser.Geom.Rectangle} rect - The Rectangle to use.
+ * @param {Phaser.Geom.Rectangle} rect - [description]
  *
- * @return {number} The perimeter of the Rectangle, equal to `(width * 2) + (height * 2)`.
+ * @return {number} [description]
  */
 var Perimeter = function (rect)
 {

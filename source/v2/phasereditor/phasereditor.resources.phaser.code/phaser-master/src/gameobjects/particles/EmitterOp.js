@@ -78,14 +78,14 @@ var Wrap = require('../../math/Wrap');
 /**
  * @typedef {object} EmitterOpCustomEmitConfig
  *
- * @property {EmitterOpOnEmitCallback} onEmit - A callback that is invoked each time the emitter emits a particle.
+ * @property {EmitterOpOnEmitCallback} onEmit - [description]
  */
 
 /**
  * @typedef {object} EmitterOpCustomUpdateConfig
  *
- * @property {EmitterOpOnEmitCallback} [onEmit] - A callback that is invoked each time the emitter emits a particle.
- * @property {EmitterOpOnUpdateCallback} onUpdate - A callback that is invoked each time the emitter updates.
+ * @property {EmitterOpOnEmitCallback} [onEmit] - [description]
+ * @property {EmitterOpOnUpdateCallback} onUpdate - [description]
  */
 
 /**

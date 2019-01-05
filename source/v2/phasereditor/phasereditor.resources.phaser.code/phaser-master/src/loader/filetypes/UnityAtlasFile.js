@@ -60,8 +60,6 @@ var UnityAtlasFile = new Class({
         {
             var config = key;
 
-            key = GetFastValue(config, 'key');
-
             image = new ImageFile(loader, {
                 key: key,
                 url: GetFastValue(config, 'textureURL'),
@@ -102,7 +100,7 @@ var UnityAtlasFile = new Class({
      */
     addToCache: function ()
     {
-        if (this.isReadyToProcess())
+        if (this.failed === 0 && !this.complete)
         {
             var image = this.files[0];
             var text = this.files[1];

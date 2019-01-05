@@ -7,17 +7,17 @@
 var Rectangle = require('../rectangle/Rectangle');
 
 /**
- * Calculates the bounding AABB rectangle of a polygon.
+ * [description]
  *
  * @function Phaser.Geom.Polygon.GetAABB
  * @since 3.0.0
  *
  * @generic {Phaser.Geom.Rectangle} O - [out,$return]
  *
- * @param {Phaser.Geom.Polygon} polygon - The polygon that should be calculated.
- * @param {(Phaser.Geom.Rectangle|object)} [out] - The rectangle or object that has x, y, width, and height properties to store the result. Optional.
+ * @param {Phaser.Geom.Polygon} polygon - [description]
+ * @param {(Phaser.Geom.Rectangle|object)} [out] - [description]
  *
- * @return {(Phaser.Geom.Rectangle|object)} The resulting rectangle or object that is passed in with position and dimensions of the polygon's AABB.
+ * @return {(Phaser.Geom.Rectangle|object)} [description]
  */
 var GetAABB = function (polygon, out)
 {

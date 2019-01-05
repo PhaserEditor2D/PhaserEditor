@@ -39,7 +39,7 @@ var CONST = {
     STATIC_BODY: 1,
 
     /**
-     * Arcade Physics Group containing Dynamic Bodies.
+     * [description]
      *
      * @name Phaser.Physics.Arcade.GROUP
      * @readonly
@@ -49,7 +49,7 @@ var CONST = {
     GROUP: 2,
 
     /**
-     * A Tilemap Layer.
+     * [description]
      *
      * @name Phaser.Physics.Arcade.TILEMAPLAYER
      * @readonly

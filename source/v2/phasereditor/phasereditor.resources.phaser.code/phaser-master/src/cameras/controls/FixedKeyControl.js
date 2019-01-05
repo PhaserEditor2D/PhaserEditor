@@ -7,6 +7,13 @@
 var Class = require('../../utils/Class');
 var GetValue = require('../../utils/object/GetValue');
 
+//  var camControl = new CameraControl({
+//      camera: this.cameras.main,
+//      left: cursors.left,
+//      right: cursors.right,
+//      speed: float OR { x: 0, y: 0 }
+//  })
+
 /**
  * @typedef {object} FixedKeyControlConfig
  *
@@ -23,29 +30,14 @@ var GetValue = require('../../utils/object/GetValue');
 
 /**
  * @classdesc
- * A Fixed Key Camera Control.
- *
- * This allows you to control the movement and zoom of a camera using the defined keys.
- *
- * ```javascript
- * var camControl = new FixedKeyControl({
- *     camera: this.cameras.main,
- *     left: cursors.left,
- *     right: cursors.right,
- *     speed: float OR { x: 0, y: 0 }
- * });
- * ```
- *
- * Movement is precise and has no 'smoothing' applied to it.
- *
- * You must call the `update` method of this controller every frame.
+ * [description]
  *
  * @class FixedKeyControl
  * @memberof Phaser.Cameras.Controls
  * @constructor
  * @since 3.0.0
  *
- * @param {FixedKeyControlConfig} config - The Fixed Key Control configuration object.
+ * @param {FixedKeyControlConfig} config - [description]
  */
 var FixedKeyControl = new Class({
 
@@ -167,7 +159,7 @@ var FixedKeyControl = new Class({
         }
 
         /**
-         * Internal property to track the current zoom level.
+         * [description]
          *
          * @name Phaser.Cameras.Controls.FixedKeyControl#_zoom
          * @type {number}
@@ -235,9 +227,7 @@ var FixedKeyControl = new Class({
     },
 
     /**
-     * Applies the results of pressing the control keys to the Camera.
-     *
-     * You must call this every step, it is not called automatically.
+     * [description]
      *
      * @method Phaser.Cameras.Controls.FixedKeyControl#update
      * @since 3.0.0

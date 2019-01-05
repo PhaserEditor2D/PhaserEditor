@@ -5,15 +5,15 @@
  */
 
 /**
- * Checks if the given point falls between the two end-points of the line segment.
+ * [description]
  *
  * @function Phaser.Geom.Intersects.PointToLine
  * @since 3.0.0
  *
- * @param {(Phaser.Geom.Point|any)} point - The point, or point-like object to check.
- * @param {Phaser.Geom.Line} line - The line segment to test for intersection on.
+ * @param {Phaser.Geom.Point} point - [description]
+ * @param {Phaser.Geom.Line} line - [description]
  *
- * @return {boolean} `true` if the two objects intersect, otherwise `false`.
+ * @return {boolean} [description]
  */
 var PointToLine = function (point, line)
 {

@@ -22,8 +22,8 @@ var GetFastValue = require('../../utils/object/GetFastValue');
  * @param {object} config - An object describing how to parse the Sprite Sheet.
  * @param {number} config.frameWidth - Width in pixels of a single frame in the sprite sheet.
  * @param {number} [config.frameHeight] - Height in pixels of a single frame in the sprite sheet. Defaults to frameWidth if not provided.
- * @param {number} [config.startFrame=0] - Index of the start frame in the sprite sheet
- * @param {number} [config.endFrame=-1] - Index of the end frame in the sprite sheet. -1 mean all the rest of the frames
+ * @param {number} [config.startFrame=0] - [description]
+ * @param {number} [config.endFrame=-1] - [description]
  * @param {number} [config.margin=0] - If the frames have been drawn with a margin, specify the amount here.
  * @param {number} [config.spacing=0] - If the frames have been drawn with spacing between them, specify the amount here.
  *
@@ -117,32 +117,26 @@ var SpriteSheetFromAtlas = function (texture, frame, config)
             {
                 var destX = (leftRow) ? leftPad : 0;
                 var destY = (topRow) ? topPad : 0;
-
-                var trimWidth = 0;
-                var trimHeight = 0;
+                var destWidth = frameWidth;
+                var destHeight = frameHeight;
 
                 if (leftRow)
                 {
-                    trimWidth += (frameWidth - leftWidth);
+                    destWidth = leftWidth;
                 }
-
-                if (rightRow)
+                else if (rightRow)
                 {
-                    trimWidth += (frameWidth - rightWidth);
+                    destWidth = rightWidth;
                 }
 
                 if (topRow)
                 {
-                    trimHeight += (frameHeight - topHeight);
+                    destHeight = topHeight;
                 }
-
-                if (bottomRow)
+                else if (bottomRow)
                 {
-                    trimHeight += (frameHeight - bottomHeight);
+                    destHeight = bottomHeight;
                 }
-
-                var destWidth = frameWidth - trimWidth;
-                var destHeight = frameHeight - trimHeight;
 
                 sheetFrame.cutWidth = destWidth;
                 sheetFrame.cutHeight = destHeight;
@@ -158,7 +152,7 @@ var SpriteSheetFromAtlas = function (texture, frame, config)
             }
             else if (rightRow)
             {
-                frameX += rightWidth;
+                frameX += rightRow;
             }
             else
             {

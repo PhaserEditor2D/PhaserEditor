@@ -5,14 +5,14 @@
  */
 
 /**
- * Calculate the magnitude of the point, which equivalent to the length of the line from the origin to this point.
+ * [description]
  *
  * @function Phaser.Geom.Point.GetMagnitude
  * @since 3.0.0
  *
- * @param {Phaser.Geom.Point} point - The point to calculate the magnitude for
+ * @param {Phaser.Geom.Point} point - [description]
  *
- * @return {number} The resulting magnitude
+ * @return {number} [description]
  */
 var GetMagnitude = function (point)
 {

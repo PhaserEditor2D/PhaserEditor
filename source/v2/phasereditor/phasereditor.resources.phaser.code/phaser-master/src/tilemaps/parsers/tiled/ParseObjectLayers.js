@@ -9,14 +9,14 @@ var ParseObject = require('./ParseObject');
 var ObjectLayer = require('../../mapdata/ObjectLayer');
 
 /**
- * Parses a Tiled JSON object into an array of ObjectLayer objects.
+ * [description]
  *
  * @function Phaser.Tilemaps.Parsers.Tiled.ParseObjectLayers
  * @since 3.0.0
  *
- * @param {object} json - The Tiled JSON object.
+ * @param {object} json - [description]
  *
- * @return {array} An array of all object layers in the tilemap as `ObjectLayer`s.
+ * @return {array} [description]
  */
 var ParseObjectLayers = function (json)
 {

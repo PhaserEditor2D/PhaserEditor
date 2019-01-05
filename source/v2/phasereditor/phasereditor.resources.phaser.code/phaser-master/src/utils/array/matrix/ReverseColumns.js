@@ -16,7 +16,12 @@
  */
 var ReverseColumns = function (matrix)
 {
-    return matrix.reverse();
+    for (var i = 0; i < matrix.length; i++)
+    {
+        matrix[i].reverse();
+    }
+
+    return matrix;
 };
 
 module.exports = ReverseColumns;

@@ -7,6 +7,20 @@
 var Class = require('../../utils/Class');
 var GetValue = require('../../utils/object/GetValue');
 
+// var controlConfig = {
+//     camera: this.cameras.main,
+//     left: cursors.left,
+//     right: cursors.right,
+//     up: cursors.up,
+//     down: cursors.down,
+//     zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+//     zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+//     zoomSpeed: 0.02,
+//     acceleration: 0.06,
+//     drag: 0.0005,
+//     maxSpeed: 1.0
+// };
+
 /**
  * @typedef {object} SmoothedKeyControlConfig
  *
@@ -24,36 +38,14 @@ var GetValue = require('../../utils/object/GetValue');
 
 /**
  * @classdesc
- * A Smoothed Key Camera Control.
- *
- * This allows you to control the movement and zoom of a camera using the defined keys.
- * Unlike the Fixed Camera Control you can also provide physics values for acceleration, drag and maxSpeed for smoothing effects.
- *
- * ```javascript
- *
- * var controlConfig = {
- *     camera: this.cameras.main,
- *     left: cursors.left,
- *     right: cursors.right,
- *     up: cursors.up,
- *     down: cursors.down,
- *     zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
- *     zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
- *     zoomSpeed: 0.02,
- *     acceleration: 0.06,
- *     drag: 0.0005,
- *     maxSpeed: 1.0
- * };
- * ```
- * 
- * You must call the `update` method of this controller every frame.
+ * [description]
  *
  * @class SmoothedKeyControl
  * @memberof Phaser.Cameras.Controls
  * @constructor
  * @since 3.0.0
  *
- * @param {SmoothedKeyControlConfig} config - The Smoothed Key Control configuration object.
+ * @param {SmoothedKeyControlConfig} config - [description]
  */
 var SmoothedKeyControl = new Class({
 
@@ -241,7 +233,7 @@ var SmoothedKeyControl = new Class({
         }
 
         /**
-         * Internal property to track the speed of the control.
+         * [description]
          *
          * @name Phaser.Cameras.Controls.SmoothedKeyControl#_speedX
          * @type {number}
@@ -252,7 +244,7 @@ var SmoothedKeyControl = new Class({
         this._speedX = 0;
 
         /**
-         * Internal property to track the speed of the control.
+         * [description]
          *
          * @name Phaser.Cameras.Controls.SmoothedKeyControl#_speedY
          * @type {number}
@@ -263,7 +255,7 @@ var SmoothedKeyControl = new Class({
         this._speedY = 0;
 
         /**
-         * Internal property to track the zoom of the control.
+         * [description]
          *
          * @name Phaser.Cameras.Controls.SmoothedKeyControl#_zoom
          * @type {number}
@@ -331,14 +323,12 @@ var SmoothedKeyControl = new Class({
     },
 
     /**
-     * Applies the results of pressing the control keys to the Camera.
-     *
-     * You must call this every step, it is not called automatically.
+     * [description]
      *
      * @method Phaser.Cameras.Controls.SmoothedKeyControl#update
      * @since 3.0.0
      *
-     * @param {number} delta - The delta time in ms since the last frame. This is a smoothed and capped value based on the FPS rate.
+     * @param {number} delta - The delta time, in ms, elapsed since the last frame.
      */
     update: function (delta)
     {

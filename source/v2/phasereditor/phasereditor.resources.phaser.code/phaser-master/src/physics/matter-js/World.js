@@ -1074,8 +1074,7 @@ var World = new Class({
     },
 
     /**
-     * Will remove all Matter physics event listeners and clear the matter physics world,
-     * engine and any debug graphics, if any.
+     * [description]
      *
      * @method Phaser.Physics.Matter.World#shutdown
      * @since 3.0.0
@@ -1097,10 +1096,7 @@ var World = new Class({
     },
 
     /**
-     * Will remove all Matter physics event listeners and clear the matter physics world,
-     * engine and any debug graphics, if any.
-     *
-     * After destroying the world it cannot be re-used again.
+     * [description]
      *
      * @method Phaser.Physics.Matter.World#destroy
      * @since 3.0.0

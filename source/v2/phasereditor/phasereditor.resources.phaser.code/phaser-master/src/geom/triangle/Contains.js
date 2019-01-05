@@ -7,16 +7,16 @@
 //  http://www.blackpawn.com/texts/pointinpoly/
 
 /**
- * Checks if a point (as a pair of coordinates) is inside a Triangle's bounds.
+ * [description]
  *
  * @function Phaser.Geom.Triangle.Contains
  * @since 3.0.0
  *
- * @param {Phaser.Geom.Triangle} triangle - The Triangle to check.
- * @param {number} x - The X coordinate of the point to check.
- * @param {number} y - The Y coordinate of the point to check.
+ * @param {Phaser.Geom.Triangle} triangle - [description]
+ * @param {number} x - [description]
+ * @param {number} y - [description]
  *
- * @return {boolean} `true` if the point is inside the Triangle, otherwise `false`.
+ * @return {boolean} [description]
  */
 var Contains = function (triangle, x, y)
 {

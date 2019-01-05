@@ -13,14 +13,14 @@ var TweenBuilder = require('./builders/TweenBuilder');
 
 /**
  * @classdesc
- * The Tween Manager is a default Scene Plugin which controls and updates Tweens and Timelines.
+ * [description]
  *
  * @class TweenManager
  * @memberof Phaser.Tweens
  * @constructor
  * @since 3.0.0
  *
- * @param {Phaser.Scene} scene - The Scene which owns this Tween Manager.
+ * @param {Phaser.Scene} scene - [description]
  */
 var TweenManager = new Class({
 
@@ -29,7 +29,7 @@ var TweenManager = new Class({
     function TweenManager (scene)
     {
         /**
-         * The Scene which owns this Tween Manager.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#scene
          * @type {Phaser.Scene}
@@ -38,7 +38,7 @@ var TweenManager = new Class({
         this.scene = scene;
 
         /**
-         * The Systems object of the Scene which owns this Tween Manager.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#systems
          * @type {Phaser.Scenes.Systems}
@@ -47,9 +47,7 @@ var TweenManager = new Class({
         this.systems = scene.sys;
 
         /**
-         * The time scale of the Tween Manager.
-         *
-         * This value scales the time delta between two frames, thus influencing the speed of time for all Tweens owned by this Tween Manager.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#timeScale
          * @type {number}
@@ -59,7 +57,7 @@ var TweenManager = new Class({
         this.timeScale = 1;
 
         /**
-         * An array of Tweens and Timelines which will be added to the Tween Manager at the start of the frame.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#_add
          * @type {array}
@@ -69,7 +67,7 @@ var TweenManager = new Class({
         this._add = [];
 
         /**
-         * An array of Tweens and Timelines pending to be later added to the Tween Manager.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#_pending
          * @type {array}
@@ -79,7 +77,7 @@ var TweenManager = new Class({
         this._pending = [];
 
         /**
-         * An array of Tweens and Timelines which are still incomplete and are actively processed by the Tween Manager.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#_active
          * @type {array}
@@ -89,7 +87,7 @@ var TweenManager = new Class({
         this._active = [];
 
         /**
-         * An array of Tweens and Timelines which will be removed from the Tween Manager at the start of the frame.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#_destroy
          * @type {array}
@@ -99,7 +97,7 @@ var TweenManager = new Class({
         this._destroy = [];
 
         /**
-         * The number of Tweens and Timelines which need to be processed by the Tween Manager at the start of the frame.
+         * [description]
          *
          * @name Phaser.Tweens.TweenManager#_toProcess
          * @type {integer}
@@ -152,9 +150,9 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#createTimeline
      * @since 3.0.0
      *
-     * @param {object} config - The configuration object for the Timeline and its Tweens.
+     * @param {object} config - [description]
      *
-     * @return {Phaser.Tweens.Timeline} The created Timeline object.
+     * @return {Phaser.Tweens.Timeline} [description]
      */
     createTimeline: function (config)
     {
@@ -167,9 +165,9 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#timeline
      * @since 3.0.0
      *
-     * @param {object} config - The configuration object for the Timeline and its Tweens.
+     * @param {object} config - [description]
      *
-     * @return {Phaser.Tweens.Timeline} The created Timeline object.
+     * @return {Phaser.Tweens.Timeline} [description]
      */
     timeline: function (config)
     {
@@ -191,9 +189,9 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#create
      * @since 3.0.0
      *
-     * @param {object} config - The configuration object for the Tween as per {@link Phaser.Tweens.Builders.TweenBuilder}.
+     * @param {object} config - [description]
      *
-     * @return {Phaser.Tweens.Tween} The created Tween object.
+     * @return {Phaser.Tweens.Tween} [description]
      */
     create: function (config)
     {
@@ -206,9 +204,9 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#add
      * @since 3.0.0
      *
-     * @param {object} config - The configuration object for the Tween as per the {@link Phaser.Tweens.Builders.TweenBuilder}.
+     * @param {object} config - [description]
      *
-     * @return {Phaser.Tweens.Tween} The created Tween.
+     * @return {Phaser.Tweens.Tween} [description]
      */
     add: function (config)
     {
@@ -227,7 +225,7 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#existing
      * @since 3.0.0
      *
-     * @param {Phaser.Tweens.Tween} tween - The Tween to add.
+     * @param {Phaser.Tweens.Tween} tween - [description]
      *
      * @return {Phaser.Tweens.TweenManager} This Tween Manager object.
      */
@@ -246,9 +244,9 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#addCounter
      * @since 3.0.0
      *
-     * @param {object} config - The configuration object for the Number Tween as per the {@link Phaser.Tweens.Builders.NumberTweenBuilder}.
+     * @param {object} config - [description]
      *
-     * @return {Phaser.Tweens.Tween} The created Number Tween.
+     * @return {Phaser.Tweens.Tween} [description]
      */
     addCounter: function (config)
     {
@@ -262,9 +260,7 @@ var TweenManager = new Class({
     },
 
     /**
-     * Updates the Tween Manager's internal lists at the start of the frame.
-     *
-     * This method will return immediately if no changes have been indicated.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#preUpdate
      * @since 3.0.0
@@ -342,12 +338,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Updates all Tweens and Timelines of the Tween Manager.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#update
      * @since 3.0.0
      *
-     * @param {number} timestamp - The current time in milliseconds.
+     * @param {number} timestamp - [description]
      * @param {number} delta - The delta time in ms since the last frame. This is a smoothed and capped value based on the FPS rate.
      */
     update: function (timestamp, delta)
@@ -374,12 +370,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Checks if a Tween or Timeline is active and adds it to the Tween Manager at the start of the frame if it isn't.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#makeActive
      * @since 3.0.0
      *
-     * @param {Phaser.Tweens.Tween} tween - The Tween to check.
+     * @param {Phaser.Tweens.Tween} tween - [description]
      *
      * @return {Phaser.Tweens.TweenManager} This Tween Manager object.
      */
@@ -412,9 +408,9 @@ var TweenManager = new Class({
      * @method Phaser.Tweens.TweenManager#each
      * @since 3.0.0
      *
-     * @param {function} callback - The function to call.
-     * @param {object} [scope] - The scope (`this` object) to call the function with.
-     * @param {...*} [args] - The arguments to pass into the function. Its first argument will always be the Tween currently being iterated.
+     * @param {function} callback - [description]
+     * @param {object} [scope] - [description]
+     * @param {...*} [args] - [description]
      */
     each: function (callback, scope)
     {
@@ -434,12 +430,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Returns an array of all active Tweens and Timelines in the Tween Manager.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#getAllTweens
      * @since 3.0.0
      *
-     * @return {Phaser.Tweens.Tween[]} A new array containing references to all active Tweens and Timelines.
+     * @return {Phaser.Tweens.Tween[]} [description]
      */
     getAllTweens: function ()
     {
@@ -455,12 +451,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Returns the scale of the time delta for all Tweens and Timelines owned by this Tween Manager.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#getGlobalTimeScale
      * @since 3.0.0
      *
-     * @return {number} The scale of the time delta, usually 1.
+     * @return {number} [description]
      */
     getGlobalTimeScale: function ()
     {
@@ -468,14 +464,14 @@ var TweenManager = new Class({
     },
 
     /**
-     * Returns an array of all Tweens or Timelines in the Tween Manager which affect the given target or array of targets.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#getTweensOf
      * @since 3.0.0
      *
-     * @param {(object|array)} target - The target to look for. Provide an array to look for multiple targets.
+     * @param {(object|array)} target - [description]
      *
-     * @return {Phaser.Tweens.Tween[]} A new array containing all Tweens and Timelines which affect the given target(s).
+     * @return {Phaser.Tweens.Tween[]} [description]
      */
     getTweensOf: function (target)
     {
@@ -516,14 +512,14 @@ var TweenManager = new Class({
     },
 
     /**
-     * Checks if the given object is being affected by a playing Tween.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#isTweening
      * @since 3.0.0
      *
-     * @param {object} target - target Phaser.Tweens.Tween object
+     * @param {object} target - [description]
      *
-     * @return {boolean} returns if target tween object is active or not
+     * @return {boolean} [description]
      */
     isTweening: function (target)
     {
@@ -544,12 +540,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Stops all Tweens in this Tween Manager. They will be removed at the start of the frame.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#killAll
      * @since 3.0.0
      *
-     * @return {Phaser.Tweens.TweenManager} This Tween Manager.
+     * @return {Phaser.Tweens.TweenManager} [description]
      */
     killAll: function ()
     {
@@ -564,16 +560,14 @@ var TweenManager = new Class({
     },
 
     /**
-     * Stops all Tweens which affect the given target or array of targets. The Tweens will be removed from the Tween Manager at the start of the frame.
-     *
-     * @see {@link #getTweensOf}
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#killTweensOf
      * @since 3.0.0
      *
-     * @param {(object|array)} target - The target to look for. Provide an array to look for multiple targets.
+     * @param {(object|array)} target - [description]
      *
-     * @return {Phaser.Tweens.TweenManager} This Tween Manager.
+     * @return {Phaser.Tweens.TweenManager} [description]
      */
     killTweensOf: function (target)
     {
@@ -588,12 +582,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Pauses all Tweens in this Tween Manager.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#pauseAll
      * @since 3.0.0
      *
-     * @return {Phaser.Tweens.TweenManager} This Tween Manager.
+     * @return {Phaser.Tweens.TweenManager} [description]
      */
     pauseAll: function ()
     {
@@ -608,12 +602,12 @@ var TweenManager = new Class({
     },
 
     /**
-     * Resumes all Tweens in this Tween Manager.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#resumeAll
      * @since 3.0.0
      *
-     * @return {Phaser.Tweens.TweenManager} This Tween Manager.
+     * @return {Phaser.Tweens.TweenManager} [description]
      */
     resumeAll: function ()
     {
@@ -628,16 +622,14 @@ var TweenManager = new Class({
     },
 
     /**
-     * Sets a new scale of the time delta for this Tween Manager.
-     *
-     * The time delta is the time elapsed between two consecutive frames and influences the speed of time for this Tween Manager and all Tweens it owns. Values higher than 1 increase the speed of time, while values smaller than 1 decrease it. A value of 0 freezes time and is effectively equivalent to pausing all Tweens.
+     * [description]
      *
      * @method Phaser.Tweens.TweenManager#setGlobalTimeScale
      * @since 3.0.0
      *
-     * @param {number} value - The new scale of the time delta, where 1 is the normal speed.
+     * @param {number} value - [description]
      *
-     * @return {Phaser.Tweens.TweenManager} This Tween Manager.
+     * @return {Phaser.Tweens.TweenManager} [description]
      */
     setGlobalTimeScale: function (value)
     {

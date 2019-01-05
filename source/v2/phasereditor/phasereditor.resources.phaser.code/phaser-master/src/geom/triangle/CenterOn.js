@@ -10,9 +10,9 @@ var Offset = require('./Offset');
 /**
  * @callback CenterFunction
  *
- * @param {Phaser.Geom.Triangle} triangle - The Triangle to return the center coordinates of.
+ * @param {Phaser.Geom.Triangle} triangle - [description]
  *
- * @return {Phaser.Math.Vector2} The center point of the Triangle according to the function.
+ * @return {Phaser.Math.Vector2} [description]
  */
 
 /**

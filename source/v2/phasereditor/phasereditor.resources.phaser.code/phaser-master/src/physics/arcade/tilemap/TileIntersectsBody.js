@@ -5,19 +5,20 @@
  */
 
 /**
- * Checks for intersection between the given tile rectangle-like object and an Arcade Physics body.
+ * [description]
  *
  * @function Phaser.Physics.Arcade.Tilemap.TileIntersectsBody
  * @since 3.0.0
  *
- * @param {{ left: number, right: number, top: number, bottom: number }} tileWorldRect - A rectangle object that defines the tile placement in the world.
- * @param {Phaser.Physics.Arcade.Body} body - The body to check for intersection against.
+ * @param {{ left: number, right: number, top: number, bottom: number }} tileWorldRect - [description]
+ * @param {Phaser.Physics.Arcade.Body} body - [description]
  *
- * @return {boolean} Returns `true` of the tile intersects with the body, otherwise `false`.
+ * @return {boolean} [description]
  */
 var TileIntersectsBody = function (tileWorldRect, body)
 {
-    // Currently, all bodies are treated as rectangles when colliding with a Tile.
+    // Currently, all bodies are treated as rectangles when colliding with a Tile. Eventually, this
+    // should support circle bodies when those are less buggy in v3.
 
     return !(
         body.right <= tileWorldRect.left ||

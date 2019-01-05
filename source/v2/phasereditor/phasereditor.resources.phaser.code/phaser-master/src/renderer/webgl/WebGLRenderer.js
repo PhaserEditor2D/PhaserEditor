@@ -67,6 +67,7 @@ var WebGLRenderer = new Class({
             antialias: gameConfig.antialias,
             premultipliedAlpha: gameConfig.premultipliedAlpha,
             stencil: true,
+            preserveDrawingBuffer: gameConfig.preserveDrawingBuffer,
             failIfMajorPerformanceCaveat: gameConfig.failIfMajorPerformanceCaveat,
             powerPreference: gameConfig.powerPreference
         };
@@ -117,7 +118,7 @@ var WebGLRenderer = new Class({
          * @type {integer}
          * @since 3.0.0
          */
-        this.width = game.scale.canvasWidth;
+        this.width = game.config.width;
 
         /**
          * The height of the canvas being rendered to.
@@ -126,7 +127,7 @@ var WebGLRenderer = new Class({
          * @type {integer}
          * @since 3.0.0
          */
-        this.height = game.scale.canvasHeight;
+        this.height = game.config.height;
 
         /**
          * The canvas which this WebGL Renderer draws to.
@@ -546,6 +547,8 @@ var WebGLRenderer = new Class({
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
 
+        // gl.disable(gl.SCISSOR_TEST);
+
         gl.enable(gl.BLEND);
         gl.clearColor(clearColor.redGL, clearColor.greenGL, clearColor.blueGL, 1.0);
 
@@ -564,24 +567,7 @@ var WebGLRenderer = new Class({
 
         this.setBlendMode(CONST.BlendModes.NORMAL);
 
-        var width = this.width;
-        var height = this.height;
-
-        gl.viewport(0, 0, width, height);
-
-        var pipelines = this.pipelines;
-
-        //  Update all registered pipelines
-        for (var pipelineName in pipelines)
-        {
-            pipelines[pipelineName].resize(width, height, this.game.scale.resolution);
-        }
-
-        this.drawingBufferHeight = gl.drawingBufferHeight;
-
-        this.defaultCamera.setSize(width, height);
-
-        gl.scissor(0, (this.drawingBufferHeight - height), width, height);
+        this.resize(this.width, this.height);
 
         this.game.events.once('texturesready', this.boot, this);
 
@@ -624,10 +610,19 @@ var WebGLRenderer = new Class({
     {
         var gl = this.gl;
         var pipelines = this.pipelines;
-        var resolution = this.game.scale.resolution;
+        var resolution = this.config.resolution;
 
         this.width = Math.floor(width * resolution);
         this.height = Math.floor(height * resolution);
+
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+
+        if (this.config.autoResize)
+        {
+            this.canvas.style.width = (this.width / resolution) + 'px';
+            this.canvas.style.height = (this.height / resolution) + 'px';
+        }
 
         gl.viewport(0, 0, this.width, this.height);
 
@@ -925,71 +920,6 @@ var WebGLRenderer = new Class({
     },
 
     /**
-     * Use this to reset the gl context to the state that Phaser requires to continue rendering.
-     * Calling this will:
-     * 
-     * * Disable `DEPTH_TEST`, `CULL_FACE` and `STENCIL_TEST`.
-     * * Clear the depth buffer and stencil buffers.
-     * * Reset the viewport size.
-     * * Reset the blend mode.
-     * * Bind a blank texture as the active texture on texture unit zero.
-     * * Rebinds the given pipeline instance.
-     * 
-     * You should call this having previously called `clearPipeline` and then wishing to return
-     * control to Phaser again.
-     *
-     * @method Phaser.Renderer.WebGL.WebGLRenderer#rebindPipeline
-     * @since 3.16.0
-     * 
-     * @param {Phaser.Renderer.WebGL.WebGLPipeline} pipelineInstance - The pipeline instance to be activated.
-     */
-    rebindPipeline: function (pipelineInstance)
-    {
-        var gl = this.gl;
-
-        gl.disable(gl.DEPTH_TEST);
-        gl.disable(gl.CULL_FACE);
-        gl.disable(gl.STENCIL_TEST);
-    
-        gl.clear(gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-
-        gl.viewport(0, 0, this.width, this.height);
-
-        this.setBlendMode(0, true);
-
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.blankTexture.glTexture);
-
-        this.currentActiveTextureUnit = 0;
-        this.currentTextures[0] = this.blankTexture.glTexture;
-
-        this.currentPipeline = pipelineInstance;
-        this.currentPipeline.bind();
-        this.currentPipeline.onBind();
-    },
-
-    /**
-     * Flushes the current WebGLPipeline being used and then clears it, along with the
-     * the current shader program and vertex buffer. Then resets the blend mode to NORMAL.
-     * Call this before jumping to your own gl context handler, and then call `rebindPipeline` when
-     * you wish to return control to Phaser again.
-     *
-     * @method Phaser.Renderer.WebGL.WebGLRenderer#clearPipeline
-     * @since 3.16.0
-     */
-    clearPipeline: function ()
-    {
-        this.flush();
-
-        this.currentPipeline = null;
-        this.currentProgram = null;
-        this.currentVertexBuffer = null;
-        this.currentIndexBuffer = null;
-
-        this.setBlendMode(0, true);
-    },
-
-    /**
      * Sets the blend mode to the value given.
      *
      * If the current blend mode is different from the one given, the pipeline is flushed and the new
@@ -999,18 +929,15 @@ var WebGLRenderer = new Class({
      * @since 3.0.0
      *
      * @param {integer} blendModeId - The blend mode to be set. Can be a `BlendModes` const or an integer value.
-     * @param {boolean} [force=false] - Force the blend mode to be set, regardless of the currently set blend mode.
      *
      * @return {boolean} `true` if the blend mode was changed as a result of this call, forcing a flush, otherwise `false`.
      */
-    setBlendMode: function (blendModeId, force)
+    setBlendMode: function (blendModeId)
     {
-        if (force === undefined) { force = false; }
-
         var gl = this.gl;
         var blendMode = this.blendModes[blendModeId];
 
-        if (force || (blendModeId !== CONST.BlendModes.SKIP_CHECK && this.currentBlendMode !== blendModeId))
+        if (blendModeId !== CONST.BlendModes.SKIP_CHECK && this.currentBlendMode !== blendModeId)
         {
             this.flush();
 

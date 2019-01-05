@@ -5,15 +5,15 @@
  */
 
 /**
- * Compares the `x`, `y`, `width` and `height` properties of two rectangles.
+ * [description]
  *
  * @function Phaser.Geom.Rectangle.Equals
  * @since 3.0.0
  *
- * @param {Phaser.Geom.Rectangle} rect - Rectangle A
- * @param {Phaser.Geom.Rectangle} toCompare - Rectangle B
+ * @param {Phaser.Geom.Rectangle} rect - [description]
+ * @param {Phaser.Geom.Rectangle} toCompare - [description]
  *
- * @return {boolean} `true` if the rectangles' properties are an exact match, otherwise `false`.
+ * @return {boolean} [description]
  */
 var Equals = function (rect, toCompare)
 {

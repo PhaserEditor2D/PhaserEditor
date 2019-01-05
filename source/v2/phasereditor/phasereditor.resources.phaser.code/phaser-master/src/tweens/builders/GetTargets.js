@@ -7,16 +7,14 @@
 var GetValue = require('../../utils/object/GetValue');
 
 /**
- * Extracts an array of targets from a Tween configuration object.
- *
- * The targets will be looked for in a `targets` property. If it's a function, its return value will be used as the result.
+ * [description]
  *
  * @function Phaser.Tweens.Builders.GetTargets
  * @since 3.0.0
  *
- * @param {object} config - The configuration object to use.
+ * @param {object} config - [description]
  *
- * @return {array} An array of targets (may contain only one element), or `null` if no targets were specified.
+ * @return {array} [description]
  */
 var GetTargets = function (config)
 {

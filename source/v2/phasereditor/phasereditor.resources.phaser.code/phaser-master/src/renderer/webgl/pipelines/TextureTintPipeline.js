@@ -35,7 +35,7 @@ var WebGLPipeline = require('../WebGLPipeline');
  * @constructor
  * @since 3.0.0
  *
- * @param {object} config - The configuration options for this Texture Tint Pipeline, as described above.
+ * @param {object} config - [description]
  */
 var TextureTintPipeline = new Class({
 
@@ -420,7 +420,7 @@ var TextureTintPipeline = new Class({
 
         gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.bytes.subarray(0, vertexCount * vertexSize));
 
-        for (var index = 0; index < batchCount - 1; index++)
+        for (var index = 0; index < batches.length - 1; index++)
         {
             batch = batches[index];
             batchNext = batches[index + 1];
@@ -453,7 +453,7 @@ var TextureTintPipeline = new Class({
         }
 
         // Left over data
-        batch = batches[batchCount - 1];
+        batch = batches[batches.length - 1];
 
         if (batch.textures.length > 0)
         {

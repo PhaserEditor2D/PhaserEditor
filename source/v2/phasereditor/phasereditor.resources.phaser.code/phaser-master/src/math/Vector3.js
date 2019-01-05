@@ -543,7 +543,7 @@ var Vector3 = new Class({
     },
 
     /**
-     * Transforms the coordinates of this Vector3 with the given Matrix4.
+     * [description]
      *
      * @method Phaser.Math.Vector3#transformCoordinates
      * @since 3.0.0

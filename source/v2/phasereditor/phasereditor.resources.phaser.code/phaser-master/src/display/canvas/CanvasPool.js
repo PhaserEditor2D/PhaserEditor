@@ -38,7 +38,7 @@ var CanvasPool = function ()
      * @param {integer} [canvasType=Phaser.CANVAS] - The type of the Canvas. Either `Phaser.CANVAS` or `Phaser.WEBGL`.
      * @param {boolean} [selfParent=false] - Use the generated Canvas element as the parent?
      *
-     * @return {HTMLCanvasElement} The canvas element that was created or pulled from the pool
+     * @return {HTMLCanvasElement} [description]
      */
     var create = function (parent, width, height, canvasType, selfParent)
     {
@@ -98,7 +98,7 @@ var CanvasPool = function ()
      * @param {integer} [width=1] - The width of the Canvas.
      * @param {integer} [height=1] - The height of the Canvas.
      *
-     * @return {HTMLCanvasElement} The created canvas.
+     * @return {HTMLCanvasElement} [description]
      */
     var create2D = function (parent, width, height)
     {
@@ -115,7 +115,7 @@ var CanvasPool = function ()
      * @param {integer} [width=1] - The width of the Canvas.
      * @param {integer} [height=1] - The height of the Canvas.
      *
-     * @return {HTMLCanvasElement} The created WebGL canvas.
+     * @return {HTMLCanvasElement} [description]
      */
     var createWebGL = function (parent, width, height)
     {
@@ -130,7 +130,7 @@ var CanvasPool = function ()
      *
      * @param {integer} [canvasType=Phaser.CANVAS] - The type of the Canvas. Either `Phaser.CANVAS` or `Phaser.WEBGL`.
      *
-     * @return {HTMLCanvasElement} The first free canvas, or `null` if a WebGL canvas was requested or if the pool doesn't have free canvases.
+     * @return {HTMLCanvasElement} [description]
      */
     var first = function (canvasType)
     {
@@ -161,7 +161,7 @@ var CanvasPool = function ()
      * @function Phaser.Display.Canvas.CanvasPool.remove
      * @since 3.0.0
      *
-     * @param {*} parent - The canvas or the parent of the canvas to free.
+     * @param {*} parent - [description]
      */
     var remove = function (parent)
     {
@@ -185,7 +185,7 @@ var CanvasPool = function ()
      * @function Phaser.Display.Canvas.CanvasPool.total
      * @since 3.0.0
      *
-     * @return {integer} The number of used canvases.
+     * @return {integer} [description]
      */
     var total = function ()
     {
@@ -208,7 +208,7 @@ var CanvasPool = function ()
      * @function Phaser.Display.Canvas.CanvasPool.free
      * @since 3.0.0
      *
-     * @return {integer} The number of free canvases.
+     * @return {integer} [description]
      */
     var free = function ()
     {

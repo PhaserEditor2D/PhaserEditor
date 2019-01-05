@@ -5,14 +5,14 @@
  */
 
 /**
- * Calculates the width/height ratio of a rectangle.
+ * [description]
  *
  * @function Phaser.Geom.Rectangle.GetAspectRatio
  * @since 3.0.0
  *
- * @param {Phaser.Geom.Rectangle} rect - The rectangle.
+ * @param {Phaser.Geom.Rectangle} rect - [description]
  *
- * @return {number} The width/height ratio of the rectangle.
+ * @return {number} [description]
  */
 var GetAspectRatio = function (rect)
 {

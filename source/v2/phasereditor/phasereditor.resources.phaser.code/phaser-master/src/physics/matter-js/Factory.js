@@ -16,14 +16,14 @@ var PointerConstraint = require('./PointerConstraint');
 
 /**
  * @classdesc
- * The Matter Factory can create different types of bodies and them to a physics world.
+ * [description]
  *
  * @class Factory
  * @memberof Phaser.Physics.Matter
  * @constructor
  * @since 3.0.0
  *
- * @param {Phaser.Physics.Matter.World} world - The Matter World which this Factory adds to.
+ * @param {Phaser.Physics.Matter.World} world - [description]
  */
 var Factory = new Class({
 
@@ -32,7 +32,7 @@ var Factory = new Class({
     function Factory (world)
     {
         /**
-         * The Matter World which this Factory adds to.
+         * [description]
          *
          * @name Phaser.Physics.Matter.Factory#world
          * @type {Phaser.Physics.Matter.World}
@@ -41,7 +41,7 @@ var Factory = new Class({
         this.world = world;
 
         /**
-         * The Scene which this Factory's Matter World belongs to.
+         * [description]
          *
          * @name Phaser.Physics.Matter.Factory#scene
          * @type {Phaser.Scene}
@@ -60,16 +60,16 @@ var Factory = new Class({
     },
 
     /**
-     * Creates a new rigid rectangular Body and adds it to the World.
+     * [description]
      *
      * @method Phaser.Physics.Matter.Factory#rectangle
      * @since 3.0.0
      *
-     * @param {number} x - The X coordinate of the center of the Body.
-     * @param {number} y - The Y coordinate of the center of the Body.
-     * @param {number} width - The width of the Body.
-     * @param {number} height - The height of the Body.
-     * @param {object} options - An object of properties to set on the Body. You can also specify a `chamfer` property to automatically adjust the body.
+     * @param {number} x - [description]
+     * @param {number} y - [description]
+     * @param {number} width - [description]
+     * @param {number} height - [description]
+     * @param {object} options - [description]
      *
      * @return {MatterJS.Body} A Matter JS Body.
      */
@@ -83,17 +83,17 @@ var Factory = new Class({
     },
 
     /**
-     * Creates a new rigid trapezoidal Body and adds it to the World.
+     * [description]
      *
      * @method Phaser.Physics.Matter.Factory#trapezoid
      * @since 3.0.0
      *
-     * @param {number} x - The X coordinate of the center of the Body.
-     * @param {number} y - The Y coordinate of the center of the Body.
-     * @param {number} width - The width of the trapezoid of the Body.
-     * @param {number} height - The height of the trapezoid of the Body.
-     * @param {number} slope - The slope of the trapezoid. 0 creates a rectangle, while 1 creates a triangle. Positive values make the top side shorter, while negative values make the bottom side shorter.
-     * @param {object} options - An object of properties to set on the Body. You can also specify a `chamfer` property to automatically adjust the body.
+     * @param {number} x - [description]
+     * @param {number} y - [description]
+     * @param {number} width - [description]
+     * @param {number} height - [description]
+     * @param {number} slope - [description]
+     * @param {object} options - [description]
      *
      * @return {MatterJS.Body} A Matter JS Body.
      */
@@ -107,16 +107,16 @@ var Factory = new Class({
     },
 
     /**
-     * Creates a new rigid circular Body and adds it to the World.
+     * [description]
      *
      * @method Phaser.Physics.Matter.Factory#circle
      * @since 3.0.0
      *
-     * @param {number} x - The X coordinate of the center of the Body.
-     * @param {number} y - The Y coordinate of the center of the Body.
-     * @param {number} radius - The radius of the circle.
-     * @param {object} options - An object of properties to set on the Body. You can also specify a `chamfer` property to automatically adjust the body.
-     * @param {number} maxSides - The maximum amount of sides to use for the polygon which will approximate this circle.
+     * @param {number} x - [description]
+     * @param {number} y - [description]
+     * @param {number} radius - [description]
+     * @param {object} options - [description]
+     * @param {number} maxSides - [description]
      *
      * @return {MatterJS.Body} A Matter JS Body.
      */
@@ -130,16 +130,16 @@ var Factory = new Class({
     },
 
     /**
-     * Creates a new rigid polygonal Body and adds it to the World.
+     * [description]
      *
      * @method Phaser.Physics.Matter.Factory#polygon
      * @since 3.0.0
      *
-     * @param {number} x - The X coordinate of the center of the Body.
-     * @param {number} y - The Y coordinate of the center of the Body.
-     * @param {number} sides - The number of sides the polygon will have.
-     * @param {number} radius - The "radius" of the polygon, i.e. the distance from its center to any vertex. This is also the radius of its circumcircle.
-     * @param {object} options - An object of properties to set on the Body. You can also specify a `chamfer` property to automatically adjust the body.
+     * @param {number} x - [description]
+     * @param {number} y - [description]
+     * @param {number} sides - [description]
+     * @param {number} radius - [description]
+     * @param {object} options - [description]
      *
      * @return {MatterJS.Body} A Matter JS Body.
      */
@@ -153,14 +153,13 @@ var Factory = new Class({
     },
 
     /**
-     * Creates a body using the supplied vertices (or an array containing multiple sets of vertices) and adds it to the World.
-     * If the vertices are convex, they will pass through as supplied. Otherwise, if the vertices are concave, they will be decomposed. Note that this process is not guaranteed to support complex sets of vertices, e.g. ones with holes.
+     * [description]
      *
      * @method Phaser.Physics.Matter.Factory#fromVertices
      * @since 3.0.0
      *
-     * @param {number} x - The X coordinate of the center of the Body.
-     * @param {number} y - The Y coordinate of the center of the Body.
+     * @param {number} x - [description]
+     * @param {number} y - [description]
      * @param {array} vertexSets - [description]
      * @param {object} options - [description]
      * @param {boolean} flagInternal - [description]

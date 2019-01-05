@@ -10,14 +10,14 @@ var TimerEvent = require('./TimerEvent');
 
 /**
  * @classdesc
- * The Clock is a Scene plugin which creates and updates Timer Events for its Scene.
+ * [description]
  *
  * @class Clock
  * @memberof Phaser.Time
  * @constructor
  * @since 3.0.0
  *
- * @param {Phaser.Scene} scene - The Scene which owns this Clock.
+ * @param {Phaser.Scene} scene - [description]
  */
 var Clock = new Class({
 
@@ -26,7 +26,7 @@ var Clock = new Class({
     function Clock (scene)
     {
         /**
-         * The Scene which owns this Clock.
+         * [description]
          *
          * @name Phaser.Time.Clock#scene
          * @type {Phaser.Scene}
@@ -35,7 +35,7 @@ var Clock = new Class({
         this.scene = scene;
 
         /**
-         * The Scene Systems object of the Scene which owns this Clock.
+         * [description]
          *
          * @name Phaser.Time.Clock#systems
          * @type {Phaser.Scenes.Systems}
@@ -44,9 +44,7 @@ var Clock = new Class({
         this.systems = scene.sys;
 
         /**
-         * The current time of the Clock, in milliseconds.
-         *
-         * If accessed externally, this is equivalent to the `time` parameter normally passed to a Scene's `update` method.
+         * [description]
          *
          * @name Phaser.Time.Clock#now
          * @type {number}
@@ -58,9 +56,7 @@ var Clock = new Class({
         //  which then influences anything using this Clock for calculations, like TimerEvents
 
         /**
-         * The scale of the Clock's time delta.
-         * 
-         * The time delta is the time elapsed between two consecutive frames and influences the speed of time for this Clock and anything which uses it, such as its Timer Events. Values higher than 1 increase the speed of time, while values smaller than 1 decrease it. A value of 0 freezes time and is effectively equivalent to pausing the Clock.
+         * [description]
          *
          * @name Phaser.Time.Clock#timeScale
          * @type {number}
@@ -70,9 +66,7 @@ var Clock = new Class({
         this.timeScale = 1;
 
         /**
-         * Whether the Clock is paused (`true`) or active (`false`).
-         *
-         * When paused, the Clock will not update any of its Timer Events, thus freezing time.
+         * [description]
          *
          * @name Phaser.Time.Clock#paused
          * @type {boolean}
@@ -82,7 +76,7 @@ var Clock = new Class({
         this.paused = false;
 
         /**
-         * An array of all Timer Events whose delays haven't expired - these are actively updating Timer Events.
+         * [description]
          *
          * @name Phaser.Time.Clock#_active
          * @type {Phaser.Time.TimerEvent[]}
@@ -93,7 +87,7 @@ var Clock = new Class({
         this._active = [];
 
         /**
-         * An array of all Timer Events which will be added to the Clock at the start of the frame.
+         * [description]
          *
          * @name Phaser.Time.Clock#_pendingInsertion
          * @type {Phaser.Time.TimerEvent[]}
@@ -104,7 +98,7 @@ var Clock = new Class({
         this._pendingInsertion = [];
 
         /**
-         * An array of all Timer Events which will be removed from the Clock at the start of the frame.
+         * [description]
          *
          * @name Phaser.Time.Clock#_pendingRemoval
          * @type {Phaser.Time.TimerEvent[]}
@@ -150,14 +144,14 @@ var Clock = new Class({
     },
 
     /**
-     * Creates a Timer Event and adds it to the Clock at the start of the frame.
+     * [description]
      *
      * @method Phaser.Time.Clock#addEvent
      * @since 3.0.0
      *
-     * @param {TimerEventConfig} config - The configuration for the Timer Event.
+     * @param {TimerEventConfig} config - [description]
      *
-     * @return {Phaser.Time.TimerEvent} The Timer Event which was created.
+     * @return {Phaser.Time.TimerEvent} [description]
      */
     addEvent: function (config)
     {
@@ -169,19 +163,17 @@ var Clock = new Class({
     },
 
     /**
-     * Creates a Timer Event and adds it to the Clock at the start of the frame.
-     *
-     * This is a shortcut for {@link #addEvent} which can be shorter and is compatible with the syntax of the GreenSock Animation Platform (GSAP).
+     * [description]
      *
      * @method Phaser.Time.Clock#delayedCall
      * @since 3.0.0
      *
-     * @param {number} delay - The delay of the function call, in milliseconds.
-     * @param {function} callback - The function to call after the delay expires.
-     * @param {Array.<*>} args - The arguments to call the function with.
-     * @param {*} callbackScope - The scope (`this` object) to call the function with.
+     * @param {number} delay - [description]
+     * @param {function} callback - [description]
+     * @param {Array.<*>} args - [description]
+     * @param {*} callbackScope - [description]
      *
-     * @return {Phaser.Time.TimerEvent} The Timer Event which was created.
+     * @return {Phaser.Time.TimerEvent} [description]
      */
     delayedCall: function (delay, callback, args, callbackScope)
     {
@@ -189,12 +181,12 @@ var Clock = new Class({
     },
 
     /**
-     * Clears and recreates the array of pending Timer Events.
+     * [description]
      *
      * @method Phaser.Time.Clock#clearPendingEvents
      * @since 3.0.0
      *
-     * @return {Phaser.Time.Clock} This Clock object.
+     * @return {Phaser.Time.Clock} [description]
      */
     clearPendingEvents: function ()
     {
@@ -204,12 +196,12 @@ var Clock = new Class({
     },
 
     /**
-     * Schedules all active Timer Events for removal at the start of the frame.
+     * [description]
      *
      * @method Phaser.Time.Clock#removeAllEvents
      * @since 3.0.0
      *
-     * @return {Phaser.Time.Clock} This Clock object.
+     * @return {Phaser.Time.Clock} [description]
      */
     removeAllEvents: function ()
     {
@@ -219,7 +211,7 @@ var Clock = new Class({
     },
 
     /**
-     * Updates the arrays of active and pending Timer Events. Called at the start of the frame.
+     * [description]
      *
      * @method Phaser.Time.Clock#preUpdate
      * @since 3.0.0
@@ -270,7 +262,7 @@ var Clock = new Class({
     },
 
     /**
-     * Updates the Clock's internal time and all of its Timer Events.
+     * [description]
      *
      * @method Phaser.Time.Clock#update
      * @since 3.0.0

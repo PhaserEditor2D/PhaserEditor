@@ -284,7 +284,7 @@ var Tween = new Class({
     },
 
     /**
-     * Returns the current value of the Tween.
+     * [description]
      *
      * @method Phaser.Tweens.Tween#getValue
      * @since 3.0.0
@@ -402,7 +402,7 @@ var Tween = new Class({
     },
 
     /**
-     * Restarts the tween from the beginning.
+     * [description]
      *
      * @method Phaser.Tweens.Tween#restart
      * @since 3.0.0
@@ -828,9 +828,9 @@ var Tween = new Class({
      * @method Phaser.Tweens.Tween#setCallback
      * @since 3.0.0
      *
-     * @param {string} type - Type of the callback.
-     * @param {function} callback - Callback function.
-     * @param {array} [params] - An array of parameters for specified callbacks types.
+     * @param {string} type - [description]
+     * @param {function} callback - [description]
+     * @param {array} [params] - [description]
      * @param {object} [scope] - [description]
      *
      * @return {Phaser.Tweens.Tween} This Tween object.
@@ -1126,7 +1126,7 @@ var Tween = new Class({
      * @since 3.0.0
      *
      * @param {Phaser.Tweens.Tween} tween - [description]
-     * @param {Phaser.Tweens.TweenDataConfig} tweenData - A TweenData object contains all the information related to a tween. Created by and belongs to a Phaser.Tween object.
+     * @param {Phaser.Tweens.TweenDataConfig} tweenData - [description]
      * @param {number} diff - [description]
      *
      * @return {integer} The state of this Tween.

@@ -7,15 +7,15 @@
 var HasValue = require('../../../utils/object/HasValue');
 
 /**
- * Returns a new object that only contains the `keys` that were found on the object provided. If no `keys` are found, an empty object is returned.
+ * [description]
  *
  * @function Phaser.Tilemaps.Parsers.Tiled.Pick
  * @since 3.0.0
  *
- * @param {object} object - The object to pick the provided keys from.
- * @param {array} keys - An array of properties to retrieve from the provided object.
+ * @param {object} object - [description]
+ * @param {array} keys - [description]
  *
- * @return {object} A new object that only contains the `keys` that were found on the provided object. If no `keys` were found, an empty object will be returned.
+ * @return {object} [description]
  */
 var Pick = function (object, keys)
 {

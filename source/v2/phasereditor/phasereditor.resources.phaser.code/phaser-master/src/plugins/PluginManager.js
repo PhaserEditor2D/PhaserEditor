@@ -406,8 +406,6 @@ var PluginManager = new Class({
      * @param {boolean} [start=false] - Automatically start the plugin running? This is always `true` if you provide a mapping value.
      * @param {string} [mapping] - If this plugin is injected into the Phaser.Scene class, this is the property key to use.
      * @param {any} [data] - A value passed to the plugin's `init` method.
-     *
-     * @return {?Phaser.Plugins.BasePlugin} The plugin that was started, or `null` if `start` was false, or game isn't yet booted.
      */
     install: function (key, plugin, start, mapping, data)
     {
@@ -418,13 +416,13 @@ var PluginManager = new Class({
         if (typeof plugin !== 'function')
         {
             console.warn('Invalid Plugin: ' + key);
-            return null;
+            return;
         }
 
         if (PluginCache.hasCustom(key))
         {
             console.warn('Plugin key in use: ' + key);
-            return null;
+            return;
         }
 
         if (mapping !== null)
@@ -446,8 +444,6 @@ var PluginManager = new Class({
                 return this.start(key);
             }
         }
-
-        return null;
     },
 
     /**

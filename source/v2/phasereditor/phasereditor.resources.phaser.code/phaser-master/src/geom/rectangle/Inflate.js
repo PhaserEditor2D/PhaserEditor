@@ -6,22 +6,23 @@
 
 var CenterOn = require('./CenterOn');
 
+//  Increases the size of the Rectangle object by the specified amounts.
+//  The center point of the Rectangle object stays the same, and its size increases
+//  to the left and right by the x value, and to the top and the bottom by the y value.
 
 /**
- * Increases the size of a Rectangle by a specified amount.
- *
- * The center of the Rectangle stays the same. The amounts are added to each side, so the actual increase in width or height is two times bigger than the respective argument.
+ * [description]
  *
  * @function Phaser.Geom.Rectangle.Inflate
  * @since 3.0.0
  *
  * @generic {Phaser.Geom.Rectangle} O - [rect,$return]
  *
- * @param {Phaser.Geom.Rectangle} rect - The Rectangle to inflate.
- * @param {number} x - How many pixels the left and the right side should be moved by horizontally.
- * @param {number} y - How many pixels the top and the bottom side should be moved by vertically.
+ * @param {Phaser.Geom.Rectangle} rect - [description]
+ * @param {number} x - [description]
+ * @param {number} y - [description]
  *
- * @return {Phaser.Geom.Rectangle} The inflated Rectangle.
+ * @return {Phaser.Geom.Rectangle} [description]
  */
 var Inflate = function (rect, x, y)
 {

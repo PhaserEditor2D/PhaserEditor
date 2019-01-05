@@ -121,14 +121,6 @@ var PhysicsGroup = new Class({
                 singleConfig.removeCallback = this.removeCallbackHandler;
             });
         }
-        else
-        {
-            // config is not defined and children is not a plain object nor an array of plain objects
-            config = {
-                createCallback: this.createCallbackHandler,
-                removeCallback: this.removeCallbackHandler
-            }
-        }
 
         /**
          * The physics simulation.

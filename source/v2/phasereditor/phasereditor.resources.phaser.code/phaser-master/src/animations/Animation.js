@@ -803,7 +803,7 @@ var Animation = new Class({
     },
 
     /**
-     * Sets the texture frame the animation uses for rendering.
+     * [description]
      *
      * @method Phaser.Animations.Animation#setFrame
      * @since 3.0.0
@@ -824,7 +824,7 @@ var Animation = new Class({
     },
 
     /**
-     * Converts the animation data to JSON.
+     * [description]
      *
      * @method Phaser.Animations.Animation#toJSON
      * @since 3.0.0

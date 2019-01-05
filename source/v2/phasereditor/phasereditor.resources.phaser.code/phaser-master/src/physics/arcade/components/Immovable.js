@@ -5,7 +5,7 @@
  */
 
 /**
- * Provides methods used for setting the immovable properties of an Arcade Physics Body.
+ * [description]
  *
  * @name Phaser.Physics.Arcade.Components.Immovable
  * @since 3.0.0
@@ -13,12 +13,12 @@
 var Immovable = {
 
     /**
-     * Sets Whether this Body can be moved by collisions with another Body.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Immovable#setImmovable
      * @since 3.0.0
      *
-     * @param {boolean} [value=true] - Sets if this body can be moved by collisions with another Body.
+     * @param {boolean} [value=true] - [description]
      *
      * @return {this} This Game Object.
      */

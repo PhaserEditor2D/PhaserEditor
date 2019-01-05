@@ -16,7 +16,7 @@ var tmpVec2 = new Vector2();
 
 /**
  * @classdesc
- * A LineCurve is a "curve" comprising exactly two points (a line segment).
+ * [description]
  *
  * @class Line
  * @extends Phaser.Curves.Curve
@@ -24,8 +24,8 @@ var tmpVec2 = new Vector2();
  * @constructor
  * @since 3.0.0
  *
- * @param {(Phaser.Math.Vector2|number[])} p0 - The first endpoint.
- * @param {Phaser.Math.Vector2} [p1] - The second endpoint.
+ * @param {(Phaser.Math.Vector2|number[])} p0 - [description]
+ * @param {Phaser.Math.Vector2} [p1] - [description]
  */
 var LineCurve = new Class({
 
@@ -45,7 +45,7 @@ var LineCurve = new Class({
         }
 
         /**
-         * The first endpoint.
+         * [description]
          *
          * @name Phaser.Curves.Line#p0
          * @type {Phaser.Math.Vector2}
@@ -54,7 +54,7 @@ var LineCurve = new Class({
         this.p0 = p0;
 
         /**
-         * The second endpoint.
+         * [description]
          *
          * @name Phaser.Curves.Line#p1
          * @type {Phaser.Math.Vector2}
@@ -102,14 +102,14 @@ var LineCurve = new Class({
     },
 
     /**
-     * Gets the resolution of the line.
+     * [description]
      *
      * @method Phaser.Curves.Line#getResolution
      * @since 3.0.0
      *
-     * @param {number} [divisions=1] - The number of divisions to consider.
+     * @param {number} [divisions=1] - [description]
      *
-     * @return {number} The resolution. Equal to the number of divisions.
+     * @return {number} [description]
      */
     getResolution: function (divisions)
     {
@@ -148,7 +148,7 @@ var LineCurve = new Class({
     // Line curve is linear, so we can overwrite default getPointAt
 
     /**
-     * Gets a point at a given position on the line.
+     * [description]
      *
      * @method Phaser.Curves.Line#getPointAt
      * @since 3.0.0
@@ -166,14 +166,14 @@ var LineCurve = new Class({
     },
 
     /**
-     * Gets the slope of the line as a unit vector.
+     * [description]
      *
      * @method Phaser.Curves.Line#getTangent
      * @since 3.0.0
      * 
      * @generic {Phaser.Math.Vector2} O - [out,$return]
      *
-     * @return {Phaser.Math.Vector2} The tangent vector.
+     * @return {Phaser.Math.Vector2} [description]
      */
     getTangent: function ()
     {
@@ -208,7 +208,7 @@ var LineCurve = new Class({
     },
 
     /**
-     * Gets a JSON representation of the line.
+     * [description]
      *
      * @method Phaser.Curves.Line#toJSON
      * @since 3.0.0
@@ -229,14 +229,14 @@ var LineCurve = new Class({
 });
 
 /**
- * Configures this line from a JSON representation.
+ * [description]
  *
  * @function Phaser.Curves.Line.fromJSON
  * @since 3.0.0
  *
  * @param {JSONCurve} data - The JSON object containing this curve data.
  *
- * @return {Phaser.Curves.Line} A new LineCurve object.
+ * @return {Phaser.Curves.Line} [description]
  */
 LineCurve.fromJSON = function (data)
 {

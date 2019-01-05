@@ -5,15 +5,15 @@
  */
 
 /**
- * Decomposes a Triangle into an array of its points.
+ * [description]
  *
  * @function Phaser.Geom.Triangle.Decompose
  * @since 3.0.0
  *
- * @param {Phaser.Geom.Triangle} triangle - The Triangle to decompose.
- * @param {array} [out] - An array to store the points into.
+ * @param {Phaser.Geom.Triangle} triangle - [description]
+ * @param {array} [out] - [description]
  *
- * @return {array} The provided `out` array, or a new array if none was provided, with three objects with `x` and `y` properties representing each point of the Triangle appended to it.
+ * @return {array} [description]
  */
 var Decompose = function (triangle, out)
 {

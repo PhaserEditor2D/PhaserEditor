@@ -727,11 +727,7 @@ var TransformMatrix = new Class({
     },
 
     /**
-     * Decompose this Matrix into its translation, scale and rotation values using QR decomposition.
-     * 
-     * The result must be applied in the following order to reproduce the current matrix:
-     * 
-     * translate -> rotate -> scale
+     * Decompose this Matrix into its translation, scale and rotation values.
      *
      * @method Phaser.GameObjects.Components.TransformMatrix#decomposeMatrix
      * @since 3.0.0
@@ -754,33 +750,21 @@ var TransformMatrix = new Class({
         var c = matrix[2];
         var d = matrix[3];
 
-        var determ = a * d - b * c;
+        var a2 = a * a;
+        var b2 = b * b;
+        var c2 = c * c;
+        var d2 = d * d;
+
+        var sx = Math.sqrt(a2 + c2);
+        var sy = Math.sqrt(b2 + d2);
 
         decomposedMatrix.translateX = matrix[4];
         decomposedMatrix.translateY = matrix[5];
 
-        if (a || b)
-        {
-            var r = Math.sqrt(a * a + b * b);
+        decomposedMatrix.scaleX = sx;
+        decomposedMatrix.scaleY = sy;
 
-            decomposedMatrix.rotation = (b > 0) ? Math.acos(a / r) : -Math.acos(a / r);
-            decomposedMatrix.scaleX = r;
-            decomposedMatrix.scaleY = determ / r;
-        }
-        else if (c || d)
-        {
-            var s = Math.sqrt(c * c + d * d);
-
-            decomposedMatrix.rotation = Math.PI * 0.5 - (d > 0 ? Math.acos(-c / s) : -Math.acos(c / s));
-            decomposedMatrix.scaleX = determ / s;
-            decomposedMatrix.scaleY = s;
-        }
-        else
-        {
-            decomposedMatrix.rotation = 0;
-            decomposedMatrix.scaleX = 0;
-            decomposedMatrix.scaleY = 0;
-        }
+        decomposedMatrix.rotation = Math.acos(a / sx) * (Math.atan(-c / a) < 0 ? -1 : 1);
 
         return decomposedMatrix;
     },

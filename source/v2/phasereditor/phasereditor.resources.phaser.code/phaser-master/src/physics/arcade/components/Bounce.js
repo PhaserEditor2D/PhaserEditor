@@ -5,7 +5,7 @@
  */
 
 /**
- * Provides methods used for setting the bounce properties of an Arcade Physics Body.
+ * [description]
  *
  * @name Phaser.Physics.Arcade.Components.Bounce
  * @since 3.0.0
@@ -13,16 +13,13 @@
 var Bounce = {
 
     /**
-     * Sets the bounce values of this body.
-     * 
-     * Bounce is the amount of restitution, or elasticity, the body has when it collides with another object.
-     * A value of 1 means that it will retain its full velocity after the rebound. A value of 0 means it will not rebound at all.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Bounce#setBounce
      * @since 3.0.0
      *
-     * @param {number} x - The amount of horizontal bounce to apply on collision. A float, typically between 0 and 1.
-     * @param {number} [y=x] - The amount of vertical bounce to apply on collision. A float, typically between 0 and 1.
+     * @param {number} x - [description]
+     * @param {number} [y=x] - [description]
      *
      * @return {this} This Game Object.
      */
@@ -34,12 +31,12 @@ var Bounce = {
     },
 
     /**
-     * Sets the horizontal bounce value for this body.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Bounce#setBounceX
      * @since 3.0.0
      *
-     * @param {number} value - The amount of horizontal bounce to apply on collision. A float, typically between 0 and 1.
+     * @param {number} value - [description]
      *
      * @return {this} This Game Object.
      */
@@ -51,12 +48,12 @@ var Bounce = {
     },
 
     /**
-     * Sets the vertical bounce value for this body.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Bounce#setBounceY
      * @since 3.0.0
      *
-     * @param {number} value - The amount of vertical bounce to apply on collision. A float, typically between 0 and 1.
+     * @param {number} value - [description]
      *
      * @return {this} This Game Object.
      */
@@ -68,12 +65,12 @@ var Bounce = {
     },
 
     /**
-     * Sets if this body should collide with the world bounds or not.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Bounce#setCollideWorldBounds
      * @since 3.0.0
      *
-     * @param {boolean} value - `true` if this body should collide with the world bounds, otherwise `false`.
+     * @param {boolean} value - [description]
      *
      * @return {this} This Game Object.
      */

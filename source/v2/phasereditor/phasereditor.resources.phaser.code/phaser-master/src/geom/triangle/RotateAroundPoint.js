@@ -7,18 +7,18 @@
 var RotateAroundXY = require('./RotateAroundXY');
 
 /**
- * Rotates a Triangle at a certain angle about a given Point or object with public `x` and `y` properties.
+ * [description]
  *
  * @function Phaser.Geom.Triangle.RotateAroundPoint
  * @since 3.0.0
  *
  * @generic {Phaser.Geom.Triangle} O - [triangle,$return]
  *
- * @param {Phaser.Geom.Triangle} triangle - The Triangle to rotate.
- * @param {Phaser.Geom.Point} point - The Point to rotate the Triangle about.
- * @param {number} angle - The angle by which to rotate the Triangle, in radians.
+ * @param {Phaser.Geom.Triangle} triangle - [description]
+ * @param {Phaser.Geom.Point} point - [description]
+ * @param {number} angle - [description]
  *
- * @return {Phaser.Geom.Triangle} The rotated Triangle.
+ * @return {Phaser.Geom.Triangle} [description]
  */
 var RotateAroundPoint = function (triangle, point, angle)
 {

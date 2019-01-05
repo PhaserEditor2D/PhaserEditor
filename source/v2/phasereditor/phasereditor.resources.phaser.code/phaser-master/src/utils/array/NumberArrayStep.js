@@ -41,7 +41,7 @@ var RoundAwayFromZero = require('../../math/RoundAwayFromZero');
  * @param {number} [end=null] - The end of the range.
  * @param {number} [step=1] - The value to increment or decrement by.
  *
- * @return {number[]} The array of number values.
+ * @return {number[]} [description]
  */
 var NumberArrayStep = function (start, end, step)
 {

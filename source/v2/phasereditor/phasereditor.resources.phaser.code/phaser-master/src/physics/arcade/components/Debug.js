@@ -5,7 +5,7 @@
  */
 
 /**
- * Provides methods used for setting the debug properties of an Arcade Physics Body.
+ * [description]
  *
  * @name Phaser.Physics.Arcade.Components.Debug
  * @since 3.0.0
@@ -13,17 +13,14 @@
 var Debug = {
 
     /**
-     * Sets the debug values of this body.
-     * 
-     * Bodies will only draw their debug if debug has been enabled for Arcade Physics as a whole.
-     * Note that there is a performance cost in drawing debug displays. It should never be used in production.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Debug#setDebug
      * @since 3.0.0
      *
-     * @param {boolean} showBody - Set to `true` to have this body render its outline to the debug display.
-     * @param {boolean} showVelocity - Set to `true` to have this body render a velocity marker to the debug display.
-     * @param {number} bodyColor - The color of the body outline when rendered to the debug display.
+     * @param {boolean} showBody - [description]
+     * @param {boolean} showVelocity - [description]
+     * @param {number} bodyColor - [description]
      *
      * @return {this} This Game Object.
      */
@@ -37,12 +34,12 @@ var Debug = {
     },
 
     /**
-     * Sets the color of the body outline when it renders to the debug display.
+     * [description]
      *
      * @method Phaser.Physics.Arcade.Components.Debug#setDebugBodyColor
      * @since 3.0.0
      *
-     * @param {number} value - The color of the body outline when rendered to the debug display.
+     * @param {number} value - [description]
      *
      * @return {this} This Game Object.
      */
@@ -54,7 +51,7 @@ var Debug = {
     },
 
     /**
-     * Set to `true` to have this body render its outline to the debug display.
+     * [description]
      *
      * @name Phaser.Physics.Arcade.Components.Debug#debugShowBody
      * @type {boolean}
@@ -75,7 +72,7 @@ var Debug = {
     },
 
     /**
-     * Set to `true` to have this body render a velocity marker to the debug display.
+     * [description]
      *
      * @name Phaser.Physics.Arcade.Components.Debug#debugShowVelocity
      * @type {boolean}
@@ -96,7 +93,7 @@ var Debug = {
     },
 
     /**
-     * The color of the body outline when it renders to the debug display.
+     * [description]
      *
      * @name Phaser.Physics.Arcade.Components.Debug#debugBodyColor
      * @type {number}

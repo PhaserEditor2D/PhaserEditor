@@ -5,23 +5,18 @@
  */
 
 /**
- * Reverses the rows in the given Array Matrix.
+ * [description]
  *
  * @function Phaser.Utils.Array.Matrix.ReverseRows
  * @since 3.0.0
  *
- * @param {array} matrix - The array matrix to reverse the rows for.
+ * @param {array} matrix - [description]
  *
- * @return {array} The column reversed matrix.
+ * @return {array} [description]
  */
 var ReverseRows = function (matrix)
 {
-    for (var i = 0; i < matrix.length; i++)
-    {
-        matrix[i].reverse();
-    }
-
-    return matrix;
+    return matrix.reverse();
 };
 
 module.exports = ReverseRows;

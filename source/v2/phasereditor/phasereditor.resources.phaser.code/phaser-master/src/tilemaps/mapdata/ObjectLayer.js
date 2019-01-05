@@ -21,7 +21,7 @@ var GetFastValue = require('../../utils/object/GetFastValue');
  * @constructor
  * @since 3.0.0
  *
- * @param {object} [config] - The data for the layer from the Tiled JSON object.
+ * @param {object} [config] - [description]
  */
 var ObjectLayer = new Class({
 
@@ -32,7 +32,7 @@ var ObjectLayer = new Class({
         if (config === undefined) { config = {}; }
 
         /**
-         * The name of the Object Layer.
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#name
          * @type {string}
@@ -41,7 +41,7 @@ var ObjectLayer = new Class({
         this.name = GetFastValue(config, 'name', 'object layer');
 
         /**
-         * The opacity of the layer, between 0 and 1.
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#opacity
          * @type {number}
@@ -50,7 +50,7 @@ var ObjectLayer = new Class({
         this.opacity = GetFastValue(config, 'opacity', 1);
 
         /**
-         * The custom properties defined on the Object Layer, keyed by their name.
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#properties
          * @type {object}
@@ -59,7 +59,7 @@ var ObjectLayer = new Class({
         this.properties = GetFastValue(config, 'properties', {});
 
         /**
-         * The type of each custom property defined on the Object Layer, keyed by its name.
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#propertyTypes
          * @type {object}
@@ -68,7 +68,7 @@ var ObjectLayer = new Class({
         this.propertyTypes = GetFastValue(config, 'propertytypes', {});
 
         /**
-         * The type of the layer, which should be `objectgroup`.
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#type
          * @type {string}
@@ -77,7 +77,7 @@ var ObjectLayer = new Class({
         this.type = GetFastValue(config, 'type', 'objectgroup');
 
         /**
-         * Whether the layer is shown (`true`) or hidden (`false`).
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#visible
          * @type {boolean}
@@ -86,15 +86,7 @@ var ObjectLayer = new Class({
         this.visible = GetFastValue(config, 'visible', true);
 
         /**
-         * An array of all objects on this Object Layer.
-         *
-         * Each Tiled object corresponds to a JavaScript object in this array. It has an `id` (unique), `name` (as assigned in Tiled), `type` (as assigned in Tiled), `rotation` (in clockwise degrees), `properties` (if any), `visible` state (`true` if visible, `false` otherwise), `x` and `y` coordinates (in pixels, relative to the tilemap), and a `width` and `height` (in pixels).
-         *
-         * An object tile has a `gid` property (GID of the represented tile), a `flippedHorizontal` property, a `flippedVertical` property, and `flippedAntiDiagonal` property. The {@link http://docs.mapeditor.org/en/latest/reference/tmx-map-format/|Tiled documentation} contains information on flipping and rotation.
-         *
-         * Polylines have a `polyline` property, which is an array of objects corresponding to points, where each point has an `x` property and a `y` property. Polygons have an identically structured array in their `polygon` property. Text objects have a `text` property with the text's properties.
-         *
-         * Rectangles and ellipses have a `rectangle` or `ellipse` property set to `true`.
+         * [description]
          *
          * @name Phaser.Tilemaps.ObjectLayer#objects
          * @type {Phaser.GameObjects.GameObject[]}

@@ -10,10 +10,10 @@ var Class = require('../utils/Class');
  * @callback EachSetCallback
  * @generic E - [entry]
  *
- * @param {*} entry - The Set entry.
- * @param {number} index - The index of the entry within the Set.
+ * @param {*} entry - [description]
+ * @param {number} index - [description]
  *
- * @return {?boolean} The callback result.
+ * @return {?boolean} [description]
  */
 
 /**

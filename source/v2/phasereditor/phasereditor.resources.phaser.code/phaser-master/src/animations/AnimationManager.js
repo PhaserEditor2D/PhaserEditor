@@ -14,8 +14,8 @@ var Pad = require('../utils/string/Pad');
 /**
  * @typedef {object} JSONAnimationManager
  *
- * @property {JSONAnimation[]} anims - An array of all Animations added to the Animation Manager.
- * @property {number} globalTimeScale - The global time scale of the Animation Manager.
+ * @property {JSONAnimation[]} anims - [description]
+ * @property {number} globalTimeScale - [description]
  */
 
 /**
@@ -67,9 +67,7 @@ var AnimationManager = new Class({
         this.textureManager = null;
 
         /**
-         * The global time scale of the Animation Manager.
-         *
-         * This scales the time delta between two frames, thus influencing the speed of time for the Animation Manager.
+         * [description]
          *
          * @name Phaser.Animations.AnimationManager#globalTimeScale
          * @type {number}
@@ -79,9 +77,7 @@ var AnimationManager = new Class({
         this.globalTimeScale = 1;
 
         /**
-         * The Animations registered in the Animation Manager.
-         *
-         * This map should be modified with the {@link #add} and {@link #create} methods of the Animation Manager.
+         * [description]
          *
          * @name Phaser.Animations.AnimationManager#anims
          * @type {Phaser.Structs.Map.<string, Phaser.Animations.Animation>}
@@ -91,7 +87,7 @@ var AnimationManager = new Class({
         this.anims = new CustomMap();
 
         /**
-         * Whether the Animation Manager is paused along with all of its Animations.
+         * [description]
          *
          * @name Phaser.Animations.AnimationManager#paused
          * @type {boolean}
@@ -101,7 +97,7 @@ var AnimationManager = new Class({
         this.paused = false;
 
         /**
-         * The name of this Animation Manager.
+         * [description]
          *
          * @name Phaser.Animations.AnimationManager#name
          * @type {string}
@@ -113,7 +109,7 @@ var AnimationManager = new Class({
     },
 
     /**
-     * Registers event listeners after the Game boots.
+     * [description]
      *
      * @method Phaser.Animations.AnimationManager#boot
      * @since 3.0.0
@@ -126,14 +122,14 @@ var AnimationManager = new Class({
     },
 
     /**
-     * Adds an existing Animation to the Animation Manager.
+     * [description]
      *
      * @method Phaser.Animations.AnimationManager#add
      * @fires AddAnimationEvent
      * @since 3.0.0
      *
-     * @param {string} key - The key under which the Animation should be added. The Animation will be updated with it. Must be unique.
-     * @param {Phaser.Animations.Animation} animation - The Animation which should be added to the Animation Manager.
+     * @param {string} key - [description]
+     * @param {Phaser.Animations.Animation} animation - [description]
      *
      * @return {Phaser.Animations.AnimationManager} This Animation Manager.
      */
@@ -155,13 +151,13 @@ var AnimationManager = new Class({
     },
 
     /**
-     * Creates a new Animation and adds it to the Animation Manager.
+     * [description]
      *
      * @method Phaser.Animations.AnimationManager#create
      * @fires AddAnimationEvent
      * @since 3.0.0
      *
-     * @param {AnimationConfig} config - The configuration settings for the Animation.
+     * @param {AnimationConfig} config - [description]
      *
      * @return {Phaser.Animations.Animation} The Animation that was created.
      */
@@ -185,12 +181,12 @@ var AnimationManager = new Class({
     },
 
     /**
-     * Loads this Animation Manager's Animations and settings from a JSON object.
+     * [description]
      *
      * @method Phaser.Animations.AnimationManager#fromJSON
      * @since 3.0.0
      *
-     * @param {(string|JSONAnimationManager|JSONAnimation)} data - The JSON object to parse.
+     * @param {(string|JSONAnimationManager|JSONAnimation)} data - [description]
      * @param {boolean} [clearCurrentAnimations=false] - If set to `true`, the current animations will be removed (`anims.clear()`). If set to `false` (default), the animations in `data` will be added.
      *
      * @return {Phaser.Animations.Animation[]} An array containing all of the Animation objects that were created as a result of this call.
@@ -236,17 +232,19 @@ var AnimationManager = new Class({
     /**
      * @typedef {object} GenerateFrameNamesConfig
      *
-     * @property {string} [prefix=''] - The string to append to every resulting frame name if using a range or an array of `frames`.
-     * @property {integer} [start=0] - If `frames` is not provided, the number of the first frame to return.
-     * @property {integer} [end=0] - If `frames` is not provided, the number of the last frame to return.
-     * @property {string} [suffix=''] - The string to append to every resulting frame name if using a range or an array of `frames`.
-     * @property {integer} [zeroPad=0] - The minimum expected lengths of each resulting frame's number. Numbers will be left-padded with zeroes until they are this long, then prepended and appended to create the resulting frame name.
-     * @property {AnimationFrameConfig[]} [outputArray=[]] - The array to append the created configuration objects to.
-     * @property {boolean} [frames=false] - If provided as an array, the range defined by `start` and `end` will be ignored and these frame numbers will be used.
+     * @property {string} [prefix=''] - [description]
+     * @property {integer} [start=0] - [description]
+     * @property {integer} [end=0] - [description]
+     * @property {string} [suffix=''] - [description]
+     * @property {integer} [zeroPad=0] - [description]
+     * @property {AnimationFrameConfig[]} [outputArray=[]] - [description]
+     * @property {boolean} [frames=false] - [description]
      */
 
     /**
-     * [description]
+     * Generate an array of {@link AnimationFrameConfig} objects from a texture key and configuration object.
+     *
+     * Generates objects with string frame names, as configured by the given {@link AnimationFrameConfig}.
      *
      * @method Phaser.Animations.AnimationManager#generateFrameNames
      * @since 3.0.0
