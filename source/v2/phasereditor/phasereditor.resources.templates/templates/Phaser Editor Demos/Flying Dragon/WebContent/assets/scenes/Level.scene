@@ -258,6 +258,7 @@
   },
   "snapWidth": 80,
   "snapHeight": 62,
+  "autoLoadAssets": false,
   "borderHeight": 450,
   "createMethodName": "_create"
 }
