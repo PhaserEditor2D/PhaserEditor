@@ -118,6 +118,11 @@
                            id="phasereditor.ide.theme.light"
                            label="Phaser Editor">
                      </theme>
+                     <theme
+                           basestylesheeturi="css/phasereditor_simple.css"
+                           id="phasereditor.ide.theme.simple"
+                           label="Phaser Editor (Simple)">
+                     </theme>
                   </extension>
                   <extension
                         point="org.eclipse.ui.startup">
