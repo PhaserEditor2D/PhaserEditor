@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Phaser Examples Resources (Audio Assets)
+Bundle-SymbolicName: phasereditor.resources.phaser.examples.assets.audio
+Bundle-Version: 2.0.0.20181220
+Fragment-Host: phasereditor.resources.phaser.examples;bundle-version="2.0.0"
+Automatic-Module-Name: phasereditor.resources.phaser.examples.assets.audio
+Bundle-Vendor: Arian Fornaris

@@ -128,11 +128,23 @@ public class WebRunCore {
 		handlerList.addHandler(context);
 	}
 
+	private static void addPluginResourcesHandler(HandlerList handlerList, String url, String plugin,
+			String pluginFolder) {
+		out.println("Serving plugin folder: " + plugin + "/" + pluginFolder);
+
+		ContextHandler context = new ContextHandler(url);
+
+		ResourceHandler resourceHandler = new PluginResourcesHandler(plugin, pluginFolder);
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+		context.setHandler(resourceHandler);
+		handlerList.addHandler(context);
+
+	}
+
 	private static void addExampleServletsHandler(HandlerList handlerList) {
 		ServletHandler handler = new ServletHandler();
 
-		handler.addServletWithMapping(new ServletHolder(new PhaserExamplesServlet()),
-				"/phaser-examples");
+		handler.addServletWithMapping(new ServletHolder(new PhaserExamplesServlet()), "/phaser-examples");
 		handler.addServletWithMapping(new ServletHolder(new PhaserExampleCategoryServlet()),
 				"/phaser-examples-category");
 		handler.addServletWithMapping(new ServletHolder(new PhaserExampleServlet()), "/phaser-example");
@@ -155,11 +167,9 @@ public class WebRunCore {
 	}
 
 	private static void addAssetsHandler(HandlerList handlerList) {
-		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
+		// addStaticFilesHandler(handlerList, path, "/assets");
+		addPluginResourcesHandler(handlerList, "/assets", InspectCore.RESOURCES_EXAMPLES_PLUGIN,
 				"phaser3-examples/public/assets");
-		String path = file.toFile().getAbsolutePath();
-
-		addStaticFilesHandler(handlerList, path, "/assets");
 	}
 
 	private static void addStaticFilesHandler(HandlerList handlerList, String path, String url) {
