@@ -277,9 +277,10 @@ public class SceneUI {
 				var gc = new GC(img);
 				var tx = new Transform(gc.getDevice());
 
-				// display.syncExec(() -> {
-				renderer.renderScene(gc, tx, model);
-				// });
+				// yes, lets do this in the UI thread
+				display.syncExec(() -> {
+					renderer.renderScene(gc, tx, model);
+				});
 
 			}
 
