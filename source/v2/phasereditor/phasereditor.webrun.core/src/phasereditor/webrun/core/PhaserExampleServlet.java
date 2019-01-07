@@ -78,9 +78,8 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("<h1>" + example.getName() + "</h1>");
 		out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
 
-
 		out.println("<div style='float:left; margin-right:2em' id='phaser-example'></div>");
-		
+
 		out.println("<div style='float:left'>");
 		out.println("<h3>All the examples in this folder</h3>");
 		out.println("<a href='/phaser-examples'>Home</a> / ");
@@ -92,10 +91,10 @@ public class PhaserExampleServlet extends HttpServlet {
 				sb.insert(0, "<a href='/phaser-examples#" + examples.lookup(cat) + "'>" + cat.getName() + "</a> / ");
 				cat = cat.getParentCategory();
 			} while (cat != null);
-			
+
 			out.println(sb.toString());
 		}
-		
+
 		out.println("<ul>");
 		for (PhaserExampleModel example2 : example.getCategory().getTemplates()) {
 			out.println("<li><a href='/phaser-example?n=" + examples.lookup(example2) + "'>" + example2.getName()
@@ -105,19 +104,17 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("</div>");
 
 		out.println("<div style='clear:both	'></div>");
-		
-		
+
 		out.println("<h5>Files:</h5>");
 		out.println("<ul>");
-		for(var mapping : example.getFilesMapping()) {
+		for (var mapping : example.getFilesMapping()) {
 			var orig = mapping.getOriginal();
-			var relpath = examples.getExamplesRepoPath().relativize(orig);
+			var relpath = orig;
 			var url = relpath.toString().replace("\\", "/");
 			out.println("<li><a href='" + url + "' target='blank'>" + url + "</a></li>");
 		}
 		out.println("</ul>");
-		
-		
+
 		out.println("<h5>Code:</h5>");
 		{
 			Path path = examples.getExamplesRepoPath().relativize(example.getMainFilePath());

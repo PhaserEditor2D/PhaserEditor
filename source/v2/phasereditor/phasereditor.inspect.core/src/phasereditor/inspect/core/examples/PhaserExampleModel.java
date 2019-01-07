@@ -24,6 +24,7 @@ package phasereditor.inspect.core.examples;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -43,16 +44,16 @@ import phasereditor.ui.ISourceLocation;
 
 public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 	public static class Mapping {
-		private Path _original;
+		private String _original;
 		private String destiny;
 
-		public Mapping(Path original, String destiny) {
+		public Mapping(String original, String destiny) {
 			super();
 			_original = original;
 			this.destiny = destiny;
 		}
 
-		public Path getOriginal() {
+		public String getOriginal() {
 			return _original;
 		}
 
@@ -95,7 +96,7 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 		return _filesMapping;
 	}
 
-	public void addMapping(Path orig, String dest) {
+	public void addMapping(String orig, String dest) {
 		_filesMapping.add(new Mapping(orig, dest));
 	}
 
@@ -108,33 +109,33 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 
 				for (Mapping m : _filesMapping) {
 
-					Path orig = m.getOriginal();
+					var orig = m.getOriginal();
+					var url = new URL(
+							"platform:/plugin/phasereditor.resources.phaser.examples/phaser3-examples/public/" + orig);
 					IFile dst = folder.getFile(m.getDestiny());
 
-					copy(orig, dst, monitor);
+					copy(url, dst, monitor);
 				}
 			}
 
 			{
 				// copy phaser.js
 
-				Path phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-						"phaser-master/dist/");
-				copy(phaserBuildFolder.resolve("phaser.js"), folder.getFile("lib/phaser.js"), monitor);
+				var baseUrl = "platform:/plugin/" + InspectCore.RESOURCES_PHASER_CODE_PLUGIN + "/phaser-master/dist/";
+				copy(new URL(baseUrl + "phaser.js"), folder.getFile("lib/phaser.js"), monitor);
 			}
 
 			{
 				// copy typescript defs
-				Path phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-						"phaser-master/typescript/");
-				copy(phaserBuildFolder.resolve("phaser.d.ts"), folder.getFile("typings/phaser.d.ts"), monitor);
+				var baseUrl = "platform:/plugin/" + InspectCore.RESOURCES_PHASER_CODE_PLUGIN
+						+ "/phaser-master/typescript/";
+				copy(new URL(baseUrl + "phaser.d.ts"), folder.getFile("typings/phaser.d.ts"), monitor);
 			}
 
 			{
 				// copy jsconfig.json
-				Path phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN,
-						"phaser-custom/");
-				Path jsconfig = phaserCustomFolder.resolve("examples/examples-jsconfig.json");
+				var baseUrl = "platform:/plugin/" + InspectCore.RESOURCES_METADATA_PLUGIN + "/phaser-custom/";
+				var jsconfig = new URL(baseUrl + "examples/examples-jsconfig.json");
 				copy(jsconfig, folder.getFile("jsconfig.json"), monitor);
 			}
 
@@ -176,16 +177,20 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 		return folder.getFile(_info.getMainFile());
 	}
 
+	private void copy(URL orig, IFile dst, IProgressMonitor monitor) throws CoreException, IOException {
+		mkdirs(dst.getParent(), monitor);
+
+		try (InputStream input = orig.openStream()) {
+			dst.create(input, false, monitor);
+		}
+	}
+
 	private void copy(InputStream orig, IFile dst, IProgressMonitor monitor) throws CoreException, IOException {
 		mkdirs(dst.getParent(), monitor);
 
 		try (InputStream input = orig) {
 			dst.create(input, false, monitor);
 		}
-	}
-
-	private void copy(Path orig, IFile dst, IProgressMonitor monitor) throws CoreException, IOException {
-		copy(Files.newInputStream(orig), dst, monitor);
 	}
 
 	private void mkdirs(IContainer folder, IProgressMonitor monitor) {

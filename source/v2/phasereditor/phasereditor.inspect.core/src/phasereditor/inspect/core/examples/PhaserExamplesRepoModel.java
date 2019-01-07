@@ -246,7 +246,8 @@ public class PhaserExamplesRepoModel {
 					JSONObject jsonMap = jsonMaps.getJSONObject(k);
 					String orig = jsonMap.getString("orig");
 					String dst = jsonMap.optString("dst", orig);
-					example.addMapping(_examplesFolderPath.resolve(orig), dst);
+
+					example.addMapping(orig, dst);
 				}
 			}
 		}
