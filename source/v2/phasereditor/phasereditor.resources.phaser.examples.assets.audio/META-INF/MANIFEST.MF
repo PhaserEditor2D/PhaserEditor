@@ -5,4 +5,5 @@ Bundle-SymbolicName: phasereditor.resources.phaser.examples.assets.audio
 Bundle-Version: 2.0.0.20190107
 Fragment-Host: phasereditor.resources.phaser.examples;bundle-version="2.0.0"
 Automatic-Module-Name: phasereditor.resources.phaser.examples.assets.audio
+Eclipse-BundleShape: dir
 Bundle-Vendor: Arian Fornaris
