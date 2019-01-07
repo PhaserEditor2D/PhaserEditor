@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Executables MacOS Resources
 Bundle-SymbolicName: phasereditor.resources.executables.macos
-Bundle-Version: 2.0.0.20181220
+Bundle-Version: 2.0.0.20190107
 Fragment-Host: phasereditor.resources.executables;bundle-version="2.0.0"
 Bundle-Vendor: Arian Fornaris
 Eclipse-PlatformFilter: (osgi.os=macosx)

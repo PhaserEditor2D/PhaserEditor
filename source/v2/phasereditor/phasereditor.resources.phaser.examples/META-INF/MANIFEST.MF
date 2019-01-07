@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor  - Phaser Examples Resources
 Bundle-SymbolicName: phasereditor.resources.phaser.examples;singleton:=true
-Bundle-Version: 2.0.0.20181220
+Bundle-Version: 2.0.0.20190107
 Bundle-Vendor: Arian Fornaris
 Eclipse-BundleShape: dir
 Automatic-Module-Name: phasereditor.resources.phaser.examples

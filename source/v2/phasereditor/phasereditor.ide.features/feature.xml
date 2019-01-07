@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.ide.features"
       label="Phaser Editor IDE"
-      version="2.0.0.20181220"
+      version="2.0.0.20190107"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.1.v20180423-1114">
@@ -354,5 +354,12 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.examples.assets.audio"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
 
 </feature>
