@@ -673,6 +673,8 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 				.filter(a -> a instanceof IAssetFrameModel)
 
+				.filter(a -> !(a instanceof SpritesheetAssetModel.FrameModel))
+
 				.map(a -> (IAssetFrameModel) a)
 
 				.collect(toList());
@@ -685,10 +687,18 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 				for (var frame : frames) {
 
-					var image = AssetPackUI.getImageProxy(frame);
+					getDisplay().syncExec(() -> {
+						var image = AssetPackUI.getImageProxy(frame);
 
-					if (image != null) {
-						image.getImage();
+						if (image != null) {
+							image.getImage();
+						}
+					});
+
+					try {
+						Thread.sleep(2);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 
 					monitor.worked(1);

@@ -89,7 +89,7 @@ public class ImageProxy {
 	}
 
 	@SuppressWarnings("boxing")
-	public synchronized static ImageProxy get(File file, FrameData fd) {
+	public static ImageProxy get(File file, FrameData fd) {
 
 		try {
 
@@ -224,7 +224,7 @@ public class ImageProxy {
 		}.start();
 	}
 
-	public synchronized static void disposeAll() {
+	public static void disposeAll() {
 		out.println("ImageProxy: disposing all images...");
 
 		for (var item : _trash) {
@@ -240,7 +240,7 @@ public class ImageProxy {
 		}
 	}
 
-	public synchronized static void collectGarbage() {
+	public static void collectGarbage() {
 
 		out.println("ImageProxy: collecting garbage...");
 
@@ -338,14 +338,14 @@ public class ImageProxy {
 	 * The SWT image. It is taken from the FrameData of the file texture, so it
 	 * should be painted complete, as it is.
 	 */
-	public synchronized Image getImage() {
+	public Image getImage() {
 
 		updateImages();
 
 		return _swtImage;
 	}
 
-	public synchronized BufferedImage getFileBufferedImage() {
+	public BufferedImage getFileBufferedImage() {
 		return _fileBufferedImageMap.get(_file);
 	}
 
@@ -440,7 +440,7 @@ public class ImageProxy {
 				&& fd.dst.equals(rect);
 	}
 
-	public synchronized FrameData getFinalFrameData() {
+	public FrameData getFinalFrameData() {
 
 		updateImages();
 
