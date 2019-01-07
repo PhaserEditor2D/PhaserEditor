@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import static phasereditor.ui.PhaserEditorUI.isZoomEvent;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -111,11 +113,11 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 
 	}
 
-	public boolean isZoomWhenShiftPressed() {
+	public boolean isZoomWhenModifiedPressed() {
 		return _zoomWhenShiftPressed;
 	}
 
-	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
+	public void setZoomWhenModifiedPressed(boolean zoomWhenShiftPressed) {
 		_zoomWhenShiftPressed = zoomWhenShiftPressed;
 	}
 
@@ -577,8 +579,8 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if (isZoomWhenShiftPressed()) {
-			if ((e.stateMask & SWT.SHIFT) == 0) {
+		if (isZoomWhenModifiedPressed()) {
+			if (!isZoomEvent(e)) {
 				return;
 			}
 		}

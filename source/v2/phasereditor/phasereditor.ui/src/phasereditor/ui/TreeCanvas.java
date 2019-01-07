@@ -90,7 +90,7 @@ public class TreeCanvas extends BaseCanvas implements PaintListener, MouseWheelL
 		_origin = 0;
 
 		final ScrollBar vBar = getVerticalBar();
-		
+
 		vBar.addListener(SWT.Selection, e -> {
 			_origin = -vBar.getSelection();
 			redraw();
@@ -589,10 +589,10 @@ public class TreeCanvas extends BaseCanvas implements PaintListener, MouseWheelL
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.SHIFT) == 0) {
+		if (!PhaserEditorUI.isZoomEvent(e)) {
 			return;
 		}
-		
+
 		double f = e.count < 0 ? 0.8 : 1.2;
 		_imageSize = (int) (_imageSize * f);
 		if (_imageSize < MIN_ROW_HEIGHT) {

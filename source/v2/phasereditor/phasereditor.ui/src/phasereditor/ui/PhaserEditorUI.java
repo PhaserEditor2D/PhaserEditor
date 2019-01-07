@@ -89,6 +89,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
@@ -1107,11 +1108,11 @@ public class PhaserEditorUI {
 	}
 
 	public static Rectangle getImageBounds(String filepath) {
-		
+
 		if (filepath == null) {
 			return new Rectangle(0, 0, 1, 1);
 		}
-		
+
 		try (FileImageInputStream input = new FileImageInputStream(new File(filepath))) {
 			ImageReader reader = ImageIO.getImageReaders(input).next();
 			reader.setInput(input);
@@ -1125,7 +1126,7 @@ public class PhaserEditorUI {
 	}
 
 	public static Rectangle getImageBounds(IFile file) {
-		return getImageBounds(file == null? null : file.getLocation().toPortableString());
+		return getImageBounds(file == null ? null : file.getLocation().toPortableString());
 	}
 
 	public static String getUIIconURL(String icon) {
@@ -1509,4 +1510,7 @@ public class PhaserEditorUI {
 		return new Image(device, width, height);
 	}
 
+	public static boolean isZoomEvent(MouseEvent e) {
+		return e.stateMask != 0;
+	}
 }

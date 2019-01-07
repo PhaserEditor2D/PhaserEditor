@@ -491,7 +491,7 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.SHIFT) == 0) {
+		if (!PhaserEditorUI.isZoomEvent(e)) {
 			return;
 		}
 

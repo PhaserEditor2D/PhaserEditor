@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.editor;
 
 import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
+import static phasereditor.ui.PhaserEditorUI.isZoomEvent;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
@@ -722,7 +723,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.SHIFT) == 0) {
+		if (!isZoomEvent(e)) {
 			return;
 		}
 

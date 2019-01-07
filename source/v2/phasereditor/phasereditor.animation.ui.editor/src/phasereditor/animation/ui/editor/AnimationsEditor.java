@@ -226,7 +226,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		});
 		_animCanvas.setZoomWhenShiftPressed(false);
 
-		_timelineCanvas.setZoomWhenShiftPressed(false);
+		_timelineCanvas.setZoomWhenModifiedPressed(false);
 
 		disableToolbar();
 

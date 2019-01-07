@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -154,7 +153,7 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 		public void mouseScrolled(MouseEvent e) {
 
 			if (isZoomWhenShiftPressed()) {
-				if ((e.stateMask & SWT.SHIFT) == 0) {
+				if (!PhaserEditorUI.isZoomEvent(e)) {
 					return;
 				}
 			}
