@@ -28,7 +28,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -36,6 +35,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import phasereditor.ui.ZoomCanvas.ZoomCalculator;
@@ -45,7 +45,7 @@ import phasereditor.ui.ZoomCanvas.ZoomCalculator;
  *
  */
 @SuppressWarnings({})
-public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
+public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZoomable, KeyListener {
 
 	private static int S = 5;
 
@@ -87,7 +87,7 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 
 		addPaintListener(this);
 
-		addMouseWheelListener(this);
+		addListener(SWT.MouseVerticalWheel , this::mouseScrolled);
 
 		_utils = new FrameCanvasUtils(this, initDND) {
 
@@ -489,17 +489,18 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 		getVerticalBar().setSelection(0);
 	}
 
-	@Override
-	public void mouseScrolled(MouseEvent e) {
+	public void mouseScrolled(Event e) {
 		if (!PhaserEditorUI.isZoomEvent(e)) {
 			return;
 		}
+		
+		e.doit = false;
 
 		int dir = e.count;
 
 		zoom(dir);
 
-		_utils.updateOverIndex(e);
+		_utils.updateOverIndex(new MouseEvent(e));
 	}
 
 	private void zoom(int dir) {

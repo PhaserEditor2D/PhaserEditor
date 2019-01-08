@@ -21,19 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 
 public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZoomable {
 
@@ -113,7 +114,7 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 		}
 	}
 
-	class MyMouseListener implements MouseMoveListener, MouseListener, MouseWheelListener, MouseTrackListener {
+	class MyMouseListener implements MouseMoveListener, MouseListener, MouseTrackListener {
 
 		private Point _startPoint;
 		private Point _startOffset;
@@ -149,14 +150,15 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 			_startPoint = null;
 		}
 
-		@Override
-		public void mouseScrolled(MouseEvent e) {
+		public void mouseScrolled(Event e) {
 
 			if (isZoomWhenShiftPressed()) {
 				if (!PhaserEditorUI.isZoomEvent(e)) {
 					return;
 				}
 			}
+			
+			e.doit = false;
 
 			float zoom = (e.count < 0 ? 0.9f : 1.1f);
 
@@ -211,10 +213,10 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 		addPaintListener(this);
 		_preferredSize = new Point(0, 0);
 
-		MyMouseListener listener = new MyMouseListener();
+		var listener = new MyMouseListener();
 		addMouseMoveListener(listener);
 		addMouseListener(listener);
-		addMouseWheelListener(listener);
+		addListener(SWT.MouseVerticalWheel, listener::mouseScrolled);
 		addMouseTrackListener(listener);
 		addKeyListener(new KeyListener() {
 

@@ -35,7 +35,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -43,6 +42,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  *
  */
 @SuppressWarnings({ "boxing" })
-public class TreeCanvas extends BaseCanvas implements PaintListener, MouseWheelListener {
+public class TreeCanvas extends BaseCanvas implements PaintListener {
 	public static final int ACTION_SPACE = 2;
 	public static final int ACTION_PADDING = 2;
 	public static final int MIN_ROW_HEIGHT = 20;
@@ -85,7 +86,14 @@ public class TreeCanvas extends BaseCanvas implements PaintListener, MouseWheelL
 		_filteredItems = new HashSet<>();
 
 		addPaintListener(this);
-		addMouseWheelListener(this);
+		// addMouseWheelListener(this);
+		addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				mouseScrolled(event);
+			}
+		});
 
 		_origin = 0;
 
@@ -587,11 +595,13 @@ public class TreeCanvas extends BaseCanvas implements PaintListener, MouseWheelL
 		}
 	}
 
-	@Override
-	public void mouseScrolled(MouseEvent e) {
+	public void mouseScrolled(Event e) {
+
 		if (!PhaserEditorUI.isZoomEvent(e)) {
 			return;
 		}
+		
+		e.doit = false;
 
 		double f = e.count < 0 ? 0.8 : 1.2;
 		_imageSize = (int) (_imageSize * f);

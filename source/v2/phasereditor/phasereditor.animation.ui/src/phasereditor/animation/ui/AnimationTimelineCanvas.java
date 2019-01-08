@@ -46,12 +46,13 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.pushingpixels.trident.Timeline.TimelineState;
 
@@ -69,7 +70,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanvas
-		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener, KeyListener {
+		implements PaintListener, MouseListener, DragSourceListener, KeyListener {
 
 	private T _model;
 	private double _widthFactor;
@@ -89,7 +90,13 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 		_widthFactor = 1;
 
 		addPaintListener(this);
-		addMouseWheelListener(this);
+		addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				mouseScrolled(event);
+			}
+		});
 		addKeyListener(this);
 
 		_origin = 0;
@@ -577,13 +584,14 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 		return _model.getFrames().get(i);
 	}
 
-	@Override
-	public void mouseScrolled(MouseEvent e) {
+	public void mouseScrolled(Event e) {
 		if (isZoomWhenModifiedPressed()) {
 			if (!isZoomEvent(e)) {
 				return;
 			}
 		}
+
+		e.doit = false;
 
 		if (e.count < 0) {
 			_widthFactor -= 0.2;

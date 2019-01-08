@@ -40,7 +40,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
@@ -50,6 +49,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 
 import phasereditor.animation.ui.AnimationsCellRender;
 import phasereditor.assetpack.core.AnimationsAssetModel;
@@ -92,7 +92,7 @@ import phasereditor.ui.SwtRM;
  * @author arian
  *
  */
-public class PackEditorCanvas extends BaseCanvas implements PaintListener, MouseWheelListener, MouseMoveListener {
+public class PackEditorCanvas extends BaseCanvas implements PaintListener, MouseMoveListener {
 
 	private static final int MIN_ROW_HEIGHT = 48;
 	private AssetPackModel _model;
@@ -110,7 +110,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 		super(parent, style | SWT.V_SCROLL);
 
 		addPaintListener(this);
-		addMouseWheelListener(this);
+		addListener(SWT.MouseVerticalWheel, this::mouseScrolled);
 		addMouseMoveListener(this);
 
 		_utils = new MyFrameUtils();
@@ -721,11 +721,12 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 		return _utils;
 	}
 
-	@Override
-	public void mouseScrolled(MouseEvent e) {
+	public void mouseScrolled(Event e) {
 		if (!isZoomEvent(e)) {
 			return;
 		}
+
+		e.doit = false;
 
 		var before = _imageSize;
 
