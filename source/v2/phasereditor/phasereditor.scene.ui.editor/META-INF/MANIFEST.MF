@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.assetpack.ui.editor;bundle-version="2.0.0",
  phasereditor.assetpack.ui;bundle-version="2.0.0",
  phasereditor.inspect.core;bundle-version="2.0.0",
- phasereditor.project.ui;bundle-version="2.0.0"
+ phasereditor.project.ui;bundle-version="2.0.0",
+ phasereditor.lic;bundle-version="2.0.1"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.scene.ui.editor
 Export-Package: phasereditor.scene.ui.editor.wizards

@@ -33,6 +33,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
@@ -103,6 +104,14 @@ public class SceneEditor extends EditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		var file = getEditorInput().getFile();
+		
+		{
+			var cause = SceneCore.isFreeVersionAllowed(file.getProject());
+			if (cause != null) {
+				LicCore.launchGoPremiumDialogs(cause);
+				return;
+			}
+		}
 
 		try {
 

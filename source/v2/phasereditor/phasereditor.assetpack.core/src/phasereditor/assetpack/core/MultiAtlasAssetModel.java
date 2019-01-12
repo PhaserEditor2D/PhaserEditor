@@ -97,7 +97,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 		}
 		return _frames;
 	}
-
+	
 	@Override
 	protected void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);

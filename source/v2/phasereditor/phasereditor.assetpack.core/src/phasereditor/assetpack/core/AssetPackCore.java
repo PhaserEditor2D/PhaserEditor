@@ -972,11 +972,14 @@ public class AssetPackCore {
 			for (AssetModel asset : pack.getAssets()) {
 				if (asset instanceof TilemapAssetModel) {
 					tilemapCount++;
+				} else if (asset instanceof AtlasAssetModel) {
+					atlasCount++;
+				} else if (asset instanceof MultiAtlasAssetModel) {
+					var atlas = (MultiAtlasAssetModel) asset;
+					var count = atlas.getSubElements().stream().map(f -> f.getTextureFilename()).distinct().count();
+					atlasCount += count;
 				}
 
-				if (asset instanceof AtlasAssetModel) {
-					atlasCount++;
-				}
 			}
 		}
 
@@ -1061,7 +1064,7 @@ public class AssetPackCore {
 		}
 
 		finder.build();
-		
+
 		return finder;
 	}
 

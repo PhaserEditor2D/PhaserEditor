@@ -22,8 +22,10 @@
 package phasereditor.scene.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.FileDataCache;
 
 /**
@@ -43,11 +45,30 @@ public class SceneCore {
 	}
 
 	public static void compileScene(SceneModel model, IFile sceneFile, IProgressMonitor monitor) throws Exception {
-
+		
+		{
+			var cause = SceneCore.isFreeVersionAllowed(sceneFile.getProject());
+			if (cause != null) {
+				LicCore.launchGoPremiumDialogs(cause);
+				return;
+			}
+		}
+		
 		var compiler = new SceneCompiler(sceneFile, model);
 
 		compiler.compile(monitor);
 
+	}
+
+	public static String isFreeVersionAllowed(IProject project) {
+		var projectData = getSceneFileDataCache().getProjectData(project);
+		var count = projectData.size();
+
+		if (count > LicCore.getFreeNumberSceneFiles()) {
+			return count + " scene files";
+		}
+
+		return null;
 	}
 
 	public static FileDataCache<SceneFile> getSceneFileDataCache() {
@@ -76,7 +97,7 @@ public class SceneCore {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 }
