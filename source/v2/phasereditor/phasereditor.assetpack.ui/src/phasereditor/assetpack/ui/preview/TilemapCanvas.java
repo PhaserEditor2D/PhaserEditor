@@ -50,7 +50,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -82,7 +81,7 @@ import phasereditor.ui.ZoomCanvas;
  *
  */
 public class TilemapCanvas extends ZoomCanvas
-		implements MouseMoveListener, MouseListener, KeyListener, ISelectionProvider {
+		implements MouseMoveListener, MouseListener, ISelectionProvider {
 
 	private TilemapAssetModel _model;
 	private Point _imageSize = new Point(1, 1);
@@ -686,7 +685,7 @@ public class TilemapCanvas extends ZoomCanvas
 			_selectedCells.clear();
 			fireSelectionChanged(new StructuredSelection(_selectedCells));
 			redraw();
-		} else if (e.character == ' ') {
+		} else if (e.character == SWT.SPACE) {
 			selectAllFrames();
 		}
 	}

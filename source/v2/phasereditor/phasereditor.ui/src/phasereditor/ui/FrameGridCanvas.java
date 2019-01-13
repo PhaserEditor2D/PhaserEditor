@@ -77,6 +77,8 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 	private int _total;
 	private String _nextFilterText;
 
+	private HandModeUtils _handModeBehavior;
+
 	public FrameGridCanvas(Composite parent, int style, boolean initDND) {
 		super(parent, style | SWT.V_SCROLL);
 
@@ -137,6 +139,8 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 		addListener(SWT.Resize, e -> {
 			updateScroll();
 		});
+		
+		_handModeBehavior = new HandModeUtils(this);
 
 		afterCreateWidgets();
 	}
@@ -489,8 +493,9 @@ public class FrameGridCanvas extends BaseCanvas implements PaintListener, IZooma
 		getVerticalBar().setSelection(0);
 	}
 
+	
 	public void mouseScrolled(Event e) {
-		if (!PhaserEditorUI.isZoomEvent(e)) {
+		if (!PhaserEditorUI.isZoomEvent(_handModeBehavior,  e)) {
 			return;
 		}
 		

@@ -40,7 +40,6 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DragDetectEvent;
 import org.eclipse.swt.events.DragDetectListener;
-import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -127,15 +126,6 @@ public class SceneCanvas extends ZoomCanvas
 		_interactiveTools = new ArrayList<>();
 
 		_transformLocalCoords = true;
-
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.character == SWT.ESC) {
-					getEditor().setSelection(List.of());
-				}
-			}
-		});
 	}
 
 	public boolean isTransformLocalCoords() {
@@ -247,7 +237,7 @@ public class SceneCanvas extends ZoomCanvas
 				var textureKey = animFrame.getTextureKey();
 
 				var texture = _finder.findTexture(textureKey, textureFrame);
-				
+
 				if (texture != null) {
 					var sprite = new SpriteModel();
 
@@ -325,9 +315,9 @@ public class SceneCanvas extends ZoomCanvas
 
 	private static String computeBaseName(IAssetFrameModel texture) {
 		if (texture instanceof SpritesheetAssetModel.FrameModel) {
-			return texture.getAsset().getKey(); 
-		} 
-		
+			return texture.getAsset().getKey();
+		}
+
 		return texture.getKey();
 	}
 
@@ -335,7 +325,6 @@ public class SceneCanvas extends ZoomCanvas
 		_editor = editor;
 		_sceneModel = editor.getSceneModel();
 
-		
 	}
 
 	@Override
@@ -387,7 +376,7 @@ public class SceneCanvas extends ZoomCanvas
 			_finder = AssetPackCore.getAssetFinder(getEditor().getProject());
 			_renderer = new SceneObjectRenderer(this);
 		}
-		
+
 		_interactiveToolsHightlights = isInteractiveHightlights();
 
 		// I dont know why the line width affects the transform in angles of 45.5.
@@ -1260,7 +1249,7 @@ public class SceneCanvas extends ZoomCanvas
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		if (e.button != 1) {
+		if (e.button != 1 || isHandModeActivated()) {
 			return;
 		}
 
@@ -1272,7 +1261,7 @@ public class SceneCanvas extends ZoomCanvas
 	@Override
 	public void mouseUp(MouseEvent e) {
 
-		if (e.button != 1) {
+		if (e.button != 1 || isHandModeActivated()) {
 			return;
 		}
 
@@ -1294,8 +1283,8 @@ public class SceneCanvas extends ZoomCanvas
 		}
 
 		if (_dragDetected) {
-
 			_dragDetected = false;
+
 
 			if (_dragObjectsEvents.isDragging()) {
 				_dragObjectsEvents.done();
@@ -1312,6 +1301,11 @@ public class SceneCanvas extends ZoomCanvas
 
 	@Override
 	public void mouseMove(MouseEvent e) {
+
+		if (isHandModeActivated()) {
+			return;
+		}
+
 		boolean contains = false;
 
 		for (var elem : _interactiveTools) {
@@ -1343,13 +1337,18 @@ public class SceneCanvas extends ZoomCanvas
 
 	@Override
 	public void dragDetected(DragDetectEvent e) {
-
+		if (isHandModeActivated()) {
+			return;
+		}
+		
 		_dragDetected = true;
 
 		var obj = pickObject(e.x, e.y);
 
-		if (_editor.getSelectionList().contains(obj)) {
-			_dragObjectsEvents.start(e);
+		if (obj != null) {
+			if (_editor.getSelectionList().contains(obj)) {
+				_dragObjectsEvents.start(e);
+			}
 		}
 	}
 
@@ -1383,5 +1382,30 @@ public class SceneCanvas extends ZoomCanvas
 	@Override
 	public Device getDevice() {
 		return getDisplay();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.character == SWT.SPACE) {
+			if (_dragDetected) {
+				// don't activate the hand tool if we are dragging objects
+				return;
+			}
+		}
+
+		super.keyPressed(e);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		super.keyReleased(e);
+
+		switch (e.character) {
+		case SWT.ESC:
+			getEditor().setSelection(List.of());
+			break;
+		default:
+			break;
+		}
 	}
 }

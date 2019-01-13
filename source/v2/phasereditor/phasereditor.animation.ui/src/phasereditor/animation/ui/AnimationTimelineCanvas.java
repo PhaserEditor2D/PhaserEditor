@@ -62,6 +62,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.BaseCanvas;
+import phasereditor.ui.HandModeUtils;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -83,6 +84,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 	private AnimationFrameModel _lastSelectedFrame;
 	private AnimationCanvas _animCanvas;
 	private boolean _zoomWhenShiftPressed;
+	private HandModeUtils _handModeUtils;
 
 	public AnimationTimelineCanvas(Composite parent, int style) {
 		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -98,6 +100,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 			}
 		});
 		addKeyListener(this);
+		_handModeUtils = new HandModeUtils(this);
 
 		_origin = 0;
 
@@ -586,7 +589,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 
 	public void mouseScrolled(Event e) {
 		if (isZoomWhenModifiedPressed()) {
-			if (!isZoomEvent(e)) {
+			if (!isZoomEvent(_handModeUtils, e)) {
 				return;
 			}
 		}
@@ -763,13 +766,13 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 		}
 	}
 
-	private int getFrameIndex(AnimationFrameModel frame) {
-		return _model.getFrames().indexOf(frame);
-	}
-
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// nothing
+		//
+	}
+
+	private int getFrameIndex(AnimationFrameModel frame) {
+		return _model.getFrames().indexOf(frame);
 	}
 
 	private void shiftSelection(int dir) {

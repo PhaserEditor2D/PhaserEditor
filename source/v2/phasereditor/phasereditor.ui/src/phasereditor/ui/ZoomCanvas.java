@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.out;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -36,7 +38,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
-public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZoomable {
+public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZoomable, KeyListener {
 
 	private Point _preferredSize;
 	private int _offsetX;
@@ -44,6 +46,7 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 	private float _scale = 1;
 	private boolean _fitWindow;
 	private boolean _zoomWhenShiftPressed;
+	private boolean _handModeActivated;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -139,7 +142,7 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 				setFocus();
 			}
 
-			if (e.button == 2) {
+			if (e.button == 2 || _handModeActivated) {
 				_startPoint = new Point(e.x, e.y);
 				_startOffset = new Point(getOffsetX(), getOffsetY());
 			}
@@ -153,11 +156,11 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 		public void mouseScrolled(Event e) {
 
 			if (isZoomWhenShiftPressed()) {
-				if (!PhaserEditorUI.isZoomEvent(e)) {
+				if (!PhaserEditorUI.isZoomEvent(ZoomCanvas.this, e)) {
 					return;
 				}
 			}
-			
+
 			e.doit = false;
 
 			float zoom = (e.count < 0 ? 0.9f : 1.1f);
@@ -218,18 +221,7 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 		addMouseListener(listener);
 		addListener(SWT.MouseVerticalWheel, listener::mouseScrolled);
 		addMouseTrackListener(listener);
-		addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				//
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				//
-			}
-		});
+		addKeyListener(this);
 
 		_zoomWhenShiftPressed = true;
 
@@ -241,6 +233,10 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 
 	public void setZoomWhenShiftPressed(boolean zoomWhenShiftPressed) {
 		_zoomWhenShiftPressed = zoomWhenShiftPressed;
+	}
+
+	public boolean isHandModeActivated() {
+		return _handModeActivated;
 	}
 
 	@Override
@@ -353,5 +349,36 @@ public abstract class ZoomCanvas extends BaseCanvas implements PaintListener, IZ
 			return _preferredSize;
 		}
 		return super.computeSize(wHint, hHint, changed);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.character) {
+		case SWT.SPACE:
+			if (_handModeActivated) {
+				return;
+			}
+
+			out.println("ZoomCanvas: Activated hand mode.");
+
+			_handModeActivated = true;
+
+			setCursor(getDisplay().getSystemCursor(SWT.CURSOR_SIZEALL));
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch (e.character) {
+		case SWT.SPACE:
+			_handModeActivated = false;
+			setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+			break;
+		default:
+			break;
+		}
 	}
 }

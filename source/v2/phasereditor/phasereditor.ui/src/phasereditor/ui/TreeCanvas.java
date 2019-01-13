@@ -71,6 +71,7 @@ public class TreeCanvas extends BaseCanvas implements PaintListener {
 	private HashSet<TreeCanvasItem> _filteredItems;
 	private boolean _revealSelection;
 	private boolean _showCheckbox;
+	private HandModeUtils _handModeUtils;
 
 	public TreeCanvas(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -94,6 +95,8 @@ public class TreeCanvas extends BaseCanvas implements PaintListener {
 				mouseScrolled(event);
 			}
 		});
+
+		_handModeUtils = new HandModeUtils(this);
 
 		_origin = 0;
 
@@ -597,10 +600,10 @@ public class TreeCanvas extends BaseCanvas implements PaintListener {
 
 	public void mouseScrolled(Event e) {
 
-		if (!PhaserEditorUI.isZoomEvent(e)) {
+		if (!PhaserEditorUI.isZoomEvent(_handModeUtils, e)) {
 			return;
 		}
-		
+
 		e.doit = false;
 
 		double f = e.count < 0 ? 0.8 : 1.2;

@@ -1510,7 +1510,15 @@ public class PhaserEditorUI {
 		return new Image(device, width, height);
 	}
 
-	public static boolean isZoomEvent(Event e) {
-		return e.stateMask != 0;
+	public static boolean isZoomEvent(ZoomCanvas canvas, Event e) {
+		return isZoomEvent(canvas.isHandModeActivated(), e);
+	}
+	
+	public static boolean isZoomEvent(HandModeUtils utils, Event e) {
+		return isZoomEvent(utils.isActivated(), e);
+	}
+	
+	private static boolean isZoomEvent(boolean handModeActivated, Event e) {
+		return e.stateMask != 0 || handModeActivated;
 	}
 }

@@ -79,6 +79,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameCellRenderer;
 import phasereditor.ui.FrameGridCellRenderer;
+import phasereditor.ui.HandModeUtils;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
@@ -105,6 +106,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	private AssetPackEditor _editor;
 	private MyScrollUtils _scrollUtils;
 	private boolean _loadingImagesInBackground;
+	private HandModeUtils _handModeUtils;
 
 	public PackEditorCanvas(AssetPackEditor editor, Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
@@ -117,6 +119,8 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 		_utils.setFilterInputWhenSetSelection(false);
 
 		_scrollUtils = new MyScrollUtils();
+
+		_handModeUtils = new HandModeUtils(this);
 
 		_editor = editor;
 		_imageSize = 96;
@@ -722,7 +726,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	}
 
 	public void mouseScrolled(Event e) {
-		if (!isZoomEvent(e)) {
+		if (!isZoomEvent(_handModeUtils, e)) {
 			return;
 		}
 

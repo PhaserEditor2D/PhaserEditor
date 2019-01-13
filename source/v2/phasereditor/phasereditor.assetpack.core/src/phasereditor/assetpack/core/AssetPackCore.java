@@ -992,9 +992,9 @@ public class AssetPackCore {
 
 		out.println("Count atlas assets for '" + project + "' : " + atlasCount);
 
-		if (atlasCount > LicCore.getFreeNumberOfAtlasAssets()) {
+		if (atlasCount > LicCore.getFreeNumberOfAtlasTextures()) {
 			out.println("Number of atlas assets exceeded.");
-			return LicCore.getFreeNumberOfAtlasAssets() + " atlas assets";
+			return LicCore.getFreeNumberOfAtlasTextures() + " atlas assets";
 		}
 
 		return null;
