@@ -102,7 +102,7 @@
             commandId="phasereditor.animation.ui.playPauseAnimation"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="ENTER">
+            sequence="SPACE">
       </key>
       <key
             commandId="phasereditor.ui.quickEdit"
