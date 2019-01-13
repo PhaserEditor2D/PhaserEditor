@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.project.ui.prefs;
+package phasereditor.project.core.prefs;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.SourceLang;
-import phasereditor.project.ui.ProjectUI;
 
 /**
  * @author arian
@@ -39,7 +39,7 @@ public class PhaserProjectPreferencesPage extends FieldEditorPreferencePage impl
 
 	@Override
 	public void init(IWorkbench workbench) {
-		setPreferenceStore(ProjectUI.getPreferenceStore());
+		setPreferenceStore(ProjectCore.getPreferenceStore());
 		setTitle("Configure default project settigs:");
 	}
 
@@ -47,9 +47,9 @@ public class PhaserProjectPreferencesPage extends FieldEditorPreferencePage impl
 	protected void createFieldEditors() {
 		Composite parent = getFieldEditorParent();
 
-		addField(new IntegerFieldEditor(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_WIDTH, "Default game width", parent));
-		addField(new IntegerFieldEditor(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_HEIGHT, "Default game height", parent));
-		addField(new ComboFieldEditor(ProjectUI.PREF_PROP_PROJECT_WIZARD_LANGUAJE, "Default language", new String[][] {
+		addField(new IntegerFieldEditor(ProjectCore.PREF_PROP_PROJECT_GAME_WIDTH, "Default game width", parent));
+		addField(new IntegerFieldEditor(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT, "Default game height", parent));
+		addField(new ComboFieldEditor(ProjectCore.PREF_PROP_PROJECT_WIZARD_LANGUAJE, "Default language", new String[][] {
 
 				{ SourceLang.JAVA_SCRIPT.getDisplayName(), SourceLang.JAVA_SCRIPT.name() },
 				{ SourceLang.JAVA_SCRIPT_6.getDisplayName(), SourceLang.JAVA_SCRIPT_6.name() },

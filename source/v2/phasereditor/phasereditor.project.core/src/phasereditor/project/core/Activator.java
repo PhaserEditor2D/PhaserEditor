@@ -55,6 +55,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
+ProjectCore.setDefaultPreferences();
+
 		out.println("Starting project.core...");
 
 		new Job("Inital projects build") {

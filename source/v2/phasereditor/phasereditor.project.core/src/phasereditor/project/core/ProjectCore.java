@@ -44,6 +44,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -56,6 +57,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -63,6 +66,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -79,6 +83,14 @@ public class ProjectCore {
 	public static final String PHASER_BUILDER_ID = PLUGIN_ID + ".builder";
 	public static final String PHASER_PROBLEM_MARKER_ID = PLUGIN_ID + ".problem";
 	private static final QualifiedName PROJECT_LANG = new QualifiedName("phasereditor.project.core", "lang");
+
+	public static final String PREF_PROP_PROJECT_GAME_WIDTH = "phasereditor.project.ui.gameWidth";
+	public static final String PREF_PROP_PROJECT_GAME_HEIGHT = "phasereditor.project.ui.gameHeight";
+	public static final String PREF_PROP_PROJECT_WIZARD_LANGUAJE = "phasereditor.project.ui.projectWizardLang";
+
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
 
 	public static List<IProjectBuildParticipant> getBuildParticipants() {
 		List<IProjectBuildParticipant> list = new ArrayList<>();
@@ -226,6 +238,7 @@ public class ProjectCore {
 
 	public static void configureNewPhaserProject(IProject project, IProjectTemplate template,
 			Map<String, String> paramValues, SourceLang lang, IProgressMonitor monitor) throws CoreException {
+
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> {
 			openTemplateMainFileInEditor(project, template);
 		});
@@ -239,6 +252,10 @@ public class ProjectCore {
 		template.copyInto(webContentFolder, paramValues, monitor);
 
 		setProjectLanguage(project, lang);
+		{
+			ProjectCore.getProjectSceneSize(project);
+		}
+
 		PhaserProjectNature.addPhaserNature(project, lang, monitor);
 
 		project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
@@ -422,6 +439,54 @@ public class ProjectCore {
 		return getProjectLanguage(project);
 	}
 
+	public static Point getProjectSceneSize(IPath path) {
+		var res = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+
+		IProject project = res == null ? null : res.getProject();
+
+		return getProjectSceneSize(project);
+
+	}
+
+	private static Map<IProject, IPreferenceStore> _projectPrefMap = new HashMap<>();
+
+	public static IPreferenceStore getProjectPreferenceStore(IProject project) {
+		if (_projectPrefMap.containsKey(project)) {
+			return _projectPrefMap.get(project);
+		}
+
+		var store = new ScopedPreferenceStore(new ProjectScope(project), "phasereditor.project.core");
+		_projectPrefMap.put(project, store);
+
+		return store;
+	}
+
+	public static Point getProjectSceneSize(IProject project) {
+
+		var width = getPreferenceStore().getInt(PREF_PROP_PROJECT_GAME_WIDTH);
+		var height = getPreferenceStore().getInt(PREF_PROP_PROJECT_GAME_HEIGHT);
+
+		if (project != null) {
+
+			var projectStore = getProjectPreferenceStore(project);
+
+			if (projectStore.contains(PREF_PROP_PROJECT_GAME_WIDTH)) {
+				width = projectStore.getInt(PREF_PROP_PROJECT_GAME_WIDTH);
+				height = projectStore.getInt(PREF_PROP_PROJECT_GAME_HEIGHT);
+			}
+
+		}
+
+		return new Point(width, height);
+
+	}
+
+	public static void setProjectSceneSize(IProject project, int width, int height) {
+		var store = getProjectPreferenceStore(project);
+		store.putValue(PREF_PROP_PROJECT_GAME_WIDTH, Integer.toString(width));
+		store.putValue(PREF_PROP_PROJECT_GAME_HEIGHT, Integer.toString(height));
+	}
+
 	public static boolean areFilesAffectedByDelta(IResourceDelta delta, Collection<IFile> files) {
 		boolean[] touched = { false };
 
@@ -467,9 +532,11 @@ public class ProjectCore {
 		}
 		return touched[0];
 	}
+
 	public enum OS {
 		WINDOWS, LINUX, MAC
 	}
+
 	private static OS _os;
 	private static java.nio.file.Path _userFolderPath;
 
@@ -486,7 +553,7 @@ public class ProjectCore {
 		}
 		return _os;
 	}
-	
+
 	public static java.nio.file.Path getUserCacheFolder() {
 		if (_userFolderPath == null) {
 			String home = System.getProperty("user.home");
@@ -512,4 +579,10 @@ public class ProjectCore {
 
 	}
 
+	public static void setDefaultPreferences() {
+		var store = getPreferenceStore();
+
+		store.setDefault(ProjectCore.PREF_PROP_PROJECT_GAME_WIDTH, 800);
+		store.setDefault(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT, 450);
+	}
 }

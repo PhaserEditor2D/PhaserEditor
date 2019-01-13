@@ -144,9 +144,15 @@ public class SceneFileWizardPage extends WizardNewFileCreationPage {
 		return true;
 	}
 
-	@SuppressWarnings("static-method")
 	public SceneModel getInitialModel() {
-		return new SceneModel();
+		var model = new SceneModel();
+
+		var size = ProjectCore.getProjectSceneSize(getContainerFullPath());
+
+		model.setBorderWidth(size.x);
+		model.setBorderHeight(size.y);
+
+		return model;
 	}
 
 	@Override

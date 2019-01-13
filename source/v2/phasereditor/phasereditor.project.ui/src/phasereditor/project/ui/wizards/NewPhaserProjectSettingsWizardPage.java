@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.SourceLang;
-import phasereditor.project.ui.ProjectUI;
 
 /**
  * @author arian
@@ -125,7 +125,6 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		physicsGroup.setLayout(new GridLayout(5, false));
 		physicsGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
 
-
 		_arcadeBtn = new Button(physicsGroup, SWT.RADIO);
 		_arcadeBtn.setText("arcade");
 
@@ -151,14 +150,14 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	}
 
 	private void afterCreateWidgets() {
-		IPreferenceStore store = ProjectUI.getPreferenceStore();
+		IPreferenceStore store = ProjectCore.getPreferenceStore();
 
-		_widthText.setText(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_WIDTH));
-		_heightText.setText(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_HEIGHT));
+		_widthText.setText(store.getString(ProjectCore.PREF_PROP_PROJECT_GAME_WIDTH));
+		_heightText.setText(store.getString(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT));
 
 		_comboLang.setInput(new Object[] { SourceLang.JAVA_SCRIPT_6 });
 		_comboLang.setSelection(new StructuredSelection(
-				SourceLang.valueOf(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_LANGUAJE))));
+				SourceLang.valueOf(store.getString(ProjectCore.PREF_PROP_PROJECT_WIZARD_LANGUAJE))));
 	}
 
 	public void setFocus() {

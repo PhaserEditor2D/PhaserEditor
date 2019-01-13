@@ -118,6 +118,9 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 		IProject project = _projectPage.getProjectHandle();
 
+		int width = Integer.parseInt(_settingsPage.getWidthText().getText());
+		int height = Integer.parseInt(_settingsPage.getHeightText().getText());
+
 		params.put("title", project.getName());
 
 		boolean pixelArt = _settingsPage.getPixelArtBtn().getSelection();
@@ -128,8 +131,8 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		var config = new JSONObject();
 
 		config.put("title", project.getName());
-		config.put("width", Integer.parseInt(_settingsPage.getWidthText().getText()));
-		config.put("height", Integer.parseInt(_settingsPage.getHeightText().getText()));
+		config.put("width", width);
+		config.put("height", height);
 		config.put("type", _settingsPage.getTypeCombo().getText());
 		config.put("backgroundColor", "#88F");
 
@@ -149,7 +152,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 		{
 			String str = config.toString(8);
-			for(var type : new String[] {"AUTO", "WEBGL", "CANVAS", "HEADLESS"}) {
+			for (var type : new String[] { "AUTO", "WEBGL", "CANVAS", "HEADLESS" }) {
 				str = str.replace("\"Phaser." + type + "\"", "Phaser." + type);
 			}
 			str = str.substring(0, str.length() - 2) + "\n\t}";
@@ -170,6 +173,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 				monitor.worked(1);
 
 				project.open(monitor);
+				ProjectCore.setProjectSceneSize(project, width, height);
 				monitor.worked(1);
 
 				TemplateModel template;
