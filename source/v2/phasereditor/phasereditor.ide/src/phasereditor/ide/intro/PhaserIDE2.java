@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.ui.internal.ide.application.IDEApplication;
 
+import phasereditor.ide.ModifiedIDEApplication;
 import phasereditor.lic.LicCore;
 
 /**
@@ -36,7 +37,7 @@ import phasereditor.lic.LicCore;
  *
  */
 @SuppressWarnings("restriction")
-public class PhaserIDE2 extends IDEApplication {
+public class PhaserIDE2 extends ModifiedIDEApplication {
 
 	@Override
 	public Object start(IApplicationContext appContext) throws Exception {
