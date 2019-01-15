@@ -175,6 +175,25 @@ public class ModifiedChooseWorkspaceDialog extends Dialog {
 		_images.stream().forEach(Image::dispose);
 	}
 
+	@Override
+	protected Control createContents(Composite parent) {
+		// create the top level composite for the dialog
+		Composite composite = new Composite(parent, SWT.BORDER);
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		layout.verticalSpacing = 0;
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		applyDialogFont(composite);
+		// initialize the dialog units
+		initializeDialogUnits(composite);
+		// create the dialog area and button bar
+		dialogArea = createDialogArea(composite);
+		buttonBar = createButtonBar(composite);
+		return composite;
+	}
+
 	/**
 	 * Creates and returns the contents of the upper part of this dialog (above the
 	 * button bar).
@@ -211,7 +230,6 @@ public class ModifiedChooseWorkspaceDialog extends Dialog {
 			gd.grabExcessVerticalSpace = true;
 			gd.minimumHeight = img.getBounds().height;
 			label.setLayoutData(gd);
-
 		}
 
 		// Should only create the Recent Workspaces Composite if Recent
@@ -342,9 +360,7 @@ public class ModifiedChooseWorkspaceDialog extends Dialog {
 		initializeBounds();
 		// Remove Workspace from combobox
 		if (text.getText().equals(workspace) || text.getText().isEmpty()) {
-			text.setText(TextProcessor
-					.process((launchData.getRecentWorkspaces().length > 0 ? launchData.getRecentWorkspaces()[0]
-							: launchData.getInitialDefault())));
+			text.setText(getCurrentWorkspacePath());
 		}
 	}
 
@@ -631,9 +647,35 @@ public class ModifiedChooseWorkspaceDialog extends Dialog {
 		// }
 		// }
 
-		text.setText(
-				TextProcessor.process((launchData.getRecentWorkspaces().length > 0 ? launchData.getRecentWorkspaces()[0]
-						: launchData.getInitialDefault())));
+		String newText = launchData.getInitialDefault();
+
+		for (String workspace : launchData.getRecentWorkspaces()) {
+			if (workspace != null) {
+				newText = workspace;
+				break;
+			}
+		}
+
+		if (newText == null) {
+			newText = System.getProperty("user.home") + File.separator + "workspace";
+		}
+
+		text.setText(TextProcessor.process(newText == null ? "" : newText));
+	}
+
+	public String getCurrentWorkspacePath() {
+		String[] recent = launchData.getRecentWorkspaces();
+		String path = launchData.getInitialDefault();
+
+		if (recent.length > 0) {
+			path = recent[0];
+		}
+
+		if (path == null) {
+			path = System.getProperty("user.home") + File.separator + "workspace";
+		}
+
+		return TextProcessor.process(path);
 	}
 
 	@Override
