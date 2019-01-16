@@ -74,7 +74,7 @@ Copyright (c) Arian Fornaris 2015-2019
    <launcher name="PhaserEditor2D">
       <macosx icon="/phasereditor.ide/icons/Eclipse.icns"/>
       <win useIco="true">
-         <ico path="/phasereditor.ide/icons/win-icons.ico"/>
+         <ico path="/phasereditor.ide/icons/windows.ico"/>
          <bmp/>
       </win>
    </launcher>
