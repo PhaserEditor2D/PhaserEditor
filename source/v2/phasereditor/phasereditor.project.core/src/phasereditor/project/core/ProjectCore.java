@@ -584,5 +584,6 @@ public class ProjectCore {
 
 		store.setDefault(ProjectCore.PREF_PROP_PROJECT_GAME_WIDTH, 800);
 		store.setDefault(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT, 450);
+		store.setDefault(ProjectCore.PREF_PROP_PROJECT_WIZARD_LANGUAJE, SourceLang.JAVA_SCRIPT_6.name());
 	}
 }
