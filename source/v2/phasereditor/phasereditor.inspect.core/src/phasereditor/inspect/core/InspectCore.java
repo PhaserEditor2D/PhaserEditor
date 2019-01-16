@@ -88,8 +88,10 @@ public class InspectCore {
 		}
 
 		try {
-
-			Files.createDirectories(_userFolderPath);
+			
+			if (!Files.exists(_userFolderPath)) {
+				Files.createDirectories(_userFolderPath);
+			}
 
 			return _userFolderPath;
 		} catch (IOException e) {
