@@ -46,6 +46,7 @@ public class JFaceOrderAction extends Action {
 	public JFaceOrderAction(SceneEditor editor, OrderActionValue order) {
 		setImageDescriptor(EditorSharedImages.getImageDescriptor(ICON_MAP[order.ordinal()]));
 		_action = new OrderAction(editor, order);
+		setText("Move objects to '" + order.name().toLowerCase() + "' in the parent's list.");
 	}
 	
 	@Override
