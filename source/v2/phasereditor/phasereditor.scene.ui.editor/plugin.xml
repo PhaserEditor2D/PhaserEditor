@@ -65,6 +65,11 @@
             id="phasereditor.scene.ui.editor.order_BOTTOM"
             name="Move Objects to the Bottom">
       </command>
+      <command
+            categoryId="phasereditor.scene.ui.editor.category"
+            id="phasereditor.scene.ui.editor.duplicateObjects"
+            name="Duplicate Selected Objects">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -109,7 +114,7 @@
             commandId="phasereditor.scene.ui.editor.resizeTileSprite">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -118,7 +123,7 @@
             commandId="phasereditor.scene.ui.editor.order_UP">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -127,7 +132,7 @@
             commandId="phasereditor.scene.ui.editor.order_DOWN">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -136,7 +141,7 @@
             commandId="phasereditor.scene.ui.editor.order_TOP">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -145,7 +150,7 @@
             commandId="phasereditor.scene.ui.editor.order_BOTTOM">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -154,7 +159,16 @@
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.scene.ui.editor.handlers.DuplicateSelectedObjectsHandler"
+            commandId="phasereditor.scene.ui.editor.duplicateObjects">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -215,6 +229,12 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="END">
       </key>
+      <key
+            commandId="phasereditor.scene.ui.editor.duplicateObjects"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+D">
+      </key>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -252,6 +272,26 @@
                </iterate>
             </with>
          </or>
+      </definition>
+      <definition
+            id="phasereditor.scene.ui.editor.hasSelection">
+         <with
+               variable="selection">
+            <count
+                  value="+">
+            </count>
+         </with>
+      </definition>
+      <definition
+            id="phasereditor.scene.ui.editor.sceneContextHasSelection">
+         <and>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+            </reference>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.hasSelection">
+            </reference>
+         </and>
       </definition>
    </extension>
    <extension
