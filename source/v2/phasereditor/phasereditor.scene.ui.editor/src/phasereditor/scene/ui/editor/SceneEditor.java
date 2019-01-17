@@ -47,6 +47,7 @@ public class SceneEditor extends EditorPart {
 
 	public static final String ID = "phasereditor.scene.ui.editor.SceneEditor";
 	private static String OBJECTS_CONTEXT = "phasereditor.scene.ui.editor.objects";
+	private static String COMMAND_CONTEXT = "phasereditor.scene.ui.editor.command";
 
 	private SceneModel _model;
 	private SceneCanvas _scene;
@@ -71,6 +72,7 @@ public class SceneEditor extends EditorPart {
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
 	private IContextActivation _objectsContextActivation;
+	private IContextActivation _commandContextActivation;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -99,6 +101,14 @@ public class SceneEditor extends EditorPart {
 
 	public void deactivateObjectsContext() {
 		getContextService().deactivateContext(_objectsContextActivation);
+	}
+	
+	public void activateCommandContext() {
+		_commandContextActivation = getContextService().activateContext(COMMAND_CONTEXT);
+	}
+
+	public void deactivateCommandContext() {
+		getContextService().deactivateContext(_commandContextActivation);
 	}
 
 	@Override

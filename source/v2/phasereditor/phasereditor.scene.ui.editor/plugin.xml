@@ -167,9 +167,14 @@
             class="phasereditor.scene.ui.editor.handlers.DuplicateSelectedObjectsHandler"
             commandId="phasereditor.scene.ui.editor.duplicateObjects">
          <activeWhen>
-            <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
-            </reference>
+            <or>
+               <reference
+                     definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+               </reference>
+               <reference
+                     definitionId="phasereditor.scene.ui.editor.sectionaction">
+               </reference>
+            </or>
          </activeWhen>
       </handler>
    </extension>
@@ -293,6 +298,19 @@
             </reference>
          </and>
       </definition>
+      <definition
+            id="phasereditor.scene.ui.editor.sectionaction">
+         <with
+               variable="activeContexts">
+            <iterate
+                  ifEmpty="false"
+                  operator="or">
+               <equals
+                     value="phasereditor.scene.ui.editor.command">
+               </equals>
+            </iterate>
+         </with>
+      </definition>
    </extension>
    <extension
          point="phasereditor.project.core.buildParticipant">
@@ -309,6 +327,10 @@
             id="phasereditor.scene.ui.editor.objects"
             name="Objects Context"
             parentId="org.eclipse.ui.contexts.window">
+      </context>
+      <context
+            id="phasereditor.scene.ui.editor.command"
+            name="Scene Properties section command.">
       </context>
    </extension>
    <extension
@@ -378,6 +400,13 @@
             wizardId="phasereditor.scene.ui.editor.wizards.NewSceneFileWizard">
          <enablement></enablement>
       </commonWizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="phasereditor.scene.ui.editor.duplicateObjects"
+            icon="platform:/plugin/phasereditor.ui/icons/shape-duplicate.png">
+      </image>
    </extension>
 
 </plugin>

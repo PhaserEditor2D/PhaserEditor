@@ -27,6 +27,7 @@ public interface IEditorSharedImages {
 	String IMG_GENERIC_EDITOR = "icons/generic_editor.png";
 	String IMG_CHECK_OFF = "icons/blender_ICON_CHECKBOX_DEHLT.png";
 	String IMG_CHECK_ON = "icons/blender_ICON_CHECKBOX_HLT.png";
+	String IMG_SHAPE_ADD = "icons/shape-duplicate.png";
 	String IMG_SHAPE = "icons/shape_square.png";
 	String IMG_SHAPE_GROUP_NODE = "icons/shape_node_group.png";
 	String IMG_ADD = "icons/add.png";

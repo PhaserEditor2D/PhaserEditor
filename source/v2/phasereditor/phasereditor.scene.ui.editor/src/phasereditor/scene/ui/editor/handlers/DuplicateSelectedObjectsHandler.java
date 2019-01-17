@@ -1,5 +1,7 @@
 package phasereditor.scene.ui.editor.handlers;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -23,17 +25,11 @@ public class DuplicateSelectedObjectsHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		var sel = HandlerUtil.getCurrentStructuredSelection(event);
 		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
+		var sel = editor.getSelectionList();
 
-		var list = new ArrayList<ObjectModel>();
+		var list = sel.stream().filter(o -> o instanceof TransformComponent).collect(toList());
 
-		for (var obj : sel.toArray()) {
-			if (obj instanceof TransformComponent) {
-				list.add((ObjectModel) obj);
-			}
-		}
-		
 		if (list.isEmpty()) {
 			return null;
 		}

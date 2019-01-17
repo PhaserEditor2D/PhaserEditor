@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.internal.actions.CommandAction;
 
 import phasereditor.scene.core.ContainerModel;
 import phasereditor.scene.core.GameObjectEditorComponent;
@@ -74,12 +75,13 @@ public class GameObjectEditorSection extends ScenePropertySection {
 	private IAction _removeFromGroupAction;
 	private Label _groupsLabel;
 	private SelectGroupMenuAction _selectGroupAction;
-	private Action _showBonesAction;
+	// private Action _showBonesAction;
 	private Button _parentButton;
 	private SelectContainerAction _selectContainerAction;
 	private CreateContainerAction _createContainerAction;
 	private RemoveFromParentAction _removeFromParentAction;
 	private Button _snapButton;
+	private CommandAction _duplicateAction;
 
 	public GameObjectEditorSection(ScenePropertyPage page) {
 		super("Editor", page);
@@ -220,7 +222,8 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 		manager.add(new Separator());
 
-		manager.add(_showBonesAction);
+		// manager.add(_showBonesAction);
+		manager.add(_duplicateAction);
 
 		manager.add(new Separator());
 
@@ -571,7 +574,9 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		_removeFromGroupAction = new RemoveFromGroupMenuAction();
 		_selectGroupAction = new SelectGroupMenuAction();
 
-		_showBonesAction = new ShowBonesAction();
+		_duplicateAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_DUPLICATE_OBJECTS);
+
+		// _showBonesAction = new ShowBonesAction();
 
 		_selectContainerAction = new SelectContainerAction();
 		_createContainerAction = new CreateContainerAction();
@@ -661,11 +666,12 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		// VariableComponent.get_variableName(ParentComponent.get_parent(model)))));
 		// }
 
-		{
-			boolean b = flatValues_to_boolean(
-					getModels().stream().map(model -> GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));
-			_showBonesAction.setChecked(b);
-		}
+		// {
+		// boolean b = flatValues_to_boolean(
+		// getModels().stream().map(model ->
+		// GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));
+		// _showBonesAction.setChecked(b);
+		// }
 
 		{
 			var snap = computeSelectionSnap();

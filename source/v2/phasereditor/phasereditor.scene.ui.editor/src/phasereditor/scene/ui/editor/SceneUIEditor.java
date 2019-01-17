@@ -42,6 +42,8 @@ import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
  *
  */
 public class SceneUIEditor {
+	public static final String COMMAND_ID_DUPLICATE_OBJECTS = "phasereditor.scene.ui.editor.duplicateObjects";
+
 	public static void action_MorphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
 		var before = WorldSnapshotOperation.takeSnapshot(editor);
 
