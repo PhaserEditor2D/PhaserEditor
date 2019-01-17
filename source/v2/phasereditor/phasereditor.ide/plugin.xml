@@ -60,35 +60,7 @@
         
       </product>
    </extension>
-   <!--
-   No intro for now
-   <extension
-         point="org.eclipse.ui.intro">
-      <intro
-            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
-            id="phasereditor.ide.intro">
-      </intro>
-      <introProductBinding
-            introId="phasereditor.ide.intro"
-            productId="phasereditor.ide.product">
-      </introProductBinding>
-   </extension>
-   <extension
-         point="org.eclipse.ui.intro.config">
-      <config
-            introId="phasereditor.ide.intro"
-            content="introContent.xml"
-            id="phasereditor.ide.configId">
-         <presentation
-               home-page-id="root">
-            <implementation
-                  kind="html"
-                  os="win32,linux,macosx">
-            </implementation>
-         </presentation>
-      </config>
-   </extension>
-   -->
+   
    
       <extension
          point="org.eclipse.ui.perspectives">
