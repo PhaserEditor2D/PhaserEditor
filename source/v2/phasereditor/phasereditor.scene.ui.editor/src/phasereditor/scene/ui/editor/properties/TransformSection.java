@@ -46,11 +46,6 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class TransformSection extends ScenePropertySection {
 
-	private Text _xText;
-	private Text _yText;
-	private Text _scaleXText;
-	private Text _scaleYText;
-	private Text _angleText;
 	private Action _localTransformAction;
 	private Action _positionToolAction;
 	private Action _scaleToolAction;
@@ -216,7 +211,7 @@ public class TransformSection extends ScenePropertySection {
 
 	}
 
-	@SuppressWarnings({ "unused" })
+	@SuppressWarnings({ "unused", "boxing" })
 	@Override
 	public Control createContent(Composite parent) {
 
@@ -236,34 +231,48 @@ public class TransformSection extends ScenePropertySection {
 
 			label(comp, "Position", "Phaser.GameObjects.Sprite.setPosition");
 
-			label(comp, "X", "Phaser.GameObjects.Sprite.x");
+			{
+				label(comp, "X", "Phaser.GameObjects.Sprite.x");
 
-			_xText = new Text(comp, SWT.BORDER);
-			_xText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				var text = new Text(comp, SWT.BORDER);
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			new SceneTextToFloat(_xText) {
+				new SceneTextToFloat(text) {
 
-				@Override
-				protected void accept2(float value) {
-					getModels().forEach(model -> TransformComponent.set_x(model, value));
-					getEditor().setDirty(true);
-				}
-			};
+					@Override
+					protected void accept2(float value) {
+						getModels().forEach(model -> TransformComponent.set_x(model, value));
+						getEditor().setDirty(true);
+					}
+				};
 
-			label(comp, "Y", "Phaser.GameObjects.Sprite.y");
+				addUpdate(() -> {
+					text.setText(
+							flatValues_to_String(getModels().stream().map(model -> TransformComponent.get_x(model))));
+				});
+			}
 
-			_yText = new Text(comp, SWT.BORDER);
-			_yText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			{
+				label(comp, "Y", "Phaser.GameObjects.Sprite.y");
 
-			new SceneTextToFloat(_yText) {
+				var text = new Text(comp, SWT.BORDER);
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-				@Override
-				protected void accept2(float value) {
-					getModels().forEach(model -> TransformComponent.set_y(model, value));
-					getEditor().setDirty(true);
+				new SceneTextToFloat(text) {
 
-				}
-			};
+					@Override
+					protected void accept2(float value) {
+						getModels().forEach(model -> TransformComponent.set_y(model, value));
+						getEditor().setDirty(true);
+
+					}
+				};
+
+				addUpdate(() -> {
+					text.setText(
+							flatValues_to_String(getModels().stream().map(model -> TransformComponent.get_y(model))));
+				});
+			}
 
 		}
 
@@ -276,33 +285,47 @@ public class TransformSection extends ScenePropertySection {
 
 			label(comp, "Scale", "Phaser.GameObjects.Sprite.setScale");
 
-			label(comp, "X", "Phaser.GameObjects.Sprite.scaleX");
+			{
+				label(comp, "X", "Phaser.GameObjects.Sprite.scaleX");
 
-			_scaleXText = new Text(comp, SWT.BORDER);
-			_scaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new SceneTextToFloat(_scaleXText) {
+				Text text = new Text(comp, SWT.BORDER);
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				new SceneTextToFloat(text) {
 
-				@Override
-				protected void accept2(float value) {
-					getModels().forEach(model -> TransformComponent.set_scaleX(model, value));
-					getEditor().setDirty(true);
-				}
+					@Override
+					protected void accept2(float value) {
+						getModels().forEach(model -> TransformComponent.set_scaleX(model, value));
+						getEditor().setDirty(true);
+					}
 
-			};
+				};
 
-			label(comp, "Y", "Phaser.GameObjects.Sprite.scaleY");
+				addUpdate(() -> {
+					text.setText(flatValues_to_String(
+							getModels().stream().map(model -> TransformComponent.get_scaleX(model))));
+				});
+			}
 
-			_scaleYText = new Text(comp, SWT.BORDER);
-			_scaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new SceneTextToFloat(_scaleYText) {
+			{
+				label(comp, "Y", "Phaser.GameObjects.Sprite.scaleY");
 
-				@Override
-				protected void accept2(float value) {
-					getModels().forEach(model -> TransformComponent.set_scaleY(model, value));
-					getEditor().setDirty(true);
-				}
+				Text _scaleYText = new Text(comp, SWT.BORDER);
+				_scaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				new SceneTextToFloat(_scaleYText) {
 
-			};
+					@Override
+					protected void accept2(float value) {
+						getModels().forEach(model -> TransformComponent.set_scaleY(model, value));
+						getEditor().setDirty(true);
+					}
+
+				};
+
+				addUpdate(() -> {
+					_scaleYText.setText(flatValues_to_String(
+							getModels().stream().map(model -> TransformComponent.get_scaleY(model))));
+				});
+			}
 		}
 
 		{
@@ -312,23 +335,30 @@ public class TransformSection extends ScenePropertySection {
 			manager.add(_angleToolAction);
 			manager.createControl(comp);
 
-			label(comp, "Angle", "Phaser.GameObjects.Sprite.angle");
+			{
+				label(comp, "Angle", "Phaser.GameObjects.Sprite.angle");
 
-			new Label(comp, SWT.NONE);
+				new Label(comp, SWT.NONE);
 
-			_angleText = new Text(comp, SWT.BORDER);
-			_angleText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-			new SceneTextToFloat(_angleText) {
+				var text = new Text(comp, SWT.BORDER);
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+				new SceneTextToFloat(text) {
 
-				@Override
-				protected void accept2(float value) {
-					getModels().forEach(model -> TransformComponent.set_angle(model, value));
-					getEditor().setDirty(true);
-				}
-			};
+					@Override
+					protected void accept2(float value) {
+						getModels().forEach(model -> TransformComponent.set_angle(model, value));
+						getEditor().setDirty(true);
+					}
+				};
 
-			new Label(comp, SWT.NONE);
-			new Label(comp, SWT.NONE);
+				addUpdate(() -> {
+					text.setText(flatValues_to_String(
+							getModels().stream().map(model -> TransformComponent.get_angle(model))));
+				});
+
+				new Label(comp, SWT.NONE);
+				new Label(comp, SWT.NONE);
+			}
 
 		}
 
@@ -364,29 +394,8 @@ public class TransformSection extends ScenePropertySection {
 			}
 		};
 
-	}
+		addUpdate(this::updateActions);
 
-	@Override
-	@SuppressWarnings("boxing")
-	public void user_update_UI_from_Model() {
-
-		var models = getModels();
-
-		// x y
-
-		_xText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_x(model))));
-		_yText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_y(model))));
-
-		// scale
-
-		_scaleXText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleX(model))));
-		_scaleYText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_scaleY(model))));
-
-		// angle
-
-		_angleText.setText(flatValues_to_String(models.stream().map(model -> TransformComponent.get_angle(model))));
-
-		updateActions();
 	}
 
 	void updateActions() {
