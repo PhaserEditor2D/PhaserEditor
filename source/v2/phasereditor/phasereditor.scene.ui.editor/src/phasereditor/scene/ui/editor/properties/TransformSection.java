@@ -95,7 +95,7 @@ public class TransformSection extends ScenePropertySection {
 		private AlignValue _value;
 
 		public AlignAction(AlignValue value) {
-			super();
+			super("Align to '" + value.name().toLowerCase().replace("_", " ") + "'.");
 			_value = value;
 
 			String icon = null;
