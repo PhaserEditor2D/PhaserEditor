@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
+import static phasereditor.ui.PhaserEditorUI.scriptEngineEval;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -76,6 +78,27 @@ public abstract class TextListener implements FocusListener, KeyListener {
 		if (e.character == SWT.LF || e.character == SWT.CR || e.character == 13) {
 			fireChanged();
 		}
+	}
+
+	
+	@SuppressWarnings("boxing")
+	Number evalNumberExpression(String value) {
+		Number result = null;
+
+		try {
+			result = Float.parseFloat(value);
+		} catch (NumberFormatException e) {
+			// it is not a number, let's try to evaluate it as JavaScript expression:
+			try {
+				result = scriptEngineEval(value);
+				// ok, it is an expression, let's update the text field with result
+				_text.setText(result.toString());
+			} catch (Exception e1) {
+				// nothing, it is not a valid expression
+			}
+
+		}
+		return result;
 	}
 
 	protected abstract void accept(String value);

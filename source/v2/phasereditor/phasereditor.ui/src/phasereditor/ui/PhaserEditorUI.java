@@ -52,6 +52,9 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
@@ -1513,12 +1516,51 @@ public class PhaserEditorUI {
 	public static boolean isZoomEvent(ZoomCanvas canvas, Event e) {
 		return isZoomEvent(canvas.isHandModeActivated(), e);
 	}
-	
+
 	public static boolean isZoomEvent(HandModeUtils utils, Event e) {
 		return isZoomEvent(utils.isActivated(), e);
 	}
-	
+
 	private static boolean isZoomEvent(boolean handModeActivated, Event e) {
 		return e.stateMask != 0 || handModeActivated;
+	}
+
+	public final static ScriptEngine scriptEngine;
+
+	static {
+		scriptEngine = new ScriptEngineManager().getEngineByName("nashorn");
+	}
+
+	public static Double scriptEngineEval(String value) {
+		try {
+			return Double.valueOf(value);
+		} catch (NumberFormatException e) {
+			try {
+				Object result = scriptEngine.eval(value);
+				return Double.valueOf(((Number) result).doubleValue());
+			} catch (ScriptException e1) {
+				throw new RuntimeException(e1);
+			}
+		}
+	}
+
+	public static String scriptEngineValidate(Object value) {
+		if (value instanceof String) {
+			String script = (String) value;
+			try {
+				Double.parseDouble(script);
+			} catch (NumberFormatException e) {
+				// try a javascript expression
+				try {
+					Object result = scriptEngine.eval(script);
+					if (!(result instanceof Number)) {
+						return "Invalid expression result.";
+					}
+				} catch (ScriptException e1) {
+					return "Invalid number or script format.";
+				}
+			}
+		}
+		return null;
 	}
 }

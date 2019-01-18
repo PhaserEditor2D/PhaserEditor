@@ -35,7 +35,11 @@ public abstract class TextToIntListener extends TextListener {
 
 	@Override
 	protected void accept(String value) {
-		accept(Integer.parseInt(value));
+		var result = evalNumberExpression(value);
+
+		if (result != null) {
+			accept(result.intValue());
+		}
 	}
 
 	protected abstract void accept(int value);

@@ -33,9 +33,16 @@ public abstract class TextToFloatListener extends TextListener {
 		super(widget);
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	protected void accept(String value) {
-		accept(Float.parseFloat(value));
+
+		var result = evalNumberExpression(value);
+
+		if (result != null) {
+			accept(result.floatValue());
+		}
+
 	}
 
 	protected abstract void accept(float value);
