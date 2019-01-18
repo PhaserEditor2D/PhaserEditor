@@ -43,6 +43,13 @@ import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
  */
 public class SceneUIEditor {
 	public static final String COMMAND_ID_DUPLICATE_OBJECTS = "phasereditor.scene.ui.editor.duplicateObjects";
+	public static final String COMMAND_ID_POSITION_TOOL = "phasereditor.scene.ui.editor.positionTool";
+	public static final String COMMAND_ID_SCALE_TOOL = "phasereditor.scene.ui.editor.scaleTool";
+	public static final String COMMAND_ID_ANGLE_TOOL = "phasereditor.scene.ui.editor.angleTool";
+	public static final String COMMAND_ID_ORIGIN_TOOL = "phasereditor.scene.ui.editor.originTool";
+	public static final String COMMAND_ID_RESIZE_TILE_SPRITE_TOOL = "phasereditor.scene.ui.editor.resizeTileSprite";
+	
+	
 
 	public static void action_MorphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
 		var before = WorldSnapshotOperation.takeSnapshot(editor);

@@ -78,7 +78,7 @@
             commandId="phasereditor.scene.ui.editor.positionTool">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbar">
             </reference>
          </activeWhen>
       </handler>
@@ -87,7 +87,7 @@
             commandId="phasereditor.scene.ui.editor.scaleTool">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbar">
             </reference>
          </activeWhen>
       </handler>
@@ -96,7 +96,7 @@
             commandId="phasereditor.scene.ui.editor.angleTool">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbar">
             </reference>
          </activeWhen>
       </handler>
@@ -105,7 +105,7 @@
             commandId="phasereditor.scene.ui.editor.originTool">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbar">
             </reference>
          </activeWhen>
       </handler>
@@ -114,7 +114,7 @@
             commandId="phasereditor.scene.ui.editor.resizeTileSprite">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbar">
             </reference>
          </activeWhen>
       </handler>
@@ -123,7 +123,7 @@
             commandId="phasereditor.scene.ui.editor.order_UP">
           <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -132,7 +132,7 @@
             commandId="phasereditor.scene.ui.editor.order_DOWN">
           <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -141,7 +141,7 @@
             commandId="phasereditor.scene.ui.editor.order_TOP">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -150,7 +150,7 @@
             commandId="phasereditor.scene.ui.editor.order_BOTTOM">
           <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -159,7 +159,7 @@
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -168,7 +168,7 @@
             commandId="phasereditor.scene.ui.editor.duplicateObjects">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -307,7 +307,7 @@
          </with>
       </definition>
       <definition
-            id="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+            id="phasereditor.scene.ui.editor.sceneOrToolbarHasSelection">
          <or>
             <reference
                   definitionId="phasereditor.scene.ui.editor.toolbar">
@@ -315,6 +315,17 @@
             <reference
                   definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
             </reference></or>
+      </definition>
+      <definition
+            id="phasereditor.scene.ui.editor.sceneOrToolbar">
+         <or>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.sceneContext">
+            </reference>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.toolbar">
+            </reference>
+         </or>
       </definition>
    </extension>
    <extension
@@ -427,6 +438,26 @@
       <image
             commandId="phasereditor.scene.ui.editor.order_BOTTOM"
             icon="platform:/plugin/phasereditor.ui/icons/depth-bottom.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.positionTool"
+            icon="platform:/plugin/phasereditor.ui/icons/shape_move.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.scaleTool"
+            icon="platform:/plugin/phasereditor.ui/icons/shape_handles.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.angleTool"
+            icon="platform:/plugin/phasereditor.ui/icons/arrow_rotate_clockwise_blue.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.resizeTileSprite"
+            icon="platform:/plugin/phasereditor.ui/icons/shape_handles.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.originTool"
+            icon="platform:/plugin/phasereditor.ui/icons/origin.png">
       </image>
    </extension>
 

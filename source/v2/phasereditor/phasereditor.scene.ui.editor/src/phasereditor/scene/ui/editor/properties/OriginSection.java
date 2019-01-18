@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -39,6 +38,7 @@ import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.SceneObjectRenderer;
+import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.interactive.OriginTool;
 import phasereditor.ui.EditorSharedImages;
 
@@ -157,31 +157,8 @@ public class OriginSection extends ScenePropertySection {
 			_originPresetActions.add(action);
 		}
 
-		_originToolAction = new Action("Origin tool.", IAction.AS_CHECK_BOX) {
-
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_ORIGIN));
-			}
-
-			@Override
-			public void run() {
-
-				if (isChecked()) {
-					setInteractiveTools(
-
-							new OriginTool(getEditor(), true, false),
-
-							new OriginTool(getEditor(), false, true),
-
-							new OriginTool(getEditor(), true, true)
-
-					);
-				} else {
-					setInteractiveTools();
-				}
-
-			}
-		};
+		_originToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_ORIGIN_TOOL);
+		_originToolAction.setChecked(false);
 	}
 
 	@SuppressWarnings({ "boxing", "unused" })

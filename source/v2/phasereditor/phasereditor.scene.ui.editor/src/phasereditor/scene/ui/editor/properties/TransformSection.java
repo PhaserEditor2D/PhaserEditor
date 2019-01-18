@@ -22,7 +22,6 @@
 package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -35,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.editor.interactive.AngleLineTool;
+import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.interactive.AngleTool;
 import phasereditor.scene.ui.editor.interactive.PositionTool;
 import phasereditor.scene.ui.editor.interactive.ScaleTool;
@@ -337,80 +336,15 @@ public class TransformSection extends ScenePropertySection {
 	}
 
 	private void createActions() {
-		_positionToolAction = new Action("Position tool.", IAction.AS_CHECK_BOX) {
+		// we use the setChecked() to convert the action to a toogle button.
+		_positionToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_POSITION_TOOL);
+		_positionToolAction.setChecked(false);
 
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_POSITION));
-			}
+		_scaleToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_SCALE_TOOL);
+		_scaleToolAction.setChecked(false);
 
-			@Override
-			public void run() {
-				if (isChecked()) {
-					setInteractiveTools(
-
-							new PositionTool(getEditor(), true, false),
-
-							new PositionTool(getEditor(), false, true),
-
-							new PositionTool(getEditor(), true, true)
-
-					);
-				} else {
-					setInteractiveTools();
-				}
-
-			}
-		};
-
-		_scaleToolAction = new Action("Scale tool.", IAction.AS_CHECK_BOX) {
-
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE));
-			}
-
-			@Override
-			public void run() {
-				if (isChecked()) {
-					setInteractiveTools(
-
-							new ScaleTool(getEditor(), true, false),
-
-							new ScaleTool(getEditor(), false, true),
-
-							new ScaleTool(getEditor(), true, true)
-
-					);
-				} else {
-					setInteractiveTools();
-				}
-
-			}
-		};
-
-		_angleToolAction = new Action("Angle tool.", IAction.AS_CHECK_BOX) {
-
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_ANGLE));
-			}
-
-			@Override
-			public void run() {
-				if (isChecked()) {
-					setInteractiveTools(
-
-							new AngleTool(getEditor()),
-
-							new AngleLineTool(getEditor(), true),
-
-							new AngleLineTool(getEditor(), false)
-
-					);
-				} else {
-					setInteractiveTools();
-				}
-
-			}
-		};
+		_angleToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_ANGLE_TOOL);
+		_angleToolAction.setChecked(false);
 
 		_localTransformAction = new Action("Transform in local/global coords.") {
 			{

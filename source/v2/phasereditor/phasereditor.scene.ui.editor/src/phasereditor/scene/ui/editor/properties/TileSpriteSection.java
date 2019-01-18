@@ -36,6 +36,7 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.interactive.TilePositionTool;
 import phasereditor.scene.ui.editor.interactive.TileScaleTool;
 import phasereditor.scene.ui.editor.interactive.TileSizeTool;
@@ -342,28 +343,8 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		};
 
-		_sizeToolAction = new Action("Tile size tool.", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_EDIT_SCALE));
-			}
-
-			@Override
-			public void run() {
-				if (isChecked()) {
-					setInteractiveTools(
-
-							new TileSizeTool(getEditor(), true, false),
-
-							new TileSizeTool(getEditor(), false, true),
-
-							new TileSizeTool(getEditor(), true, true)
-
-					);
-				} else {
-					setInteractiveTools();
-				}
-			}
-		};
+		_sizeToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_RESIZE_TILE_SPRITE_TOOL);
+		_sizeToolAction.setChecked(false);
 
 	}
 
