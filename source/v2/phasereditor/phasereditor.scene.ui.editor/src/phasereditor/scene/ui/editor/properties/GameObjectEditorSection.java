@@ -57,7 +57,6 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.scene.ui.editor.properties.OrderAction.OrderActionValue;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
@@ -70,7 +69,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 	private Button _typeButton;
 	private Scale _transpScale;
-	private List<JFaceOrderAction> _orderActions;
+	private List<Action> _orderActions;
 	private IAction _addToGroupAction;
 	private IAction _removeFromGroupAction;
 	private Label _groupsLabel;
@@ -562,13 +561,17 @@ public class GameObjectEditorSection extends ScenePropertySection {
 	}
 
 	private void createActions() {
-		var editor = getEditor();
-
 		_orderActions = new ArrayList<>();
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.UP));
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.DOWN));
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.TOP));
-		_orderActions.add(new JFaceOrderAction(editor, OrderActionValue.BOTTOM));
+
+		// _orderActions.add(new JFaceOrderAction(editor, OrderActionValue.UP));
+		// _orderActions.add(new JFaceOrderAction(editor, OrderActionValue.DOWN));
+		// _orderActions.add(new JFaceOrderAction(editor, OrderActionValue.TOP));
+		// _orderActions.add(new JFaceOrderAction(editor, OrderActionValue.BOTTOM));
+
+		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_UP"));
+		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_DOWN"));
+		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_TOP"));
+		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_BOTTOM"));
 
 		_addToGroupAction = new AddToGroupMenuAction();
 		_removeFromGroupAction = new RemoveFromGroupMenuAction();

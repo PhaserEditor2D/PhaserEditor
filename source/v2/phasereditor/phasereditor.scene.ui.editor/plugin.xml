@@ -121,18 +121,18 @@
       <handler
             class="phasereditor.scene.ui.editor.handlers.ChangeObjectsOrderHandler"
             commandId="phasereditor.scene.ui.editor.order_UP">
-         <activeWhen>
+          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
       <handler
             class="phasereditor.scene.ui.editor.handlers.ChangeObjectsOrderHandler"
             commandId="phasereditor.scene.ui.editor.order_DOWN">
-         <activeWhen>
+          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -141,16 +141,16 @@
             commandId="phasereditor.scene.ui.editor.order_TOP">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
       <handler
             class="phasereditor.scene.ui.editor.handlers.ChangeObjectsOrderHandler"
             commandId="phasereditor.scene.ui.editor.order_BOTTOM">
-         <activeWhen>
+          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -159,7 +159,7 @@
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <reference
-                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
             </reference>
          </activeWhen>
       </handler>
@@ -167,14 +167,9 @@
             class="phasereditor.scene.ui.editor.handlers.DuplicateSelectedObjectsHandler"
             commandId="phasereditor.scene.ui.editor.duplicateObjects">
          <activeWhen>
-            <or>
-               <reference
-                     definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
-               </reference>
-               <reference
-                     definitionId="phasereditor.scene.ui.editor.sectionaction">
-               </reference>
-            </or>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+            </reference>
          </activeWhen>
       </handler>
    </extension>
@@ -299,7 +294,7 @@
          </and>
       </definition>
       <definition
-            id="phasereditor.scene.ui.editor.sectionaction">
+            id="phasereditor.scene.ui.editor.toolbar">
          <with
                variable="activeContexts">
             <iterate
@@ -310,6 +305,16 @@
                </equals>
             </iterate>
          </with>
+      </definition>
+      <definition
+            id="phasereditor.scene.ui.editor.sceneAndToolbarHasSelection">
+         <or>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.toolbar">
+            </reference>
+            <reference
+                  definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
+            </reference></or>
       </definition>
    </extension>
    <extension
@@ -406,6 +411,22 @@
       <image
             commandId="phasereditor.scene.ui.editor.duplicateObjects"
             icon="platform:/plugin/phasereditor.ui/icons/shape-duplicate.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.order_UP"
+            icon="platform:/plugin/phasereditor.ui/icons/depth-up.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.order_DOWN"
+            icon="platform:/plugin/phasereditor.ui/icons/depth-down.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.order_TOP"
+            icon="platform:/plugin/phasereditor.ui/icons/depth-top.png">
+      </image>
+      <image
+            commandId="phasereditor.scene.ui.editor.order_BOTTOM"
+            icon="platform:/plugin/phasereditor.ui/icons/depth-bottom.png">
       </image>
    </extension>
 
