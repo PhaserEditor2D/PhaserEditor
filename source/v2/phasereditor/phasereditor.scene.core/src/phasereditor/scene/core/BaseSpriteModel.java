@@ -28,13 +28,13 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public abstract class BaseSpriteModel extends TransformModel implements FlipComponent,
+public abstract class BaseSpriteModel extends TransformModel implements
+
+		FlipComponent,
 
 		OriginComponent,
 
-		TextureComponent,
-
-		VisibleComponent
+		TextureComponent
 
 {
 
@@ -46,8 +46,6 @@ public abstract class BaseSpriteModel extends TransformModel implements FlipComp
 		OriginComponent.init(this);
 
 		TextureComponent.init(this);
-
-		VisibleComponent.init(this);
 
 	}
 
@@ -61,8 +59,6 @@ public abstract class BaseSpriteModel extends TransformModel implements FlipComp
 
 		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
 		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
-
-		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 
 		data.put(textureKey_name, TextureComponent.get_textureKey(this), textureKey_default);
 		data.put(textureFrame_name, TextureComponent.get_textureFrame(this), textureFrame_default);
@@ -78,8 +74,6 @@ public abstract class BaseSpriteModel extends TransformModel implements FlipComp
 
 		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, OriginComponent.originX_default(this)));
 		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, OriginComponent.originY_default(this)));
-
-		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 
 		TextureComponent.set_textureKey(this, data.optString(textureKey_name, textureKey_default));
 		TextureComponent.set_textureFrame(this, data.optString(textureFrame_name, textureFrame_default));

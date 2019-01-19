@@ -21,49 +21,33 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
-import org.eclipse.core.resources.IProject;
-import org.json.JSONObject;
-
 /**
  * @author arian
  *
  */
-public abstract class TransformModel extends GameObjectModel implements
+@SuppressWarnings("boxing")
+public interface GameObjectComponent {
 
-		TransformComponent
+	// active
 
-{
+	static String active_name = "active";
 
-	public TransformModel(String type) {
-		super(type);
+	static boolean active_default = true;
 
-		TransformComponent.init(this);
+	static boolean get_active(ObjectModel obj) {
+		return (boolean) obj.get("active");
 	}
 
-	@Override
-	public void write(JSONObject data) {
-
-		super.write(data);
-
-		data.put(x_name, TransformComponent.get_x(this), x_default);
-		data.put(y_name, TransformComponent.get_y(this), y_default);
-		data.put(scaleX_name, TransformComponent.get_scaleX(this), scaleX_default);
-		data.put(scaleY_name, TransformComponent.get_scaleY(this), scaleY_default);
-		data.put(angle_name, TransformComponent.get_angle(this), angle_default);
-
+	static void set_active(ObjectModel obj, boolean active) {
+		obj.put("active", active);
 	}
 
-	@Override
-	public void read(JSONObject data, IProject project) {
+	static boolean is(ObjectModel model) {
+		return model instanceof GameObjectComponent;
+	}
 
-		super.read(data, project);
-
-		TransformComponent.set_x(this, (float) data.optDouble(x_name, x_default));
-		TransformComponent.set_y(this, (float) data.optDouble(y_name, y_default));
-		TransformComponent.set_scaleX(this, (float) data.optDouble(scaleX_name, scaleX_default));
-		TransformComponent.set_scaleY(this, (float) data.optDouble(scaleY_name, scaleY_default));
-		TransformComponent.set_angle(this, (float) data.optDouble(angle_name, angle_default));
-
+	static void init(ObjectModel model) {
+		set_active(model, active_default);
 	}
 
 }

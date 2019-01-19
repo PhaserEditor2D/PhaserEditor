@@ -35,8 +35,6 @@ public class BitmapTextModel extends TransformModel implements
 
 		OriginComponent,
 
-		VisibleComponent,
-
 		TextualComponent,
 
 		BitmapTextComponent
@@ -58,7 +56,6 @@ public class BitmapTextModel extends TransformModel implements
 		OriginComponent.set_originX(this, 0);
 		OriginComponent.set_originY(this, 0);
 
-		VisibleComponent.init(this);
 		TextualComponent.init(this);
 		BitmapTextComponent.init(this);
 	}
@@ -69,8 +66,6 @@ public class BitmapTextModel extends TransformModel implements
 
 		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
 		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
-
-		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 
 		data.put(text_name, TextualComponent.get_text(this), text_default);
 
@@ -88,8 +83,6 @@ public class BitmapTextModel extends TransformModel implements
 		// origin default at 0,0
 		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, 0));
 		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, 0));
-
-		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 
 		TextualComponent.set_text(this, data.optString(text_name, text_default));
 

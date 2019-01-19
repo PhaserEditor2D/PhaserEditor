@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -28,42 +28,38 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public abstract class TransformModel extends GameObjectModel implements
+public abstract class GameObjectModel extends EditorObjectModel implements
 
-		TransformComponent
+		GameObjectComponent,
+
+		VisibleComponent
 
 {
 
-	public TransformModel(String type) {
+	public GameObjectModel(String type) {
 		super(type);
 
-		TransformComponent.init(this);
-	}
+		GameObjectComponent.init(this);
 
-	@Override
-	public void write(JSONObject data) {
-
-		super.write(data);
-
-		data.put(x_name, TransformComponent.get_x(this), x_default);
-		data.put(y_name, TransformComponent.get_y(this), y_default);
-		data.put(scaleX_name, TransformComponent.get_scaleX(this), scaleX_default);
-		data.put(scaleY_name, TransformComponent.get_scaleY(this), scaleY_default);
-		data.put(angle_name, TransformComponent.get_angle(this), angle_default);
-
+		VisibleComponent.init(this);
 	}
 
 	@Override
 	public void read(JSONObject data, IProject project) {
-
 		super.read(data, project);
 
-		TransformComponent.set_x(this, (float) data.optDouble(x_name, x_default));
-		TransformComponent.set_y(this, (float) data.optDouble(y_name, y_default));
-		TransformComponent.set_scaleX(this, (float) data.optDouble(scaleX_name, scaleX_default));
-		TransformComponent.set_scaleY(this, (float) data.optDouble(scaleY_name, scaleY_default));
-		TransformComponent.set_angle(this, (float) data.optDouble(angle_name, angle_default));
+		GameObjectComponent.set_active(this, data.optBoolean(active_name, active_default));
 
+		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
+	}
+
+	@Override
+	public void write(JSONObject data) {
+		super.write(data);
+
+		data.put(active_name, GameObjectComponent.get_active(this), active_default);
+
+		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 	}
 
 }

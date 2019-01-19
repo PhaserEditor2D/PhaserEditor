@@ -38,6 +38,7 @@ public abstract class EditorObjectModel extends VariableModel implements
 		super(type);
 
 		GameObjectEditorComponent.init(this);
+		
 	}
 
 	@Override

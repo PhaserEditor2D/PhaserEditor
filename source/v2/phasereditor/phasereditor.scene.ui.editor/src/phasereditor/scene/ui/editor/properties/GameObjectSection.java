@@ -27,6 +27,7 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import phasereditor.scene.core.GameObjectComponent;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.ui.EditorSharedImages;
 
@@ -42,7 +43,7 @@ public class GameObjectSection extends ScenePropertySection {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		return obj instanceof VisibleComponent;
+		return obj instanceof VisibleComponent && obj instanceof GameObjectComponent;
 	}
 
 	@SuppressWarnings("boxing")
@@ -50,37 +51,67 @@ public class GameObjectSection extends ScenePropertySection {
 	public void fillToolbar(ToolBarManager manager) {
 		super.fillToolbar(manager);
 
-		var action = new Action("", IAction.AS_CHECK_BOX) {
-			{
-				setToolTipText(getHelp("Phaser.GameObjects.Components.Visible.visible"));
-			}
+		{
+			var action = new Action("", IAction.AS_CHECK_BOX) {
 
-			@Override
-			public void run() {
-				wrapOperation(() -> {
-					getModels().forEach(model -> VisibleComponent.set_visible(model, isChecked()));
-				});
+				{
+					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_LIGHTNING));
+					setToolTipText(getHelp("Phaser.GameObjects.GameObject.active"));
+				}
 
-				getEditor().setDirty(true);
-				
-				update_UI_from_Model();
-			}
-		};
+				@Override
+				public void run() {
+					wrapOperation(() -> {
+						getModels().forEach(model -> GameObjectComponent.set_active(model, isChecked()));
+					});
 
-		manager.add(action);
+					getEditor().setDirty(true);
 
-		addUpdate(() -> {
-			action.setChecked(
-					flatValues_to_Boolean(getModels().stream().map(model -> VisibleComponent.get_visible(model))));
+					update_UI_from_Model();
+				}
+			};
 
-			action.setImageDescriptor(
+			manager.add(action);
 
-					EditorSharedImages.getImageDescriptor(action.isChecked() ?
+			addUpdate(() -> {
+				action.setChecked(flatValues_to_Boolean(
+						getModels().stream().map(model -> GameObjectComponent.get_active(model))));
+			});
+		}
 
-							IMG_EYE_OPEN
+		{
+			var action = new Action("", IAction.AS_CHECK_BOX) {
+				{
+					setToolTipText(getHelp("Phaser.GameObjects.Components.Visible.visible"));
+				}
 
-							: IMG_EYE_CLOSE));
-		});
+				@Override
+				public void run() {
+					wrapOperation(() -> {
+						getModels().forEach(model -> VisibleComponent.set_visible(model, isChecked()));
+					});
+
+					getEditor().setDirty(true);
+
+					update_UI_from_Model();
+				}
+			};
+
+			manager.add(action);
+
+			addUpdate(() -> {
+				action.setChecked(
+						flatValues_to_Boolean(getModels().stream().map(model -> VisibleComponent.get_visible(model))));
+
+				action.setImageDescriptor(
+
+						EditorSharedImages.getImageDescriptor(action.isChecked() ?
+
+								IMG_EYE_OPEN
+
+								: IMG_EYE_CLOSE));
+			});
+		}
 
 	}
 
