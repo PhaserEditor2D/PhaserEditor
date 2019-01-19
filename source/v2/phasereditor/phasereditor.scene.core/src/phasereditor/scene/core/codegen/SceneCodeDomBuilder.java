@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.eclipse.core.resources.IFile;
 
@@ -41,6 +42,7 @@ import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
+import phasereditor.scene.core.GameObjectComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
@@ -157,8 +159,14 @@ public class SceneCodeDomBuilder {
 				fieldModels.add(model);
 			}
 
+			if (model instanceof GameObjectComponent) {
+				assignToVar = buildSingleFlagProp(methodDecl, model, "active", GameObjectComponent::get_active,
+						GameObjectComponent.active_default) || assignToVar;
+			}
+
 			if (model instanceof VisibleComponent) {
-				assignToVar = buildVisibleProps(methodDecl, model) || assignToVar;
+				assignToVar = buildSingleFlagProp(methodDecl, model, "visible", VisibleComponent::get_visible,
+						VisibleComponent.visible_default) || assignToVar;
 			}
 
 			if (model instanceof OriginComponent) {
@@ -220,20 +228,21 @@ public class SceneCodeDomBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private boolean buildVisibleProps(MethodDeclDom methodDecl, ObjectModel model) {
+	private boolean buildSingleFlagProp(MethodDeclDom methodDecl, ObjectModel model, String propName,
+			Function<ObjectModel, Boolean> get, boolean defaultValue) {
 		var assignToVar = false;
 
 		var name = varname(model);
 
-		var visible = VisibleComponent.get_visible(model);
+		var flag = get.apply(model).booleanValue();
 
-		if (visible != VisibleComponent.visible_default) {
+		if (flag != defaultValue) {
 
 			assignToVar = true;
 
-			var instr = new AssignPropertyDom("visible", name);
+			var instr = new AssignPropertyDom(propName, name);
 
-			instr.value(visible);
+			instr.value(flag);
 
 			methodDecl.getInstructions().add(instr);
 		}
