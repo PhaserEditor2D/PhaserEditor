@@ -24,8 +24,6 @@ package phasereditor.scene.ui.editor.properties;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -52,10 +50,7 @@ public class FlipSection extends ScenePropertySection {
 
 	@Override
 	public Control createContent(Composite parent) {
-		Composite comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(4, false));
-
-		return comp;
+		return null;
 	}
 
 	@Override

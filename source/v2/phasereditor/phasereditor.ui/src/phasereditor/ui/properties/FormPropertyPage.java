@@ -95,7 +95,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 			if (canEdit) {
 				section.setModels(models);
-				
+
 				if (!row.isCreated()) {
 					row.createContents();
 				}
@@ -121,7 +121,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			super(parent, 0);
 
 			this.setData("org.eclipse.e4.ui.css.CssClassName", "FormSection");
-			
+
 			_section = section;
 			_created = false;
 
@@ -176,20 +176,25 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 				header.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionHeader");
 			}
 
+			var control = _section.createContent(this);
+			if (control != null) {
+				control.setLayoutData(createControlGridData());
+				control.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionBody");
+
+				if (control instanceof Composite) {
+					((Composite) control).setBackgroundMode(SWT.INHERIT_FORCE);
+				}
+			}
+
 			var collapseBtn = new Label(header, SWT.NONE);
-			collapseBtn.setImage(EditorSharedImages.getImage(collapsed ? IMG_BULLET_EXPAND : IMG_BULLET_COLLAPSE));
+			if (control != null) {
+				collapseBtn.setImage(EditorSharedImages.getImage(collapsed ? IMG_BULLET_EXPAND : IMG_BULLET_COLLAPSE));
+			}
 
 			var title = new Label(header, SWT.NONE);
 			title.setText(_section.getName());
 			title.setFont(SwtRM.getBoldFont(title.getFont()));
 			title.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionTitle");
-
-			var control = _section.createContent(this);
-			control.setLayoutData(createControlGridData());
-			control.setData("org.eclipse.e4.ui.css.CssClassName", "FormSectionBody");
-			if (control instanceof Composite) {
-				((Composite) control).setBackgroundMode(SWT.INHERIT_FORCE);
-			}
 
 			var toolbarManager = new ToolBarManager();
 			_section.fillToolbar(toolbarManager);
@@ -204,50 +209,54 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 			_section.update_UI_from_Model();
 
-			if (collapsed) {
-				((GridData) control.getLayoutData()).heightHint = 0;
-				control.setVisible(false);
+			if (control != null) {
+				if (collapsed) {
+					((GridData) control.getLayoutData()).heightHint = 0;
+					control.setVisible(false);
+				}
 			}
 
 			var sep = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
 			sep.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-			var expandListener = new MouseAdapter() {
+			if (control != null) {
+				var expandListener = new MouseAdapter() {
 
-				@Override
-				public void mouseUp(MouseEvent e) {
-					_collapsed = !_collapsed;
+					@Override
+					public void mouseUp(MouseEvent e) {
+						_collapsed = !_collapsed;
 
-					var img = EditorSharedImages.getImage(_collapsed ? IEditorSharedImages.IMG_BULLET_EXPAND
-							: IEditorSharedImages.IMG_BULLET_COLLAPSE);
+						var img = EditorSharedImages.getImage(_collapsed ? IEditorSharedImages.IMG_BULLET_EXPAND
+								: IEditorSharedImages.IMG_BULLET_COLLAPSE);
 
-					collapseBtn.setImage(img);
+						collapseBtn.setImage(img);
 
-					control.setVisible(!_collapsed);
+						control.setVisible(!_collapsed);
 
-					{
-						var gd = createControlGridData();
-						gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
-						control.setLayoutData(gd);
+						{
+							var gd = createControlGridData();
+							gd.heightHint = _collapsed ? 0 : SWT.DEFAULT;
+							control.setLayoutData(gd);
+						}
+
+						control.requestLayout();
+
+						if (_collapsed) {
+							_collapsedSectionsIds.add(sectionId);
+						} else {
+							_collapsedSectionsIds.remove(sectionId);
+						}
+
+						_sectionsContainer.requestLayout();
+						_sectionsContainer.layout();
+						updateScrolledComposite();
+
 					}
+				};
 
-					control.requestLayout();
-
-					if (_collapsed) {
-						_collapsedSectionsIds.add(sectionId);
-					} else {
-						_collapsedSectionsIds.remove(sectionId);
-					}
-
-					_sectionsContainer.requestLayout();
-					_sectionsContainer.layout();
-					updateScrolledComposite();
-
-				}
-			};
-
-			title.addMouseListener(expandListener);
-			collapseBtn.addMouseListener(expandListener);
+				title.addMouseListener(expandListener);
+				collapseBtn.addMouseListener(expandListener);
+			}
 
 			_created = true;
 		}
