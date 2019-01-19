@@ -71,7 +71,7 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		list.add(new GameObjectEditorSection(this));
 		
-		list.add(new VisibleSection(this));
+		list.add(new GameObjectSection(this));
 
 		list.add(new TransformSection(this));
 

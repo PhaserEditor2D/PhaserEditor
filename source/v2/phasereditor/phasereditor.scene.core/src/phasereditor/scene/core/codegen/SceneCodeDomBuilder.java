@@ -53,6 +53,7 @@ import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
+import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
@@ -156,6 +157,10 @@ public class SceneCodeDomBuilder {
 				fieldModels.add(model);
 			}
 
+			if (model instanceof VisibleComponent) {
+				assignToVar = buildVisibleProps(methodDecl, model) || assignToVar;
+			}
+
 			if (model instanceof OriginComponent) {
 				assignToVar = buildOriginProps(methodDecl, model) || assignToVar;
 			}
@@ -209,6 +214,28 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	@SuppressWarnings("static-method")
+	private boolean buildVisibleProps(MethodDeclDom methodDecl, ObjectModel model) {
+		var assignToVar = false;
+
+		var name = varname(model);
+
+		var visible = VisibleComponent.get_visible(model);
+
+		if (visible != VisibleComponent.visible_default) {
+
+			assignToVar = true;
+
+			var instr = new AssignPropertyDom("visible", name);
+
+			instr.value(visible);
+
+			methodDecl.getInstructions().add(instr);
+		}
+
+		return assignToVar;
 	}
 
 	private void buildGroups(SceneModel sceneModel, MethodDeclDom methodDecl) {

@@ -34,10 +34,10 @@ import phasereditor.ui.EditorSharedImages;
  * @author arian
  *
  */
-public class VisibleSection extends ScenePropertySection {
+public class GameObjectSection extends ScenePropertySection {
 
-	public VisibleSection(ScenePropertyPage page) {
-		super("Visible", page);
+	public GameObjectSection(ScenePropertyPage page) {
+		super("Game Object", page);
 	}
 
 	@Override
