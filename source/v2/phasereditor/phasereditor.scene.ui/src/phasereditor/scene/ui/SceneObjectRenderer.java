@@ -63,6 +63,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.VisibleComponent;
 import phasereditor.ui.BaseCanvas;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
@@ -335,6 +336,10 @@ public class SceneObjectRenderer {
 
 		var alpha = gc.getAlpha();
 		var transp = GameObjectEditorComponent.get_gameObjectEditorTransparency(model);
+
+		if (VisibleComponent.is(model)) {
+			transp = transp * (VisibleComponent.get_visible(model) ? 1 : 0.5f);
+		}
 
 		{
 
