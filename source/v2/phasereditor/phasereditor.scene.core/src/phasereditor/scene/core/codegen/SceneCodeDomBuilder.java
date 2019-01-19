@@ -193,6 +193,9 @@ public class SceneCodeDomBuilder {
 			if (assignToVar && methodCall != null) {
 				methodCall.setReturnToVar(varname(model));
 			}
+
+			// add a new line
+			methodDecl.getInstructions().add(new RawCode(""));
 		}
 
 		buildGroups(sceneModel, methodDecl);
