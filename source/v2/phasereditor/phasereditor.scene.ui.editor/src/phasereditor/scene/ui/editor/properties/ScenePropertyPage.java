@@ -70,6 +70,8 @@ public class ScenePropertyPage extends FormPropertyPage {
 		list.add(new VariableSection(this));
 
 		list.add(new GameObjectEditorSection(this));
+		
+		list.add(new VisibleSection(this));
 
 		list.add(new TransformSection(this));
 
@@ -77,8 +79,7 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		list.add(new FlipSection(this));
 
-		// list.add(new VisibleSection(this));
-
+		
 		list.add(new TextureSection(this));
 
 		list.add(new TileSpriteSection(this));

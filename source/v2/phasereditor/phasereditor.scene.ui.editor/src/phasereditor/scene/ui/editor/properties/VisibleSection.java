@@ -21,22 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.scene.core.VisibleComponent;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
 public class VisibleSection extends ScenePropertySection {
-
-	private Button _visibleBtn;
 
 	public VisibleSection(ScenePropertyPage page) {
 		super("Visible", page);
@@ -47,48 +45,47 @@ public class VisibleSection extends ScenePropertySection {
 		return obj instanceof VisibleComponent;
 	}
 
-	@SuppressWarnings({ "unused" })
+	@SuppressWarnings("boxing")
 	@Override
-	public Control createContent(Composite parent) {
-		Composite comp = new Composite(parent, SWT.NONE);
+	public void fillToolbar(ToolBarManager manager) {
+		super.fillToolbar(manager);
 
-		comp.setLayout(new GridLayout(1, false));
+		var action = new Action("", IAction.AS_CHECK_BOX) {
+			{
+				setToolTipText(getHelp("Phaser.GameObjects.Components.Visible.visible"));
+			}
 
-		_visibleBtn = new Button(comp, SWT.CHECK);
-		_visibleBtn.setText("Visible");
-		_visibleBtn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
-		_visibleBtn.setToolTipText(getHelp("Phaser.GameObjects.Sprite.visible"));
-		new SceneCheckListener(_visibleBtn) {
-
-			
 			@Override
-			protected void accept2(boolean value) {
-				getModels().forEach(model -> VisibleComponent.set_visible(model, value));
-
-				_visibleBtn.setGrayed(false);
-				_visibleBtn.setSelection(value);
+			public void run() {
+				wrapOperation(() -> {
+					getModels().forEach(model -> VisibleComponent.set_visible(model, isChecked()));
+				});
 
 				getEditor().setDirty(true);
+				
+				update_UI_from_Model();
 			}
 		};
 
-		return comp;
+		manager.add(action);
+
+		addUpdate(() -> {
+			action.setChecked(
+					flatValues_to_Boolean(getModels().stream().map(model -> VisibleComponent.get_visible(model))));
+
+			action.setImageDescriptor(
+
+					EditorSharedImages.getImageDescriptor(action.isChecked() ?
+
+							IMG_EYE_OPEN
+
+							: IMG_EYE_CLOSE));
+		});
+
 	}
 
 	@Override
-	@SuppressWarnings("boxing")
-	public void user_update_UI_from_Model() {
-		var models = getModels();
-
-		var value = flatValues_to_Boolean(models.stream().map(model -> VisibleComponent.get_visible(model)));
-
-		if (value == null) {
-			_visibleBtn.setGrayed(true);
-			_visibleBtn.setSelection(false);
-		} else {
-			_visibleBtn.setGrayed(false);
-			_visibleBtn.setSelection(value);
-		}
+	public Control createContent(Composite parent) {
+		return null;
 	}
-
 }

@@ -30,6 +30,8 @@ public interface IEditorSharedImages {
 	String IMG_SHAPE_ADD = "icons/shape-duplicate.png";
 	String IMG_SHAPE = "icons/shape_square.png";
 	String IMG_SHAPE_GROUP_NODE = "icons/shape_node_group.png";
+	String IMG_EYE_OPEN = "icons/eye-open.png";
+	String IMG_EYE_CLOSE = "icons/eye-close.png";
 	String IMG_ADD = "icons/add.png";
 	String IMG_DELETE = "icons/delete.png";
 	String IMG_RENAME = "icons/textfield_rename.png";
