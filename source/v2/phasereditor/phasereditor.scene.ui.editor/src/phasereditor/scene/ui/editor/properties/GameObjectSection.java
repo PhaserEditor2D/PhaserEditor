@@ -24,8 +24,12 @@ package phasereditor.scene.ui.editor.properties;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.GameObjectComponent;
 import phasereditor.scene.core.VisibleComponent;
@@ -117,6 +121,49 @@ public class GameObjectSection extends ScenePropertySection {
 
 	@Override
 	public Control createContent(Composite parent) {
-		return null;
+		var comp = new Composite(parent, 0);
+		comp.setLayout(new GridLayout(1, false));
+
+		label(comp, "Data", "");
+
+		new DataRowComp(comp, 0);
+		new DataRowComp(comp, 0);
+		new DataRowComp(comp, 0);
+
+		return comp;
+	}
+
+	private class DataRowComp extends Composite {
+
+		public DataRowComp(Composite parent, int style) {
+			super(parent, style);
+
+			setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			setLayout(new GridLayout(3, false));
+			
+			{
+				var text = new Text(this, SWT.BORDER);
+				text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			}
+
+			{
+				var text = new Text(this, SWT.BORDER);
+				text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			}
+
+			{
+				var toolbar = new ToolBarManager();
+				toolbar.add(new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+					@Override
+					public void run() {
+						// nothing for now
+					}
+				});
+				toolbar.createControl(this);
+			}
+
+		}
+
 	}
 }

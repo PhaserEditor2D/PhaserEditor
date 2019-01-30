@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
@@ -42,12 +44,28 @@ public interface GameObjectComponent {
 		obj.put("active", active);
 	}
 
+	
+	// data
+
+	static String data_name = "data";
+
+	static JSONObject data_default = null;
+
+	static JSONObject get_data(ObjectModel obj) {
+		return (JSONObject) obj.get("data");
+	}
+
+	static void set_data(ObjectModel obj, JSONObject data) {
+		obj.put("data", data);
+	}
+	
 	static boolean is(ObjectModel model) {
 		return model instanceof GameObjectComponent;
 	}
 
 	static void init(ObjectModel model) {
 		set_active(model, active_default);
+		set_data(model, data_default);
 	}
 
 }
