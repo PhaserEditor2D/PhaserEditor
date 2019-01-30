@@ -965,8 +965,9 @@ public class AssetPackCore {
 
 		List<AssetPackModel> packs = getAssetPackModels(project);
 
-		int tilemapCount = 0;
-		int atlasCount = 0;
+		var tilemapCount = 0;
+		var atlasCount = 0;
+		var imageCount = 0; 
 
 		for (AssetPackModel pack : packs) {
 			for (AssetModel asset : pack.getAssets()) {
@@ -978,6 +979,8 @@ public class AssetPackCore {
 					var atlas = (MultiAtlasAssetModel) asset;
 					var count = atlas.getSubElements().stream().map(f -> f.getTextureFilename()).distinct().count();
 					atlasCount += count;
+				} else if (asset instanceof ImageAssetModel) {
+					imageCount += 1;
 				}
 
 			}
@@ -992,9 +995,16 @@ public class AssetPackCore {
 
 		out.println("Count atlas assets for '" + project + "' : " + atlasCount);
 
-		if (atlasCount > LicCore.getFreeNumberOfAtlasTextures()) {
+		if (atlasCount > LicCore.getFreeNumberOfImages()) {
 			out.println("Number of atlas assets exceeded.");
-			return LicCore.getFreeNumberOfAtlasTextures() + " atlas assets";
+			return LicCore.getFreeNumberOfImages() + " atlas assets";
+		}
+		
+		out.println("Image assets for '" + project + "' : " + imageCount);
+
+		if (imageCount > LicCore.getFreeNumberOfImages()) {
+			out.println("Number of image assets exceeded.");
+			return LicCore.getFreeNumberOfImages() + " image assets";
 		}
 
 		return null;
