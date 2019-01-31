@@ -23,6 +23,8 @@ package phasereditor.scene.ui.editor.properties;
 
 import static java.util.stream.Collectors.toSet;
 
+import java.util.HashSet;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
@@ -139,50 +141,71 @@ public class GameObjectSection extends ScenePropertySection {
 
 	}
 
+	class AddDataAction extends Action {
+		public AddDataAction() {
+			super("Add Property", EditorSharedImages.getImageDescriptor(IMG_ADD));
+		}
+
+		@Override
+		public void run() {
+
+			// collect all keys in this scene
+			var sceneKeys = new HashSet<>();
+
+			getEditor().getSceneModel().getDisplayList().visit(model -> {
+				if (GameObjectComponent.is(model)) {
+					var json = GameObjectComponent.get_data(model);
+					sceneKeys.addAll(json.keySet());
+				}
+			});
+
+			var selectionKeys = new HashSet<>();
+
+			openNewPropertyDialog();
+		}
+
+		private void openNewPropertyDialog() {
+			var dlg = new InputDialog(getEditor().getEditorSite().getShell(), "Add Property", "Enter the property name",
+					"", str -> {
+						for (var model : getModels()) {
+							var json = GameObjectComponent.get_data(model);
+							if (json != null) {
+								if (json.has(str)) {
+									return "That property name exists.";
+								}
+							}
+						}
+						return null;
+					});
+
+			if (dlg.open() == Window.OK) {
+
+				wrapOperation(() -> {
+					var key = dlg.getValue();
+
+					for (var model : getModels()) {
+						var json = GameObjectComponent.get_data(model);
+
+						if (json == null) {
+							json = new JSONObject();
+							GameObjectComponent.set_data(model, json);
+						}
+
+						json.put(key, "0");
+					}
+				});
+
+				getEditor().setDirty(true);
+				updateDataRows();
+
+			}
+		}
+	}
+
 	private void createActions() {
 		{
 			// data
-
-			var action = new Action("Add Property", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
-				@Override
-				public void run() {
-					var dlg = new InputDialog(getEditor().getEditorSite().getShell(), "Add Property",
-							"Enter the property name", "", str -> {
-								for (var model : getModels()) {
-									var json = GameObjectComponent.get_data(model);
-									if (json != null) {
-										if (json.has(str)) {
-											return "That property name exists.";
-										}
-									}
-								}
-								return null;
-							});
-
-					if (dlg.open() == Window.OK) {
-
-						wrapOperation(() -> {
-							var key = dlg.getValue();
-
-							for (var model : getModels()) {
-								var json = GameObjectComponent.get_data(model);
-
-								if (json == null) {
-									json = new JSONObject();
-									GameObjectComponent.set_data(model, json);
-								}
-
-								json.put(key, "0");
-							}
-						});
-
-						getEditor().setDirty(true);
-						updateDataRows();
-
-					}
-				}
-			};
-			_addDataAction = action;
+			_addDataAction = new AddDataAction();
 		}
 	}
 
@@ -227,7 +250,18 @@ public class GameObjectSection extends ScenePropertySection {
 
 				.collect(toSet());
 
-		keys.stream().sorted().forEach(key -> {
+		var finalKeys = new HashSet<>(keys);
+
+		for (var key : keys) {
+			for (var model : getModels()) {
+				var json = GameObjectComponent.get_data(model);
+				if (!json.has(key)) {
+					finalKeys.remove(key);
+				}
+			}
+		}
+
+		finalKeys.stream().sorted().forEach(key -> {
 
 			var row = new DataRowHandler(_dataComp, key);
 
@@ -272,6 +306,7 @@ public class GameObjectSection extends ScenePropertySection {
 					@Override
 					protected void accept2(String value) {
 						getModels().forEach(obj -> GameObjectComponent.get_data(obj).put(_key, value));
+						getEditor().setDirty(true);
 					}
 				};
 			}
