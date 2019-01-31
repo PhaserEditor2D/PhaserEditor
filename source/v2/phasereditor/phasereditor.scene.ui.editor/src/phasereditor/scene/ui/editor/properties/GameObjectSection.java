@@ -21,15 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static java.util.stream.Collectors.toSet;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.json.JSONObject;
 
 import phasereditor.scene.core.GameObjectComponent;
 import phasereditor.scene.core.VisibleComponent;
@@ -40,6 +46,9 @@ import phasereditor.ui.EditorSharedImages;
  *
  */
 public class GameObjectSection extends ScenePropertySection {
+
+	private Composite _dataComp;
+	private Action _addDataAction;
 
 	public GameObjectSection(ScenePropertyPage page) {
 		super("Game Object", page);
@@ -56,6 +65,8 @@ public class GameObjectSection extends ScenePropertySection {
 		super.fillToolbar(manager);
 
 		{
+			// active
+
 			var action = new Action("", IAction.AS_CHECK_BOX) {
 
 				{
@@ -84,6 +95,8 @@ public class GameObjectSection extends ScenePropertySection {
 		}
 
 		{
+			// visible
+
 			var action = new Action("", IAction.AS_CHECK_BOX) {
 				{
 					setToolTipText(getHelp("Phaser.GameObjects.Components.Visible.visible"));
@@ -117,53 +130,168 @@ public class GameObjectSection extends ScenePropertySection {
 			});
 		}
 
+		{
+			// data
+			manager.add(_addDataAction);
+		}
+
+		createActions();
+
+	}
+
+	private void createActions() {
+		{
+			// data
+
+			var action = new Action("Add Property", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
+				@Override
+				public void run() {
+					var dlg = new InputDialog(getEditor().getEditorSite().getShell(), "Add Property",
+							"Enter the property name", "", str -> {
+								for (var model : getModels()) {
+									var json = GameObjectComponent.get_data(model);
+									if (json != null) {
+										if (json.has(str)) {
+											return "That property name exists.";
+										}
+									}
+								}
+								return null;
+							});
+
+					if (dlg.open() == Window.OK) {
+
+						wrapOperation(() -> {
+							var key = dlg.getValue();
+
+							for (var model : getModels()) {
+								var json = GameObjectComponent.get_data(model);
+
+								if (json == null) {
+									json = new JSONObject();
+									GameObjectComponent.set_data(model, json);
+								}
+
+								json.put(key, "0");
+							}
+						});
+
+						getEditor().setDirty(true);
+						updateDataRows();
+
+					}
+				}
+			};
+			_addDataAction = action;
+		}
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
+		createActions();
+
 		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(1, false));
+		comp.setLayout(new GridLayout(2, false));
 
-		label(comp, "Data", "");
+		{
 
-		new DataRowComp(comp, 0);
-		new DataRowComp(comp, 0);
-		new DataRowComp(comp, 0);
+			label(comp, "Data", "");
+			var manager = new ToolBarManager();
+			manager.add(_addDataAction);
+			manager.createControl(comp);
+
+			_dataComp = new Composite(comp, 0);
+			_dataComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+			_dataComp.setLayout(new GridLayout(3, false));
+
+			addUpdate(this::updateDataRows);
+
+		}
 
 		return comp;
 	}
 
-	private class DataRowComp extends Composite {
+	private void updateDataRows() {
 
-		public DataRowComp(Composite parent, int style) {
-			super(parent, style);
+		for (var comp : _dataComp.getChildren()) {
+			comp.dispose();
+		}
 
-			setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		var keys = getModels().stream()
 
-			setLayout(new GridLayout(3, false));
-			
+				.map(model -> GameObjectComponent.get_data(model))
+
+				.filter(json -> json != null)
+
+				.flatMap(json -> json.keySet().stream())
+
+				.collect(toSet());
+
+		keys.stream().sorted().forEach(key -> {
+
+			var row = new DataRowHandler(_dataComp, key);
+
+			var str = flatValues_to_String(
+
+					getModels().stream()
+
+							.map(model -> GameObjectComponent.get_data(model))
+
+							.filter(json -> json.has(key))
+
+							.map(json -> json.getString(key))
+
+			);
+
+			row.setValue(str);
+		});
+
+	}
+
+	private class DataRowHandler {
+
+		private String _key;
+		private Text _valueText;
+
+		@SuppressWarnings("unused")
+		public DataRowHandler(Composite parent, String key) {
+
+			_key = key;
+
 			{
-				var text = new Text(this, SWT.BORDER);
-				text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+				var label = new Label(parent, 0);
+				label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+				label.setText(_key);
 			}
 
 			{
-				var text = new Text(this, SWT.BORDER);
-				text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+				_valueText = new Text(parent, SWT.BORDER);
+				_valueText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				new SceneText(_valueText) {
+
+					@Override
+					protected void accept2(String value) {
+						getModels().forEach(obj -> GameObjectComponent.get_data(obj).put(_key, value));
+					}
+				};
 			}
 
 			{
-				var toolbar = new ToolBarManager();
-				toolbar.add(new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+				var manager = new ToolBarManager();
+				manager.add(new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
 					@Override
 					public void run() {
 						// nothing for now
 					}
 				});
-				toolbar.createControl(this);
+				var toolbar = manager.createControl(parent);
+				toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 			}
 
 		}
 
+		public void setValue(String value) {
+			_valueText.setText(value);
+		}
 	}
 }
