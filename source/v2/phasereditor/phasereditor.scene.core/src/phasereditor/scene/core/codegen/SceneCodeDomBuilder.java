@@ -162,6 +162,9 @@ public class SceneCodeDomBuilder {
 			if (model instanceof GameObjectComponent) {
 				assignToVar = buildSingleFlagProp(methodDecl, model, "active", GameObjectComponent::get_active,
 						GameObjectComponent.active_default) || assignToVar;
+
+				assignToVar = buildDataProp(methodDecl, model) || assignToVar;
+
 			}
 
 			if (model instanceof VisibleComponent) {
@@ -225,6 +228,28 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private static boolean buildDataProp(MethodDeclDom methodDecl, ObjectModel model) {
+
+		var json = GameObjectComponent.get_data(model);
+
+		if (json == null || json.keySet().isEmpty()) {
+			return false;
+		}
+
+		var name = varname(model);
+
+		for (var key : json.keySet()) {
+			var value = json.getString(key);
+			var call = new MethodCallDom("setData", name);
+			call.argLiteral(key);
+			call.arg(value);
+
+			methodDecl.getInstructions().add(call);
+		}
+
+		return true;
 	}
 
 	@SuppressWarnings("static-method")
