@@ -49,6 +49,7 @@ public interface IEditorSharedImages {
 	String IMG_ASSET_FOLDER = "icons/folder_brick.png";
 	String IMG_ASSET_KEY = "icons/brick.png";
 	String IMG_ASSET_ELEM_KEY = IMG_GENERIC_ELEMENT;
+	String IMG_BULLET_MENU = "icons/bullet-arrow-down.png";
 	String IMG_ASSET_GROUP = "icons/bullet_blue.png";
 	String IMG_BULLET_BLUE = "icons/bullet_blue.png";
 	String IMG_BULLET_GREEN = "icons/bullet_green.png";

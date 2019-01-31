@@ -36,6 +36,10 @@ public class EditorSharedImages implements IEditorSharedImages {
 		return image;
 	}
 
+	public static ImageDescriptor getImageDescriptor(String plugin, String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin(plugin, path);
+	}
+
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, path);
 	}

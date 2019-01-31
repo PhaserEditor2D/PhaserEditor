@@ -28,6 +28,7 @@ import java.util.HashSet;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -52,6 +53,7 @@ public class GameObjectSection extends ScenePropertySection {
 
 	private Composite _dataComp;
 	private Action _addDataAction;
+	private String _focusOnDataKey;
 
 	public GameObjectSection(ScenePropertyPage page) {
 		super("Game Object", page);
@@ -133,16 +135,10 @@ public class GameObjectSection extends ScenePropertySection {
 			});
 		}
 
-		{
-			// data
-			manager.add(_addDataAction);
-		}
-
-		createActions();
-
 	}
 
 	class AddDataPropertyAction extends Action {
+
 		public AddDataPropertyAction() {
 			super("Add Property", EditorSharedImages.getImageDescriptor(IMG_ADD));
 		}
@@ -187,6 +183,7 @@ public class GameObjectSection extends ScenePropertySection {
 					});
 				}
 
+				manager.add(new Separator());
 				manager.add(new Action("Add New Property", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
 					@Override
 					public void run() {
@@ -236,6 +233,8 @@ public class GameObjectSection extends ScenePropertySection {
 					json.put(key, "0");
 				}
 			});
+
+			_focusOnDataKey = key;
 
 			getEditor().setDirty(true);
 			updateDataRows();
@@ -349,18 +348,49 @@ public class GameObjectSection extends ScenePropertySection {
 						getEditor().setDirty(true);
 					}
 				};
+
 			}
 
 			{
 				var manager = new ToolBarManager();
-				manager.add(new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+				manager.add(new Action("Property Menu", EditorSharedImages.getImageDescriptor(IMG_BULLET_MENU)) {
 					@Override
 					public void run() {
-						// nothing for now
+
+						var menuManager = new MenuManager();
+						menuManager.add(new Action("Delete") {
+
+							@Override
+							public void run() {
+
+								wrapOperation(() -> {
+
+									getModels().stream().map(obj -> GameObjectComponent.get_data(obj))
+
+											.filter(json -> json != null)
+
+											.forEach(json -> json.remove(_key));
+
+								});
+
+								updateDataRows();
+
+								getEditor().setDirty(true);
+							}
+						});
+						
+						var menu = menuManager.createContextMenu(parent);
+						menu.setVisible(true);
+
 					}
 				});
 				var toolbar = manager.createControl(parent);
 				toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+			}
+
+			if (_key.equals(_focusOnDataKey)) {
+				_valueText.setFocus();
+				_focusOnDataKey = null;
 			}
 
 		}
