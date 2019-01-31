@@ -348,6 +348,20 @@ public class JSONObject implements Serializable {
 	public JSONObject(File file) throws JSONException, IOException {
 		this(new JSONTokener(file));
 	}
+	
+	/**
+	 * @author arian
+	 */
+	public JSONObject copy() {
+		return new JSONObject(toString());
+	}
+	
+	/**
+	 * @author arian
+	 */
+	public static JSONObject copy(JSONObject src) {
+		return src == null? null : src.copy();
+	}
 
 	/**
 	 * Construct a JSONObject from a JSONTokener.

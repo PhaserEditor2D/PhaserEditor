@@ -58,6 +58,8 @@ public interface GameObjectComponent {
 	static void set_data(ObjectModel obj, JSONObject data) {
 		obj.put("data", data);
 	}
+
+	// utils
 	
 	static boolean is(ObjectModel model) {
 		return model instanceof GameObjectComponent;

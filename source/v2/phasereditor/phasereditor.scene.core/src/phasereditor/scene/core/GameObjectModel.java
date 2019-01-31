@@ -50,9 +50,9 @@ public abstract class GameObjectModel extends EditorObjectModel implements
 
 		GameObjectComponent.set_active(this, data.optBoolean(active_name, active_default));
 		GameObjectComponent.set_data(this, data.optJSONObject(data_name));
-		
+
 		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
-		
+
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public abstract class GameObjectModel extends EditorObjectModel implements
 		super.write(data);
 
 		data.put(active_name, GameObjectComponent.get_active(this), active_default);
-		data.put(data_name, GameObjectComponent.get_data(this));
+		data.put(data_name, JSONObject.copy(GameObjectComponent.get_data(this)));
 
 		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 	}
