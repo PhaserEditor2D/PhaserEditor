@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import static java.util.stream.Collectors.toSet;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.eclipse.jface.action.Action;
@@ -42,6 +43,7 @@ import org.eclipse.swt.widgets.Text;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.GameObjectComponent;
+import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.ui.EditorSharedImages;
 
@@ -358,7 +360,26 @@ public class GameObjectSection extends ScenePropertySection {
 					public void run() {
 
 						var menuManager = new MenuManager();
-						menuManager.add(new Action("Delete") {
+						menuManager.add(new Action("Select Objects With '" + _key + "'") {
+							@Override
+							public void run() {
+								selectObjectsWithSameProperty(null);
+							}
+
+						});
+
+						menuManager.add(new Action("Select Objects With '" + _key + "=" + _valueText.getText() + "'") {
+							@Override
+							public void run() {
+								selectObjectsWithSameProperty(_valueText.getText());
+							}
+
+						});
+
+						menuManager.add(new Separator());
+
+						menuManager.add(new Action("Delete Property '" + _key + "'",
+								EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
 
 							@Override
 							public void run() {
@@ -378,7 +399,7 @@ public class GameObjectSection extends ScenePropertySection {
 								getEditor().setDirty(true);
 							}
 						});
-						
+
 						var menu = menuManager.createContextMenu(parent);
 						menu.setVisible(true);
 
@@ -393,6 +414,34 @@ public class GameObjectSection extends ScenePropertySection {
 				_focusOnDataKey = null;
 			}
 
+		}
+
+		private void selectObjectsWithSameProperty(String value) {
+			var list = new ArrayList<ObjectModel>();
+
+			getEditor().getSceneModel().getDisplayList().visit(model -> {
+				if (GameObjectComponent.is(model)) {
+					var json = GameObjectComponent.get_data(model);
+					if (json != null) {
+
+						if (json.has(_key)) {
+
+							if (value == null) {
+								list.add(model);
+							} else {
+								var value2 = json.getString(_key);
+								if (value.equals(value2)) {
+									list.add(model);
+								}
+							}
+						}
+					}
+
+				}
+			});
+
+			getEditor().setSelection(list);
+			getEditor().updatePropertyPagesContentWithSelection();
 		}
 
 		public void setValue(String value) {
