@@ -27,6 +27,7 @@ import java.util.HashSet;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -141,8 +142,8 @@ public class GameObjectSection extends ScenePropertySection {
 
 	}
 
-	class AddDataAction extends Action {
-		public AddDataAction() {
+	class AddDataPropertyAction extends Action {
+		public AddDataPropertyAction() {
 			super("Add Property", EditorSharedImages.getImageDescriptor(IMG_ADD));
 		}
 
@@ -150,18 +151,52 @@ public class GameObjectSection extends ScenePropertySection {
 		public void run() {
 
 			// collect all keys in this scene
-			var sceneKeys = new HashSet<>();
+			var sceneKeys = new HashSet<String>();
 
 			getEditor().getSceneModel().getDisplayList().visit(model -> {
 				if (GameObjectComponent.is(model)) {
 					var json = GameObjectComponent.get_data(model);
-					sceneKeys.addAll(json.keySet());
+					if (json != null) {
+						sceneKeys.addAll(json.keySet());
+					}
 				}
 			});
 
-			var selectionKeys = new HashSet<>();
+			var selectionKeys = getModels().stream().filter(model -> GameObjectComponent.get_data(model) != null)
+					.flatMap(model -> GameObjectComponent.get_data(model).keySet().stream()).collect(toSet());
 
-			openNewPropertyDialog();
+			var keys = new HashSet<>(sceneKeys);
+			keys.removeAll(selectionKeys);
+
+			if (keys.isEmpty()) {
+				openNewPropertyDialog();
+				return;
+			}
+
+			// there are unused keys, let's show the menu
+
+			{
+				var manager = new MenuManager();
+
+				for (var key : keys) {
+					manager.add(new Action("Add '" + key + "'") {
+						@Override
+						public void run() {
+							addProperty(key);
+						}
+					});
+				}
+
+				manager.add(new Action("Add New Property", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
+					@Override
+					public void run() {
+						openNewPropertyDialog();
+					}
+				});
+
+				var menu = manager.createContextMenu(_dataComp);
+				menu.setVisible(true);
+			}
 		}
 
 		private void openNewPropertyDialog() {
@@ -180,32 +215,37 @@ public class GameObjectSection extends ScenePropertySection {
 
 			if (dlg.open() == Window.OK) {
 
-				wrapOperation(() -> {
-					var key = dlg.getValue();
+				var key = dlg.getValue();
 
-					for (var model : getModels()) {
-						var json = GameObjectComponent.get_data(model);
-
-						if (json == null) {
-							json = new JSONObject();
-							GameObjectComponent.set_data(model, json);
-						}
-
-						json.put(key, "0");
-					}
-				});
-
-				getEditor().setDirty(true);
-				updateDataRows();
+				addProperty(key);
 
 			}
+		}
+
+		private void addProperty(String key) {
+			wrapOperation(() -> {
+
+				for (var model : getModels()) {
+					var json = GameObjectComponent.get_data(model);
+
+					if (json == null) {
+						json = new JSONObject();
+						GameObjectComponent.set_data(model, json);
+					}
+
+					json.put(key, "0");
+				}
+			});
+
+			getEditor().setDirty(true);
+			updateDataRows();
 		}
 	}
 
 	private void createActions() {
 		{
 			// data
-			_addDataAction = new AddDataAction();
+			_addDataAction = new AddDataPropertyAction();
 		}
 	}
 
