@@ -91,6 +91,7 @@ import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.editors.EditorFileStampHelper;
 
 /**
  * @author arian
@@ -116,6 +117,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private Action _outlineAction;
 	private AnimationActions _animationActions;
 	private AnimationModel _initialAnimation;
+	private EditorFileStampHelper _fileStampHelper;
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
@@ -142,13 +144,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public AnimationsEditor() {
+		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
 	}
 
-	/**
-	 * Create contents of the editor part.
-	 * 
-	 * @param parent
-	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		SashForm sash = new SashForm(parent, SWT.VERTICAL);
@@ -395,6 +393,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		_fileStampHelper.doSave(monitor);
+	}
+
+	private void saveMethod(IProgressMonitor monitor) {
+
 		var file = getEditorInput().getFile();
 
 		try (ByteArrayInputStream source = new ByteArrayInputStream(_model.toJSON().toString(2).getBytes())) {
@@ -409,9 +412,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-
-		_lastFileStamp = file.getModificationStamp();
-
 	}
 
 	@Override
@@ -442,25 +442,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	private long _lastFileStamp;
-
 	public void reloadFile() {
+		_fileStampHelper.reloadFile();
+	}
 
-		var file = getEditorInput().getFile();
-
-		{
-			var stamp = file.getModificationStamp();
-
-			if (_lastFileStamp == stamp) {
-				// nothing changed, return.
-				// this happen when the modification is perfomed by the editor itself
-				out.println("AnimationsEditor: abort reloadFile() " + file);
-				return;
-			}
-		}
-
-		out.println("AnimationsEditor: reloadFile() " + file);
-
+	private void reloadMethod() {
 		try {
 			_model = new AnimationsModel_in_Editor(this);
 
