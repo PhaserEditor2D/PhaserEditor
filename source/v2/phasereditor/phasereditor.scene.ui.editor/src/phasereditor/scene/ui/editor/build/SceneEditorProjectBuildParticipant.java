@@ -23,8 +23,7 @@ public class SceneEditorProjectBuildParticipant extends BaseEditorBuildParticipa
 
 	@Override
 	protected void reloadEditorFile(SceneEditor editor) {
-		// TODO Auto-generated method stub
-		
+		editor.reloadFile();
 	}
 
 }

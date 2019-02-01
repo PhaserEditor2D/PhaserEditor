@@ -466,6 +466,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			build();
 
 			selectAnimation(anim);
+			
+			setDirty(false);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -509,7 +511,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void setDirty() {
-		_dirty = true;
+		setDirty(true);
+	}
+	
+	public void setDirty(boolean dirty) {
+		_dirty = dirty;
 		firePropertyChange(PROP_DIRTY);
 	}
 

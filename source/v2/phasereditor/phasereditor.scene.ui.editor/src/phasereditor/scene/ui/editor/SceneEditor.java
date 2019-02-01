@@ -42,6 +42,7 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
+import phasereditor.ui.editors.EditorFileStampHelper;
 
 public class SceneEditor extends EditorPart {
 
@@ -73,6 +74,7 @@ public class SceneEditor extends EditorPart {
 	protected SelectionProviderImpl _selectionProvider;
 	private IContextActivation _objectsContextActivation;
 	private IContextActivation _commandContextActivation;
+	private EditorFileStampHelper _fileStampHelper;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -88,6 +90,8 @@ public class SceneEditor extends EditorPart {
 		};
 
 		_propertyPages = new ArrayList<>();
+
+		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
 	}
 
 	private IContextService getContextService() {
@@ -102,7 +106,7 @@ public class SceneEditor extends EditorPart {
 	public void deactivateObjectsContext() {
 		getContextService().deactivateContext(_objectsContextActivation);
 	}
-	
+
 	public void activateCommandContext() {
 		_commandContextActivation = getContextService().activateContext(COMMAND_CONTEXT);
 	}
@@ -110,11 +114,59 @@ public class SceneEditor extends EditorPart {
 	public void deactivateCommandContext() {
 		getContextService().deactivateContext(_commandContextActivation);
 	}
-	
-	
+
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		_fileStampHelper.helpDoSave(monitor);
+	}
+
+	public void reloadFile() {
+		_fileStampHelper.helpReloadFile();
+	}
+
+	private void reloadMethod() {
+
+		_model = new SceneModel();
+
+		var file = getEditorInput().getFile();
+
+		try {
+
+			_model.read(file);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+		if (_outline != null) {
+			_outline.getViewer().setInput(_model);
+		}
+
+		build();
+
+		setSelection(new ArrayList<>());
 		
+		setDirty(false);
+		
+		try {
+			var history = getSite().getWorkbenchWindow().getWorkbench().getOperationSupport().getOperationHistory();
+			history.dispose(undoContext, true, true, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void build() {
+		_scene.redraw();
+
+		updatePropertyPagesContentWithSelection();
+
+		refreshOutline();
+	}
+
+	private void saveMethod(IProgressMonitor monitor) {
 		var file = getEditorInput().getFile();
 
 		{
@@ -137,7 +189,35 @@ public class SceneEditor extends EditorPart {
 		}
 
 		generateCode(monitor);
+	}
 
+	@Override
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+		setSite(site);
+		setInput(input);
+
+		_selectionProvider = new SelectionProviderImpl(true);
+
+		site.setSelectionProvider(_selectionProvider);
+
+		registerUndoRedoActions();
+
+		IFileEditorInput fileInput = (IFileEditorInput) input;
+
+		setPartName(fileInput.getName());
+
+		_model = new SceneModel();
+
+		var file = fileInput.getFile();
+
+		try {
+
+			_model.read(file);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	void generateCode(IProgressMonitor monitor) {
@@ -169,35 +249,6 @@ public class SceneEditor extends EditorPart {
 	@Override
 	public void doSaveAs() {
 		// not supported
-	}
-
-	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		setSite(site);
-		setInput(input);
-
-		_selectionProvider = new SelectionProviderImpl(true);
-
-		site.setSelectionProvider(_selectionProvider);
-
-		registerUndoRedoActions();
-
-		IFileEditorInput fileInput = (IFileEditorInput) input;
-
-		setPartName(fileInput.getName());
-
-		_model = new SceneModel();
-
-		var file = fileInput.getFile();
-
-		try {
-
-			_model.read(file);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override
@@ -404,14 +455,6 @@ public class SceneEditor extends EditorPart {
 	@SuppressWarnings({ "cast", "rawtypes", "unchecked" })
 	public List<ObjectModel> getSelectionList() {
 		return (List<ObjectModel>) (List) _selectionProvider.getSelectionList();
-	}
-
-	public void build() {
-		_scene.redraw();
-		
-		updatePropertyPagesContentWithSelection();
-
-		refreshOutline();
 	}
 
 	@SuppressWarnings("static-method")

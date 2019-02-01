@@ -99,7 +99,6 @@ public class SceneCanvas extends ZoomCanvas
 	private SceneObjectRenderer _renderer;
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
-	private SceneModel _sceneModel;
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
@@ -203,7 +202,7 @@ public class SceneCanvas extends ZoomCanvas
 
 	protected void selectionDropped(int x, int y, Object[] data) {
 
-		var nameComputer = new NameComputer(_sceneModel.getDisplayList());
+		var nameComputer = new NameComputer(getModel().getDisplayList());
 
 		var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
 
@@ -297,7 +296,7 @@ public class SceneCanvas extends ZoomCanvas
 		}
 
 		for (var model : newModels) {
-			ParentComponent.utils_addChild(_sceneModel.getDisplayList(), model);
+			ParentComponent.utils_addChild(getModel().getDisplayList(), model);
 		}
 
 		var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
@@ -323,8 +322,6 @@ public class SceneCanvas extends ZoomCanvas
 
 	public void init(SceneEditor editor) {
 		_editor = editor;
-		_sceneModel = editor.getSceneModel();
-
 	}
 
 	@Override
@@ -427,8 +424,8 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	private void renderBorders(GC gc, ZoomCalculator calc) {
-		var view = calc.modelToView(_sceneModel.getBorderX(), _sceneModel.getBorderY(), _sceneModel.getBorderWidth(),
-				_sceneModel.getBorderHeight());
+		var view = calc.modelToView(getModel().getBorderX(), getModel().getBorderY(), getModel().getBorderWidth(),
+				getModel().getBorderHeight());
 
 		view.x += Y_LABEL_WIDTH;
 		view.y += X_LABELS_HEIGHT;
@@ -585,11 +582,11 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	private Color getGridColor() {
-		return Colors.color(_sceneModel.getForegroundColor());
+		return Colors.color(getModel().getForegroundColor());
 	}
 
 	private Color getBackgroundColor() {
-		return Colors.color(_sceneModel.getBackgroundColor());
+		return Colors.color(getModel().getBackgroundColor());
 	}
 
 	private void renderGrid(PaintEvent e, ZoomCalculator calc) {
@@ -602,9 +599,9 @@ public class SceneCanvas extends ZoomCanvas
 		var initialModelSnapX = 5f;
 		var initialModelSnapY = 5f;
 
-		if (_sceneModel.isSnapEnabled()) {
-			initialModelSnapX = _sceneModel.getSnapWidth();
-			initialModelSnapY = _sceneModel.getSnapHeight();
+		if (getModel().isSnapEnabled()) {
+			initialModelSnapX = getModel().getSnapWidth();
+			initialModelSnapY = getModel().getSnapHeight();
 		}
 
 		var modelSnapX = 10f;
@@ -813,7 +810,7 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	ObjectModel pickObject(int x, int y) {
-		return pickObject(_sceneModel.getDisplayList(), x, y);
+		return pickObject(getModel().getDisplayList(), x, y);
 	}
 
 	private ObjectModel pickObject(ObjectModel model, int x, int y) {
@@ -1147,7 +1144,7 @@ public class SceneCanvas extends ZoomCanvas
 
 		// set new id and editorName
 
-		var nameComputer = new NameComputer(_sceneModel.getDisplayList());
+		var nameComputer = new NameComputer(getModel().getDisplayList());
 
 		float[] offsetPoint;
 
@@ -1285,7 +1282,6 @@ public class SceneCanvas extends ZoomCanvas
 		if (_dragDetected) {
 			_dragDetected = false;
 
-
 			if (_dragObjectsEvents.isDragging()) {
 				_dragObjectsEvents.done();
 			}
@@ -1340,7 +1336,7 @@ public class SceneCanvas extends ZoomCanvas
 		if (isHandModeActivated()) {
 			return;
 		}
-		
+
 		_dragDetected = true;
 
 		var obj = pickObject(e.x, e.y);

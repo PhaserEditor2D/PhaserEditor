@@ -73,7 +73,7 @@ public class EditorFileStampHelper {
 	public void helpDoSave(IProgressMonitor monitor) {
 		var file = getEditorInput().getFile();
 		var stamp = file.getModificationStamp();
-		if (stamp != _lastFileStamp) {
+		if (_lastFileStamp != 0 && stamp != _lastFileStamp) {
 			// the file was modified by other editor
 			var confirmSave = MessageDialog.openConfirm(_editor.getEditorSite().getShell(), "Save",
 					"The editor's content was modified by an external editor. Do you want to continue saving?\n\n"
