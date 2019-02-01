@@ -98,6 +98,7 @@ import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
+import phasereditor.ui.editors.EditorFileStampHelper;
 
 /**
  * @author arian
@@ -128,6 +129,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private PackEditorCanvas _assetsCanvas;
 
+	private EditorFileStampHelper _fileStampHelper;
+
+	public AssetPackEditor() {
+		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
+	}
+
 	public AssetPackEditorOutlinePage getOutliner() {
 		return _outliner;
 	}
@@ -138,6 +145,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		_fileStampHelper.helpDoSave(monitor);
+	}
+
+	private void saveMethod(IProgressMonitor monitor) {
 		_model.save(monitor);
 		firePropertyChange(PROP_DIRTY);
 		saveEditingPoint();
@@ -723,6 +734,39 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	}
 
+	public void build() {
+		getModel().build();
+		refresh();
+	}
+
+	public void reloadFile() {
+		_fileStampHelper.helpReloadFile();
+	}
+
+	private void reloadMethod() {
+		try {
+			_model = new AssetPackModel(getEditorInput().getFile());
+			firePropertyChange(PROP_DIRTY);
+			
+			_model.addPropertyChangeListener(this::propertyChange);
+			
+			if (_outliner != null) {
+				_outliner.getTreeViewer().setInput(_model);
+			}
+			
+			_assetsCanvas.setModel(_model);
+			
+			build();
+
+			getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
+			_assetsCanvas.getUtils().setSelection(StructuredSelection.EMPTY);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
 	private void propertyChange(@SuppressWarnings("unused") PropertyChangeEvent evt) {
 		getEditorSite().getShell().getDisplay().asyncExec(() -> {
 			firePropertyChange(PROP_DIRTY);
@@ -954,11 +998,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
-	public void build() {
-		getModel().build();
-		refresh();
-	}
-
 	private Object[] getSelection() {
 		var sel = (IStructuredSelection) getSite().getSelectionProvider().getSelection();
 
@@ -972,7 +1011,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	public void clearSelection() {
-		if (_outliner!= null) {
+		if (_outliner != null) {
 			_outliner.setSelection(StructuredSelection.EMPTY);
 			_assetsCanvas.getUtils().setSelectionList(List.of());
 		}

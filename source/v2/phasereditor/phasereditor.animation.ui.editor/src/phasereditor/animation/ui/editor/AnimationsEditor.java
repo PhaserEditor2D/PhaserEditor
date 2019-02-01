@@ -393,7 +393,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		_fileStampHelper.doSave(monitor);
+		_fileStampHelper.helpDoSave(monitor);
 	}
 
 	private void saveMethod(IProgressMonitor monitor) {
@@ -443,7 +443,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void reloadFile() {
-		_fileStampHelper.reloadFile();
+		_fileStampHelper.helpReloadFile();
 	}
 
 	private void reloadMethod() {

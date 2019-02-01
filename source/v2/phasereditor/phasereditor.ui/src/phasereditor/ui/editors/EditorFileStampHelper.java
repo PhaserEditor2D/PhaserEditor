@@ -48,7 +48,7 @@ public class EditorFileStampHelper {
 		_saveMethod = saveMethod;
 	}
 
-	public void reloadFile() {
+	public void helpReloadFile() {
 		var file = getEditorInput().getFile();
 		var stamp = file.getModificationStamp();
 
@@ -70,7 +70,7 @@ public class EditorFileStampHelper {
 		return (IFileEditorInput) _editor.getEditorInput();
 	}
 
-	public void doSave(IProgressMonitor monitor) {
+	public void helpDoSave(IProgressMonitor monitor) {
 		var file = getEditorInput().getFile();
 		var stamp = file.getModificationStamp();
 		if (stamp != _lastFileStamp) {
@@ -83,7 +83,7 @@ public class EditorFileStampHelper {
 						"Do you want to load the external changes?");
 
 				if (confirmReload) {
-					reloadFile();
+					helpReloadFile();
 				}
 
 				return;

@@ -23,8 +23,7 @@ public class AssetPackEditorProjectBuildParticipant extends BaseEditorBuildParti
 
 	@Override
 	protected void reloadEditorFile(AssetPackEditor editor) {
-		// TODO Auto-generated method stub
-		
+		editor.reloadFile();
 	}
 
 
