@@ -46,8 +46,21 @@ public class NameComputer {
 			return baseName;
 		}
 
-		for (int i = 1; true; i++) {
-			var name = baseName + "_" + i;
+		String baseName2;
+
+		{
+			int i = baseName.length() - 1;
+			char c;
+
+			while (i > 0 && (Character.isDigit(c = baseName.charAt(i)) || c == '_')) {
+				i--;
+			}
+
+			baseName2 = baseName.substring(0, i + 1);
+		}
+
+		for (int j = 1; true; j++) {
+			var name = baseName2 + "_" + j;
 			if (!_names.contains(name)) {
 				return name;
 			}
