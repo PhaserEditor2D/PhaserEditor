@@ -39,6 +39,11 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 		super(name);
 		_page = page;
 	}
+	
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number > 0;
+	}
 
 	public AnimationsEditor getEditor() {
 		return _page.getEditor();

@@ -77,7 +77,9 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 		if (models.length == 0) {
 			var defaultModel = getDefaultModel();
-			if (defaultModel != null) {
+			if (defaultModel == null) {
+				models = new Object[] {};
+			} else {
 				models = new Object[] { defaultModel };
 			}
 		}
