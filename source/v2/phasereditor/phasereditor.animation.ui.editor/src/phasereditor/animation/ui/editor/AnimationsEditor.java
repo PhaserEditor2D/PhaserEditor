@@ -409,6 +409,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+
+		_lastFileStamp = file.getModificationStamp();
+
 	}
 
 	@Override
@@ -439,24 +442,45 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
+	private long _lastFileStamp;
+
 	public void reloadFile() {
+
+		var file = getEditorInput().getFile();
+
+		{
+			var stamp = file.getModificationStamp();
+
+			if (_lastFileStamp == stamp) {
+				// nothing changed, return.
+				// this happen when the modification is perfomed by the editor itself
+				out.println("AnimationsEditor: abort reloadFile() " + file);
+				return;
+			}
+		}
+
+		out.println("AnimationsEditor: reloadFile() " + file);
+
 		try {
 			_model = new AnimationsModel_in_Editor(this);
+
 			var anim = _animCanvas.getModel();
+
 			if (anim != null) {
 				var key = anim.getKey();
 				anim = _model.getAnimation(key);
 			}
+
 			_initialAnimation = anim;
 
 			if (_outliner != null) {
 				_outliner._viewer.setInput(null);
 			}
-			
+
 			build();
-			
+
 			selectAnimation(anim);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -523,7 +547,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		return super.getAdapter(adapter);
 	}
-	
+
 	public AnimationCanvas getAnimationCanvas() {
 		return _animCanvas;
 	}
@@ -748,7 +772,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_zoom_1_1_action.setEnabled(true);
 		_zoom_fitWindow_action.setEnabled(true);
 		_deleteAction.setEnabled(true);
-		
+
 	}
 
 	public void deleteAnimations(List<AnimationModel> animations) {
