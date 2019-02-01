@@ -33,6 +33,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.EditorPart;
 
 import phasereditor.project.core.IProjectBuildParticipant;
 
@@ -40,7 +41,7 @@ import phasereditor.project.core.IProjectBuildParticipant;
  * @author arian
  *
  */
-public abstract class BaseEditorBuildParticipant<T> implements IProjectBuildParticipant{
+public abstract class BaseEditorBuildParticipant<T extends EditorPart> implements IProjectBuildParticipant{
 
 	protected final HashSet<String> _editorIdSet;
 
@@ -49,6 +50,8 @@ public abstract class BaseEditorBuildParticipant<T> implements IProjectBuildPart
 	}
 	
 	protected abstract void buildEditor(T editor);
+	
+	protected abstract void reloadEditorFile(T editor);
 	
 	protected abstract IFile getEditorFile(T editor);
 	
@@ -77,12 +80,12 @@ public abstract class BaseEditorBuildParticipant<T> implements IProjectBuildPart
 								buildEditor(editor);
 							} else {
 								var file = getEditorFile(editor);
-								var doit = new boolean[] { true };
+								var editorFileChanged = new boolean[] { false };
 								try {
 									delta.accept(d -> {
 										IResource resource = d.getResource();
 										if (file.equals(resource)) {
-											doit[0] = false;
+											editorFileChanged[0] = true;
 											return false;
 										}
 										return true;
@@ -91,7 +94,12 @@ public abstract class BaseEditorBuildParticipant<T> implements IProjectBuildPart
 									e.printStackTrace();
 								}
 
-								if (doit[0]) {
+								if (editorFileChanged[0]) {
+									if (!editor.isDirty()) {
+										reloadEditorFile(editor);
+									}
+								
+								} else {
 									buildEditor(editor);
 								}
 							}

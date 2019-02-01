@@ -20,4 +20,9 @@ public class AnimationsEditorProjectBuildParticipant extends BaseEditorBuildPart
 		return editor.getEditorInput().getFile();
 	}
 
+	@Override
+	protected void reloadEditorFile(AnimationsEditor editor) {
+		editor.reloadFile();
+	}
+
 }

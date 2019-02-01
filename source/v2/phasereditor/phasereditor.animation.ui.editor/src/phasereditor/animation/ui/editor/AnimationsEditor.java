@@ -439,6 +439,47 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
+	public void reloadFile() {
+		try {
+			_model = new AnimationsModel_in_Editor(this);
+			var anim = _animCanvas.getModel();
+			if (anim != null) {
+				var key = anim.getKey();
+				anim = _model.getAnimation(key);
+			}
+			_initialAnimation = anim;
+
+			if (_outliner != null) {
+				_outliner._viewer.setInput(null);
+			}
+			
+			build();
+			
+			selectAnimation(anim);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void build() {
+		_model.build();
+
+		if (_outliner != null) {
+			_outliner.refresh();
+		}
+
+		AnimationModel model = _animCanvas.getModel();
+
+		if (_initialAnimation != null) {
+			model = _initialAnimation;
+			_initialAnimation = null;
+		}
+
+		loadAnimation(model);
+	}
+
 	@Override
 	public IFileEditorInput getEditorInput() {
 		return (IFileEditorInput) super.getEditorInput();
@@ -482,7 +523,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		return super.getAdapter(adapter);
 	}
-
+	
 	public AnimationCanvas getAnimationCanvas() {
 		return _animCanvas;
 	}
@@ -680,23 +721,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	public void build() {
-		_model.build();
-
-		if (_outliner != null) {
-			_outliner.refresh();
-		}
-
-		AnimationModel model = _animCanvas.getModel();
-
-		if (_initialAnimation != null) {
-			model = _initialAnimation;
-			_initialAnimation = null;
-		}
-
-		loadAnimation(model);
-	}
-
 	protected void loadAnimation(AnimationModel anim) {
 		_animationActions.setChecked(false);
 		_animationActions.setEnabled(false);
@@ -724,6 +748,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_zoom_1_1_action.setEnabled(true);
 		_zoom_fitWindow_action.setEnabled(true);
 		_deleteAction.setEnabled(true);
+		
 	}
 
 	public void deleteAnimations(List<AnimationModel> animations) {

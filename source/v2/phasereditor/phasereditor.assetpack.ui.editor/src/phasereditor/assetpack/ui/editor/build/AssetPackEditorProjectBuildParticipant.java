@@ -21,5 +21,11 @@ public class AssetPackEditorProjectBuildParticipant extends BaseEditorBuildParti
 		return editor.getEditorInput().getFile();
 	}
 
+	@Override
+	protected void reloadEditorFile(AssetPackEditor editor) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

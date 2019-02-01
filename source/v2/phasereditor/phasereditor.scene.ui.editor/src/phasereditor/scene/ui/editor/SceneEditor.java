@@ -110,11 +110,13 @@ public class SceneEditor extends EditorPart {
 	public void deactivateCommandContext() {
 		getContextService().deactivateContext(_commandContextActivation);
 	}
-
+	
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		var file = getEditorInput().getFile();
 		
+		var file = getEditorInput().getFile();
+
 		{
 			var cause = SceneCore.isFreeVersionAllowed(file.getProject());
 			if (cause != null) {
