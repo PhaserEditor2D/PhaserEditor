@@ -203,7 +203,7 @@ public class AudioSpriteEditor extends EditorPart implements IResourceChangeList
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void run() {
-				setPartName(getEditorInputFile().getName());
+				setPartName(getEditorInputFile().getName() + "(deprecated)");
 				firePropertyChange(PROP_TITLE);
 			}
 		});
