@@ -97,7 +97,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setMinWidth(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 
 				}
 			};
@@ -110,7 +110,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setMinHeight(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 		}
@@ -127,7 +127,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setMaxWidth(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 
@@ -140,7 +140,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setMaxHeight(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 
 				}
 			};
@@ -156,7 +156,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(boolean value) {
 					getModel().getSettings().setPot(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 		}
@@ -186,7 +186,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setPaddingX(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 
 				}
 			};
@@ -200,7 +200,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setPaddingY(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 
 				}
 			};
@@ -214,7 +214,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(boolean value) {
 					getModel().getSettings().setStripWhitespaceX(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 
@@ -225,7 +225,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(boolean value) {
 					getModel().getSettings().setStripWhitespaceY(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 		}
@@ -255,7 +255,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(int value) {
 					getModel().getSettings().setIncludeNumberOfFolders(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 
@@ -289,7 +289,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(boolean value) {
 					getModel().getSettings().setUseIndexes(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 
@@ -300,7 +300,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(boolean value) {
 					getModel().getSettings().setGrid(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 
@@ -311,7 +311,7 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 				@Override
 				protected void accept(boolean value) {
 					getModel().getSettings().setDebug(value);
-					getEditor().dirtify();
+					getEditor().setDirty(true);
 				}
 			};
 		}

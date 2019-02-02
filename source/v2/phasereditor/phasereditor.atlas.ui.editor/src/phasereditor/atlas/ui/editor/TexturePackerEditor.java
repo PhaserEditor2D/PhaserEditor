@@ -115,17 +115,18 @@ import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.editors.EditorFileStampHelper;
 
 public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
 
 	public static final String ID = "phasereditor.atlas.ui.editor.TexturePackerEditor"; //$NON-NLS-1$
 
-	protected TexturePackerEditorModel _model;
+	private TexturePackerEditorModel _model;
 	private Composite _container;
 	private boolean _dirty;
-	TabFolder _tabsFolder;
+	private TabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
-	TexturePackerContentOutlinePage _outliner;
+	private TexturePackerContentOutlinePage _outliner;
 
 	private ISelectionProvider _selectionProvider;
 
@@ -133,10 +134,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private AtlasCanvas_Unmanaged _canvasClicked;
 
-	ISelectionChangedListener _outlinerSelectionListener;
+	private ISelectionChangedListener _outlinerSelectionListener;
+
+	private EditorFileStampHelper _fileStampHelper;
 
 	public TexturePackerEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
+		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
 	}
 
 	@Override
@@ -173,7 +177,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 				_model.getImageFiles().removeAll(toRemove);
 
-				build(true);
+				setDirty(true);
+				build();
 
 				selectSettings();
 
@@ -270,9 +275,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		// maybe we should build if we set a preference for that
 		// build(false);
-		if (_model != null) {
-			updateUIFromModel();
-		}
+
+		updateUIFromModel();
 
 	}
 
@@ -351,7 +355,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			if (!files.isEmpty()) {
 				_model.addImageFiles(files);
 
-				build(true);
+				setDirty(true);
+				build();
 			}
 		}
 	}
@@ -373,27 +378,16 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 	}
 
-	public void dirtify() {
-		_dirty = true;
-		firePropertyChange(PROP_DIRTY);
-	}
-
 	@Override
-	protected void setInput(IEditorInput input) {
-		super.setInput(input);
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+		setSite(site);
+		setInput(input);
 
 		IFile file = ((IFileEditorInput) input).getFile();
-		try {
-			boolean hasUI = _tabsFolder != null;
-			if (_model == null) {
-				_model = new TexturePackerEditorModel(this, file);
 
-				if (hasUI) {
-					updateUIFromModel();
-				}
-			} else {
-				_model.setFile(file);
-			}
+		try {
+			_model = new TexturePackerEditorModel(this, file);
+
 			setPartName(file.getName());
 
 		} catch (IOException | CoreException e) {
@@ -402,21 +396,39 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	}
 
-	private void build(boolean dirty) {
-		build(dirty, null);
+	public void reloadFile() {
+		_fileStampHelper.helpReloadFile();
 	}
 
-	void build(boolean dirty, Runnable whenDone) {
+	private void reloadMethod() {
+		try {
+			var file = getEditorInputFile();
+			
+			_model = new TexturePackerEditorModel(this, file);
+			
+			updateUIFromModel();
+			
+			build();
+			setDirty(false);
+			
+			updatePropertyPagesWithSelection();
+			
+		} catch (IOException | CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void build() {
+		build(null);
+	}
+
+	void build(Runnable whenDone) {
 
 		if (_model == null) {
 			return;
 		}
 
 		_guessLastOutputFiles = _model.guessOutputFiles();
-
-		if (dirty) {
-			dirtify();
-		}
 
 		Job job = new Job("Build atlas '" + _model.getFile().getName() + "'") {
 
@@ -660,13 +672,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 			private String computeFrameName(String filename) {
 				IPath path = new Path(filename);
-				
+
 				path = path.setDevice(null);
 
 				var includeSegments = _model.getSettings().getIncludeNumberOfFolders() + 1;
 
 				includeSegments = Math.min(includeSegments, path.segmentCount() - 1);
-				
+
 				if (includeSegments < 1) {
 					includeSegments = 1;
 				}
@@ -693,6 +705,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		_fileStampHelper.helpDoSave(monitor);
+	}
+
+	private void saveMethod(IProgressMonitor monitor) {
 		try {
 			refreshFolder(monitor);
 
@@ -794,14 +810,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		setSite(site);
-		setInput(input);
-	}
-
-	@Override
 	public boolean isDirty() {
 		return _dirty;
+	}
+	
+	public void setDirty(boolean dirty) {
+		_dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
 	}
 
 	@Override
@@ -933,6 +948,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			}
 			event.getDelta().accept(new IResourceDeltaVisitor() {
 
+				@SuppressWarnings("synthetic-access")
 				@Override
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IFile thisFile = getEditorInputFile();
@@ -952,9 +968,15 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 								});
 
 							} else {
+								
 								// rename
+								
 								setInput(new FileEditorInput(root.getFile(movedTo)));
-								swtRun(TexturePackerEditor.this::updateTitle);
+								
+								swtRun(()-> {
+									updateTitle();
+									reloadFile();
+								});
 							}
 						}
 					}
@@ -972,7 +994,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	public void manuallyBuild() {
-		build(true, new Runnable() {
+		setDirty(true);
+		build(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1235,4 +1258,5 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	public TexturePackerEditorModel getModel() {
 		return _model;
 	}
+
 }

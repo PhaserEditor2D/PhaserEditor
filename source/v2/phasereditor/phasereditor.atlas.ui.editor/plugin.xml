@@ -85,6 +85,14 @@
          </activeWhen>
       </handler>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.atlas.ui.editor.build.TexturePackerEditorBuildParticipant"
+            id="TexturePackerEditorBuildParticipant"
+            order="1000">
+      </participant>
+   </extension>
 
 
 </plugin>

@@ -369,10 +369,6 @@ public class TexturePackerEditorModel implements IAdaptable {
 		return list;
 	}
 
-	protected void afterPropertyUpdate() {
-		_editor.dirtify();
-	}
-
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		return null;
