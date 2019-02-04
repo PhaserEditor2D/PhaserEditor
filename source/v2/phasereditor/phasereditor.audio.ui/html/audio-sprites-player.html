@@ -91,10 +91,12 @@
 
 		window.addEventListener("load", function () {
 
+			//_log("Loaded: audio-sprites-player.html");
+
 			audio = document.getElementById("audio");
 			audio.addEventListener("timeupdate", update);
 			audio.addEventListener("canplaythrough", canplay);
-
+			
 			cursor = document.getElementById("cursor");
 
 			body = document.getElementById("body");
@@ -175,6 +177,10 @@
 				audio.currentTime = sprite.start;
 				selectedSprite = sprite;
 			}
+		}
+
+		function _play() {
+			audio.play();
 		}
 
 	</script>

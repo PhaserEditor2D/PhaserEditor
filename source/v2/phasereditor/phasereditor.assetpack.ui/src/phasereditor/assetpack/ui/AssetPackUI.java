@@ -76,7 +76,6 @@ import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AudioAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AudioFileInformationControl;
 import phasereditor.assetpack.ui.preview.AudioSpriteAssetElementInformationControl;
-import phasereditor.assetpack.ui.preview.AudioSpriteAssetInformationControl;
 import phasereditor.assetpack.ui.preview.BitmapFontAssetInformationControl;
 import phasereditor.assetpack.ui.preview.ImageAssetInformationControl;
 import phasereditor.assetpack.ui.preview.ImageFileInformationControl;
@@ -98,12 +97,12 @@ import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ListCanvasDialog;
 import phasereditor.ui.ListSelectionDialog2;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.ImageProxy;
 
 public class AssetPackUI {
 
@@ -556,12 +555,12 @@ public class AssetPackUI {
 
 				@Override
 				public IInformationControl createInformationControl(Shell parent) {
-					return new AudioSpriteAssetInformationControl(parent);
+					return new AudioAssetInformationControl(parent);
 				}
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info != null && info.getClass() == AudioSpriteAssetModel.class;
+					return info != null && info instanceof AudioSpriteAssetModel;
 				}
 			});
 

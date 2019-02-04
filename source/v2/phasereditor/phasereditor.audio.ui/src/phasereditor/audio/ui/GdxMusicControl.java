@@ -60,6 +60,7 @@ import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.RM;
 
+@Deprecated
 public class GdxMusicControl extends Composite implements DisposeListener, MouseMoveListener, MouseTrackListener {
 	private Music _music;
 	protected boolean _playing;

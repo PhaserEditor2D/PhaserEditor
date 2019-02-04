@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
-import phasereditor.audio.ui.GdxMusicControl;
+import phasereditor.audio.ui.WebAudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -68,7 +68,7 @@ public class SingleAudioSpriteAssetElementPreviewSection
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			addUpdate(() -> setValues_to_Text(text, getModels(), AssetAudioSprite::getStart));
 		}
-		
+
 		{
 			label(comp, "End", "");
 			var text = new Text(comp, SWT.BORDER | SWT.READ_ONLY);
@@ -77,7 +77,7 @@ public class SingleAudioSpriteAssetElementPreviewSection
 		}
 
 		{
-			var audioControl = new GdxMusicControl(comp, 0);
+			var audioControl = new WebAudioSpritePlayer(comp, 0);
 			var gd = new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1);
 			gd.heightHint = 300;
 			audioControl.setLayoutData(gd);
@@ -89,12 +89,12 @@ public class SingleAudioSpriteAssetElementPreviewSection
 				var sprites = asset.getSpriteMap();
 				var index = sprites.indexOf(sprite);
 
-				audioControl.setTimePartition(AudioSpriteCore.createTimePartition(sprites));
-				audioControl.setTimePartitionSelection(index);
+				var file = pickFileWithoutExtension(asset.getFilesFromUrls(asset.getUrls()), "mp3", "ogg");
 
-				var file = pickFileWithoutExtension(asset.getFilesFromUrls(asset.getUrls()), "ogg", "mp3");
-
-				audioControl.load(file);
+				audioControl.load(file, () -> {
+					audioControl.setTimePartition(AudioSpriteCore.createTimePartition(sprites));
+					audioControl.setTimePartitionSelection(index);
+				});
 
 			});
 		}
