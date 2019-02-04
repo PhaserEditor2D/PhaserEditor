@@ -207,4 +207,9 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 			user_update_UI_from_Model();
 		}
 	}
+
+	@SuppressWarnings("unused")
+	protected void visibilityChanged(boolean visible) {
+		// nothing
+	}
 }

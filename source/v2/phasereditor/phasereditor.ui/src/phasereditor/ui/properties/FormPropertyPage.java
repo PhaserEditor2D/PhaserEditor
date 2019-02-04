@@ -151,6 +151,8 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			setLayoutData(gd);
 
 			requestLayout();
+			
+			_section.visibilityChanged(visible);
 		}
 
 		public GridData createControlGridData() {

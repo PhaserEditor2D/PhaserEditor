@@ -37,6 +37,8 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAssetModel> {
 
+	private WebAudioPlayer _player;
+
 	public SingleAudioAssetPreviewSection() {
 		super("Audio Preview");
 	}
@@ -56,11 +58,11 @@ public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAss
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout());
 
-//		var preview = new GdxMusicControl(comp, 0);
-		var preview = new WebAudioPlayer(comp, 0);
+		// var preview = new GdxMusicControl(comp, 0);
+		_player = new WebAudioPlayer(comp, 0);
 		var gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.heightHint = 200;
-		preview.setLayoutData(gd);
+		_player.setLayoutData(gd);
 
 		addUpdate(() -> {
 			var model = getModels().get(0);
@@ -70,11 +72,20 @@ public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAss
 
 					.ifPresentOrElse(
 
-							(url) -> preview.load(model.getFileFromUrl(url)),
+							(url) -> _player.load(model.getFileFromUrl(url)),
 
-							() -> preview.load(null));
+							() -> _player.load(null));
 		});
 		return comp;
+	}
+
+	@Override
+	protected void visibilityChanged(boolean visible) {
+		if (!visible) {
+			if (_player != null) {
+				_player.load(null);
+			}
+		}
 	}
 
 }
