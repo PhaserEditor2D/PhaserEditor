@@ -50,6 +50,10 @@ public class WebAudioPlayer extends Composite {
 		setLayout(new FillLayout());
 
 		_browser = new Browser(this, SWT.None);
+		
+		parent.addDisposeListener(e -> {
+			_browser.setText("");
+		});
 
 	}
 
