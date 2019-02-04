@@ -1,0 +1,184 @@
+<html>
+
+
+<head>
+	
+	<style type="text/css">
+
+		body {
+			background: black;
+			margin: 0px;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			image-rendering: pixelated;			
+		}
+
+		#audio {
+			width: 100%;
+			height: 2em;
+			margin-top: -2em;
+		}
+
+		#message {
+			position: absolute;
+			top: 100%;
+			margin-top: -4em;
+			margin-left: 1em;
+			font-weight: bold;
+			font-family: monospace;
+			color: yellow;			
+			text-shadow:  -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+		}
+
+		#cursor {
+			width: 1px;
+			height: 100%;
+			position: absolute;
+			background: red;		
+			margin-left: -10px;	
+		}
+
+		#sprites {
+			background: blue;
+		}
+
+		.sprite {
+			background: white;
+			height: 100%;
+			position: absolute;
+			opacity: 0.5;
+		}
+
+		.selected {
+			background: blue;
+		}
+
+	</style>
+
+
+</head>
+
+<body id="body">
+
+	<div id="sprites">
+
+	</div>
+	
+	<div id="cursor"></div>
+
+	<img id="image" src="$image-url$">
+	
+	
+	<audio id="audio">
+	  <source src="$audio-url$">
+	  <p>Your browser doesn't support HTML5 audio.</p>
+	</audio>
+
+	<div id="message" style="display: none">$filename$</div>
+
+
+	<script type="text/javascript">
+		var audio = null;
+		var audioReady = false;
+		var cursor = null;
+		var message = null;
+		var sprites = null;			
+		var spritesData = null;
+		var selectedSprite = null;
+
+		window.addEventListener("load", function () {
+
+			audio = document.getElementById("audio");
+			audio.addEventListener("timeupdate", update);
+			audio.addEventListener("canplaythrough", canplay);
+
+			cursor = document.getElementById("cursor");
+
+			body = document.getElementById("body");
+			body.addEventListener("mouseenter", controlsOn);
+			body.addEventListener("mouseleave", controlsOff);
+
+			message = document.getElementById("message");
+
+			sprites = document.getElementById("sprites");
+		});
+
+		function canplay() {
+			_log("Can play.");
+			_onAudioReady();	
+		}
+
+		function update() {			
+			var t = audio.currentTime;
+			cursor.setAttribute("style", "margin-left:" + (t / audio.duration * 100) + "%");
+			if (selectedSprite) {
+				
+				if (t < selectedSprite.start) {
+					audio.currentTime = selectedSprite.start;
+				}
+
+				if (t > selectedSprite.end) {
+					audio.pause();
+					audio.currentTime = selectedSprite.start;
+				}
+			}
+		}
+
+		function controlsOn() {
+			audio.setAttribute("controls", "");	
+			message.setAttribute("style", "display:block");
+		}
+
+		function controlsOff() {
+			audio.removeAttribute("controls");
+			message.setAttribute("style", "display:none");
+		}
+
+
+		// Public functions, that are called by Phaser Editor
+
+		
+		function setSprites(data) {
+
+			var html = "";
+
+			var duration = audio.duration;
+
+			for(var i = 0; i < data.length; i += 1) {
+				var sprite = data[i];
+				var x = sprite.start / duration * 100;
+				var width = (sprite.end - sprite.start) / duration * 100;
+				html += "<div id='sprite-" + i + "' class='sprite' style='margin-left:" + x + "%;width:" + width + "%'></div>"
+			}
+
+			sprites.innerHTML = html;
+
+			spritesData = data;
+		}
+
+		function selectSprite(index) {
+			var list = document.getElementsByClassName("sprite");
+			
+			for(var i = 0; i < list.length; i += 1) {
+				var sprite = list[i];
+				sprite.setAttribute("class", "sprite");			
+			}
+
+			var sprite = document.getElementById("sprite-" + index);
+			sprite.setAttribute("class", "sprite selected");
+
+			if (spritesData) {
+				var sprite = spritesData[index];
+				audio.currentTime = sprite.start;
+				selectedSprite = sprite;
+			}
+		}
+
+	</script>
+
+</body>
+
+</html>

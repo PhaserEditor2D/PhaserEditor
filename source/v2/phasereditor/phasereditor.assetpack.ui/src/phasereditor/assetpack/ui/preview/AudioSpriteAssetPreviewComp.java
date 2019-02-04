@@ -44,12 +44,13 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.audio.ui.GdxMusicControl;
+import phasereditor.audio.ui.WebAudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 
 public class AudioSpriteAssetPreviewComp extends Composite {
 
-	private GdxMusicControl _musicControl;
+	// private GdxMusicControl _musicControl;
+	private WebAudioSpritePlayer _musicControl;
 	private ComboViewer _spritesViewer;
 	private List<AssetAudioSprite> _sprites;
 	private AudioSpriteAssetModel _model;
@@ -68,7 +69,7 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 			}
 			return AssetLabelProvider.GLOBAL_16.getText(element);
 		}
-		
+
 		@Override
 		public Image getImage(Object element) {
 			return AssetLabelProvider.GLOBAL_16.getImage(element);
@@ -105,11 +106,8 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 		_filesLabel = new Label(this, SWT.WRAP);
 		_filesLabel.setText("files");
 
-		_musicControl = new GdxMusicControl(this, SWT.NONE);
+		_musicControl = new WebAudioSpritePlayer(this, SWT.NONE);
 		_musicControl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		GridLayout gridLayout = (GridLayout) _musicControl.getLayout();
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
 
 		afterCreateWidgets();
 	}
@@ -129,7 +127,7 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 	}
 
 	private void updateSprite(AssetAudioSprite sprite) {
-		_musicControl.stop();
+		// _musicControl.stop();
 		int i = _sprites.indexOf(sprite);
 		_musicControl.setTimePartitionSelection(i);
 	}
@@ -154,12 +152,13 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 		List<AssetAudioSprite> sprites = model.getSpriteMap();
 		_sprites = sprites;
 		_spritesViewer.setInput(_sprites);
-		// TODO: missing
-		// _audioCanvas.setContent(_sprites, null);
-		IFile file = pickFileWithoutExtension(files, "ogg", "mp3");
-		_musicControl.load(file);
-
-		_musicControl.setTimePartition(AudioSpriteCore.createTimePartition(sprites));
+		IFile file = pickFileWithoutExtension(files, "mp3", "ogg");
+		_musicControl.load(file, () -> {
+			_musicControl.setTimePartition(AudioSpriteCore.createTimePartition(sprites));
+			if (!sprites.isEmpty()) {
+				_musicControl.setTimePartitionSelection(0);
+			}
+		});
 
 		if (!_sprites.isEmpty()) {
 			selectElement(_sprites.get(0));
@@ -171,8 +170,9 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 	}
 
 	public void disposeMusicControl() {
-		_musicControl.stop();
-		_musicControl.disposeMusic();
+		// _musicControl.stop();
+		// _musicControl.disposeMusic();
+		_musicControl.load(null);
 	}
 
 	public void selectElement(Object element) {

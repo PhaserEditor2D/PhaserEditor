@@ -1,0 +1,181 @@
+<html>
+
+
+<head>
+	
+	<style type="text/css">
+
+		body {
+			background: black;
+			margin: 0px;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			image-rendering: pixelated;			
+		}
+
+		#audio {
+			width: 100%;
+			height: 2em;
+			margin-top: -2em;
+		}
+
+		#message {
+			position: absolute;
+			top: 100%;
+			margin-top: -4em;
+			margin-left: 1em;
+			font-weight: bold;
+			font-family: monospace;
+			color: yellow;			
+			text-shadow:  -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+		}
+
+		#cursor {
+			width: 1px;
+			height: 100%;
+			position: absolute;
+			background: red;		
+			margin-left: -10px;	
+		}
+
+		#sprites {
+			background: blue;
+		}
+
+		.sprite {
+			background: white;
+			height: 100%;
+			position: absolute;
+			opacity: 0.5;
+		}
+
+		.selected {
+			background: blue;
+		}
+
+	</style>
+
+</head>
+
+<body id="body">
+
+	<div id="sprites">
+
+	</div>
+	
+	<div id="cursor"></div>
+
+	<img id="image" src="file:///home/arian/.phasereditor/waves/91920c77-740f-44a6-85b5-32c53465aae4.png">
+	
+	
+	<audio id="audio" >
+	  <source src="file:///home/arian/Documents/PhaserEditor/Workspaces/runtime-PhaserEditor.product/AudioSprite/WebContent/assets/audio/SoundEffects/fx_mixdown.mp3">
+	  <p>Your browser doesn't support HTML5 audio.</p>
+	</audio>
+
+	<div id="message" style="display: none">fx_mixdown.mp3</div>
+
+
+	<script type="text/javascript">
+		var audio = null;
+		var audioReady = false;
+		var cursor = null;
+		var message = null;
+		var sprites = null;
+		var currentData = null;
+		var currentSelectedIndex = null;
+		
+		window.addEventListener("load", function () {
+			audio = document.getElementById("audio");
+			audio.addEventListener("canplaythrough", canplay);
+			audio.addEventListener("timeupdate", update);			
+
+			cursor = document.getElementById("cursor");
+
+			body = document.getElementById("body");
+			body.addEventListener("mouseenter", controlsOn);
+			body.addEventListener("mouseleave", controlsOff);
+
+			message = document.getElementById("message");
+
+			sprites = document.getElementById("sprites");
+		});
+
+		function canplay() {
+			console.log(audio.readyState + " " + audio.duration);
+			audioReady = true;
+
+			if (currentData != null) {
+				setSprites(currentData);
+			}
+
+			if (currentSelectedIndex != null) {
+				selectSprite(currentSelectedIndex);
+			}
+		}
+
+		function update() {			
+			cursor.setAttribute("style", "margin-left:" + (audio.currentTime / audio.duration * 100) + "%");
+		}
+
+		function controlsOn() {
+			audio.setAttribute("controls", "");	
+			message.setAttribute("style", "display:block");
+		}
+
+		function controlsOff() {
+			audio.removeAttribute("controls");
+			message.setAttribute("style", "display:none");
+		}
+
+
+		// Public functions, that are called by Phaser Editor
+
+		
+		function setSprites(data) {
+			currentData = data;
+
+			if (!canplay) {				
+				return;
+			}
+
+			var html = "";
+
+			var duration = audio.duration;
+
+			for(var i = 0; i < data.length; i += 1) {
+				var sprite = data[i];
+				var x = sprite.start / duration * 100;
+				var width = (sprite.end - sprite.start) / duration * 100;
+				html += "<div id='sprite-" + i + "' class='sprite' style='margin-left:" + x + "%;width:" + width + "%'></div>"
+			}
+
+			sprites.innerHTML = html;
+		}
+
+		function selectSprite(index) {
+			currentSelectedIndex = index;
+
+			if (!canplay) {
+				return;
+			}
+
+			var list = document.getElementsByClassName("sprite");
+			
+			for(var i = 0; i < list.length; i += 1) {
+				var sprite = list[i];
+				sprite.setAttribute("class", "sprite");			
+			}
+
+			var sprite = document.getElementById("sprite-" + index);
+			sprite.setAttribute("class", "sprite selected");
+		}
+
+	</script>
+
+</body>
+
+</html>
