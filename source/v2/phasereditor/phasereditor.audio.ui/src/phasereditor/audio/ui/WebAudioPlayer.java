@@ -68,6 +68,7 @@ public class WebAudioPlayer extends Composite {
 
 		var audioFileUrl = audioFile.getLocation().toFile().toPath().toUri().toString();
 		var imageFileUrl = imageFile == null ? "" : imageFile.toUri().toString();
+		var filename = audioFile.getName();
 
 		out.println("Load audio file :" + audioFileUrl);
 		out.println("Load image file :" + imageFileUrl);
@@ -93,7 +94,9 @@ public class WebAudioPlayer extends Composite {
 
 				.replace("$audio-url$", audioFileUrl)
 
-				.replace("$autoplay$", autoplay? "autoplay='true'" : "");
+				.replace("$autoplay$", autoplay? "autoplay='true'" : "")
+				
+				.replace("$filename$", filename);
 
 		out.println(html);
 		
