@@ -23,7 +23,6 @@ package phasereditor.assetpack.ui.preview;
 
 import static phasereditor.ui.PhaserEditorUI.pickFileWithoutExtension;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
@@ -33,6 +32,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 
+import phasereditor.animation.ui.AnimationModelPreviewFactory;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetModelFactory;
@@ -51,11 +52,9 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.animation.ui.AnimationModelPreviewFactory;
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.audio.ui.GdxMusicControl;
+import phasereditor.audio.ui.WebAudioPlayer;
 import phasereditor.ui.views.IPreviewFactory;
 
 public class AssetPreviewAdapterFactory implements IAdapterFactory {
@@ -389,27 +388,31 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public void updateControl2(Control preview, Object element) {
-				GdxMusicControl comp = (GdxMusicControl) preview;
-				AudioAssetModel model = (AudioAssetModel) element;
-				IFile file = pickFileWithoutExtension(model.getFilesFromUrls(model.getUrls()), "mp3", "ogg");
+//				GdxMusicControl comp = (GdxMusicControl) preview;
+				var comp = (WebAudioPlayer) preview;
+				var model = (AudioAssetModel) element;
+				var file = pickFileWithoutExtension(model.getFilesFromUrls(model.getUrls()), "mp3", "ogg");
 				comp.load(file);
 			}
 
 			@Override
 			public void hiddenControl(Control preview) {
-				GdxMusicControl control = (GdxMusicControl) preview;
-				control.stop();
-				control.disposeMusic();
+//				GdxMusicControl control = (GdxMusicControl) preview;
+//				control.stop();
+//				control.disposeMusic();
+				((WebAudioPlayer)preview).load(null);
 			}
 
 			@Override
 			public Control createControl(Composite previewContainer) {
-				return new GdxMusicControl(previewContainer, SWT.NONE);
+				// return new GdxMusicControl(previewContainer, SWT.NONE);
+				return new WebAudioPlayer(previewContainer, 0);
 			}
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof GdxMusicControl;
+				// return c instanceof GdxMusicControl;
+				return c instanceof WebAudioPlayer;
 			}
 		};
 	}

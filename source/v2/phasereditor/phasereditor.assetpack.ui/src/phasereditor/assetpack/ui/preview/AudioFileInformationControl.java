@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import phasereditor.audio.ui.WebAudioPlayer;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class AudioFileInformationControl extends BaseInformationControl {
@@ -37,18 +38,21 @@ public class AudioFileInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new GdxAutoMusicControl(parentComp, SWT.NONE);
+		// return new GdxAutoMusicControl(parentComp, SWT.NONE);
+		return new WebAudioPlayer(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		((GdxAutoMusicControl) control).load((IFile) model);
+		// ((GdxAutoMusicControl) control).load((IFile) model);
+		((WebAudioPlayer)control).load((IFile) model, true);
 	}
 
 	@Override
 	protected void handleHidden(Control control) {
-		GdxAutoMusicControl musicControl = (GdxAutoMusicControl) control;
-		musicControl.stop();
-		musicControl.disposeMusic();
+//		GdxAutoMusicControl musicControl = (GdxAutoMusicControl) control;
+//		musicControl.stop();
+//		musicControl.disposeMusic();
+		((WebAudioPlayer)control).load(null);
 	}
 }

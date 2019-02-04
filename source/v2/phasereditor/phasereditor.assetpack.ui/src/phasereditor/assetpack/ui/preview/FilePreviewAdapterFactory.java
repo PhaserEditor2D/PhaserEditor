@@ -33,7 +33,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.ImagePreviewComp;
-import phasereditor.audio.ui.GdxMusicControl;
+import phasereditor.audio.ui.WebAudioPlayer;
 import phasereditor.ui.views.IPreviewFactory;
 
 @SuppressWarnings("rawtypes")
@@ -123,25 +123,29 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 			public void updateControl(Control preview, Object element) {
 				IFile file = (IFile) element;
 				if (file.exists()) {
-					((GdxMusicControl) preview).load(file);
+					// ((GdxMusicControl) preview).load(file);
+					((WebAudioPlayer) preview).load(file);
 				}
 			}
 
 			@Override
 			public Control createControl(Composite previewContainer) {
-				return new GdxMusicControl(previewContainer, 0);
+				// return new GdxMusicControl(previewContainer, 0);
+				return new WebAudioPlayer(previewContainer, 0);
 			}
 
 			@Override
 			public void hiddenControl(Control preview) {
-				GdxMusicControl control = (GdxMusicControl) preview;
-				control.stop();
-				control.disposeMusic();
+				// GdxMusicControl control = (GdxMusicControl) preview;
+				// control.stop();
+				// control.disposeMusic();
+				((WebAudioPlayer) preview).load(null);
 			}
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof GdxMusicControl;
+				// return c instanceof GdxMusicControl;
+				return c instanceof WebAudioPlayer;
 			}
 		};
 	}

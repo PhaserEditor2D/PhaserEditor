@@ -1,0 +1,98 @@
+<html>
+
+
+<head>
+	
+	<style type="text/css">
+
+		body {
+			background: black;
+			margin: 0px;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			image-rendering: pixelated;			
+		}
+
+		#audio {
+			width: 100%;
+			height: 2em;
+			margin-top: -2em;
+		}
+
+		#message {
+			position: absolute;
+			top: 100%;
+			margin-top: -4em;
+			margin-left: 1em;
+			font-weight: bold;
+			font-family: monospace;
+			color: yellow;			
+			text-shadow:  -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+		}
+
+		#cursor {
+			width: 1px;
+			height: 100%;
+			position: absolute;
+			background: red;		
+			margin-left: -10px;	
+		}
+	</style>
+
+</head>
+
+<body id="body">
+
+	<div id="cursor"></div>
+
+	<img id="image" src="$image-url$">
+	
+	
+	<audio id="audio" $autoplay$>
+	  <source src="$audio-url$">
+	  <p>Your browser doesn't support HTML5 audio.</p>
+	</audio>
+
+	<div id="message" style="display: none">oedipus_ark_pandora.mp3</div>
+
+
+	<script type="text/javascript">
+		var audio = null;
+		var cursor = null;
+		var message = null;
+		
+		window.addEventListener("load", function () {
+			audio = document.getElementById("audio");
+			audio.addEventListener("timeupdate", update);
+
+			cursor = document.getElementById("cursor");
+
+			body = document.getElementById("body");
+			body.addEventListener("mouseenter", controlsOn);
+			body.addEventListener("mouseleave", controlsOff);
+
+			message = document.getElementById("message");
+		});
+
+		function update() {			
+			cursor.setAttribute("style", "margin-left:" + (audio.currentTime / audio.duration * 100) + "%");
+		}
+
+		function controlsOn() {
+			audio.setAttribute("controls", "");	
+			message.setAttribute("style", "display:block");
+		}
+
+		function controlsOff() {
+			audio.removeAttribute("controls");
+			message.setAttribute("style", "display:none");
+		}
+
+	</script>
+
+</body>
+
+</html>
