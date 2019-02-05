@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
-import phasereditor.audio.ui.WebAudioSpritePlayer;
+import phasereditor.audio.ui.Html5AudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -77,7 +77,7 @@ public class SingleAudioSpriteAssetElementPreviewSection
 		}
 
 		{
-			var audioControl = new WebAudioSpritePlayer(comp, 0);
+			var audioControl = new Html5AudioSpritePlayer(comp, 0);
 			var gd = new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1);
 			gd.heightHint = 300;
 			audioControl.setLayoutData(gd);

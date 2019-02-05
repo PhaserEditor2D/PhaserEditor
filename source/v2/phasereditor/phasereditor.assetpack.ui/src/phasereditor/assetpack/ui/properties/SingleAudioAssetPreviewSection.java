@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.audio.ui.WebAudioPlayer;
+import phasereditor.audio.ui.Html5AudioPlayer;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -37,7 +37,7 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAssetModel> {
 
-	private WebAudioPlayer _player;
+	private Html5AudioPlayer _player;
 
 	public SingleAudioAssetPreviewSection() {
 		super("Audio Preview");
@@ -59,7 +59,7 @@ public class SingleAudioAssetPreviewSection extends FormPropertySection<AudioAss
 		comp.setLayout(new GridLayout());
 
 		// var preview = new GdxMusicControl(comp, 0);
-		_player = new WebAudioPlayer(comp, 0);
+		_player = new Html5AudioPlayer(comp, 0);
 		var gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.heightHint = 200;
 		_player.setLayoutData(gd);

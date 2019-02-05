@@ -110,7 +110,7 @@ public class AudioResourceDialog extends Dialog {
 		gd__table.widthHint = 150;
 		_filteredCanvas.setLayoutData(gd__table);
 
-		_audioPlayer = new WebAudioPlayer(composite_1, SWT.BORDER);
+		_audioPlayer = new Html5AudioPlayer(composite_1, SWT.BORDER);
 		GridData gd_audioPlayer = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_audioPlayer.heightHint = 200;
 		_audioPlayer.setLayoutData(gd_audioPlayer);
@@ -149,7 +149,7 @@ public class AudioResourceDialog extends Dialog {
 
 	private List<IFile> _allFiles;
 	private LabelProvider _labelProvider;
-	private WebAudioPlayer _audioPlayer;
+	private Html5AudioPlayer _audioPlayer;
 	private List<IFile> _initialFiles = List.of();
 
 	public void setInput(List<IFile> files) {

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
-import phasereditor.audio.ui.WebAudioSpritePlayer;
+import phasereditor.audio.ui.Html5AudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.ui.info.BaseInformationControl;
 
@@ -44,7 +44,7 @@ public class AudioSpriteAssetElementInformationControl extends BaseInformationCo
 	@Override
 	protected Control createContent2(Composite parentComp) {
 		// return new GdxAutoMusicControl(parentComp, SWT.NONE);
-		return new WebAudioSpritePlayer(parentComp, 0);
+		return new Html5AudioSpritePlayer(parentComp, 0);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class AudioSpriteAssetElementInformationControl extends BaseInformationCo
 		var sprite = (AssetAudioSprite) model;
 		var asset = sprite.getAsset();
 
-		var audioControl = (WebAudioSpritePlayer) control;
+		var audioControl = (Html5AudioSpritePlayer) control;
 
 		List<AssetAudioSprite> sprites = asset.getSpriteMap();
 
@@ -87,7 +87,7 @@ public class AudioSpriteAssetElementInformationControl extends BaseInformationCo
 		// GdxAutoMusicControl musicControl = (GdxAutoMusicControl) control;
 		// musicControl.stop();
 		// musicControl.disposeMusic();
-		var player = (WebAudioSpritePlayer) control;
+		var player = (Html5AudioSpritePlayer) control;
 		player.load(null);
 	}
 

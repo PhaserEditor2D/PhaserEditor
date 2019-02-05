@@ -54,7 +54,7 @@ import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.audio.ui.WebAudioPlayer;
+import phasereditor.audio.ui.Html5AudioPlayer;
 import phasereditor.ui.views.IPreviewFactory;
 
 public class AssetPreviewAdapterFactory implements IAdapterFactory {
@@ -389,7 +389,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void updateControl2(Control preview, Object element) {
 //				GdxMusicControl comp = (GdxMusicControl) preview;
-				var comp = (WebAudioPlayer) preview;
+				var comp = (Html5AudioPlayer) preview;
 				var model = (AudioAssetModel) element;
 				var file = pickFileWithoutExtension(model.getFilesFromUrls(model.getUrls()), "mp3", "ogg");
 				comp.load(file);
@@ -400,19 +400,19 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 //				GdxMusicControl control = (GdxMusicControl) preview;
 //				control.stop();
 //				control.disposeMusic();
-				((WebAudioPlayer)preview).load(null);
+				((Html5AudioPlayer)preview).load(null);
 			}
 
 			@Override
 			public Control createControl(Composite previewContainer) {
 				// return new GdxMusicControl(previewContainer, SWT.NONE);
-				return new WebAudioPlayer(previewContainer, 0);
+				return new Html5AudioPlayer(previewContainer, 0);
 			}
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				// return c instanceof GdxMusicControl;
-				return c instanceof WebAudioPlayer;
+				return c instanceof Html5AudioPlayer;
 			}
 		};
 	}

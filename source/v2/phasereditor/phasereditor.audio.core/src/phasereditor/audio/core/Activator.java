@@ -62,8 +62,6 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 
-		AudioCore.disposeGdxAudio();
-
 		plugin = null;
 		super.stop(context);
 	}

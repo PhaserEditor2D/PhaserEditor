@@ -21,15 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.audio.core;
 
-import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.eclipseFileToJavaPath;
 import static phasereditor.ui.PhaserEditorUI.getExtensionFromFilename;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,14 +48,6 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
-import org.lwjgl.openal.AL;
-
-import com.badlogic.gdx.Audio;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALAudio;
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxNativesLoader;
 
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.FileUtils;
@@ -85,129 +74,6 @@ public class AudioCore {
 
 	private static Path _silencePath;
 
-	private static Audio _audio;
-	static List<OpenALMusic> _musicsToUpdate;
-	static List<Runnable> _musicActionsToUpdate;
-
-	static {
-		initGdxAudio();
-	}
-
-	private static void initGdxAudio() {
-		GdxNativesLoader.disableNativesLoading = true;
-		_musicsToUpdate = new ArrayList<>();
-		_musicActionsToUpdate = new ArrayList<>();
-
-		// music loop
-
-		Thread th = new Thread("Phaser Editor music loop") {
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						sleep(100);
-					} catch (InterruptedException e) {
-						// nothing
-					}
-					synchronized (_musicsToUpdate) {
-						for (OpenALMusic music : _musicsToUpdate) {
-							synchronized (music) {
-								if (music.isPlaying()) {
-									music.update();
-								}
-							}
-						}
-					}
-
-					synchronized (_musicActionsToUpdate) {
-						for (Runnable action : _musicActionsToUpdate) {
-							try {
-								action.run();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}
-		};
-		th.setDaemon(true);
-		th.start();
-	}
-
-	static void disposeGdxAudio() {
-		synchronized (_musicsToUpdate) {
-			for (OpenALMusic m : _musicsToUpdate) {
-				synchronized (m) {
-					m.dispose();
-				}
-			}
-		}
-
-		AL.destroy();
-	}
-
-	private static Audio getAudio() {
-		if (_audio == null) {
-			_audio = new OpenALAudio();
-		}
-		return _audio;
-	}
-
-	public static Music createGdxMusic(FileHandle file) throws Exception {
-		OpenALMusic music = (OpenALMusic) getAudio().newMusic(file);
-		synchronized (_musicsToUpdate) {
-			_musicsToUpdate.add(music);
-		}
-		return music;
-	}
-
-	public static void disposeGdxMusic(Music music) {
-		music.dispose();
-		synchronized (_musicsToUpdate) {
-			_musicsToUpdate.remove(music);
-		}
-	}
-
-	static class MemoryFileHandle extends FileHandle {
-		private byte[] _bytes;
-
-		public MemoryFileHandle(Path path) throws IOException {
-			super(path.toFile());
-			long t = currentTimeMillis();
-			_bytes = Files.readAllBytes(path);
-			out.println("read " + path.getFileName() + " in " + (currentTimeMillis() - t) + " ms");
-		}
-
-		@Override
-		public InputStream read() {
-			return new ByteArrayInputStream(_bytes);
-		}
-	}
-
-	public static Music createGdxMusic(IFile file) throws Exception {
-		try {
-			Path path = eclipseFileToJavaPath(file);
-			if (Files.size(path) > 1024 * 1024 * 50) {
-				return createGdxMusic(new FileHandle(path.toFile()));
-			}
-			return createGdxMusic(new MemoryFileHandle(path));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void addMusicUpdateAction(Runnable action) {
-		synchronized (_musicsToUpdate) {
-			_musicActionsToUpdate.add(action);
-		}
-	}
-
-	public static void removeMusicUpdateAction(Runnable action) {
-		synchronized (_musicsToUpdate) {
-			_musicActionsToUpdate.remove(action);
-		}
-	}
 
 	public static boolean isSupportedAudio(IFile file) {
 		return isSupportedAudio(file.getLocation().toFile());

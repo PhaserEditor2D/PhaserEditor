@@ -44,13 +44,13 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.audio.ui.WebAudioSpritePlayer;
+import phasereditor.audio.ui.Html5AudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 
 public class AudioSpriteAssetPreviewComp extends Composite {
 
 	// private GdxMusicControl _musicControl;
-	private WebAudioSpritePlayer _musicControl;
+	private Html5AudioSpritePlayer _musicControl;
 	private ComboViewer _spritesViewer;
 	private List<AssetAudioSprite> _sprites;
 	private AudioSpriteAssetModel _model;
@@ -106,7 +106,7 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 		_filesLabel = new Label(this, SWT.WRAP);
 		_filesLabel.setText("files");
 
-		_musicControl = new WebAudioSpritePlayer(this, SWT.NONE);
+		_musicControl = new Html5AudioSpritePlayer(this, SWT.NONE);
 		_musicControl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		afterCreateWidgets();

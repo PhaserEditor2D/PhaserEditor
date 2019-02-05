@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.AudioAssetModel;
-import phasereditor.audio.ui.WebAudioPlayer;
+import phasereditor.audio.ui.Html5AudioPlayer;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class AudioAssetInformationControl extends BaseInformationControl {
@@ -42,7 +42,7 @@ public class AudioAssetInformationControl extends BaseInformationControl {
 	@Override
 	protected Control createContent2(Composite parentComp) {
 		// return new GdxAutoMusicControl(parentComp, SWT.NONE);
-		return new WebAudioPlayer(parentComp, SWT.NONE);
+		return new Html5AudioPlayer(parentComp, SWT.NONE);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class AudioAssetInformationControl extends BaseInformationControl {
 		IFile file = pickFileWithoutExtension(asset.getFilesFromUrls(asset.getUrls()), "ogg", "mp3");
 		// GdxAutoMusicControl audioControl = (GdxAutoMusicControl) control;
 		// audioControl.load(file);
-		((WebAudioPlayer) control).load(file, true);
+		((Html5AudioPlayer) control).load(file, true);
 	}
 
 	@Override
@@ -59,6 +59,6 @@ public class AudioAssetInformationControl extends BaseInformationControl {
 //		GdxAutoMusicControl musicControl = (GdxAutoMusicControl) control;
 //		musicControl.stop();
 //		musicControl.disposeMusic();
-		((WebAudioPlayer)control).load(null);
+		((Html5AudioPlayer)control).load(null);
 	}
 }

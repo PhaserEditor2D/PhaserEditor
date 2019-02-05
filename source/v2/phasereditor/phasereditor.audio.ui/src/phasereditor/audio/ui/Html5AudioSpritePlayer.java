@@ -30,8 +30,11 @@ import java.net.URL;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import phasereditor.audio.core.AudioCore;
 
@@ -39,33 +42,71 @@ import phasereditor.audio.core.AudioCore;
  * @author arian
  *
  */
-public class WebAudioPlayer extends Composite {
+public class Html5AudioSpritePlayer extends Composite {
 
 	private Browser _browser;
+	private Runnable _onAudioReadyCallback;
 	private static String _playerHTML;
 
-	public WebAudioPlayer(Composite parent, int style) {
+	@SuppressWarnings("unused")
+	public Html5AudioSpritePlayer(Composite parent, int style) {
 		super(parent, style);
 
 		setLayout(new FillLayout());
 
 		_browser = new Browser(this, SWT.None);
-		
+
+		new BrowserFunction(_browser, "_log") {
+			@Override
+			public Object function(Object[] arguments) {
+				super.function(arguments);
+
+				out.println("Browser:" + arguments[0]);
+
+				return null;
+			}
+		};
+
+		new BrowserFunction(_browser, "_onAudioReady") {
+			@Override
+			public Object function(Object[] arguments) {
+				super.function(arguments);
+
+				out.println("Call onAudioReady callback: " + _onAudioReadyCallback);
+
+				if (_onAudioReadyCallback != null) {
+					_onAudioReadyCallback.run();
+				}
+
+				return null;
+			}
+		};
+
 		parent.addDisposeListener(e -> {
 			_browser.setText("");
 		});
 	}
 
-	public void load(IFile audioFile) {
-		load(audioFile, false);
+	public void play() {
+		_browser.execute("_play();");
 	}
 
-	public void load(IFile audioFile, boolean autoplay) {
+	public void stop() {
+		_browser.execute("_stop();");
+	}
+
+	public void load(IFile audioFile) {
+		load(audioFile, null);
+	}
+
+	public void load(IFile audioFile, Runnable onAudioReady) {
 
 		if (audioFile == null) {
 			_browser.setText("");
 			return;
 		}
+
+		_onAudioReadyCallback = onAudioReady;
 
 		var imageFile = AudioCore.getSoundWavesFile(audioFile);
 
@@ -76,9 +117,11 @@ public class WebAudioPlayer extends Composite {
 		out.println("Load audio file :" + audioFileUrl);
 		out.println("Load image file :" + imageFileUrl);
 
-		if (_playerHTML == null) {
+		// if (_playerHTML == null)
+
+		{
 			try {
-				var url = new URL("platform:/plugin/phasereditor.audio.ui/html/player.html");
+				var url = new URL("platform:/plugin/phasereditor.audio.ui/html/audio-sprites-player.html");
 				try (InputStream input = url.openStream()) {
 					var reader = new BufferedInputStream(input);
 					var bytes = reader.readAllBytes();
@@ -97,11 +140,35 @@ public class WebAudioPlayer extends Composite {
 
 				.replace("$audio-url$", audioFileUrl)
 
-				.replace("$autoplay$", autoplay? "autoplay='true'" : "")
-				
 				.replace("$filename$", filename);
 
 		_browser.setText(html);
+	}
+
+	public void setTimePartitionSelection(int selectedPartition) {
+		var script = "selectSprite(" + selectedPartition + ");";
+
+		_browser.execute(script);
+	}
+
+	public void setTimePartition(double[][] partitions) {
+
+		var jsonArray = new JSONArray();
+
+		for (var tuple : partitions) {
+			JSONObject jsonPartition = new JSONObject();
+			jsonPartition.put("start", tuple[0]);
+			jsonPartition.put("end", tuple[1]);
+			jsonArray.put(jsonPartition);
+		}
+
+		var script = "setSprites(" + jsonArray.toString() + ");";
+
+		out.println(script);
+
+		var result = _browser.execute(script);
+
+		out.println(result);
 	}
 
 }

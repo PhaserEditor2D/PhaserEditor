@@ -69,7 +69,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.ToolBar;
 
 import phasereditor.audio.core.AudioCore;
-import phasereditor.audio.ui.WebAudioSpritePlayer;
+import phasereditor.audio.ui.Html5AudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSprite;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.audiosprite.core.AudioSpritesModel;
@@ -91,7 +91,7 @@ public class AudioSpriteEditorComp extends Composite {
 		}
 	}
 
-	protected WebAudioSpritePlayer _musicControl;
+	protected Html5AudioSpritePlayer _musicControl;
 	TableViewer _spritesViewer;
 	private List<AudioSprite> _sprites;
 	private AudioSpritesModel _model;
@@ -132,7 +132,7 @@ public class AudioSpriteEditorComp extends Composite {
 		SashForm sashForm_1 = new SashForm(this, SWT.VERTICAL);
 		sashForm_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		_musicControl = new WebAudioSpritePlayer(sashForm_1, SWT.NONE);
+		_musicControl = new Html5AudioSpritePlayer(sashForm_1, SWT.NONE);
 		_musicControl.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
