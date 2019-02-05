@@ -117,9 +117,7 @@ public class Html5AudioSpritePlayer extends Composite {
 		out.println("Load audio file :" + audioFileUrl);
 		out.println("Load image file :" + imageFileUrl);
 
-		// if (_playerHTML == null)
-
-		{
+		if (_playerHTML == null) {
 			try {
 				var url = new URL("platform:/plugin/phasereditor.audio.ui/html/audio-sprites-player.html");
 				try (InputStream input = url.openStream()) {
