@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources;bundle-version="3.9.1",
  phasereditor.org.json,
  phasereditor.audio.core,
- phasereditor.ui
+ phasereditor.ui,
+ phasereditor.project.core;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audiosprite.core
 Automatic-Module-Name: phasereditor.audiosprite.core

@@ -68,7 +68,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.ToolBar;
 
-import phasereditor.audio.ui.GdxMusicControl;
+import phasereditor.audio.core.AudioCore;
+import phasereditor.audio.ui.WebAudioSpritePlayer;
 import phasereditor.audiosprite.core.AudioSprite;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.audiosprite.core.AudioSpritesModel;
@@ -90,7 +91,7 @@ public class AudioSpriteEditorComp extends Composite {
 		}
 	}
 
-	protected GdxMusicControl _musicControl;
+	protected WebAudioSpritePlayer _musicControl;
 	TableViewer _spritesViewer;
 	private List<AudioSprite> _sprites;
 	private AudioSpritesModel _model;
@@ -99,6 +100,8 @@ public class AudioSpriteEditorComp extends Composite {
 	private Label _filesLabel;
 	private Action _addAction;
 	private Action _removeAction;
+	private IFile _playFile;
+	private double _playFileDuration;
 
 	/**
 	 * Create the composite.
@@ -129,17 +132,13 @@ public class AudioSpriteEditorComp extends Composite {
 		SashForm sashForm_1 = new SashForm(this, SWT.VERTICAL);
 		sashForm_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		_musicControl = new GdxMusicControl(sashForm_1, SWT.NONE);
-		_musicControl.getCanvas().addKeyListener(new KeyAdapter() {
+		_musicControl = new WebAudioSpritePlayer(sashForm_1, SWT.NONE);
+		_musicControl.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				handleKey(e);
 			}
 		});
-		GridLayout gridLayout_1 = (GridLayout) _musicControl.getLayout();
-		gridLayout_1.marginBottom = 5;
-		gridLayout_1.marginHeight = 0;
-		gridLayout_1.marginWidth = 0;
 
 		Composite composite_2 = new Composite(sashForm_1, SWT.NONE);
 		GridLayout gl_composite_2 = new GridLayout(1, false);
@@ -324,8 +323,7 @@ public class AudioSpriteEditorComp extends Composite {
 			}
 		};
 
-		_removeAction = new Action("remove",
-				RM.getPluginImageDescriptor("phasereditor.ui", "icons/delete.png")) {
+		_removeAction = new Action("remove", RM.getPluginImageDescriptor("phasereditor.ui", "icons/delete.png")) {
 			@Override
 			public void run() {
 				deleteSprite();
@@ -334,7 +332,6 @@ public class AudioSpriteEditorComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
-		_musicControl.setPaintTimeCursor(true);
 
 		ToolBarManager manager = new ToolBarManager(_spritesToolbar);
 		manager.add(_addAction);
@@ -440,7 +437,7 @@ public class AudioSpriteEditorComp extends Composite {
 			sprite.setStart(sprites.get(count - 1).getEnd() + 0.1);
 		}
 
-		sprite.setEnd(_musicControl.getDuration());
+		sprite.setEnd(_playFileDuration);
 
 		sprites.add(sprite);
 
@@ -482,16 +479,21 @@ public class AudioSpriteEditorComp extends Composite {
 		// FF will be set after select the file
 		List<IFile> files = _model.getResources();
 
-		IFile playFile = pickFileWithoutExtension(files, "ogg", "mp3");
+		_playFile = pickFileWithoutExtension(files, "ogg", "mp3");
 		try {
-			_musicControl.load(playFile);
+			
+			_musicControl.load(_playFile, () -> {
+				var partition = AudioSpriteCore.createTimePartition(_sprites);
+				_musicControl.setTimePartition(partition);
+			});
+			
+			_playFileDuration = AudioCore.getSoundDuration(_playFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(getShell(), "Audio Sprite Editor",
-					"Error loading file '" + playFile.getFullPath().toPortableString() + "'.\n\n" + e.getMessage());
+					"Error loading file '" + _playFile.getFullPath().toPortableString() + "'.\n\n" + e.getMessage());
 		}
 
-		_musicControl.setTimePartition(AudioSpriteCore.createTimePartition(_sprites));
 		{
 			String label = files.isEmpty() ? "(empty)" : "";
 

@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.audiosprite.ui;bundle-version="2.0.0",
  phasereditor.org.json;bundle-version="2.0.0",
  phasereditor.ui;bundle-version="2.0.0",
- phasereditor.audio.ui;bundle-version="2.0.0"
+ phasereditor.audio.ui;bundle-version="2.0.0",
+ phasereditor.audio.core;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.audiosprite.ui.editor

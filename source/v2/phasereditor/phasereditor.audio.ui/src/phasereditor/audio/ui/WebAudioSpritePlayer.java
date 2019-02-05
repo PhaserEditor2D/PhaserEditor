@@ -91,6 +91,10 @@ public class WebAudioSpritePlayer extends Composite {
 		_browser.execute("_play();");
 	}
 
+	public void stop() {
+		_browser.execute("_stop();");
+	}
+
 	public void load(IFile audioFile) {
 		load(audioFile, null);
 	}
@@ -113,7 +117,7 @@ public class WebAudioSpritePlayer extends Composite {
 		out.println("Load audio file :" + audioFileUrl);
 		out.println("Load image file :" + imageFileUrl);
 
-//		 if (_playerHTML == null)
+		// if (_playerHTML == null)
 
 		{
 			try {

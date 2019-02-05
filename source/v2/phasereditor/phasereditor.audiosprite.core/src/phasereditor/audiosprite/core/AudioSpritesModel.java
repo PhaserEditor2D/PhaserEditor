@@ -34,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import phasereditor.project.core.ProjectCore;
+
 public class AudioSpritesModel {
 
 	private List<AudioSprite> _sprites;
@@ -73,8 +75,12 @@ public class AudioSpritesModel {
 			if (resourcesJson != null) {
 				for (int i = 0; i < resourcesJson.length(); i++) {
 					String filename = resourcesJson.getString(i);
-					IFile audioFile = modelFile.getParent().getFile(
-							new Path(filename));
+					var audioFile = modelFile.getParent().getFile(new Path(filename));
+
+					if (!audioFile.exists()) {
+						audioFile = ProjectCore.getWebContentFolder(modelFile.getProject()).getFile(new Path(filename));
+					}
+					
 					_resources.add(audioFile);
 				}
 			}
