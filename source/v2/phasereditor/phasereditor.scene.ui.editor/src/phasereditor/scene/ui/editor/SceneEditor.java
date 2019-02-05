@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -30,6 +31,7 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
@@ -125,11 +127,17 @@ public class SceneEditor extends EditorPart {
 	}
 
 	private void reloadMethod() {
-
-		_model = new SceneModel();
-
+		
 		var file = getEditorInput().getFile();
+		
+		if (!file.exists()) {
+			// abort reload, we are in the case of a rename, move or delete.
+			return;
+		}
 
+		
+		_model = new SceneModel();
+		
 		try {
 
 			_model.read(file);
@@ -146,9 +154,9 @@ public class SceneEditor extends EditorPart {
 		build();
 
 		setSelection(new ArrayList<>());
-		
+
 		setDirty(false);
-		
+
 		try {
 			var history = getSite().getWorkbenchWindow().getWorkbench().getOperationSupport().getOperationHistory();
 			history.dispose(undoContext, true, true, true);
@@ -218,6 +226,12 @@ public class SceneEditor extends EditorPart {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void handleFileRenamed(IFile file) {
+		setInput(new FileEditorInput(file));
+		setPartName(file.getName());
+		firePropertyChange(PROP_TITLE);
 	}
 
 	void generateCode(IProgressMonitor monitor) {

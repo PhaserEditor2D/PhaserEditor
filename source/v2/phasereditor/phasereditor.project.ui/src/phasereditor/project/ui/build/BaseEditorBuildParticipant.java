@@ -41,21 +41,20 @@ import phasereditor.project.core.IProjectBuildParticipant;
  * @author arian
  *
  */
-public abstract class BaseEditorBuildParticipant<T extends EditorPart> implements IProjectBuildParticipant{
+public abstract class BaseEditorBuildParticipant<T extends EditorPart> implements IProjectBuildParticipant {
 
 	protected final HashSet<String> _editorIdSet;
 
 	public BaseEditorBuildParticipant(String... editorId) {
 		_editorIdSet = new HashSet<>(List.of(editorId));
 	}
-	
+
 	protected abstract void buildEditor(T editor);
-	
+
 	protected abstract void reloadEditorFile(T editor);
-	
+
 	protected abstract IFile getEditorFile(T editor);
-	
-	
+
 	@Override
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
 		rebuildEditors();
@@ -65,7 +64,7 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 		rebuildEditors(null);
 	}
 
-	private  void rebuildEditors(IResourceDelta delta) {
+	private void rebuildEditors(IResourceDelta delta) {
 		swtRun(new Runnable() {
 
 			@Override
@@ -84,7 +83,13 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 								try {
 									delta.accept(d -> {
 										IResource resource = d.getResource();
-										if (file.equals(resource)) {
+										if (file.equals(resource) 
+												
+												&& file.exists()
+												
+												&& d.getMovedToPath() == null 
+												
+												&& d.getMovedFromPath() == null) {
 											editorFileChanged[0] = true;
 											return false;
 										}
@@ -98,7 +103,7 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 									if (!editor.isDirty()) {
 										reloadEditorFile(editor);
 									}
-								
+
 								} else {
 									buildEditor(editor);
 								}
@@ -129,5 +134,5 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 	public void projectDeleted(IProject project, Map<String, Object> env) {
 		rebuildEditors();
 	}
-	
+
 }

@@ -107,8 +107,11 @@ public class RenameSceneFileParticipant extends RenameParticipant {
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 
-		var changelist = new CompositeChange("Rename Scene compiled file '" + _jsFile.getName() + "'");
+		var changelist = new CompositeChange("Update stuff related to file '" + _sceneFile.getName() + "'");
+
 		changelist.add(new RenameResourceChange(_jsFile.getFullPath(), _jsFileNewName));
+
+		changelist.add(new RenameSceneEditorChange(_sceneFile.getFullPath(), getArguments().getNewName()));
 
 		for (var participant : _participants) {
 			var change = participant.createChange(pm);
