@@ -275,7 +275,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 				alienFrame.setTextureKey(frame.getAsset().getKey());
 
 				if (frame.getAsset() instanceof ImageAssetModel) {
-					// nothing
+					alienFrame.setFrameName(frame.getAsset().getKey());
 				} else if (frame instanceof SpritesheetAssetModel.FrameModel) {
 					alienFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
 				} else {
