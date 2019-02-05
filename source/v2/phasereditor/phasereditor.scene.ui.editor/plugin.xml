@@ -460,5 +460,18 @@
             icon="platform:/plugin/phasereditor.ui/icons/origin.png">
       </image>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="phasereditor.scene.ui.editor.refactorings.RenameSceneFileParticipant"
+            id="phasereditor.scene.ui.editor.renameSceneFileParticipant"
+            name="Rename Scene File">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof>
+         </enablement>
+      </renameParticipant>
+   </extension>
 
 </plugin>

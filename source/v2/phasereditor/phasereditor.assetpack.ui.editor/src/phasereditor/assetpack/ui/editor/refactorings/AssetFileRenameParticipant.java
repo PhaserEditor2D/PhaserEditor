@@ -69,7 +69,7 @@ public class AssetFileRenameParticipant extends RenameParticipant {
 
 	@Override
 	public String getName() {
-		return "Delete asset resource.";
+		return "Rename asset resource.";
 	}
 
 	@Override
