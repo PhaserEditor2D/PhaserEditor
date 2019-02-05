@@ -187,30 +187,6 @@
          unpack="false"/>
 
    <plugin
-         id="phasereditor.libgdx.linux"
-         os="linux"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.libgdx.macos"
-         os="macosx"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.libgdx.win32"
-         os="win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="phasereditor.lic"
          download-size="0"
          install-size="0"

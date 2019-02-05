@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-natives.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gdx-tools.jar" sourcepath="/media/arian/windon/Users/arian/Downloads/Installs/Java/Libs/libgdx/extensions/gdx-tools/sources/gdx-tools-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-backend-jglfw.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gdx-backend-lwjgl.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gdx.jar" sourcepath="/media/arian/windon/Users/arian/Downloads/Installs/Java/Libs/libgdx/sources/gdx-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
