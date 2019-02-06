@@ -119,13 +119,32 @@ public class TexturePackerEditorModel implements IAdaptable {
 			{
 				JSONArray jsonPages = obj.optJSONArray("pages");
 				if (jsonPages != null) {
-					ImageLoader loader = new ImageLoader();
-					for (int i = 0; i < jsonPages.length(); i++) {
+					
+					var loader = new ImageLoader();
+					
+					var pagesCount = jsonPages.length();
+					
+					for (int i = 0; i < pagesCount; i++) {
 						JSONObject jsonPage = jsonPages.getJSONObject(i);
 						EditorPage page = new EditorPage(this, i);
 						_pages.add(page);
-						String filename = jsonPage.getString("imageFile");
-						IFile imagefile = file.getParent().getFile(new Path(filename));
+
+						// String filename = jsonPage.getString("imageFile");
+						// IFile imagefile = file.getParent().getFile(new Path(filename));
+
+						IFile imagefile;
+						{
+							IPath filename;
+							var name = new Path(file.getName()).removeFileExtension().toString();
+
+							if (pagesCount > 1) {
+								name += i + 1;
+							}
+
+							filename = new Path(name).addFileExtension("png");
+
+							imagefile = file.getParent().getFile(filename);
+						}
 
 						if (imagefile.exists()) {
 							ImageData[] imgData = loader.load(imagefile.getContents());
@@ -137,12 +156,14 @@ public class TexturePackerEditorModel implements IAdaptable {
 						}
 
 						JSONArray jsonFrames = jsonPage.getJSONArray("frames");
+
 						for (int j = 0; j < jsonFrames.length(); j++) {
 							JSONObject jsonFrame = jsonFrames.getJSONObject(j);
 
 							String regionFilename = jsonFrame.getString("regionFilename");
 							int regionIndex = jsonFrame.getInt("regionIndex");
-							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename, regionIndex, page);
+							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename, regionIndex,
+									page);
 							AtlasFrame.updateFrameFromJSON(frame, jsonFrame);
 							frame.setName(jsonFrame.getString("name"));
 
@@ -220,7 +241,11 @@ public class TexturePackerEditorModel implements IAdaptable {
 			for (EditorPage page : _pages) {
 				JSONObject jsonPage = new JSONObject();
 				jsonPages.put(jsonPage);
-				jsonPage.put("imageFile", page.getImageFile().getName());
+
+				// we don't need this anymore, the image should be comupted from the number of
+				// the page.
+
+				// jsonPage.put("imageFile", page.getImageFile().getName());
 				JSONArray jsonFrames = new JSONArray();
 				jsonPage.put("frames", jsonFrames);
 
