@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
@@ -17,8 +18,6 @@ import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.SharableParticipants;
 import org.eclipse.ltk.core.refactoring.resource.RenameResourceChange;
 import org.eclipse.ltk.internal.core.refactoring.resource.RenameResourceProcessor;
-
-import phasereditor.scene.core.SceneCore;
 
 public class RenameSceneFileParticipant extends RenameParticipant {
 
@@ -33,15 +32,7 @@ public class RenameSceneFileParticipant extends RenameParticipant {
 	@Override
 	protected boolean initialize(Object element) {
 
-		if (!(element instanceof IFile)) {
-			return false;
-		}
-
 		var file = (IFile) element;
-
-		if (!SceneCore.isSceneFile(file)) {
-			return false;
-		}
 
 		_sceneFile = file;
 		_jsFile = _sceneFile.getProject()
@@ -111,7 +102,10 @@ public class RenameSceneFileParticipant extends RenameParticipant {
 
 		changelist.add(new RenameResourceChange(_jsFile.getFullPath(), _jsFileNewName));
 
-		changelist.add(new RenameSceneEditorChange(_sceneFile.getFullPath(), getArguments().getNewName()));
+		IPath oldPath = _sceneFile.getFullPath();
+		IPath newPath = oldPath.removeLastSegments(1).append(getArguments().getNewName());
+		
+		changelist.add(new UpdateSceneEditorInputChange(oldPath, newPath));
 
 		for (var participant : _participants) {
 			var change = participant.createChange(pm);

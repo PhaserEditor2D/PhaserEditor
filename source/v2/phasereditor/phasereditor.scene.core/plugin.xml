@@ -21,5 +21,15 @@
             order="2">
       </participant>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="phasereditor.scene.core.sceneContentTypeTest">
+         <test
+               property="org.eclipse.core.resources.contentTypeId"
+               value="phasereditor.scene.core.SceneContentType">
+         </test>
+      </definition>
+   </extension>
 
 </plugin>

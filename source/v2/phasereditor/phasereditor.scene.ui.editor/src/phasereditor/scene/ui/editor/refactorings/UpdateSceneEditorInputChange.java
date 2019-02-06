@@ -27,7 +27,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ui.PlatformUI;
@@ -38,15 +37,17 @@ import phasereditor.scene.ui.editor.SceneEditor;
  * @author arian
  *
  */
-public class RenameSceneEditorChange extends Change {
+public class UpdateSceneEditorInputChange extends Change {
 
-	private IPath _originalFilePath;
-	private String _newName;
+	private IPath _oldFilePath;
+	private IPath _newFilePath;
 
-	public RenameSceneEditorChange(IPath originalFilePath, String newName) {
+	public UpdateSceneEditorInputChange(IPath oldFilePath, IPath newFilePath) {
 		super();
-		_originalFilePath = originalFilePath;
-		_newName = newName;
+
+		_oldFilePath = oldFilePath;
+		_newFilePath = newFilePath;
+
 	}
 
 	@Override
@@ -67,21 +68,24 @@ public class RenameSceneEditorChange extends Change {
 		var file = getOldFile();
 
 		if (!file.exists()) {
-			status.addError("The file '" + _originalFilePath + "' does not exist.");
+			status.addError("The file '" + _oldFilePath + "' does not exist.");
 		}
 
 		return status;
 	}
 
 	private IFile getOldFile() {
-		return ResourcesPlugin.getWorkspace().getRoot().getFile(_originalFilePath);
+		return ResourcesPlugin.getWorkspace().getRoot().getFile(_oldFilePath);
+	}
+
+	private IFile getNewFile() {
+		return ResourcesPlugin.getWorkspace().getRoot().getFile(_newFilePath);
 	}
 
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
 
-		var oldFile = getOldFile();
-		var newFile = oldFile.getParent().getFile(new Path(_newName));
+		var newFile = getNewFile();
 
 		for (var window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
 			for (var page : window.getPages()) {
@@ -90,7 +94,9 @@ public class RenameSceneEditorChange extends Change {
 						var editor = (SceneEditor) ref.getEditor(false);
 						if (editor != null) {
 							var curFile = editor.getEditorInput().getFile();
-							if (curFile.getFullPath().equals(oldFile.getFullPath())) {
+							var curPath = curFile.getFullPath();
+
+							if (curPath.equals(_oldFilePath)) {
 								editor.handleFileMoved(newFile);
 							}
 						}
@@ -99,12 +105,12 @@ public class RenameSceneEditorChange extends Change {
 			}
 		}
 
-		return new RenameSceneEditorChange(newFile.getFullPath(), oldFile.getName());
+		return new UpdateSceneEditorInputChange(_newFilePath, _oldFilePath);
 	}
 
 	@Override
 	public Object getModifiedElement() {
-		return _originalFilePath;
+		return _oldFilePath;
 	}
 
 }

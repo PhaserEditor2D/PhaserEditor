@@ -467,11 +467,33 @@
             id="phasereditor.scene.ui.editor.renameSceneFileParticipant"
             name="Rename Scene File">
          <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof>
+            <reference
+                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
+            </reference>
          </enablement>
       </renameParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="phasereditor.scene.ui.editor.refactorings.MoveSceneEditorInput"
+            id="phasereditor.scene.ui.editor.refactorings.MoveSceneEditorInput"
+            name="Move Scene Editor Input">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
+            </reference></enablement>
+      </moveParticipant>
+      <moveParticipant
+            class="phasereditor.scene.ui.editor.refactorings.MoveSceneCompiledFile"
+            id="phasereditor.scene.ui.editor.refactorings.MoveSceneCompiledFile"
+            name="Move Scene Compiled File">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
+            </reference>
+         </enablement>
+      </moveParticipant>
    </extension>
 
 </plugin>
