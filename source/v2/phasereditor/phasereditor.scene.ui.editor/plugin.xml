@@ -463,9 +463,9 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
-            class="phasereditor.scene.ui.editor.refactorings.RenameSceneFileParticipant"
-            id="phasereditor.scene.ui.editor.renameSceneFileParticipant"
-            name="Rename Scene File">
+            class="phasereditor.scene.ui.editor.refactorings.RenameSceneEditorInput"
+            id="phasereditor.scene.ui.editor.refactorings.RenameSceneEditorInput"
+            name="Rename Scene Editor">
          <enablement>
             <reference
                   definitionId="phasereditor.scene.core.sceneContentTypeTest">
@@ -483,16 +483,6 @@
             <reference
                   definitionId="phasereditor.scene.core.sceneContentTypeTest">
             </reference></enablement>
-      </moveParticipant>
-      <moveParticipant
-            class="phasereditor.scene.ui.editor.refactorings.MoveSceneCompiledFile"
-            id="phasereditor.scene.ui.editor.refactorings.MoveSceneCompiledFile"
-            name="Move Scene Compiled File">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
-            </reference>
-         </enablement>
       </moveParticipant>
    </extension>
 

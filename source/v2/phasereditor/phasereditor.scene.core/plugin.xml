@@ -31,5 +31,27 @@
          </test>
       </definition>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="phasereditor.scene.core.refactoring.RenameSceneCompiledFile"
+            id="phasereditor.scene.core.refactoring.RenameSceneCompiledFile"
+            name="Rename Scene Compiled File">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
+            </reference>
+         </enablement>
+      </renameParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="phasereditor.scene.core.refactoring.MoveSceneCompiledFile"
+            id="phasereditor.scene.core.refactoring.MoveSceneCompiledFile"
+            name="Move Scene Compiled File">
+         <enablement></enablement>
+      </moveParticipant>
+   </extension>
 
 </plugin>
