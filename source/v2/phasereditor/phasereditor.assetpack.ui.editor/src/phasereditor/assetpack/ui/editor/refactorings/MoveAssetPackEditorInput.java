@@ -19,31 +19,32 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.refactorings;
+package phasereditor.assetpack.ui.editor.refactorings;
 
 import org.eclipse.core.resources.IFile;
 
-import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.ui.refactorings.RenameEditorInput;
+import phasereditor.assetpack.ui.editor.AssetPackEditor;
+import phasereditor.ui.refactorings.MoveEditorInput;
 
 /**
  * @author arian
  *
  */
-public class RenameSceneEditorInput extends RenameEditorInput<SceneEditor> {
+public class MoveAssetPackEditorInput extends MoveEditorInput<AssetPackEditor> {
 
 	@Override
 	protected String getEditorId() {
-		return SceneEditor.ID;
+		return AssetPackEditor.ID;
 	}
 
 	@Override
-	protected void handleFileMoved(SceneEditor editor, IFile newFile) {
+	protected void handleFileMoved(AssetPackEditor editor, IFile newFile) {
 		editor.handleFileMoved(newFile);
 	}
 
 	@Override
-	protected IFile getEditorInputFile(SceneEditor editor) {
+	protected IFile getEditorInputFile(AssetPackEditor editor) {
 		return editor.getEditorInput().getFile();
 	}
+
 }

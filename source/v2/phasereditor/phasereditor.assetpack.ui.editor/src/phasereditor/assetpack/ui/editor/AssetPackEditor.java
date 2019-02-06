@@ -734,6 +734,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	}
 
+	public void handleFileMoved(IFile file) {
+		_model.setFile(file);
+
+		super.setInput(new FileEditorInput(file));
+		
+		setPartName(_model.getName());
+	}
+
 	public void build() {
 		getModel().build();
 		refresh();
@@ -747,20 +755,20 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		try {
 			_model = new AssetPackModel(getEditorInput().getFile());
 			firePropertyChange(PROP_DIRTY);
-			
+
 			_model.addPropertyChangeListener(this::propertyChange);
-			
+
 			if (_outliner != null) {
 				_outliner.getTreeViewer().setInput(_model);
 			}
-			
+
 			_assetsCanvas.setModel(_model);
-			
+
 			build();
 
 			getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
 			_assetsCanvas.getUtils().setSelection(StructuredSelection.EMPTY);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -958,14 +966,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		return super.getAdapter(adapter);
-	}
-
-	public void handleFileRename(IFile file) {
-		_model.setFile(file);
-		swtRun(() -> {
-			super.setInput(new FileEditorInput(file));
-			setPartName(_model.getName());
-		});
 	}
 
 	public PackEditorCanvas getAssetsCanvas() {

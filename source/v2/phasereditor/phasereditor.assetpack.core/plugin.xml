@@ -57,4 +57,14 @@
            type="phasereditor.project.core.problem">
      </super>
   </extension>
+  <extension
+        point="org.eclipse.core.expressions.definitions">
+     <definition
+           id="phasereditor.assetpack.core.assetPackContentTypeTest">
+        <test
+              property="org.eclipse.core.resources.contentTypeId"
+              value="phasereditor.assetpack.contentType">
+        </test>
+     </definition>
+  </extension>
 </plugin>

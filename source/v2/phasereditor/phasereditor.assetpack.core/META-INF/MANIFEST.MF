@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.ui,
  phasereditor.project.core,
  phasereditor.bmpfont.core;bundle-version="2.0.0",
- phasereditor.lic;bundle-version="2.0.0"
+ phasereditor.lic;bundle-version="2.0.0",
+ org.eclipse.core.expressions;bundle-version="3.6.200"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.core,
  phasereditor.assetpack.core.animations

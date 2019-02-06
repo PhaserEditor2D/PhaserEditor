@@ -209,6 +209,16 @@
             </instanceof>
          </enablement>
       </renameParticipant>
+      <renameParticipant
+            class="phasereditor.assetpack.ui.editor.refactorings.RenameAssetPackEditorInput"
+            id="phasereditor.assetpack.ui.editor.refactorings.RenameAssetPackEditorInput"
+            name="Rename Asset Pack Editor input">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.assetpack.core.assetPackContentTypeTest">
+            </reference>
+         </enablement>
+      </renameParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">
@@ -222,12 +232,21 @@
             </instanceof>
          </enablement>
       </moveParticipant>
+      <moveParticipant
+            class="phasereditor.assetpack.ui.editor.refactorings.MoveAssetPackEditorInput"
+            id="phasereditor.assetpack.ui.editor.refactorings.MoveAssetPackEditorInput"
+            name="Move Asset Pack Editor Input">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.assetpack.core.assetPackContentTypeTest">
+            </reference></enablement>
+      </moveParticipant>
    </extension>
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
             handler="phasereditor.assetpack.ui.editor.build.AssetPackEditorProjectBuildParticipant"
-            id="phasereditor.assetpack.ui.editor.participant1"
+            id="phasereditor.assetpack.ui.editor.build.AssetPackEditorProjectBuildParticipant"
             order="phasereditor.assetpack.ui.editor.participant1">
       </participant>
    </extension>
