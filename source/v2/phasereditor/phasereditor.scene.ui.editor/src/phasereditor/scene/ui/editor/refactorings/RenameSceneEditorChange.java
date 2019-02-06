@@ -91,7 +91,7 @@ public class RenameSceneEditorChange extends Change {
 						if (editor != null) {
 							var curFile = editor.getEditorInput().getFile();
 							if (curFile.getFullPath().equals(oldFile.getFullPath())) {
-								editor.handleFileRenamed(newFile);
+								editor.handleFileMoved(newFile);
 							}
 						}
 					}

@@ -83,16 +83,19 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 								try {
 									delta.accept(d -> {
 										IResource resource = d.getResource();
-										if (file.equals(resource) 
-												
-												&& file.exists()
-												
-												&& d.getMovedToPath() == null 
-												
-												&& d.getMovedFromPath() == null) {
-											editorFileChanged[0] = true;
-											return false;
+
+										switch (d.getKind()) {
+
+										case IResourceDelta.CHANGED:
+											if (resource.equals(file)) {
+												editorFileChanged[0] = true;
+												return false;
+											}
+											break;
+										default:
+											break;
 										}
+
 										return true;
 									});
 								} catch (CoreException e) {

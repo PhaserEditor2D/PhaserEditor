@@ -228,7 +228,7 @@ public class SceneEditor extends EditorPart {
 		}
 	}
 
-	public void handleFileRenamed(IFile file) {
+	public void handleFileMoved(IFile file) {
 		setInput(new FileEditorInput(file));
 		setPartName(file.getName());
 		firePropertyChange(PROP_TITLE);
