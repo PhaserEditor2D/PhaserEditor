@@ -37,13 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -74,7 +68,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -117,7 +110,7 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
-public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
+public class TexturePackerEditor extends EditorPart implements IEditorSharedImages {
 
 	public static final String ID = "phasereditor.atlas.ui.editor.TexturePackerEditor"; //$NON-NLS-1$
 
@@ -154,12 +147,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		_tabsFolder.setSelection(0);
 
 		afterCreateWidgets();
-	}
-
-	protected void handleTableKey(KeyEvent e) {
-		if (e.character == SWT.DEL) {
-			deleteSelection();
-		}
 	}
 
 	public void deleteSelection() {
@@ -229,9 +216,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		// menu
 
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-
 		_tabsFolder.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int index = _tabsFolder.getSelectionIndex();
@@ -320,8 +306,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	@Override
 	public void dispose() {
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-
 		if (_outliner != null) {
 			_outliner.removeSelectionChangedListener(_outlinerSelectionListener);
 		}
@@ -396,6 +380,18 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	}
 
+	public void handleFileMoved(IFile newFile) {
+		setInput(new FileEditorInput(newFile));
+
+		swtRun(() -> {
+
+			updateTitle();
+
+			reloadFile();
+
+		});
+	}
+
 	public void reloadFile() {
 		_fileStampHelper.helpReloadFile();
 	}
@@ -403,16 +399,16 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	private void reloadMethod() {
 		try {
 			var file = getEditorInputFile();
-			
+
 			_model = new TexturePackerEditorModel(this, file);
-			
+
 			updateUIFromModel();
-			
+
 			build();
 			setDirty(false);
-			
+
 			updatePropertyPagesWithSelection();
-			
+
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);
 		}
@@ -813,7 +809,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	public boolean isDirty() {
 		return _dirty;
 	}
-	
+
 	public void setDirty(boolean dirty) {
 		_dirty = dirty;
 		firePropertyChange(PROP_DIRTY);
@@ -937,55 +933,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	public IFile getEditorInputFile() {
 		return ((IFileEditorInput) getEditorInput()).getFile();
-	}
-
-	@Override
-	public void resourceChanged(IResourceChangeEvent event) {
-		try {
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			if (event.getDelta() == null) {
-				return;
-			}
-			event.getDelta().accept(new IResourceDeltaVisitor() {
-
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public boolean visit(IResourceDelta delta) throws CoreException {
-					IFile thisFile = getEditorInputFile();
-					IResource deltaFile = delta.getResource();
-					if (deltaFile.equals(thisFile)) {
-						if (delta.getKind() == IResourceDelta.REMOVED) {
-							IPath movedTo = delta.getMovedToPath();
-							if (movedTo == null) {
-								// delete
-								Display display = Display.getDefault();
-								display.asyncExec(new Runnable() {
-
-									@Override
-									public void run() {
-										getSite().getPage().closeEditor(TexturePackerEditor.this, false);
-									}
-								});
-
-							} else {
-								
-								// rename
-								
-								setInput(new FileEditorInput(root.getFile(movedTo)));
-								
-								swtRun(()-> {
-									updateTitle();
-									reloadFile();
-								});
-							}
-						}
-					}
-					return true;
-				}
-			});
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	protected void updateTitle() {
@@ -1184,6 +1131,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					IContext context = HelpSystem.getContext("phasereditor.help.textureatlaseditor");
 					return context;
 				}
+
 			};
 		}
 		return super.getAdapter(adapter);

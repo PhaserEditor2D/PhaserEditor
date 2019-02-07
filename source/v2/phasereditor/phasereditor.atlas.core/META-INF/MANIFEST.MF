@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.org.json,
  phasereditor.ui,
  phasereditor.libgdx,
- phasereditor.project.core;bundle-version="2.0.0"
+ phasereditor.project.core;bundle-version="2.0.0",
+ org.eclipse.core.expressions;bundle-version="3.6.200",
+ org.eclipse.ltk.core.refactoring;bundle-version="3.9.100"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.yaml.snakeyaml,
  org.yaml.snakeyaml.composer,
