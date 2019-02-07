@@ -25,10 +25,15 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="phasereditor.scene.core.sceneContentTypeTest">
+         <and>
+          <instanceof
+               value="org.eclipse.core.resources.IFile">
+         </instanceof>
          <test
                property="org.eclipse.core.resources.contentTypeId"
                value="phasereditor.scene.core.SceneContentType">
          </test>
+         </and>
       </definition>
    </extension>
    <extension

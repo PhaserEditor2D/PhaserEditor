@@ -169,6 +169,31 @@
             label="sprite">
       </keyword>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="phasereditor.animation.ui.editor.refactorings.RenameAnimationsEditorInput"
+            id="phasereditor.animation.ui.editor.refactorings.RenameAnimationsEditorInput"
+            name="Rename Animations Editor Input">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.assetpack.core.animationsContentTypeTest">
+            </reference>
+         </enablement>
+      </renameParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="phasereditor.animation.ui.editor.refactorings.MoveAnimationsEditorInput"
+            id="phasereditor.animation.ui.editor.refactorings.MoveAnimationsEditorInput"
+            name="Move Animations Editor Input">
+         <enablement>
+            <reference
+                  definitionId="phasereditor.assetpack.core.animationsContentTypeTest">
+            </reference></enablement>
+      </moveParticipant>
+   </extension>
    
 
 </plugin>

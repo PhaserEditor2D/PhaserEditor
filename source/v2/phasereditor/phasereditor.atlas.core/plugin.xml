@@ -24,10 +24,15 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="phasereditor.atlas.core.atlasContentTypeTest">
+            <and>
+         <instanceof
+               value="org.eclipse.core.resources.IFile">
+         </instanceof>
          <test
                property="org.eclipse.core.resources.contentTypeId"
                value="phasereditor.atlas.core.atlasContentType">
          </test>
+         </and>
       </definition>
    </extension>
    <extension

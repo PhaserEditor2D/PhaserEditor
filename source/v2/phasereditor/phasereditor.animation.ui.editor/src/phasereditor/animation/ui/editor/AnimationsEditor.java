@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
@@ -64,6 +65,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -442,6 +444,17 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
+	public void handleFileMoved(IFile file) {
+		super.setInput(new FileEditorInput(file));
+		
+		_model.setFile(file);
+		
+		setPartName(file.getName());
+		
+		firePropertyChange(PROP_TITLE);
+		
+	}
+
 	public void reloadFile() {
 		_fileStampHelper.helpReloadFile();
 	}
@@ -466,7 +479,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			build();
 
 			selectAnimation(anim);
-			
+
 			setDirty(false);
 
 		} catch (Exception e) {
@@ -513,7 +526,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	public void setDirty() {
 		setDirty(true);
 	}
-	
+
 	public void setDirty(boolean dirty) {
 		_dirty = dirty;
 		firePropertyChange(PROP_DIRTY);

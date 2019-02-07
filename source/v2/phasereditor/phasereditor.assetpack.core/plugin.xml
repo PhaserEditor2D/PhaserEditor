@@ -61,10 +61,29 @@
         point="org.eclipse.core.expressions.definitions">
      <definition
            id="phasereditor.assetpack.core.assetPackContentTypeTest">
+           <and>
+          <instanceof
+               value="org.eclipse.core.resources.IFile">
+         </instanceof>
         <test
               property="org.eclipse.core.resources.contentTypeId"
               value="phasereditor.assetpack.contentType">
         </test>
+        </and>
      </definition>
+     
+     <definition
+           id="phasereditor.assetpack.core.animationsContentTypeTest">
+           <and>
+          <instanceof
+               value="org.eclipse.core.resources.IFile">
+         </instanceof>
+        <test
+              property="org.eclipse.core.resources.contentTypeId"
+              value="phasereditor.assetpack.core.animations">
+        </test>
+        </and>
+     </definition>
+     
   </extension>
 </plugin>
