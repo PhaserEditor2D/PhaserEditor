@@ -3,6 +3,7 @@ package phasereditor.atlas.core.refactoring;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -32,6 +33,7 @@ public class MoveTexturePackerFile extends MoveParticipant {
 	private List<MoveParticipant> _participants;
 	private IFile _jsonFile;
 	private List<MoveResourceChange> _moveChanges;
+	private Set<Object> _movingElements;
 
 	@Override
 	protected boolean initialize(Object element) {
@@ -44,6 +46,8 @@ public class MoveTexturePackerFile extends MoveParticipant {
 		_images = new ArrayList<>();
 
 		_moveChanges = new ArrayList<>();
+
+		_movingElements = Set.of(getProcessor().getElements());
 
 		try (InputStream contents = _file.getContents()) {
 			JSONObject obj = new JSONObject(new JSONTokener(contents));
@@ -92,12 +96,12 @@ public class MoveTexturePackerFile extends MoveParticipant {
 
 		var status = new RefactoringStatus();
 
-		if (_jsonFile.exists()) {
+		if (canMoveFile(_jsonFile)) {
 			status.addInfo("The output Multi-Atlas file '" + _jsonFile.getName() + "' will be moved.");
 		}
 
 		for (var file : _images) {
-			if (file.exists()) {
+			if (canMoveFile(file)) {
 				status.addInfo("The generated texture '" + file.getName() + "' will be moved.");
 			}
 		}
@@ -108,22 +112,26 @@ public class MoveTexturePackerFile extends MoveParticipant {
 
 		try {
 
-			if (_jsonFile.exists()) {
+			if (canMoveFile(_jsonFile)) {
 				registerMove(_jsonFile, status, sharable, pm, context);
 			}
 
 			// move image files participants
 			for (var image : _images) {
-				if (image.exists()) {
+				if (canMoveFile(image)) {
 					registerMove(image, status, sharable, pm, context);
 				}
 			}
-			
+
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 
 		return status;
+	}
+
+	private boolean canMoveFile(IFile file) {
+		return file.exists() && !_movingElements.contains(file);
 	}
 
 	private void registerMove(IResource resource, RefactoringStatus status, SharableParticipants sharable,
