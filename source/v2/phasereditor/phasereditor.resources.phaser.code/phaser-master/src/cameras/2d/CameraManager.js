@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -9,6 +9,7 @@ var Class = require('../../utils/Class');
 var GetFastValue = require('../../utils/object/GetFastValue');
 var PluginCache = require('../../plugins/PluginCache');
 var RectangleContains = require('../../geom/rectangle/Contains');
+var SceneEvents = require('../../scene/events');
 
 /**
  * @typedef {object} InputJSONCameraObject
@@ -134,17 +135,8 @@ var CameraManager = new Class({
          */
         this.main;
 
-        /**
-         * This scale affects all cameras. It's used by the Scale Manager.
-         *
-         * @name Phaser.Cameras.Scene2D.CameraManager#baseScale
-         * @type {number}
-         * @since 3.0.0
-         */
-        this.baseScale = 1;
-
-        scene.sys.events.once('boot', this.boot, this);
-        scene.sys.events.on('start', this.start, this);
+        scene.sys.events.once(SceneEvents.BOOT, this.boot, this);
+        scene.sys.events.on(SceneEvents.START, this.start, this);
     },
 
     /**
@@ -153,6 +145,7 @@ var CameraManager = new Class({
      *
      * @method Phaser.Cameras.Scene2D.CameraManager#boot
      * @private
+     * @listens Phaser.Scenes.Events#DESTROY
      * @since 3.5.1
      */
     boot: function ()
@@ -172,7 +165,7 @@ var CameraManager = new Class({
 
         this.main = this.cameras[0];
 
-        this.systems.events.once('destroy', this.destroy, this);
+        this.systems.events.once(SceneEvents.DESTROY, this.destroy, this);
     },
 
     /**
@@ -182,6 +175,8 @@ var CameraManager = new Class({
      *
      * @method Phaser.Cameras.Scene2D.CameraManager#start
      * @private
+     * @listens Phaser.Scenes.Events#UPDATE
+     * @listens Phaser.Scenes.Events#SHUTDOWN
      * @since 3.5.0
      */
     start: function ()
@@ -206,8 +201,8 @@ var CameraManager = new Class({
 
         var eventEmitter = this.systems.events;
 
-        eventEmitter.on('update', this.update, this);
-        eventEmitter.once('shutdown', this.shutdown, this);
+        eventEmitter.on(SceneEvents.UPDATE, this.update, this);
+        eventEmitter.once(SceneEvents.SHUTDOWN, this.shutdown, this);
     },
 
     /**
@@ -222,7 +217,7 @@ var CameraManager = new Class({
      * By default Cameras are transparent and will render anything that they can see based on their `scrollX`
      * and `scrollY` values. Game Objects can be set to be ignored by a Camera by using the `Camera.ignore` method.
      * 
-     * The Camera will have its `roundPixels` propery set to whatever `CameraManager.roundPixels` is. You can change
+     * The Camera will have its `roundPixels` property set to whatever `CameraManager.roundPixels` is. You can change
      * it after creation if required.
      * 
      * See the Camera class documentation for more details.
@@ -243,8 +238,8 @@ var CameraManager = new Class({
     {
         if (x === undefined) { x = 0; }
         if (y === undefined) { y = 0; }
-        if (width === undefined) { width = this.scene.sys.game.config.width; }
-        if (height === undefined) { height = this.scene.sys.game.config.height; }
+        if (width === undefined) { width = this.scene.sys.scale.width; }
+        if (height === undefined) { height = this.scene.sys.scale.height; }
         if (makeMain === undefined) { makeMain = false; }
         if (name === undefined) { name = ''; }
 
@@ -271,7 +266,7 @@ var CameraManager = new Class({
      * 
      * The Camera should either be a `Phaser.Cameras.Scene2D.Camera` instance, or a class that extends from it.
      * 
-     * The Camera will have its `roundPixels` propery set to whatever `CameraManager.roundPixels` is. You can change
+     * The Camera will have its `roundPixels` property set to whatever `CameraManager.roundPixels` is. You can change
      * it after addition if required.
      * 
      * The Camera will be assigned an ID, which is used for Game Object exclusion and then added to the
@@ -412,8 +407,8 @@ var CameraManager = new Class({
             config = [ config ];
         }
 
-        var gameWidth = this.scene.sys.game.config.width;
-        var gameHeight = this.scene.sys.game.config.height;
+        var gameWidth = this.scene.sys.scale.width;
+        var gameHeight = this.scene.sys.scale.height;
 
         for (var i = 0; i < config.length; i++)
         {
@@ -598,8 +593,6 @@ var CameraManager = new Class({
     {
         var scene = this.scene;
         var cameras = this.cameras;
-        var baseScale = this.baseScale;
-        var resolution = renderer.config.resolution;
 
         for (var i = 0; i < this.cameras.length; i++)
         {
@@ -607,7 +600,8 @@ var CameraManager = new Class({
 
             if (camera.visible && camera.alpha > 0)
             {
-                camera.preRender(baseScale, resolution);
+                //  Hard-coded to 1 for now
+                camera.preRender(1);
 
                 renderer.render(scene, children, interpolation, camera);
             }
@@ -646,14 +640,14 @@ var CameraManager = new Class({
      * @protected
      * @since 3.0.0
      *
-     * @param {number} timestep - The timestep value.
-     * @param {number} delta - The delta value since the last frame.
+     * @param {integer} time - The current timestamp as generated by the Request Animation Frame or SetTimeout.
+     * @param {number} delta - The delta time, in ms, elapsed since the last frame.
      */
-    update: function (timestep, delta)
+    update: function (time, delta)
     {
         for (var i = 0; i < this.cameras.length; i++)
         {
-            this.cameras[i].update(timestep, delta);
+            this.cameras[i].update(time, delta);
         }
     },
 
@@ -695,8 +689,8 @@ var CameraManager = new Class({
 
         var eventEmitter = this.systems.events;
 
-        eventEmitter.off('update', this.update, this);
-        eventEmitter.off('shutdown', this.shutdown, this);
+        eventEmitter.off(SceneEvents.UPDATE, this.update, this);
+        eventEmitter.off(SceneEvents.SHUTDOWN, this.shutdown, this);
     },
 
     /**
@@ -711,7 +705,7 @@ var CameraManager = new Class({
     {
         this.shutdown();
 
-        this.scene.sys.events.off('start', this.start, this);
+        this.scene.sys.events.off(SceneEvents.START, this.start, this);
 
         this.scene = null;
         this.systems = null;

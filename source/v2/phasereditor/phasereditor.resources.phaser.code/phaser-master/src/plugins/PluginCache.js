@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -29,6 +29,10 @@ var customPlugins = {};
  */
 
 var PluginCache = {};
+
+/**
+ * @namespace Phaser.Plugins.PluginCache
+ */
 
 /**
  * Static method called directly by the Core internal Plugins.

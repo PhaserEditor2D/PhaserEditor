@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -30,7 +30,7 @@ var RemoveTileAt = function (tileX, tileY, replaceWithNull, recalculateFaces, la
     if (recalculateFaces === undefined) { recalculateFaces = true; }
     if (!IsInLayerBounds(tileX, tileY, layer)) { return null; }
 
-    var tile = layer.data[tileY][tileX];
+    var tile = layer.data[tileY][tileX] || null;
     if (tile === null)
     {
         return null;

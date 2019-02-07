@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -10,6 +10,7 @@ var Common = require('./lib/core/Common');
 var Composite = require('./lib/body/Composite');
 var Engine = require('./lib/core/Engine');
 var EventEmitter = require('eventemitter3');
+var Events = require('./events');
 var GetFastValue = require('../../utils/object/GetFastValue');
 var GetValue = require('../../utils/object/GetValue');
 var MatterBody = require('./lib/body/Body');
@@ -96,8 +97,8 @@ var World = new Class({
             {
                 var x = GetFastValue(boundsConfig, 'x', 0);
                 var y = GetFastValue(boundsConfig, 'y', 0);
-                var width = GetFastValue(boundsConfig, 'width', scene.sys.game.config.width);
-                var height = GetFastValue(boundsConfig, 'height', scene.sys.game.config.height);
+                var width = GetFastValue(boundsConfig, 'width', scene.sys.scale.width);
+                var height = GetFastValue(boundsConfig, 'height', scene.sys.scale.height);
                 var thickness = GetFastValue(boundsConfig, 'thickness', 64);
                 var left = GetFastValue(boundsConfig, 'left', true);
                 var right = GetFastValue(boundsConfig, 'right', true);
@@ -238,12 +239,12 @@ var World = new Class({
 
         MatterEvents.on(engine, 'beforeUpdate', function (event)
         {
-            _this.emit('beforeupdate', event);
+            _this.emit(Events.BEFORE_UPDATE, event);
         });
 
         MatterEvents.on(engine, 'afterUpdate', function (event)
         {
-            _this.emit('afterupdate', event);
+            _this.emit(Events.AFTER_UPDATE, event);
         });
 
         MatterEvents.on(engine, 'collisionStart', function (event)
@@ -258,7 +259,7 @@ var World = new Class({
                 bodyB = pairs[0].bodyB;
             }
 
-            _this.emit('collisionstart', event, bodyA, bodyB);
+            _this.emit(Events.COLLISION_START, event, bodyA, bodyB);
         });
 
         MatterEvents.on(engine, 'collisionActive', function (event)
@@ -273,7 +274,7 @@ var World = new Class({
                 bodyB = pairs[0].bodyB;
             }
 
-            _this.emit('collisionactive', event, bodyA, bodyB);
+            _this.emit(Events.COLLISION_ACTIVE, event, bodyA, bodyB);
         });
 
         MatterEvents.on(engine, 'collisionEnd', function (event)
@@ -288,7 +289,7 @@ var World = new Class({
                 bodyB = pairs[0].bodyB;
             }
 
-            _this.emit('collisionend', event, bodyA, bodyB);
+            _this.emit(Events.COLLISION_END, event, bodyA, bodyB);
         });
     },
 
@@ -319,8 +320,8 @@ var World = new Class({
     {
         if (x === undefined) { x = 0; }
         if (y === undefined) { y = 0; }
-        if (width === undefined) { width = this.scene.sys.game.config.width; }
-        if (height === undefined) { height = this.scene.sys.game.config.height; }
+        if (width === undefined) { width = this.scene.sys.scale.width; }
+        if (height === undefined) { height = this.scene.sys.scale.height; }
         if (thickness === undefined) { thickness = 128; }
         if (left === undefined) { left = true; }
         if (right === undefined) { right = true; }
@@ -399,7 +400,7 @@ var World = new Class({
     },
 
     /**
-     * [description]
+     * Sets the world's gravity and gravity scale to 0.
      *
      * @method Phaser.Physics.Matter.World#disableGravity
      * @since 3.0.0
@@ -416,13 +417,13 @@ var World = new Class({
     },
 
     /**
-     * [description]
+     * Sets the world's gravity
      *
      * @method Phaser.Physics.Matter.World#setGravity
      * @since 3.0.0
      *
-     * @param {number} [x=0] - [description]
-     * @param {number} [y=1] - [description]
+     * @param {number} [x=0] - The world gravity x component.
+     * @param {number} [y=1] - The world gravity y component.
      * @param {number} [scale] - [description]
      *
      * @return {Phaser.Physics.Matter.World} This Matter World object.
@@ -467,7 +468,7 @@ var World = new Class({
     },
 
     /**
-     * [description]
+     * Adds an object to the world.
      *
      * @method Phaser.Physics.Matter.World#add
      * @since 3.0.0
@@ -537,7 +538,7 @@ var World = new Class({
     convertTilemapLayer: function (tilemapLayer, options)
     {
         var layerData = tilemapLayer.layer;
-        var tiles = tilemapLayer.getTilesWithin(0, 0, layerData.width, layerData.height, {isColliding: true});
+        var tiles = tilemapLayer.getTilesWithin(0, 0, layerData.width, layerData.height, { isColliding: true });
 
         this.convertTiles(tiles, options);
 
@@ -592,7 +593,7 @@ var World = new Class({
      * @method Phaser.Physics.Matter.World#nextCategory
      * @since 3.0.0
      *
-     * @return {number} [description]
+     * @return {number} Returns the next unique category bitfield.
      */
     nextCategory: function ()
     {
@@ -603,6 +604,7 @@ var World = new Class({
      * [description]
      *
      * @method Phaser.Physics.Matter.World#pause
+     * @fires Phaser.Physics.Matter.Events#PAUSE
      * @since 3.0.0
      *
      * @return {Phaser.Physics.Matter.World} This Matter World object.
@@ -611,7 +613,7 @@ var World = new Class({
     {
         this.enabled = false;
 
-        this.emit('pause');
+        this.emit(Events.PAUSE);
 
         return this;
     },
@@ -620,6 +622,7 @@ var World = new Class({
      * [description]
      *
      * @method Phaser.Physics.Matter.World#resume
+     * @fires Phaser.Physics.Matter.Events#RESUME
      * @since 3.0.0
      *
      * @return {Phaser.Physics.Matter.World} This Matter World object.
@@ -628,7 +631,7 @@ var World = new Class({
     {
         this.enabled = true;
 
-        this.emit('resume');
+        this.emit(Events.RESUME);
 
         return this;
     },
@@ -1074,7 +1077,8 @@ var World = new Class({
     },
 
     /**
-     * [description]
+     * Will remove all Matter physics event listeners and clear the matter physics world,
+     * engine and any debug graphics, if any.
      *
      * @method Phaser.Physics.Matter.World#shutdown
      * @since 3.0.0
@@ -1096,7 +1100,10 @@ var World = new Class({
     },
 
     /**
-     * [description]
+     * Will remove all Matter physics event listeners and clear the matter physics world,
+     * engine and any debug graphics, if any.
+     *
+     * After destroying the world it cannot be re-used again.
      *
      * @method Phaser.Physics.Matter.World#destroy
      * @since 3.0.0

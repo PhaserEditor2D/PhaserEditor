@@ -1,12 +1,13 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
 var Class = require('../../utils/Class');
 var FileTypesManager = require('../FileTypesManager');
 var JSONFile = require('./JSONFile.js');
+var LoaderEvents = require('../events');
 
 /**
  * @classdesc
@@ -54,7 +55,7 @@ var AnimationJSONFile = new Class({
     onProcess: function ()
     {
         //  We need to hook into this event:
-        this.loader.once('loadcomplete', this.onLoadComplete, this);
+        this.loader.once(LoaderEvents.POST_PROCESS, this.onLoadComplete, this);
 
         //  But the rest is the same as a normal JSON file
         JSONFile.prototype.onProcess.call(this);

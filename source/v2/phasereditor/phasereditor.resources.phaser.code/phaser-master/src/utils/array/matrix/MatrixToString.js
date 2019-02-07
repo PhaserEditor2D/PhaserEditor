@@ -1,14 +1,11 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
 var Pad = require('../../string/Pad');
 var CheckMatrix = require('./CheckMatrix');
-
-//  Generates a string (which you can pass to console.log) from the given
-//  Array Matrix.
 
 /**
  * Generates a string (which you can pass to console.log) from the given Array Matrix.

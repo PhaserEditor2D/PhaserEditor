@@ -1,26 +1,17 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
 var Class = require('../utils/Class');
 
 /**
- * @typedef {object} JSONAnimationFrame
- *
- * @property {string} key - The key of the Texture this AnimationFrame uses.
- * @property {(string|integer)} frame - The key of the Frame within the Texture that this AnimationFrame uses.
- * @property {number} duration - Additional time (in ms) that this frame should appear for during playback.
- */
-
-/**
  * @classdesc
  * A single frame in an Animation sequence.
  *
  * An AnimationFrame consists of a reference to the Texture it uses for rendering, references to other
- * frames in the animation, and index data. It also has the ability to fire its own `onUpdate` callback
- * and modify the animation timing.
+ * frames in the animation, and index data. It also has the ability to modify the animation timing.
  *
  * AnimationFrames are generated automatically by the Animation class.
  *
@@ -150,7 +141,7 @@ var AnimationFrame = new Class({
      * @method Phaser.Animations.AnimationFrame#toJSON
      * @since 3.0.0
      *
-     * @return {JSONAnimationFrame} The AnimationFrame data.
+     * @return {Phaser.Animations.Types.JSONAnimationFrame} The AnimationFrame data.
      */
     toJSON: function ()
     {

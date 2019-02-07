@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -9,7 +9,7 @@ var Systems = require('./Systems');
 
 /**
  * @classdesc
- * [description]
+ * A base Phaser.Scene class which you could extend for your own use.
  *
  * @class Scene
  * @memberof Phaser
@@ -242,6 +242,19 @@ var Scene = new Class({
          * @since 3.0.0
          */
         this.matter;
+
+        if (typeof PLUGIN_FBINSTANT)
+        {
+            /**
+             * A scene level Facebook Instant Games Plugin.
+             * This property will only be available if defined in the Scene Injection Map, the plugin is installed and configured.
+             *
+             * @name Phaser.Scene#facebook
+             * @type {Phaser.FacebookInstantGamesPlugin}
+             * @since 3.12.0
+             */
+            this.facebook;
+        }
     },
 
     /**

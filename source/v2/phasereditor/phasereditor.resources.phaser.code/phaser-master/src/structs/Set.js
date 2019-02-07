@@ -1,19 +1,18 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
 var Class = require('../utils/Class');
 
 /**
- * @callback EachSetCallback
- * @generic E - [entry]
+ * @callback EachSetCallback<E>
  *
- * @param {*} entry - [description]
- * @param {number} index - [description]
+ * @param {E} entry - The Set entry.
+ * @param {number} index - The index of the entry within the Set.
  *
- * @return {?boolean} [description]
+ * @return {?boolean} The callback result.
  */
 
 /**
@@ -179,7 +178,7 @@ var Set = new Class({
      * @genericUse {Phaser.Structs.Set.<T>} - [$return]
      *
      * @param {EachSetCallback} callback - The callback to be invoked and passed each value this Set contains.
-     * @param {*} callbackScope - The scope of the callback.
+     * @param {*} [callbackScope] - The scope of the callback.
      *
      * @return {Phaser.Structs.Set} This Set object.
      */
@@ -224,7 +223,7 @@ var Set = new Class({
      * @genericUse {Phaser.Structs.Set.<T>} - [$return]
      *
      * @param {EachSetCallback} callback - The callback to be invoked and passed each value this Set contains.
-     * @param {*} callbackScope - The scope of the callback.
+     * @param {*} [callbackScope] - The scope of the callback.
      *
      * @return {Phaser.Structs.Set} This Set object.
      */

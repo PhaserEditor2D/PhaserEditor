@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -9,6 +9,10 @@ var GetColor = require('./GetColor');
 var GetColor32 = require('./GetColor32');
 var HSVToRGB = require('./HSVToRGB');
 var RGBToHSV = require('./RGBToHSV');
+
+/**
+ * @namespace Phaser.Display.Color
+ */
 
 /**
  * @classdesc

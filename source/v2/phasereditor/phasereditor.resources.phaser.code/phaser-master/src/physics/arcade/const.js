@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -39,7 +39,7 @@ var CONST = {
     STATIC_BODY: 1,
 
     /**
-     * [description]
+     * Arcade Physics Group containing Dynamic Bodies.
      *
      * @name Phaser.Physics.Arcade.GROUP
      * @readonly
@@ -49,7 +49,7 @@ var CONST = {
     GROUP: 2,
 
     /**
-     * [description]
+     * A Tilemap Layer.
      *
      * @name Phaser.Physics.Arcade.TILEMAPLAYER
      * @readonly

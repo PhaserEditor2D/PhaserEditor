@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -78,7 +78,7 @@ var MultiAtlasFile = new Class({
     /**
      * Called by each File when it finishes loading.
      *
-     * @method Phaser.Loader.MultiFile#onFileComplete
+     * @method Phaser.Loader.FileTypes.MultiAtlasFile#onFileComplete
      * @since 3.7.0
      *
      * @param {Phaser.Loader.File} file - The File that has completed processing.
@@ -151,7 +151,7 @@ var MultiAtlasFile = new Class({
     /**
      * Adds this file to its target cache upon successful loading and processing.
      *
-     * @method Phaser.Loader.MultiFile#addToCache
+     * @method Phaser.Loader.FileTypes.MultiAtlasFile#addToCache
      * @since 3.7.0
      */
     addToCache: function ()

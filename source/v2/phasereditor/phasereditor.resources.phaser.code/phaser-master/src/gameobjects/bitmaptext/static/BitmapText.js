@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -68,12 +68,12 @@ var Render = require('./BitmapTextRender');
  *
  * To create a BitmapText data files you need a 3rd party app such as:
  *
- * BMFont (Windows, free): http://www.angelcode.com/products/bmfont/
- * Glyph Designer (OS X, commercial): http://www.71squared.com/en/glyphdesigner
- * Littera (Web-based, free): http://kvazars.com/littera/
+ * BMFont (Windows, free): {@link http://www.angelcode.com/products/bmfont/|http://www.angelcode.com/products/bmfont/}
+ * Glyph Designer (OS X, commercial): {@link http://www.71squared.com/en/glyphdesigner|http://www.71squared.com/en/glyphdesigner}
+ * Littera (Web-based, free): {@link http://kvazars.com/littera/|http://kvazars.com/littera/}
  *
  * For most use cases it is recommended to use XML. If you wish to use JSON, the formatting should be equal to the result of
- * converting a valid XML file through the popular X2JS library. An online tool for conversion can be found here: http://codebeautify.org/xmltojson
+ * converting a valid XML file through the popular X2JS library. An online tool for conversion can be found here: {@link http://codebeautify.org/xmltojson|http://codebeautify.org/xmltojson}
  *
  * @class BitmapText
  * @extends Phaser.GameObjects.GameObject
@@ -639,6 +639,24 @@ BitmapText.ALIGN_CENTER = 1;
  */
 BitmapText.ALIGN_RIGHT = 2;
 
+/**
+ * Parse an XML Bitmap Font from an Atlas.
+ *
+ * Adds the parsed Bitmap Font data to the cache with the `fontName` key.
+ *
+ * @name Phaser.GameObjects.BitmapText.ParseFromAtlas
+ * @since 3.0.0
+ *
+ * @param {Phaser.Scene} scene - The Scene to parse the Bitmap Font for.
+ * @param {string} fontName - The key of the font to add to the Bitmap Font cache.
+ * @param {string} textureKey - The key of the BitmapFont's texture.
+ * @param {string} frameKey - The key of the BitmapFont texture's frame.
+ * @param {string} xmlKey - The key of the XML data of the font to parse.
+ * @param {integer} [xSpacing] - The x-axis spacing to add between each letter.
+ * @param {integer} [ySpacing] - The y-axis spacing to add to the line height.
+ *
+ * @return {boolean} Whether the parsing was successful or not.
+ */
 BitmapText.ParseFromAtlas = ParseFromAtlas;
 
 module.exports = BitmapText;

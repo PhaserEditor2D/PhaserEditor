@@ -1,12 +1,13 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
 var CircleContains = require('../../geom/circle/Contains');
 var Class = require('../../utils/Class');
 var CONST = require('./const');
+var Events = require('./events');
 var RadToDeg = require('../../math/RadToDeg');
 var Rectangle = require('../../geom/rectangle/Rectangle');
 var RectangleContains = require('../../geom/rectangle/Contains');
@@ -401,7 +402,7 @@ var Body = new Class({
          * @type {boolean}
          * @default false
          * @since 3.0.0
-         * @see Phaser.Physics.Arcade.World#event:worldbounds
+         * @see Phaser.Physics.Arcade.World#worldboundsEvent
          */
         this.onWorldBounds = false;
 
@@ -412,7 +413,7 @@ var Body = new Class({
          * @type {boolean}
          * @default false
          * @since 3.0.0
-         * @see Phaser.Physics.Arcade.World#event:collide
+         * @see Phaser.Physics.Arcade.World#collideEvent
          */
         this.onCollide = false;
 
@@ -423,7 +424,7 @@ var Body = new Class({
          * @type {boolean}
          * @default false
          * @since 3.0.0
-         * @see Phaser.Physics.Arcade.World#event:overlap
+         * @see Phaser.Physics.Arcade.World#overlapEvent
          */
         this.onOverlap = false;
 
@@ -436,6 +437,19 @@ var Body = new Class({
          * @since 3.0.0
          */
         this.maxVelocity = new Vector2(10000, 10000);
+
+        /**
+         * The maximum speed this Body is allowed to reach.
+         * 
+         * If not negative it limits the scalar value of speed.
+         * 
+         * Any negative value means no maximum is being applied.
+         * 
+         * @name Phaser.Physics.Arcade.Body#maxSpeed
+         * @type {number}
+         * @since 3.16.0 
+         */
+        this.maxSpeed = -1;
 
         /**
          * If this Body is `immovable` and in motion, `friction` is the proportion of this Body's motion received by the riding Body on each axis, relative to 1.
@@ -623,7 +637,7 @@ var Body = new Class({
         this.overlapR = 0;
 
         /**
-         * Whether this Body is overlapped with another and both have zero velocity.
+         * Whether this Body is overlapped with another and both are not moving.
          *
          * @name Phaser.Physics.Arcade.Body#embedded
          * @type {boolean}
@@ -644,7 +658,7 @@ var Body = new Class({
 
         /**
          * Whether this Body is checked for collisions and for which directions.
-         * You can set `checkCollision.none = false` to disable collision checks.
+         * You can set `checkCollision.none = true` to disable collision checks.
          *
          * @name Phaser.Physics.Arcade.Body#checkCollision
          * @type {ArcadeBodyCollision}
@@ -718,6 +732,7 @@ var Body = new Class({
          * @name Phaser.Physics.Arcade.Body#physicsType
          * @type {integer}
          * @readonly
+         * @default Phaser.Physics.Arcade.DYNAMIC_BODY
          * @since 3.0.0
          */
         this.physicsType = CONST.DYNAMIC_BODY;
@@ -787,7 +802,8 @@ var Body = new Class({
     },
 
     /**
-     * Updates this Body's transform, dimensions, and position from its Game Object.
+     * Updates the Body's `transform`, `width`, `height`, and `center` from its Game Object.
+     * The Body's `position` isn't changed.
      *
      * @method Phaser.Physics.Arcade.Body#updateBounds
      * @since 3.0.0
@@ -874,7 +890,7 @@ var Body = new Class({
      * @fires Phaser.Physics.Arcade.World#worldbounds
      * @since 3.0.0
      *
-     * @param {number} delta - The delta time, in ms, elapsed since the last frame.
+     * @param {number} delta - The delta time, in seconds, elapsed since the last frame.
      */
     update: function (delta)
     {
@@ -944,7 +960,7 @@ var Body = new Class({
 
             if (this.collideWorldBounds && this.checkWorldBounds() && this.onWorldBounds)
             {
-                this.world.emit('worldbounds', this, this.blocked.up, this.blocked.down, this.blocked.left, this.blocked.right);
+                this.world.emit(Events.WORLD_BOUNDS, this, this.blocked.up, this.blocked.down, this.blocked.left, this.blocked.right);
             }
         }
 
@@ -1395,7 +1411,10 @@ var Body = new Class({
     {
         this.enable = false;
 
-        this.world.pendingDestroy.set(this);
+        if (this.world)
+        {
+            this.world.pendingDestroy.set(this);
+        }
     },
 
     /**
@@ -1415,7 +1434,7 @@ var Body = new Class({
 
         if (this.debugShowBody)
         {
-            graphic.lineStyle(1, this.debugBodyColor);
+            graphic.lineStyle(graphic.defaultStrokeWidth, this.debugBodyColor);
 
             if (this.isCircle)
             {
@@ -1429,7 +1448,7 @@ var Body = new Class({
 
         if (this.debugShowVelocity)
         {
-            graphic.lineStyle(1, this.world.defaults.velocityDebugColor, 1);
+            graphic.lineStyle(graphic.defaultStrokeWidth, this.world.defaults.velocityDebugColor, 1);
             graphic.lineBetween(x, y, x + this.velocity.x / 2, y + this.velocity.y / 2);
         }
     },
@@ -1544,6 +1563,23 @@ var Body = new Class({
     setMaxVelocity: function (x, y)
     {
         this.maxVelocity.set(x, y);
+
+        return this;
+    },
+
+    /**
+     * Sets the maximum speed the Body can move.
+     *
+     * @method Phaser.Physics.Arcade.Body#setMaxSpeed
+     * @since 3.16.0
+     *
+     * @param {number} value - The maximum speed value, in pixels per second. Set to a negative value to disable.
+     *
+     * @return {Phaser.Physics.Arcade.Body} This Body object.
+     */
+    setMaxSpeed: function (value)
+    {
+        this.maxSpeed = value;
 
         return this;
     },

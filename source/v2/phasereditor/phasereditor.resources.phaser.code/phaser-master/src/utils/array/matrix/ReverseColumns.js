@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -16,12 +16,7 @@
  */
 var ReverseColumns = function (matrix)
 {
-    for (var i = 0; i < matrix.length; i++)
-    {
-        matrix[i].reverse();
-    }
-
-    return matrix;
+    return matrix.reverse();
 };
 
 module.exports = ReverseColumns;

@@ -1,11 +1,12 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
 var Clamp = require('../../../math/Clamp');
 var Class = require('../../../utils/Class');
+var Events = require('../events');
 var Vector2 = require('../../../math/Vector2');
 
 /**
@@ -147,29 +148,11 @@ var Shake = new Class({
     },
 
     /**
-     * This event is fired when the shake effect begins to run on a camera.
-     *
-     * @event CameraShakeStartEvent
-     * @param {Phaser.Cameras.Scene2D.Camera} camera - The camera that the effect began on.
-     * @param {Phaser.Cameras.Scene2D.Effects.Shake} effect - A reference to the effect instance.
-     * @param {integer} duration - The duration of the effect.
-     * @param {number} intensity - The intensity of the effect.
-     */
-
-    /**
-     * This event is fired when the shake effect completes.
-     *
-     * @event CameraShakeCompleteEvent
-     * @param {Phaser.Cameras.Scene2D.Camera} camera - The camera that the effect began on.
-     * @param {Phaser.Cameras.Scene2D.Effects.Shake} effect - A reference to the effect instance.
-     */
-
-    /**
      * Shakes the Camera by the given intensity over the duration specified.
      *
      * @method Phaser.Cameras.Scene2D.Effects.Shake#start
-     * @fires CameraShakeStartEvent
-     * @fires CameraShakeCompleteEvent
+     * @fires Phaser.Cameras.Scene2D.Events#SHAKE_START
+     * @fires Phaser.Cameras.Scene2D.Events#SHAKE_COMPLETE
      * @since 3.5.0
      *
      * @param {integer} [duration=100] - The duration of the effect in milliseconds.
@@ -214,7 +197,7 @@ var Shake = new Class({
         this._onUpdate = callback;
         this._onUpdateScope = context;
 
-        this.camera.emit('camerashakestart', this.camera, this, duration, intensity);
+        this.camera.emit(Events.SHAKE_START, this.camera, this, duration, intensity);
 
         return this.camera;
     },
@@ -270,8 +253,8 @@ var Shake = new Class({
 
             if (this.camera.roundPixels)
             {
-                this._offsetX |= 0;
-                this._offsetY |= 0;
+                this._offsetX = Math.round(this._offsetX);
+                this._offsetY = Math.round(this._offsetY);
             }
         }
         else
@@ -284,6 +267,7 @@ var Shake = new Class({
      * Called internally when the effect completes.
      *
      * @method Phaser.Cameras.Scene2D.Effects.Shake#effectComplete
+     * @fires Phaser.Cameras.Scene2D.Events#SHAKE_COMPLETE
      * @since 3.5.0
      */
     effectComplete: function ()
@@ -296,7 +280,7 @@ var Shake = new Class({
 
         this.isRunning = false;
 
-        this.camera.emit('camerashakecomplete', this.camera, this);
+        this.camera.emit(Events.SHAKE_COMPLETE, this.camera, this);
     },
 
     /**

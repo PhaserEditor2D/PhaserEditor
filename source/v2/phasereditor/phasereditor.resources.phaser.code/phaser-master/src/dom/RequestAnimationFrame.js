@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2018 Photon Storm Ltd.
+ * @copyright    2019 Photon Storm Ltd.
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
@@ -92,16 +92,19 @@ var RequestAnimationFrame = new Class({
          * @type {FrameRequestCallback}
          * @since 3.0.0
          */
-        this.step = function step (timestamp)
+        this.step = function step ()
         {
+            //  Because we cannot trust the time passed to this callback from the browser and need it kept in sync with event times
+            var timestamp = window.performance.now();
+
             //  DOMHighResTimeStamp
             _this.lastTime = _this.tick;
 
             _this.tick = timestamp;
 
-            _this.timeOutID = window.requestAnimationFrame(step);
-
             _this.callback(timestamp);
+
+            _this.timeOutID = window.requestAnimationFrame(step);
         };
 
         /**
@@ -122,9 +125,9 @@ var RequestAnimationFrame = new Class({
 
             _this.tick = d;
 
-            _this.timeOutID = window.setTimeout(stepTimeout, delay);
-
             _this.callback(d);
+
+            _this.timeOutID = window.setTimeout(stepTimeout, delay);
         };
     },
 
