@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +98,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 		}
 		return _frames;
 	}
-	
+
 	@Override
 	protected void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
@@ -170,6 +171,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 
 		if (url.equals(_url)) {
 			_url = newUrl;
+			_path = new Path(newUrl).removeLastSegments(1).toString();
 		}
 	}
 
