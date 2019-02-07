@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -16,22 +17,21 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
-import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
-import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
+import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
 import org.eclipse.ltk.core.refactoring.participants.SharableParticipants;
-import org.eclipse.ltk.core.refactoring.resource.RenameResourceChange;
-import org.eclipse.ltk.internal.core.refactoring.resource.RenameResourceProcessor;
+import org.eclipse.ltk.core.refactoring.resource.MoveResourceChange;
+import org.eclipse.ltk.internal.core.refactoring.resource.MoveResourcesProcessor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class RenameTexturePackerFile extends RenameParticipant {
+public class MoveTexturePackerFile extends MoveParticipant {
 
 	private IFile _file;
 	private List<IFile> _images;
-	private List<RenameParticipant> _participants;
+	private List<MoveParticipant> _participants;
 	private IFile _jsonFile;
-	private List<RenameResourceChange> _renameChanges;
+	private List<MoveResourceChange> _moveChanges;
 
 	@Override
 	protected boolean initialize(Object element) {
@@ -43,7 +43,7 @@ public class RenameTexturePackerFile extends RenameParticipant {
 
 		_images = new ArrayList<>();
 
-		_renameChanges = new ArrayList<>();
+		_moveChanges = new ArrayList<>();
 
 		try (InputStream contents = _file.getContents()) {
 			JSONObject obj = new JSONObject(new JSONTokener(contents));
@@ -83,7 +83,7 @@ public class RenameTexturePackerFile extends RenameParticipant {
 
 	@Override
 	public String getName() {
-		return "Rename Texture Packer output files.";
+		return "Move Texture Packer output files.";
 	}
 
 	@Override
@@ -93,12 +93,12 @@ public class RenameTexturePackerFile extends RenameParticipant {
 		var status = new RefactoringStatus();
 
 		if (_jsonFile.exists()) {
-			status.addInfo("The output Multi-Atlas file '" + _jsonFile.getName() + "' will be renamed.");
+			status.addInfo("The output Multi-Atlas file '" + _jsonFile.getName() + "' will be moved.");
 		}
 
 		for (var file : _images) {
 			if (file.exists()) {
-				status.addInfo("The generated texture '" + file.getName() + "' will be renamed.");
+				status.addInfo("The generated texture '" + file.getName() + "' will be moved.");
 			}
 		}
 
@@ -109,37 +109,16 @@ public class RenameTexturePackerFile extends RenameParticipant {
 		try {
 
 			if (_jsonFile.exists()) {
-				// rename json file participants
-				var newJsonFileName = new Path(getArguments().getNewName()).removeFileExtension()
-						.addFileExtension("json").lastSegment();
-
-				registerRename(_jsonFile, newJsonFileName, status, sharable, pm, context);
+				registerMove(_jsonFile, status, sharable, pm, context);
 			}
 
-			// rename image files participants
-			var i = 0;
+			// move image files participants
 			for (var image : _images) {
-
-				if (!image.exists()) {
-					continue;
+				if (image.exists()) {
+					registerMove(image, status, sharable, pm, context);
 				}
-
-				String newImageName;
-
-				{
-					String basename = new Path(getArguments().getNewName()).removeFileExtension().toString();
-					if (_images.size() > 1) {
-						newImageName = new Path(basename + (i + 1)).addFileExtension("png").toString();
-					} else {
-						newImageName = new Path(basename).addFileExtension("png").toString();
-					}
-				}
-
-				registerRename(image, newImageName, status, sharable, pm, context);
-
-				i++;
 			}
-
+			
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -147,40 +126,44 @@ public class RenameTexturePackerFile extends RenameParticipant {
 		return status;
 	}
 
-	private void registerRename(IResource resource, String newName, RefactoringStatus status,
-			SharableParticipants sharable, IProgressMonitor pm, CheckConditionsContext context) throws CoreException {
+	private void registerMove(IResource resource, RefactoringStatus status, SharableParticipants sharable,
+			IProgressMonitor pm, CheckConditionsContext context) throws CoreException {
 
-		var renameProcessor = new RenameResourceProcessor(resource);
+		var destination = (IContainer) getArguments().getDestination();
+
+		var processor = new MoveResourcesProcessor(new IResource[] { resource });
 
 		{
-			renameProcessor.setNewResourceName(newName);
 
-			var status2 = renameProcessor.checkInitialConditions(pm);
+			processor.setDestination(destination);
+			processor.setUpdateReferences(getArguments().getUpdateReferences());
+
+			var status2 = processor.checkInitialConditions(pm);
 			status.merge(status2);
 
-			status2 = renameProcessor.checkFinalConditions(pm, context);
+			status2 = processor.checkFinalConditions(pm, context);
 			status.merge(status2);
 		}
 
-		var list = renameProcessor.loadParticipants(status, sharable);
+		var list = processor.loadParticipants(status, sharable);
 
 		for (var participant : list) {
-			if (participant.initialize(renameProcessor, resource, new RenameArguments(newName, true))) {
+			if (participant.initialize(processor, resource, getArguments())) {
 				var status2 = participant.checkConditions(pm, context);
 				status.merge(status2);
-				_participants.add((RenameParticipant) participant);
+				_participants.add((MoveParticipant) participant);
 			}
 		}
 
-		_renameChanges.add(new RenameResourceChange(resource.getFullPath(), newName));
+		_moveChanges.add(new MoveResourceChange(resource, destination));
 	}
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 
-		var changes = new CompositeChange("Rename the Texture Packer output files.");
+		var changes = new CompositeChange("Move the Texture Packer output files.");
 
-		for (var change : _renameChanges) {
+		for (var change : _moveChanges) {
 			changes.add(change);
 		}
 
