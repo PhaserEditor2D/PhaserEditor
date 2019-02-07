@@ -25,6 +25,7 @@ package phasereditor.inspect.core;
 public class InspectCore {
 
 	public static final String RESOURCES_EXAMPLES_PLUGIN = "phasereditor.resources.phaser.examples";
+	public static final String RESOURCES_EXAMPLES_AUDIO_PLUGIN = "phasereditor.resources.phaser.examples.assets.audio";
 	public static final String RESOURCES_METADATA_PLUGIN = "phasereditor.resources.phaser.metadata";
 
 }
