@@ -350,18 +350,20 @@ public class PhaserJsdocModel implements Serializable {
 	}
 
 	private boolean buildConstant(JSONObject obj) {
-		boolean isCons = obj.getString("kind").equals("constant");
+		String kind = obj.getString("kind");
+		boolean isCons = kind.equals("constant");
+		var isEvent = kind.equals("event");
 
-		if (!isCons) {
+		if (!isCons && !isEvent) {
 			if (obj.optString("scope", "").equals("static")) {
 				String name = obj.getString("name");
-				if (obj.getString("kind").equals("member") && name.toUpperCase().equals(name)) {
+				if (kind.equals("member") && name.toUpperCase().equals(name)) {
 					isCons = true;
 				}
 			}
 		}
 
-		if (!isCons) {
+		if (!isCons && !isEvent) {
 			return false;
 		}
 
@@ -370,12 +372,16 @@ public class PhaserJsdocModel implements Serializable {
 		Object defaultValue = obj.opt("defaultvalue");
 
 		String[] types;
-		if (obj.has("type")) {
-			JSONArray jsonTypes = obj.getJSONObject("type").getJSONArray("names");
-			types = getStringArray(jsonTypes);
+		if (isEvent) {
+			types = new String[] { "String" };
 		} else {
-			// FIXME: this is the case of blendModes and scaleModes
-			types = new String[] { "Object" };
+			if (obj.has("type")) {
+				JSONArray jsonTypes = obj.getJSONObject("type").getJSONArray("names");
+				types = getStringArray(jsonTypes);
+			} else {
+				// FIXME: this is the case of blendModes and scaleModes
+				types = new String[] { "Object" };
+			}
 		}
 
 		PhaserConstant cons = new PhaserConstant(obj);
@@ -408,7 +414,7 @@ public class PhaserJsdocModel implements Serializable {
 			if (container instanceof PhaserType) {
 				PhaserType type = (PhaserType) container;
 				cons.setDeclType(type);
-				if (!obj.has("type")) {
+				if (isCons && !obj.has("type")) {
 					cons.setTypes(type.getEnumElementsType());
 				}
 			}
@@ -577,7 +583,7 @@ public class PhaserJsdocModel implements Serializable {
 		if (kind.equals("namespace")) {
 
 			String longname = obj.getString("longname");
-
+			
 			// out.println("Parsing namespace: " + name);
 
 			String desc = obj.optString("description", "");
