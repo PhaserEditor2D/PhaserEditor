@@ -52,6 +52,7 @@ public class PhaserFilesModel {
 
 		for (IPhaserMember member : _jsdocModel.getMembersMap().values()) {
 			Path file = realFile(member);
+			
 			List<IPhaserMember> list;
 			if (map.containsKey(file)) {
 				list = map.get(file);

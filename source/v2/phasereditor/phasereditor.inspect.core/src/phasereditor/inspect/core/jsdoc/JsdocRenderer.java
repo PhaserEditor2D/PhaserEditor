@@ -129,6 +129,8 @@ public class JsdocRenderer {
 			} else {
 				key = IEditorSharedImages.IMG_PROPERTY;
 			}
+		} else if (member instanceof PhaserEventConstant) {
+			key = IEditorSharedImages.IMG_EVENT;
 		} else if (member instanceof PhaserConstant) {
 			key = IEditorSharedImages.IMG_CONSTANT;
 		} else if (member instanceof PhaserMethod) {

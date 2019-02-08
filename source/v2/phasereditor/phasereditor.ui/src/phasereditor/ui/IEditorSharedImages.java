@@ -150,6 +150,7 @@ public interface IEditorSharedImages {
 	String IMG_FIELD = "icons/field.png";
 	String IMG_FUNTION = "icons/function.png";
 	String IMG_METHOD = "icons/method.png";
+	String IMG_EVENT = "icons/event.png";
 	String IMG_PROPERTY = "icons/property.png";
 	String IMG_VARIABLE = "icons/variable.png";
 	String IMG_EDIT = "icons/pencil.png";

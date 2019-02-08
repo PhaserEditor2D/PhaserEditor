@@ -236,6 +236,8 @@ public class PhaserJsdocModel implements Serializable {
 
 				buildEnumType(jsdocElement);
 
+				buildEventConstant(jsdocElement);
+
 				if (!buildConstant(jsdocElement)) {
 					buildProperty(jsdocElement);
 				}
@@ -349,12 +351,52 @@ public class PhaserJsdocModel implements Serializable {
 		}
 	}
 
+	private void buildEventConstant(JSONObject obj) {
+		if (!obj.getString("kind").equals("event")) {
+			return;
+		}
+
+		String name = obj.getString("name");
+		String desc = obj.optString("description", "");
+		Object defaultValue = obj.opt("defaultvalue");
+
+		var types = new String[] { "String" };
+
+		var event = new PhaserEventConstant(obj);
+		// all event constants are decalred in namespaces
+		event.setStatic(true);
+
+		event.setName(name);
+		event.setHelp(desc);
+		event.setTypes(types);
+		event.setDefaultValue(defaultValue);
+
+		var memberof = obj.optString("memberof", null);
+		var container = (PhaserNamespace) _containersMap.get(memberof);
+
+		var map = container.getMemberMap();
+
+		if (map.containsKey(name)) {
+
+			assert (false);
+
+		} else {
+
+			map.put(name, event);
+
+			var longname = container.getName() + "." + name;
+
+			_membersMap.put(longname, event);
+
+			buildMeta(event, obj);
+		}
+
+	}
+
 	private boolean buildConstant(JSONObject obj) {
 		String kind = obj.getString("kind");
 		boolean isCons = kind.equals("constant");
-		var isEvent = kind.equals("event");
-
-		if (!isCons && !isEvent) {
+		if (!isCons) {
 			if (obj.optString("scope", "").equals("static")) {
 				String name = obj.getString("name");
 				if (kind.equals("member") && name.toUpperCase().equals(name)) {
@@ -363,7 +405,7 @@ public class PhaserJsdocModel implements Serializable {
 			}
 		}
 
-		if (!isCons && !isEvent) {
+		if (!isCons) {
 			return false;
 		}
 
@@ -372,16 +414,12 @@ public class PhaserJsdocModel implements Serializable {
 		Object defaultValue = obj.opt("defaultvalue");
 
 		String[] types;
-		if (isEvent) {
-			types = new String[] { "String" };
+		if (obj.has("type")) {
+			JSONArray jsonTypes = obj.getJSONObject("type").getJSONArray("names");
+			types = getStringArray(jsonTypes);
 		} else {
-			if (obj.has("type")) {
-				JSONArray jsonTypes = obj.getJSONObject("type").getJSONArray("names");
-				types = getStringArray(jsonTypes);
-			} else {
-				// FIXME: this is the case of blendModes and scaleModes
-				types = new String[] { "Object" };
-			}
+			// FIXME: this is the case of blendModes and scaleModes
+			types = new String[] { "Object" };
 		}
 
 		PhaserConstant cons = new PhaserConstant(obj);
@@ -421,6 +459,7 @@ public class PhaserJsdocModel implements Serializable {
 
 			buildMeta(cons, obj);
 		}
+
 		return true;
 	}
 
@@ -583,7 +622,7 @@ public class PhaserJsdocModel implements Serializable {
 		if (kind.equals("namespace")) {
 
 			String longname = obj.getString("longname");
-			
+
 			// out.println("Parsing namespace: " + name);
 
 			String desc = obj.optString("description", "");
