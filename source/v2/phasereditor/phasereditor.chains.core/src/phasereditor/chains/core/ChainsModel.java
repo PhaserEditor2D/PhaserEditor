@@ -22,10 +22,12 @@
 package phasereditor.chains.core;
 
 import static java.lang.System.out;
+import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -162,9 +164,15 @@ public class ChainsModel {
 		return matches;
 	}
 
+	
+	private static String querySpaceToAster(String query) {
+		return  Arrays.stream(query.split(" ")).filter( s -> s.trim().length() > 0).collect(joining("*"));
+	}
+	
 	private static String quote(String query) {
-		String patternStart = query.startsWith("*") ? "" : ".*";
-		String patternEnd = query.endsWith("*") ? "" : ".*";
+		var query2 = querySpaceToAster(query);
+		String patternStart = query2.startsWith("*") ? "" : ".*";
+		String patternEnd = query2.endsWith("*") ? "" : ".*";
 
 		// String pattern = query.replace(".", "\\.").replace("*", ".*").replace("(",
 		// "\\(").replace(")", "\\)")
@@ -174,7 +182,7 @@ public class ChainsModel {
 
 		boolean open = false;
 
-		for (char c : query.toCharArray()) {
+		for (char c : query2.toCharArray()) {
 
 			if (c == '*') {
 				if (open) {
