@@ -165,6 +165,10 @@ public class JsdocRenderer {
 			return renderMethod((PhaserMethod) member);
 		}
 
+		if (member instanceof PhaserEventConstant) {
+			return renderEventConstant((PhaserEventConstant) member);
+		}
+
 		if (member instanceof PhaserConstant) {
 			return renderConstant((PhaserConstant) member);
 		}
@@ -197,6 +201,22 @@ public class JsdocRenderer {
 		String base64 = PhaserEditorUI.imageToBase64(image);
 
 		return "<img src='data:image/png;base64," + base64 + "' style='vertical-align:text-middle'>";
+	}
+
+	private String renderEventConstant(PhaserEventConstant event) {
+		var sb = new StringBuilder();
+
+		var container = event.getContainer();
+
+		var qname = container.getName() + "." + event.getName();
+
+		sb.append("<b>" + renderImageBase64(getImage(event)) + " event " + qname + "</b>");
+
+		sb.append("<p>" + markdownToHtml(event.getHelp()) + "</p>");
+
+		sb.append(htmlArgsDoc(event.getArgs()));
+
+		return sb.toString();
 	}
 
 	private String renderConstant(PhaserConstant cons) {

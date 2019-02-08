@@ -371,25 +371,23 @@ public class PhaserJsdocModel implements Serializable {
 		event.setTypes(types);
 		event.setDefaultValue(defaultValue);
 
+		{
+			var args = buildArgs(obj);
+			event.setArgs(args);
+		}
+
 		var memberof = obj.optString("memberof", null);
 		var container = (PhaserNamespace) _containersMap.get(memberof);
 
 		var map = container.getMemberMap();
 
-		if (map.containsKey(name)) {
+		map.put(name, event);
 
-			assert (false);
+		var longname = container.getName() + "." + name;
 
-		} else {
+		_membersMap.put(longname, event);
 
-			map.put(name, event);
-
-			var longname = container.getName() + "." + name;
-
-			_membersMap.put(longname, event);
-
-			buildMeta(event, obj);
-		}
+		buildMeta(event, obj);
 
 	}
 

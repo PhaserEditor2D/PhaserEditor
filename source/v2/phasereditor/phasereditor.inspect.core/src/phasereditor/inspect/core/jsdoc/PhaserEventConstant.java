@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 
 /**
@@ -31,8 +34,19 @@ public class PhaserEventConstant extends PhaserConstant {
 
 	private static final long serialVersionUID = 1L;
 
+	private List<PhaserMethodArg> _args;
+
 	public PhaserEventConstant(JSONObject json) {
 		super(json);
+		_args = new ArrayList<>();
+	}
+
+	public List<PhaserMethodArg> getArgs() {
+		return _args;
+	}
+
+	public void setArgs(List<PhaserMethodArg> args) {
+		_args = args;
 	}
 
 }
