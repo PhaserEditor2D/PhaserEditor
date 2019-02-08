@@ -23,15 +23,10 @@ package phasereditor.inspect.core.jsdoc;
 
 import static java.util.stream.Collectors.toList;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.mylyn.wikitext.markdown.MarkdownLanguage;
-import org.eclipse.mylyn.wikitext.parser.MarkupParser;
-import org.eclipse.mylyn.wikitext.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -74,7 +69,7 @@ public class JsdocRenderer {
 		html.append("<html style='background:" + bgcolor + ";color:" + fgcolor + "'><body>");
 		html.append("<style>");
 		html.append("a { color: " + fgcolor + ";font-weight: bold;}");
-		html.append(".prettyprint { color: blue; font-family: monospace;}");
+		html.append("code { color: blue; font-family: monospace;}");
 		html.append("</style>");
 
 		html.append(doc);
@@ -85,22 +80,23 @@ public class JsdocRenderer {
 	private Pattern _linkPattern;
 
 	public String markdownToHtml(String markdown) {
-		try (StringWriter writer = new StringWriter()) {
-			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
-			builder.setEmitAsDocument(false);
-			final MarkupParser parser = new MarkupParser();
-			parser.setMarkupLanguage(new MarkdownLanguage());
-			parser.setBuilder(builder);
-			parser.parse(markdown);
-
-			String html = writer.toString();
-
-			html = expandLinksInHtml(html);
-
-			return html;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+//		try (StringWriter writer = new StringWriter()) {
+//			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
+//			builder.setEmitAsDocument(false);
+//			final MarkupParser parser = new MarkupParser();
+//			parser.setMarkupLanguage(new MarkdownLanguage());
+//			parser.setBuilder(builder);
+//			parser.parse(markdown);
+//
+//			String html = writer.toString();
+//			
+//			html = expandLinksInHtml(html);
+//
+//			return html;
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
+		return expandLinksInHtml(markdown);
 	}
 
 	private String expandLinksInHtml(String html) {
