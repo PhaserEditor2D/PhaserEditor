@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
@@ -34,6 +36,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
@@ -71,6 +74,7 @@ public class JsdocRenderer {
 		html.append("<html style='background:" + bgcolor + ";color:" + fgcolor + "'><body>");
 		html.append("<style>");
 		html.append("a { color: " + fgcolor + ";font-weight: bold;}");
+		html.append(".prettyprint { color: blue; font-family: monospace;}");
 		html.append("</style>");
 
 		html.append(doc);
@@ -88,6 +92,7 @@ public class JsdocRenderer {
 			parser.setMarkupLanguage(new MarkdownLanguage());
 			parser.setBuilder(builder);
 			parser.parse(markdown);
+
 			String html = writer.toString();
 
 			html = expandLinksInHtml(html);
@@ -216,6 +221,19 @@ public class JsdocRenderer {
 
 		sb.append(htmlArgsDoc(event.getArgs()));
 
+		var callers = InspectCore.getPhaserHelp().getMembersMap().values().stream()
+				.filter(m -> m.getFiresEventList().contains(event)).collect(toList());
+
+		if (!callers.isEmpty()) {
+
+			sb.append("<p><b>Emitters:</b></p>");
+
+			for (var caller : callers) {
+				sb.append(renderLink(caller.getContainer().getName() + "." + caller.getName()));
+				sb.append("<br>");
+			}
+		}
+
 		return sb.toString();
 	}
 
@@ -251,7 +269,7 @@ public class JsdocRenderer {
 		}
 
 		renderFires(sb, var);
-		
+
 		return sb.toString();
 	}
 
@@ -287,15 +305,12 @@ public class JsdocRenderer {
 
 		if (!list.isEmpty()) {
 
-			sb.append("<br><b>Fires:</b>");
-			sb.append("<dd>");
-			
+			sb.append("<br><b>Fires:</b><br>");
+
 			for (var event : list) {
 				sb.append("<a href='" + event.getContainer().getName() + "." + event.getName() + "'>" + event.getName()
 						+ "</a><br>");
 			}
-			
-			sb.append("</dd>");
 		}
 	}
 
@@ -311,7 +326,7 @@ public class JsdocRenderer {
 		sb.append("<p>" + markdownToHtml(type.getHelp()) + "</p>");
 
 		renderFires(sb, type);
-		
+
 		sb.append(htmlArgsDoc(type.getConstructorArgs()));
 
 		return sb.toString();
