@@ -250,6 +250,8 @@ public class JsdocRenderer {
 			sb.append("<p><b>readonly</b></p>");
 		}
 
+		renderFires(sb, var);
+		
 		return sb.toString();
 	}
 
@@ -265,13 +267,36 @@ public class JsdocRenderer {
 
 		sb.append("<p>" + markdownToHtml(method.getHelp()) + "</p>");
 
+		renderFires(sb, method);
+
 		if (method.getReturnTypes().length > 0) {
+			if (!method.getFiresEventList().isEmpty()) {
+				sb.append("<br>");
+			}
 			sb.append("<b>Returns:</b> " + returnSignature);
 			sb.append("<dd>" + markdownToHtml(method.getReturnHelp()) + "</dd>");
 		}
 
 		sb.append(htmlArgsDoc(method.getArgs()));
+
 		return sb.toString();
+	}
+
+	private void renderFires(StringBuilder sb, IPhaserMember member) {
+		var list = member.getFiresEventList();
+
+		if (!list.isEmpty()) {
+
+			sb.append("<br><b>Fires:</b>");
+			sb.append("<dd>");
+			
+			for (var event : list) {
+				sb.append("<a href='" + event.getContainer().getName() + "." + event.getName() + "'>" + event.getName()
+						+ "</a><br>");
+			}
+			
+			sb.append("</dd>");
+		}
 	}
 
 	public String renderType(PhaserType type) {
@@ -285,6 +310,8 @@ public class JsdocRenderer {
 
 		sb.append("<p>" + markdownToHtml(type.getHelp()) + "</p>");
 
+		renderFires(sb, type);
+		
 		sb.append(htmlArgsDoc(type.getConstructorArgs()));
 
 		return sb.toString();

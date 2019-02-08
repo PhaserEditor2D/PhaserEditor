@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONObject;
 
@@ -35,12 +38,19 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 	private boolean _static;
 	private transient JSONObject _json;
 	private IMemberContainer _container;
+	private List<PhaserEventConstant> _firesEventList;
 
 	private String _filename;
 
 	public PhaserMember(JSONObject json) {
 		_static = false;
 		_json = json;
+		_firesEventList = new ArrayList<>();
+	}
+
+	@Override
+	public List<PhaserEventConstant> getFiresEventList() {
+		return _firesEventList;
 	}
 
 	@Override

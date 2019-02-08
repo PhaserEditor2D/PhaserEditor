@@ -282,6 +282,13 @@ public class PhaserJsdocModel implements Serializable {
 				globals.sort((a, b) -> a.getName().compareTo(b.getName()));
 				_globalScope = new PhaserGlobalScope(globals);
 			}
+
+			{
+				// build fires
+				for (var member : _membersMap.values()) {
+					buildFiresEventList(member);
+				}
+			}
 		}
 	}
 
@@ -809,6 +816,23 @@ public class PhaserJsdocModel implements Serializable {
 			}
 		}
 		return args;
+	}
+
+	private void buildFiresEventList(IPhaserMember member) {
+		var obj = member.getJSON();
+		var firesArray = obj.optJSONArray("fires");
+		if (firesArray != null) {
+			for (int i = 0; i < firesArray.length(); i++) {
+				var name = firesArray.getString(i);
+				name = name.replace("#event:", ".");
+				
+				var event = (PhaserEventConstant) _membersMap.get(name);
+				
+				if (event != null) {
+					member.getFiresEventList().add(event);
+				}
+			}
+		}
 	}
 
 	private static String[] getStringArray(JSONArray jsonTypes) {

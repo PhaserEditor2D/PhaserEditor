@@ -23,6 +23,7 @@ package phasereditor.inspect.core.jsdoc;
 
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -59,4 +60,6 @@ public interface IPhaserMember extends ISourceLocation, Serializable {
 	default Path getFilePath() {
 		return InspectCore.getPhaserHelp().getMemberPath(this);
 	}
+
+	public List<PhaserEventConstant> getFiresEventList();
 }
