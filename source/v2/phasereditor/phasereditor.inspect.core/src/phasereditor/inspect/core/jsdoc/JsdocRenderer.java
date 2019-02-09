@@ -27,9 +27,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.tm4e.core.grammar.IToken;
+import org.eclipse.tm4e.core.grammar.ITokenizeLineResult;
+import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
+import org.eclipse.tm4e.ui.TMUIPlugin;
 
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
@@ -79,24 +84,102 @@ public class JsdocRenderer {
 
 	private Pattern _linkPattern;
 
-	public String markdownToHtml(String markdown) {
-//		try (StringWriter writer = new StringWriter()) {
-//			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
-//			builder.setEmitAsDocument(false);
-//			final MarkupParser parser = new MarkupParser();
-//			parser.setMarkupLanguage(new MarkdownLanguage());
-//			parser.setBuilder(builder);
-//			parser.parse(markdown);
-//
-//			String html = writer.toString();
-//			
-//			html = expandLinksInHtml(html);
-//
-//			return html;
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
-		return expandLinksInHtml(markdown);
+	public String processHtmlDescription(String html) {
+		// try (StringWriter writer = new StringWriter()) {
+		// HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
+		// builder.setEmitAsDocument(false);
+		// final MarkupParser parser = new MarkupParser();
+		// parser.setMarkupLanguage(new MarkdownLanguage());
+		// parser.setBuilder(builder);
+		// parser.parse(markdown);
+		//
+		// String html = writer.toString();
+		//
+		// html = expandLinksInHtml(html);
+		//
+		// return html;
+		// } catch (IOException e) {
+		// throw new RuntimeException(e);
+		// }
+
+		var html2 = expandCodeTag(html);
+
+		return expandLinksInHtml(html2);
+	}
+
+	private static String expandCodeTag(String html) {
+		var sb = new StringBuilder();
+		int i = 0;
+		while (i < html.length()) {
+			var k = html.indexOf("<code>", i);
+
+			if (k == -1) {
+				break;
+			}
+
+			var j = html.indexOf("</code>", k);
+
+			if (j == -1) {
+				break;
+			}
+
+			sb.append(html.substring(i, k));
+
+			String code = html.substring(k + 6, j);
+
+			sb.append(syntaxColoring(code));
+
+			i = j + 7;
+		}
+
+		sb.append(html.substring(i));
+
+		return sb.toString();
+	}
+
+	private static String syntaxColoring(String code) {
+		var grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
+		var theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
+
+		var sb = new StringBuilder();
+
+		try {
+			ITokenizeLineResult result;
+
+			// synchronized (_grammar) {
+			result = grammar.tokenizeLine(code);
+			// }
+
+			for (IToken token : result.getTokens()) {
+				org.eclipse.swt.graphics.Color color = null;
+
+				for (String scope : token.getScopes()) {
+					org.eclipse.jface.text.rules.IToken themeToken = theme.getToken(scope);
+					if (themeToken != null) {
+						Object data = themeToken.getData();
+						if (data != null && data instanceof TextAttribute) {
+							TextAttribute attr = (TextAttribute) data;
+							color = attr.getForeground();
+						}
+					}
+				}
+
+				if (color == null) {
+					sb.append(code.substring(token.getStartIndex(), token.getEndIndex()));
+				} else {
+					sb.append("<span style='color:rgb("
+
+							+ color.getRed() + "," + color.getGreen() + "," + color.getBlue()
+
+							+ ")'>" + code.substring(token.getStartIndex(), token.getEndIndex()) + "</span>");
+				}
+			}
+		} catch (Exception e) {
+			// TODO: there are problems with parallel parsing, we should test it in Photon.
+			// e.printStackTrace();
+		}
+
+		return "<span style='font-family:monospace'>" + sb.toString() + "</span>";
 	}
 
 	private String expandLinksInHtml(String html) {
@@ -189,7 +272,7 @@ public class JsdocRenderer {
 
 		sb.append("<b>" + renderImageBase64(getImage(member)) + " " + member.getName() + "</b>");
 
-		sb.append("<p>" + markdownToHtml(member.getHelp()) + "</p>");
+		sb.append("<p>" + processHtmlDescription(member.getHelp()) + "</p>");
 
 		return sb.toString();
 	}
@@ -213,7 +296,7 @@ public class JsdocRenderer {
 
 		sb.append("<b>" + renderImageBase64(getImage(event)) + " event " + qname + "</b>");
 
-		sb.append("<p>" + markdownToHtml(event.getHelp()) + "</p>");
+		sb.append("<p>" + processHtmlDescription(event.getHelp()) + "</p>");
 
 		sb.append(htmlArgsDoc(event.getArgs()));
 
@@ -244,7 +327,7 @@ public class JsdocRenderer {
 
 		sb.append("<b>" + renderImageBase64(getImage(cons)) + returnSignature + " " + qname + "</b>");
 
-		sb.append("<p>" + markdownToHtml(cons.getHelp()) + "</p>");
+		sb.append("<p>" + processHtmlDescription(cons.getHelp()) + "</p>");
 
 		return sb.toString();
 	}
@@ -258,7 +341,7 @@ public class JsdocRenderer {
 
 		sb.append("<b>" + renderImageBase64(getImage(var)) + returnSignature + " " + qname + "</b>");
 
-		sb.append("<p>" + markdownToHtml(var.getHelp()) + "</p>");
+		sb.append("<p>" + processHtmlDescription(var.getHelp()) + "</p>");
 
 		if (var instanceof PhaserProperty && ((PhaserProperty) var).isReadOnly()) {
 			sb.append("<p><b>readonly</b></p>");
@@ -279,7 +362,7 @@ public class JsdocRenderer {
 		sb.append("<b>" + renderImageBase64(getImage(method)) + returnSignature + " " + qname
 				+ htmlArgsList(method.getArgs()) + "</b>");
 
-		sb.append("<p>" + markdownToHtml(method.getHelp()) + "</p>");
+		sb.append("<p>" + processHtmlDescription(method.getHelp()) + "</p>");
 
 		renderFires(sb, method);
 
@@ -288,7 +371,7 @@ public class JsdocRenderer {
 				sb.append("<br>");
 			}
 			sb.append("<b>Returns:</b> " + returnSignature);
-			sb.append("<dd>" + markdownToHtml(method.getReturnHelp()) + "</dd>");
+			sb.append("<dd>" + processHtmlDescription(method.getReturnHelp()) + "</dd>");
 		}
 
 		sb.append(htmlArgsDoc(method.getArgs()));
@@ -319,7 +402,7 @@ public class JsdocRenderer {
 		}
 		sb.append("<br>");
 
-		sb.append("<p>" + markdownToHtml(type.getHelp()) + "</p>");
+		sb.append("<p>" + processHtmlDescription(type.getHelp()) + "</p>");
 
 		renderFires(sb, type);
 
@@ -352,7 +435,7 @@ public class JsdocRenderer {
 			}
 
 			sb.append(htmlTypes(var.getTypes()));
-			sb.append("<dd>" + markdownToHtml(var.getHelp()) + "</dd>");
+			sb.append("<dd>" + processHtmlDescription(var.getHelp()) + "</dd>");
 			sb.append("<br>");
 		}
 

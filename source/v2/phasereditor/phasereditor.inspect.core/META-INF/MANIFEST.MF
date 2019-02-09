@@ -11,7 +11,11 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.org.json,
  org.eclipse.mylyn.wikitext.markdown;bundle-version="3.0.19",
  org.eclipse.mylyn.wikitext;bundle-version="3.0.19",
- phasereditor.ui;bundle-version="2.0.0"
+ phasereditor.ui;bundle-version="2.0.0",
+ org.eclipse.tm4e.registry;bundle-version="0.2.0",
+ org.eclipse.tm4e.core;bundle-version="0.2.0",
+ org.eclipse.tm4e.ui;bundle-version="0.2.0",
+ org.eclipse.jface.text;bundle-version="3.14.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.inspect.core,
  phasereditor.inspect.core.examples,
