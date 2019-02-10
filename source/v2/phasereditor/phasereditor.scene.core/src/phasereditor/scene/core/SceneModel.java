@@ -76,6 +76,12 @@ public class SceneModel {
 	private String _preloadMethodName;
 	private String _createMethodName;
 
+	public enum MethodContextType {
+		SCENE, OBJECT
+	}
+
+	private MethodContextType _methodContextType;
+
 	private RGB _backgroundColor;
 	private RGB _foregroundColor;
 	private static final RGB DEF_FG_RGB = Colors.WHITESMOKE.rgb;
@@ -109,12 +115,13 @@ public class SceneModel {
 		_preloadMethodName = "preload";
 		_createMethodName = "create";
 		_superClassName = "Phaser.Scene";
+		_methodContextType = MethodContextType.SCENE;
 	}
-	
+
 	public boolean isOnlyGenerateMethods() {
 		return _onlyGenerateMethods;
 	}
-	
+
 	public void setOnlyGenerateMethods(boolean onlyGenerateMethods) {
 		_onlyGenerateMethods = onlyGenerateMethods;
 	}
@@ -157,6 +164,14 @@ public class SceneModel {
 
 	public void setAutoLoadAssets(boolean autoLoadAssets) {
 		_autoLoadAssets = autoLoadAssets;
+	}
+	
+	public MethodContextType getMethodContextType() {
+		return _methodContextType;
+	}
+	
+	public void setMethodContextType(MethodContextType methodContextType) {
+		_methodContextType = methodContextType;
 	}
 
 	public int getBorderY() {
@@ -373,6 +388,7 @@ public class SceneModel {
 			data.put("superClassName", _superClassName, "Phaser.Scene");
 			data.put("preloadMethodName", _preloadMethodName, "preload");
 			data.put("createMethodName", _createMethodName, "create");
+			data.put("methodContextType", _methodContextType.name());
 		}
 	}
 
@@ -402,6 +418,8 @@ public class SceneModel {
 			_superClassName = data.optString("superClassName", "Phaser.Scene");
 			_preloadMethodName = data.optString("preloadMethodName", "preload");
 			_createMethodName = data.optString("createMethodName", "create");
+			_methodContextType = MethodContextType
+					.valueOf(data.optString("methodContextType", MethodContextType.SCENE.name()));
 		}
 	}
 
@@ -440,12 +458,12 @@ public class SceneModel {
 	}
 
 	public JSONObject toJSON() {
-		
+
 		JSONObject data = new JSONObject();
-		
+
 		write(data);
-		
+
 		return data;
 	}
-	
+
 }

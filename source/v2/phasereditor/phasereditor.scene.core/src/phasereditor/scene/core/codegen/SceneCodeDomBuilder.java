@@ -48,6 +48,7 @@ import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
@@ -132,19 +133,19 @@ public class SceneCodeDomBuilder {
 
 			if (model instanceof TileSpriteModel) {
 
-				methodCall = buildCreateTileSprite(methodDecl, (TileSpriteModel) model);
+				methodCall = buildCreateTileSprite(methodDecl, (TileSpriteModel) model, sceneModel);
 
 			} else if (model instanceof BitmapTextModel) {
 
-				methodCall = buildCreateBitmapText(methodDecl, (BitmapTextModel) model);
+				methodCall = buildCreateBitmapText(methodDecl, (BitmapTextModel) model, sceneModel);
 
 			} else if (model instanceof SpriteModel) {
 
-				methodCall = buildCreateSprite(methodDecl, (SpriteModel) model);
+				methodCall = buildCreateSprite(methodDecl, (SpriteModel) model, sceneModel);
 
 			} else if (model instanceof ImageModel) {
 
-				methodCall = buildCreateImage(methodDecl, (ImageModel) model);
+				methodCall = buildCreateImage(methodDecl, (ImageModel) model, sceneModel);
 
 			}
 
@@ -201,8 +202,25 @@ public class SceneCodeDomBuilder {
 				assignToVar = buildTileSpriteProps(methodDecl, model) || assignToVar;
 			}
 
-			if (assignToVar && methodCall != null) {
-				methodCall.setReturnToVar(varname(model));
+			{
+
+				var isObjectContext = sceneModel.getMethodContextType() == MethodContextType.OBJECT;
+
+				if (methodCall != null) {
+
+					var varname = varname(model);
+
+					if (assignToVar || isObjectContext) {
+						methodCall.setReturnToVar(varname);
+					}
+
+					if (isObjectContext) {
+						var call = new MethodCallDom("add", "this");
+						call.arg(varname);
+						methodDecl.getInstructions().add(call);
+					}
+				}
+
 			}
 
 			// add a new line
@@ -284,7 +302,7 @@ public class SceneCodeDomBuilder {
 		for (var group : sceneModel.getGroupsModel().getGroups()) {
 			var groupName = varname(group);
 
-			var methodCall = buildCreateGroup(methodDecl, group);
+			var methodCall = buildCreateGroup(methodDecl, group, sceneModel);
 
 			if (VariableComponent.get_variableField(group)) {
 				var fieldName = JSCodeUtils.fieldOf(groupName);
@@ -301,8 +319,8 @@ public class SceneCodeDomBuilder {
 	}
 
 	@SuppressWarnings("static-method")
-	private MethodCallDom buildCreateGroup(MethodDeclDom methodDecl, GroupModel group) {
-		var call = new MethodCallDom("group", "this.add");
+	private MethodCallDom buildCreateGroup(MethodDeclDom methodDecl, GroupModel group, SceneModel sceneModel) {
+		var call = new MethodCallDom("group", getObjectFactoryExpr(sceneModel));
 
 		var array = group.getChildren().stream().map(model -> varname(model)).collect(joining(", "));
 		call.arg("[ " + array + " ]");
@@ -561,11 +579,12 @@ public class SceneCodeDomBuilder {
 		return true;
 	}
 
-	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model) {
+	private MethodCallDom buildCreateBitmapText(MethodDeclDom methodDecl, BitmapTextModel model,
+			SceneModel sceneModel) {
 
 		var methodName = model instanceof DynamicBitmapTextModel ? "dynamicBitmapText" : "bitmapText";
 
-		var call = new MethodCallDom(methodName, "this.add");
+		var call = new MethodCallDom(methodName, getObjectFactoryExpr(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -656,8 +675,8 @@ public class SceneCodeDomBuilder {
 		return true;
 	}
 
-	private MethodCallDom buildCreateSprite(MethodDeclDom methodDecl, SpriteModel model) {
-		var call = new MethodCallDom("sprite", "this.add");
+	private MethodCallDom buildCreateSprite(MethodDeclDom methodDecl, SpriteModel model, SceneModel sceneModel) {
+		var call = new MethodCallDom("sprite", getObjectFactoryExpr(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -671,8 +690,20 @@ public class SceneCodeDomBuilder {
 		return call;
 	}
 
-	private MethodCallDom buildCreateImage(MethodDeclDom methodDecl, ImageModel model) {
-		var call = new MethodCallDom("image", "this.add");
+	private static String getObjectFactoryExpr(SceneModel sceneModel) {
+		switch (sceneModel.getMethodContextType()) {
+		case SCENE:
+			return "this.add";
+		case OBJECT:
+			return "this.scene.add";
+		default:
+			break;
+		}
+		return "this.add";
+	}
+
+	private MethodCallDom buildCreateImage(MethodDeclDom methodDecl, ImageModel model, SceneModel sceneModel) {
+		var call = new MethodCallDom("image", getObjectFactoryExpr(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -686,9 +717,10 @@ public class SceneCodeDomBuilder {
 		return call;
 	}
 
-	private MethodCallDom buildCreateTileSprite(MethodDeclDom methodDecl, TileSpriteModel model) {
+	private MethodCallDom buildCreateTileSprite(MethodDeclDom methodDecl, TileSpriteModel model,
+			SceneModel sceneModel) {
 
-		var call = new MethodCallDom("tileSprite", "this.add");
+		var call = new MethodCallDom("tileSprite", getObjectFactoryExpr(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));

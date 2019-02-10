@@ -21,12 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -35,6 +40,7 @@ import org.eclipse.ui.ide.IDE;
 
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -169,6 +175,25 @@ public class CompilerSection extends BaseDesignSection {
 				}
 
 			};
+		}
+
+		{
+			label(comp, "Methods Context Type", "*The context of the method.");
+			var combo = new Combo(comp, SWT.READ_ONLY);
+			combo.setItems(Arrays.stream(MethodContextType.values()).map(e -> e.name()).toArray(String[]::new));
+			combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			combo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					wrapOperation(() -> {
+						getScene().getModel()
+								.setMethodContextType(MethodContextType.values()[combo.getSelectionIndex()]);
+					});
+				}
+			});
+			addUpdate(() -> {
+				combo.select(getScene().getModel().getMethodContextType().ordinal());
+			});
 		}
 
 		return comp;

@@ -80,7 +80,7 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 
 		append("class " + clsDecl.getName() + " ");
 
-		if (clsDecl.getSuperClass() != null) {
+		if (clsDecl.getSuperClass() != null && clsDecl.getSuperClass().trim().length() > 0) {
 			append("extends " + clsDecl.getSuperClass() + " ");
 		}
 
