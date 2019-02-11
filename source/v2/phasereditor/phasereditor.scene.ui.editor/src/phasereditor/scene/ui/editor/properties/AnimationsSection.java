@@ -24,6 +24,8 @@ package phasereditor.scene.ui.editor.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.SelectionListener;
@@ -37,13 +39,16 @@ import phasereditor.animation.ui.AnimationPreviewComp;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.scene.core.AnimationsComponent;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
 /**
  * @author arian
  *
  */
+@SuppressWarnings("synthetic-access")
 public class AnimationsSection extends ScenePropertySection {
 
 	private AnimationPreviewComp _animCanvas;
@@ -62,6 +67,28 @@ public class AnimationsSection extends ScenePropertySection {
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 		_animCanvas.createPlaybackToolbar(manager);
+		manager.add(new Separator());
+		manager.add(new Action("Show this animations key in the Asset Pack editor.",
+				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
+			@Override
+			public void run() {
+
+				AnimationModel found = null;
+
+				var key = flatValues_to_String(
+						getModels().stream().map(model -> AnimationsComponent.get_autoPlayAnimKey(model)));
+
+				if (key != null) {
+					for (var anim : getAnimations()) {
+						if (anim.getKey().equals(key)) {
+							found = anim;
+						}
+					}
+				}
+
+				AssetPackUI.openElementInEditor(found);
+			}
+		});
 	}
 
 	@Override
@@ -144,11 +171,10 @@ public class AnimationsSection extends ScenePropertySection {
 
 	@Override
 	public void user_update_UI_from_Model() {
-		var models = getModels();
-
 		AnimationModel found = null;
 
-		var key = flatValues_to_String(models.stream().map(model -> AnimationsComponent.get_autoPlayAnimKey(model)));
+		var key = flatValues_to_String(
+				getModels().stream().map(model -> AnimationsComponent.get_autoPlayAnimKey(model)));
 
 		if (key != null) {
 			for (var anim : getAnimations()) {
