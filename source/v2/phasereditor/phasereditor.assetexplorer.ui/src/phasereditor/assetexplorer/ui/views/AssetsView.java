@@ -70,7 +70,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.scene.core.SceneFile;
@@ -167,7 +167,7 @@ public class AssetsView extends ViewPart {
 			}
 		}
 
-		AssetPackUIEditor.openElementInEditor(elem);
+		AssetPackUI.openElementInEditor(elem);
 	}
 
 	private void afterCreateWidgets() {

@@ -88,6 +88,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.assetpack.ui.IAssetPackEditor;
 import phasereditor.assetpack.ui.ImageResourceDialog;
 import phasereditor.assetpack.ui.SvgResourceDialog;
 import phasereditor.audio.ui.AudioResourceDialog;
@@ -104,7 +105,7 @@ import phasereditor.ui.editors.EditorFileStampHelper;
  * @author arian
  *
  */
-public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
+public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource, IAssetPackEditor {
 
 	public static final String ID = "phasereditor.assetpack.ui.editor.AssetPackEditor";
 
@@ -782,6 +783,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		});
 	}
 
+	@Override
 	public AssetPackModel getModel() {
 		return _model;
 	}
@@ -810,6 +812,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
+	@Override
 	public void revealElement(Object elem) {
 		if (elem == null) {
 			return;

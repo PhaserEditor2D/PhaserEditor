@@ -28,7 +28,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
+import phasereditor.assetpack.ui.AssetPackUI;
 
 public class EditInPackEditorHandler extends AbstractHandler {
 
@@ -37,7 +37,7 @@ public class EditInPackEditorHandler extends AbstractHandler {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil
 				.getCurrentSelection(event);
 		Object elem = sel.getFirstElement();
-		boolean b = AssetPackUIEditor.openElementInEditor(elem);
+		boolean b = AssetPackUI.openElementInEditor(elem);
 		if (!b) {
 			MessageDialog
 					.openInformation(HandlerUtil.getActiveShell(event), "Edit",

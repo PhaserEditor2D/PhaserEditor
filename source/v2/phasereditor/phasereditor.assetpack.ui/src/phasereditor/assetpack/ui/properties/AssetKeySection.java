@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,6 +31,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -45,10 +49,21 @@ public class AssetKeySection extends FormPropertySection<IAssetKey> {
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
 	}
-	
+
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof IAssetKey;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(new Action("Edit this asset key in the Asset Pack editor.",
+				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
+			@Override
+			public void run() {
+				AssetPackUI.openElementInEditor(getModels().get(0));
+			}
+		});
 	}
 
 	@Override
@@ -60,11 +75,11 @@ public class AssetKeySection extends FormPropertySection<IAssetKey> {
 
 		var text = new Text(comp, SWT.BORDER | SWT.READ_ONLY);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		addUpdate(() -> {
 			text.setText(flatValues_to_String(getModels().stream().map(model -> model.getKey())));
 		});
-		
+
 		return comp;
 	}
 

@@ -22,7 +22,6 @@
 package phasereditor.assetpack.ui.editor;
 
 import static java.lang.System.arraycopy;
-import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,19 +36,12 @@ import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.FileEditorInput;
-import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.core.IAssetElementModel;
-import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.editor.refactorings.AssetDeleteProcessor;
 import phasereditor.assetpack.ui.editor.refactorings.AssetDeleteWizard;
 import phasereditor.assetpack.ui.editor.refactorings.AssetMoveProcessor;
@@ -159,49 +151,5 @@ public class AssetPackUIEditor {
 		list2.stream().forEach(consumer);
 
 		return result;
-	}
-
-	/**
-	 * Open the given element in an asset pack editor.
-	 * 
-	 * @param elem
-	 *            An asset pack element (section, group, asset, etc..)
-	 */
-	public static boolean openElementInEditor(Object elem) {
-		if (elem == null) {
-			return false;
-		}
-
-		AssetPackModel pack = null;
-		if (elem instanceof AssetModel) {
-			pack = ((AssetModel) elem).getPack();
-		} else if (elem instanceof AssetGroupModel) {
-			pack = ((AssetGroupModel) elem).getSection().getPack();
-		} else if (elem instanceof AssetSectionModel) {
-			pack = ((AssetSectionModel) elem).getPack();
-		} else if (elem instanceof AssetPackModel) {
-			pack = (AssetPackModel) elem;
-		} else if (elem instanceof IAssetElementModel) {
-			pack = ((IAssetKey) elem).getAsset().getPack();
-		} else {
-			return false;
-		}
-
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		try {
-			AssetPackEditor editor = (AssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()),
-					AssetPackEditor.ID);
-			if (editor != null) {
-				JSONObject ref = pack.getAssetJSONRefrence(elem);
-				Object elem2 = editor.getModel().getElementFromJSONReference(ref);
-				if (elem2 != null) {
-					swtRun(() -> editor.revealElement(elem2));
-				}
-			}
-		} catch (PartInitException e) {
-			throw new RuntimeException(e);
-		}
-
-		return true;
 	}
 }

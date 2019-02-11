@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,9 +45,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
@@ -53,15 +60,19 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
 import phasereditor.animation.ui.AnimationInformationControl;
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -108,7 +119,47 @@ public class AssetPackUI {
 
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
+	public static final String PACK_EDITOR_ID = "phasereditor.assetpack.ui.editor.AssetPackEditor";
+	
+	public static boolean openElementInEditor(Object elem) {
+		if (elem == null) {
+			return false;
+		}
 
+		AssetPackModel pack = null;
+		if (elem instanceof AssetModel) {
+			pack = ((AssetModel) elem).getPack();
+		} else if (elem instanceof AssetGroupModel) {
+			pack = ((AssetGroupModel) elem).getSection().getPack();
+		} else if (elem instanceof AssetSectionModel) {
+			pack = ((AssetSectionModel) elem).getPack();
+		} else if (elem instanceof AssetPackModel) {
+			pack = (AssetPackModel) elem;
+		} else if (elem instanceof IAssetElementModel) {
+			pack = ((IAssetKey) elem).getAsset().getPack();
+		} else {
+			return false;
+		}
+
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		try {
+			var editor = (IAssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()),
+					PACK_EDITOR_ID);
+			if (editor != null) {
+				JSONObject ref = pack.getAssetJSONRefrence(elem);
+				
+				Object elem2 = editor.getModel().getElementFromJSONReference(ref);
+				if (elem2 != null) {
+					swtRun(() -> editor.revealElement(elem2));
+				}
+			}
+		} catch (PartInitException e) {
+			throw new RuntimeException(e);
+		}
+
+		return true;
+	}
+	
 	public static ImageProxy getImageProxy(IAssetFrameModel frame) {
 		if (frame == null) {
 			return null;
