@@ -42,7 +42,6 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class VariableSection extends ScenePropertySection {
 
-	private Text _editorNameText;
 	private Action _fieldAction;
 
 	public VariableSection(ScenePropertyPage page) {
@@ -61,14 +60,14 @@ public class VariableSection extends ScenePropertySection {
 		createActions();
 
 		Composite comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(2, false));
+		comp.setLayout(new GridLayout(3, false));
 
 		{
 			label(comp, "Var Name", "*(Editor) The name of the variable used in the generated code.");
 
-			_editorNameText = new Text(comp, SWT.BORDER);
-			_editorNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			new SceneText(_editorNameText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new SceneText(text) {
 
 				@Override
 				protected void accept2(String value) {
@@ -88,6 +87,10 @@ public class VariableSection extends ScenePropertySection {
 					getEditor().refreshOutline();
 				}
 			};
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(
+						getModels().stream().map(model -> VariableComponent.get_variableName(model))));
+			});
 		}
 
 		return comp;
@@ -98,6 +101,7 @@ public class VariableSection extends ScenePropertySection {
 		manager.add(_fieldAction);
 	}
 
+	@SuppressWarnings("boxing")
 	private void createActions() {
 		_fieldAction = new Action("Assign to a property.", IAction.AS_CHECK_BOX) {
 			{
@@ -106,37 +110,26 @@ public class VariableSection extends ScenePropertySection {
 
 			@Override
 			public void run() {
-				update_editorField();
+				getModels().forEach(model -> {
+					SceneEditor editor = getEditor();
+
+					var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+
+					VariableComponent.set_variableField(model, _fieldAction.isChecked());
+
+					editor.setDirty(true);
+
+					var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+
+					editor.executeOperation(
+							new SingleObjectSnapshotOperation(before, after, "Set variables field flag."));
+				});
 			}
 		};
-	}
 
-	protected void update_editorField() {
-		getModels().forEach(model -> {
-			SceneEditor editor = getEditor();
-
-			var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
-
-			VariableComponent.set_variableField(model, _fieldAction.isChecked());
-
-			editor.setDirty(true);
-
-			var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
-
-			editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Set variables field flag."));
+		addUpdate(() -> {
+			_fieldAction.setChecked(flatValues_to_boolean(
+					getModels().stream().map(model -> VariableComponent.get_variableField(model))));
 		});
 	}
-
-	@SuppressWarnings("boxing")
-	@Override
-	public void user_update_UI_from_Model() {
-		var models = getModels();
-
-		_editorNameText
-				.setText(flatValues_to_String(models.stream().map(model -> VariableComponent.get_variableName(model))));
-
-		_fieldAction.setChecked(
-				flatValues_to_boolean(models.stream().map(model -> VariableComponent.get_variableField(model))));
-	}
-
 }

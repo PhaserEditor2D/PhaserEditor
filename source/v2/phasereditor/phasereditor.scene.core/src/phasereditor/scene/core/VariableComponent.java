@@ -55,7 +55,7 @@ public interface VariableComponent {
 	static void set_variableField(ObjectModel obj, boolean editorField) {
 		obj.put("variableField", editorField);
 	}
-
+	
 	// utils
 
 	static boolean is(Object obj) {

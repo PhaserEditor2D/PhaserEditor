@@ -58,6 +58,20 @@ public interface GameObjectComponent {
 	static void set_data(ObjectModel obj, JSONObject data) {
 		obj.put("data", data);
 	}
+	
+	// objectFactory
+
+	static String objectFactory_name = "objectFactory";
+
+	static String objectFactory_default = "";
+
+	static String get_objectFactory(ObjectModel obj) {
+		return (String) obj.get("objectFactory");
+	}
+
+	static void set_objectFactory(ObjectModel obj, String objectFactory) {
+		obj.put("objectFactory", objectFactory);
+	}
 
 	// utils
 	
@@ -68,6 +82,7 @@ public interface GameObjectComponent {
 	static void init(ObjectModel model) {
 		set_active(model, active_default);
 		set_data(model, data_default);
+		set_objectFactory(model, objectFactory_default);
 	}
 
 }

@@ -43,6 +43,7 @@ import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
 import phasereditor.scene.core.GameObjectComponent;
+import phasereditor.scene.core.GameObjectModel;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
@@ -320,7 +321,7 @@ public class SceneCodeDomBuilder {
 
 	@SuppressWarnings("static-method")
 	private MethodCallDom buildCreateGroup(MethodDeclDom methodDecl, GroupModel group, SceneModel sceneModel) {
-		var call = new MethodCallDom("group", getObjectFactoryExpr(sceneModel));
+		var call = new MethodCallDom("group", getObjectFactoryPath(sceneModel));
 
 		var array = group.getChildren().stream().map(model -> varname(model)).collect(joining(", "));
 		call.arg("[ " + array + " ]");
@@ -584,7 +585,7 @@ public class SceneCodeDomBuilder {
 
 		var methodName = model instanceof DynamicBitmapTextModel ? "dynamicBitmapText" : "bitmapText";
 
-		var call = new MethodCallDom(methodName, getObjectFactoryExpr(sceneModel));
+		var call = new MethodCallDom(getObjectFactoryMethod(methodName, model), getObjectFactoryPath(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -676,7 +677,7 @@ public class SceneCodeDomBuilder {
 	}
 
 	private MethodCallDom buildCreateSprite(MethodDeclDom methodDecl, SpriteModel model, SceneModel sceneModel) {
-		var call = new MethodCallDom("sprite", getObjectFactoryExpr(sceneModel));
+		var call = new MethodCallDom(getObjectFactoryMethod("sprite", model), getObjectFactoryPath(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -690,7 +691,7 @@ public class SceneCodeDomBuilder {
 		return call;
 	}
 
-	private static String getObjectFactoryExpr(SceneModel sceneModel) {
+	private static String getObjectFactoryPath(SceneModel sceneModel) {
 		switch (sceneModel.getMethodContextType()) {
 		case SCENE:
 			return "this.add";
@@ -703,7 +704,7 @@ public class SceneCodeDomBuilder {
 	}
 
 	private MethodCallDom buildCreateImage(MethodDeclDom methodDecl, ImageModel model, SceneModel sceneModel) {
-		var call = new MethodCallDom("image", getObjectFactoryExpr(sceneModel));
+		var call = new MethodCallDom(getObjectFactoryMethod("image", model), getObjectFactoryPath(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -720,7 +721,7 @@ public class SceneCodeDomBuilder {
 	private MethodCallDom buildCreateTileSprite(MethodDeclDom methodDecl, TileSpriteModel model,
 			SceneModel sceneModel) {
 
-		var call = new MethodCallDom("tileSprite", getObjectFactoryExpr(sceneModel));
+		var call = new MethodCallDom(getObjectFactoryMethod("tileSprite", model), getObjectFactoryPath(sceneModel));
 
 		call.arg(TransformComponent.get_x(model));
 		call.arg(TransformComponent.get_y(model));
@@ -735,6 +736,17 @@ public class SceneCodeDomBuilder {
 		methodDecl.getInstructions().add(call);
 
 		return call;
+	}
+
+	private static String getObjectFactoryMethod(String defaultName, GameObjectModel model) {
+
+		var factory = GameObjectComponent.get_objectFactory(model);
+
+		if (factory.trim().length() > 0) {
+			return factory.trim();
+		}
+		
+		return defaultName;
 	}
 
 	private IAssetFrameModel getTexture(ObjectModel model) {

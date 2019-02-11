@@ -51,6 +51,7 @@ import phasereditor.ui.EditorSharedImages;
  * @author arian
  *
  */
+@SuppressWarnings("synthetic-access")
 public class GameObjectSection extends ScenePropertySection {
 
 	private Composite _dataComp;
@@ -177,7 +178,7 @@ public class GameObjectSection extends ScenePropertySection {
 				var manager = new MenuManager();
 
 				for (var key : keys) {
-					manager.add(new Action("Add '" + key + "'") {
+					manager.add(new Action("Add Property '" + key + "'") {
 						@Override
 						public void run() {
 							addProperty(key);
@@ -250,19 +251,111 @@ public class GameObjectSection extends ScenePropertySection {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 		createActions();
 
 		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(2, false));
+		comp.setLayout(new GridLayout(3, false));
+
+		{
+			label(comp, "Factory",
+					"*(Editor) Custom GameObjectFactory method. Leave it blank to use the default method.");
+
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new SceneText(text) {
+
+				@Override
+				protected void accept2(String value) {
+					getModels().stream().forEach(model -> GameObjectComponent.set_objectFactory(model, value));
+					getEditor().setDirty(true);
+				}
+			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(
+						getModels().stream().map(model -> GameObjectComponent.get_objectFactory(model))));
+			});
+
+			var manager = new ToolBarManager();
+			manager.add(new Action("Factory menu.", EditorSharedImages.getImageDescriptor(IMG_BULLET_MENU)) {
+
+				@Override
+				public void run() {
+					var menuManager = new MenuManager();
+					var factory = flatValues_to_String(
+							getModels().stream().map(model -> GameObjectComponent.get_objectFactory(model)))
+
+									.trim();
+
+					var set = new HashSet<String>();
+
+					getScene().getModel().getDisplayList().visit(model -> {
+						if (GameObjectComponent.is(model)) {
+							var factory2 = GameObjectComponent.get_objectFactory(model);
+							if (!factory2.equals(factory)) {
+								set.add(factory2);
+							}
+						}
+					});
+
+					set.remove(GameObjectComponent.objectFactory_default);
+
+					for (var factory2 : set) {
+						menuManager.add(new Action("Set User Factory '" + factory2 + "'") {
+							@Override
+							public void run() {
+								setObjectFactory(factory2);
+							}
+						});
+					}
+
+					if (!factory.equals(GameObjectComponent.objectFactory_default)) {
+						menuManager.add(new Action("Clear User Factory") {
+							@Override
+							public void run() {
+								setObjectFactory(GameObjectComponent.objectFactory_default);
+							}
+						});
+					}
+
+					if (factory.length() > 0) {
+						menuManager.add(new Separator());
+						menuManager.add(new Action("Select All Objects With Factory '" + factory + "'") {
+
+							@Override
+							public void run() {
+								var list = new ArrayList<ObjectModel>();
+
+								getSceneModel().getDisplayList().visit(model -> {
+									if (GameObjectComponent.is(model)
+											&& GameObjectComponent.get_objectFactory(model).equals(factory)) {
+										list.add(model);
+									}
+								});
+
+								setSelection(list);
+							}
+						});
+					}
+
+					var menu = menuManager.createContextMenu(comp);
+					menu.setVisible(true);
+				}
+			});
+			manager.createControl(comp);
+		}
 
 		{
 
-			label(comp, "Data", "");
+			label(comp, "Data", "Phaser.GameObjects.GameObject.data");
 			var manager = new ToolBarManager();
 			manager.add(_addDataAction);
-			manager.createControl(comp);
+			manager.createControl(comp).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+
+			new Label(comp, 0);
 
 			_dataComp = new Composite(comp, 0);
 			_dataComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
@@ -273,6 +366,15 @@ public class GameObjectSection extends ScenePropertySection {
 		}
 
 		return comp;
+	}
+
+	private void setObjectFactory(String factory) {
+		wrapOperation(() -> {
+			getModels().forEach(model -> GameObjectComponent.set_objectFactory(model, factory));
+		});
+
+		getEditor().setDirty(true);
+		getEditor().updatePropertyPagesContentWithSelection();
 	}
 
 	private void updateDataRows() {
@@ -296,7 +398,7 @@ public class GameObjectSection extends ScenePropertySection {
 		for (var key : keys) {
 			for (var model : getModels()) {
 				var json = GameObjectComponent.get_data(model);
-				if (!json.has(key)) {
+				if (json != null && !json.has(key)) {
 					finalKeys.remove(key);
 				}
 			}
@@ -321,6 +423,11 @@ public class GameObjectSection extends ScenePropertySection {
 			row.setValue(str);
 		});
 
+	}
+
+	private void setSelection(ArrayList<ObjectModel> list) {
+		getEditor().setSelection(list);
+		getEditor().updatePropertyPagesContentWithSelection();
 	}
 
 	private class DataRowHandler {
@@ -360,7 +467,7 @@ public class GameObjectSection extends ScenePropertySection {
 					public void run() {
 
 						var menuManager = new MenuManager();
-						menuManager.add(new Action("Select Objects With '" + _key + "'") {
+						menuManager.add(new Action("Select All Objects With Property '" + _key + "'") {
 							@Override
 							public void run() {
 								selectObjectsWithSameProperty(null);
@@ -368,7 +475,8 @@ public class GameObjectSection extends ScenePropertySection {
 
 						});
 
-						menuManager.add(new Action("Select Objects With '" + _key + "=" + _valueText.getText() + "'") {
+						menuManager.add(new Action(
+								"Select All Objects With Property '" + _key + "=" + _valueText.getText() + "'") {
 							@Override
 							public void run() {
 								selectObjectsWithSameProperty(_valueText.getText());
@@ -440,8 +548,7 @@ public class GameObjectSection extends ScenePropertySection {
 				}
 			});
 
-			getEditor().setSelection(list);
-			getEditor().updatePropertyPagesContentWithSelection();
+			setSelection(list);
 		}
 
 		public void setValue(String value) {
