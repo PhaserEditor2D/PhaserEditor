@@ -21,9 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
@@ -41,6 +45,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
 import phasereditor.scene.core.TextureComponent;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -55,6 +60,38 @@ public class TextureSection extends ScenePropertySection {
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof TextureComponent;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(new Action("Select All Objects With This Texture",
+				EditorSharedImages.getImageDescriptor(IMG_SELECT_OBJECTS)) {
+			@Override
+			public void run() {
+
+				var currentFrame = getFrame();
+
+				if (currentFrame == null) {
+					return;
+				}
+
+				var finder = getAssetFinder();
+
+				var list = getSceneModel().getDisplayList().stream()
+
+						.filter(TextureComponent::is)
+
+						.filter(model -> {
+							var frame = TextureComponent.utils_getTexture(model, finder);
+							return frame == currentFrame;
+						})
+
+						.collect(toList());
+
+				getEditor().setSelection(list);
+				getEditor().updatePropertyPagesContentWithSelection();
+			}
+		});
 	}
 
 	@Override

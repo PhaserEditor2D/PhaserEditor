@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.eclipse.core.resources.IProject;
 import org.json.JSONArray;
@@ -157,6 +158,14 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 		}
 	}
 
+	public Stream<ObjectModel> stream() {
+		var list = new ArrayList<ObjectModel>();
+
+		visit(model -> list.add(model));
+
+		return list.stream();
+	}
+
 	public List<ObjectModel> getChildren() {
 		return ParentComponent.get_children(this);
 	}
@@ -184,7 +193,7 @@ public abstract class ParentModel extends ObjectModel implements ParentComponent
 			return result;
 		}
 	}
-	
+
 	public LookupTable lookupTable() {
 		return new LookupTable(this);
 	}
