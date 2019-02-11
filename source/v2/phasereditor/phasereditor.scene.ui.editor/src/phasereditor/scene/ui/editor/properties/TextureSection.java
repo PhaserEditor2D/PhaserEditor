@@ -45,6 +45,7 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.ui.EditorSharedImages;
@@ -92,6 +93,14 @@ public class TextureSection extends ScenePropertySection {
 
 				getEditor().setSelection(list);
 				getEditor().updatePropertyPagesContentWithSelection();
+			}
+		});
+
+		manager.add(new Action("Edit this texture key in the Asset Pack editor.",
+				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
+			@Override
+			public void run() {
+				AssetPackUI.openElementInEditor(getFrame());
 			}
 		});
 	}
