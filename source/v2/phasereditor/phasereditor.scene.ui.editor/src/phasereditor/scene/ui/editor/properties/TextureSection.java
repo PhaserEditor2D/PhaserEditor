@@ -30,6 +30,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -101,11 +103,17 @@ public class TextureSection extends ScenePropertySection {
 
 		{
 			var canvas = new SingleFrameCanvas(comp, SWT.BORDER);
-			canvas.setToolTipText(getHelp("Phaser.GameObjects.Sprite.frame"));
+			canvas.setToolTipText("Click to change the texture.");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.heightHint = 100;
 			gd.minimumWidth = 100;
 			canvas.setLayoutData(gd);
+			canvas.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseUp(MouseEvent e) {
+					selectFrame();
+				}
+			});
 
 			addUpdate(() -> {
 				var frame = getFrame();
