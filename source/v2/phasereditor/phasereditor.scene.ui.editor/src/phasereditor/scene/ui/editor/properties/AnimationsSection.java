@@ -40,11 +40,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.animation.ui.AnimationPreviewComp;
-import phasereditor.animation.ui.AnimationUI;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.ShowAnimationKeyInAnimationsEditorAction;
+import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -100,23 +101,20 @@ public class AnimationsSection extends ScenePropertySection {
 			}
 		};
 
-		_showAnimationInAssetPackAction = new Action("Show this animation key in the Asset Pack editor.",
-				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
+		_showAnimationInAssetPackAction = new ShowKeyInAssetPackEditorAction(
+				"Show this animation key in the Asset Pack editor.") {
+
 			@Override
-			public void run() {
-
-				var found = getCurrentAnimation();
-
-				AssetPackUI.openElementInEditor(found);
+			protected IAssetKey getKey() {
+				return (IAssetKey) getCurrentAnimation();
 			}
 		};
 
-		_showAnimationInAnimationsEditorAction = new Action("Show this animation in the Animations editor.",
-				EditorSharedImages.getImageDescriptor(IMG_FILM_GO)) {
+		_showAnimationInAnimationsEditorAction = new ShowAnimationKeyInAnimationsEditorAction() {
+
 			@Override
-			public void run() {
-				var anim = getCurrentAnimation();
-				AnimationUI.showAnimationInEditor(anim);
+			protected AnimationModel getAnimation() {
+				return getCurrentAnimation();
 			}
 		};
 	}

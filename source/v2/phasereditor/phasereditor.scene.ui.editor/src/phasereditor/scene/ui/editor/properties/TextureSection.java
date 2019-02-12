@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -40,18 +39,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.FileEditorInput;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
+import phasereditor.assetpack.ui.ShowTextureInTexturePackerAction;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
-import phasereditor.atlas.ui.ITexturePackerEditor;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.ui.EditorSharedImages;
 
@@ -104,43 +101,20 @@ public class TextureSection extends ScenePropertySection {
 			}
 		};
 
-		_showTextureInAssetPackEditorAction = new Action("Show this texture key in the Asset Pack editor.",
-				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
+		_showTextureInAssetPackEditorAction = new ShowKeyInAssetPackEditorAction(
+				"Show this texture key in the Asset Pack editor.") {
+
 			@Override
-			public void run() {
-				AssetPackUI.openElementInEditor(getFrame());
+			protected IAssetKey getKey() {
+				return getFrame();
 			}
 		};
 
-		_showTextureInTexturePackerEditorAction = new Action("Show this texture in the Texture Packer.",
-				EditorSharedImages.getImageDescriptor(IMG_IMAGES_GO)) {
+		_showTextureInTexturePackerEditorAction = new ShowTextureInTexturePackerAction() {
+
 			@Override
-			public void run() {
-				var frame = getFrame();
-				var packerFile = AssetPackCore.getTexturePackerFileOfFrame(frame);
-				if (packerFile == null) {
-					MessageDialog.openInformation(getEditor().getSite().getShell(), "Go To Texture Packer",
-							"Cannot find a Texture Packer file for this texture.");
-				} else {
-					try {
-						var editor = (ITexturePackerEditor) PlatformUI.getWorkbench()
-
-								.getActiveWorkbenchWindow()
-
-								.getActivePage()
-
-								.openEditor(new FileEditorInput(packerFile),
-
-										"phasereditor.atlas.ui.editor.TexturePackerEditor");
-
-						if (editor != null) {
-							editor.revealFrame(frame.getKey());
-						}
-
-					} catch (PartInitException e) {
-						throw new RuntimeException(e);
-					}
-				}
+			protected IAssetFrameModel getTexture() {
+				return getFrame();
 			}
 		};
 
