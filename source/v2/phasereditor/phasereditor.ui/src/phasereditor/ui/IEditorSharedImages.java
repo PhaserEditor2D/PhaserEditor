@@ -44,6 +44,7 @@ public interface IEditorSharedImages {
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";
 	String IMG_GENERIC_ELEMENT = "icons/generic_element.png";
 	String IMG_IMAGES = "icons/images.png";
+	String IMG_IMAGES_GO = "icons/images-go.png";
 	String IMG_NEW_ATLAS = "icons/atlas_add.png";
 	String IMG_IMAGE = "icons/image.png";
 	String IMG_ASSET_FOLDER = "icons/folder_brick.png";

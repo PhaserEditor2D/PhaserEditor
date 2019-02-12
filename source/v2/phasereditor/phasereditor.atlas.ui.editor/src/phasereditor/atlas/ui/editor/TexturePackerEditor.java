@@ -98,6 +98,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
+import phasereditor.atlas.ui.ITexturePackerEditor;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
@@ -110,7 +111,7 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
-public class TexturePackerEditor extends EditorPart implements IEditorSharedImages {
+public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, ITexturePackerEditor {
 
 	public static final String ID = "phasereditor.atlas.ui.editor.TexturePackerEditor"; //$NON-NLS-1$
 
@@ -1205,6 +1206,26 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	public TexturePackerEditorModel getModel() {
 		return _model;
+	}
+
+	@Override
+	public void revealFrame(String frameName) {
+		getModel().getPages()
+
+				.stream()
+
+				.flatMap(page -> page.stream())
+
+				.filter(frame -> frame.getName().equals(frameName))
+
+				.findFirst()
+
+				.ifPresent(frame -> {
+					var index = frame.getPage().getIndex();
+					selectTab(index);
+					var canvas = getAtlasCanvas(index);
+					canvas.setSelection(new StructuredSelection(frame), true);
+				});
 	}
 
 }

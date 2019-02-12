@@ -52,6 +52,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
@@ -967,7 +968,7 @@ public class AssetPackCore {
 
 		var tilemapCount = 0;
 		var atlasCount = 0;
-		var imageCount = 0; 
+		var imageCount = 0;
 
 		for (AssetPackModel pack : packs) {
 			for (AssetModel asset : pack.getAssets()) {
@@ -999,7 +1000,7 @@ public class AssetPackCore {
 			out.println("Number of atlas assets exceeded.");
 			return LicCore.getFreeNumberOfImages() + " atlas assets";
 		}
-		
+
 		out.println("Image assets for '" + project + "' : " + imageCount);
 
 		if (imageCount > LicCore.getFreeNumberOfImages()) {
@@ -1093,5 +1094,22 @@ public class AssetPackCore {
 
 			return finder;
 		}
+	}
+
+	public static IFile getTexturePackerFileOfFrame(IAssetKey key) {
+		var asset = key.getAsset();
+
+		if (asset instanceof MultiAtlasAssetModel) {
+			var jsonFile = ((MultiAtlasAssetModel) asset).getUrlFile();
+			
+			var packerFile = jsonFile.getParent()
+					.getFile(new Path(jsonFile.getName()).removeFileExtension().addFileExtension("atlas"));
+			
+			if (packerFile.exists()) {
+				return packerFile;
+			}
+		}
+		
+		return null;
 	}
 }

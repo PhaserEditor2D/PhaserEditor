@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -39,6 +40,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.FileEditorInput;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -47,6 +51,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
+import phasereditor.atlas.ui.ITexturePackerEditor;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.ui.EditorSharedImages;
 
@@ -55,6 +60,10 @@ import phasereditor.ui.EditorSharedImages;
  *
  */
 public class TextureSection extends ScenePropertySection {
+
+	private Action _selectAllObjectsWithTextureAction;
+	private Action _showTextureInAssetPackEditorAction;
+	private Action _showTextureInTexturePackerEditorAction;
 
 	public TextureSection(ScenePropertyPage page) {
 		super("Texture", page);
@@ -65,9 +74,8 @@ public class TextureSection extends ScenePropertySection {
 		return obj instanceof TextureComponent;
 	}
 
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		manager.add(new Action("Select All Objects With This Texture",
+	private void createActions() {
+		_selectAllObjectsWithTextureAction = new Action("Select All Objects With This Texture",
 				EditorSharedImages.getImageDescriptor(IMG_SELECT_OBJECTS)) {
 			@Override
 			public void run() {
@@ -94,19 +102,68 @@ public class TextureSection extends ScenePropertySection {
 				getEditor().setSelection(list);
 				getEditor().updatePropertyPagesContentWithSelection();
 			}
-		});
+		};
 
-		manager.add(new Action("Edit this texture key in the Asset Pack editor.",
+		_showTextureInAssetPackEditorAction = new Action("Show this texture key in the Asset Pack editor.",
 				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
 			@Override
 			public void run() {
 				AssetPackUI.openElementInEditor(getFrame());
 			}
+		};
+
+		_showTextureInTexturePackerEditorAction = new Action("Show this texture in the Texture Packer.",
+				EditorSharedImages.getImageDescriptor(IMG_IMAGES_GO)) {
+			@Override
+			public void run() {
+				var frame = getFrame();
+				var packerFile = AssetPackCore.getTexturePackerFileOfFrame(frame);
+				if (packerFile == null) {
+					MessageDialog.openInformation(getEditor().getSite().getShell(), "Go To Texture Packer",
+							"Cannot find a Texture Packer file for this texture.");
+				} else {
+					try {
+						var editor = (ITexturePackerEditor) PlatformUI.getWorkbench()
+
+								.getActiveWorkbenchWindow()
+
+								.getActivePage()
+
+								.openEditor(new FileEditorInput(packerFile),
+
+										"phasereditor.atlas.ui.editor.TexturePackerEditor");
+
+						if (editor != null) {
+							editor.revealFrame(frame.getKey());
+						}
+
+					} catch (PartInitException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		};
+
+		addUpdate(() -> {
+			var frame = getFrame();
+			_showTextureInAssetPackEditorAction.setEnabled(frame != null);
+			_selectAllObjectsWithTextureAction.setEnabled(frame != null);
+			_showTextureInTexturePackerEditorAction.setEnabled(frame != null);
 		});
 	}
 
 	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		manager.add(_selectAllObjectsWithTextureAction);
+		manager.add(_showTextureInAssetPackEditorAction);
+		manager.add(_showTextureInTexturePackerEditorAction);
+	}
+
+	@Override
 	public Control createContent(Composite parent) {
+
+		createActions();
+
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(1, false));
 
