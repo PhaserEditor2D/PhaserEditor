@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static java.util.stream.Collectors.toList;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -36,6 +38,8 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.ui.EditorSharedImages;
@@ -54,6 +58,8 @@ public class BitmapTextSection extends ScenePropertySection {
 	private Text _letterSpacingText;
 	private Button _fontNameBtn;
 	private FontAction _fontAction;
+	private ShowKeyInAssetPackEditorAction _showFontInAssetPackEditor;
+	private Action _selectAllObjectsWithSameFontAction;
 
 	public BitmapTextSection(FormPropertyPage page) {
 		super("Bitmap Text", page);
@@ -250,6 +256,11 @@ public class BitmapTextSection extends ScenePropertySection {
 
 		manager.add(new FontSizeAction(true));
 		manager.add(new FontSizeAction(false));
+
+		manager.add(new Separator());
+
+		manager.add(_selectAllObjectsWithSameFontAction);
+		manager.add(_showFontInAssetPackEditor);
 	}
 
 	private void createActions() {
@@ -258,6 +269,41 @@ public class BitmapTextSection extends ScenePropertySection {
 		_alignRightAction = new AlignAction("ALIGN_RIGHT", IMG_TEXT_ALIGN_RIGHT, BitmapTextComponent.ALIGN_RIGHT);
 
 		_fontAction = new FontAction();
+
+		_selectAllObjectsWithSameFontAction = new Action("Select all objects with the same font.",
+				EditorSharedImages.getImageDescriptor(IMG_SELECT_OBJECTS)) {
+			@Override
+			public void run() {
+
+				var key = getAssetKey();
+
+				if (key == null) {
+					return;
+				}
+
+				var list = getSceneModel().getDisplayList().stream()
+
+						.filter(BitmapTextComponent::is)
+
+						.filter(model -> key.equals(BitmapTextComponent.get_fontAssetKey(model)))
+
+						.collect(toList());
+
+				getEditor().setSelection(list);
+				getEditor().updatePropertyPagesContentWithSelection();
+			}
+		};
+
+		_showFontInAssetPackEditor = new ShowKeyInAssetPackEditorAction(
+				"Show the bitmap font key in the Asset Pack editor.") {
+
+			@Override
+			protected IAssetKey getKey() {
+				var key = getAssetKey();
+				var asset = getAssetFinder().findAssetKey(key);
+				return asset;
+			}
+		};
 	}
 
 	@SuppressWarnings("boxing")
@@ -292,6 +338,10 @@ public class BitmapTextSection extends ScenePropertySection {
 			action.setChecked(flatValues_to_boolean(
 					getModels().stream().map(model -> BitmapTextComponent.get_align(model) == action.getAlign())));
 		}
+	}
+
+	private String getAssetKey() {
+		return flatValues_to_String(getModels().stream().map(model -> BitmapTextComponent.get_fontAssetKey(model)));
 	}
 
 }
