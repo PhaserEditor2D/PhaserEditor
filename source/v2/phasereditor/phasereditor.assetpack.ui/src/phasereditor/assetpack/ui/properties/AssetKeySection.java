@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,8 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.ui.EditorSharedImages;
+import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -57,11 +55,11 @@ public class AssetKeySection extends FormPropertySection<IAssetKey> {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		manager.add(new Action("Edit this asset key in the Asset Pack editor.",
-				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
+		manager.add(new ShowKeyInAssetPackEditorAction("Show this key in the Asset Pack editor.") {
+
 			@Override
-			public void run() {
-				AssetPackUI.openElementInEditor(getModels().get(0));
+			protected IAssetKey getKey() {
+				return getModels().get(0);
 			}
 		});
 	}

@@ -21,34 +21,27 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import static phasereditor.ui.IEditorSharedImages.IMG_IMAGES_GO;
+import static phasereditor.ui.IEditorSharedImages.IMG_FILM_GO;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.swt.widgets.Event;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.animation.ui.AnimationUI;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public abstract class ShowTextureInTexturePackerAction extends Action {
-	public ShowTextureInTexturePackerAction() {
-		super("Show this texture in the Texture Packer.", EditorSharedImages.getImageDescriptor(IMG_IMAGES_GO));
+public abstract class ShowAnimationsInAnimationsEditorAction extends Action {
+	public ShowAnimationsInAnimationsEditorAction() {
+		super("Show these animations in the Animations editor.", EditorSharedImages.getImageDescriptor(IMG_FILM_GO));
 	}
 
 	@Override
-	public void runWithEvent(Event event) {
-		var frame = getTexture();
-
-		var editor = ShowAtlasKeyInTexturePackerAction.openAtlasKeyInTexturePackerEditor(frame.getAsset());
-
-		if (editor != null) {
-			editor.revealFrame(frame.getKey());
-		}
-
+	public void run() {
+		AnimationUI.showAnimationsInEditor(getAnimations());
 	}
 
-	protected abstract IAssetFrameModel getTexture();
+	protected abstract AnimationsModel getAnimations();
 }

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,6 +31,8 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.ShowTextureInTexturePackerAction;
 import phasereditor.assetpack.ui.preview.ExplainAssetFrameCanvas;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -68,6 +71,25 @@ public class SingleFramePreviewSection extends FormPropertySection<IAssetKey> {
 			preview.setModel((IAssetFrameModel) model);
 		});
 		return comp;
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		super.fillToolbar(manager);
+
+		var action = new ShowTextureInTexturePackerAction() {
+
+			@Override
+			protected IAssetFrameModel getTexture() {
+				return (IAssetFrameModel) getModels().get(0);
+			}
+		};
+
+		addUpdate(() -> {
+			action.setEnabled(getModels().get(0) instanceof MultiAtlasAssetModel.Frame);
+		});
+
+		manager.add(action);
 	}
 
 }

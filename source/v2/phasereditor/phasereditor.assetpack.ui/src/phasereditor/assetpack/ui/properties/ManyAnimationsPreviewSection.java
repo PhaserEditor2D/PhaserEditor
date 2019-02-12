@@ -23,10 +23,13 @@ package phasereditor.assetpack.ui.properties;
 
 import static java.util.stream.Collectors.toList;
 
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.animations.AnimationsModel;
+import phasereditor.assetpack.ui.ShowAnimationsInAnimationsEditorAction;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -37,15 +40,15 @@ public class ManyAnimationsPreviewSection extends FormPropertySection<Animations
 
 	public ManyAnimationsPreviewSection() {
 		super("Animations Preview");
-		
+
 		setFillSpace(true);
 	}
-	
+
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
 		return number > 0;
 	}
-	
+
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof AnimationsAssetModel;
@@ -55,6 +58,21 @@ public class ManyAnimationsPreviewSection extends FormPropertySection<Animations
 	public Control createContent(Composite parent) {
 		return ManyAnimationPreviewSection.createAnimationsViewer(this, parent,
 				() -> getModels().stream().flatMap(model -> model.getSubElements().stream()).collect(toList()));
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		var action = new ShowAnimationsInAnimationsEditorAction() {
+
+			@Override
+			protected AnimationsModel getAnimations() {
+				return getModels().get(0).getAnimationsModel();
+			}
+		};
+
+		addUpdate(() -> action.setEnabled(getModels().size() == 1));
+		
+		manager.add(action);
 	}
 
 }

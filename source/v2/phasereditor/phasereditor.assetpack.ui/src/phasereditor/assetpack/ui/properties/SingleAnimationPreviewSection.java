@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 
 import phasereditor.animation.ui.AnimationPreviewComp;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.ShowAnimationKeyInAnimationsEditorAction;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -71,6 +73,16 @@ public class SingleAnimationPreviewSection extends FormPropertySection<Animation
 		super.fillToolbar(manager);
 
 		_preview.createToolBar(manager);
+		
+		manager.add(new Separator());
+		
+		manager.add(new ShowAnimationKeyInAnimationsEditorAction() {
+			
+			@Override
+			protected AnimationModel getAnimation() {
+				return getModels().get(0);
+			}
+		});
 	}
 
 }

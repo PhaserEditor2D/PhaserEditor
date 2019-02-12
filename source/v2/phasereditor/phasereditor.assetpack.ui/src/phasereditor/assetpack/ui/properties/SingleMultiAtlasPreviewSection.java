@@ -21,12 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.ShowAtlasKeyInTexturePackerAction;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetPreviewComp;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -42,7 +44,7 @@ public class SingleMultiAtlasPreviewSection extends FormPropertySection<MultiAtl
 		super("Multi Atlas Preview");
 		setFillSpace(true);
 	}
-	
+
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
@@ -67,8 +69,18 @@ public class SingleMultiAtlasPreviewSection extends FormPropertySection<MultiAtl
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 		super.fillToolbar(manager);
-		
+
 		_preview.fillToolBar(manager);
+
+		manager.add(new Separator());
+		
+		manager.add(new ShowAtlasKeyInTexturePackerAction() {
+
+			@Override
+			protected MultiAtlasAssetModel getAtlasKey() {
+				return getModels().get(0);
+			}
+		});
 	}
 
 }

@@ -1100,14 +1100,20 @@ public class AssetPackCore {
 		var asset = key.getAsset();
 
 		if (asset instanceof MultiAtlasAssetModel) {
-			var jsonFile = ((MultiAtlasAssetModel) asset).getUrlFile();
-			
-			var packerFile = jsonFile.getParent()
-					.getFile(new Path(jsonFile.getName()).removeFileExtension().addFileExtension("atlas"));
-			
-			if (packerFile.exists()) {
-				return packerFile;
-			}
+			getAtlasTexturePackerFile((MultiAtlasAssetModel) asset);
+		}
+		
+		return null;
+	}
+
+	public static IFile getAtlasTexturePackerFile(MultiAtlasAssetModel atlasAsset) {
+		var jsonFile = atlasAsset.getUrlFile();
+		
+		var packerFile = jsonFile.getParent()
+				.getFile(new Path(jsonFile.getName()).removeFileExtension().addFileExtension("atlas"));
+		
+		if (packerFile.exists()) {
+			return packerFile;
 		}
 		
 		return null;

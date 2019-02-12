@@ -21,11 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import java.util.Optional;
+
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 
 /**
  * @author arian
@@ -34,10 +37,16 @@ import phasereditor.assetpack.core.animations.AnimationModel;
 public class AnimationUI {
 
 	public static void showAnimationInEditor(AnimationModel anim) {
-		var file = anim.getAnimations().getFile();
+		showAnimationsInEditor(anim.getAnimations()).ifPresent(editor -> {
+			editor.revealAnimation(anim.getKey());
+		});
+	}
+
+	public static Optional<IAnimationsEditor> showAnimationsInEditor(AnimationsModel animations) {
+		var file = animations.getFile();
 
 		if (!file.exists()) {
-			return;
+			return Optional.empty();
 		}
 
 		try {
@@ -45,13 +54,14 @@ public class AnimationUI {
 					.openEditor(new FileEditorInput(file), "phasereditor.animation.ui.editor.AnimationsEditor");
 
 			if (editor == null) {
-				return;
+				return Optional.empty();
 			}
-			
-			editor.revealAnimation(anim.getKey());
+
+			return Optional.of(editor);
 
 		} catch (PartInitException e) {
 			e.printStackTrace();
+			return Optional.empty();
 		}
 	}
 }
