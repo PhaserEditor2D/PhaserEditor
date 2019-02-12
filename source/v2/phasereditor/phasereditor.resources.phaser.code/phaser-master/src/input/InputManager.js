@@ -136,16 +136,6 @@ var InputManager = new Class({
         this.isOver = true;
 
         /**
-         * The DOM Event that was fired when the canvas dispatched an over or out event.
-         *
-         * @name Phaser.Input.InputManager#_emitIsOverEvent
-         * @type {(MouseEvent|TouchEvent)}
-         * @private
-         * @since 3.16.0
-         */
-        this._emitIsOverEvent = false;
-
-        /**
          * Are there any up callbacks defined?
          *
          * @name Phaser.Input.InputManager#_hasUpCallback
@@ -357,6 +347,17 @@ var InputManager = new Class({
         this.useQueue = config.inputQueue;
 
         /**
+         * The time this Input Manager was last updated.
+         * This value is populated by the Game Step each frame.
+         *
+         * @name Phaser.Input.InputManager#time
+         * @type {number}
+         * @readonly
+         * @since 3.16.2
+         */
+        this.time = 0;
+
+        /**
          * Internal property that tracks frame event state.
          *
          * @name Phaser.Input.InputManager#_updatedThisFrame
@@ -431,6 +432,10 @@ var InputManager = new Class({
         {
             this.game.events.on(GameEvents.PRE_STEP, this.legacyUpdate, this);
         }
+        else
+        {
+            this.game.events.on(GameEvents.PRE_STEP, this.preStep, this);
+        }
 
         this.game.events.on(GameEvents.POST_STEP, this.postUpdate, this);
 
@@ -441,6 +446,7 @@ var InputManager = new Class({
      * Internal canvas state change, called automatically by the Mouse Manager.
      *
      * @method Phaser.Input.InputManager#setCanvasOver
+     * @fires Phaser.Input.Events#GAME_OVER
      * @private
      * @since 3.16.0
      *
@@ -450,13 +456,14 @@ var InputManager = new Class({
     {
         this.isOver = true;
 
-        this._emitIsOverEvent = event;
+        this.events.emit(Events.GAME_OVER, event);
     },
 
     /**
      * Internal canvas state change, called automatically by the Mouse Manager.
      *
      * @method Phaser.Input.InputManager#setCanvasOut
+     * @fires Phaser.Input.Events#GAME_OUT
      * @private
      * @since 3.16.0
      *
@@ -466,10 +473,8 @@ var InputManager = new Class({
     {
         this.isOver = false;
 
-        this._emitIsOverEvent = event;
+        this.events.emit(Events.GAME_OUT, event);
     },
-
-
 
     /**
      * Internal update method, called automatically when a DOM input event is received.
@@ -505,6 +510,20 @@ var InputManager = new Class({
     },
 
     /**
+     * Internal update, called automatically by the Game Step.
+     *
+     * @method Phaser.Input.InputManager#preStep
+     * @private
+     * @since 3.16.2
+     *
+     * @param {number} time - The time stamp value of this game step.
+     */
+    preStep: function (time)
+    {
+        this.time = time;
+    },
+
+    /**
      * Internal update loop, called automatically by the Game Step when using the legacy event queue.
      *
      * @method Phaser.Input.InputManager#legacyUpdate
@@ -516,6 +535,8 @@ var InputManager = new Class({
      */
     legacyUpdate: function (time)
     {
+        this.time = time;
+
         var i;
 
         this._setCursor = 0;
@@ -617,9 +638,6 @@ var InputManager = new Class({
         {
             this.canvas.style.cursor = this.defaultCursor;
         }
-
-        //  Reset the isOver event
-        this._emitIsOverEvent = null;
 
         this.dirty = false;
 

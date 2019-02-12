@@ -8,3 +8,4 @@ cp -R /home/arian/Documents/Phaser/phaser3-docs/json /home/arian/Documents/Phase
 #npm run tsgen
 cp -R /home/arian/Documents/Phaser/phaser3-docs/typescript /home/arian/Documents/PhaserEditor/Public/source/v2/phasereditor/phasereditor.resources.phaser.code/phaser-master/
 
+
