@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,12 +50,13 @@ import phasereditor.ui.properties.FormPropertyPage;
  * @author arian
  *
  */
-@SuppressWarnings("synthetic-access")
 public class AnimationsSection extends ScenePropertySection {
 
 	private AnimationPreviewComp _animCanvas;
 	private Button _browseBtn;
 	private Button _clearBtn;
+	private Action _selectAllWithSameAnimationAction;
+	private Action _showAnimationInAssetPackAction;
 
 	public AnimationsSection(FormPropertyPage page) {
 		super("Animations", page);
@@ -64,35 +67,61 @@ public class AnimationsSection extends ScenePropertySection {
 		return obj instanceof AnimationsComponent;
 	}
 
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		_animCanvas.createPlaybackToolbar(manager);
-		manager.add(new Separator());
-		manager.add(new Action("Show this animations key in the Asset Pack editor.",
+	private void createActions() {
+		_selectAllWithSameAnimationAction = new Action("Select All Objects With This Auto-Play Animation",
+				EditorSharedImages.getImageDescriptor(IMG_SELECT_OBJECTS)) {
+			@Override
+			public void run() {
+
+				var anim = getCurrentAnimation();
+
+				if (anim == null) {
+					return;
+				}
+
+				var list = getSceneModel().getDisplayList().stream()
+
+						.filter(AnimationsComponent::is)
+
+						.filter(model -> {
+							var key = AnimationsComponent.get_autoPlayAnimKey(model);
+
+							return anim.getKey().equals(key);
+						})
+
+						.collect(toList());
+
+				getEditor().setSelection(list);
+				getEditor().updatePropertyPagesContentWithSelection();
+			}
+		};
+
+		_showAnimationInAssetPackAction = new Action("Show this animation key in the Asset Pack editor.",
 				EditorSharedImages.getImageDescriptor(IMG_PACKAGE_GO)) {
 			@Override
 			public void run() {
 
-				AnimationModel found = null;
-
-				var key = flatValues_to_String(
-						getModels().stream().map(model -> AnimationsComponent.get_autoPlayAnimKey(model)));
-
-				if (key != null) {
-					for (var anim : getAnimations()) {
-						if (anim.getKey().equals(key)) {
-							found = anim;
-						}
-					}
-				}
+				var found = getCurrentAnimation();
 
 				AssetPackUI.openElementInEditor(found);
 			}
-		});
+		};
+	}
+
+	@Override
+	public void fillToolbar(ToolBarManager manager) {
+		_animCanvas.createPlaybackToolbar(manager);
+		manager.add(new Separator());
+
+		manager.add(_selectAllWithSameAnimationAction);
+
+		manager.add(_showAnimationInAssetPackAction);
 	}
 
 	@Override
 	public Control createContent(Composite parent) {
+
+		createActions();
 
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
@@ -115,6 +144,40 @@ public class AnimationsSection extends ScenePropertySection {
 		_clearBtn.setText("Clear");
 		_clearBtn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> clearAnimation()));
 
+		addUpdate(() -> {
+			AnimationModel found = null;
+
+			var key = flatValues_to_String(
+					getModels().stream().map(model -> AnimationsComponent.get_autoPlayAnimKey(model)));
+
+			if (key != null) {
+				for (var anim : getAnimations()) {
+					if (anim.getKey().equals(key)) {
+						found = anim;
+					}
+				}
+			}
+
+			if (found == null) {
+				_browseBtn.setText("Select Auto Play Animation");
+			} else {
+				_browseBtn.setText(key);
+			}
+
+			_animCanvas.setVisible(found != null);
+			{
+				var gd = (GridData) _animCanvas.getLayoutData();
+				gd.heightHint = found == null ? 0 : 200;
+			}
+			_animCanvas.setModel(found);
+
+			_animCanvas.getParent().getParent().layout();
+
+			_selectAllWithSameAnimationAction.setEnabled(found != null);
+			_showAnimationInAssetPackAction.setEnabled(found != null);
+
+		});
+
 		return comp;
 	}
 
@@ -128,7 +191,7 @@ public class AnimationsSection extends ScenePropertySection {
 
 		getEditor().setDirty(true);
 
-		user_update_UI_from_Model();
+		update_UI_from_Model();
 	}
 
 	private void selectAnimation() {
@@ -148,7 +211,7 @@ public class AnimationsSection extends ScenePropertySection {
 
 			getEditor().setDirty(true);
 
-			user_update_UI_from_Model();
+			update_UI_from_Model();
 		}
 	}
 
@@ -169,8 +232,7 @@ public class AnimationsSection extends ScenePropertySection {
 		return list;
 	}
 
-	@Override
-	public void user_update_UI_from_Model() {
+	private AnimationModel getCurrentAnimation() {
 		AnimationModel found = null;
 
 		var key = flatValues_to_String(
@@ -183,21 +245,7 @@ public class AnimationsSection extends ScenePropertySection {
 				}
 			}
 		}
-
-		if (found == null) {
-			_browseBtn.setText("Select Auto Play Animation");
-		} else {
-			_browseBtn.setText(key);
-		}
-
-		_animCanvas.setVisible(found != null);
-		{
-			var gd = (GridData) _animCanvas.getLayoutData();
-			gd.heightHint = found == null ? 0 : 200;
-		}
-		_animCanvas.setModel(found);
-
-		_animCanvas.getParent().getParent().layout();
+		return found;
 	}
 
 }
