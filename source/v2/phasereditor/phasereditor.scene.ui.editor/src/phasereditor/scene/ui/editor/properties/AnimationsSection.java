@@ -30,6 +30,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -132,6 +134,12 @@ public class AnimationsSection extends ScenePropertySection {
 			gd.horizontalSpan = 2;
 			gd.heightHint = 200;
 			_animCanvas.setLayoutData(gd);
+			_animCanvas.getAnimationCanvas().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseDoubleClick(MouseEvent e) {
+					selectAnimation();
+				}
+			});
 		}
 
 		_browseBtn = new Button(comp, 0);
