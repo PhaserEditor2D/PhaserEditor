@@ -11,15 +11,15 @@ import org.eclipse.ui.menus.WorkbenchWindowControlContribution;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 
-public class VersionsControl extends WorkbenchWindowControlContribution {
+public class PhaserVersionControl extends WorkbenchWindowControlContribution {
 
-	public VersionsControl() {
+	public PhaserVersionControl() {
 	}
 
 	@Override
 	protected Control createControl(Composite parent) {
 		CLabel label = new CLabel(parent, SWT.None);
-		label.setText("Phaser v" + InspectCore.PHASER_VERSION);
+		label.setText("v" + InspectCore.PHASER_VERSION);
 		label.setImage(EditorSharedImages.getImage(IMG_PHASER_LOGO));
 		return label;
 	}

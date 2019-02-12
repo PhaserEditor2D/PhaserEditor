@@ -136,7 +136,7 @@
          <toolbar
                id="phasereditor.inspect.ui.versions">
             <control
-                  class="phasereditor.inspect.ui.VersionsControl">
+                  class="phasereditor.inspect.ui.PhaserVersionControl">
             </control>
          </toolbar>
       </menuContribution>
