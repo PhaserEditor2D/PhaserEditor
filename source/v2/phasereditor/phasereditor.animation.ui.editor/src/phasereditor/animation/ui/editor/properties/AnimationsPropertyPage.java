@@ -50,6 +50,8 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 		var list = new ArrayList<FormPropertySection<?>>();
 
 		list.add(new AnimationFrameSection(this));
+		list.add(new AnimationFrameAssetKeySection(this));
+		list.add(new AnimationFramePreviewSection(this));
 		list.add(new AnimationSection(this));
 
 		return list;

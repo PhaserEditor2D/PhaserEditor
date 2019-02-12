@@ -29,11 +29,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.ExplainFrameDataCanvas;
 import phasereditor.ui.properties.TextToIntListener;
 
 /**
@@ -45,13 +42,16 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 
 	public AnimationFrameSection(AnimationsPropertyPage page) {
 		super(page, "Animation Frame");
-
-		setFillSpace(true);
 	}
 
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof AnimationFrameModel;
+	}
+	
+	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number == 1;
 	}
 
 	@SuppressWarnings("unused")
@@ -112,76 +112,6 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 				label.setText("Real duration: " + total);
 			});
 
-		}
-
-		// texture
-
-		{
-			label(comp, "Frame", InspectCore.getPhaserHelp().getMemberHelp("AnimationFrameConfig.frame"),
-					new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		}
-
-		{
-			var canvas = new ExplainFrameDataCanvas(comp, SWT.BORDER);
-			var gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-			canvas.setLayoutData(gd);
-
-			addUpdate(() -> {
-				{
-
-					var frame = (IAssetFrameModel) flatValues_to_Object(
-							getModels().stream().map(model -> model.getAssetFrame()));
-
-					if (frame == null) {
-						canvas.clear();
-					} else {
-						var file = frame.getImageFile();
-						var fd = frame.getFrameData();
-
-						canvas.setImageInfo(file, fd, true);
-					}
-
-				}
-			});
-		}
-
-		{
-			var _frameLabel = new Label(comp, SWT.WRAP);
-			_frameLabel.setText("");
-			_frameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-
-			addUpdate(() -> {
-				{
-
-					var frame = (IAssetFrameModel) flatValues_to_Object(
-							getModels().stream().map(model -> model.getAssetFrame()));
-
-					if (frame == null) {
-						_frameLabel.setText("Frame");
-					} else {
-
-						var file = frame.getImageFile();
-						var fd = frame.getFrameData();
-
-						var sb = new StringBuilder();
-						if (frame instanceof ImageAssetModel.Frame) {
-							sb.append("key: " + frame.getKey());
-						} else {
-							sb.append("key: " + frame.getAsset().getKey() + "\nframe: " + frame.getKey());
-						}
-
-						sb.append("\n");
-						sb.append("size: " + fd.srcSize.x + "x" + fd.srcSize.y);
-						sb.append("\n");
-
-						if (file != null) {
-							sb.append("file: " + file.getName());
-						}
-
-						_frameLabel.setText(sb.toString());
-					}
-				}
-			});
 		}
 
 		return comp;
