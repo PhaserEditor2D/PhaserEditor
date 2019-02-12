@@ -118,8 +118,9 @@ public class TextureSection extends ScenePropertySection {
 			gd.minimumWidth = 100;
 			canvas.setLayoutData(gd);
 			canvas.addMouseListener(new MouseAdapter() {
+
 				@Override
-				public void mouseUp(MouseEvent e) {
+				public void mouseDoubleClick(MouseEvent e) {
 					selectFrame();
 				}
 			});
