@@ -74,6 +74,7 @@ import org.json.JSONObject;
 
 import phasereditor.animation.ui.AnimationActions;
 import phasereditor.animation.ui.AnimationCanvas;
+import phasereditor.animation.ui.IAnimationsEditor;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -99,7 +100,7 @@ import phasereditor.ui.editors.EditorFileStampHelper;
  * @author arian
  *
  */
-public class AnimationsEditor extends EditorPart implements IPersistableEditor {
+public class AnimationsEditor extends EditorPart implements IPersistableEditor, IAnimationsEditor {
 
 	private static final String ANIMATION_KEY = "animation";
 	private static final String OUTLINER_TREE_STATE_KEY = "outliner.tree.state";
@@ -446,13 +447,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	public void handleFileMoved(IFile file) {
 		super.setInput(new FileEditorInput(file));
-		
+
 		_model.setFile(file);
-		
+
 		setPartName(file.getName());
-		
+
 		firePropertyChange(PROP_TITLE);
-		
+
 	}
 
 	public void reloadFile() {
@@ -932,5 +933,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		setDirty();
+	}
+
+	@Override
+	public void revealAnimation(String key) {
+		var anim = getModel().getAnimation(key);
+		if (anim != null) {
+			selectAnimation(anim);
+		}
 	}
 }

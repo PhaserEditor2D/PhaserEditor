@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.animation.ui.AnimationPreviewComp;
+import phasereditor.animation.ui.AnimationUI;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.animations.AnimationModel;
@@ -59,6 +60,7 @@ public class AnimationsSection extends ScenePropertySection {
 	private Button _clearBtn;
 	private Action _selectAllWithSameAnimationAction;
 	private Action _showAnimationInAssetPackAction;
+	private Action _showAnimationInAnimationsEditorAction;
 
 	public AnimationsSection(FormPropertyPage page) {
 		super("Animations", page);
@@ -108,6 +110,15 @@ public class AnimationsSection extends ScenePropertySection {
 				AssetPackUI.openElementInEditor(found);
 			}
 		};
+
+		_showAnimationInAnimationsEditorAction = new Action("Show this animation in the Animations editor.",
+				EditorSharedImages.getImageDescriptor(IMG_FILM_GO)) {
+			@Override
+			public void run() {
+				var anim = getCurrentAnimation();
+				AnimationUI.showAnimationInEditor(anim);
+			}
+		};
 	}
 
 	@Override
@@ -118,6 +129,8 @@ public class AnimationsSection extends ScenePropertySection {
 		manager.add(_selectAllWithSameAnimationAction);
 
 		manager.add(_showAnimationInAssetPackAction);
+
+		manager.add(_showAnimationInAnimationsEditorAction);
 	}
 
 	@Override
@@ -183,6 +196,7 @@ public class AnimationsSection extends ScenePropertySection {
 
 			_selectAllWithSameAnimationAction.setEnabled(found != null);
 			_showAnimationInAssetPackAction.setEnabled(found != null);
+			_showAnimationInAnimationsEditorAction.setEnabled(found != null);
 
 		});
 
