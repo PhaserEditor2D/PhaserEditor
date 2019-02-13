@@ -8,3 +8,4 @@ rm -R /home/arian/Documents/PhaserEditor/Public/source/v2/phasereditor/phaseredi
 mv /home/arian/Documents/PhaserEditor/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples/phaser3-examples/public/assets/audio /home/arian/Documents/PhaserEditor/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples.assets.audio/phaser3-examples/public/assets/
 
 echo "Remember to build the examples cache (phasereditor.scripts.BuildExamplesCache)"
+echo "Remember to delete unused audio assets (phasereditor.scripts.RemoveUnusedAudioAssets)"

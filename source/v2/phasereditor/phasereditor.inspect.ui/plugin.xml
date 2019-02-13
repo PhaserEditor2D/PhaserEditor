@@ -130,16 +130,6 @@
                style="push">
          </command>
       </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:org.eclipse.ui.trim.status?before=additions">
-         <toolbar
-               id="phasereditor.inspect.ui.versions">
-            <control
-                  class="phasereditor.inspect.ui.PhaserVersionControl">
-            </control>
-         </toolbar>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
