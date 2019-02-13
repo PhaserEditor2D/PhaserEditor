@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Audio Sprite UI
 Bundle-SymbolicName: phasereditor.audiosprite.ui;singleton:=true
-Bundle-Version: 2.0.0.20190107
+Bundle-Version: 2.0.1.20190213
 Bundle-Activator: phasereditor.audiosprite.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
