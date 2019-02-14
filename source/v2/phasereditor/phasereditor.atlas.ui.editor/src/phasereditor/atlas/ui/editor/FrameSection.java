@@ -236,6 +236,9 @@ public class FrameSection extends TexturePackerSection<TexturePackerEditorFrame>
 		})));
 		_imageFileSizeText.setText(flatValues_to_String(models.stream().map(model -> {
 			var file = getEditor().findFile(model);
+			if (file == null) {
+				return null;
+			}
 			return PhaserEditorUI.getFileHumanSize(file.getLocation().toFile().length());
 		})));
 
