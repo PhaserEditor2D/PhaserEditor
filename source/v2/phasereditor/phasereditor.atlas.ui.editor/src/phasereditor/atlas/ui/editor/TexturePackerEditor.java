@@ -175,11 +175,14 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	public IFile findFile(TexturePackerEditorFrame frame) {
-		String regionName = frame.getRegionFilename();
+		String name = frame.getName();
 
-		for (IFile file : _model.getImageFiles()) {
-			String location = file.getLocation().toPortableString();
-			if (location.startsWith(regionName + ".")) {
+		var files = new ArrayList<>(_model.getImageFiles());
+		files.sort((a, b) -> Integer.compare(a.getLocation().toString().length(), b.getLocation().toString().length()));
+
+		for (IFile file : files) {
+			String filepath = file.getFullPath().removeFileExtension().toPortableString();
+			if (filepath.endsWith(name)) {
 				return file;
 			}
 		}
