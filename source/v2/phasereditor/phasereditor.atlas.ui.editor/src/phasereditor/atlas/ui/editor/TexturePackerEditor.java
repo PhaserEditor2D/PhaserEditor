@@ -180,8 +180,20 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		var files = new ArrayList<>(_model.getImageFiles());
 		files.sort((a, b) -> Integer.compare(a.getLocation().toString().length(), b.getLocation().toString().length()));
 
-		for (IFile file : files) {
-			String filepath = file.getFullPath().removeFileExtension().toPortableString();
+		for (var file : files) {
+			var filepath = file.getFullPath().removeFileExtension().toPortableString();
+
+			if (frame.getIndex() > -1) {
+				var i = filepath.lastIndexOf('_');
+				var number = filepath.substring(i + 1);
+				try {
+					Integer.parseInt(number);
+					filepath = filepath.substring(0, i) + "_" + frame.getIndex();
+				} catch (NumberFormatException e) {
+					// nothing
+				}
+			}
+
 			if (filepath.endsWith(name)) {
 				return file;
 			}
@@ -566,8 +578,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 									regionFilename += "_" + region.index;
 								}
 
-								TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename,
-										region.index, newEditorPage);
+								TexturePackerEditorFrame frame = new TexturePackerEditorFrame(region.index,
+										newEditorPage);
 
 								var frameName = computeFrameName(regionFilename);
 

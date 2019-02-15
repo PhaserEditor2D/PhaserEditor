@@ -119,11 +119,11 @@ public class TexturePackerEditorModel implements IAdaptable {
 			{
 				JSONArray jsonPages = obj.optJSONArray("pages");
 				if (jsonPages != null) {
-					
+
 					var loader = new ImageLoader();
-					
+
 					var pagesCount = jsonPages.length();
-					
+
 					for (int i = 0; i < pagesCount; i++) {
 						JSONObject jsonPage = jsonPages.getJSONObject(i);
 						EditorPage page = new EditorPage(this, i);
@@ -160,10 +160,8 @@ public class TexturePackerEditorModel implements IAdaptable {
 						for (int j = 0; j < jsonFrames.length(); j++) {
 							JSONObject jsonFrame = jsonFrames.getJSONObject(j);
 
-							String regionFilename = jsonFrame.getString("regionFilename");
 							int regionIndex = jsonFrame.getInt("regionIndex");
-							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename, regionIndex,
-									page);
+							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionIndex, page);
 							AtlasFrame.updateFrameFromJSON(frame, jsonFrame);
 							frame.setName(jsonFrame.getString("name"));
 
@@ -254,7 +252,6 @@ public class TexturePackerEditorModel implements IAdaptable {
 					jsonFrames.put(jsonFrame);
 					writeFrameJsonData(frame, jsonFrame);
 					jsonFrame.put("name", frame.getName());
-					jsonFrame.put("regionFilename", frame.getRegionFilename());
 					jsonFrame.put("regionIndex", frame.getIndex());
 				}
 			}

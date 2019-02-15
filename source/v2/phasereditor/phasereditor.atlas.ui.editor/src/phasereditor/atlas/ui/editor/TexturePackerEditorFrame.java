@@ -29,17 +29,11 @@ import phasereditor.atlas.core.AtlasFrame;
  */
 public class TexturePackerEditorFrame extends AtlasFrame {
 
-	private String _regionFilename;
 	private EditorPage _page;
 
-	public TexturePackerEditorFrame(String regionFilename, int regionIndex, EditorPage page) {
+	public TexturePackerEditorFrame(int regionIndex, EditorPage page) {
 		super(regionIndex);
-		_regionFilename = regionFilename;
 		_page = page;
-	}
-
-	public String getRegionFilename() {
-		return _regionFilename;
 	}
 
 	public EditorPage getPage() {
