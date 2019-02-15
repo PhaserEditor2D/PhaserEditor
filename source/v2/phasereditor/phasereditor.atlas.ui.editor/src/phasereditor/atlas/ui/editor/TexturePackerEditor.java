@@ -217,7 +217,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	private void afterCreateWidgets() {
 		{
 			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
-			DropTarget target = new DropTarget(_container, options);
+			DropTarget target = new DropTarget(_tabsFolder, options);
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 			target.setTransfer(types);
 			target.addDropListener(new DropTargetAdapter() {
