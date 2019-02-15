@@ -9,3 +9,4 @@ mv /home/arian/Documents/PhaserEditor/Public/source/v2/phasereditor/phasereditor
 
 echo "Remember to build the examples cache (phasereditor.scripts.BuildExamplesCache)"
 echo "Remember to delete unused audio assets (phasereditor.scripts.RemoveUnusedAudioAssets)"
+echo "Remember to run script delete-unussed-assets.js"
