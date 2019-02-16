@@ -52,6 +52,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
@@ -239,26 +240,37 @@ public class ProjectCore {
 	public static void configureNewPhaserProject(IProject project, IProjectTemplate template,
 			Map<String, String> paramValues, SourceLang lang, IProgressMonitor monitor) throws CoreException {
 
+		var nullMonitor = new NullProgressMonitor();
+		
+		monitor.beginTask("Copying template content.", 5);
+		
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> {
 			openTemplateMainFileInEditor(project, template);
 		});
 
+		
 		IFolder webContentFolder = project.getFolder("WebContent");
-		webContentFolder.create(true, true, monitor);
-
+		webContentFolder.create(true, true, nullMonitor);
+		monitor.worked(1);
+		
+		
 		IFolder folder = project.getFolder("Design");
-		folder.create(true, true, monitor);
+		folder.create(true, true, nullMonitor);
+		monitor.worked(1);
 
-		template.copyInto(webContentFolder, paramValues, monitor);
+		template.copyInto(webContentFolder, paramValues, nullMonitor);
+		monitor.worked(1);
 
 		setProjectLanguage(project, lang);
 		{
 			ProjectCore.getProjectSceneSize(project);
 		}
 
-		PhaserProjectNature.addPhaserNature(project, lang, monitor);
+		PhaserProjectNature.addPhaserNature(project, lang, nullMonitor);
+		monitor.worked(1);
 
-		project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+		project.build(IncrementalProjectBuilder.CLEAN_BUILD, nullMonitor);
+		monitor.worked(1);
 
 	}
 

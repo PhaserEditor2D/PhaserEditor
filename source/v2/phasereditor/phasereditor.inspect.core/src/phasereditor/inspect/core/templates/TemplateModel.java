@@ -42,8 +42,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import phasereditor.inspect.core.IProjectTemplateCategory;
 import phasereditor.inspect.core.IProjectTemplate;
+import phasereditor.inspect.core.IProjectTemplateCategory;
 import phasereditor.inspect.core.ProjectTemplateInfo;
 
 public class TemplateModel implements IProjectTemplate {
@@ -113,8 +113,10 @@ public class TemplateModel implements IProjectTemplate {
 
 	@Override
 	public void copyInto(IFolder dstWebContentFolder, Map<String, String> values, IProgressMonitor monitor) {
+
 		// copy template content
 		try {
+
 			Path designFolder = _templateFolder.resolve("Design");
 			Path webContentFolder = _templateFolder.resolve("WebContent");
 
@@ -128,7 +130,10 @@ public class TemplateModel implements IProjectTemplate {
 			IFolder dstDesignFolder = parent.getFolder(new org.eclipse.core.runtime.Path("Design"));
 			mkdirs(dstDesignFolder, monitor);
 
+			monitor.worked(1);
 			copyTree(designFolder, dstDesignFolder, monitor);
+
+			monitor.worked(2);
 			copyTree(webContentFolder, dstWebContentFolder, monitor);
 
 			if (values != null) {
