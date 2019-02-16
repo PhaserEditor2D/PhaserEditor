@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Inspect Core
 Bundle-SymbolicName: phasereditor.inspect.core;singleton:=true
-Bundle-Version: 2.0.1.20190213
+Bundle-Version: 2.0.1.20190216
 Bundle-Activator: phasereditor.inspect.core.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
