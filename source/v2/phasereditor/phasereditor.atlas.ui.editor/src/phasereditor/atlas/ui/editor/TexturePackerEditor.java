@@ -870,6 +870,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
+
+		_tabsFolder.requestLayout();
+		_container.requestLayout();
 	}
 
 	private AtlasCanvas_Unmanaged createAtlasCanvas(Composite parent) {
