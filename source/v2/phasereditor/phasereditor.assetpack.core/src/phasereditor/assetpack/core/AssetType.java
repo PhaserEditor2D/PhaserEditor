@@ -69,6 +69,8 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 
 	physics("json", "Physics"), 
 	
+	sceneFile("js", "Scene File (JavaScript)"),
+	
 	htmlTexture("html", "HTML Texture"),
 	
 	html("html", "HTML File"),

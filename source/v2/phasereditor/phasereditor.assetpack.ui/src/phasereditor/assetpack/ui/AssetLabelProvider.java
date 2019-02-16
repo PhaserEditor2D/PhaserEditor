@@ -52,6 +52,7 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
@@ -252,6 +253,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 		if (element instanceof ScriptAssetModel) {
 			IFile file = ((ScriptAssetModel) element).getUrlFile();
+			if (file != null) {
+				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(file);
+			}
+		}
+		
+		if (element instanceof SceneFileAssetModel) {
+			IFile file = ((SceneFileAssetModel) element).getUrlFile();
 			if (file != null) {
 				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(file);
 			}

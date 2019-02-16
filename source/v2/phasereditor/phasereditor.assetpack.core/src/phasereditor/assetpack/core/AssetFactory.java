@@ -284,6 +284,20 @@ public abstract class AssetFactory {
 				return new BinaryAssetModel(key, section);
 			}
 		});
+		
+		cache(new AbstractFileAssetFactory(AssetType.sceneFile, "js") {
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new SceneFileAssetModel(jsonData, section);
+			}
+
+			@Override
+			protected AbstractFileAssetModel makeAsset(String key, AssetSectionModel section) {
+				return new SceneFileAssetModel(key, section);
+			}
+		});
+
 
 		cache(new AbstractFileAssetFactory(AssetType.script, "js") {
 

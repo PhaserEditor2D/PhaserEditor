@@ -34,7 +34,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
-import phasereditor.assetpack.core.ScriptAssetModel;
+import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.editor.wizards.NewPage_AssetPackSection;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
@@ -110,7 +110,7 @@ public class NewSceneFileWizard extends Wizard implements INewWizard {
 						var jsFile = SceneCore.getSceneSourceCodeFile(file);
 
 						var pack = section.getPack();
-						var asset = new ScriptAssetModel(pack.createKey(jsFile), section);
+						var asset = new SceneFileAssetModel(pack.createKey(jsFile), section);
 						asset.setUrl(ProjectCore.getAssetUrl(jsFile));
 						section.addAsset(asset, false);
 					});

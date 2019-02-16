@@ -96,9 +96,9 @@ import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
-import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
+import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
 /**
@@ -269,7 +269,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return manager;
 	}
 
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "boxing" })
 	private List<AssetModel> openNewAssetListDialog(AssetSectionModel section, AssetFactory factory) throws Exception {
 		AssetType type = factory.getType();
 
@@ -354,6 +354,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		case script:
 		case plugin:
 		case scenePlugin:
+		case sceneFile:
 			return openNewSimpleFileListDialog(section, type, () -> {
 				try {
 					return pack.discoverTextFiles("js");
@@ -739,7 +740,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_model.setFile(file);
 
 		super.setInput(new FileEditorInput(file));
-		
+
 		setPartName(_model.getName());
 	}
 

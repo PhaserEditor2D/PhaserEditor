@@ -89,6 +89,8 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 
 		list.add(new HtmlTextureSection(this));
 
+		
+		
 		for (var factory : AssetFactory.getFactories()) {
 			if (factory instanceof AbstractFileAssetFactory) {
 				list.add(new FileSection(this, factory.getType()));
