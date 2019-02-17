@@ -45,5 +45,4 @@ public class MethodDeclDom extends MemberDeclDom {
 	public void setInstructions(List<Object> instructions) {
 		_instructions = instructions;
 	}
-
 }

@@ -114,12 +114,27 @@ public class SceneCodeDomBuilder {
 			var clsDom = new ClassDeclDom(clsName);
 
 			clsDom.setSuperClass(model.getSuperClassName());
+			
+			var ctrMethod = buildConstructorMethod(clsName);
+			
+			clsDom.getMembers().add(ctrMethod);
+						
 			clsDom.getMembers().addAll(methods);
-
 			unit.getElements().add(clsDom);
 		}
 
 		return unit;
+	}
+
+	private static MethodDeclDom buildConstructorMethod(String clsName) {
+		var methodDecl = new MethodDeclDom("constructor");
+		
+		var superCall = new MethodCallDom("super", null);
+		superCall.argLiteral(clsName);
+		
+		methodDecl.getInstructions().add(superCall);
+		
+		return methodDecl;
 	}
 
 	private MethodDeclDom buildCreateMethod(SceneModel sceneModel) {

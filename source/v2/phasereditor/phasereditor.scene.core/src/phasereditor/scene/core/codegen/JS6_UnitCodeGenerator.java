@@ -46,16 +46,16 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 	protected void internalGenerate() {
 
 		sectionStart("/* START OF COMPILED CODE */", "\n// You can write more code here\n\n");
-		
+
 		line();
 		line();
-		
+
 		for (var elem : _unit.getElements()) {
 
 			generateUnitElement(elem);
 
 		}
-		
+
 		section("/* END OF COMPILED CODE */", "\n\n// You can write more code here\n");
 
 	}
@@ -69,7 +69,7 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 		} else if (elem instanceof MethodDeclDom) {
 
 			line();
-			
+
 			generateMethodDecl((MethodDeclDom) elem, true);
 
 			line();
@@ -112,7 +112,7 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 		if (function) {
 			append("function ");
 		}
-		
+
 		append(methodDecl.getName() + "() ");
 
 		line("{");
@@ -161,8 +161,10 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 			append(" = ");
 		}
 
-		append(call.getContextExpr());
-		append(".");
+		if (call.getContextExpr() != null) {
+			append(call.getContextExpr());
+			append(".");
+		}
 		append(call.getMethodName());
 		append("(");
 
