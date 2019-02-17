@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
 import phasereditor.animation.ui.AnimationsCellRender;
-import phasereditor.assetpack.core.AbstractFileAssetModel;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -66,7 +65,6 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SceneFileAssetModel;
-import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -642,8 +640,8 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 			return new AudioSpriteAssetCellRenderer((AudioSpriteAssetModel) asset, 5);
 		} else if (asset instanceof BitmapFontAssetModel) {
 			return new BitmapFontAssetCellRenderer((BitmapFontAssetModel) asset);
-		} else if (asset instanceof ScriptAssetModel || asset instanceof SceneFileAssetModel) {
-			var renderer = getSceneScreenshot((AbstractFileAssetModel) asset);
+		} else if (asset instanceof SceneFileAssetModel) {
+			var renderer = getSceneScreenshot((SceneFileAssetModel) asset);
 			if (renderer != null) {
 				return renderer;
 			}
@@ -652,20 +650,11 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 		return new IconCellRenderer(AssetLabelProvider.GLOBAL_64.getImage(asset));
 	}
 
-	private static FrameCellRenderer getSceneScreenshot(AbstractFileAssetModel asset) {
-		var file = asset.getUrlFile();
-		if (file != null) {
-			var file2 = file.getProject()
-					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
-			if (file2.exists()) {
-				var screenPath = SceneUI.getSceneScreenshotFile(file2, false);
-				if (screenPath != null) {
-					var screenFile = screenPath.toFile();
-					if (screenFile.exists()) {
-						return new FrameCellRenderer(screenFile, null);
-					}
-				}
-			}
+	private static FrameCellRenderer getSceneScreenshot(SceneFileAssetModel asset) {
+		var screenFile = SceneUI.getSceneScreenshotFile(asset);
+
+		if (screenFile != null) {
+			return new FrameCellRenderer(screenFile, null);
 		}
 
 		return null;

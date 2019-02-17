@@ -56,6 +56,7 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationP
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
@@ -192,6 +193,24 @@ public class SceneUI {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static File getSceneScreenshotFile(SceneFileAssetModel asset) {
+		var file = asset.getUrlFile();
+		if (file != null) {
+			var file2 = file.getProject()
+					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
+			if (file2.exists()) {
+				var screenPath = SceneUI.getSceneScreenshotFile(file2, false);
+				if (screenPath != null) {
+					var screenFile = screenPath.toFile();
+					if (screenFile.exists()) {
+						return screenFile;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	private static class OfflineSceneRendererContext implements ISceneObjectRendererContext, Closeable {

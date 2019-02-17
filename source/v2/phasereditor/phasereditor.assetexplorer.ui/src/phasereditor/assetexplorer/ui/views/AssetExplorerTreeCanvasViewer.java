@@ -40,6 +40,7 @@ import phasereditor.assetexplorer.ui.views.newactions.NewExampleProjectWizardLau
 import phasereditor.assetexplorer.ui.views.newactions.NewProjectWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewSceneWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
+import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.scene.ui.SceneUI;
@@ -68,7 +69,22 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		var elem = item.getData();
 
-		if (elem instanceof SceneFile) {
+		if (elem instanceof SceneFileAssetModel) {
+
+			var asset = (SceneFileAssetModel) elem;
+
+			var imgFile = SceneUI.getSceneScreenshotFile(asset);
+
+			if (imgFile == null) {
+				super.setItemIconProperties(item);
+			} else {
+				item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(imgFile, null)));
+			}
+
+			item.setLabel(asset.getKey());
+
+		} else if (elem instanceof SceneFile) {
+
 			var file = ((SceneFile) elem).getFile();
 			var imgFile = SceneUI.getSceneScreenshotFile(file, false);
 
@@ -79,6 +95,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 			}
 
 			item.setLabel(file.getName());
+
 		} else {
 			super.setItemIconProperties(item);
 		}
