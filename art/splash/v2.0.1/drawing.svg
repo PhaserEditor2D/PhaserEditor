@@ -197,8 +197,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="587.10987"
-     inkscape:cy="354.54063"
+     inkscape:cx="681.57307"
+     inkscape:cy="434.59342"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -288,14 +288,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6388855px;line-height:1.25;font-family:monospace;-inkscape-font-specification:monospace;letter-spacing:0px;word-spacing:0px;opacity:0.8;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="150.81436"
+       x="146.58109"
        y="170.17929"
        id="text4235-6-0"><tspan
          sodipodi:role="line"
-         x="150.81436"
+         x="146.58109"
          y="170.17929"
          style="font-size:2.82222223px;fill:#ffffff;stroke-width:0.26458332"
-         id="tspan4273-7-9">Supports Phaser v3.16</tspan></text>
+         id="tspan4273-7-9">Includes Phaser v3.16.2</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.14934063px;line-height:1.25;font-family:'Passero One';-inkscape-font-specification:'Passero One, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;opacity:0.69599998;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"

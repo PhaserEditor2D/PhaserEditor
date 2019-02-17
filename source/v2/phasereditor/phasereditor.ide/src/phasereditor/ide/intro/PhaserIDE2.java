@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.ui.internal.ide.application.IDEApplication;
 
 import phasereditor.ide.ModifiedIDEApplication;
 import phasereditor.lic.LicCore;
