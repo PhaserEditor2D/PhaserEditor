@@ -12,13 +12,13 @@
       "path": "assets/atlas"
     },
     {
-      "type": "script",
+      "type": "sceneFile",
       "key": "Level",
       "url": "assets/scene/Level.js"
     }
   ]},
   "meta": {
-    "generated": "1546642640057",
+    "generated": "1550396744538",
     "app": "Phaser Editor",
     "url": "https://phasereditor2d.com",
     "version": "1.0",

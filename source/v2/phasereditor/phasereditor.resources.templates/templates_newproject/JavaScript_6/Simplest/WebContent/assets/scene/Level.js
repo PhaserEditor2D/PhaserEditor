@@ -5,12 +5,20 @@
 
 class Level extends Phaser.Scene {
 	
+	constructor() {
+	
+		super('Level');
+		
+	}
+	
 	_create() {
 	
 		var player = this.add.sprite(399.99994, 300.0, 'character', 'Jump Loop_000');
 		player.setAngle(-10.210137);
 		player.anims.play('character - Jump Loop');
+		
 		var fruit = this.add.image(371.2782, 266.19022, 'character', 'fruit');
+		
 		this.fPlayer = player;
 		this.fFruit = fruit;
 		
