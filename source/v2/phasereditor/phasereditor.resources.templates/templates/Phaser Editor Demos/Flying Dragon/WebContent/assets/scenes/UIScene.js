@@ -5,14 +5,23 @@
 
 class UIScene extends Phaser.Scene {
 	
+	constructor() {
+	
+		super('UIScene');
+		
+	}
+	
 	_create() {
 	
 		var up = this.add.image(640.5179, 378.75363, 'Objects', 'Button Up');
 		up.setScale(0.5, 0.5);
+		
 		var flame = this.add.image(80.0, 378.75363, 'Objects', 'Button Flame');
 		flame.setScale(0.40251637, 0.3830197);
+		
 		var down = this.add.image(739.939, 378.75363, 'Objects', 'Button Down');
 		down.setScale(0.5, 0.5);
+		
 		this.fUp = up;
 		this.fFlame = flame;
 		this.fDown = down;

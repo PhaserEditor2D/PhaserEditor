@@ -28,9 +28,8 @@ class Boot extends Phaser.Scene {
 		this.load.pack("section1", "assets/pack.json");
 	}
 
-	create() {
-		this.scene.add("UI", UIScene);
-		this.scene.add("Level", Level, true);
+	update() {
+		this.scene.start("Level");
 	}
 }
 

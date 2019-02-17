@@ -72,11 +72,6 @@
       "path": "assets/atlas"
     },
     {
-      "type": "script",
-      "key": "UIScene",
-      "url": "assets/scenes/UIScene.js"
-    },
-    {
       "type": "spritesheet",
       "key": "explosion",
       "url": "assets/spritesheets/explosion-4.png",
@@ -88,13 +83,18 @@
       }
     },
     {
-      "type": "script",
+      "type": "sceneFile",
+      "key": "UIScene",
+      "url": "assets/scenes/UIScene.js"
+    },
+    {
+      "type": "sceneFile",
       "key": "Level",
       "url": "assets/scenes/Level.js"
     }
   ]},
   "meta": {
-    "generated": "1546618479818",
+    "generated": "1550395661012",
     "app": "Phaser Editor",
     "url": "https://phasereditor2d.com",
     "version": "1.0",

@@ -5,9 +5,9 @@
 
 class Level extends Phaser.Scene {
 	
-	preload() {
+	constructor() {
 	
-		this.load.pack('section1', 'assets/pack.json');
+		super('Level');
 		
 	}
 	
@@ -15,33 +15,49 @@ class Level extends Phaser.Scene {
 	
 		var sky = this.add.image(0.0, 0.0, 'sky');
 		sky.setOrigin(0.0, 0.0);
+		
 		var clouds_3 = this.add.image(0.0, 163.44876, 'clouds_3');
 		clouds_3.setOrigin(0.0, 0.0);
+		
 		var rocks_2 = this.add.image(0.0, 54.476154, 'rocks_2');
 		rocks_2.setOrigin(0.0, 0.0);
+		
 		var clouds_2 = this.add.image(15.882956, -51.556595, 'clouds_2');
 		clouds_2.setOrigin(0.0, 0.0);
+		
 		var pines = this.add.image(0.0, 0.0, 'pines');
 		pines.setOrigin(0.0, 0.0);
+		
 		var dragon = this.add.sprite(145.22865, 80.51337, 'dragon', 'dragon/Idle_003');
 		dragon.anims.play('dragon - dragon/Moving Forward');
+		
 		var melon_1 = this.add.sprite(87.6739, 718.5431, 'Objects', 'watermelon-1');
+		
 		var melon_2 = this.add.sprite(167.67389, 718.5431, 'Objects', 'watermelon-1');
+		
 		var melon_3 = this.add.sprite(247.67389, 718.5431, 'Objects', 'watermelon-1');
+		
 		var bomb_1 = this.add.sprite(80.0, 660.0, 'Objects', 'bomb-1');
 		bomb_1.setOrigin(0.5, 1.0);
+		
 		var bomb_1_1 = this.add.sprite(160.0, 660.0, 'Objects', 'bomb-1');
 		bomb_1_1.setOrigin(0.5, 1.0);
+		
 		var bomb_1_2 = this.add.sprite(240.0, 660.0, 'Objects', 'bomb-1');
 		bomb_1_2.setOrigin(0.5, 1.0);
+		
 		var fire_1 = this.add.image(435.4351, 621.15967, 'Objects', 'Fire');
 		fire_1.setAngle(90.0);
+		
 		var fire_2 = this.add.image(515.4351, 621.15967, 'Objects', 'Fire');
 		fire_2.setAngle(90.0);
+		
 		var fire_3 = this.add.image(595.4351, 621.15967, 'Objects', 'Fire');
 		fire_3.setAngle(90.0);
+		
 		var clouds_1 = this.add.image(0.0, 156.84879, 'clouds_1');
 		clouds_1.setOrigin(0.0, 0.0);
+		
 		this.fMelons = this.add.group([ melon_3, melon_2, melon_1 ]);
 		this.fObjects = this.add.group([ melon_3, melon_2, melon_1, bomb_1, bomb_1_1, bomb_1_2 ]);
 		this.fBombs = this.add.group([ bomb_1_2, bomb_1_1, bomb_1 ]);
@@ -54,18 +70,15 @@ class Level extends Phaser.Scene {
 	
 	/* START-USER-CODE */
 
-
-
-
 	create() {
 		this._create();
 
 		// UI
 
-		var ui = this.scene.launch("UI", {
+		var ui = this.scene.launch("UIScene", {
 			eventListener: this
 		});
-		this.scene.bringToTop("UI");
+		this.scene.bringToTop("UIScene");
 
 		// Dragon
 
