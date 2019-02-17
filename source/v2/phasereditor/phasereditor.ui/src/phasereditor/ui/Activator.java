@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -53,7 +55,10 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		PhaserEditorUI.initPreferences();
+		swtRun(() -> {
+			PhaserEditorUI.initPreferences();
+		});
+
 		ImageProxy.startGargabeCollector();
 	}
 
