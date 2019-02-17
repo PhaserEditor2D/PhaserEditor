@@ -114,11 +114,16 @@ public class SceneCodeDomBuilder {
 			var clsDom = new ClassDeclDom(clsName);
 
 			clsDom.setSuperClass(model.getSuperClassName());
-			
-			var ctrMethod = buildConstructorMethod(clsName);
-			
-			clsDom.getMembers().add(ctrMethod);
-						
+
+			{
+				var key = model.getSceneKey();
+				if (key.trim().length() == 0) {
+					key = clsName;
+				}
+				var ctrMethod = buildConstructorMethod(key);
+				clsDom.getMembers().add(ctrMethod);
+			}
+
 			clsDom.getMembers().addAll(methods);
 			unit.getElements().add(clsDom);
 		}
@@ -126,14 +131,14 @@ public class SceneCodeDomBuilder {
 		return unit;
 	}
 
-	private static MethodDeclDom buildConstructorMethod(String clsName) {
+	private static MethodDeclDom buildConstructorMethod(String sceneKey) {
 		var methodDecl = new MethodDeclDom("constructor");
-		
+
 		var superCall = new MethodCallDom("super", null);
-		superCall.argLiteral(clsName);
-		
+		superCall.argLiteral(sceneKey);
+
 		methodDecl.getInstructions().add(superCall);
-		
+
 		return methodDecl;
 	}
 
@@ -760,7 +765,7 @@ public class SceneCodeDomBuilder {
 		if (factory.trim().length() > 0) {
 			return factory.trim();
 		}
-		
+
 		return defaultName;
 	}
 

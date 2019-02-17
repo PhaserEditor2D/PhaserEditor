@@ -75,6 +75,7 @@ public class SceneModel {
 	private String _superClassName;
 	private String _preloadMethodName;
 	private String _createMethodName;
+	private String _sceneKey;
 
 	public enum MethodContextType {
 		SCENE, OBJECT
@@ -165,13 +166,21 @@ public class SceneModel {
 	public void setAutoLoadAssets(boolean autoLoadAssets) {
 		_autoLoadAssets = autoLoadAssets;
 	}
-	
+
 	public MethodContextType getMethodContextType() {
 		return _methodContextType;
 	}
-	
+
 	public void setMethodContextType(MethodContextType methodContextType) {
 		_methodContextType = methodContextType;
+	}
+	
+	public String getSceneKey() {
+		return _sceneKey;
+	}
+	
+	public void setSceneKey(String sceneKey) {
+		_sceneKey = sceneKey;
 	}
 
 	public int getBorderY() {
@@ -389,6 +398,7 @@ public class SceneModel {
 			data.put("preloadMethodName", _preloadMethodName, "preload");
 			data.put("createMethodName", _createMethodName, "create");
 			data.put("methodContextType", _methodContextType.name());
+			data.put("sceneKey", _sceneKey, "");
 		}
 	}
 
@@ -420,6 +430,7 @@ public class SceneModel {
 			_createMethodName = data.optString("createMethodName", "create");
 			_methodContextType = MethodContextType
 					.valueOf(data.optString("methodContextType", MethodContextType.SCENE.name()));
+			_sceneKey = data.optString("sceneKey", "");
 		}
 	}
 
