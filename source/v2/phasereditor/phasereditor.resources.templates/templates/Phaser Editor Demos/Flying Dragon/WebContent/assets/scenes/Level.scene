@@ -1,5 +1,5 @@
 {
-  "-app": "Scene Editor - Phaser Editor v2.0.0",
+  "-app": "Scene Editor - Phaser Editor v2.0.1",
   "-version": 1,
   "displayList": {
     "-id": "b2e3901b-799d-4aa0-a9e8-10e62266d278",
@@ -258,7 +258,9 @@
   },
   "snapWidth": 80,
   "snapHeight": 62,
-  "autoLoadAssets": false,
   "borderHeight": 450,
-  "createMethodName": "_create"
+  "autoLoadAssets": false,
+  "createMethodName": "_create",
+  "methodContextType": "SCENE",
+  "sceneKey": "Level"
 }

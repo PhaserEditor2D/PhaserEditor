@@ -1,5 +1,5 @@
 {
-  "-app": "Scene Editor - Phaser Editor v2.0.0",
+  "-app": "Scene Editor - Phaser Editor v2.0.1",
   "-version": 1,
   "displayList": {
     "-id": "8d715559-399d-42e9-9525-4a1dc0336b31",
@@ -37,5 +37,7 @@
     "children": []
   },
   "autoLoadAssets": false,
-  "createMethodName": "_create"
+  "createMethodName": "_create",
+  "methodContextType": "SCENE",
+  "sceneKey": "Level"
 }

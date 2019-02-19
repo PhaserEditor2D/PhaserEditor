@@ -1,5 +1,5 @@
 {
-  "-app": "Scene Editor - Phaser Editor v2.0.0",
+  "-app": "Scene Editor - Phaser Editor v2.0.1",
   "-version": 1,
   "displayList": {
     "-id": "1d8004cc-6386-432f-83d1-c234002be414",
@@ -55,5 +55,7 @@
   "snapHeight": 80,
   "borderHeight": 450,
   "autoLoadAssets": false,
-  "createMethodName": "_create"
+  "createMethodName": "_create",
+  "methodContextType": "SCENE",
+  "sceneKey": "UIScene"
 }
