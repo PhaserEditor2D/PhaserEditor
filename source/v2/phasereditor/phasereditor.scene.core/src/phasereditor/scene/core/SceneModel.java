@@ -117,6 +117,8 @@ public class SceneModel {
 		_createMethodName = "create";
 		_superClassName = "Phaser.Scene";
 		_methodContextType = MethodContextType.SCENE;
+		
+		_sceneKey = "";
 	}
 
 	public boolean isOnlyGenerateMethods() {
@@ -182,7 +184,7 @@ public class SceneModel {
 	public void setSceneKey(String sceneKey) {
 		_sceneKey = sceneKey;
 	}
-
+	
 	public int getBorderY() {
 		return _borderY;
 	}

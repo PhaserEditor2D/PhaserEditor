@@ -76,14 +76,9 @@ public class CompilerSection extends BaseDesignSection {
 		comp.setLayout(new GridLayout(2, false));
 
 		{
+			label(comp, "Generate Assets Loading",
+					"*Generate a preload method that loads all the assets used in this scene.");
 			_autoLoadAssetsButton = new Button(comp, SWT.CHECK);
-			_autoLoadAssetsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
-			_autoLoadAssetsButton.setText("Generate Assets Loading");
-			_autoLoadAssetsButton.setToolTipText(
-
-					"Generate a preload method that loads all the assets used in this scene."
-
-			);
 			new CheckListener(_autoLoadAssetsButton) {
 
 				@Override
@@ -96,14 +91,9 @@ public class CompilerSection extends BaseDesignSection {
 		}
 
 		{
+			label(comp, "Generate Method Events", "*Insert events at the start and the end of the methods.");
 			_generateEventsButton = new Button(comp, SWT.CHECK);
-			_generateEventsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
-			_generateEventsButton.setText("Generate Method Events");
-			_generateEventsButton.setToolTipText(
 
-					"Insert events at the start and the end of the methods."
-
-			);
 			new CheckListener(_generateEventsButton) {
 
 				@Override
@@ -116,10 +106,8 @@ public class CompilerSection extends BaseDesignSection {
 		}
 
 		{
+			label(comp, "Only Generate Methods", "*Generate plain methods, without a containing class.");
 			_onlyGenerateMethodsButton = new Button(comp, SWT.CHECK);
-			_onlyGenerateMethodsButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
-			_onlyGenerateMethodsButton.setText("Only Generate Methods");
-			_onlyGenerateMethodsButton.setToolTipText("Generate plain methods, without a containing class.");
 			new CheckListener(_onlyGenerateMethodsButton) {
 
 				@Override
@@ -148,6 +136,7 @@ public class CompilerSection extends BaseDesignSection {
 			addUpdate(() -> {
 				text.setText(getScene().getModel().getSceneKey());
 			});
+
 		}
 
 		{

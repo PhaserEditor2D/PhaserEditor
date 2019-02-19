@@ -117,11 +117,10 @@ public class SceneCodeDomBuilder {
 
 			{
 				var key = model.getSceneKey();
-				if (key.trim().length() == 0) {
-					key = clsName;
+				if (key.trim().length() > 0) {
+					var ctrMethod = buildConstructorMethod(key);
+					clsDom.getMembers().add(ctrMethod);
 				}
-				var ctrMethod = buildConstructorMethod(key);
-				clsDom.getMembers().add(ctrMethod);
 			}
 
 			clsDom.getMembers().addAll(methods);
