@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
@@ -146,6 +147,10 @@ public class SceneFileWizardPage extends WizardNewFileCreationPage {
 
 	public SceneModel getInitialModel() {
 		var model = new SceneModel();
+		{
+			var sceneKey = new Path(getFileName()).removeFileExtension().lastSegment();
+			model.setSceneKey(sceneKey);
+		}
 
 		var size = ProjectCore.getProjectSceneSize(getContainerFullPath());
 
@@ -157,6 +162,7 @@ public class SceneFileWizardPage extends WizardNewFileCreationPage {
 
 	@Override
 	protected InputStream getInitialContents() {
-		return new ByteArrayInputStream(getInitialModel().toJSON().toString(2).getBytes(Charset.forName("UTF-8")));
+		var model = getInitialModel();
+		return new ByteArrayInputStream(model.toJSON().toString(2).getBytes(Charset.forName("UTF-8")));
 	}
 }

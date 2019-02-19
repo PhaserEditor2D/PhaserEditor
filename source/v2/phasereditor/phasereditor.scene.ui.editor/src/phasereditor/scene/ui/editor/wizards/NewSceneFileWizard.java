@@ -100,7 +100,8 @@ public class NewSceneFileWizard extends Wizard implements INewWizard {
 
 					try {
 
-						SceneCore.compileScene(getFilePage().getInitialModel(), file, monitor);
+						var model = getFilePage().getInitialModel();
+						SceneCore.compileScene(model, file, monitor);
 
 					} catch (Exception e) {
 						throw new RuntimeException(e);
