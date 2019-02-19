@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JSON (Modified)
 Bundle-SymbolicName: phasereditor.org.json
-Bundle-Version: 2.0.1.20190216
+Bundle-Version: 2.0.1.20190219
 Bundle-Vendor: Arian Fornaris (Modified org.json)
 Export-Package: com.phasereditor2d.json,
  org.json

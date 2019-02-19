@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Atlas Editor
 Bundle-SymbolicName: phasereditor.atlas.ui.editor;singleton:=true
-Bundle-Version: 2.0.1.20190216
+Bundle-Version: 2.0.1.20190219
 Bundle-Activator: phasereditor.atlas.ui.editor.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui;bundle-version="3.108.0",
