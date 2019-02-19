@@ -121,7 +121,7 @@ public class CompilerSection extends BaseDesignSection {
 
 		{
 			label(comp, "Scene Key",
-					"*The unique key of this Scene. Must be unique within the entire Game instance.\nIf not set, the name of the file (without the extension) will be used. ");
+					"*The unique key of this Scene. Must be unique within the entire Game instance.\nIf not set, no constructor with the scene key will be generated. ");
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			new TextListener(text) {
