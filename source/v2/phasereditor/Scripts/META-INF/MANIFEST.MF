@@ -7,3 +7,11 @@ Export-Package: org.json,
  phasereditor.inspect.core,
  phasereditor.inspect.core.examples,
  phasereditor.scripts
+Require-Bundle: org.eclipse.ui;bundle-version="3.110.0",
+ org.eclipse.jetty.server;bundle-version="8.1.16",
+ org.eclipse.jetty.util;bundle-version="8.1.16",
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ org.eclipse.jetty.http;bundle-version="9.3.9",
+ org.eclipse.jetty.servlet;bundle-version="9.3.9",
+ javax.servlet;bundle-version="3.1.0",
+ org.eclipse.jetty.io;bundle-version="9.4.11"
