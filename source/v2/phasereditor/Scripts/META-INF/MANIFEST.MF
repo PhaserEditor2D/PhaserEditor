@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Scripts
+Bundle-SymbolicName: Scripts
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.json,
+ phasereditor.inspect.core,
+ phasereditor.inspect.core.examples,
+ phasereditor.scripts

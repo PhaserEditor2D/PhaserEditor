@@ -263,7 +263,15 @@ public class BuildExamplesCache extends Application {
 			@Override
 			public void publish(LogRecord record) {
 				String msg = record.getMessage();
-				int i = msg.indexOf("http://127.0.0.1:8080/assets");
+
+				// out.println("URL: " + msg);
+
+				int i = msg.indexOf("http://127.0.0.1:8080/plugins");
+
+				if (i < 0) {
+					i = msg.indexOf("http://127.0.0.1:8080/assets");
+				}
+
 				if (i > 0) {
 					String url = msg.substring(i + "http://127.0.0.1:8080".length() + 1);
 					try {

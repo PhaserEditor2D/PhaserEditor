@@ -15490,10 +15490,13 @@
     "examples": [
       {
         "mainFile": "src/spine/basic spineboy.js",
-        "map": [{
-          "orig": "src/spine/basic spineboy.js",
-          "dst": "basic spineboy.js"
-        }]
+        "map": [
+          {
+            "orig": "src/spine/basic spineboy.js",
+            "dst": "basic spineboy.js"
+          },
+          {"orig": "plugins/SpineWebGLPlugin.js"}
+        ]
       },
       {
         "mainFile": "src/spine/canvas test 1.js",
