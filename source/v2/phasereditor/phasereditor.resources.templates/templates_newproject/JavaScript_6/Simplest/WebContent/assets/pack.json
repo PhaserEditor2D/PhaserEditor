@@ -3,22 +3,22 @@
     {
       "type": "animation",
       "key": "animations",
-      "url": "assets/atlas/animations.json"
-    },
-    {
-      "type": "multiatlas",
-      "key": "character",
-      "url": "assets/atlas/character.json",
-      "path": "assets/atlas"
+      "url": "assets/animations.json"
     },
     {
       "type": "sceneFile",
-      "key": "Level",
-      "url": "assets/scene/Level.js"
+      "key": "Scene1",
+      "url": "assets/scenes/Scene1.js"
+    },
+    {
+      "type": "multiatlas",
+      "key": "textures",
+      "url": "assets/atlas/textures.json",
+      "path": "assets/atlas"
     }
   ]},
   "meta": {
-    "generated": "1550396744538",
+    "generated": "1550918638166",
     "app": "Phaser Editor",
     "url": "https://phasereditor2d.com",
     "version": "1.0",

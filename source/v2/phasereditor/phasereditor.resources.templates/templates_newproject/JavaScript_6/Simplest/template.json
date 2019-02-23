@@ -4,7 +4,7 @@
 		"email": "developers@phasereditor2d.com",
 		"website": "phasereditor2d.com",
 	},
-	"mainFile": "assets/scene/Level.scene",
+	"mainFile": "assets/scenes/Scene1.scene",
 	"eval" : {
 		"index.html" : ["title"], 
 		"main.js" : ["title", "config"]
