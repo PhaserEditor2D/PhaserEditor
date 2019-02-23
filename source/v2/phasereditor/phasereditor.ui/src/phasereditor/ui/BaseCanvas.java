@@ -30,6 +30,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author arian
@@ -43,6 +44,11 @@ public class BaseCanvas extends Canvas {
 		setData("org.eclipse.e4.ui.css.CssClassName", "Canvas");
 
 		parent.setBackgroundMode(SWT.INHERIT_FORCE);
+
+		addPaintListener(e -> {
+			var fg = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getForeground();
+			setForeground(fg);
+		});
 
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 
