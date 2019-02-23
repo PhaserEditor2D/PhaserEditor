@@ -59,10 +59,11 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	private Text _heightText;
 	private Combo _typeCombo;
 	private Button _pixelArtBtn;
-	private Button _arcadeBtn;
-	private Button _matterBtn;
 	private Label _label;
 	private ComboViewer _comboLang;
+	private Combo _physicsCombo;
+	private Combo _scaleModeCombo;
+	private Combo _scaleAutoCenterCombo;
 
 	/**
 	 * Create the wizard.
@@ -88,10 +89,10 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		Group grpGame = new Group(container, SWT.NONE);
 		grpGame.setLayout(new GridLayout(4, false));
 		grpGame.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		grpGame.setText("Game Parameters");
+		grpGame.setText("Game Config");
 
 		Label lblWidth = new Label(grpGame, SWT.NONE);
-		lblWidth.setText("width:");
+		lblWidth.setText("Width");
 
 		_widthText = new Text(grpGame, SWT.BORDER);
 		_widthText.setText("800");
@@ -99,37 +100,92 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 
 		Label lblHeight = new Label(grpGame, SWT.NONE);
 		lblHeight.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblHeight.setText("height:");
+		lblHeight.setText("Height");
 
 		_heightText = new Text(grpGame, SWT.BORDER);
 		_heightText.setText("600");
 		_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblRenderer = new Label(grpGame, SWT.NONE);
-		lblRenderer.setText("type:");
+		lblRenderer.setText("Type");
 
 		_typeCombo = new Combo(grpGame, SWT.READ_ONLY);
 		_typeCombo.setItems(new String[] { "Phaser.AUTO", "Phaser.WEBGL", "Phaser.CANVAS", "Phaser.HEADLESS" });
 		_typeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		_typeCombo.select(0);
 
-		_pixelArtBtn = new Button(grpGame, SWT.CHECK);
-		_pixelArtBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
-		_pixelArtBtn.setSize(79, 20);
-		_pixelArtBtn.setText("pixelArt");
+		{
+			var label = new Label(grpGame, 0);
+			label.setText("Pixel Art");
+			_pixelArtBtn = new Button(grpGame, SWT.CHECK);
+			_pixelArtBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+			_pixelArtBtn.setSize(79, 20);
+		}
 
-		Label lblPhysicsconfig = new Label(grpGame, SWT.NONE);
-		lblPhysicsconfig.setText("physicsConfig:");
+		{
+			var label = new Label(grpGame, SWT.NONE);
+			label.setText("Physics");
 
-		var physicsGroup = new Group(grpGame, SWT.NONE);
-		physicsGroup.setLayout(new GridLayout(5, false));
-		physicsGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+			var combo = new Combo(grpGame, SWT.READ_ONLY);
+			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+			combo.setItems(new String[] {
 
-		_arcadeBtn = new Button(physicsGroup, SWT.RADIO);
-		_arcadeBtn.setText("arcade");
+					"Arcade",
 
-		_matterBtn = new Button(physicsGroup, SWT.RADIO);
-		_matterBtn.setText("matter");
+					"Matter",
+
+					"None"
+
+			});
+			combo.select(2);
+			_physicsCombo = combo;
+		}
+
+		{
+			var label = new Label(grpGame, SWT.NONE);
+			label.setText("Scale Mode");
+
+			var combo = new Combo(grpGame, SWT.READ_ONLY);
+			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+			combo.setItems(new String[] {
+
+					"Phaser.Scale.FIT",
+
+					"Phaser.Scale.ENVELOP",
+
+					"Phaser.Scale.HEIGHT_CONTROLS_WIDTH",
+
+					"Phaser.Scale.WIDTH_CONTROLS_HEIGHT",
+
+					"Phaser.Scale.RESIZE",
+
+					"Phaser.Scale.NONE"
+
+			});
+			combo.select(0);
+			_scaleModeCombo = combo;
+		}
+
+		{
+			var label = new Label(grpGame, SWT.NONE);
+			label.setText("Scale Auto Center");
+
+			var combo = new Combo(grpGame, SWT.READ_ONLY);
+			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+			combo.setItems(new String[] {
+
+					"Phaser.Scale.CENTER_BOTH",
+
+					"Phaser.Scale.CENTER_HORIZONTALLY",
+
+					"Phaser.Scale.CENTER_VERTICALLY",
+
+					"Phaser.Scale.NO_CENTER"
+
+			});
+			combo.select(0);
+			_scaleAutoCenterCombo = combo;
+		}
 
 		Group codeGroup = new Group(container, SWT.NONE);
 		codeGroup.setLayout(new GridLayout(2, false));
@@ -138,7 +194,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 
 		_label = new Label(codeGroup, SWT.NONE);
 		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		_label.setText("Language: ");
+		_label.setText("Language");
 
 		_comboLang = new ComboViewer(codeGroup, SWT.READ_ONLY);
 		Combo combo = _comboLang.getCombo();
@@ -180,12 +236,28 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		return _pixelArtBtn;
 	}
 
-	public Button getArcadeBtn() {
-		return _arcadeBtn;
+	public String getPhysics() {
+		var text = _physicsCombo.getText();
+		if ("None".equals(text)) {
+			return null;
+		}
+		return text.toLowerCase();
 	}
 
-	public Button getMatterBtn() {
-		return _matterBtn;
+	public String getScaleMode() {
+		var text = _scaleModeCombo.getText();
+		if (text.contains("NONE")) {
+			return null;
+		}
+		return text;
+	}
+
+	public String getScaleAutoCenter() {
+		var text = _scaleAutoCenterCombo.getText();
+		if (text.contains("NO_CENTER")) {
+			return null;
+		}
+		return text;
 	}
 
 	public SourceLang getSourceLang() {

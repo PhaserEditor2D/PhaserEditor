@@ -133,28 +133,40 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		config.put("title", project.getName());
 		config.put("width", width);
 		config.put("height", height);
-		config.put("type", _settingsPage.getTypeCombo().getText());
+		config.put("type", "#!@-" + _settingsPage.getTypeCombo().getText() + "#!@-");
 		config.put("backgroundColor", "#88F");
 
-		JSONObject physicsConfig = new JSONObject();
+		{
+			var physicsConfig = new JSONObject();
+			var physics = _settingsPage.getPhysics();
 
-		if (_settingsPage.getArcadeBtn().getSelection()) {
-			physicsConfig.put("default", "arcade");
-		}
-
-		if (_settingsPage.getMatterBtn().getSelection()) {
-			physicsConfig.put("default", "matter");
-		}
-
-		if (!physicsConfig.isEmpty()) {
-			config.put("physics", physicsConfig);
+			if (physics != null) {
+				physicsConfig.put("default", physics);
+				config.put("physics", physicsConfig);
+			}
 		}
 
 		{
-			String str = config.toString(8);
-			for (var type : new String[] { "AUTO", "WEBGL", "CANVAS", "HEADLESS" }) {
-				str = str.replace("\"Phaser." + type + "\"", "Phaser." + type);
+			var scaleConfig = new JSONObject();
+
+			var scaleMode = _settingsPage.getScaleMode();
+			if (scaleMode != null) {
+				scaleConfig.put("mode", "#!@-" + scaleMode + "#!@-");
 			}
+
+			var scaleAutoCenter = _settingsPage.getScaleAutoCenter();
+			if (scaleAutoCenter != null) {
+				scaleConfig.put("autoCenter", "#!@-" + scaleAutoCenter + "#!@-");
+			}
+
+			if (!scaleConfig.isEmpty()) {
+				config.put("scale", scaleConfig);
+			}
+		}
+
+		{
+			String str = config.toString(4);
+			str = str.replace("\"#!@-", "").replace("#!@-\"", "");
 			str = str.substring(0, str.length() - 2) + "\n\t}";
 			params.put("config", str);
 		}
