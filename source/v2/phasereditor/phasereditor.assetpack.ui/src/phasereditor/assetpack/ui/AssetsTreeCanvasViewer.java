@@ -122,9 +122,8 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			proxy = ImageProxy.get(asset.getTextureFile(), null);
 		} else if (element instanceof SpritesheetAssetModel) {
 			var asset = (SpritesheetAssetModel) element;
-			if (!asset.getFrames().isEmpty()) {
-				proxy = AssetPackUI.getImageProxy(asset.getFrames().get(0));
-			}
+			var file = asset.getUrlFile();
+			proxy = ImageProxy.get(file, null);
 		} else if (element instanceof AnimationFrameModel) {
 			AnimationFrameModel animFrame = (AnimationFrameModel) element;
 			var assetFrame = animFrame.getAssetFrame();
