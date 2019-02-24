@@ -80,9 +80,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		_btnAddTheSource = new Button(container, SWT.CHECK);
-		_btnAddTheSource.setSelection(true);
-		_btnAddTheSource.setText("Add the file to a pack section.");
+		createParametersControls(container);
 
 		_treeViewer = new TreeViewer(container);
 		Tree tree = _treeViewer.getTree();
@@ -94,18 +92,25 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 	}
 
+	protected void createParametersControls(Composite container) {
+		_btnAddTheSource = new Button(container, SWT.CHECK);
+		_btnAddTheSource.setSelection(true);
+		_btnAddTheSource.setText("Add the file to a pack section.");
+		_btnAddTheSource.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updatePageComplete()));
+	}
+
 	private void afterCreateWidgets() {
 		_treeViewer.addSelectionChangedListener(e -> updatePageComplete());
-		_btnAddTheSource.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updatePageComplete()));
+		
 		updatePageComplete();
 	}
 
-	private void updatePageComplete() {
+	protected void updatePageComplete() {
 		_selectedSection = null;
 
 		String error = null;
 
-		if (_btnAddTheSource.getSelection()) {
+		if (isAddingToAssetPackSelected()) {
 			Object elem = _treeViewer.getStructuredSelection().getFirstElement();
 
 			if (elem == null) {
@@ -124,13 +129,17 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 					_selectedSection = section;
 				} else {
-					error = "Please, select an asset section.";
+					error = "Please, select a section in the asset pack.";
 				}
 			}
 		}
 
 		setErrorMessage(error);
 		setPageComplete(error == null);
+	}
+
+	protected boolean isAddingToAssetPackSelected() {
+		return _btnAddTheSource.getSelection();
 	}
 
 	@Override
