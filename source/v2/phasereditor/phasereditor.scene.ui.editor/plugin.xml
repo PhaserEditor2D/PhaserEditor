@@ -351,13 +351,8 @@
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
-      <category
-            id="phasereditor.scene.ui.editor.wizardCategory"
-            name="Scene"
-            parentCategory="phasereditor.ui.wizardCategory">
-      </category>
       <wizard
-            category="phasereditor.scene.ui.editor.wizardCategory"
+            category="phasereditor.ui.wizardCategory"
             class="phasereditor.scene.ui.editor.wizards.NewSceneFileWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
             icon="platform:/plugin/phasereditor.ui/icons/new_canvas.png"
