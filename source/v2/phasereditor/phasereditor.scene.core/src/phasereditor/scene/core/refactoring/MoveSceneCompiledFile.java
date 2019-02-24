@@ -51,6 +51,11 @@ public class MoveSceneCompiledFile extends MoveParticipant {
 
 	@Override
 	protected boolean initialize(Object element) {
+		
+		if (!(element instanceof IFile)) {
+			return false;
+		}
+		
 		var file = (IFile) element;
 
 		_sceneFile = file;

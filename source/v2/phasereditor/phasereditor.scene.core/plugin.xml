@@ -55,7 +55,10 @@
             class="phasereditor.scene.core.refactoring.MoveSceneCompiledFile"
             id="phasereditor.scene.core.refactoring.MoveSceneCompiledFile"
             name="Move Scene Compiled File">
-         <enablement></enablement>
+         <enablement>
+            <reference
+                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
+            </reference></enablement>
       </moveParticipant>
    </extension>
 
