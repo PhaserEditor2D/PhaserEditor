@@ -31,6 +31,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -56,6 +57,7 @@ import phasereditor.ui.IFrameProvider;
 import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
 
 public class SpritesheetAssetPreviewComp extends Composite {
@@ -89,10 +91,11 @@ public class SpritesheetAssetPreviewComp extends Composite {
 					return;
 				}
 
-				var proxy = _sheetCanvas.getProxy();
-				
+				var frame = (SpritesheetAssetModel.FrameModel) ((IStructuredSelection) sel).toArray()[0];
+
+				var proxy = ImageProxy.get(frame.getImageFile(), frame.getFrameData());
 				if (proxy != null) {
-					PhaserEditorUI.set_DND_Image(event, proxy.getImage(), proxy.getBounds());
+					PhaserEditorUI.set_DND_Image(event, proxy.getImage());
 				}
 
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
