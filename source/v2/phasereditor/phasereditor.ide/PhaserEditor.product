@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.0.1.20190219" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.0.2.20190225" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 2D - v2.0.1.20190219
+         Phaser Editor 2D - 2.0.2.20190225
 
 Includes Phaser v3.16.2
 
@@ -285,7 +285,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="org.eclipse.jgit"/>
       <feature id="phasereditor.platform.features" version="2.0.0.20190107"/>
       <feature id="phasereditor.wildwebdeveloper.features" version="2.0.0.20190107"/>
-      <feature id="phasereditor.ide.features" version="2.0.1.20190219"/>
+      <feature id="phasereditor.ide.features" version="2.0.2.20190225"/>
    </features>
 
    <configurations>
