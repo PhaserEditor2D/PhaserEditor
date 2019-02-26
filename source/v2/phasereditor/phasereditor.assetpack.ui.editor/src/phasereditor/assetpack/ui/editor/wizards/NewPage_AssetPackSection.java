@@ -21,15 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor.wizards;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -41,11 +45,11 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.AssetSectionsContentProvider;
 import phasereditor.assetpack.ui.editor.AssetPackEditor;
 import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.TreeArrayContentProvider;
 
 /**
  * @author arian
@@ -85,8 +89,19 @@ public class NewPage_AssetPackSection extends WizardPage {
 		_treeViewer = new TreeViewer(container);
 		Tree tree = _treeViewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_treeViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-		_treeViewer.setContentProvider(new AssetSectionsContentProvider());
+		_treeViewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				return AssetLabelProvider.GLOBAL_16.getImage(element);
+			}
+			
+			@Override
+			public String getText(Object element) {
+				var section = (AssetSectionModel) element;
+				return section.getKey() + " - " + section.getPack().getName();
+			}
+		});
+		_treeViewer.setContentProvider(new TreeArrayContentProvider());
 
 		afterCreateWidgets();
 
@@ -101,7 +116,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 	private void afterCreateWidgets() {
 		_treeViewer.addSelectionChangedListener(e -> updatePageComplete());
-		
+
 		updatePageComplete();
 	}
 
@@ -121,7 +136,8 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 					// find if there is an open and dirty editor
 
-					List<AssetPackEditor> editors = AssetPackUIEditor.findOpenAssetPackEditors(section.getPack().getFile());
+					List<AssetPackEditor> editors = AssetPackUIEditor
+							.findOpenAssetPackEditors(section.getPack().getFile());
 
 					if (editors.stream().filter(editor -> editor.isDirty()).findFirst().isPresent()) {
 						error = "The selected section is open in a dirty editor.";
@@ -148,7 +164,8 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 		_project = getProject();
 
-		_treeViewer.setInput(_project);
+		_treeViewer.setInput(AssetPackCore.getAssetPackModels(_project).stream()
+				.flatMap(pack -> pack.getSections().stream()).collect(toList()));
 		_treeViewer.expandAll();
 
 		updatePageComplete();
