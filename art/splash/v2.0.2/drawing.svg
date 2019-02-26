@@ -196,9 +196,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7071068"
-     inkscape:cx="390.45815"
-     inkscape:cy="575.28962"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="512.92811"
+     inkscape:cy="434.59342"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -274,6 +274,17 @@
          x="122.07538"
          y="158.33347"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87777805px;font-family:'Passero One';-inkscape-font-specification:'Passero One, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke:none;stroke-width:0.26458332">Phaser Editor 2D</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6388855px;line-height:1.25;font-family:monospace;-inkscape-font-specification:monospace;letter-spacing:0px;word-spacing:0px;opacity:0.8;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="193.91498"
+       y="122.0407"
+       id="text4235-30"><tspan
+         sodipodi:role="line"
+         x="193.91498"
+         y="122.0407"
+         style="font-size:3.52777767px;fill:#ffffff;stroke-width:0.26458332"
+         id="tspan4273-3">v2.0.0-Preview</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6388855px;line-height:1.25;font-family:monospace;-inkscape-font-specification:monospace;letter-spacing:0px;word-spacing:0px;opacity:0.8;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"

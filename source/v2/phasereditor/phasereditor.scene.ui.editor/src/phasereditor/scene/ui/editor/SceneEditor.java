@@ -127,17 +127,16 @@ public class SceneEditor extends EditorPart {
 	}
 
 	private void reloadMethod() {
-		
+
 		var file = getEditorInput().getFile();
-		
+
 		if (!file.exists()) {
 			// abort reload, we are in the case of a rename, move or delete.
 			return;
 		}
 
-		
 		_model = new SceneModel();
-		
+
 		try {
 
 			_model.read(file);
@@ -177,7 +176,7 @@ public class SceneEditor extends EditorPart {
 	private void saveMethod(IProgressMonitor monitor) {
 		var file = getEditorInput().getFile();
 
-		{
+		if (LicCore.isEvaluationProduct()) {
 			var cause = SceneCore.isFreeVersionAllowed(file.getProject());
 			if (cause != null) {
 				LicCore.launchGoPremiumDialogs(cause);

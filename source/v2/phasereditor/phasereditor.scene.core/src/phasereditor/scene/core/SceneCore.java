@@ -45,15 +45,17 @@ public class SceneCore {
 	}
 
 	public static void compileScene(SceneModel model, IFile sceneFile, IProgressMonitor monitor) throws Exception {
-		
+
 		{
-			var cause = SceneCore.isFreeVersionAllowed(sceneFile.getProject());
-			if (cause != null) {
-				LicCore.launchGoPremiumDialogs(cause);
-				return;
+			if (LicCore.isEvaluationProduct()) {
+				var cause = SceneCore.isFreeVersionAllowed(sceneFile.getProject());
+				if (cause != null) {
+					LicCore.launchGoPremiumDialogs(cause);
+					return;
+				}
 			}
 		}
-		
+
 		var compiler = new SceneCompiler(sceneFile, model);
 
 		compiler.compile(monitor);
