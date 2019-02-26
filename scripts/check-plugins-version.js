@@ -5,7 +5,7 @@ const { exec } = require("child_process");
 
 
 var current_ver_tag = "v2.0.1";
-var next_ver = "2.0.2.20190225";
+var next_ver = "2.0.3.20190226";
 
 console.log(next_ver);
 console.log("Comparing with version " + current_ver_tag);
