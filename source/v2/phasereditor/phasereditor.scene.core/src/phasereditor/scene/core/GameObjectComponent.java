@@ -72,6 +72,20 @@ public interface GameObjectComponent {
 	static void set_objectFactory(ObjectModel obj, String objectFactory) {
 		obj.put("objectFactory", objectFactory);
 	}
+	
+	// useName
+
+	static String useName_name = "useName";
+
+	static boolean useName_default = false;
+
+	static boolean get_useName(ObjectModel obj) {
+		return (boolean) obj.get("useName");
+	}
+
+	static void set_useName(ObjectModel obj, boolean useName) {
+		obj.put("useName", useName);
+	}
 
 	// utils
 	
@@ -83,6 +97,7 @@ public interface GameObjectComponent {
 		set_active(model, active_default);
 		set_data(model, data_default);
 		set_objectFactory(model, objectFactory_default);
+		set_useName(model, useName_default);
 	}
 
 }

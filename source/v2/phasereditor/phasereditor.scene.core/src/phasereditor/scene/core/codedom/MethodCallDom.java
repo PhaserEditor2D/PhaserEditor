@@ -24,6 +24,8 @@ package phasereditor.scene.core.codedom;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
@@ -65,7 +67,7 @@ public class MethodCallDom {
 	}
 
 	public void argLiteral(String expr) {
-		_args.add("'" + expr.replace("'", "\\\\'").replaceAll("\\R", "\\\\n") + "'");
+		_args.add(JSONObject.quote(expr));
 	}
 
 	public void arg(float n) {

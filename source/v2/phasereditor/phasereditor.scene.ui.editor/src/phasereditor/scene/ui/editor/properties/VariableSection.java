@@ -85,6 +85,9 @@ public class VariableSection extends ScenePropertySection {
 
 					getEditor().setDirty(true);
 					getEditor().refreshOutline();
+
+					// let's do this to update other fields like GameObject.name
+					getEditor().updatePropertyPagesContentWithSelection();
 				}
 			};
 			addUpdate(() -> {

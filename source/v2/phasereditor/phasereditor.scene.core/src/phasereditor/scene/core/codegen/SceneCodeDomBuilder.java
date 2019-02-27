@@ -181,6 +181,8 @@ public class SceneCodeDomBuilder {
 			}
 
 			if (model instanceof GameObjectComponent) {
+				assignToVar = buildNameProp(methodDecl, model) || assignToVar;
+
 				assignToVar = buildSingleFlagProp(methodDecl, model, "active", GameObjectComponent::get_active,
 						GameObjectComponent.active_default) || assignToVar;
 
@@ -266,6 +268,21 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private static boolean buildNameProp(MethodDeclDom methodDecl, ObjectModel model) {
+
+		var useName = GameObjectComponent.get_useName(model);
+
+		if (useName) {
+			var name = varname(model);
+			var prop = new AssignPropertyDom("name", name);
+			prop.valueLiteral(name);
+			methodDecl.getInstructions().add(prop);
+			return true;
+		}
+
+		return false;
 	}
 
 	private static boolean buildDataProp(MethodDeclDom methodDecl, ObjectModel model) {

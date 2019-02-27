@@ -36,6 +36,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -44,8 +45,10 @@ import org.json.JSONObject;
 
 import phasereditor.scene.core.GameObjectComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.properties.CheckListener;
 
 /**
  * @author arian
@@ -251,13 +254,35 @@ public class GameObjectSection extends ScenePropertySection {
 		}
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "boxing" })
 	@Override
 	public Control createContent(Composite parent) {
 		createActions();
 
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(3, false));
+
+		{
+			label(comp, "Name", "Phaser.GameObjects.GameObject.name");
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new CheckListener(btn) {
+
+				@Override
+				protected void accept(boolean value) {
+					wrapOperation(() -> {
+						getModels().forEach(model -> GameObjectComponent.set_useName(model, value));
+					});
+					
+					getEditor().setDirty(true);
+				}
+			};
+			
+			addUpdate(() -> {
+				btn.setText(flatValues_to_String(getModels().stream().map(VariableComponent::get_variableName)));
+				btn.setSelection(flatValues_to_Boolean(getModels().stream().map(GameObjectComponent::get_useName)));
+			});
+		}
 
 		{
 			label(comp, "Factory",

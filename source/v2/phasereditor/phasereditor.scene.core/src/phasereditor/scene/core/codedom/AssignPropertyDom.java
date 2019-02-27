@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core.codedom;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
@@ -40,7 +42,7 @@ public class AssignPropertyDom {
 	}
 
 	public void valueLiteral(String expr) {
-		_propertyValueExpr = "'" + expr.replace("'", "\\\\'").replaceAll("\\R", "\\\\n") + "'";
+		_propertyValueExpr = JSONObject.quote(expr);
 	}
 
 	public void value(float n) {
