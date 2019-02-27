@@ -167,9 +167,11 @@ public class WebRunCore {
 	}
 
 	private static void addAssetsHandler(HandlerList handlerList) {
-		// addStaticFilesHandler(handlerList, path, "/assets");
 		addPluginResourcesHandler(handlerList, "/assets", InspectCore.RESOURCES_EXAMPLES_PLUGIN,
 				"phaser3-examples/public/assets");
+
+		addPluginResourcesHandler(handlerList, "/plugins", InspectCore.RESOURCES_EXAMPLES_PLUGIN,
+				"phaser3-examples/public/plugins");
 	}
 
 	private static void addStaticFilesHandler(HandlerList handlerList, String path, String url) {
