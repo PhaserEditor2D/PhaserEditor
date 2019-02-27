@@ -58,6 +58,14 @@ public class CreateProjectFromExampleHandler extends AbstractHandler {
 
 		String name = example.getName();
 
+		{
+			int i = 1;
+			while (root.getProject(name).exists()) {
+				name = example.getName() + " " + i;
+				i++;
+			}
+		}
+
 		InputDialog dlg = new InputDialog(HandlerUtil.getActiveShell(event), "Create Project",
 				"Create a project with the selected example.", name, new IInputValidator() {
 
@@ -72,6 +80,9 @@ public class CreateProjectFromExampleHandler extends AbstractHandler {
 				});
 
 		if (dlg.open() == Window.OK) {
+
+			name = dlg.getValue();
+
 			IProject project = root.getProject(name);
 
 			WorkspaceJob job = new WorkspaceJob("Create example project '" + project.getName() + "'") {
