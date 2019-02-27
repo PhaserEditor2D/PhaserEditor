@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -23,123 +23,65 @@ package phasereditor.scripts;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.ProgressEvent;
+import org.eclipse.swt.browser.ProgressListener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.json.JSONException;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker.State;
-import javafx.scene.web.WebEngine;
-import javafx.stage.Stage;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
-public class BuildExamplesCache extends Application {
+/**
+ * @author arian
+ *
+ */
+public class BuildExamplesCache {
+	private static final int PORT = 1994;
 
-	Path _wsPath;
-	Path _examplesProjectPath;
-	Path _metadataProjectPath;
-	WebEngine _engine;
-	LinkedList<PhaserExampleModel> _examples;
-	private Path _cacheFolder;
-	private PhaserExampleModel _currentExample;
-	private PhaserExamplesRepoModel model;
-	private Path _examplesPath;
+	static Browser _browser;
 
-	@Override
-	public void start(Stage stage) throws Exception {
+	static Path _wsPath;
+	static Path _examplesProjectPath;
+	static Path _metadataProjectPath;
+	static LinkedList<PhaserExampleModel> _examples;
+	static private Path _cacheFolder;
+	static private PhaserExampleModel _currentExample;
+	static private PhaserExamplesRepoModel model;
+	static private Path _examplesPath;
 
-		// init cache
-
-		_cacheFolder = Paths.get(System.getProperty("user.home") + "/.phasereditor_dev/examples-cache");
-		Files.createDirectories(_cacheFolder);
-
-		_engine = new WebEngine();
-
-		Logger logger = Logger.getLogger("com.sun.webkit.WebPage");
-		logger.setLevel(Level.FINE);
-		logger.addHandler(createLoggerHandler());
-
-		_wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		_examplesProjectPath = _wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
-		_examplesPath = _examplesProjectPath.resolve("phaser3-examples/public");
-		_metadataProjectPath = _wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
-
-		out.println("Building model...");
-		out.println();
-
-		model = new PhaserExamplesRepoModel(_examplesProjectPath);
-		model.build();
-
-		_examples = new LinkedList<>();
-
-		for (PhaserExampleCategoryModel c : model.getExamplesCategories()) {
-			visitCategory(c);
-		}
-
-		ExecutorService pool = Executors.newCachedThreadPool();
-
-		_engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
-
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				if (newValue == State.SUCCEEDED) {
-					pool.execute(new Runnable() {
-						@Override
-						public void run() {
-
-							try {
-								Thread.sleep(1 * 1000);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-
-							Platform.runLater(new Runnable() {
-
-								@Override
-								public void run() {
-									try {
-										processNewExample();
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								}
-							});
-
-						}
-					});
-				}
-			}
-		});
-
-		processNewExample();
-	}
-
-	void processNewExample() throws Exception {
+	static void processNewExample() throws Exception {
 
 		if (_examples.isEmpty()) {
 			examplesProcessingDone();
 		} else {
+
+			if (_currentExample != null) {
+				saveExampleCache(_currentExample);
+			}
+
 			_currentExample = _examples.removeFirst();
 
 			Path exampleFile = _currentExample.getFilePath();
@@ -148,7 +90,7 @@ public class BuildExamplesCache extends Application {
 
 			Path path = exampleFile;
 			path = _examplesPath.relativize(path);
-			String url = "http://127.0.0.1:8080/view.html?src=" + path;
+			String url = "http://127.0.0.1:" + PORT + "/view-iframe.html?src=" + path;
 
 			Path cacheFile = getCacheFile(_currentExample);
 
@@ -162,12 +104,24 @@ public class BuildExamplesCache extends Application {
 					Files.createFile(cacheFile);
 				}
 				out.println("Loading " + url);
-				_engine.load(url);
+				loadUrl(url);
 			}
 		}
 	}
 
-	private void examplesProcessingDone() throws Exception {
+	private static void saveExampleCache(PhaserExampleModel example) throws IOException {
+		Path cacheFile = getCacheFile(example);
+		List<String> urls = example.getFilesMapping().stream()
+
+				.map(m -> m.getOriginal().toString())
+
+				.filter(url -> !url.startsWith("src/"))
+
+				.collect(toList());
+		Files.write(cacheFile, urls);
+	}
+
+	static private void examplesProcessingDone() throws Exception {
 		out.println("DONE!");
 
 		saveCache();
@@ -175,23 +129,15 @@ public class BuildExamplesCache extends Application {
 		exit(0);
 	}
 
-	void addExampleMapping(String url) throws IOException {
+	synchronized static void addExampleMapping(String url) throws IOException {
 		String url2 = decodeUrl(url);
 
 		out.println("- Catching asset: " + url2);
 
 		_currentExample.addMapping(Paths.get(url2), url2);
-
-		Path cacheFile = getCacheFile(_currentExample);
-
-		List<String> urls = new ArrayList<>(Files.readAllLines(cacheFile));
-
-		urls.add(url2);
-
-		Files.write(cacheFile, urls);
 	}
 
-	boolean loadFromCache(PhaserExampleModel example) throws IOException {
+	static boolean loadFromCache(PhaserExampleModel example) throws IOException {
 		Path cacheFile = getCacheFile(example);
 
 		if (Files.exists(cacheFile)) {
@@ -213,13 +159,13 @@ public class BuildExamplesCache extends Application {
 		return java.net.URLDecoder.decode(url, "UTF-8");
 	}
 
-	private Path getCacheFile(PhaserExampleModel example) throws IOException {
+	private static Path getCacheFile(PhaserExampleModel example) throws IOException {
 		String id = getExampleId(example);
 		Path cacheFile = _cacheFolder.resolve(id);
 		return cacheFile;
 	}
 
-	private String getExampleId(PhaserExampleModel example) throws IOException {
+	private static String getExampleId(PhaserExampleModel example) throws IOException {
 		Path exampleFile = example.getFilePath();
 		Path relFile = _examplesProjectPath.resolve("phaser3-examples/public/src").relativize(exampleFile);
 		String name = relFile.toString().replace(" ", "_").replace(".", "_").replace("/", "_");
@@ -228,7 +174,7 @@ public class BuildExamplesCache extends Application {
 		return id;
 	}
 
-	private void saveCache() throws JSONException, IOException {
+	private static void saveCache() throws JSONException, IOException {
 		Path cache = _metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
@@ -243,7 +189,7 @@ public class BuildExamplesCache extends Application {
 		}
 	}
 
-	private void visitCategory(PhaserExampleCategoryModel category) {
+	private static void visitCategory(PhaserExampleCategoryModel category) {
 		for (PhaserExampleModel example : category.getTemplates()) {
 			visitExample(example);
 		}
@@ -253,44 +199,142 @@ public class BuildExamplesCache extends Application {
 		}
 	}
 
-	private void visitExample(PhaserExampleModel example) {
+	private static void visitExample(PhaserExampleModel example) {
 		_examples.add(example);
 	}
 
-	private Handler createLoggerHandler() {
-		return new Handler() {
+	public static void main(String[] args) throws Exception {
+		// init cache
+
+		_cacheFolder = Paths.get(System.getProperty("user.home") + "/.phasereditor_dev/examples-cache");
+		Files.createDirectories(_cacheFolder);
+
+		_wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
+		_examplesProjectPath = _wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
+		_examplesPath = _examplesProjectPath.resolve("phaser3-examples/public");
+		_metadataProjectPath = _wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
+
+		out.println("Building model...");
+		out.println();
+
+		model = new PhaserExamplesRepoModel(_examplesProjectPath);
+		model.build();
+
+		_examples = new LinkedList<>();
+
+		for (PhaserExampleCategoryModel c : model.getExamplesCategories()) {
+			visitCategory(c);
+		}
+
+		startServer("/home/arian/Documents/Phaser/phaser3-examples/public");
+
+		Display display = new Display();
+		Shell shell = new Shell(display);
+		shell.setLayout(new FillLayout());
+
+		_browser = new Browser(shell, 0);
+
+		ExecutorService pool = Executors.newCachedThreadPool();
+
+		_browser.addProgressListener(new ProgressListener() {
 
 			@Override
-			public void publish(LogRecord record) {
-				String msg = record.getMessage();
+			public void completed(ProgressEvent event) {
+				pool.execute(new Runnable() {
+					@Override
+					public void run() {
 
-				// out.println("URL: " + msg);
+						try {
+							Thread.sleep(1 * 1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 
-				int i = msg.indexOf("http://127.0.0.1:8080/plugins");
+						try {
+							processNewExample();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
-				if (i < 0) {
-					i = msg.indexOf("http://127.0.0.1:8080/assets");
+					}
+				});
+			}
+
+			@Override
+			public void changed(ProgressEvent event) {
+				//
+			}
+		});
+
+		pool.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					processNewExample();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+			}
+		});
 
-				if (i > 0) {
-					String url = msg.substring(i + "http://127.0.0.1:8080".length() + 1);
+		shell.open();
+
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		display.dispose();
+	}
+
+	private static void loadUrl(String url) {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				_browser.setUrl(url);
+			}
+		});
+
+	}
+
+	private static void startServer(String examplesPath) {
+		Server _server = new Server(PORT);
+		_server.setAttribute("useFileMappedBuffer", "false");
+		HandlerList handlerList = new HandlerList();
+
+		ContextHandler context = new ContextHandler("/");
+
+		ResourceHandler resourceHandler = new ResourceHandler() {
+			@Override
+			public Resource getResource(String path) {
+				// out.println("URL: " + path);
+
+				if (path.startsWith("/assets") || path.startsWith("/plugin")) {
 					try {
-						addExampleMapping(url);
+						addExampleMapping(path.substring(1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
-			}
 
-			@Override
-			public void flush() {
-				//
-			}
-
-			@Override
-			public void close() throws SecurityException {
-				//
+				return super.getResource(path);
 			}
 		};
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+		resourceHandler.setDirectoriesListed(true);
+		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+		resourceHandler.setResourceBase(examplesPath);
+		context.setHandler(resourceHandler);
+		handlerList.addHandler(context);
+
+		_server.setHandler(handlerList);
+
+		try {
+			_server.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 }
