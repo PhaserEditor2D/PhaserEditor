@@ -12,6 +12,7 @@
     "children": []
   },
   "autoLoadAssets": false,
+  "borderHeight": 450,
   "createMethodName": "_create",
   "methodContextType": "SCENE",
   "sceneKey": "Scene1"
