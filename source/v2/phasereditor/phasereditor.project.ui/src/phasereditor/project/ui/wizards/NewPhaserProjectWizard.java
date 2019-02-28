@@ -135,6 +135,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		config.put("height", height);
 		config.put("type", "#!@-" + _settingsPage.getTypeCombo().getText() + "#!@-");
 		config.put("backgroundColor", "#88F");
+		config.put("parent", "game-container");
 
 		{
 			var physicsConfig = new JSONObject();
