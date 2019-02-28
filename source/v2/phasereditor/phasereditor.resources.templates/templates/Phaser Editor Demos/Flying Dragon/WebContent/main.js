@@ -7,6 +7,7 @@ window.addEventListener('load', function() {
 		"height": 450,
 		"type": Phaser.AUTO,
 		url: "https://phasereditor2d.com",
+		parent: "game-container",
 		physics: {
 			default: "arcade",
 			arcade: {
