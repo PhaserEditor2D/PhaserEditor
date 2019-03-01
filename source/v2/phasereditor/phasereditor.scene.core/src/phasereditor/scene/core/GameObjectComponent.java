@@ -68,9 +68,23 @@ public interface GameObjectComponent {
 	static String get_objectFactory(ObjectModel obj) {
 		return (String) obj.get("objectFactory");
 	}
-
+	
 	static void set_objectFactory(ObjectModel obj, String objectFactory) {
 		obj.put("objectFactory", objectFactory);
+	}
+
+	// objectBuild
+
+	static String objectBuild_name = "objectBuild";
+
+	static boolean objectBuild_default = false;
+
+	static boolean get_objectBuild(ObjectModel obj) {
+		return (boolean) obj.get("objectBuild");
+	}
+
+	static void set_objectBuild(ObjectModel obj, boolean objectBuild) {
+		obj.put("objectBuild", objectBuild);
 	}
 	
 	// useName
@@ -97,6 +111,7 @@ public interface GameObjectComponent {
 		set_active(model, active_default);
 		set_data(model, data_default);
 		set_objectFactory(model, objectFactory_default);
+		set_objectBuild(model, objectBuild_default);
 		set_useName(model, useName_default);
 	}
 

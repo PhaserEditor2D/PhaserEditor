@@ -224,6 +224,11 @@ public class SceneCodeDomBuilder {
 				assignToVar = buildTileSpriteProps(methodDecl, model) || assignToVar;
 			}
 
+			// do this always at the end!
+			if (GameObjectComponent.is(model)) {
+				assignToVar = buildObjectBuildCall(methodDecl, model) || assignToVar;
+			}
+
 			{
 
 				var isObjectContext = sceneModel.getMethodContextType() == MethodContextType.OBJECT;
@@ -268,6 +273,18 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private static boolean buildObjectBuildCall(MethodDeclDom methodDecl, ObjectModel model) {
+
+		if (GameObjectComponent.get_objectBuild(model)) {
+			var name = varname(model);
+			var call = new MethodCallDom("build", name);
+			methodDecl.getInstructions().add(call);
+			return true;
+		}
+
+		return false;
 	}
 
 	private static boolean buildNameProp(MethodDeclDom methodDecl, ObjectModel model) {

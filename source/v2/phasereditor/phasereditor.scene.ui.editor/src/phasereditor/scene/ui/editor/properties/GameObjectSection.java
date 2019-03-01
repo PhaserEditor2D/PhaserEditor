@@ -273,11 +273,11 @@ public class GameObjectSection extends ScenePropertySection {
 					wrapOperation(() -> {
 						getModels().forEach(model -> GameObjectComponent.set_useName(model, value));
 					});
-					
+
 					getEditor().setDirty(true);
 				}
 			};
-			
+
 			addUpdate(() -> {
 				btn.setText(flatValues_to_String(getModels().stream().map(VariableComponent::get_variableName)));
 				btn.setSelection(flatValues_to_Boolean(getModels().stream().map(GameObjectComponent::get_useName)));
@@ -296,6 +296,7 @@ public class GameObjectSection extends ScenePropertySection {
 				protected void accept2(String value) {
 					getModels().stream().forEach(model -> GameObjectComponent.set_objectFactory(model, value));
 					getEditor().setDirty(true);
+					getEditor().updatePropertyPagesContentWithSelection();
 				}
 			};
 
@@ -371,6 +372,31 @@ public class GameObjectSection extends ScenePropertySection {
 				}
 			});
 			manager.createControl(comp);
+		}
+
+		{
+			new Label(comp, 0);
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setText("Build Object");
+			btn.setToolTipText("(Phaser Editor) If checked, a build() method will be applied to this object.");
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new CheckListener(btn) {
+
+				@Override
+				protected void accept(boolean value) {
+					wrapOperation(() -> {
+						getModels().forEach(model -> GameObjectComponent.set_objectBuild(model, value));
+					});
+					getEditor().setDirty(true);
+				}
+			};
+
+			addUpdate(() -> {
+				long count = getModels().stream()
+						.filter(model -> GameObjectComponent.get_objectFactory(model).trim().length() > 0).count();
+				btn.setEnabled(count == getModels().size());
+				btn.setSelection(flatValues_to_Boolean(getModels().stream().map(GameObjectComponent::get_objectBuild)));
+			});
 		}
 
 		{
