@@ -69,7 +69,6 @@ public class SceneModel {
 	private int _snapWidth;
 	private int _snapHeight;
 
-	private boolean _autoLoadAssets;
 	private boolean _generateMethodEvents;
 	private boolean _onlyGenerateMethods;
 	private String _superClassName;
@@ -109,15 +108,14 @@ public class SceneModel {
 		_borderWidth = 800;
 		_borderHeight = 600;
 
-		_autoLoadAssets = true;
 		_generateMethodEvents = false;
 		_onlyGenerateMethods = false;
 
-		_preloadMethodName = "preload";
+		_preloadMethodName = "";
 		_createMethodName = "create";
 		_superClassName = "Phaser.Scene";
 		_methodContextType = MethodContextType.SCENE;
-		
+
 		_sceneKey = "";
 	}
 
@@ -161,14 +159,6 @@ public class SceneModel {
 		_generateMethodEvents = generateMethodEvents;
 	}
 
-	public boolean isAutoLoadAssets() {
-		return _autoLoadAssets;
-	}
-
-	public void setAutoLoadAssets(boolean autoLoadAssets) {
-		_autoLoadAssets = autoLoadAssets;
-	}
-
 	public MethodContextType getMethodContextType() {
 		return _methodContextType;
 	}
@@ -176,15 +166,15 @@ public class SceneModel {
 	public void setMethodContextType(MethodContextType methodContextType) {
 		_methodContextType = methodContextType;
 	}
-	
+
 	public String getSceneKey() {
 		return _sceneKey;
 	}
-	
+
 	public void setSceneKey(String sceneKey) {
 		_sceneKey = sceneKey;
 	}
-	
+
 	public int getBorderY() {
 		return _borderY;
 	}
@@ -393,11 +383,10 @@ public class SceneModel {
 		}
 
 		{
-			data.put("autoLoadAssets", _autoLoadAssets, true);
 			data.put("generateMethodEvents", _generateMethodEvents, false);
 			data.put("onlyGenerateMethods", _onlyGenerateMethods, false);
 			data.put("superClassName", _superClassName, "Phaser.Scene");
-			data.put("preloadMethodName", _preloadMethodName, "preload");
+			data.put("preloadMethodName", _preloadMethodName, "");
 			data.put("createMethodName", _createMethodName, "create");
 			data.put("methodContextType", _methodContextType.name());
 			data.put("sceneKey", _sceneKey, "");
@@ -424,11 +413,18 @@ public class SceneModel {
 		}
 
 		{
-			_autoLoadAssets = data.optBoolean("autoLoadAssets", true);
 			_generateMethodEvents = data.optBoolean("generateMethodEvents", false);
 			_onlyGenerateMethods = data.optBoolean("onlyGenerateMethods", false);
 			_superClassName = data.optString("superClassName", "Phaser.Scene");
-			_preloadMethodName = data.optString("preloadMethodName", "preload");
+			{
+				_preloadMethodName = data.optString("preloadMethodName", "");
+				var autoLoadAssets = data.optBoolean("autoLoadAssets", true);
+				if (!autoLoadAssets) {
+					if (_preloadMethodName.trim().length() > 0) {
+						_preloadMethodName = "";
+					}
+				}
+			}
 			_createMethodName = data.optString("createMethodName", "create");
 			_methodContextType = MethodContextType
 					.valueOf(data.optString("methodContextType", MethodContextType.SCENE.name()));

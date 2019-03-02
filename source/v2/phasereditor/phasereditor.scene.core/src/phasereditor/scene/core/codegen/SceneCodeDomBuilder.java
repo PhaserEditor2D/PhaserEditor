@@ -93,7 +93,7 @@ public class SceneCodeDomBuilder {
 
 		var methods = new ArrayList<MemberDeclDom>();
 
-		if (model.isAutoLoadAssets()) {
+		if (model.getPreloadMethodName().trim().length() > 0) {
 			var preloadDom = buildPreloadMethod(model);
 			methods.add(preloadDom);
 		}

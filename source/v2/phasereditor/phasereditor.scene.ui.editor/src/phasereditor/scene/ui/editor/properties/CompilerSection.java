@@ -52,7 +52,6 @@ import phasereditor.ui.properties.TextListener;
  */
 public class CompilerSection extends BaseDesignSection {
 
-	private Button _autoLoadAssetsButton;
 	private Text _preloadNameText;
 	private Text _createNameText;
 	private Button _generateEventsButton;
@@ -74,21 +73,6 @@ public class CompilerSection extends BaseDesignSection {
 
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
-
-		{
-			label(comp, "Generate Assets Loading",
-					"*Generate a preload method that loads all the assets used in this scene.");
-			_autoLoadAssetsButton = new Button(comp, SWT.CHECK);
-			new CheckListener(_autoLoadAssetsButton) {
-
-				@Override
-				protected void accept(boolean value) {
-					wrapOperation(() -> {
-						getScene().getModel().setAutoLoadAssets(value);
-					});
-				}
-			};
-		}
 
 		{
 			label(comp, "Generate Method Events", "*Insert events at the start and the end of the methods.");
@@ -155,7 +139,7 @@ public class CompilerSection extends BaseDesignSection {
 		}
 
 		{
-			label(comp, "Preload Method", "*The name of the preload method.");
+			label(comp, "Preload Method", "*The name of the preload method.\nLeave it empty if you don't want to generate this method.");
 			_preloadNameText = new Text(comp, SWT.BORDER);
 			_preloadNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			new TextListener(_preloadNameText) {
@@ -240,7 +224,6 @@ public class CompilerSection extends BaseDesignSection {
 	public void user_update_UI_from_Model() {
 		var model = getEditor().getSceneModel();
 
-		_autoLoadAssetsButton.setSelection(model.isAutoLoadAssets());
 		_generateEventsButton.setSelection(model.isGenerateMethodEvents());
 		_onlyGenerateMethodsButton.setSelection(model.isOnlyGenerateMethods());
 
