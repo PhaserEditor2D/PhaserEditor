@@ -30,6 +30,7 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -289,6 +290,24 @@ public class CompilerSection extends BaseDesignSection {
 				combo.select(getScene().getModel().getMethodContextType().ordinal());
 			});
 		}
+		
+		{
+			var btn = new Button(comp, 0);
+			btn.setAlignment(SWT.LEFT);
+			btn.setText("Compile Scene");
+			btn.setImage(EditorSharedImages.getImage(IMG_BUILD));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().compile()));
+		}
+		
+		{
+			var btn = new Button(comp, 0);
+			btn.setAlignment(SWT.LEFT);
+			btn.setText("Go To Code");
+			btn.setImage(EditorSharedImages.getImage(IMG_GOTO_SOURCE));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> openSourceFile()));
+		}
 
 		return comp;
 	}
@@ -307,7 +326,7 @@ public class CompilerSection extends BaseDesignSection {
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
-		manager.add(new Action("Compile scene.", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
+		manager.add(new Action("Compile Scene.", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
 			@Override
 			public void run() {
 				getEditor().compile();
