@@ -74,20 +74,20 @@ public class CompilerSection extends BaseDesignSection {
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
 
-		{
-			label(comp, "Generate Method Events", "*Insert events at the start and the end of the methods.");
-			_generateEventsButton = new Button(comp, SWT.CHECK);
-
-			new CheckListener(_generateEventsButton) {
-
-				@Override
-				protected void accept(boolean value) {
-					wrapOperation(() -> {
-						getScene().getModel().setGenerateMethodEvents(value);
-					});
-				}
-			};
-		}
+//		{
+//			label(comp, "Generate Method Events", "*Insert events at the start and the end of the methods.");
+//			_generateEventsButton = new Button(comp, SWT.CHECK);
+//
+//			new CheckListener(_generateEventsButton) {
+//
+//				@Override
+//				protected void accept(boolean value) {
+//					wrapOperation(() -> {
+//						getScene().getModel().setGenerateMethodEvents(value);
+//					});
+//				}
+//			};
+//		}
 
 		{
 			label(comp, "Only Generate Methods", "*Generate plain methods, without a containing class.");
