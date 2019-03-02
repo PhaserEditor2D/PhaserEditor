@@ -24,9 +24,13 @@ package phasereditor.ui.properties;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -34,7 +38,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
 
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
 /**
@@ -211,5 +217,19 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	@SuppressWarnings("unused")
 	protected void visibilityChanged(boolean visible) {
 		// nothing
+	}
+
+	protected static ToolBar createMenuIconToolbar(Composite parent, Consumer<IMenuManager> menuBuilder) {
+		var toolbarManager = new ToolBarManager();
+		toolbarManager.add(new Action("", EditorSharedImages.getImageDescriptor(IMG_BULLET_MENU)) {
+			@Override
+			public void run() {
+				var menuManager = new MenuManager();
+				menuBuilder.accept(menuManager);
+				var menu = menuManager.createContextMenu(parent);
+				menu.setVisible(true);
+			}
+		});
+		return toolbarManager.createControl(parent);
 	}
 }

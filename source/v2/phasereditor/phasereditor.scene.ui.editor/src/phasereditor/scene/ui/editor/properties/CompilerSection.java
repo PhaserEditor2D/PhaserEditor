@@ -22,8 +22,10 @@
 package phasereditor.scene.ui.editor.properties;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -52,12 +54,6 @@ import phasereditor.ui.properties.TextListener;
  */
 public class CompilerSection extends BaseDesignSection {
 
-	private Text _preloadNameText;
-	private Text _createNameText;
-	private Button _generateEventsButton;
-	private Text _superClassNameText;
-	private Button _onlyGenerateMethodsButton;
-
 	public CompilerSection(FormPropertyPage page) {
 		super("Compiler", page);
 	}
@@ -72,27 +68,29 @@ public class CompilerSection extends BaseDesignSection {
 	public Control createContent(Composite parent) {
 
 		var comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(2, false));
+		comp.setLayout(new GridLayout(3, false));
 
-//		{
-//			label(comp, "Generate Method Events", "*Insert events at the start and the end of the methods.");
-//			_generateEventsButton = new Button(comp, SWT.CHECK);
-//
-//			new CheckListener(_generateEventsButton) {
-//
-//				@Override
-//				protected void accept(boolean value) {
-//					wrapOperation(() -> {
-//						getScene().getModel().setGenerateMethodEvents(value);
-//					});
-//				}
-//			};
-//		}
+		// {
+		// label(comp, "Generate Method Events", "*Insert events at the start and the
+		// end of the methods.");
+		// _generateEventsButton = new Button(comp, SWT.CHECK);
+		//
+		// new CheckListener(_generateEventsButton) {
+		//
+		// @Override
+		// protected void accept(boolean value) {
+		// wrapOperation(() -> {
+		// getScene().getModel().setGenerateMethodEvents(value);
+		// });
+		// }
+		// };
+		// }
 
 		{
 			label(comp, "Only Generate Methods", "*Generate plain methods, without a containing class.");
-			_onlyGenerateMethodsButton = new Button(comp, SWT.CHECK);
-			new CheckListener(_onlyGenerateMethodsButton) {
+			var btn = new Button(comp, SWT.CHECK);
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			new CheckListener(btn) {
 
 				@Override
 				protected void accept(boolean value) {
@@ -101,9 +99,18 @@ public class CompilerSection extends BaseDesignSection {
 					});
 				}
 			};
+			addUpdate(() -> {
+				btn.setSelection(getSceneModel().isOnlyGenerateMethods());
+			});
 		}
 
 		{
+			Consumer<String> setValue = value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setSceneKey(value);
+				});
+			};
+
 			label(comp, "Scene Key",
 					"*The unique key of this Scene. Must be unique within the entire Game instance.\nIf not set, no constructor with the scene key will be generated. ");
 			var text = new Text(comp, SWT.BORDER);
@@ -112,11 +119,31 @@ public class CompilerSection extends BaseDesignSection {
 
 				@Override
 				protected void accept(String value) {
-					wrapOperation(() -> {
-						getScene().getModel().setSceneKey(value);
-					});
+					setValue.accept(value);
 				}
 			};
+			createMenuIconToolbar(comp, menu -> {
+				var name = getEditor().getEditorInput().getFile().getFullPath().removeFileExtension().lastSegment();
+				menu.add(new Action(name) {
+					@Override
+					public void run() {
+						text.setText(name);
+						setValue.accept(name);
+					}
+				});
+
+				menu.add(new Separator());
+
+				menu.add(new Action("(None)") {
+					@Override
+					public void run() {
+						text.setText("");
+						setValue.accept("");
+					}
+				});
+
+			});
+
 			addUpdate(() -> {
 				text.setText(getScene().getModel().getSceneKey());
 			});
@@ -124,56 +151,131 @@ public class CompilerSection extends BaseDesignSection {
 		}
 
 		{
+			Consumer<String> setValue = value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setSuperClassName(value);
+				});
+			};
+
 			label(comp, "Super Class", "*The name of the super class.");
-			_superClassNameText = new Text(comp, SWT.BORDER);
-			_superClassNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			new TextListener(_superClassNameText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new TextListener(text) {
 
 				@Override
 				protected void accept(String value) {
-					wrapOperation(() -> {
-						getScene().getModel().setSuperClassName(value);
-					});
+					setValue.accept(value);
 				}
 			};
+			addUpdate(() -> {
+				text.setText(getSceneModel().getSuperClassName());
+			});
+
+			createMenuIconToolbar(comp, menu -> {
+				menu.add(new Action("Phaser.Scene") {
+					@Override
+					public void run() {
+						text.setText(getText());
+						setValue.accept(getText());
+					}
+				});
+
+				menu.add(new Separator());
+
+				menu.add(new Action("(None)") {
+					@Override
+					public void run() {
+						text.setText("");
+						setValue.accept("");
+					}
+				});
+			});
 		}
 
 		{
-			label(comp, "Preload Method", "*The name of the preload method.\nLeave it empty if you don't want to generate this method.");
-			_preloadNameText = new Text(comp, SWT.BORDER);
-			_preloadNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			new TextListener(_preloadNameText) {
+			Consumer<String> setValue = value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setPreloadMethodName(value);
+				});
+			};
+			label(comp, "Preload Method",
+					"*The name of the preload method.\nLeave it empty if you don't want to generate this method.");
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new TextListener(text) {
 
 				@Override
 				protected void accept(String value) {
-					wrapOperation(() -> {
-						getScene().getModel().setPreloadMethodName(value);
-					});
+					setValue.accept(value);
 				}
 			};
+			addUpdate(() -> {
+				text.setText(getSceneModel().getPreloadMethodName());
+			});
+
+			createMenuIconToolbar(comp, menu -> {
+				for (var name : new String[] { "preload", "_preload" }) {
+					menu.add(new Action(name) {
+						@Override
+						public void run() {
+							text.setText(getText());
+							setValue.accept(getText());
+						}
+					});
+				}
+
+				menu.add(new Separator());
+
+				menu.add(new Action("(None)") {
+					@Override
+					public void run() {
+						text.setText("");
+						setValue.accept("");
+					}
+				});
+			});
 		}
 
 		{
+			Consumer<String> setValue = value -> {
+				wrapOperation(() -> {
+					getScene().getModel().setCreateMethodName(value);
+				});
+			};
+			
 			label(comp, "Create Method", "*The name of the create method.");
-			_createNameText = new Text(comp, SWT.BORDER);
-			_createNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			new TextListener(_createNameText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new TextListener(text) {
 
 				@Override
 				protected void accept(String value) {
-					wrapOperation(() -> {
-						getScene().getModel().setCreateMethodName(value);
-					});
+					setValue.accept(value);
 				}
 
 			};
+			addUpdate(() -> {
+				text.setText(getSceneModel().getCreateMethodName());
+			});
+
+			createMenuIconToolbar(comp, menu -> {
+				for (var name : new String[] { "create", "_create" }) {
+					menu.add(new Action(name) {
+						@Override
+						public void run() {
+							text.setText(getText());
+							setValue.accept(getText());
+						}
+					});
+				}
+			});
 		}
 
 		{
 			label(comp, "Methods Context Type", "*The context of the method.");
 			var combo = new Combo(comp, SWT.READ_ONLY);
 			combo.setItems(Arrays.stream(MethodContextType.values()).map(e -> e.name()).toArray(String[]::new));
-			combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			combo.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -219,18 +321,4 @@ public class CompilerSection extends BaseDesignSection {
 			}
 		});
 	}
-
-	@Override
-	public void user_update_UI_from_Model() {
-		var model = getEditor().getSceneModel();
-
-		_generateEventsButton.setSelection(model.isGenerateMethodEvents());
-		_onlyGenerateMethodsButton.setSelection(model.isOnlyGenerateMethods());
-
-		_superClassNameText.setText(model.getSuperClassName());
-		_preloadNameText.setText(model.getPreloadMethodName());
-		_createNameText.setText(model.getCreateMethodName());
-
-	}
-
 }
