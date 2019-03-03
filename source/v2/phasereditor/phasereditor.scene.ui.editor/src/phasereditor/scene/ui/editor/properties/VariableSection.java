@@ -25,14 +25,19 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.scene.core.CodeDomComponent;
+import phasereditor.scene.core.SceneCompiler;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 
@@ -43,6 +48,7 @@ import phasereditor.ui.EditorSharedImages;
 public class VariableSection extends ScenePropertySection {
 
 	private Action _fieldAction;
+	private Action _goToCodeAction;
 
 	public VariableSection(ScenePropertyPage page) {
 		super("Variable", page);
@@ -96,12 +102,22 @@ public class VariableSection extends ScenePropertySection {
 			});
 		}
 
+		{
+			var btn = new Button(comp, SWT.BORDER);
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+			btn.setText("Go To Code");
+			btn.setImage(EditorSharedImages.getImage(IMG_GOTO_SOURCE));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> _goToCodeAction.run()));
+
+		}
+
 		return comp;
 	}
 
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 		manager.add(_fieldAction);
+		manager.add(_goToCodeAction);
 	}
 
 	@SuppressWarnings("boxing")
@@ -134,5 +150,25 @@ public class VariableSection extends ScenePropertySection {
 			_fieldAction.setChecked(flatValues_to_boolean(
 					getModels().stream().map(model -> VariableComponent.get_variableField(model))));
 		});
+
+		_goToCodeAction = new Action("Go To Code", EditorSharedImages.getImageDescriptor(IMG_GOTO_SOURCE)) {
+			@Override
+			public void run() {
+				try {
+					var codeDom = CodeDomComponent.get_codeDom(getModels().get(0));
+
+					if (codeDom == null) {
+						var compiler = new SceneCompiler(getEditor().getEditorInput().getFile(), getSceneModel());
+						compiler.compile();
+						codeDom = CodeDomComponent.get_codeDom(getModels().get(0));
+					}
+
+					getEditor().openSourceFile(codeDom.getOffset());
+
+				} catch (Exception e) {
+					SceneUIEditor.logError(e);
+				}
+			}
+		};
 	}
 }

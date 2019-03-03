@@ -39,6 +39,7 @@ import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.core.CodeDomComponent;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
@@ -230,7 +231,7 @@ public class SceneCodeDomBuilder {
 			}
 
 			{
-
+				// add to a parent container, if it is the case
 				var isObjectContext = sceneModel.getMethodContextType() == MethodContextType.OBJECT;
 
 				if (methodCall != null) {
@@ -247,9 +248,14 @@ public class SceneCodeDomBuilder {
 						methodDecl.getInstructions().add(call);
 					}
 				}
-
 			}
-
+			
+			// link the model with its codedom
+			if (model instanceof CodeDomComponent) {
+				CodeDomComponent.set_codeDom(model, methodCall);
+			}
+			
+			
 			// add a new line
 			methodDecl.getInstructions().add(new RawCode(""));
 		}
@@ -357,6 +363,7 @@ public class SceneCodeDomBuilder {
 			var groupName = varname(group);
 
 			var methodCall = buildCreateGroup(methodDecl, group, sceneModel);
+			CodeDomComponent.set_codeDom(group, methodCall);
 
 			if (VariableComponent.get_variableField(group)) {
 				var fieldName = JSCodeUtils.fieldOf(groupName);

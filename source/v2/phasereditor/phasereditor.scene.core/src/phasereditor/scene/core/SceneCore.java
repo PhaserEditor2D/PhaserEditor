@@ -58,7 +58,7 @@ public class SceneCore {
 
 		var compiler = new SceneCompiler(sceneFile, model);
 
-		compiler.compile(monitor);
+		compiler.compileToFile(monitor);
 
 	}
 

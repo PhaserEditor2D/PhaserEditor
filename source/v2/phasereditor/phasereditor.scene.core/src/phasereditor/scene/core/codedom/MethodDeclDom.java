@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class MethodDeclDom extends MemberDeclDom {
 
-	private List<Object> _instructions;
+	private List<CodeDom> _instructions;
 
 	public MethodDeclDom(String name) {
 		super(name);
@@ -38,11 +38,11 @@ public class MethodDeclDom extends MemberDeclDom {
 		_instructions = new ArrayList<>();
 	}
 
-	public List<Object> getInstructions() {
+	public List<CodeDom> getInstructions() {
 		return _instructions;
 	}
 
-	public void setInstructions(List<Object> instructions) {
+	public void setInstructions(List<CodeDom> instructions) {
 		_instructions = instructions;
 	}
 }

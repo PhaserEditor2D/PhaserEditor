@@ -38,10 +38,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.ide.IDE;
 
-import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.ui.EditorSharedImages;
@@ -243,7 +240,7 @@ public class CompilerSection extends BaseDesignSection {
 					getScene().getModel().setCreateMethodName(value);
 				});
 			};
-			
+
 			label(comp, "Create Method", "*The name of the create method.");
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -290,7 +287,7 @@ public class CompilerSection extends BaseDesignSection {
 				combo.select(getScene().getModel().getMethodContextType().ordinal());
 			});
 		}
-		
+
 		{
 			var btn = new Button(comp, 0);
 			btn.setAlignment(SWT.LEFT);
@@ -299,29 +296,17 @@ public class CompilerSection extends BaseDesignSection {
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().compile()));
 		}
-		
+
 		{
 			var btn = new Button(comp, 0);
 			btn.setAlignment(SWT.LEFT);
 			btn.setText("Go To Code");
 			btn.setImage(EditorSharedImages.getImage(IMG_GOTO_SOURCE));
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> openSourceFile()));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().openSourceFile()));
 		}
 
 		return comp;
-	}
-
-	void openSourceFile() {
-		var file = SceneCore.getSceneSourceCodeFile(getEditor().getEditorInput().getFile());
-		if (file.exists()) {
-			try {
-				IDE.openEditor(getEditor().getEditorSite().getWorkbenchWindow().getActivePage(), file);
-			} catch (PartInitException e1) {
-				e1.printStackTrace();
-				throw new RuntimeException(e1);
-			}
-		}
 	}
 
 	@Override
@@ -336,7 +321,7 @@ public class CompilerSection extends BaseDesignSection {
 		manager.add(new Action("Open JavaScript Source File.", EditorSharedImages.getImageDescriptor(IMG_GOTO_SOURCE)) {
 			@Override
 			public void run() {
-				openSourceFile();
+				getEditor().openSourceFile();
 			}
 		});
 	}

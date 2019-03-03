@@ -25,7 +25,7 @@ package phasereditor.scene.core.codedom;
  * @author arian
  *
  */
-public class MemberDeclDom {
+public class MemberDeclDom extends CodeDom {
 	private String _name;
 	public MemberDeclDom(String name) {
 		super();

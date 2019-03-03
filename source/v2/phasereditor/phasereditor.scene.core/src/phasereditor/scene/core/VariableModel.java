@@ -30,7 +30,9 @@ import org.json.JSONObject;
  */
 public abstract class VariableModel extends ParentModel implements
 
-		VariableComponent
+		VariableComponent,
+		
+		CodeDomComponent
 
 {
 

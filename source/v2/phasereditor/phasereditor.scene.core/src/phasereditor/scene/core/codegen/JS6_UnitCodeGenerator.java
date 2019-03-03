@@ -24,6 +24,7 @@ package phasereditor.scene.core.codegen;
 import phasereditor.project.core.codegen.BaseCodeGenerator;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
+import phasereditor.scene.core.codedom.CodeDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
 import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
@@ -125,7 +126,9 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 		closeIndent("}");
 	}
 
-	private void generateInstr(Object instr) {
+	private void generateInstr(CodeDom instr) {
+
+		instr.setOffset(getOffset());
 
 		if (instr instanceof RawCode) {
 

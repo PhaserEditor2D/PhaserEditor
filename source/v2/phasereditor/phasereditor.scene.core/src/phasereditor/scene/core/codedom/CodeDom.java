@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -25,19 +25,18 @@ package phasereditor.scene.core.codedom;
  * @author arian
  *
  */
-public class RawCode extends CodeDom {
-	private String _code;
+public abstract class CodeDom {
+	private int _offset;
 
-	public RawCode(String code) {
-		super();
-		_code = code;
+	public CodeDom() {
+	}
+	
+	public int getOffset() {
+		return _offset;
 	}
 
-	public String getCode() {
-		return _code;
+	public void setOffset(int offset) {
+		_offset = offset;
 	}
 
-	public void setCode(String code) {
-		_code = code;
-	}
 }

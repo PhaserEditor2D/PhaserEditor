@@ -26,6 +26,9 @@ import static java.util.stream.Collectors.toList;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.BitmapTextModel;
@@ -48,6 +51,7 @@ public class SceneUIEditor {
 	public static final String COMMAND_ID_ANGLE_TOOL = "phasereditor.scene.ui.editor.angleTool";
 	public static final String COMMAND_ID_ORIGIN_TOOL = "phasereditor.scene.ui.editor.originTool";
 	public static final String COMMAND_ID_RESIZE_TILE_SPRITE_TOOL = "phasereditor.scene.ui.editor.resizeTileSprite";
+	private static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	
 	
 
@@ -145,5 +149,16 @@ public class SceneUIEditor {
 			var after = WorldSnapshotOperation.takeSnapshot(editor);
 			editor.executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + morphToType));
 		}
+	}
+
+
+
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}
 }

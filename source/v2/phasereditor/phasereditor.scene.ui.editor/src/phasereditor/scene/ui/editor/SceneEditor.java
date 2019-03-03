@@ -19,9 +19,11 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -29,6 +31,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -484,6 +488,39 @@ public class SceneEditor extends EditorPart {
 		_scene.redraw();
 
 		refreshOutline();
+	}
+
+	public void openSourceFile() {
+		openSourceFile(-1);
+	}
+
+	public void openSourceFile(int offset) {
+		var file = SceneCore.getSceneSourceCodeFile(getEditorInput().getFile());
+		if (file.exists()) {
+			try {
+				var editor = (TextEditor) IDE.openEditor(getEditorSite().getWorkbenchWindow().getActivePage(), file);
+
+				if (offset != -1) {
+
+					StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
+					textWidget.setEditable(false);
+
+					try {
+						textWidget.setCaretOffset(offset);
+						var index = textWidget.getLineAtOffset(offset);
+						textWidget.setTopIndex(index);
+					} catch (IllegalArgumentException e) {
+						// protect from index out of bounds
+						e.printStackTrace();
+					}
+
+				}
+
+			} catch (PartInitException e1) {
+				e1.printStackTrace();
+				throw new RuntimeException(e1);
+			}
+		}
 	}
 
 }

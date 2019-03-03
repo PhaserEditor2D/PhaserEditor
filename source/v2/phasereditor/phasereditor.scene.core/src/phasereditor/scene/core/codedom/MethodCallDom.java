@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class MethodCallDom {
+public class MethodCallDom extends CodeDom {
 
 	private String _methodName;
 	private String _contextExpr;
@@ -45,19 +45,19 @@ public class MethodCallDom {
 		_args = new ArrayList<>();
 		_declareReturnToVar = true;
 	}
-	
+
 	public String getReturnToVar() {
 		return _returnToVar;
 	}
-	
+
 	public void setReturnToVar(String returnToVar) {
 		_returnToVar = returnToVar;
 	}
-	
+
 	public void setDeclareReturnToVar(boolean declareReturnToVar) {
 		_declareReturnToVar = declareReturnToVar;
 	}
-	
+
 	public boolean isDeclareReturnToVar() {
 		return _declareReturnToVar;
 	}

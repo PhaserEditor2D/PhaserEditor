@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class AssignPropertyDom {
+public class AssignPropertyDom extends CodeDom {
 	private String _propertyName;
 	private String _propertyValueExpr;
 	private String _contextExpr;

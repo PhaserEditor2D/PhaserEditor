@@ -46,7 +46,40 @@ public class SceneCompiler {
 		_sceneModel = sceneModel;
 	}
 
-	public void compile(IProgressMonitor monitor) throws Exception {
+	public void compileToFile(IProgressMonitor monitor) throws Exception {
+
+		var result = compile();
+
+		var code = result.code;
+		var codeFile = result.codeFile;
+		var charset = result.charset;
+
+		ByteArrayInputStream stream = new ByteArrayInputStream(code.getBytes(charset));
+		if (codeFile.exists()) {
+			codeFile.setContents(stream, IResource.NONE, monitor);
+		} else {
+			codeFile.create(stream, false, monitor);
+			codeFile.setCharset(charset.name(), monitor);
+		}
+		codeFile.refreshLocal(1, null);
+
+	}
+
+	public static class CompileResult {
+		public String code;
+		public IFile codeFile;
+		public Charset charset;
+
+		public CompileResult(String code, IFile codeFile, Charset charset) {
+			super();
+			this.code = code;
+			this.codeFile = codeFile;
+			this.charset = charset;
+		}
+
+	}
+
+	public CompileResult compile() throws Exception {
 		var codeFile = SceneCore.getSceneSourceCodeFile(_sceneFile);
 
 		Charset charset;
@@ -70,14 +103,6 @@ public class SceneCompiler {
 		var codeGenerator = new JS6_UnitCodeGenerator(unitDom);
 		var code = codeGenerator.generate(replace);
 
-		ByteArrayInputStream stream = new ByteArrayInputStream(code.getBytes(charset));
-		if (codeFile.exists()) {
-			codeFile.setContents(stream, IResource.NONE, monitor);
-		} else {
-			codeFile.create(stream, false, monitor);
-			codeFile.setCharset(charset.name(), monitor);
-		}
-		codeFile.refreshLocal(1, null);
-
+		return new CompileResult(code, codeFile, charset);
 	}
 }

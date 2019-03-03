@@ -38,6 +38,10 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		_sb = new StringBuilder();
 	}
 
+	public int getOffset() {
+		return _sb.length();
+	}
+
 	@Override
 	public final String generate(String replace) {
 		_replace = replace == null ? "" : replace;
@@ -52,11 +56,12 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	public int length() {
 		return _sb.length();
 	}
+
 	public String getSectionContent(String closeTag, String defaultContent) {
 		var j = _replace.indexOf(closeTag);
-		
+
 		var size = _replace.length();
-		
+
 		if (size > 0 && j != -1) {
 			String section = _replace.substring(0, j);
 			return section;
@@ -64,15 +69,15 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 
 		return defaultContent;
 	}
-	
+
 	public String getSectionContent(String openTag, String closeTag, String defaultContent) {
 		int i = _replace.indexOf(openTag);
 		int j = _replace.indexOf(closeTag);
-		
+
 		if (j == -1) {
 			j = _replace.length();
 		}
-		
+
 		if (i != -1 && j != -1) {
 			String section = _replace.substring(i + openTag.length(), j);
 			return section;
@@ -96,7 +101,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		append(getSectionContent(endTag, defaultContent));
 		append(endTag);
 	}
-	
+
 	public void section(String openTag, String defaultContent) {
 		append(openTag);
 		append(getSectionContent(openTag, "papa(--o^^o--)pig", defaultContent));
