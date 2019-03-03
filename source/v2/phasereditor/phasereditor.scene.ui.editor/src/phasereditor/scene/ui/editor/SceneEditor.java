@@ -503,7 +503,6 @@ public class SceneEditor extends EditorPart {
 				if (offset != -1) {
 
 					StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
-					textWidget.setEditable(false);
 
 					try {
 						textWidget.setCaretOffset(offset);
