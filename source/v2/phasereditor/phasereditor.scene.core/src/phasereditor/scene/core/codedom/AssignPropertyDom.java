@@ -31,6 +31,7 @@ public class AssignPropertyDom extends CodeDom {
 	private String _propertyName;
 	private String _propertyValueExpr;
 	private String _contextExpr;
+	private String _propertyType;
 
 	public AssignPropertyDom(String propertyName, String contextExpr) {
 		_propertyName = propertyName;
@@ -67,6 +68,14 @@ public class AssignPropertyDom extends CodeDom {
 
 	public String getPropertyValueExpr() {
 		return _propertyValueExpr;
+	}
+
+	public String getPropertyType() {
+		return _propertyType;
+	}
+
+	public void setPropertyType(String propertyType) {
+		_propertyType = propertyType;
 	}
 
 }

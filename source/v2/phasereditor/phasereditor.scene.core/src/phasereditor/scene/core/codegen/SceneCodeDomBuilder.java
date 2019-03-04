@@ -249,13 +249,12 @@ public class SceneCodeDomBuilder {
 					}
 				}
 			}
-			
+
 			// link the model with its codedom
 			if (model instanceof CodeDomComponent) {
 				CodeDomComponent.set_codeDom(model, methodCall);
 			}
-			
-			
+
 			// add a new line
 			methodDecl.getInstructions().add(new RawCode(""));
 		}
@@ -269,6 +268,13 @@ public class SceneCodeDomBuilder {
 
 			var instr = new AssignPropertyDom(fieldName, "this");
 			instr.value(local);
+
+			if (GameObjectComponent.is(model)) {
+				var type = GameObjectComponent.get_objectFactoryType(model);
+				if (!type.equals(GameObjectComponent.objectFactoryType_default)) {
+					instr.setPropertyType(type);
+				}
+			}
 
 			methodDecl.getInstructions().add(instr);
 		}

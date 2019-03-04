@@ -146,6 +146,12 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 	}
 
 	private void generateAssignProperty(AssignPropertyDom assign) {
+		{
+			var type = assign.getPropertyType();
+			if (type != null) {
+				line("/** @type {" + type + "} */");
+			}
+		}
 		append(assign.getContextExpr());
 		append(".");
 		append(assign.getPropertyName());
