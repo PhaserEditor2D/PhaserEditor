@@ -42,18 +42,14 @@ public class JSClassGenerator extends BaseCodeGenerator {
 		line("/**");
 		line(" *");
 		line(" */");
-		openIndent("function " + _clsname + " () {");
+		openIndent("class " + _clsname + (_hasBaseClass ? " extends " + _baseClass : " ") + "{");
+		line();
+		openIndent("constructor() {");
 		if (_hasBaseClass) {
-			line(_baseClass + ".call(this);");
+			line("super();");
 		}
 		closeIndent("}");
+		closeIndent("}");
 		line();
-		if (_hasBaseClass) {
-			line("/** @type " + _baseClass + " */");
-			line("var " + _clsname + "_proto = Object.create(" + _baseClass + ".prototype);");
-			line(_clsname + ".prototype = " + _clsname + "_proto;");
-			line(_clsname + ".prototype.constructor = " + _clsname + ";");
-			line();
-		}
 	}
 }
