@@ -77,6 +77,12 @@ public class VariableSection extends ScenePropertySection {
 
 				@Override
 				protected void accept2(String value) {
+					
+					// just don't allow empty names
+					if (value.length() == 0) {
+						return;
+					}
+					
 					int len = getModels().size();
 
 					if (len > 1) {
