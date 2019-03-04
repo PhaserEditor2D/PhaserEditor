@@ -265,9 +265,6 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			_created = true;
 		}
 
-		private String getSectionId(FormPropertySection section) {
-			return section.getClass().getSimpleName();
-		}
 
 		public FormPropertySection getSection() {
 			return _section;
@@ -275,6 +272,10 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 	}
 
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
+	
+	private static String getSectionId(FormPropertySection section) {
+		return section.getClass().getSimpleName();
+	}
 
 	protected abstract List<FormPropertySection<?>> createSections();
 
@@ -303,6 +304,11 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	private void createSectionsUI() {
 		for (var section : _sections) {
+			
+			if (section.isStartCollapsed()) {
+				_collapsedSectionsIds.add(getSectionId(section));
+			}
+			
 			var row = new RowComp(_sectionsContainer, section);
 			row.setVisible(false);
 		}

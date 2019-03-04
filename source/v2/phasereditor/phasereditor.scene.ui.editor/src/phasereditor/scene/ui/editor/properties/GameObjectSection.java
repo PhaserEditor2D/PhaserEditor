@@ -64,6 +64,8 @@ public class GameObjectSection extends ScenePropertySection {
 
 	public GameObjectSection(ScenePropertyPage page) {
 		super("Game Object", page);
+		
+		setStartCollapsed(true);
 	}
 
 	@Override

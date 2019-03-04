@@ -52,6 +52,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	private String _name;
 	private boolean _fillSpace;
 	private List<Runnable> _updates;
+	private boolean _startCollapsed;
 
 	public FormPropertySection(String name) {
 		_name = name;
@@ -236,5 +237,13 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 			}
 		});
 		return toolbarManager.createControl(parent);
+	}
+
+	public boolean isStartCollapsed() {
+		return _startCollapsed;
+	}
+	
+	public void setStartCollapsed(boolean startCollapsed) {
+		_startCollapsed = startCollapsed;
 	}
 }

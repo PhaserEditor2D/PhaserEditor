@@ -84,6 +84,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 	public GameObjectEditorSection(ScenePropertyPage page) {
 		super("Editor", page);
+		setStartCollapsed(true);
 	}
 
 	@Override
