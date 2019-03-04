@@ -21,10 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
@@ -87,6 +89,12 @@ public abstract class ObjectModel {
 				child.visit(visitor);
 			}
 		}
+	}
+
+	public Stream<ObjectModel> treeStream() {
+		var list = new ArrayList<ObjectModel>();
+		visit(m -> list.add(m));
+		return list.stream();
 	}
 
 	@SuppressWarnings({ "static-method", "unused" })

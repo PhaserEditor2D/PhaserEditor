@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.toSet;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -338,6 +339,8 @@ public class GameObjectSection extends ScenePropertySection {
 						});
 					}
 
+					menuManager.add(new Separator());
+
 					if (!factory.equals(GameObjectComponent.objectFactory_default)) {
 						menuManager.add(new Action("Clear User Factory") {
 							@Override
@@ -348,7 +351,6 @@ public class GameObjectSection extends ScenePropertySection {
 					}
 
 					if (factory.length() > 0) {
-						menuManager.add(new Separator());
 						menuManager.add(new Action("Select All Objects With Factory '" + factory + "'") {
 
 							@Override
@@ -372,6 +374,86 @@ public class GameObjectSection extends ScenePropertySection {
 				}
 			});
 			manager.createControl(comp);
+		}
+
+		{
+			label(comp, "Factory Type",
+					"*(Editor) If the Factory is set, document it asreturning this type. Leave blank if no type will be used.");
+
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new SceneText(text) {
+
+				@Override
+				protected void accept2(String value) {
+					getModels().stream().forEach(model -> GameObjectComponent.set_objectFactoryType(model, value));
+					getEditor().setDirty(true);
+					getEditor().updatePropertyPagesContentWithSelection();
+				}
+			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(getModels().stream()
+
+						.map(model -> GameObjectComponent.get_objectFactoryType(model))));
+
+				text.setEnabled(getModels().stream()
+
+						.map(model -> GameObjectComponent.get_objectFactory(model))
+
+						.filter(s -> s.trim().length() == 0)
+
+						.count() == 0
+
+				);
+			});
+
+			createMenuIconToolbar(comp, menu -> {
+				var currentFactory = flatValues_to_String(getModels()
+
+						.stream()
+
+						.map(model -> GameObjectComponent.get_objectFactory(model)))
+
+								.trim();
+
+				var currentType = text.getText();
+
+				var set = new HashSet<String>();
+
+				getScene().getModel().getDisplayList().visit(model -> {
+					if (GameObjectComponent.is(model)) {
+						var factory2 = GameObjectComponent.get_objectFactory(model);
+						if (factory2.equals(currentFactory)) {
+							var type = GameObjectComponent.get_objectFactoryType(model);
+							set.add(type);
+						}
+					}
+				});
+
+				set.remove(GameObjectComponent.objectFactoryType_default);
+				set.remove(currentType);
+
+				for (var type : set) {
+					menu.add(new Action("Set Factory Type '" + type + "'") {
+						@Override
+						public void run() {
+							setObjectFactoryType(type);
+						}
+					});
+				}
+
+				menu.add(new Separator());
+
+				if (!currentType.equals(GameObjectComponent.objectFactoryType_default)) {
+					menu.add(new Action("Clear Factory Type") {
+						@Override
+						public void run() {
+							setObjectFactoryType(GameObjectComponent.objectFactoryType_default);
+						}
+					});
+				}
+			});
 		}
 
 		{
@@ -421,7 +503,37 @@ public class GameObjectSection extends ScenePropertySection {
 
 	private void setObjectFactory(String factory) {
 		wrapOperation(() -> {
+			Set<String> types;
+
+			if (factory.equals(GameObjectComponent.objectFactory_default)) {
+				types = Set.of(GameObjectComponent.objectFactoryType_default);
+			} else {
+				types = getSceneModel().getDisplayList().stream()
+
+						.filter(GameObjectComponent::is)
+
+						.filter(model -> GameObjectComponent.get_objectFactory(model).equals(factory))
+
+						.map(GameObjectComponent::get_objectFactoryType)
+
+						.collect(toSet());
+			}
+
+			if (types.size() == 1) {
+				var type = types.iterator().next();
+				getModels().forEach(model -> GameObjectComponent.set_objectFactoryType(model, type));
+			}
+			
 			getModels().forEach(model -> GameObjectComponent.set_objectFactory(model, factory));
+		});
+
+		getEditor().setDirty(true);
+		getEditor().updatePropertyPagesContentWithSelection();
+	}
+
+	private void setObjectFactoryType(String factory) {
+		wrapOperation(() -> {
+			getModels().forEach(model -> GameObjectComponent.set_objectFactoryType(model, factory));
 		});
 
 		getEditor().setDirty(true);

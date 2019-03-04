@@ -72,6 +72,20 @@ public interface GameObjectComponent {
 	static void set_objectFactory(ObjectModel obj, String objectFactory) {
 		obj.put("objectFactory", objectFactory);
 	}
+	
+	// objectFactoryType
+
+	static String objectFactoryType_name = "objectFactoryType";
+
+	static String objectFactoryType_default = "";
+
+	static String get_objectFactoryType(ObjectModel obj) {
+		return (String) obj.get("objectFactoryType");
+	}
+
+	static void set_objectFactoryType(ObjectModel obj, String objectFactoryType) {
+		obj.put("objectFactoryType", objectFactoryType);
+	}
 
 	// objectBuild
 
@@ -111,6 +125,7 @@ public interface GameObjectComponent {
 		set_active(model, active_default);
 		set_data(model, data_default);
 		set_objectFactory(model, objectFactory_default);
+		set_objectFactoryType(model, objectFactoryType_default);
 		set_objectBuild(model, objectBuild_default);
 		set_useName(model, useName_default);
 	}

@@ -226,6 +226,11 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 			public void run() {
 				var menuManager = new MenuManager();
 				menuBuilder.accept(menuManager);
+				if (menuManager.isEmpty()) {
+					menuManager.add(new Action("- No options available -") {
+						//
+					});
+				}
 				var menu = menuManager.createContextMenu(parent);
 				menu.setVisible(true);
 			}
