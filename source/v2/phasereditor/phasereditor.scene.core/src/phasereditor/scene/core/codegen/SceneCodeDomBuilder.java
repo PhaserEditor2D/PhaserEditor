@@ -50,6 +50,7 @@ import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.ScrollFactorComponent;
 import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
@@ -206,6 +207,10 @@ public class SceneCodeDomBuilder {
 
 			if (model instanceof FlipComponent) {
 				assignToVar = buildFlipProps(methodDecl, model) || assignToVar;
+			}
+
+			if (model instanceof ScrollFactorComponent) {
+				assignToVar = buildScrollFactorProps(methodDecl, model) || assignToVar;
 			}
 
 			if (model instanceof BitmapTextComponent) {
@@ -485,6 +490,27 @@ public class SceneCodeDomBuilder {
 		methodDecl.getInstructions().add(instr);
 
 		return true;
+	}
+
+	private static boolean buildScrollFactorProps(MethodDeclDom methodDecl, ObjectModel model) {
+		var name = varname(model);
+
+		var x = ScrollFactorComponent.get_scrollFactorX(model);
+		var y = ScrollFactorComponent.get_scrollFactorY(model);
+
+		if (x != ScrollFactorComponent.scrollFactorX_default || y != ScrollFactorComponent.scrollFactorY_default) {
+
+			var instr = new MethodCallDom("setScrollFactor", name);
+
+			instr.arg(x);
+			instr.arg(y);
+
+			methodDecl.getInstructions().add(instr);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@SuppressWarnings("static-method")

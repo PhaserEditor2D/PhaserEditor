@@ -30,7 +30,9 @@ import org.json.JSONObject;
  */
 public abstract class TransformModel extends GameObjectModel implements
 
-		TransformComponent
+		TransformComponent,
+
+		ScrollFactorComponent
 
 {
 
@@ -38,6 +40,8 @@ public abstract class TransformModel extends GameObjectModel implements
 		super(type);
 
 		TransformComponent.init(this);
+
+		ScrollFactorComponent.init(this);
 	}
 
 	@Override
@@ -51,6 +55,9 @@ public abstract class TransformModel extends GameObjectModel implements
 		data.put(scaleY_name, TransformComponent.get_scaleY(this), scaleY_default);
 		data.put(angle_name, TransformComponent.get_angle(this), angle_default);
 
+		data.put(scrollFactorX_name, ScrollFactorComponent.get_scrollFactorX(this), scrollFactorX_default);
+		data.put(scrollFactorY_name, ScrollFactorComponent.get_scrollFactorY(this), scrollFactorY_default);
+
 	}
 
 	@Override
@@ -63,6 +70,9 @@ public abstract class TransformModel extends GameObjectModel implements
 		TransformComponent.set_scaleX(this, (float) data.optDouble(scaleX_name, scaleX_default));
 		TransformComponent.set_scaleY(this, (float) data.optDouble(scaleY_name, scaleY_default));
 		TransformComponent.set_angle(this, (float) data.optDouble(angle_name, angle_default));
+
+		ScrollFactorComponent.set_scrollFactorX(this, data.optFloat(scrollFactorX_name, scrollFactorX_default));
+		ScrollFactorComponent.set_scrollFactorY(this, data.optFloat(scrollFactorY_name, scrollFactorY_default));
 
 	}
 

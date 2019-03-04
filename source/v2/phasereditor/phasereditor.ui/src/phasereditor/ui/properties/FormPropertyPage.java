@@ -116,7 +116,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 	public class RowComp extends Composite {
 
 		private FormPropertySection _section;
-		boolean _collapsed = false;
+		boolean _collapsed;
 		private boolean _created;
 
 		public RowComp(Composite parent, FormPropertySection section) {
@@ -125,6 +125,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			this.setData("org.eclipse.e4.ui.css.CssClassName", "FormSection");
 
 			_section = section;
+			_collapsed = _section.isStartCollapsed();
 			_created = false;
 
 			setLayout(new GridLayout(1, false));
@@ -151,7 +152,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			setLayoutData(gd);
 
 			requestLayout();
-			
+
 			_section.visibilityChanged(visible);
 		}
 
@@ -265,14 +266,13 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 			_created = true;
 		}
 
-
 		public FormPropertySection getSection() {
 			return _section;
 		}
 	}
 
 	static Set<String> _collapsedSectionsIds = new HashSet<>();
-	
+
 	private static String getSectionId(FormPropertySection section) {
 		return section.getClass().getSimpleName();
 	}
@@ -304,11 +304,11 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	private void createSectionsUI() {
 		for (var section : _sections) {
-			
+
 			if (section.isStartCollapsed()) {
 				_collapsedSectionsIds.add(getSectionId(section));
 			}
-			
+
 			var row = new RowComp(_sectionsContainer, section);
 			row.setVisible(false);
 		}
