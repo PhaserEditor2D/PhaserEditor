@@ -379,8 +379,8 @@ public class GameObjectSection extends ScenePropertySection {
 		}
 
 		{
-			label(comp, "Factory Type",
-					"*(Editor) If the Factory is set, document it asreturning this type. Leave blank if no type will be used.");
+			label(comp, "Factory R. Type",
+					"*(Editor) If the Factory is set, then add jsdoc to set the return type. You can leave it blank.");
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
