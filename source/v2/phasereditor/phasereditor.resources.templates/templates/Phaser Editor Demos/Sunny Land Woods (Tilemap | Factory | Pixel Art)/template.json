@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Arian Fornaris",
+		"email": "developers@phasereditor2d.com",
+		"website": "phasereditor2d.com",
+	},
+	"mainFile": "assets/scenes/Scene1.scene",
+	"description": "Sunny Land Woods by Ansimuz (adapted to Phaser Editor 2D)",
+	"id" : "phasereditor.demos.sunnyLandWoods"
+}

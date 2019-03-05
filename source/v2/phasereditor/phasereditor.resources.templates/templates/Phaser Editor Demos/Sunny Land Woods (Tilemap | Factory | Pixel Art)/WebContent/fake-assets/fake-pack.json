@@ -1,0 +1,21 @@
+{
+  "fake": {"files": [
+    {
+      "type": "image",
+      "key": "Collisions Layer",
+      "url": "fake-assets/Collisions Layer.png"
+    },
+    {
+      "type": "image",
+      "key": "Main Layer",
+      "url": "fake-assets/Main Layer.png"
+    }
+  ]},
+  "meta": {
+    "generated": "1551642591806",
+    "app": "Phaser Editor",
+    "url": "https://phasereditor2d.com",
+    "version": "1.0",
+    "copyright": "Arian Fornaris (c) 2015,2018"
+  }
+}

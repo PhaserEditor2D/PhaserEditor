@@ -1,0 +1,81 @@
+{
+  "-app": "Scene Editor - Phaser Editor v2.0.3",
+  "-version": 1,
+  "displayList": {
+    "-id": "375bdba0-4bf4-4747-aef3-0418c8dbc39b",
+    "-type": "DisplayList",
+    "children": [
+      {
+        "-id": "b97bb1da-9edc-4084-88b7-9a2622a9277e",
+        "-type": "TileSprite",
+        "children": [],
+        "variableName": "bg-clouds",
+        "variableField": false,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "bg-clouds",
+        "textureFrame": "bg-clouds",
+        "width": 288,
+        "height": 192
+      },
+      {
+        "-id": "19010740-90f3-48fa-ae3f-2aabd66ae307",
+        "-type": "TileSprite",
+        "children": [],
+        "variableName": "bg-mountains",
+        "variableField": false,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "bg-mountains",
+        "textureFrame": "bg-mountains",
+        "width": 288,
+        "height": 192
+      },
+      {
+        "-id": "a1369096-164c-4fa6-a714-34f06ed9974a",
+        "-type": "TileSprite",
+        "children": [],
+        "variableName": "bg-trees",
+        "variableField": false,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "bg-trees",
+        "textureFrame": "bg-trees",
+        "width": 288,
+        "height": 192
+      },
+      {
+        "-id": "3d0f6416-e604-486f-9680-41b3039d6ef1",
+        "-type": "Image",
+        "children": [],
+        "variableName": "game-over",
+        "variableField": false,
+        "x": 144.00001525878906,
+        "y": 75.42617797851562,
+        "textureKey": "game-over",
+        "textureFrame": "game-over"
+      },
+      {
+        "-id": "b88dd954-0c11-4294-b676-03b9bd0365d0",
+        "-type": "Image",
+        "children": [],
+        "variableName": "press-enter-text",
+        "variableField": true,
+        "x": 144,
+        "y": 145.42445373535156,
+        "textureKey": "press-enter-text",
+        "textureFrame": "press-enter-text"
+      }
+    ]
+  },
+  "groups": {
+    "-id": "bd57b504-f523-4be1-9776-da4f7c8a6da9",
+    "-type": "Groups",
+    "children": []
+  },
+  "borderWidth": 288,
+  "borderHeight": 192,
+  "createMethodName": "_create",
+  "methodContextType": "SCENE",
+  "sceneKey": "GameOver"
+}

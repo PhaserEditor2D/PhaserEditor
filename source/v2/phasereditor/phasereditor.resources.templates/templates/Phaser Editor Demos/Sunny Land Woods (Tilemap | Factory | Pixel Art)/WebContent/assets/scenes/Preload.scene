@@ -1,0 +1,29 @@
+{
+  "-app": "Scene Editor - Phaser Editor v2.0.3",
+  "-version": 1,
+  "displayList": {
+    "-id": "e20b5084-ce39-4354-8306-def007cfe5b1",
+    "-type": "DisplayList",
+    "children": [{
+      "-id": "1b278d3e-622b-4c5d-9879-bbb637af4b2b",
+      "-type": "Image",
+      "children": [],
+      "variableName": "loading",
+      "variableField": true,
+      "x": 144,
+      "y": 96.00001525878906,
+      "textureKey": "loading",
+      "textureFrame": "loading"
+    }]
+  },
+  "groups": {
+    "-id": "df41df73-5c65-4808-a9b0-f513aa86ac83",
+    "-type": "Groups",
+    "children": []
+  },
+  "borderWidth": 288,
+  "borderHeight": 192,
+  "createMethodName": "_create",
+  "methodContextType": "SCENE",
+  "sceneKey": "Preload"
+}

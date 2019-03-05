@@ -1,0 +1,1040 @@
+{
+  "textures": [{
+    "image": "atlas.png",
+    "frames": [
+      {
+        "filename": "acorn-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 308,
+          "y": 175,
+          "w": 16,
+          "h": 14
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 16,
+          "h": 14
+        },
+        "sourceSize": {
+          "w": 16,
+          "h": 14
+        }
+      },
+      {
+        "filename": "acorn-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 227,
+          "y": 14,
+          "w": 16,
+          "h": 14
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 16,
+          "h": 14
+        },
+        "sourceSize": {
+          "w": 16,
+          "h": 14
+        }
+      },
+      {
+        "filename": "acorn-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 257,
+          "y": 42,
+          "w": 16,
+          "h": 14
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 16,
+          "h": 14
+        },
+        "sourceSize": {
+          "w": 16,
+          "h": 14
+        }
+      },
+      {
+        "filename": "ant-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 7,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 41,
+          "y": 7,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 80,
+          "y": 7,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 119,
+          "y": 7,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-5",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 158,
+          "y": 7,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-6",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 282,
+          "y": 130,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-7",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 282,
+          "y": 97,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "ant-8",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 282,
+          "y": 64,
+          "w": 37,
+          "h": 31
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 37,
+          "h": 31
+        },
+        "sourceSize": {
+          "w": 37,
+          "h": 31
+        }
+      },
+      {
+        "filename": "enemy-death-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 163,
+          "w": 28,
+          "h": 26
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 28,
+          "h": 26
+        },
+        "sourceSize": {
+          "w": 28,
+          "h": 26
+        }
+      },
+      {
+        "filename": "enemy-death-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 197,
+          "y": 30,
+          "w": 28,
+          "h": 26
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 28,
+          "h": 26
+        },
+        "sourceSize": {
+          "w": 28,
+          "h": 26
+        }
+      },
+      {
+        "filename": "enemy-death-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 197,
+          "y": 2,
+          "w": 28,
+          "h": 26
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 28,
+          "h": 26
+        },
+        "sourceSize": {
+          "w": 28,
+          "h": 26
+        }
+      },
+      {
+        "filename": "enemy-death-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 227,
+          "y": 30,
+          "w": 28,
+          "h": 26
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 28,
+          "h": 26
+        },
+        "sourceSize": {
+          "w": 28,
+          "h": 26
+        }
+      },
+      {
+        "filename": "gator-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 109,
+          "w": 46,
+          "h": 49
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 46,
+          "h": 49
+        },
+        "sourceSize": {
+          "w": 46,
+          "h": 49
+        }
+      },
+      {
+        "filename": "gator-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 58,
+          "w": 46,
+          "h": 49
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 46,
+          "h": 49
+        },
+        "sourceSize": {
+          "w": 46,
+          "h": 49
+        }
+      },
+      {
+        "filename": "gator-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 234,
+          "y": 109,
+          "w": 46,
+          "h": 49
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 46,
+          "h": 49
+        },
+        "sourceSize": {
+          "w": 46,
+          "h": 49
+        }
+      },
+      {
+        "filename": "gator-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 234,
+          "y": 58,
+          "w": 46,
+          "h": 49
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 46,
+          "h": 49
+        },
+        "sourceSize": {
+          "w": 46,
+          "h": 49
+        }
+      },
+      {
+        "filename": "grasshopper-fall-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 473,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-fall-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 426,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-idle-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 379,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-idle-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 332,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-idle-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 332,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-idle-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 285,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-jump-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 238,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "grasshopper-jump-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 278,
+          "y": 191,
+          "w": 52,
+          "h": 45
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 52,
+          "h": 45
+        },
+        "sourceSize": {
+          "w": 52,
+          "h": 45
+        }
+      },
+      {
+        "filename": "player-crouch-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 460,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-crouch-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 400,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-hurt-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 460,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-hurt-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 340,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 400,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 460,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 280,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 340,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-5",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 400,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-6",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 220,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-7",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 280,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-idle-8",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 340,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-jump-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 160,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-jump-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 220,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-jump-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 280,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-jump-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 100,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-run-1",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 160,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-run-2",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 220,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-run-3",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 2,
+          "y": 40,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-run-4",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 100,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-run-5",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 186,
+          "y": 160,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      },
+      {
+        "filename": "player-run-6",
+        "trimmed": false,
+        "rotated": false,
+        "frame": {
+          "x": 94,
+          "y": 40,
+          "w": 90,
+          "h": 58
+        },
+        "spriteSourceSize": {
+          "x": 0,
+          "y": 0,
+          "w": 90,
+          "h": 58
+        },
+        "sourceSize": {
+          "w": 90,
+          "h": 58
+        }
+      }
+    ]
+  }],
+  "meta": {
+    "app": "Phaser Editor - Atlas Generator",
+    "version": "2"
+  }
+}

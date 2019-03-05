@@ -1,0 +1,112 @@
+{
+  "-app": "Scene Editor - Phaser Editor v2.0.3",
+  "-version": 1,
+  "displayList": {
+    "-id": "1ca5257d-4d21-4e27-8152-81e3ad604f49",
+    "-type": "DisplayList",
+    "children": [
+      {
+        "-id": "854fd1c0-c17d-44df-92e4-11514e424965",
+        "-type": "TileSprite",
+        "children": [],
+        "variableName": "bg-clouds",
+        "variableField": false,
+        "scrollFactorX": 0,
+        "scrollFactorY": 0,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "bg-clouds",
+        "textureFrame": "bg-clouds",
+        "width": 288,
+        "height": 192
+      },
+      {
+        "-id": "a4e5a762-ae93-44b6-b097-e5ffc89bc7a7",
+        "-type": "TileSprite",
+        "children": [],
+        "variableName": "bg-mountains",
+        "variableField": false,
+        "y": 20,
+        "scrollFactorX": 0.07000000029802322,
+        "scrollFactorY": 0,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "bg-mountains",
+        "textureFrame": "bg-mountains",
+        "width": 288,
+        "height": 192
+      },
+      {
+        "-id": "d9983329-a7f8-4d71-b715-0107adf31365",
+        "-type": "TileSprite",
+        "children": [],
+        "variableName": "bg-trees",
+        "variableField": false,
+        "y": -10,
+        "scrollFactorX": 0.25,
+        "scrollFactorY": 0,
+        "originX": 0,
+        "originY": 0,
+        "textureKey": "bg-trees",
+        "textureFrame": "bg-trees",
+        "width": 288,
+        "height": 192
+      },
+      {
+        "-id": "6c722f60-4f1e-4eb1-81b2-7220be56ddf3",
+        "-type": "Image",
+        "children": [],
+        "variableName": "instructions",
+        "variableField": true,
+        "visible": false,
+        "x": 144.00001525878906,
+        "y": 75.42617797851562,
+        "textureKey": "instructions",
+        "textureFrame": "instructions"
+      },
+      {
+        "-id": "a1302401-6ca5-4de9-9897-2581b0f62157",
+        "-type": "Image",
+        "children": [],
+        "variableName": "title",
+        "variableField": true,
+        "x": 144.00001525878906,
+        "y": 96,
+        "textureKey": "title-screen",
+        "textureFrame": "title-screen"
+      },
+      {
+        "-id": "be8fa620-e883-4548-b865-cd217a33df04",
+        "-type": "Image",
+        "children": [],
+        "variableName": "credits-text",
+        "variableField": false,
+        "x": 144.00001525878906,
+        "y": 170.16514587402344,
+        "textureKey": "credits-text",
+        "textureFrame": "credits-text"
+      },
+      {
+        "-id": "25bc35a0-b435-4129-938b-4d5337fba1ea",
+        "-type": "Image",
+        "children": [],
+        "variableName": "press-enter-text",
+        "variableField": true,
+        "x": 144.00001525878906,
+        "y": 145.42445373535156,
+        "textureKey": "press-enter-text",
+        "textureFrame": "press-enter-text"
+      }
+    ]
+  },
+  "groups": {
+    "-id": "4eeb3b58-f1e5-4c41-95ca-9bad4af59d39",
+    "-type": "Groups",
+    "children": []
+  },
+  "borderWidth": 288,
+  "borderHeight": 192,
+  "createMethodName": "_create",
+  "methodContextType": "SCENE",
+  "sceneKey": "TitleScreen"
+}

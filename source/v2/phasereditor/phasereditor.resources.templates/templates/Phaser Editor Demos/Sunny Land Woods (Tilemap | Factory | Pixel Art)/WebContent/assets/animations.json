@@ -1,0 +1,285 @@
+{
+  "anims": [
+    {
+      "key": "acorn",
+      "frameRate": 12,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "acorn-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "acorn-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "acorn-3"
+        }
+      ]
+    },
+    {
+      "key": "ant",
+      "frameRate": 10,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "ant-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-4"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-5"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-6"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-7"
+        },
+        {
+          "key": "atlas",
+          "frame": "ant-8"
+        }
+      ]
+    },
+    {
+      "key": "enemy-death",
+      "frameRate": 15,
+      "hideOnComplete": true,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "enemy-death-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "enemy-death-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "enemy-death-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "enemy-death-4"
+        }
+      ]
+    },
+    {
+      "key": "gator",
+      "frameRate": 10,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "gator-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "gator-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "gator-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "gator-4"
+        }
+      ]
+    },
+    {
+      "key": "grasshopper-fall",
+      "frameRate": 24,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "grasshopper-fall-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "grasshopper-fall-2"
+        }
+      ]
+    },
+    {
+      "key": "grasshopper-idle",
+      "frameRate": 24,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "grasshopper-idle-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "grasshopper-idle-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "grasshopper-idle-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "grasshopper-idle-4"
+        }
+      ]
+    },
+    {
+      "key": "grasshopper-jump",
+      "frameRate": 24,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "grasshopper-jump-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "grasshopper-jump-2"
+        }
+      ]
+    },
+    {
+      "key": "player-duck",
+      "frameRate": 12,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "player-crouch-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-crouch-2"
+        }
+      ]
+    },
+    {
+      "key": "player-hurt",
+      "frameRate": 12,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "player-hurt-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-hurt-2"
+        }
+      ]
+    },
+    {
+      "key": "player-idle",
+      "frameRate": 8,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "player-idle-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-4"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-5"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-6"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-7"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-idle-8"
+        }
+      ]
+    },
+    {
+      "key": "player-jump",
+      "frameRate": 20,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "player-jump-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-jump-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-jump-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-jump-4"
+        }
+      ]
+    },
+    {
+      "key": "player-run",
+      "frameRate": 15,
+      "repeat": -1,
+      "frames": [
+        {
+          "key": "atlas",
+          "frame": "player-run-1"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-run-2"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-run-3"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-run-4"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-run-5"
+        },
+        {
+          "key": "atlas",
+          "frame": "player-run-6"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "Phaser Editor v2",
+    "contentType": "Phaser v3 Animations"
+  }
+}

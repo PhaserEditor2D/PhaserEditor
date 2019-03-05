@@ -1,0 +1,163 @@
+{
+  "section1": {"files": [
+    {
+      "type": "animation",
+      "key": "animations",
+      "url": "assets/animations.json"
+    },
+    {
+      "type": "sceneFile",
+      "key": "Scene1",
+      "url": "assets/scenes/Scene1.js"
+    },
+    {
+      "type": "atlas",
+      "key": "atlas-props",
+      "textureURL": "assets/atlas/atlas-props.png",
+      "atlasURL": "assets/atlas/atlas-props.json",
+      "format": "TEXTURE_ATLAS_JSON_ARRAY"
+    },
+    {
+      "type": "image",
+      "key": "bg-clouds",
+      "url": "assets/environment/bg-clouds.png",
+      "normalMap": ""
+    },
+    {
+      "type": "image",
+      "key": "bg-mountains",
+      "url": "assets/environment/bg-mountains.png",
+      "normalMap": ""
+    },
+    {
+      "type": "image",
+      "key": "bg-trees",
+      "url": "assets/environment/bg-trees.png",
+      "normalMap": ""
+    },
+    {
+      "type": "image",
+      "key": "game-over",
+      "url": "assets/sprites/game-over.png",
+      "normalMap": ""
+    },
+    {
+      "type": "tilemapTiledJSON",
+      "key": "map",
+      "url": "assets/maps/map.json"
+    },
+    {
+      "type": "spritesheet",
+      "key": "tileset",
+      "url": "assets/environment/tileset.png",
+      "frameConfig": {
+        "frameWidth": 16,
+        "frameHeight": 16,
+        "margin": 0,
+        "spacing": 0
+      }
+    },
+    {
+      "type": "script",
+      "key": "Player",
+      "url": "assets/scenes/Player.js"
+    },
+    {
+      "type": "multiatlas",
+      "key": "atlas",
+      "url": "assets/atlas/atlas.json",
+      "path": "assets/atlas"
+    },
+    {
+      "type": "script",
+      "key": "Ant",
+      "url": "assets/scenes/Ant.js"
+    },
+    {
+      "type": "script",
+      "key": "Grasshopper",
+      "url": "assets/scenes/Grasshopper.js"
+    },
+    {
+      "type": "script",
+      "key": "Gator",
+      "url": "assets/scenes/Gator.js"
+    },
+    {
+      "type": "audio",
+      "key": "hurt",
+      "url": ["assets/sounds/hurt.ogg"]
+    },
+    {
+      "type": "audio",
+      "key": "music",
+      "url": ["assets/sounds/the_valley.ogg"]
+    },
+    {
+      "type": "audio",
+      "key": "jump",
+      "url": ["assets/sounds/jump.ogg"]
+    },
+    {
+      "type": "audio",
+      "key": "item",
+      "url": ["assets/sounds/item.ogg"]
+    },
+    {
+      "type": "audio",
+      "key": "kill",
+      "url": ["assets/sounds/enemy-death.ogg"]
+    },
+    {
+      "type": "script",
+      "key": "Acorn",
+      "url": "assets/scenes/Acorn.js"
+    },
+    {
+      "type": "script",
+      "key": "EnemyDeath",
+      "url": "assets/scenes/EnemyDeath.js"
+    },
+    {
+      "type": "sceneFile",
+      "key": "TitleScreen",
+      "url": "assets/scenes/TitleScreen.js"
+    },
+    {
+      "type": "image",
+      "key": "title-screen",
+      "url": "assets/sprites/title-screen.png",
+      "normalMap": ""
+    },
+    {
+      "type": "image",
+      "key": "credits-text",
+      "url": "assets/sprites/credits-text.png",
+      "normalMap": ""
+    },
+    {
+      "type": "image",
+      "key": "press-enter-text",
+      "url": "assets/sprites/press-enter-text.png",
+      "normalMap": ""
+    },
+    {
+      "type": "image",
+      "key": "instructions",
+      "url": "assets/sprites/instructions.png",
+      "normalMap": ""
+    },
+    {
+      "type": "sceneFile",
+      "key": "GameOver",
+      "url": "assets/scenes/GameOver.js"
+    }
+  ]},
+  "meta": {
+    "generated": "1551817749266",
+    "app": "Phaser Editor",
+    "url": "https://phasereditor2d.com",
+    "version": "1.0",
+    "copyright": "Arian Fornaris (c) 2015,2018"
+  }
+}
