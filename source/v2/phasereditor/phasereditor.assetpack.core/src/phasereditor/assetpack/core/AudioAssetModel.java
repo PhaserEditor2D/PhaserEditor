@@ -44,7 +44,14 @@ public class AudioAssetModel extends AssetModel {
 
 	public AudioAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
-		JSONArray urls = jsonData.getJSONArray("urls");
+		JSONArray urls;
+
+		if (jsonData.has("urls")) {
+			// for backward compatibility
+			urls = jsonData.getJSONArray("urls");
+		} else {
+			urls = jsonData.getJSONArray("url");
+		}
 		_urls = JSONUtils.toList(urls);
 	}
 
@@ -66,16 +73,16 @@ public class AudioAssetModel extends AssetModel {
 				urls.put(url);
 			}
 		}
-		obj.put("urls", urls);
+		obj.put("url", urls);
 	}
 
 	public List<String> getUrls() {
 		return _urls;
 	}
 
-	public void setUrls(List<String> urls) {
-		_urls = urls;
-		firePropertyChange("urls");
+	public void setUrls(List<String> url) {
+		_urls = url;
+		firePropertyChange("url");
 	}
 
 	public void setUrlsJSONString(String urlsJSONString) throws JSONException {
