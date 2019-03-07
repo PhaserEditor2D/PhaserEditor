@@ -31,7 +31,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
-import org.eclipse.swt.dnd.DragSourceEffect;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -447,16 +446,6 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
 			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
 			dragSource.addDragListener(this);
-			dragSource.setDragSourceEffect(new DragSourceEffect(_canvas) {
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					int index = indexOf(_overObject);
-					var proxy = get_DND_Image(index);
-					if (proxy != null) {
-						PhaserEditorUI.set_DND_Image(event, proxy.getImage());
-					}
-				}
-			});
 		}
 	}
 
@@ -468,6 +457,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			return;
 		}
 
+		int index = indexOf(_overObject);
+
 		ISelection sel = null;
 
 		if (_selectedObjects.contains(_overObject)) {
@@ -476,6 +467,11 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			sel = new StructuredSelection(_overObject);
 			clearSelection();
 			_canvas.redraw();
+		}
+
+		var proxy = get_DND_Image(index);
+		if (proxy != null) {
+			PhaserEditorUI.set_DND_Image(event, proxy.getImage());
 		}
 
 		LocalSelectionTransfer.getTransfer().setSelection(sel);
