@@ -39,6 +39,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -155,7 +156,15 @@ public class PhaserTemplateWizardPage extends WizardPage {
 			}
 		});
 		_treeViewer.setContentProvider(new WizardTemplateContentProvider());
-		_treeViewer.setLabelProvider(new TemplateLabelProvider());
+		_treeViewer.setLabelProvider(new TemplateLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				if (element == PhaserTemplateWizardPage.PHASER_EXAMPLES) {
+					return getFolderImage();
+				}
+				return super.getImage(element);
+			}
+		});
 
 		_infoText = new Browser(sashForm, SWT.BORDER);
 		sashForm.setWeights(new int[] { 2, 1 });

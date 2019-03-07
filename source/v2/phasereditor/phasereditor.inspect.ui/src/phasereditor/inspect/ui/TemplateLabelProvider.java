@@ -57,10 +57,14 @@ public class TemplateLabelProvider extends LabelProvider {
 		}
 
 		if (element instanceof IProjectTemplateCategory) {
-			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+			return getFolderImage();
 		}
 
 		return super.getImage(element);
+	}
+
+	public static Image getFolderImage() {
+		return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
 	}
 
 }
