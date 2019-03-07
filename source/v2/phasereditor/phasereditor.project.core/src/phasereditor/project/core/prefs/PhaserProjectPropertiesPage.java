@@ -1,7 +1,6 @@
 package phasereditor.project.core.prefs;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -54,9 +53,7 @@ public class PhaserProjectPropertiesPage extends PropertyPage {
 	}
 
 	private void afterCreateWidgets() {
-
-		initFromStore(ProjectCore.getProjectPreferenceStore(getElement()));
-
+		initFromStore();
 	}
 
 	@Override
@@ -64,11 +61,12 @@ public class PhaserProjectPropertiesPage extends PropertyPage {
 
 		super.performDefaults();
 
-		initFromStore(ProjectCore.getPreferenceStore());
+		initFromStore();
 
 	}
 
-	private void initFromStore(IPreferenceStore store) {
+	private void initFromStore() {
+		var store = ProjectCore.getProjectPreferenceStore(getElement());
 		var width = store.getInt(ProjectCore.PREF_PROP_PROJECT_GAME_WIDTH);
 		var height = store.getInt(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT);
 
