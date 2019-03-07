@@ -5,7 +5,7 @@ window.addEventListener('load', function() {
 		"title": "Sunny Land Woods",
 		"width": 288,
 		"height": 192,
-		"type": Phaser.AUTO,
+		"type": Phaser.CANVAS,
 		"backgroundColor": "#000",
 		"parent": "game-container",
 		"scale": {
