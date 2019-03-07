@@ -4,7 +4,7 @@ const fs = require("fs");
 const { exec } = require("child_process");
 
 
-var current_ver_tag = "v2.0.1";
+var current_ver_tag = "v2.0.2";
 var next_ver = "2.0.3.20190226";
 
 console.log(next_ver);
@@ -26,6 +26,7 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 
 	
 	plugin_names.delete("Scripts");
+	plugin_names.add("phasereditor.lic");
 	
 	console.log("\nPlugins that need to be updated:\n");
 
@@ -38,8 +39,12 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 
 		let plugin_path = "../source/v2/phasereditor/" + plugin_name;
 
+		if (plugin_name === "phasereditor.lic") {
+			plugin_path = "../../PhaserEditor_private/source/" + plugin_name;
+		}
+
 		if (!fs.existsSync(plugin_path)) {
-			// console.log("Deleted!\n");
+			//console.log("Deleted!\n" + plugin_path);
 			continue;
 		}
 		
@@ -81,7 +86,7 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 		}
 	}	
 
-	console.log("\nRemember check lic plugin.\n");
+	console.log("\nDone!\n");	
 });
 
 
