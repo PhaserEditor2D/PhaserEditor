@@ -109,7 +109,7 @@ public class VariableSection extends ScenePropertySection {
 		}
 
 		{
-			var btn = new Button(comp, SWT.BORDER);
+			var btn = new Button(comp, SWT.PUSH);
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			btn.setText("Go To Code");
 			btn.setImage(EditorSharedImages.getImage(IMG_GOTO_SOURCE));
