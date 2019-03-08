@@ -680,7 +680,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		{
 			var snap = computeSelectionSnap();
 			if (snap != null) {
-				_snapButton.setText(snap[0] + " x " + snap[1]);
+				_snapButton.setText("Set " + snap[0] + " x " + snap[1]);
 			}
 		}
 
