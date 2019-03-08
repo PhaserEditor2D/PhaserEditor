@@ -163,6 +163,15 @@
             id="phasereditor.assetpack.ui.wizards.new"
             name="Asset Pack File">
       </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/new_generic_editor.png"
+            id="phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard"
+            name="Factory Code File">
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -170,6 +179,9 @@
             targetID="*">
          <newWizardShortcut
                id="phasereditor.assetpack.ui.wizards.new">
+         </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard">
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
@@ -181,6 +193,12 @@
             menuGroupId="phaser.new.other"
             type="new"
             wizardId="phasereditor.assetpack.ui.wizards.new">
+         <enablement></enablement>
+      </commonWizard>
+      <commonWizard
+            menuGroupId="phaser.new.other"
+            type="new"
+            wizardId="phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard">
          <enablement></enablement>
       </commonWizard>
    </extension>
