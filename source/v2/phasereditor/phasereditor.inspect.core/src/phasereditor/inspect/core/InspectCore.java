@@ -50,6 +50,7 @@ import phasereditor.inspect.core.templates.TemplatesModel;
 public class InspectCore {
 
 	public static final String RESOURCES_EXAMPLES_PLUGIN = "phasereditor.resources.phaser.examples";
+	public static final String RESOURCES_EXAMPLES_AUDIO_PLUGIN = "phasereditor.resources.phaser.examples.assets.audio";
 	public static final String RESOURCES_METADATA_PLUGIN = "phasereditor.resources.phaser.metadata";
 	public static final String RESOURCES_PHASER_CODE_PLUGIN = "phasereditor.resources.phaser.code";
 	public static final String RESOURCES_EXECUTABLES_PLUGIN = "phasereditor.resources.executables";
@@ -60,6 +61,7 @@ public class InspectCore {
 	public static final String PREF_BUILTIN_PHASER_VERSION = "phasereditor.inspect.core.builtInPhaserVersion";
 	public static final String PREF_USER_PHASER_VERSION_PATH = "phasereditor.inspect.core.userPhaserVersion";
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	
 
 	protected static PhaserExamplesRepoModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;

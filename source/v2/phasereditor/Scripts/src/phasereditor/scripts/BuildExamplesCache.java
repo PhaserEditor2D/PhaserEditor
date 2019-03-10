@@ -86,8 +86,7 @@ public class BuildExamplesCache {
 			_currentExample = _examples.removeFirst();
 
 			Path exampleFile = _currentExample.getFilePath();
-
-			_currentExample.addMapping(_examplesPath.relativize(exampleFile), exampleFile.getFileName().toString());
+			_currentExample.addMapping(exampleFile.toString(), exampleFile.getFileName().toString());
 
 			Path path = exampleFile;
 			path = _examplesPath.relativize(path);
@@ -135,7 +134,7 @@ public class BuildExamplesCache {
 
 		out.println("- Catching asset: " + url2);
 
-		_currentExample.addMapping(Paths.get(url2), url2);
+		_currentExample.addMapping(url2, url2);
 	}
 
 	static boolean loadFromCache(PhaserExampleModel example) throws IOException {
@@ -147,7 +146,7 @@ public class BuildExamplesCache {
 			for (String url : new HashSet<>(urls)) {
 				url = decodeUrl(url);
 				out.println("* Restore asset: " + url);
-				_currentExample.addMapping(Paths.get(url), url);
+				_currentExample.addMapping(url, url);
 			}
 
 			return true;
