@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -169,8 +170,10 @@ public class BuildExamplesCache {
 		Path exampleFile = example.getFilePath();
 		Path relFile = _examplesProjectPath.resolve("phaser3-examples/public/src").relativize(exampleFile);
 		String name = relFile.toString().replace(" ", "_").replace(".", "_").replace("/", "_");
-		long t = Files.getLastModifiedTime(exampleFile).toMillis();
-		String id = name + "-" + t;
+		// long t = Files.getLastModifiedTime(exampleFile).toMillis();
+		var content = Files.readAllBytes(exampleFile);
+		var md5 = DigestUtils.md5Hex(content);
+		String id = name + "-" + md5;
 		return id;
 	}
 
