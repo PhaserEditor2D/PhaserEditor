@@ -86,10 +86,9 @@ public class BuildExamplesCache {
 			_currentExample = _examples.removeFirst();
 
 			Path exampleFile = _currentExample.getFilePath();
-			_currentExample.addMapping(exampleFile.toString(), exampleFile.getFileName().toString());
-
 			Path path = exampleFile;
 			path = _examplesPath.relativize(path);
+			_currentExample.addMapping(path.toString(), exampleFile.getFileName().toString());
 			String url = "http://127.0.0.1:" + PORT + "/view-iframe.html?src=" + path;
 
 			Path cacheFile = getCacheFile(_currentExample);
