@@ -880,10 +880,12 @@ public class SceneCodeDomBuilder {
 
 				var frame = getTexture(objModel);
 
-				var pack = ProjectCore.getAssetUrl(frame.getAsset().getPack().getFile());
-				var section = frame.getAsset().getSection().getKey();
+				var packFile = frame.getAsset().getPack().getFile();
 
-				packSectionList.put(section + "-" + pack, new String[] { section, pack });
+				var key = packFile.getFullPath().removeFileExtension().lastSegment();
+				var url = ProjectCore.getAssetUrl(packFile);
+
+				packSectionList.put(key + "-" + url, new String[] { key, url });
 			}
 		});
 
