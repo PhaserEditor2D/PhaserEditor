@@ -1038,7 +1038,7 @@ public class AssetPackCore {
 	public static boolean isAnimationsFile(IFile file) {
 		try {
 
-			if (!file.getFileExtension().equals("json")) {
+			if (!"json".equals(file.getFileExtension())) {
 				return false;
 			}
 

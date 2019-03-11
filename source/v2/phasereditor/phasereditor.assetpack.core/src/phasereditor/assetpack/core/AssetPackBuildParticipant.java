@@ -118,7 +118,7 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 										AssetPackCore.removeAssetPackModel(pack);
 									} else {
 										// moved: update the pack
-										if (movedTo.getFileExtension().equals("json")) {
+										if ("json".equals(movedTo.getFileExtension())) {
 											AssetPackCore.moveAssetPackModel(root.getFile(movedTo), pack);
 										} else {
 											AssetPackCore.removeAssetPackModel(pack);

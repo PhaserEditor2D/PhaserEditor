@@ -625,7 +625,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	@SuppressWarnings("boxing")
 	private List<AssetModel> openNewSvgListDialog(AssetSectionModel section) throws CoreException {
 		AssetPackModel pack = getModel();
-		List<IFile> imageFiles = pack.discoverFiles(f -> f.getFileExtension().equals("svg"));
+		List<IFile> imageFiles = pack.discoverFiles(f -> "svg".equals(f.getFileExtension()));
 
 		Set<IFile> usedFiles = pack.sortFilesByNotUsed(imageFiles);
 

@@ -39,7 +39,7 @@ public class AtlasFileDataCache extends FileDataCache<AtlasData> {
 
 	@Override
 	public AtlasData createData(IFile file) {
-		if (file.getFileExtension().equals("atlas")) {
+		if ("atlas".equals(file.getFileExtension())) {
 			AtlasData data = new AtlasData(file);
 			return data;
 		}

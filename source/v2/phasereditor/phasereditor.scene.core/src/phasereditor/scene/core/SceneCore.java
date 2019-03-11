@@ -85,7 +85,7 @@ public class SceneCore {
 
 		try {
 
-			if (!file.getFileExtension().equals("scene")) {
+			if (!"scene".equals(file.getFileExtension())) {
 				return false;
 			}
 

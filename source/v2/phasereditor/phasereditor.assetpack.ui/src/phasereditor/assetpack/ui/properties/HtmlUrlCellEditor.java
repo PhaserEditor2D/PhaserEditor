@@ -55,7 +55,7 @@ public class HtmlUrlCellEditor extends DialogCellEditor {
 		try {
 			AssetPackModel pack = _asset.getPack();
 			IFile urlFile = _asset.getFileFromUrl(_asset.getUrl());
-			List<IFile> files = pack.discoverFiles(f -> f.getFullPath().getFileExtension().equals("html"));
+			List<IFile> files = pack.discoverFiles(f -> "html".equals(f.getFullPath().getFileExtension()));
 			
 			AssetType type = _asset.getType();
 			
