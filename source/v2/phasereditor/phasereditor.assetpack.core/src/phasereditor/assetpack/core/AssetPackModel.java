@@ -22,6 +22,7 @@
 package phasereditor.assetpack.core;
 
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -292,7 +293,7 @@ public final class AssetPackModel {
 	public IProject getProject() {
 		return _file.getProject();
 	}
-	
+
 	public AssetFinder getGlobalFinder() {
 		return AssetPackCore.getAssetFinder(getProject());
 	}
@@ -614,6 +615,14 @@ public final class AssetPackModel {
 			}
 		}
 		return list;
+	}
+	
+	public List<AssetModel> getAsstes(AssetType type) {
+		return getSections().stream()
+
+				.flatMap(section -> section.getGroup(type).getAssets().stream())
+
+				.collect(toList());
 	}
 
 	public IAssetFrameModel findFrame(String textureKey, Object frameName) {

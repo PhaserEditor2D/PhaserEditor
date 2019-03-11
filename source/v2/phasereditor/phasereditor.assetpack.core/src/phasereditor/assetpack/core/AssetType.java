@@ -37,6 +37,8 @@ import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 
 public enum AssetType implements IAssetPackEelement, IAdaptable {
+	sceneFile("js", "Scene File (JavaScript)"),
+	
 	image("png", "Image"),
 
 	svg("svg", "SVG Image"),
@@ -68,8 +70,6 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	video("mp4", "Video"),
 
 	physics("json", "Physics"), 
-	
-	sceneFile("js", "Scene File (JavaScript)"),
 	
 	htmlTexture("html", "HTML Texture"),
 	

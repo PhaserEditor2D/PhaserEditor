@@ -27,11 +27,8 @@ import static phasereditor.ui.PhaserEditorUI.isZoomEvent;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -42,7 +39,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -55,7 +51,6 @@ import phasereditor.animation.ui.AnimationsCellRender;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
@@ -81,7 +76,6 @@ import phasereditor.ui.FrameCellRenderer;
 import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.HandModeUtils;
 import phasereditor.ui.ICanvasCellRenderer;
-import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCellRenderer;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.LoadingCellRenderer;
@@ -98,9 +92,6 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	private static final int MIN_ROW_HEIGHT = 48;
 	private AssetPackModel _model;
 	private int _imageSize;
-	private Set<Object> _collapsed;
-	private Map<Rectangle, Object> _collapseIconBoundsMap;
-	private Font _boldFont;
 	private List<AssetRenderInfo> _renderInfoList;
 	private FrameCanvasUtils _utils;
 	private AssetPackEditor _editor;
@@ -124,9 +115,6 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 		_editor = editor;
 		_imageSize = 96;
-		_collapsed = new HashSet<>();
-		_collapseIconBoundsMap = new HashMap<>();
-		_boldFont = SwtRM.getBoldFont(getFont());
 
 		_renderInfoList = new ArrayList<>();
 
@@ -191,27 +179,11 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 			var hit = false;
 
-			var modelPointer = _utils.viewToModel(e.x, e.y);
-
 			for (var action : _actions) {
 				if (action.getBounds().contains(_modelPointer)) {
 					action.run();
 					hit = true;
 					break;
-				}
-			}
-
-			{
-				for (var entry : _collapseIconBoundsMap.entrySet()) {
-					if (entry.getKey().contains(modelPointer)) {
-						var obj = entry.getValue();
-						if (_collapsed.contains(obj)) {
-							_collapsed.remove(obj);
-						} else {
-							_collapsed.add(obj);
-						}
-						hit = true;
-					}
 				}
 			}
 
@@ -230,8 +202,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	private static int ROW_HEIGHT = 30;
 	private static int ASSET_SPACING_X = 10;
 	private static int ASSET_SPACING_Y = 30;
-	private static int MARGIN_X = 30;
-	private static int ASSETS_MARGIN_X = 240;
+	private static final int MARGIN_X = 10;
 
 	private List<IconAction> _actions;
 
@@ -274,8 +245,6 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	@Override
 	public void paintControl(PaintEvent event) {
 
-		_collapseIconBoundsMap = new HashMap<>();
-
 		var renderInfoList = new ArrayList<AssetRenderInfo>();
 		var actions = new ArrayList<IconAction>();
 
@@ -298,13 +267,6 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 			prepareGC(gc);
 
-			gc.setAlpha(5);
-			gc.setBackground(getForeground());
-			gc.fillRectangle(0, 0, ASSETS_MARGIN_X - 20, clientArea.height);
-			gc.setAlpha(10);
-			gc.drawLine(ASSETS_MARGIN_X - 20, 0, ASSETS_MARGIN_X - 20, clientArea.height);
-			gc.setAlpha(255);
-
 			{
 				Transform tx = new Transform(getDisplay());
 				tx.translate(0, _scrollUtils.getOrigin().y);
@@ -312,191 +274,166 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 				tx.dispose();
 			}
 
-			var font = gc.getFont();
-
-			var x = MARGIN_X;
 			var y = 10;
 
 			// paint objects
 
-			for (var section : _model.getSections()) {
+			for (var type : AssetType.values()) {
+				var assets = getAssetsForType(type);
 
-				x = MARGIN_X;
+				if (_filter != null) {
+					assets = assets.stream()
+
+							.filter(a ->
+
+							a.getKey().toLowerCase().contains(_filter)
+									|| a.getType().getCapitalName().toLowerCase().contains(_filter))
+
+							.collect(toList());
+				}
+
+				if (assets.isEmpty()) {
+					continue;
+				}
 
 				{
-					var collapsed = isCollapsed(section);
+					var f = gc.getFont();
+					gc.setFont(SwtRM.getBoldFont(getFont()));
 
-					gc.setFont(_boldFont);
+					var title = type.getCapitalName();
 
-					gc.drawText(section.getKey(), x + 20, y, true);
+					var textSize = gc.textExtent(title);
 
-					renderCollapseIcon(section, gc, collapsed, x, y);
+					var x2 = event.width / 2 - textSize.x / 2;
+					var y2 = y + ROW_HEIGHT / 2 - textSize.y / 2 - 3;
 
-					gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(section), x, y);
-
-					gc.setFont(font);
+					gc.drawText(title, x2, y2, true);
+					gc.setFont(f);
 
 					var action = new IconAction(IMG_ADD, () -> {
 
-						var manager = _editor.createAddAssetMenu(section);
-						var menu = manager.createContextMenu(PackEditorCanvas.this);
-						menu.setVisible(true);
-						// _editor.openAddAssetButtonDialog(section, null);
-					}, ASSETS_MARGIN_X - 40, y);
+						_editor.openAddAssetDialog(type);
+
+					}, x2 + textSize.x + 10, y + 5);
 
 					action.paint(gc, action.getBounds().contains(_modelPointer));
 					actions.add(action);
 
 					y += ROW_HEIGHT;
 
-					if (isCollapsed(section)) {
-						continue;
-					}
 				}
 
-				var types = new ArrayList<>(List.of(AssetType.values()));
+				{
 
-				types.sort((a, b) -> {
-					var a1 = sortValue(section, a);
-					var b1 = sortValue(section, b);
-					return Long.compare(a1, b1);
-				});
+					int assetX = MARGIN_X;
+					int assetY = y;
+					int bottom = y;
 
-				for (var type : types) {
-					var group = section.getGroup(type);
-					var assets = group.getAssets();
+					var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
 
-					if (assets.isEmpty()) {
-						continue;
-					}
+					for (var asset : assets) {
 
-					{
-						var collapsed = isCollapsed(group);
+						Rectangle bounds;
 
-						var title = type.getCapitalName();
-						var size = gc.stringExtent(title);
-
-						var y2 = y + ROW_HEIGHT / 2 - size.y / 2 - 3;
-
-						gc.drawText(title, x + 20, y2, true);
-
-						var count = section.getGroup(type).getAssets().size();
-
-						gc.setAlpha(100);
-						gc.drawText(" (" + count + ")", x + size.x + 20, y2, true);
-						gc.setAlpha(255);
-
-						renderCollapseIcon(group, gc, collapsed, x, y2);
-						gc.drawImage(AssetLabelProvider.GLOBAL_16.getImage(type), x, y + 3);
-
-						var action = new IconAction(IMG_ADD, () -> {
-
-							_editor.openAddAssetDialog(section, type);
-
-						}, ASSETS_MARGIN_X - 40, y + 5);
-
-						action.paint(gc, action.getBounds().contains(_modelPointer));
-						actions.add(action);
-
-						if (collapsed) {
-							y += ROW_HEIGHT;
-							continue;
+						if (isFullRowAsset(asset)) {
+							bounds = new Rectangle(assetX, assetY, clientArea.width - assetX - 10, _imageSize);
+						} else {
+							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
 						}
-					}
 
-					{
+						{
+							var info = new AssetRenderInfo();
+							info.asset = asset;
+							info.bounds = bounds;
+							renderInfoList.add(info);
+						}
 
-						int assetX = ASSETS_MARGIN_X;
-						int assetY = y;
-						int bottom = y;
+						bottom = Math.max(bottom, bounds.y + bounds.height);
 
-						var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
-						for (var asset : assets) {
+						// gc.setAlpha(20);
+						// gc.setBackground(Colors.color(0, 0, 0));
+						// gc.fillRectangle(bounds);
+						// gc.setAlpha(255);
 
-							Rectangle bounds;
+						if (_utils.isSelected(asset)) {
+							gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+							gc.fillRectangle(bounds);
+						}
 
-							if (isFullRowAsset(asset)) {
-								bounds = new Rectangle(assetX, assetY, clientArea.width - assetX - 10, _imageSize);
-							} else {
-								bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
+						var renderer = getAssetRenderer(asset);
+
+						if (renderer != null) {
+							try {
+								renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
+							} catch (Exception e2) {
+								e2.printStackTrace();
 							}
+						}
 
-							{
-								var info = new AssetRenderInfo();
-								info.asset = asset;
-								info.bounds = bounds;
-								renderInfoList.add(info);
+						if (_utils.getOverObject() == asset) {
+							gc.drawRectangle(bounds);
+						} else {
+							gc.setAlpha(30);
+							gc.drawRectangle(bounds);
+							gc.setAlpha(255);
+						}
+
+						var key = asset.getKey();
+						var key2 = key;
+
+						for (int i = key.length(); i > 0; i--) {
+							key2 = key.substring(0, i);
+							var size = gc.textExtent(key2);
+							if (size.x < bounds.width) {
+								break;
 							}
+						}
 
-							bottom = Math.max(bottom, bounds.y + bounds.height);
-
-							// gc.setAlpha(20);
-							// gc.setBackground(Colors.color(0, 0, 0));
-							// gc.fillRectangle(bounds);
-							// gc.setAlpha(255);
-
-							if (_utils.isSelected(asset)) {
-								gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-								gc.fillRectangle(bounds);
+						if (key2.length() < key.length()) {
+							if (key2.length() > 2) {
+								key2 = key2.substring(0, key2.length() - 2) + "..";
 							}
+						}
 
-							var renderer = getAssetRenderer(asset);
+						gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
 
-							if (renderer != null) {
-								try {
-									renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
-								} catch (Exception e2) {
-									e2.printStackTrace();
-								}
+						assetX += bounds.width + ASSET_SPACING_X;
+
+						if (asset != last) {
+							if (assetX + _imageSize > clientArea.width - 5) {
+								assetX = MARGIN_X;
+								assetY += _imageSize + ASSET_SPACING_Y;
 							}
+						}
+					} // end of assets loop
 
-							if (_utils.getOverObject() == asset) {
-								gc.drawRectangle(bounds);
-							} else {
-								gc.setAlpha(30);
-								gc.drawRectangle(bounds);
-								gc.setAlpha(255);
-							}
-
-							var key = asset.getKey();
-
-							var key2 = key;
-
-							for (int i = key.length(); i > 0; i--) {
-								key2 = key.substring(0, i);
-								var size = gc.textExtent(key2);
-								if (size.x < bounds.width) {
-									break;
-								}
-							}
-
-							if (key2.length() < key.length()) {
-								if (key2.length() > 2) {
-									key2 = key2.substring(0, key2.length() - 2) + "..";
-								}
-							}
-
-							gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
-
-							assetX += bounds.width + ASSET_SPACING_X;
-
-							if (asset != last) {
-								if (assetX + _imageSize > clientArea.width - 5) {
-									assetX = ASSETS_MARGIN_X;
-									assetY += _imageSize + ASSET_SPACING_Y;
-								}
-							}
-						} // end of assets loop
-
-						y = bottom + ASSET_SPACING_Y;
-					} // end of not collapsed types
-					y += 10;
-				}
+					y = bottom + ASSET_SPACING_Y;
+				} // end of not collapsed types
+				y += 10;
 			}
 		} finally {
 			_renderInfoList = renderInfoList;
 			_actions = actions;
 		}
+	}
+
+	private List<AssetModel> getAssetsForType(AssetType type) {
+		switch (type) {
+		case atlas:
+			var list = new ArrayList<AssetModel>();
+			list.addAll(_model.getAsstes(AssetType.atlas));
+			list.addAll(_model.getAsstes(AssetType.atlasXML));
+			list.addAll(_model.getAsstes(AssetType.multiatlas));
+			list.addAll(_model.getAsstes(AssetType.unityAtlas));
+			return list;
+		case atlasXML:
+		case multiatlas:
+		case unityAtlas:
+			return Collections.emptyList();
+		default:
+			break;
+		}
+		return _model.getAsstes(type);
 	}
 
 	public Rectangle computeScrollArea() {
@@ -511,66 +448,47 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 			var y = 10;
 
-			for (var section : _model.getSections()) {
+			y += ROW_HEIGHT;
 
-				y += ROW_HEIGHT;
+			var types = new ArrayList<>(List.of(AssetType.values()));
 
-				if (isCollapsed(section)) {
+			for (var type : types) {
+				var assets = getAssetsForType(type);
+
+				if (assets.isEmpty()) {
 					continue;
 				}
 
-				var types = new ArrayList<>(List.of(AssetType.values()));
+				int assetX = MARGIN_X;
+				int assetY = y;
+				int bottom = y;
 
-				types.sort((a, b) -> {
-					var a1 = sortValue(section, a);
-					var b1 = sortValue(section, b);
-					return Long.compare(a1, b1);
-				});
+				var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
+				for (var asset : assets) {
 
-				for (var type : types) {
-					var group = section.getGroup(type);
-					var assets = group.getAssets();
+					Rectangle bounds;
 
-					if (assets.isEmpty()) {
-						continue;
+					if (isFullRowAsset(asset)) {
+						bounds = new Rectangle(assetX, assetY, e.width - assetX - 10, _imageSize);
+					} else {
+						bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
 					}
 
-					if (isCollapsed(group)) {
-						y += ROW_HEIGHT;
-						continue;
+					bottom = Math.max(bottom, bounds.y + bounds.height);
+
+					assetX += bounds.width + ASSET_SPACING_X;
+
+					if (asset != last) {
+						if (assetX + _imageSize > e.width - 5) {
+							assetX = MARGIN_X;
+							assetY += _imageSize + ASSET_SPACING_Y;
+						}
 					}
+				} // end of assets loop
 
-					int assetX = ASSETS_MARGIN_X;
-					int assetY = y;
-					int bottom = y;
+				y = bottom + ASSET_SPACING_Y;
 
-					var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
-					for (var asset : assets) {
-
-						Rectangle bounds;
-
-						if (isFullRowAsset(asset)) {
-							bounds = new Rectangle(assetX, assetY, e.width - assetX - 10, _imageSize);
-						} else {
-							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
-						}
-
-						bottom = Math.max(bottom, bounds.y + bounds.height);
-
-						assetX += bounds.width + ASSET_SPACING_X;
-
-						if (asset != last) {
-							if (assetX + _imageSize > e.width - 5) {
-								assetX = ASSETS_MARGIN_X;
-								assetY += _imageSize + ASSET_SPACING_Y;
-							}
-						}
-					} // end of assets loop
-
-					y = bottom + ASSET_SPACING_Y;
-
-					y += 10;
-				}
+				y += 10;
 			}
 
 			return new Rectangle(0, y, e.width, y);
@@ -579,30 +497,8 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 		}
 	}
 
-	private boolean isCollapsed(Object obj) {
-		return _collapsed.contains(obj);
-	}
-
-	private static int sortValue(AssetSectionModel section, AssetType type) {
-		var assets = section.getGroup(type).getAssets();
-		var v = AssetType.values().length - type.ordinal();
-		if (assets.size() > 0) {
-			v += 1000;
-		}
-		return -v;
-	}
-
 	private static boolean isFullRowAsset(AssetModel asset) {
-		return asset instanceof AnimationsAssetModel || asset instanceof AudioAssetModel;
-	}
-
-	private void renderCollapseIcon(Object obj, GC gc, boolean collapsed, int x, int y) {
-		var path = collapsed ? IEditorSharedImages.IMG_BULLET_EXPAND : IEditorSharedImages.IMG_BULLET_COLLAPSE;
-		var icon = EditorSharedImages.getImage(path);
-		gc.drawImage(icon, x - 20, y);
-		var bounds = new Rectangle(0, y - 5, ASSETS_MARGIN_X - 45, 16 + 10);
-		_collapseIconBoundsMap.put(bounds, obj);
-		// gc.drawRectangle(bounds);
+		return asset instanceof AnimationsAssetModel;
 	}
 
 	private ICanvasCellRenderer getAssetRenderer(AssetModel asset) {
@@ -748,9 +644,6 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	}
 
 	public void reveal(AssetModel asset) {
-		_collapsed.remove(asset.getSection());
-		_collapsed.remove(asset.getGroup());
-
 		swtRun(() -> {
 			for (var info : _renderInfoList) {
 				if (info.asset == asset) {
@@ -763,10 +656,20 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	}
 
 	private Point _modelPointer = new Point(-10_000, -10_000);
+	private String _filter;
 
 	@Override
 	public void mouseMove(MouseEvent e) {
 		_modelPointer = _utils.viewToModel(e.x, e.y);
+		redraw();
+	}
+
+	public void filter(String filter) {
+		if (filter != null && filter.trim().length() == 0) {
+			_filter = null;
+		} else {
+			_filter = filter;
+		}
 		redraw();
 	}
 }

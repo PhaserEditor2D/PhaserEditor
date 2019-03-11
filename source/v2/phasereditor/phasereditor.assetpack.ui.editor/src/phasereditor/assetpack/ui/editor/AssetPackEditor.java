@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import static phasereditor.ui.IEditorSharedImages.IMG_DELETE;
 import static phasereditor.ui.IEditorSharedImages.IMG_RENAME;
 import static phasereditor.ui.IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ;
@@ -60,8 +61,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -253,7 +260,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return false;
 	}
 
-	MenuManager createAddAssetMenu(AssetSectionModel section) {
+	MenuManager createAddAssetMenu() {
 		var manager = new MenuManager();
 		for (var type : AssetType.values()) {
 			if (AssetType.isTypeSupported(type.name())) {
@@ -261,7 +268,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						EditorSharedImages.getImageDescriptor(IMG_TYPE_VARIABLE_OBJ)) {
 					@Override
 					public void run() {
-						openAddAssetDialog(section, type);
+						openAddAssetDialog(type);
 					}
 				});
 			}
@@ -270,7 +277,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	@SuppressWarnings({ "boxing" })
-	private List<AssetModel> openNewAssetListDialog(AssetSectionModel section, AssetFactory factory) throws Exception {
+	private List<AssetModel> openNewAssetListDialog(AssetFactory factory) throws Exception {
+		var section = _model.getSections().get(0);
 		AssetType type = factory.getType();
 
 		var pack = getModel();
@@ -398,7 +406,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return Collections.emptyList();
 	}
 
-	protected void openAddAssetDialog(AssetSectionModel section, AssetType initialType) {
+	protected void openAddAssetDialog(AssetType initialType) {
+		var section = _model.getSections().get(0);
 		if (LicCore.isEvaluationProduct()) {
 
 			IProject project = getEditorInput().getFile().getProject();
@@ -414,7 +423,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			AssetFactory factory = AssetFactory.getFactory(initialType);
 
 			if (factory != null) {
-				var assets = openNewAssetListDialog(section, factory);
+				var assets = openNewAssetListDialog(factory);
 
 				if (!assets.isEmpty()) {
 
@@ -658,7 +667,22 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		createActions();
 
-		_assetsCanvas = new PackEditorCanvas(this, parent, 0);
+		var comp = new Composite(parent, SWT.NONE);
+		comp.setLayout(new GridLayout(2, false));
+
+		var text = new Text(comp, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		text.addModifyListener(e -> _assetsCanvas.filter(text.getText()));
+
+		var btn = new Button(comp, SWT.PUSH);
+		btn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		btn.setText("Add");
+		btn.setImage(EditorSharedImages.getImage(IMG_ADD));
+		btn.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> createAddAssetMenu().createContextMenu(btn).setVisible(true)));
+
+		_assetsCanvas = new PackEditorCanvas(this, comp, 0);
+		_assetsCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		_assetsCanvas.getUtils().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -847,13 +871,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					super.setItemProperties(item);
 
 					if (item.getData() instanceof AssetSectionModel) {
-						var section = (AssetSectionModel) item.getData();
 						item.getActions()
 								.add(new TreeCanvasItemAction(EditorSharedImages.getImage(IMG_ADD), "Add assets") {
 
 									@Override
 									public void run(MouseEvent event) {
-										var manager = createAddAssetMenu(section);
+										var manager = createAddAssetMenu();
 										var menu = manager.createContextMenu(getTreeViewer().getControl());
 										menu.setVisible(true);
 									}
