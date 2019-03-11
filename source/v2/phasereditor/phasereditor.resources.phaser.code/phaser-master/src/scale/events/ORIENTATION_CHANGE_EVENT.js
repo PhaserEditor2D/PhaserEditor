@@ -5,9 +5,10 @@
  */
 
 /**
- * The Scale Manager Resize Event.
+ * The Scale Manager Orientation Change Event.
  *
  * @event Phaser.Scale.Events#ORIENTATION_CHANGE
+ * @since 3.16.1
  * 
  * @param {string} orientation - 
  */

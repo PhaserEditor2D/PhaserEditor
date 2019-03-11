@@ -660,8 +660,8 @@
             "orig": "src/animation/spine test 2.js",
             "dst": "spine test 2.js"
           },
-          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/animations/spine/spineboy-ess.json"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -2268,7 +2268,13 @@
             "orig": "src/demoscene/birdy nam nam.js",
             "dst": "birdy nam nam.js"
           },
-          {"orig": "assets/demoscene/birdy-nam-nam-loader.png"}
+          {"orig": "assets/demoscene/birdy-nam-nam-bg2.png"},
+          {"orig": "assets/demoscene/birdy-nam-nam-loader.png"},
+          {"orig": "assets/demoscene/budbrain.json"},
+          {"orig": "assets/demoscene/birdy-nam-nam-bg1.png"},
+          {"orig": "assets/audio/jungle.ogg"},
+          {"orig": "assets/demoscene/birdy.json"},
+          {"orig": "assets/demoscene/budbrain.png"}
         ]
       },
       {
@@ -2993,8 +2999,8 @@
                 "dst": "flickering spotlight.js"
               },
               {"orig": "assets/pics/taikodrummaster.jpg"},
-              {"orig": "assets/sprites/mask1.png"},
-              {"orig": "assets/sprites/phaser.png"}
+              {"orig": "assets/sprites/phaser.png"},
+              {"orig": "assets/sprites/mask1.png"}
             ]
           },
           {
@@ -3028,15 +3034,15 @@
               },
               {"orig": "assets/particles/blue-flare.png"},
               {"orig": "assets/particles/glass.png"},
-              {"orig": "assets/tests/masks/ship.png"},
               {"orig": "assets/demoscene/multi-color-raster.png"},
+              {"orig": "assets/tests/masks/ship.png"},
               {"orig": "assets/pics/rezero-cast.png"},
               {"orig": "assets/particles/white-flare.png"},
               {"orig": "assets/skies/grid.png"},
               {"orig": "assets/tests/masks/chrome-mask.png"},
               {"orig": "assets/tests/masks/fog.png"},
-              {"orig": "assets/tests/masks/phaser.png"},
-              {"orig": "assets/tests/masks/blue-planet.png"}
+              {"orig": "assets/tests/masks/blue-planet.png"},
+              {"orig": "assets/tests/masks/phaser.png"}
             ]
           },
           {
@@ -3431,13 +3437,10 @@
       },
       {
         "mainFile": "src/game config/custom webgl canvas.js",
-        "map": [
-          {
-            "orig": "src/game config/custom webgl canvas.js",
-            "dst": "custom webgl canvas.js"
-          },
-          {"orig": "assets/pics/baal-loader.png"}
-        ]
+        "map": [{
+          "orig": "src/game config/custom webgl canvas.js",
+          "dst": "custom webgl canvas.js"
+        }]
       },
       {
         "mainFile": "src/game config/custom webgl2 canvas.js",
@@ -3620,14 +3623,10 @@
               },
               {
                 "mainFile": "src/game objects/bitmaptext/dynamic/display callback index effect.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/bitmaptext/dynamic/display callback index effect.js",
-                    "dst": "display callback index effect.js"
-                  },
-                  {"orig": "assets/fonts/bitmap/desyrel.xml"},
-                  {"orig": "assets/fonts/bitmap/desyrel.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/bitmaptext/dynamic/display callback index effect.js",
+                  "dst": "display callback index effect.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/bitmaptext/dynamic/display callback rotation effect.js",
@@ -3636,12 +3635,14 @@
                     "orig": "src/game objects/bitmaptext/dynamic/display callback rotation effect.js",
                     "dst": "display callback rotation effect.js"
                   },
+                  {"orig": "assets/fonts/bitmap/desyrel.xml"},
                   {"orig": "assets/fonts/bitmap/gothic.xml"},
                   {"orig": "assets/fonts/bitmap/hyperdrive.png"},
                   {"orig": "assets/fonts/bitmap/iceicebaby.xml"},
                   {"orig": "assets/fonts/bitmap/gothic.png"},
                   {"orig": "assets/fonts/bitmap/hyperdrive.xml"},
                   {"orig": "assets/fonts/bitmap/iceicebaby.png"},
+                  {"orig": "assets/fonts/bitmap/desyrel.png"},
                   {"orig": "assets/fonts/bitmap/atari-smooth.xml"},
                   {"orig": "assets/fonts/bitmap/atari-smooth.png"}
                 ]
@@ -3769,14 +3770,10 @@
               },
               {
                 "mainFile": "src/game objects/bitmaptext/retro font/scrolling retro text.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/bitmaptext/retro font/scrolling retro text.js",
-                    "dst": "scrolling retro text.js"
-                  },
-                  {"orig": "assets/pics/case.jpg"},
-                  {"orig": "assets/fonts/retro/knighthawks-font.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/bitmaptext/retro font/scrolling retro text.js",
+                  "dst": "scrolling retro text.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/bitmaptext/retro font/tinted retro text.js",
@@ -3785,6 +3782,8 @@
                     "orig": "src/game objects/bitmaptext/retro font/tinted retro text.js",
                     "dst": "tinted retro text.js"
                   },
+                  {"orig": "assets/pics/case.jpg"},
+                  {"orig": "assets/fonts/retro/knighthawks-font.png"},
                   {"orig": "assets/fonts/retro/knight3.png"}
                 ]
               }
@@ -3874,22 +3873,10 @@
               },
               {
                 "mainFile": "src/game objects/bitmaptext/static/change font.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/bitmaptext/static/change font.js",
-                    "dst": "change font.js"
-                  },
-                  {"orig": "assets/fonts/bitmap/desyrel.xml"},
-                  {"orig": "assets/fonts/bitmap/gothic.xml"},
-                  {"orig": "assets/fonts/bitmap/hyperdrive.png"},
-                  {"orig": "assets/fonts/bitmap/iceicebaby.xml"},
-                  {"orig": "assets/fonts/bitmap/gothic.png"},
-                  {"orig": "assets/fonts/bitmap/hyperdrive.xml"},
-                  {"orig": "assets/fonts/bitmap/iceicebaby.png"},
-                  {"orig": "assets/fonts/bitmap/desyrel.png"},
-                  {"orig": "assets/fonts/bitmap/atari-smooth.xml"},
-                  {"orig": "assets/fonts/bitmap/atari-smooth.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/bitmaptext/static/change font.js",
+                  "dst": "change font.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/bitmaptext/static/change font size.js",
@@ -3898,8 +3885,18 @@
                     "orig": "src/game objects/bitmaptext/static/change font size.js",
                     "dst": "change font size.js"
                   },
+                  {"orig": "assets/fonts/bitmap/hyperdrive.png"},
+                  {"orig": "assets/fonts/bitmap/gothic.png"},
                   {"orig": "assets/fonts/bitmap/gem.xml"},
-                  {"orig": "assets/fonts/bitmap/gem.png"}
+                  {"orig": "assets/fonts/bitmap/iceicebaby.png"},
+                  {"orig": "assets/fonts/bitmap/desyrel.png"},
+                  {"orig": "assets/fonts/bitmap/gem.png"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.png"},
+                  {"orig": "assets/fonts/bitmap/desyrel.xml"},
+                  {"orig": "assets/fonts/bitmap/gothic.xml"},
+                  {"orig": "assets/fonts/bitmap/iceicebaby.xml"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.xml"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.xml"}
                 ]
               },
               {
@@ -3934,14 +3931,10 @@
               },
               {
                 "mainFile": "src/game objects/bitmaptext/static/get text size scaled.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/bitmaptext/static/get text size scaled.js",
-                    "dst": "get text size scaled.js"
-                  },
-                  {"orig": "assets/fonts/bitmap/atari-smooth.xml"},
-                  {"orig": "assets/fonts/bitmap/atari-smooth.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/bitmaptext/static/get text size scaled.js",
+                  "dst": "get text size scaled.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/bitmaptext/static/large-text.js",
@@ -3953,7 +3946,9 @@
                   {"orig": "assets/fonts/bitmap/desyrel.xml"},
                   {"orig": "assets/text/loremipsum.txt"},
                   {"orig": "assets/fonts/bitmap/desyrel.png"},
-                  {"orig": "assets/sprites/bunny.png"}
+                  {"orig": "assets/fonts/bitmap/atari-smooth.xml"},
+                  {"orig": "assets/sprites/bunny.png"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.png"}
                 ]
               },
               {
@@ -3995,16 +3990,10 @@
               },
               {
                 "mainFile": "src/game objects/bitmaptext/static/text origin.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/bitmaptext/static/text origin.js",
-                    "dst": "text origin.js"
-                  },
-                  {"orig": "assets/fonts/bitmap/gothic.xml"},
-                  {"orig": "assets/fonts/bitmap/hyperdrive.png"},
-                  {"orig": "assets/fonts/bitmap/gothic.png"},
-                  {"orig": "assets/fonts/bitmap/hyperdrive.xml"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/bitmaptext/static/text origin.js",
+                  "dst": "text origin.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/bitmaptext/static/tinted text.js",
@@ -4013,7 +4002,11 @@
                     "orig": "src/game objects/bitmaptext/static/tinted text.js",
                     "dst": "tinted text.js"
                   },
+                  {"orig": "assets/fonts/bitmap/gothic.xml"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.png"},
                   {"orig": "assets/fonts/bitmap/iceicebaby.xml"},
+                  {"orig": "assets/fonts/bitmap/gothic.png"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.xml"},
                   {"orig": "assets/fonts/bitmap/iceicebaby.png"}
                 ]
               },
@@ -4083,13 +4076,10 @@
           },
           {
             "mainFile": "src/game objects/blitter/blitter camera test.js",
-            "map": [
-              {
-                "orig": "src/game objects/blitter/blitter camera test.js",
-                "dst": "blitter camera test.js"
-              },
-              {"orig": "assets/sprites/bobs-by-cleathley.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/blitter/blitter camera test.js",
+              "dst": "blitter camera test.js"
+            }]
           },
           {
             "mainFile": "src/game objects/blitter/blitter camera test canvas.js",
@@ -4103,13 +4093,10 @@
           },
           {
             "mainFile": "src/game objects/blitter/blitter global alpha.js",
-            "map": [
-              {
-                "orig": "src/game objects/blitter/blitter global alpha.js",
-                "dst": "blitter global alpha.js"
-              },
-              {"orig": "assets/sprites/atari130xe.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/blitter/blitter global alpha.js",
+              "dst": "blitter global alpha.js"
+            }]
           },
           {
             "mainFile": "src/game objects/blitter/bob frame object.js",
@@ -4119,7 +4106,8 @@
                 "dst": "bob frame object.js"
               },
               {"orig": "assets/atlas/megaset-2.json"},
-              {"orig": "assets/atlas/megaset-2.png"}
+              {"orig": "assets/atlas/megaset-2.png"},
+              {"orig": "assets/sprites/atari130xe.png"}
             ]
           },
           {
@@ -4129,7 +4117,11 @@
                 "orig": "src/game objects/blitter/bobs using a multi atlas.js",
                 "dst": "bobs using a multi atlas.js"
               },
-              {"orig": "assets/loader-tests/texture-packer-multi-atlas.json"}
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas.json"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-0.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-2.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-1.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-3.png"}
             ]
           },
           {
@@ -4145,13 +4137,10 @@
           },
           {
             "mainFile": "src/game objects/blitter/create from callback.js",
-            "map": [
-              {
-                "orig": "src/game objects/blitter/create from callback.js",
-                "dst": "create from callback.js"
-              },
-              {"orig": "assets/demoscene/blue_ball.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/blitter/create from callback.js",
+              "dst": "create from callback.js"
+            }]
           },
           {
             "mainFile": "src/game objects/blitter/multiple atlas frame bobs.js",
@@ -4161,6 +4150,7 @@
                 "dst": "multiple atlas frame bobs.js"
               },
               {"orig": "assets/atlas/megaset-2.json"},
+              {"orig": "assets/demoscene/blue_ball.png"},
               {"orig": "assets/atlas/megaset-2.png"}
             ]
           },
@@ -4197,14 +4187,10 @@
           },
           {
             "mainFile": "src/game objects/blitter/tween test 1.js",
-            "map": [
-              {
-                "orig": "src/game objects/blitter/tween test 1.js",
-                "dst": "tween test 1.js"
-              },
-              {"orig": "assets/tests/fruit/veg.json"},
-              {"orig": "assets/tests/fruit/veg.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/blitter/tween test 1.js",
+              "dst": "tween test 1.js"
+            }]
           },
           {
             "mainFile": "src/game objects/blitter/twist scroller.js",
@@ -4214,8 +4200,10 @@
                 "dst": "twist scroller.js"
               },
               {"orig": "assets/tests/twist/bobs.json"},
+              {"orig": "assets/tests/fruit/veg.json"},
               {"orig": "assets/tests/twist/bobs.png"},
-              {"orig": "assets/tests/twist/bob-font.png"}
+              {"orig": "assets/tests/twist/bob-font.png"},
+              {"orig": "assets/tests/fruit/veg.png"}
             ]
           }
         ]
@@ -4330,13 +4318,10 @@
           },
           {
             "mainFile": "src/game objects/container/child order.js",
-            "map": [
-              {
-                "orig": "src/game objects/container/child order.js",
-                "dst": "child order.js"
-              },
-              {"orig": "assets/sprites/block.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/container/child order.js",
+              "dst": "child order.js"
+            }]
           },
           {
             "mainFile": "src/game objects/container/container alpha.js",
@@ -4345,6 +4330,7 @@
                 "orig": "src/game objects/container/container alpha.js",
                 "dst": "container alpha.js"
               },
+              {"orig": "assets/sprites/block.png"},
               {"orig": "assets/sprites/lemming.png"}
             ]
           },
@@ -4470,15 +4456,10 @@
           },
           {
             "mainFile": "src/game objects/container/get bounds test 1.js",
-            "map": [
-              {
-                "orig": "src/game objects/container/get bounds test 1.js",
-                "dst": "get bounds test 1.js"
-              },
-              {"orig": "assets/sprites/copy-that-floppy.png"},
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"},
-              {"orig": "assets/sprites/tetrisblock1.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/container/get bounds test 1.js",
+              "dst": "get bounds test 1.js"
+            }]
           },
           {
             "mainFile": "src/game objects/container/impact physics body test.js",
@@ -4487,6 +4468,9 @@
                 "orig": "src/game objects/container/impact physics body test.js",
                 "dst": "impact physics body test.js"
               },
+              {"orig": "assets/sprites/copy-that-floppy.png"},
+              {"orig": "assets/pics/lance-overdose-loader-eye.png"},
+              {"orig": "assets/sprites/tetrisblock1.png"},
               {"orig": "assets/sprites/mushroom2.png"}
             ]
           },
@@ -4866,21 +4850,21 @@
           "examples": [
             {
               "mainFile": "src/game objects/graphics/primitives/arc filled.js",
+              "map": [{
+                "orig": "src/game objects/graphics/primitives/arc filled.js",
+                "dst": "arc filled.js"
+              }]
+            },
+            {
+              "mainFile": "src/game objects/graphics/primitives/arc gradient filled.js",
               "map": [
                 {
-                  "orig": "src/game objects/graphics/primitives/arc filled.js",
-                  "dst": "arc filled.js"
+                  "orig": "src/game objects/graphics/primitives/arc gradient filled.js",
+                  "dst": "arc gradient filled.js"
                 },
                 {"orig": "assets/textures/alien-metal.jpg"},
                 {"orig": "assets/sprites/bunny.png"}
               ]
-            },
-            {
-              "mainFile": "src/game objects/graphics/primitives/arc gradient filled.js",
-              "map": [{
-                "orig": "src/game objects/graphics/primitives/arc gradient filled.js",
-                "dst": "arc gradient filled.js"
-              }]
             },
             {
               "mainFile": "src/game objects/graphics/primitives/arc stroked.js",
@@ -5233,17 +5217,10 @@
           },
           {
             "mainFile": "src/game objects/graphics/obj scene.js",
-            "map": [
-              {
-                "orig": "src/game objects/graphics/obj scene.js",
-                "dst": "obj scene.js"
-              },
-              {"orig": "assets/text/torus.obj"},
-              {"orig": "assets/text/bevelledcube.obj"},
-              {"orig": "assets/text/computer.obj"},
-              {"orig": "assets/text/geosphere.obj"},
-              {"orig": "assets/text/spike.obj"}
-            ]
+            "map": [{
+              "orig": "src/game objects/graphics/obj scene.js",
+              "dst": "obj scene.js"
+            }]
           },
           {
             "mainFile": "src/game objects/graphics/obj viewer.js",
@@ -5259,8 +5236,8 @@
               {"orig": "assets/text/bevelledcube.obj"},
               {"orig": "assets/text/computer.obj"},
               {"orig": "assets/text/geosphere.obj"},
-              {"orig": "assets/text/implodedcube.obj"},
-              {"orig": "assets/text/spike.obj"}
+              {"orig": "assets/text/spike.obj"},
+              {"orig": "assets/text/implodedcube.obj"}
             ]
           },
           {
@@ -5415,13 +5392,10 @@
           },
           {
             "mainFile": "src/game objects/graphics/teapot.js",
-            "map": [
-              {
-                "orig": "src/game objects/graphics/teapot.js",
-                "dst": "teapot.js"
-              },
-              {"orig": "assets/text/teapot.obj"}
-            ]
+            "map": [{
+              "orig": "src/game objects/graphics/teapot.js",
+              "dst": "teapot.js"
+            }]
           },
           {
             "mainFile": "src/game objects/graphics/trace.js",
@@ -5430,6 +5404,7 @@
                 "orig": "src/game objects/graphics/trace.js",
                 "dst": "trace.js"
               },
+              {"orig": "assets/text/teapot.obj"},
               {"orig": "assets/tests/sw.png"}
             ]
           },
@@ -5683,14 +5658,10 @@
           },
           {
             "mainFile": "src/game objects/images/get bounds.js",
-            "map": [
-              {
-                "orig": "src/game objects/images/get bounds.js",
-                "dst": "get bounds.js"
-              },
-              {"orig": "assets/pics/ra-einstein.png"},
-              {"orig": "assets/sprites/blue_ball.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/images/get bounds.js",
+              "dst": "get bounds.js"
+            }]
           },
           {
             "mainFile": "src/game objects/images/image alpha.js",
@@ -5699,6 +5670,8 @@
                 "orig": "src/game objects/images/image alpha.js",
                 "dst": "image alpha.js"
               },
+              {"orig": "assets/pics/ra-einstein.png"},
+              {"orig": "assets/sprites/blue_ball.png"},
               {"orig": "assets/sprites/bunny.png"}
             ]
           },
@@ -5740,13 +5713,10 @@
           },
           {
             "mainFile": "src/game objects/images/image rotation.js",
-            "map": [
-              {
-                "orig": "src/game objects/images/image rotation.js",
-                "dst": "image rotation.js"
-              },
-              {"orig": "assets/sprites/phaser3-logo.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/images/image rotation.js",
+              "dst": "image rotation.js"
+            }]
           },
           {
             "mainFile": "src/game objects/images/make image from config.js",
@@ -5757,6 +5727,7 @@
               },
               {"orig": "assets/sprites/atari400.png"},
               {"orig": "assets/sprites/phaser2.png"},
+              {"orig": "assets/sprites/phaser3-logo.png"},
               {"orig": "assets/sprites/bunny.png"}
             ]
           },
@@ -5782,13 +5753,10 @@
           },
           {
             "mainFile": "src/game objects/images/single image.js",
-            "map": [
-              {
-                "orig": "src/game objects/images/single image.js",
-                "dst": "single image.js"
-              },
-              {"orig": "assets/pics/ra-einstein.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/images/single image.js",
+              "dst": "single image.js"
+            }]
           }
         ]
       },
@@ -5804,6 +5772,7 @@
                 "orig": "src/game objects/lights/blitter light.js",
                 "dst": "blitter light.js"
               },
+              {"orig": "assets/pics/ra-einstein.png"},
               {"orig": "assets/tests/fruit/veg2-n.png"},
               {"orig": "assets/tests/fruit/veg2.json"},
               {"orig": "assets/tests/fruit/veg2.png"}
@@ -6041,17 +6010,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/camera test.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/camera test.js",
-                "dst": "camera test.js"
-              },
-              {"orig": "assets/particles/muzzleflash3.png"},
-              {"orig": "assets/particles/smoke-puff.png"},
-              {"orig": "assets/particles/red.png"},
-              {"orig": "assets/particles/blue.png"},
-              {"orig": "assets/particles/smoke0.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/camera test.js",
+              "dst": "camera test.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/change emitter order.js",
@@ -6060,7 +6022,12 @@
                 "orig": "src/game objects/particle emitter/change emitter order.js",
                 "dst": "change emitter order.js"
               },
-              {"orig": "assets/sprites/fruitnveg64wh37.png"}
+              {"orig": "assets/particles/muzzleflash3.png"},
+              {"orig": "assets/particles/smoke-puff.png"},
+              {"orig": "assets/particles/red.png"},
+              {"orig": "assets/sprites/fruitnveg64wh37.png"},
+              {"orig": "assets/particles/blue.png"},
+              {"orig": "assets/particles/smoke0.png"}
             ]
           },
           {
@@ -6151,15 +6118,10 @@
           },
           {
             "mainFile": "src/game objects/particle emitter/create emitter from JSON.js",
-            "map": [
-              {
-                "orig": "src/game objects/particle emitter/create emitter from JSON.js",
-                "dst": "create emitter from JSON.js"
-              },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/flares.json"},
-              {"orig": "assets/particles/emitter.json"}
-            ]
+            "map": [{
+              "orig": "src/game objects/particle emitter/create emitter from JSON.js",
+              "dst": "create emitter from JSON.js"
+            }]
           },
           {
             "mainFile": "src/game objects/particle emitter/custom particles.js",
@@ -6168,7 +6130,10 @@
                 "orig": "src/game objects/particle emitter/custom particles.js",
                 "dst": "custom particles.js"
               },
-              {"orig": "assets/animations/mummy37x45.png"}
+              {"orig": "assets/particles/flares.png"},
+              {"orig": "assets/animations/mummy37x45.png"},
+              {"orig": "assets/particles/flares.json"},
+              {"orig": "assets/particles/emitter.json"}
             ]
           },
           {
@@ -6896,14 +6861,10 @@
           },
           {
             "mainFile": "src/game objects/render texture/explosion.js",
-            "map": [
-              {
-                "orig": "src/game objects/render texture/explosion.js",
-                "dst": "explosion.js"
-              },
-              {"orig": "assets/particles/muzzleflash3.png"},
-              {"orig": "assets/particles/smoke-puff.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/render texture/explosion.js",
+              "dst": "explosion.js"
+            }]
           },
           {
             "mainFile": "src/game objects/render texture/fireball.js",
@@ -6913,6 +6874,7 @@
                 "dst": "fireball.js"
               },
               {"orig": "assets/particles/muzzleflash3.png"},
+              {"orig": "assets/particles/smoke-puff.png"},
               {"orig": "assets/sprites/phaser-dude.png"}
             ]
           },
@@ -7520,15 +7482,10 @@
           },
           {
             "mainFile": "src/game objects/tests/static bitmap text.js",
-            "map": [
-              {
-                "orig": "src/game objects/tests/static bitmap text.js",
-                "dst": "static bitmap text.js"
-              },
-              {"orig": "assets/fonts/bitmap/desyrel.xml"},
-              {"orig": "assets/pics/debug-grid-1920x1920.png"},
-              {"orig": "assets/fonts/bitmap/desyrel.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/tests/static bitmap text.js",
+              "dst": "static bitmap text.js"
+            }]
           },
           {
             "mainFile": "src/game objects/tests/text.js",
@@ -7537,7 +7494,9 @@
                 "orig": "src/game objects/tests/text.js",
                 "dst": "text.js"
               },
-              {"orig": "assets/pics/debug-grid-1920x1920.png"}
+              {"orig": "assets/fonts/bitmap/desyrel.xml"},
+              {"orig": "assets/pics/debug-grid-1920x1920.png"},
+              {"orig": "assets/fonts/bitmap/desyrel.png"}
             ]
           },
           {
@@ -7692,20 +7651,20 @@
             },
             {
               "mainFile": "src/game objects/text/static/speech bubble.js",
-              "map": [
-                {
-                  "orig": "src/game objects/text/static/speech bubble.js",
-                  "dst": "speech bubble.js"
-                },
-                {"orig": "assets/pics/akira.jpg"}
-              ]
+              "map": [{
+                "orig": "src/game objects/text/static/speech bubble.js",
+                "dst": "speech bubble.js"
+              }]
             },
             {
               "mainFile": "src/game objects/text/static/text bounds.js",
-              "map": [{
-                "orig": "src/game objects/text/static/text bounds.js",
-                "dst": "text bounds.js"
-              }]
+              "map": [
+                {
+                  "orig": "src/game objects/text/static/text bounds.js",
+                  "dst": "text bounds.js"
+                },
+                {"orig": "assets/pics/akira.jpg"}
+              ]
             },
             {
               "mainFile": "src/game objects/text/static/text key.js",
@@ -7796,14 +7755,10 @@
           },
           {
             "mainFile": "src/game objects/tile sprite/change frame.js",
-            "map": [
-              {
-                "orig": "src/game objects/tile sprite/change frame.js",
-                "dst": "change frame.js"
-              },
-              {"orig": "assets/atlas/megaset-2.json"},
-              {"orig": "assets/atlas/megaset-2.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/tile sprite/change frame.js",
+              "dst": "change frame.js"
+            }]
           },
           {
             "mainFile": "src/game objects/tile sprite/create from frame.js",
@@ -7812,6 +7767,8 @@
                 "orig": "src/game objects/tile sprite/create from frame.js",
                 "dst": "create from frame.js"
               },
+              {"orig": "assets/atlas/megaset-2.json"},
+              {"orig": "assets/atlas/megaset-2.png"},
               {"orig": "assets/pics/alex-bisleys-horsy-512x512.png"}
             ]
           },
@@ -7878,13 +7835,10 @@
           },
           {
             "mainFile": "src/game objects/tile sprite/tilesprite pixel art test.js",
-            "map": [
-              {
-                "orig": "src/game objects/tile sprite/tilesprite pixel art test.js",
-                "dst": "tilesprite pixel art test.js"
-              },
-              {"orig": "assets/sprites/mushroom16x16.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/tile sprite/tilesprite pixel art test.js",
+              "dst": "tilesprite pixel art test.js"
+            }]
           }
         ]
       },
@@ -7904,6 +7858,7 @@
                     "orig": "src/game objects/tilemap/collision/csv map arcade physics.js",
                     "dst": "csv map arcade physics.js"
                   },
+                  {"orig": "assets/sprites/mushroom16x16.png"},
                   {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
                   {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"},
                   {"orig": "assets/sprites/spaceman.png"}
@@ -8017,9 +7972,9 @@
                     "orig": "src/game objects/tilemap/collision/simple map.js",
                     "dst": "simple map.js"
                   },
+                  {"orig": "assets/tilemaps/maps/simple-map.json"},
                   {"orig": "assets/sprites/phaser-dude.png"},
-                  {"orig": "assets/tilemaps/tiles/drawtiles.png"},
-                  {"orig": "assets/tilemaps/maps/simple-map.json"}
+                  {"orig": "assets/tilemaps/tiles/gridtiles.png"}
                 ]
               },
               {
@@ -8030,7 +7985,9 @@
                     "dst": "tile callbacks.js"
                   },
                   {"orig": "assets/sprites/phaser-dude.png"},
+                  {"orig": "assets/tilemaps/tiles/gridtiles.png"},
                   {"orig": "assets/sprites/coin.png"},
+                  {"orig": "assets/tilemaps/maps/simple-map.json"},
                   {"orig": "assets/tilemaps/tiles/ground_1x1.png"},
                   {"orig": "assets/tilemaps/maps/tile-collision-test.json"}
                 ]
@@ -8049,15 +8006,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/collision/weltmeister map and impact.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/collision/weltmeister map and impact.js",
-                    "dst": "weltmeister map and impact.js"
-                  },
-                  {"orig": "assets/sprites/phaser-dude.png"},
-                  {"orig": "assets/tilemaps/tiles/slopes32mud.png"},
-                  {"orig": "assets/tilemaps/maps/impact3.json"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/collision/weltmeister map and impact.js",
+                  "dst": "weltmeister map and impact.js"
+                }]
               }
             ]
           },
@@ -8073,7 +8025,10 @@
                     "orig": "src/game objects/tilemap/dynamic/base tile size.js",
                     "dst": "base tile size.js"
                   },
-                  {"orig": "assets/tilemaps/tiles/walls_1x2.png"}
+                  {"orig": "assets/tilemaps/tiles/walls_1x2.png"},
+                  {"orig": "assets/sprites/phaser-dude.png"},
+                  {"orig": "assets/tilemaps/tiles/slopes32mud.png"},
+                  {"orig": "assets/tilemaps/maps/impact3.json"}
                 ]
               },
               {
@@ -8119,15 +8074,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/dynamic/endless map.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/dynamic/endless map.js",
-                    "dst": "endless map.js"
-                  },
-                  {"orig": "assets/tilemaps/tiles/muddy-ground.png"},
-                  {"orig": "assets/fonts/bitmap/nokia16.png"},
-                  {"orig": "assets/fonts/bitmap/nokia16.xml"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/dynamic/endless map.js",
+                  "dst": "endless map.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/dynamic/fill tiles.js",
@@ -8136,7 +8086,10 @@
                     "orig": "src/game objects/tilemap/dynamic/fill tiles.js",
                     "dst": "fill tiles.js"
                   },
+                  {"orig": "assets/tilemaps/tiles/muddy-ground.png"},
+                  {"orig": "assets/fonts/bitmap/nokia16.png"},
                   {"orig": "assets/tilemaps/maps/desert.json"},
+                  {"orig": "assets/fonts/bitmap/nokia16.xml"},
                   {"orig": "assets/tilemaps/tiles/tmw_desert_spacing.png"}
                 ]
               },
@@ -8212,14 +8165,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/dynamic/randomize tiles.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/dynamic/randomize tiles.js",
-                    "dst": "randomize tiles.js"
-                  },
-                  {"orig": "assets/tilemaps/maps/desert.json"},
-                  {"orig": "assets/tilemaps/tiles/tmw_desert_spacing.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/dynamic/randomize tiles.js",
+                  "dst": "randomize tiles.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/dynamic/replace tiles.js",
@@ -8296,13 +8245,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/static/create-from-array.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/static/create-from-array.js",
-                    "dst": "create-from-array.js"
-                  },
-                  {"orig": "assets/tilemaps/tiles/super-mario.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/static/create-from-array.js",
+                  "dst": "create-from-array.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/static/csv-map.js",
@@ -8312,6 +8258,7 @@
                     "dst": "csv-map.js"
                   },
                   {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
+                  {"orig": "assets/tilemaps/tiles/super-mario.png"},
                   {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"}
                 ]
               },
@@ -8341,15 +8288,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/static/grid movement.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/static/grid movement.js",
-                    "dst": "grid movement.js"
-                  },
-                  {"orig": "assets/sprites/car90.png"},
-                  {"orig": "assets/tilemaps/tiles/drawtiles-spaced.png"},
-                  {"orig": "assets/tilemaps/csv/grid.csv"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/static/grid movement.js",
+                  "dst": "grid movement.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/static/layer size.js",
@@ -8359,9 +8301,12 @@
                     "dst": "layer size.js"
                   },
                   {"orig": "assets/tilemaps/maps/super-mario-3.json"},
+                  {"orig": "assets/sprites/car90.png"},
                   {"orig": "assets/tilemaps/maps/super-mario.json"},
+                  {"orig": "assets/tilemaps/tiles/drawtiles-spaced.png"},
                   {"orig": "assets/tilemaps/tiles/super-mario.png"},
-                  {"orig": "assets/tilemaps/tiles/super-mario-3.png"}
+                  {"orig": "assets/tilemaps/tiles/super-mario-3.png"},
+                  {"orig": "assets/tilemaps/csv/grid.csv"}
                 ]
               },
               {
@@ -8388,16 +8333,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/static/mario-map-scroller.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/static/mario-map-scroller.js",
-                    "dst": "mario-map-scroller.js"
-                  },
-                  {"orig": "assets/tilemaps/maps/super-mario-3.json"},
-                  {"orig": "assets/tilemaps/maps/super-mario.json"},
-                  {"orig": "assets/tilemaps/tiles/super-mario.png"},
-                  {"orig": "assets/tilemaps/tiles/super-mario-3.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/static/mario-map-scroller.js",
+                  "dst": "mario-map-scroller.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/static/multi camera map.js",
@@ -8406,8 +8345,12 @@
                     "orig": "src/game objects/tilemap/static/multi camera map.js",
                     "dst": "multi camera map.js"
                   },
+                  {"orig": "assets/tilemaps/maps/super-mario-3.json"},
                   {"orig": "assets/tilemaps/maps/dangerous-kiss.json"},
-                  {"orig": "assets/tilemaps/tiles/dangerous-kiss-x2.png"}
+                  {"orig": "assets/tilemaps/tiles/dangerous-kiss-x2.png"},
+                  {"orig": "assets/tilemaps/maps/super-mario.json"},
+                  {"orig": "assets/tilemaps/tiles/super-mario.png"},
+                  {"orig": "assets/tilemaps/tiles/super-mario-3.png"}
                 ]
               },
               {
@@ -8508,16 +8451,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/static/tiled  multi tileset.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/static/tiled  multi tileset.js",
-                    "dst": "tiled  multi tileset.js"
-                  },
-                  {"orig": "assets/tilemaps/tiles/kenny_ground_64x64.png"},
-                  {"orig": "assets/tilemaps/tiles/kenny_platformer_64x64.png"},
-                  {"orig": "assets/tilemaps/tiles/kenny_items_64x64.png"},
-                  {"orig": "assets/tilemaps/maps/multi-tileset.json"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/static/tiled  multi tileset.js",
+                  "dst": "tiled  multi tileset.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/static/tiled-json-map.js",
@@ -8526,7 +8463,11 @@
                     "orig": "src/game objects/tilemap/static/tiled-json-map.js",
                     "dst": "tiled-json-map.js"
                   },
+                  {"orig": "assets/tilemaps/tiles/kenny_ground_64x64.png"},
+                  {"orig": "assets/tilemaps/tiles/kenny_platformer_64x64.png"},
                   {"orig": "assets/tilemaps/tiles/cybernoid.png"},
+                  {"orig": "assets/tilemaps/tiles/kenny_items_64x64.png"},
+                  {"orig": "assets/tilemaps/maps/multi-tileset.json"},
                   {"orig": "assets/tilemaps/maps/cybernoid.json"}
                 ]
               },
@@ -8555,13 +8496,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/static/zoom.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/static/zoom.js",
-                    "dst": "zoom.js"
-                  },
-                  {"orig": "assets/tilemaps/tiles/drawtiles.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/static/zoom.js",
+                  "dst": "zoom.js"
+                }]
               }
             ]
           },
@@ -8589,27 +8527,17 @@
                   {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"},
                   {"orig": "assets/tilemaps/tiles/tiles2.png"},
                   {"orig": "assets/sprites/coin.png"},
+                  {"orig": "assets/tilemaps/tiles/drawtiles.png"},
                   {"orig": "assets/tilemaps/tiles/dangerous-kiss.png"},
                   {"orig": "assets/tilemaps/tiles/ground_1x1.png"}
                 ]
               },
               {
                 "mainFile": "src/game objects/tilemap/tests/visual culling check.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/tests/visual culling check.js",
-                    "dst": "visual culling check.js"
-                  },
-                  {"orig": "assets/tilemaps/tiles/walls_1x2.png"},
-                  {"orig": "assets/tilemaps/maps/super-mario.json"},
-                  {"orig": "assets/tilemaps/maps/features-test.json"},
-                  {"orig": "assets/tilemaps/tiles/super-mario.png"},
-                  {"orig": "assets/tilemaps/tiles/tiles2.png"},
-                  {"orig": "assets/tilemaps/maps/desert.json"},
-                  {"orig": "assets/tilemaps/tiles/dangerous-kiss.png"},
-                  {"orig": "assets/tilemaps/tiles/tmw_desert_spacing.png"},
-                  {"orig": "assets/tilemaps/tiles/ground_1x1.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/tests/visual culling check.js",
+                  "dst": "visual culling check.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/tests/visual face test.js",
@@ -8618,8 +8546,15 @@
                     "orig": "src/game objects/tilemap/tests/visual face test.js",
                     "dst": "visual face test.js"
                   },
+                  {"orig": "assets/tilemaps/tiles/walls_1x2.png"},
+                  {"orig": "assets/tilemaps/maps/features-test.json"},
                   {"orig": "assets/tilemaps/maps/super-mario.json"},
-                  {"orig": "assets/tilemaps/tiles/super-mario.png"}
+                  {"orig": "assets/tilemaps/tiles/super-mario.png"},
+                  {"orig": "assets/tilemaps/tiles/tiles2.png"},
+                  {"orig": "assets/tilemaps/maps/desert.json"},
+                  {"orig": "assets/tilemaps/tiles/dangerous-kiss.png"},
+                  {"orig": "assets/tilemaps/tiles/tmw_desert_spacing.png"},
+                  {"orig": "assets/tilemaps/tiles/ground_1x1.png"}
                 ]
               },
               {
@@ -8636,14 +8571,10 @@
               },
               {
                 "mainFile": "src/game objects/tilemap/tests/visual tile bleed test.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/tests/visual tile bleed test.js",
-                    "dst": "visual tile bleed test.js"
-                  },
-                  {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
-                  {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"}
-                ]
+                "map": [{
+                  "orig": "src/game objects/tilemap/tests/visual tile bleed test.js",
+                  "dst": "visual tile bleed test.js"
+                }]
               },
               {
                 "mainFile": "src/game objects/tilemap/tests/visual tile coords test.js",
@@ -8653,7 +8584,9 @@
                     "dst": "visual tile coords test.js"
                   },
                   {"orig": "assets/tilemaps/tiles/walls_1x2.png"},
+                  {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
                   {"orig": "assets/tilemaps/maps/features-test.json"},
+                  {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"},
                   {"orig": "assets/tilemaps/tiles/tiles2.png"},
                   {"orig": "assets/sprites/coin.png"},
                   {"orig": "assets/tilemaps/tiles/dangerous-kiss.png"},
@@ -8693,19 +8626,10 @@
         "subCategories": [],
         "examples": [{
           "mainFile": "src/games/defenda/test.js",
-          "map": [
-            {
-              "orig": "src/games/defenda/test.js",
-              "dst": "test.js"
-            },
-            {"orig": "assets/demoscene/star2.png"},
-            {"orig": "assets/particles/blue.png"},
-            {"orig": "assets/sprites/shmup-ship2.png"},
-            {"orig": "assets/demoscene/star3.png"},
-            {"orig": "assets/sprites/bullets/bullet6.png"},
-            {"orig": "assets/particles/yellow.png"},
-            {"orig": "assets/sprites/metalface78x92.png"}
-          ]
+          "map": [{
+            "orig": "src/games/defenda/test.js",
+            "dst": "test.js"
+          }]
         }]
       },
       {
@@ -8719,10 +8643,17 @@
               "orig": "src/games/flood/flood-fill.js",
               "dst": "flood-fill.js"
             },
+            {"orig": "assets/demoscene/star2.png"},
             {"orig": "assets/games/flood/blobs.png"},
+            {"orig": "assets/particles/blue.png"},
+            {"orig": "assets/sprites/shmup-ship2.png"},
+            {"orig": "assets/demoscene/star3.png"},
             {"orig": "assets/fonts/bitmap/atari-smooth.xml"},
+            {"orig": "assets/particles/yellow.png"},
             {"orig": "assets/games/flood/blobs.json"},
-            {"orig": "assets/fonts/bitmap/atari-smooth.png"}
+            {"orig": "assets/sprites/bullets/bullet6.png"},
+            {"orig": "assets/fonts/bitmap/atari-smooth.png"},
+            {"orig": "assets/sprites/metalface78x92.png"}
           ]
         }]
       },
@@ -10938,14 +10869,10 @@
           },
           {
             "mainFile": "src/input/keyboard/cross scene keys.js",
-            "map": [
-              {
-                "orig": "src/input/keyboard/cross scene keys.js",
-                "dst": "cross scene keys.js"
-              },
-              {"orig": "assets/atlas/jellies.png"},
-              {"orig": "assets/atlas/jellies.json"}
-            ]
+            "map": [{
+              "orig": "src/input/keyboard/cross scene keys.js",
+              "dst": "cross scene keys.js"
+            }]
           },
           {
             "mainFile": "src/input/keyboard/cursor keys.js",
@@ -10954,7 +10881,9 @@
                 "orig": "src/input/keyboard/cursor keys.js",
                 "dst": "cursor keys.js"
               },
-              {"orig": "assets/sprites/block.png"}
+              {"orig": "assets/atlas/jellies.png"},
+              {"orig": "assets/sprites/block.png"},
+              {"orig": "assets/atlas/jellies.json"}
             ]
           },
           {
@@ -10980,10 +10909,17 @@
           },
           {
             "mainFile": "src/input/keyboard/just down.js",
+            "map": [{
+              "orig": "src/input/keyboard/just down.js",
+              "dst": "just down.js"
+            }]
+          },
+          {
+            "mainFile": "src/input/keyboard/key combo max key delay.js",
             "map": [
               {
-                "orig": "src/input/keyboard/just down.js",
-                "dst": "just down.js"
+                "orig": "src/input/keyboard/key combo max key delay.js",
+                "dst": "key combo max key delay.js"
               },
               {"orig": "assets/tests/space/nebula.jpg"},
               {"orig": "assets/sprites/bullets/bullet10.png"},
@@ -10991,28 +10927,21 @@
             ]
           },
           {
-            "mainFile": "src/input/keyboard/key combo max key delay.js",
-            "map": [{
-              "orig": "src/input/keyboard/key combo max key delay.js",
-              "dst": "key combo max key delay.js"
-            }]
-          },
-          {
             "mainFile": "src/input/keyboard/key down delay.js",
-            "map": [
-              {
-                "orig": "src/input/keyboard/key down delay.js",
-                "dst": "key down delay.js"
-              },
-              {"orig": "assets/sprites/block.png"}
-            ]
+            "map": [{
+              "orig": "src/input/keyboard/key down delay.js",
+              "dst": "key down delay.js"
+            }]
           },
           {
             "mainFile": "src/input/keyboard/key modifier.js",
-            "map": [{
-              "orig": "src/input/keyboard/key modifier.js",
-              "dst": "key modifier.js"
-            }]
+            "map": [
+              {
+                "orig": "src/input/keyboard/key modifier.js",
+                "dst": "key modifier.js"
+              },
+              {"orig": "assets/sprites/block.png"}
+            ]
           },
           {
             "mainFile": "src/input/keyboard/keydown.js",
@@ -11041,27 +10970,34 @@
           },
           {
             "mainFile": "src/input/keyboard/numpad.js",
+            "map": [{
+              "orig": "src/input/keyboard/numpad.js",
+              "dst": "numpad.js"
+            }]
+          },
+          {
+            "mainFile": "src/input/keyboard/reset key combo on match.js",
             "map": [
               {
-                "orig": "src/input/keyboard/numpad.js",
-                "dst": "numpad.js"
+                "orig": "src/input/keyboard/reset key combo on match.js",
+                "dst": "reset key combo on match.js"
               },
               {"orig": "assets/sprites/bobs-by-cleathley.png"}
             ]
           },
           {
-            "mainFile": "src/input/keyboard/reset key combo on match.js",
+            "mainFile": "src/input/keyboard/retro leaderboard.js",
             "map": [{
-              "orig": "src/input/keyboard/reset key combo on match.js",
-              "dst": "reset key combo on match.js"
+              "orig": "src/input/keyboard/retro leaderboard.js",
+              "dst": "retro leaderboard.js"
             }]
           },
           {
-            "mainFile": "src/input/keyboard/retro leaderboard.js",
+            "mainFile": "src/input/keyboard/single keydown event.js",
             "map": [
               {
-                "orig": "src/input/keyboard/retro leaderboard.js",
-                "dst": "retro leaderboard.js"
+                "orig": "src/input/keyboard/single keydown event.js",
+                "dst": "single keydown event.js"
               },
               {"orig": "assets/input/end.png"},
               {"orig": "assets/fonts/bitmap/arcade.xml"},
@@ -11070,13 +11006,6 @@
               {"orig": "assets/demoscene/star4.png"},
               {"orig": "assets/input/block.png"}
             ]
-          },
-          {
-            "mainFile": "src/input/keyboard/single keydown event.js",
-            "map": [{
-              "orig": "src/input/keyboard/single keydown event.js",
-              "dst": "single keydown event.js"
-            }]
           },
           {
             "mainFile": "src/input/keyboard/text entry.js",
@@ -11094,13 +11023,10 @@
         "examples": [
           {
             "mainFile": "src/input/mouse/circle hit area.js",
-            "map": [
-              {
-                "orig": "src/input/mouse/circle hit area.js",
-                "dst": "circle hit area.js"
-              },
-              {"orig": "assets/sprites/wizball.png"}
-            ]
+            "map": [{
+              "orig": "src/input/mouse/circle hit area.js",
+              "dst": "circle hit area.js"
+            }]
           },
           {
             "mainFile": "src/input/mouse/click sprite.js",
@@ -11109,7 +11035,8 @@
                 "orig": "src/input/mouse/click sprite.js",
                 "dst": "click sprite.js"
               },
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"}
+              {"orig": "assets/pics/lance-overdose-loader-eye.png"},
+              {"orig": "assets/sprites/wizball.png"}
             ]
           },
           {
@@ -11164,13 +11091,10 @@
           },
           {
             "mainFile": "src/input/mouse/move event.js",
-            "map": [
-              {
-                "orig": "src/input/mouse/move event.js",
-                "dst": "move event.js"
-              },
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"}
-            ]
+            "map": [{
+              "orig": "src/input/mouse/move event.js",
+              "dst": "move event.js"
+            }]
           },
           {
             "mainFile": "src/input/mouse/origin tests.js",
@@ -11517,7 +11441,9 @@
                 "orig": "src/input/pointer/multiple scene down event.js",
                 "dst": "multiple scene down event.js"
               },
-              {"orig": "assets/sprites/balls.png"}
+              {"orig": "assets/ui/down-bubble.png"},
+              {"orig": "assets/ui/undersea-bg.png"},
+              {"orig": "assets/ui/up-bubble.png"}
             ]
           },
           {
@@ -11526,6 +11452,16 @@
               {
                 "orig": "src/input/pointer/pointer buttons.js",
                 "dst": "pointer buttons.js"
+              },
+              {"orig": "assets/sprites/balls.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/pointer/pointer buttons debug.js",
+            "map": [
+              {
+                "orig": "src/input/pointer/pointer buttons debug.js",
+                "dst": "pointer buttons debug.js"
               },
               {"orig": "assets/sprites/balls.png"}
             ]
@@ -11658,6 +11594,7 @@
                 "orig": "src/loader/audio/load audio stream.js",
                 "dst": "load audio stream.js"
               },
+              {"orig": "assets/audio/kyobi/kyobi.ogg"},
               {"orig": "assets/audio/Dafunk - Hardcore Power (We Believe In Goa - Remix).ogg"}
             ]
           },
@@ -11732,13 +11669,10 @@
           },
           {
             "mainFile": "src/loader/bitmap text/load bitmap text from pack.js",
-            "map": [
-              {
-                "orig": "src/loader/bitmap text/load bitmap text from pack.js",
-                "dst": "load bitmap text from pack.js"
-              },
-              {"orig": "assets/loader-tests/pack6.json"}
-            ]
+            "map": [{
+              "orig": "src/loader/bitmap text/load bitmap text from pack.js",
+              "dst": "load bitmap text from pack.js"
+            }]
           }
         ]
       },
@@ -11754,15 +11688,24 @@
                 "orig": "src/loader/file pack/load file pack.js",
                 "dst": "load file pack.js"
               },
-              {"orig": "assets/loader-tests/pack1.json"}
+              {"orig": "assets/pics/sukasuka-chtholly.png"},
+              {"orig": "assets/pics/taikodrummaster.jpg"},
+              {"orig": "assets/loader-tests/pack1.json"},
+              {"orig": "assets/loader-tests/pack6.json"}
             ]
           },
           {
             "mainFile": "src/loader/file pack/load file pack from json.js",
-            "map": [{
-              "orig": "src/loader/file pack/load file pack from json.js",
-              "dst": "load file pack from json.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/file pack/load file pack from json.js",
+                "dst": "load file pack from json.js"
+              },
+              {"orig": "assets/pics/donuts.jpg"},
+              {"orig": "assets/pics/ayu.png"},
+              {"orig": "assets/pics/sukasuka-chtholly.png"},
+              {"orig": "assets/pics/taikodrummaster.jpg"}
+            ]
           },
           {
             "mainFile": "src/loader/file pack/load file pack test 2.js",
@@ -11771,6 +11714,8 @@
                 "orig": "src/loader/file pack/load file pack test 2.js",
                 "dst": "load file pack test 2.js"
               },
+              {"orig": "assets/pics/donuts.jpg"},
+              {"orig": "assets/pics/ayu.png"},
               {"orig": "assets/loader-tests/pack1.json"}
             ]
           },
@@ -11781,6 +11726,10 @@
                 "orig": "src/loader/file pack/load file pack test 3.js",
                 "dst": "load file pack test 3.js"
               },
+              {"orig": "assets/pics/donuts.jpg"},
+              {"orig": "assets/pics/ayu.png"},
+              {"orig": "assets/pics/sukasuka-chtholly.png"},
+              {"orig": "assets/pics/taikodrummaster.jpg"},
               {"orig": "assets/loader-tests/pack1.json"}
             ]
           },
@@ -11791,6 +11740,9 @@
                 "orig": "src/loader/file pack/load file pack test 4.js",
                 "dst": "load file pack test 4.js"
               },
+              {"orig": "assets/pics/nayuki.png"},
+              {"orig": "assets/loader-tests/pack3.json"},
+              {"orig": "assets/pics/makoto.png"},
               {"orig": "assets/loader-tests/pack2.json"}
             ]
           },
@@ -11801,6 +11753,7 @@
                 "orig": "src/loader/file pack/load file pack test 5.js",
                 "dst": "load file pack test 5.js"
               },
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas.json"},
               {"orig": "assets/loader-tests/pack4.json"}
             ]
           }
@@ -11828,14 +11781,10 @@
         "examples": [
           {
             "mainFile": "src/loader/image/load image.js",
-            "map": [
-              {
-                "orig": "src/loader/image/load image.js",
-                "dst": "load image.js"
-              },
-              {"orig": "assets/pics/sukasuka-chtholly.png"},
-              {"orig": "assets/pics/taikodrummaster.jpg"}
-            ]
+            "map": [{
+              "orig": "src/loader/image/load image.js",
+              "dst": "load image.js"
+            }]
           },
           {
             "mainFile": "src/loader/image/load image from object.js",
@@ -11844,6 +11793,7 @@
                 "orig": "src/loader/image/load image from object.js",
                 "dst": "load image from object.js"
               },
+              {"orig": "assets/pics/sukasuka-chtholly.png"},
               {"orig": "assets/pics/taikodrummaster.jpg"}
             ]
           },
@@ -11905,7 +11855,39 @@
                 "orig": "src/loader/loader events/add files during load.js",
                 "dst": "add files during load.js"
               },
-              {"orig": "assets/sprites/atari130xe.png"}
+              {"orig": "assets/sprites/advanced_wars_tank.png"},
+              {"orig": "assets/sprites/budbrain_chick.png"},
+              {"orig": "assets/sprites/128x128-v2.png"},
+              {"orig": "assets/sprites/arrow.png"},
+              {"orig": "assets/sprites/bikkuriman.png"},
+              {"orig": "assets/sprites/balls.png"},
+              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/bsquadron2.png"},
+              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/atari800xl.png"},
+              {"orig": "assets/sprites/blue_ball.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/asteroids_ship_white.png"},
+              {"orig": "assets/sprites/advanced_wars_land.png"},
+              {"orig": "assets/sprites/bsquadron3.png"},
+              {"orig": "assets/sprites/b.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/atari130xe.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/sprites/atari1200xl.png"},
+              {"orig": "assets/sprites/block.png"},
+              {"orig": "assets/sprites/bluemetal_32x32x4.png"},
+              {"orig": "assets/sprites/atari800.png"},
+              {"orig": "assets/sprites/128x128.png"},
+              {"orig": "assets/sprites/amiga-cursor.png"},
+              {"orig": "assets/sprites/arrows.png"},
+              {"orig": "assets/sprites/atari400.png"},
+              {"orig": "assets/sprites/a.png"},
+              {"orig": "assets/sprites/baddie_cat_1.png"},
+              {"orig": "assets/sprites/asteroids_ship.png"},
+              {"orig": "assets/sprites/aqua_ball.png"},
+              {"orig": "assets/sprites/bsquadron1.png"}
             ]
           },
           {
@@ -11922,7 +11904,8 @@
                 "orig": "src/loader/loader events/display file as loaded.js",
                 "dst": "display file as loaded.js"
               },
-              {"orig": "assets/sprites/atari130xe.png"}
+              {"orig": "assets/sprites/atari130xe.png"},
+              {"orig": "assets/sprites/zelda-life.png"}
             ]
           },
           {
@@ -11965,37 +11948,69 @@
                 "orig": "src/loader/loader events/load 200 image files.js",
                 "dst": "load 200 image files.js"
               },
-              {"orig": "assets/sprites/advanced_wars_tank.png"},
-              {"orig": "assets/sprites/budbrain_chick.png"},
               {"orig": "assets/sprites/128x128-v2.png"},
               {"orig": "assets/sprites/arrow.png"},
-              {"orig": "assets/sprites/bikkuriman.png"},
-              {"orig": "assets/sprites/balls.png"},
-              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/chain.png"},
+              {"orig": "assets/sprites/copy-that-floppy.png"},
+              {"orig": "assets/sprites/carrot.png"},
               {"orig": "assets/sprites/bsquadron2.png"},
-              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/crate.png"},
+              {"orig": "assets/sprites/chick.png"},
               {"orig": "assets/sprites/atari800xl.png"},
-              {"orig": "assets/sprites/blue_ball.png"},
-              {"orig": "assets/sprites/asuna_by_vali233.png"},
-              {"orig": "assets/sprites/asteroids_ship_white.png"},
-              {"orig": "assets/sprites/advanced_wars_land.png"},
               {"orig": "assets/sprites/bsquadron3.png"},
-              {"orig": "assets/sprites/b.png"},
-              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/elephant.png"},
+              {"orig": "assets/sprites/coin.png"},
+              {"orig": "assets/sprites/dude.png"},
               {"orig": "assets/sprites/atari130xe.png"},
-              {"orig": "assets/sprites/bullet.png"},
               {"orig": "assets/sprites/atari1200xl.png"},
-              {"orig": "assets/sprites/block.png"},
               {"orig": "assets/sprites/bluemetal_32x32x4.png"},
+              {"orig": "assets/sprites/exocet_spaceman.png"},
               {"orig": "assets/sprites/atari800.png"},
               {"orig": "assets/sprites/128x128.png"},
+              {"orig": "assets/sprites/car.png"},
               {"orig": "assets/sprites/amiga-cursor.png"},
+              {"orig": "assets/sprites/columns-orange.png"},
+              {"orig": "assets/sprites/crate32.png"},
               {"orig": "assets/sprites/arrows.png"},
               {"orig": "assets/sprites/atari400.png"},
               {"orig": "assets/sprites/a.png"},
+              {"orig": "assets/sprites/cursor-rotate.png"},
+              {"orig": "assets/sprites/diamond.png"},
+              {"orig": "assets/sprites/aqua_ball.png"},
+              {"orig": "assets/sprites/enemy-bullet.png"},
+              {"orig": "assets/sprites/advanced_wars_tank.png"},
+              {"orig": "assets/sprites/budbrain_chick.png"},
+              {"orig": "assets/sprites/clown.png"},
+              {"orig": "assets/sprites/dragcircle.png"},
+              {"orig": "assets/sprites/bikkuriman.png"},
+              {"orig": "assets/sprites/cokecan.png"},
+              {"orig": "assets/sprites/balls.png"},
+              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/checkerboard.png"},
+              {"orig": "assets/sprites/blue_ball.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/cakewalk.png"},
+              {"orig": "assets/sprites/asteroids_ship_white.png"},
+              {"orig": "assets/sprites/darkwing_crazy.png"},
+              {"orig": "assets/sprites/advanced_wars_land.png"},
+              {"orig": "assets/sprites/b.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/default.png"},
+              {"orig": "assets/sprites/chunk.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/sprites/eyes.png"},
+              {"orig": "assets/sprites/block.png"},
+              {"orig": "assets/sprites/drawcursor.png"},
+              {"orig": "assets/sprites/firstaid.png"},
+              {"orig": "assets/sprites/columns-blue.png"},
+              {"orig": "assets/sprites/explosion.png"},
+              {"orig": "assets/sprites/eggplant.png"},
+              {"orig": "assets/sprites/columns-red.png"},
+              {"orig": "assets/sprites/centroid.png"},
               {"orig": "assets/sprites/baddie_cat_1.png"},
               {"orig": "assets/sprites/asteroids_ship.png"},
-              {"orig": "assets/sprites/aqua_ball.png"},
               {"orig": "assets/sprites/bsquadron1.png"}
             ]
           },
@@ -12006,37 +12021,69 @@
                 "orig": "src/loader/loader events/load progress.js",
                 "dst": "load progress.js"
               },
-              {"orig": "assets/sprites/advanced_wars_tank.png"},
-              {"orig": "assets/sprites/budbrain_chick.png"},
               {"orig": "assets/sprites/128x128-v2.png"},
               {"orig": "assets/sprites/arrow.png"},
-              {"orig": "assets/sprites/bikkuriman.png"},
-              {"orig": "assets/sprites/balls.png"},
-              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/chain.png"},
+              {"orig": "assets/sprites/copy-that-floppy.png"},
+              {"orig": "assets/sprites/carrot.png"},
               {"orig": "assets/sprites/bsquadron2.png"},
-              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/crate.png"},
+              {"orig": "assets/sprites/chick.png"},
               {"orig": "assets/sprites/atari800xl.png"},
-              {"orig": "assets/sprites/blue_ball.png"},
-              {"orig": "assets/sprites/asuna_by_vali233.png"},
-              {"orig": "assets/sprites/asteroids_ship_white.png"},
-              {"orig": "assets/sprites/advanced_wars_land.png"},
               {"orig": "assets/sprites/bsquadron3.png"},
-              {"orig": "assets/sprites/b.png"},
-              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/elephant.png"},
+              {"orig": "assets/sprites/coin.png"},
+              {"orig": "assets/sprites/dude.png"},
               {"orig": "assets/sprites/atari130xe.png"},
-              {"orig": "assets/sprites/bullet.png"},
               {"orig": "assets/sprites/atari1200xl.png"},
-              {"orig": "assets/sprites/block.png"},
               {"orig": "assets/sprites/bluemetal_32x32x4.png"},
+              {"orig": "assets/sprites/exocet_spaceman.png"},
               {"orig": "assets/sprites/128x128.png"},
               {"orig": "assets/sprites/atari800.png"},
+              {"orig": "assets/sprites/car.png"},
               {"orig": "assets/sprites/amiga-cursor.png"},
+              {"orig": "assets/sprites/columns-orange.png"},
+              {"orig": "assets/sprites/crate32.png"},
               {"orig": "assets/sprites/arrows.png"},
               {"orig": "assets/sprites/a.png"},
               {"orig": "assets/sprites/atari400.png"},
+              {"orig": "assets/sprites/cursor-rotate.png"},
+              {"orig": "assets/sprites/diamond.png"},
+              {"orig": "assets/sprites/aqua_ball.png"},
+              {"orig": "assets/sprites/enemy-bullet.png"},
+              {"orig": "assets/sprites/advanced_wars_tank.png"},
+              {"orig": "assets/sprites/budbrain_chick.png"},
+              {"orig": "assets/sprites/clown.png"},
+              {"orig": "assets/sprites/dragcircle.png"},
+              {"orig": "assets/sprites/bikkuriman.png"},
+              {"orig": "assets/sprites/cokecan.png"},
+              {"orig": "assets/sprites/balls.png"},
+              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/checkerboard.png"},
+              {"orig": "assets/sprites/blue_ball.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/cakewalk.png"},
+              {"orig": "assets/sprites/asteroids_ship_white.png"},
+              {"orig": "assets/sprites/darkwing_crazy.png"},
+              {"orig": "assets/sprites/advanced_wars_land.png"},
+              {"orig": "assets/sprites/b.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/default.png"},
+              {"orig": "assets/sprites/chunk.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/sprites/eyes.png"},
+              {"orig": "assets/sprites/block.png"},
+              {"orig": "assets/sprites/drawcursor.png"},
+              {"orig": "assets/sprites/firstaid.png"},
+              {"orig": "assets/sprites/columns-blue.png"},
+              {"orig": "assets/sprites/explosion.png"},
+              {"orig": "assets/sprites/eggplant.png"},
+              {"orig": "assets/sprites/columns-red.png"},
+              {"orig": "assets/sprites/centroid.png"},
               {"orig": "assets/sprites/baddie_cat_1.png"},
               {"orig": "assets/sprites/asteroids_ship.png"},
-              {"orig": "assets/sprites/aqua_ball.png"},
               {"orig": "assets/sprites/bsquadron1.png"}
             ]
           },
@@ -12060,38 +12107,70 @@
                 "orig": "src/loader/loader events/play animation during load.js",
                 "dst": "play animation during load.js"
               },
-              {"orig": "assets/sprites/advanced_wars_tank.png"},
-              {"orig": "assets/sprites/budbrain_chick.png"},
               {"orig": "assets/sprites/128x128-v2.png"},
-              {"orig": "assets/animations/muybridge01.png"},
               {"orig": "assets/sprites/arrow.png"},
-              {"orig": "assets/sprites/bikkuriman.png"},
-              {"orig": "assets/sprites/balls.png"},
-              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/chain.png"},
+              {"orig": "assets/sprites/copy-that-floppy.png"},
+              {"orig": "assets/sprites/carrot.png"},
               {"orig": "assets/sprites/bsquadron2.png"},
-              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/crate.png"},
+              {"orig": "assets/sprites/chick.png"},
               {"orig": "assets/sprites/atari800xl.png"},
-              {"orig": "assets/sprites/blue_ball.png"},
-              {"orig": "assets/sprites/asuna_by_vali233.png"},
-              {"orig": "assets/sprites/asteroids_ship_white.png"},
-              {"orig": "assets/sprites/advanced_wars_land.png"},
               {"orig": "assets/sprites/bsquadron3.png"},
-              {"orig": "assets/sprites/b.png"},
-              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/elephant.png"},
+              {"orig": "assets/sprites/coin.png"},
+              {"orig": "assets/sprites/dude.png"},
               {"orig": "assets/sprites/atari130xe.png"},
-              {"orig": "assets/sprites/bullet.png"},
               {"orig": "assets/sprites/atari1200xl.png"},
-              {"orig": "assets/sprites/block.png"},
               {"orig": "assets/sprites/bluemetal_32x32x4.png"},
+              {"orig": "assets/sprites/exocet_spaceman.png"},
               {"orig": "assets/sprites/atari800.png"},
               {"orig": "assets/sprites/128x128.png"},
+              {"orig": "assets/sprites/car.png"},
               {"orig": "assets/sprites/amiga-cursor.png"},
+              {"orig": "assets/sprites/columns-orange.png"},
+              {"orig": "assets/sprites/crate32.png"},
               {"orig": "assets/sprites/arrows.png"},
               {"orig": "assets/sprites/atari400.png"},
               {"orig": "assets/sprites/a.png"},
+              {"orig": "assets/sprites/cursor-rotate.png"},
+              {"orig": "assets/sprites/diamond.png"},
+              {"orig": "assets/sprites/aqua_ball.png"},
+              {"orig": "assets/sprites/enemy-bullet.png"},
+              {"orig": "assets/sprites/advanced_wars_tank.png"},
+              {"orig": "assets/sprites/budbrain_chick.png"},
+              {"orig": "assets/sprites/clown.png"},
+              {"orig": "assets/sprites/dragcircle.png"},
+              {"orig": "assets/animations/muybridge01.png"},
+              {"orig": "assets/sprites/bikkuriman.png"},
+              {"orig": "assets/sprites/cokecan.png"},
+              {"orig": "assets/sprites/balls.png"},
+              {"orig": "assets/sprites/bobs-by-cleathley.png"},
+              {"orig": "assets/sprites/beball1.png"},
+              {"orig": "assets/sprites/checkerboard.png"},
+              {"orig": "assets/sprites/blue_ball.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/cakewalk.png"},
+              {"orig": "assets/sprites/asteroids_ship_white.png"},
+              {"orig": "assets/sprites/darkwing_crazy.png"},
+              {"orig": "assets/sprites/advanced_wars_land.png"},
+              {"orig": "assets/sprites/b.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/sprites/default.png"},
+              {"orig": "assets/sprites/chunk.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/bunny.png"},
+              {"orig": "assets/sprites/eyes.png"},
+              {"orig": "assets/sprites/block.png"},
+              {"orig": "assets/sprites/drawcursor.png"},
+              {"orig": "assets/sprites/firstaid.png"},
+              {"orig": "assets/sprites/columns-blue.png"},
+              {"orig": "assets/sprites/explosion.png"},
+              {"orig": "assets/sprites/eggplant.png"},
+              {"orig": "assets/sprites/columns-red.png"},
+              {"orig": "assets/sprites/centroid.png"},
               {"orig": "assets/sprites/baddie_cat_1.png"},
               {"orig": "assets/sprites/asteroids_ship.png"},
-              {"orig": "assets/sprites/aqua_ball.png"},
               {"orig": "assets/sprites/bsquadron1.png"}
             ]
           },
@@ -12156,13 +12235,10 @@
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/scene/load scene.js",
-          "map": [
-            {
-              "orig": "src/loader/scene/load scene.js",
-              "dst": "load scene.js"
-            },
-            {"orig": "assets/loader-tests/ExternalScene.js"}
-          ]
+          "map": [{
+            "orig": "src/loader/scene/load scene.js",
+            "dst": "load scene.js"
+          }]
         }]
       },
       {
@@ -12176,6 +12252,7 @@
               "orig": "src/loader/scene payload/scene files payload.js",
               "dst": "scene files payload.js"
             },
+            {"orig": "assets/loader-tests/ExternalScene.js"},
             {"orig": "assets/atlas/megaset-0.png"},
             {"orig": "assets/atlas/megaset-0.json"},
             {"orig": "assets/sprites/sonic_havok_sanity.png"},
@@ -12352,7 +12429,9 @@
                 "orig": "src/loader/texture atlas json/load texture atlas from pack.js",
                 "dst": "load texture atlas from pack.js"
               },
-              {"orig": "assets/loader-tests/pack5.json"}
+              {"orig": "assets/loader-tests/pack5.json"},
+              {"orig": "assets/atlas/megaset-0.png"},
+              {"orig": "assets/atlas/megaset-0.json"}
             ]
           },
           {
@@ -12415,7 +12494,11 @@
                 "orig": "src/loader/texture atlas multi/load multi texture atlas.js",
                 "dst": "load multi texture atlas.js"
               },
-              {"orig": "assets/loader-tests/texture-packer-multi-atlas.json"}
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas.json"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-0.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-2.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-1.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-3.png"}
             ]
           },
           {
@@ -12425,7 +12508,13 @@
                 "orig": "src/loader/texture atlas multi/load multi texture atlas with normal maps.js",
                 "dst": "load multi texture atlas with normal maps.js"
               },
-              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals.json"}
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals-1_n.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals-0.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals-1.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals-2.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals.json"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals-0_n.png"},
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals-2_n.png"}
             ]
           }
         ]
@@ -12538,37 +12627,69 @@
             "orig": "src/loader/game load config.js",
             "dst": "game load config.js"
           },
-          {"orig": "assets/sprites/advanced_wars_tank.png"},
-          {"orig": "assets/sprites/budbrain_chick.png"},
-          {"orig": "assets/sprites/clown.png"},
           {"orig": "assets/sprites/arrow.png"},
           {"orig": "assets/sprites/chain.png"},
-          {"orig": "assets/sprites/bikkuriman.png"},
+          {"orig": "assets/sprites/copy-that-floppy.png"},
           {"orig": "assets/sprites/carrot.png"},
           {"orig": "assets/sprites/bsquadron2.png"},
-          {"orig": "assets/sprites/beball1.png"},
+          {"orig": "assets/sprites/crate.png"},
           {"orig": "assets/sprites/chick.png"},
           {"orig": "assets/sprites/atari800xl.png"},
-          {"orig": "assets/sprites/blue_ball.png"},
-          {"orig": "assets/sprites/asuna_by_vali233.png"},
-          {"orig": "assets/sprites/cakewalk.png"},
           {"orig": "assets/sprites/bsquadron3.png"},
-          {"orig": "assets/sprites/bluebar.png"},
+          {"orig": "assets/sprites/elephant.png"},
           {"orig": "assets/sprites/coin.png"},
-          {"orig": "assets/sprites/chunk.png"},
+          {"orig": "assets/sprites/dude.png"},
+          {"orig": "assets/sprites/fork.png"},
           {"orig": "assets/sprites/atari130xe.png"},
-          {"orig": "assets/sprites/bullet.png"},
-          {"orig": "assets/sprites/bunny.png"},
           {"orig": "assets/sprites/atari1200xl.png"},
-          {"orig": "assets/sprites/block.png"},
+          {"orig": "assets/sprites/helix.png"},
+          {"orig": "assets/sprites/exocet_spaceman.png"},
           {"orig": "assets/sprites/128x128.png"},
           {"orig": "assets/sprites/atari800.png"},
           {"orig": "assets/sprites/car.png"},
           {"orig": "assets/sprites/amiga-cursor.png"},
+          {"orig": "assets/sprites/columns-orange.png"},
+          {"orig": "assets/sprites/hello.png"},
+          {"orig": "assets/sprites/crate32.png"},
+          {"orig": "assets/sprites/healthbar.png"},
+          {"orig": "assets/sprites/gem.png"},
           {"orig": "assets/sprites/atari400.png"},
+          {"orig": "assets/sprites/cursor-rotate.png"},
+          {"orig": "assets/sprites/hotdog.png"},
+          {"orig": "assets/sprites/diamond.png"},
+          {"orig": "assets/sprites/kirito_by_vali233.png"},
+          {"orig": "assets/sprites/aqua_ball.png"},
+          {"orig": "assets/sprites/enemy-bullet.png"},
+          {"orig": "assets/sprites/advanced_wars_tank.png"},
+          {"orig": "assets/sprites/budbrain_chick.png"},
+          {"orig": "assets/sprites/clown.png"},
+          {"orig": "assets/sprites/ilkke.png"},
+          {"orig": "assets/sprites/interference_ball_48x48.png"},
+          {"orig": "assets/sprites/ghost.png"},
+          {"orig": "assets/sprites/bikkuriman.png"},
+          {"orig": "assets/sprites/cokecan.png"},
+          {"orig": "assets/sprites/beball1.png"},
+          {"orig": "assets/sprites/blue_ball.png"},
+          {"orig": "assets/sprites/asuna_by_vali233.png"},
+          {"orig": "assets/sprites/cakewalk.png"},
+          {"orig": "assets/sprites/darkwing_crazy.png"},
+          {"orig": "assets/sprites/flectrum2.png"},
+          {"orig": "assets/sprites/bluebar.png"},
+          {"orig": "assets/sprites/chunk.png"},
+          {"orig": "assets/sprites/bullet.png"},
+          {"orig": "assets/sprites/bunny.png"},
+          {"orig": "assets/sprites/eyes.png"},
+          {"orig": "assets/sprites/block.png"},
+          {"orig": "assets/sprites/flectrum.png"},
+          {"orig": "assets/sprites/green_ball.png"},
+          {"orig": "assets/sprites/firstaid.png"},
+          {"orig": "assets/sprites/columns-blue.png"},
+          {"orig": "assets/sprites/explosion.png"},
+          {"orig": "assets/sprites/eggplant.png"},
+          {"orig": "assets/sprites/fuji.png"},
+          {"orig": "assets/sprites/columns-red.png"},
           {"orig": "assets/sprites/centroid.png"},
           {"orig": "assets/sprites/asteroids_ship.png"},
-          {"orig": "assets/sprites/aqua_ball.png"},
           {"orig": "assets/sprites/bsquadron1.png"}
         ]
       },
@@ -12760,6 +12881,13 @@
             ]
           },
           {
+            "mainFile": "src/physics/arcade/basic platform.js",
+            "map": [{
+              "orig": "src/physics/arcade/basic platform.js",
+              "dst": "basic platform.js"
+            }]
+          },
+          {
             "mainFile": "src/physics/arcade/body controls.js",
             "map": [
               {
@@ -12776,6 +12904,17 @@
               "orig": "src/physics/arcade/body on a path.js",
               "dst": "body on a path.js"
             }]
+          },
+          {
+            "mainFile": "src/physics/arcade/body stack test.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/body stack test.js",
+                "dst": "body stack test.js"
+              },
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/crate.png"}
+            ]
           },
           {
             "mainFile": "src/physics/arcade/bounce test.js",
@@ -12874,6 +13013,16 @@
             ]
           },
           {
+            "mainFile": "src/physics/arcade/fps test.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/fps test.js",
+                "dst": "fps test.js"
+              },
+              {"orig": "assets/sprites/flower-exo.png"}
+            ]
+          },
+          {
             "mainFile": "src/physics/arcade/friction.js",
             "map": [
               {
@@ -12883,6 +13032,16 @@
               {"orig": "assets/sprites/spikedball.png"},
               {"orig": "assets/sprites/lemming.png"},
               {"orig": "assets/sprites/platform.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/arcade/get bodies within rectangle.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/get bodies within rectangle.js",
+                "dst": "get bodies within rectangle.js"
+              },
+              {"orig": "assets/sprites/mushroom16x16.png"}
             ]
           },
           {
@@ -13838,6 +13997,40 @@
             ]
           },
           {
+            "mainFile": "src/physics/matterjs/draw chain.js",
+            "map": [{
+              "orig": "src/physics/matterjs/draw chain.js",
+              "dst": "draw chain.js"
+            }]
+          },
+          {
+            "mainFile": "src/physics/matterjs/draw smoother stiff line.js",
+            "map": [
+              {
+                "orig": "src/physics/matterjs/draw smoother stiff line.js",
+                "dst": "draw smoother stiff line.js"
+              },
+              {"orig": "assets/sprites/pangball.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/matterjs/draw stiff line.js",
+            "map": [
+              {
+                "orig": "src/physics/matterjs/draw stiff line.js",
+                "dst": "draw stiff line.js"
+              },
+              {"orig": "assets/sprites/pangball.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/matterjs/draw triangles.js",
+            "map": [{
+              "orig": "src/physics/matterjs/draw triangles.js",
+              "dst": "draw triangles.js"
+            }]
+          },
+          {
             "mainFile": "src/physics/matterjs/fixed rotation.js",
             "map": [
               {
@@ -14749,8 +14942,8 @@
             "orig": "src/spine/basic spineboy.js",
             "dst": "basic spineboy.js"
           },
-          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.png"}
@@ -14766,7 +14959,8 @@
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "plugins/SpineCanvasPlugin.js"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
       {
@@ -14779,7 +14973,8 @@
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
       {
@@ -14789,8 +14984,10 @@
             "orig": "src/spine/spine inside container.js",
             "dst": "spine inside container.js"
           },
+          {"orig": "assets/animations/spine/webgl/coin.png"},
           {"orig": "assets/animations/spine/webgl/spineboy-ess.json"},
           {"orig": "assets/animations/spine/webgl/coin-pro.json"},
+          {"orig": "assets/animations/spine/webgl/spineboy-pma.png"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
           {"orig": "assets/animations/spine/webgl/spineboy.atlas"},
           {"orig": "assets/sprites/phaser.png"},
@@ -14808,7 +15005,8 @@
           {"orig": "assets/sprites/arrow.png"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
       {
@@ -14818,6 +15016,7 @@
             "orig": "src/spine/stretchy man.js",
             "dst": "stretchy man.js"
           },
+          {"orig": "assets/animations/spine/webgl/atlas2.png"},
           {"orig": "assets/animations/spine/webgl/demos.json"},
           {"orig": "assets/animations/spine/webgl/atlas2.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
@@ -14834,7 +15033,8 @@
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
       {
@@ -14847,7 +15047,8 @@
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
       {
@@ -14860,7 +15061,8 @@
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
       {
@@ -14870,6 +15072,7 @@
             "orig": "src/spine/webgl test 4.js",
             "dst": "webgl test 4.js"
           },
+          {"orig": "assets/animations/spine/webgl/raptor.png"},
           {"orig": "assets/animations/spine/webgl/raptor-pro.json"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
           {"orig": "assets/animations/spine/webgl/raptor.atlas"},
@@ -14884,13 +15087,17 @@
             "dst": "webgl test 5.js"
           },
           {"orig": "assets/animations/spine/webgl/raptor-pro.json"},
-          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
           {"orig": "assets/animations/spine/webgl/tank-pro.json"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
+          {"orig": "assets/animations/spine/webgl/tank.atlas"},
+          {"orig": "assets/animations/spine/webgl/tank.png"},
+          {"orig": "assets/animations/spine/webgl/vine.png"},
+          {"orig": "assets/animations/spine/webgl/coin.png"},
+          {"orig": "assets/animations/spine/webgl/raptor.png"},
+          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
           {"orig": "assets/animations/spine/webgl/raptor.atlas"},
           {"orig": "assets/animations/spine/webgl/vine.atlas"},
           {"orig": "assets/animations/spine/webgl/vine-pro.json"},
-          {"orig": "assets/animations/spine/webgl/tank.atlas"},
           {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/webgl/coin.atlas"}
         ]
@@ -15157,7 +15364,11 @@
             "orig": "src/textures/multi atlas.js",
             "dst": "multi atlas.js"
           },
-          {"orig": "assets/atlas/tp3-multi-atlas.json"}
+          {"orig": "assets/atlas/tp3-multi-atlas.json"},
+          {"orig": "assets/atlas/tp3-multi-atlas-3.png"},
+          {"orig": "assets/atlas/tp3-multi-atlas-2.png"},
+          {"orig": "assets/atlas/tp3-multi-atlas-1.png"},
+          {"orig": "assets/atlas/tp3-multi-atlas-0.png"}
         ]
       },
       {
@@ -15224,7 +15435,11 @@
             "orig": "src/textures/trimmed frame from multi atlas.js",
             "dst": "trimmed frame from multi atlas.js"
           },
-          {"orig": "assets/atlas/tp3-multi-atlas.json"}
+          {"orig": "assets/atlas/tp3-multi-atlas.json"},
+          {"orig": "assets/atlas/tp3-multi-atlas-3.png"},
+          {"orig": "assets/atlas/tp3-multi-atlas-2.png"},
+          {"orig": "assets/atlas/tp3-multi-atlas-1.png"},
+          {"orig": "assets/atlas/tp3-multi-atlas-0.png"}
         ]
       },
       {

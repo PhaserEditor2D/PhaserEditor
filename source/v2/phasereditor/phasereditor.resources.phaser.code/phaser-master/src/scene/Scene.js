@@ -16,7 +16,7 @@ var Systems = require('./Systems');
  * @constructor
  * @since 3.0.0
  *
- * @param {(string|Phaser.Scenes.Settings.Config)} config - Scene specific configuration settings.
+ * @param {(string|Phaser.Scenes.Types.SettingsConfig)} config - Scene specific configuration settings.
  */
 var Scene = new Class({
 
@@ -280,6 +280,30 @@ var Scene = new Class({
     update: function ()
     {
     }
+
+    /**
+     * Should be overridden by your own Scenes.
+     *
+     * @method Phaser.Scene#init
+     * @override
+     * @since 3.0.0
+     */
+
+    /**
+     * Should be overridden by your own Scenes.
+     *
+     * @method Phaser.Scene#preload
+     * @override
+     * @since 3.0.0
+     */
+
+    /**
+     * Should be overridden by your own Scenes.
+     *
+     * @method Phaser.Scene#create
+     * @override
+     * @since 3.0.0
+     */
 
 });
 

@@ -15,15 +15,6 @@ var PluginCache = require('./PluginCache');
 var Remove = require('../utils/array/Remove');
 
 /**
- * @typedef {object} GlobalPlugin
- *
- * @property {string} key - The unique name of this plugin within the plugin cache.
- * @property {function} plugin - An instance of the plugin.
- * @property {boolean} [active] - Is the plugin active or not?
- * @property {string} [mapping] - If this plugin is to be injected into the Scene Systems, this is the property key map used.
- */
-
-/**
  * @classdesc
  * The PluginManager is responsible for installing and adding plugins to Phaser.
  *
@@ -88,7 +79,7 @@ var PluginManager = new Class({
          * A plugin must have been started at least once in order to appear in this list.
          *
          * @name Phaser.Plugins.PluginManager#plugins
-         * @type {GlobalPlugin[]}
+         * @type {Phaser.Plugins.Types.GlobalPlugin[]}
          * @since 3.8.0
          */
         this.plugins = [];
@@ -231,7 +222,7 @@ var PluginManager = new Class({
         for (i = 0; i < globalPlugins.length; i++)
         {
             pluginKey = globalPlugins[i];
-           
+
             if (game[pluginKey])
             {
                 sys[pluginKey] = game[pluginKey];
@@ -291,7 +282,7 @@ var PluginManager = new Class({
         for (i = 0; i < pluginList.length; i++)
         {
             var entry = pluginList[i];
-           
+
             if (entry.mapping)
             {
                 scene[entry.mapping] = entry.plugin;
@@ -345,24 +336,31 @@ var PluginManager = new Class({
      * @param {function} plugin - The plugin code. This should be the non-instantiated version.
      * @param {string} [mapping] - If this plugin is injected into the Phaser.Scene class, this is the property key to use.
      * @param {Phaser.Scene} [addToScene] - Optionally automatically add this plugin to the given Scene.
+     * @param {boolean} [fromLoader=false] - Is this being called by the Loader?
      */
-    installScenePlugin: function (key, plugin, mapping, addToScene)
+    installScenePlugin: function (key, plugin, mapping, addToScene, fromLoader)
     {
+        if (fromLoader === undefined) { fromLoader = false; }
+
         if (typeof plugin !== 'function')
         {
             console.warn('Invalid Scene Plugin: ' + key);
             return;
         }
 
-        if (PluginCache.hasCore(key))
+        if (!PluginCache.hasCore(key))
         {
+            //  Plugin is freshly loaded
+            PluginCache.register(key, plugin, mapping, true);
+
+            this.scenePlugins.push(key);
+        }
+        else if (!fromLoader && PluginCache.hasCore(key))
+        {
+            //  Plugin wasn't from the loader but already exists
             console.warn('Scene Plugin key in use: ' + key);
             return;
         }
-
-        PluginCache.register(key, plugin, mapping, true);
-
-        this.scenePlugins.push(key);
 
         if (addToScene)
         {
@@ -488,7 +486,7 @@ var PluginManager = new Class({
      *
      * @param {string} key - The unique plugin key.
      *
-     * @return {GlobalPlugin} The plugin entry.
+     * @return {Phaser.Plugins.Types.GlobalPlugin} The plugin entry.
      */
     getEntry: function (key)
     {

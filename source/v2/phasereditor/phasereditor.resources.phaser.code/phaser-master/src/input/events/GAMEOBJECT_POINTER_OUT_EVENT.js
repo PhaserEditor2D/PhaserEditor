@@ -25,8 +25,9 @@
  * the propagation of this event.
  *
  * @event Phaser.Input.Events#GAMEOBJECT_POINTER_OUT
+ * @since 3.0.0
  * 
  * @param {Phaser.Input.Pointer} pointer - The Pointer responsible for triggering this event.
- * @param {Phaser.Input.EventData} event - The Phaser input event. You can call `stopPropagation()` to halt it from going any further in the event flow.
+ * @param {Phaser.Input.Types.EventData} event - The Phaser input event. You can call `stopPropagation()` to halt it from going any further in the event flow.
  */
 module.exports = 'pointerout';
