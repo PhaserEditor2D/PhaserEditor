@@ -5,8 +5,7 @@ const { exec } = require("child_process");
 
 const {current_ver_tag, next_ver } = require("./versions")
 
-console.log(next_ver);
-console.log("Comparing with version " + current_ver_tag);
+console.log("Listing plugins with version " + next_ver + "\n");
 
 proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.MAX_VALUE},  (err, stdout, stderr) => {
 	var lines = stdout.split("\n");
@@ -25,12 +24,7 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 	
 	plugin_names.delete("Scripts");
 	plugin_names.add("phasereditor.lic");
-	
-	console.log("\nPlugins that need to be updated:\n");
 
-
-	let plugins_to_update = new Set();
-	let features_names = new Set();
 
 	for(var plugin_name of plugin_names) {
 		//console.log("Processing: " + plugin_name);
@@ -46,41 +40,16 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 			continue;
 		}
 		
-		if (plugin_name.endsWith(".features")) {
-			features_names.add(plugin_name);
-		} else {
+		if (!plugin_name.endsWith(".features")) {
 			let text = fs.readFileSync(plugin_path + "/META-INF/MANIFEST.MF", {encoding: "utf-8"});
 			for(let line of text.split("\n")) {
 				if (line.startsWith("Bundle-Version:")) {
 					let ver = line.substring(16).trim();
-					if (ver !== next_ver) {
-						console.log("Invalid plugin version: " + plugin_name + " " + ver);
-						plugins_to_update.add(plugin_name);
+					if (ver === next_ver) {
+						console.log("Updated plugin: " + plugin_name + "_" + ver);						
 					}
 				}
 			}			
-		}
-	}
-
-	let features_to_update = new Set();
-
-	for(let feature_name of features_names) {
-
-		let text = fs.readFileSync("../source/v2/phasereditor/" + feature_name + "/feature.xml", {encoding: "utf-8"});
-
-		for(let plugin_name of plugins_to_update) {
-			
-			if (text.indexOf(plugin_name) > 0) {
-				
-				if (!features_to_update.has(feature_name)) {
-					
-					features_to_update.add(feature_name);
-
-					if (text.indexOf(next_ver) === -1) {
-						console.log("Invalid feature version: " + feature_name);
-					}
-				}				
-			}
 		}
 	}	
 
