@@ -27,7 +27,7 @@ window.addEventListener('load', function() {
 class Boot extends Phaser.Scene {
 
 	preload() {
-		this.load.pack("preload", "assets/preload.json");
+		this.load.pack("preload-pack", "assets/preload-pack.json");
 	}
 
 	update() {

@@ -26,7 +26,7 @@ class Preload extends Phaser.Scene {
 			this.fLoading.scaleX = value;
 		}, this);
 	
-		this.load.pack("section1", "assets/pack.json");
+		this.load.pack("levels-pack", "assets/levels-pack.json");
 		
 		this._create();
 	}

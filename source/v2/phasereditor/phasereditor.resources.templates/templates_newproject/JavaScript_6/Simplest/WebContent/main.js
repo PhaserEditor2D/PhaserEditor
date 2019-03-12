@@ -9,7 +9,7 @@ window.addEventListener('load', function() {
 class Boot extends Phaser.Scene {
 
 	preload() {
-		this.load.pack("section1", "assets/pack.json");
+		this.load.pack("pack", "assets/pack.json");
 	}
 
 	create() {
