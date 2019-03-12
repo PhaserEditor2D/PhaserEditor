@@ -21,19 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor.wizards;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,7 +54,7 @@ import phasereditor.ui.TreeArrayContentProvider;
 public class NewPage_AssetPackSection extends WizardPage {
 	private TreeViewer _treeViewer;
 	private Button _btnAddTheSource;
-	private AssetSectionModel _selectedSection;
+	private AssetPackModel _selectedPack;
 	private WizardNewFileCreationPage _filePage;
 	private IProject _project;
 
@@ -89,18 +85,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 		_treeViewer = new TreeViewer(container);
 		Tree tree = _treeViewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_treeViewer.setLabelProvider(new LabelProvider() {
-			@Override
-			public Image getImage(Object element) {
-				return AssetLabelProvider.GLOBAL_16.getImage(element);
-			}
-			
-			@Override
-			public String getText(Object element) {
-				var section = (AssetSectionModel) element;
-				return section.getKey() + " - " + section.getPack().getName();
-			}
-		});
+		_treeViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 		_treeViewer.setContentProvider(new TreeArrayContentProvider());
 
 		afterCreateWidgets();
@@ -110,7 +95,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 	protected void createParametersControls(Composite container) {
 		_btnAddTheSource = new Button(container, SWT.CHECK);
 		_btnAddTheSource.setSelection(true);
-		_btnAddTheSource.setText("Add the file to a pack section.");
+		_btnAddTheSource.setText("Add the new file to a Pack file.");
 		_btnAddTheSource.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updatePageComplete()));
 	}
 
@@ -121,7 +106,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 	}
 
 	protected void updatePageComplete() {
-		_selectedSection = null;
+		_selectedPack = null;
 
 		String error = null;
 
@@ -129,24 +114,19 @@ public class NewPage_AssetPackSection extends WizardPage {
 			Object elem = _treeViewer.getStructuredSelection().getFirstElement();
 
 			if (elem == null) {
-				error = "Please, select an asset section.";
+				error = "Please, select a Pack file.";
 			} else {
-				if (elem instanceof AssetSectionModel) {
-					AssetSectionModel section = (AssetSectionModel) elem;
+				var pack = (AssetPackModel) elem;
 
-					// find if there is an open and dirty editor
+				// find if there is an open and dirty editor
 
-					List<AssetPackEditor> editors = AssetPackUIEditor
-							.findOpenAssetPackEditors(section.getPack().getFile());
+				List<AssetPackEditor> editors = AssetPackUIEditor.findOpenAssetPackEditors(pack.getFile());
 
-					if (editors.stream().filter(editor -> editor.isDirty()).findFirst().isPresent()) {
-						error = "The selected section is open in a dirty editor.";
-					}
-
-					_selectedSection = section;
-				} else {
-					error = "Please, select a section in the asset pack.";
+				if (editors.stream().filter(editor -> editor.isDirty()).findFirst().isPresent()) {
+					error = "The selected Pack file is open in a dirty editor.";
 				}
+
+				_selectedPack = pack;
 			}
 		}
 
@@ -164,8 +144,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 		_project = getProject();
 
-		_treeViewer.setInput(AssetPackCore.getAssetPackModels(_project).stream()
-				.flatMap(pack -> pack.getSections().stream()).collect(toList()));
+		_treeViewer.setInput(AssetPackCore.getAssetPackModels(_project));
 		_treeViewer.expandAll();
 
 		updatePageComplete();
@@ -175,50 +154,50 @@ public class NewPage_AssetPackSection extends WizardPage {
 		return ProjectCore.getProjectFromPath(_filePage.getContainerFullPath());
 	}
 
-	public AssetSectionModel getSelectedSection() {
-		return _selectedSection;
+	public AssetPackModel getSelectedPack() {
+		return _selectedPack;
 	}
 
 	public void performFinish(IProgressMonitor monitor, Consumer<AssetSectionModel> addElementsToSection) {
-		AssetSectionModel addToSection = getSelectedSection();
-		if (addToSection != null) {
-
-			var sectionKey = addToSection.getKey();
+		if (_selectedPack != null) {
 
 			PhaserEditorUI.swtRun(new Runnable() {
 
 				@Override
 				public void run() {
-					List<AssetPackEditor> editors = AssetPackUIEditor
-							.findOpenAssetPackEditors(addToSection.getPack().getFile());
+					List<AssetPackEditor> editors = AssetPackUIEditor.findOpenAssetPackEditors(_selectedPack.getFile());
 
 					for (AssetPackEditor editor : editors) {
 						AssetPackModel pack = editor.getModel();
 
-						var section = pack.findSection(sectionKey);
+						var section = pack.getSections().get(0);
 
-						if (section != null) {
-
-							addElementsToSection.accept(section);
-
-							editor.build();
-
-							pack.setDirty(false);
+						if (section == null) {
+							section = new AssetSectionModel("section", pack);
+							pack.addSection(section, true);
 						}
+
+						addElementsToSection.accept(section);
+
+						editor.build();
+
+						pack.setDirty(false);
 					}
 				}
 			});
 
 			for (AssetPackModel pack : AssetPackCore.getAssetPackModels(_project)) {
 
-				AssetSectionModel section = pack.findSection(sectionKey);
+				AssetSectionModel section = pack.getSections().get(0);
 
-				if (section != null) {
-
-					addElementsToSection.accept(section);
-
-					pack.save(monitor);
+				if (section == null) {
+					section = new AssetSectionModel("section", pack);
+					pack.addSection(section, true);
 				}
+
+				addElementsToSection.accept(section);
+
+				pack.save(monitor);
 			}
 
 		}
