@@ -89,6 +89,7 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -99,9 +100,13 @@ import phasereditor.assetpack.ui.SvgResourceDialog;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.ImageProxy;
+import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
 /**
@@ -406,7 +411,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		if (_model.getSections().isEmpty()) {
 			_model.addSection(new AssetSectionModel("section", _model), false);
 		}
-		
+
 		var section = _model.getSections().get(0);
 		if (LicCore.isEvaluationProduct()) {
 
@@ -863,7 +868,22 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		@Override
 		protected TreeCanvasViewer createViewer() {
 			var viewer = new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getTree(), new AssetsContentProvider(true),
-					AssetLabelProvider.GLOBAL_16);
+					AssetLabelProvider.GLOBAL_16) {
+				@Override
+				protected void setItemProperties(TreeCanvasItem item) {
+					super.setItemProperties(item);
+
+					var elem = item.getData();
+
+					if (elem instanceof SceneFileAssetModel) {
+						var asset = (SceneFileAssetModel) elem;
+						var imgFile = SceneUI.getSceneScreenshotFile(asset);
+						if (imgFile != null) {
+							item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(imgFile, null)));
+						}
+					}
+				}
+			};
 			viewer.getTree().getUtils().setFilterInputWhenSetSelection(false);
 			return viewer;
 		}
