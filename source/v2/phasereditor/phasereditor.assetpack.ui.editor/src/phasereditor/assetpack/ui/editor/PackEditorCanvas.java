@@ -70,6 +70,7 @@ import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
 import phasereditor.audio.ui.AudioCellRenderer;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.BaseCanvas;
+import phasereditor.ui.Colors;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameCellRenderer;
@@ -205,6 +206,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	private static int ASSET_SPACING_X = 10;
 	private static int ASSET_SPACING_Y = 30;
 	private static final int MARGIN_X = 10;
+	private static final int SPACE_BETWEE_SECTIONS = 20;
 
 	private List<IconAction> _actions;
 
@@ -299,33 +301,41 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 				}
 
 				{
-					var f = gc.getFont();
-					gc.setFont(SwtRM.getBoldFont(getFont()));
 
-					var title = type.getCapitalName();
+					{
+						var f = gc.getFont();
+						gc.setFont(SwtRM.getBoldFont(getFont()));
 
-					var textSize = gc.textExtent(title);
+						var title = type.getCapitalName();
 
-					var x2 = event.width / 2 - textSize.x / 2;
-					var y2 = y + ROW_HEIGHT / 2 - textSize.y / 2 - 3;
+						var textSize = gc.textExtent(title);
 
-					gc.drawText(title, x2, y2, true);
-					gc.setFont(f);
+						var x2 = event.width / 2 - textSize.x / 2;
+						var y2 = y + ROW_HEIGHT / 2 - textSize.y / 2 - 3;
 
-					var action = new IconAction(IMG_ADD, () -> {
+						gc.setAlpha(20);
+						gc.setBackground(Colors.color(200, 200, 200));
+						gc.fillRectangle(0, y2 - 5, clientArea.width, textSize.y + 10);
+						gc.setBackground(getBackground());
+						gc.setAlpha(255);
 
-						_editor.openAddAssetDialog(type);
+						gc.setAlpha(150);
+						gc.drawText(title, x2, y2, true);
+						gc.setAlpha(255);
+						gc.setFont(f);
 
-					}, x2 + textSize.x + 10, y + 5);
+						var action = new IconAction(IMG_ADD, () -> {
 
-					action.paint(gc, action.getBounds().contains(_modelPointer));
-					actions.add(action);
+							_editor.openAddAssetDialog(type);
 
-					y += ROW_HEIGHT;
+						}, /* x2 + textSize.x + 10 */ clientArea.width - 20, y + 5);
 
-				}
+						action.paint(gc, action.getBounds().contains(_modelPointer));
+						actions.add(action);
 
-				{
+						y += ROW_HEIGHT + 10;
+
+					}
 
 					int assetX = MARGIN_X;
 					int assetY = y;
@@ -337,7 +347,9 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 						Rectangle bounds;
 
-						if (isFullRowAsset(asset)) {
+						var isFullRow = isFullRowAsset(asset);
+						
+						if (isFullRow) {
 							bounds = new Rectangle(assetX, assetY, clientArea.width - assetX - 10, _imageSize);
 						} else {
 							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
@@ -366,17 +378,24 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 						if (renderer != null) {
 							try {
-								renderer.render(this, gc, bounds.x, bounds.y, bounds.width, bounds.height);
+								var margin = (int) (bounds.width * 0.1);
+
+								if (isFullRow) {
+									margin = 0;
+								}
+
+								renderer.render(this, gc, bounds.x + margin, bounds.y + margin,
+										bounds.width - margin * 2, bounds.height - margin * 2);
 							} catch (Exception e2) {
 								e2.printStackTrace();
 							}
 						}
 
 						if (_utils.getOverObject() == asset) {
-							gc.drawRectangle(bounds);
+							gc.drawRectangle(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
 						} else {
 							gc.setAlpha(30);
-							gc.drawRectangle(bounds);
+							gc.drawRectangle(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
 							gc.setAlpha(255);
 						}
 
@@ -397,7 +416,13 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 							}
 						}
 
-						gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
+						var size = gc.textExtent(key2);
+
+						if (isFullRow) {
+							gc.drawText(key2, assetX, assetY + _imageSize + 5, true);
+						} else {
+							gc.drawText(key2, assetX + _imageSize / 2 - size.x / 2, assetY + _imageSize + 5, true);
+						}
 
 						assetX += bounds.width + ASSET_SPACING_X;
 
@@ -411,9 +436,11 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 					y = bottom + ASSET_SPACING_Y;
 				} // end of not collapsed types
-				y += 10;
+				y += SPACE_BETWEE_SECTIONS;
 			}
-		} finally {
+		} finally
+
+		{
 			_renderInfoList = renderInfoList;
 			_actions = actions;
 		}
@@ -470,7 +497,8 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 					continue;
 				}
 
-				y += ROW_HEIGHT;
+				// the title space
+				y += ROW_HEIGHT + 10;
 
 				{
 
@@ -505,7 +533,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 					y = bottom + ASSET_SPACING_Y;
 				} // end of not collapsed types
 
-				y += 10;
+				y += SPACE_BETWEE_SECTIONS;
 			}
 
 			return new Rectangle(0, y, e.width, y);
