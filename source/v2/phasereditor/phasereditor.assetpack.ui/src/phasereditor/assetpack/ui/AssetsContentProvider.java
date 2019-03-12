@@ -21,12 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -95,36 +92,18 @@ public class AssetsContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof AssetPackModel) {
-			return ((AssetPackModel) parentElement).getSections().toArray();
-		}
+			var pack = (AssetPackModel) parentElement;
+			return Arrays.stream(AssetType.values())
 
-		if (parentElement instanceof AssetSectionModel) {
-			AssetSectionModel section = (AssetSectionModel) parentElement;
-			List<AssetGroupModel> groups = new ArrayList<>();
-			Set<AssetType> used = new HashSet<>();
+					.map(type -> pack.getGroup(type))
 
-			for (AssetModel asset : section.getAssets()) {
-				AssetType type = asset.getType();
-				if (!used.contains(type)) {
-					groups.add(section.getGroup(type));
-					used.add(type);
-				}
-			}
+					.filter(group -> !group.getAssets().isEmpty())
 
-			Collections.sort(groups);
-
-			return groups.toArray();
+					.toArray();
 		}
 
 		if (parentElement instanceof AssetGroupModel) {
-			List<AssetModel> assets = new ArrayList<>();
-			AssetGroupModel typeNode = (AssetGroupModel) parentElement;
-			for (AssetModel asset : typeNode.getSection().getAssets()) {
-				if (asset.getType() == typeNode.getType()) {
-					assets.add(asset);
-				}
-			}
-			return assets.toArray();
+			return ((AssetGroupModel) parentElement).getAssets().toArray();
 		}
 
 		if (_includeAssetElements) {
@@ -159,7 +138,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 					break;
 				}
 			}
-			
+
 			if (parentElement instanceof AnimationModel) {
 				return ((AnimationModel) parentElement).getFrames().toArray();
 			}
@@ -175,7 +154,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 		}
 
 		if (element instanceof AssetGroupModel) {
-			return ((AssetGroupModel) element).getSection();
+			return ((AssetGroupModel) element).getPack();
 		}
 
 		if (element instanceof AssetModel) {

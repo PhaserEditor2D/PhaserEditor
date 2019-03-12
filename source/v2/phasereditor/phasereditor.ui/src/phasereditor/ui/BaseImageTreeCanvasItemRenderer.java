@@ -105,6 +105,7 @@ public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItem
 		paintScaledInArea(gc, area, true);
 	}
 
+	@SuppressWarnings("static-method")
 	protected boolean isIconified(int imgSize) {
 		return imgSize <= 64;
 	}

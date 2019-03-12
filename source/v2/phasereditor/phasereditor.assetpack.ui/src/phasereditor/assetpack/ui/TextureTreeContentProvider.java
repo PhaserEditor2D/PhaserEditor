@@ -21,20 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 
-import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.assetpack.ui.AssetsContentProvider;
 
 public class TextureTreeContentProvider extends AssetsContentProvider {
 	@Override
@@ -45,22 +42,19 @@ public class TextureTreeContentProvider extends AssetsContentProvider {
 			return packs.toArray();
 		}
 
-		if (parent instanceof AssetSectionModel) {
-			AssetSectionModel section = (AssetSectionModel) parent;
-
-			List<Object> list = new ArrayList<>();
+		if (parent instanceof AssetPackModel) {
+			var pack = (AssetPackModel) parent;
 
 			AssetType[] types = { AssetType.image, AssetType.spritesheet, AssetType.atlas, AssetType.atlasXML,
 					AssetType.multiatlas, AssetType.unityAtlas };
 
-			for (AssetType type : types) {
-				AssetGroupModel group = section.getGroup(type);
-				if (hasChildren(group)) {
-					list.add(group);
-				}
-			}
+			return Arrays.stream(types)
 
-			return list.toArray();
+					.map(type -> pack.getGroup(type))
+
+					.filter(group -> !group.getAssets().isEmpty())
+
+					.toArray();
 		}
 
 		if (parent instanceof AssetModel) {

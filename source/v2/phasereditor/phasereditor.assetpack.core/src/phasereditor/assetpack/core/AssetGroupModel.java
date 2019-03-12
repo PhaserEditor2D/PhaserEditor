@@ -31,20 +31,20 @@ import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 
 public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable, IAssetPackEelement {
 	private AssetType _type;
-	private AssetSectionModel _section;
+	private AssetPackModel _pack;
 
-	AssetGroupModel(AssetType type, AssetSectionModel section) {
+	AssetGroupModel(AssetType type, AssetPackModel pack) {
 		super();
 		_type = type;
-		_section = section;
+		_pack = pack;
 	}
 
 	public AssetType getType() {
 		return _type;
 	}
 
-	public AssetSectionModel getSection() {
-		return _section;
+	public AssetPackModel getPack() {
+		return _pack;
 	}
 
 	@Override
@@ -54,7 +54,9 @@ public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable,
 
 	public void remove(AssetModel asset) {
 		if (asset.getType() == _type) {
-			_section.removeAsset(asset);
+			for (var section : _pack.getSections()) {
+				section.removeAsset(asset);
+			}
 		}
 	}
 
@@ -66,12 +68,14 @@ public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable,
 		}
 		return null;
 	}
-	
+
 	public List<AssetModel> getAssets() {
 		List<AssetModel> list = new ArrayList<>();
-		for(AssetModel asset : _section.getAssets()) {
-			if (asset.getType() == getType()) {
-				list.add(asset);
+		for (var section : _pack.getSections()) {
+			for (AssetModel asset : section.getAssets()) {
+				if (asset.getType() == getType()) {
+					list.add(asset);
+				}
 			}
 		}
 		return list;

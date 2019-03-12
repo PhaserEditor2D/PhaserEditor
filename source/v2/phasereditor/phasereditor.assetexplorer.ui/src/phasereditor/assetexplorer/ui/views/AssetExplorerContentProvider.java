@@ -147,10 +147,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		// return list.toArray();
 		// }
 
-		if (parent instanceof AssetPackModel) {
-			return ((AssetPackModel) parent).getSections().toArray();
-		}
-
 		if (parent instanceof AssetsContentProvider.Container) {
 			return ((Container) parent).children;
 		}

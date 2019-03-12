@@ -425,7 +425,7 @@ public class AssetsView extends ViewPart {
 					IAssetKey key = ((IAssetKey) obj).getSharedVersion();
 					toExpand.add(key);
 				} else if (obj instanceof AssetGroupModel) {
-					AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
+					AssetPackModel oldPack = ((AssetGroupModel) obj).getPack();
 					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
 					IFile file = oldPack.getFile();
 					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);

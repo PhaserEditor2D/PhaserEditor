@@ -204,7 +204,7 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 	}
 
 	public AssetGroupModel getGroup() {
-		return getSection().getGroup(_type);
+		return getPack().getGroup(_type);
 	}
 
 	public AssetPackModel getPack() {

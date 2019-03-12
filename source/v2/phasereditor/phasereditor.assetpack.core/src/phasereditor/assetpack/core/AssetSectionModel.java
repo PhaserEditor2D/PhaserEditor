@@ -27,9 +27,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONArray;
@@ -40,12 +38,10 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement, IEdita
 	private String _key;
 	private List<AssetModel> _assets;
 	private AssetPackModel _pack;
-	private Map<AssetType, AssetGroupModel> _groupMap;
-
+	
 	public AssetSectionModel(String key, AssetPackModel pack) {
 		_key = key;
 		_assets = new ArrayList<>();
-		_groupMap = new HashMap<>();
 		_pack = pack;
 	}
 
@@ -135,12 +131,7 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement, IEdita
 		return null;
 	}
 
-	public AssetGroupModel getGroup(AssetType type) {
-		if (!_groupMap.containsKey(type)) {
-			_groupMap.put(type, new AssetGroupModel(type, this));
-		}
-		return _groupMap.get(type);
-	}
+	
 
 	public void removeAsset(AssetModel asset) {
 		removeAsset(asset, true);

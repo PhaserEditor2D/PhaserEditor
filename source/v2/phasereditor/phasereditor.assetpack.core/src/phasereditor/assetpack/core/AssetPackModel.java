@@ -22,7 +22,6 @@
 package phasereditor.assetpack.core;
 
 import static java.lang.System.out;
-import static java.util.stream.Collectors.toList;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -32,9 +31,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -69,6 +70,7 @@ public final class AssetPackModel {
 	public static final String PROP_FILE = "file";
 	public static final String PROP_ASSET_KEY = "assetKey";
 	protected List<AssetSectionModel> _sections;
+	private Map<AssetType, AssetGroupModel> _groupMap;
 	private IFile _file;
 	private boolean _dirty;
 
@@ -83,6 +85,7 @@ public final class AssetPackModel {
 
 	private void build(JSONObject jsonRoot) throws Exception {
 		_sections = new ArrayList<>();
+		_groupMap = new HashMap<>();
 
 		@SuppressWarnings("rawtypes")
 		Iterator keysIter = jsonRoot.keys();
@@ -616,13 +619,16 @@ public final class AssetPackModel {
 		}
 		return list;
 	}
-	
+
 	public List<AssetModel> getAsstes(AssetType type) {
-		return getSections().stream()
+		return getGroup(type).getAssets();
+	}
 
-				.flatMap(section -> section.getGroup(type).getAssets().stream())
-
-				.collect(toList());
+	public AssetGroupModel getGroup(AssetType type) {
+		if (!_groupMap.containsKey(type)) {
+			_groupMap.put(type, new AssetGroupModel(type, this));
+		}
+		return _groupMap.get(type);
 	}
 
 	public IAssetFrameModel findFrame(String textureKey, Object frameName) {
@@ -732,7 +738,6 @@ public final class AssetPackModel {
 			section = (AssetSectionModel) element;
 		} else if (element instanceof AssetGroupModel) {
 			group = (AssetGroupModel) element;
-			section = group.getSection();
 		} else if (element instanceof AssetModel) {
 			asset = (AssetModel) element;
 			section = asset.getSection();
@@ -773,10 +778,7 @@ public final class AssetPackModel {
 			section = findSection(obj.getString("section"));
 		}
 		if (obj.has("group")) {
-			if (section == null) {
-				return null;
-			}
-			group = section.getGroup(AssetType.valueOf(obj.getString("group")));
+			group = getGroup(AssetType.valueOf(obj.getString("group")));
 			return group;
 		}
 		if (obj.has("asset")) {

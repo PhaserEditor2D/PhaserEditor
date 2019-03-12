@@ -130,7 +130,7 @@ public class AssetPackUI {
 		if (elem instanceof AssetModel) {
 			pack = ((AssetModel) elem).getPack();
 		} else if (elem instanceof AssetGroupModel) {
-			pack = ((AssetGroupModel) elem).getSection().getPack();
+			pack = ((AssetGroupModel) elem).getPack();
 		} else if (elem instanceof AssetSectionModel) {
 			pack = ((AssetSectionModel) elem).getPack();
 		} else if (elem instanceof AssetPackModel) {

@@ -178,7 +178,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 					} else if (toPersist instanceof AssetSectionModel) {
 						pack = ((AssetSectionModel) toPersist).getPack();
 					} else if (toPersist instanceof AssetGroupModel) {
-						pack = ((AssetGroupModel) toPersist).getSection().getPack();
+						pack = ((AssetGroupModel) toPersist).getPack();
 					} else if (toPersist instanceof IAssetElementModel) {
 						pack = ((IAssetElementModel) toPersist).getAsset().getPack();
 					}
