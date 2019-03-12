@@ -54,20 +54,18 @@ import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -103,8 +101,6 @@ import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
-import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
@@ -260,7 +256,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return false;
 	}
 
-	MenuManager createAddAssetMenu() {
+	public void showAddAssetMenu(Control parent) {
 		var manager = new MenuManager();
 		for (var type : AssetType.values()) {
 			if (AssetType.isTypeSupported(type.name())) {
@@ -273,7 +269,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				});
 			}
 		}
-		return manager;
+		manager.createContextMenu(parent).setVisible(true);
 	}
 
 	@SuppressWarnings({ "boxing" })
@@ -407,6 +403,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	protected void openAddAssetDialog(AssetType initialType) {
+		if (_model.getSections().isEmpty()) {
+			_model.addSection(new AssetSectionModel("section", _model), false);
+		}
+		
 		var section = _model.getSections().get(0);
 		if (LicCore.isEvaluationProduct()) {
 
@@ -678,8 +678,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		btn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		btn.setText("Add");
 		btn.setImage(EditorSharedImages.getImage(IMG_ADD));
-		btn.addSelectionListener(SelectionListener
-				.widgetSelectedAdapter(e -> createAddAssetMenu().createContextMenu(btn).setVisible(true)));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
 
 		_assetsCanvas = new PackEditorCanvas(this, comp, 0);
 		_assetsCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -864,26 +863,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		@Override
 		protected TreeCanvasViewer createViewer() {
 			var viewer = new AssetsTreeCanvasViewer(getFilteredTreeCanvas().getTree(), new AssetsContentProvider(true),
-					AssetLabelProvider.GLOBAL_16) {
-
-				@Override
-				protected void setItemProperties(TreeCanvasItem item) {
-					super.setItemProperties(item);
-
-					if (item.getData() instanceof AssetSectionModel) {
-						item.getActions()
-								.add(new TreeCanvasItemAction(EditorSharedImages.getImage(IMG_ADD), "Add assets") {
-
-									@Override
-									public void run(MouseEvent event) {
-										var manager = createAddAssetMenu();
-										var menu = manager.createContextMenu(getTreeViewer().getControl());
-										menu.setVisible(true);
-									}
-								});
-					}
-				}
-			};
+					AssetLabelProvider.GLOBAL_16);
 			viewer.getTree().getUtils().setFilterInputWhenSetSelection(false);
 			return viewer;
 		}
@@ -1001,28 +981,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	public void launchRenameWizard() {
 		AssetPackUIEditor.launchRenameWizard(getSelection()[0], this);
-	}
-
-	public void launchAddSectionDialog() {
-		var model = getModel();
-		var dlg = new InputDialog(getSite().getShell(), "New Section", "Enter the section key:",
-				model.createKey("section"), new IInputValidator() {
-
-					@Override
-					public String isValid(String newText) {
-						return model.hasKey(newText) ? "That key already exists, use other." : null;
-					}
-				});
-		if (dlg.open() == Window.OK) {
-			var sectionName = dlg.getValue();
-
-			var section = new AssetSectionModel(sectionName, model);
-			model.addSection(section, true);
-
-			refresh();
-
-			revealElement(section);
-		}
 	}
 
 	private Object[] getSelection() {

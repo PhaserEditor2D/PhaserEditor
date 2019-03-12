@@ -171,12 +171,6 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 		@Override
 		public void mouseUp(MouseEvent e) {
-
-			if (_model != null && _model.getSections().isEmpty()) {
-				_editor.launchAddSectionDialog();
-				return;
-			}
-
 			var hit = false;
 
 			for (var action : _actions) {
@@ -190,6 +184,14 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 			if (hit) {
 				updateScroll();
 			} else {
+
+				if (_model != null) {
+					if (_model.getSections().isEmpty() || e.button == 3) {
+						_editor.showAddAssetMenu(PackEditorCanvas.this);
+						return;
+					}
+				}
+
 				super.mouseUp(e);
 			}
 		}
@@ -258,7 +260,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 			}
 
 			if (_model.getSections().isEmpty()) {
-				var str = "Click to add a Section";
+				var str = "Click to add an Asset Key.";
 				var size = gc.textExtent(str);
 				var b = getClientArea();
 				gc.drawText(str, b.width / 2 - size.x / 2, b.height / 2 - size.y / 2, true);
