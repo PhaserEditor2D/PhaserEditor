@@ -390,7 +390,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 		if (element instanceof AssetPackModel) {
 			AssetPackModel pack = (AssetPackModel) element;
-			return pack.getFile().getProject().getName() + "/" + pack.getName();
+			return pack.getName();
 		}
 
 		if (element instanceof SpritesheetAssetModel.FrameModel) {
