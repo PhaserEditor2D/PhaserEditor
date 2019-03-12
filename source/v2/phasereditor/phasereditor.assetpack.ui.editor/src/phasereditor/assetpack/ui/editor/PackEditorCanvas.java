@@ -450,50 +450,66 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 			var y = 10;
 
-			y += ROW_HEIGHT;
+			// paint objects
 
-			var types = new ArrayList<>(List.of(AssetType.values()));
-
-			for (var type : types) {
+			for (var type : AssetType.values()) {
 				var assets = getAssetsForType(type);
+
+				if (_filter != null) {
+					assets = assets.stream()
+
+							.filter(a ->
+
+							a.getKey().toLowerCase().contains(_filter)
+									|| a.getType().getCapitalName().toLowerCase().contains(_filter))
+
+							.collect(toList());
+				}
 
 				if (assets.isEmpty()) {
 					continue;
 				}
 
-				int assetX = MARGIN_X;
-				int assetY = y;
-				int bottom = y;
+				y += ROW_HEIGHT;
 
-				var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
-				for (var asset : assets) {
+				{
 
-					Rectangle bounds;
+					int assetX = MARGIN_X;
+					int assetY = y;
+					int bottom = y;
 
-					if (isFullRowAsset(asset)) {
-						bounds = new Rectangle(assetX, assetY, e.width - assetX - 10, _imageSize);
-					} else {
-						bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
-					}
+					var last = assets.isEmpty() ? null : assets.get(assets.size() - 1);
 
-					bottom = Math.max(bottom, bounds.y + bounds.height);
+					for (var asset : assets) {
 
-					assetX += bounds.width + ASSET_SPACING_X;
+						Rectangle bounds;
 
-					if (asset != last) {
-						if (assetX + _imageSize > e.width - 5) {
-							assetX = MARGIN_X;
-							assetY += _imageSize + ASSET_SPACING_Y;
+						if (isFullRowAsset(asset)) {
+							bounds = new Rectangle(assetX, assetY, e.width - assetX - 10, _imageSize);
+						} else {
+							bounds = new Rectangle(assetX, assetY, _imageSize, _imageSize);
 						}
-					}
-				} // end of assets loop
 
-				y = bottom + ASSET_SPACING_Y;
+						bottom = Math.max(bottom, bounds.y + bounds.height);
+
+						assetX += bounds.width + ASSET_SPACING_X;
+
+						if (asset != last) {
+							if (assetX + _imageSize > e.width - 5) {
+								assetX = MARGIN_X;
+								assetY += _imageSize + ASSET_SPACING_Y;
+							}
+						}
+					} // end of assets loop
+
+					y = bottom + ASSET_SPACING_Y;
+				} // end of not collapsed types
 
 				y += 10;
 			}
 
 			return new Rectangle(0, y, e.width, y);
+
 		} finally {
 			gc.dispose();
 		}
