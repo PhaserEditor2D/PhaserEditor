@@ -3,11 +3,11 @@
 
 /* START OF COMPILED CODE */
 
-class Scene1 extends Phaser.Scene {
+class Level extends Phaser.Scene {
 	
 	constructor() {
 	
-		super("Scene1");
+		super("Level");
 		
 	}
 	

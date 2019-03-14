@@ -64,7 +64,7 @@ class TitleScreen extends Phaser.Scene {
 	
 	startGame() {
 		if (this.fInstructions.visible) {
-			this.scene.start("Scene1");
+			this.scene.start("Level");
 		} else {
 			this.fTitle.destroy();
 			this.fInstructions.visible = true;

@@ -7,8 +7,8 @@
     },
     {
       "type": "sceneFile",
-      "key": "Scene1",
-      "url": "assets/scenes/Scene1.js"
+      "key": "Level",
+      "url": "assets/scenes/Level.js"
     },
     {
       "type": "atlas",
@@ -154,7 +154,7 @@
     }
   ]},
   "meta": {
-    "generated": "1551817749266",
+    "generated": "1552571260796",
     "app": "Phaser Editor",
     "url": "https://phasereditor2d.com",
     "version": "1.0",
