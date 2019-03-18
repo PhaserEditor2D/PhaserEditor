@@ -6,9 +6,6 @@ class Grasshopper extends Phaser.GameObjects.Sprite {
 	constructor(scene, x, y, texture, frame) {
 		super(scene, x, y, texture, frame);
 
-		this.scene.sys.updateList.add(this);
-		this.scene.sys.displayList.add(this);
-
 		this.play("grasshopper-idle");
 
 		this.scene.physics.add.existing(this);
@@ -51,7 +48,12 @@ class Grasshopper extends Phaser.GameObjects.Sprite {
 }
 
 Phaser.GameObjects.GameObjectFactory.register("grasshopper", function(x, y, texture, frame) {
-	return new Grasshopper(this.scene, x, y, texture, frame);
+	var sprite = new Grasshopper(this.scene, x, y, texture, frame);
+
+	this.scene.sys.displayList.add(sprite);
+	this.scene.sys.updateList.add(sprite);
+
+	return sprite;
 });
 
 

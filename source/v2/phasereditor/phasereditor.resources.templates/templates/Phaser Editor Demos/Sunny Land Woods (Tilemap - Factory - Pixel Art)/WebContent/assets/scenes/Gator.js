@@ -4,10 +4,7 @@
 class Gator extends Phaser.GameObjects.Sprite {
 
 	constructor(scene, x, y, texture, frame) {
-		super(scene, x, y, texture, frame);
-
-		this.scene.sys.updateList.add(this);
-		this.scene.sys.displayList.add(this);
+		super(scene, x, y, texture, frame);		
 
 		this.play("gator");
 
@@ -80,5 +77,10 @@ class Gator extends Phaser.GameObjects.Sprite {
 }
 
 Phaser.GameObjects.GameObjectFactory.register("gator", function(x, y, texture, frame) {
-	return new Gator(this.scene, x, y, texture, frame);
+	var sprite = new Gator(this.scene, x, y, texture, frame);
+
+	this.scene.sys.displayList.add(sprite);
+	this.scene.sys.updateList.add(sprite);
+
+	return sprite;
 });

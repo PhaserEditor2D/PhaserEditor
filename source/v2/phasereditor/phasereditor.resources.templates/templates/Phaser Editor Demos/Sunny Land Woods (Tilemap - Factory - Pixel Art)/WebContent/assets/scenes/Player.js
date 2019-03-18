@@ -6,11 +6,7 @@ class Player extends Phaser.GameObjects.Sprite {
 	constructor(scene, x, y, texture, frame) {
 		super(scene, x, y, texture, frame);
 
-		this.scene.sys.updateList.add(this);
-		this.scene.sys.displayList.add(this);
-
 		this.play("player-idle", true);
-
 
 		this.initX = x;
 		this.initY = y;
@@ -47,7 +43,12 @@ class Player extends Phaser.GameObjects.Sprite {
 	}
 }
 
-Phaser.GameObjects.GameObjectFactory.register("player", function(x, y, texture, frame) {
-	return new Player(this.scene, x, y, texture, frame);
+Phaser.GameObjects.GameObjectFactory.register("player", function(x, y, texture, frame) {	
+	var sprite = new Player(this.scene, x, y, texture, frame);
+
+	this.scene.sys.displayList.add(sprite);
+	this.scene.sys.updateList.add(sprite);
+
+	return sprite;
 });
 
