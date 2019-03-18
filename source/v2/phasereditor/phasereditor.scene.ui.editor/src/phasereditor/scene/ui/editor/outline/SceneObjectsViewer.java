@@ -58,20 +58,22 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 
 		if (data instanceof BitmapTextModel) {
 			var model = (BitmapTextModel) data;
-
-			var scaled = sceneRenderer.getBitmapTextImage(model);
-
-			if (scaled != null) {
-				item.setRenderer(new ImageTreeCanvasItemRenderer(item, scaled.getImage()));
-			}
+			item.setRenderer(new ImageTreeCanvasItemRenderer(item, () -> {
+				var scaled = sceneRenderer.getBitmapTextImage(model);
+				if (scaled == null) {
+					return null;
+				}
+				return scaled.getImage();
+			}));
 		} else if (data instanceof TileSpriteModel) {
 			var model = (TileSpriteModel) data;
-
-			var scaled = sceneRenderer.getTileSpriteImage(model);
-
-			if (scaled != null) {
-				item.setRenderer(new ImageTreeCanvasItemRenderer(item, scaled.getImage()));
-			}
+			item.setRenderer(new ImageTreeCanvasItemRenderer(item, () -> {
+				var scaled = sceneRenderer.getTileSpriteImage(model);
+				if (scaled == null) {
+					return null;
+				}
+				return scaled.getImage();
+			}));
 		} else if (data instanceof TextureComponent) {
 			var frame = TextureComponent.utils_getTexture((ObjectModel) data, finder);
 			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.util.function.Supplier;
+
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -33,16 +35,21 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  */
 public class ImageTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRenderer {
 
-	private Image _image;
+	private Supplier<Image> _getImage;
 
-	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image) {
+	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Supplier<Image> getImage) {
 		super(item);
-		_image = image;
+		_getImage = getImage;
+	}
+	
+	public ImageTreeCanvasItemRenderer(TreeCanvasItem item, Image image) {
+		this(item, () -> image);
 	}
 
 	@Override
 	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
-		if (_image != null) {
+		var _image = _getImage.get();
+		if (_image != null && !_image.isDisposed()) {
 			PhaserEditorUI.paintScaledImageInArea(gc, _image, FrameData.fromImage(_image), area);
 		}
 	}
