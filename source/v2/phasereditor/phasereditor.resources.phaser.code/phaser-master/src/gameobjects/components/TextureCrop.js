@@ -10,7 +10,7 @@ var _FLAG = 8; // 1000
 /**
  * Provides methods used for getting and setting the texture of a Game Object.
  *
- * @namespace Phaser.GameObjects.Components.TextureCrop
+ * @name Phaser.GameObjects.Components.TextureCrop
  * @since 3.0.0
  */
 

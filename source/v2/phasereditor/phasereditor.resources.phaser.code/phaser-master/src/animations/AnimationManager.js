@@ -390,12 +390,7 @@ var AnimationManager = new Class({
                 endFrame = texture.frameTotal;
             }
 
-            var diff = (startFrame < endFrame) ? 1 : -1;
-
-            //  Adjust because we use i !== end in the for loop
-            endFrame += diff;
-
-            for (i = startFrame; i !== endFrame; i += diff)
+            for (i = startFrame; i <= endFrame; i++)
             {
                 if (texture.has(i))
                 {

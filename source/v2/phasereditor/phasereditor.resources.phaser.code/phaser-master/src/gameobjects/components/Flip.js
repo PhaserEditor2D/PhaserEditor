@@ -8,7 +8,7 @@
  * Provides methods used for visually flipping a Game Object.
  * Should be applied as a mixin and not used directly.
  * 
- * @namespace Phaser.GameObjects.Components.Flip
+ * @name Phaser.GameObjects.Components.Flip
  * @since 3.0.0
  */
 

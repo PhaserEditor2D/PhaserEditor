@@ -10,7 +10,6 @@
  * This event is dispatched by a Camera instance when the Shake Effect starts.
  *
  * @event Phaser.Cameras.Scene2D.Events#SHAKE_START
- * @since 3.3.0
  * 
  * @param {Phaser.Cameras.Scene2D.Camera} camera - The camera that the effect began on.
  * @param {Phaser.Cameras.Scene2D.Effects.Shake} effect - A reference to the effect instance.

@@ -42,7 +42,7 @@ var DOMContentLoaded = function (callback)
     {
         window.setTimeout(check, 20);
     }
-    else if (OS.cordova)
+    else if (OS.cordova && !OS.cocoonJS)
     {
         //  Ref. http://docs.phonegap.com/en/3.5.0/cordova_events_events.md.html#deviceready
         document.addEventListener('deviceready', check, false);

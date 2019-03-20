@@ -5,6 +5,14 @@
  */
 
 /**
+ * @typedef {object} SinCosTable
+ *
+ * @property {number} sin - The sine value.
+ * @property {number} cos - The cosine value.
+ * @property {number} length - The length.
+ */
+
+/**
  * Generate a series of sine and cosine values.
  *
  * @function Phaser.Math.SinCosTableGenerator
@@ -15,7 +23,7 @@
  * @param {number} [cosAmp=1] - The cosine value amplitude.
  * @param {number} [frequency=1] - The frequency of the values.
  *
- * @return {Phaser.Math.Types.SinCosTable} The generated values.
+ * @return {SinCosTable} The generated values.
  */
 var SinCosTableGenerator = function (length, sinAmp, cosAmp, frequency)
 {

@@ -16,11 +16,11 @@ var CONST = {
      * Phaser Release Version
      * 
      * @name Phaser.VERSION
-     * @const
+     * @readonly
      * @type {string}
      * @since 3.0.0
      */
-    VERSION: '3.17.0',
+    VERSION: '3.16.2',
 
     BlendModes: require('./renderer/BlendModes'),
 
@@ -30,7 +30,7 @@ var CONST = {
      * AUTO Detect Renderer.
      * 
      * @name Phaser.AUTO
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -40,7 +40,7 @@ var CONST = {
      * Canvas Renderer.
      * 
      * @name Phaser.CANVAS
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -50,7 +50,7 @@ var CONST = {
      * WebGL Renderer.
      * 
      * @name Phaser.WEBGL
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -60,7 +60,7 @@ var CONST = {
      * Headless Renderer.
      * 
      * @name Phaser.HEADLESS
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -71,7 +71,7 @@ var CONST = {
      * to help you remember what the value is doing in your code.
      * 
      * @name Phaser.FOREVER
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -81,7 +81,7 @@ var CONST = {
      * Direction constant.
      * 
      * @name Phaser.NONE
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -91,7 +91,7 @@ var CONST = {
      * Direction constant.
      * 
      * @name Phaser.UP
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -101,7 +101,7 @@ var CONST = {
      * Direction constant.
      * 
      * @name Phaser.DOWN
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -111,7 +111,7 @@ var CONST = {
      * Direction constant.
      * 
      * @name Phaser.LEFT
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */
@@ -121,7 +121,7 @@ var CONST = {
      * Direction constant.
      * 
      * @name Phaser.RIGHT
-     * @const
+     * @readonly
      * @type {integer}
      * @since 3.0.0
      */

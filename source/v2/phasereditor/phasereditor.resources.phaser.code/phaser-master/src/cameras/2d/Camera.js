@@ -950,7 +950,7 @@ var Camera = new Class({
      * cameras are stored in a pool, ready for recycling later, and calling this directly will prevent that.
      *
      * @method Phaser.Cameras.Scene2D.Camera#destroy
-     * @fires Phaser.Cameras.Scene2D.Events#DESTROY
+     * @fires CameraDestroyEvent
      * @since 3.0.0
      */
     destroy: function ()

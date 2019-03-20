@@ -7,7 +7,7 @@
 /**
  * A component to set restitution on objects.
  *
- * @namespace Phaser.Physics.Matter.Components.Bounce
+ * @name Phaser.Physics.Matter.Components.Bounce
  * @since 3.0.0
  */
 var Bounce = {

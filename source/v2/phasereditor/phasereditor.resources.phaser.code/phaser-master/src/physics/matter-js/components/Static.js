@@ -9,7 +9,7 @@ var Body = require('../lib/body/Body');
 /**
  * [description]
  *
- * @namespace Phaser.Physics.Matter.Components.Static
+ * @name Phaser.Physics.Matter.Components.Static
  * @since 3.0.0
  */
 var Static = {

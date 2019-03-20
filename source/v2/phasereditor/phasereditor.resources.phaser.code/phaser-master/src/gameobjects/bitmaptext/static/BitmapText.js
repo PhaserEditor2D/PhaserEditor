@@ -12,6 +12,48 @@ var ParseFromAtlas = require('../ParseFromAtlas');
 var Render = require('./BitmapTextRender');
 
 /**
+ * The font data for an individual character of a Bitmap Font.
+ *
+ * Describes the character's position, size, offset and kerning.
+ *
+ * @typedef {object} BitmapFontCharacterData
+ *
+ * @property {number} x - The x position of the character.
+ * @property {number} y - The y position of the character.
+ * @property {number} width - The width of the character.
+ * @property {number} height - The height of the character.
+ * @property {number} centerX - The center x position of the character.
+ * @property {number} centerY - The center y position of the character.
+ * @property {number} xOffset - The x offset of the character.
+ * @property {number} yOffset - The y offset of the character.
+ * @property {object} data - Extra data for the character.
+ * @property {Object.<number>} kerning - Kerning values, keyed by character code.
+ */
+
+/**
+ * Bitmap Font data that can be used by a BitmapText Game Object.
+ *
+ * @typedef {object} BitmapFontData
+ *
+ * @property {string} font - The name of the font.
+ * @property {number} size - The size of the font.
+ * @property {number} lineHeight - The line height of the font.
+ * @property {boolean} retroFont - Whether this font is a retro font (monospace).
+ * @property {Object.<number, BitmapFontCharacterData>} chars - The character data of the font, keyed by character code. Each character datum includes a position, size, offset and more.
+ */
+
+/**
+ * @typedef {object} JSONBitmapText
+ * @extends {JSONGameObject}
+ *
+ * @property {string} font - The name of the font.
+ * @property {string} text - The text that this Bitmap Text displays.
+ * @property {number} fontSize - The size of the font.
+ * @property {number} letterSpacing - Adds / Removes spacing between characters.
+ * @property {integer} align - The alignment of the text in a multi-line BitmapText object.
+ */
+
+/**
  * @classdesc
  * BitmapText objects work by taking a texture file and an XML or JSON file that describes the font structure.
  * 
@@ -106,7 +148,7 @@ var BitmapText = new Class({
          * The data of the Bitmap Font used by this Bitmap Text.
          *
          * @name Phaser.GameObjects.BitmapText#fontData
-         * @type {Phaser.GameObjects.BitmapText.Types.BitmapFontData}
+         * @type {BitmapFontData}
          * @readonly
          * @since 3.0.0
          */
@@ -168,7 +210,7 @@ var BitmapText = new Class({
          * An object that describes the size of this Bitmap Text.
          *
          * @name Phaser.GameObjects.BitmapText#_bounds
-         * @type {Phaser.GameObjects.BitmapText.Types.BitmapTextSize}
+         * @type {BitmapTextSize}
          * @private
          * @since 3.0.0
          */
@@ -341,7 +383,7 @@ var BitmapText = new Class({
      *
      * @param {boolean} [round] - Whether to round the results to the nearest integer.
      *
-     * @return {Phaser.GameObjects.BitmapText.Types.BitmapTextSize} An object that describes the size of this Bitmap Text.
+     * @return {BitmapTextSize} An object that describes the size of this Bitmap Text.
      */
     getTextBounds: function (round)
     {
@@ -547,7 +589,7 @@ var BitmapText = new Class({
      * @method Phaser.GameObjects.BitmapText#toJSON
      * @since 3.0.0
      *
-     * @return {Phaser.GameObjects.BitmapText.Types.JSONBitmapText} A JSON representation of this Bitmap Text.
+     * @return {JSONBitmapText} A JSON representation of this Bitmap Text.
      */
     toJSON: function ()
     {
@@ -603,7 +645,6 @@ BitmapText.ALIGN_RIGHT = 2;
  * Adds the parsed Bitmap Font data to the cache with the `fontName` key.
  *
  * @name Phaser.GameObjects.BitmapText.ParseFromAtlas
- * @type {function}
  * @since 3.0.0
  *
  * @param {Phaser.Scene} scene - The Scene to parse the Bitmap Font for.

@@ -78,7 +78,7 @@ function checkIsLittleEndian ()
 
 function init ()
 {
-    Features.canvas = !!window['CanvasRenderingContext2D'];
+    Features.canvas = !!window['CanvasRenderingContext2D'] || OS.cocoonJS;
 
     try
     {
@@ -101,6 +101,11 @@ function init ()
             try
             {
                 var canvas = CanvasPool.createWebGL(this);
+
+                if (OS.cocoonJS)
+                {
+                    canvas.screencanvas = false;
+                }
 
                 var ctx = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 

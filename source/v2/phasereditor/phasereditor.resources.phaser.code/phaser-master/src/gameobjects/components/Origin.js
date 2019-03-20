@@ -10,7 +10,7 @@
  * Display values contain the calculated pixel values.
  * Should be applied as a mixin and not used directly.
  *
- * @namespace Phaser.GameObjects.Components.Origin
+ * @name Phaser.GameObjects.Components.Origin
  * @since 3.0.0
  */
 

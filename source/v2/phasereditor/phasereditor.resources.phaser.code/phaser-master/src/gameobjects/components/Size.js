@@ -7,7 +7,7 @@
 /**
  * Provides methods used for getting and setting the size of a Game Object.
  * 
- * @namespace Phaser.GameObjects.Components.Size
+ * @name Phaser.GameObjects.Components.Size
  * @since 3.0.0
  */
 

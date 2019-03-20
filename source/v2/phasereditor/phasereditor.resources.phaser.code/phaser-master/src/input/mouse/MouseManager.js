@@ -117,28 +117,6 @@ var MouseManager = new Class({
         this.onMouseUp = NOOP;
 
         /**
-         * The Mouse Down Event handler specifically for events on the Window.
-         * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
-         *
-         * @name Phaser.Input.Mouse.MouseManager#onMouseDownWindow
-         * @type {function}
-         * @since 3.17.0
-         */
-        this.onMouseDownWindow = NOOP;
-
-        /**
-         * The Mouse Up Event handler specifically for events on the Window.
-         * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
-         *
-         * @name Phaser.Input.Mouse.MouseManager#onMouseUpWindow
-         * @type {function}
-         * @since 3.17.0
-         */
-        this.onMouseUpWindow = NOOP;
-
-        /**
          * The Mouse Over Event handler.
          * This function is sent the native DOM MouseEvent.
          * Initially empty and bound in the `startListeners` method.
@@ -323,21 +301,6 @@ var MouseManager = new Class({
             }
         };
 
-        this.onMouseDownWindow = function (event)
-        {
-            if (event.defaultPrevented || !_this.enabled || !_this.manager)
-            {
-                // Do nothing if event already handled
-                return;
-            }
-
-            if (event.target !== canvas)
-            {
-                //  Only process the event if the target isn't the canvas
-                _this.manager.queueMouseDown(event);
-            }
-        };
-
         this.onMouseUp = function (event)
         {
             if (event.defaultPrevented || !_this.enabled || !_this.manager)
@@ -351,21 +314,6 @@ var MouseManager = new Class({
             if (_this.capture && event.target === canvas)
             {
                 event.preventDefault();
-            }
-        };
-
-        this.onMouseUpWindow = function (event)
-        {
-            if (event.defaultPrevented || !_this.enabled || !_this.manager)
-            {
-                // Do nothing if event already handled
-                return;
-            }
-
-            if (event.target !== canvas)
-            {
-                //  Only process the event if the target isn't the canvas
-                _this.manager.queueMouseUp(event);
             }
         };
 
@@ -407,10 +355,10 @@ var MouseManager = new Class({
         target.addEventListener('mouseover', this.onMouseOver, (this.capture) ? nonPassive : passive);
         target.addEventListener('mouseout', this.onMouseOut, (this.capture) ? nonPassive : passive);
 
-        if (window && this.manager.game.config.inputWindowEvents)
+        if (window)
         {
-            window.addEventListener('mousedown', this.onMouseDownWindow, nonPassive);
-            window.addEventListener('mouseup', this.onMouseUpWindow, nonPassive);
+            window.addEventListener('mousedown', this.onMouseDown, nonPassive);
+            window.addEventListener('mouseup', this.onMouseUp, nonPassive);
         }
 
         if (Features.pointerLock)
@@ -451,8 +399,8 @@ var MouseManager = new Class({
 
         if (window)
         {
-            window.removeEventListener('mousedown', this.onMouseDownWindow);
-            window.removeEventListener('mouseup', this.onMouseUpWindow);
+            window.removeEventListener('mousedown', this.onMouseDown);
+            window.removeEventListener('mouseup', this.onMouseUp);
         }
 
         if (Features.pointerLock)

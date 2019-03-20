@@ -8,7 +8,7 @@
  * The Impact Friction component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.Friction
+ * @name Phaser.Physics.Impact.Components.Friction
  * @since 3.0.0
  */
 var Friction = {

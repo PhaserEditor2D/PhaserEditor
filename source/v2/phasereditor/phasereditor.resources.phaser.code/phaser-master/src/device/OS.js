@@ -15,6 +15,8 @@
  *
  * @property {boolean} android - Is running on android?
  * @property {boolean} chromeOS - Is running on chromeOS?
+ * @property {boolean} cocoonJS - Is the game running under CocoonJS?
+ * @property {boolean} cocoonJSApp - Is this game running with CocoonJS.App?
  * @property {boolean} cordova - Is the game running under Apache Cordova?
  * @property {boolean} crosswalk - Is the game running under the Intel Crosswalk XDK?
  * @property {boolean} desktop - Is running on a desktop?
@@ -38,6 +40,8 @@ var OS = {
 
     android: false,
     chromeOS: false,
+    cocoonJS: false,
+    cocoonJSApp: false,
     cordova: false,
     crosswalk: false,
     desktop: false,
@@ -145,6 +149,20 @@ function init ()
         OS.nodeWebkit = !!process.versions['node-webkit'];
 
         OS.electron = !!process.versions.electron;
+    }
+
+    if (navigator.isCocoonJS)
+    {
+        OS.cocoonJS = true;
+
+        try
+        {
+            OS.cocoonJSApp = (typeof CocoonJS !== 'undefined');
+        }
+        catch (error)
+        {
+            OS.cocoonJSApp = false;
+        }
     }
 
     if (window.ejecta !== undefined)

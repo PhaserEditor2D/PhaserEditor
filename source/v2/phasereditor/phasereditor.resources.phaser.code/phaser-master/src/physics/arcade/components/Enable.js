@@ -7,7 +7,7 @@
 /**
  * Provides methods used for setting the enable properties of an Arcade Physics Body.
  *
- * @namespace Phaser.Physics.Arcade.Components.Enable
+ * @name Phaser.Physics.Arcade.Components.Enable
  * @since 3.0.0
  */
 var Enable = {

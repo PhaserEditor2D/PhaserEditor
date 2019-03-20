@@ -8,7 +8,7 @@
  * Provides methods used for calculating and setting the size of a non-Frame based Game Object.
  * Should be applied as a mixin and not used directly.
  * 
- * @namespace Phaser.GameObjects.Components.ComputedSize
+ * @name Phaser.GameObjects.Components.ComputedSize
  * @since 3.0.0
  */
 

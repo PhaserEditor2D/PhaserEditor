@@ -86,24 +86,20 @@ var GameScene = new Phaser.Class({
 
         var button = this.add.image(800-16, 16, 'fullscreen', 0).setOrigin(1, 0).setInteractive();
 
-        button.on('pointerup', function () {
+        button.on('pointerdown', function () {
 
             if (this.scale.isFullscreen)
             {
                 button.setFrame(0);
-
                 this.scale.stopFullscreen();
             }
             else
             {
                 button.setFrame(1);
-
                 this.scale.startFullscreen();
             }
 
         }, this);
-
-        this.scoreText.setText('v15');
 
         var FKey = this.input.keyboard.addKey('F');
 
@@ -167,7 +163,7 @@ var config = {
     type: Phaser.AUTO,
     scale: {
         mode: Phaser.Scale.FIT,
-        parent: 'phaser-example',
+        _parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 800,
         height: 600
@@ -183,3 +179,6 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+
+
+

@@ -13,8 +13,10 @@
  * with other LITE or PASSIVE entities at all. The behavior for FIXED vs.
  * FIXED collisions is undefined.
  *
- * @namespace Phaser.Physics.Impact.TYPE
+ * @name Phaser.Physics.Impact.TYPE
+ * @enum {integer}
  * @memberof Phaser.Physics.Impact
+ * @readonly
  * @since 3.0.0
  */
 module.exports = {
@@ -23,9 +25,6 @@ module.exports = {
      * Collides with nothing.
      *
      * @name Phaser.Physics.Impact.TYPE.NONE
-     * @type {integer}
-     * @const
-     * @since 3.0.0
      */
     NONE: 0,
 
@@ -33,9 +32,6 @@ module.exports = {
      * Type A. Collides with Type B.
      *
      * @name Phaser.Physics.Impact.TYPE.A
-     * @type {integer}
-     * @const
-     * @since 3.0.0
      */
     A: 1,
 
@@ -43,9 +39,6 @@ module.exports = {
      * Type B. Collides with Type A.
      *
      * @name Phaser.Physics.Impact.TYPE.B
-     * @type {integer}
-     * @const
-     * @since 3.0.0
      */
     B: 2,
 
@@ -53,9 +46,6 @@ module.exports = {
      * Collides with both types A and B.
      *
      * @name Phaser.Physics.Impact.TYPE.BOTH
-     * @type {integer}
-     * @const
-     * @since 3.0.0
      */
     BOTH: 3
 

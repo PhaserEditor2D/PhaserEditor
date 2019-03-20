@@ -15,7 +15,7 @@ var _FLAG = 4; // 0100
 /**
  * Provides methods used for getting and setting the position, scale and rotation of a Game Object.
  *
- * @namespace Phaser.GameObjects.Components.Transform
+ * @name Phaser.GameObjects.Components.Transform
  * @since 3.0.0
  */
 

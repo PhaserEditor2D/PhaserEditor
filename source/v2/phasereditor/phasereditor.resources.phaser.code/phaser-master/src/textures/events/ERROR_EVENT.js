@@ -13,7 +13,6 @@
  * Listen to this event from within a Scene using: `this.textures.on('onerror', listener)`.
  *
  * @event Phaser.Textures.Events#ERROR
- * @since 3.0.0
  * 
  * @param {string} key - The key of the Texture that failed to load into the Texture Manager.
  */

@@ -13,6 +13,13 @@ var InputPluginCache = require('../InputPluginCache');
 var InputEvents = require('../events');
 
 /**
+ * @typedef {object} Pad
+ *
+ * @property {string} id - The ID of the Gamepad.
+ * @property {integer} index - The index of the Gamepad.
+ */
+
+/**
  * @classdesc
  * The Gamepad Plugin is an input plugin that belongs to the Scene-owned Input system.
  *
@@ -78,7 +85,7 @@ var GamepadPlugin = new Class({
          * A reference to the Scene Systems Settings.
          *
          * @name Phaser.Input.Gamepad.GamepadPlugin#settings
-         * @type {Phaser.Scenes.Types.SettingsObject}
+         * @type {Phaser.Scenes.Settings.Object}
          * @since 3.10.0
          */
         this.settings = this.scene.sys.settings;

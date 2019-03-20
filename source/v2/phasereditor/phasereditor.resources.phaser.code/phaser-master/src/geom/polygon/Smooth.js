@@ -5,9 +5,6 @@
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
-/**
- * @ignore
- */
 var copy = function (out, a)
 {
     out[0] = a[0];

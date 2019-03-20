@@ -8,7 +8,7 @@
  * The Impact Offset component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.Offset
+ * @name Phaser.Physics.Impact.Components.Offset
  * @since 3.0.0
  */
 var Offset = {

@@ -8,7 +8,7 @@
  * The Impact Body Scale component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.BodyScale
+ * @name Phaser.Physics.Impact.Components.BodyScale
  * @since 3.0.0
  */
 var BodyScale = {

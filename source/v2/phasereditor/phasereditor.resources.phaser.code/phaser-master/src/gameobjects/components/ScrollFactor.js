@@ -7,7 +7,7 @@
 /**
  * Provides methods used for getting and setting the Scroll Factor of a Game Object.
  *
- * @namespace Phaser.GameObjects.Components.ScrollFactor
+ * @name Phaser.GameObjects.Components.ScrollFactor
  * @since 3.0.0
  */
 

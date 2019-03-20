@@ -11,10 +11,28 @@ var TYPE = require('./TYPE');
 var UpdateMotion = require('./UpdateMotion');
 
 /**
- * @callback Phaser.Physics.Impact.Types.BodyUpdateCallback
- * @since 3.0.0
+ * @callback BodyUpdateCallback
  *
  * @param {Phaser.Physics.Impact.Body} body - [description]
+ */
+
+/**
+ * @typedef {object} JSONImpactBody
+ * @todo Replace object types
+ *
+ * @property {string} name - [description]
+ * @property {object} size - [description]
+ * @property {object} pos - The entity's position in the game world.
+ * @property {object} vel - Current velocity in pixels per second.
+ * @property {object} accel - Current acceleration to be added to the entity's velocity per second. E.g. an entity with a `vel.x` of 0 and `accel.x` of 10 will have a `vel.x` of 100 ten seconds later.
+ * @property {object} friction - Deceleration to be subtracted from the entity's velocity per second. Only applies if `accel` is 0.
+ * @property {object} maxVel - The maximum velocity a body can move.
+ * @property {number} gravityFactor - [description]
+ * @property {number} bounciness - [description]
+ * @property {number} minBounceVelocity - [description]
+ * @property {Phaser.Physics.Impact.TYPE} type - [description]
+ * @property {Phaser.Physics.Impact.TYPE} checkAgainst - [description]
+ * @property {Phaser.Physics.Impact.COLLIDES} collides - [description]
  */
 
 /**
@@ -103,7 +121,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#size
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.size = { x: sx, y: sy };
@@ -112,7 +130,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#offset
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.offset = { x: 0, y: 0 };
@@ -121,7 +139,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#pos
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.pos = { x: x, y: y };
@@ -130,7 +148,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#last
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.last = { x: x, y: y };
@@ -139,7 +157,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#vel
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.vel = { x: 0, y: 0 };
@@ -148,7 +166,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#accel
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.accel = { x: 0, y: 0 };
@@ -157,7 +175,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#friction
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.friction = { x: 0, y: 0 };
@@ -166,7 +184,7 @@ var Body = new Class({
          * [description]
          *
          * @name Phaser.Physics.Impact.Body#maxVel
-         * @type {Phaser.Math.Types.Vector2Like}
+         * @type {{x: number, y: number}}
          * @since 3.0.0
          */
         this.maxVel = { x: world.defaults.maxVelocityX, y: world.defaults.maxVelocityY };
@@ -491,7 +509,7 @@ var Body = new Class({
      * @method Phaser.Physics.Impact.Body#toJSON
      * @since 3.0.0
      *
-     * @return {Phaser.Physics.Impact.Types.JSONImpactBody} JSON representation of this body object.
+     * @return {JSONImpactBody} JSON representation of this body object.
      */
     toJSON: function ()
     {

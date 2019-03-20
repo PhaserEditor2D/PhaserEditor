@@ -144,7 +144,7 @@ var Sprite = new Class({
      * @method Phaser.GameObjects.Sprite#toJSON
      * @since 3.0.0
      *
-     * @return {Phaser.GameObjects.Types.JSONGameObject} A JSON representation of the Game Object.
+     * @return {JSONGameObject} A JSON representation of the Game Object.
      */
     toJSON: function ()
     {

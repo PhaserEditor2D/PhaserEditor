@@ -29,8 +29,6 @@ var Fullscreen = {
 
 /**
 * Checks for support of the Full Screen API.
-* 
-* @ignore
 */
 function init ()
 {

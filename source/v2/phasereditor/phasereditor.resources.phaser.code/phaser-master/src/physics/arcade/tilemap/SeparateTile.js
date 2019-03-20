@@ -20,11 +20,10 @@ var TileIntersectsBody = require('./TileIntersectsBody');
  * @param {Phaser.Geom.Rectangle} tileWorldRect - A rectangle-like object defining the dimensions of the tile.
  * @param {(Phaser.Tilemaps.DynamicTilemapLayer|Phaser.Tilemaps.StaticTilemapLayer)} tilemapLayer - The tilemapLayer to collide against.
  * @param {number} tileBias - The tile bias value. Populated by the `World.TILE_BIAS` constant.
- * @param {boolean} isLayer - Is this check coming from a TilemapLayer or an array of tiles?
  *
  * @return {boolean} `true` if the body was separated, otherwise `false`.
  */
-var SeparateTile = function (i, body, tile, tileWorldRect, tilemapLayer, tileBias, isLayer)
+var SeparateTile = function (i, body, tile, tileWorldRect, tilemapLayer, tileBias)
 {
     var tileLeft = tileWorldRect.left;
     var tileTop = tileWorldRect.top;
@@ -32,12 +31,6 @@ var SeparateTile = function (i, body, tile, tileWorldRect, tilemapLayer, tileBia
     var tileBottom = tileWorldRect.bottom;
     var faceHorizontal = tile.faceLeft || tile.faceRight;
     var faceVertical = tile.faceTop || tile.faceBottom;
-
-    if (!isLayer)
-    {
-        faceHorizontal = true;
-        faceVertical = true;
-    }
 
     //  We don't need to go any further if this tile doesn't actually have any colliding faces. This
     //  could happen if the tile was meant to be collided with re: a callback, but otherwise isn't
@@ -75,7 +68,7 @@ var SeparateTile = function (i, body, tile, tileWorldRect, tilemapLayer, tileBia
     {
         if (faceHorizontal)
         {
-            ox = TileCheckX(body, tile, tileLeft, tileRight, tileBias, isLayer);
+            ox = TileCheckX(body, tile, tileLeft, tileRight, tileBias);
 
             //  That's horizontal done, check if we still intersects? If not then we can return now
             if (ox !== 0 && !TileIntersectsBody(tileWorldRect, body))
@@ -86,14 +79,14 @@ var SeparateTile = function (i, body, tile, tileWorldRect, tilemapLayer, tileBia
 
         if (faceVertical)
         {
-            oy = TileCheckY(body, tile, tileTop, tileBottom, tileBias, isLayer);
+            oy = TileCheckY(body, tile, tileTop, tileBottom, tileBias);
         }
     }
     else
     {
         if (faceVertical)
         {
-            oy = TileCheckY(body, tile, tileTop, tileBottom, tileBias, isLayer);
+            oy = TileCheckY(body, tile, tileTop, tileBottom, tileBias);
 
             //  That's vertical done, check if we still intersects? If not then we can return now
             if (oy !== 0 && !TileIntersectsBody(tileWorldRect, body))
@@ -104,7 +97,7 @@ var SeparateTile = function (i, body, tile, tileWorldRect, tilemapLayer, tileBia
 
         if (faceHorizontal)
         {
-            ox = TileCheckX(body, tile, tileLeft, tileRight, tileBias, isLayer);
+            ox = TileCheckX(body, tile, tileLeft, tileRight, tileBias);
         }
     }
 

@@ -10,6 +10,13 @@
 var Class = require('../utils/Class');
 
 /**
+ * @typedef {object} Vector2Like
+ *
+ * @property {number} x - The x component.
+ * @property {number} y - The y component.
+ */
+
+/**
  * @classdesc
  * A representation of a vector in 2D space.
  *
@@ -20,7 +27,7 @@ var Class = require('../utils/Class');
  * @constructor
  * @since 3.0.0
  *
- * @param {number|Phaser.Math.Types.Vector2Like} [x] - The x component, or an object with `x` and `y` properties.
+ * @param {number|Vector2Like} [x] - The x component, or an object with `x` and `y` properties.
  * @param {number} [y] - The y component.
  */
 var Vector2 = new Class({

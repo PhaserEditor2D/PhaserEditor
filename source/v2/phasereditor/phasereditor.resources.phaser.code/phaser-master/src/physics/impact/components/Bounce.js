@@ -8,7 +8,7 @@
  * The Impact Bounce component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.Bounce
+ * @name Phaser.Physics.Impact.Components.Bounce
  * @since 3.0.0
  */
 var Bounce = {

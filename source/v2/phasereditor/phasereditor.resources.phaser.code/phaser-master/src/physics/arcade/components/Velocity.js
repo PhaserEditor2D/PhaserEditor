@@ -9,7 +9,7 @@
  *
  * Should be applied as a mixin and not used directly.
  *
- * @namespace Phaser.Physics.Arcade.Components.Velocity
+ * @name Phaser.Physics.Arcade.Components.Velocity
  * @since 3.0.0
  */
 var Velocity = {

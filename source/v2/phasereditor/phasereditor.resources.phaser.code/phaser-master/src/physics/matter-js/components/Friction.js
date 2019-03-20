@@ -7,7 +7,7 @@
 /**
  * Contains methods for changing the friction of a Game Object's Matter Body. Should be used a mixin, not called directly.
  *
- * @namespace Phaser.Physics.Matter.Components.Friction
+ * @name Phaser.Physics.Matter.Components.Friction
  * @since 3.0.0
  */
 var Friction = {

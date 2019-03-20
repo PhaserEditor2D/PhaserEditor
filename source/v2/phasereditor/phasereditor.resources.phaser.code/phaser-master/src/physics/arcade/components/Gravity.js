@@ -8,7 +8,7 @@
  * Provides methods for setting the gravity properties of an Arcade Physics Game Object.
  * Should be applied as a mixin and not used directly.
  *
- * @namespace Phaser.Physics.Arcade.Components.Gravity
+ * @name Phaser.Physics.Arcade.Components.Gravity
  * @since 3.0.0
  */
 var Gravity = {

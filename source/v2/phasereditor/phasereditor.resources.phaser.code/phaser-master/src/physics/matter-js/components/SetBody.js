@@ -13,7 +13,7 @@ var Vertices = require('../lib/geometry/Vertices');
 /**
  * [description]
  *
- * @namespace Phaser.Physics.Matter.Components.SetBody
+ * @name Phaser.Physics.Matter.Components.SetBody
  * @since 3.0.0
  */
 var SetBody = {

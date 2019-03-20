@@ -8,7 +8,7 @@
  * The Impact Gravity component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.Gravity
+ * @name Phaser.Physics.Impact.Components.Gravity
  * @since 3.0.0
  */
 var Gravity = {

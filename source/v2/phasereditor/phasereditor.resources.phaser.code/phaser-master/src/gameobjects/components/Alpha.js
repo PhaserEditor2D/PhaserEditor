@@ -13,7 +13,7 @@ var _FLAG = 2; // 0010
  * Provides methods used for setting the alpha properties of a Game Object.
  * Should be applied as a mixin and not used directly.
  *
- * @namespace Phaser.GameObjects.Components.Alpha
+ * @name Phaser.GameObjects.Components.Alpha
  * @since 3.0.0
  */
 

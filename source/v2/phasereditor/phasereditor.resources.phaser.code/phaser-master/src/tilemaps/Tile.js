@@ -151,7 +151,7 @@ var Tile = new Class({
          * Tile specific properties. These usually come from Tiled.
          *
          * @name Phaser.Tilemaps.Tile#properties
-         * @type {any}
+         * @type {object}
          * @since 3.0.0
          */
         this.properties = {};

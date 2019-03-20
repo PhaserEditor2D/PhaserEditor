@@ -1,91 +1,34 @@
-var SceneA = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-
-    initialize:
-
-    function SceneA ()
-    {
-        Phaser.Scene.call(this, { key: 'sceneA', active: true });
-    },
-
+var scene1Config = {
+    key: 'scene1',
+    active: true,
     preload: function ()
     {
-        this.load.image('bg', 'assets/ui/undersea-bg.png');
+        this.load.spritesheet('balls', 'assets/sprites/balls.png', { frameWidth: 17, frameHeight: 17 });
     },
-
     create: function ()
     {
-        var bg = this.add.image(400, 300, 'bg').setInteractive();
+        this.input.on('pointerdown', function (pointer) {
 
-        bg.on('pointerdown', function () {
-            console.log('Scene A');
-        });
+            this.add.image(pointer.x, pointer.y, 'balls', Phaser.Math.Between(0, 5));
+
+        }, this);
     }
+};
 
-});
-
-var SceneB = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-
-    initialize:
-
-    function SceneB ()
-    {
-        Phaser.Scene.call(this, { key: 'sceneB', active: true });
-    },
-
-    preload: function ()
-    {
-        this.load.image('up', 'assets/ui/up-bubble.png');
-    },
-
-    create: function ()
-    {
-        var button = this.add.image(400, 300, 'up').setInteractive();
-
-        button.on('pointerdown', function () {
-            console.log('Scene B');
-        });
-    }
-
-});
-
-var SceneC = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-
-    initialize:
-
-    function SceneC ()
-    {
-        Phaser.Scene.call(this, { key: 'sceneC', active: true });
-    },
-
-    preload: function ()
-    {
-        this.load.image('down', 'assets/ui/down-bubble.png');
-    },
-
-    create: function ()
-    {
-        var button = this.add.image(500, 300, 'down').setInteractive();
-
-        button.on('pointerdown', function () {
-            console.log('Scene C');
-        });
-    }
-
-});
+var scene2Config = {
+    key: 'scene2',
+    active: true
+};
 
 var config = {
-    type: Phaser.AUTO,
+    type: Phaser.WEBGL,
+    parent: 'phaser-example',
     width: 800,
     height: 600,
-    backgroundColor: '#000000',
-    parent: 'phaser-example',
-    scene: [ SceneA, SceneB, SceneC ]
+    scene: [
+        scene1Config,
+        scene2Config
+    ]
 };
 
 var game = new Phaser.Game(config);

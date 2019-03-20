@@ -5,10 +5,8 @@
  */
 
 /**
- * The Scale Manager was in fullscreen mode, but has since left, either directly via game code,
- * or via a user gestured, such as pressing the ESC key.
+ * The Scale Manager Resize Event.
  *
  * @event Phaser.Scale.Events#LEAVE_FULLSCREEN
- * @since 3.16.1
  */
 module.exports = 'leavefullscreen';

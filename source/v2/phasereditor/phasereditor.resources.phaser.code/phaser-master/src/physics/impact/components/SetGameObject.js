@@ -8,7 +8,7 @@
  * The Impact Set Game Object component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.SetGameObject
+ * @name Phaser.Physics.Impact.Components.SetGameObject
  * @since 3.0.0
  */
 var SetGameObject = {

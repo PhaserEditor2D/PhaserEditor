@@ -8,7 +8,7 @@
  * The Impact Debug component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.Debug
+ * @name Phaser.Physics.Impact.Components.Debug
  * @since 3.0.0
  */
 var Debug = {

@@ -8,7 +8,7 @@
  * The Impact Acceleration component.
  * Should be applied as a mixin.
  *
- * @namespace Phaser.Physics.Impact.Components.Acceleration
+ * @name Phaser.Physics.Impact.Components.Acceleration
  * @since 3.0.0
  */
 var Acceleration = {

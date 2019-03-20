@@ -10,6 +10,5 @@
  * This event is dispatched when the game loop leaves a paused state and resumes running.
  *
  * @event Phaser.Core.Events#RESUME
- * @since 3.0.0
  */
 module.exports = 'resume';
