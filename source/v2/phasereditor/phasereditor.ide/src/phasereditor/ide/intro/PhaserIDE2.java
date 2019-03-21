@@ -38,17 +38,21 @@ import phasereditor.lic.LicCore;
 @SuppressWarnings("restriction")
 public class PhaserIDE2 extends ModifiedIDEApplication {
 
+	/**
+	 * 
+	 */
+	private static final String WWW_NODE_JS_LOCATION = "org.eclipse.wildwebdeveloper.nodeJSLocation";
+
 	@Override
 	public Object start(IApplicationContext appContext) throws Exception {
-
 		out.println("Starting Phaser IDE application " + LicCore.PRODUCT_VERSION);
 
 		out.println("Starting license monitor");
 		LicCore.startMonitor();
 
 		{
-			var nodeJsLocation = System.getProperty("NodeJsLocation");
-			
+			var nodeJsLocation = System.getProperty(WWW_NODE_JS_LOCATION);
+
 			if (nodeJsLocation == null) {
 				var eclipseHomeUrl = Platform.getInstallLocation().getURL();
 				var eclipseHomePath = eclipseHomeUrl.getPath();
@@ -61,9 +65,9 @@ public class PhaserIDE2 extends ModifiedIDEApplication {
 				}
 				var nodeJsPath = Paths.get(eclipseHomePath).resolve(nodeJsPathname);
 				nodeJsLocation = nodeJsPath.toString();
-				System.setProperty("NodeJsLocation", nodeJsPath.toString());
+				System.setProperty(WWW_NODE_JS_LOCATION, nodeJsPath.toString());
 			}
-			
+
 			out.println("Phaser Editor: NodeJS location = " + nodeJsLocation);
 		}
 
