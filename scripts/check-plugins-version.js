@@ -49,6 +49,10 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 		if (plugin_name.endsWith(".features")) {
 			features_names.add(plugin_name);
 		} else {
+			if (!fs.existsSync(plugin_path + "/META-INF/MANIFEST.MF")) {
+				continue;
+			}
+
 			let text = fs.readFileSync(plugin_path + "/META-INF/MANIFEST.MF", {encoding: "utf-8"});
 			for(let line of text.split("\n")) {
 				if (line.startsWith("Bundle-Version:")) {
