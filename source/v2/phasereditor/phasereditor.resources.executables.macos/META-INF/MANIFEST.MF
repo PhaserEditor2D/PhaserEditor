@@ -6,4 +6,4 @@ Bundle-Version: 2.0.0.20190107
 Fragment-Host: phasereditor.resources.executables;bundle-version="2.0.0"
 Eclipse-BundleShape: dir
 Bundle-Vendor: Arian Fornaris
-Eclipse-PlatformFilter: (osgi.os=macosx)
+Automatic-Module-Name: phasereditor.resources.executables.macos

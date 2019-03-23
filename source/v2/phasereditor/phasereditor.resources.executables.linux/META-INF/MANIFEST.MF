@@ -5,6 +5,5 @@ Bundle-SymbolicName: phasereditor.resources.executables.linux
 Bundle-Version: 2.0.0.20190107
 Fragment-Host: phasereditor.resources.executables;bundle-version="2.0.0"
 Eclipse-BundleShape: dir
-Eclipse-PlatformFilter: (osgi.os=linux)
 Bundle-Vendor: Arian Fornaris
 Automatic-Module-Name: phasereditor.resources.executables.linux

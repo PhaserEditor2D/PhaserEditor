@@ -43,6 +43,9 @@
         <module>phasereditor.project.core</module>
         <module>phasereditor.project.ui</module>
         <module>phasereditor.resources.executables</module>
+        <module>phasereditor.resources.executables.linux</module>
+        <module>phasereditor.resources.executables.macos</module>
+        <module>phasereditor.resources.executables.win32</module>
         <module>phasereditor.resources.phaser.code</module>
         <module>phasereditor.resources.phaser.examples</module>
         <module>phasereditor.resources.phaser.examples.assets.audio</module>
@@ -57,11 +60,12 @@
         <module>phasereditor.webrun.ui</module>        
         <module>phasereditor.wildwebdeveloper.core</module>
         
-        <!-- features -->
+        <!-- features
 
         <module>phasereditor.ide.features</module>
         <module>phasereditor.platform</module>
         <module>phasereditor.wildwebdeveloper</module>
-        
+        -->
+
     </modules>
 </project>

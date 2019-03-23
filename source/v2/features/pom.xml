@@ -1,0 +1,19 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.phasereditor2d</groupId>
+    <artifactId>com.phasereditor2d.features</artifactId>
+    <version>2.0.4-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>com.phasereditor2d</groupId>
+        <artifactId>com.phasereditor2d.root</artifactId>
+        <version>2.0.4-SNAPSHOT</version>
+    </parent>
+
+    <modules>        
+        <module>phasereditor.ide.features</module>
+        <module>phasereditor.platform</module>
+        <module>phasereditor.wildwebdeveloper</module>        
+    </modules>
+</project>
