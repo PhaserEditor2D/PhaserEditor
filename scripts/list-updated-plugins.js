@@ -23,17 +23,11 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 
 	
 	plugin_names.delete("Scripts");
-	plugin_names.add("phasereditor.lic");
-
-
+	
 	for(var plugin_name of plugin_names) {
 		//console.log("Processing: " + plugin_name);
 
 		let plugin_path = "../source/v2/phasereditor/" + plugin_name;
-
-		if (plugin_name === "phasereditor.lic") {
-			plugin_path = "../../PhaserEditor_private/source/" + plugin_name;
-		}
 
 		if (!fs.existsSync(plugin_path)) {
 			//console.log("Deleted!\n" + plugin_path);
@@ -41,7 +35,14 @@ proc = exec("git diff --name-only HEAD " + current_ver_tag, {maxBuffer : Number.
 		}
 		
 		if (!plugin_name.endsWith(".features")) {
-			let text = fs.readFileSync(plugin_path + "/META-INF/MANIFEST.MF", {encoding: "utf-8"});
+
+			let mf_path = plugin_path + "/META-INF/MANIFEST.MF";
+
+			if (!fs.existsSync(mf_path)) {
+				continue;
+			}
+
+			let text = fs.readFileSync(mf_path, {encoding: "utf-8"});
 			for(let line of text.split("\n")) {
 				if (line.startsWith("Bundle-Version:")) {
 					let ver = line.substring(16).trim();
