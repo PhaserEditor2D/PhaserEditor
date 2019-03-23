@@ -1,0 +1,95 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.phasereditor2d</groupId>
+	<artifactId>com.phasereditor2d.configuration</artifactId>
+	<version>2.0.4-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<tycho.version>1.3.0</tycho.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+    	<maven.compiler.target>11</maven.compiler.target>
+<!--
+	
+		<eclipse-release.url>http://download.eclipse.org/releases/2019-03</eclipse-release.url>		
+		<eclipse-license.url>https://download.eclipse.org/cbi/updates/license/</eclipse-license.url>
+-->
+
+		<eclipse-release.url>http://localhost/repo-mirror/eclipse-release</eclipse-release.url>
+		<eclipse-license.url>http://localhost/repo-mirror/eclipse-license</eclipse-license.url>
+
+
+			
+	</properties>
+
+	<repositories>
+		
+
+		<repository>
+			<id>eclipse-release</id>
+			<url>${eclipse-release.url}</url>
+			<layout>p2</layout>
+		</repository>
+
+
+		<repository>
+			<id>eclipse-license</id>
+			<url>${eclipse-license.url}</url>			
+			<layout>p2</layout>
+		</repository>
+		
+
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<!--Enable the replacement of the SNAPSHOT version in the final product 
+				configuration -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<id>package-feature</id>
+						<configuration>
+							<finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

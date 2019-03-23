@@ -1,0 +1,67 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.phasereditor2d</groupId>
+    <artifactId>com.phasereditor2d.bundles</artifactId>
+    <version>2.0.4-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>com.phasereditor2d</groupId>
+        <artifactId>com.phasereditor2d.root</artifactId>
+        <version>2.0.4-SNAPSHOT</version>
+    </parent>
+
+    <modules>        
+        <module>org.json</module>
+        <module>phasereditor.lic</module>
+        <module>phasereditor.animation.ui</module>
+        <module>phasereditor.animation.ui.editor</module>
+        <module>phasereditor.assetexplorer.ui</module>
+        <module>phasereditor.assetpack.core</module>
+        <module>phasereditor.assetpack.ui</module>
+        <module>phasereditor.assetpack.ui.editor</module>
+        <module>phasereditor.atlas.core</module>
+        <module>phasereditor.atlas.ui</module>
+        <module>phasereditor.atlas.ui.editor</module>
+        <module>phasereditor.audio.core</module>
+        <module>phasereditor.audiosprite.core</module>
+        <module>phasereditor.audiosprite.ui</module>
+        <module>phasereditor.audiosprite.ui.editor</module>
+        <module>phasereditor.audio.ui</module>
+        <module>phasereditor.bmpfont.core</module>
+        <module>phasereditor.bmpfont.ui</module>
+        <module>phasereditor.chains.core</module>
+        <module>phasereditor.chains.ui</module>
+        <module>phasereditor.help</module>
+        <module>phasereditor.help.phaser</module>
+        <module>phasereditor.ide</module>
+        <module>phasereditor.inspect.core</module>        
+        <module>phasereditor.inspect.ui</module>
+        <module>phasereditor.libgdx</module>
+        <module>phasereditor.optipng.ui</module>
+        <module>phasereditor.optipng.core</module>
+        <module>phasereditor.project.core</module>
+        <module>phasereditor.project.ui</module>
+        <module>phasereditor.resources.executables</module>
+        <module>phasereditor.resources.phaser.code</module>
+        <module>phasereditor.resources.phaser.examples</module>
+        <module>phasereditor.resources.phaser.examples.assets.audio</module>
+        <module>phasereditor.resources.phaser.metadata</module>
+        <module>phasereditor.resources.templates</module>
+        <module>phasereditor.scene.core</module>
+        <module>phasereditor.scene.ui</module>
+        <module>phasereditor.scene.ui.editor</module>
+        <module>phasereditor.spritedemo.core</module>
+        <module>phasereditor.ui</module>
+        <module>phasereditor.webrun.core</module>
+        <module>phasereditor.webrun.ui</module>        
+        <module>phasereditor.wildwebdeveloper.core</module>
+        
+        <!-- features -->
+
+        <module>phasereditor.ide.features</module>
+        <module>phasereditor.platform</module>
+        <module>phasereditor.wildwebdeveloper</module>
+        
+    </modules>
+</project>
