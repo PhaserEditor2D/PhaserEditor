@@ -80,8 +80,8 @@ pushd .
 cd target/products/phasereditor2d.com/linux/gtk/x86_64/
 zip -rq compressed *
 md5sum compressed.zip > compressed.zip.md5
-
-mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux
+mkdir -p $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux
+mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux/
 mv compressed.zip $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux.zip
 mv compressed.zip.md5 $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux.zip.md5
 popd
@@ -90,9 +90,11 @@ echo
 echo +++ Windows
 pushd .
 cd target/products/phasereditor2d.com/win32/win32/x86_64/
+rm eclipsec.exe
 zip -rq compressed *
 md5sum compressed.zip > compressed.zip.md5
-mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows
+mkdir -p $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows
+mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows/
 mv compressed.zip $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows.zip
 mv compressed.zip.md5 $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows.zip.md5
 popd
