@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export dir=~/Documents/PhaserEditor
+export root=~/Documents/PhaserEditor
 export ver=2.0.4
 export fullver=2.0.4.20190321
 export prever=2.0.3
@@ -72,31 +72,31 @@ echo
 echo :: Zipping products
 echo
 
-rm -Rf $dir/Releases/v$ver/dist/
-mkdir -p $dir/Releases/v$ver/dist/
+rm -Rf $root/Releases/v$ver/dist/
+mkdir -p $root/Releases/v$ver/dist/
 
 echo +++ Linux
 pushd .
 cd target/products/phasereditor2d.com/linux/gtk/x86_64/
 zip -rq compressed *
 md5sum compressed.zip > compressed.zip.md5
-mkdir -p $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux
-mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux/
-mv compressed.zip $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux.zip
-mv compressed.zip.md5 $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-linux.zip.md5
+mkdir -p $root/Releases/v$ver/dist/PhaserEditor2D-$ver-linux
+mv PhaserEditor2D $root/Releases/v$ver/dist/PhaserEditor2D-$ver-linux/
+mv compressed.zip $root/Releases/v$ver/dist/PhaserEditor2D-$ver-linux.zip
+mv compressed.zip.md5 $root/Releases/v$ver/dist/PhaserEditor2D-$ver-linux.zip.md5
 popd
 
 echo
 echo +++ Windows
 pushd .
 cd target/products/phasereditor2d.com/win32/win32/x86_64/
-rm eclipsec.exe
+rm PhaserEditor2D/eclipsec.exe
 zip -rq compressed *
 md5sum compressed.zip > compressed.zip.md5
-mkdir -p $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows
-mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows/
-mv compressed.zip $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows.zip
-mv compressed.zip.md5 $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-windows.zip.md5
+mkdir -p $root/Releases/v$ver/dist/PhaserEditor2D-$ver-windows
+mv PhaserEditor2D $root/Releases/v$ver/dist/PhaserEditor2D-$ver-windows/
+mv compressed.zip $root/Releases/v$ver/dist/PhaserEditor2D-$ver-windows.zip
+mv compressed.zip.md5 $root/Releases/v$ver/dist/PhaserEditor2D-$ver-windows.zip.md5
 popd
 
 echo
@@ -106,13 +106,14 @@ cd target/products/phasereditor2d.com/macosx/cocoa/
 mv x86_64 PhaserEditor2D
 zip -rq compressed *
 md5sum compressed.zip > compressed.zip.md5
-mv compressed.zip $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-macos.zip
-mv compressed.zip.md5 $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-macos.zip.md5
-mv PhaserEditor2D $dir/Releases/v$ver/dist/PhaserEditor2D-$ver-macos
+mv compressed.zip $root/Releases/v$ver/dist/PhaserEditor2D-$ver-macos.zip
+mv compressed.zip.md5 $root/Releases/v$ver/dist/PhaserEditor2D-$ver-macos.zip.md5
+mkdir -p $root/Releases/v$ver/dist/PhaserEditor2D-$ver-macos
+mv PhaserEditor2D $root/Releases/v$ver/dist/PhaserEditor2D-$ver-macos/
 popd
 
 echo 
 echo :: Copying repository/
 echo
-rm -rf $dir/Releases/v$ver/repository
-mv target/repository $dir/Releases/v$ver/repository
+rm -rf $root/Releases/v$ver/repository
+mv target/repository $root/Releases/v$ver/repository
