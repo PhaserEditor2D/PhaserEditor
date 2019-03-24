@@ -3,6 +3,8 @@
 export dir=~/Documents/PhaserEditor
 export ver=2.0.4
 export fullver=2.0.4.20190321
+export prever=2.0.3
+export fullprever=2.0.3.20190320
 
 echo ----------------------------------------
 echo Applying Phaser Editor 2D products patch
@@ -23,6 +25,25 @@ else
 fi
 echo
 echo 
+
+
+echo :: Testing phasereditor2d.com.product has the right version...
+echo
+
+if cat phasereditor2d.com.product | head -n 12 | grep $fullprever; then	
+	echo +Wrong .product file version. It contains previous $fullprever. Good bye!
+	exit;	
+fi
+
+if cat phasereditor2d.com.product | head -n 12 | grep $ver; then
+	echo .product file version ok!
+else
+	echo +Wrong .product file version. It does not contains $ver. Good bye!
+	exit;	
+fi
+echo
+echo 
+
 
 echo Copying target-path/ ...
 cp -rf target-patch/* target/
