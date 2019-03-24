@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plist version="1.0">
+
+<dict>
+	<key>CFBundleExecutable</key>
+		<string>PhaserEditor2D</string>
+	<key>CFBundleGetInfoString</key>
+		<string>Phaser Editor 2D v2.0.4</string>
+	<key>CFBundleIconFile</key>
+		<string>Eclipse.icns</string>
+	<key>CFBundleIdentifier</key>
+		<string>PhaserEditor2D</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+	<key>CFBundleName</key>
+		<string>PhaserEditor2D</string>
+	<key>CFBundlePackageType</key>
+		<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+		<string>2.0.4</string>
+	<key>CFBundleSignature</key>
+		<string>????</string>
+	<key>CFBundleVersion</key>
+		<string>2.0.4</string>
+	<key>NSHighResolutionCapable</key>
+		<true/>
+	<key>CFBundleDevelopmentRegion</key>
+		<string>English</string>		
+	<key>Eclipse</key>
+		<array>
+			<string>-vm</string>
+			<string>jre/lib/jli/libjli.dylib</string>
+
+			<string>-keyring</string>
+			<string>~/.eclipse_keyring</string>
+		</array>
+<key>CFBundleDisplayName</key>
+    <string>PhaserEditor2D</string>
+  </dict>
+
+</plist>

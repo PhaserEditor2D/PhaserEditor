@@ -1,0 +1,7 @@
+instructions.configure=\
+  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:0,location:http${#58}//phasereditor2d.com/updates/2.0,name:Phaser Editor 2D v2.0 Update Site,enabled:true);\
+  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:1,location:http${#58}//phasereditor2d.com/updates/2.0,name:Phaser Editor 2D v2.0 Update Site,enabled:true);\
+  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:0,location:http${#58}//download.eclipse.org/releases/photon,name:Eclipse Photon 4.9,enabled:true);\
+  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:1,location:http${#58}//download.eclipse.org/releases/photon,name:Eclipse Photon 4.9,enabled:true);\
+  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:0,location:http${#58}//download.eclipse.org/eclipse/updates/4.9,name:The Eclipse Project Updates - Photon,enabled:true);\
+  org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:1,location:http${#58}//download.eclipse.org/eclipse/updates/4.9,name:The Eclipse Project Updates - Photon,enabled:true);

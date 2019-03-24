@@ -32,13 +32,23 @@
 							<goal>materialize-products</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>archive-products</id>
-						<goals>
-							<goal>archive-products</goal>
-						</goals>
-					</execution>
+					<!-- <execution> <id>archive-products</id> <goals> <goal>archive-products</goal> 
+						</goals> </execution> -->
 				</executions>
+
+				<configuration>
+					<products>
+						<product>
+							<id>phasereditor2d.com</id>							
+							<rootFolders>
+								<macosx>PhaserEditor2D.app</macosx>
+								<linux>PhaserEditor2D</linux>
+								<win32>PhaserEditor2D</win32>
+							</rootFolders>
+						</product>
+					</products>
+				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>

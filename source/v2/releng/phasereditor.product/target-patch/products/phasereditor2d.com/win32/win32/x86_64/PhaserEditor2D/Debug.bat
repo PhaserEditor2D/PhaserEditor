@@ -1,0 +1,1 @@
+PhaserEditor2D.exe -consoleLog -clean
