@@ -1,11 +1,13 @@
-IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes { /* pseudo attribute added to allow contributions without replacing this node, see Bug 466075 */
+/*
+IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
 	preferences:
 		'AbstractTextEditor.Color.Background.SystemDefault=false'
 		'AbstractTextEditor.Color.SelectionForeground.SystemDefault=false'
 		'AbstractTextEditor.Color.SelectionBackground.SystemDefault=false'
 		'AbstractTextEditor.Color.Background=245,245,245'
-		'currentLineColor=222, 232, 244'
+		'currentLineColor=222,232,244'
 }
+*/
 
 .MTrimmedWindow {
     background-color: #d4d4d4;
