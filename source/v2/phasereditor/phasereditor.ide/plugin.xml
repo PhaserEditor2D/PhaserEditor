@@ -88,12 +88,17 @@
                      <theme
                            basestylesheeturi="css/phasereditor_default.css"
                            id="phasereditor.ide.theme.light"
-                           label="Phaser Editor">
+                           label="Phaser Editor 2D - Light">
                      </theme>
                      <theme
                            basestylesheeturi="css/phasereditor_simple.css"
                            id="phasereditor.ide.theme.simple"
-                           label="Phaser Editor (Simple)">
+                           label="Phaser Editor 2D - Light Simple">
+                     </theme>
+                     <theme
+                           basestylesheeturi="css/phasereditor_dark.css"
+                           id="phasereditor.ide.theme.dark"
+                           label="Phaser Editor 2D - Dark">
                      </theme>
                   </extension>
                   <extension
