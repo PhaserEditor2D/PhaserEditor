@@ -116,4 +116,4 @@ echo
 echo :: Copying repository/
 echo
 rm -rf $root/Releases/v$ver/repository
-mv target/repository $root/Releases/v$ver/repository
+mv target/repository $root/Releases/v$ver/dist/repository
