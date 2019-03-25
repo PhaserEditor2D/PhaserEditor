@@ -17,3 +17,8 @@ Text {
     background-color: #2A2A2A;
     color: #AAAAAA;
 }
+
+.FilteredTreeCanvas,
+.Canvas {
+	background-color: #292929;
+}

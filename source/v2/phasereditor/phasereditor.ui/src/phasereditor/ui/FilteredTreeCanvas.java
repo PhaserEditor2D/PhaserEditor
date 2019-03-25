@@ -43,6 +43,8 @@ public class FilteredTreeCanvas extends Composite {
 	public FilteredTreeCanvas(Composite parent, int style) {
 		super(parent, style | SWT.INHERIT_FORCE);
 
+		setData("org.eclipse.e4.ui.css.CssClassName", "FilteredTreeCanvas");
+		
 		var layout = new GridLayout(1, false);
 		//layout.marginWidth = 0;
 		//layout.marginHeight = 0;
