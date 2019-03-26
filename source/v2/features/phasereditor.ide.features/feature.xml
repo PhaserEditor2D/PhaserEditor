@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.ide.features"
       label="Phaser Editor IDE"
-      version="2.0.4.20190321"
+      version="2.1.0.20190326"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.1.v20180423-1114">
@@ -321,20 +321,21 @@
          install-size="0"
          version="0.0.0"
          fragment="true"/>
-         
-    <plugin
+
+   <plugin
          id="phasereditor.resources.executables.win32"
          os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"/>        
-         
-    <plugin
+         fragment="true"/>
+
+   <plugin
          id="phasereditor.resources.executables.macos"
          os="macosx"
          download-size="0"
          install-size="0"
          version="0.0.0"
          fragment="true"/>
+
 </feature>
