@@ -32,6 +32,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -82,6 +83,7 @@ public class WebRunCore {
 
 		HandlerList handlerList = new HandlerList();
 
+		addApiWebSocketHandler(handlerList);
 		addJSLibsHandler(handlerList);
 		addProjectsHandler(handlerList);
 		addExamplesHandler(handlerList);
@@ -103,6 +105,14 @@ public class WebRunCore {
 					e.getClass().getName() + ": " + e.getMessage());
 		}
 
+	}
+
+	private static void addApiWebSocketHandler(HandlerList handlerList) {
+		out.println("Serving API websocket at /wsapi");
+		var context = new ServletContextHandler();
+		context.setContextPath("/ws");
+		context.addServlet(ApiWebSocketServlet.class, "/api");
+		handlerList.addHandler(context);
 	}
 
 	private static void addJSLibsHandler(HandlerList handlerList) {

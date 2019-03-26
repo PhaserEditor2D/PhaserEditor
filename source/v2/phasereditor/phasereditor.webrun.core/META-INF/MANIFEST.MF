@@ -12,12 +12,18 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources;bundle-version="3.9.1",
  org.eclipse.jetty.http;bundle-version="9.3.9",
  org.eclipse.jetty.servlet;bundle-version="9.3.9",
+ org.eclipse.jetty.io;bundle-version="9.4.15",
  javax.servlet;bundle-version="3.1.0",
  phasereditor.inspect.core;bundle-version="2.0.0",
  phasereditor.resources.phaser.examples;bundle-version="2.0.0",
  phasereditor.resources.phaser.code;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.webrun.core
-Bundle-ClassPath: libs/java2html.jar,
- .
+Bundle-ClassPath: .,
+ libs/jetty/javax.websocket-api-1.0.jar,
+ libs/jetty/websocket-api-9.4.15.v20190215.jar,
+ libs/jetty/websocket-common-9.4.15.v20190215.jar,
+ libs/jetty/websocket-server-9.4.15.v20190215.jar,
+ libs/jetty/websocket-servlet-9.4.15.v20190215.jar
 Automatic-Module-Name: phasereditor.webrun.core
+Bundle-RequiredExecutionEnvironment: JavaSE-11
