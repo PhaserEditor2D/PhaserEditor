@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - UI
 Bundle-SymbolicName: phasereditor.ui;singleton:=true
-Bundle-Version: 2.0.3.20190320
+Bundle-Version: 2.0.4.20190321
 Bundle-Activator: phasereditor.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -41,3 +41,4 @@ Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
 Bundle-ClassPath: lib/trident-7.3-swt.jar,
  .
 Automatic-Module-Name: phasereditor.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-11

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Project UI
 Bundle-SymbolicName: phasereditor.project.ui;singleton:=true
-Bundle-Version: 2.0.3.20190320
+Bundle-Version: 2.0.4.20190321
 Bundle-Activator: phasereditor.project.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -23,3 +23,4 @@ Automatic-Module-Name: phasereditor.project.ui
 Export-Package: phasereditor.project.ui,
  phasereditor.project.ui.build,
  phasereditor.project.ui.wizards
+Bundle-RequiredExecutionEnvironment: JavaSE-11
