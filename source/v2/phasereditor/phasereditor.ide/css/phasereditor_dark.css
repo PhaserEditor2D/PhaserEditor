@@ -1,4 +1,7 @@
+/*
 @import url("platform:/plugin/org.eclipse.ui.themes/css/e4-dark.css");
+*/
+
 
 .MPartStack {
 	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.intro.MyTabRendering');	
@@ -19,6 +22,8 @@ Text {
 }
 
 .FilteredTreeCanvas,
-.Canvas {
+.Canvas,
+Tree,
+StyledText {
 	background-color: #292929;
 }

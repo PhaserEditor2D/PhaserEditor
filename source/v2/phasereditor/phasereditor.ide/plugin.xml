@@ -90,16 +90,12 @@
                            id="phasereditor.ide.theme.light"
                            label="Phaser Editor 2D - Light">
                      </theme>
-                     <theme
-                           basestylesheeturi="css/phasereditor_simple.css"
-                           id="phasereditor.ide.theme.simple"
-                           label="Phaser Editor 2D - Light Simple">
-                     </theme>
-                     <theme
-                           basestylesheeturi="css/phasereditor_dark.css"
-                           id="phasereditor.ide.theme.dark"
-                           label="Phaser Editor 2D - Dark">
-                     </theme>
+                     <stylesheet
+                           uri="css/phasereditor_dark.css">
+                        <themeid
+                              refid="org.eclipse.e4.ui.css.theme.e4_dark">
+                        </themeid>
+                     </stylesheet>
                   </extension>
                   <extension
                         point="org.eclipse.ui.startup">
