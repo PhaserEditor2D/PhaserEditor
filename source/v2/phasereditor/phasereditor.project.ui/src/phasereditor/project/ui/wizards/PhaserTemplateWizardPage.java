@@ -33,12 +33,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,9 +48,9 @@ import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.inspect.core.IProjectTemplateCategory;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.ProjectTemplateInfo;
-import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
+import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 import phasereditor.inspect.ui.TemplateContentProvider;
 import phasereditor.inspect.ui.TemplateLabelProvider;
 import phasereditor.ui.FilteredTree2;
@@ -104,7 +102,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	TreeViewer _treeViewer;
 	PhaserExamplesRepoModel _examples;
 	private IProjectTemplate _template;
-	private Browser _infoText;
+	private StyledText _infoText;
 	private FilteredTree2 _filteredTree;
 	private ToolItem _playItem;
 
@@ -166,7 +164,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 			}
 		});
 
-		_infoText = new Browser(sashForm, SWT.BORDER);
+		_infoText = new StyledText(sashForm, SWT.BORDER);
 		sashForm.setWeights(new int[] { 2, 1 });
 
 		afterCreateWidgets();
@@ -208,14 +206,14 @@ public class PhaserTemplateWizardPage extends WizardPage {
 				ProjectTemplateInfo templInfo = _template.getInfo();
 				StringBuilder sb = new StringBuilder();
 
-				sb.append("<b>Author:</b> " + templInfo.getAuthor() + " (" + templInfo.getEmail() + ")<br>");
-				sb.append("<b>Website:</b> " + templInfo.getWebsite());
-				sb.append("<br>");
+				sb.append("Author: " + templInfo.getAuthor() + " (" + templInfo.getEmail() + ")\n");
+				sb.append("Website: " + templInfo.getWebsite() + "\n");
 
 				if (templInfo.getUrl() != null) {
-					sb.append("<b>URL:</b> " + templInfo.getUrl() + "<br>");
+					sb.append("URL: " + templInfo.getUrl() + "\n");
 				}
-				sb.append("<br><b>Description</b><br><br>");
+				sb.append("\n");
+				sb.append("Description\n\n");
 				sb.append(templInfo.getDescription());
 				info = sb.toString();
 
@@ -234,12 +232,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 			}
 			setPageComplete(getErrorMessage() == null);
 		}
-		{
-			Font font = getShell().getDisplay().getSystemFont();
-			FontData fd = font.getFontData()[0];
-			_infoText.setText(String.format("<html><body style='font-family:%s;font-size:%spt;'>%s</body></html>",
-					fd.getName(), Integer.valueOf(fd.getHeight()), info));
-		}
+		_infoText.setText(info);
 	}
 
 	public IProjectTemplate getTemplate() {
