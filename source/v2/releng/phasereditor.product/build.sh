@@ -1,9 +1,9 @@
 #!/bin/bash
 
 export root=~/Documents/PhaserEditor
-export ver=2.0.4
-export fullver=2.0.4.20190321
-export prever=2.0.3
+export ver=2.1.0
+export fullver=2.1.0.20190326
+export prever=2.0.4
 export fullprever=2.0.3.20190320
 
 echo ----------------------------------------
