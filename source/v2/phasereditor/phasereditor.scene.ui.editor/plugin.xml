@@ -480,5 +480,13 @@
             </reference></enablement>
       </moveParticipant>
    </extension>
+   <extension
+         point="phasereditor.webrun.core.webcontent">
+      <static
+            name="sceneEditor"
+            path="html"
+            plugin="phasereditor.scene.ui.editor">
+      </static>
+   </extension>
 
 </plugin>

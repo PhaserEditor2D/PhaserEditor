@@ -27,6 +27,7 @@ import java.net.ServerSocket;
 import java.nio.file.Path;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -84,6 +85,7 @@ public class WebRunCore {
 		HandlerList handlerList = new HandlerList();
 
 		addApiWebSocketHandler(handlerList);
+		addExtensionsHandlers(handlerList);
 		addJSLibsHandler(handlerList);
 		addProjectsHandler(handlerList);
 		addExamplesHandler(handlerList);
@@ -105,6 +107,20 @@ public class WebRunCore {
 					e.getClass().getName() + ": " + e.getMessage());
 		}
 
+	}
+
+	private static void addExtensionsHandlers(HandlerList handlerList) {
+		var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint("phasereditor.webrun.core.webcontent");
+		var extensions = extensionPoint.getExtensions();
+		for (var extension : extensions) {
+			var elems = extension.getConfigurationElements();
+			for (var elem : elems) {
+				var name = elem.getAttribute("name");
+				var path = elem.getAttribute("path");
+				var plugin = elem.getAttribute("plugin");
+				addPluginResourcesHandler(handlerList, "/extension/" + plugin + "/" + name, plugin, path);
+			}
+		}
 	}
 
 	private static void addApiWebSocketHandler(HandlerList handlerList) {
@@ -138,9 +154,10 @@ public class WebRunCore {
 		handlerList.addHandler(context);
 	}
 
-	private static void addPluginResourcesHandler(HandlerList handlerList, String url, String plugin,
+	private static ResourceHandler addPluginResourcesHandler(HandlerList handlerList, String url, String plugin,
 			String pluginFolder) {
 		out.println("Serving plugin folder: " + plugin + "/" + pluginFolder);
+		out.println("\t" + url);
 
 		ContextHandler context = new ContextHandler(url);
 
@@ -149,6 +166,7 @@ public class WebRunCore {
 		context.setHandler(resourceHandler);
 		handlerList.addHandler(context);
 
+		return resourceHandler;
 	}
 
 	private static void addExampleServletsHandler(HandlerList handlerList) {
