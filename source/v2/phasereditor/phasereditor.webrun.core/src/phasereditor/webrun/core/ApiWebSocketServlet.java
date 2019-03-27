@@ -30,13 +30,15 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
  */
 public class ApiWebSocketServlet extends WebSocketServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void configure(WebSocketServletFactory factory) {
-		factory.setCreator((req, res) -> new ApiWebSocket());
+		factory.setCreator((req, res) -> {
+
+			var bus = req.getParameterMap().get("bus").get(0);
+
+			return new ApiHub(bus);
+		});
 	}
 }

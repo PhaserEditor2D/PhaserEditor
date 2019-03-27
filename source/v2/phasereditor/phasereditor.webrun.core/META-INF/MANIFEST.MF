@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.ui,
  javax.servlet;bundle-version="3.1.0",
  phasereditor.inspect.core;bundle-version="2.0.0",
  phasereditor.resources.phaser.examples;bundle-version="2.0.0",
- phasereditor.resources.phaser.code;bundle-version="2.0.0"
+ phasereditor.resources.phaser.code;bundle-version="2.0.0",
+ phasereditor.org.json;bundle-version="2.0.1"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.webrun.core
 Bundle-ClassPath: .,
