@@ -19,11 +19,14 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -45,7 +48,6 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -83,6 +85,7 @@ public class SceneEditor extends EditorPart {
 	private IContextActivation _commandContextActivation;
 	private EditorFileStampHelper _fileStampHelper;
 	private SceneEditorBroker _broker;
+	private Browser _webView;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -286,26 +289,43 @@ public class SceneEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_scene = new SceneCanvas(parent, SWT.NONE);
-
-		_scene.init(this);
-
-		_scene.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				deactivateObjectsContext();
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				activateObjectsContext();
-			}
-		});
-
 		_broker = new SceneEditorBroker(this);
+		
+		var tabFolder = new TabFolder(parent, SWT.TOP);
+
+		{
+			var item = new TabItem(tabFolder, SWT.NONE);
+			item.setText("Old");
+			_scene = new SceneCanvas(tabFolder, SWT.NONE);
+			item.setControl(_scene);
+
+			_scene.init(this);
+
+			_scene.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusLost(FocusEvent e) {
+					deactivateObjectsContext();
+				}
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					activateObjectsContext();
+				}
+			});
+		}
+
+		{
+			var item = new TabItem(tabFolder, SWT.NONE);
+			item.setText("New");
+			_webView = new Browser(tabFolder, SWT.NONE);
+			item.setControl(_webView);
+		}
+
+		_webView.setUrl(_broker.getUrl());
+		
 	}
-	
+
 	public SceneEditorBroker getBroker() {
 		return _broker;
 	}
