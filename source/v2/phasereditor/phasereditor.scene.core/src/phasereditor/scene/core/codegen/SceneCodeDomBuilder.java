@@ -24,8 +24,6 @@ package phasereditor.scene.core.codegen;
 import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IFile;
@@ -35,11 +33,11 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.CodeDomComponent;
+import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
@@ -50,8 +48,8 @@ import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.core.ScrollFactorComponent;
 import phasereditor.scene.core.SceneModel.MethodContextType;
+import phasereditor.scene.core.ScrollFactorComponent;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
@@ -873,23 +871,11 @@ public class SceneCodeDomBuilder {
 
 		var preloadDom = new MethodDeclDom(model.getPreloadMethodName());
 
-		Map<String, String[]> packSectionList = new HashMap<>();
+		var collector = new PackReferencesCollector(model, _finder);
+		
+		var packSectionList = collector.collect();
 
-		model.getDisplayList().visit(objModel -> {
-			if (objModel instanceof TextureComponent) {
-
-				var frame = getTexture(objModel);
-
-				var packFile = frame.getAsset().getPack().getFile();
-
-				var key = packFile.getFullPath().removeFileExtension().lastSegment();
-				var url = ProjectCore.getAssetUrl(packFile);
-
-				packSectionList.put(key + "-" + url, new String[] { key, url });
-			}
-		});
-
-		for (var pair : packSectionList.values()) {
+		for (var pair : packSectionList) {
 
 			var call = new MethodCallDom("pack", "this.load");
 

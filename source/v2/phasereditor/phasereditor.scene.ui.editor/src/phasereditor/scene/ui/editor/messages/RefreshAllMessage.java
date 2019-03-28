@@ -19,26 +19,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.webrun.core;
+package phasereditor.scene.ui.editor.messages;
 
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.scene.core.PackReferencesCollector;
+import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.webrun.core.ApiMessage;
+import phasereditor.webrun.ui.WebRunUI;
 
 /**
  * @author arian
  *
  */
-public class ApiWebSocketServlet extends WebSocketServlet {
+public class RefreshAllMessage extends ApiMessage {
 
-	private static final long serialVersionUID = 1L;
+	public RefreshAllMessage(SceneEditor editor) {
+		var model = editor.getSceneModel();
+		var project = editor.getProject();
+		var finder = AssetPackCore.getAssetFinder(project);
 
-	@Override
-	public void configure(WebSocketServletFactory factory) {
-		factory.setCreator((req, res) -> {
+		{
+			var displayListData = new JSONObject();
+			model.getDisplayList().write(displayListData);
 
-			var channel = req.getHttpServletRequest().getParameter("channel");
+			_data.put("method", "RefreshAll");
+			_data.put("displayList", displayListData);
+		}
 
-			return new ApiHub(channel);
-		});
+		{
+			var projectUrl = WebRunUI.getProjectBrowserURL(project);
+
+			var packData = new JSONArray();
+			_data.put("packs", packData);
+			_data.put("projectUrl", projectUrl);
+			var collector = new PackReferencesCollector(model, finder);
+			var list = collector.collect();
+
+			for (var item : list) {
+				var url = item[1];
+				packData.put(url);
+			}
+		}
 	}
 }

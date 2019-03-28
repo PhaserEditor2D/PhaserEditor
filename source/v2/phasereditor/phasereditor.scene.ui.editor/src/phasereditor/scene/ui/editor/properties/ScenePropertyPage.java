@@ -66,6 +66,7 @@ public class ScenePropertyPage extends FormPropertyPage {
 		list.add(new DisplaySection(this));
 		list.add(new AssetsSection(this));
 		list.add(new CompilerSection(this));
+		list.add(new RendererSection(this));
 
 		list.add(new VariableSection(this));
 

@@ -45,6 +45,7 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -81,6 +82,7 @@ public class SceneEditor extends EditorPart {
 	private IContextActivation _objectsContextActivation;
 	private IContextActivation _commandContextActivation;
 	private EditorFileStampHelper _fileStampHelper;
+	private SceneEditorBroker _broker;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -301,6 +303,19 @@ public class SceneEditor extends EditorPart {
 			}
 		});
 
+		_broker = new SceneEditorBroker(this);
+	}
+	
+	public SceneEditorBroker getBroker() {
+		return _broker;
+	}
+
+	@Override
+	public void dispose() {
+
+		_broker.dispose();
+
+		super.dispose();
 	}
 
 	@Override

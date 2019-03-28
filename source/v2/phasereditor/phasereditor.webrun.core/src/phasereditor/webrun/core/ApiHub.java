@@ -63,6 +63,8 @@ public class ApiHub extends WebSocketAdapter {
 
 	@Override
 	public void onWebSocketConnect(Session sess) {
+		super.onWebSocketConnect(sess);
+
 		out.println("ApiHub.onWebSocketConnect@" + _channel);
 	}
 
@@ -129,6 +131,10 @@ public class ApiHub extends WebSocketAdapter {
 		}
 	}
 
+	public static void sendMessageAsync(String channel, ApiMessage message) {
+		sendMessageAsync(channel, message.getData());
+	}
+
 	public static void sendMessageAsync(String channel, JSONObject message) {
 		synchronized (_channelSocketListMap) {
 
@@ -138,7 +144,6 @@ public class ApiHub extends WebSocketAdapter {
 				for (var socket : list) {
 					try {
 						socket.getRemote().sendString(message.toString());
-						socket.getRemote().flush();
 					} catch (IOException e) {
 						WebRunCore.logError(e);
 					}

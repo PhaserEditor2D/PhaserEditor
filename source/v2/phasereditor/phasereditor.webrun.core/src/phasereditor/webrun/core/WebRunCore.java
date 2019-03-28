@@ -139,7 +139,7 @@ public class WebRunCore {
 	}
 
 	private static void addApiWebSocketHandler(HandlerList handlerList) {
-		out.println("Serving API websocket at /wsapi");
+		out.println("Serving API websocket at /ws/api");
 		var context = new ServletContextHandler();
 		context.setContextPath("/ws");
 		context.addServlet(ApiWebSocketServlet.class, "/api");

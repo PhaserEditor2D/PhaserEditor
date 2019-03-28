@@ -21,24 +21,22 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.webrun.core;
 
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.json.JSONArray;
 
 /**
  * @author arian
  *
  */
-public class ApiWebSocketServlet extends WebSocketServlet {
+public class BatchMessage extends ApiMessage {
 
-	private static final long serialVersionUID = 1L;
+	private JSONArray _list;
 
-	@Override
-	public void configure(WebSocketServletFactory factory) {
-		factory.setCreator((req, res) -> {
+	public BatchMessage() {
+		_list = new JSONArray();
+		_data.put("list", _list);
+	}
 
-			var channel = req.getHttpServletRequest().getParameter("channel");
-
-			return new ApiHub(channel);
-		});
+	public void add(ApiMessage msg) {
+		_list.put(msg.getData());
 	}
 }
