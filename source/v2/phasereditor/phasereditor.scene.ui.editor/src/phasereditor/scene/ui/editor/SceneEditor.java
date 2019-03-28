@@ -48,6 +48,7 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -180,6 +181,8 @@ public class SceneEditor extends EditorPart {
 		updatePropertyPagesContentWithSelection();
 
 		refreshOutline();
+		
+		_broker.send(new RefreshAllMessage(this));
 	}
 
 	private void saveMethod(IProgressMonitor monitor) {
