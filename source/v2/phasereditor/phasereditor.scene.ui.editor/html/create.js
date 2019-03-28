@@ -70,6 +70,7 @@ var EditorCreate = {
 
     updateObject: function (obj, data) {
         var type = data["-type"];
+        obj.name = data["-id"];
 
         switch (type) {
             case "Image":

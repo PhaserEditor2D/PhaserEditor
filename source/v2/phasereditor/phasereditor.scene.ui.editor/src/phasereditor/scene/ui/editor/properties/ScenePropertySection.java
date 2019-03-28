@@ -36,6 +36,7 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
+import phasereditor.scene.ui.editor.messages.UpdateObjectsMessage;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -180,6 +181,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		getScene().redraw();
 
+		getEditor().getBroker().send(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}
 
 	protected abstract class SceneCheckListener extends CheckListener {

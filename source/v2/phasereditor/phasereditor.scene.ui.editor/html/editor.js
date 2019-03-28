@@ -83,9 +83,29 @@ Editor.prototype.messageReceived = function (batch) {
             case "RefreshAll":
                 this.onRefreshAll(msg);
                 break;
+            case "UpdateObjects":
+                this.onUpdateObjects(msg);
+                break;
         }
     }
 };
+
+Editor.prototype.onUpdateObjects = function (msg) {
+    /** @type {Phaser.Scene} */
+    var scene = this.getScene();
+    
+    var list = msg.objects;
+
+    for(var i = 0; i < list.length; i++) {
+        var objData = list[i];
+        
+        Models.displayList_updateObjectData(objData);
+
+        var id = objData["-id"];
+        var obj = scene.sys.displayList.getByName(id);
+        EditorCreate.updateObject(obj, objData);
+    }
+}
 
 Editor.prototype.onRefreshAll = function (msg) {
     /** @type {Phaser.Scene} */
@@ -106,7 +126,7 @@ EditorScene.prototype = Object.create(Phaser.Scene.prototype);
 EditorScene.prototype.constructor = EditorScene;
 
 EditorScene.prototype.init = function () {
-    this.performResize();    
+    this.performResize();
 };
 
 EditorScene.prototype.performResize = function () {
