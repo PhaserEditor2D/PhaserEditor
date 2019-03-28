@@ -32,7 +32,7 @@ function Editor(socket) {
             autoCenter: Phaser.Scale.NO_CENTER
         },
         scene: EditorScene,
-        backgroundColor: "#262626"
+        backgroundColor: "#d3d3d3"
     });
 
     this._resizeToken = 0;
