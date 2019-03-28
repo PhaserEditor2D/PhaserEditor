@@ -43,7 +43,7 @@ function Editor(socket) {
         setTimeout((function (token) {
             return function () {
                 if (token === self._resizeToken) {
-                    self._game.scale.resize(window.innerWidth, window.innerHeight - 10);
+                    self.getScene().performResize();
                 }
             };
         })(self._resizeToken), 200);
@@ -98,14 +98,23 @@ Editor.prototype.onRefreshAll = function (msg) {
     editorScene.scene.restart();
 }
 
-
-
 function EditorScene() {
     Phaser.Scene.call(this, "editor");
 }
 
 EditorScene.prototype = Object.create(Phaser.Scene.prototype);
 EditorScene.prototype.constructor = EditorScene;
+
+EditorScene.prototype.init = function () {
+    this.performResize();    
+};
+
+EditorScene.prototype.performResize = function () {
+    /** @type {Phaser.Scene} */
+    var scene = this;
+
+    scene.scale.resize(window.innerWidth, window.innerHeight);
+};
 
 EditorScene.prototype.preload = function () {
     /** @type {Phaser.Loader.LoaderPlugin} */
@@ -126,11 +135,13 @@ EditorScene.prototype.preload = function () {
 };
 
 EditorScene.prototype.create = function () {
-    /** @type {Phaser.GameObjects.GameObjectFactory} */
-    var add = this.add;
-    EditorCreate.createWorld(add);
+    /** @type {Phaser.Scene} */
+    var scene = this;
 
     this.initCamera();
+
+    EditorCreate.createWorld(scene.add);
+
 };
 
 EditorScene.prototype.initCamera = function () {
@@ -206,7 +217,7 @@ EditorScene.prototype.onMouseWheel = function (e) {
 
     /** @type {Phaser.Scene} */
     var scene = this;
-    
+
     var cam = scene.cameras.main;
     var delta = e.wheelDelta;
     var zoom = (delta < 0 ? 0.9 : 1.1);
