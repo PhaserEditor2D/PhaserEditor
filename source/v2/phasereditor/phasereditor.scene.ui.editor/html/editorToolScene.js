@@ -2,6 +2,8 @@ function EditorToolScene() {
     Phaser.Scene.call(this, "toolScene");
 
     EditorGlobal.toolScene = this;
+
+    this._selection = [];
 }
 
 EditorToolScene.prototype = Object.create(Phaser.Scene.prototype);
@@ -14,13 +16,11 @@ EditorToolScene.prototype.create = function () {
     scene.add.text(10, 10, "Hello tool scene", {
         fill: "#ffffff"
     })
-
-    this._selection = [];
 };
 
 EditorToolScene.prototype.updateSelectionObjects = function () {
-    
-    for(var i = 0; i < this._selection.length; i++) {
+
+    for (var i = 0; i < this._selection.length; i++) {
         this._selection[i].destroy();
     }
 
@@ -38,10 +38,10 @@ EditorToolScene.prototype.updateSelectionObjects = function () {
         /** @type {Phaser.GameObjects.Image} */
         var obj = editorScene.sys.displayList.getByName(id);
         if (obj) {
-            var rect = self.add.rectangle(obj.x, obj.y, obj.displayWidth, obj.displayHeight);
+            var rect = self.add.rectangle(obj.x, obj.y, obj.displayWidth, obj.displayHeight, 0x00ff00, 0.1);
             rect._selectedObject = obj;
             rect.strokeColor = 0x00ff00;
-            rect.lineWidth = 1;
+            rect.fillColor = rect.strokeColor;
             rect.isStroked = true
             this._selection.push(rect);
         }
@@ -49,6 +49,7 @@ EditorToolScene.prototype.updateSelectionObjects = function () {
 };
 
 EditorToolScene.prototype.update = function () {
+    this.syncCamera();
 
     for (var i = 0; i < this._selection.length; i++) {
         /** @type {Phaser.GameObjects.Rectangle} */
@@ -58,12 +59,35 @@ EditorToolScene.prototype.update = function () {
 
 };
 
+EditorToolScene.prototype.syncCamera = function () {
+    /** @type {Phaser.Scene} */
+    var editorScene = EditorGlobal.editor.getScene();
+    /** @type {Phaser.Scene} */
+    var self = this;
+
+    var editorCamera = editorScene.cameras.main;
+    var camera = self.cameras.main;
+
+    camera.zoom = editorCamera.zoom;
+    camera.setScroll(editorCamera.scrollX, editorCamera.scrollY);
+};
+
+/**
+ * @param {Phaser.Scene.GameObjects.Rectangle} rect
+ */
 EditorToolScene.prototype.updateSelectionRect = function (rect) {
+    /** @type {Phaser.Scene} */
+    var self = EditorGlobal.editor.getScene();
+
     /** @type {Phaser.GameObjects.Sprite} */
     var obj = rect._selectedObject;
 
+    rect.lineWidth = 1 / self.cameras.main.zoom;
     rect.x = obj.x;
     rect.y = obj.y;
-    rect.width = obj.width;
-    rect.height = obj.height;
+    rect.displayWidth = obj.displayWidth;
+    rect.displayHeight = obj.displayHeight;
+    rect.angle = obj.angle;
+    rect.originX = obj.originX;
+    rect.originY = obj.originY;
 };

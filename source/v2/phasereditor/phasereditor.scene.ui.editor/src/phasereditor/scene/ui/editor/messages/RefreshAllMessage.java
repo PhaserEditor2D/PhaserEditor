@@ -37,6 +37,7 @@ import phasereditor.webrun.ui.WebRunUI;
 public class RefreshAllMessage extends ApiMessage {
 
 	public RefreshAllMessage(SceneEditor editor) {
+
 		var model = editor.getSceneModel();
 		var project = editor.getProject();
 		var finder = AssetPackCore.getAssetFinder(project);

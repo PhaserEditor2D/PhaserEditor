@@ -61,7 +61,7 @@ function Editor(socket) {
 Editor.prototype = Object.create(Object.prototype);
 Editor.prototype.constructor = Editor;
 
-Editor.prototype.sendMessage = function (msg) {
+Editor.prototype.sendMessage = function (msg) {    
     this._socket.send(JSON.stringify(msg));
 };
 

@@ -24,6 +24,7 @@ package phasereditor.scene.ui.editor;
 import org.json.JSONObject;
 
 import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.webrun.core.ApiHub;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.core.BatchMessage;
@@ -50,18 +51,16 @@ public class SceneEditorBroker {
 		ApiHub.addListener(_channel, this::messageReceived);
 	}
 
-	public void send(ApiMessage... list) {
-
+	public void send(ApiMessage msg) {
+		if (msg instanceof BatchMessage) {
+			ApiHub.sendMessageAsync(_channel, msg);
+			return;
+		}
+		
 		var batch = new BatchMessage();
 
-		for (var msg : list) {
-			batch.add(msg);
-		}
+		batch.add(msg);
 
-		sendBatch(batch);
-	}
-
-	public void sendBatch(BatchMessage batch) {
 		ApiHub.sendMessageAsync(_channel, batch);
 	}
 
@@ -76,10 +75,13 @@ public class SceneEditorBroker {
 
 	private void messageReceived(JSONObject msg) {
 		var method = msg.getString("method");
-		
+
 		switch (method) {
 		case "GetRefreshAll":
 			send(new RefreshAllMessage(_editor));
+			break;
+		case "GetSelectObjects":
+			send(new SelectObjectsMessage(_editor));
 			break;
 
 		default:

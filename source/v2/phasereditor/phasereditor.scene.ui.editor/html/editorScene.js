@@ -46,6 +46,11 @@ EditorScene.prototype.create = function () {
 
     EditorCreate.createWorld(scene.add);
 
+    if (Models.displayList) {
+        EditorGlobal.editor.sendMessage({
+            method: "GetSelectObjects"
+        });
+    }
 };
 
 EditorScene.prototype.initSelectionScene = function () {
