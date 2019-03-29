@@ -1,8 +1,15 @@
+var EditorGlobal = {
+    editor: null,
+    toolScene: null
+};
+
 /**
  * 
  * @param {Broker} broker 
  */
 function Editor(socket) {
+
+    EditorGlobal.editor = this;
 
     this._socket = socket;
 
@@ -18,8 +25,6 @@ function Editor(socket) {
         self.messageReceived(msg);
     };
 
-
-
     this._game = new Phaser.Game({
         "title": "Phaser Editor 2D - Web Scene Editor",
         "width": window.innerWidth,
@@ -31,12 +36,11 @@ function Editor(socket) {
             mode: Phaser.Scale.NONE,
             autoCenter: Phaser.Scale.NO_CENTER
         },
-        scene: EditorScene,
+        scene: [EditorScene, EditorToolScene],
         backgroundColor: "#d3d3d3"
     });
 
     this._resizeToken = 0;
-
 
     window.addEventListener('resize', function (event) {
         self._resizeToken += 1;
@@ -86,19 +90,27 @@ Editor.prototype.messageReceived = function (batch) {
             case "UpdateObjects":
                 this.onUpdateObjects(msg);
                 break;
+            case "SelectObjects":
+                this.onSelectObjects(msg);
+                break;
         }
     }
+};
+
+Editor.prototype.onSelectObjects = function (msg) {
+    Models.selection = msg.objectIds;
+    EditorGlobal.toolScene.updateSelectionObjects();
 };
 
 Editor.prototype.onUpdateObjects = function (msg) {
     /** @type {Phaser.Scene} */
     var scene = this.getScene();
-    
+
     var list = msg.objects;
 
-    for(var i = 0; i < list.length; i++) {
+    for (var i = 0; i < list.length; i++) {
         var objData = list[i];
-        
+
         Models.displayList_updateObjectData(objData);
 
         var id = objData["-id"];
@@ -117,129 +129,3 @@ Editor.prototype.onRefreshAll = function (msg) {
 
     editorScene.scene.restart();
 }
-
-function EditorScene() {
-    Phaser.Scene.call(this, "editor");
-}
-
-EditorScene.prototype = Object.create(Phaser.Scene.prototype);
-EditorScene.prototype.constructor = EditorScene;
-
-EditorScene.prototype.init = function () {
-    this.performResize();
-};
-
-EditorScene.prototype.performResize = function () {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-
-    scene.scale.resize(window.innerWidth, window.innerHeight);
-};
-
-EditorScene.prototype.preload = function () {
-    /** @type {Phaser.Loader.LoaderPlugin} */
-    var load = this.load;
-
-    load.reset();
-
-    var urls = Models.packs;
-
-    for (var i = 0; i < urls.length; i++) {
-        var url = urls[i];
-
-        console.log("Preload: " + url);
-
-        load.setBaseURL(Models.projectUrl);
-        load.pack("-asset-pack" + i, url);
-    }
-};
-
-EditorScene.prototype.create = function () {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-
-    this.initCamera();
-
-    EditorCreate.createWorld(scene.add);
-
-};
-
-EditorScene.prototype.initCamera = function () {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-
-    var cam = scene.cameras.main;
-
-    scene.input.keyboard.addCapture([
-        Phaser.Input.Keyboard.KeyCodes.I,
-        Phaser.Input.Keyboard.KeyCodes.O,
-        Phaser.Input.Keyboard.KeyCodes.LEFT,
-        Phaser.Input.Keyboard.KeyCodes.RIGHT,
-        Phaser.Input.Keyboard.KeyCodes.UP,
-        Phaser.Input.Keyboard.KeyCodes.DOWN,
-    ]);
-
-    scene.input.keyboard.on("keydown_I", function () {
-        this.cameraZoom(-1);
-    }, this);
-
-    scene.input.keyboard.on("keydown_O", function () {
-        this.cameraZoom(1);
-    }, this);
-
-    scene.input.keyboard.on("keydown_LEFT", function () {
-        this.cameraPan(-1, 0);
-    }, this);
-
-    scene.input.keyboard.on("keydown_RIGHT", function () {
-        this.cameraPan(1, 0);
-    }, this);
-
-    scene.input.keyboard.on("keydown_UP", function () {
-        this.cameraPan(0, -1);
-    }, this);
-
-    scene.input.keyboard.on("keydown_DOWN", function () {
-        this.cameraPan(0, 1);
-    }, this);
-};
-
-EditorScene.prototype.update = function () {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-
-    var x = scene.input.activePointer.worldX;
-    var y = scene.input.activePointer.worldY;
-    var cam = scene.cameras.main;
-}
-
-EditorScene.prototype.cameraZoom = function (delta) {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-    var cam = scene.cameras.main;
-    if (delta < 0) {
-        cam.zoom *= 1.1;
-    } else {
-        cam.zoom *= 0.9;
-    }
-}
-
-EditorScene.prototype.cameraPan = function (dx, dy) {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-    var cam = scene.cameras.main;
-
-    cam.scrollX += dx * 30;
-    cam.scrollY += dy * 30;
-}
-
-EditorScene.prototype.onMouseWheel = function (e) {
-
-    /** @type {Phaser.Scene} */
-    var scene = this;
-
-    var cam = scene.cameras.main;
-    var delta = e.wheelDelta;
-    var zoom = (delta < 0 ? 0.9 : 1.1);
-    cam.zoom *= zoom;
-};

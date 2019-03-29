@@ -49,6 +49,7 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.ui.SelectionProviderImpl;
@@ -98,6 +99,8 @@ public class SceneEditor extends EditorPart {
 				_selectionProvider.setAutoFireSelectionChanged(true);
 
 				getScene().redraw();
+				
+				getBroker().send(new SelectObjectsMessage(SceneEditor.this));
 			}
 		};
 
