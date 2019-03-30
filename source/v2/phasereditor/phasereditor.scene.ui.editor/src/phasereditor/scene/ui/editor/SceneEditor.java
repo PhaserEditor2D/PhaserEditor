@@ -48,7 +48,6 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
@@ -99,7 +98,7 @@ public class SceneEditor extends EditorPart {
 				_selectionProvider.setAutoFireSelectionChanged(true);
 
 				getScene().redraw();
-				
+
 				getBroker().send(new SelectObjectsMessage(SceneEditor.this));
 			}
 		};
@@ -184,8 +183,8 @@ public class SceneEditor extends EditorPart {
 		updatePropertyPagesContentWithSelection();
 
 		refreshOutline();
-		
-		_broker.send(new RefreshAllMessage(this));
+
+		// _broker.send(new RefreshAllMessage(this));
 	}
 
 	private void saveMethod(IProgressMonitor monitor) {
@@ -296,8 +295,17 @@ public class SceneEditor extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		_broker = new SceneEditorBroker(this);
-		
+
 		var tabFolder = new TabFolder(parent, SWT.TOP);
+
+		{
+			var item = new TabItem(tabFolder, SWT.NONE);
+			item.setText("New");
+			_webView = new Browser(tabFolder, SWT.NONE);
+			item.setControl(_webView);
+		}
+
+		_webView.setUrl(_broker.getUrl());
 
 		{
 			var item = new TabItem(tabFolder, SWT.NONE);
@@ -321,15 +329,6 @@ public class SceneEditor extends EditorPart {
 			});
 		}
 
-		{
-			var item = new TabItem(tabFolder, SWT.NONE);
-			item.setText("New");
-			_webView = new Browser(tabFolder, SWT.NONE);
-			item.setControl(_webView);
-		}
-
-		_webView.setUrl(_broker.getUrl());
-		
 	}
 
 	public SceneEditorBroker getBroker() {

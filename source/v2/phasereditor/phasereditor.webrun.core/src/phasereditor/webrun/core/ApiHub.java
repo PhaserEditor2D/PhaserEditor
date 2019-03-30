@@ -70,7 +70,7 @@ public class ApiHub extends WebSocketAdapter {
 
 	@Override
 	public void onWebSocketClose(int statusCode, String reason) {
-
+		
 		out.println("ApiHub.onWebSocketClose@" + _channel);
 
 		synchronized (_channelSocketListMap) {

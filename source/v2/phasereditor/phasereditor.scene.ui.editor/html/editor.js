@@ -7,23 +7,11 @@ var EditorGlobal = {
  * 
  * @param {Broker} broker 
  */
-function Editor(socket) {
+function Editor() {
 
     EditorGlobal.editor = this;
 
-    this._socket = socket;
-
     var self = this;
-
-    this._socket.onopen = function () {
-        self.sendMessage({
-            method: "GetRefreshAll"
-        });
-    };
-    this._socket.onmessage = function (event) {
-        var msg = JSON.parse(event.data);
-        self.messageReceived(msg);
-    };
 
     this._game = new Phaser.Game({
         "title": "Phaser Editor 2D - Web Scene Editor",
@@ -61,7 +49,40 @@ function Editor(socket) {
 Editor.prototype = Object.create(Object.prototype);
 Editor.prototype.constructor = Editor;
 
-Editor.prototype.sendMessage = function (msg) {    
+Editor.prototype.openSocket = function () {
+    var self = this;
+    
+    console.log("Opening socket");
+
+    this._socket = new WebSocket(this.getWebSocketUrl());
+
+    // we should create the socket when the editor scene is ready, it means, the first time the preload method is called.
+    this._socket.onopen = function () {
+        self.sendMessage({
+            method: "GetRefreshAll"
+        });
+    };
+
+    this._socket.onmessage = function (event) {
+        var msg = JSON.parse(event.data);
+        self.messageReceived(msg);
+    };
+};
+
+Editor.prototype.getChannelId = function () {
+    var s = document.location.search;
+    var i = s.indexOf("=");
+    var c = s.substring(i + 1);
+    return c;
+}
+
+Editor.prototype.getWebSocketUrl = function () {
+    var loc = document.location;
+    var channel = this.getChannelId();
+    return "ws://" + loc.host + "/ws/api?channel=" + channel;
+}
+
+Editor.prototype.sendMessage = function (msg) {
     this._socket.send(JSON.stringify(msg));
 };
 
@@ -73,9 +94,6 @@ Editor.prototype.getScene = function () {
 };
 
 Editor.prototype.messageReceived = function (batch) {
-
-    console.log(batch);
-
     var list = batch.list;
 
     for (var i = 0; i < list.length; i++) {

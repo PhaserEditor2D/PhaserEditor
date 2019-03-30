@@ -58,7 +58,7 @@
         <module>phasereditor.ui</module>
         <module>phasereditor.webrun.core</module>
         <module>phasereditor.webrun.ui</module>        
-        <module>phasereditor.wildwebdeveloper.core</module>
+        <module>phasereditor.wildwebdeveloper.core</module>        
         
         <!-- features
 

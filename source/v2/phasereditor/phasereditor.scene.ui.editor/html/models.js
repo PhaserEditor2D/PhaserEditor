@@ -2,6 +2,10 @@ var Models = {
 
     displayList: undefined,
 
+    ready: function () {
+        return this.displayList !== undefined;
+    },
+
     displayList_updateObjectData: function (objData) {
         var children = this.displayList.children;
         for (var i = 0; i < children.length; i++) {

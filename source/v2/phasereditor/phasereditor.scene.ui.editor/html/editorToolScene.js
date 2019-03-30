@@ -10,12 +10,6 @@ EditorToolScene.prototype = Object.create(Phaser.Scene.prototype);
 EditorToolScene.prototype.constructor = EditorToolScene;
 
 EditorToolScene.prototype.create = function () {
-    /** @type {Phaser.Scene} */
-    var scene = this;
-
-    scene.add.text(10, 10, "Hello tool scene", {
-        fill: "#ffffff"
-    })
 };
 
 EditorToolScene.prototype.updateSelectionObjects = function () {

@@ -17,6 +17,15 @@ EditorScene.prototype.performResize = function () {
 };
 
 EditorScene.prototype.preload = function () {
+
+    if (!Models.ready()) {
+        // we do not load nothing, we open the socket to request the first refresh all.
+        console.log("First preload");
+        EditorGlobal.editor.openSocket();
+        return;
+    }
+    console.log("Common preload");
+
     /** @type {Phaser.Loader.LoaderPlugin} */
     var load = this.load;
 
@@ -36,15 +45,26 @@ EditorScene.prototype.preload = function () {
 
 EditorScene.prototype.create = function () {
     /** @type {Phaser.Scene} */
-    var scene = this;
+    var self = this;
 
+    if (!Models.ready()) {
+        this._loadingSprite = self.add.text(10, 10, "Loading...");
+        return;
+    }
+
+    if (this._loadingSprite) {
+        this._loadingSprite.destroy();
+        delete this._loadingSprite;
+    }
+
+    
     this.initCamera();
 
     this.initKeyboard();
 
     this.initSelectionScene();
 
-    EditorCreate.createWorld(scene.add);
+    EditorCreate.createWorld(self.add);
 
     if (Models.displayList) {
         EditorGlobal.editor.sendMessage({
