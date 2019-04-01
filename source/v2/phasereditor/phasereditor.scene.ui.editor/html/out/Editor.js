@@ -5,10 +5,13 @@ var PhaserEditor2D;
             Editor._instance = this;
             this._create = new PhaserEditor2D.Create();
             this._game = new Phaser.Game({
-                "title": "Phaser Editor 2D - Web Scene Editor",
-                "width": window.innerWidth,
-                "height": window.innerWidth,
-                "type": Phaser.AUTO,
+                title: "Phaser Editor 2D - Web Scene Editor",
+                width: window.innerWidth,
+                height: window.innerWidth,
+                type: Phaser.CANVAS,
+                render: {
+                    pixelArt: true
+                },
                 url: "https://phasereditor2d.com",
                 parent: "editorContainer",
                 scale: {

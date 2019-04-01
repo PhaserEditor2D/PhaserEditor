@@ -6,7 +6,7 @@ namespace PhaserEditor2D {
         private _game: Phaser.Game;
         private _resizeToken: integer;
         private _objectScene: ObjectScene;
-        private _create : Create;
+        private _create: Create;
 
         constructor() {
             Editor._instance = this;
@@ -14,10 +14,14 @@ namespace PhaserEditor2D {
             this._create = new Create();
 
             this._game = new Phaser.Game({
-                "title": "Phaser Editor 2D - Web Scene Editor",
-                "width": window.innerWidth,
-                "height": window.innerWidth,
-                "type": Phaser.AUTO,
+                title: "Phaser Editor 2D - Web Scene Editor",
+                width: window.innerWidth,
+                height: window.innerWidth,
+                // WEBGL is problematic on Linux
+                type: Phaser.CANVAS,
+                render: {
+                    pixelArt: true,
+                },
                 url: "https://phasereditor2d.com",
                 parent: "editorContainer",
                 scale: {
@@ -83,7 +87,7 @@ namespace PhaserEditor2D {
         openSocket() {
             console.log("Open socket");
             this._socket = new WebSocket(this.getWebSocketUrl());
-            
+
             const self = this;
 
             // we should create the socket when the editor scene is ready, it means, the first time the preload method is called.
@@ -94,7 +98,7 @@ namespace PhaserEditor2D {
             };
 
             this._socket.onmessage = function (event) {
-                var msg = JSON.parse(event.data);                
+                var msg = JSON.parse(event.data);
                 self.messageReceived(msg);
             };
 
@@ -106,28 +110,28 @@ namespace PhaserEditor2D {
                 if (self._socket) {
                     console.log("Closing socket...");
                     self._socket.close();
-                }                
+                }
                 event.preventDefault();
                 event.returnValue = "Phaser Editor 2D - Scene Editor Web View";
             });
         }
-        
-        private onSelectObjects(msg : any) {
+
+        private onSelectObjects(msg: any) {
             Models.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
         };
 
         private onUpdateObjects(msg) {
-            
+
             var list = msg.objects;
-        
+
             for (var i = 0; i < list.length; i++) {
                 var objData = list[i];
-        
+
                 Models.displayList_updateObjectData(objData);
-        
+
                 var id = objData["-id"];
-                
+
                 var obj = this._objectScene.sys.displayList.getByName(id);
 
                 this._create.updateObject(obj, objData);
@@ -138,22 +142,22 @@ namespace PhaserEditor2D {
             Models.displayList = msg.displayList;
             Models.projectUrl = msg.projectUrl;
             Models.packs = msg.packs;
-        
+
             this._objectScene.scene.restart();
         }
 
-        private messageReceived(batch : any) {
+        private messageReceived(batch: any) {
             console.log("messageReceived:");
             console.log(batch);
             console.log("----");
 
             var list = batch.list;
-        
+
             for (var i = 0; i < list.length; i++) {
                 var msg = list[i];
-        
+
                 var method = msg.method;
-        
+
                 switch (method) {
                     case "RefreshAll":
                         this.onRefreshAll(msg);
@@ -168,7 +172,7 @@ namespace PhaserEditor2D {
             }
         };
 
-        sendMessage(msg : any) {
+        sendMessage(msg: any) {
             console.log("Sending message:");
             console.log(msg);
             console.log("----");
