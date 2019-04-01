@@ -60,11 +60,9 @@ namespace PhaserEditor2D {
 
             editor.getCreate().createWorld(this.add);
 
-            if (Models.displayList) {
-                editor.sendMessage({
-                    method: "GetSelectObjects"
-                });
-            }
+            editor.sendMessage({
+                method: "GetSelectObjects"
+            });
         }
 
         update() {

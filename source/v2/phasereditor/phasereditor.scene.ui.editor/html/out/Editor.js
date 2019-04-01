@@ -68,7 +68,6 @@ var PhaserEditor2D;
             };
             this._socket.onmessage = function (event) {
                 var msg = JSON.parse(event.data);
-                console.log(msg);
                 self.messageReceived(msg);
             };
             this._socket.onclose = function (event) {
@@ -80,6 +79,7 @@ var PhaserEditor2D;
                     self._socket.close();
                 }
                 event.preventDefault();
+                event.returnValue = "Phaser Editor 2D - Scene Editor Web View";
             });
         };
         Editor.prototype.onSelectObjects = function (msg) {
@@ -104,6 +104,9 @@ var PhaserEditor2D;
             this._objectScene.scene.restart();
         };
         Editor.prototype.messageReceived = function (batch) {
+            console.log("messageReceived:");
+            console.log(batch);
+            console.log("----");
             var list = batch.list;
             for (var i = 0; i < list.length; i++) {
                 var msg = list[i];
@@ -123,6 +126,9 @@ var PhaserEditor2D;
         };
         ;
         Editor.prototype.sendMessage = function (msg) {
+            console.log("Sending message:");
+            console.log(msg);
+            console.log("----");
             this._socket.send(JSON.stringify(msg));
         };
         Editor.prototype.getWebSocketUrl = function () {

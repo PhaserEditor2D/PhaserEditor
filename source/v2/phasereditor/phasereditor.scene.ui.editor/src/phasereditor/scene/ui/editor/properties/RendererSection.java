@@ -65,7 +65,7 @@ public class RendererSection extends BaseDesignSection {
 			var btn = new Button(comp, SWT.PUSH);
 			btn.setText("Refresh");
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				getEditor().getBroker().send(new RefreshAllMessage(getEditor()));
+				getEditor().getBroker().sendAll(new RefreshAllMessage(getEditor()));
 			}));
 		}
 

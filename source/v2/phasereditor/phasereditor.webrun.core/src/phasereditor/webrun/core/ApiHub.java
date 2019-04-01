@@ -98,7 +98,7 @@ public class ApiHub extends WebSocketAdapter {
 
 			if (list != null) {
 				for (var listener : list) {
-					listener.messageReceived(data);
+					listener.messageReceived(this, data);
 				}
 			}
 		}
@@ -131,11 +131,11 @@ public class ApiHub extends WebSocketAdapter {
 		}
 	}
 
-	public static void sendMessageAsync(String channel, ApiMessage message) {
-		sendMessageAsync(channel, message.getData());
+	public static void sendMessageAllClients(String channel, ApiMessage message) {
+		sendMessageAllClients(channel, message.getData());
 	}
 
-	public static void sendMessageAsync(String channel, JSONObject message) {
+	public static void sendMessageAllClients(String channel, JSONObject message) {
 		synchronized (_channelSocketListMap) {
 
 			var list = _channelSocketListMap.get(channel);
@@ -143,7 +143,7 @@ public class ApiHub extends WebSocketAdapter {
 			if (list != null) {
 				for (var socket : list) {
 					try {
-						out.println(socket.hashCode() + "@ ApiHub.sendMessageAsync: " + message.toString(2));
+						out.println(socket.hashCode() + "@ ApiHub.sendMessageAllClients: " + message.toString(2));
 						socket.getRemote().sendString(message.toString());
 					} catch (IOException e) {
 						WebRunCore.logError(e);
@@ -153,7 +153,17 @@ public class ApiHub extends WebSocketAdapter {
 		}
 	}
 
+	public static void sendMessage(Object client, ApiMessage message) {
+		try {
+			var socket = (ApiHub) client;
+			out.println(socket.hashCode() + "@ ApiHub.send: " + message.getData().toString(2));
+			socket.getRemote().sendString(message.getData().toString());
+		} catch (IOException e) {
+			WebRunCore.logError(e);
+		}
+	}
+
 	public static interface IMessageListener {
-		public void messageReceived(JSONObject message);
+		public void messageReceived(Object client, JSONObject message);
 	}
 }

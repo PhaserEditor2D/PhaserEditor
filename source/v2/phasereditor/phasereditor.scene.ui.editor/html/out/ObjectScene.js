@@ -67,11 +67,9 @@ var PhaserEditor2D;
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
             editor.getCreate().createWorld(this.add);
-            if (PhaserEditor2D.Models.displayList) {
-                editor.sendMessage({
-                    method: "GetSelectObjects"
-                });
-            }
+            editor.sendMessage({
+                method: "GetSelectObjects"
+            });
         };
         ObjectScene.prototype.update = function () {
             var pointer = this.input.activePointer;

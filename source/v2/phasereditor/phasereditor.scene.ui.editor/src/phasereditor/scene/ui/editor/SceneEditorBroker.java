@@ -51,17 +51,24 @@ public class SceneEditorBroker {
 		ApiHub.addListener(_channel, this::messageReceived);
 	}
 
-	public void send(ApiMessage msg) {
+	public void sendAll(ApiMessage msg) {
+		ApiHub.sendMessageAllClients(_channel, wrapMessage(msg));
+	}
+
+	@SuppressWarnings("static-method")
+	public void send(Object client, ApiMessage msg) {
+		ApiHub.sendMessage(client, wrapMessage(msg));
+	}
+
+	private static BatchMessage wrapMessage(ApiMessage msg) {
 		if (msg instanceof BatchMessage) {
-			ApiHub.sendMessageAsync(_channel, msg);
-			return;
+			return (BatchMessage) msg;
 		}
-		
+
 		var batch = new BatchMessage();
 
 		batch.add(msg);
-
-		ApiHub.sendMessageAsync(_channel, batch);
+		return batch;
 	}
 
 	public void dispose() {
@@ -73,15 +80,15 @@ public class SceneEditorBroker {
 				+ "/extension/phasereditor.scene.ui.editor/sceneEditor/index.html?channel=" + _channel;
 	}
 
-	private void messageReceived(JSONObject msg) {
+	private void messageReceived(Object client, JSONObject msg) {
 		var method = msg.getString("method");
 
 		switch (method) {
 		case "GetRefreshAll":
-			send(new RefreshAllMessage(_editor));
+			send(client, new RefreshAllMessage(_editor));
 			break;
 		case "GetSelectObjects":
-			send(new SelectObjectsMessage(_editor));
+			send(client, new SelectObjectsMessage(_editor));
 			break;
 
 		default:

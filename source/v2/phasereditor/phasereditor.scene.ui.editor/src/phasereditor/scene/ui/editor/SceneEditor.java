@@ -99,7 +99,7 @@ public class SceneEditor extends EditorPart {
 
 				getScene().redraw();
 
-				getBroker().send(new SelectObjectsMessage(SceneEditor.this));
+				getBroker().sendAll(new SelectObjectsMessage(SceneEditor.this));
 			}
 		};
 

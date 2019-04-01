@@ -181,7 +181,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		getScene().redraw();
 
-		getEditor().getBroker().send(UpdateObjectsMessage.createFromSnapshot(afterData));
+		getEditor().getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}
 
 	protected abstract class SceneCheckListener extends CheckListener {

@@ -94,8 +94,7 @@ namespace PhaserEditor2D {
             };
 
             this._socket.onmessage = function (event) {
-                var msg = JSON.parse(event.data);
-                console.log(msg);
+                var msg = JSON.parse(event.data);                
                 self.messageReceived(msg);
             };
 
@@ -109,6 +108,7 @@ namespace PhaserEditor2D {
                     self._socket.close();
                 }                
                 event.preventDefault();
+                event.returnValue = "Phaser Editor 2D - Scene Editor Web View";
             });
         }
         
@@ -143,6 +143,10 @@ namespace PhaserEditor2D {
         }
 
         private messageReceived(batch : any) {
+            console.log("messageReceived:");
+            console.log(batch);
+            console.log("----");
+
             var list = batch.list;
         
             for (var i = 0; i < list.length; i++) {
@@ -165,6 +169,9 @@ namespace PhaserEditor2D {
         };
 
         sendMessage(msg : any) {
+            console.log("Sending message:");
+            console.log(msg);
+            console.log("----");
             this._socket.send(JSON.stringify(msg));
         }
 
