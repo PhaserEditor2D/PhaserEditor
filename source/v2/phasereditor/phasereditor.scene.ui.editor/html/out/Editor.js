@@ -58,6 +58,7 @@ var PhaserEditor2D;
             this._objectScene.scale.resize(w, h);
         };
         Editor.prototype.openSocket = function () {
+            console.log("Open socket");
             this._socket = new WebSocket(this.getWebSocketUrl());
             var self = this;
             this._socket.onopen = function () {
@@ -67,8 +68,19 @@ var PhaserEditor2D;
             };
             this._socket.onmessage = function (event) {
                 var msg = JSON.parse(event.data);
+                console.log(msg);
                 self.messageReceived(msg);
             };
+            this._socket.onclose = function (event) {
+                console.log("Socket closed");
+            };
+            window.addEventListener("beforeunload", function (event) {
+                if (self._socket) {
+                    console.log("Closing socket...");
+                    self._socket.close();
+                }
+                event.preventDefault();
+            });
         };
         Editor.prototype.onSelectObjects = function (msg) {
             PhaserEditor2D.Models.selection = msg.objectIds;

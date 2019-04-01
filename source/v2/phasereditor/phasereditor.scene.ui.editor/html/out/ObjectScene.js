@@ -41,14 +41,17 @@ var PhaserEditor2D;
             console.log("Common preload");
             this.load.reset();
             var urls = PhaserEditor2D.Models.packs;
-            for (var i = 0; i < urls.length; i++) {
-                var url = urls[i];
+            var i = 0;
+            for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
+                var url = urls_1[_i];
                 console.log("Preload: " + url);
                 this.load.setBaseURL(PhaserEditor2D.Models.projectUrl);
                 this.load.pack("-asset-pack" + i, url);
+                i++;
             }
         };
         ObjectScene.prototype.create = function () {
+            this._dragManager = new DragManager(this);
             this.scale.resize(window.innerWidth, window.innerHeight);
             if (!PhaserEditor2D.Models.isReady()) {
                 this._loadingSprite = this.add.text(10, 10, "Loading...", { fill: "#ff0000" });
@@ -56,10 +59,11 @@ var PhaserEditor2D;
             }
             if (this._loadingSprite !== null) {
                 this._loadingSprite.destroy();
-                delete this._loadingSprite;
+                this._loadingSprite = null;
             }
             this.initCamera();
             this.initKeyboard();
+            this.initMouse();
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
             editor.getCreate().createWorld(this.add);
@@ -68,6 +72,17 @@ var PhaserEditor2D;
                     method: "GetSelectObjects"
                 });
             }
+        };
+        ObjectScene.prototype.update = function () {
+            var pointer = this.input.activePointer;
+            if (pointer.isDown) {
+                console.log(pointer.movementX);
+                var cam = this.cameras.main;
+                cam.scrollX += pointer.movementX;
+                cam.scrollY += pointer.movementY;
+            }
+        };
+        ObjectScene.prototype.initMouse = function () {
         };
         ObjectScene.prototype.initSelectionScene = function () {
             this.scene.launch("ToolScene");
@@ -119,4 +134,36 @@ var PhaserEditor2D;
         return ObjectScene;
     }(Phaser.Scene));
     PhaserEditor2D.ObjectScene = ObjectScene;
+    var DragManager = (function () {
+        function DragManager(scene) {
+            this._scene = scene;
+            this._dragStartPoint = null;
+            this._scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDown, this);
+            this._scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.pointerMove, this);
+            this._scene.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUp, this);
+        }
+        DragManager.prototype.pointerDown = function () {
+            var pointer = this._scene.input.activePointer;
+            if (pointer.middleButtonDown()) {
+                this._dragStartPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+                var cam = this._scene.cameras.main;
+                this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
+            }
+        };
+        DragManager.prototype.pointerMove = function () {
+            if (this._dragStartPoint == null) {
+                return;
+            }
+            var pointer = this._scene.input.activePointer;
+            var dx = this._dragStartPoint.x - pointer.x;
+            var dy = this._dragStartPoint.y - pointer.y;
+            var cam = this._scene.cameras.main;
+            cam.scrollX = this._dragStartCameraScroll.x + dx / cam.zoom;
+            cam.scrollY = this._dragStartCameraScroll.y + dy / cam.zoom;
+        };
+        DragManager.prototype.pointerUp = function () {
+            this._dragStartPoint = null;
+        };
+        return DragManager;
+    }());
 })(PhaserEditor2D || (PhaserEditor2D = {}));

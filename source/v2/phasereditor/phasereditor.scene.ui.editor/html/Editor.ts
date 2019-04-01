@@ -81,6 +81,7 @@ namespace PhaserEditor2D {
         }
 
         openSocket() {
+            console.log("Open socket");
             this._socket = new WebSocket(this.getWebSocketUrl());
             
             const self = this;
@@ -94,8 +95,21 @@ namespace PhaserEditor2D {
 
             this._socket.onmessage = function (event) {
                 var msg = JSON.parse(event.data);
+                console.log(msg);
                 self.messageReceived(msg);
             };
+
+            this._socket.onclose = function (event) {
+                console.log("Socket closed");
+            };
+
+            window.addEventListener("beforeunload", (event) => {
+                if (self._socket) {
+                    console.log("Closing socket...");
+                    self._socket.close();
+                }                
+                event.preventDefault();
+            });
         }
         
         private onSelectObjects(msg : any) {

@@ -70,7 +70,7 @@ public class ApiHub extends WebSocketAdapter {
 
 	@Override
 	public void onWebSocketClose(int statusCode, String reason) {
-		
+
 		out.println("ApiHub.onWebSocketClose@" + _channel);
 
 		synchronized (_channelSocketListMap) {
@@ -143,6 +143,7 @@ public class ApiHub extends WebSocketAdapter {
 			if (list != null) {
 				for (var socket : list) {
 					try {
+						out.println(socket.hashCode() + "@ ApiHub.sendMessageAsync: " + message.toString(2));
 						socket.getRemote().sendString(message.toString());
 					} catch (IOException e) {
 						WebRunCore.logError(e);

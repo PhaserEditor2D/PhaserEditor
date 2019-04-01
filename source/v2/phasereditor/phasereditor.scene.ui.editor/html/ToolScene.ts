@@ -42,7 +42,8 @@ namespace PhaserEditor2D {
                     color: 0x00ff00
                 },
                 lineStyle: {
-                    color: 0x00ff00
+                    color: 0x00ff00,
+                    width: 2
                 }
             });
 
@@ -61,11 +62,16 @@ namespace PhaserEditor2D {
                 point.x = (point.x - cam.scrollX) * cam.zoom;
                 point.y = (point.y - cam.scrollY) * cam.zoom;
 
-                g2.fillCircle(point.x, point.y, 10);
-
                 this.paintSelectionBox(g2, obj);
             }
         }
+
+        private _selectionBoxPoints: Phaser.Math.Vector2[] = [
+            new Phaser.Math.Vector2(0, 0),
+            new Phaser.Math.Vector2(0, 0),
+            new Phaser.Math.Vector2(0, 0),
+            new Phaser.Math.Vector2(0, 0)
+        ];
 
         private paintSelectionBox(graphics: Phaser.GameObjects.Graphics, gameObj: any) {
             var w = gameObj.width;
@@ -76,24 +82,21 @@ namespace PhaserEditor2D {
             var y = -h * oy;
 
             var worldTx = gameObj.getWorldTransformMatrix();
+            
+            worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
+            worldTx.transformPoint(x + w, y, this._selectionBoxPoints[1]);
+            worldTx.transformPoint(x + w, y + h, this._selectionBoxPoints[2]);
+            worldTx.transformPoint(x, y + h, this._selectionBoxPoints[3]);
 
-            var p1 = new Phaser.Math.Vector2(0, 0);
-            var p2 = new Phaser.Math.Vector2(0, 0);
-            var p3 = new Phaser.Math.Vector2(0, 0);
-            var p4 = new Phaser.Math.Vector2(0, 0);
-
-            worldTx.transformPoint(x, y, p1);
-            worldTx.transformPoint(x + w, y, p2);
-            worldTx.transformPoint(x + w, y + h, p3);
-            worldTx.transformPoint(x, y + h, p4);
-
-            const points = [p1, p2, p3, p4];
             var cam = Editor.getInstance().getObjectScene().cameras.main;
-            for(let p of points) {
+            for (let p of this._selectionBoxPoints) {
                 p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom)
             }
 
-            graphics.strokePoints(points, true);
+            graphics.lineStyle(4, 0x000000);
+            graphics.strokePoints(this._selectionBoxPoints, true);
+            graphics.lineStyle(2, 0x00ff00);
+            graphics.strokePoints(this._selectionBoxPoints, true);
         }
     }
 

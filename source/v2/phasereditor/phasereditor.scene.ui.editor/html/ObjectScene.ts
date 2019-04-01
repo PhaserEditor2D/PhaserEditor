@@ -4,6 +4,7 @@ namespace PhaserEditor2D {
 
         private _loadingSprite: Phaser.GameObjects.Text = null;
         private _toolScene: ToolScene;
+        private _dragManager: DragManager;
 
         constructor() {
             super("ObjectScene");
@@ -22,17 +23,19 @@ namespace PhaserEditor2D {
 
             var urls = Models.packs;
 
-            for (var i = 0; i < urls.length; i++) {
-                var url = urls[i];
-
+            let i = 0;
+            for (const url of urls) {
                 console.log("Preload: " + url);
 
                 this.load.setBaseURL(Models.projectUrl);
                 this.load.pack("-asset-pack" + i, url);
+                i++;
             }
         }
 
         create() {
+            this._dragManager = new DragManager(this);
+
             this.scale.resize(window.innerWidth, window.innerHeight);
 
             if (!Models.isReady()) {
@@ -42,12 +45,14 @@ namespace PhaserEditor2D {
 
             if (this._loadingSprite !== null) {
                 this._loadingSprite.destroy();
-                delete this._loadingSprite;
+                this._loadingSprite = null;
             }
 
             this.initCamera();
 
             this.initKeyboard();
+
+            this.initMouse();
 
             this.initSelectionScene();
 
@@ -60,6 +65,22 @@ namespace PhaserEditor2D {
                     method: "GetSelectObjects"
                 });
             }
+        }
+
+        update() {
+            const pointer = this.input.activePointer;
+
+            if (pointer.isDown) {
+
+                console.log(pointer.movementX);
+
+                const cam = this.cameras.main;
+                cam.scrollX += pointer.movementX;
+                cam.scrollY += pointer.movementY;
+            }
+        }
+
+        private initMouse() {
         }
 
         private initSelectionScene() {
@@ -107,7 +128,7 @@ namespace PhaserEditor2D {
             ]);
         };
 
-        private cameraZoom = function (delta : number) {
+        private cameraZoom = function (delta: number) {
             /** @type {Phaser.Scene} */
             var scene = this;
             var cam = scene.cameras.main;
@@ -117,10 +138,10 @@ namespace PhaserEditor2D {
                 cam.zoom *= 0.9;
             }
         }
-        
-        private cameraPan = function (dx : number, dy : number) {
+
+        private cameraPan = function (dx: number, dy: number) {
             var cam = this.cameras.main;
-        
+
             cam.scrollX += dx * 30 / cam.zoom;
             cam.scrollY += dy * 30 / cam.zoom;
         }
@@ -129,15 +150,63 @@ namespace PhaserEditor2D {
             return this._toolScene;
         }
 
-        onMouseWheel(e : any) {
+        onMouseWheel(e: any) {
             var cam = this.cameras.main;
-            
-            var delta : number = e.wheelDelta;
-        
+
+            var delta: number = e.wheelDelta;
+
             var zoom = (delta < 0 ? 0.9 : 1.1);
-        
+
             cam.zoom *= zoom;
-        
+
+        }
+    }
+
+    class DragManager {
+        private _scene: ObjectScene;
+        private _dragStartPoint: Phaser.Math.Vector2;
+        private _dragStartCameraScroll: Phaser.Math.Vector2;
+        private _spaceKey: Phaser.Input.Keyboard.Key;
+
+        constructor(scene: ObjectScene) {
+            this._scene = scene;
+            this._dragStartPoint = null;
+
+            this._scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDown, this);
+            this._scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.pointerMove, this);
+            this._scene.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUp, this);
+        }
+
+        private pointerDown() {
+
+            const pointer = this._scene.input.activePointer;
+
+            if (pointer.middleButtonDown()) {
+                this._dragStartPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+                const cam = this._scene.cameras.main;
+                this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
+            }
+
+        }
+
+        private pointerMove() {
+            if (this._dragStartPoint == null) {
+                return;
+            }
+
+            const pointer = this._scene.input.activePointer;
+
+            const dx = this._dragStartPoint.x - pointer.x;
+            const dy = this._dragStartPoint.y - pointer.y;
+
+            const cam = this._scene.cameras.main;
+
+            cam.scrollX = this._dragStartCameraScroll.x + dx / cam.zoom;
+            cam.scrollY = this._dragStartCameraScroll.y + dy / cam.zoom;
+        }
+
+        private pointerUp() {
+            this._dragStartPoint = null;
         }
     }
 }

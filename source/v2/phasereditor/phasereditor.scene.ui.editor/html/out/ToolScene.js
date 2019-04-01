@@ -14,6 +14,12 @@ var PhaserEditor2D;
         __extends(ToolScene, _super);
         function ToolScene() {
             var _this = _super.call(this, "ToolScene") || this;
+            _this._selectionBoxPoints = [
+                new Phaser.Math.Vector2(0, 0),
+                new Phaser.Math.Vector2(0, 0),
+                new Phaser.Math.Vector2(0, 0),
+                new Phaser.Math.Vector2(0, 0)
+            ];
             _this._selectedObjects = [];
             _this._selectionGraphics = null;
             return _this;
@@ -43,7 +49,8 @@ var PhaserEditor2D;
                     color: 0x00ff00
                 },
                 lineStyle: {
-                    color: 0x00ff00
+                    color: 0x00ff00,
+                    width: 2
                 }
             });
             var g2 = this._selectionGraphics;
@@ -55,7 +62,6 @@ var PhaserEditor2D;
                 worldTx.transformPoint(0, 0, point);
                 point.x = (point.x - cam.scrollX) * cam.zoom;
                 point.y = (point.y - cam.scrollY) * cam.zoom;
-                g2.fillCircle(point.x, point.y, 10);
                 this.paintSelectionBox(g2, obj);
             }
         };
@@ -67,21 +73,19 @@ var PhaserEditor2D;
             var x = -w * ox;
             var y = -h * oy;
             var worldTx = gameObj.getWorldTransformMatrix();
-            var p1 = new Phaser.Math.Vector2(0, 0);
-            var p2 = new Phaser.Math.Vector2(0, 0);
-            var p3 = new Phaser.Math.Vector2(0, 0);
-            var p4 = new Phaser.Math.Vector2(0, 0);
-            worldTx.transformPoint(x, y, p1);
-            worldTx.transformPoint(x + w, y, p2);
-            worldTx.transformPoint(x + w, y + h, p3);
-            worldTx.transformPoint(x, y + h, p4);
-            var points = [p1, p2, p3, p4];
+            worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
+            worldTx.transformPoint(x + w, y, this._selectionBoxPoints[1]);
+            worldTx.transformPoint(x + w, y + h, this._selectionBoxPoints[2]);
+            worldTx.transformPoint(x, y + h, this._selectionBoxPoints[3]);
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
-            for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
-                var p = points_1[_i];
+            for (var _i = 0, _a = this._selectionBoxPoints; _i < _a.length; _i++) {
+                var p = _a[_i];
                 p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom);
             }
-            graphics.strokePoints(points, true);
+            graphics.lineStyle(4, 0x000000);
+            graphics.strokePoints(this._selectionBoxPoints, true);
+            graphics.lineStyle(2, 0x00ff00);
+            graphics.strokePoints(this._selectionBoxPoints, true);
         };
         return ToolScene;
     }(Phaser.Scene));
