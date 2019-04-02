@@ -40,6 +40,12 @@ var PhaserEditor2D;
                     var frame = PhaserEditor2D.TextureComponent.get_textureFrame(data);
                     obj = add.tileSprite(x, y, width, height, key, frame);
                     break;
+                case "BitmapText":
+                    var x = PhaserEditor2D.TransformComponent.get_x(data);
+                    var y = PhaserEditor2D.TransformComponent.get_y(data);
+                    var key = PhaserEditor2D.BitmapTextComponent.get_fontAssetKey(data);
+                    obj = add.bitmapText(x, y, key);
+                    break;
             }
             this.updateObject(obj, data);
         };
@@ -50,13 +56,19 @@ var PhaserEditor2D;
                 case "Image":
                 case "Sprite":
                 case "TileSprite":
+                case "BitmapText":
                     PhaserEditor2D.TransformComponent.updateObject(obj, data);
                     PhaserEditor2D.OriginComponent.updateObject(obj, data);
                     PhaserEditor2D.FlipComponent.updateObject(obj, data);
                     break;
             }
-            if (type === "TileSprite") {
-                PhaserEditor2D.TileSpriteComponent.updateObject(obj, data);
+            switch (type) {
+                case "TileSprite":
+                    PhaserEditor2D.TileSpriteComponent.updateObject(obj, data);
+                    break;
+                case "BitmapText":
+                    PhaserEditor2D.BitmapTextComponent.updateObject(obj, data);
+                    break;
             }
         };
         return Create;

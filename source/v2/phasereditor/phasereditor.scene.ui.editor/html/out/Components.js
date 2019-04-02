@@ -54,4 +54,21 @@ var PhaserEditor2D;
             obj.flipY = this.get_flipY(data);
         }
     };
+    PhaserEditor2D.BitmapTextComponent = {
+        get_fontSize: get_property("fontSize", 0),
+        get_align: get_property("align", 0),
+        get_letterSpacing: get_property("letterSpacing", 0),
+        get_fontAssetKey: get_property("fontAssetKey"),
+        get_originX: get_property("originX", 0),
+        get_originY: get_property("originY", 0),
+        updateObject: function (obj, data) {
+            obj.text = PhaserEditor2D.TextualComponent.get_text(data);
+            obj.fontSize = PhaserEditor2D.BitmapTextComponent.get_fontSize(data);
+            obj.align = PhaserEditor2D.BitmapTextComponent.get_align(data);
+            obj.setOrigin(this.get_originX(data), this.get_originY(data));
+        }
+    };
+    PhaserEditor2D.TextualComponent = {
+        get_text: get_property("text", "")
+    };
 })(PhaserEditor2D || (PhaserEditor2D = {}));

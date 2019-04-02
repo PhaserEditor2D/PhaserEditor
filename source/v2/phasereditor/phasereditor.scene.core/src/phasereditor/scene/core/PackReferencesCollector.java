@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import phasereditor.assetpack.core.AssetFinder;
-import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.project.core.ProjectCore;
 
 /**
@@ -48,11 +48,17 @@ public class PackReferencesCollector {
 		Map<String, String[]> packSectionList = new HashMap<>();
 
 		_sceneModel.getDisplayList().visit(objModel -> {
+			IAssetKey assetKey = null;
+
 			if (objModel instanceof TextureComponent) {
+				assetKey = TextureComponent.utils_getTexture(objModel, _finder);
+			} else if (objModel instanceof BitmapTextComponent) {
+				var key = BitmapTextComponent.get_fontAssetKey(objModel);
+				assetKey = _finder.findAssetKey(key);
+			}
 
-				var frame = getTexture(objModel);
-
-				var packFile = frame.getAsset().getPack().getFile();
+			if (assetKey != null) {
+				var packFile = assetKey.getAsset().getPack().getFile();
 
 				var key = packFile.getFullPath().removeFileExtension().lastSegment();
 				var url = ProjectCore.getAssetUrl(packFile);
@@ -63,18 +69,4 @@ public class PackReferencesCollector {
 
 		return packSectionList.values();
 	}
-
-	private IAssetFrameModel getTexture(ObjectModel model) {
-		var frame = TextureComponent.utils_getTexture(model, _finder);
-
-		if (frame == null) {
-			// TODO: we should not generate code if there is any error, so it is missing a
-			// previous validation
-			throw new RuntimeException("Texture not found (" + TextureComponent.get_textureKey(model) + ","
-					+ TextureComponent.get_textureFrame(model) + ")");
-		}
-
-		return frame;
-	}
-
 }

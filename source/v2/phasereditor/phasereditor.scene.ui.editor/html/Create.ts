@@ -56,30 +56,48 @@ namespace PhaserEditor2D {
                     var frame = TextureComponent.get_textureFrame(data);
 
                     obj = add.tileSprite(x, y, width, height, key, frame);
+                    
+                    break;
+                case "BitmapText":
+                    var x = TransformComponent.get_x(data);
+                    var y = TransformComponent.get_y(data);
+
+                    var key = BitmapTextComponent.get_fontAssetKey(data);
+
+                    obj = add.bitmapText(x, y, key);
+
                     break;
             }
 
             this.updateObject(obj, data);
         }
 
-        updateObject(obj : any, data : any) {
+        updateObject(obj: any, data: any) {
             var type = data["-type"];
-            obj.name = data["-id"];            
+            obj.name = data["-id"];
 
 
             switch (type) {
                 case "Image":
                 case "Sprite":
                 case "TileSprite":
+                case "BitmapText":
                     TransformComponent.updateObject(obj, data);
                     OriginComponent.updateObject(obj, data);
                     FlipComponent.updateObject(obj, data);
                     break;
             }
 
-            if (type === "TileSprite") {
-                TileSpriteComponent.updateObject(obj, data);
+            switch (type) {
+                case "TileSprite":
+                    TileSpriteComponent.updateObject(obj, data);
+                    break;
+                case "BitmapText":
+                    BitmapTextComponent.updateObject(obj, data);
+                    break;
             }
+
+
         }
     }
 }
