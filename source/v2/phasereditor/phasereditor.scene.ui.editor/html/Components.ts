@@ -77,8 +77,9 @@ namespace PhaserEditor2D {
 
         updateObject: function (obj: Phaser.GameObjects.BitmapText, data: any) {
             obj.text = TextualComponent.get_text(data);
-            obj.fontSize = BitmapTextComponent.get_fontSize(data);
-            obj.align = BitmapTextComponent.get_align(data);
+            obj.fontSize = this.get_fontSize(data);
+            obj.align = this.get_align(data);
+            obj.letterSpacing = this.get_letterSpacing(data);
             obj.setOrigin(this.get_originX(data), this.get_originY(data));
         }
     };

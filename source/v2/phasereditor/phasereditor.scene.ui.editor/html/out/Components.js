@@ -63,8 +63,9 @@ var PhaserEditor2D;
         get_originY: get_property("originY", 0),
         updateObject: function (obj, data) {
             obj.text = PhaserEditor2D.TextualComponent.get_text(data);
-            obj.fontSize = PhaserEditor2D.BitmapTextComponent.get_fontSize(data);
-            obj.align = PhaserEditor2D.BitmapTextComponent.get_align(data);
+            obj.fontSize = this.get_fontSize(data);
+            obj.align = this.get_align(data);
+            obj.letterSpacing = this.get_letterSpacing(data);
             obj.setOrigin(this.get_originX(data), this.get_originY(data));
         }
     };
