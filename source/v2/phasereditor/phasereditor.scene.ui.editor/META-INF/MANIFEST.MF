@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.lic;bundle-version="2.0.1",
  phasereditor.atlas.ui;bundle-version="2.0.0",
  phasereditor.webrun.core;bundle-version="2.0.3",
- phasereditor.webrun.ui;bundle-version="2.0.0"
+ phasereditor.webrun.ui;bundle-version="2.0.0",
+ phasereditor.bmpfont.core;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.scene.ui.editor
 Export-Package: phasereditor.scene.ui.editor.wizards

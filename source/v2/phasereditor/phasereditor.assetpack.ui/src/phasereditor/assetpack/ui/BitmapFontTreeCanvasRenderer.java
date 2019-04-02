@@ -52,7 +52,7 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 
 		var canvas = _item.getCanvas();
 
-		var asset = (BitmapFontAssetModel) _item.getData();
+		var asset = getBitmapFontAsset();
 		var frame = asset.getFrame();
 		var file = frame.getImageFile();
 		var model = asset.getFontModel();
@@ -91,6 +91,10 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 
 	}
 
+	protected BitmapFontAssetModel getBitmapFontAsset() {
+		return (BitmapFontAssetModel) _item.getData();
+	}
+
 	@Override
 	public int computeRowHeight(TreeCanvas canvas) {
 		return canvas.getImageSize() + 32;
@@ -98,7 +102,7 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 
 	@Override
 	public ImageProxy get_DND_Image() {
-		var frame = ((BitmapFontAssetModel) _item.getData()).getFrame();
+		var frame = getBitmapFontAsset().getFrame();
 		return AssetPackUI.getImageProxy(frame);
 	}
 }

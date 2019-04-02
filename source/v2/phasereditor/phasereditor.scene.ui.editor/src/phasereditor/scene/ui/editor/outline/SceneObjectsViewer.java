@@ -23,13 +23,16 @@ package phasereditor.scene.ui.editor.outline;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
+import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.assetpack.ui.BitmapFontTreeCanvasRenderer;
+import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
-import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
@@ -47,33 +50,20 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		super.setItemIconProperties(item);
 
-		if (!_editor.getScene().isRendered()) {
-			return;
-		}
-
 		var data = item.getData();
 
-		var sceneRenderer = _editor.getScene().getSceneRenderer();
-		var finder = _editor.getScene().getAssetFinder();
+		var finder = getFinder();
 
 		if (data instanceof BitmapTextModel) {
-			var model = (BitmapTextModel) data;
-			item.setRenderer(new ImageTreeCanvasItemRenderer(item, () -> {
-				var scaled = sceneRenderer.getBitmapTextImage(model);
-				if (scaled == null) {
-					return null;
+			item.setRenderer(new BitmapFontTreeCanvasRenderer(item) {
+				@Override
+				protected BitmapFontAssetModel getBitmapFontAsset() {
+					var model = (BitmapTextModel) _item.getData();
+					var fontAsset = BitmapTextComponent.utils_getFont(model, finder);
+					return fontAsset;
 				}
-				return scaled.getImage();
-			}));
-		} else if (data instanceof TileSpriteModel) {
-			var model = (TileSpriteModel) data;
-			item.setRenderer(new ImageTreeCanvasItemRenderer(item, () -> {
-				var scaled = sceneRenderer.getTileSpriteImage(model);
-				if (scaled == null) {
-					return null;
-				}
-				return scaled.getImage();
-			}));
+			});
+
 		} else if (data instanceof TextureComponent) {
 			var frame = TextureComponent.utils_getTexture((ObjectModel) data, finder);
 			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
@@ -85,5 +75,9 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 			var type = model.getType();
 			item.setKeywords(type);
 		}
+	}
+
+	private AssetFinder getFinder() {
+		return AssetPackCore.getAssetFinder(_editor.getProject());
 	}
 }
