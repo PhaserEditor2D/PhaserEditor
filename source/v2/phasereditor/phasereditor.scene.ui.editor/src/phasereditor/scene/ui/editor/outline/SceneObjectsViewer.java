@@ -31,6 +31,7 @@ import phasereditor.assetpack.ui.BitmapFontTreeCanvasRenderer;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.TreeCanvas;
@@ -61,6 +62,13 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 					var model = (BitmapTextModel) _item.getData();
 					var fontAsset = BitmapTextComponent.utils_getFont(model, finder);
 					return fontAsset;
+				}
+
+				@Override
+				protected String getPreviewText() {
+					var model = (BitmapTextModel) _item.getData();
+					var text = TextualComponent.get_text(model);
+					return text;
 				}
 			});
 

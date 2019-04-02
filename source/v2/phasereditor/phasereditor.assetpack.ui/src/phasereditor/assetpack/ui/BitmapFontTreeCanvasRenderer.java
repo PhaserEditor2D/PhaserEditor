@@ -58,7 +58,7 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 		var model = asset.getFontModel();
 		var rowHeight = computeRowHeight(canvas);
 
-		var text = "abc123";// asset.getKey();
+		var text = getPreviewText();// asset.getKey();
 
 		var metrics = model.metrics(text);
 		var calc = new ZoomCalculator(metrics.getWidth(), metrics.getHeight());
@@ -89,6 +89,11 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 			gc.drawText(label, x, y + rowHeight - textHeight - 5, true);
 		}
 
+	}
+
+	@SuppressWarnings("static-method")
+	protected String getPreviewText() {
+		return "abc123";
 	}
 
 	protected BitmapFontAssetModel getBitmapFontAsset() {
