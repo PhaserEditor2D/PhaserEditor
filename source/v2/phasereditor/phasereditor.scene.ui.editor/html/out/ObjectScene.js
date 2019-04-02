@@ -72,13 +72,7 @@ var PhaserEditor2D;
             });
         };
         ObjectScene.prototype.update = function () {
-            var pointer = this.input.activePointer;
-            if (pointer.isDown) {
-                console.log(pointer.movementX);
-                var cam = this.cameras.main;
-                cam.scrollX += pointer.movementX;
-                cam.scrollY += pointer.movementY;
-            }
+            this._dragManager.update();
         };
         ObjectScene.prototype.initMouse = function () {
         };
@@ -139,6 +133,7 @@ var PhaserEditor2D;
             this._scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDown, this);
             this._scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.pointerMove, this);
             this._scene.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUp, this);
+            this._scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.pointerUp, this);
         }
         DragManager.prototype.pointerDown = function () {
             var pointer = this._scene.input.activePointer;
@@ -161,6 +156,23 @@ var PhaserEditor2D;
         };
         DragManager.prototype.pointerUp = function () {
             this._dragStartPoint = null;
+            this._dragStartCameraScroll = null;
+        };
+        DragManager.prototype.isDragging = function () {
+            return this._dragStartPoint !== null;
+        };
+        DragManager.prototype.update = function () {
+            var pointer = this._scene.input.activePointer;
+            if (this.isDragging() && pointer.isDown) {
+                var cam = this._scene.cameras.main;
+                cam.scrollX += pointer.movementX;
+                cam.scrollY += pointer.movementY;
+            }
+            else {
+                if (this.isDragging()) {
+                    this.pointerUp();
+                }
+            }
         };
         return DragManager;
     }());

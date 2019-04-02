@@ -66,16 +66,7 @@ namespace PhaserEditor2D {
         }
 
         update() {
-            const pointer = this.input.activePointer;
-
-            if (pointer.isDown) {
-
-                console.log(pointer.movementX);
-
-                const cam = this.cameras.main;
-                cam.scrollX += pointer.movementX;
-                cam.scrollY += pointer.movementY;
-            }
+            this._dragManager.update();
         }
 
         private initMouse() {
@@ -173,6 +164,7 @@ namespace PhaserEditor2D {
             this._scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDown, this);
             this._scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.pointerMove, this);
             this._scene.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUp, this);
+            this._scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.pointerUp, this);
         }
 
         private pointerDown() {
@@ -205,6 +197,25 @@ namespace PhaserEditor2D {
 
         private pointerUp() {
             this._dragStartPoint = null;
+            this._dragStartCameraScroll = null;
+        }
+
+        private isDragging() {
+            return this._dragStartPoint !== null;
+        }
+
+        update() {
+            const pointer = this._scene.input.activePointer;
+
+            if (this.isDragging() && pointer.isDown) {
+                const cam = this._scene.cameras.main;
+                cam.scrollX += pointer.movementX;
+                cam.scrollY += pointer.movementY;
+            } else {
+                if (this.isDragging()) {
+                    this.pointerUp();
+                }
+            }
         }
     }
 }
