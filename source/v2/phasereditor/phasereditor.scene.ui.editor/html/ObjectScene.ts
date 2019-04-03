@@ -5,7 +5,7 @@ namespace PhaserEditor2D {
         private _loadingSprite: Phaser.GameObjects.Text = null;
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
-
+        
         constructor() {
             super("ObjectScene");
         }

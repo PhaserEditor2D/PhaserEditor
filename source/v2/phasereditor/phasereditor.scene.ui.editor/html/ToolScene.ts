@@ -4,6 +4,7 @@ namespace PhaserEditor2D {
 
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
+        private _gridGraphics: Phaser.GameObjects.Graphics;
 
 
         constructor() {
@@ -16,6 +17,52 @@ namespace PhaserEditor2D {
         create() {
             this.cameras.main.setOrigin(0, 0);
             this.scale.resize(window.innerWidth, window.innerHeight);
+
+            this._gridGraphics = this.add.graphics({
+                lineStyle: {
+                    width: 1,
+                    color: 0xffffff,
+                    alpha: 0.5
+                }
+            });
+        }
+
+
+        private _gridToken = null;
+
+        private renderGrid() {
+            var cam = Editor.getInstance().getObjectScene().cameras.main;
+
+
+            var w = this.scale.baseSize.width;
+            var h = this.scale.baseSize.height;
+
+            var dx = 32 * cam.zoom;
+            var dy = 32 * cam.zoom;
+
+            var sx = dx - cam.scrollX * cam.zoom % dx;
+            var sy = dy - cam.scrollY * cam.zoom % dy;
+
+            sx -= dx;
+            sy -= dy;
+
+            const token = w + "-" + h + "-" + dx + "-" + dy + "-" + sx + "-" + sy;
+
+            if (this._gridToken !== null && this._gridToken === token) {
+                return;
+            }
+
+            this._gridToken = token;
+
+            this._gridGraphics.clear();
+
+            for (let x = sx; x < w; x += dx) {
+                this._gridGraphics.lineBetween(x, 0, x, h);
+            }
+
+            for (let y = sy; y < window.innerHeight; y += dy) {
+                this._gridGraphics.lineBetween(0, y, w, y);
+            }
         }
 
         updateSelectionObjects() {
@@ -32,6 +79,21 @@ namespace PhaserEditor2D {
         }
 
         update() {
+
+            this.renderGrid();
+
+            if (this._selectedObjects.length === 0) {
+                if (this._selectionGraphics) {
+                    this._selectionGraphics.destroy();
+                    this._selectionGraphics = null;
+                }
+            } else {
+                this.renderSelection();
+            }
+
+        }
+
+        private renderSelection() {
             if (this._selectionGraphics !== null) {
                 this._selectionGraphics.destroy();
                 this._selectionGraphics = null;
@@ -82,7 +144,7 @@ namespace PhaserEditor2D {
             var y = -h * oy;
 
             var worldTx = gameObj.getWorldTransformMatrix();
-            
+
             worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
             worldTx.transformPoint(x + w, y, this._selectionBoxPoints[1]);
             worldTx.transformPoint(x + w, y + h, this._selectionBoxPoints[2]);

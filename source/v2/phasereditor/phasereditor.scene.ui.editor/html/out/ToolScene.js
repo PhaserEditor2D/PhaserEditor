@@ -14,6 +14,7 @@ var PhaserEditor2D;
         __extends(ToolScene, _super);
         function ToolScene() {
             var _this = _super.call(this, "ToolScene") || this;
+            _this._gridToken = null;
             _this._selectionBoxPoints = [
                 new Phaser.Math.Vector2(0, 0),
                 new Phaser.Math.Vector2(0, 0),
@@ -27,6 +28,36 @@ var PhaserEditor2D;
         ToolScene.prototype.create = function () {
             this.cameras.main.setOrigin(0, 0);
             this.scale.resize(window.innerWidth, window.innerHeight);
+            this._gridGraphics = this.add.graphics({
+                lineStyle: {
+                    width: 1,
+                    color: 0xffffff,
+                    alpha: 0.5
+                }
+            });
+        };
+        ToolScene.prototype.renderGrid = function () {
+            var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
+            var w = this.scale.baseSize.width;
+            var h = this.scale.baseSize.height;
+            var dx = 32 * cam.zoom;
+            var dy = 32 * cam.zoom;
+            var sx = dx - cam.scrollX * cam.zoom % dx;
+            var sy = dy - cam.scrollY * cam.zoom % dy;
+            sx -= dx;
+            sy -= dy;
+            var token = w + "-" + h + "-" + dx + "-" + dy + "-" + sx + "-" + sy;
+            if (this._gridToken !== null && this._gridToken === token) {
+                return;
+            }
+            this._gridToken = token;
+            this._gridGraphics.clear();
+            for (var x = sx; x < w; x += dx) {
+                this._gridGraphics.lineBetween(x, 0, x, h);
+            }
+            for (var y = sy; y < window.innerHeight; y += dy) {
+                this._gridGraphics.lineBetween(0, y, w, y);
+            }
         };
         ToolScene.prototype.updateSelectionObjects = function () {
             this._selectedObjects = [];
@@ -40,6 +71,18 @@ var PhaserEditor2D;
             }
         };
         ToolScene.prototype.update = function () {
+            this.renderGrid();
+            if (this._selectedObjects.length === 0) {
+                if (this._selectionGraphics) {
+                    this._selectionGraphics.destroy();
+                    this._selectionGraphics = null;
+                }
+            }
+            else {
+                this.renderSelection();
+            }
+        };
+        ToolScene.prototype.renderSelection = function () {
             if (this._selectionGraphics !== null) {
                 this._selectionGraphics.destroy();
                 this._selectionGraphics = null;
