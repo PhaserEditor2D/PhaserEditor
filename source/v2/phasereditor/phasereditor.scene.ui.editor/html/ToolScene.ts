@@ -48,8 +48,20 @@ namespace PhaserEditor2D {
             const w = this.scale.baseSize.width;
             const h = this.scale.baseSize.height;
 
-            const dx = 32;
-            const dy = 32;
+            let dx = 8;
+            let dy = 8;
+
+            let i = 1;
+            while(dx * i * cam.zoom < 32) {
+                i++;
+            }
+            dx = dx * i;
+
+            i = 1;
+            while(dy * i * cam.zoom < 32) {
+                i++;
+            }
+            dy = dy * i;
 
             const sx = ((cam.scrollX / dx) | 0) * dx;
             const sy = ((cam.scrollY / dy) | 0) * dy;
@@ -68,15 +80,67 @@ namespace PhaserEditor2D {
                 label.destroy();
             }
 
+            // labels
+
+            let label: Phaser.GameObjects.Text = null;
+            let labelHeight = 0;
 
             for (let x = sx; ; x += dx) {
                 const x2 = (x - cam.scrollX) * cam.zoom;
+
                 if (x2 > w) {
                     break;
                 }
-                this._axisGraphics.lineBetween(x2, 0, x2, h);
-                const label = this.add.text(x2, 0, x.toString());
+
+                if (label != null) {
+                    if (label.x + label.width * 2 > x2) {
+                        continue;
+                    }
+                }
+
+                label = this.add.text(x2, 0, x.toString());
+                label.style.setShadow(1, 1);
                 this._axisLabels.push(label);
+                labelHeight = label.height;
+                label.setOrigin(0.5, 0);
+            }
+
+
+
+            let labelWidth = 0;
+
+            for (let y = sy; ; y += dy) {
+                const y2 = (y - cam.scrollY) * cam.zoom;
+                if (y2 > h) {
+                    break;
+                }
+
+                if (y2 < labelHeight) {
+                    continue;
+                }
+
+                const label = this.add.text(0, y2, (y).toString());
+                label.style.setShadow(1, 1);
+                label.setOrigin(0, 0.5);
+                this._axisLabels.push(label);
+
+                labelWidth = Math.max(label.width, labelWidth);
+            }
+
+            // lines
+
+            for (let x = sx; ; x += dx) {
+                const x2 = (x - cam.scrollX) * cam.zoom;
+
+                if (x2 > w) {
+                    break;
+                }
+
+                if (x2 < labelWidth) {
+                    continue;
+                }
+
+                this._axisGraphics.lineBetween(x2, labelHeight, x2, h);
             }
 
             for (let y = sy; ; y += dy) {
@@ -84,9 +148,12 @@ namespace PhaserEditor2D {
                 if (y2 > h) {
                     break;
                 }
-                this._axisGraphics.lineBetween(0, y2, w, y2);
-                const label = this.add.text(0, y2, (y).toString());
-                this._axisLabels.push(label);
+
+                if (y2 < labelHeight) {
+                    continue;
+                }
+
+                this._axisGraphics.lineBetween(labelWidth, y2, w, y2);
             }
         }
 

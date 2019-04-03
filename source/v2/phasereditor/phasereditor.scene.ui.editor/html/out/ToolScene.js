@@ -50,8 +50,18 @@ var PhaserEditor2D;
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
             var w = this.scale.baseSize.width;
             var h = this.scale.baseSize.height;
-            var dx = 32;
-            var dy = 32;
+            var dx = 8;
+            var dy = 8;
+            var i = 1;
+            while (dx * i * cam.zoom < 32) {
+                i++;
+            }
+            dx = dx * i;
+            i = 1;
+            while (dy * i * cam.zoom < 32) {
+                i++;
+            }
+            dy = dy * i;
             var sx = ((cam.scrollX / dx) | 0) * dx;
             var sy = ((cam.scrollY / dy) | 0) * dy;
             var token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY;
@@ -61,26 +71,61 @@ var PhaserEditor2D;
             this._axisToken = token;
             this._axisGraphics.clear();
             for (var _i = 0, _a = this._axisLabels; _i < _a.length; _i++) {
-                var label = _a[_i];
-                label.destroy();
+                var label_1 = _a[_i];
+                label_1.destroy();
+            }
+            var label = null;
+            var labelHeight = 0;
+            for (var x = sx;; x += dx) {
+                var x2 = (x - cam.scrollX) * cam.zoom;
+                if (x2 > w) {
+                    break;
+                }
+                if (label != null) {
+                    if (label.x + label.width * 2 > x2) {
+                        continue;
+                    }
+                }
+                label = this.add.text(x2, 0, x.toString());
+                label.style.setShadow(1, 1);
+                this._axisLabels.push(label);
+                labelHeight = label.height;
+                label.setOrigin(0.5, 0);
+            }
+            var labelWidth = 0;
+            for (var y = sy;; y += dy) {
+                var y2 = (y - cam.scrollY) * cam.zoom;
+                if (y2 > h) {
+                    break;
+                }
+                if (y2 < labelHeight) {
+                    continue;
+                }
+                var label_2 = this.add.text(0, y2, (y).toString());
+                label_2.style.setShadow(1, 1);
+                label_2.setOrigin(0, 0.5);
+                this._axisLabels.push(label_2);
+                labelWidth = Math.max(label_2.width, labelWidth);
             }
             for (var x = sx;; x += dx) {
                 var x2 = (x - cam.scrollX) * cam.zoom;
                 if (x2 > w) {
                     break;
                 }
-                this._axisGraphics.lineBetween(x2, 0, x2, h);
-                var label = this.add.text(x2, 0, x.toString());
-                this._axisLabels.push(label);
+                if (x2 < labelWidth) {
+                    continue;
+                }
+                this._axisGraphics.lineBetween(x2, labelHeight, x2, h);
             }
             for (var y = sy;; y += dy) {
                 var y2 = (y - cam.scrollY) * cam.zoom;
                 if (y2 > h) {
                     break;
                 }
-                this._axisGraphics.lineBetween(0, y2, w, y2);
-                var label = this.add.text(0, y2, (y).toString());
-                this._axisLabels.push(label);
+                if (y2 < labelHeight) {
+                    continue;
+                }
+                this._axisGraphics.lineBetween(labelWidth, y2, w, y2);
             }
         };
         ToolScene.prototype.updateSelectionObjects = function () {
