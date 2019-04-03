@@ -35,6 +35,15 @@ var PhaserEditor2D;
                     alpha: 0.5
                 }
             });
+            this._selectionGraphics = this.add.graphics({
+                fillStyle: {
+                    color: 0x00ff00
+                },
+                lineStyle: {
+                    color: 0x00ff00,
+                    width: 2
+                }
+            });
         };
         ToolScene.prototype.renderGrid = function () {
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
@@ -72,30 +81,10 @@ var PhaserEditor2D;
         };
         ToolScene.prototype.update = function () {
             this.renderGrid();
-            if (this._selectedObjects.length === 0) {
-                if (this._selectionGraphics) {
-                    this._selectionGraphics.destroy();
-                    this._selectionGraphics = null;
-                }
-            }
-            else {
-                this.renderSelection();
-            }
+            this.renderSelection();
         };
         ToolScene.prototype.renderSelection = function () {
-            if (this._selectionGraphics !== null) {
-                this._selectionGraphics.destroy();
-                this._selectionGraphics = null;
-            }
-            this._selectionGraphics = this.add.graphics({
-                fillStyle: {
-                    color: 0x00ff00
-                },
-                lineStyle: {
-                    color: 0x00ff00,
-                    width: 2
-                }
-            });
+            this._selectionGraphics.clear();
             var g2 = this._selectionGraphics;
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
             var point = new Phaser.Math.Vector2(0, 0);

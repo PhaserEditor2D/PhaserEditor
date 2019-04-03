@@ -25,6 +25,16 @@ namespace PhaserEditor2D {
                     alpha: 0.5
                 }
             });
+
+            this._selectionGraphics = this.add.graphics({
+                fillStyle: {
+                    color: 0x00ff00
+                },
+                lineStyle: {
+                    color: 0x00ff00,
+                    width: 2
+                }
+            });
         }
 
 
@@ -79,35 +89,13 @@ namespace PhaserEditor2D {
         }
 
         update() {
-
             this.renderGrid();
-
-            if (this._selectedObjects.length === 0) {
-                if (this._selectionGraphics) {
-                    this._selectionGraphics.destroy();
-                    this._selectionGraphics = null;
-                }
-            } else {
-                this.renderSelection();
-            }
-
+            this.renderSelection();
         }
 
         private renderSelection() {
-            if (this._selectionGraphics !== null) {
-                this._selectionGraphics.destroy();
-                this._selectionGraphics = null;
-            }
+            this._selectionGraphics.clear();
 
-            this._selectionGraphics = this.add.graphics({
-                fillStyle: {
-                    color: 0x00ff00
-                },
-                lineStyle: {
-                    color: 0x00ff00,
-                    width: 2
-                }
-            });
 
             const g2 = this._selectionGraphics;
 
