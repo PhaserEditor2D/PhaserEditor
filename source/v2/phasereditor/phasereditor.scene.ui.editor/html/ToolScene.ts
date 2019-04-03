@@ -4,7 +4,7 @@ namespace PhaserEditor2D {
 
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
-        private _gridGraphics: Phaser.GameObjects.Graphics;
+        private _axisGraphics: Phaser.GameObjects.Graphics;
 
 
         constructor() {
@@ -18,7 +18,7 @@ namespace PhaserEditor2D {
             this.cameras.main.setOrigin(0, 0);
             this.scale.resize(window.innerWidth, window.innerHeight);
 
-            this._gridGraphics = this.add.graphics({
+            this._axisGraphics = this.add.graphics({
                 lineStyle: {
                     width: 1,
                     color: 0xffffff,
@@ -38,40 +38,55 @@ namespace PhaserEditor2D {
         }
 
 
-        private _gridToken = null;
+        private _axisToken = null;
+        private _axisLabels: Phaser.GameObjects.Text[] = [];
 
-        private renderGrid() {
-            var cam = Editor.getInstance().getObjectScene().cameras.main;
+        private renderAxis() {
+            const cam = Editor.getInstance().getObjectScene().cameras.main;
 
 
-            var w = this.scale.baseSize.width;
-            var h = this.scale.baseSize.height;
+            const w = this.scale.baseSize.width;
+            const h = this.scale.baseSize.height;
 
-            var dx = 32 * cam.zoom;
-            var dy = 32 * cam.zoom;
+            const dx = 32;
+            const dy = 32;
 
-            var sx = dx - cam.scrollX * cam.zoom % dx;
-            var sy = dy - cam.scrollY * cam.zoom % dy;
+            const sx = ((cam.scrollX / dx) | 0) * dx;
+            const sy = ((cam.scrollY / dy) | 0) * dy;
 
-            sx -= dx;
-            sy -= dy;
+            const token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY;
 
-            const token = w + "-" + h + "-" + dx + "-" + dy + "-" + sx + "-" + sy;
-
-            if (this._gridToken !== null && this._gridToken === token) {
+            if (this._axisToken !== null && this._axisToken === token) {
                 return;
             }
 
-            this._gridToken = token;
+            this._axisToken = token;
 
-            this._gridGraphics.clear();
+            this._axisGraphics.clear();
 
-            for (let x = sx; x < w; x += dx) {
-                this._gridGraphics.lineBetween(x, 0, x, h);
+            for (const label of this._axisLabels) {
+                label.destroy();
             }
 
-            for (let y = sy; y < window.innerHeight; y += dy) {
-                this._gridGraphics.lineBetween(0, y, w, y);
+
+            for (let x = sx; ; x += dx) {
+                const x2 = (x - cam.scrollX) * cam.zoom;
+                if (x2 > w) {
+                    break;
+                }
+                this._axisGraphics.lineBetween(x2, 0, x2, h);
+                const label = this.add.text(x2, 0, x.toString());
+                this._axisLabels.push(label);
+            }
+
+            for (let y = sy; ; y += dy) {
+                const y2 = (y - cam.scrollY) * cam.zoom;
+                if (y2 > h) {
+                    break;
+                }
+                this._axisGraphics.lineBetween(0, y2, w, y2);
+                const label = this.add.text(0, y2, (y).toString());
+                this._axisLabels.push(label);
             }
         }
 
@@ -89,7 +104,7 @@ namespace PhaserEditor2D {
         }
 
         update() {
-            this.renderGrid();
+            this.renderAxis();
             this.renderSelection();
         }
 
