@@ -81,8 +81,6 @@ var PhaserEditor2D;
                     console.log("Closing socket...");
                     self._socket.close();
                 }
-                event.preventDefault();
-                event.returnValue = "Phaser Editor 2D - Scene Editor Web View";
             });
         };
         Editor.prototype.onSelectObjects = function (msg) {
