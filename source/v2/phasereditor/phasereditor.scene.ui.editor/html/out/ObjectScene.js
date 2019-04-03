@@ -40,15 +40,8 @@ var PhaserEditor2D;
             }
             console.log("Common preload");
             this.load.reset();
-            var urls = PhaserEditor2D.Models.packs;
-            var i = 0;
-            for (var _i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
-                var url = urls_1[_i];
-                console.log("Preload: " + url);
-                this.load.setBaseURL(PhaserEditor2D.Models.projectUrl);
-                this.load.pack("-asset-pack" + i, url);
-                i++;
-            }
+            this.load.setBaseURL(PhaserEditor2D.Models.projectUrl);
+            this.load.pack("pack", PhaserEditor2D.Models.pack);
         };
         ObjectScene.prototype.create = function () {
             this._dragManager = new DragManager(this);

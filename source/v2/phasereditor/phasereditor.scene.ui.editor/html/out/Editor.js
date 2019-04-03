@@ -103,7 +103,7 @@ var PhaserEditor2D;
         Editor.prototype.onRefreshAll = function (msg) {
             PhaserEditor2D.Models.displayList = msg.displayList;
             PhaserEditor2D.Models.projectUrl = msg.projectUrl;
-            PhaserEditor2D.Models.packs = msg.packs;
+            PhaserEditor2D.Models.pack = msg.pack;
             this._objectScene.scene.restart();
         };
         Editor.prototype.messageReceived = function (batch) {

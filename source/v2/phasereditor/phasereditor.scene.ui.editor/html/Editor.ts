@@ -141,7 +141,7 @@ namespace PhaserEditor2D {
         private onRefreshAll(msg) {
             Models.displayList = msg.displayList;
             Models.projectUrl = msg.projectUrl;
-            Models.packs = msg.packs;
+            Models.pack = msg.pack;
 
             this._objectScene.scene.restart();
         }

@@ -6,7 +6,7 @@ namespace PhaserEditor2D {
         };
         static selection: any[] = [];
         static projectUrl: string = null;
-        static packs: any[] = [];
+        static pack: any = {};
 
 
         static displayList_updateObjectData(objData: any) {

@@ -21,12 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.messages;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -53,15 +58,31 @@ public class RefreshAllMessage extends ApiMessage {
 		{
 			var projectUrl = WebRunUI.getProjectBrowserURL(project);
 
-			var packData = new JSONArray();
-			_data.put("packs", packData);
 			_data.put("projectUrl", projectUrl);
 			var collector = new PackReferencesCollector(model, finder);
-			var list = collector.collect();
 
-			for (var item : list) {
-				var url = item[1];
-				packData.put(url);
+			try {
+				var newPack = collector.collectNewPack(asset -> {
+					return
+
+					asset instanceof ImageAssetModel
+
+							|| asset instanceof SpritesheetAssetModel
+
+							|| asset instanceof AtlasAssetModel
+
+							|| asset instanceof MultiAtlasAssetModel
+
+							|| asset instanceof BitmapFontAssetModel;
+
+				});
+
+				var packData = newPack.toJSON();
+
+				_data.put("pack", packData);
+
+			} catch (Exception e) {
+				SceneUIEditor.logError(e);
 			}
 		}
 	}

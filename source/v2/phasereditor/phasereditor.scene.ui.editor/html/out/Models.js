@@ -20,7 +20,7 @@ var PhaserEditor2D;
         };
         Models.selection = [];
         Models.projectUrl = null;
-        Models.packs = [];
+        Models.pack = {};
         return Models;
     }());
     PhaserEditor2D.Models = Models;

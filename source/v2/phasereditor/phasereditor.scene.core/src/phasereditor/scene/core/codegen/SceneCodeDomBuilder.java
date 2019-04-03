@@ -873,7 +873,7 @@ public class SceneCodeDomBuilder {
 
 		var collector = new PackReferencesCollector(model, _finder);
 		
-		var packSectionList = collector.collect();
+		var packSectionList = collector.collectKeyUrlTuples();
 
 		for (var pair : packSectionList) {
 

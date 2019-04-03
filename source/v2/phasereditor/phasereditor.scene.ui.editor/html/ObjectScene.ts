@@ -21,16 +21,9 @@ namespace PhaserEditor2D {
 
             this.load.reset();
 
-            var urls = Models.packs;
-
-            let i = 0;
-            for (const url of urls) {
-                console.log("Preload: " + url);
-
-                this.load.setBaseURL(Models.projectUrl);
-                this.load.pack("-asset-pack" + i, url);
-                i++;
-            }
+            this.load.setBaseURL(Models.projectUrl);
+            this.load.pack("pack", Models.pack);
+            
         }
 
         create() {

@@ -21,11 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.project.core.ProjectCore;
 
@@ -44,8 +53,8 @@ public class PackReferencesCollector {
 		_finder = finder;
 	}
 
-	public Collection<String[]> collect() {
-		Map<String, String[]> packSectionList = new HashMap<>();
+	public List<IAssetKey> collectAssetKeys() {
+		var list = new ArrayList<IAssetKey>();
 
 		_sceneModel.getDisplayList().visit(objModel -> {
 			IAssetKey assetKey = null;
@@ -58,15 +67,48 @@ public class PackReferencesCollector {
 			}
 
 			if (assetKey != null) {
-				var packFile = assetKey.getAsset().getPack().getFile();
-
-				var key = packFile.getFullPath().removeFileExtension().lastSegment();
-				var url = ProjectCore.getAssetUrl(packFile);
-
-				packSectionList.put(key + "-" + url, new String[] { key, url });
+				list.add(assetKey);
 			}
 		});
 
+		return list;
+	}
+
+	public Collection<String[]> collectKeyUrlTuples() {
+		Map<String, String[]> packSectionList = new HashMap<>();
+
+		var assetKeys = collectAssetKeys();
+		
+		for (var assetKey : assetKeys) {
+			var packFile = assetKey.getAsset().getPack().getFile();
+
+			var key = packFile.getFullPath().removeFileExtension().lastSegment();
+			var url = ProjectCore.getAssetUrl(packFile);
+
+			packSectionList.put(key + "-" + url, new String[] { key, url });
+		}
+
 		return packSectionList.values();
+	}
+
+	public AssetPackModel collectNewPack(Predicate<AssetModel> filter) throws Exception {
+		var assetKeys = collectAssetKeys();
+		var assetModels = new HashSet<AssetModel>();
+		
+		for(var assetKey : assetKeys) {
+			if (filter.test(assetKey.getAsset())) {
+				assetModels.add(assetKey.getAsset());
+			}
+		}
+		
+		var pack = new AssetPackModel(new JSONObject(), null);
+		var section = new AssetSectionModel("section", pack);
+		pack.addSection(section, false);
+		
+		for(var model: assetModels) {
+			section.addAsset(model, false);
+		}
+		
+		return pack;
 	}
 }
