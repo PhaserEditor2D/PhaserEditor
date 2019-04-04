@@ -57,7 +57,7 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 
 	@Override
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
-		rebuildEditors();
+		// rebuildEditors();
 	}
 
 	private void rebuildEditors() {
