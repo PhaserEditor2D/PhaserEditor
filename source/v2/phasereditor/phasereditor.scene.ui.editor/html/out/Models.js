@@ -15,6 +15,9 @@ var PhaserEditor2D;
         Models.isReady = function () {
             return Models.displayList.children.length > 0;
         };
+        Models.gameConfig = {
+            webgl: true
+        };
         Models.displayList = {
             children: []
         };

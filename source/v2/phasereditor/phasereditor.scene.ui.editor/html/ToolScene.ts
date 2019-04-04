@@ -15,8 +15,7 @@ namespace PhaserEditor2D {
         }
 
         create() {
-            this.cameras.main.setOrigin(0, 0);
-            this.scale.resize(window.innerWidth, window.innerHeight);
+            this.initCamera();
 
             this._axisGraphics = this.add.graphics({
                 lineStyle: {
@@ -35,6 +34,12 @@ namespace PhaserEditor2D {
                     width: 2
                 }
             });
+        }
+
+        initCamera() {
+            this.cameras.main.setRoundPixels(true);
+            this.cameras.main.setOrigin(0, 0);
+            this.scale.resize(window.innerWidth, window.innerHeight);
         }
 
 

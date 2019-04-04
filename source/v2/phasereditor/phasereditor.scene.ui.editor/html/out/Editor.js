@@ -3,12 +3,15 @@ var PhaserEditor2D;
     var Editor = (function () {
         function Editor() {
             Editor._instance = this;
+            this.openSocket();
+        }
+        Editor.prototype.createGame = function () {
             this._create = new PhaserEditor2D.Create();
             this._game = new Phaser.Game({
                 title: "Phaser Editor 2D - Web Scene Editor",
                 width: window.innerWidth,
                 height: window.innerWidth,
-                type: Phaser.CANVAS,
+                type: PhaserEditor2D.Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
                     pixelArt: true
                 },
@@ -39,7 +42,10 @@ var PhaserEditor2D;
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
             });
-        }
+            this.sendMessage({
+                method: "GetRefreshAll"
+            });
+        };
         Editor.getInstance = function () {
             return Editor._instance;
         };
@@ -65,8 +71,11 @@ var PhaserEditor2D;
             this._socket = new WebSocket(this.getWebSocketUrl());
             var self = this;
             this._socket.onopen = function () {
+                if (self._game) {
+                    return;
+                }
                 self.sendMessage({
-                    method: "GetRefreshAll"
+                    method: "GetCreateGame"
                 });
             };
             this._socket.onmessage = function (event) {
@@ -104,6 +113,10 @@ var PhaserEditor2D;
             PhaserEditor2D.Models.pack = msg.pack;
             this._objectScene.scene.restart();
         };
+        Editor.prototype.onCreateGame = function (msg) {
+            PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
+            this.createGame();
+        };
         Editor.prototype.messageReceived = function (batch) {
             console.log("messageReceived:");
             console.log(batch);
@@ -113,6 +126,9 @@ var PhaserEditor2D;
                 var msg = list[i];
                 var method = msg.method;
                 switch (method) {
+                    case "CreateGame":
+                        this.onCreateGame(msg);
+                        break;
                     case "RefreshAll":
                         this.onRefreshAll(msg);
                         break;

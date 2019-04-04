@@ -27,8 +27,7 @@ var PhaserEditor2D;
             return _this;
         }
         ToolScene.prototype.create = function () {
-            this.cameras.main.setOrigin(0, 0);
-            this.scale.resize(window.innerWidth, window.innerHeight);
+            this.initCamera();
             this._axisGraphics = this.add.graphics({
                 lineStyle: {
                     width: 1,
@@ -45,6 +44,11 @@ var PhaserEditor2D;
                     width: 2
                 }
             });
+        };
+        ToolScene.prototype.initCamera = function () {
+            this.cameras.main.setRoundPixels(true);
+            this.cameras.main.setOrigin(0, 0);
+            this.scale.resize(window.innerWidth, window.innerHeight);
         };
         ToolScene.prototype.renderAxis = function () {
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;

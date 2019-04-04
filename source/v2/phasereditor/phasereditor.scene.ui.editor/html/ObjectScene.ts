@@ -11,6 +11,7 @@ namespace PhaserEditor2D {
         }
 
         preload() {
+            
             if (!Models.isReady()) {
                 // we do not load nothing, we open the socket to request the first refresh all.
                 console.log("First preload");
@@ -28,8 +29,6 @@ namespace PhaserEditor2D {
 
         create() {
             this._dragManager = new DragManager(this);
-
-            this.scale.resize(window.innerWidth, window.innerHeight);
 
             if (!Models.isReady()) {
                 this._loadingSprite = this.add.text(10, 10, "Loading...", { fill: "#ff0000" });
@@ -99,6 +98,9 @@ namespace PhaserEditor2D {
         private initCamera() {
             var cam = this.cameras.main;
             cam.setOrigin(0, 0);
+            cam.setRoundPixels(true);
+
+            this.scale.resize(window.innerWidth, window.innerHeight);
 
             this.input.keyboard.addCapture([
                 Phaser.Input.Keyboard.KeyCodes.I,
@@ -111,9 +113,8 @@ namespace PhaserEditor2D {
         };
 
         private cameraZoom = function (delta: number) {
-            /** @type {Phaser.Scene} */
-            var scene = this;
-            var cam = scene.cameras.main;
+            var cam = this.cameras.main;
+
             if (delta < 0) {
                 cam.zoom *= 1.1;
             } else {

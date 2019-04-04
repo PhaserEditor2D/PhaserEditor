@@ -16,8 +16,7 @@ var PhaserEditor2D;
             var _this = _super.call(this, "ObjectScene") || this;
             _this._loadingSprite = null;
             _this.cameraZoom = function (delta) {
-                var scene = this;
-                var cam = scene.cameras.main;
+                var cam = this.cameras.main;
                 if (delta < 0) {
                     cam.zoom *= 1.1;
                 }
@@ -45,7 +44,6 @@ var PhaserEditor2D;
         };
         ObjectScene.prototype.create = function () {
             this._dragManager = new DragManager(this);
-            this.scale.resize(window.innerWidth, window.innerHeight);
             if (!PhaserEditor2D.Models.isReady()) {
                 this._loadingSprite = this.add.text(10, 10, "Loading...", { fill: "#ff0000" });
                 return;
@@ -97,6 +95,8 @@ var PhaserEditor2D;
         ObjectScene.prototype.initCamera = function () {
             var cam = this.cameras.main;
             cam.setOrigin(0, 0);
+            cam.setRoundPixels(true);
+            this.scale.resize(window.innerWidth, window.innerHeight);
             this.input.keyboard.addCapture([
                 Phaser.Input.Keyboard.KeyCodes.I,
                 Phaser.Input.Keyboard.KeyCodes.O,

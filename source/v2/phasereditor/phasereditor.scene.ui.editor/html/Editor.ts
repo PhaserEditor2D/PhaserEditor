@@ -11,16 +11,19 @@ namespace PhaserEditor2D {
         constructor() {
             Editor._instance = this;
 
-            this._create = new Create();
+            this.openSocket();
+        }
 
+        private createGame() {
+            this._create = new Create();
             this._game = new Phaser.Game({
                 title: "Phaser Editor 2D - Web Scene Editor",
                 width: window.innerWidth,
                 height: window.innerWidth,
                 // WEBGL is problematic on Linux
-                type: Phaser.CANVAS,
+                type: Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
-                    pixelArt: true,
+                    pixelArt: true
                 },
                 url: "https://phasereditor2d.com",
                 parent: "editorContainer",
@@ -55,6 +58,10 @@ namespace PhaserEditor2D {
 
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
+            });
+
+            this.sendMessage({
+                method: "GetRefreshAll"
             });
         }
 
@@ -92,9 +99,13 @@ namespace PhaserEditor2D {
 
             // we should create the socket when the editor scene is ready, it means, the first time the preload method is called.
             this._socket.onopen = function () {
-                self.sendMessage({
-                    method: "GetRefreshAll"
-                });
+                //TODO: I don't know why this method is executed twice
+                if (self._game) {
+                    return;
+                }
+               self.sendMessage({
+                   method: "GetCreateGame"
+               });
             };
 
             this._socket.onmessage = function (event) {
@@ -146,6 +157,12 @@ namespace PhaserEditor2D {
             this._objectScene.scene.restart();
         }
 
+        private onCreateGame(msg) {
+            Models.gameConfig.webgl = msg.webgl;
+
+            this.createGame();
+        }
+
         private messageReceived(batch: any) {
             console.log("messageReceived:");
             console.log(batch);
@@ -159,6 +176,9 @@ namespace PhaserEditor2D {
                 var method = msg.method;
 
                 switch (method) {
+                    case "CreateGame":
+                        this.onCreateGame(msg);
+                        break;
                     case "RefreshAll":
                         this.onRefreshAll(msg);
                         break;

@@ -1,6 +1,9 @@
 namespace PhaserEditor2D {
 
     export class Models {
+        static gameConfig = {
+            webgl: true
+        }
         static displayList = {
             children: []
         };
