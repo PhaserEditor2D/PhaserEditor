@@ -28,6 +28,7 @@ var PhaserEditor2D;
         }
         ToolScene.prototype.create = function () {
             this.initCamera();
+            this._axisToken = "";
             this._axisGraphics = this.add.graphics({
                 lineStyle: {
                     width: 1,

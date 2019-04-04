@@ -34,13 +34,13 @@ var PhaserEditor2D;
         ObjectScene.prototype.preload = function () {
             if (!PhaserEditor2D.Models.isReady()) {
                 console.log("First preload");
-                PhaserEditor2D.Editor.getInstance().openSocket();
                 return;
             }
             console.log("Common preload");
-            this.load.reset();
             this.load.setBaseURL(PhaserEditor2D.Models.projectUrl);
-            this.load.pack("pack", PhaserEditor2D.Models.pack);
+            var key = "pack" + this.time.now;
+            console.log("Loading: " + key);
+            this.load.pack(key, PhaserEditor2D.Models.pack);
         };
         ObjectScene.prototype.create = function () {
             this._dragManager = new DragManager(this);

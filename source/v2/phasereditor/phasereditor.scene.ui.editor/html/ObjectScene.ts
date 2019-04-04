@@ -5,26 +5,25 @@ namespace PhaserEditor2D {
         private _loadingSprite: Phaser.GameObjects.Text = null;
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
-        
+
         constructor() {
             super("ObjectScene");
         }
 
         preload() {
-            
+
             if (!Models.isReady()) {
                 // we do not load nothing, we open the socket to request the first refresh all.
                 console.log("First preload");
-                Editor.getInstance().openSocket();
                 return;
             }
             console.log("Common preload");
 
-            this.load.reset();
-
             this.load.setBaseURL(Models.projectUrl);
-            this.load.pack("pack", Models.pack);
-            
+            const key = "pack" + this.time.now;
+            console.log("Loading: " + key);
+            this.load.pack(key, Models.pack);
+
         }
 
         create() {

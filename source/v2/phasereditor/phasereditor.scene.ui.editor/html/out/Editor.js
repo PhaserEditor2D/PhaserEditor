@@ -113,6 +113,9 @@ var PhaserEditor2D;
             PhaserEditor2D.Models.pack = msg.pack;
             this._objectScene.scene.restart();
         };
+        Editor.prototype.onReloadPage = function () {
+            window.location.reload();
+        };
         Editor.prototype.onCreateGame = function (msg) {
             PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
             this.createGame();
@@ -126,6 +129,9 @@ var PhaserEditor2D;
                 var msg = list[i];
                 var method = msg.method;
                 switch (method) {
+                    case "ReloadPage":
+                        this.onReloadPage();
+                        break;
                     case "CreateGame":
                         this.onCreateGame(msg);
                         break;

@@ -103,9 +103,9 @@ namespace PhaserEditor2D {
                 if (self._game) {
                     return;
                 }
-               self.sendMessage({
-                   method: "GetCreateGame"
-               });
+                self.sendMessage({
+                    method: "GetCreateGame"
+                });
             };
 
             this._socket.onmessage = function (event) {
@@ -157,6 +157,10 @@ namespace PhaserEditor2D {
             this._objectScene.scene.restart();
         }
 
+        private onReloadPage() {
+            window.location.reload();
+        }
+
         private onCreateGame(msg) {
             Models.gameConfig.webgl = msg.webgl;
 
@@ -176,6 +180,9 @@ namespace PhaserEditor2D {
                 var method = msg.method;
 
                 switch (method) {
+                    case "ReloadPage":
+                        this.onReloadPage();
+                        break;
                     case "CreateGame":
                         this.onCreateGame(msg);
                         break;
@@ -187,7 +194,7 @@ namespace PhaserEditor2D {
                         break;
                     case "SelectObjects":
                         this.onSelectObjects(msg);
-                        break;
+                        break;                    
                 }
             }
         };

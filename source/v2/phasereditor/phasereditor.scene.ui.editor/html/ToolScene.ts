@@ -17,6 +17,8 @@ namespace PhaserEditor2D {
         create() {
             this.initCamera();
 
+            this._axisToken = "";
+
             this._axisGraphics = this.add.graphics({
                 lineStyle: {
                     width: 1,
@@ -43,7 +45,7 @@ namespace PhaserEditor2D {
         }
 
 
-        private _axisToken = null;
+        private _axisToken : string = null;
         private _axisLabels: Phaser.GameObjects.Text[] = [];
 
         private renderAxis() {

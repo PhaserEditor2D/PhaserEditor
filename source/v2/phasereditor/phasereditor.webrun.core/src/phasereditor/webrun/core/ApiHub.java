@@ -143,7 +143,7 @@ public class ApiHub extends WebSocketAdapter {
 			if (list != null) {
 				for (var socket : list) {
 					try {
-						out.println(socket.hashCode() + "@ ApiHub.sendMessageAllClients: " + message.toString(2));
+						out.println(socket.hashCode() + "@ ApiHub.sendMessageAllClients: " + message.toString());
 						socket.getRemote().sendString(message.toString());
 					} catch (IOException e) {
 						WebRunCore.logError(e);

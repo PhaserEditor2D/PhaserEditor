@@ -23,13 +23,14 @@ package phasereditor.scene.ui.editor.properties;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
+import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -55,7 +56,8 @@ public class RendererSection extends BaseDesignSection {
 
 		{
 			var btn = new Button(comp, SWT.PUSH);
-			btn.setText("Open In Browser");
+			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			btn.setText("System Browser");
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 				WebRunUI.openBrowser(getEditor().getBroker().getUrl());
 			}));
@@ -63,9 +65,10 @@ public class RendererSection extends BaseDesignSection {
 
 		{
 			var btn = new Button(comp, SWT.PUSH);
+			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			btn.setText("Refresh");
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				getEditor().getBroker().sendAll(new RefreshAllMessage(getEditor()));
+				getEditor().getBroker().sendAll(new ReloadPageMessage());
 			}));
 		}
 
