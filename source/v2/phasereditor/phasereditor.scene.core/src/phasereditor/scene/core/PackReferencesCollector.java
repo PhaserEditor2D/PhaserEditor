@@ -29,12 +29,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.project.core.ProjectCore;
 
@@ -78,7 +77,7 @@ public class PackReferencesCollector {
 		Map<String, String[]> packSectionList = new HashMap<>();
 
 		var assetKeys = collectAssetKeys();
-		
+
 		for (var assetKey : assetKeys) {
 			var packFile = assetKey.getAsset().getPack().getFile();
 
@@ -91,24 +90,26 @@ public class PackReferencesCollector {
 		return packSectionList.values();
 	}
 
-	public AssetPackModel collectNewPack(Predicate<AssetModel> filter) throws Exception {
+	public JSONObject collectNewPack(Predicate<AssetModel> filter) throws Exception {
 		var assetKeys = collectAssetKeys();
 		var assetModels = new HashSet<AssetModel>();
-		
-		for(var assetKey : assetKeys) {
+
+		for (var assetKey : assetKeys) {
 			if (filter.test(assetKey.getAsset())) {
 				assetModels.add(assetKey.getAsset());
 			}
 		}
-		
-		var pack = new AssetPackModel(new JSONObject(), null);
-		var section = new AssetSectionModel("section", pack);
-		pack.addSection(section, false);
-		
-		for(var model: assetModels) {
-			section.addAsset(model, false);
+
+		var pack = new JSONObject();
+		var section = new JSONObject();
+		pack.put("section", section);
+		var files = new JSONArray();
+		section.put("files", files);
+
+		for (var model : assetModels) {
+			files.put(model.toJSON());
 		}
-		
+
 		return pack;
 	}
 }

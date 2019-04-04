@@ -77,9 +77,7 @@ public class RefreshAllMessage extends ApiMessage {
 
 				});
 
-				var packData = newPack.toJSON();
-
-				_data.put("pack", packData);
+				_data.put("pack", newPack);
 
 			} catch (Exception e) {
 				SceneUIEditor.logError(e);

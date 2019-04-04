@@ -61,6 +61,7 @@ import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.bmpfont.core.JsonBitmapFontContentType;
 import phasereditor.bmpfont.core.XmlBitmapFontContentType;
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 
 public final class AssetPackModel {
@@ -252,10 +253,10 @@ public final class AssetPackModel {
 		JSONObject meta = new JSONObject();
 		pack.put("meta", meta);
 		meta.put("generated", Long.toString(System.currentTimeMillis()));
-		meta.put("app", "Phaser Editor");
+		meta.put("app", "Phaser Editor 2D - " + LicCore.PRODUCT_VERSION);
 		meta.put("url", "https://phasereditor2d.com");
 		meta.put("version", "1.0");
-		meta.put("copyright", "Arian Fornaris (c) 2015,2018");
+		meta.put("copyright", "Arian Fornaris (c) 2015,2019");
 	}
 
 	public void save(IProgressMonitor monitor) {
@@ -852,6 +853,7 @@ public final class AssetPackModel {
 		}
 
 		IContainer webContentFolder = getWebContentFolder();
+		
 		IFile file = webContentFolder.getFile(new Path(url));
 
 		if (!file.exists()) {
