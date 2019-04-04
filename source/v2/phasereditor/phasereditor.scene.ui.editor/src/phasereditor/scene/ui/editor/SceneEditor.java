@@ -48,7 +48,7 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
+import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
@@ -185,7 +185,7 @@ public class SceneEditor extends EditorPart {
 
 		refreshOutline();
 
-		_broker.sendAll(new RefreshAllMessage(this));
+		_broker.sendAll(new ReloadPageMessage());
 	}
 
 	private void saveMethod(IProgressMonitor monitor) {

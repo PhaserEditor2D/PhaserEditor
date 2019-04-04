@@ -22,9 +22,19 @@
 package phasereditor.scene.ui.editor.messages;
 
 import org.eclipse.core.runtime.Platform;
+import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.webrun.core.ApiMessage;
+import phasereditor.webrun.ui.WebRunUI;
 
 /**
  * @author arian
@@ -32,10 +42,49 @@ import phasereditor.webrun.core.ApiMessage;
  */
 public class CreateGameMessage extends ApiMessage {
 
-	@SuppressWarnings("unused")
 	public CreateGameMessage(SceneEditor editor) {
-		var OS = Platform.getOS();
-		_data.put("method", "CreateGame");
-		_data.put("webgl", !OS.equals(Platform.OS_LINUX));
+
+		var model = editor.getSceneModel();
+		var project = editor.getProject();
+		var finder = AssetPackCore.getAssetFinder(project);
+
+		{
+			var displayListData = new JSONObject();
+			model.getDisplayList().write(displayListData);
+
+			_data.put("method", "CreateGame");
+			_data.put("webgl", !Platform.getOS().equals(Platform.OS_LINUX));
+			_data.put("displayList", displayListData);
+			
+		}
+
+		{
+			var projectUrl = WebRunUI.getProjectBrowserURL(project);
+
+			_data.put("projectUrl", projectUrl);
+			var collector = new PackReferencesCollector(model, finder);
+
+			try {
+				var newPack = collector.collectNewPack(asset -> {
+					return
+
+					asset instanceof ImageAssetModel
+
+							|| asset instanceof SpritesheetAssetModel
+
+							|| asset instanceof AtlasAssetModel
+
+							|| asset instanceof MultiAtlasAssetModel
+
+							|| asset instanceof BitmapFontAssetModel;
+
+				});
+
+				_data.put("pack", newPack);
+
+			} catch (Exception e) {
+				SceneUIEditor.logError(e);
+			}
+		}
 	}
 }

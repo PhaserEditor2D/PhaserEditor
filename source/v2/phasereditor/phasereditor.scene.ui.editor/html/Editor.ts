@@ -59,10 +59,6 @@ namespace PhaserEditor2D {
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
             });
-
-            this.sendMessage({
-                method: "GetRefreshAll"
-            });
         }
 
         static getInstance() {
@@ -99,10 +95,6 @@ namespace PhaserEditor2D {
 
             // we should create the socket when the editor scene is ready, it means, the first time the preload method is called.
             this._socket.onopen = function () {
-                //TODO: I don't know why this method is executed twice
-                if (self._game) {
-                    return;
-                }
                 self.sendMessage({
                     method: "GetCreateGame"
                 });
@@ -149,20 +141,16 @@ namespace PhaserEditor2D {
             }
         }
 
-        private onRefreshAll(msg) {
-            Models.displayList = msg.displayList;
-            Models.projectUrl = msg.projectUrl;
-            Models.pack = msg.pack;
-
-            this._objectScene.scene.restart();
-        }
-
         private onReloadPage() {
+            this._socket.close();
             window.location.reload();
         }
 
         private onCreateGame(msg) {
             Models.gameConfig.webgl = msg.webgl;
+            Models.displayList = msg.displayList;
+            Models.projectUrl = msg.projectUrl;
+            Models.pack = msg.pack;
 
             this.createGame();
         }
@@ -185,9 +173,6 @@ namespace PhaserEditor2D {
                         break;
                     case "CreateGame":
                         this.onCreateGame(msg);
-                        break;
-                    case "RefreshAll":
-                        this.onRefreshAll(msg);
                         break;
                     case "UpdateObjects":
                         this.onUpdateObjects(msg);

@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor;
 import org.json.JSONObject;
 
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
-import phasereditor.scene.ui.editor.messages.RefreshAllMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.webrun.core.ApiHub;
 import phasereditor.webrun.core.ApiMessage;
@@ -87,9 +86,6 @@ public class SceneEditorBroker {
 		switch (method) {
 		case "GetCreateGame":
 			send(client, new CreateGameMessage(_editor));
-			break;
-		case "GetRefreshAll":
-			send(client, new RefreshAllMessage(_editor));
 			break;
 		case "GetSelectObjects":
 			send(client, new SelectObjectsMessage(_editor));

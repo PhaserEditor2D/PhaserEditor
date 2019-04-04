@@ -42,9 +42,6 @@ var PhaserEditor2D;
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
             });
-            this.sendMessage({
-                method: "GetRefreshAll"
-            });
         };
         Editor.getInstance = function () {
             return Editor._instance;
@@ -71,9 +68,6 @@ var PhaserEditor2D;
             this._socket = new WebSocket(this.getWebSocketUrl());
             var self = this;
             this._socket.onopen = function () {
-                if (self._game) {
-                    return;
-                }
                 self.sendMessage({
                     method: "GetCreateGame"
                 });
@@ -107,17 +101,15 @@ var PhaserEditor2D;
                 this._create.updateObject(obj, objData);
             }
         };
-        Editor.prototype.onRefreshAll = function (msg) {
-            PhaserEditor2D.Models.displayList = msg.displayList;
-            PhaserEditor2D.Models.projectUrl = msg.projectUrl;
-            PhaserEditor2D.Models.pack = msg.pack;
-            this._objectScene.scene.restart();
-        };
         Editor.prototype.onReloadPage = function () {
+            this._socket.close();
             window.location.reload();
         };
         Editor.prototype.onCreateGame = function (msg) {
             PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
+            PhaserEditor2D.Models.displayList = msg.displayList;
+            PhaserEditor2D.Models.projectUrl = msg.projectUrl;
+            PhaserEditor2D.Models.pack = msg.pack;
             this.createGame();
         };
         Editor.prototype.messageReceived = function (batch) {
@@ -134,9 +126,6 @@ var PhaserEditor2D;
                         break;
                     case "CreateGame":
                         this.onCreateGame(msg);
-                        break;
-                    case "RefreshAll":
-                        this.onRefreshAll(msg);
                         break;
                     case "UpdateObjects":
                         this.onUpdateObjects(msg);
