@@ -88,4 +88,15 @@ namespace PhaserEditor2D {
         get_text: get_property("text", "")
     };
 
+    export const ScenePropertiesComponent = {
+        get_snapEnabled: get_property("snapEnabled", false),
+        get_snapWidth: get_property("snapWidth", 16),
+        get_snapHeight: get_property("snapHeight", 16),
+        get_backgroundColor: get_property("backgroundColor", "192,192,182"),
+        get_foregroundColor: get_property("foregroundColor", 0xffffff),
+        get_borderX: get_property("borderX", 0),
+        get_borderY: get_property("borderY", 0),
+        get_borderWidth: get_property("borderWidth", 800),
+        get_borderHeight: get_property("borderHeight", 600),
+    }
 }

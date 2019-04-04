@@ -2,7 +2,6 @@ namespace PhaserEditor2D {
 
     export class ObjectScene extends Phaser.Scene {
 
-        private _loadingSprite: Phaser.GameObjects.Text = null;
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
 
@@ -11,33 +10,13 @@ namespace PhaserEditor2D {
         }
 
         preload() {
-
-            if (!Models.isReady()) {
-                // we do not load nothing, we open the socket to request the first refresh all.
-                console.log("First preload");
-                return;
-            }
-            console.log("Common preload");
-
+            console.log("preload()");
             this.load.setBaseURL(Models.projectUrl);
-            const key = "pack" + this.time.now;
-            console.log("Loading: " + key);
-            this.load.pack(key, Models.pack);
-
+            this.load.pack("pack", Models.pack);
         }
 
         create() {
             this._dragManager = new DragManager(this);
-
-            if (!Models.isReady()) {
-                this._loadingSprite = this.add.text(10, 10, "Loading...", { fill: "#ff0000" });
-                return;
-            }
-
-            if (this._loadingSprite !== null) {
-                this._loadingSprite.destroy();
-                this._loadingSprite = null;
-            }
 
             this.initCamera();
 

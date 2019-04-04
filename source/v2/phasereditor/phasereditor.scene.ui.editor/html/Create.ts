@@ -5,10 +5,6 @@ namespace PhaserEditor2D {
         }
 
         createWorld(add: Phaser.GameObjects.GameObjectFactory) {
-            if (!Models.isReady()) {
-                return;
-            }
-
             var list = Models.displayList.children;
 
             for (var i = 0; i < list.length; i++) {

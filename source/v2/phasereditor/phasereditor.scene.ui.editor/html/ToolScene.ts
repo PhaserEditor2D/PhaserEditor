@@ -4,7 +4,7 @@ namespace PhaserEditor2D {
 
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
-        private _axisGraphics: Phaser.GameObjects.Graphics;
+        private _gridGraphics: Phaser.GameObjects.Graphics;
 
 
         constructor() {
@@ -19,10 +19,12 @@ namespace PhaserEditor2D {
 
             this._axisToken = "";
 
-            this._axisGraphics = this.add.graphics({
+            const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties));
+
+            this._gridGraphics = this.add.graphics({
                 lineStyle: {
                     width: 1,
-                    color: 0xffffff,
+                    color: fg,
                     alpha: 0.5
                 }
             });
@@ -45,7 +47,7 @@ namespace PhaserEditor2D {
         }
 
 
-        private _axisToken : string = null;
+        private _axisToken: string = null;
         private _axisLabels: Phaser.GameObjects.Text[] = [];
 
         private renderAxis() {
@@ -59,13 +61,13 @@ namespace PhaserEditor2D {
             let dy = 8;
 
             let i = 1;
-            while(dx * i * cam.zoom < 32) {
+            while (dx * i * cam.zoom < 32) {
                 i++;
             }
             dx = dx * i;
 
             i = 1;
-            while(dy * i * cam.zoom < 32) {
+            while (dy * i * cam.zoom < 32) {
                 i++;
             }
             dy = dy * i;
@@ -73,7 +75,13 @@ namespace PhaserEditor2D {
             const sx = ((cam.scrollX / dx) | 0) * dx;
             const sy = ((cam.scrollY / dy) | 0) * dy;
 
-            const token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY;
+            const bx = ScenePropertiesComponent.get_borderX(Models.sceneProperties);
+            const by = ScenePropertiesComponent.get_borderY(Models.sceneProperties);
+            const bw = ScenePropertiesComponent.get_borderWidth(Models.sceneProperties);
+            const bh = ScenePropertiesComponent.get_borderHeight(Models.sceneProperties);
+
+            const token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY
+                + "-" + bx + "-" + by + "-" + bw + "-" + bh;
 
             if (this._axisToken !== null && this._axisToken === token) {
                 return;
@@ -81,7 +89,11 @@ namespace PhaserEditor2D {
 
             this._axisToken = token;
 
-            this._axisGraphics.clear();
+            this._gridGraphics.clear();
+
+            const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties));
+
+            this._gridGraphics.lineStyle(1, fg, 0.5);
 
             for (const label of this._axisLabels) {
                 label.destroy();
@@ -147,7 +159,7 @@ namespace PhaserEditor2D {
                     continue;
                 }
 
-                this._axisGraphics.lineBetween(x2, labelHeight, x2, h);
+                this._gridGraphics.lineBetween(x2, labelHeight, x2, h);
             }
 
             for (let y = sy; ; y += dy) {
@@ -160,8 +172,22 @@ namespace PhaserEditor2D {
                     continue;
                 }
 
-                this._axisGraphics.lineBetween(labelWidth, y2, w, y2);
+                this._gridGraphics.lineBetween(labelWidth, y2, w, y2);
             }
+
+            // border
+
+            this._gridGraphics.lineStyle(4, 0x000000, 1);
+            
+            this._gridGraphics.strokeRect(
+                (bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom,
+                bw * cam.zoom, bh * cam.zoom);
+            
+                this._gridGraphics.lineStyle(2, 0xffffff, 1);
+            
+            this._gridGraphics.strokeRect(
+                (bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom,
+                bw * cam.zoom, bh * cam.zoom);
         }
 
         updateSelectionObjects() {

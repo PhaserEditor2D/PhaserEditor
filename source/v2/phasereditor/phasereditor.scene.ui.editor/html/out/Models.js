@@ -12,8 +12,10 @@ var PhaserEditor2D;
                 }
             }
         };
-        Models.isReady = function () {
-            return Models.displayList.children.length > 0;
+        Models.updateModel = function (model, properties) {
+            for (var key in properties) {
+                model[key] = properties[key];
+            }
         };
         Models.gameConfig = {
             webgl: true
@@ -21,6 +23,7 @@ var PhaserEditor2D;
         Models.displayList = {
             children: []
         };
+        Models.sceneProperties = {};
         Models.selection = [];
         Models.projectUrl = null;
         Models.pack = {};

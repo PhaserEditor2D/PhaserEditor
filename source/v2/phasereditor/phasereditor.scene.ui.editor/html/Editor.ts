@@ -14,53 +14,6 @@ namespace PhaserEditor2D {
             this.openSocket();
         }
 
-        private createGame() {
-            this._create = new Create();
-            this._game = new Phaser.Game({
-                title: "Phaser Editor 2D - Web Scene Editor",
-                width: window.innerWidth,
-                height: window.innerWidth,
-                // WEBGL is problematic on Linux
-                type: Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
-                render: {
-                    pixelArt: true
-                },
-                url: "https://phasereditor2d.com",
-                parent: "editorContainer",
-                scale: {
-                    mode: Phaser.Scale.NONE,
-                    autoCenter: Phaser.Scale.NO_CENTER
-                },
-                backgroundColor: "#d3d3d3"
-            });
-
-            this._objectScene = new ObjectScene();
-
-            this._game.scene.add("ObjectScene", this._objectScene);
-            this._game.scene.add("ToolScene", ToolScene);
-            this._game.scene.start("ObjectScene");
-
-            this._resizeToken = 0;
-
-            const self = this;
-
-            window.addEventListener('resize', function (event) {
-
-                self._resizeToken += 1;
-                setTimeout((function (token) {
-                    return function () {
-                        if (token === self._resizeToken) {
-                            self.performResize();
-                        }
-                    };
-                })(self._resizeToken), 200);
-            }, false);
-
-            window.addEventListener("mousewheel", function (e) {
-                self.getObjectScene().onMouseWheel(e);
-            });
-        }
-
         static getInstance() {
             return Editor._instance;
         }
@@ -146,13 +99,61 @@ namespace PhaserEditor2D {
             window.location.reload();
         }
 
-        private onCreateGame(msg) {
+        private onCreateGame(msg : any) {
+            // update the model
+
             Models.gameConfig.webgl = msg.webgl;
             Models.displayList = msg.displayList;
             Models.projectUrl = msg.projectUrl;
             Models.pack = msg.pack;
+            Models.sceneProperties = msg.sceneProperties;
 
-            this.createGame();
+            // create the game
+
+            this._create = new Create();
+            this._game = new Phaser.Game({
+                title: "Phaser Editor 2D - Web Scene Editor",
+                width: window.innerWidth,
+                height: window.innerWidth,
+                // WEBGL is problematic on Linux
+                type: Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                render: {
+                    pixelArt: true
+                },
+                url: "https://phasereditor2d.com",
+                parent: "editorContainer",
+                scale: {
+                    mode: Phaser.Scale.NONE,
+                    autoCenter: Phaser.Scale.NO_CENTER
+                },
+                backgroundColor: "rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")"
+            });
+
+            this._objectScene = new ObjectScene();
+
+            this._game.scene.add("ObjectScene", this._objectScene);
+            this._game.scene.add("ToolScene", ToolScene);
+            this._game.scene.start("ObjectScene");
+
+            this._resizeToken = 0;
+
+            const self = this;
+
+            window.addEventListener('resize', function (event) {
+
+                self._resizeToken += 1;
+                setTimeout((function (token) {
+                    return function () {
+                        if (token === self._resizeToken) {
+                            self.performResize();
+                        }
+                    };
+                })(self._resizeToken), 200);
+            }, false);
+
+            window.addEventListener("mousewheel", function (e) {
+                self.getObjectScene().onMouseWheel(e);
+            });
         }
 
         private messageReceived(batch: any) {
@@ -179,7 +180,7 @@ namespace PhaserEditor2D {
                         break;
                     case "SelectObjects":
                         this.onSelectObjects(msg);
-                        break;                    
+                        break;
                 }
             }
         };

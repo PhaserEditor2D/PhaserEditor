@@ -33,6 +33,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
+import phasereditor.ui.Colors;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -50,12 +51,16 @@ public class CreateGameMessage extends ApiMessage {
 
 		{
 			var displayListData = new JSONObject();
+			var scenePropertiesData = new JSONObject();
+			
 			model.getDisplayList().write(displayListData);
+			model.writeProperties(scenePropertiesData);
 
 			_data.put("method", "CreateGame");
 			_data.put("webgl", !Platform.getOS().equals(Platform.OS_LINUX));
 			_data.put("displayList", displayListData);
-			
+			_data.put("sceneProperties", scenePropertiesData);
+			scenePropertiesData.put("foregroundColor", Colors.hexColor(model.getForegroundColor()));
 		}
 
 		{

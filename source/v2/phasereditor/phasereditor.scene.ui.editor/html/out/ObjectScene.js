@@ -14,7 +14,6 @@ var PhaserEditor2D;
         __extends(ObjectScene, _super);
         function ObjectScene() {
             var _this = _super.call(this, "ObjectScene") || this;
-            _this._loadingSprite = null;
             _this.cameraZoom = function (delta) {
                 var cam = this.cameras.main;
                 if (delta < 0) {
@@ -32,26 +31,12 @@ var PhaserEditor2D;
             return _this;
         }
         ObjectScene.prototype.preload = function () {
-            if (!PhaserEditor2D.Models.isReady()) {
-                console.log("First preload");
-                return;
-            }
-            console.log("Common preload");
+            console.log("preload()");
             this.load.setBaseURL(PhaserEditor2D.Models.projectUrl);
-            var key = "pack" + this.time.now;
-            console.log("Loading: " + key);
-            this.load.pack(key, PhaserEditor2D.Models.pack);
+            this.load.pack("pack", PhaserEditor2D.Models.pack);
         };
         ObjectScene.prototype.create = function () {
             this._dragManager = new DragManager(this);
-            if (!PhaserEditor2D.Models.isReady()) {
-                this._loadingSprite = this.add.text(10, 10, "Loading...", { fill: "#ff0000" });
-                return;
-            }
-            if (this._loadingSprite !== null) {
-                this._loadingSprite.destroy();
-                this._loadingSprite = null;
-            }
             this.initCamera();
             this.initKeyboard();
             this.initMouse();

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.out;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -36,6 +38,11 @@ import org.eclipse.swt.graphics.RGBA;
 @SuppressWarnings("all")
 public class Colors {
 
+	public static String hexColor(RGB color) {
+		var value = ((color.red & 0xFF) << 16) | ((color.green & 0xFF) << 8) | ((color.blue & 0xFF) << 0);
+		return Integer.toHexString(value);
+	}
+
 	public static Color color(String webColor) {
 		return SwtRM.getColor(rgb(webColor).rgb);
 	}
@@ -47,7 +54,7 @@ public class Colors {
 	public static Color color(RGB rgb) {
 		return SwtRM.getColor(rgb);
 	}
-	
+
 	public static Color color(RGBA rgba) {
 		return color(rgba.rgb);
 	}

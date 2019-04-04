@@ -5,44 +5,6 @@ var PhaserEditor2D;
             Editor._instance = this;
             this.openSocket();
         }
-        Editor.prototype.createGame = function () {
-            this._create = new PhaserEditor2D.Create();
-            this._game = new Phaser.Game({
-                title: "Phaser Editor 2D - Web Scene Editor",
-                width: window.innerWidth,
-                height: window.innerWidth,
-                type: PhaserEditor2D.Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
-                render: {
-                    pixelArt: true
-                },
-                url: "https://phasereditor2d.com",
-                parent: "editorContainer",
-                scale: {
-                    mode: Phaser.Scale.NONE,
-                    autoCenter: Phaser.Scale.NO_CENTER
-                },
-                backgroundColor: "#d3d3d3"
-            });
-            this._objectScene = new PhaserEditor2D.ObjectScene();
-            this._game.scene.add("ObjectScene", this._objectScene);
-            this._game.scene.add("ToolScene", PhaserEditor2D.ToolScene);
-            this._game.scene.start("ObjectScene");
-            this._resizeToken = 0;
-            var self = this;
-            window.addEventListener('resize', function (event) {
-                self._resizeToken += 1;
-                setTimeout((function (token) {
-                    return function () {
-                        if (token === self._resizeToken) {
-                            self.performResize();
-                        }
-                    };
-                })(self._resizeToken), 200);
-            }, false);
-            window.addEventListener("mousewheel", function (e) {
-                self.getObjectScene().onMouseWheel(e);
-            });
-        };
         Editor.getInstance = function () {
             return Editor._instance;
         };
@@ -110,7 +72,43 @@ var PhaserEditor2D;
             PhaserEditor2D.Models.displayList = msg.displayList;
             PhaserEditor2D.Models.projectUrl = msg.projectUrl;
             PhaserEditor2D.Models.pack = msg.pack;
-            this.createGame();
+            PhaserEditor2D.Models.sceneProperties = msg.sceneProperties;
+            this._create = new PhaserEditor2D.Create();
+            this._game = new Phaser.Game({
+                title: "Phaser Editor 2D - Web Scene Editor",
+                width: window.innerWidth,
+                height: window.innerWidth,
+                type: PhaserEditor2D.Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                render: {
+                    pixelArt: true
+                },
+                url: "https://phasereditor2d.com",
+                parent: "editorContainer",
+                scale: {
+                    mode: Phaser.Scale.NONE,
+                    autoCenter: Phaser.Scale.NO_CENTER
+                },
+                backgroundColor: "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")"
+            });
+            this._objectScene = new PhaserEditor2D.ObjectScene();
+            this._game.scene.add("ObjectScene", this._objectScene);
+            this._game.scene.add("ToolScene", PhaserEditor2D.ToolScene);
+            this._game.scene.start("ObjectScene");
+            this._resizeToken = 0;
+            var self = this;
+            window.addEventListener('resize', function (event) {
+                self._resizeToken += 1;
+                setTimeout((function (token) {
+                    return function () {
+                        if (token === self._resizeToken) {
+                            self.performResize();
+                        }
+                    };
+                })(self._resizeToken), 200);
+            }, false);
+            window.addEventListener("mousewheel", function (e) {
+                self.getObjectScene().onMouseWheel(e);
+            });
         };
         Editor.prototype.messageReceived = function (batch) {
             console.log("messageReceived:");

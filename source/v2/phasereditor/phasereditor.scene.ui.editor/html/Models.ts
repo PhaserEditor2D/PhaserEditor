@@ -7,6 +7,11 @@ namespace PhaserEditor2D {
         static displayList = {
             children: []
         };
+
+        static sceneProperties = {
+
+        };
+
         static selection: any[] = [];
         static projectUrl: string = null;
         static pack: any = {};
@@ -23,8 +28,10 @@ namespace PhaserEditor2D {
             }
         }
 
-        static isReady() {
-            return Models.displayList.children.length > 0;
+        static updateModel(model: Object, properties: Object) {
+            for (let key in properties) {
+                model[key] = properties[key];
+            }
         }
     }
 

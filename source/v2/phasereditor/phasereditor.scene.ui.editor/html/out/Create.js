@@ -4,9 +4,6 @@ var PhaserEditor2D;
         function Create() {
         }
         Create.prototype.createWorld = function (add) {
-            if (!PhaserEditor2D.Models.isReady()) {
-                return;
-            }
             var list = PhaserEditor2D.Models.displayList.children;
             for (var i = 0; i < list.length; i++) {
                 var data = list[i];

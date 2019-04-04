@@ -29,10 +29,11 @@ var PhaserEditor2D;
         ToolScene.prototype.create = function () {
             this.initCamera();
             this._axisToken = "";
-            this._axisGraphics = this.add.graphics({
+            var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties));
+            this._gridGraphics = this.add.graphics({
                 lineStyle: {
                     width: 1,
-                    color: 0xffffff,
+                    color: fg,
                     alpha: 0.5
                 }
             });
@@ -69,12 +70,19 @@ var PhaserEditor2D;
             dy = dy * i;
             var sx = ((cam.scrollX / dx) | 0) * dx;
             var sy = ((cam.scrollY / dy) | 0) * dy;
-            var token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY;
+            var bx = PhaserEditor2D.ScenePropertiesComponent.get_borderX(PhaserEditor2D.Models.sceneProperties);
+            var by = PhaserEditor2D.ScenePropertiesComponent.get_borderY(PhaserEditor2D.Models.sceneProperties);
+            var bw = PhaserEditor2D.ScenePropertiesComponent.get_borderWidth(PhaserEditor2D.Models.sceneProperties);
+            var bh = PhaserEditor2D.ScenePropertiesComponent.get_borderHeight(PhaserEditor2D.Models.sceneProperties);
+            var token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY
+                + "-" + bx + "-" + by + "-" + bw + "-" + bh;
             if (this._axisToken !== null && this._axisToken === token) {
                 return;
             }
             this._axisToken = token;
-            this._axisGraphics.clear();
+            this._gridGraphics.clear();
+            var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties));
+            this._gridGraphics.lineStyle(1, fg, 0.5);
             for (var _i = 0, _a = this._axisLabels; _i < _a.length; _i++) {
                 var label_1 = _a[_i];
                 label_1.destroy();
@@ -120,7 +128,7 @@ var PhaserEditor2D;
                 if (x2 < labelWidth) {
                     continue;
                 }
-                this._axisGraphics.lineBetween(x2, labelHeight, x2, h);
+                this._gridGraphics.lineBetween(x2, labelHeight, x2, h);
             }
             for (var y = sy;; y += dy) {
                 var y2 = (y - cam.scrollY) * cam.zoom;
@@ -130,8 +138,12 @@ var PhaserEditor2D;
                 if (y2 < labelHeight) {
                     continue;
                 }
-                this._axisGraphics.lineBetween(labelWidth, y2, w, y2);
+                this._gridGraphics.lineBetween(labelWidth, y2, w, y2);
             }
+            this._gridGraphics.lineStyle(4, 0x000000, 1);
+            this._gridGraphics.strokeRect((bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom, bw * cam.zoom, bh * cam.zoom);
+            this._gridGraphics.lineStyle(2, 0xffffff, 1);
+            this._gridGraphics.strokeRect((bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom, bw * cam.zoom, bh * cam.zoom);
         };
         ToolScene.prototype.updateSelectionObjects = function () {
             this._selectedObjects = [];
