@@ -95,6 +95,14 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.eclipse.ecf.filetransfer.httpclient4.feature"
          version="0.0.0"/>
 
+   <includes
+         id="com.make.chromium.cef.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.swt.chromium.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.userstorage"
          download-size="0"

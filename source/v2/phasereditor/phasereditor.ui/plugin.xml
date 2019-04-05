@@ -15,6 +15,14 @@
             id="phasereditor.ui.preview"
             name="Preview">
       </view>
+      <view
+            category="phasereditor.ui.phaser"
+            class="phasereditor.ui.views.ChromiumBrowserView"
+            icon="icons/sample.png"
+            id="phasereditor.ui.chromiumBrowser"
+            inject="true"
+            name="Chromium Browser">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

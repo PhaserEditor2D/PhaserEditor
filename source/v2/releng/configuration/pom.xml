@@ -10,16 +10,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
     	<maven.compiler.target>11</maven.compiler.target>
-<!--
-	
+
+<!-- 
 		<eclipse-release.url>http://download.eclipse.org/releases/2019-03</eclipse-release.url>		
 		<eclipse-license.url>https://download.eclipse.org/cbi/updates/license/</eclipse-license.url>
--->
+ -->  	
 
 		<eclipse-release.url>http://localhost/repo-mirror/eclipse-release</eclipse-release.url>
 		<eclipse-license.url>http://localhost/repo-mirror/eclipse-license</eclipse-license.url>
 
-
+		<chromium-cef.url>http://localhost/repo-mirror/chromium-cef/</chromium-cef.url>
+		<chromium-swt.url>http://localhost/repo-mirror/chromium-swt/</chromium-swt.url>
 			
 	</properties>
 
@@ -36,6 +37,18 @@
 		<repository>
 			<id>eclipse-license</id>
 			<url>${eclipse-license.url}</url>			
+			<layout>p2</layout>
+		</repository>
+		
+		<repository>
+			<id>chromium-swt</id>
+			<url>${chromium-swt.url}</url>
+			<layout>p2</layout>
+		</repository>
+		
+		<repository>
+			<id>chromium-cef</id>
+			<url>${chromium-cef.url}</url>
 			<layout>p2</layout>
 		</repository>
 		
