@@ -8,6 +8,12 @@ var PhaserEditor2D;
         Editor.getInstance = function () {
             return Editor._instance;
         };
+        Editor.prototype.repaint = function () {
+            this._game.loop.step(Date.now());
+        };
+        Editor.prototype.stop = function () {
+            this._game.loop.stop();
+        };
         Editor.prototype.getCreate = function () {
             return this._create;
         };
@@ -24,6 +30,7 @@ var PhaserEditor2D;
             var w = window.innerWidth;
             var h = window.innerHeight;
             this._objectScene.scale.resize(w, h);
+            this.repaint();
         };
         Editor.prototype.openSocket = function () {
             console.log("Open socket");
@@ -116,6 +123,7 @@ var PhaserEditor2D;
             }, false);
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
+                self.repaint();
             });
             this.updateBackgroundColor();
         };
@@ -145,6 +153,7 @@ var PhaserEditor2D;
                         break;
                 }
             }
+            this.repaint();
         };
         ;
         Editor.prototype.sendMessage = function (msg) {

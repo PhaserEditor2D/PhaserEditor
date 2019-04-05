@@ -1,6 +1,7 @@
 namespace PhaserEditor2D {
 
     export class Editor {
+        
         private static _instance: Editor;
         private _socket: WebSocket;
         private _game: Phaser.Game;
@@ -16,6 +17,14 @@ namespace PhaserEditor2D {
 
         static getInstance() {
             return Editor._instance;
+        }
+
+        repaint() {
+            this._game.loop.step(Date.now());
+        }
+
+        stop() {
+            this._game.loop.stop();
         }
 
         getCreate() {
@@ -38,6 +47,8 @@ namespace PhaserEditor2D {
             var w = window.innerWidth;
             var h = window.innerHeight;
             this._objectScene.scale.resize(w, h);
+
+            this.repaint();
         }
 
         openSocket() {
@@ -140,7 +151,6 @@ namespace PhaserEditor2D {
                 backgroundColor: "rgba(0,0,0,0)"
             });
 
-            
             this._objectScene = new ObjectScene();
 
             this._game.scene.add("ObjectScene", this._objectScene);
@@ -165,6 +175,7 @@ namespace PhaserEditor2D {
 
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
+                self.repaint();
             });
 
             this.updateBackgroundColor();
@@ -200,6 +211,8 @@ namespace PhaserEditor2D {
                         break;
                 }
             }
+
+            this.repaint();
         };
 
         sendMessage(msg: any) {

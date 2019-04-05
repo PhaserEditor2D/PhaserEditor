@@ -33,7 +33,6 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.ui.Colors;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.ui.WebRunUI;
 

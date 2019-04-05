@@ -15,13 +15,13 @@ namespace PhaserEditor2D {
         }
 
         create() {
+            Editor.getInstance().stop();
+
             this._dragManager = new DragManager(this);
 
             this.initCamera();
 
             this.initKeyboard();
-
-            this.initMouse();
 
             this.initSelectionScene();
 
@@ -31,14 +31,9 @@ namespace PhaserEditor2D {
 
             editor.sendMessage({
                 method: "GetSelectObjects"
-            });
-        }
+            });            
 
-        update() {
-            this._dragManager.update();
-        }
-
-        private initMouse() {
+            editor.repaint();
         }
 
         private initSelectionScene() {
@@ -126,67 +121,64 @@ namespace PhaserEditor2D {
         private _scene: ObjectScene;
         private _dragStartPoint: Phaser.Math.Vector2;
         private _dragStartCameraScroll: Phaser.Math.Vector2;
-        private _spaceKey: Phaser.Input.Keyboard.Key;
 
         constructor(scene: ObjectScene) {
             this._scene = scene;
             this._dragStartPoint = null;
 
-            this._scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDown, this);
-            this._scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.pointerMove, this);
-            this._scene.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUp, this);
-            this._scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.pointerUp, this);
+            const self = this;
+            
+
+            scene.game.canvas.addEventListener("mousedown", function (e: MouseEvent) {
+                self.pointerDown(e);
+            })
+
+            scene.game.canvas.addEventListener("mousemove", function (e: MouseEvent) {
+                self.pointerMove(e);
+            })
+
+            scene.game.canvas.addEventListener("mouseup", function () {
+                self.pointerUp();
+            })
+
+            scene.game.canvas.addEventListener("mouseleave", function () {
+                self.pointerUp();
+            })
         }
 
-        private pointerDown() {
-
-            const pointer = this._scene.input.activePointer;
-
-            if (pointer.middleButtonDown()) {
-                this._dragStartPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
-                const cam = this._scene.cameras.main;
+        private pointerDown(e: MouseEvent) {
+            // if middle button peressed
+            if (e.buttons === 4) {
+                this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
+                const cam = this._scene.cameras.main;                
                 this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
+
+                e.preventDefault();
             }
 
         }
 
-        private pointerMove() {
-            if (this._dragStartPoint == null) {
+        private pointerMove(e: MouseEvent) {     
+            if (this._dragStartPoint === null) {
                 return;
             }
 
-            const pointer = this._scene.input.activePointer;
-
-            const dx = this._dragStartPoint.x - pointer.x;
-            const dy = this._dragStartPoint.y - pointer.y;
+            const dx = this._dragStartPoint.x - e.clientX;
+            const dy = this._dragStartPoint.y - e.clientY;
 
             const cam = this._scene.cameras.main;
 
             cam.scrollX = this._dragStartCameraScroll.x + dx / cam.zoom;
             cam.scrollY = this._dragStartCameraScroll.y + dy / cam.zoom;
+
+            Editor.getInstance().repaint();
+
+            e.preventDefault();
         }
 
         private pointerUp() {
             this._dragStartPoint = null;
             this._dragStartCameraScroll = null;
-        }
-
-        private isDragging() {
-            return this._dragStartPoint !== null;
-        }
-
-        update() {
-            const pointer = this._scene.input.activePointer;
-
-            if (this.isDragging() && pointer.isDown) {
-                const cam = this._scene.cameras.main;
-                cam.scrollX += pointer.movementX;
-                cam.scrollY += pointer.movementY;
-            } else {
-                if (this.isDragging()) {
-                    this.pointerUp();
-                }
-            }
         }
     }
 }
