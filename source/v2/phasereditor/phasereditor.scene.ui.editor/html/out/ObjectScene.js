@@ -42,11 +42,18 @@ var PhaserEditor2D;
             this.initKeyboard();
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
+            this.initBackground();
             editor.getCreate().createWorld(this.add);
             editor.sendMessage({
                 method: "GetSelectObjects"
             });
+            this.initBackground();
             editor.repaint();
+        };
+        ObjectScene.prototype.initBackground = function () {
+            this.scene.launch("BackgroundScene");
+            this._backgroundScene = this.scene.get("BackgroundScene");
+            this.scene.moveDown("BackgroundScene");
         };
         ObjectScene.prototype.initSelectionScene = function () {
             this.scene.launch("ToolScene");
@@ -97,6 +104,10 @@ var PhaserEditor2D;
             var zoom = (delta < 0 ? 0.9 : 1.1);
             cam.zoom *= zoom;
         };
+        ObjectScene.prototype.performResize = function () {
+            this.scale.resize(window.innerWidth, window.innerHeight);
+            this._backgroundScene.scale.resize(window.innerWidth, window.innerHeight);
+        };
         return ObjectScene;
     }(Phaser.Scene));
     PhaserEditor2D.ObjectScene = ObjectScene;
@@ -144,4 +155,21 @@ var PhaserEditor2D;
         };
         return DragManager;
     }());
+    var BackgroundScene = (function (_super) {
+        __extends(BackgroundScene, _super);
+        function BackgroundScene() {
+            return _super.call(this, "BackgroundScene") || this;
+        }
+        BackgroundScene.prototype.create = function () {
+            this._bg = this.add.graphics();
+        };
+        BackgroundScene.prototype.update = function () {
+            this._bg.clear();
+            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.Models.sceneProperties.backgroundColor + ")");
+            this._bg.fillStyle(bgColor.color, 1);
+            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        };
+        return BackgroundScene;
+    }(Phaser.Scene));
+    PhaserEditor2D.BackgroundScene = BackgroundScene;
 })(PhaserEditor2D || (PhaserEditor2D = {}));

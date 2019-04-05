@@ -27,9 +27,7 @@ var PhaserEditor2D;
             return this.getObjectScene().getToolScene();
         };
         Editor.prototype.performResize = function () {
-            var w = window.innerWidth;
-            var h = window.innerHeight;
-            this._objectScene.scale.resize(w, h);
+            this._objectScene.performResize();
             this.repaint();
         };
         Editor.prototype.openSocket = function () {
@@ -77,10 +75,11 @@ var PhaserEditor2D;
         Editor.prototype.onUpdateSceneProperties = function (msg) {
             PhaserEditor2D.Models.sceneProperties = msg.sceneProperties;
             this.getToolScene().updateFromSceneProperties();
-            this.updateBackgroundColor();
+            this.updateBodyColor();
         };
-        Editor.prototype.updateBackgroundColor = function () {
-            document.getElementsByTagName("body")[0].setAttribute("style", "background-color:rgb(" + PhaserEditor2D.Models.sceneProperties.backgroundColor + ")");
+        Editor.prototype.updateBodyColor = function () {
+            var body = document.getElementsByTagName("body")[0];
+            body.setAttribute("style", "background-color: rgb(" + PhaserEditor2D.Models.sceneProperties.backgroundColor + ")");
         };
         Editor.prototype.onCreateGame = function (msg) {
             PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
@@ -102,11 +101,11 @@ var PhaserEditor2D;
                 scale: {
                     mode: Phaser.Scale.NONE,
                     autoCenter: Phaser.Scale.NO_CENTER
-                },
-                backgroundColor: "rgba(0,0,0,0)"
+                }
             });
             this._objectScene = new PhaserEditor2D.ObjectScene();
             this._game.scene.add("ObjectScene", this._objectScene);
+            this._game.scene.add("BackgroundScene", PhaserEditor2D.BackgroundScene);
             this._game.scene.add("ToolScene", PhaserEditor2D.ToolScene);
             this._game.scene.start("ObjectScene");
             this._resizeToken = 0;
@@ -125,7 +124,7 @@ var PhaserEditor2D;
                 self.getObjectScene().onMouseWheel(e);
                 self.repaint();
             });
-            this.updateBackgroundColor();
+            this.updateBodyColor();
         };
         Editor.prototype.onServerMessage = function (batch) {
             console.log("onServerMessage:");

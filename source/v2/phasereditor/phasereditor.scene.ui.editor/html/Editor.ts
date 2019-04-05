@@ -1,7 +1,7 @@
 namespace PhaserEditor2D {
 
     export class Editor {
-        
+
         private static _instance: Editor;
         private _socket: WebSocket;
         private _game: Phaser.Game;
@@ -44,10 +44,7 @@ namespace PhaserEditor2D {
         }
 
         private performResize() {
-            var w = window.innerWidth;
-            var h = window.innerHeight;
-            this._objectScene.scale.resize(w, h);
-
+            this._objectScene.performResize();
             this.repaint();
         }
 
@@ -113,11 +110,13 @@ namespace PhaserEditor2D {
         private onUpdateSceneProperties(msg: any) {
             Models.sceneProperties = msg.sceneProperties;
             this.getToolScene().updateFromSceneProperties();
-            this.updateBackgroundColor();
+
+            this.updateBodyColor();
         }
 
-        private updateBackgroundColor() {
-            document.getElementsByTagName("body")[0].setAttribute("style", "background-color:rgb(" + Models.sceneProperties.backgroundColor + ")");
+        private updateBodyColor() {
+            const body = document.getElementsByTagName("body")[0];
+            body.setAttribute("style", "background-color: rgb(" + Models.sceneProperties.backgroundColor + ")");
         }
 
         private onCreateGame(msg: any) {
@@ -146,14 +145,13 @@ namespace PhaserEditor2D {
                 scale: {
                     mode: Phaser.Scale.NONE,
                     autoCenter: Phaser.Scale.NO_CENTER
-                },
-                //backgroundColor: "rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")"
-                backgroundColor: "rgba(0,0,0,0)"
+                }
             });
 
             this._objectScene = new ObjectScene();
 
             this._game.scene.add("ObjectScene", this._objectScene);
+            this._game.scene.add("BackgroundScene", BackgroundScene);
             this._game.scene.add("ToolScene", ToolScene);
             this._game.scene.start("ObjectScene");
 
@@ -178,7 +176,7 @@ namespace PhaserEditor2D {
                 self.repaint();
             });
 
-            this.updateBackgroundColor();
+            this.updateBodyColor();
         }
 
         private onServerMessage(batch: any) {

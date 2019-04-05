@@ -1,8 +1,10 @@
 namespace PhaserEditor2D {
 
-    export class ObjectScene extends Phaser.Scene {
+    export class ObjectScene extends Phaser.Scene {            
+
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
+        private _backgroundScene: Phaser.Scene;
 
         constructor() {
             super("ObjectScene");
@@ -27,13 +29,24 @@ namespace PhaserEditor2D {
 
             const editor = Editor.getInstance();
 
+            this.initBackground();
+
             editor.getCreate().createWorld(this.add);
 
             editor.sendMessage({
                 method: "GetSelectObjects"
-            });            
+            });
+
+            this.initBackground();
 
             editor.repaint();
+
+        }
+
+        private initBackground() {
+            this.scene.launch("BackgroundScene");
+            this._backgroundScene = this.scene.get("BackgroundScene");
+            this.scene.moveDown("BackgroundScene");
         }
 
         private initSelectionScene() {
@@ -115,6 +128,11 @@ namespace PhaserEditor2D {
             cam.zoom *= zoom;
 
         }
+
+        performResize() {
+            this.scale.resize(window.innerWidth, window.innerHeight);
+            this._backgroundScene.scale.resize(window.innerWidth, window.innerHeight);
+        }
     }
 
     class DragManager {
@@ -127,7 +145,7 @@ namespace PhaserEditor2D {
             this._dragStartPoint = null;
 
             const self = this;
-            
+
 
             scene.game.canvas.addEventListener("mousedown", function (e: MouseEvent) {
                 self.pointerDown(e);
@@ -150,7 +168,7 @@ namespace PhaserEditor2D {
             // if middle button peressed
             if (e.buttons === 4) {
                 this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
-                const cam = this._scene.cameras.main;                
+                const cam = this._scene.cameras.main;
                 this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
 
                 e.preventDefault();
@@ -158,7 +176,7 @@ namespace PhaserEditor2D {
 
         }
 
-        private pointerMove(e: MouseEvent) {     
+        private pointerMove(e: MouseEvent) {
             if (this._dragStartPoint === null) {
                 return;
             }
@@ -179,6 +197,26 @@ namespace PhaserEditor2D {
         private pointerUp() {
             this._dragStartPoint = null;
             this._dragStartCameraScroll = null;
+        }
+    }
+
+
+    export class BackgroundScene extends Phaser.Scene {
+        private _bg: Phaser.GameObjects.Graphics;
+
+        constructor() {
+            super("BackgroundScene");
+        }
+
+        create() {
+            this._bg = this.add.graphics();
+        }
+
+        update() {
+            this._bg.clear();
+            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + Models.sceneProperties.backgroundColor + ")");
+            this._bg.fillStyle(bgColor.color, 1);
+            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
         }
     }
 }
