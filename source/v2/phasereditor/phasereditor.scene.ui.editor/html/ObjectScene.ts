@@ -118,12 +118,12 @@ namespace PhaserEditor2D {
             return this._toolScene;
         }
 
-        onMouseWheel(e: any) {
+        onMouseWheel(e: WheelEvent) {
             var cam = this.cameras.main;
 
-            var delta: number = e.wheelDelta;
+            var delta: number = e.deltaY;
 
-            var zoom = (delta < 0 ? 0.9 : 1.1);
+            var zoom = (delta > 0 ? 0.9 : 1.1);
 
             cam.zoom *= zoom;
 

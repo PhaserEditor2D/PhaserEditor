@@ -100,8 +100,8 @@ var PhaserEditor2D;
         };
         ObjectScene.prototype.onMouseWheel = function (e) {
             var cam = this.cameras.main;
-            var delta = e.wheelDelta;
-            var zoom = (delta < 0 ? 0.9 : 1.1);
+            var delta = e.deltaY;
+            var zoom = (delta > 0 ? 0.9 : 1.1);
             cam.zoom *= zoom;
         };
         ObjectScene.prototype.performResize = function () {

@@ -120,7 +120,7 @@ var PhaserEditor2D;
                     };
                 })(self._resizeToken), 200);
             }, false);
-            window.addEventListener("mousewheel", function (e) {
+            window.addEventListener("wheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
                 self.repaint();
             });
