@@ -36,7 +36,7 @@ var PhaserEditor2D;
             };
             this._socket.onmessage = function (event) {
                 var msg = JSON.parse(event.data);
-                self.messageReceived(msg);
+                self.onServerMessage(msg);
             };
             this._socket.onclose = function (event) {
                 console.log("Socket closed");
@@ -67,6 +67,14 @@ var PhaserEditor2D;
             this._socket.close();
             window.location.reload();
         };
+        Editor.prototype.onUpdateSceneProperties = function (msg) {
+            PhaserEditor2D.Models.sceneProperties = msg.sceneProperties;
+            this.getToolScene().updateFromSceneProperties();
+            this.updateBackgroundColor();
+        };
+        Editor.prototype.updateBackgroundColor = function () {
+            document.getElementsByTagName("body")[0].setAttribute("style", "background-color:rgb(" + PhaserEditor2D.Models.sceneProperties.backgroundColor + ")");
+        };
         Editor.prototype.onCreateGame = function (msg) {
             PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
             PhaserEditor2D.Models.displayList = msg.displayList;
@@ -88,7 +96,7 @@ var PhaserEditor2D;
                     mode: Phaser.Scale.NONE,
                     autoCenter: Phaser.Scale.NO_CENTER
                 },
-                backgroundColor: "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")"
+                backgroundColor: "rgba(0,0,0,0)"
             });
             this._objectScene = new PhaserEditor2D.ObjectScene();
             this._game.scene.add("ObjectScene", this._objectScene);
@@ -109,9 +117,10 @@ var PhaserEditor2D;
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
             });
+            this.updateBackgroundColor();
         };
-        Editor.prototype.messageReceived = function (batch) {
-            console.log("messageReceived:");
+        Editor.prototype.onServerMessage = function (batch) {
+            console.log("onServerMessage:");
             console.log(batch);
             console.log("----");
             var list = batch.list;
@@ -130,6 +139,9 @@ var PhaserEditor2D;
                         break;
                     case "SelectObjects":
                         this.onSelectObjects(msg);
+                        break;
+                    case "UpdateSceneProperties":
+                        this.onUpdateSceneProperties(msg);
                         break;
                 }
             }

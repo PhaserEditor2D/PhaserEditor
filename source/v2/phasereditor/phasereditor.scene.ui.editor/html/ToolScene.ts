@@ -1,6 +1,7 @@
 namespace PhaserEditor2D {
 
     export class ToolScene extends Phaser.Scene {
+        
 
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
@@ -21,13 +22,7 @@ namespace PhaserEditor2D {
 
             const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties));
 
-            this._gridGraphics = this.add.graphics({
-                lineStyle: {
-                    width: 1,
-                    color: fg,
-                    alpha: 0.5
-                }
-            });
+            this._gridGraphics = this.add.graphics();
 
             this._selectionGraphics = this.add.graphics({
                 fillStyle: {
@@ -46,6 +41,12 @@ namespace PhaserEditor2D {
             this.scale.resize(window.innerWidth, window.innerHeight);
         }
 
+
+        updateFromSceneProperties() {
+            this._axisToken = "";
+
+            this.renderAxis();
+        }
 
         private _axisToken: string = null;
         private _axisLabels: Phaser.GameObjects.Text[] = [];
@@ -91,9 +92,9 @@ namespace PhaserEditor2D {
 
             this._gridGraphics.clear();
 
-            const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties));
+            const fg =  Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties) + ")");
 
-            this._gridGraphics.lineStyle(1, fg, 0.5);
+            this._gridGraphics.lineStyle(1, fg.color, 0.5);
 
             for (const label of this._axisLabels) {
                 label.destroy();

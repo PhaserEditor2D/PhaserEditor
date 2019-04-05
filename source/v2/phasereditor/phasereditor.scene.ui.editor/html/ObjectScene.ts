@@ -1,7 +1,6 @@
 namespace PhaserEditor2D {
 
     export class ObjectScene extends Phaser.Scene {
-
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
 

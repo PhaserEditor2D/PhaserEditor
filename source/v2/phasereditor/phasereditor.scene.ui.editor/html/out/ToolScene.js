@@ -30,13 +30,7 @@ var PhaserEditor2D;
             this.initCamera();
             this._axisToken = "";
             var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties));
-            this._gridGraphics = this.add.graphics({
-                lineStyle: {
-                    width: 1,
-                    color: fg,
-                    alpha: 0.5
-                }
-            });
+            this._gridGraphics = this.add.graphics();
             this._selectionGraphics = this.add.graphics({
                 fillStyle: {
                     color: 0x00ff00
@@ -51,6 +45,10 @@ var PhaserEditor2D;
             this.cameras.main.setRoundPixels(true);
             this.cameras.main.setOrigin(0, 0);
             this.scale.resize(window.innerWidth, window.innerHeight);
+        };
+        ToolScene.prototype.updateFromSceneProperties = function () {
+            this._axisToken = "";
+            this.renderAxis();
         };
         ToolScene.prototype.renderAxis = function () {
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
@@ -81,8 +79,8 @@ var PhaserEditor2D;
             }
             this._axisToken = token;
             this._gridGraphics.clear();
-            var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties));
-            this._gridGraphics.lineStyle(1, fg, 0.5);
+            var fg = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
+            this._gridGraphics.lineStyle(1, fg.color, 0.5);
             for (var _i = 0, _a = this._axisLabels; _i < _a.length; _i++) {
                 var label_1 = _a[_i];
                 label_1.destroy();

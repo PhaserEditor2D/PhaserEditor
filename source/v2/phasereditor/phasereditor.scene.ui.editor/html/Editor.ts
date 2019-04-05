@@ -55,7 +55,7 @@ namespace PhaserEditor2D {
 
             this._socket.onmessage = function (event) {
                 var msg = JSON.parse(event.data);
-                self.messageReceived(msg);
+                self.onServerMessage(msg);
             };
 
             this._socket.onclose = function (event) {
@@ -99,7 +99,17 @@ namespace PhaserEditor2D {
             window.location.reload();
         }
 
-        private onCreateGame(msg : any) {
+        private onUpdateSceneProperties(msg: any) {
+            Models.sceneProperties = msg.sceneProperties;
+            this.getToolScene().updateFromSceneProperties();
+            this.updateBackgroundColor();
+        }
+
+        private updateBackgroundColor() {
+            document.getElementsByTagName("body")[0].setAttribute("style", "background-color:rgb(" + Models.sceneProperties.backgroundColor + ")");
+        }
+
+        private onCreateGame(msg: any) {
             // update the model
 
             Models.gameConfig.webgl = msg.webgl;
@@ -126,9 +136,11 @@ namespace PhaserEditor2D {
                     mode: Phaser.Scale.NONE,
                     autoCenter: Phaser.Scale.NO_CENTER
                 },
-                backgroundColor: "rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")"
+                //backgroundColor: "rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")"
+                backgroundColor: "rgba(0,0,0,0)"
             });
 
+            
             this._objectScene = new ObjectScene();
 
             this._game.scene.add("ObjectScene", this._objectScene);
@@ -154,10 +166,12 @@ namespace PhaserEditor2D {
             window.addEventListener("mousewheel", function (e) {
                 self.getObjectScene().onMouseWheel(e);
             });
+
+            this.updateBackgroundColor();
         }
 
-        private messageReceived(batch: any) {
-            console.log("messageReceived:");
+        private onServerMessage(batch: any) {
+            console.log("onServerMessage:");
             console.log(batch);
             console.log("----");
 
@@ -180,6 +194,9 @@ namespace PhaserEditor2D {
                         break;
                     case "SelectObjects":
                         this.onSelectObjects(msg);
+                        break;
+                    case "UpdateSceneProperties":
+                        this.onUpdateSceneProperties(msg);
                         break;
                 }
             }

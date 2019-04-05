@@ -8,7 +8,7 @@ namespace PhaserEditor2D {
             children: []
         };
 
-        static sceneProperties = {
+        static sceneProperties : any = {
 
         };
 

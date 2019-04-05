@@ -60,7 +60,6 @@ public class CreateGameMessage extends ApiMessage {
 			_data.put("webgl", !Platform.getOS().equals(Platform.OS_LINUX));
 			_data.put("displayList", displayListData);
 			_data.put("sceneProperties", scenePropertiesData);
-			scenePropertiesData.put("foregroundColor", Colors.hexColor(model.getForegroundColor()));
 		}
 
 		{
