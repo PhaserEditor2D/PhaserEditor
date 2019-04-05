@@ -93,7 +93,7 @@ namespace PhaserEditor2D {
         get_snapWidth: get_property("snapWidth", 16),
         get_snapHeight: get_property("snapHeight", 16),
         get_backgroundColor: get_property("backgroundColor", "192,192,182"),
-        get_foregroundColor: get_property("foregroundColor", 0xffffff),
+        get_foregroundColor: get_property("foregroundColor", "255,255,255"),
         get_borderX: get_property("borderX", 0),
         get_borderY: get_property("borderY", 0),
         get_borderWidth: get_property("borderWidth", 800),

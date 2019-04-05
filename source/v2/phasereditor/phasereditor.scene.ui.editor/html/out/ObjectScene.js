@@ -162,12 +162,16 @@ var PhaserEditor2D;
         }
         BackgroundScene.prototype.create = function () {
             this._bg = this.add.graphics();
+            this.repaint();
         };
-        BackgroundScene.prototype.update = function () {
+        BackgroundScene.prototype.repaint = function () {
             this._bg.clear();
-            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.Models.sceneProperties.backgroundColor + ")");
+            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
             this._bg.fillStyle(bgColor.color, 1);
             this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        };
+        BackgroundScene.prototype.update = function () {
+            this.repaint();
         };
         return BackgroundScene;
     }(Phaser.Scene));

@@ -1,6 +1,6 @@
 namespace PhaserEditor2D {
 
-    export class ObjectScene extends Phaser.Scene {            
+    export class ObjectScene extends Phaser.Scene {
 
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
@@ -210,13 +210,18 @@ namespace PhaserEditor2D {
 
         create() {
             this._bg = this.add.graphics();
+            this.repaint();
+        }
+
+        private repaint() {
+            this._bg.clear();
+            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")");
+            this._bg.fillStyle(bgColor.color, 1);
+            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
         }
 
         update() {
-            this._bg.clear();
-            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + Models.sceneProperties.backgroundColor + ")");
-            this._bg.fillStyle(bgColor.color, 1);
-            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            this.repaint();
         }
     }
 }

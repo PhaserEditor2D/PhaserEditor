@@ -43,7 +43,7 @@ namespace PhaserEditor2D {
             return this.getObjectScene().getToolScene();
         }
 
-        private performResize() {
+        private onResize() {
             this._objectScene.performResize();
             this.repaint();
         }
@@ -116,7 +116,7 @@ namespace PhaserEditor2D {
 
         private updateBodyColor() {
             const body = document.getElementsByTagName("body")[0];
-            body.setAttribute("style", "background-color: rgb(" + Models.sceneProperties.backgroundColor + ")");
+            body.setAttribute("style", "background-color: rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")");
         }
 
         private onCreateGame(msg: any) {
@@ -136,7 +136,7 @@ namespace PhaserEditor2D {
                 width: window.innerWidth,
                 height: window.innerWidth,
                 // WEBGL is problematic on Linux
-                type: Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                type: Models.gameConfig.webgl? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
                     pixelArt: true
                 },
@@ -165,7 +165,7 @@ namespace PhaserEditor2D {
                 setTimeout((function (token) {
                     return function () {
                         if (token === self._resizeToken) {
-                            self.performResize();
+                            self.onResize();
                         }
                     };
                 })(self._resizeToken), 200);
