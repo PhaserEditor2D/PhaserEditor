@@ -118,6 +118,10 @@ namespace PhaserEditor2D {
             return this._toolScene;
         }
 
+        getBackgroundScene() {
+            return this._backgroundScene;
+        }
+
         onMouseWheel(e: WheelEvent) {
             var cam = this.cameras.main;
 
@@ -130,8 +134,8 @@ namespace PhaserEditor2D {
         }
 
         performResize() {
-            this.scale.resize(window.innerWidth, window.innerHeight);
-            this._backgroundScene.scale.resize(window.innerWidth, window.innerHeight);
+            this.cameras.main.setSize(window.innerWidth, window.innerHeight);
+            this._backgroundScene.cameras.main.setSize(window.innerWidth, window.innerHeight);
         }
     }
 

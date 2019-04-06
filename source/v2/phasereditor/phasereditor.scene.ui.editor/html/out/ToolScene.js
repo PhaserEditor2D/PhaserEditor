@@ -44,7 +44,6 @@ var PhaserEditor2D;
         ToolScene.prototype.initCamera = function () {
             this.cameras.main.setRoundPixels(true);
             this.cameras.main.setOrigin(0, 0);
-            this.scale.resize(window.innerWidth, window.innerHeight);
         };
         ToolScene.prototype.updateFromSceneProperties = function () {
             this._axisToken = "";

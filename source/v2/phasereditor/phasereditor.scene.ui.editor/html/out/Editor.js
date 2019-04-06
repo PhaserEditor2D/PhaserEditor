@@ -26,8 +26,14 @@ var PhaserEditor2D;
         Editor.prototype.getToolScene = function () {
             return this.getObjectScene().getToolScene();
         };
+        Editor.prototype.getBackgroundScene = function () {
+            return this.getObjectScene().getBackgroundScene();
+        };
         Editor.prototype.onResize = function () {
-            this._objectScene.performResize();
+            for (var _i = 0, _a = this._game.scene.scenes; _i < _a.length; _i++) {
+                var scene = _a[_i];
+                scene.cameras.main.setSize(window.innerWidth, window.innerHeight);
+            }
             this.repaint();
         };
         Editor.prototype.openSocket = function () {
@@ -79,7 +85,7 @@ var PhaserEditor2D;
         };
         Editor.prototype.updateBodyColor = function () {
             var body = document.getElementsByTagName("body")[0];
-            body.setAttribute("style", "background-color: rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
+            body.style.backgroundColor = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")";
         };
         Editor.prototype.onCreateGame = function (msg) {
             PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
@@ -97,10 +103,8 @@ var PhaserEditor2D;
                     pixelArt: true
                 },
                 url: "https://phasereditor2d.com",
-                parent: "editorContainer",
                 scale: {
-                    mode: Phaser.Scale.NONE,
-                    autoCenter: Phaser.Scale.NO_CENTER
+                    mode: Phaser.Scale.RESIZE
                 }
             });
             this._objectScene = new PhaserEditor2D.ObjectScene();

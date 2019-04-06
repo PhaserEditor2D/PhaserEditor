@@ -38,7 +38,6 @@ namespace PhaserEditor2D {
         initCamera() {
             this.cameras.main.setRoundPixels(true);
             this.cameras.main.setOrigin(0, 0);
-            this.scale.resize(window.innerWidth, window.innerHeight);
         }
 
 

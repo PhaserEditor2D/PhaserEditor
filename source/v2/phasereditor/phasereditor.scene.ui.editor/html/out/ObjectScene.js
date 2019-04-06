@@ -98,6 +98,9 @@ var PhaserEditor2D;
         ObjectScene.prototype.getToolScene = function () {
             return this._toolScene;
         };
+        ObjectScene.prototype.getBackgroundScene = function () {
+            return this._backgroundScene;
+        };
         ObjectScene.prototype.onMouseWheel = function (e) {
             var cam = this.cameras.main;
             var delta = e.deltaY;
@@ -105,8 +108,8 @@ var PhaserEditor2D;
             cam.zoom *= zoom;
         };
         ObjectScene.prototype.performResize = function () {
-            this.scale.resize(window.innerWidth, window.innerHeight);
-            this._backgroundScene.scale.resize(window.innerWidth, window.innerHeight);
+            this.cameras.main.setSize(window.innerWidth, window.innerHeight);
+            this._backgroundScene.cameras.main.setSize(window.innerWidth, window.innerHeight);
         };
         return ObjectScene;
     }(Phaser.Scene));
