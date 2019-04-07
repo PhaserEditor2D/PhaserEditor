@@ -51,10 +51,14 @@ var PhaserEditor2D;
         };
         ToolScene.prototype.renderAxis = function () {
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
-            var w = this.scale.baseSize.width;
-            var h = this.scale.baseSize.height;
-            var dx = 8;
-            var dy = 8;
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            var dx = 16;
+            var dy = 16;
+            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(PhaserEditor2D.Models.sceneProperties)) {
+                dx = PhaserEditor2D.ScenePropertiesComponent.get_snapWidth(PhaserEditor2D.Models.sceneProperties);
+                dy = PhaserEditor2D.ScenePropertiesComponent.get_snapHeight(PhaserEditor2D.Models.sceneProperties);
+            }
             var i = 1;
             while (dx * i * cam.zoom < 32) {
                 i++;

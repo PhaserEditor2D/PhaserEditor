@@ -54,11 +54,16 @@ namespace PhaserEditor2D {
             const cam = Editor.getInstance().getObjectScene().cameras.main;
 
 
-            const w = this.scale.baseSize.width;
-            const h = this.scale.baseSize.height;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
 
-            let dx = 8;
-            let dy = 8;
+            let dx = 16;
+            let dy = 16;
+
+            if (ScenePropertiesComponent.get_snapEnabled(Models.sceneProperties)) {
+                dx = ScenePropertiesComponent.get_snapWidth(Models.sceneProperties);
+                dy = ScenePropertiesComponent.get_snapHeight(Models.sceneProperties);
+            }
 
             let i = 1;
             while (dx * i * cam.zoom < 32) {
