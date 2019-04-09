@@ -19,29 +19,33 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.webrun.core;
+package phasereditor.scene.ui.editor;
 
-import org.json.JSONArray;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author arian
  *
  */
-public class BatchMessage extends ApiMessage {
+public class SceneWebView extends Composite {
 
-	private JSONArray _list;
+	private Browser _webView;
 
-	public BatchMessage(ApiMessage... messages) {
-		_list = new JSONArray();
-		_data.put("list", _list);
+	public SceneWebView(Composite parent, int style) {
+		super(parent, style);
+		var layout = new FillLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		setLayout(layout);
 
-		for (var msg : messages) {
-			add(msg);
-		}
+		_webView = new Browser(this, SWT.NONE);
 	}
 
-	public void add(ApiMessage msg) {
-		_list.put(msg.getData());
+	public void setUrl(String url) {
+		_webView.setUrl(url);
 	}
 
 }

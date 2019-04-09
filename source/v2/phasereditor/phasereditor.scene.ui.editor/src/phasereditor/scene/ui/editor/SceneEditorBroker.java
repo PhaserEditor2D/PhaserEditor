@@ -23,10 +23,13 @@ package phasereditor.scene.ui.editor;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
+import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.webrun.core.ApiHub;
 import phasereditor.webrun.core.ApiMessage;
@@ -63,6 +66,10 @@ public class SceneEditorBroker {
 		ApiHub.sendMessage(client, wrapMessage(msg));
 	}
 
+	public void sendBatch(Object client, ApiMessage... msgs) {
+		send(client, new BatchMessage(msgs));
+	}
+
 	private static BatchMessage wrapMessage(ApiMessage msg) {
 		if (msg instanceof BatchMessage) {
 			return (BatchMessage) msg;
@@ -96,8 +103,38 @@ public class SceneEditorBroker {
 		case "ClickObject":
 			onClickObject(client, msg);
 			break;
+		case "DropEvent":
+			onDropEvent(client, msg);
+			break;
 		default:
 			break;
+		}
+	}
+
+	private void onDropEvent(Object client, JSONObject msg) {
+		var x = msg.getFloat("x");
+		var y = msg.getFloat("y");
+
+		var sel = LocalSelectionTransfer.getTransfer().getSelection();
+
+		if (!sel.isEmpty() && sel instanceof IStructuredSelection) {
+			var data = ((IStructuredSelection) sel).toArray();
+			swtRun(() -> {
+
+				var models = _editor.selectionDropped(x, y, data);
+
+				if (!models.isEmpty()) {
+					sendBatch(client,
+
+							new DropObjectsMessage(models),
+
+							new SelectObjectsMessage(_editor)
+
+					);
+				}
+
+			});
+
 		}
 	}
 

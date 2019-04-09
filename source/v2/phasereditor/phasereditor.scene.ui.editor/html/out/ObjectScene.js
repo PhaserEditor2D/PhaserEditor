@@ -38,6 +38,7 @@ var PhaserEditor2D;
         ObjectScene.prototype.create = function () {
             PhaserEditor2D.Editor.getInstance().stop();
             this._dragManager = new DragManager(this);
+            new DropManager();
             this.initCamera();
             this.initKeyboard();
             this.initSelectionScene();
@@ -114,6 +115,27 @@ var PhaserEditor2D;
         return ObjectScene;
     }(Phaser.Scene));
     PhaserEditor2D.ObjectScene = ObjectScene;
+    var BackgroundScene = (function (_super) {
+        __extends(BackgroundScene, _super);
+        function BackgroundScene() {
+            return _super.call(this, "BackgroundScene") || this;
+        }
+        BackgroundScene.prototype.create = function () {
+            this._bg = this.add.graphics();
+            this.repaint();
+        };
+        BackgroundScene.prototype.repaint = function () {
+            this._bg.clear();
+            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
+            this._bg.fillStyle(bgColor.color, 1);
+            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        };
+        BackgroundScene.prototype.update = function () {
+            this.repaint();
+        };
+        return BackgroundScene;
+    }(Phaser.Scene));
+    PhaserEditor2D.BackgroundScene = BackgroundScene;
     var DragManager = (function () {
         function DragManager(scene) {
             this._scene = scene;
@@ -158,25 +180,21 @@ var PhaserEditor2D;
         };
         return DragManager;
     }());
-    var BackgroundScene = (function (_super) {
-        __extends(BackgroundScene, _super);
-        function BackgroundScene() {
-            return _super.call(this, "BackgroundScene") || this;
+    var DropManager = (function () {
+        function DropManager() {
+            window.addEventListener("drop", function (e) {
+                var editor = PhaserEditor2D.Editor.getInstance();
+                var point = editor.getObjectScene().cameras.main.getWorldPoint(e.clientX, e.clientY);
+                editor.sendMessage({
+                    method: "DropEvent",
+                    x: point.x,
+                    y: point.y
+                });
+            });
+            window.addEventListener("dragover", function (e) {
+                e.preventDefault();
+            });
         }
-        BackgroundScene.prototype.create = function () {
-            this._bg = this.add.graphics();
-            this.repaint();
-        };
-        BackgroundScene.prototype.repaint = function () {
-            this._bg.clear();
-            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
-            this._bg.fillStyle(bgColor.color, 1);
-            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        };
-        BackgroundScene.prototype.update = function () {
-            this.repaint();
-        };
-        return BackgroundScene;
-    }(Phaser.Scene));
-    PhaserEditor2D.BackgroundScene = BackgroundScene;
+        return DropManager;
+    }());
 })(PhaserEditor2D || (PhaserEditor2D = {}));

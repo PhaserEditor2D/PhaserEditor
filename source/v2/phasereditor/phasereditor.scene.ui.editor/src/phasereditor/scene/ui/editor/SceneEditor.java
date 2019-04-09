@@ -19,7 +19,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -42,16 +41,35 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.PhaserProjectBuilder;
+import phasereditor.scene.core.AnimationsComponent;
+import phasereditor.scene.core.BitmapTextComponent;
+import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.GameObjectEditorComponent;
+import phasereditor.scene.core.ImageModel;
+import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.core.SpriteModel;
+import phasereditor.scene.core.TextualComponent;
+import phasereditor.scene.core.TextureComponent;
+import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
@@ -87,7 +105,7 @@ public class SceneEditor extends EditorPart {
 	private IContextActivation _commandContextActivation;
 	private EditorFileStampHelper _fileStampHelper;
 	private SceneEditorBroker _broker;
-	private Browser _webView;
+	private SceneWebView _webView;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -302,7 +320,7 @@ public class SceneEditor extends EditorPart {
 		{
 			var item = new TabItem(tabFolder, SWT.NONE);
 			item.setText("New");
-			_webView = new Browser(tabFolder, SWT.NONE);
+			_webView = new SceneWebView(tabFolder, SWT.NONE);
 			item.setControl(_webView);
 		}
 
@@ -561,6 +579,125 @@ public class SceneEditor extends EditorPart {
 				throw new RuntimeException(e1);
 			}
 		}
+	}
+	
+	public List<ObjectModel> selectionDropped(float x, float y, Object[] data) {
+		var finder = AssetPackCore.getAssetFinder(getProject());
+		
+		var sceneModel = getSceneModel();
+		
+		var nameComputer = new NameComputer(sceneModel.getDisplayList());
+
+		var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(this);
+
+		var modelX = sceneModel.snapValueX(x);
+		var modelY = sceneModel.snapValueY(y);
+
+		var newModels = new ArrayList<ObjectModel>();
+
+		for (var obj : data) {
+
+			if (obj instanceof ImageAssetModel) {
+				obj = ((ImageAssetModel) obj).getFrame();
+			}
+
+			if (obj instanceof AnimationModel) {
+				var animFrames = ((AnimationModel) obj).getFrames();
+				if (!animFrames.isEmpty()) {
+					obj = animFrames.get(0);
+				}
+			}
+
+			if (obj instanceof AnimationFrameModel) {
+				var animFrame = (AnimationFrameModel) obj;
+				var textureFrame = animFrame.getFrameName() == null ? null : animFrame.getFrameName() + "";
+				var textureKey = animFrame.getTextureKey();
+
+				var texture = finder.findTexture(textureKey, textureFrame);
+
+				if (texture != null) {
+					var sprite = new SpriteModel();
+
+					var name = nameComputer.newName(computeBaseName(texture));
+
+					VariableComponent.set_variableName(sprite, name);
+
+					TransformComponent.set_x(sprite, modelX);
+					TransformComponent.set_y(sprite, modelY);
+
+					TextureComponent.set_textureKey(sprite, textureKey);
+					TextureComponent.set_textureFrame(sprite, textureFrame);
+
+					AnimationsComponent.set_autoPlayAnimKey(sprite, animFrame.getAnimation().getKey());
+
+					newModels.add(sprite);
+
+				}
+			} else if (obj instanceof IAssetFrameModel) {
+
+				var frame = (IAssetFrameModel) obj;
+
+				var sprite = new ImageModel();
+
+				var name = nameComputer.newName(computeBaseName(frame));
+
+				VariableComponent.set_variableName(sprite, name);
+
+				TransformComponent.set_x(sprite, modelX);
+				TransformComponent.set_y(sprite, modelY);
+
+				TextureComponent.utils_setTexture(sprite, (IAssetFrameModel) obj);
+
+				newModels.add(sprite);
+
+			} else if (obj instanceof BitmapFontAssetModel) {
+
+				var asset = (BitmapFontAssetModel) obj;
+
+				var textModel = new BitmapTextModel();
+
+				var name = nameComputer.newName(asset.getKey());
+
+				VariableComponent.set_variableName(textModel, name);
+
+				TransformComponent.set_x(textModel, modelX);
+				TransformComponent.set_y(textModel, modelY);
+
+				BitmapTextComponent.utils_setFont(textModel, asset);
+				TextualComponent.set_text(textModel, "BitmapText");
+
+				textModel.updateSizeFromBitmapFont(finder);
+
+				newModels.add(textModel);
+
+			}
+		}
+
+		for (var model : newModels) {
+			ParentComponent.utils_addChild(sceneModel.getDisplayList(), model);
+		}
+
+		var afterSnapshot = WorldSnapshotOperation.takeSnapshot(this);
+
+		executeOperation(new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop assets"));
+
+		refreshOutline();
+
+		setSelection(newModels);
+
+		setDirty(true);
+
+		getEditorSite().getPage().activate(this);
+		
+		return newModels;
+	}
+	
+	private static String computeBaseName(IAssetFrameModel texture) {
+		if (texture instanceof SpritesheetAssetModel.FrameModel) {
+			return texture.getAsset().getKey();
+		}
+
+		return texture.getKey();
 	}
 
 }

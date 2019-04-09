@@ -49,7 +49,7 @@ namespace PhaserEditor2D {
 
         private onResize() {
 
-            for(let scene of this._game.scene.scenes) {
+            for (let scene of this._game.scene.scenes) {
                 scene.cameras.main.setSize(window.innerWidth, window.innerHeight);
             }
 
@@ -186,6 +186,15 @@ namespace PhaserEditor2D {
             this.updateBodyColor();
         }
 
+        private onDropObjects(msg : any) {
+            let list = msg.list;
+
+            for(let model of list) {
+                Models.displayList.children.push(model);
+                this._create.createObject(this._objectScene.add, model);
+            }
+        }
+
         private onServerMessage(batch: any) {
             console.log("onServerMessage:");
             console.log(batch);
@@ -214,11 +223,15 @@ namespace PhaserEditor2D {
                     case "UpdateSceneProperties":
                         this.onUpdateSceneProperties(msg);
                         break;
+                    case "DropObjects":
+                        this.onDropObjects(msg);
+                        break;
                 }
             }
 
             this.repaint();
         };
+
 
         sendMessage(msg: any) {
             console.log("Sending message:");

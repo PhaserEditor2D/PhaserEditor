@@ -130,6 +130,14 @@ var PhaserEditor2D;
             });
             this.updateBodyColor();
         };
+        Editor.prototype.onDropObjects = function (msg) {
+            var list = msg.list;
+            for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+                var model = list_1[_i];
+                PhaserEditor2D.Models.displayList.children.push(model);
+                this._create.createObject(this._objectScene.add, model);
+            }
+        };
         Editor.prototype.onServerMessage = function (batch) {
             console.log("onServerMessage:");
             console.log(batch);
@@ -153,6 +161,9 @@ var PhaserEditor2D;
                         break;
                     case "UpdateSceneProperties":
                         this.onUpdateSceneProperties(msg);
+                        break;
+                    case "DropObjects":
+                        this.onDropObjects(msg);
                         break;
                 }
             }

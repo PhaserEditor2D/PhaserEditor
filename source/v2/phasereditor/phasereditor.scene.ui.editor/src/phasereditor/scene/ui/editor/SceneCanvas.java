@@ -200,7 +200,7 @@ public class SceneCanvas extends ZoomCanvas
 		return new float[] { viewX, viewY };
 	}
 
-	protected void selectionDropped(int x, int y, Object[] data) {
+	private void selectionDropped(int x, int y, Object[] data) {
 
 		var nameComputer = new NameComputer(getModel().getDisplayList());
 

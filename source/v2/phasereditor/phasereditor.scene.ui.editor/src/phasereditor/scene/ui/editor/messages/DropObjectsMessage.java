@@ -19,29 +19,33 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.webrun.core;
+package phasereditor.scene.ui.editor.messages;
+
+import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import phasereditor.scene.core.ObjectModel;
+import phasereditor.webrun.core.ApiMessage;
 
 /**
  * @author arian
  *
  */
-public class BatchMessage extends ApiMessage {
+public class DropObjectsMessage extends ApiMessage {
 
-	private JSONArray _list;
+	public DropObjectsMessage(List<ObjectModel> models) {
+		var list = new JSONArray();
 
-	public BatchMessage(ApiMessage... messages) {
-		_list = new JSONArray();
-		_data.put("list", _list);
-
-		for (var msg : messages) {
-			add(msg);
+		for (var model : models) {
+			var objData = new JSONObject();
+			model.write(objData);
+			list.put(objData);
 		}
-	}
 
-	public void add(ApiMessage msg) {
-		_list.put(msg.getData());
-	}
+		_data.put("method", "DropObjects");
+		_data.put("list", list);
 
+	}
 }

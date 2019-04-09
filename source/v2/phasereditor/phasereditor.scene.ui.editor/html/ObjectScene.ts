@@ -21,6 +21,8 @@ namespace PhaserEditor2D {
 
             this._dragManager = new DragManager(this);
 
+            new DropManager();
+
             this.initCamera();
 
             this.initKeyboard();
@@ -139,6 +141,30 @@ namespace PhaserEditor2D {
         }
     }
 
+    export class BackgroundScene extends Phaser.Scene {
+        private _bg: Phaser.GameObjects.Graphics;
+
+        constructor() {
+            super("BackgroundScene");
+        }
+
+        create() {
+            this._bg = this.add.graphics();
+            this.repaint();
+        }
+
+        private repaint() {
+            this._bg.clear();
+            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")");
+            this._bg.fillStyle(bgColor.color, 1);
+            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        }
+
+        update() {
+            this.repaint();
+        }
+    }
+
     class DragManager {
         private _scene: ObjectScene;
         private _dragStartPoint: Phaser.Math.Vector2;
@@ -204,28 +230,27 @@ namespace PhaserEditor2D {
         }
     }
 
-
-    export class BackgroundScene extends Phaser.Scene {
-        private _bg: Phaser.GameObjects.Graphics;
+    class DropManager {
 
         constructor() {
-            super("BackgroundScene");
-        }
+            window.addEventListener("drop", function (e) {
+                let editor = Editor.getInstance();
+                
+                let point = editor.getObjectScene().cameras.main.getWorldPoint(e.clientX, e.clientY);
 
-        create() {
-            this._bg = this.add.graphics();
-            this.repaint();
-        }
+                editor.sendMessage({
+                    method: "DropEvent",
+                    x: point.x,
+                    y: point.y
+                });
+            })
 
-        private repaint() {
-            this._bg.clear();
-            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")");
-            this._bg.fillStyle(bgColor.color, 1);
-            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        }
-
-        update() {
-            this.repaint();
+            window.addEventListener("dragover", function (e : DragEvent) {
+                e.preventDefault();
+            });    
         }
     }
+
+
+
 }
