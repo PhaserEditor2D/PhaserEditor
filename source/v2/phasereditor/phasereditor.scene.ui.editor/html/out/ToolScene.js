@@ -213,15 +213,17 @@ var PhaserEditor2D;
             var editor = PhaserEditor2D.Editor.getInstance();
             var scene = editor.getObjectScene();
             var pointer = scene.input.activePointer;
-            var result = scene.input.hitTestPointer(pointer);
-            console.log(result);
-            if (result) {
-                var pick = result[result.length - 1];
-                if (pick) {
-                    console.log(pick.name);
-                    pick.destroy();
-                }
+            if (pointer.buttons !== 1) {
+                return;
             }
+            var result = scene.input.hitTestPointer(pointer);
+            var gameObj = result.pop();
+            editor.sendMessage({
+                method: "ClickObject",
+                ctrl: e.ctrlKey,
+                shift: e.shiftKey,
+                id: gameObj ? gameObj.name : undefined
+            });
             editor.repaint();
         };
         return PickManager;

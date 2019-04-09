@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 
+import phasereditor.scene.core.ObjectModel;
+
 /**
  * @author arian
  *
@@ -43,25 +45,31 @@ public class SelectionEvents {
 			return;
 		}
 
-		var fireUpdateSelection = false;
-
 		var pick = _scene.pickObject(e.x, e.y);
+		var controlPressed = (e.stateMask & SWT.CTRL) != 0;
+		
+		updateSelection(pick, controlPressed);
+	}
+
+	public void updateSelection(ObjectModel clickedObject, boolean controlPressed) {
+		
+		var fireUpdateSelection = false;
 
 		var list = new ArrayList<>(_scene.getEditor().getSelectionList());
 
-		if (pick == null) {
+		if (clickedObject == null) {
 			fireUpdateSelection = !list.isEmpty();
 			list = new ArrayList<>();
 		} else {
-			if ((e.stateMask & SWT.CTRL) != 0) {
-				if (list.contains(pick)) {
-					list.remove(pick);
+			if (controlPressed) {
+				if (list.contains(clickedObject)) {
+					list.remove(clickedObject);
 				} else {
-					list.add(pick);
+					list.add(clickedObject);
 				}
 			} else {
 				list = new ArrayList<>();
-				list.add(pick);
+				list.add(clickedObject);
 			}
 
 			fireUpdateSelection = true;

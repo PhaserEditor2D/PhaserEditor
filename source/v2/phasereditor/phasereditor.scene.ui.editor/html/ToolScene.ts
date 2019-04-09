@@ -284,18 +284,24 @@ namespace PhaserEditor2D {
 
         private onMouseDown(e: MouseEvent) {
             const editor = Editor.getInstance();
-            //editor.repaint();
+
             const scene = editor.getObjectScene();
             const pointer = scene.input.activePointer;
-            const result = scene.input.hitTestPointer(pointer);
-            console.log(result);
-            if (result) {
-                let pick = result[result.length - 1];
-                if (pick) {
-                    console.log(pick.name);
-                    pick.destroy();
-                }
+
+            if (pointer.buttons !== 1) {
+                return;
             }
+            
+            const result = scene.input.hitTestPointer(pointer);
+
+            let gameObj = result.pop();
+
+            editor.sendMessage({
+                method: "ClickObject",
+                ctrl: e.ctrlKey,
+                shift: e.shiftKey,
+                id: gameObj? gameObj.name : undefined
+            })
             editor.repaint();
         }
     }

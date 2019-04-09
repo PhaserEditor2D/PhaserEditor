@@ -1238,6 +1238,10 @@ public class SceneCanvas extends ZoomCanvas
 
 		return result;
 	}
+	
+	public SelectionEvents getSelectionEvents() {
+		return _selectionEvents;
+	}
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {

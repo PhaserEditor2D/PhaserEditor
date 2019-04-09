@@ -21,8 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import org.json.JSONObject;
 
+import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.webrun.core.ApiHub;
@@ -90,9 +93,24 @@ public class SceneEditorBroker {
 		case "GetSelectObjects":
 			send(client, new SelectObjectsMessage(_editor));
 			break;
-
+		case "ClickObject":
+			onClickObject(client, msg);
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void onClickObject(Object client, JSONObject msg) {
+
+		var id = msg.optString("id");
+		var ctrl = msg.getBoolean("ctrl");
+
+		ObjectModel obj = id == null ? null : _editor.getSceneModel().getDisplayList().findById(id);
+
+		swtRun(() -> {
+			_editor.getScene().getSelectionEvents().updateSelection(obj, ctrl);
+			send(client, new SelectObjectsMessage(_editor));
+		});
 	}
 }
