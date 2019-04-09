@@ -30,7 +30,7 @@ var PhaserEditor2D;
         ToolScene.prototype.create = function () {
             this.initCamera();
             this._axisToken = "";
-            var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties));
+            var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Editor.getInstance().sceneProperties));
             this._gridGraphics = this.add.graphics();
             this._selectionGraphics = this.add.graphics({
                 fillStyle: {
@@ -51,14 +51,15 @@ var PhaserEditor2D;
             this.renderAxis();
         };
         ToolScene.prototype.renderAxis = function () {
-            var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
+            var editor = PhaserEditor2D.Editor.getInstance();
+            var cam = editor.getObjectScene().cameras.main;
             var w = window.innerWidth;
             var h = window.innerHeight;
             var dx = 16;
             var dy = 16;
-            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(PhaserEditor2D.Models.sceneProperties)) {
-                dx = PhaserEditor2D.ScenePropertiesComponent.get_snapWidth(PhaserEditor2D.Models.sceneProperties);
-                dy = PhaserEditor2D.ScenePropertiesComponent.get_snapHeight(PhaserEditor2D.Models.sceneProperties);
+            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(editor.sceneProperties)) {
+                dx = PhaserEditor2D.ScenePropertiesComponent.get_snapWidth(editor.sceneProperties);
+                dy = PhaserEditor2D.ScenePropertiesComponent.get_snapHeight(editor.sceneProperties);
             }
             var i = 1;
             while (dx * i * cam.zoom < 32) {
@@ -72,10 +73,10 @@ var PhaserEditor2D;
             dy = dy * i;
             var sx = ((cam.scrollX / dx) | 0) * dx;
             var sy = ((cam.scrollY / dy) | 0) * dy;
-            var bx = PhaserEditor2D.ScenePropertiesComponent.get_borderX(PhaserEditor2D.Models.sceneProperties);
-            var by = PhaserEditor2D.ScenePropertiesComponent.get_borderY(PhaserEditor2D.Models.sceneProperties);
-            var bw = PhaserEditor2D.ScenePropertiesComponent.get_borderWidth(PhaserEditor2D.Models.sceneProperties);
-            var bh = PhaserEditor2D.ScenePropertiesComponent.get_borderHeight(PhaserEditor2D.Models.sceneProperties);
+            var bx = PhaserEditor2D.ScenePropertiesComponent.get_borderX(editor.sceneProperties);
+            var by = PhaserEditor2D.ScenePropertiesComponent.get_borderY(editor.sceneProperties);
+            var bw = PhaserEditor2D.ScenePropertiesComponent.get_borderWidth(editor.sceneProperties);
+            var bh = PhaserEditor2D.ScenePropertiesComponent.get_borderHeight(editor.sceneProperties);
             var token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY
                 + "-" + bx + "-" + by + "-" + bw + "-" + bh;
             if (this._axisToken !== null && this._axisToken === token) {
@@ -83,7 +84,7 @@ var PhaserEditor2D;
             }
             this._axisToken = token;
             this._gridGraphics.clear();
-            var fg = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
+            var fg = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(editor.sceneProperties) + ")");
             this._gridGraphics.lineStyle(1, fg.color, 0.5);
             for (var _i = 0, _a = this._axisLabels; _i < _a.length; _i++) {
                 var label_1 = _a[_i];
@@ -148,9 +149,10 @@ var PhaserEditor2D;
             this._gridGraphics.strokeRect((bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom, bw * cam.zoom, bh * cam.zoom);
         };
         ToolScene.prototype.updateSelectionObjects = function () {
+            var editor = PhaserEditor2D.Editor.getInstance();
             this._selectedObjects = [];
             var objectScene = PhaserEditor2D.Editor.getInstance().getObjectScene();
-            for (var _i = 0, _a = PhaserEditor2D.Models.selection; _i < _a.length; _i++) {
+            for (var _i = 0, _a = editor.selection; _i < _a.length; _i++) {
                 var id = _a[_i];
                 var obj = objectScene.sys.displayList.getByName(id);
                 if (obj) {

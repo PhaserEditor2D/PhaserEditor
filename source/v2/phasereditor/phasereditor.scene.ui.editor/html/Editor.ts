@@ -9,6 +9,9 @@ namespace PhaserEditor2D {
         private _objectScene: ObjectScene;
         private _create: Create;
 
+        sceneProperties : any;
+        selection: any[] = [];
+
         constructor() {
             Editor._instance = this;
 
@@ -89,7 +92,7 @@ namespace PhaserEditor2D {
         }
 
         private onSelectObjects(msg: any) {
-            Models.selection = msg.objectIds;
+            this.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
         };
 
@@ -99,8 +102,6 @@ namespace PhaserEditor2D {
 
             for (var i = 0; i < list.length; i++) {
                 var objData = list[i];
-
-                Models.displayList_updateObjectData(objData);
 
                 var id = objData["-id"];
 
@@ -116,7 +117,7 @@ namespace PhaserEditor2D {
         }
 
         private onUpdateSceneProperties(msg: any) {
-            Models.sceneProperties = msg.sceneProperties;
+            this.sceneProperties = msg.sceneProperties;
             this.getToolScene().updateFromSceneProperties();
 
             this.updateBodyColor();
@@ -124,17 +125,14 @@ namespace PhaserEditor2D {
 
         private updateBodyColor() {
             const body = document.getElementsByTagName("body")[0];
-            body.style.backgroundColor = "rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")";
+            body.style.backgroundColor = "rgb(" + ScenePropertiesComponent.get_backgroundColor(this.sceneProperties) + ")";
         }
 
         private onCreateGame(msg: any) {
             // update the model
 
-            Models.gameConfig.webgl = msg.webgl;
-            Models.displayList = msg.displayList;
-            Models.projectUrl = msg.projectUrl;
-            Models.pack = msg.pack;
-            Models.sceneProperties = msg.sceneProperties;
+            const webgl = msg.webgl;
+            this.sceneProperties = msg.sceneProperties;
 
             // create the game
 
@@ -144,7 +142,7 @@ namespace PhaserEditor2D {
                 width: window.innerWidth,
                 height: window.innerWidth,
                 // WEBGL is problematic on Linux
-                type: Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                type: webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
                     pixelArt: true
                 },
@@ -160,7 +158,11 @@ namespace PhaserEditor2D {
             this._game.scene.add("ObjectScene", this._objectScene);
             this._game.scene.add("BackgroundScene", BackgroundScene);
             this._game.scene.add("ToolScene", ToolScene);
-            this._game.scene.start("ObjectScene");
+            this._game.scene.start("ObjectScene", {
+                displayList: msg.displayList,
+                projectUrl: msg.projectUrl,
+                pack: msg.pack
+            });
 
             this._resizeToken = 0;
 
@@ -199,7 +201,6 @@ namespace PhaserEditor2D {
                             console.log("load complete!");
 
                             for (let model of models) {
-                                Models.displayList.children.push(model);
                                 this._create.createObject(this._objectScene.add, model);
                             }
 
@@ -215,7 +216,6 @@ namespace PhaserEditor2D {
                 scene.load.start();
             } else {
                 for (let model of list) {
-                    Models.displayList.children.push(model);
                     this._create.createObject(this._objectScene.add, model);
                 }
             }

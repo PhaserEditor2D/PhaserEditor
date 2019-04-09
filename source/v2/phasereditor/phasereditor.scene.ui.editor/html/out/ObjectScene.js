@@ -30,10 +30,13 @@ var PhaserEditor2D;
             };
             return _this;
         }
+        ObjectScene.prototype.init = function (initData) {
+            this._initData = initData;
+        };
         ObjectScene.prototype.preload = function () {
             console.log("preload()");
-            this.load.setBaseURL(PhaserEditor2D.Models.projectUrl);
-            this.load.pack("pack", PhaserEditor2D.Models.pack);
+            this.load.setBaseURL(this._initData.projectUrl);
+            this.load.pack("pack", this._initData.pack);
         };
         ObjectScene.prototype.create = function () {
             PhaserEditor2D.Editor.getInstance().stop();
@@ -44,7 +47,7 @@ var PhaserEditor2D;
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
             this.initBackground();
-            editor.getCreate().createWorld(this.add);
+            editor.getCreate().createWorld(this.add, this._initData.displayList);
             editor.sendMessage({
                 method: "GetSelectObjects"
             });
@@ -126,7 +129,7 @@ var PhaserEditor2D;
         };
         BackgroundScene.prototype.repaint = function () {
             this._bg.clear();
-            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")");
+            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Editor.getInstance().sceneProperties) + ")");
             this._bg.fillStyle(bgColor.color, 1);
             this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
         };

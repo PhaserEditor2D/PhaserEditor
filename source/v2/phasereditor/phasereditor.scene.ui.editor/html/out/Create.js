@@ -3,8 +3,8 @@ var PhaserEditor2D;
     var Create = (function () {
         function Create() {
         }
-        Create.prototype.createWorld = function (add) {
-            var list = PhaserEditor2D.Models.displayList.children;
+        Create.prototype.createWorld = function (add, displayList) {
+            var list = displayList.children;
             for (var i = 0; i < list.length; i++) {
                 var data = list[i];
                 this.createObject(add, data);

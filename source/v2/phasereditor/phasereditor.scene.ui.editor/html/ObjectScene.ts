@@ -5,15 +5,20 @@ namespace PhaserEditor2D {
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
         private _backgroundScene: Phaser.Scene;
+        private _initData : any;
 
         constructor() {
             super("ObjectScene");
         }
 
+        init(initData) {
+            this._initData = initData;
+        }
+
         preload() {
             console.log("preload()");
-            this.load.setBaseURL(Models.projectUrl);
-            this.load.pack("pack", Models.pack);
+            this.load.setBaseURL(this._initData.projectUrl);
+            this.load.pack("pack", this._initData.pack);
         }
 
         create() {
@@ -33,7 +38,7 @@ namespace PhaserEditor2D {
 
             this.initBackground();
 
-            editor.getCreate().createWorld(this.add);
+            editor.getCreate().createWorld(this.add, this._initData.displayList);
 
             editor.sendMessage({
                 method: "GetSelectObjects"
@@ -155,7 +160,7 @@ namespace PhaserEditor2D {
 
         private repaint() {
             this._bg.clear();
-            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_backgroundColor(Models.sceneProperties) + ")");
+            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_backgroundColor(Editor.getInstance().sceneProperties) + ")");
             this._bg.fillStyle(bgColor.color, 1);
             this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
         }

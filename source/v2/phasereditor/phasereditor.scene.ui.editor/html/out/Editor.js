@@ -2,6 +2,7 @@ var PhaserEditor2D;
 (function (PhaserEditor2D) {
     var Editor = (function () {
         function Editor() {
+            this.selection = [];
             Editor._instance = this;
             this.openSocket();
         }
@@ -60,7 +61,7 @@ var PhaserEditor2D;
             });
         };
         Editor.prototype.onSelectObjects = function (msg) {
-            PhaserEditor2D.Models.selection = msg.objectIds;
+            this.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
         };
         ;
@@ -68,7 +69,6 @@ var PhaserEditor2D;
             var list = msg.objects;
             for (var i = 0; i < list.length; i++) {
                 var objData = list[i];
-                PhaserEditor2D.Models.displayList_updateObjectData(objData);
                 var id = objData["-id"];
                 var obj = this._objectScene.sys.displayList.getByName(id);
                 this._create.updateObject(obj, objData);
@@ -79,26 +79,23 @@ var PhaserEditor2D;
             window.location.reload();
         };
         Editor.prototype.onUpdateSceneProperties = function (msg) {
-            PhaserEditor2D.Models.sceneProperties = msg.sceneProperties;
+            this.sceneProperties = msg.sceneProperties;
             this.getToolScene().updateFromSceneProperties();
             this.updateBodyColor();
         };
         Editor.prototype.updateBodyColor = function () {
             var body = document.getElementsByTagName("body")[0];
-            body.style.backgroundColor = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Models.sceneProperties) + ")";
+            body.style.backgroundColor = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(this.sceneProperties) + ")";
         };
         Editor.prototype.onCreateGame = function (msg) {
-            PhaserEditor2D.Models.gameConfig.webgl = msg.webgl;
-            PhaserEditor2D.Models.displayList = msg.displayList;
-            PhaserEditor2D.Models.projectUrl = msg.projectUrl;
-            PhaserEditor2D.Models.pack = msg.pack;
-            PhaserEditor2D.Models.sceneProperties = msg.sceneProperties;
+            var webgl = msg.webgl;
+            this.sceneProperties = msg.sceneProperties;
             this._create = new PhaserEditor2D.Create();
             this._game = new Phaser.Game({
                 title: "Phaser Editor 2D - Web Scene Editor",
                 width: window.innerWidth,
                 height: window.innerWidth,
-                type: PhaserEditor2D.Models.gameConfig.webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                type: webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
                     pixelArt: true
                 },
@@ -111,7 +108,11 @@ var PhaserEditor2D;
             this._game.scene.add("ObjectScene", this._objectScene);
             this._game.scene.add("BackgroundScene", PhaserEditor2D.BackgroundScene);
             this._game.scene.add("ToolScene", PhaserEditor2D.ToolScene);
-            this._game.scene.start("ObjectScene");
+            this._game.scene.start("ObjectScene", {
+                displayList: msg.displayList,
+                projectUrl: msg.projectUrl,
+                pack: msg.pack
+            });
             this._resizeToken = 0;
             var self = this;
             window.addEventListener('resize', function (event) {
@@ -139,7 +140,6 @@ var PhaserEditor2D;
                         console.log("load complete!");
                         for (var _i = 0, models_1 = models; _i < models_1.length; _i++) {
                             var model = models_1[_i];
-                            PhaserEditor2D.Models.displayList.children.push(model);
                             this._create.createObject(this._objectScene.add, model);
                         }
                         this.repaint();
@@ -153,7 +153,6 @@ var PhaserEditor2D;
             else {
                 for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                     var model = list_1[_i];
-                    PhaserEditor2D.Models.displayList.children.push(model);
                     this._create.createObject(this._objectScene.add, model);
                 }
             }

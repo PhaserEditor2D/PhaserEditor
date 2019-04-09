@@ -22,7 +22,7 @@ namespace PhaserEditor2D {
 
             this._axisToken = "";
 
-            const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties));
+            const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Editor.getInstance().sceneProperties));
 
             this._gridGraphics = this.add.graphics();
 
@@ -53,7 +53,9 @@ namespace PhaserEditor2D {
         private _axisLabels: Phaser.GameObjects.Text[] = [];
 
         private renderAxis() {
-            const cam = Editor.getInstance().getObjectScene().cameras.main;
+            const editor = Editor.getInstance();
+
+            const cam = editor.getObjectScene().cameras.main;
 
 
             const w = window.innerWidth;
@@ -62,9 +64,9 @@ namespace PhaserEditor2D {
             let dx = 16;
             let dy = 16;
 
-            if (ScenePropertiesComponent.get_snapEnabled(Models.sceneProperties)) {
-                dx = ScenePropertiesComponent.get_snapWidth(Models.sceneProperties);
-                dy = ScenePropertiesComponent.get_snapHeight(Models.sceneProperties);
+            if (ScenePropertiesComponent.get_snapEnabled(editor.sceneProperties)) {
+                dx = ScenePropertiesComponent.get_snapWidth(editor.sceneProperties);
+                dy = ScenePropertiesComponent.get_snapHeight(editor.sceneProperties);
             }
 
             let i = 1;
@@ -82,10 +84,10 @@ namespace PhaserEditor2D {
             const sx = ((cam.scrollX / dx) | 0) * dx;
             const sy = ((cam.scrollY / dy) | 0) * dy;
 
-            const bx = ScenePropertiesComponent.get_borderX(Models.sceneProperties);
-            const by = ScenePropertiesComponent.get_borderY(Models.sceneProperties);
-            const bw = ScenePropertiesComponent.get_borderWidth(Models.sceneProperties);
-            const bh = ScenePropertiesComponent.get_borderHeight(Models.sceneProperties);
+            const bx = ScenePropertiesComponent.get_borderX(editor.sceneProperties);
+            const by = ScenePropertiesComponent.get_borderY(editor.sceneProperties);
+            const bw = ScenePropertiesComponent.get_borderWidth(editor.sceneProperties);
+            const bh = ScenePropertiesComponent.get_borderHeight(editor.sceneProperties);
 
             const token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY
                 + "-" + bx + "-" + by + "-" + bw + "-" + bh;
@@ -98,7 +100,7 @@ namespace PhaserEditor2D {
 
             this._gridGraphics.clear();
 
-            const fg = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties) + ")");
+            const fg = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_foregroundColor(editor.sceneProperties) + ")");
 
             this._gridGraphics.lineStyle(1, fg.color, 0.5);
 
@@ -198,11 +200,13 @@ namespace PhaserEditor2D {
         }
 
         updateSelectionObjects() {
+            const editor = Editor.getInstance();
+
             this._selectedObjects = [];
 
             var objectScene = Editor.getInstance().getObjectScene();
 
-            for (let id of Models.selection) {
+            for (let id of editor.selection) {
                 const obj = objectScene.sys.displayList.getByName(id);
                 if (obj) {
                     this._selectedObjects.push(obj);
@@ -291,7 +295,7 @@ namespace PhaserEditor2D {
             if (pointer.buttons !== 1) {
                 return;
             }
-            
+
             const result = scene.input.hitTestPointer(pointer);
 
             let gameObj = result.pop();

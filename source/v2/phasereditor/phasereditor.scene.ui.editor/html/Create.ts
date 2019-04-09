@@ -4,8 +4,8 @@ namespace PhaserEditor2D {
 
         }
 
-        createWorld(add: Phaser.GameObjects.GameObjectFactory) {
-            var list = Models.displayList.children;
+        createWorld(add: Phaser.GameObjects.GameObjectFactory, displayList : any) {
+            var list = displayList.children;
 
             for (var i = 0; i < list.length; i++) {
                 var data = list[i];
