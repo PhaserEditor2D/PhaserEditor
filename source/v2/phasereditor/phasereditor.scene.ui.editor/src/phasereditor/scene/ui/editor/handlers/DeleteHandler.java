@@ -44,7 +44,7 @@ public class DeleteHandler extends AbstractHandler {
 			editor.setDirty(true);
 
 		} else {
-			editor.getScene().delete();
+			editor.delete();
 		}
 
 		return null;

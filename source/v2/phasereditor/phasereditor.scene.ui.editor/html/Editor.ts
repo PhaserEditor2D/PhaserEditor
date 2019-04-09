@@ -9,7 +9,7 @@ namespace PhaserEditor2D {
         private _objectScene: ObjectScene;
         private _create: Create;
 
-        sceneProperties : any;
+        sceneProperties: any;
         selection: any[] = [];
 
         constructor() {
@@ -185,6 +185,10 @@ namespace PhaserEditor2D {
                 self.repaint();
             });
 
+            window.addEventListener("keyup", function (e) {
+                console.log(e);
+            });
+
             this.updateBodyColor();
         }
 
@@ -193,7 +197,7 @@ namespace PhaserEditor2D {
 
             if (msg.pack) {
                 let scene = this.getObjectScene();
-                scene.load.on(Phaser.Loader.Events.COMPLETE,
+                scene.load.once(Phaser.Loader.Events.COMPLETE,
 
                     (function (models) {
                         return function () {
@@ -219,6 +223,21 @@ namespace PhaserEditor2D {
                     this._create.createObject(this._objectScene.add, model);
                 }
             }
+        }
+
+        private onDeleteObjects(msg) {
+            let scene = this.getObjectScene();
+
+            let list = msg.list;
+
+            for(let id of list) {
+                var obj = scene.sys.displayList.getByName(id);
+                if (obj) {
+                    obj.destroy();
+                }
+            }
+
+            this.repaint();
         }
 
         private onServerMessage(batch: any) {
@@ -251,6 +270,9 @@ namespace PhaserEditor2D {
                         break;
                     case "DropObjects":
                         this.onDropObjects(msg);
+                        break;
+                    case "DeleteObjects":
+                        this.onDeleteObjects(msg);
                         break;
                 }
             }

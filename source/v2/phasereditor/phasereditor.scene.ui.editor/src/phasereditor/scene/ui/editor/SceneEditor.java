@@ -66,6 +66,7 @@ import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
+import phasereditor.scene.ui.editor.messages.DeleteObjectsMessage;
 import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
@@ -73,6 +74,7 @@ import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.editors.EditorFileStampHelper;
+import phasereditor.webrun.core.BatchMessage;
 
 public class SceneEditor extends EditorPart {
 
@@ -581,12 +583,12 @@ public class SceneEditor extends EditorPart {
 			}
 		}
 	}
-	
+
 	public List<ObjectModel> selectionDropped(float x, float y, Object[] data) {
 		var finder = AssetPackCore.getAssetFinder(getProject());
-		
+
 		var sceneModel = getSceneModel();
-		
+
 		var nameComputer = new NameComputer(sceneModel.getDisplayList());
 
 		var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(this);
@@ -689,10 +691,10 @@ public class SceneEditor extends EditorPart {
 		setDirty(true);
 
 		getEditorSite().getPage().activate(this);
-		
+
 		return newModels;
 	}
-	
+
 	private static String computeBaseName(IAssetFrameModel texture) {
 		if (texture instanceof SpritesheetAssetModel.FrameModel) {
 			return texture.getAsset().getKey();
@@ -703,6 +705,41 @@ public class SceneEditor extends EditorPart {
 
 	public AssetFinder getAssetFinder() {
 		return AssetPackCore.getAssetFinder(getProject());
+	}
+
+	public void delete() {
+		var beforeData = WorldSnapshotOperation.takeSnapshot(this);
+
+		var selection = getSelectionList();
+
+		for (var model : selection) {
+			ParentComponent.utils_removeFromParent(model);
+		}
+
+		for (var group : getSceneModel().getGroupsModel().getGroups()) {
+			group.getChildren().removeAll(selection);
+		}
+
+		refreshOutline();
+
+		setDirty(true);
+
+		setSelection(List.of());
+
+		var afterData = WorldSnapshotOperation.takeSnapshot(this);
+
+		executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Delete objects"));
+
+		_scene.redraw();
+
+		_broker.sendAll(new BatchMessage(
+
+				new DeleteObjectsMessage(selection),
+
+				new SelectObjectsMessage(this)
+
+		));
+
 	}
 
 }

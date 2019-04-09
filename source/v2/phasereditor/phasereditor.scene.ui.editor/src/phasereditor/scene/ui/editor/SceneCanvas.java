@@ -1015,29 +1015,7 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	public void delete() {
-		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
-
-		var selection = _editor.getSelectionList();
-
-		for (var model : selection) {
-			ParentComponent.utils_removeFromParent(model);
-		}
-
-		for (var group : _editor.getSceneModel().getGroupsModel().getGroups()) {
-			group.getChildren().removeAll(selection);
-		}
-
-		_editor.refreshOutline();
-
-		_editor.setDirty(true);
-
-		_editor.setSelection(List.of());
-
-		var afterData = WorldSnapshotOperation.takeSnapshot(_editor);
-
-		_editor.executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Delete objects"));
-
-		redraw();
+		_editor.delete();
 	}
 
 	public void copy() {

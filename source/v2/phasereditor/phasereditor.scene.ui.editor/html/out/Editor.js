@@ -129,13 +129,16 @@ var PhaserEditor2D;
                 self.getObjectScene().onMouseWheel(e);
                 self.repaint();
             });
+            window.addEventListener("keyup", function (e) {
+                console.log(e);
+            });
             this.updateBodyColor();
         };
         Editor.prototype.onDropObjects = function (msg) {
             var list = msg.list;
             if (msg.pack) {
                 var scene = this.getObjectScene();
-                scene.load.on(Phaser.Loader.Events.COMPLETE, (function (models) {
+                scene.load.once(Phaser.Loader.Events.COMPLETE, (function (models) {
                     return function () {
                         console.log("load complete!");
                         for (var _i = 0, models_1 = models; _i < models_1.length; _i++) {
@@ -156,6 +159,18 @@ var PhaserEditor2D;
                     this._create.createObject(this._objectScene.add, model);
                 }
             }
+        };
+        Editor.prototype.onDeleteObjects = function (msg) {
+            var scene = this.getObjectScene();
+            var list = msg.list;
+            for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
+                var id = list_2[_i];
+                var obj = scene.sys.displayList.getByName(id);
+                if (obj) {
+                    obj.destroy();
+                }
+            }
+            this.repaint();
         };
         Editor.prototype.onServerMessage = function (batch) {
             console.log("onServerMessage:");
@@ -183,6 +198,9 @@ var PhaserEditor2D;
                         break;
                     case "DropObjects":
                         this.onDropObjects(msg);
+                        break;
+                    case "DeleteObjects":
+                        this.onDeleteObjects(msg);
                         break;
                 }
             }
