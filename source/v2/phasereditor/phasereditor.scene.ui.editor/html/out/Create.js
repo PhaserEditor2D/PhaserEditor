@@ -44,6 +44,7 @@ var PhaserEditor2D;
                     obj = add.bitmapText(x, y, key);
                     break;
             }
+            obj.setInteractive();
             this.updateObject(obj, data);
         };
         Create.prototype.updateObject = function (obj, data) {

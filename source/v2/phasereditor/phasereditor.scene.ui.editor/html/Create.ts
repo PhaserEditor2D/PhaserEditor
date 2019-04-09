@@ -65,6 +65,8 @@ namespace PhaserEditor2D {
                     break;
             }
 
+            obj.setInteractive();
+
             this.updateObject(obj, data);
         }
 

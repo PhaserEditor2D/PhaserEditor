@@ -1,7 +1,7 @@
 namespace PhaserEditor2D {
 
     export class ToolScene extends Phaser.Scene {
-        
+
 
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
@@ -13,6 +13,8 @@ namespace PhaserEditor2D {
 
             this._selectedObjects = [];
             this._selectionGraphics = null;
+
+            new PickManager();
         }
 
         create() {
@@ -96,7 +98,7 @@ namespace PhaserEditor2D {
 
             this._gridGraphics.clear();
 
-            const fg =  Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties) + ")");
+            const fg = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_foregroundColor(Models.sceneProperties) + ")");
 
             this._gridGraphics.lineStyle(1, fg.color, 0.5);
 
@@ -183,13 +185,13 @@ namespace PhaserEditor2D {
             // border
 
             this._gridGraphics.lineStyle(4, 0x000000, 1);
-            
+
             this._gridGraphics.strokeRect(
                 (bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom,
                 bw * cam.zoom, bh * cam.zoom);
-            
-                this._gridGraphics.lineStyle(2, 0xffffff, 1);
-            
+
+            this._gridGraphics.lineStyle(2, 0xffffff, 1);
+
             this._gridGraphics.strokeRect(
                 (bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom,
                 bw * cam.zoom, bh * cam.zoom);
@@ -267,6 +269,34 @@ namespace PhaserEditor2D {
             graphics.strokePoints(this._selectionBoxPoints, true);
             graphics.lineStyle(2, 0x00ff00);
             graphics.strokePoints(this._selectionBoxPoints, true);
+        }
+    }
+
+
+    class PickManager {
+        constructor() {
+            const editor = Editor.getInstance();
+            const self = this;
+            editor.getGame().canvas.addEventListener("mousedown", function (e) {
+                self.onMouseDown(e);
+            });
+        }
+
+        private onMouseDown(e: MouseEvent) {
+            const editor = Editor.getInstance();
+            //editor.repaint();
+            const scene = editor.getObjectScene();
+            const pointer = scene.input.activePointer;
+            const result = scene.input.hitTestPointer(pointer);
+            console.log(result);
+            if (result) {
+                let pick = result[result.length - 1];
+                if (pick) {
+                    console.log(pick.name);
+                    pick.destroy();
+                }
+            }
+            editor.repaint();
         }
     }
 

@@ -24,6 +24,7 @@ var PhaserEditor2D;
             ];
             _this._selectedObjects = [];
             _this._selectionGraphics = null;
+            new PickManager();
             return _this;
         }
         ToolScene.prototype.create = function () {
@@ -200,4 +201,29 @@ var PhaserEditor2D;
         return ToolScene;
     }(Phaser.Scene));
     PhaserEditor2D.ToolScene = ToolScene;
+    var PickManager = (function () {
+        function PickManager() {
+            var editor = PhaserEditor2D.Editor.getInstance();
+            var self = this;
+            editor.getGame().canvas.addEventListener("mousedown", function (e) {
+                self.onMouseDown(e);
+            });
+        }
+        PickManager.prototype.onMouseDown = function (e) {
+            var editor = PhaserEditor2D.Editor.getInstance();
+            var scene = editor.getObjectScene();
+            var pointer = scene.input.activePointer;
+            var result = scene.input.hitTestPointer(pointer);
+            console.log(result);
+            if (result) {
+                var pick = result[result.length - 1];
+                if (pick) {
+                    console.log(pick.name);
+                    pick.destroy();
+                }
+            }
+            editor.repaint();
+        };
+        return PickManager;
+    }());
 })(PhaserEditor2D || (PhaserEditor2D = {}));
