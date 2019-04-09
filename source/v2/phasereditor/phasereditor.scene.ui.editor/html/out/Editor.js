@@ -132,10 +132,30 @@ var PhaserEditor2D;
         };
         Editor.prototype.onDropObjects = function (msg) {
             var list = msg.list;
-            for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-                var model = list_1[_i];
-                PhaserEditor2D.Models.displayList.children.push(model);
-                this._create.createObject(this._objectScene.add, model);
+            if (msg.pack) {
+                var scene = this.getObjectScene();
+                scene.load.on(Phaser.Loader.Events.COMPLETE, (function (models) {
+                    return function () {
+                        console.log("load complete!");
+                        for (var _i = 0, models_1 = models; _i < models_1.length; _i++) {
+                            var model = models_1[_i];
+                            PhaserEditor2D.Models.displayList.children.push(model);
+                            this._create.createObject(this._objectScene.add, model);
+                        }
+                        this.repaint();
+                    };
+                })(list), this);
+                console.log("Load: ");
+                console.log(msg.pack);
+                scene.load.addPack(msg.pack);
+                scene.load.start();
+            }
+            else {
+                for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+                    var model = list_1[_i];
+                    PhaserEditor2D.Models.displayList.children.push(model);
+                    this._create.createObject(this._objectScene.add, model);
+                }
             }
         };
         Editor.prototype.onServerMessage = function (batch) {

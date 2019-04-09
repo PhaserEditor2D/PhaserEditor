@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.json.JSONArray;
@@ -91,7 +92,9 @@ public class PackReferencesCollector {
 	}
 
 	public JSONObject collectNewPack(Predicate<AssetModel> filter) throws Exception {
+
 		var assetKeys = collectAssetKeys();
+
 		var assetModels = new HashSet<AssetModel>();
 
 		for (var assetKey : assetKeys) {
@@ -100,13 +103,18 @@ public class PackReferencesCollector {
 			}
 		}
 
+		return collectNewPack(assetModels);
+	}
+
+	@SuppressWarnings("static-method")
+	public JSONObject collectNewPack(Set<AssetModel> assets) {
 		var pack = new JSONObject();
 		var section = new JSONObject();
 		pack.put("section", section);
 		var files = new JSONArray();
 		section.put("files", files);
 
-		for (var model : assetModels) {
+		for (var model : assets) {
 			files.put(model.toJSON());
 		}
 

@@ -22,6 +22,7 @@
 package phasereditor.scene.ui.editor.messages;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ import phasereditor.webrun.core.ApiMessage;
  */
 public class DropObjectsMessage extends ApiMessage {
 
-	public DropObjectsMessage(List<ObjectModel> models) {
+	public DropObjectsMessage(List<ObjectModel> models, Optional<JSONObject> optPackData) {
 		var list = new JSONArray();
 
 		for (var model : models) {
@@ -46,6 +47,6 @@ public class DropObjectsMessage extends ApiMessage {
 
 		_data.put("method", "DropObjects");
 		_data.put("list", list);
-
+		optPackData.ifPresent(packData -> _data.put("pack", packData));
 	}
 }

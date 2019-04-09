@@ -186,12 +186,38 @@ namespace PhaserEditor2D {
             this.updateBodyColor();
         }
 
-        private onDropObjects(msg : any) {
-            let list = msg.list;
+        private onDropObjects(msg: any) {
+            const list = msg.list;
 
-            for(let model of list) {
-                Models.displayList.children.push(model);
-                this._create.createObject(this._objectScene.add, model);
+            if (msg.pack) {
+                let scene = this.getObjectScene();
+                scene.load.on(Phaser.Loader.Events.COMPLETE,
+
+                    (function (models) {
+                        return function () {
+
+                            console.log("load complete!");
+
+                            for (let model of models) {
+                                Models.displayList.children.push(model);
+                                this._create.createObject(this._objectScene.add, model);
+                            }
+
+                            this.repaint();
+                        };
+                    })(list)
+
+
+                    , this);
+                console.log("Load: ");
+                console.log(msg.pack);
+                scene.load.addPack(msg.pack);
+                scene.load.start();
+            } else {
+                for (let model of list) {
+                    Models.displayList.children.push(model);
+                    this._create.createObject(this._objectScene.add, model);
+                }
             }
         }
 

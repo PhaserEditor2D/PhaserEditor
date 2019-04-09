@@ -41,6 +41,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
+import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -698,6 +699,10 @@ public class SceneEditor extends EditorPart {
 		}
 
 		return texture.getKey();
+	}
+
+	public AssetFinder getAssetFinder() {
+		return AssetPackCore.getAssetFinder(getProject());
 	}
 
 }

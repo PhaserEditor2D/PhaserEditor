@@ -21,13 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static java.util.stream.Collectors.toSet;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
+
+import java.util.HashSet;
+import java.util.Optional;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
@@ -119,14 +124,30 @@ public class SceneEditorBroker {
 
 		if (!sel.isEmpty() && sel instanceof IStructuredSelection) {
 			var data = ((IStructuredSelection) sel).toArray();
+
 			swtRun(() -> {
 
+				var collector = new PackReferencesCollector(_editor.getSceneModel(), _editor.getAssetFinder());
+
+				var beforeKeys = new HashSet<>(collector.collectAssetKeys());
+
 				var models = _editor.selectionDropped(x, y, data);
+
+				var currentKeys = new HashSet<>(collector.collectAssetKeys());
+				currentKeys.removeAll(beforeKeys);
+
+				var newAssets = currentKeys.stream().map(key -> key.getAsset()).collect(toSet());
+
+				JSONObject pack = null;
+
+				if (!newAssets.isEmpty()) {
+					pack = collector.collectNewPack(newAssets);
+				}
 
 				if (!models.isEmpty()) {
 					sendBatch(client,
 
-							new DropObjectsMessage(models),
+							new DropObjectsMessage(models, Optional.ofNullable(pack)),
 
 							new SelectObjectsMessage(_editor)
 
