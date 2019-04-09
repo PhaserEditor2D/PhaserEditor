@@ -79,7 +79,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 			mdoc.append();
 
 			openIndent(
-					"constructor(aGame : Phaser.Game, aX : number, aY : number, aWidth : number, aHeight : number, aKey : any, aFrame : any) {");
+					"constructor(aGame : Phaser.Game, aX : number, aY : number, aWidth? : number, aHeight? : number, aKey? : any, aFrame? : any) {");
 
 			trim(() -> {
 				line();
@@ -111,7 +111,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 			mdoc.append();
 
 			openIndent(
-					"constructor(aGame : Phaser.Game, aX : number, aY : number, aKey : any, aCallback : any, aCallbackContext : any, aOverFrame : any, aOutFrame : any, aDownFrame : any, aUpFrame : any) {");
+					"constructor(aGame : Phaser.Game, aX : number, aY : number, aKey? : any, aCallback? : any, aCallbackContext? : any, aOverFrame? : any, aOutFrame? : any, aDownFrame? : any, aUpFrame? : any) {");
 
 			trim(() -> {
 				line();
@@ -143,7 +143,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 
 			mdoc.append();
 
-			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aText : string, aStyle : any) {");
+			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aText? : string, aStyle? : any) {");
 
 			trim(() -> {
 				line();
@@ -207,7 +207,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 			mdoc.arg("aFrame", help.getMethodArgHelp("Phaser.Sprite", "frame"));
 			mdoc.append();
 
-			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey : any, aFrame : any) {");
+			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey? : any, aFrame? : any) {");
 
 			trim(() -> {
 				line();
