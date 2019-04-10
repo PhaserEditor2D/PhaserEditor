@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import static phasereditor.ui.PhaserEditorUI.swtRunLater;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,6 +50,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.internal.actions.CommandAction;
 
 import phasereditor.scene.core.ContainerModel;
+import phasereditor.scene.core.DisplayComponent;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.NameComputer;
@@ -79,7 +82,6 @@ public class GameObjectEditorSection extends ScenePropertySection {
 	private SelectContainerAction _selectContainerAction;
 	private CreateContainerAction _createContainerAction;
 	private RemoveFromParentAction _removeFromParentAction;
-	private Button _snapButton;
 	private CommandAction _duplicateAction;
 
 	public GameObjectEditorSection(ScenePropertyPage page) {
@@ -178,10 +180,10 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		{
 			// snap
 			label(comp, "Snapping", "*Set the size of the selected objects as snapping values.");
-			_snapButton = new Button(comp, 0);
-			_snapButton.setText("");
-			_snapButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			_snapButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			var btn = new Button(comp, 0);
+			btn.setText("");
+			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 
 				var scene = getScene();
 
@@ -209,6 +211,18 @@ public class GameObjectEditorSection extends ScenePropertySection {
 				scene.redraw();
 
 			}));
+
+			addUpdate(() -> {
+				{
+					swtRunLater(100, () -> {
+						var snap = computeSelectionSnap();
+
+						if (snap != null) {
+							btn.setText("Set " + snap[0] + " x " + snap[1]);
+						}
+					});
+				}
+			});
 		}
 
 		return comp;
@@ -663,52 +677,29 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 		}
 
-		// TODO: Well, no containers for now
-		// {
-		// _parentButton.setText(flatValues_to_String(getModels().stream()
-		// .map(model ->
-		// VariableComponent.get_variableName(ParentComponent.get_parent(model)))));
-		// }
-
-		// {
-		// boolean b = flatValues_to_boolean(
-		// getModels().stream().map(model ->
-		// GameObjectEditorComponent.get_gameObjectEditorShowBones(model)));
-		// _showBonesAction.setChecked(b);
-		// }
-
-		{
-			var snap = computeSelectionSnap();
-			if (snap != null) {
-				_snapButton.setText("Set " + snap[0] + " x " + snap[1]);
-			}
-		}
-
 	}
 
 	private int[] computeSelectionSnap() {
-		var renderer = getScene().getSceneRenderer();
-
-		var w = Integer.MAX_VALUE;
-		var h = Integer.MAX_VALUE;
+		var snapWidth = Integer.MAX_VALUE;
+		var snapHeight = Integer.MAX_VALUE;
 		var set = false;
 
 		for (var model : getModels()) {
-			var size = renderer.getObjectSize(model);
-			if (size != null) {
-				if (size[0] > 0 && size[1] > 0) {
+			var objWidth = DisplayComponent.get_displayWidth(model);
+			var objHeight = DisplayComponent.get_displayHeight(model);
 
-					w = (int) Math.min(w, size[0]);
-					h = (int) Math.min(h, size[1]);
+			if (objWidth > 0 && objHeight > 0) {
 
-					if (w != 0 && h != 0) {
-						set = true;
-					}
+				snapWidth = (int) Math.min(snapWidth, objWidth);
+				snapHeight = (int) Math.min(snapHeight, objHeight);
+
+				if (snapWidth != 0 && snapHeight != 0) {
+					set = true;
 				}
 			}
 		}
 
-		return set ? new int[] { w, h } : null;
+		return set ? new int[] { snapWidth, snapHeight } : null;
 	}
 
 }

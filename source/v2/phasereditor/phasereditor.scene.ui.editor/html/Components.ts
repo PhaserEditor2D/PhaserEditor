@@ -10,6 +10,12 @@ namespace PhaserEditor2D {
         };
     }
 
+    function set_property(name: string) {
+        return function (data: any, value: any) {
+            data[name] = value;
+        };
+    }
+
 
     export const TransformComponent = {
         get_x: get_property("x", 0),
@@ -98,5 +104,5 @@ namespace PhaserEditor2D {
         get_borderY: get_property("borderY", 0),
         get_borderWidth: get_property("borderWidth", 800),
         get_borderHeight: get_property("borderHeight", 600),
-    }
+    };
 }

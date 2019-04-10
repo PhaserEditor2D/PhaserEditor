@@ -32,7 +32,9 @@ public abstract class TransformModel extends GameObjectModel implements
 
 		TransformComponent,
 
-		ScrollFactorComponent
+		ScrollFactorComponent,
+		
+		DisplayComponent
 
 {
 
@@ -42,6 +44,8 @@ public abstract class TransformModel extends GameObjectModel implements
 		TransformComponent.init(this);
 
 		ScrollFactorComponent.init(this);
+		
+		DisplayComponent.init(this);
 	}
 
 	@Override

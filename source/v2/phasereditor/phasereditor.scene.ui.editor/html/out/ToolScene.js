@@ -148,6 +148,9 @@ var PhaserEditor2D;
             this._gridGraphics.lineStyle(2, 0xffffff, 1);
             this._gridGraphics.strokeRect((bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom, bw * cam.zoom, bh * cam.zoom);
         };
+        ToolScene.prototype.getSelectedObjects = function () {
+            return this._selectedObjects;
+        };
         ToolScene.prototype.updateSelectionObjects = function () {
             var editor = PhaserEditor2D.Editor.getInstance();
             this._selectedObjects = [];

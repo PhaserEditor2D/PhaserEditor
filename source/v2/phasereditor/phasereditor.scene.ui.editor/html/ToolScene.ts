@@ -199,6 +199,10 @@ namespace PhaserEditor2D {
                 bw * cam.zoom, bh * cam.zoom);
         }
 
+        getSelectedObjects() {
+            return this._selectedObjects;
+        }
+
         updateSelectionObjects() {
             const editor = Editor.getInstance();
 

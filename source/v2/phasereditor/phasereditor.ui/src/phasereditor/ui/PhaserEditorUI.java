@@ -44,6 +44,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -823,6 +825,19 @@ public class PhaserEditorUI {
 
 		}).start();
 
+	}
+	
+	private static ExecutorService _runLaterExecutor = Executors.newCachedThreadPool();
+
+	public static void swtRunLater(long delay, Runnable run) {
+		_runLaterExecutor.execute(() -> {
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			swtRun(run);
+		});
 	}
 
 	public static void swtRun(Runnable run) {

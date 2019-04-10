@@ -9,6 +9,11 @@ var PhaserEditor2D;
             return value;
         };
     }
+    function set_property(name) {
+        return function (data, value) {
+            data[name] = value;
+        };
+    }
     PhaserEditor2D.TransformComponent = {
         get_x: get_property("x", 0),
         get_y: get_property("y", 0),

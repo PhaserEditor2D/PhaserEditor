@@ -31,6 +31,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.json.JSONObject;
 
+import phasereditor.scene.core.DisplayComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
@@ -97,23 +98,51 @@ public class SceneEditorBroker {
 	}
 
 	private void messageReceived(Object client, JSONObject msg) {
-		var method = msg.getString("method");
+		try {
+			var method = msg.getString("method");
 
-		switch (method) {
-		case "GetCreateGame":
-			send(client, new CreateGameMessage(_editor));
-			break;
-		case "GetSelectObjects":
-			send(client, new SelectObjectsMessage(_editor));
-			break;
-		case "ClickObject":
-			onClickObject(client, msg);
-			break;
-		case "DropEvent":
-			onDropEvent(client, msg);
-			break;
-		default:
-			break;
+			switch (method) {
+			case "GetCreateGame":
+				send(client, new CreateGameMessage(_editor));
+				break;
+			case "GetSelectObjects":
+				send(client, new SelectObjectsMessage(_editor));
+				break;
+			case "ClickObject":
+				onClickObject(client, msg);
+				break;
+			case "DropEvent":
+				onDropEvent(client, msg);
+				break;
+			case "SetObjectDisplayProperties":
+				onSetObjectDisplayProperties(msg);
+				break;
+			default:
+				break;
+			}
+		} catch (Exception e) {
+			SceneUIEditor.logError(e);
+		}
+	}
+
+	private void onSetObjectDisplayProperties(JSONObject msg) {
+
+		var displayList = _editor.getSceneModel().getDisplayList();
+
+		var list = msg.getJSONArray("list");
+
+		for (int i = 0; i < list.length(); i++) {
+			var objData = list.getJSONObject(i);
+			var id = objData.getString("id");
+			var model = displayList.findById(id);
+			if (model != null) {
+
+				var w = objData.getFloat("displayWidth");
+				var h = objData.getFloat("displayHeight");
+
+				DisplayComponent.set_displayWidth(model, w);
+				DisplayComponent.set_displayHeight(model, h);
+			}
 		}
 	}
 

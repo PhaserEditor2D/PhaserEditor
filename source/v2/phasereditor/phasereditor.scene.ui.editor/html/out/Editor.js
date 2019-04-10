@@ -70,6 +70,19 @@ var PhaserEditor2D;
         Editor.prototype.onSelectObjects = function (msg) {
             this.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
+            var list = [];
+            for (var _i = 0, _a = this.getToolScene().getSelectedObjects(); _i < _a.length; _i++) {
+                var obj = _a[_i];
+                list.push({
+                    id: obj.name,
+                    displayWidth: obj.displayWidth,
+                    displayHeight: obj.displayHeight
+                });
+            }
+            this.sendMessage({
+                method: "SetObjectDisplayProperties",
+                list: list
+            });
         };
         ;
         Editor.prototype.onUpdateObjects = function (msg) {

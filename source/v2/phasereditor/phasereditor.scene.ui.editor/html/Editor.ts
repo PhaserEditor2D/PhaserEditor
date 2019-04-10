@@ -102,6 +102,23 @@ namespace PhaserEditor2D {
         private onSelectObjects(msg: any) {
             this.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
+                
+            let list = [];
+
+            for(let obj of this.getToolScene().getSelectedObjects()) {
+                list.push(
+                    {
+                        id: obj.name,
+                        displayWidth: (<any>obj).displayWidth,
+                        displayHeight: (<any>obj).displayHeight
+                    }
+                );
+            }
+
+            this.sendMessage({
+                method: "SetObjectDisplayProperties",
+                list: list
+            });
         };
 
         private onUpdateObjects(msg) {

@@ -64,7 +64,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	}
 
 	public AssetFinder getAssetFinder() {
-		return getEditor().getScene().getAssetFinder();
+		return getEditor().getAssetFinder();
 	}
 
 	public SceneCanvas getScene() {
@@ -230,4 +230,6 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	protected void setInteractiveTools(InteractiveTool... tools) {
 		getEditor().getScene().setInteractiveTools(tools);
 	}
+
+	
 }
