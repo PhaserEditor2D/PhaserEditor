@@ -129,9 +129,6 @@ var PhaserEditor2D;
                 self.getObjectScene().onMouseWheel(e);
                 self.repaint();
             });
-            window.addEventListener("keyup", function (e) {
-                console.log(e);
-            });
             this.updateBodyColor();
         };
         Editor.prototype.onDropObjects = function (msg) {

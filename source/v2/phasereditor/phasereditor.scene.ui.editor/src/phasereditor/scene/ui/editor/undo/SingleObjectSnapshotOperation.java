@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.messages.UpdateObjectsMessage;
 
 /**
  * @author arian
@@ -67,7 +68,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 
 	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label,
 			boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
-		
+
 		super(label);
 
 		_beforeData = beforeData;
@@ -103,17 +104,17 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 		return Status.OK_STATUS;
 	}
 
-	private void loadSnapshot(IAdaptable info, List<JSONObject> list) {
+	private void loadSnapshot(IAdaptable info, List<JSONObject> snapshot) {
 		var editor = info.getAdapter(SceneEditor.class);
 		var sceneModel = editor.getSceneModel();
 		var project = editor.getEditorInput().getFile().getProject();
-		var selectionIds = editor.getSelectionIdList(); 
+		var selectionIds = editor.getSelectionIdList();
 
-		for (var data : list) {
+		for (var data : snapshot) {
 			var id = data.getString("-id");
-			
+
 			var model = sceneModel.getDisplayList().findById(id);
-			
+
 			if (model == null) {
 				model = sceneModel.getGroupsModel().findById(id);
 			}
@@ -131,12 +132,14 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 		}
 
 		editor.refreshOutline_basedOnId();
-		
+
 		editor.setSelectionFromIdList(selectionIds);
-		
+
 		editor.updatePropertyPagesContentWithSelection();
 
 		editor.setDirty(true);
+
+		editor.getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(snapshot));
 	}
 
 }

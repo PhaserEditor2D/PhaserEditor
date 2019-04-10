@@ -185,10 +185,6 @@ namespace PhaserEditor2D {
                 self.repaint();
             });
 
-            window.addEventListener("keyup", function (e) {
-                console.log(e);
-            });
-
             this.updateBodyColor();
         }
 
