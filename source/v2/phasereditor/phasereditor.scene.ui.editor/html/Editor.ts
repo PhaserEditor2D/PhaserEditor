@@ -232,8 +232,12 @@ namespace PhaserEditor2D {
                     obj.destroy();
                 }
             }
+        }
 
-            this.repaint();
+        private onResetScene(msg: any) {
+            let scene = this.getObjectScene();
+            scene.removeAllObjects();
+            this._create.createWorld(scene.add, msg.displayList);
         }
 
         private onServerMessage(batch: any) {
@@ -269,6 +273,9 @@ namespace PhaserEditor2D {
                         break;
                     case "DeleteObjects":
                         this.onDeleteObjects(msg);
+                        break;
+                        case "ResetScene":
+                        this.onResetScene(msg);
                         break;
                 }
             }

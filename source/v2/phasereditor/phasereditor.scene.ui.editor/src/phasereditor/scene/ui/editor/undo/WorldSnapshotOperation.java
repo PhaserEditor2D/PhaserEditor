@@ -30,6 +30,9 @@ import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
+import phasereditor.webrun.core.BatchMessage;
 
 /**
  * @author arian
@@ -93,6 +96,14 @@ public class WorldSnapshotOperation extends AbstractOperation {
 		editor.getScene().redraw();
 
 		editor.setDirty(true);
+
+		editor.getBroker().sendAll(new BatchMessage(
+
+				new ResetSceneMessage(editor),
+
+				new SelectObjectsMessage(editor)
+
+		));
 	}
 
 }

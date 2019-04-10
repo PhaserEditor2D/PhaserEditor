@@ -50,6 +50,14 @@ namespace PhaserEditor2D {
 
         }
 
+        removeAllObjects() {
+            let list = this.sys.displayList.list;
+            for(let obj of list) {
+                obj.destroy();
+            }
+            this.sys.displayList.removeAll(false);
+        }
+
         private initBackground() {
             this.scene.launch("BackgroundScene");
             this._backgroundScene = this.scene.get("BackgroundScene");

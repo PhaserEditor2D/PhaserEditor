@@ -167,7 +167,11 @@ var PhaserEditor2D;
                     obj.destroy();
                 }
             }
-            this.repaint();
+        };
+        Editor.prototype.onResetScene = function (msg) {
+            var scene = this.getObjectScene();
+            scene.removeAllObjects();
+            this._create.createWorld(scene.add, msg.displayList);
         };
         Editor.prototype.onServerMessage = function (batch) {
             console.log("onServerMessage:");
@@ -198,6 +202,9 @@ var PhaserEditor2D;
                         break;
                     case "DeleteObjects":
                         this.onDeleteObjects(msg);
+                        break;
+                    case "ResetScene":
+                        this.onResetScene(msg);
                         break;
                 }
             }

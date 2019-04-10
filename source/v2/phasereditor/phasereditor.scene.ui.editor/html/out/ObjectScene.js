@@ -54,6 +54,14 @@ var PhaserEditor2D;
             this.initBackground();
             editor.repaint();
         };
+        ObjectScene.prototype.removeAllObjects = function () {
+            var list = this.sys.displayList.list;
+            for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+                var obj = list_1[_i];
+                obj.destroy();
+            }
+            this.sys.displayList.removeAll(false);
+        };
         ObjectScene.prototype.initBackground = function () {
             this.scene.launch("BackgroundScene");
             this._backgroundScene = this.scene.get("BackgroundScene");
