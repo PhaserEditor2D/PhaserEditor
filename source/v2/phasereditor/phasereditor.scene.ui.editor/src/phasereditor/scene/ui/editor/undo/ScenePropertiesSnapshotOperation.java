@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.messages.UpdateScenePropertiesMessage;
 
 /**
  * @author arian
@@ -76,13 +77,15 @@ public class ScenePropertiesSnapshotOperation extends AbstractOperation {
 		return Status.OK_STATUS;
 	}
 
-	private static void loadSnapshot(IAdaptable info, JSONObject data) {
+	private static void loadSnapshot(IAdaptable info, JSONObject snapshot) {
 		var editor = info.getAdapter(SceneEditor.class);
 
-		editor.getSceneModel().readProperties(data);
+		editor.getSceneModel().readProperties(snapshot);
 
 		editor.updatePropertyPagesContentWithSelection();
 		editor.getScene().redraw();
 		editor.setDirty(true);
+
+		editor.getBroker().sendAll(new UpdateScenePropertiesMessage(snapshot));
 	}
 }
