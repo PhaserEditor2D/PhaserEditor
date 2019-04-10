@@ -88,6 +88,7 @@ public class SceneEditorBroker {
 
 	public void dispose() {
 		ApiHub.removeListener(_channel, this::messageReceived);
+		ApiHub.stopConnection(_channel);
 	}
 
 	public String getUrl() {

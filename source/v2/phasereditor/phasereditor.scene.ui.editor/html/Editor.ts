@@ -78,7 +78,7 @@ namespace PhaserEditor2D {
             };
 
             this._socket.onclose = function (event) {
-                console.log("Socket closed");
+                self.onClosedSocket();
             };
 
             window.addEventListener("beforeunload", (event) => {
@@ -89,6 +89,14 @@ namespace PhaserEditor2D {
                 //event.preventDefault();
                 //event.returnValue = "";
             });
+        }
+
+        private onClosedSocket() {
+            console.log("Socket closed");
+            this._game.destroy(true, false);
+            let body = document.getElementById("body");
+            body.innerHTML = "<div class='lostConnection'><p>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button></div>";
+            body.style.backgroundColor = "gray";
         }
 
         private onSelectObjects(msg: any) {

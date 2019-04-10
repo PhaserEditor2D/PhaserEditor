@@ -131,6 +131,20 @@ public class ApiHub extends WebSocketAdapter {
 		}
 	}
 
+	public static void stopConnection(String channel) {
+		synchronized (_channelSocketListMap) {
+
+			var list = _channelSocketListMap.get(channel);
+
+			if (list != null) {
+				for (var socket : list) {
+					out.println(socket.hashCode() + "@ ApiHub.stopConnection: " + socket.getRemote());
+					socket.getSession().close();
+				}
+			}
+		}
+	}
+
 	public static void sendMessageAllClients(String channel, ApiMessage message) {
 		sendMessageAllClients(channel, message.getData());
 	}
