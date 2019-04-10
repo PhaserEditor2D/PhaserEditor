@@ -3,16 +3,17 @@ var PhaserEditor2D;
     var Create = (function () {
         function Create() {
         }
-        Create.prototype.createWorld = function (add, displayList) {
+        Create.prototype.createWorld = function (scene, displayList) {
             var list = displayList.children;
             for (var i = 0; i < list.length; i++) {
                 var data = list[i];
-                this.createObject(add, data);
+                this.createObject(scene, data);
             }
         };
-        Create.prototype.createObject = function (add, data) {
+        Create.prototype.createObject = function (scene, data) {
             var type = data["-type"];
             var obj;
+            var add = scene.add;
             switch (type) {
                 case "Image":
                     var x = PhaserEditor2D.TransformComponent.get_x(data);
@@ -44,7 +45,7 @@ var PhaserEditor2D;
                     obj = add.bitmapText(x, y, key);
                     break;
             }
-            obj.setInteractive();
+            obj.setInteractive(scene.input.makePixelPerfect());
             this.updateObject(obj, data);
         };
         Create.prototype.updateObject = function (obj, data) {

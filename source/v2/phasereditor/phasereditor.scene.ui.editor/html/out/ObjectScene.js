@@ -47,7 +47,7 @@ var PhaserEditor2D;
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
             this.initBackground();
-            editor.getCreate().createWorld(this.add, this._initData.displayList);
+            editor.getCreate().createWorld(this, this._initData.displayList);
             editor.sendMessage({
                 method: "GetSelectObjects"
             });

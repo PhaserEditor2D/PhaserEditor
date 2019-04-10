@@ -38,7 +38,7 @@ namespace PhaserEditor2D {
 
             this.initBackground();
 
-            editor.getCreate().createWorld(this.add, this._initData.displayList);
+            editor.getCreate().createWorld(this, this._initData.displayList);
 
             editor.sendMessage({
                 method: "GetSelectObjects"

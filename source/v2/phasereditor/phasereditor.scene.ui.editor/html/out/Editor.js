@@ -173,7 +173,7 @@ var PhaserEditor2D;
             else {
                 for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                     var model = list_1[_i];
-                    this._create.createObject(this._objectScene.add, model);
+                    this._create.createObject(this.getObjectScene(), model);
                 }
             }
         };
@@ -191,7 +191,7 @@ var PhaserEditor2D;
         Editor.prototype.onResetScene = function (msg) {
             var scene = this.getObjectScene();
             scene.removeAllObjects();
-            this._create.createWorld(scene.add, msg.displayList);
+            this._create.createWorld(scene, msg.displayList);
         };
         Editor.prototype.onServerMessage = function (batch) {
             console.log("onServerMessage:");

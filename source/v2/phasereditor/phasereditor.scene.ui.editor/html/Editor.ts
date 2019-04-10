@@ -241,7 +241,7 @@ namespace PhaserEditor2D {
                 scene.load.start();
             } else {
                 for (let model of list) {
-                    this._create.createObject(this._objectScene.add, model);
+                    this._create.createObject(this.getObjectScene(), model);
                 }
             }
         }
@@ -262,7 +262,7 @@ namespace PhaserEditor2D {
         private onResetScene(msg: any) {
             let scene = this.getObjectScene();
             scene.removeAllObjects();
-            this._create.createWorld(scene.add, msg.displayList);
+            this._create.createWorld(scene, msg.displayList);
         }
 
         private onServerMessage(batch: any) {

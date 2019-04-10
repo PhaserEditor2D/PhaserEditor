@@ -4,19 +4,20 @@ namespace PhaserEditor2D {
 
         }
 
-        createWorld(add: Phaser.GameObjects.GameObjectFactory, displayList : any) {
+        createWorld(scene: Phaser.Scene, displayList : any) {
             var list = displayList.children;
 
             for (var i = 0; i < list.length; i++) {
                 var data = list[i];
-                this.createObject(add, data);
+                this.createObject(scene, data);
             }
         }
 
-        createObject(add: Phaser.GameObjects.GameObjectFactory, data: any) {
+        createObject(scene: Phaser.Scene, data: any) {
 
             var type = data["-type"];
             var obj: Phaser.GameObjects.GameObject;
+            let add = scene.add;
 
             switch (type) {
                 case "Image":
@@ -65,7 +66,7 @@ namespace PhaserEditor2D {
                     break;
             }
 
-            obj.setInteractive();
+            obj.setInteractive(scene.input.makePixelPerfect());
 
             this.updateObject(obj, data);
         }
