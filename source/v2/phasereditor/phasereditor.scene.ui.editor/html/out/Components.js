@@ -55,6 +55,8 @@ var PhaserEditor2D;
         updateObject: function (obj, data) {
             obj.setTilePosition(this.get_tilePositionX(data), this.get_tilePositionY(data));
             obj.setTileScale(this.get_tileScaleX(data), this.get_tileScaleY(data));
+            obj.width = this.get_width(data);
+            obj.height = this.get_height(data);
         }
     };
     PhaserEditor2D.FlipComponent = {

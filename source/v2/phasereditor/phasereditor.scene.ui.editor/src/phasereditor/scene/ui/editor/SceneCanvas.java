@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -104,7 +103,6 @@ public class SceneCanvas extends ZoomCanvas
 	private List<InteractiveTool> _interactiveTools;
 	private boolean _transformLocalCoords;
 	private boolean _interactiveToolsHightlights;
-	private AssetFinder _finder;
 
 	public SceneCanvas(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.NO_REDRAW_RESIZE);
@@ -235,7 +233,7 @@ public class SceneCanvas extends ZoomCanvas
 				var textureFrame = animFrame.getFrameName() == null ? null : animFrame.getFrameName() + "";
 				var textureKey = animFrame.getTextureKey();
 
-				var texture = _finder.findTexture(textureKey, textureFrame);
+				var texture = getAssetFinder().findTexture(textureKey, textureFrame);
 
 				if (texture != null) {
 					var sprite = new SpriteModel();
@@ -326,7 +324,7 @@ public class SceneCanvas extends ZoomCanvas
 
 	@Override
 	public AssetFinder getAssetFinder() {
-		return _finder;
+		return _editor.getAssetFinder();
 	}
 
 	public SceneEditor getEditor() {
@@ -370,7 +368,6 @@ public class SceneCanvas extends ZoomCanvas
 		}
 
 		if (_renderer == null) {
-			_finder = AssetPackCore.getAssetFinder(getEditor().getProject());
 			_renderer = new SceneObjectRenderer(this);
 		}
 
@@ -875,7 +872,7 @@ public class SceneCanvas extends ZoomCanvas
 
 		if (scaledImage == null) {
 			if (model instanceof ImageModel || model instanceof SpriteModel) {
-				var frame = TextureComponent.utils_getTexture(model, _finder);
+				var frame = TextureComponent.utils_getTexture(model, getAssetFinder());
 
 				if (frame == null) {
 					return false;

@@ -160,7 +160,7 @@ var PhaserEditor2D;
                         console.log("load complete!");
                         for (var _i = 0, models_1 = models; _i < models_1.length; _i++) {
                             var model = models_1[_i];
-                            this._create.createObject(this._objectScene.add, model);
+                            this._create.createObject(this.getObjectScene(), model);
                         }
                         this.repaint();
                     };

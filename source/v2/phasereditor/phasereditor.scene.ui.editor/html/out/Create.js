@@ -45,7 +45,12 @@ var PhaserEditor2D;
                     obj = add.bitmapText(x, y, key);
                     break;
             }
-            obj.setInteractive(scene.input.makePixelPerfect());
+            if (type === "TileSprite") {
+                obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+            }
+            else {
+                obj.setInteractive(scene.input.makePixelPerfect());
+            }
             this.updateObject(obj, data);
         };
         Create.prototype.updateObject = function (obj, data) {
@@ -74,4 +79,22 @@ var PhaserEditor2D;
         return Create;
     }());
     PhaserEditor2D.Create = Create;
+    function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {
+        return function (hitArea, x, y, gameObject) {
+            var alpha = getCanvasTexturePixelAlpha(x, y, gameObject.texture);
+            return alpha >= alphaTolerance;
+        };
+    }
+    ;
+    function getCanvasTexturePixelAlpha(x, y, canvasTexture) {
+        if (canvasTexture) {
+            {
+                var imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
+                var rgb = imgData.data;
+                var alpha = rgb[3];
+                return alpha;
+            }
+        }
+        return 0;
+    }
 })(PhaserEditor2D || (PhaserEditor2D = {}));

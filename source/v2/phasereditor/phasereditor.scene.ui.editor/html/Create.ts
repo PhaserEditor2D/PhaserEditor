@@ -4,7 +4,7 @@ namespace PhaserEditor2D {
 
         }
 
-        createWorld(scene: Phaser.Scene, displayList : any) {
+        createWorld(scene: Phaser.Scene, displayList: any) {
             var list = displayList.children;
 
             for (var i = 0; i < list.length; i++) {
@@ -53,7 +53,7 @@ namespace PhaserEditor2D {
                     var frame = TextureComponent.get_textureFrame(data);
 
                     obj = add.tileSprite(x, y, width, height, key, frame);
-                    
+
                     break;
                 case "BitmapText":
                     var x = TransformComponent.get_x(data);
@@ -66,9 +66,13 @@ namespace PhaserEditor2D {
                     break;
             }
 
-            obj.setInteractive(scene.input.makePixelPerfect());
+            if (type === "TileSprite") {
+                obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+            } else {
+                obj.setInteractive(scene.input.makePixelPerfect());
+            }
 
-            this.updateObject(obj, data);            
+            this.updateObject(obj, data);
         }
 
         updateObject(obj: any, data: any) {
@@ -81,7 +85,7 @@ namespace PhaserEditor2D {
                 case "Sprite":
                 case "TileSprite":
                 case "BitmapText":
-                GameObjectEditorComponent.updateObject(obj, data);
+                    GameObjectEditorComponent.updateObject(obj, data);
                     TransformComponent.updateObject(obj, data);
                     OriginComponent.updateObject(obj, data);
                     FlipComponent.updateObject(obj, data);
@@ -99,5 +103,29 @@ namespace PhaserEditor2D {
 
 
         }
+    }
+
+    function CreatePixelPerfectCanvasTextureHandler(alphaTolerance: number) {
+
+        return function (hitArea: any, x: number, y: number, gameObject: any) {
+
+            var alpha = getCanvasTexturePixelAlpha(x, y, gameObject.texture);
+
+            return alpha >= alphaTolerance;
+        };
+
+    };
+
+    function getCanvasTexturePixelAlpha(x: number, y: number, canvasTexture: Phaser.Textures.CanvasTexture) {
+        if (canvasTexture) {
+            //if (x >= 0 && x < canvasTexture.width && y >= 0 && y < canvasTexture.height) 
+            {
+                let imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
+                let rgb = imgData.data;
+                let alpha = rgb[3];
+                return alpha;
+            }
+        }
+        return 0;
     }
 }

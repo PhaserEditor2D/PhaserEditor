@@ -308,10 +308,8 @@ namespace PhaserEditor2D {
                 method: "ClickObject",
                 ctrl: e.ctrlKey,
                 shift: e.shiftKey,
-                id: gameObj? gameObj.name : undefined
+                id: gameObj ? gameObj.name : undefined
             })
-            editor.repaint();
         }
     }
-
 }

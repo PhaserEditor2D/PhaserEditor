@@ -229,7 +229,6 @@ var PhaserEditor2D;
                 shift: e.shiftKey,
                 id: gameObj ? gameObj.name : undefined
             });
-            editor.repaint();
         };
         return PickManager;
     }());

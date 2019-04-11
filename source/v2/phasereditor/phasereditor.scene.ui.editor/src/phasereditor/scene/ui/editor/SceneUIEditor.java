@@ -38,7 +38,10 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.webrun.core.BatchMessage;
 
 /**
  * @author arian
@@ -52,8 +55,6 @@ public class SceneUIEditor {
 	public static final String COMMAND_ID_ORIGIN_TOOL = "phasereditor.scene.ui.editor.originTool";
 	public static final String COMMAND_ID_RESIZE_TILE_SPRITE_TOOL = "phasereditor.scene.ui.editor.resizeTileSprite";
 	private static final String PLUGIN_ID = Activator.PLUGIN_ID;
-	
-	
 
 	public static void action_MorphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
 		var before = WorldSnapshotOperation.takeSnapshot(editor);
@@ -98,7 +99,7 @@ public class SceneUIEditor {
 			case TileSpriteModel.TYPE:
 				var tileModel = new TileSpriteModel();
 				tileModel.read(data, project);
-				tileModel.setSizeToFrame(editor.getScene().getAssetFinder());
+				tileModel.setSizeToFrame(editor.getAssetFinder());
 				newModel = tileModel;
 				break;
 			case BitmapTextModel.TYPE:
@@ -148,10 +149,16 @@ public class SceneUIEditor {
 
 			var after = WorldSnapshotOperation.takeSnapshot(editor);
 			editor.executeOperation(new WorldSnapshotOperation(before, after, "Morph to " + morphToType));
+
+			editor.getBroker().sendAll(new BatchMessage(
+
+					new ResetSceneMessage(editor),
+
+					new SelectObjectsMessage(editor)
+
+			));
 		}
 	}
-
-
 
 	public static void logError(Exception e) {
 		e.printStackTrace();

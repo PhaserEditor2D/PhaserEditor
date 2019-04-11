@@ -66,7 +66,7 @@ public abstract class InteractiveTool {
 	}
 	
 	public AssetFinder getAssetFinder() {
-		return getEditor().getScene().getAssetFinder();
+		return getEditor().getAssetFinder();
 	}
 
 	public SceneCanvas getScene() {

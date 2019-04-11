@@ -102,10 +102,10 @@ namespace PhaserEditor2D {
         private onSelectObjects(msg: any) {
             this.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
-                
+
             let list = [];
 
-            for(let obj of this.getToolScene().getSelectedObjects()) {
+            for (let obj of this.getToolScene().getSelectedObjects()) {
                 list.push(
                     {
                         id: obj.name,
@@ -226,7 +226,7 @@ namespace PhaserEditor2D {
                             console.log("load complete!");
 
                             for (let model of models) {
-                                this._create.createObject(this._objectScene.add, model);
+                                this._create.createObject(this.getObjectScene(), model);
                             }
 
                             this.repaint();
@@ -251,7 +251,7 @@ namespace PhaserEditor2D {
 
             let list = msg.list;
 
-            for(let id of list) {
+            for (let id of list) {
                 var obj = scene.sys.displayList.getByName(id);
                 if (obj) {
                     obj.destroy();
@@ -299,7 +299,7 @@ namespace PhaserEditor2D {
                     case "DeleteObjects":
                         this.onDeleteObjects(msg);
                         break;
-                        case "ResetScene":
+                    case "ResetScene":
                         this.onResetScene(msg);
                         break;
                 }

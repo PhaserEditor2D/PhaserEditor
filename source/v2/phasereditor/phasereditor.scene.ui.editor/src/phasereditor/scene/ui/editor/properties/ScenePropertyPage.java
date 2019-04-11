@@ -62,11 +62,19 @@ public class ScenePropertyPage extends FormPropertyPage {
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
+		// Scene sections
+
 		list.add(new SnappingSection(this));
+		
 		list.add(new DisplaySection(this));
+		
 		list.add(new AssetsSection(this));
+		
 		list.add(new CompilerSection(this));
+		
 		list.add(new RendererSection(this));
+
+		// Object sections
 
 		list.add(new VariableSection(this));
 
