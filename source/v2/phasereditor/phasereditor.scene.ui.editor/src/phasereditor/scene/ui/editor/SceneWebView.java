@@ -21,10 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static java.lang.System.out;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * @author arian
@@ -33,19 +39,61 @@ import org.eclipse.swt.widgets.Composite;
 public class SceneWebView extends Composite {
 
 	private Browser _webView;
+	private SceneEditor _editor;
 
-	public SceneWebView(Composite parent, int style) {
+	public SceneWebView(SceneEditor editor, Composite parent, int style) {
 		super(parent, style);
 		var layout = new FillLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		setLayout(layout);
 
+		_editor = editor;
+
 		_webView = new Browser(this, SWT.NONE);
+
+		out.println("Add filter " + this);
+		var listener = new Listener() {
+
+			private int _lastTime;
+
+			@Override
+			public void handleEvent(Event event) {
+				if (event.time == _lastTime) {
+					return;
+				}
+
+				if (_webView.isFocusControl()) {
+					if (event.keyCode == SWT.DEL) {
+						_lastTime = event.time;
+						getEditor().delete();
+					}
+				}
+			}
+		};
+		getDisplay().addFilter(SWT.KeyUp, listener);
+		addDisposeListener(e -> getDisplay().removeFilter(SWT.KeyUp, listener));
+
+		_webView.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				getEditor().deactivateObjectsContext();
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				getEditor().activateObjectsContext();
+			}
+		});
 	}
 
 	public void setUrl(String url) {
 		_webView.setUrl(url);
+	}
+
+	public SceneEditor getEditor() {
+		return _editor;
 	}
 
 }

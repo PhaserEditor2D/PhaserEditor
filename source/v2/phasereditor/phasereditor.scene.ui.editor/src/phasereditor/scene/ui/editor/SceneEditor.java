@@ -323,7 +323,7 @@ public class SceneEditor extends EditorPart {
 		{
 			var item = new TabItem(tabFolder, SWT.NONE);
 			item.setText("New");
-			_webView = new SceneWebView(tabFolder, SWT.NONE);
+			_webView = new SceneWebView(this, tabFolder, SWT.NONE);
 			item.setControl(_webView);
 		}
 
