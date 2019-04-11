@@ -68,7 +68,7 @@ namespace PhaserEditor2D {
 
             obj.setInteractive(scene.input.makePixelPerfect());
 
-            this.updateObject(obj, data);
+            this.updateObject(obj, data);            
         }
 
         updateObject(obj: any, data: any) {
@@ -81,6 +81,7 @@ namespace PhaserEditor2D {
                 case "Sprite":
                 case "TileSprite":
                 case "BitmapText":
+                GameObjectEditorComponent.updateObject(obj, data);
                     TransformComponent.updateObject(obj, data);
                     OriginComponent.updateObject(obj, data);
                     FlipComponent.updateObject(obj, data);

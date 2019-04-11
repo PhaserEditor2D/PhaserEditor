@@ -14,6 +14,12 @@ var PhaserEditor2D;
             data[name] = value;
         };
     }
+    PhaserEditor2D.GameObjectEditorComponent = {
+        get_gameObjectEditorTransparency: get_property("gameObjectEditorTransparency", 1),
+        updateObject: function (obj, data) {
+            obj.alpha = this.get_gameObjectEditorTransparency(data);
+        }
+    };
     PhaserEditor2D.TransformComponent = {
         get_x: get_property("x", 0),
         get_y: get_property("y", 0),

@@ -16,6 +16,14 @@ namespace PhaserEditor2D {
         };
     }
 
+    export const GameObjectEditorComponent = {
+        get_gameObjectEditorTransparency : get_property("gameObjectEditorTransparency", 1),
+
+        updateObject: function (obj: Phaser.GameObjects.Components.Alpha, data: any) {
+            obj.alpha = this.get_gameObjectEditorTransparency(data);
+        }
+    };
+
 
     export const TransformComponent = {
         get_x: get_property("x", 0),

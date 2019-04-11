@@ -56,6 +56,7 @@ var PhaserEditor2D;
                 case "Sprite":
                 case "TileSprite":
                 case "BitmapText":
+                    PhaserEditor2D.GameObjectEditorComponent.updateObject(obj, data);
                     PhaserEditor2D.TransformComponent.updateObject(obj, data);
                     PhaserEditor2D.OriginComponent.updateObject(obj, data);
                     PhaserEditor2D.FlipComponent.updateObject(obj, data);
