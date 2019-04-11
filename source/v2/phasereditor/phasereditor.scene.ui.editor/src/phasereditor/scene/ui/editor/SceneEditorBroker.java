@@ -63,6 +63,10 @@ public class SceneEditorBroker {
 		ApiHub.addListener(_channel, this::messageReceived);
 	}
 
+	public void sendAllBatch(ApiMessage... msg) {
+		sendAll(new BatchMessage(msg));
+	}
+
 	public void sendAll(ApiMessage msg) {
 		ApiHub.sendMessageAllClients(_channel, wrapMessage(msg));
 	}

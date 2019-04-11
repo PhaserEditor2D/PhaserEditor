@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor.handlers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -35,7 +34,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
+import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 
 /**
  * @author arian
@@ -53,9 +54,9 @@ public class ChangeObjectsOrderHandler extends AbstractHandler {
 
 		final var ordername = cmd.substring(nameindex + 1);
 
-		var _editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
+		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
 
-		var models = _editor.getSelectionList();
+		var models = editor.getSelectionList();
 
 		// first, check all models are from the same parent
 
@@ -68,7 +69,7 @@ public class ChangeObjectsOrderHandler extends AbstractHandler {
 			} else {
 				if (parent2 != parent) {
 
-					MessageDialog.openInformation(_editor.getEditorSite().getShell(), "Order Action",
+					MessageDialog.openInformation(editor.getEditorSite().getShell(), "Order Action",
 							"Cannot change the order of objects with different parents.");
 					return null;
 				}
@@ -173,21 +174,27 @@ public class ChangeObjectsOrderHandler extends AbstractHandler {
 			newChildren.set(newIndex, model);
 		}
 
-		var parentList = List.of(parent);
-
-		var beforeData = SingleObjectSnapshotOperation.takeSnapshot(parentList);
+		var beforeData = WorldSnapshotOperation.takeSnapshot(editor);
 
 		ParentComponent.set_children(parent, newChildren);
 
-		var afterData = SingleObjectSnapshotOperation.takeSnapshot(parentList);
+		var afterData = WorldSnapshotOperation.takeSnapshot(editor);
 
-		var operation = new SingleObjectSnapshotOperation(beforeData, afterData, "Change objects order.");
+		var operation = new WorldSnapshotOperation(beforeData, afterData, "Change objects order.");
 
-		_editor.executeOperation(operation);
+		editor.executeOperation(operation);
 
-		_editor.setDirty(true);
-		_editor.getScene().redraw();
-		_editor.refreshOutline();
+		editor.setDirty(true);
+		editor.getScene().redraw();
+		editor.refreshOutline();
+
+		editor.getBroker().sendAllBatch(
+
+				new ResetSceneMessage(editor),
+
+				new SelectObjectsMessage(editor)
+
+		);
 
 		return null;
 	}
