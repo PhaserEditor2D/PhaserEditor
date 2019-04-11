@@ -60,6 +60,7 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
+import phasereditor.scene.ui.editor.messages.UpdateScenePropertiesMessage;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
 import phasereditor.scene.ui.editor.undo.ScenePropertiesSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
@@ -193,18 +194,21 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 				if (snap != null) {
 
-					var before = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
+					var editor = getEditor();
+					var before = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
 
 					sceneModel.setSnapEnabled(true);
 					sceneModel.setSnapWidth(snap[0]);
 					sceneModel.setSnapHeight(snap[1]);
 
-					var after = ScenePropertiesSnapshotOperation.takeSnapshot(getEditor());
+					var after = ScenePropertiesSnapshotOperation.takeSnapshot(editor);
 
-					getEditor().executeOperation(
+					editor.executeOperation(
 							new ScenePropertiesSnapshotOperation(before, after, "Change snapping with selection."));
 
 					user_update_UI_from_Model();
+					
+					editor.getBroker().sendAll(new UpdateScenePropertiesMessage(after));
 
 				}
 
