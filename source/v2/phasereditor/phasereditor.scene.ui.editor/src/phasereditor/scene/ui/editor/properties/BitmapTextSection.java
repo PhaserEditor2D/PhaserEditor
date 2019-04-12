@@ -200,7 +200,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 			if (dlg.open() == Window.OK) {
 
-				wrapOperation(() -> {
+				wrapWorldOperation(() -> {
 
 					var asset = (BitmapFontAssetModel) dlg.getSingleResult();
 
@@ -208,9 +208,12 @@ public class BitmapTextSection extends ScenePropertySection {
 						BitmapTextComponent.utils_setFont(obj, asset);
 					}
 
-				}, true);
+				});
+
+				dirtyModels(BitmapTextSection.this, getModels(), true, null);
 
 				editor.setDirty(true);
+
 			}
 		}
 	}

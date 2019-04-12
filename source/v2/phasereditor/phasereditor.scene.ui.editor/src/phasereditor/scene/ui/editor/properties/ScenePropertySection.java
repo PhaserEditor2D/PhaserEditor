@@ -144,7 +144,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 	}
 
-	private static void dirtyModels(ScenePropertySection section, List<ObjectModel> models, boolean dirtyModels,
+	protected static void dirtyModels(ScenePropertySection section, List<ObjectModel> models, boolean dirtyModels,
 			Function<ObjectModel, Boolean> filterDirtyModels) {
 
 		if (dirtyModels || filterDirtyModels != null) {
