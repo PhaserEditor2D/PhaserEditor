@@ -18,6 +18,8 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 
 public class DuplicateSelectedObjectsHandler extends AbstractHandler {
@@ -68,6 +70,14 @@ public class DuplicateSelectedObjectsHandler extends AbstractHandler {
 		editor.setSelection(copyList);
 
 		editor.executeOperation(new WorldSnapshotOperation(before, after, "Duplicate objects"));
+
+		editor.getBroker().sendAllBatch(
+
+				new ResetSceneMessage(editor),
+
+				new SelectObjectsMessage(editor)
+
+		);
 
 		return null;
 	}
