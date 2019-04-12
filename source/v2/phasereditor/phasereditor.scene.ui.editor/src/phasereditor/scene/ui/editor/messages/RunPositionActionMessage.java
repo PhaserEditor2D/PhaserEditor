@@ -19,41 +19,27 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core;
+package phasereditor.scene.ui.editor.messages;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.webrun.core.ApiMessage;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
-public interface DisplayComponent {
-	// display
-	static String displayWidth_name = "displayWidth";
-	static String displayHeight_name = "displayHeight";
+public class RunPositionActionMessage extends ApiMessage {
 
-	static float displayWidth_default = 0;
-	static float displayHeight_default = 0;
+	public RunPositionActionMessage(String action,JSONObject actionData, SceneEditor editor) {
+		_data.put("method", "RunPositionAction");
+		_data.put("action", action);
+		_data.put("actionData", actionData);
+		var list = new JSONArray();
+		_data.put("list", list);
 
-	static float get_displayWidth(ObjectModel obj) {
-		return (float) obj.get("displayWidth");
-	}
-
-	static void set_displayWidth(ObjectModel obj, float displayWidth) {
-		obj.put("displayWidth", displayWidth);
-	}
-
-	static float get_displayHeight(ObjectModel obj) {
-		return (float) obj.get("displayHeight");
-	}
-
-	static void set_displayHeight(ObjectModel obj, float displayHeight) {
-		obj.put("displayHeight", displayHeight);
-	}
-
-	// utils
-
-	static void init(ObjectModel model) {
-		set_displayWidth(model, displayWidth_default);
-		set_displayHeight(model, displayHeight_default);
+		editor.getSelectionIdList().stream().forEach(id -> list.put(id));
 	}
 }

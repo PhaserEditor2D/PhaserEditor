@@ -64,7 +64,7 @@ public class GameObjectSection extends ScenePropertySection {
 
 	public GameObjectSection(ScenePropertyPage page) {
 		super("Game Object", page);
-		
+
 		setStartCollapsed(true);
 	}
 
@@ -132,7 +132,14 @@ public class GameObjectSection extends ScenePropertySection {
 
 			addUpdate(() -> {
 				action.setChecked(
-						flatValues_to_Boolean(getModels().stream().map(model -> VisibleComponent.get_visible(model))));
+
+						flatValues_to_Boolean(
+
+								getModels().stream().map(model ->
+
+								VisibleComponent.get_visible(model)
+
+								)));
 
 				action.setImageDescriptor(
 
@@ -525,7 +532,7 @@ public class GameObjectSection extends ScenePropertySection {
 				var type = types.iterator().next();
 				getModels().forEach(model -> GameObjectComponent.set_objectFactoryType(model, type));
 			}
-			
+
 			getModels().forEach(model -> GameObjectComponent.set_objectFactory(model, factory));
 		});
 

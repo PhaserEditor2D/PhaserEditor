@@ -31,13 +31,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.json.JSONObject;
 
-import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.interactive.AngleTool;
 import phasereditor.scene.ui.editor.interactive.PositionTool;
 import phasereditor.scene.ui.editor.interactive.ScaleTool;
+import phasereditor.scene.ui.editor.messages.RunPositionActionMessage;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -125,89 +126,10 @@ public class TransformSection extends ScenePropertySection {
 
 		@Override
 		public void run() {
+			var data = new JSONObject();
+			data.put("align", _value);
 
-			var scene = getScene();
-			var rend = scene.getSceneRenderer();
-
-			var minX = Float.MAX_VALUE;
-			var maxX = Float.MIN_VALUE;
-			var minY = Float.MAX_VALUE;
-			var maxY = Float.MIN_VALUE;
-
-			var models = getModels();
-
-			if (models.size() == 1) {
-
-				var sm = getEditor().getSceneModel();
-
-				var p1 = scene.modelToView(sm.getBorderX(), sm.getBorderY());
-				var p2 = scene.modelToView(sm.getBorderX() + sm.getBorderWidth(),
-						sm.getBorderY() + sm.getBorderHeight());
-
-				minX = p1[0];
-				maxX = p2[0];
-				minY = p1[1];
-				maxY = p2[1];
-
-			} else {
-				for (var model : models) {
-					var parent = ParentComponent.get_parent(model);
-
-					var point = rend.localToScene(parent, TransformComponent.get_x(model),
-							TransformComponent.get_y(model));
-
-					minX = Math.min(minX, point[0]);
-					maxX = Math.max(maxX, point[0]);
-					minY = Math.min(minY, point[1]);
-					maxY = Math.max(maxY, point[1]);
-				}
-			}
-
-			var fminX = minX;
-			var fmaxX = maxX;
-			var fminY = minY;
-			var fmaxY = maxY;
-
-			wrapOperation(() -> {
-
-				for (var model : models) {
-
-					var parent = ParentComponent.get_parent(model);
-
-					switch (_value) {
-					case LEFT:
-						TransformComponent.set_x(model, rend.sceneToLocal(parent, fminX, 0)[0]);
-						break;
-					case RIGHT:
-						TransformComponent.set_x(model, rend.sceneToLocal(parent, fmaxX, 0)[0]);
-						break;
-					case HORIZONTAL_CENTER:
-						TransformComponent.set_x(model, rend.sceneToLocal(parent, (fmaxX + fminX) / 2, 0)[0]);
-						break;
-					case TOP:
-						TransformComponent.set_y(model, rend.sceneToLocal(parent, 0, fminY)[1]);
-						break;
-					case BOTTOM:
-						TransformComponent.set_y(model, rend.sceneToLocal(parent, 0, fmaxY)[1]);
-						break;
-					case VERTICAL_CENTER:
-						TransformComponent.set_y(model, rend.sceneToLocal(parent, 0, (fmaxY + fminY) / 2)[1]);
-						break;
-					default:
-						break;
-					}
-				}
-
-			});
-
-			var editor = getEditor();
-
-			editor.setDirty(true);
-
-			scene.redraw();
-
-			editor.updatePropertyPagesContentWithSelection();
-
+			getEditor().getBroker().sendAll(new RunPositionActionMessage("Align", data, getEditor()));
 		}
 
 	}

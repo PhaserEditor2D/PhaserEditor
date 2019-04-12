@@ -71,8 +71,13 @@ var PhaserEditor2D;
             this.selection = msg.objectIds;
             this.getToolScene().updateSelectionObjects();
             var list = [];
+            var point = new Phaser.Math.Vector2(0, 0);
+            var tx = new Phaser.GameObjects.Components.TransformMatrix();
             for (var _i = 0, _a = this.getToolScene().getSelectedObjects(); _i < _a.length; _i++) {
                 var obj = _a[_i];
+                var objTx = obj;
+                objTx.getWorldTransformMatrix(tx);
+                tx.transformPoint(0, 0, point);
                 list.push({
                     id: obj.name,
                     displayWidth: obj.displayWidth,
@@ -193,6 +198,18 @@ var PhaserEditor2D;
             scene.removeAllObjects();
             this._create.createWorld(scene, msg.displayList);
         };
+        Editor.prototype.onRunPositionAction = function (msg) {
+            var actionName = msg.action;
+            var action;
+            switch (actionName) {
+                case "Align":
+                    action = new PhaserEditor2D.AlignAction(msg);
+                    break;
+            }
+            if (action) {
+                action.run();
+            }
+        };
         Editor.prototype.onServerMessage = function (batch) {
             console.log("onServerMessage:");
             console.log(batch);
@@ -225,6 +242,9 @@ var PhaserEditor2D;
                         break;
                     case "ResetScene":
                         this.onResetScene(msg);
+                        break;
+                    case "RunPositionAction":
+                        this.onRunPositionAction(msg);
                         break;
                 }
             }

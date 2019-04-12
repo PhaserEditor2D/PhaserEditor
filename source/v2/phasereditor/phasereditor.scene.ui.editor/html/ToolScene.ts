@@ -208,7 +208,7 @@ namespace PhaserEditor2D {
 
             this._selectedObjects = [];
 
-            var objectScene = Editor.getInstance().getObjectScene();
+            let objectScene = Editor.getInstance().getObjectScene();
 
             for (let id of editor.selection) {
                 const obj = objectScene.sys.displayList.getByName(id);
@@ -235,7 +235,7 @@ namespace PhaserEditor2D {
             const point = new Phaser.Math.Vector2(0, 0);
 
             for (let obj of this._selectedObjects) {
-                var worldTx = (<Phaser.GameObjects.Components.Transform><any>obj).getWorldTransformMatrix();
+                let worldTx = (<Phaser.GameObjects.Components.Transform><any>obj).getWorldTransformMatrix();
 
                 worldTx.transformPoint(0, 0, point);
 
@@ -254,21 +254,21 @@ namespace PhaserEditor2D {
         ];
 
         private paintSelectionBox(graphics: Phaser.GameObjects.Graphics, gameObj: any) {
-            var w = gameObj.width;
-            var h = gameObj.height;
-            var ox = gameObj.originX;
-            var oy = gameObj.originY;
-            var x = -w * ox;
-            var y = -h * oy;
+            let w = gameObj.width;
+            let h = gameObj.height;
+            let ox = gameObj.originX;
+            let oy = gameObj.originY;
+            let x = -w * ox;
+            let y = -h * oy;
 
-            var worldTx = gameObj.getWorldTransformMatrix();
+            let worldTx = gameObj.getWorldTransformMatrix();
 
             worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
             worldTx.transformPoint(x + w, y, this._selectionBoxPoints[1]);
             worldTx.transformPoint(x + w, y + h, this._selectionBoxPoints[2]);
             worldTx.transformPoint(x, y + h, this._selectionBoxPoints[3]);
 
-            var cam = Editor.getInstance().getObjectScene().cameras.main;
+            let cam = Editor.getInstance().getObjectScene().cameras.main;
             for (let p of this._selectionBoxPoints) {
                 p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom)
             }

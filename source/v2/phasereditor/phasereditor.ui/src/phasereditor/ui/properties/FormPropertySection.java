@@ -148,7 +148,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 			return (Boolean) value;
 		}
 
-		return null;
+		return Boolean.FALSE;
 	}
 
 	protected static boolean flatValues_to_boolean(Stream<Boolean> values) {

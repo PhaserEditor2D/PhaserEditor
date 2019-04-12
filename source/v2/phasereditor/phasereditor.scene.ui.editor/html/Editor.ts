@@ -104,8 +104,15 @@ namespace PhaserEditor2D {
             this.getToolScene().updateSelectionObjects();
 
             let list = [];
+            let point = new Phaser.Math.Vector2(0, 0);
+            let tx = new Phaser.GameObjects.Components.TransformMatrix();
 
             for (let obj of this.getToolScene().getSelectedObjects()) {
+
+                let objTx: Phaser.GameObjects.Components.Transform = <any>obj;
+                objTx.getWorldTransformMatrix(tx);
+                tx.transformPoint(0, 0, point);
+
                 list.push(
                     {
                         id: obj.name,
@@ -265,6 +272,22 @@ namespace PhaserEditor2D {
             this._create.createWorld(scene, msg.displayList);
         }
 
+        private onRunPositionAction(msg) {
+            let actionName = msg.action;
+
+            let action : PositionAction;
+
+            switch (actionName) {
+                case "Align":
+                    action = new AlignAction(msg);
+                    break;
+            }
+
+            if (action) {
+                action.run();
+            }
+        }
+
         private onServerMessage(batch: any) {
             console.log("onServerMessage:");
             console.log(batch);
@@ -301,6 +324,9 @@ namespace PhaserEditor2D {
                         break;
                     case "ResetScene":
                         this.onResetScene(msg);
+                        break;
+                    case "RunPositionAction":
+                        this.onRunPositionAction(msg);
                         break;
                 }
             }

@@ -24,6 +24,7 @@ package phasereditor.scene.ui.editor;
 import static java.util.stream.Collectors.toSet;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -34,9 +35,11 @@ import org.json.JSONObject;
 import phasereditor.scene.core.DisplayComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.PackReferencesCollector;
+import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
+import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.webrun.core.ApiHub;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.core.BatchMessage;
@@ -121,12 +124,60 @@ public class SceneEditorBroker {
 			case "SetObjectDisplayProperties":
 				onSetObjectDisplayProperties(msg);
 				break;
+			case "SetObjectPosition":
+				onSetObjectPosition(msg);
+				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 			SceneUIEditor.logError(e);
 		}
+	}
+
+	private void onSetObjectPosition(JSONObject msg) {
+		var list = msg.getJSONArray("list");
+
+		var table = _editor.getSceneModel().getDisplayList().lookupTable();
+
+		var models = new ArrayList<ObjectModel>();
+		var positions = new ArrayList<JSONObject>();
+
+		for (int i = 0; i < list.length(); i++) {
+			var pos = list.getJSONObject(i);
+			var id = pos.getString("id");
+
+			var model = table.lookup(id);
+
+			if (model != null) {
+				models.add(model);
+				positions.add(pos);
+			}
+		}
+
+		var before = SingleObjectSnapshotOperation.takeSnapshot(models);
+
+		int i = 0;
+		for (var model : models) {
+			var pos = positions.get(i);
+
+			TransformComponent.set_x(model, pos.getFloat("x"));
+			TransformComponent.set_y(model, pos.getFloat("y"));
+
+			i++;
+		}
+
+		var after = SingleObjectSnapshotOperation.takeSnapshot(models);
+
+		swtRun(() -> {
+
+			_editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Align Objects"));
+
+			_editor.setDirty(true);
+			
+			_editor.updatePropertyPagesContentWithSelection();
+
+		});
 	}
 
 	private void onSetObjectDisplayProperties(JSONObject msg) {
