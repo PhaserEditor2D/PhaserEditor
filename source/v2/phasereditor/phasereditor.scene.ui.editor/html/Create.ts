@@ -79,7 +79,6 @@ namespace PhaserEditor2D {
             var type = data["-type"];
             obj.name = data["-id"];
 
-
             VisibleComponent.updateObject(obj, data);
 
             switch (type) {

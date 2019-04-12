@@ -21,12 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -119,5 +122,23 @@ public class PackReferencesCollector {
 		}
 
 		return pack;
+	}
+
+	public Optional<JSONObject> collectNewPack(Runnable action) {
+		var beforeKeys = new HashSet<>(collectAssetKeys());
+
+		action.run();
+
+		var currentKeys = new HashSet<>(collectAssetKeys());
+		currentKeys.removeAll(beforeKeys);
+
+		var newAssets = currentKeys.stream().map(key -> key.getAsset()).collect(toSet());
+
+		if (!newAssets.isEmpty()) {
+			var pack = collectNewPack(newAssets);
+			return Optional.of(pack);
+		}
+
+		return Optional.empty();
 	}
 }

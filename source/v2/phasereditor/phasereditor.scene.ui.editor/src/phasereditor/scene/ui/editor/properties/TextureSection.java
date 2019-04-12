@@ -50,6 +50,7 @@ import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.assetpack.ui.ShowTextureInTexturePackerAction;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
 import phasereditor.scene.core.TextureComponent;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -96,8 +97,13 @@ public class TextureSection extends ScenePropertySection {
 
 						.collect(toList());
 
-				getEditor().setSelection(list);
-				getEditor().updatePropertyPagesContentWithSelection();
+				var editor = getEditor();
+
+				editor.setSelection(list);
+
+				editor.updatePropertyPagesContentWithSelection();
+
+				editor.getBroker().sendAll(new SelectObjectsMessage(editor));
 			}
 		};
 
@@ -223,7 +229,8 @@ public class TextureSection extends ScenePropertySection {
 
 		var list = new ArrayList<>();
 
-		for (var pack : AssetPackCore.getAssetPackModels(getEditor().getProject())) {
+		var editor = getEditor();
+		for (var pack : AssetPackCore.getAssetPackModels(editor.getProject())) {
 			for (var asset : pack.getAssets()) {
 				if (asset instanceof ImageAssetModel || asset instanceof AtlasAssetModel
 						|| asset instanceof MultiAtlasAssetModel) {
@@ -232,7 +239,7 @@ public class TextureSection extends ScenePropertySection {
 			}
 		}
 
-		var dlg = new QuickSelectAssetDialog(getEditor().getEditorSite().getShell());
+		var dlg = new QuickSelectAssetDialog(editor.getEditorSite().getShell());
 		dlg.setTitle("Select Texture");
 
 		dlg.setInput(list);
@@ -240,15 +247,13 @@ public class TextureSection extends ScenePropertySection {
 		if (dlg.open() == Window.OK) {
 			var frame = (IAssetFrameModel) dlg.getSingleResult();
 
-			wrapOperation(() -> {
-
+			wrapWorldOperation(() -> {
 				getModels().forEach(model -> {
 					TextureComponent.utils_setTexture(model, frame);
 				});
+			});
 
-			}, true);
-
-			getEditor().setDirty(true);
+			editor.setDirty(true);
 
 			update_UI_from_Model();
 		}

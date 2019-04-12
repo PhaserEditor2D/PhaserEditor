@@ -215,7 +215,32 @@ var PhaserEditor2D;
             console.log(batch);
             console.log("----");
             var list = batch.list;
-            for (var i = 0; i < list.length; i++) {
+            this.processServerMessages(0, list);
+            this.repaint();
+        };
+        ;
+        Editor.prototype.onLoadAssets = function (index, list) {
+            var loadMsg = list[index];
+            if (loadMsg.pack) {
+                var scene = this.getObjectScene();
+                scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
+                    return function () {
+                        console.log("Loader complete.");
+                        this.processServerMessages(index2, list2);
+                        this.repaint();
+                    };
+                })(index + 1, list), this);
+                console.log("Load: ");
+                console.log(loadMsg.pack);
+                scene.load.addPack(loadMsg.pack);
+                scene.load.start();
+            }
+            else {
+                this.processServerMessages(index + 1, list);
+            }
+        };
+        Editor.prototype.processServerMessages = function (startIndex, list) {
+            for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
                 var method = msg.method;
                 switch (method) {
@@ -246,11 +271,12 @@ var PhaserEditor2D;
                     case "RunPositionAction":
                         this.onRunPositionAction(msg);
                         break;
+                    case "LoadAssets":
+                        this.onLoadAssets(i, list);
+                        break;
                 }
             }
-            this.repaint();
         };
-        ;
         Editor.prototype.sendMessage = function (msg) {
             console.log("Sending message:");
             console.log(msg);

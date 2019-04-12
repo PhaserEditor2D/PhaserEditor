@@ -24,6 +24,7 @@ package phasereditor.scene.ui.editor.properties;
 import java.util.List;
 import java.util.function.Function;
 
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
@@ -32,12 +33,17 @@ import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
+import phasereditor.scene.ui.editor.messages.LoadAssetsMessage;
+import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.messages.UpdateObjectsMessage;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -184,6 +190,34 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		getEditor().getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}
 
+	protected void wrapWorldOperation(Runnable run) {
+		var editor = getEditor();
+
+		var collector = new PackReferencesCollector(editor.getSceneModel(), editor.getAssetFinder());
+
+		var packData = collector.collectNewPack(() -> {
+			var beforeData = WorldSnapshotOperation.takeSnapshot(getEditor());
+
+			run.run();
+
+			var afterData = WorldSnapshotOperation.takeSnapshot(getEditor());
+
+			IUndoableOperation op = new WorldSnapshotOperation(beforeData, afterData, "Change object property");
+
+			getEditor().executeOperation(op);
+		});
+
+		editor.getBroker().sendAllBatch(
+
+				new LoadAssetsMessage(packData),
+
+				new ResetSceneMessage(editor),
+
+				new SelectObjectsMessage(editor)
+
+		);
+	}
+
 	protected abstract class SceneCheckListener extends CheckListener {
 		protected boolean dirtyModels;
 		protected Function<ObjectModel, Boolean> filterDirtyModels;
@@ -231,5 +265,4 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		getEditor().getScene().setInteractiveTools(tools);
 	}
 
-	
 }

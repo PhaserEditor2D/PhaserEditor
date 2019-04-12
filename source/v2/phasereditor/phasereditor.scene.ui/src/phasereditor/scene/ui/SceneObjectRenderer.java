@@ -342,7 +342,6 @@ public class SceneObjectRenderer {
 		}
 
 		{
-
 			if (transp != 1) {
 				gc.setAlpha((int) (transp * 255));
 			}
