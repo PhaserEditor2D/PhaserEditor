@@ -17,7 +17,7 @@ var PhaserEditor2D;
     PhaserEditor2D.GameObjectEditorComponent = {
         get_gameObjectEditorTransparency: get_property("gameObjectEditorTransparency", 1),
         updateObject: function (obj, data) {
-            obj.alpha = this.get_gameObjectEditorTransparency(data);
+            obj.alpha *= this.get_gameObjectEditorTransparency(data);
         }
     };
     PhaserEditor2D.TransformComponent = {
@@ -84,6 +84,12 @@ var PhaserEditor2D;
     };
     PhaserEditor2D.TextualComponent = {
         get_text: get_property("text", "")
+    };
+    PhaserEditor2D.VisibleComponent = {
+        get_visible: get_property("visible", true),
+        updateObject: function (obj, data) {
+            obj.alpha = this.get_visible(data) ? 1 : 0.5;
+        }
     };
     PhaserEditor2D.ScenePropertiesComponent = {
         get_snapEnabled: get_property("snapEnabled", false),

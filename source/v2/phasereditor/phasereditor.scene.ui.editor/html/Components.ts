@@ -20,7 +20,7 @@ namespace PhaserEditor2D {
         get_gameObjectEditorTransparency : get_property("gameObjectEditorTransparency", 1),
 
         updateObject: function (obj: Phaser.GameObjects.Components.Alpha, data: any) {
-            obj.alpha = this.get_gameObjectEditorTransparency(data);
+            obj.alpha *= this.get_gameObjectEditorTransparency(data);
         }
     };
 
@@ -102,6 +102,14 @@ namespace PhaserEditor2D {
 
     export const TextualComponent = {
         get_text: get_property("text", "")
+    };
+
+    export const VisibleComponent = {
+        get_visible: get_property("visible", true),
+
+        updateObject: function (obj: any, data: any) {
+            obj.alpha = this.get_visible(data)? 1 : 0.5;
+        }
     };
 
     export const ScenePropertiesComponent = {

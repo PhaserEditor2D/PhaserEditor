@@ -56,6 +56,7 @@ var PhaserEditor2D;
         Create.prototype.updateObject = function (obj, data) {
             var type = data["-type"];
             obj.name = data["-id"];
+            PhaserEditor2D.VisibleComponent.updateObject(obj, data);
             switch (type) {
                 case "Image":
                 case "Sprite":

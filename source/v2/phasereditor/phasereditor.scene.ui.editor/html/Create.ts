@@ -80,6 +80,8 @@ namespace PhaserEditor2D {
             obj.name = data["-id"];
 
 
+            VisibleComponent.updateObject(obj, data);
+
             switch (type) {
                 case "Image":
                 case "Sprite":
@@ -100,8 +102,6 @@ namespace PhaserEditor2D {
                     BitmapTextComponent.updateObject(obj, data);
                     break;
             }
-
-
         }
     }
 
