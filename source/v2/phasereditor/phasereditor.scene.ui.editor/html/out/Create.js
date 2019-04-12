@@ -50,7 +50,7 @@ var PhaserEditor2D;
                     obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
                     break;
                 case "BitmapText":
-                    obj.setInteractive();
+                    obj.setInteractive(BitmapTextHitHandler);
                     break;
                 default:
                     obj.setInteractive(scene.input.makePixelPerfect());
@@ -85,13 +85,19 @@ var PhaserEditor2D;
         return Create;
     }());
     PhaserEditor2D.Create = Create;
+    function BitmapTextHitHandler(hitArea, x, y, gameObject) {
+        var w = gameObject.width;
+        var h = gameObject.height;
+        x = x * gameObject.scaleX;
+        y = y * gameObject.scaleY;
+        return x >= 0 && y >= 0 && x <= w && y <= h;
+    }
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {
         return function (hitArea, x, y, gameObject) {
             var alpha = getCanvasTexturePixelAlpha(x, y, gameObject.texture);
             return alpha >= alphaTolerance;
         };
     }
-    ;
     function getCanvasTexturePixelAlpha(x, y, canvasTexture) {
         if (canvasTexture) {
             {
