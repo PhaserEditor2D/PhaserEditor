@@ -42,6 +42,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -289,8 +290,10 @@ public class BitmapTextSection extends ScenePropertySection {
 
 						.collect(toList());
 
-				getEditor().setSelection(list);
-				getEditor().updatePropertyPagesContentWithSelection();
+				var editor = getEditor();
+				editor.setSelection(list);
+				editor.updatePropertyPagesContentWithSelection();
+				editor.getBroker().sendAll(new SelectObjectsMessage(editor));
 			}
 		};
 

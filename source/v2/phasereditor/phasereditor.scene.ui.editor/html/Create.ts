@@ -66,10 +66,16 @@ namespace PhaserEditor2D {
                     break;
             }
 
-            if (type === "TileSprite") {
-                obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
-            } else {
-                obj.setInteractive(scene.input.makePixelPerfect());
+            switch (type) {
+                case "TileSprite":
+                    obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+                    break;
+                case "BitmapText":
+                    obj.setInteractive();
+                    break;
+                default:
+                    obj.setInteractive(scene.input.makePixelPerfect());
+                    break;
             }
 
             this.updateObject(obj, data);
