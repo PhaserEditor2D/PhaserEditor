@@ -36,6 +36,7 @@ import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
+import phasereditor.scene.ui.editor.messages.LoadAssetsMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.webrun.core.ApiHub;
@@ -214,14 +215,16 @@ public class SceneEditorBroker {
 
 				var collector = new PackReferencesCollector(_editor.getSceneModel(), _editor.getAssetFinder());
 
-				var pack = collector.collectNewPack(() -> {
+				var packData = collector.collectNewPack(() -> {
 					models.addAll(_editor.selectionDropped(x, y, data));
 				});
 
 				if (!models.isEmpty()) {
 					sendBatch(client,
 
-							new DropObjectsMessage(models, pack),
+							new LoadAssetsMessage(packData),
+
+							new DropObjectsMessage(models),
 
 							new SelectObjectsMessage(_editor)
 

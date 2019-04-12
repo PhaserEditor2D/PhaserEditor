@@ -223,33 +223,8 @@ namespace PhaserEditor2D {
         private onDropObjects(msg: any) {
             const list = msg.list;
 
-            if (msg.pack) {
-                let scene = this.getObjectScene();
-                scene.load.once(Phaser.Loader.Events.COMPLETE,
-
-                    (function (models) {
-                        return function () {
-
-                            console.log("load complete!");
-
-                            for (let model of models) {
-                                this._create.createObject(this.getObjectScene(), model);
-                            }
-
-                            this.repaint();
-                        };
-                    })(list)
-
-
-                    , this);
-                console.log("Load: ");
-                console.log(msg.pack);
-                scene.load.addPack(msg.pack);
-                scene.load.start();
-            } else {
-                for (let model of list) {
-                    this._create.createObject(this.getObjectScene(), model);
-                }
+            for (let model of list) {
+                this._create.createObject(this.getObjectScene(), model);
             }
         }
 
@@ -366,7 +341,8 @@ namespace PhaserEditor2D {
                         break;
                     case "LoadAssets":
                         this.onLoadAssets(i, list);
-                        break;
+                        // break the loop, the remaining messages are processed after the load
+                        return;
                 }
             }
         }
