@@ -220,6 +220,61 @@ var PhaserEditor2D;
                 this.processServerMessages(index + 1, list);
             }
         };
+        Editor.prototype.onSetObjectOriginKeepPosition = function (msg) {
+            var list = msg.list;
+            var value = msg.value;
+            var is_x_axis = msg.axis === "x";
+            var displayList = this.getObjectScene().sys.displayList;
+            var point = new Phaser.Math.Vector2();
+            var tx = new Phaser.GameObjects.Components.TransformMatrix();
+            var data = [];
+            for (var _i = 0, list_3 = list; _i < list_3.length; _i++) {
+                var id = list_3[_i];
+                var obj = displayList.getByName(id);
+                var x = -obj.width * obj.originX;
+                var y = -obj.height * obj.originY;
+                obj.getWorldTransformMatrix(tx);
+                tx.transformPoint(x, y, point);
+                data.push({
+                    obj: obj,
+                    x: point.x,
+                    y: point.y
+                });
+            }
+            for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
+                var item = data_1[_a];
+                var obj = item.obj;
+                if (is_x_axis) {
+                    obj.setOrigin(value, obj.originY);
+                }
+                else {
+                    obj.setOrigin(obj.originX, value);
+                }
+            }
+            this.repaint();
+            var list2 = [];
+            for (var _b = 0, data_2 = data; _b < data_2.length; _b++) {
+                var item = data_2[_b];
+                var obj = item.obj;
+                var x = -obj.width * obj.originX;
+                var y = -obj.height * obj.originY;
+                obj.getWorldTransformMatrix(tx);
+                tx.transformPoint(x, y, point);
+                obj.x += item.x - point.x;
+                obj.y += item.y - point.y;
+                list2.push({
+                    id: obj.name,
+                    originX: obj.originX,
+                    originY: obj.originY,
+                    x: obj.x,
+                    y: obj.y
+                });
+            }
+            Editor.getInstance().sendMessage({
+                method: "SetObjectOrigin",
+                list: list2
+            });
+        };
         Editor.prototype.processServerMessages = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
@@ -255,6 +310,9 @@ var PhaserEditor2D;
                     case "LoadAssets":
                         this.onLoadAssets(i, list);
                         return;
+                    case "SetObjectOriginKeepPosition":
+                        this.onSetObjectOriginKeepPosition(msg);
+                        break;
                 }
             }
         };

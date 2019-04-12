@@ -304,6 +304,82 @@ namespace PhaserEditor2D {
 
         }
 
+        private onSetObjectOriginKeepPosition(msg: any) {
+            let list = msg.list;
+            let value = msg.value;
+            let is_x_axis = msg.axis === "x";
+
+            let displayList = this.getObjectScene().sys.displayList;
+
+
+            let point = new Phaser.Math.Vector2();
+            let tx = new Phaser.GameObjects.Components.TransformMatrix();
+
+            let data = [];
+
+            for (let id of list) {
+                let obj = <any>displayList.getByName(id);
+                
+                let x = -obj.width * obj.originX;
+                let y = -obj.height * obj.originY;
+
+                obj.getWorldTransformMatrix(tx);
+                tx.transformPoint(x, y, point);
+
+                data.push(
+                    {
+                        obj: obj,
+                        x: point.x,
+                        y: point.y
+                    }
+                );
+            }
+
+            for (let item of data) {
+                let obj = item.obj;
+
+                if (is_x_axis) {
+                    obj.setOrigin(value, obj.originY);
+                } else {
+                    obj.setOrigin(obj.originX, value);
+                }
+            }
+
+            this.repaint();
+
+            let list2 = [];
+
+            for (let item of data) {
+                let obj = item.obj;
+
+                // restore the position!
+
+                let x = -obj.width * obj.originX;
+                let y = -obj.height * obj.originY;
+
+                obj.getWorldTransformMatrix(tx);
+                tx.transformPoint(x, y, point);
+
+                obj.x += item.x - point.x;
+                obj.y += item.y - point.y;
+
+                // build message data
+
+                list2.push({
+                    id: obj.name,
+                    originX: obj.originX,
+                    originY: obj.originY,
+                    x: obj.x,
+                    y: obj.y
+                });
+            }
+
+            Editor.getInstance().sendMessage({
+                method: "SetObjectOrigin",
+                list: list2
+            });
+        }
+
         private processServerMessages(startIndex: number, list: any[]) {
 
             for (var i = startIndex; i < list.length; i++) {
@@ -343,6 +419,9 @@ namespace PhaserEditor2D {
                         this.onLoadAssets(i, list);
                         // break the loop, the remaining messages are processed after the load
                         return;
+                    case "SetObjectOriginKeepPosition":
+                        this.onSetObjectOriginKeepPosition(msg);
+                        break;
                 }
             }
         }

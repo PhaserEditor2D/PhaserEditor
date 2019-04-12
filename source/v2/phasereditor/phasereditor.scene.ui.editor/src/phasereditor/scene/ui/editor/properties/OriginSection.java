@@ -36,10 +36,9 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
-import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.ui.SceneObjectRenderer;
 import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.interactive.OriginTool;
+import phasereditor.scene.ui.editor.messages.SetObjectOriginKeepPositionMessage;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -53,7 +52,7 @@ public class OriginSection extends ScenePropertySection {
 
 	public OriginSection(ScenePropertyPage page) {
 		super("Origin", page);
-		
+
 		setStartCollapsed(true);
 	}
 
@@ -90,47 +89,9 @@ public class OriginSection extends ScenePropertySection {
 
 		}
 
-		@SuppressWarnings("boxing")
 		@Override
 		public void run() {
-
-			wrapOperation(() -> {
-
-				getModels().forEach(model -> {
-
-					SceneObjectRenderer renderer = getEditor().getScene().getSceneRenderer();
-
-					var size = renderer.getObjectSize(model);
-
-					var originX = OriginComponent.get_originX(model);
-					var originY = OriginComponent.get_originY(model);
-
-					var newOriginX = _x ? _value : originX;
-					var newOriginY = _x ? originY : _value;
-
-					var local1 = new float[] { originX * size[0], originY * size[1] };
-					var local2 = new float[] { newOriginX * size[0], newOriginY * size[1] };
-
-					var parent1 = renderer.localToParent(model, local1);
-					var parent2 = renderer.localToParent(model, local2);
-
-					var dx = parent2[0] - parent1[0];
-					var dy = parent2[1] - parent1[1];
-
-					OriginComponent.set_originX(model, newOriginX);
-					OriginComponent.set_originY(model, newOriginY);
-
-					TransformComponent.set_x(model, TransformComponent.get_x(model) + dx);
-					TransformComponent.set_y(model, TransformComponent.get_y(model) + dy);
-				});
-
-				// update the position texts.
-				OriginSection.this.getEditor().updatePropertyPagesContentWithSelection();
-
-			}, true, model -> model instanceof DynamicBitmapTextComponent);
-
-			getEditor().setDirty(true);
-
+			getEditor().getBroker().sendAll(new SetObjectOriginKeepPositionMessage(getModels(), _value, _x ? "x" : "y"));
 		}
 	}
 

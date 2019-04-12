@@ -25,6 +25,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -32,6 +33,7 @@ import org.json.JSONObject;
 
 import phasereditor.scene.core.DisplayComponent;
 import phasereditor.scene.core.ObjectModel;
+import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
@@ -126,6 +128,9 @@ public class SceneEditorBroker {
 			case "SetObjectPosition":
 				onSetObjectPosition(msg);
 				break;
+			case "SetObjectOrigin":
+				onSetObjectOrigin(msg);
+				break;
 			default:
 				break;
 			}
@@ -135,22 +140,38 @@ public class SceneEditorBroker {
 	}
 
 	private void onSetObjectPosition(JSONObject msg) {
+		setObjectCustomProperties(msg, (model, data) -> {
+			TransformComponent.set_x(model, data.getFloat("x"));
+			TransformComponent.set_y(model, data.getFloat("y"));
+		});
+	}
+
+	private void onSetObjectOrigin(JSONObject msg) {
+		setObjectCustomProperties(msg, (model, data) -> {
+			OriginComponent.set_originX(model, data.getFloat("originX"));
+			OriginComponent.set_originY(model, data.getFloat("originY"));
+			TransformComponent.set_x(model, data.getFloat("x"));
+			TransformComponent.set_y(model, data.getFloat("y"));
+		});
+	}
+
+	private void setObjectCustomProperties(JSONObject msg, BiConsumer<ObjectModel, JSONObject> operation) {
 		var list = msg.getJSONArray("list");
 
 		var table = _editor.getSceneModel().getDisplayList().lookupTable();
 
 		var models = new ArrayList<ObjectModel>();
-		var positions = new ArrayList<JSONObject>();
+		var dataList = new ArrayList<JSONObject>();
 
 		for (int i = 0; i < list.length(); i++) {
-			var pos = list.getJSONObject(i);
-			var id = pos.getString("id");
+			var data = list.getJSONObject(i);
+			var id = data.getString("id");
 
 			var model = table.lookup(id);
 
 			if (model != null) {
 				models.add(model);
-				positions.add(pos);
+				dataList.add(data);
 			}
 		}
 
@@ -158,10 +179,9 @@ public class SceneEditorBroker {
 
 		int i = 0;
 		for (var model : models) {
-			var pos = positions.get(i);
+			var data = dataList.get(i);
 
-			TransformComponent.set_x(model, pos.getFloat("x"));
-			TransformComponent.set_y(model, pos.getFloat("y"));
+			operation.accept(model, data);
 
 			i++;
 		}
@@ -170,7 +190,7 @@ public class SceneEditorBroker {
 
 		swtRun(() -> {
 
-			_editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Align Objects"));
+			_editor.executeOperation(new SingleObjectSnapshotOperation(before, after, "Change Object Properties"));
 
 			_editor.setDirty(true);
 
