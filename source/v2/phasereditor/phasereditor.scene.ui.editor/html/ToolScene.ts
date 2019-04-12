@@ -256,6 +256,13 @@ namespace PhaserEditor2D {
         private paintSelectionBox(graphics: Phaser.GameObjects.Graphics, gameObj: any) {
             let w = gameObj.width;
             let h = gameObj.height;
+
+            if (gameObj instanceof Phaser.GameObjects.BitmapText) {
+                // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
+                w = w / gameObj.scaleX;
+                h = h / gameObj.scaleY;
+            }
+
             let ox = gameObj.originX;
             let oy = gameObj.originY;
             let x = -w * ox;

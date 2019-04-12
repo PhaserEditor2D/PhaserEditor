@@ -86,10 +86,8 @@ var PhaserEditor2D;
     }());
     PhaserEditor2D.Create = Create;
     function BitmapTextHitHandler(hitArea, x, y, gameObject) {
-        var w = gameObject.width;
-        var h = gameObject.height;
-        x = x * gameObject.scaleX;
-        y = y * gameObject.scaleY;
+        var w = gameObject.width / gameObject.scaleX;
+        var h = gameObject.height / gameObject.scaleY;
         return x >= 0 && y >= 0 && x <= w && y <= h;
     }
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {

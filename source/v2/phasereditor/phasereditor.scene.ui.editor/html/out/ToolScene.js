@@ -184,6 +184,10 @@ var PhaserEditor2D;
         ToolScene.prototype.paintSelectionBox = function (graphics, gameObj) {
             var w = gameObj.width;
             var h = gameObj.height;
+            if (gameObj instanceof Phaser.GameObjects.BitmapText) {
+                w = w / gameObj.scaleX;
+                h = h / gameObj.scaleY;
+            }
             var ox = gameObj.originX;
             var oy = gameObj.originY;
             var x = -w * ox;

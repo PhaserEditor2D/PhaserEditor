@@ -111,12 +111,11 @@ namespace PhaserEditor2D {
     }
 
     function BitmapTextHitHandler(hitArea: any, x: number, y: number, gameObject: Phaser.GameObjects.BitmapText) {
-        let w = gameObject.width;
-        let h = gameObject.height;
-        x = x * gameObject.scaleX;
-        y = y * gameObject.scaleY;
+        // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
+        let w = gameObject.width / gameObject.scaleX;
+        let h = gameObject.height / gameObject.scaleY;
 
-        return  x >= 0 && y >= 0 && x <= w && y <= h;
+        return x >= 0 && y >= 0 && x <= w && y <= h;
     }
 
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance: number) {
