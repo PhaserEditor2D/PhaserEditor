@@ -47,6 +47,7 @@ import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.ShowAnimationKeyInAnimationsEditorAction;
 import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.scene.core.AnimationsComponent;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -96,8 +97,13 @@ public class AnimationsSection extends ScenePropertySection {
 
 						.collect(toList());
 
-				getEditor().setSelection(list);
-				getEditor().updatePropertyPagesContentWithSelection();
+				var editor = getEditor();
+
+				editor.setSelection(list);
+
+				editor.updatePropertyPagesContentWithSelection();
+
+				editor.getBroker().sendAll(new SelectObjectsMessage(editor));
 			}
 		};
 
