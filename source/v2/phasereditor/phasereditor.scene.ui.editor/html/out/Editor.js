@@ -78,11 +78,18 @@ var PhaserEditor2D;
                 var objTx = obj;
                 objTx.getWorldTransformMatrix(tx);
                 tx.transformPoint(0, 0, point);
-                list.push({
-                    id: obj.name,
-                    displayWidth: obj.displayWidth,
-                    displayHeight: obj.displayHeight
-                });
+                var info = {
+                    id: obj.name
+                };
+                if (obj instanceof Phaser.GameObjects.BitmapText) {
+                    info.displayWidth = obj.width;
+                    info.displayHeight = obj.height;
+                }
+                else {
+                    info.displayWidth = obj.displayWidth;
+                    info.displayHeight = obj.displayHeight;
+                }
+                list.push(info);
             }
             this.sendMessage({
                 method: "SetObjectDisplayProperties",

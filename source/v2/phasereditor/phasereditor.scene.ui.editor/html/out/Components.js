@@ -82,6 +82,18 @@ var PhaserEditor2D;
             obj.setOrigin(this.get_originX(data), this.get_originY(data));
         }
     };
+    PhaserEditor2D.DynamicBitmapTextComponent = {
+        get_cropWidth: get_property("cropWidth", 0),
+        get_cropHeight: get_property("cropHeight", 0),
+        get_scrollX: get_property("scrollX", 0),
+        get_scrollY: get_property("scrollY", 0),
+        updateObject: function (obj, data) {
+            obj.cropWidth = this.get_cropWidth(data);
+            obj.cropHeight = this.get_cropHeight(data);
+            obj.scrollX = this.get_scrollX(data);
+            obj.scrollY = this.get_scrollY(data);
+        }
+    };
     PhaserEditor2D.TextualComponent = {
         get_text: get_property("text", "")
     };

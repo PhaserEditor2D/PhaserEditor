@@ -17,7 +17,7 @@ namespace PhaserEditor2D {
     }
 
     export const GameObjectEditorComponent = {
-        get_gameObjectEditorTransparency : get_property("gameObjectEditorTransparency", 1),
+        get_gameObjectEditorTransparency: get_property("gameObjectEditorTransparency", 1),
 
         updateObject: function (obj: Phaser.GameObjects.Components.Alpha, data: any) {
             obj.alpha *= this.get_gameObjectEditorTransparency(data);
@@ -100,6 +100,20 @@ namespace PhaserEditor2D {
         }
     };
 
+    export const DynamicBitmapTextComponent = {
+        get_cropWidth: get_property("cropWidth", 0),
+        get_cropHeight: get_property("cropHeight", 0),
+        get_scrollX: get_property("scrollX", 0),
+        get_scrollY: get_property("scrollY", 0),
+
+        updateObject: function (obj: Phaser.GameObjects.DynamicBitmapText, data: any) {
+            obj.cropWidth = this.get_cropWidth(data);
+            obj.cropHeight = this.get_cropHeight(data);
+            obj.scrollX = this.get_scrollX(data);
+            obj.scrollY = this.get_scrollY(data);
+        }
+    };
+
     export const TextualComponent = {
         get_text: get_property("text", "")
     };
@@ -108,7 +122,7 @@ namespace PhaserEditor2D {
         get_visible: get_property("visible", true),
 
         updateObject: function (obj: any, data: any) {
-            obj.alpha = this.get_visible(data)? 1 : 0.5;
+            obj.alpha = this.get_visible(data) ? 1 : 0.5;
         }
     };
 

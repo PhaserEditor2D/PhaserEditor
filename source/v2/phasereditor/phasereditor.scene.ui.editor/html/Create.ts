@@ -64,6 +64,16 @@ namespace PhaserEditor2D {
                     obj = add.bitmapText(x, y, key);
 
                     break;
+
+                case "DynamicBitmapText":
+                    var x = TransformComponent.get_x(data);
+                    var y = TransformComponent.get_y(data);
+
+                    var key = BitmapTextComponent.get_fontAssetKey(data);
+
+                    obj = add.dynamicBitmapText(x, y, key);
+
+                    break;
             }
 
             switch (type) {
@@ -71,6 +81,7 @@ namespace PhaserEditor2D {
                     obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
                     break;
                 case "BitmapText":
+                case "DynamicBitmapText":
                     obj.setInteractive(BitmapTextHitHandler);
                     break;
                 default:
@@ -92,6 +103,7 @@ namespace PhaserEditor2D {
                 case "Sprite":
                 case "TileSprite":
                 case "BitmapText":
+                case "DynamicBitmapText":
                     GameObjectEditorComponent.updateObject(obj, data);
                     TransformComponent.updateObject(obj, data);
                     OriginComponent.updateObject(obj, data);
@@ -105,6 +117,10 @@ namespace PhaserEditor2D {
                     break;
                 case "BitmapText":
                     BitmapTextComponent.updateObject(obj, data);
+                    break;
+                case "DynamicBitmapText":
+                    BitmapTextComponent.updateObject(obj, data);
+                    DynamicBitmapTextComponent.updateObject(obj, data);
                     break;
             }
         }

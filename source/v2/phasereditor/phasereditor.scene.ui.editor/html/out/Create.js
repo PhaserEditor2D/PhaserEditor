@@ -44,12 +44,19 @@ var PhaserEditor2D;
                     var key = PhaserEditor2D.BitmapTextComponent.get_fontAssetKey(data);
                     obj = add.bitmapText(x, y, key);
                     break;
+                case "DynamicBitmapText":
+                    var x = PhaserEditor2D.TransformComponent.get_x(data);
+                    var y = PhaserEditor2D.TransformComponent.get_y(data);
+                    var key = PhaserEditor2D.BitmapTextComponent.get_fontAssetKey(data);
+                    obj = add.dynamicBitmapText(x, y, key);
+                    break;
             }
             switch (type) {
                 case "TileSprite":
                     obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
                     break;
                 case "BitmapText":
+                case "DynamicBitmapText":
                     obj.setInteractive(BitmapTextHitHandler);
                     break;
                 default:
@@ -67,6 +74,7 @@ var PhaserEditor2D;
                 case "Sprite":
                 case "TileSprite":
                 case "BitmapText":
+                case "DynamicBitmapText":
                     PhaserEditor2D.GameObjectEditorComponent.updateObject(obj, data);
                     PhaserEditor2D.TransformComponent.updateObject(obj, data);
                     PhaserEditor2D.OriginComponent.updateObject(obj, data);
@@ -79,6 +87,10 @@ var PhaserEditor2D;
                     break;
                 case "BitmapText":
                     PhaserEditor2D.BitmapTextComponent.updateObject(obj, data);
+                    break;
+                case "DynamicBitmapText":
+                    PhaserEditor2D.BitmapTextComponent.updateObject(obj, data);
+                    PhaserEditor2D.DynamicBitmapTextComponent.updateObject(obj, data);
                     break;
             }
         };

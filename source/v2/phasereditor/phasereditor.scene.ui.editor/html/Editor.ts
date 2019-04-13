@@ -113,13 +113,19 @@ namespace PhaserEditor2D {
                 objTx.getWorldTransformMatrix(tx);
                 tx.transformPoint(0, 0, point);
 
-                list.push(
-                    {
-                        id: obj.name,
-                        displayWidth: (<any>obj).displayWidth,
-                        displayHeight: (<any>obj).displayHeight
-                    }
-                );
+                let info: any = {
+                    id: obj.name
+                };
+
+                if (obj instanceof Phaser.GameObjects.BitmapText) {
+                    info.displayWidth = obj.width;
+                    info.displayHeight = obj.height;
+                } else {
+                    info.displayWidth = (<any>obj).displayWidth;
+                    info.displayHeight = (<any>obj).displayHeight;
+                }
+
+                list.push(info);
             }
 
             this.sendMessage({
@@ -319,7 +325,7 @@ namespace PhaserEditor2D {
 
             for (let id of list) {
                 let obj = <any>displayList.getByName(id);
-                
+
                 let x = -obj.width * obj.originX;
                 let y = -obj.height * obj.originY;
 
