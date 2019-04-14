@@ -56,9 +56,13 @@ var PhaserEditor2D;
             window.addEventListener("beforeunload", function (event) {
                 if (self._socket) {
                     console.log("Closing socket...");
-                    self._socket.close();
+                    self.closeSocket();
                 }
             });
+        };
+        Editor.prototype.closeSocket = function () {
+            this._socket.onclose = function () { };
+            this._socket.close();
         };
         Editor.prototype.onClosedSocket = function () {
             console.log("Socket closed");
@@ -282,6 +286,14 @@ var PhaserEditor2D;
                 list: list2
             });
         };
+        Editor.prototype.onSetCameraState = function (msg) {
+            var cam = this.getObjectScene().cameras.main;
+            if (msg.cameraState.scrollX !== undefined) {
+                cam.scrollX = msg.cameraState.scrollX;
+                cam.scrollY = msg.cameraState.scrollY;
+                cam.zoom = msg.cameraState.zoom;
+            }
+        };
         Editor.prototype.processServerMessages = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
@@ -320,8 +332,12 @@ var PhaserEditor2D;
                     case "SetObjectOriginKeepPosition":
                         this.onSetObjectOriginKeepPosition(msg);
                         break;
+                    case "SetCameraState":
+                        this.onSetCameraState(msg);
+                        break;
                 }
             }
+            this.repaint();
         };
         Editor.prototype.sendMessage = function (msg) {
             console.log("Sending message:");

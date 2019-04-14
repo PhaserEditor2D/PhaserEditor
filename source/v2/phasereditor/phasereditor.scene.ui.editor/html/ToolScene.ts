@@ -22,8 +22,6 @@ namespace PhaserEditor2D {
 
             this._axisToken = "";
 
-            const fg = eval("0x" + ScenePropertiesComponent.get_foregroundColor(Editor.getInstance().sceneProperties));
-
             this._gridGraphics = this.add.graphics();
 
             this._selectionGraphics = this.add.graphics({

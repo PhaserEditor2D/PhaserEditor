@@ -13,22 +13,7 @@ var PhaserEditor2D;
     var ObjectScene = (function (_super) {
         __extends(ObjectScene, _super);
         function ObjectScene() {
-            var _this = _super.call(this, "ObjectScene") || this;
-            _this.cameraZoom = function (delta) {
-                var cam = this.cameras.main;
-                if (delta < 0) {
-                    cam.zoom *= 1.1;
-                }
-                else {
-                    cam.zoom *= 0.9;
-                }
-            };
-            _this.cameraPan = function (dx, dy) {
-                var cam = this.cameras.main;
-                cam.scrollX += dx * 30 / cam.zoom;
-                cam.scrollY += dy * 30 / cam.zoom;
-            };
-            return _this;
+            return _super.call(this, "ObjectScene") || this;
         }
         ObjectScene.prototype.init = function (initData) {
             this._initData = initData;
@@ -43,13 +28,15 @@ var PhaserEditor2D;
             this._dragManager = new DragManager(this);
             new DropManager();
             this.initCamera();
-            this.initKeyboard();
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
             this.initBackground();
             editor.getCreate().createWorld(this, this._initData.displayList);
             editor.sendMessage({
                 method: "GetSelectObjects"
+            });
+            editor.sendMessage({
+                method: "GetCameraState"
             });
             this.initBackground();
             editor.repaint();
@@ -71,40 +58,11 @@ var PhaserEditor2D;
             this.scene.launch("ToolScene");
             this._toolScene = this.scene.get("ToolScene");
         };
-        ObjectScene.prototype.initKeyboard = function () {
-            this.input.keyboard.on("keydown_I", function () {
-                this.cameraZoom(-1);
-            }, this);
-            this.input.keyboard.on("keydown_O", function () {
-                this.cameraZoom(1);
-            }, this);
-            this.input.keyboard.on("keydown_LEFT", function () {
-                this.cameraPan(-1, 0);
-            }, this);
-            this.input.keyboard.on("keydown_RIGHT", function () {
-                this.cameraPan(1, 0);
-            }, this);
-            this.input.keyboard.on("keydown_UP", function () {
-                this.cameraPan(0, -1);
-            }, this);
-            this.input.keyboard.on("keydown_DOWN", function () {
-                this.cameraPan(0, 1);
-            }, this);
-        };
-        ;
         ObjectScene.prototype.initCamera = function () {
             var cam = this.cameras.main;
             cam.setOrigin(0, 0);
             cam.setRoundPixels(true);
             this.scale.resize(window.innerWidth, window.innerHeight);
-            this.input.keyboard.addCapture([
-                Phaser.Input.Keyboard.KeyCodes.I,
-                Phaser.Input.Keyboard.KeyCodes.O,
-                Phaser.Input.Keyboard.KeyCodes.LEFT,
-                Phaser.Input.Keyboard.KeyCodes.RIGHT,
-                Phaser.Input.Keyboard.KeyCodes.UP,
-                Phaser.Input.Keyboard.KeyCodes.DOWN,
-            ]);
         };
         ;
         ObjectScene.prototype.getToolScene = function () {
@@ -118,6 +76,18 @@ var PhaserEditor2D;
             var delta = e.deltaY;
             var zoom = (delta > 0 ? 0.9 : 1.1);
             cam.zoom *= zoom;
+            this.sendRecordCameraStateMessage();
+        };
+        ObjectScene.prototype.sendRecordCameraStateMessage = function () {
+            var cam = this.cameras.main;
+            PhaserEditor2D.Editor.getInstance().sendMessage({
+                method: "RecordCameraState",
+                cameraState: {
+                    scrollX: cam.scrollX,
+                    scrollY: cam.scrollY,
+                    zoom: cam.zoom
+                }
+            });
         };
         ObjectScene.prototype.performResize = function () {
             this.cameras.main.setSize(window.innerWidth, window.innerHeight);
@@ -186,6 +156,9 @@ var PhaserEditor2D;
             e.preventDefault();
         };
         DragManager.prototype.pointerUp = function () {
+            if (this._dragStartPoint !== null) {
+                this._scene.sendRecordCameraStateMessage();
+            }
             this._dragStartPoint = null;
             this._dragStartCameraScroll = null;
         };

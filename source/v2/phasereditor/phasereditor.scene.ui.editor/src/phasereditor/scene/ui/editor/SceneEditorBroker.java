@@ -40,6 +40,7 @@ import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
 import phasereditor.scene.ui.editor.messages.LoadAssetsMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
+import phasereditor.scene.ui.editor.messages.SetCameraStateMessage;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.webrun.core.ApiHub;
 import phasereditor.webrun.core.ApiMessage;
@@ -131,12 +132,27 @@ public class SceneEditorBroker {
 			case "SetObjectOrigin":
 				onSetObjectOrigin(msg);
 				break;
+			case "RecordCameraState":
+				onRecordCameraState(msg);
+				break;
+			case "GetCameraState":
+				onGetCameraState(client, msg);
+				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 			SceneUIEditor.logError(e);
 		}
+	}
+
+	@SuppressWarnings("unused")
+	private void onGetCameraState(Object client, JSONObject msg) {
+		send(client, new SetCameraStateMessage(_editor));
+	}
+
+	private void onRecordCameraState(JSONObject msg) {
+		_editor.setCameraState(msg.getJSONObject("cameraState"));
 	}
 
 	private void onSetObjectPosition(JSONObject msg) {

@@ -83,12 +83,17 @@ namespace PhaserEditor2D {
 
             window.addEventListener("beforeunload", (event) => {
                 if (self._socket) {
-                    console.log("Closing socket...");
-                    self._socket.close();
+                    console.log("Closing socket...");\
+                    self.closeSocket();
                 }
                 //event.preventDefault();
                 //event.returnValue = "";
             });
+        }
+
+        private closeSocket() {
+            this._socket.onclose = function () {};
+            this._socket.close();
         }
 
         private onClosedSocket() {
@@ -386,6 +391,16 @@ namespace PhaserEditor2D {
             });
         }
 
+        private onSetCameraState(msg: any) {
+            let cam = this.getObjectScene().cameras.main;
+
+            if (msg.cameraState.scrollX !== undefined) {
+                cam.scrollX = msg.cameraState.scrollX;
+                cam.scrollY = msg.cameraState.scrollY;
+                cam.zoom = msg.cameraState.zoom;
+            } 
+        }
+
         private processServerMessages(startIndex: number, list: any[]) {
 
             for (var i = startIndex; i < list.length; i++) {
@@ -428,10 +443,14 @@ namespace PhaserEditor2D {
                     case "SetObjectOriginKeepPosition":
                         this.onSetObjectOriginKeepPosition(msg);
                         break;
+                    case "SetCameraState":
+                        this.onSetCameraState(msg);
+                        break;
                 }
             }
-        }
 
+            this.repaint();
+        }
 
         sendMessage(msg: any) {
             console.log("Sending message:");
@@ -439,7 +458,6 @@ namespace PhaserEditor2D {
             console.log("----");
             this._socket.send(JSON.stringify(msg));
         }
-
 
         private getWebSocketUrl() {
             var loc = document.location;

@@ -30,7 +30,6 @@ var PhaserEditor2D;
         ToolScene.prototype.create = function () {
             this.initCamera();
             this._axisToken = "";
-            var fg = eval("0x" + PhaserEditor2D.ScenePropertiesComponent.get_foregroundColor(PhaserEditor2D.Editor.getInstance().sceneProperties));
             this._gridGraphics = this.add.graphics();
             this._selectionGraphics = this.add.graphics({
                 fillStyle: {

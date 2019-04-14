@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
@@ -40,6 +42,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -76,7 +79,7 @@ import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.editors.EditorFileStampHelper;
 import phasereditor.webrun.core.BatchMessage;
 
-public class SceneEditor extends EditorPart {
+public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	public static final String ID = "phasereditor.scene.ui.editor.SceneEditor";
 	private static String OBJECTS_CONTEXT = "phasereditor.scene.ui.editor.objects";
@@ -740,6 +743,29 @@ public class SceneEditor extends EditorPart {
 
 		));
 
+	}
+
+	private JSONObject _cameraState = new JSONObject();
+
+	public JSONObject getCameraState() {
+		return _cameraState;
+	}
+	
+	public void setCameraState(JSONObject cameraState) {
+		_cameraState = cameraState;
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putString("cameraState", _cameraState.toString());
+	}
+
+	@Override
+	public void restoreState(IMemento memento) {
+		var s = memento.getString("cameraState");
+		if (s != null) {
+			_cameraState = new JSONObject(s);
+		}
 	}
 
 }

@@ -5,7 +5,7 @@ namespace PhaserEditor2D {
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
         private _backgroundScene: Phaser.Scene;
-        private _initData : any;
+        private _initData: any;
 
         constructor() {
             super("ObjectScene");
@@ -30,8 +30,6 @@ namespace PhaserEditor2D {
 
             this.initCamera();
 
-            this.initKeyboard();
-
             this.initSelectionScene();
 
             const editor = Editor.getInstance();
@@ -44,6 +42,10 @@ namespace PhaserEditor2D {
                 method: "GetSelectObjects"
             });
 
+            editor.sendMessage({
+                method: "GetCameraState"
+            });
+
             this.initBackground();
 
             editor.repaint();
@@ -52,7 +54,7 @@ namespace PhaserEditor2D {
 
         removeAllObjects() {
             let list = this.sys.displayList.list;
-            for(let obj of list) {
+            for (let obj of list) {
                 obj.destroy();
             }
             this.sys.displayList.removeAll(false);
@@ -69,65 +71,13 @@ namespace PhaserEditor2D {
             this._toolScene = <ToolScene>this.scene.get("ToolScene");
         }
 
-        private initKeyboard() {
-            this.input.keyboard.on("keydown_I", function () {
-                this.cameraZoom(-1);
-            }, this);
-
-            this.input.keyboard.on("keydown_O", function () {
-                this.cameraZoom(1);
-            }, this);
-
-            this.input.keyboard.on("keydown_LEFT", function () {
-                this.cameraPan(-1, 0);
-            }, this);
-
-            this.input.keyboard.on("keydown_RIGHT", function () {
-                this.cameraPan(1, 0);
-            }, this);
-
-            this.input.keyboard.on("keydown_UP", function () {
-                this.cameraPan(0, -1);
-            }, this);
-
-            this.input.keyboard.on("keydown_DOWN", function () {
-                this.cameraPan(0, 1);
-            }, this);
-        };
-
         private initCamera() {
             var cam = this.cameras.main;
             cam.setOrigin(0, 0);
             cam.setRoundPixels(true);
 
             this.scale.resize(window.innerWidth, window.innerHeight);
-
-            this.input.keyboard.addCapture([
-                Phaser.Input.Keyboard.KeyCodes.I,
-                Phaser.Input.Keyboard.KeyCodes.O,
-                Phaser.Input.Keyboard.KeyCodes.LEFT,
-                Phaser.Input.Keyboard.KeyCodes.RIGHT,
-                Phaser.Input.Keyboard.KeyCodes.UP,
-                Phaser.Input.Keyboard.KeyCodes.DOWN,
-            ]);
         };
-
-        private cameraZoom = function (delta: number) {
-            var cam = this.cameras.main;
-
-            if (delta < 0) {
-                cam.zoom *= 1.1;
-            } else {
-                cam.zoom *= 0.9;
-            }
-        }
-
-        private cameraPan = function (dx: number, dy: number) {
-            var cam = this.cameras.main;
-
-            cam.scrollX += dx * 30 / cam.zoom;
-            cam.scrollY += dy * 30 / cam.zoom;
-        }
 
         getToolScene() {
             return this._toolScene;
@@ -146,6 +96,20 @@ namespace PhaserEditor2D {
 
             cam.zoom *= zoom;
 
+            this.sendRecordCameraStateMessage();
+
+        }
+
+        sendRecordCameraStateMessage() {
+            let cam = this.cameras.main;
+            Editor.getInstance().sendMessage({
+                method: "RecordCameraState",
+                cameraState: {
+                    scrollX: cam.scrollX,
+                    scrollY: cam.scrollY,
+                    zoom: cam.zoom
+                }
+            });
         }
 
         performResize() {
@@ -238,6 +202,11 @@ namespace PhaserEditor2D {
         }
 
         private pointerUp() {
+
+            if (this._dragStartPoint !== null) {
+                this._scene.sendRecordCameraStateMessage();
+            }
+
             this._dragStartPoint = null;
             this._dragStartCameraScroll = null;
         }
@@ -248,7 +217,7 @@ namespace PhaserEditor2D {
         constructor() {
             window.addEventListener("drop", function (e) {
                 let editor = Editor.getInstance();
-                
+
                 let point = editor.getObjectScene().cameras.main.getWorldPoint(e.clientX, e.clientY);
 
                 editor.sendMessage({
@@ -258,9 +227,9 @@ namespace PhaserEditor2D {
                 });
             })
 
-            window.addEventListener("dragover", function (e : DragEvent) {
+            window.addEventListener("dragover", function (e: DragEvent) {
                 e.preventDefault();
-            });    
+            });
         }
     }
 
