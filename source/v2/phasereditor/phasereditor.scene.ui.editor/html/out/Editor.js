@@ -30,6 +30,22 @@ var PhaserEditor2D;
         Editor.prototype.getBackgroundScene = function () {
             return this.getObjectScene().getBackgroundScene();
         };
+        Editor.prototype.sceneCreated = function () {
+            var self = this;
+            this._game.canvas.addEventListener("mousedown", function (e) {
+                self.getObjectScene().getDragManager().onMouseDown(e);
+                self.getObjectScene().getPickManager().onMouseDown(e);
+            });
+            this._game.canvas.addEventListener("mousemove", function (e) {
+                self.getObjectScene().getDragManager().onMouseMove(e);
+            });
+            this._game.canvas.addEventListener("mouseup", function () {
+                self.getObjectScene().getDragManager().onMouseUp();
+            });
+            this._game.canvas.addEventListener("mouseleave", function () {
+                self.getObjectScene().getDragManager().onMouseUp();
+            });
+        };
         Editor.prototype.onResize = function () {
             for (var _i = 0, _a = this._game.scene.scenes; _i < _a.length; _i++) {
                 var scene = _a[_i];

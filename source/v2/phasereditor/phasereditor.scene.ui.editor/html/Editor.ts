@@ -50,6 +50,27 @@ namespace PhaserEditor2D {
             return this.getObjectScene().getBackgroundScene();
         }
 
+        sceneCreated() {
+            const self = this;
+
+            this._game.canvas.addEventListener("mousedown", function (e: MouseEvent) {
+                self.getObjectScene().getDragManager().onMouseDown(e);
+                self.getObjectScene().getPickManager().onMouseDown(e);
+            })
+
+            this._game.canvas.addEventListener("mousemove", function (e: MouseEvent) {
+                self.getObjectScene().getDragManager().onMouseMove(e);
+            })
+
+            this._game.canvas.addEventListener("mouseup", function () {
+                self.getObjectScene().getDragManager().onMouseUp();
+            })
+
+            this._game.canvas.addEventListener("mouseleave", function () {
+                self.getObjectScene().getDragManager().onMouseUp();
+            })
+        }
+
         private onResize() {
 
             for (let scene of this._game.scene.scenes) {
@@ -83,7 +104,7 @@ namespace PhaserEditor2D {
 
             window.addEventListener("beforeunload", (event) => {
                 if (self._socket) {
-                    console.log("Closing socket...");\
+                    console.log("Closing socket...");
                     self.closeSocket();
                 }
                 //event.preventDefault();
@@ -106,6 +127,7 @@ namespace PhaserEditor2D {
 
         private onSelectObjects(msg: any) {
             this.selection = msg.objectIds;
+
             this.getToolScene().updateSelectionObjects();
 
             let list = [];

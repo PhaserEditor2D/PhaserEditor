@@ -26,6 +26,7 @@ var PhaserEditor2D;
         ObjectScene.prototype.create = function () {
             PhaserEditor2D.Editor.getInstance().stop();
             this._dragManager = new DragManager(this);
+            this._pickManager = new PickManager();
             new DropManager();
             this.initCamera();
             this.initSelectionScene();
@@ -40,6 +41,13 @@ var PhaserEditor2D;
             });
             this.initBackground();
             editor.repaint();
+            editor.sceneCreated();
+        };
+        ObjectScene.prototype.getPickManager = function () {
+            return this._pickManager;
+        };
+        ObjectScene.prototype.getDragManager = function () {
+            return this._dragManager;
         };
         ObjectScene.prototype.removeAllObjects = function () {
             var list = this.sys.displayList.list;
@@ -117,25 +125,33 @@ var PhaserEditor2D;
         return BackgroundScene;
     }(Phaser.Scene));
     PhaserEditor2D.BackgroundScene = BackgroundScene;
+    var PickManager = (function () {
+        function PickManager() {
+        }
+        PickManager.prototype.onMouseDown = function (e) {
+            var editor = PhaserEditor2D.Editor.getInstance();
+            var scene = editor.getObjectScene();
+            var pointer = scene.input.activePointer;
+            if (pointer.buttons !== 1) {
+                return;
+            }
+            var result = scene.input.hitTestPointer(pointer);
+            var gameObj = result.pop();
+            editor.sendMessage({
+                method: "ClickObject",
+                ctrl: e.ctrlKey,
+                shift: e.shiftKey,
+                id: gameObj ? gameObj.name : undefined
+            });
+        };
+        return PickManager;
+    }());
     var DragManager = (function () {
         function DragManager(scene) {
             this._scene = scene;
             this._dragStartPoint = null;
-            var self = this;
-            scene.game.canvas.addEventListener("mousedown", function (e) {
-                self.pointerDown(e);
-            });
-            scene.game.canvas.addEventListener("mousemove", function (e) {
-                self.pointerMove(e);
-            });
-            scene.game.canvas.addEventListener("mouseup", function () {
-                self.pointerUp();
-            });
-            scene.game.canvas.addEventListener("mouseleave", function () {
-                self.pointerUp();
-            });
         }
-        DragManager.prototype.pointerDown = function (e) {
+        DragManager.prototype.onMouseDown = function (e) {
             if (e.buttons === 4) {
                 this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
                 var cam = this._scene.cameras.main;
@@ -143,7 +159,7 @@ var PhaserEditor2D;
                 e.preventDefault();
             }
         };
-        DragManager.prototype.pointerMove = function (e) {
+        DragManager.prototype.onMouseMove = function (e) {
             if (this._dragStartPoint === null) {
                 return;
             }
@@ -155,7 +171,7 @@ var PhaserEditor2D;
             PhaserEditor2D.Editor.getInstance().repaint();
             e.preventDefault();
         };
-        DragManager.prototype.pointerUp = function () {
+        DragManager.prototype.onMouseUp = function () {
             if (this._dragStartPoint !== null) {
                 this._scene.sendRecordCameraStateMessage();
             }

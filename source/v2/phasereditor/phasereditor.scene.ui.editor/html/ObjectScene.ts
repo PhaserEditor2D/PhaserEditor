@@ -4,6 +4,7 @@ namespace PhaserEditor2D {
 
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
+        private _pickManager: PickManager;
         private _backgroundScene: Phaser.Scene;
         private _initData: any;
 
@@ -25,6 +26,8 @@ namespace PhaserEditor2D {
             Editor.getInstance().stop();
 
             this._dragManager = new DragManager(this);
+
+            this._pickManager = new PickManager();
 
             new DropManager();
 
@@ -50,6 +53,16 @@ namespace PhaserEditor2D {
 
             editor.repaint();
 
+            editor.sceneCreated();
+
+        }
+
+        getPickManager() {
+            return this._pickManager;
+        }
+
+        getDragManager() {
+            return this._dragManager;
         }
 
         removeAllObjects() {
@@ -142,6 +155,31 @@ namespace PhaserEditor2D {
         }
     }
 
+    class PickManager {
+
+        onMouseDown(e: MouseEvent) {
+            const editor = Editor.getInstance();
+
+            const scene = editor.getObjectScene();
+            const pointer = scene.input.activePointer;
+
+            if (pointer.buttons !== 1) {
+                return;
+            }
+
+            const result = scene.input.hitTestPointer(pointer);
+
+            let gameObj = result.pop();
+
+            editor.sendMessage({
+                method: "ClickObject",
+                ctrl: e.ctrlKey,
+                shift: e.shiftKey,
+                id: gameObj ? gameObj.name : undefined
+            })
+        }
+    }
+
     class DragManager {
         private _scene: ObjectScene;
         private _dragStartPoint: Phaser.Math.Vector2;
@@ -150,28 +188,9 @@ namespace PhaserEditor2D {
         constructor(scene: ObjectScene) {
             this._scene = scene;
             this._dragStartPoint = null;
-
-            const self = this;
-
-
-            scene.game.canvas.addEventListener("mousedown", function (e: MouseEvent) {
-                self.pointerDown(e);
-            })
-
-            scene.game.canvas.addEventListener("mousemove", function (e: MouseEvent) {
-                self.pointerMove(e);
-            })
-
-            scene.game.canvas.addEventListener("mouseup", function () {
-                self.pointerUp();
-            })
-
-            scene.game.canvas.addEventListener("mouseleave", function () {
-                self.pointerUp();
-            })
         }
 
-        private pointerDown(e: MouseEvent) {
+        onMouseDown(e: MouseEvent) {
             // if middle button peressed
             if (e.buttons === 4) {
                 this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
@@ -183,7 +202,7 @@ namespace PhaserEditor2D {
 
         }
 
-        private pointerMove(e: MouseEvent) {
+        onMouseMove(e: MouseEvent) {
             if (this._dragStartPoint === null) {
                 return;
             }
@@ -201,7 +220,7 @@ namespace PhaserEditor2D {
             e.preventDefault();
         }
 
-        private pointerUp() {
+        onMouseUp() {
 
             if (this._dragStartPoint !== null) {
                 this._scene.sendRecordCameraStateMessage();

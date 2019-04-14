@@ -6,15 +6,15 @@ namespace PhaserEditor2D {
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
         private _gridGraphics: Phaser.GameObjects.Graphics;
-
+        private _tools: InteractiveTool[];
+        
 
         constructor() {
             super("ToolScene");
 
             this._selectedObjects = [];
             this._selectionGraphics = null;
-
-            new PickManager();
+            this._tools = [];
         }
 
         create() {
@@ -33,6 +33,9 @@ namespace PhaserEditor2D {
                     width: 2
                 }
             });
+
+            // just for test
+            this.setTools([new TileSizeTool(true, false), new TileSizeTool(false, true)]);
         }
 
         initCamera() {
@@ -219,7 +222,19 @@ namespace PhaserEditor2D {
         update() {
             this.renderAxis();
             this.renderSelection();
+            this.renderTools();
         }
+
+        setTools(tools: InteractiveTool[]) {
+            this._tools = tools;
+        }
+
+        private renderTools() {
+            for (let tool of this._tools) {
+                tool.render();
+            }
+        }
+
 
         private renderSelection() {
             this._selectionGraphics.clear();
@@ -283,38 +298,5 @@ namespace PhaserEditor2D {
             graphics.lineStyle(2, 0x00ff00);
             graphics.strokePoints(this._selectionBoxPoints, true);
         }
-    }
-
-
-    class PickManager {
-        constructor() {
-            const editor = Editor.getInstance();
-            const self = this;
-            editor.getGame().canvas.addEventListener("mousedown", function (e) {
-                self.onMouseDown(e);
-            });
-        }
-
-        private onMouseDown(e: MouseEvent) {
-            const editor = Editor.getInstance();
-
-            const scene = editor.getObjectScene();
-            const pointer = scene.input.activePointer;
-
-            if (pointer.buttons !== 1) {
-                return;
-            }
-
-            const result = scene.input.hitTestPointer(pointer);
-
-            let gameObj = result.pop();
-
-            editor.sendMessage({
-                method: "ClickObject",
-                ctrl: e.ctrlKey,
-                shift: e.shiftKey,
-                id: gameObj ? gameObj.name : undefined
-            })
-        }
-    }
+    }   
 }

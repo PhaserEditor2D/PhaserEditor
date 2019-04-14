@@ -24,7 +24,7 @@ var PhaserEditor2D;
             ];
             _this._selectedObjects = [];
             _this._selectionGraphics = null;
-            new PickManager();
+            _this._tools = [];
             return _this;
         }
         ToolScene.prototype.create = function () {
@@ -40,6 +40,7 @@ var PhaserEditor2D;
                     width: 2
                 }
             });
+            this.setTools([new PhaserEditor2D.TileSizeTool(true, false), new PhaserEditor2D.TileSizeTool(false, true)]);
         };
         ToolScene.prototype.initCamera = function () {
             this.cameras.main.setRoundPixels(true);
@@ -165,6 +166,16 @@ var PhaserEditor2D;
         ToolScene.prototype.update = function () {
             this.renderAxis();
             this.renderSelection();
+            this.renderTools();
+        };
+        ToolScene.prototype.setTools = function (tools) {
+            this._tools = tools;
+        };
+        ToolScene.prototype.renderTools = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                tool.render();
+            }
         };
         ToolScene.prototype.renderSelection = function () {
             this._selectionGraphics.clear();
@@ -209,30 +220,4 @@ var PhaserEditor2D;
         return ToolScene;
     }(Phaser.Scene));
     PhaserEditor2D.ToolScene = ToolScene;
-    var PickManager = (function () {
-        function PickManager() {
-            var editor = PhaserEditor2D.Editor.getInstance();
-            var self = this;
-            editor.getGame().canvas.addEventListener("mousedown", function (e) {
-                self.onMouseDown(e);
-            });
-        }
-        PickManager.prototype.onMouseDown = function (e) {
-            var editor = PhaserEditor2D.Editor.getInstance();
-            var scene = editor.getObjectScene();
-            var pointer = scene.input.activePointer;
-            if (pointer.buttons !== 1) {
-                return;
-            }
-            var result = scene.input.hitTestPointer(pointer);
-            var gameObj = result.pop();
-            editor.sendMessage({
-                method: "ClickObject",
-                ctrl: e.ctrlKey,
-                shift: e.shiftKey,
-                id: gameObj ? gameObj.name : undefined
-            });
-        };
-        return PickManager;
-    }());
 })(PhaserEditor2D || (PhaserEditor2D = {}));
