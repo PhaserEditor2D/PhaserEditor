@@ -21,13 +21,13 @@ public class ResizeTileSpriteHandler extends ShowInteractiveToolHander {
 
 		var morphing = editor.getSelectionList().stream()
 
-				.filter(model -> !(model instanceof TileSpriteModel))
+				.filter(model -> model.allowMorphTo(TileSpriteModel.TYPE))
 
 				.count() > 0;
 
-		SceneUIEditor.action_MorphObjectsToNewType(editor, editor.getSelectionList(), TileSpriteModel.TYPE);
-
 		if (morphing) {
+
+			SceneUIEditor.action_MorphObjectsToNewType(editor, editor.getSelectionList(), TileSpriteModel.TYPE);
 
 			editor.getScene().setInteractiveTools(createTools(editor));
 			editor.setInteractiveTools(getTools(editor));

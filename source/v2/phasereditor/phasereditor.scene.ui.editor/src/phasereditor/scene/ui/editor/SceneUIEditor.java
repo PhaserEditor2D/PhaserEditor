@@ -81,6 +81,10 @@ public class SceneUIEditor {
 			if (model.getType().equals(morphToType)) {
 				continue;
 			}
+			
+			if (!model.allowMorphTo(morphToType)) {
+				continue;
+			}
 
 			var data = new JSONObject();
 			model.write(data);
