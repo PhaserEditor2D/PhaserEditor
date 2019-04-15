@@ -22,7 +22,18 @@ var PhaserEditor2D;
         InteractiveTool.prototype.contains = function (x, y) {
             return false;
         };
-        InteractiveTool.prototype.render = function () {
+        InteractiveTool.prototype.clear = function () {
+        };
+        InteractiveTool.prototype.update = function () {
+            var list = this.getObjects();
+            if (list.length === 0) {
+                this.clear();
+            }
+            else {
+                this.render(list);
+            }
+        };
+        InteractiveTool.prototype.render = function (objects) {
         };
         InteractiveTool.prototype.onMouseDown = function () {
         };
@@ -45,12 +56,10 @@ var PhaserEditor2D;
         TileSizeTool.prototype.canEdit = function (obj) {
             return obj instanceof Phaser.GameObjects.TileSprite;
         };
-        TileSizeTool.prototype.render = function () {
-            var list = this.getObjects();
-            if (list.length === 0) {
-                this._shape.visible = false;
-                return;
-            }
+        TileSizeTool.prototype.clear = function () {
+            this._shape.visible = false;
+        };
+        TileSizeTool.prototype.render = function (list) {
             var shapePos = new Phaser.Math.Vector2();
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                 var obj = list_1[_i];
@@ -74,4 +83,21 @@ var PhaserEditor2D;
         return TileSizeTool;
     }(InteractiveTool));
     PhaserEditor2D.TileSizeTool = TileSizeTool;
+    var ToolFactory = (function () {
+        function ToolFactory() {
+        }
+        ToolFactory.createByName = function (name) {
+            switch (name) {
+                case "TileSize":
+                    return [
+                        new TileSizeTool(true, false),
+                        new TileSizeTool(false, true),
+                        new TileSizeTool(true, true)
+                    ];
+            }
+            return [];
+        };
+        return ToolFactory;
+    }());
+    PhaserEditor2D.ToolFactory = ToolFactory;
 })(PhaserEditor2D || (PhaserEditor2D = {}));

@@ -1,5 +1,7 @@
 package phasereditor.scene.ui.editor.handlers;
 
+import java.util.Set;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -28,6 +30,7 @@ public class ResizeTileSpriteHandler extends ShowInteractiveToolHander {
 		if (morphing) {
 
 			editor.getScene().setInteractiveTools(createTools(editor));
+			editor.setInteractiveTools(getTools(editor));
 
 			return null;
 		}
@@ -51,6 +54,11 @@ public class ResizeTileSpriteHandler extends ShowInteractiveToolHander {
 	@Override
 	protected Class<?> getToolClass() {
 		return TileSizeTool.class;
+	}
+
+	@Override
+	protected Set<String> getTools(SceneEditor editor) {
+		return Set.of("TileSize");
 	}
 
 }

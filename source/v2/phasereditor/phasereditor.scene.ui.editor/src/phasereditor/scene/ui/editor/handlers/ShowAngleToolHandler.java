@@ -1,5 +1,7 @@
 package phasereditor.scene.ui.editor.handlers;
 
+import java.util.Set;
+
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.interactive.AngleLineTool;
 import phasereditor.scene.ui.editor.interactive.AngleTool;
@@ -18,6 +20,11 @@ public class ShowAngleToolHandler extends ShowInteractiveToolHander {
 				new AngleLineTool(editor, false)
 
 		};
+	}
+	
+	@Override
+	protected Set<String> getTools(SceneEditor editor) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package phasereditor.scene.ui.editor.handlers;
 
+import java.util.Set;
+
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.interactive.OriginTool;
@@ -22,6 +24,11 @@ public class ShowOriginToolHandler extends ShowInteractiveToolHander {
 	@Override
 	protected Class<?> getToolClass() {
 		return OriginTool.class;
+	}
+	
+	@Override
+	protected Set<String> getTools(SceneEditor editor) {
+		throw new UnsupportedOperationException();
 	}
 
 }

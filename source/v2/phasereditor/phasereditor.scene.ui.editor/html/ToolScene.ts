@@ -33,9 +33,6 @@ namespace PhaserEditor2D {
                     width: 2
                 }
             });
-
-            // just for test
-            this.setTools([new TileSizeTool(true, false), new TileSizeTool(false, true)]);
         }
 
         initCamera() {
@@ -222,16 +219,21 @@ namespace PhaserEditor2D {
         update() {
             this.renderAxis();
             this.renderSelection();
-            this.renderTools();
+            this.updateTools();
         }
 
         setTools(tools: InteractiveTool[]) {
+            
+            for(let tool of this._tools) {
+                tool.clear();
+            }
+
             this._tools = tools;
         }
 
-        private renderTools() {
+        private updateTools() {
             for (let tool of this._tools) {
-                tool.render();
+                tool.update();
             }
         }
 

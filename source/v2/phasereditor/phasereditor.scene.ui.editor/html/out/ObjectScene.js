@@ -33,15 +33,9 @@ var PhaserEditor2D;
             var editor = PhaserEditor2D.Editor.getInstance();
             this.initBackground();
             editor.getCreate().createWorld(this, this._initData.displayList);
-            editor.sendMessage({
-                method: "GetSelectObjects"
-            });
-            editor.sendMessage({
-                method: "GetCameraState"
-            });
             this.initBackground();
-            editor.repaint();
             editor.sceneCreated();
+            editor.repaint();
         };
         ObjectScene.prototype.getPickManager = function () {
             return this._pickManager;

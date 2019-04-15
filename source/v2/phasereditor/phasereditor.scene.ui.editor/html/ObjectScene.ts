@@ -41,19 +41,11 @@ namespace PhaserEditor2D {
 
             editor.getCreate().createWorld(this, this._initData.displayList);
 
-            editor.sendMessage({
-                method: "GetSelectObjects"
-            });
-
-            editor.sendMessage({
-                method: "GetCameraState"
-            });
-
             this.initBackground();
 
-            editor.repaint();
-
             editor.sceneCreated();
+
+            editor.repaint();
 
         }
 

@@ -45,6 +45,9 @@ var PhaserEditor2D;
             this._game.canvas.addEventListener("mouseleave", function () {
                 self.getObjectScene().getDragManager().onMouseUp();
             });
+            this.sendMessage({
+                method: "GetInitialState"
+            });
         };
         Editor.prototype.onResize = function () {
             for (var _i = 0, _a = this._game.scene.scenes; _i < _a.length; _i++) {
@@ -223,8 +226,7 @@ var PhaserEditor2D;
             console.log(batch);
             console.log("----");
             var list = batch.list;
-            this.processServerMessages(0, list);
-            this.repaint();
+            this.processMessageList(0, list);
         };
         ;
         Editor.prototype.onLoadAssets = function (index, list) {
@@ -234,7 +236,7 @@ var PhaserEditor2D;
                 scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
                     return function () {
                         console.log("Loader complete.");
-                        this.processServerMessages(index2, list2);
+                        this.processMessageList(index2, list2);
                         this.repaint();
                     };
                 })(index + 1, list), this);
@@ -244,7 +246,7 @@ var PhaserEditor2D;
                 scene.load.start();
             }
             else {
-                this.processServerMessages(index + 1, list);
+                this.processMessageList(index + 1, list);
             }
         };
         Editor.prototype.onSetObjectOriginKeepPosition = function (msg) {
@@ -310,7 +312,19 @@ var PhaserEditor2D;
                 cam.zoom = msg.cameraState.zoom;
             }
         };
-        Editor.prototype.processServerMessages = function (startIndex, list) {
+        Editor.prototype.onSetInteractiveTool = function (msg) {
+            var tools = [];
+            for (var _i = 0, _a = msg.list; _i < _a.length; _i++) {
+                var name_1 = _a[_i];
+                var tools2 = PhaserEditor2D.ToolFactory.createByName(name_1);
+                for (var _b = 0, tools2_1 = tools2; _b < tools2_1.length; _b++) {
+                    var tool = tools2_1[_b];
+                    tools.push(tool);
+                }
+            }
+            this.getToolScene().setTools(tools);
+        };
+        Editor.prototype.processMessageList = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
                 var method = msg.method;
@@ -350,6 +364,9 @@ var PhaserEditor2D;
                         break;
                     case "SetCameraState":
                         this.onSetCameraState(msg);
+                        break;
+                    case "SetInteractiveTool":
+                        this.onSetInteractiveTool(msg);
                         break;
                 }
             }

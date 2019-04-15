@@ -18,7 +18,21 @@ namespace PhaserEditor2D {
             return false;
         }
 
-        render() {
+        clear() {
+
+        }
+
+        update() {
+            const list = this.getObjects();
+
+            if (list.length === 0) {
+                this.clear();
+            } else {
+                this.render(list);
+            }
+        }
+
+        render(objects: Phaser.GameObjects.GameObject[]) {
 
         }
 
@@ -54,15 +68,11 @@ namespace PhaserEditor2D {
             return obj instanceof Phaser.GameObjects.TileSprite;
         }
 
-        render() {
+        clear() {
+            this._shape.visible = false;
+        }
 
-            const list = this.getObjects();
-
-            if (list.length === 0) {
-                this._shape.visible = false;
-                return;
-            }
-
+        render(list: Phaser.GameObjects.TileSprite[]) {
             const shapePos = new Phaser.Math.Vector2();
 
             for (let obj of list) {
@@ -92,5 +102,21 @@ namespace PhaserEditor2D {
             this._shape.visible = true;
         }
 
+    }
+
+    export class ToolFactory {
+
+        static createByName(name: string): InteractiveTool[] {
+            switch (name) {
+                case "TileSize":
+                    return [
+                        new TileSizeTool(true, false),
+                        new TileSizeTool(false, true),
+                        new TileSizeTool(true, true)
+                    ]
+            }
+
+            return [];
+        }
     }
 }

@@ -40,7 +40,6 @@ var PhaserEditor2D;
                     width: 2
                 }
             });
-            this.setTools([new PhaserEditor2D.TileSizeTool(true, false), new PhaserEditor2D.TileSizeTool(false, true)]);
         };
         ToolScene.prototype.initCamera = function () {
             this.cameras.main.setRoundPixels(true);
@@ -166,15 +165,19 @@ var PhaserEditor2D;
         ToolScene.prototype.update = function () {
             this.renderAxis();
             this.renderSelection();
-            this.renderTools();
+            this.updateTools();
         };
         ToolScene.prototype.setTools = function (tools) {
-            this._tools = tools;
-        };
-        ToolScene.prototype.renderTools = function () {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
                 var tool = _a[_i];
-                tool.render();
+                tool.clear();
+            }
+            this._tools = tools;
+        };
+        ToolScene.prototype.updateTools = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                tool.update();
             }
         };
         ToolScene.prototype.renderSelection = function () {

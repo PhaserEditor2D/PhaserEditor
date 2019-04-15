@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,53 +19,28 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui.editor.handlers;
+package phasereditor.scene.ui.editor.messages;
 
-import java.util.Set;
-
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.json.JSONArray;
 
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.interactive.InteractiveTool;
+import phasereditor.webrun.core.ApiMessage;
 
 /**
  * @author arian
  *
  */
-public abstract class ShowInteractiveToolHander extends AbstractHandler {
+public class SetInteractiveToolMessage extends ApiMessage {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public SetInteractiveToolMessage(SceneEditor editor) {
+		_data.put("method", "SetInteractiveTool");
 
-		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
+		var list = new JSONArray();
 
-		var scene = editor.getScene();
-
-		if (scene.hasInteractiveTool(getToolClass())) {
-			scene.setInteractiveTools();
-		} else {
-			scene.setInteractiveTools(createTools(editor));
-		}
-		
-		var tools = getTools(editor);
-		
-		if (editor.hasInteractiveTools(tools)) {
-			editor.setInteractiveTools();
-		} else {
-			editor.setInteractiveTools(getTools(editor));
+		for (var tool : editor.getInteractiveTools()) {
+			list.put(tool);
 		}
 
-		return null;
+		_data.put("list", list);
 	}
-
-	@Deprecated
-	protected abstract InteractiveTool[] createTools(SceneEditor editor);
-
-	protected abstract Class<?> getToolClass();
-
-	protected abstract Set<String> getTools(SceneEditor editor);
-
 }

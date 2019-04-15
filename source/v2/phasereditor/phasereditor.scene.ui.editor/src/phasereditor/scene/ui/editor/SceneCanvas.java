@@ -137,6 +137,7 @@ public class SceneCanvas extends ZoomCanvas
 		return _interactiveTools;
 	}
 
+	@Deprecated
 	public void setInteractiveTools(InteractiveTool... tools) {
 		_interactiveTools = Arrays.asList(tools);
 

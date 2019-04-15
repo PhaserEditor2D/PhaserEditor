@@ -3,7 +3,9 @@ package phasereditor.scene.ui.editor;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
@@ -72,6 +74,7 @@ import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.messages.DeleteObjectsMessage;
 import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
+import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
@@ -91,6 +94,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
 	private List<ScenePropertyPage> _propertyPages;
+	private Set<String> _interactiveTools;
 
 	public final IUndoContext undoContext = new IUndoContext() {
 
@@ -131,8 +135,30 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_propertyPages = new ArrayList<>();
 
 		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
+
+		_interactiveTools = new HashSet<>();
 	}
 
+	public Set<String> getInteractiveTools() {
+		return _interactiveTools;
+	}
+
+	public void setInteractiveTools(Set<String> interactiveTools) {
+		_interactiveTools = interactiveTools;
+
+		updatePropertyPagesContentWithSelection();
+
+		_broker.sendAll(new SetInteractiveToolMessage(this));
+	}
+
+	public void setInteractiveTools(String... interactiveTools) {
+		setInteractiveTools(Set.of(interactiveTools));
+	}
+	
+	public boolean hasInteractiveTools(Set<String> tools) {
+		return _interactiveTools.containsAll(tools);
+	}
+	
 	private IContextService getContextService() {
 		IContextService service = getSite().getWorkbenchWindow().getWorkbench().getService(IContextService.class);
 		return service;
@@ -750,7 +776,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	public JSONObject getCameraState() {
 		return _cameraState;
 	}
-	
+
 	public void setCameraState(JSONObject cameraState) {
 		_cameraState = cameraState;
 	}
