@@ -725,7 +725,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		if (model.isOverriding(BaseObjectModel.PROPSET_POSITION)) {
 			if (model instanceof GroupModel || model instanceof TilemapSpriteModel) {
 				if (model.getX() != 0 || model.getY() != 0) {
-					line(varname + ".position.setTo(" + model.getX() + ", " + model.getY() + ");");
+					line(varname + ".position.set(" + model.getX() + ", " + model.getY() + ");");
 				}
 			}
 		}
@@ -738,13 +738,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 		if (model.isOverriding(BaseObjectModel.PROPSET_SCALE)) {
 			if (model.getScaleX() != 1 || model.getScaleY() != 1) {
-				line(varname + ".scale.setTo(" + model.getScaleX() + ", " + model.getScaleY() + ");");
+				line(varname + ".scale.set(" + model.getScaleX() + ", " + model.getScaleY() + ");");
 			}
 		}
 
 		if (model.isOverriding(BaseObjectModel.PROPSET_PIVOT)) {
 			if (model.getPivotX() != 0 || model.getPivotY() != 0) {
-				line(varname + ".pivot.setTo(" + model.getPivotX() + ", " + model.getPivotY() + ");");
+				line(varname + ".pivot.set(" + model.getPivotX() + ", " + model.getPivotY() + ");");
 			}
 		}
 
@@ -820,7 +820,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 		if (model.isOverriding(BaseSpriteModel.PROPSET_ANCHOR)) {
 			if (model.getAnchorX() != 0 || model.getAnchorY() != 0) {
-				line(varname + ".anchor.setTo(" + model.getAnchorX() + ", " + model.getAnchorY() + ");");
+				line(varname + ".anchor.set(" + model.getAnchorX() + ", " + model.getAnchorY() + ");");
 			}
 		}
 
@@ -1046,14 +1046,14 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 		if (model.isOverriding(TileSpriteModel.PROPSET_TILE_POSITION)) {
 			if (model.getTilePositionX() != 0 || model.getTilePositionY() != 0) {
-				line(varname + ".tilePosition.setTo(" + model.getTilePositionX() + ", " + model.getTilePositionY()
+				line(varname + ".tilePosition.set(" + model.getTilePositionX() + ", " + model.getTilePositionY()
 						+ ");");
 			}
 		}
 
 		if (model.isOverriding(TileSpriteModel.PROPSET_TILE_SCALE)) {
 			if (model.getTileScaleX() != 1 || model.getTileScaleY() != 1) {
-				line(varname + ".tileScale.setTo(" + model.getTileScaleX() + ", " + model.getTileScaleY() + ");");
+				line(varname + ".tileScale.set(" + model.getTileScaleX() + ", " + model.getTileScaleY() + ");");
 			}
 		}
 
