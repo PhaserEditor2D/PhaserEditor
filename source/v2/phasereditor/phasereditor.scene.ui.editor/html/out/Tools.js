@@ -19,7 +19,7 @@ var PhaserEditor2D;
             var sel = this.toolScene.getSelectedObjects();
             return sel.filter(function (obj) { return _this.canEdit(obj); });
         };
-        InteractiveTool.prototype.contains = function (x, y) {
+        InteractiveTool.prototype.containsPointer = function () {
             return false;
         };
         InteractiveTool.prototype.clear = function () {
@@ -41,6 +41,9 @@ var PhaserEditor2D;
         };
         InteractiveTool.prototype.onMouseMove = function () {
         };
+        InteractiveTool.prototype.getPointer = function () {
+            return this.toolScene.input.activePointer;
+        };
         return InteractiveTool;
     }());
     PhaserEditor2D.InteractiveTool = InteractiveTool;
@@ -48,6 +51,9 @@ var PhaserEditor2D;
         __extends(TileSizeTool, _super);
         function TileSizeTool(changeX, changeY) {
             var _this = _super.call(this) || this;
+            _this._dragging = false;
+            _this._worldPos = new Phaser.Math.Vector2();
+            _this._initWorldPos = new Phaser.Math.Vector2();
             _this._changeX = changeX;
             _this._changeY = changeY;
             _this._shape = _this.toolScene.add.rectangle(0, 0, 12, 12, 0xff0000);
@@ -60,7 +66,7 @@ var PhaserEditor2D;
             this._shape.visible = false;
         };
         TileSizeTool.prototype.render = function (list) {
-            var shapePos = new Phaser.Math.Vector2();
+            this._worldPos.set(0, 0);
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                 var obj = list_1[_i];
                 var sprite = obj;
@@ -71,14 +77,38 @@ var PhaserEditor2D;
                 var localX = this._changeX ? localLeft + sprite.width : localLeft + sprite.width / 2;
                 var localY = this._changeY ? localTop + sprite.height : localTop + sprite.height / 2;
                 worldTx.transformPoint(localX, localY, worldXY);
-                shapePos.add(worldXY);
+                this._worldPos.add(worldXY);
             }
             var len = this.getObjects().length;
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
-            shapePos.x = (shapePos.x / len - cam.scrollX) * cam.zoom;
-            shapePos.y = (shapePos.y / len - cam.scrollY) * cam.zoom;
-            this._shape.setPosition(shapePos.x, shapePos.y);
+            var cameraX = (this._worldPos.x / len - cam.scrollX) * cam.zoom;
+            var cameraY = (this._worldPos.y / len - cam.scrollY) * cam.zoom;
+            this._shape.setPosition(cameraX, cameraY);
             this._shape.visible = true;
+        };
+        TileSizeTool.prototype.containsPointer = function () {
+            var pointer = this.getPointer();
+            var d = this._worldPos.distance(new Phaser.Math.Vector2(pointer.worldX, pointer.worldY));
+            return d <= this._shape.width / 2;
+        };
+        TileSizeTool.prototype.onMouseDown = function () {
+            if (this.containsPointer()) {
+                this._dragging = true;
+                this._initWorldPos.setFromObject(this._initWorldPos);
+                var worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                for (var _i = 0, _a = this.getObjects(); _i < _a.length; _i++) {
+                    var obj = _a[_i];
+                    var sprite = obj;
+                    var initLocalPos = new Phaser.Math.Vector2();
+                    sprite.getWorldTransformMatrix(worldTx);
+                    worldTx.applyInverse(this._initWorldPos.x, this._initWorldPos.y, initLocalPos);
+                    sprite.setData("TileSizeTool", {
+                        initWidth: sprite.width,
+                        initHeight: sprite.height,
+                        initLocalPos: initLocalPos
+                    });
+                }
+            }
         };
         return TileSizeTool;
     }(InteractiveTool));

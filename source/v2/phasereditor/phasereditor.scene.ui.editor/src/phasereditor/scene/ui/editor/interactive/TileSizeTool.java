@@ -190,7 +190,7 @@ public class TileSizeTool extends InteractiveTool {
 
 				var xy = getRenderer().sceneToLocal(model, _initialGlobalX, _initialGlobalY);
 				model.put("initial-local-xy", xy);
-
+				
 			}
 		}
 	}

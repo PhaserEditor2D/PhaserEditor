@@ -33,8 +33,13 @@ var PhaserEditor2D;
         Editor.prototype.sceneCreated = function () {
             var self = this;
             this._game.canvas.addEventListener("mousedown", function (e) {
-                self.getObjectScene().getDragManager().onMouseDown(e);
-                self.getObjectScene().getPickManager().onMouseDown(e);
+                if (self.getToolScene().containsPointer()) {
+                    self.getToolScene().onMouseDown();
+                }
+                else {
+                    self.getObjectScene().getDragManager().onMouseDown(e);
+                    self.getObjectScene().getPickManager().onMouseDown(e);
+                }
             });
             this._game.canvas.addEventListener("mousemove", function (e) {
                 self.getObjectScene().getDragManager().onMouseMove(e);

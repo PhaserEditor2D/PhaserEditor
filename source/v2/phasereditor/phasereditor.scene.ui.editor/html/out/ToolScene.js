@@ -220,6 +220,22 @@ var PhaserEditor2D;
             graphics.lineStyle(2, 0x00ff00);
             graphics.strokePoints(this._selectionBoxPoints, true);
         };
+        ToolScene.prototype.containsPointer = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                var b = tool.containsPointer();
+                if (b) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        ToolScene.prototype.onMouseDown = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                tool.onMouseDown();
+            }
+        };
         return ToolScene;
     }(Phaser.Scene));
     PhaserEditor2D.ToolScene = ToolScene;

@@ -7,7 +7,7 @@ namespace PhaserEditor2D {
         private _selectionGraphics: Phaser.GameObjects.Graphics;
         private _gridGraphics: Phaser.GameObjects.Graphics;
         private _tools: InteractiveTool[];
-        
+
 
         constructor() {
             super("ToolScene");
@@ -223,8 +223,8 @@ namespace PhaserEditor2D {
         }
 
         setTools(tools: InteractiveTool[]) {
-            
-            for(let tool of this._tools) {
+
+            for (let tool of this._tools) {
                 tool.clear();
             }
 
@@ -300,5 +300,23 @@ namespace PhaserEditor2D {
             graphics.lineStyle(2, 0x00ff00);
             graphics.strokePoints(this._selectionBoxPoints, true);
         }
-    }   
+
+        containsPointer(): boolean {
+            for (let tool of this._tools) {
+                const b = tool.containsPointer();
+                if (b) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        onMouseDown() {
+            for(let tool of this._tools) {
+                tool.onMouseDown();
+            }
+        }
+
+    }
 }

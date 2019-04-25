@@ -14,7 +14,7 @@ namespace PhaserEditor2D {
             return sel.filter(obj => this.canEdit(obj));
         }
 
-        contains(x: number, y: number): boolean {
+        containsPointer(): boolean {
             return false;
         }
 
@@ -47,6 +47,10 @@ namespace PhaserEditor2D {
         onMouseMove() {
 
         }
+
+        protected getPointer() {
+            return this.toolScene.input.activePointer;
+        }
     }
 
     export class TileSizeTool extends InteractiveTool {
@@ -73,7 +77,7 @@ namespace PhaserEditor2D {
         }
 
         render(list: Phaser.GameObjects.TileSprite[]) {
-            const shapePos = new Phaser.Math.Vector2();
+            this._worldPos.set(0, 0);
 
             for (let obj of list) {
                 let sprite = <Phaser.GameObjects.TileSprite>obj;
@@ -89,17 +93,55 @@ namespace PhaserEditor2D {
 
                 worldTx.transformPoint(localX, localY, worldXY);
 
-                shapePos.add(worldXY);
+                this._worldPos.add(worldXY);
             }
 
             const len = this.getObjects().length;
             const cam = Editor.getInstance().getObjectScene().cameras.main;
 
-            shapePos.x = (shapePos.x / len - cam.scrollX) * cam.zoom;
-            shapePos.y = (shapePos.y / len - cam.scrollY) * cam.zoom;
+            const cameraX = (this._worldPos.x / len - cam.scrollX) * cam.zoom;
+            const cameraY = (this._worldPos.y / len - cam.scrollY) * cam.zoom;
 
-            this._shape.setPosition(shapePos.x, shapePos.y);
+            this._shape.setPosition(cameraX, cameraY);
             this._shape.visible = true;
+        }
+
+
+        containsPointer() {
+            const pointer = this.getPointer();
+
+            const d = this._worldPos.distance(new Phaser.Math.Vector2(pointer.worldX, pointer.worldY));
+
+            return d <= this._shape.width / 2;
+        }
+
+        private _dragging = false;
+        private _worldPos = new Phaser.Math.Vector2();
+        private _initWorldPos = new Phaser.Math.Vector2();
+
+        onMouseDown() {
+            if (this.containsPointer()) {
+                this._dragging = true;
+
+                this._initWorldPos.setFromObject(this._initWorldPos);
+
+                const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+
+                for (let obj of this.getObjects()) {
+                    let sprite = <Phaser.GameObjects.TileSprite>obj;
+
+                    const initLocalPos = new Phaser.Math.Vector2();
+                    sprite.getWorldTransformMatrix(worldTx);
+                    worldTx.applyInverse(this._initWorldPos.x, this._initWorldPos.y, initLocalPos);
+
+                    sprite.setData("TileSizeTool", {
+                        initWidth: sprite.width,
+                        initHeight: sprite.height,
+                        initLocalPos: initLocalPos
+                    });
+
+                }
+            }
         }
 
     }
