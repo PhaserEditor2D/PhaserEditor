@@ -1,9 +1,14 @@
 namespace PhaserEditor2D {
 
+    export  const ARROW_LENGTH = 80;
+
     export abstract class InteractiveTool {
 
         protected toolScene: ToolScene = Editor.getInstance().getToolScene();
         protected objScene: ObjectScene = Editor.getInstance().getObjectScene();
+        
+        
+
         requestRepaint = false;
 
         constructor() {
@@ -65,6 +70,30 @@ namespace PhaserEditor2D {
             const sceneY = toolY / cam.zoom + cam.scrollY;
 
             return new Phaser.Math.Vector2(sceneX, sceneY);
+        }
+
+        protected objectGlobalAngle(obj : Phaser.GameObjects.GameObject) {
+            let a : number = (<any>obj).angle;
+
+            const parent = obj.parentContainer;
+
+            if (parent) {
+                a += this.objectGlobalAngle(parent);
+            }
+
+            return a;
+        }
+
+        protected createArrowShape() {
+            const s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
+        }
+
+        protected createRectangleShape() {
+            const s = this.toolScene.add.rectangle(0, 0, 12, 12);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
         }
     }
 

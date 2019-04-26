@@ -17,7 +17,17 @@ var PhaserEditor2D;
             _this._dragging = false;
             _this._changeX = changeX;
             _this._changeY = changeY;
-            _this._handlerShape = _this.toolScene.add.rectangle(0, 0, 12, 12, TileSizeTool.FILL_STYLE);
+            if (changeX && changeY) {
+                _this._color = 0xffff00;
+            }
+            else if (changeX) {
+                _this._color = 0xff0000;
+            }
+            else {
+                _this._color = 0x00ff00;
+            }
+            _this._handlerShape = _this.createRectangleShape();
+            _this._handlerShape.setFillStyle(_this._color);
             return _this;
         }
         TileSizeTool.prototype.canEdit = function (obj) {
@@ -28,9 +38,11 @@ var PhaserEditor2D;
         };
         TileSizeTool.prototype.render = function (list) {
             var pos = new Phaser.Math.Vector2(0, 0);
+            var angle = 0;
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                 var obj = list_1[_i];
                 var sprite = obj;
+                angle += this.objectGlobalAngle(sprite);
                 var localLeft = -sprite.width * sprite.originX;
                 var localTop = -sprite.height * sprite.originY;
                 var worldXY = new Phaser.Math.Vector2();
@@ -45,6 +57,7 @@ var PhaserEditor2D;
             var cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
             var cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
             this._handlerShape.setPosition(cameraX, cameraY);
+            this._handlerShape.angle = angle / len;
             this._handlerShape.visible = true;
         };
         TileSizeTool.prototype.containsPointer = function () {
@@ -68,7 +81,6 @@ var PhaserEditor2D;
                     var initLocalPos = new Phaser.Math.Vector2();
                     sprite.getWorldTransformMatrix(worldTx);
                     worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
-                    console.log("initLocalPos " + initLocalPos.x + " " + initLocalPos.y);
                     sprite.setData("TileSizeTool", {
                         initWidth: sprite.width,
                         initHeight: sprite.height,
@@ -84,7 +96,6 @@ var PhaserEditor2D;
             this.requestRepaint = true;
             var pointer = this.getToolPointer();
             var pointerPos = this.getScenePoint(pointer.x, pointer.y);
-            console.log("onMouseMove");
             var worldTx = new Phaser.GameObjects.Components.TransformMatrix();
             for (var _i = 0, _a = this.getObjects(); _i < _a.length; _i++) {
                 var obj = _a[_i];
@@ -104,7 +115,6 @@ var PhaserEditor2D;
                 if (this._changeY) {
                     sprite.setSize(sprite.width, height);
                 }
-                console.log(dx + " " + dy);
             }
         };
         TileSizeTool.prototype.onMouseUp = function () {
@@ -113,10 +123,9 @@ var PhaserEditor2D;
                 PhaserEditor2D.Editor.getInstance().sendMessage(msg);
             }
             this._dragging = false;
-            this._handlerShape.setFillStyle(TileSizeTool.FILL_STYLE);
+            this._handlerShape.setFillStyle(this._color);
             this.requestRepaint = true;
         };
-        TileSizeTool.FILL_STYLE = 0xff0000;
         return TileSizeTool;
     }(PhaserEditor2D.InteractiveTool));
     PhaserEditor2D.TileSizeTool = TileSizeTool;

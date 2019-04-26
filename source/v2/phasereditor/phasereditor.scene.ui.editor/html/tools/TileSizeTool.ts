@@ -5,9 +5,7 @@ namespace PhaserEditor2D {
         private _changeX: boolean;
         private _changeY: boolean;
         private _dragging = false;
-       
-
-        private static FILL_STYLE = 0xff0000;
+        private _color : number;
 
         constructor(changeX: boolean, changeY: boolean) {
             super();
@@ -15,7 +13,16 @@ namespace PhaserEditor2D {
             this._changeX = changeX;
             this._changeY = changeY;
 
-            this._handlerShape = this.toolScene.add.rectangle(0, 0, 12, 12, TileSizeTool.FILL_STYLE);
+            if (changeX && changeY) {
+                this._color = 0xffff00;
+            } else if (changeX) {
+                this._color = 0xff0000;
+            } else {
+                this._color = 0x00ff00;
+            }
+
+            this._handlerShape = this.createRectangleShape();
+            this._handlerShape.setFillStyle(this._color);
         }
 
         canEdit(obj: any): boolean {
@@ -28,9 +35,12 @@ namespace PhaserEditor2D {
 
         render(list: Phaser.GameObjects.TileSprite[]) {
             const pos = new Phaser.Math.Vector2(0, 0);
+            let angle = 0;
 
             for (let obj of list) {
                 let sprite = <Phaser.GameObjects.TileSprite>obj;
+
+                angle += this.objectGlobalAngle(sprite);
 
                 let localLeft = -sprite.width * sprite.originX;
                 let localTop = -sprite.height * sprite.originY;
@@ -53,6 +63,7 @@ namespace PhaserEditor2D {
             const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
 
             this._handlerShape.setPosition(cameraX, cameraY);
+            this._handlerShape.angle = angle / len;
             this._handlerShape.visible = true;
         }
 
@@ -89,8 +100,6 @@ namespace PhaserEditor2D {
                     sprite.getWorldTransformMatrix(worldTx);
                     worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
 
-                    console.log("initLocalPos " + initLocalPos.x + " " + initLocalPos.y);
-
                     sprite.setData("TileSizeTool", {
                         initWidth: sprite.width,
                         initHeight: sprite.height,
@@ -111,8 +120,6 @@ namespace PhaserEditor2D {
             const pointer = this.getToolPointer();
 
             const pointerPos = this.getScenePoint(pointer.x, pointer.y);
-
-            console.log("onMouseMove");
 
             const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
 
@@ -138,8 +145,6 @@ namespace PhaserEditor2D {
                 if (this._changeY) {
                     sprite.setSize(sprite.width, height);
                 }
-
-                console.log(dx + " " + dy);
             }
         }
 
@@ -152,7 +157,7 @@ namespace PhaserEditor2D {
 
             this._dragging = false;
 
-            this._handlerShape.setFillStyle(TileSizeTool.FILL_STYLE);
+            this._handlerShape.setFillStyle(this._color);
 
             this.requestRepaint = true;
         }

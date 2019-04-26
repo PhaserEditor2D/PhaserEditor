@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.Set;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
@@ -37,9 +39,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.scene.ui.editor.interactive.TilePositionTool;
 import phasereditor.scene.ui.editor.interactive.TileScaleTool;
-import phasereditor.scene.ui.editor.interactive.TileSizeTool;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -305,15 +305,9 @@ public class TileSpriteSection extends ScenePropertySection {
 			@Override
 			public void run() {
 				if (isChecked()) {
-					setInteractiveTools(
-
-							new TilePositionTool(getEditor(), true, false),
-							new TilePositionTool(getEditor(), false, true),
-							new TilePositionTool(getEditor(), true, true)
-
-					);
+					getEditor().setInteractiveTools("TilePosition");
 				} else {
-					setInteractiveTools();
+					getEditor().setInteractiveTools();
 				}
 
 			}
@@ -419,9 +413,10 @@ public class TileSpriteSection extends ScenePropertySection {
 	private void updateActions() {
 		var scene = getEditor().getScene();
 
-		_positionToolAction.setChecked(scene.hasInteractiveTool(TilePositionTool.class));
+		_positionToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("TilePosition")));
+		_sizeToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("TileSize")));
+		
 		_scaleToolAction.setChecked(scene.hasInteractiveTool(TileScaleTool.class));
-		_sizeToolAction.setChecked(scene.hasInteractiveTool(TileSizeTool.class));
 	}
 
 }

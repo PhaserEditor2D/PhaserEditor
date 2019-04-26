@@ -1,5 +1,6 @@
 var PhaserEditor2D;
 (function (PhaserEditor2D) {
+    PhaserEditor2D.ARROW_LENGTH = 80;
     var InteractiveTool = (function () {
         function InteractiveTool() {
             this.toolScene = PhaserEditor2D.Editor.getInstance().getToolScene();
@@ -44,6 +45,24 @@ var PhaserEditor2D;
             var sceneX = toolX / cam.zoom + cam.scrollX;
             var sceneY = toolY / cam.zoom + cam.scrollY;
             return new Phaser.Math.Vector2(sceneX, sceneY);
+        };
+        InteractiveTool.prototype.objectGlobalAngle = function (obj) {
+            var a = obj.angle;
+            var parent = obj.parentContainer;
+            if (parent) {
+                a += this.objectGlobalAngle(parent);
+            }
+            return a;
+        };
+        InteractiveTool.prototype.createArrowShape = function () {
+            var s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
+        };
+        InteractiveTool.prototype.createRectangleShape = function () {
+            var s = this.toolScene.add.rectangle(0, 0, 12, 12);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
         };
         return InteractiveTool;
     }());
