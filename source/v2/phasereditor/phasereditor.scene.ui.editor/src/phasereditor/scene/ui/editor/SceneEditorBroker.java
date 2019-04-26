@@ -35,6 +35,7 @@ import phasereditor.scene.core.DisplayComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.PackReferencesCollector;
+import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
@@ -142,12 +143,27 @@ public class SceneEditorBroker {
 			case "GetInitialState":
 				onGetInitialState(client);
 				break;
+			case "SetTileSpriteProperties":
+				onSetTileSpriteProperties(msg);
+				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 			SceneUIEditor.logError(e);
 		}
+	}
+
+	private void onSetTileSpriteProperties(JSONObject msg) {
+		setObjectCustomProperties(msg, (model, data) -> {
+			TileSpriteComponent.set_tilePositionX(model, data.getFloat("tilePositionX"));
+			TileSpriteComponent.set_tilePositionY(model, data.getFloat("tilePositionY"));
+			TileSpriteComponent.set_tileScaleX(model, data.getFloat("tileScaleX"));
+			TileSpriteComponent.set_tileScaleY(model, data.getFloat("tileScaleY"));
+			TileSpriteComponent.set_width(model, data.getFloat("width"));
+			TileSpriteComponent.set_height(model, data.getFloat("height"));
+		});
+
 	}
 
 	private void onGetInitialState(Object client) {

@@ -53,6 +53,7 @@ namespace PhaserEditor2D {
         sceneCreated() {
             const self = this;
 
+
             this._game.canvas.addEventListener("mousedown", function (e: MouseEvent) {
                 if (self.getToolScene().containsPointer()) {
                     self.getToolScene().onMouseDown();
@@ -63,11 +64,20 @@ namespace PhaserEditor2D {
             })
 
             this._game.canvas.addEventListener("mousemove", function (e: MouseEvent) {
-                self.getObjectScene().getDragManager().onMouseMove(e);
+                if (self.getToolScene().isEditing()) {
+                    self.getToolScene().onMouseMove();
+                } else {
+                    self.getObjectScene().getDragManager().onMouseMove(e);
+                }
+                
             })
 
             this._game.canvas.addEventListener("mouseup", function () {
-                self.getObjectScene().getDragManager().onMouseUp();
+                if (self.getToolScene().isEditing()) {
+                    self.getToolScene().onMouseUp();
+                } else {
+                    self.getObjectScene().getDragManager().onMouseUp();
+                }
             })
 
             this._game.canvas.addEventListener("mouseleave", function () {
@@ -222,7 +232,6 @@ namespace PhaserEditor2D {
                     pixelArt: true
                 },
                 url: "https://phasereditor2d.com",
-                //parent: "editorContainer",
                 scale: {
                     mode: Phaser.Scale.RESIZE
                 }

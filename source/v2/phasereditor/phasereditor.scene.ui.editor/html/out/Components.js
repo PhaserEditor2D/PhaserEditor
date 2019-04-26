@@ -47,16 +47,30 @@ var PhaserEditor2D;
     };
     PhaserEditor2D.TileSpriteComponent = {
         get_tilePositionX: get_property("tilePositionX", 0),
+        set_tilePositionX: set_property("tilePositionX"),
         get_tilePositionY: get_property("tilePositionY", 0),
+        set_tilePositionY: set_property("tilePositionY"),
         get_tileScaleX: get_property("tileScaleX", 1),
+        set_tileScaleX: set_property("tileScaleX"),
         get_tileScaleY: get_property("tileScaleY", 1),
+        set_tileScaleY: set_property("tileScaleY"),
         get_width: get_property("width", -1),
+        set_width: set_property("width"),
         get_height: get_property("height", -1),
+        set_height: set_property("height"),
         updateObject: function (obj, data) {
             obj.setTilePosition(this.get_tilePositionX(data), this.get_tilePositionY(data));
             obj.setTileScale(this.get_tileScaleX(data), this.get_tileScaleY(data));
             obj.width = this.get_width(data);
             obj.height = this.get_height(data);
+        },
+        updateData: function (obj, data) {
+            this.set_tilePositionX(data, obj.tilePositionX);
+            this.set_tilePositionY(data, obj.tilePositionY);
+            this.set_tileScaleX(data, obj.tileScaleX);
+            this.set_tileScaleY(data, obj.tileScaleY);
+            this.set_width(data, obj.width);
+            this.set_height(data, obj.height);
         }
     };
     PhaserEditor2D.FlipComponent = {

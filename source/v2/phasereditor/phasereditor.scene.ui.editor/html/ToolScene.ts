@@ -244,7 +244,6 @@ namespace PhaserEditor2D {
 
             const g2 = this._selectionGraphics;
 
-            /** @type {Phaser.Cameras.Scene2D.Camera} */
             const cam = Editor.getInstance().getObjectScene().cameras.main;
 
             const point = new Phaser.Math.Vector2(0, 0);
@@ -312,10 +311,47 @@ namespace PhaserEditor2D {
             return false;
         }
 
+        isEditing() {
+            for (let tool of this._tools) {
+                if (tool.isEditing()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private testRepaint() {
+            for (let tool of this._tools) {
+                if (tool.requestRepaint) {
+                    tool.requestRepaint = false;
+                    Editor.getInstance().repaint();
+                    return;
+                }
+            }
+        }
+
         onMouseDown() {
-            for(let tool of this._tools) {
+            for (let tool of this._tools) {
                 tool.onMouseDown();
             }
+
+            this.testRepaint();
+        }
+
+        onMouseMove() {
+            for (let tool of this._tools) {
+                tool.onMouseMove();
+            }
+
+            this.testRepaint();
+        }
+
+        onMouseUp() {
+            for (let tool of this._tools) {
+                tool.onMouseUp();
+            }
+
+            this.testRepaint();
         }
 
     }

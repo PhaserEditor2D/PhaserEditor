@@ -230,11 +230,45 @@ var PhaserEditor2D;
             }
             return false;
         };
+        ToolScene.prototype.isEditing = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                if (tool.isEditing()) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        ToolScene.prototype.testRepaint = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                if (tool.requestRepaint) {
+                    tool.requestRepaint = false;
+                    PhaserEditor2D.Editor.getInstance().repaint();
+                    return;
+                }
+            }
+        };
         ToolScene.prototype.onMouseDown = function () {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
                 var tool = _a[_i];
                 tool.onMouseDown();
             }
+            this.testRepaint();
+        };
+        ToolScene.prototype.onMouseMove = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                tool.onMouseMove();
+            }
+            this.testRepaint();
+        };
+        ToolScene.prototype.onMouseUp = function () {
+            for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
+                var tool = _a[_i];
+                tool.onMouseUp();
+            }
+            this.testRepaint();
         };
         return ToolScene;
     }(Phaser.Scene));

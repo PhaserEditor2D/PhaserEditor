@@ -42,10 +42,20 @@ var PhaserEditor2D;
                 }
             });
             this._game.canvas.addEventListener("mousemove", function (e) {
-                self.getObjectScene().getDragManager().onMouseMove(e);
+                if (self.getToolScene().isEditing()) {
+                    self.getToolScene().onMouseMove();
+                }
+                else {
+                    self.getObjectScene().getDragManager().onMouseMove(e);
+                }
             });
             this._game.canvas.addEventListener("mouseup", function () {
-                self.getObjectScene().getDragManager().onMouseUp();
+                if (self.getToolScene().isEditing()) {
+                    self.getToolScene().onMouseUp();
+                }
+                else {
+                    self.getObjectScene().getDragManager().onMouseUp();
+                }
             });
             this._game.canvas.addEventListener("mouseleave", function () {
                 self.getObjectScene().getDragManager().onMouseUp();
