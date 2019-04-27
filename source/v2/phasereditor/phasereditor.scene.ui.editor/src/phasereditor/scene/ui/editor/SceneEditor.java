@@ -444,7 +444,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 		return super.getAdapter(adapter);
 	}
-
+	
 	public SceneCanvas getScene() {
 		return _scene;
 	}

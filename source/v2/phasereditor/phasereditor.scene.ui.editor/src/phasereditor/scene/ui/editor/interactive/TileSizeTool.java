@@ -39,6 +39,7 @@ import phasereditor.ui.SwtRM;
  *
  */
 @SuppressWarnings("boxing")
+@Deprecated
 public class TileSizeTool extends InteractiveTool {
 
 	private static final int BOX = 14;

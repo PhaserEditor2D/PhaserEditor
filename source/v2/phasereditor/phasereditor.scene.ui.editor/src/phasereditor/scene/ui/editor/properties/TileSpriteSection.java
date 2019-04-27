@@ -39,7 +39,6 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 
@@ -335,35 +334,30 @@ public class TileSpriteSection extends ScenePropertySection {
 
 	protected void resetSizeToTexture(boolean width, boolean height) {
 
-		var before = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+		wrapOperation(() -> {
+			for (var obj : getModels()) {
+				var model = (TileSpriteModel) obj;
+				var frame = TextureComponent.utils_getTexture(model, getEditor().getScene().getAssetFinder());
+				if (frame != null) {
+					var fd = frame.getFrameData();
+					if (fd != null) {
+						var size = fd.src;
 
-		for (var obj : getModels()) {
-			var model = (TileSpriteModel) obj;
-			var frame = TextureComponent.utils_getTexture(model, getEditor().getScene().getAssetFinder());
-			if (frame != null) {
-				var fd = frame.getFrameData();
-				if (fd != null) {
-					var size = fd.src;
+						if (width) {
+							TileSpriteComponent.set_width(model, size.width);
+						}
 
-					if (width) {
-						TileSpriteComponent.set_width(model, size.width);
+						if (height) {
+							TileSpriteComponent.set_height(model, size.height);
+						}
+
+						GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 					}
-
-					if (height) {
-						TileSpriteComponent.set_height(model, size.height);
-					}
-
-					GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 				}
 			}
-		}
-
-		var after = SingleObjectSnapshotOperation.takeSnapshot(getModels());
+		});
 
 		var editor = getEditor();
-
-		editor.executeOperation(
-				new SingleObjectSnapshotOperation(before, after, "Reset tile sprite size to texture size.", true));
 
 		editor.updatePropertyPagesContentWithSelection();
 
@@ -372,6 +366,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		if (editor.getOutline() != null) {
 			editor.refreshOutline_basedOnId();
 		}
+
 	}
 
 	@Override

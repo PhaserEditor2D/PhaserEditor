@@ -88,6 +88,7 @@ import phasereditor.ui.ZoomCanvas;
  * @author arian
  *
  */
+@Deprecated
 public class SceneCanvas extends ZoomCanvas
 		implements MouseListener, MouseMoveListener, DragDetectListener, ISceneObjectRendererContext {
 
@@ -146,6 +147,7 @@ public class SceneCanvas extends ZoomCanvas
 		redraw();
 	}
 
+	@Deprecated
 	public boolean hasInteractiveTool(Class<?> cls) {
 		for (var tool : _interactiveTools) {
 			if (cls.isInstance(tool)) {

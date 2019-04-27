@@ -30,14 +30,19 @@ public interface GameObjectEditorComponent {
 
 	// editorDirty
 
+	@Deprecated
 	static String gameObjecEditortDirty_name = "gameObjectEditorDirty";
 
+	
+	@Deprecated
 	static boolean gameObjectEditorDirty_default = true;
 
+	@Deprecated
 	static boolean get_gameObjectEditorDirty(ObjectModel obj) {
 		return (boolean) obj.get("gameObjectEditorDirty");
 	}
 
+	@Deprecated
 	static void set_gameObjectEditorDirty(ObjectModel obj, boolean editorDirty) {
 		obj.put("gameObjectEditorDirty", editorDirty);
 	}
