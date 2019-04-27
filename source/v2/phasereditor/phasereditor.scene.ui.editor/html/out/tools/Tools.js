@@ -1,3 +1,13 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var PhaserEditor2D;
 (function (PhaserEditor2D) {
     PhaserEditor2D.ARROW_LENGTH = 80;
@@ -64,9 +74,38 @@ var PhaserEditor2D;
             s.setStrokeStyle(1, 0, 0.8);
             return s;
         };
+        InteractiveTool.prototype.createLineShape = function () {
+            var s = this.toolScene.add.line();
+            return s;
+        };
         return InteractiveTool;
     }());
     PhaserEditor2D.InteractiveTool = InteractiveTool;
+    var SimpleLineTool = (function (_super) {
+        __extends(SimpleLineTool, _super);
+        function SimpleLineTool(tool1, tool2, color) {
+            var _this = _super.call(this) || this;
+            _this._tool1 = tool1;
+            _this._tool2 = tool2;
+            _this._line = _this.createLineShape();
+            _this._line.setStrokeStyle(1, color);
+            _this._line.setOrigin(0, 0);
+            _this._line.depth = -1;
+            return _this;
+        }
+        SimpleLineTool.prototype.canEdit = function (obj) {
+            return this._tool1.canEdit(obj) && this._tool2.canEdit(obj);
+        };
+        SimpleLineTool.prototype.render = function (objects) {
+            this._line.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
+            this._line.visible = true;
+        };
+        SimpleLineTool.prototype.clear = function () {
+            this._line.visible = false;
+        };
+        return SimpleLineTool;
+    }(InteractiveTool));
+    PhaserEditor2D.SimpleLineTool = SimpleLineTool;
     var ToolFactory = (function () {
         function ToolFactory() {
         }
@@ -79,10 +118,15 @@ var PhaserEditor2D;
                         new PhaserEditor2D.TileSizeTool(true, true)
                     ];
                 case "TilePosition":
+                    var toolX = new PhaserEditor2D.TilePositionTool(true, false);
+                    var toolY = new PhaserEditor2D.TilePositionTool(false, true);
+                    var toolXY = new PhaserEditor2D.TilePositionTool(true, true);
                     return [
-                        new PhaserEditor2D.TilePositionTool(true, false),
-                        new PhaserEditor2D.TilePositionTool(false, true),
-                        new PhaserEditor2D.TilePositionTool(true, true)
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
             }
             return [];

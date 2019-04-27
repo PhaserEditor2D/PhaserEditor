@@ -1,5 +1,5 @@
 namespace PhaserEditor2D {
-    export class TilePositionTool extends InteractiveTool {
+    export class TilePositionTool extends InteractiveTool implements SpotTool {
 
         private _handlerShape: Phaser.GameObjects.Shape;
         private _changeX: boolean;
@@ -27,6 +27,14 @@ namespace PhaserEditor2D {
 
         canEdit(obj: any): boolean {
             return obj instanceof Phaser.GameObjects.TileSprite;
+        }
+
+        getX() {
+            return this._handlerShape.x;
+        }
+
+        getY() {
+            return this._handlerShape.y;
         }
 
         clear() {

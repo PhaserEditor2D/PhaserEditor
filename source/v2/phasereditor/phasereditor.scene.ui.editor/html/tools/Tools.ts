@@ -1,13 +1,13 @@
 namespace PhaserEditor2D {
 
-    export  const ARROW_LENGTH = 80;
+    export const ARROW_LENGTH = 80;
 
     export abstract class InteractiveTool {
 
         protected toolScene: ToolScene = Editor.getInstance().getToolScene();
         protected objScene: ObjectScene = Editor.getInstance().getObjectScene();
-        
-        
+
+
 
         requestRepaint = false;
 
@@ -63,17 +63,17 @@ namespace PhaserEditor2D {
             return this.toolScene.input.activePointer;
         }
 
-        protected getScenePoint(toolX : number, toolY : number) {
+        protected getScenePoint(toolX: number, toolY: number) {
             const cam = this.objScene.cameras.main;
-            
+
             const sceneX = toolX / cam.zoom + cam.scrollX;
             const sceneY = toolY / cam.zoom + cam.scrollY;
 
             return new Phaser.Math.Vector2(sceneX, sceneY);
         }
 
-        protected objectGlobalAngle(obj : Phaser.GameObjects.GameObject) {
-            let a : number = (<any>obj).angle;
+        protected objectGlobalAngle(obj: Phaser.GameObjects.GameObject) {
+            let a: number = (<any>obj).angle;
 
             const parent = obj.parentContainer;
 
@@ -95,6 +95,50 @@ namespace PhaserEditor2D {
             s.setStrokeStyle(1, 0, 0.8);
             return s;
         }
+
+        protected createLineShape() {
+            const s = this.toolScene.add.line();
+            return s;
+        }
+    }
+
+    export interface SpotTool {
+        getX(): number;
+        getY(): number;
+        canEdit(obj: any): boolean;
+    }
+
+    export class SimpleLineTool extends InteractiveTool {
+
+        private _tool1: SpotTool;
+        private _tool2: SpotTool;
+        private _line: Phaser.GameObjects.Line;
+
+        constructor(tool1: SpotTool, tool2: SpotTool, color: number) {
+            super();
+
+            this._tool1 = tool1;
+            this._tool2 = tool2;
+
+            this._line = this.createLineShape();
+            this._line.setStrokeStyle(1, color);
+            this._line.setOrigin(0, 0);
+            this._line.depth = -1;
+        }
+
+        canEdit(obj: any): boolean {
+            return this._tool1.canEdit(obj) && this._tool2.canEdit(obj);
+        }
+
+        render(objects: Phaser.GameObjects.GameObject[]) {
+            this._line.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
+            this._line.visible = true;
+        }
+
+        clear() {
+            this._line.visible = false;
+        }
+
     }
 
     export class ToolFactory {
@@ -108,10 +152,15 @@ namespace PhaserEditor2D {
                         new TileSizeTool(true, true)
                     ];
                 case "TilePosition":
-                    return [
-                        new TilePositionTool(true, false),
-                        new TilePositionTool(false, true),
-                        new TilePositionTool(true, true)
+                    const toolX = new TilePositionTool(true, false);
+                    const toolY = new TilePositionTool(false, true);
+                    const toolXY = new TilePositionTool(true, true);
+                    return [                       
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
             }
 

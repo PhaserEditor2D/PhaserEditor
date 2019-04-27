@@ -33,6 +33,12 @@ var PhaserEditor2D;
         TilePositionTool.prototype.canEdit = function (obj) {
             return obj instanceof Phaser.GameObjects.TileSprite;
         };
+        TilePositionTool.prototype.getX = function () {
+            return this._handlerShape.x;
+        };
+        TilePositionTool.prototype.getY = function () {
+            return this._handlerShape.y;
+        };
         TilePositionTool.prototype.clear = function () {
             this._handlerShape.visible = false;
         };
