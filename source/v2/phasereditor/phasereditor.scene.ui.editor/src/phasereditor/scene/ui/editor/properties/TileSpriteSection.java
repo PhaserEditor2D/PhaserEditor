@@ -49,12 +49,6 @@ import phasereditor.ui.properties.FormPropertyPage;
 @SuppressWarnings("boxing")
 public class TileSpriteSection extends ScenePropertySection {
 
-	private Text _tilePositionXText;
-	private Text _tilePositionYText;
-	private Text _tileScaleXText;
-	private Text _tileScaleYText;
-	private Text _widthText;
-	private Text _heightText;
 	private Action _positionToolAction;
 	private Action _sizeToolAction;
 	private Action _scaleToolAction;
@@ -103,9 +97,9 @@ public class TileSpriteSection extends ScenePropertySection {
 			gd.horizontalSpan = 3;
 			comp2.setLayoutData(gd);
 
-			_widthText = new Text(comp2, SWT.BORDER);
-			_widthText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new SceneTextToFloat(_widthText) {
+			var text = new Text(comp2, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new SceneTextToFloat(text) {
 				{
 					dirtyModels = true;
 				}
@@ -117,6 +111,11 @@ public class TileSpriteSection extends ScenePropertySection {
 					getEditor().setDirty(true);
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(
+						flatValues_to_String(getModels().stream().map(model -> TileSpriteComponent.get_width(model))));
+			});
 
 			var manager = new ToolBarManager();
 
@@ -139,10 +138,10 @@ public class TileSpriteSection extends ScenePropertySection {
 			gd.horizontalSpan = 3;
 			comp2.setLayoutData(gd);
 
-			_heightText = new Text(comp2, SWT.BORDER);
-			_heightText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var text = new Text(comp2, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			new SceneTextToFloat(_heightText) {
+			new SceneTextToFloat(text) {
 				{
 					dirtyModels = true;
 				}
@@ -154,6 +153,11 @@ public class TileSpriteSection extends ScenePropertySection {
 					getEditor().setDirty(true);
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(
+						flatValues_to_String(getModels().stream().map(model -> TileSpriteComponent.get_height(model))));
+			});
 
 			var manager = new ToolBarManager();
 			manager.add(_resetTextureHeightAction);
@@ -175,9 +179,9 @@ public class TileSpriteSection extends ScenePropertySection {
 			label(comp, "X", "Phaser.GameObjects.TileSprite.tilePositionX",
 					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-			_tilePositionXText = new Text(comp, SWT.BORDER);
-			_tilePositionXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new SceneTextToFloat(_tilePositionXText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new SceneTextToFloat(text) {
 				{
 					dirtyModels = true;
 				}
@@ -189,16 +193,21 @@ public class TileSpriteSection extends ScenePropertySection {
 					getEditor().setDirty(true);
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(
+						getModels().stream().map(model -> TileSpriteComponent.get_tilePositionX(model))));
+			});
 		}
 
 		{
 			label(comp, "Y", "Phaser.GameObjects.TileSprite.tilePositionY",
 					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-			_tilePositionYText = new Text(comp, SWT.BORDER);
-			_tilePositionYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-			new SceneTextToFloat(_tilePositionYText) {
+			new SceneTextToFloat(text) {
 
 				{
 					dirtyModels = true;
@@ -211,6 +220,11 @@ public class TileSpriteSection extends ScenePropertySection {
 					getEditor().setDirty(true);
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(
+						getModels().stream().map(model -> TileSpriteComponent.get_tilePositionY(model))));
+			});
 
 		}
 
@@ -230,9 +244,9 @@ public class TileSpriteSection extends ScenePropertySection {
 			label(comp, "X", "Phaser.GameObjects.TileSprite.tileScaleX",
 					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-			_tileScaleXText = new Text(comp, SWT.BORDER);
-			_tileScaleXText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new SceneTextToFloat(_tileScaleXText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new SceneTextToFloat(text) {
 				{
 					dirtyModels = true;
 				}
@@ -244,15 +258,20 @@ public class TileSpriteSection extends ScenePropertySection {
 					getEditor().setDirty(true);
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(
+						getModels().stream().map(model -> TileSpriteComponent.get_tileScaleX(model))));
+			});
 		}
 
 		{
 			label(comp, "Y", "Phaser.GameObjects.TileSprite.tileScaleY",
 					new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-			_tileScaleYText = new Text(comp, SWT.BORDER);
-			_tileScaleYText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new SceneTextToFloat(_tileScaleYText) {
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			new SceneTextToFloat(text) {
 				{
 					dirtyModels = true;
 				}
@@ -265,6 +284,11 @@ public class TileSpriteSection extends ScenePropertySection {
 
 				}
 			};
+
+			addUpdate(() -> {
+				text.setText(flatValues_to_String(
+						getModels().stream().map(model -> TileSpriteComponent.get_tileScaleY(model))));
+			});
 		}
 
 		return comp;
@@ -330,6 +354,8 @@ public class TileSpriteSection extends ScenePropertySection {
 		_sizeToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_RESIZE_TILE_SPRITE_TOOL);
 		_sizeToolAction.setChecked(false);
 
+		addUpdate(this::updateActions);
+
 	}
 
 	protected void resetSizeToTexture(boolean width, boolean height) {
@@ -337,7 +363,7 @@ public class TileSpriteSection extends ScenePropertySection {
 		wrapOperation(() -> {
 			for (var obj : getModels()) {
 				var model = (TileSpriteModel) obj;
-				var frame = TextureComponent.utils_getTexture(model, getEditor().getScene().getAssetFinder());
+				var frame = TextureComponent.utils_getTexture(model, getEditor().getAssetFinder());
 				if (frame != null) {
 					var fd = frame.getFrameData();
 					if (fd != null) {
@@ -366,33 +392,6 @@ public class TileSpriteSection extends ScenePropertySection {
 		if (editor.getOutline() != null) {
 			editor.refreshOutline_basedOnId();
 		}
-
-	}
-
-	@Override
-	public void user_update_UI_from_Model() {
-		var models = getModels();
-
-		// tilePosition
-
-		_tilePositionXText.setText(
-				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tilePositionX(model))));
-		_tilePositionYText.setText(
-				flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tilePositionY(model))));
-
-		// tileScale
-
-		_tileScaleXText
-				.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tileScaleX(model))));
-		_tileScaleYText
-				.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_tileScaleY(model))));
-
-		// size
-
-		_widthText.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_width(model))));
-		_heightText.setText(flatValues_to_String(models.stream().map(model -> TileSpriteComponent.get_height(model))));
-
-		updateActions();
 
 	}
 
