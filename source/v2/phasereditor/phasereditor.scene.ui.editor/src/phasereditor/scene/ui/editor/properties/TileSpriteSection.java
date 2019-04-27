@@ -39,7 +39,6 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.scene.ui.editor.interactive.TileScaleTool;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -322,17 +321,9 @@ public class TileSpriteSection extends ScenePropertySection {
 			@Override
 			public void run() {
 				if (isChecked()) {
-					setInteractiveTools(
-
-							new TileScaleTool(getEditor(), true, false),
-
-							new TileScaleTool(getEditor(), false, true),
-
-							new TileScaleTool(getEditor(), true, true)
-
-					);
+					getEditor().setInteractiveTools("TileScale");
 				} else {
-					setInteractiveTools();
+					getEditor().setInteractiveTools();
 				}
 			}
 		};
@@ -411,12 +402,9 @@ public class TileSpriteSection extends ScenePropertySection {
 	}
 
 	private void updateActions() {
-		var scene = getEditor().getScene();
-
 		_positionToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("TilePosition")));
 		_sizeToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("TileSize")));
-		
-		_scaleToolAction.setChecked(scene.hasInteractiveTool(TileScaleTool.class));
+		_scaleToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("TileScale")));
 	}
 
 }

@@ -31,6 +31,7 @@ var PhaserEditor2D;
             this.initCamera();
             this._axisToken = "";
             this._gridGraphics = this.add.graphics();
+            this._gridGraphics.depth = 1;
             this._selectionGraphics = this.add.graphics({
                 fillStyle: {
                     color: 0x00ff00
@@ -40,6 +41,7 @@ var PhaserEditor2D;
                     width: 2
                 }
             });
+            this._selectionGraphics.depth = -1;
         };
         ToolScene.prototype.initCamera = function () {
             this.cameras.main.setRoundPixels(true);

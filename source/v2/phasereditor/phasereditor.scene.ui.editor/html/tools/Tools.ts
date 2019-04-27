@@ -145,23 +145,37 @@ namespace PhaserEditor2D {
 
         static createByName(name: string): InteractiveTool[] {
             switch (name) {
-                case "TileSize":
+                case "TileSize": {
                     return [
                         new TileSizeTool(true, false),
                         new TileSizeTool(false, true),
                         new TileSizeTool(true, true)
                     ];
-                case "TilePosition":
+                }
+                case "TilePosition": {
                     const toolX = new TilePositionTool(true, false);
                     const toolY = new TilePositionTool(false, true);
                     const toolXY = new TilePositionTool(true, true);
-                    return [                       
+                    return [
                         toolX,
                         toolY,
                         toolXY,
                         new SimpleLineTool(toolXY, toolX, 0xff0000),
                         new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
+                }
+                case "TileScale": {
+                    const toolX = new TileScaleTool(true, false);
+                    const toolY = new TileScaleTool(false, true);
+                    const toolXY = new TileScaleTool(true, true);
+                    return [
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                    ];
+                }
             }
 
             return [];

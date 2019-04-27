@@ -111,13 +111,14 @@ var PhaserEditor2D;
         }
         ToolFactory.createByName = function (name) {
             switch (name) {
-                case "TileSize":
+                case "TileSize": {
                     return [
                         new PhaserEditor2D.TileSizeTool(true, false),
                         new PhaserEditor2D.TileSizeTool(false, true),
                         new PhaserEditor2D.TileSizeTool(true, true)
                     ];
-                case "TilePosition":
+                }
+                case "TilePosition": {
                     var toolX = new PhaserEditor2D.TilePositionTool(true, false);
                     var toolY = new PhaserEditor2D.TilePositionTool(false, true);
                     var toolXY = new PhaserEditor2D.TilePositionTool(true, true);
@@ -128,6 +129,19 @@ var PhaserEditor2D;
                         new SimpleLineTool(toolXY, toolX, 0xff0000),
                         new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
+                }
+                case "TileScale": {
+                    var toolX = new PhaserEditor2D.TileScaleTool(true, false);
+                    var toolY = new PhaserEditor2D.TileScaleTool(false, true);
+                    var toolXY = new PhaserEditor2D.TileScaleTool(true, true);
+                    return [
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                    ];
+                }
             }
             return [];
         };
