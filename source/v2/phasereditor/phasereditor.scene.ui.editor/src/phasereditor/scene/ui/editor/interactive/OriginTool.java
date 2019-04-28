@@ -27,8 +27,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 
-import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.FlipComponent;
+import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.core.TransformComponent;
@@ -39,9 +39,9 @@ import phasereditor.ui.SwtRM;
 
 /**
  * @author arian
- *
  */
 @SuppressWarnings("boxing")
+@Deprecated
 public class OriginTool extends InteractiveTool {
 
 	private static final int BOX = 14;

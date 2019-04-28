@@ -259,7 +259,7 @@ namespace PhaserEditor2D {
                 point.x = (point.x - cam.scrollX) * cam.zoom;
                 point.y = (point.y - cam.scrollY) * cam.zoom;
 
-                this.paintSelectionBox(g2, obj);
+                this.paintSelectionBox(g2, <any>obj);
             }
         }
 
@@ -270,27 +270,31 @@ namespace PhaserEditor2D {
             new Phaser.Math.Vector2(0, 0)
         ];
 
-        private paintSelectionBox(graphics: Phaser.GameObjects.Graphics, gameObj: any) {
-            let w = gameObj.width;
-            let h = gameObj.height;
+        private paintSelectionBox(graphics: Phaser.GameObjects.Graphics, sprite: Phaser.GameObjects.Sprite) {
+            let w = sprite.width;
+            let h = sprite.height;
 
-            if (gameObj instanceof Phaser.GameObjects.BitmapText) {
+            if (sprite instanceof Phaser.GameObjects.BitmapText) {
                 // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
-                w = w / gameObj.scaleX;
-                h = h / gameObj.scaleY;
+                w = w / sprite.scaleX;
+                h = h / sprite.scaleY;
             }
 
-            let ox = gameObj.originX;
-            let oy = gameObj.originY;
-            let x = -w * ox;
-            let y = -h * oy;
+            const flipX = sprite.flipX ? -1 : 1;
+            const flipY = sprite.flipY ? -1 : 1;
 
-            let worldTx = gameObj.getWorldTransformMatrix();
+            const ox = sprite.originX;
+            const oy = sprite.originY;
+
+            const x = -w * ox * flipX;
+            const y = -h * oy * flipY;
+
+            let worldTx = sprite.getWorldTransformMatrix();
 
             worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
-            worldTx.transformPoint(x + w, y, this._selectionBoxPoints[1]);
-            worldTx.transformPoint(x + w, y + h, this._selectionBoxPoints[2]);
-            worldTx.transformPoint(x, y + h, this._selectionBoxPoints[3]);
+            worldTx.transformPoint(x + w * flipX, y, this._selectionBoxPoints[1]);
+            worldTx.transformPoint(x + w * flipX, y + h * flipY, this._selectionBoxPoints[2]);
+            worldTx.transformPoint(x, y + h * flipY, this._selectionBoxPoints[3]);
 
             let cam = Editor.getInstance().getObjectScene().cameras.main;
             for (let p of this._selectionBoxPoints) {

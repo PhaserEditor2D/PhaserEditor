@@ -85,7 +85,8 @@ namespace PhaserEditor2D {
                     obj.setInteractive(BitmapTextHitHandler);
                     break;
                 default:
-                    obj.setInteractive(scene.input.makePixelPerfect());
+                    //obj.setInteractive(scene.input.makePixelPerfect());
+                    obj.setInteractive(PixelPerfectHandler);
                     break;
             }
 
@@ -144,6 +145,21 @@ namespace PhaserEditor2D {
         };
 
     }
+
+    function PixelPerfectHandler(hitArea, x, y, sprite: Phaser.GameObjects.Sprite) {
+        if (sprite.flipX) {
+            x = 2 * sprite.displayOriginX - x;
+        }
+
+        if (sprite.flipY) {
+            y = 2 * sprite.displayOriginY - y;
+        }
+
+        const textureManager = Editor.getInstance().getGame().textures;
+        var alpha = textureManager.getPixelAlpha(x, y, sprite.texture.key, sprite.frame.name);
+
+        return alpha;
+    };
 
     function getCanvasTexturePixelAlpha(x: number, y: number, canvasTexture: Phaser.Textures.CanvasTexture) {
         if (canvasTexture) {

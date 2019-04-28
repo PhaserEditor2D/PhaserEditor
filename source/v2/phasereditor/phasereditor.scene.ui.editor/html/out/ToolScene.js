@@ -196,22 +196,24 @@ var PhaserEditor2D;
                 this.paintSelectionBox(g2, obj);
             }
         };
-        ToolScene.prototype.paintSelectionBox = function (graphics, gameObj) {
-            var w = gameObj.width;
-            var h = gameObj.height;
-            if (gameObj instanceof Phaser.GameObjects.BitmapText) {
-                w = w / gameObj.scaleX;
-                h = h / gameObj.scaleY;
+        ToolScene.prototype.paintSelectionBox = function (graphics, sprite) {
+            var w = sprite.width;
+            var h = sprite.height;
+            if (sprite instanceof Phaser.GameObjects.BitmapText) {
+                w = w / sprite.scaleX;
+                h = h / sprite.scaleY;
             }
-            var ox = gameObj.originX;
-            var oy = gameObj.originY;
-            var x = -w * ox;
-            var y = -h * oy;
-            var worldTx = gameObj.getWorldTransformMatrix();
+            var flipX = sprite.flipX ? -1 : 1;
+            var flipY = sprite.flipY ? -1 : 1;
+            var ox = sprite.originX;
+            var oy = sprite.originY;
+            var x = -w * ox * flipX;
+            var y = -h * oy * flipY;
+            var worldTx = sprite.getWorldTransformMatrix();
             worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
-            worldTx.transformPoint(x + w, y, this._selectionBoxPoints[1]);
-            worldTx.transformPoint(x + w, y + h, this._selectionBoxPoints[2]);
-            worldTx.transformPoint(x, y + h, this._selectionBoxPoints[3]);
+            worldTx.transformPoint(x + w * flipX, y, this._selectionBoxPoints[1]);
+            worldTx.transformPoint(x + w * flipX, y + h * flipY, this._selectionBoxPoints[2]);
+            worldTx.transformPoint(x, y + h * flipY, this._selectionBoxPoints[3]);
             var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
             for (var _i = 0, _a = this._selectionBoxPoints; _i < _a.length; _i++) {
                 var p = _a[_i];
