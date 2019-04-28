@@ -42,20 +42,17 @@ namespace PhaserEditor2D {
 
                 angle += this.objectGlobalAngle(sprite);
 
-                const flipX = sprite.flipX ? -1 : 1;
-                const flipY = sprite.flipY ? -1 : 1;
+                const width = sprite.width;
+                const height = sprite.height;
 
-                const width = sprite.width * flipX;
-                const height = sprite.height * flipY;
-
-                const localLeft = -width * sprite.originX;
-                const localTop = -height * sprite.originY;
+                let x = -width * sprite.originX;
+                let y = -height * sprite.originY;
 
                 let worldXY = new Phaser.Math.Vector2();
                 let worldTx = sprite.getWorldTransformMatrix();
 
-                const localX = this._changeX ? localLeft + width : localLeft + width / 2;
-                const localY = this._changeY ? localTop + height : localTop + height / 2;
+                const localX = this._changeX ? x + width : x + width / 2;
+                const localY = this._changeY ? y + height : y + height / 2;
 
                 worldTx.transformPoint(localX, localY, worldXY);
 

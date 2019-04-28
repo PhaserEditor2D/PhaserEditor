@@ -51,6 +51,8 @@ var PhaserEditor2D;
                 var sprite = obj;
                 var worldXY = new Phaser.Math.Vector2();
                 var worldTx = sprite.getWorldTransformMatrix();
+                var flipX = sprite.flipX ? -1 : 1;
+                var flipY = sprite.flipY ? -1 : 1;
                 var localLeft = -sprite.width * sprite.originX;
                 var localTop = -sprite.height * sprite.originY;
                 var localX = localLeft + sprite.tilePositionX;
