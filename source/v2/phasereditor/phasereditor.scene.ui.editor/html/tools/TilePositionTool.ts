@@ -42,6 +42,8 @@ namespace PhaserEditor2D {
         }
 
         render(list: Phaser.GameObjects.TileSprite[]) {
+            const cam = Editor.getInstance().getObjectScene().cameras.main;
+
             const pos = new Phaser.Math.Vector2(0, 0);
             let angle = 0;
 
@@ -59,9 +61,9 @@ namespace PhaserEditor2D {
 
                 if (!this._changeX || !this._changeY) {
                     if (this._changeX) {
-                        localX += ARROW_LENGTH;
+                        localX += ARROW_LENGTH / cam.zoom;
                     } else {
-                        localY += ARROW_LENGTH;
+                        localY += ARROW_LENGTH / cam.zoom;
                     }
                 }
 
@@ -73,7 +75,6 @@ namespace PhaserEditor2D {
             }
 
             const len = this.getObjects().length;
-            const cam = Editor.getInstance().getObjectScene().cameras.main;
 
             const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
             const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;

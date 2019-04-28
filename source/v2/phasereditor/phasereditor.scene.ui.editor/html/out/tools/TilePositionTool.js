@@ -43,6 +43,7 @@ var PhaserEditor2D;
             this._handlerShape.visible = false;
         };
         TilePositionTool.prototype.render = function (list) {
+            var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
             var pos = new Phaser.Math.Vector2(0, 0);
             var angle = 0;
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
@@ -56,10 +57,10 @@ var PhaserEditor2D;
                 var localY = localTop + sprite.tilePositionY;
                 if (!this._changeX || !this._changeY) {
                     if (this._changeX) {
-                        localX += PhaserEditor2D.ARROW_LENGTH;
+                        localX += PhaserEditor2D.ARROW_LENGTH / cam.zoom;
                     }
                     else {
-                        localY += PhaserEditor2D.ARROW_LENGTH;
+                        localY += PhaserEditor2D.ARROW_LENGTH / cam.zoom;
                     }
                 }
                 angle += this.objectGlobalAngle(sprite);
@@ -67,7 +68,6 @@ var PhaserEditor2D;
                 pos.add(worldXY);
             }
             var len = this.getObjects().length;
-            var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
             var cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
             var cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
             this._handlerShape.setPosition(cameraX, cameraY);
