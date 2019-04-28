@@ -1,15 +1,15 @@
 namespace PhaserEditor2D {
     export class TileSizeTool extends InteractiveTool {
 
-        private _handlerShape: Phaser.GameObjects.Rectangle;
+        private _handlerShape: Phaser.GameObjects.Shape;
         private _changeX: boolean;
         private _changeY: boolean;
         private _dragging = false;
-        private _color : number;
+        private _color: number;
 
         constructor(changeX: boolean, changeY: boolean) {
             super();
-   
+
             this._changeX = changeX;
             this._changeY = changeY;
 
@@ -42,14 +42,20 @@ namespace PhaserEditor2D {
 
                 angle += this.objectGlobalAngle(sprite);
 
-                let localLeft = -sprite.width * sprite.originX;
-                let localTop = -sprite.height * sprite.originY;
+                const flipX = sprite.flipX ? -1 : 1;
+                const flipY = sprite.flipY ? -1 : 1;
+
+                const width = sprite.width * flipX;
+                const height = sprite.height * flipY;
+
+                const localLeft = -width * sprite.originX;
+                const localTop = -height * sprite.originY;
 
                 let worldXY = new Phaser.Math.Vector2();
                 let worldTx = sprite.getWorldTransformMatrix();
 
-                let localX = this._changeX ? localLeft + sprite.width : localLeft + sprite.width / 2;
-                let localY = this._changeY ? localTop + sprite.height : localTop + sprite.height / 2;
+                const localX = this._changeX ? localLeft + width : localLeft + width / 2;
+                const localY = this._changeY ? localTop + height : localTop + height / 2;
 
                 worldTx.transformPoint(localX, localY, worldXY);
 
@@ -63,7 +69,7 @@ namespace PhaserEditor2D {
             const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
 
             this._handlerShape.setPosition(cameraX, cameraY);
-            this._handlerShape.angle = angle / len;
+            this._handlerShape.angle = angle / len + (this._changeX && !this._changeY ? -90 : 0);
             this._handlerShape.visible = true;
         }
 
@@ -132,8 +138,11 @@ namespace PhaserEditor2D {
                 sprite.getWorldTransformMatrix(worldTx);
                 worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
 
-                const dx = localPos.x - initLocalPos.x;
-                const dy = localPos.y - initLocalPos.y;
+                const flipX = sprite.flipX ? -1 : 1;
+                const flipY = sprite.flipY ? -1 : 1;
+
+                const dx = (localPos.x - initLocalPos.x) * flipX;
+                const dy = (localPos.y - initLocalPos.y) * flipY;
 
                 const width = (data.initWidth + dx) | 0;
                 const height = (data.initHeight + dy) | 0;
@@ -151,7 +160,7 @@ namespace PhaserEditor2D {
         onMouseUp() {
 
             if (this._dragging) {
-                const msg = BuildMessage.SetTileSpriteProperties(this.getObjects());                
+                const msg = BuildMessage.SetTileSpriteProperties(this.getObjects());
                 Editor.getInstance().sendMessage(msg);
             }
 
