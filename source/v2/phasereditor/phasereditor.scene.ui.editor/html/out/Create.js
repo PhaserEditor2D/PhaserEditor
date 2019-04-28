@@ -103,8 +103,14 @@ var PhaserEditor2D;
         return x >= 0 && y >= 0 && x <= w && y <= h;
     }
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {
-        return function (hitArea, x, y, gameObject) {
-            var alpha = getCanvasTexturePixelAlpha(x, y, gameObject.texture);
+        return function (hitArea, x, y, sprite) {
+            if (sprite.flipX) {
+                x = 2 * sprite.displayOriginX - x;
+            }
+            if (sprite.flipY) {
+                y = 2 * sprite.displayOriginY - y;
+            }
+            var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
             return alpha >= alphaTolerance;
         };
     }

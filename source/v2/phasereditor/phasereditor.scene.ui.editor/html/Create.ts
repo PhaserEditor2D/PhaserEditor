@@ -137,9 +137,16 @@ namespace PhaserEditor2D {
 
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance: number) {
 
-        return function (hitArea: any, x: number, y: number, gameObject: any) {
+        return function (hitArea: any, x: number, y: number, sprite: any) {
+            if (sprite.flipX) {
+                x = 2 * sprite.displayOriginX - x;
+            }
 
-            var alpha = getCanvasTexturePixelAlpha(x, y, gameObject.texture);
+            if (sprite.flipY) {
+                y = 2 * sprite.displayOriginY - y;
+            }
+            
+            var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
 
             return alpha >= alphaTolerance;
         };
