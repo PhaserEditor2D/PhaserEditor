@@ -246,19 +246,25 @@ var PhaserEditor2D;
         ;
         Editor.prototype.onLoadAssets = function (index, list) {
             var loadMsg = list[index];
+            var self = this;
             if (loadMsg.pack) {
                 var scene = this.getObjectScene();
                 scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
                     return function () {
                         console.log("Loader complete.");
-                        this.processMessageList(index2, list2);
-                        this.repaint();
+                        console.log("Cancel " + self._loaderIntervalID);
+                        clearInterval(self._loaderIntervalID);
+                        self.processMessageList(index2, list2);
+                        self.repaint();
                     };
                 })(index + 1, list), this);
                 console.log("Load: ");
                 console.log(loadMsg.pack);
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
+                this._loaderIntervalID = setInterval(function () {
+                    self.repaint();
+                }, 20);
             }
             else {
                 this.processMessageList(index + 1, list);

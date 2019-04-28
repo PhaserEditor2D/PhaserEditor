@@ -326,8 +326,11 @@ namespace PhaserEditor2D {
 
         };
 
+        private _loaderIntervalID : number;
+
         private onLoadAssets(index: number, list: any[]) {
             let loadMsg = list[index];
+            const self = this;
 
             if (loadMsg.pack) {
                 let scene = this.getObjectScene();
@@ -337,9 +340,12 @@ namespace PhaserEditor2D {
                         return function () {
                             console.log("Loader complete.");
 
-                            this.processMessageList(index2, list2);
+                            console.log("Cancel " + self._loaderIntervalID);                            
+                            clearInterval(self._loaderIntervalID);
 
-                            this.repaint();
+                            self.processMessageList(index2, list2);
+
+                            self.repaint();
                         };
                     })(index + 1, list)
 
@@ -349,6 +355,9 @@ namespace PhaserEditor2D {
                 console.log(loadMsg.pack);
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
+                this._loaderIntervalID = setInterval(function () {
+                    self.repaint();
+                }, 20);
             } else {
                 this.processMessageList(index + 1, list);
             }
