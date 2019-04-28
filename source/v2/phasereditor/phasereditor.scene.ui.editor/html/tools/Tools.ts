@@ -84,6 +84,21 @@ namespace PhaserEditor2D {
             return a;
         }
 
+        protected objectGlobalScale(obj: Phaser.GameObjects.GameObject) {
+            let scaleX: number = (<any>obj).scaleX;
+            let scaleY: number = (<any>obj).scaleY;
+
+            const parent = obj.parentContainer;
+
+            if (parent) {
+                const parentScale = this.objectGlobalScale(parent);
+                scaleX *= parentScale.x;
+                scaleY *= parentScale.y;
+            }
+
+            return new Phaser.Math.Vector2(scaleX, scaleY);
+        }
+
         protected createArrowShape() {
             const s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
             s.setStrokeStyle(1, 0, 0.8);
@@ -96,9 +111,30 @@ namespace PhaserEditor2D {
             return s;
         }
 
+        protected createCircleShape() {
+            const s = this.toolScene.add.circle(0, 0, 6);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
+        }
+
         protected createLineShape() {
             const s = this.toolScene.add.line();
             return s;
+        }
+
+        protected localToParent(sprite: Phaser.GameObjects.Sprite, point: Phaser.Math.Vector2) {
+            const result = new Phaser.Math.Vector2();
+            const tx = new Phaser.GameObjects.Components.TransformMatrix();
+            
+            sprite.getWorldTransformMatrix(tx);
+            tx.transformPoint(point.x, point.y, result);
+            
+            if (sprite.parentContainer) {
+                sprite.parentContainer.getWorldTransformMatrix(tx);
+                tx.applyInverse(result.x, result.y, result);
+            }
+
+            return result;
         }
     }
 
@@ -168,6 +204,18 @@ namespace PhaserEditor2D {
                     const toolX = new TileScaleTool(true, false);
                     const toolY = new TileScaleTool(false, true);
                     const toolXY = new TileScaleTool(true, true);
+                    return [
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                    ];
+                }
+                case "Origin": {
+                    const toolX = new OriginTool(true, false);
+                    const toolY = new OriginTool(false, true);
+                    const toolXY = new OriginTool(true, true);
                     return [
                         toolX,
                         toolY,

@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor.properties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.Separator;
@@ -37,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.OriginComponent;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.scene.ui.editor.interactive.OriginTool;
 import phasereditor.scene.ui.editor.messages.SetObjectOriginKeepPositionMessage;
 import phasereditor.ui.EditorSharedImages;
 
@@ -91,7 +91,8 @@ public class OriginSection extends ScenePropertySection {
 
 		@Override
 		public void run() {
-			getEditor().getBroker().sendAll(new SetObjectOriginKeepPositionMessage(getModels(), _value, _x ? "x" : "y"));
+			getEditor().getBroker()
+					.sendAll(new SetObjectOriginKeepPositionMessage(getModels(), _value, _x ? "x" : "y"));
 		}
 	}
 
@@ -211,7 +212,7 @@ public class OriginSection extends ScenePropertySection {
 			action.update_UI_from_Model();
 		}
 
-		_originToolAction.setChecked(getEditor().getScene().hasInteractiveTool(OriginTool.class));
+		_originToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("Origin")));
 	}
 
 }

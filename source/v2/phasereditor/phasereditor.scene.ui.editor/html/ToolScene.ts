@@ -23,7 +23,7 @@ namespace PhaserEditor2D {
             this._axisToken = "";
 
             this._gridGraphics = this.add.graphics();
-            this._gridGraphics.depth = 1;
+            this._gridGraphics.depth = -1;
 
             this._selectionGraphics = this.add.graphics({
                 fillStyle: {

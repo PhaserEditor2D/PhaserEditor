@@ -27,10 +27,19 @@ namespace PhaserEditor2D {
 
     export const TransformComponent = {
         get_x: get_property("x", 0),
+        set_x: set_property("x"),
+
         get_y: get_property("y", 0),
+        set_y: set_property("y"),
+
         get_scaleX: get_property("scaleX", 1),
+        set_scaleX: set_property("scaleX"),
+
         get_scaleY: get_property("scaleY", 1),
+        set_scaleY: set_property("scaleY"),
+
         get_angle: get_property("angle", 0),
+        set_angle: set_property("angle"),
 
         updateObject: function (obj: Phaser.GameObjects.Components.Transform, data: any) {
             obj.x = this.get_x(data);
@@ -43,10 +52,17 @@ namespace PhaserEditor2D {
 
     export const OriginComponent = {
         get_originX: get_property("originX", 0.5),
+        set_originX: set_property("originX"),
         get_originY: get_property("originY", 0.5),
+        set_originY: set_property("originY"),
 
         updateObject: function (obj: Phaser.GameObjects.Components.Origin, data: any) {
             obj.setOrigin(this.get_originX(data), this.get_originY(data));
+        },
+
+        updateData: function (obj : Phaser.GameObjects.Components.Origin, data : any) {
+            this.set_originX(data, obj.originX);
+            this.set_originY(data, obj.originY);
         }
     };
 

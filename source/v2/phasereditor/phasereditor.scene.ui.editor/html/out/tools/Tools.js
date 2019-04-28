@@ -64,6 +64,17 @@ var PhaserEditor2D;
             }
             return a;
         };
+        InteractiveTool.prototype.objectGlobalScale = function (obj) {
+            var scaleX = obj.scaleX;
+            var scaleY = obj.scaleY;
+            var parent = obj.parentContainer;
+            if (parent) {
+                var parentScale = this.objectGlobalScale(parent);
+                scaleX *= parentScale.x;
+                scaleY *= parentScale.y;
+            }
+            return new Phaser.Math.Vector2(scaleX, scaleY);
+        };
         InteractiveTool.prototype.createArrowShape = function () {
             var s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
             s.setStrokeStyle(1, 0, 0.8);
@@ -74,9 +85,25 @@ var PhaserEditor2D;
             s.setStrokeStyle(1, 0, 0.8);
             return s;
         };
+        InteractiveTool.prototype.createCircleShape = function () {
+            var s = this.toolScene.add.circle(0, 0, 6);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
+        };
         InteractiveTool.prototype.createLineShape = function () {
             var s = this.toolScene.add.line();
             return s;
+        };
+        InteractiveTool.prototype.localToParent = function (sprite, point) {
+            var result = new Phaser.Math.Vector2();
+            var tx = new Phaser.GameObjects.Components.TransformMatrix();
+            sprite.getWorldTransformMatrix(tx);
+            tx.transformPoint(point.x, point.y, result);
+            if (sprite.parentContainer) {
+                sprite.parentContainer.getWorldTransformMatrix(tx);
+                tx.applyInverse(result.x, result.y, result);
+            }
+            return result;
         };
         return InteractiveTool;
     }());
@@ -134,6 +161,18 @@ var PhaserEditor2D;
                     var toolX = new PhaserEditor2D.TileScaleTool(true, false);
                     var toolY = new PhaserEditor2D.TileScaleTool(false, true);
                     var toolXY = new PhaserEditor2D.TileScaleTool(true, true);
+                    return [
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                    ];
+                }
+                case "Origin": {
+                    var toolX = new PhaserEditor2D.OriginTool(true, false);
+                    var toolY = new PhaserEditor2D.OriginTool(false, true);
+                    var toolXY = new PhaserEditor2D.OriginTool(true, true);
                     return [
                         toolX,
                         toolY,

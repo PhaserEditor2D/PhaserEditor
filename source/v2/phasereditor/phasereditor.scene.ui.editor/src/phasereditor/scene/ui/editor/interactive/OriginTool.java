@@ -145,21 +145,18 @@ public class OriginTool extends InteractiveTool {
 		// paint
 
 		if (_changeX && _changeY) {
-			
+
 			var color = SwtRM.getColor(SWT.COLOR_YELLOW);
 
-			var darkColor = _hightlights ? color
-					: SwtRM.getColor(SWT.COLOR_DARK_YELLOW);
-			
-			drawCircle(gc, globalX, globalY, BOX,
-					color, darkColor);
+			var darkColor = _hightlights ? color : SwtRM.getColor(SWT.COLOR_DARK_YELLOW);
+
+			drawCircle(gc, globalX, globalY, BOX, color, darkColor);
 		} else if (doPaint()) {
 
 			var color = SwtRM.getColor(_changeX ? SWT.COLOR_RED : SWT.COLOR_GREEN);
 
-			var darkColor = _hightlights ? color
-					: SwtRM.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
-			
+			var darkColor = _hightlights ? color : SwtRM.getColor(_changeX ? SWT.COLOR_DARK_RED : SWT.COLOR_DARK_GREEN);
+
 			drawLine(gc, centerGlobalX, centerGlobalY, globalX, globalY, color, darkColor);
 
 			drawArrow(gc, globalX, globalY, globalAngle + (_changeY ? 90 : 0), BOX, color, darkColor);
@@ -239,7 +236,7 @@ public class OriginTool extends InteractiveTool {
 
 			}
 
-//			getEditor().updatePropertyPagesContentWithSelection();
+			// getEditor().updatePropertyPagesContentWithSelection();
 		}
 	}
 

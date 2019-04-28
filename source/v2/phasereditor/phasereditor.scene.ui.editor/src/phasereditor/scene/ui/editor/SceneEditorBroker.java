@@ -146,6 +146,9 @@ public class SceneEditorBroker {
 			case "SetTileSpriteProperties":
 				onSetTileSpriteProperties(msg);
 				break;
+			case "SetOriginProperties":
+				onSetOriginProperties(msg);
+				break;
 			default:
 				break;
 			}
@@ -164,6 +167,15 @@ public class SceneEditorBroker {
 			TileSpriteComponent.set_height(model, data.getFloat("height"));
 		});
 
+	}
+
+	private void onSetOriginProperties(JSONObject msg) {
+		setObjectCustomProperties(msg, (model, data) -> {
+			OriginComponent.set_originX(model, data.getFloat(OriginComponent.originX_name));
+			OriginComponent.set_originY(model, data.getFloat(OriginComponent.originY_name));
+			TransformComponent.set_x(model, data.getFloat(TransformComponent.x_name));
+			TransformComponent.set_y(model, data.getFloat(TransformComponent.y_name));
+		});
 	}
 
 	private void onGetInitialState(Object client) {

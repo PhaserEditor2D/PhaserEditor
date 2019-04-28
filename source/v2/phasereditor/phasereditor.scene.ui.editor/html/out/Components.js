@@ -22,10 +22,15 @@ var PhaserEditor2D;
     };
     PhaserEditor2D.TransformComponent = {
         get_x: get_property("x", 0),
+        set_x: set_property("x"),
         get_y: get_property("y", 0),
+        set_y: set_property("y"),
         get_scaleX: get_property("scaleX", 1),
+        set_scaleX: set_property("scaleX"),
         get_scaleY: get_property("scaleY", 1),
+        set_scaleY: set_property("scaleY"),
         get_angle: get_property("angle", 0),
+        set_angle: set_property("angle"),
         updateObject: function (obj, data) {
             obj.x = this.get_x(data);
             obj.y = this.get_y(data);
@@ -36,9 +41,15 @@ var PhaserEditor2D;
     };
     PhaserEditor2D.OriginComponent = {
         get_originX: get_property("originX", 0.5),
+        set_originX: set_property("originX"),
         get_originY: get_property("originY", 0.5),
+        set_originY: set_property("originY"),
         updateObject: function (obj, data) {
             obj.setOrigin(this.get_originX(data), this.get_originY(data));
+        },
+        updateData: function (obj, data) {
+            this.set_originX(data, obj.originX);
+            this.set_originY(data, obj.originY);
         }
     };
     PhaserEditor2D.TextureComponent = {

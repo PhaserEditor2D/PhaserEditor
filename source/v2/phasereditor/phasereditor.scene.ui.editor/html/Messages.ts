@@ -2,7 +2,7 @@ namespace PhaserEditor2D {
 
     export class BuildMessage {
 
-        static SetTileSpriteProperties(objects : Phaser.GameObjects.GameObject[]) {
+        static SetTileSpriteProperties(objects: Phaser.GameObjects.GameObject[]) {
             const list = [];
 
             for (let obj of objects) {
@@ -14,6 +14,25 @@ namespace PhaserEditor2D {
 
             return {
                 method: "SetTileSpriteProperties",
+                list: list
+            };
+        }
+
+        static SetOriginProperties(objects: any[]) {
+            const list = [];
+
+            for (let obj of objects) {
+                const data = { id: obj.name };
+                
+                OriginComponent.updateData(obj, data);
+                TransformComponent.set_x(data, obj.x);
+                TransformComponent.set_y(data, obj.y);
+
+                list.push(data);
+            }
+
+            return {
+                method: "SetOriginProperties",
                 list: list
             };
         }
