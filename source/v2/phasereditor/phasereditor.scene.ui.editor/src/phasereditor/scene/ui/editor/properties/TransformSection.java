@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
+import java.util.Set;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -324,7 +326,7 @@ public class TransformSection extends ScenePropertySection {
 	void updateActions() {
 		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
 		_scaleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(ScaleTool.class));
-		_angleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(AngleTool.class));
+		_angleToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("Angle")));
 
 		var local = getScene().isTransformLocalCoords();
 

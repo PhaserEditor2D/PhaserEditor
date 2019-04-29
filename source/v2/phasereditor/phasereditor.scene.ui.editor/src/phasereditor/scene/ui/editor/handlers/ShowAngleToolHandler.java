@@ -24,7 +24,7 @@ public class ShowAngleToolHandler extends ShowInteractiveToolHander {
 	
 	@Override
 	protected Set<String> getTools(SceneEditor editor) {
-		throw new UnsupportedOperationException();
+		return Set.of("Angle");
 	}
 
 	@Override

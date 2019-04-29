@@ -125,10 +125,10 @@ namespace PhaserEditor2D {
         protected localToParent(sprite: Phaser.GameObjects.Sprite, point: Phaser.Math.Vector2) {
             const result = new Phaser.Math.Vector2();
             const tx = new Phaser.GameObjects.Components.TransformMatrix();
-            
+
             sprite.getWorldTransformMatrix(tx);
             tx.transformPoint(point.x, point.y, result);
-            
+
             if (sprite.parentContainer) {
                 sprite.parentContainer.getWorldTransformMatrix(tx);
                 tx.applyInverse(result.x, result.y, result);
@@ -222,6 +222,11 @@ namespace PhaserEditor2D {
                         toolXY,
                         new SimpleLineTool(toolXY, toolX, 0xff0000),
                         new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                    ];
+                }
+                case "Angle": {
+                    return [
+                        new AngleTool()
                     ];
                 }
             }

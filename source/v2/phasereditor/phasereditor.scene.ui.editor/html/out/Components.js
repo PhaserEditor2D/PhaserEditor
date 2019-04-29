@@ -37,6 +37,13 @@ var PhaserEditor2D;
             obj.scaleX = this.get_scaleX(data);
             obj.scaleY = this.get_scaleY(data);
             obj.angle = this.get_angle(data);
+        },
+        updateData: function (obj, data) {
+            this.set_x(data, obj.x);
+            this.set_y(data, obj.y);
+            this.set_scaleX(data, obj.scaleX);
+            this.set_scaleY(data, obj.scaleX);
+            this.set_angle(data, obj.angle);
         }
     };
     PhaserEditor2D.OriginComponent = {

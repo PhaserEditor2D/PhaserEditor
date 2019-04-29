@@ -36,5 +36,22 @@ namespace PhaserEditor2D {
                 list: list
             };
         }
+
+        static SetTransformProperties(objects: any[]) {
+            const list = [];
+
+            for (let obj of objects) {
+                const data = { id: obj.name };
+                
+                TransformComponent.updateData(obj, data);
+
+                list.push(data);
+            }
+
+            return {
+                method: "SetTransformProperties",
+                list: list
+            };
+        }
     }
 }

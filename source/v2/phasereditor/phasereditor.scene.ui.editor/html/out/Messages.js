@@ -32,6 +32,19 @@ var PhaserEditor2D;
                 list: list
             };
         };
+        BuildMessage.SetTransformProperties = function (objects) {
+            var list = [];
+            for (var _i = 0, objects_3 = objects; _i < objects_3.length; _i++) {
+                var obj = objects_3[_i];
+                var data = { id: obj.name };
+                PhaserEditor2D.TransformComponent.updateData(obj, data);
+                list.push(data);
+            }
+            return {
+                method: "SetTransformProperties",
+                list: list
+            };
+        };
         return BuildMessage;
     }());
     PhaserEditor2D.BuildMessage = BuildMessage;

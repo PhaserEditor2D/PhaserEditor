@@ -149,6 +149,9 @@ public class SceneEditorBroker {
 			case "SetOriginProperties":
 				onSetOriginProperties(msg);
 				break;
+			case "SetTransformProperties":
+				onSetTransformProperties(msg);
+				break;
 			default:
 				break;
 			}
@@ -175,6 +178,16 @@ public class SceneEditorBroker {
 			OriginComponent.set_originY(model, data.getFloat(OriginComponent.originY_name));
 			TransformComponent.set_x(model, data.getFloat(TransformComponent.x_name));
 			TransformComponent.set_y(model, data.getFloat(TransformComponent.y_name));
+		});
+	}
+	
+	private void onSetTransformProperties(JSONObject msg) {
+		setObjectCustomProperties(msg, (model, data) -> {
+			TransformComponent.set_x(model, data.getFloat(TransformComponent.x_name));
+			TransformComponent.set_y(model, data.getFloat(TransformComponent.y_name));
+			TransformComponent.set_scaleX(model, data.getFloat(TransformComponent.scaleX_name));
+			TransformComponent.set_scaleY(model, data.getFloat(TransformComponent.scaleY_name));
+			TransformComponent.set_angle(model, data.getFloat(TransformComponent.angle_name));
 		});
 	}
 

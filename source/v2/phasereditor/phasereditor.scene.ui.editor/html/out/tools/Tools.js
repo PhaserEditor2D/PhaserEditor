@@ -181,6 +181,11 @@ var PhaserEditor2D;
                         new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
                 }
+                case "Angle": {
+                    return [
+                        new PhaserEditor2D.AngleTool()
+                    ];
+                }
             }
             return [];
         };

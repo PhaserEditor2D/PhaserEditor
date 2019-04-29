@@ -47,6 +47,14 @@ namespace PhaserEditor2D {
             obj.scaleX = this.get_scaleX(data);
             obj.scaleY = this.get_scaleY(data);
             obj.angle = this.get_angle(data);
+        },
+
+        updateData: function (obj: Phaser.GameObjects.Components.Transform, data: any) {
+            this.set_x(data, obj.x);
+            this.set_y(data, obj.y);
+            this.set_scaleX(data, obj.scaleX);
+            this.set_scaleY(data, obj.scaleX);
+            this.set_angle(data, obj.angle);
         }
     };
 
@@ -60,7 +68,7 @@ namespace PhaserEditor2D {
             obj.setOrigin(this.get_originX(data), this.get_originY(data));
         },
 
-        updateData: function (obj : Phaser.GameObjects.Components.Origin, data : any) {
+        updateData: function (obj: Phaser.GameObjects.Components.Origin, data: any) {
             this.set_originX(data, obj.originX);
             this.set_originY(data, obj.originY);
         }
@@ -72,21 +80,21 @@ namespace PhaserEditor2D {
     };
 
     export const TileSpriteComponent = {
-        get_tilePositionX: get_property("tilePositionX", 0),        
-        set_tilePositionX: set_property("tilePositionX"),        
+        get_tilePositionX: get_property("tilePositionX", 0),
+        set_tilePositionX: set_property("tilePositionX"),
         get_tilePositionY: get_property("tilePositionY", 0),
-        set_tilePositionY: set_property("tilePositionY"),        
+        set_tilePositionY: set_property("tilePositionY"),
 
         get_tileScaleX: get_property("tileScaleX", 1),
-        set_tileScaleX: set_property("tileScaleX"),        
+        set_tileScaleX: set_property("tileScaleX"),
         get_tileScaleY: get_property("tileScaleY", 1),
         set_tileScaleY: set_property("tileScaleY"),
 
         get_width: get_property("width", -1),
-        set_width: set_property("width"),        
+        set_width: set_property("width"),
 
         get_height: get_property("height", -1),
-        set_height: set_property("height"),        
+        set_height: set_property("height"),
 
         updateObject: function (obj: Phaser.GameObjects.TileSprite, data: any) {
             obj.setTilePosition(this.get_tilePositionX(data), this.get_tilePositionY(data));
