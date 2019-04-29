@@ -232,6 +232,13 @@ namespace PhaserEditor2D {
                         new AngleLineTool(tool, false)
                     ];
                 }
+                case "Scale": {
+                    return [
+                        new ScaleTool(true, false),
+                        new ScaleTool(false, true),
+                        new ScaleTool(true, true)
+                    ]
+                }
             }
 
             return [];

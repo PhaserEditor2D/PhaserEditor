@@ -42,7 +42,7 @@ var PhaserEditor2D;
             this.set_x(data, obj.x);
             this.set_y(data, obj.y);
             this.set_scaleX(data, obj.scaleX);
-            this.set_scaleY(data, obj.scaleX);
+            this.set_scaleY(data, obj.scaleY);
             this.set_angle(data, obj.angle);
         }
     };

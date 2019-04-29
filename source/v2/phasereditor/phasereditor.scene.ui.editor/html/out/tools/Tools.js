@@ -189,6 +189,13 @@ var PhaserEditor2D;
                         new PhaserEditor2D.AngleLineTool(tool, false)
                     ];
                 }
+                case "Scale": {
+                    return [
+                        new PhaserEditor2D.ScaleTool(true, false),
+                        new PhaserEditor2D.ScaleTool(false, true),
+                        new PhaserEditor2D.ScaleTool(true, true)
+                    ];
+                }
             }
             return [];
         };

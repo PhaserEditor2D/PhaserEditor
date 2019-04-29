@@ -324,9 +324,10 @@ public class TransformSection extends ScenePropertySection {
 	}
 
 	void updateActions() {
-		_positionToolAction.setChecked(getEditor().getScene().hasInteractiveTool(PositionTool.class));
-		_scaleToolAction.setChecked(getEditor().getScene().hasInteractiveTool(ScaleTool.class));
-		_angleToolAction.setChecked(getEditor().hasInteractiveTools(Set.of("Angle")));
+		var editor = getEditor();
+		_positionToolAction.setChecked(editor.getScene().hasInteractiveTool(PositionTool.class));
+		_scaleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Scale")));
+		_angleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Angle")));
 
 		var local = getScene().isTransformLocalCoords();
 
