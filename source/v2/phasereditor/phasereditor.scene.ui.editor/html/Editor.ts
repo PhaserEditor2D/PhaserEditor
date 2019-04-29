@@ -8,6 +8,7 @@ namespace PhaserEditor2D {
         private _resizeToken: integer;
         private _objectScene: ObjectScene;
         private _create: Create;
+        private _transformLocalCoords: boolean;
 
         sceneProperties: any;
         selection: any[] = [];
@@ -459,8 +460,12 @@ namespace PhaserEditor2D {
                     tools.push(tool);
                 }
             }
-
+            this._transformLocalCoords = msg.transformLocalCoords;
             this.getToolScene().setTools(tools);
+        }
+
+        isTransformLocalCoords() {
+            return this._transformLocalCoords;
         }
 
         private processMessageList(startIndex: number, list: any[]) {

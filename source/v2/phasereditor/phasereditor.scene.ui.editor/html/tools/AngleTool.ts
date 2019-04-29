@@ -1,8 +1,8 @@
 namespace PhaserEditor2D {
 
-    const RADIUS = 100;
 
     export class AngleTool extends InteractiveTool {
+        static RADIUS = 100;
 
         private _color: number;
         private _handlerShape: Phaser.GameObjects.Arc;
@@ -19,7 +19,7 @@ namespace PhaserEditor2D {
             this._handlerShape = this.createCircleShape();
             this._handlerShape.setFillStyle(0, 0);
             this._handlerShape.setStrokeStyle(1, this._color);
-            this._handlerShape.setRadius(RADIUS);
+            this._handlerShape.setRadius(AngleTool.RADIUS);
 
             this._centerShape = this.createCircleShape();
             this._centerShape.setFillStyle(this._color);
@@ -58,7 +58,7 @@ namespace PhaserEditor2D {
 
             const d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
 
-            return Math.abs(d - RADIUS) <= 10;
+            return Math.abs(d - AngleTool.RADIUS) <= 10;
         }
 
         clear() {
@@ -93,7 +93,6 @@ namespace PhaserEditor2D {
         }
 
         onMouseMove() {
-            console.log(this._dragging);
             if (!this._dragging) {
                 return;
             }

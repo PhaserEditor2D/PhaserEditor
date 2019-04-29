@@ -42,5 +42,6 @@ public class SetInteractiveToolMessage extends ApiMessage {
 		}
 
 		_data.put("list", list);
+		_data.put("transformLocalCoords", editor.isTransformLocalCoords());
 	}
 }

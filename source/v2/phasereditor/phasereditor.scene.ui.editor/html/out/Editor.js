@@ -343,7 +343,11 @@ var PhaserEditor2D;
                     tools.push(tool);
                 }
             }
+            this._transformLocalCoords = msg.transformLocalCoords;
             this.getToolScene().setTools(tools);
+        };
+        Editor.prototype.isTransformLocalCoords = function () {
+            return this._transformLocalCoords;
         };
         Editor.prototype.processMessageList = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {

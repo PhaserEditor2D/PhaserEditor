@@ -225,8 +225,11 @@ namespace PhaserEditor2D {
                     ];
                 }
                 case "Angle": {
+                    const tool = new AngleTool();
                     return [
-                        new AngleTool()
+                        tool,
+                        new AngleLineTool(tool, true),
+                        new AngleLineTool(tool, false)
                     ];
                 }
             }

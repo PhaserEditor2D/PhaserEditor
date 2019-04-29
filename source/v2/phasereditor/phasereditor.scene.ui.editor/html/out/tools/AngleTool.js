@@ -10,7 +10,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var PhaserEditor2D;
 (function (PhaserEditor2D) {
-    var RADIUS = 100;
     var AngleTool = (function (_super) {
         __extends(AngleTool, _super);
         function AngleTool() {
@@ -20,7 +19,7 @@ var PhaserEditor2D;
             _this._handlerShape = _this.createCircleShape();
             _this._handlerShape.setFillStyle(0, 0);
             _this._handlerShape.setStrokeStyle(1, _this._color);
-            _this._handlerShape.setRadius(RADIUS);
+            _this._handlerShape.setRadius(AngleTool.RADIUS);
             _this._centerShape = _this.createCircleShape();
             _this._centerShape.setFillStyle(_this._color);
             return _this;
@@ -49,7 +48,7 @@ var PhaserEditor2D;
         AngleTool.prototype.containsPointer = function () {
             var pointer = this.getToolPointer();
             var d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
-            return Math.abs(d - RADIUS) <= 10;
+            return Math.abs(d - AngleTool.RADIUS) <= 10;
         };
         AngleTool.prototype.clear = function () {
             this._handlerShape.visible = false;
@@ -76,7 +75,6 @@ var PhaserEditor2D;
             }
         };
         AngleTool.prototype.onMouseMove = function () {
-            console.log(this._dragging);
             if (!this._dragging) {
                 return;
             }
@@ -108,6 +106,7 @@ var PhaserEditor2D;
             this._centerShape.setFillStyle(this._color);
             this.requestRepaint = true;
         };
+        AngleTool.RADIUS = 100;
         return AngleTool;
     }(PhaserEditor2D.InteractiveTool));
     PhaserEditor2D.AngleTool = AngleTool;

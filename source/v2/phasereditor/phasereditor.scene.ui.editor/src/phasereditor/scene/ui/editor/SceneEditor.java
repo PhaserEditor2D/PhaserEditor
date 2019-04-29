@@ -95,6 +95,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	ISelectionChangedListener _outlinerSelectionListener;
 	private List<ScenePropertyPage> _propertyPages;
 	private Set<String> _interactiveTools;
+	private boolean _transformLocalCoords;
 
 	public final IUndoContext undoContext = new IUndoContext() {
 
@@ -137,6 +138,16 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
 
 		_interactiveTools = new HashSet<>();
+		
+		_transformLocalCoords = true;
+	}
+	
+	public boolean isTransformLocalCoords() {
+		return _transformLocalCoords;
+	}
+
+	public void setTransformLocalCoords(boolean transformLocalCoords) {
+		_transformLocalCoords = transformLocalCoords;
 	}
 
 	public Set<String> getInteractiveTools() {

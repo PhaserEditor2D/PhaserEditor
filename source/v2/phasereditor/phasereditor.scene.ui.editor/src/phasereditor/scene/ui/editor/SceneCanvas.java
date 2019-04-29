@@ -102,7 +102,6 @@ public class SceneCanvas extends ZoomCanvas
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
 	private List<InteractiveTool> _interactiveTools;
-	private boolean _transformLocalCoords;
 	private boolean _interactiveToolsHightlights;
 
 	public SceneCanvas(Composite parent, int style) {
@@ -123,17 +122,19 @@ public class SceneCanvas extends ZoomCanvas
 
 		_interactiveTools = new ArrayList<>();
 
-		_transformLocalCoords = true;
 	}
 
+	@Deprecated
 	public boolean isTransformLocalCoords() {
-		return _transformLocalCoords;
+		return _editor.isTransformLocalCoords();
 	}
 
+	@Deprecated
 	public void setTransformLocalCoords(boolean transformLocalCoords) {
-		_transformLocalCoords = transformLocalCoords;
+		_editor.setTransformLocalCoords(transformLocalCoords);
 	}
 
+	@Deprecated
 	public List<InteractiveTool> getInteractiveTools() {
 		return _interactiveTools;
 	}

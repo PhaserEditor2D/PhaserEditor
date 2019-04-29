@@ -182,8 +182,11 @@ var PhaserEditor2D;
                     ];
                 }
                 case "Angle": {
+                    var tool = new PhaserEditor2D.AngleTool();
                     return [
-                        new PhaserEditor2D.AngleTool()
+                        tool,
+                        new PhaserEditor2D.AngleLineTool(tool, true),
+                        new PhaserEditor2D.AngleLineTool(tool, false)
                     ];
                 }
             }
