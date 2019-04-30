@@ -6,6 +6,7 @@ namespace PhaserEditor2D {
 
         private _color: number;
         private _handlerShape: Phaser.GameObjects.Arc;
+        private _handlerShapeBorder: Phaser.GameObjects.Arc;
         private _centerShape: Phaser.GameObjects.Arc;
         private _dragging = false;
         private _cursorStartX: number;
@@ -13,13 +14,19 @@ namespace PhaserEditor2D {
 
         constructor() {
             super();
-            // blueviolet
-            this._color = Phaser.Display.Color.GetColor(138, 43, 225);
+            
+            this._color = 0xaaaaff;
+
+            this._handlerShapeBorder = this.createCircleShape();
+            this._handlerShapeBorder.setFillStyle(0, 0);
+            this._handlerShapeBorder.setStrokeStyle(4, 0);
+            this._handlerShapeBorder.setRadius(AngleTool.RADIUS);
 
             this._handlerShape = this.createCircleShape();
             this._handlerShape.setFillStyle(0, 0);
-            this._handlerShape.setStrokeStyle(1, this._color);
+            this._handlerShape.setStrokeStyle(2, this._color);
             this._handlerShape.setRadius(AngleTool.RADIUS);
+            
 
             this._centerShape = this.createCircleShape();
             this._centerShape.setFillStyle(this._color);
@@ -49,6 +56,9 @@ namespace PhaserEditor2D {
 
             this._handlerShape.setPosition(cameraX, cameraY);
             this._handlerShape.visible = true;
+            this._handlerShapeBorder.setPosition(cameraX, cameraY);
+            this._handlerShapeBorder.visible = true;
+
             this._centerShape.setPosition(cameraX, cameraY);
             this._centerShape.visible = true;
         }
@@ -63,6 +73,8 @@ namespace PhaserEditor2D {
 
         clear() {
             this._handlerShape.visible = false;
+            this._handlerShapeBorder.visible = false;
+
             this._centerShape.visible = false;
         }
 
@@ -77,7 +89,7 @@ namespace PhaserEditor2D {
 
                 this.requestRepaint = true;
 
-                this._handlerShape.setStrokeStyle(2, 0xffffff);
+                this._handlerShape.strokeColor = 0xffffff;
                 this._centerShape.setFillStyle(0xffffff);
 
                 this._cursorStartX = this.getToolPointer().x;
@@ -134,7 +146,7 @@ namespace PhaserEditor2D {
 
             this._dragging = false;
 
-            this._handlerShape.setStrokeStyle(1, this._color);
+            this._handlerShape.strokeColor = this._color;
             this._centerShape.setFillStyle(this._color);
 
             this.requestRepaint = true;

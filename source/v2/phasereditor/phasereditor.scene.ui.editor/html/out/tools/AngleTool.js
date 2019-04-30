@@ -15,10 +15,14 @@ var PhaserEditor2D;
         function AngleTool() {
             var _this = _super.call(this) || this;
             _this._dragging = false;
-            _this._color = Phaser.Display.Color.GetColor(138, 43, 225);
+            _this._color = 0xaaaaff;
+            _this._handlerShapeBorder = _this.createCircleShape();
+            _this._handlerShapeBorder.setFillStyle(0, 0);
+            _this._handlerShapeBorder.setStrokeStyle(4, 0);
+            _this._handlerShapeBorder.setRadius(AngleTool.RADIUS);
             _this._handlerShape = _this.createCircleShape();
             _this._handlerShape.setFillStyle(0, 0);
-            _this._handlerShape.setStrokeStyle(1, _this._color);
+            _this._handlerShape.setStrokeStyle(2, _this._color);
             _this._handlerShape.setRadius(AngleTool.RADIUS);
             _this._centerShape = _this.createCircleShape();
             _this._centerShape.setFillStyle(_this._color);
@@ -42,6 +46,8 @@ var PhaserEditor2D;
             var cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
             this._handlerShape.setPosition(cameraX, cameraY);
             this._handlerShape.visible = true;
+            this._handlerShapeBorder.setPosition(cameraX, cameraY);
+            this._handlerShapeBorder.visible = true;
             this._centerShape.setPosition(cameraX, cameraY);
             this._centerShape.visible = true;
         };
@@ -52,6 +58,7 @@ var PhaserEditor2D;
         };
         AngleTool.prototype.clear = function () {
             this._handlerShape.visible = false;
+            this._handlerShapeBorder.visible = false;
             this._centerShape.visible = false;
         };
         AngleTool.prototype.isEditing = function () {
@@ -61,7 +68,7 @@ var PhaserEditor2D;
             if (this.containsPointer()) {
                 this._dragging = true;
                 this.requestRepaint = true;
-                this._handlerShape.setStrokeStyle(2, 0xffffff);
+                this._handlerShape.strokeColor = 0xffffff;
                 this._centerShape.setFillStyle(0xffffff);
                 this._cursorStartX = this.getToolPointer().x;
                 this._cursorStartY = this.getToolPointer().y;
@@ -102,7 +109,7 @@ var PhaserEditor2D;
                 PhaserEditor2D.Editor.getInstance().sendMessage(msg);
             }
             this._dragging = false;
-            this._handlerShape.setStrokeStyle(1, this._color);
+            this._handlerShape.strokeColor = this._color;
             this._centerShape.setFillStyle(this._color);
             this.requestRepaint = true;
         };

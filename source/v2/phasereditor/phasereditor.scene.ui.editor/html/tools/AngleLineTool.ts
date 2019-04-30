@@ -2,6 +2,7 @@ namespace PhaserEditor2D {
     export class AngleLineTool extends InteractiveTool {
 
         private _shape: Phaser.GameObjects.Line;
+        private _shapeBorder: Phaser.GameObjects.Line;
         private _start: boolean;
         private _angleTool: AngleTool;
         private _color : number;
@@ -12,17 +13,23 @@ namespace PhaserEditor2D {
             this._angleTool = angleTool;
             this._start = start;
 
+            this._color = 0xaaaaff;
+            this._shapeBorder = this.createLineShape();
+            this._shapeBorder.setStrokeStyle(4, 0);
+            this._shapeBorder.setOrigin(0, 0);
+            this._shapeBorder.setTo(0, 0, AngleTool.RADIUS, 0);
+            this._shapeBorder.depth = -1;
+
             this._shape = this.createLineShape();
-
-            this._color = Phaser.Display.Color.GetColor(0.5411765 * 255, 0.16862746 * 255, 0.8862745 * 255);
-
-            this._shape.setStrokeStyle(1, this._color);
+            this._shape.setStrokeStyle(2, this._color);
             this._shape.setOrigin(0, 0);
             this._shape.setTo(0, 0, AngleTool.RADIUS, 0);
+            this._shape.depth = -1;
         }
 
         clear() {
             this._shape.visible = false;
+            this._shapeBorder.visible = false;
         }
 
         containsPointer() {
@@ -71,14 +78,17 @@ namespace PhaserEditor2D {
             this._shape.setPosition(cameraX, cameraY);
             this._shape.angle = this._start ? globalStartAngle : globalEndAngle;
             this._shape.visible = true;
+            this._shapeBorder.setPosition(cameraX, cameraY);
+            this._shapeBorder.angle = this._shape.angle;
+            this._shapeBorder.visible = this._shape.visible;
         }
 
         onMouseDown() {
-            this._shape.setStrokeStyle(1, 0xffffff);
+            this._shape.strokeColor = 0xffffff;
         }
 
         onMouseUp() {
-            this._shape.setStrokeStyle(1, this._color);
+            this._shape.strokeColor = this._color;
         }
 
     }

@@ -16,15 +16,22 @@ var PhaserEditor2D;
             var _this = _super.call(this) || this;
             _this._angleTool = angleTool;
             _this._start = start;
+            _this._color = 0xaaaaff;
+            _this._shapeBorder = _this.createLineShape();
+            _this._shapeBorder.setStrokeStyle(4, 0);
+            _this._shapeBorder.setOrigin(0, 0);
+            _this._shapeBorder.setTo(0, 0, PhaserEditor2D.AngleTool.RADIUS, 0);
+            _this._shapeBorder.depth = -1;
             _this._shape = _this.createLineShape();
-            _this._color = Phaser.Display.Color.GetColor(0.5411765 * 255, 0.16862746 * 255, 0.8862745 * 255);
-            _this._shape.setStrokeStyle(1, _this._color);
+            _this._shape.setStrokeStyle(2, _this._color);
             _this._shape.setOrigin(0, 0);
             _this._shape.setTo(0, 0, PhaserEditor2D.AngleTool.RADIUS, 0);
+            _this._shape.depth = -1;
             return _this;
         }
         AngleLineTool.prototype.clear = function () {
             this._shape.visible = false;
+            this._shapeBorder.visible = false;
         };
         AngleLineTool.prototype.containsPointer = function () {
             return false;
@@ -60,12 +67,15 @@ var PhaserEditor2D;
             this._shape.setPosition(cameraX, cameraY);
             this._shape.angle = this._start ? globalStartAngle : globalEndAngle;
             this._shape.visible = true;
+            this._shapeBorder.setPosition(cameraX, cameraY);
+            this._shapeBorder.angle = this._shape.angle;
+            this._shapeBorder.visible = this._shape.visible;
         };
         AngleLineTool.prototype.onMouseDown = function () {
-            this._shape.setStrokeStyle(1, 0xffffff);
+            this._shape.strokeColor = 0xffffff;
         };
         AngleLineTool.prototype.onMouseUp = function () {
-            this._shape.setStrokeStyle(1, this._color);
+            this._shape.strokeColor = this._color;
         };
         return AngleLineTool;
     }(PhaserEditor2D.InteractiveTool));
