@@ -93,8 +93,6 @@ public class WorldSnapshotOperation extends AbstractOperation {
 
 		editor.setSelectionFromIdList(selectionIds);
 
-		editor.getScene().redraw();
-
 		editor.setDirty(true);
 
 		editor.getBroker().sendAll(new BatchMessage(

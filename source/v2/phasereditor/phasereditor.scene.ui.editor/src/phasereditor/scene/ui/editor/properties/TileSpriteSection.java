@@ -387,8 +387,6 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		editor.updatePropertyPagesContentWithSelection();
 
-		editor.getScene().redraw();
-
 		if (editor.getOutline() != null) {
 			editor.refreshOutline_basedOnId();
 		}

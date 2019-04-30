@@ -83,7 +83,6 @@ public class ScenePropertiesSnapshotOperation extends AbstractOperation {
 		editor.getSceneModel().readProperties(snapshot);
 
 		editor.updatePropertyPagesContentWithSelection();
-		editor.getScene().redraw();
 		editor.setDirty(true);
 
 		editor.getBroker().sendAll(new UpdateScenePropertiesMessage(snapshot));

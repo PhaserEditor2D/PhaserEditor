@@ -185,7 +185,6 @@ public class ChangeObjectsOrderHandler extends AbstractHandler {
 		editor.executeOperation(operation);
 
 		editor.setDirty(true);
-		editor.getScene().redraw();
 		editor.refreshOutline();
 
 		editor.getBroker().sendAllBatch(

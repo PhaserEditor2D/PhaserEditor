@@ -35,7 +35,6 @@ import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.SceneModel;
-import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.messages.LoadAssetsMessage;
 import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
@@ -72,12 +71,8 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		return getEditor().getAssetFinder();
 	}
 
-	public SceneCanvas getScene() {
-		return getEditor().getScene();
-	}
-
 	public SceneModel getSceneModel() {
-		return getScene().getModel();
+		return getEditor().getSceneModel();
 	}
 
 	protected abstract class SceneText extends phasereditor.ui.properties.TextListener {
@@ -183,8 +178,6 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 				dirtyModels, filterDirtyModels));
 
 		dirtyModels(this, models, dirtyModels, filterDirtyModels);
-
-		getScene().redraw();
 
 		getEditor().getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}

@@ -71,7 +71,7 @@ public class DisplaySection extends BaseDesignSection {
 				@Override
 				protected void accept(int value) {
 					wrapOperation(() -> {
-						getScene().getModel().setBorderX(value);
+						getSceneModel().setBorderX(value);
 					});
 				}
 			};
@@ -85,7 +85,7 @@ public class DisplaySection extends BaseDesignSection {
 				@Override
 				protected void accept(int value) {
 					wrapOperation(() -> {
-						getScene().getModel().setBorderY(value);
+						getSceneModel().setBorderY(value);
 					});
 
 				}
@@ -104,7 +104,7 @@ public class DisplaySection extends BaseDesignSection {
 				@Override
 				protected void accept(int value) {
 					wrapOperation(() -> {
-						getScene().getModel().setBorderWidth(value);
+						getSceneModel().setBorderWidth(value);
 					});
 				}
 			};
@@ -119,7 +119,7 @@ public class DisplaySection extends BaseDesignSection {
 				@Override
 				protected void accept(int value) {
 					wrapOperation(() -> {
-						getScene().getModel().setBorderHeight(value);
+						getSceneModel().setBorderHeight(value);
 					});
 				}
 			};

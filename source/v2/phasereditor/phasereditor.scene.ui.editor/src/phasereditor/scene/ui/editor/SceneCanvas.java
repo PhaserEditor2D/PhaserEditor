@@ -97,7 +97,6 @@ public class SceneCanvas extends ZoomCanvas
 	private float _renderModelSnapX;
 	private float _renderModelSnapY;
 	private DragObjectsEvents _dragObjectsEvents;
-	private SelectionEvents _selectionEvents;
 	private boolean _interactiveToolsHightlights;
 
 	public SceneCanvas(Composite parent, int style) {
@@ -106,7 +105,6 @@ public class SceneCanvas extends ZoomCanvas
 		addPaintListener(this);
 
 		_dragObjectsEvents = new DragObjectsEvents(this);
-		_selectionEvents = new SelectionEvents(this);
 
 		addDragDetectListener(this);
 		addMouseListener(this);
@@ -116,16 +114,6 @@ public class SceneCanvas extends ZoomCanvas
 
 		setZoomWhenShiftPressed(false);
 
-	}
-
-	@Deprecated
-	public boolean isTransformLocalCoords() {
-		return _editor.isTransformLocalCoords();
-	}
-
-	@Deprecated
-	public void setTransformLocalCoords(boolean transformLocalCoords) {
-		_editor.setTransformLocalCoords(transformLocalCoords);
 	}
 
 	private void init_DND() {
@@ -1181,10 +1169,6 @@ public class SceneCanvas extends ZoomCanvas
 		return result;
 	}
 
-	public SelectionEvents getSelectionEvents() {
-		return _selectionEvents;
-	}
-
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		//
@@ -1215,10 +1199,6 @@ public class SceneCanvas extends ZoomCanvas
 			}
 
 			return;
-		}
-
-		if (!contains) {
-			_selectionEvents.updateSelection(e);
 		}
 
 	}

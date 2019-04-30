@@ -307,15 +307,14 @@ public class TransformSection extends ScenePropertySection {
 			@Override
 			public void run() {
 
-				var scene = getScene();
-
-				scene.setTransformLocalCoords(!scene.isTransformLocalCoords());
+				var editor = getEditor();
 				
-				getEditor().getBroker().sendAll(new SetTransformCoordsMessage(getEditor()));
+				editor.setTransformLocalCoords(!editor.isTransformLocalCoords());
+				
+				editor.getBroker().sendAll(new SetTransformCoordsMessage(editor));
 
 				updateActions();
 
-				scene.redraw();
 			}
 		};
 
@@ -329,7 +328,7 @@ public class TransformSection extends ScenePropertySection {
 		_scaleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Scale")));
 		_angleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Angle")));
 
-		var local = getScene().isTransformLocalCoords();
+		var local = getEditor().isTransformLocalCoords();
 
 		_localTransformAction.setImageDescriptor(EditorSharedImages.getImageDescriptor(local ? IMG_HOUSE : IMG_WORLD));
 		_localTransformAction.setText(local ? "Transform in local coords." : "Transform in global coords.");

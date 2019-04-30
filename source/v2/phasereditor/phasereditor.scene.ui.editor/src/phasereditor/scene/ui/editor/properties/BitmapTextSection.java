@@ -97,7 +97,6 @@ public class BitmapTextSection extends ScenePropertySection {
 			}, true);
 
 			getEditor().setDirty(true);
-			getEditor().getScene().redraw();
 
 			updateAlignActionsState();
 		}

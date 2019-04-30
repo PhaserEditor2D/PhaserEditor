@@ -186,9 +186,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 
-				var scene = getScene();
-
-				var sceneModel = scene.getModel();
+				var sceneModel = getEditor().getSceneModel();
 
 				var snap = computeSelectionSnap();
 
@@ -211,8 +209,6 @@ public class GameObjectEditorSection extends ScenePropertySection {
 					editor.getBroker().sendAll(new UpdateScenePropertiesMessage(after));
 
 				}
-
-				scene.redraw();
 
 			}));
 
@@ -306,7 +302,6 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			editor.executeOperation(new GroupListSnapshotOperation(before, after, getText()));
 
 			editor.setDirty(true);
-			editor.getScene().redraw();
 			editor.refreshOutline();
 
 			editor.updatePropertyPagesContentWithSelection();
@@ -448,7 +443,6 @@ public class GameObjectEditorSection extends ScenePropertySection {
 							editor.executeOperation(new GroupListSnapshotOperation(before, after, getText()));
 
 							editor.setDirty(true);
-							editor.getScene().redraw();
 							editor.refreshOutline();
 
 							editor.updatePropertyPagesContentWithSelection();
@@ -557,8 +551,6 @@ public class GameObjectEditorSection extends ScenePropertySection {
 				}
 
 				ParentComponent.utils_addChild(displayList, container);
-
-				getScene().redraw();
 
 				editor.setDirty(true);
 

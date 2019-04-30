@@ -23,9 +23,6 @@ package phasereditor.scene.ui.editor;
 
 import java.util.ArrayList;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-
 import phasereditor.scene.core.ObjectModel;
 
 /**
@@ -33,29 +30,19 @@ import phasereditor.scene.core.ObjectModel;
  *
  */
 public class SelectionEvents {
-	private SceneCanvas _scene;
 
-	public SelectionEvents(SceneCanvas scene) {
+	private SceneEditor _editor;
+
+	public SelectionEvents(SceneEditor editor) {
 		super();
-		_scene = scene;
-	}
-
-	public void updateSelection(MouseEvent e) {
-		if (e.button != 1) {
-			return;
-		}
-
-		var pick = _scene.pickObject(e.x, e.y);
-		var controlPressed = (e.stateMask & SWT.CTRL) != 0;
-		
-		updateSelection(pick, controlPressed);
+		_editor = editor;
 	}
 
 	public void updateSelection(ObjectModel clickedObject, boolean controlPressed) {
 		
 		var fireUpdateSelection = false;
 
-		var list = new ArrayList<>(_scene.getEditor().getSelectionList());
+		var list = new ArrayList<>(_editor.getSelectionList());
 
 		if (clickedObject == null) {
 			fireUpdateSelection = !list.isEmpty();
@@ -76,7 +63,7 @@ public class SelectionEvents {
 		}
 
 		if (fireUpdateSelection) {
-			_scene.getEditor().setSelection(list);
+			_editor.setSelection(list);
 		}
 	}
 }

@@ -133,23 +133,24 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		_viewer.setInput(_editor.getSceneModel());
 
-		var scene = _editor.getScene();
-
-		_viewer.getTree().setEditActions(scene::copy, scene::cut, () -> {
-
-			var sel = _viewer.getStructuredSelection().toArray();
-
-			ObjectModel pasteParent = getEditor().getSceneModel().getDisplayList();
-
-			if (sel.length == 1) {
-				if (sel[0] instanceof ObjectModel) {
-					pasteParent = (ObjectModel) sel[0];
-				}
-			}
-
-			scene.paste(pasteParent, false);
-
-		});
+		// TODO: move this to the editor
+		// var scene = _editor.getScene();
+		//
+		// _viewer.getTree().setEditActions(scene::copy, scene::cut, () -> {
+		//
+		// var sel = _viewer.getStructuredSelection().toArray();
+		//
+		// ObjectModel pasteParent = getEditor().getSceneModel().getDisplayList();
+		//
+		// if (sel.length == 1) {
+		// if (sel[0] instanceof ObjectModel) {
+		// pasteParent = (ObjectModel) sel[0];
+		// }
+		// }
+		//
+		// scene.paste(pasteParent, false);
+		//
+		// });
 
 		init_DND();
 
@@ -224,7 +225,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	protected void revealSelectedObjectInScene() {
 		var obj = _viewer.getTree().getUtils().getOverObject();
 		if (obj != null && obj instanceof ObjectModel) {
-			_editor.getScene().reveal((ObjectModel) obj);
+			// TODO: move this to the editor
+			// _editor.getScene().reveal((ObjectModel) obj);
 		}
 	}
 
@@ -252,112 +254,114 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	}
 
 	boolean performSelectionDrop(List<ObjectModel> models) {
-		var utils = _viewer.getTree().getUtils();
-
-		int location = utils.getDropLocation();
-		var targetObj = utils.getDropObject();
-
-		if (location == TreeCanvasDropAdapter.LOCATION_ON) {
-
-			if (targetObj instanceof ParentComponent) {
-				var newParent = (ObjectModel) targetObj;
-
-				var newDrops = new ArrayList<ObjectModel>();
-
-				// avoid dropping on descendents
-
-				for (var model : models) {
-					if (ParentComponent.utils_isDescendentOf(newParent, model)) {
-						continue;
-					}
-
-					newDrops.add(model);
-				}
-
-				// avoid droping on parents
-
-				{
-					var list = new ArrayList<>(newDrops);
-					for (var model : list) {
-						if (ParentComponent.get_parent(model) == newParent) {
-							newDrops.remove(model);
-						}
-					}
-				}
-
-				{
-					// filter dropping kids
-
-					var list = new ArrayList<>(newDrops);
-
-					for (int i = 0; i < list.size() - 1; i++) {
-						for (int j = i + 1; j < list.size(); j++) {
-							var a = list.get(i);
-							var b = list.get(j);
-							if (ParentComponent.utils_isDescendentOf(a, b)) {
-								newDrops.remove(a);
-							}
-
-							if (ParentComponent.utils_isDescendentOf(b, a)) {
-								newDrops.remove(b);
-							}
-						}
-					}
-				}
-
-				if (newDrops.isEmpty()) {
-					return false;
-				}
-
-				var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
-
-				var renderer = _editor.getScene().getSceneRenderer();
-
-				for (var model : newDrops) {
-
-					if (model instanceof TransformComponent) {
-
-						var oldParent = ParentComponent.get_parent(model);
-
-						float localX = TransformComponent.get_x(model);
-						float localY = TransformComponent.get_y(model);
-
-						var globalPoint = renderer.localToScene(oldParent, localX, localY);
-
-						// move to the new parent
-
-						ParentComponent.utils_removeFromParent(model);
-						ParentComponent.utils_addChild(newParent, model);
-
-						renderer.addPostPaintAction(() -> {
-
-							var newLocalPoint = renderer.sceneToLocal(newParent, globalPoint[0], globalPoint[1]);
-
-							TransformComponent.set_x(model, newLocalPoint[0]);
-							TransformComponent.set_y(model, newLocalPoint[1]);
-
-							getEditor().getScene().redraw();
-
-						});
-					} else {
-						// move to the new parent
-						ParentComponent.utils_removeFromParent(model);
-						ParentComponent.utils_addChild(newParent, model);
-					}
-				}
-
-				refresh();
-
-				_editor.setSelection(newDrops);
-
-				var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
-
-				_editor.executeOperation(new WorldSnapshotOperation(beforeSnapshot, afterSnapshot, "Drop into object"));
-
-				_editor.setDirty(true);
-
-			}
-		}
+		// var utils = _viewer.getTree().getUtils();
+		//
+		// int location = utils.getDropLocation();
+		// var targetObj = utils.getDropObject();
+		//
+		// if (location == TreeCanvasDropAdapter.LOCATION_ON) {
+		//
+		// if (targetObj instanceof ParentComponent) {
+		// var newParent = (ObjectModel) targetObj;
+		//
+		// var newDrops = new ArrayList<ObjectModel>();
+		//
+		// // avoid dropping on descendents
+		//
+		// for (var model : models) {
+		// if (ParentComponent.utils_isDescendentOf(newParent, model)) {
+		// continue;
+		// }
+		//
+		// newDrops.add(model);
+		// }
+		//
+		// // avoid droping on parents
+		//
+		// {
+		// var list = new ArrayList<>(newDrops);
+		// for (var model : list) {
+		// if (ParentComponent.get_parent(model) == newParent) {
+		// newDrops.remove(model);
+		// }
+		// }
+		// }
+		//
+		// {
+		// // filter dropping kids
+		//
+		// var list = new ArrayList<>(newDrops);
+		//
+		// for (int i = 0; i < list.size() - 1; i++) {
+		// for (int j = i + 1; j < list.size(); j++) {
+		// var a = list.get(i);
+		// var b = list.get(j);
+		// if (ParentComponent.utils_isDescendentOf(a, b)) {
+		// newDrops.remove(a);
+		// }
+		//
+		// if (ParentComponent.utils_isDescendentOf(b, a)) {
+		// newDrops.remove(b);
+		// }
+		// }
+		// }
+		// }
+		//
+		// if (newDrops.isEmpty()) {
+		// return false;
+		// }
+		//
+		// var beforeSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
+		//
+		// var renderer = _editor.getScene().getSceneRenderer();
+		//
+		// for (var model : newDrops) {
+		//
+		// if (model instanceof TransformComponent) {
+		//
+		// var oldParent = ParentComponent.get_parent(model);
+		//
+		// float localX = TransformComponent.get_x(model);
+		// float localY = TransformComponent.get_y(model);
+		//
+		// var globalPoint = renderer.localToScene(oldParent, localX, localY);
+		//
+		// // move to the new parent
+		//
+		// ParentComponent.utils_removeFromParent(model);
+		// ParentComponent.utils_addChild(newParent, model);
+		//
+		// renderer.addPostPaintAction(() -> {
+		//
+		// var newLocalPoint = renderer.sceneToLocal(newParent, globalPoint[0],
+		// globalPoint[1]);
+		//
+		// TransformComponent.set_x(model, newLocalPoint[0]);
+		// TransformComponent.set_y(model, newLocalPoint[1]);
+		//
+		// getEditor().getScene().redraw();
+		//
+		// });
+		// } else {
+		// // move to the new parent
+		// ParentComponent.utils_removeFromParent(model);
+		// ParentComponent.utils_addChild(newParent, model);
+		// }
+		// }
+		//
+		// refresh();
+		//
+		// _editor.setSelection(newDrops);
+		//
+		// var afterSnapshot = WorldSnapshotOperation.takeSnapshot(_editor);
+		//
+		// _editor.executeOperation(new WorldSnapshotOperation(beforeSnapshot,
+		// afterSnapshot, "Drop into object"));
+		//
+		// _editor.setDirty(true);
+		//
+		// }
+		// }
 
 		return true;
 	}

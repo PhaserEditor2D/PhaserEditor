@@ -328,7 +328,7 @@ public class GameObjectSection extends ScenePropertySection {
 
 					var set = new HashSet<String>();
 
-					getScene().getModel().getDisplayList().visit(model -> {
+					getSceneModel().getDisplayList().visit(model -> {
 						if (GameObjectComponent.is(model)) {
 							var factory2 = GameObjectComponent.get_objectFactory(model);
 							if (!factory2.equals(factory)) {
@@ -430,7 +430,7 @@ public class GameObjectSection extends ScenePropertySection {
 
 				var set = new HashSet<String>();
 
-				getScene().getModel().getDisplayList().visit(model -> {
+				getSceneModel().getDisplayList().visit(model -> {
 					if (GameObjectComponent.is(model)) {
 						var factory2 = GameObjectComponent.get_objectFactory(model);
 						if (factory2.equals(currentFactory)) {

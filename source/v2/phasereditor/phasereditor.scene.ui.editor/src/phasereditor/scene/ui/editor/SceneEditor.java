@@ -26,8 +26,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -89,7 +87,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private static String COMMAND_CONTEXT = "phasereditor.scene.ui.editor.command";
 
 	private SceneModel _model;
-	private SceneCanvas _scene;
 	private SceneOutlinePage _outline;
 	private boolean _dirty;
 	ISelectionChangedListener _outlinerSelectionListener;
@@ -117,6 +114,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private EditorFileStampHelper _fileStampHelper;
 	private SceneEditorBroker _broker;
 	private SceneWebView _webView;
+	private SelectionEvents _selectionEvents;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -127,8 +125,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 				_selectionProvider.setSelection(event.getSelection());
 				_selectionProvider.setAutoFireSelectionChanged(true);
 
-				getScene().redraw();
-
 				getBroker().sendAll(new SelectObjectsMessage(SceneEditor.this));
 			}
 		};
@@ -138,10 +134,16 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
 
 		_interactiveTools = new HashSet<>();
-		
+
+		_selectionEvents = new SelectionEvents(this);
+
 		_transformLocalCoords = true;
 	}
-	
+
+	public SelectionEvents getSelectionEvents() {
+		return _selectionEvents;
+	}
+
 	public boolean isTransformLocalCoords() {
 		return _transformLocalCoords;
 	}
@@ -165,11 +167,11 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	public void setInteractiveTools(String... interactiveTools) {
 		setInteractiveTools(Set.of(interactiveTools));
 	}
-	
+
 	public boolean hasInteractiveTools(Set<String> tools) {
 		return _interactiveTools.containsAll(tools);
 	}
-	
+
 	private IContextService getContextService() {
 		IContextService service = getSite().getWorkbenchWindow().getWorkbench().getService(IContextService.class);
 		return service;
@@ -240,8 +242,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void build() {
-		_scene.redraw();
-
 		updatePropertyPagesContentWithSelection();
 
 		refreshOutline();
@@ -357,40 +357,8 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	@Override
 	public void createPartControl(Composite parent) {
 		_broker = new SceneEditorBroker(this);
-
-		var tabFolder = new TabFolder(parent, SWT.TOP);
-
-		{
-			var item = new TabItem(tabFolder, SWT.NONE);
-			item.setText("New");
-			_webView = new SceneWebView(this, tabFolder, SWT.NONE);
-			item.setControl(_webView);
-		}
-
+		_webView = new SceneWebView(this, parent, SWT.NONE);
 		_webView.setUrl(_broker.getUrl());
-
-		{
-			var item = new TabItem(tabFolder, SWT.NONE);
-			item.setText("Old");
-			_scene = new SceneCanvas(tabFolder, SWT.NONE);
-			item.setControl(_scene);
-
-			_scene.init(this);
-
-			_scene.addFocusListener(new FocusListener() {
-
-				@Override
-				public void focusLost(FocusEvent e) {
-					deactivateObjectsContext();
-				}
-
-				@Override
-				public void focusGained(FocusEvent e) {
-					activateObjectsContext();
-				}
-			});
-		}
-
 	}
 
 	public SceneEditorBroker getBroker() {
@@ -407,7 +375,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	@Override
 	public void setFocus() {
-		_scene.setFocus();
+		_webView.setFocus();
 	}
 
 	public SceneModel getSceneModel() {
@@ -454,10 +422,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		return super.getAdapter(adapter);
-	}
-	
-	public SceneCanvas getScene() {
-		return _scene;
 	}
 
 	public void removeOutline() {
@@ -546,7 +510,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 			_outline.setSelection_from_external(selection);
 		}
 
-		_scene.redraw();
 	}
 
 	public void updatePropertyPagesContentWithSelection() {
@@ -583,11 +546,9 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void rebuildImageCache() {
-		_scene.getModel().getDisplayList().visit(m -> {
+		getSceneModel().getDisplayList().visit(m -> {
 			GameObjectEditorComponent.set_gameObjectEditorDirty(m, true);
 		});
-
-		_scene.redraw();
 
 		refreshOutline();
 	}
@@ -769,8 +730,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		var afterData = WorldSnapshotOperation.takeSnapshot(this);
 
 		executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Delete objects"));
-
-		_scene.redraw();
 
 		_broker.sendAll(new BatchMessage(
 

@@ -54,7 +54,6 @@ public abstract class BaseDesignSection extends ScenePropertySection {
 		editor.executeOperation(new ScenePropertiesSnapshotOperation(before, after, "Change display property."));
 
 		editor.setDirty(true);
-		editor.getScene().redraw();
 		
 		getEditor().getBroker().sendAll(new UpdateScenePropertiesMessage(after));
 	}

@@ -78,7 +78,7 @@ public class CompilerSection extends BaseDesignSection {
 		// @Override
 		// protected void accept(boolean value) {
 		// wrapOperation(() -> {
-		// getScene().getModel().setGenerateMethodEvents(value);
+		// getSceneModel().setGenerateMethodEvents(value);
 		// });
 		// }
 		// };
@@ -93,7 +93,7 @@ public class CompilerSection extends BaseDesignSection {
 				@Override
 				protected void accept(boolean value) {
 					wrapOperation(() -> {
-						getScene().getModel().setOnlyGenerateMethods(value);
+						getSceneModel().setOnlyGenerateMethods(value);
 					});
 				}
 			};
@@ -105,7 +105,7 @@ public class CompilerSection extends BaseDesignSection {
 		{
 			Consumer<String> setValue = value -> {
 				wrapOperation(() -> {
-					getScene().getModel().setSceneKey(value);
+					getSceneModel().setSceneKey(value);
 				});
 			};
 
@@ -143,7 +143,7 @@ public class CompilerSection extends BaseDesignSection {
 			});
 
 			addUpdate(() -> {
-				text.setText(getScene().getModel().getSceneKey());
+				text.setText(getSceneModel().getSceneKey());
 			});
 
 		}
@@ -151,7 +151,7 @@ public class CompilerSection extends BaseDesignSection {
 		{
 			Consumer<String> setValue = value -> {
 				wrapOperation(() -> {
-					getScene().getModel().setSuperClassName(value);
+					getSceneModel().setSuperClassName(value);
 				});
 			};
 
@@ -193,7 +193,7 @@ public class CompilerSection extends BaseDesignSection {
 		{
 			Consumer<String> setValue = value -> {
 				wrapOperation(() -> {
-					getScene().getModel().setPreloadMethodName(value);
+					getSceneModel().setPreloadMethodName(value);
 				});
 			};
 			label(comp, "Preload Method",
@@ -237,7 +237,7 @@ public class CompilerSection extends BaseDesignSection {
 		{
 			Consumer<String> setValue = value -> {
 				wrapOperation(() -> {
-					getScene().getModel().setCreateMethodName(value);
+					getSceneModel().setCreateMethodName(value);
 				});
 			};
 
@@ -278,13 +278,13 @@ public class CompilerSection extends BaseDesignSection {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					wrapOperation(() -> {
-						getScene().getModel()
+						getSceneModel()
 								.setMethodContextType(MethodContextType.values()[combo.getSelectionIndex()]);
 					});
 				}
 			});
 			addUpdate(() -> {
-				combo.select(getScene().getModel().getMethodContextType().ordinal());
+				combo.select(getSceneModel().getMethodContextType().ordinal());
 			});
 		}
 

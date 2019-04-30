@@ -338,7 +338,7 @@ public class SceneEditorBroker {
 		ObjectModel obj = id == null ? null : _editor.getSceneModel().getDisplayList().findById(id);
 
 		swtRun(() -> {
-			_editor.getScene().getSelectionEvents().updateSelection(obj, ctrl);
+			_editor.getSelectionEvents().updateSelection(obj, ctrl);
 			send(client, new SelectObjectsMessage(_editor));
 		});
 	}
