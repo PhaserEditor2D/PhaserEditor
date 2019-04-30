@@ -141,8 +141,11 @@ namespace PhaserEditor2D {
                 const dx = (localPos.x - initLocalPos.x) * flipX;
                 const dy = (localPos.y - initLocalPos.y) * flipY;
 
-                const width = (data.initWidth + dx) | 0;
-                const height = (data.initHeight + dy) | 0;
+                let width = (data.initWidth + dx) | 0;
+                let height = (data.initHeight + dy) | 0;
+
+                width = this.snapValueX(width);
+                height = this.snapValueY(height);
 
                 if (this._changeX) {
                     sprite.setSize(width, sprite.height);

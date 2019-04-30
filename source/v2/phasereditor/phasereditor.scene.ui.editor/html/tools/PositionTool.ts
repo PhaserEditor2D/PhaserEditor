@@ -62,9 +62,6 @@ namespace PhaserEditor2D {
 
                 const worldXY = new Phaser.Math.Vector2();
 
-                const flipX = sprite.flipX ? -1 : 1;
-                const flipY = sprite.flipY ? -1 : 1;
-
                 let localX = 0;
                 let localY = 0;
 

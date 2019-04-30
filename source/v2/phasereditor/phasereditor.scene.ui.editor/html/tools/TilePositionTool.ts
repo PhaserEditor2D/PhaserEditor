@@ -154,8 +154,11 @@ namespace PhaserEditor2D {
                 const dx = localPos.x - initLocalPos.x;
                 const dy = localPos.y - initLocalPos.y;
 
-                const tilePositionX = (data.initTilePositionX + dx) | 0;
-                const tilePositionY = (data.initTilePositionY + dy) | 0;
+                let tilePositionX = (data.initTilePositionX + dx) | 0;
+                let tilePositionY = (data.initTilePositionY + dy) | 0;
+
+                tilePositionX = this.snapValueX(tilePositionX);
+                tilePositionY = this.snapValueY(tilePositionY);
 
                 if (this._changeX) {
                     sprite.tilePositionX = tilePositionX;

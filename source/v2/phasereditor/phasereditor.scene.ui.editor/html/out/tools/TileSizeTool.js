@@ -113,6 +113,8 @@ var PhaserEditor2D;
                 var dy = (localPos.y - initLocalPos.y) * flipY;
                 var width = (data.initWidth + dx) | 0;
                 var height = (data.initHeight + dy) | 0;
+                width = this.snapValueX(width);
+                height = this.snapValueY(height);
                 if (this._changeX) {
                     sprite.setSize(width, sprite.height);
                 }

@@ -55,8 +55,6 @@ var PhaserEditor2D;
                 worldTx.transformPoint(0, 0, centerXY);
                 globalCenterXY.add(centerXY);
                 var worldXY = new Phaser.Math.Vector2();
-                var flipX = sprite.flipX ? -1 : 1;
-                var flipY = sprite.flipY ? -1 : 1;
                 var localX = 0;
                 var localY = 0;
                 if (localCoords) {

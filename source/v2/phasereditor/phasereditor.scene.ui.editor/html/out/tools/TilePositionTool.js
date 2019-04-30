@@ -126,6 +126,8 @@ var PhaserEditor2D;
                 var dy = localPos.y - initLocalPos.y;
                 var tilePositionX = (data.initTilePositionX + dx) | 0;
                 var tilePositionY = (data.initTilePositionY + dy) | 0;
+                tilePositionX = this.snapValueX(tilePositionX);
+                tilePositionY = this.snapValueY(tilePositionY);
                 if (this._changeX) {
                     sprite.tilePositionX = tilePositionX;
                 }
