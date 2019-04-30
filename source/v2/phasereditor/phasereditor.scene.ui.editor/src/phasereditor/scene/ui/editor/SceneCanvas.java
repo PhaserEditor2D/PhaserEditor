@@ -24,7 +24,6 @@ package phasereditor.scene.ui.editor;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,7 +77,6 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.ISceneObjectRendererContext;
 import phasereditor.scene.ui.SceneObjectRenderer;
-import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.Colors;
 import phasereditor.ui.PhaserEditorUI;
@@ -86,7 +84,6 @@ import phasereditor.ui.ZoomCanvas;
 
 /**
  * @author arian
- *
  */
 @Deprecated
 public class SceneCanvas extends ZoomCanvas
@@ -101,7 +98,6 @@ public class SceneCanvas extends ZoomCanvas
 	private float _renderModelSnapY;
 	private DragObjectsEvents _dragObjectsEvents;
 	private SelectionEvents _selectionEvents;
-	private List<InteractiveTool> _interactiveTools;
 	private boolean _interactiveToolsHightlights;
 
 	public SceneCanvas(Composite parent, int style) {
@@ -120,8 +116,6 @@ public class SceneCanvas extends ZoomCanvas
 
 		setZoomWhenShiftPressed(false);
 
-		_interactiveTools = new ArrayList<>();
-
 	}
 
 	@Deprecated
@@ -132,31 +126,6 @@ public class SceneCanvas extends ZoomCanvas
 	@Deprecated
 	public void setTransformLocalCoords(boolean transformLocalCoords) {
 		_editor.setTransformLocalCoords(transformLocalCoords);
-	}
-
-	@Deprecated
-	public List<InteractiveTool> getInteractiveTools() {
-		return _interactiveTools;
-	}
-
-	@Deprecated
-	public void setInteractiveTools(InteractiveTool... tools) {
-		_interactiveTools = Arrays.asList(tools);
-
-		getEditor().updatePropertyPagesContentWithSelection();
-
-		redraw();
-	}
-
-	@Deprecated
-	public boolean hasInteractiveTool(Class<?> cls) {
-		for (var tool : _interactiveTools) {
-			if (cls.isInstance(tool)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private void init_DND() {
@@ -415,12 +384,6 @@ public class SceneCanvas extends ZoomCanvas
 	}
 
 	private void renderInteractiveElements(GC gc) {
-
-		for (var elem : _interactiveTools) {
-			if (!elem.getModels().isEmpty()) {
-				elem.render(gc);
-			}
-		}
 
 	}
 
@@ -1217,7 +1180,7 @@ public class SceneCanvas extends ZoomCanvas
 
 		return result;
 	}
-	
+
 	public SelectionEvents getSelectionEvents() {
 		return _selectionEvents;
 	}
@@ -1233,9 +1196,6 @@ public class SceneCanvas extends ZoomCanvas
 			return;
 		}
 
-		for (var elem : _interactiveTools) {
-			elem.mouseDown(e);
-		}
 	}
 
 	@Override
@@ -1246,21 +1206,6 @@ public class SceneCanvas extends ZoomCanvas
 		}
 
 		boolean contains = false;
-
-		for (var elem : _interactiveTools) {
-			if (elem.contains(e.x, e.y)) {
-				contains = true;
-				break;
-			}
-		}
-
-		if (contains) {
-			for (var elem : _interactiveTools) {
-				elem.mouseUp(e);
-			}
-
-			_editor.updatePropertyPagesContentWithSelection();
-		}
 
 		if (_dragDetected) {
 			_dragDetected = false;
@@ -1285,31 +1230,10 @@ public class SceneCanvas extends ZoomCanvas
 			return;
 		}
 
-		boolean contains = false;
-
-		for (var elem : _interactiveTools) {
-			if (elem.contains(e.x, e.y)) {
-				contains = true;
-			}
+		if (_dragObjectsEvents.isDragging()) {
+			_dragObjectsEvents.update(e);
 		}
 
-		if (contains) {
-
-			for (var elem : _interactiveTools) {
-				elem.mouseMove(e);
-			}
-
-		} else {
-
-			if (_dragObjectsEvents.isDragging()) {
-				_dragObjectsEvents.update(e);
-			}
-
-		}
-
-		if (!_interactiveTools.isEmpty()) {
-			redraw();
-		}
 	}
 
 	private boolean _dragDetected;
@@ -1333,22 +1257,10 @@ public class SceneCanvas extends ZoomCanvas
 
 	public boolean isInteractiveDragging() {
 
-		for (var elem : _interactiveTools) {
-			if (elem.isDragging()) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 
 	public boolean isInteractiveHightlights() {
-
-		for (var elem : _interactiveTools) {
-			if (elem.isHightlights()) {
-				return true;
-			}
-		}
 
 		return false;
 	}

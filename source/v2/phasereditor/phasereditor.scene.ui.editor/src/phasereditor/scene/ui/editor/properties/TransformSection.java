@@ -37,9 +37,6 @@ import org.json.JSONObject;
 
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.SceneUIEditor;
-import phasereditor.scene.ui.editor.interactive.AngleTool;
-import phasereditor.scene.ui.editor.interactive.PositionTool;
-import phasereditor.scene.ui.editor.interactive.ScaleTool;
 import phasereditor.scene.ui.editor.messages.RunPositionActionMessage;
 import phasereditor.scene.ui.editor.messages.SetTransformCoordsMessage;
 import phasereditor.ui.EditorSharedImages;

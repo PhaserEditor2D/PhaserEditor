@@ -29,7 +29,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 
 /**
  * @author arian
@@ -42,14 +41,6 @@ public abstract class ShowInteractiveToolHander extends AbstractHandler {
 
 		var editor = (SceneEditor) HandlerUtil.getActiveEditor(event);
 
-		var scene = editor.getScene();
-
-		if (scene.hasInteractiveTool(getToolClass())) {
-			scene.setInteractiveTools();
-		} else {
-			scene.setInteractiveTools(createTools(editor));
-		}
-		
 		var tools = getTools(editor);
 		
 		if (editor.hasInteractiveTools(tools)) {
@@ -60,12 +51,6 @@ public abstract class ShowInteractiveToolHander extends AbstractHandler {
 
 		return null;
 	}
-
-	@Deprecated
-	protected abstract InteractiveTool[] createTools(SceneEditor editor);
-
-	protected abstract Class<?> getToolClass();
-
 	protected abstract Set<String> getTools(SceneEditor editor);
 
 }

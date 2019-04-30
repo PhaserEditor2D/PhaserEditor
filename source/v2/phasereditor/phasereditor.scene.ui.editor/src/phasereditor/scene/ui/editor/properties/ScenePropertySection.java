@@ -37,7 +37,6 @@ import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.ui.editor.SceneCanvas;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.interactive.InteractiveTool;
 import phasereditor.scene.ui.editor.messages.LoadAssetsMessage;
 import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
@@ -259,10 +258,6 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		}
 
 		return InspectCore.getPhaserHelp().getMemberHelp(helpHint);
-	}
-
-	protected void setInteractiveTools(InteractiveTool... tools) {
-		getEditor().getScene().setInteractiveTools(tools);
 	}
 
 }
