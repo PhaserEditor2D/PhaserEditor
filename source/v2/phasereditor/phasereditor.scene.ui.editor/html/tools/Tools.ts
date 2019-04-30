@@ -99,6 +99,33 @@ namespace PhaserEditor2D {
             return new Phaser.Math.Vector2(scaleX, scaleY);
         }
 
+        protected angle2(a : Phaser.Math.Vector2, b : Phaser.Math.Vector2) {
+            return this.angle(a.x, a.y, b.x, b.y);
+        }
+
+        protected angle(x1 : number,y1 : number, x2 : number, y2 : number) {
+
+            const delta = (x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+    
+            if (delta > 1.0) {
+                return 0;
+            }
+
+            if (delta < -1.0) {
+                return 180;
+            }
+    
+            return Phaser.Math.RadToDeg(Math.acos(delta));
+        }
+
+        protected snapValueX(x : number) {
+            return this.toolScene.snapValueX(x);
+        }
+
+        protected snapValueY(y : number) {
+            return this.toolScene.snapValueY(y);
+        }
+
         protected createArrowShape() {
             const s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
             s.setStrokeStyle(1, 0, 0.8);
@@ -142,6 +169,7 @@ namespace PhaserEditor2D {
         getX(): number;
         getY(): number;
         canEdit(obj: any): boolean;
+        isEditing(): boolean;
     }
 
     export class SimpleLineTool extends InteractiveTool {
@@ -149,17 +177,26 @@ namespace PhaserEditor2D {
         private _tool1: SpotTool;
         private _tool2: SpotTool;
         private _line: Phaser.GameObjects.Line;
+        private _line2: Phaser.GameObjects.Line;
+        private _color: number;
 
         constructor(tool1: SpotTool, tool2: SpotTool, color: number) {
             super();
 
+            this._color = color;
+            
             this._tool1 = tool1;
             this._tool2 = tool2;
 
             this._line = this.createLineShape();
-            this._line.setStrokeStyle(1, color);
+            this._line.setStrokeStyle(4, 0);
             this._line.setOrigin(0, 0);
             this._line.depth = -1;
+
+            this._line2 = this.createLineShape();
+            this._line2.setStrokeStyle(2, color);
+            this._line2.setOrigin(0, 0);
+            this._line2.depth = -1;
         }
 
         canEdit(obj: any): boolean {
@@ -168,11 +205,24 @@ namespace PhaserEditor2D {
 
         render(objects: Phaser.GameObjects.GameObject[]) {
             this._line.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
+            this._line2.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
             this._line.visible = true;
+            this._line2.visible = true;
         }
 
         clear() {
             this._line.visible = false;
+            this._line2.visible = false;
+        }
+
+        onMouseDown() {
+            if (this._tool2.isEditing()) {
+                this._line2.strokeColor = 0xffffff;
+            }
+        }
+
+        onMouseUp() {
+            this._line2.strokeColor = this._color;
         }
 
     }
@@ -238,6 +288,18 @@ namespace PhaserEditor2D {
                         new ScaleTool(false, true),
                         new ScaleTool(true, true)
                     ]
+                }
+                case "Position": {
+                    const toolX = new PositionTool(true, false);
+                    const toolY = new PositionTool(false, true);
+                    const toolXY = new PositionTool(true, true);
+                    return [
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                    ];
                 }
             }
 

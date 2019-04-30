@@ -349,6 +349,9 @@ var PhaserEditor2D;
         Editor.prototype.isTransformLocalCoords = function () {
             return this._transformLocalCoords;
         };
+        Editor.prototype.onSetTransformCoords = function (msg) {
+            this._transformLocalCoords = msg.transformLocalCoords;
+        };
         Editor.prototype.processMessageList = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
@@ -392,6 +395,9 @@ var PhaserEditor2D;
                         break;
                     case "SetInteractiveTool":
                         this.onSetInteractiveTool(msg);
+                        break;
+                    case "SetTransformCoords":
+                        this.onSetTransformCoords(msg);
                         break;
                 }
             }

@@ -41,6 +41,7 @@ import phasereditor.scene.ui.editor.interactive.AngleTool;
 import phasereditor.scene.ui.editor.interactive.PositionTool;
 import phasereditor.scene.ui.editor.interactive.ScaleTool;
 import phasereditor.scene.ui.editor.messages.RunPositionActionMessage;
+import phasereditor.scene.ui.editor.messages.SetTransformCoordsMessage;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -312,6 +313,8 @@ public class TransformSection extends ScenePropertySection {
 				var scene = getScene();
 
 				scene.setTransformLocalCoords(!scene.isTransformLocalCoords());
+				
+				getEditor().getBroker().sendAll(new SetTransformCoordsMessage(getEditor()));
 
 				updateActions();
 
@@ -325,7 +328,7 @@ public class TransformSection extends ScenePropertySection {
 
 	void updateActions() {
 		var editor = getEditor();
-		_positionToolAction.setChecked(editor.getScene().hasInteractiveTool(PositionTool.class));
+		_positionToolAction.setChecked(editor.hasInteractiveTools(Set.of("Position")));
 		_scaleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Scale")));
 		_angleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Angle")));
 

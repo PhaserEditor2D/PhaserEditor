@@ -53,9 +53,6 @@ namespace PhaserEditor2D {
                 const worldXY = new Phaser.Math.Vector2();
                 const worldTx = sprite.getWorldTransformMatrix();
 
-                const flipX = sprite.flipX ? -1 : 1;
-                const flipY = sprite.flipY ? -1 : 1;
-
                 const localLeft = -sprite.width * sprite.originX;
                 const localTop = -sprite.height * sprite.originY;
 
@@ -64,9 +61,9 @@ namespace PhaserEditor2D {
 
                 if (!this._changeX || !this._changeY) {
                     if (this._changeX) {
-                        localX += ARROW_LENGTH / cam.zoom;
+                        localX += ARROW_LENGTH / cam.zoom / sprite.scaleX;
                     } else {
-                        localY += ARROW_LENGTH / cam.zoom;
+                        localY += ARROW_LENGTH / cam.zoom / sprite.scaleY;
                     }
                 }
 

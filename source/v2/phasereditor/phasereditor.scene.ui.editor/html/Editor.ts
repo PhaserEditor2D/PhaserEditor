@@ -468,6 +468,10 @@ namespace PhaserEditor2D {
             return this._transformLocalCoords;
         }
 
+        private onSetTransformCoords(msg: any): any {
+            this._transformLocalCoords = msg.transformLocalCoords;
+        }
+
         private processMessageList(startIndex: number, list: any[]) {
 
             for (var i = startIndex; i < list.length; i++) {
@@ -515,6 +519,9 @@ namespace PhaserEditor2D {
                         break;
                     case "SetInteractiveTool":
                         this.onSetInteractiveTool(msg);
+                        break;
+                        case "SetTransformCoords":
+                        this.onSetTransformCoords(msg);
                         break;
                 }
             }

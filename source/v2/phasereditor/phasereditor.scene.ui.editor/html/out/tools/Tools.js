@@ -75,6 +75,25 @@ var PhaserEditor2D;
             }
             return new Phaser.Math.Vector2(scaleX, scaleY);
         };
+        InteractiveTool.prototype.angle2 = function (a, b) {
+            return this.angle(a.x, a.y, b.x, b.y);
+        };
+        InteractiveTool.prototype.angle = function (x1, y1, x2, y2) {
+            var delta = (x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+            if (delta > 1.0) {
+                return 0;
+            }
+            if (delta < -1.0) {
+                return 180;
+            }
+            return Phaser.Math.RadToDeg(Math.acos(delta));
+        };
+        InteractiveTool.prototype.snapValueX = function (x) {
+            return this.toolScene.snapValueX(x);
+        };
+        InteractiveTool.prototype.snapValueY = function (y) {
+            return this.toolScene.snapValueY(y);
+        };
         InteractiveTool.prototype.createArrowShape = function () {
             var s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
             s.setStrokeStyle(1, 0, 0.8);
@@ -112,12 +131,17 @@ var PhaserEditor2D;
         __extends(SimpleLineTool, _super);
         function SimpleLineTool(tool1, tool2, color) {
             var _this = _super.call(this) || this;
+            _this._color = color;
             _this._tool1 = tool1;
             _this._tool2 = tool2;
             _this._line = _this.createLineShape();
-            _this._line.setStrokeStyle(1, color);
+            _this._line.setStrokeStyle(4, 0);
             _this._line.setOrigin(0, 0);
             _this._line.depth = -1;
+            _this._line2 = _this.createLineShape();
+            _this._line2.setStrokeStyle(2, color);
+            _this._line2.setOrigin(0, 0);
+            _this._line2.depth = -1;
             return _this;
         }
         SimpleLineTool.prototype.canEdit = function (obj) {
@@ -125,10 +149,21 @@ var PhaserEditor2D;
         };
         SimpleLineTool.prototype.render = function (objects) {
             this._line.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
+            this._line2.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
             this._line.visible = true;
+            this._line2.visible = true;
         };
         SimpleLineTool.prototype.clear = function () {
             this._line.visible = false;
+            this._line2.visible = false;
+        };
+        SimpleLineTool.prototype.onMouseDown = function () {
+            if (this._tool2.isEditing()) {
+                this._line2.strokeColor = 0xffffff;
+            }
+        };
+        SimpleLineTool.prototype.onMouseUp = function () {
+            this._line2.strokeColor = this._color;
         };
         return SimpleLineTool;
     }(InteractiveTool));
@@ -194,6 +229,18 @@ var PhaserEditor2D;
                         new PhaserEditor2D.ScaleTool(true, false),
                         new PhaserEditor2D.ScaleTool(false, true),
                         new PhaserEditor2D.ScaleTool(true, true)
+                    ];
+                }
+                case "Position": {
+                    var toolX = new PhaserEditor2D.PositionTool(true, false);
+                    var toolY = new PhaserEditor2D.PositionTool(false, true);
+                    var toolXY = new PhaserEditor2D.PositionTool(true, true);
+                    return [
+                        toolX,
+                        toolY,
+                        toolXY,
+                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
                 }
             }

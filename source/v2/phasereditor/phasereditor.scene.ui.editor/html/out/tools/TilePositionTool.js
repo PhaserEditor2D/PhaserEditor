@@ -51,18 +51,16 @@ var PhaserEditor2D;
                 var sprite = obj;
                 var worldXY = new Phaser.Math.Vector2();
                 var worldTx = sprite.getWorldTransformMatrix();
-                var flipX = sprite.flipX ? -1 : 1;
-                var flipY = sprite.flipY ? -1 : 1;
                 var localLeft = -sprite.width * sprite.originX;
                 var localTop = -sprite.height * sprite.originY;
                 var localX = localLeft + sprite.tilePositionX;
                 var localY = localTop + sprite.tilePositionY;
                 if (!this._changeX || !this._changeY) {
                     if (this._changeX) {
-                        localX += PhaserEditor2D.ARROW_LENGTH / cam.zoom;
+                        localX += PhaserEditor2D.ARROW_LENGTH / cam.zoom / sprite.scaleX;
                     }
                     else {
-                        localY += PhaserEditor2D.ARROW_LENGTH / cam.zoom;
+                        localY += PhaserEditor2D.ARROW_LENGTH / cam.zoom / sprite.scaleY;
                     }
                 }
                 angle += this.objectGlobalAngle(sprite);
