@@ -51,10 +51,7 @@ var PhaserEditor2D;
             return this.toolScene.input.activePointer;
         };
         InteractiveTool.prototype.getScenePoint = function (toolX, toolY) {
-            var cam = this.objScene.cameras.main;
-            var sceneX = toolX / cam.zoom + cam.scrollX;
-            var sceneY = toolY / cam.zoom + cam.scrollY;
-            return new Phaser.Math.Vector2(sceneX, sceneY);
+            return this.objScene.getScenePoint(toolX, toolY);
         };
         InteractiveTool.prototype.objectGlobalAngle = function (obj) {
             var a = obj.angle;

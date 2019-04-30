@@ -89,7 +89,7 @@ import phasereditor.ui.ZoomCanvas;
 public class SceneCanvas extends ZoomCanvas
 		implements MouseListener, MouseMoveListener, DragDetectListener, ISceneObjectRendererContext {
 
-	private static final String SCENE_COPY_STAMP = "--scene--copy--stamp--";
+	
 	public static final int X_LABELS_HEIGHT = 18;
 	public static final int Y_LABEL_WIDTH = 18;
 	private SceneEditor _editor;
@@ -970,205 +970,15 @@ public class SceneCanvas extends ZoomCanvas
 		_editor.delete();
 	}
 
-	public void copy() {
 
-		var sel = new StructuredSelection(filterChidlren(_editor.getSelectionList())
-
-				.stream().map(model -> {
-
-					var data = new JSONObject();
-
-					data.put(SCENE_COPY_STAMP, true);
-
-					model.write(data);
-
-					// convert the local position to a global position
-
-					if (model instanceof TransformComponent) {
-
-						var parent = ParentComponent.get_parent(model);
-
-						var globalPoint = new float[] { 0, 0 };
-
-						if (parent != null) {
-							globalPoint = _renderer.localToScene(parent, TransformComponent.get_x(model),
-									TransformComponent.get_y(model));
-						}
-
-						data.put(TransformComponent.x_name, globalPoint[0]);
-						data.put(TransformComponent.y_name, globalPoint[1]);
-					}
-
-					return data;
-
-				}).toArray());
-
-		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-		transfer.setSelection(sel);
-
-		Clipboard cb = new Clipboard(getDisplay());
-		cb.setContents(new Object[] { sel.toArray() }, new Transfer[] { transfer });
-		cb.dispose();
-	}
-
-	public void cut() {
-		copy();
-		delete();
-	}
-
-	public void paste() {
-
-		var root = getEditor().getSceneModel().getDisplayList();
-
-		paste(root, true);
-	}
+	
 
 	public void paste(ObjectModel parent, boolean placeAtCursorPosition) {
-
-		var beforeData = WorldSnapshotOperation.takeSnapshot(_editor);
-
-		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-
-		Clipboard cb = new Clipboard(getDisplay());
-		Object content = cb.getContents(transfer);
-		cb.dispose();
-
-		if (content == null) {
-			return;
-		}
-
-		var editor = getEditor();
-
-		var project = editor.getEditorInput().getFile().getProject();
-
-		var copyElements = ((IStructuredSelection) content).toArray();
-
-		List<ObjectModel> pasteModels = new ArrayList<>();
-
-		// create the copies
-
-		for (var obj : copyElements) {
-			if (obj instanceof JSONObject) {
-				var data = (JSONObject) obj;
-				if (data.has(SCENE_COPY_STAMP)) {
-
-					String type = data.getString("-type");
-
-					var newModel = SceneModel.createModel(type);
-
-					newModel.read(data, project);
-
-					pasteModels.add(newModel);
-
-				}
-			}
-
-		}
-
-		// remove the children
-
-		pasteModels = filterChidlren(pasteModels);
-
-		var cursorPoint = toControl(getDisplay().getCursorLocation());
-		var localCursorPoint = _renderer.sceneToLocal(parent, cursorPoint.x, cursorPoint.y);
-
-		// set new id and editorName
-
-		var nameComputer = new NameComputer(getModel().getDisplayList());
-
-		float[] offsetPoint;
-
-		{
-			var minX = Float.MAX_VALUE;
-			var minY = Float.MAX_VALUE;
-
-			for (var model : pasteModels) {
-				if (model instanceof TransformComponent) {
-					var x = TransformComponent.get_x(model);
-					var y = TransformComponent.get_y(model);
-
-					minX = Math.min(minX, x);
-					minY = Math.min(minY, y);
-				}
-			}
-
-			offsetPoint = new float[] { minX - localCursorPoint[0], minY - localCursorPoint[1] };
-		}
-
-		for (var model : pasteModels) {
-			model.visit(model2 -> {
-				model2.setId(UUID.randomUUID().toString());
-
-				var name = VariableComponent.get_variableName(model2);
-
-				name = nameComputer.newName(name);
-
-				VariableComponent.set_variableName(model2, name);
-			});
-
-			if (model instanceof TransformComponent) {
-				// TODO: honor the snapping settings
-
-				var x = TransformComponent.get_x(model);
-				var y = TransformComponent.get_y(model);
-
-				var sceneModel = getModel();
-
-				if (placeAtCursorPosition) {
-
-					// if (offsetPoint == null) {
-					// offsetPoint = new float[] { x - localCursorPoint[0], y - localCursorPoint[1]
-					// };
-					// }
-
-					TransformComponent.set_x(model, sceneModel.snapValueX(x - offsetPoint[0]));
-					TransformComponent.set_y(model, sceneModel.snapValueY(y - offsetPoint[1]));
-
-				} else {
-
-					var point = _renderer.sceneToLocal(parent, x, y);
-
-					TransformComponent.set_x(model, sceneModel.snapValueX(point[0]));
-					TransformComponent.set_y(model, sceneModel.snapValueY(point[1]));
-				}
-			}
-		}
-
-		// add to the root object
-
-		for (var model : pasteModels) {
-			ParentComponent.utils_addChild(parent, model);
-		}
-
-		editor.refreshOutline();
-
-		editor.setSelection(pasteModels);
-
-		editor.setDirty(true);
-
-		var afterData = WorldSnapshotOperation.takeSnapshot(_editor);
-
-		_editor.executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Paste objects."));
+		
+		
 	}
 
-	public static List<ObjectModel> filterChidlren(List<ObjectModel> models) {
-		var result = new ArrayList<>(models);
-
-		for (var i = 0; i < models.size(); i++) {
-			for (var j = 0; j < models.size(); j++) {
-				if (i != j) {
-					var a = models.get(i);
-					var b = models.get(j);
-					if (ParentComponent.utils_isDescendentOf(a, b)) {
-						result.remove(a);
-					}
-				}
-			}
-		}
-
-		return result;
-	}
-
+	
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		//

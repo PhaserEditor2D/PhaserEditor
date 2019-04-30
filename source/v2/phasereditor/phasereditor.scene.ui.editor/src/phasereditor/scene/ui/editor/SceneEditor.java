@@ -5,7 +5,9 @@ import static java.util.stream.Collectors.toList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
@@ -17,15 +19,20 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -70,6 +77,7 @@ import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.messages.DeleteObjectsMessage;
+import phasereditor.scene.ui.editor.messages.GetPastePositionMessage;
 import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
@@ -82,6 +90,7 @@ import phasereditor.webrun.core.BatchMessage;
 
 public class SceneEditor extends EditorPart implements IPersistableEditor {
 
+	private static final String SCENE_COPY_STAMP = "--scene--copy--stamp--";
 	public static final String ID = "phasereditor.scene.ui.editor.SceneEditor";
 	private static String OBJECTS_CONTEXT = "phasereditor.scene.ui.editor.objects";
 	private static String COMMAND_CONTEXT = "phasereditor.scene.ui.editor.command";
@@ -762,6 +771,309 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		if (s != null) {
 			_cameraState = new JSONObject(s);
 		}
+	}
+
+	public void copy() {
+		var sel = new StructuredSelection(filterChidlren(getSelectionList())
+
+				.stream().map(model -> {
+
+					var data = new JSONObject();
+
+					data.put(SCENE_COPY_STAMP, true);
+
+					model.write(data);
+
+					// convert the local position to a global position
+
+					// TODO: I don't know why we should this
+
+					// if (model instanceof TransformComponent) {
+					//
+					// var parent = ParentComponent.get_parent(model);
+					//
+					// var globalPoint = new float[] { 0, 0 };
+					//
+					// if (parent != null) {
+					// globalPoint = _renderer.localToScene(parent, TransformComponent.get_x(model),
+					// TransformComponent.get_y(model));
+					// }
+					//
+					// data.put(TransformComponent.x_name, globalPoint[0]);
+					// data.put(TransformComponent.y_name, globalPoint[1]);
+					// }
+
+					return data;
+
+				}).toArray());
+
+		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+		transfer.setSelection(sel);
+
+		Clipboard cb = new Clipboard(getDisplay());
+		cb.setContents(new Object[] { sel.toArray() }, new Transfer[] { transfer });
+		cb.dispose();
+	}
+
+	public void cut() {
+		copy();
+		delete();
+	}
+
+	public void paste() {
+		getBroker().sendAll(new GetPastePositionMessage(Optional.empty(), true));
+	}
+
+	public void paste(ObjectModel parent, float pasteX, float pasteY) {
+		var beforeData = WorldSnapshotOperation.takeSnapshot(this);
+
+		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+
+		Clipboard cb = new Clipboard(getDisplay());
+		Object content = cb.getContents(transfer);
+		cb.dispose();
+
+		if (content == null) {
+			return;
+		}
+
+		var project = getEditorInput().getFile().getProject();
+
+		var copyElements = ((IStructuredSelection) content).toArray();
+
+		List<ObjectModel> pasteModels = new ArrayList<>();
+
+		// create the copies
+
+		for (var obj : copyElements) {
+			if (obj instanceof JSONObject) {
+				var data = (JSONObject) obj;
+				if (data.has(SCENE_COPY_STAMP)) {
+
+					String type = data.getString("-type");
+
+					var newModel = SceneModel.createModel(type);
+
+					newModel.read(data, project);
+
+					pasteModels.add(newModel);
+
+				}
+			}
+
+		}
+
+		// remove the children
+
+		pasteModels = filterChidlren(pasteModels);
+
+		// set new id and editorName
+
+		var sceneModel = getSceneModel();
+
+		var nameComputer = new NameComputer(sceneModel.getDisplayList());
+
+		float[] offsetPoint;
+
+		{
+			var minX = Float.MAX_VALUE;
+			var minY = Float.MAX_VALUE;
+
+			for (var model : pasteModels) {
+				if (model instanceof TransformComponent) {
+					var x = TransformComponent.get_x(model);
+					var y = TransformComponent.get_y(model);
+
+					minX = Math.min(minX, x);
+					minY = Math.min(minY, y);
+				}
+			}
+
+			offsetPoint = new float[] { minX - pasteX, minY - pasteY };
+		}
+
+		for (var model : pasteModels) {
+			model.visit(model2 -> {
+				model2.setId(UUID.randomUUID().toString());
+
+				var name = VariableComponent.get_variableName(model2);
+
+				name = nameComputer.newName(name);
+
+				VariableComponent.set_variableName(model2, name);
+			});
+
+			if (model instanceof TransformComponent) {
+				var x = TransformComponent.get_x(model);
+				var y = TransformComponent.get_y(model);
+
+				TransformComponent.set_x(model, sceneModel.snapValueX(x - offsetPoint[0]));
+				TransformComponent.set_y(model, sceneModel.snapValueY(y - offsetPoint[1]));
+			}
+		}
+
+		// add to the root object
+
+		for (var model : pasteModels) {
+			ParentComponent.utils_addChild(parent, model);
+		}
+
+		refreshOutline();
+
+		setSelection(pasteModels);
+
+		setDirty(true);
+
+		var afterData = WorldSnapshotOperation.takeSnapshot(this);
+
+		executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Paste objects."));
+	}
+
+	// public void paste(ObjectModel parent, boolean placeAtCursorPosition) {
+	//
+	//
+	// var beforeData = WorldSnapshotOperation.takeSnapshot(this);
+	//
+	// LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+	//
+	// Clipboard cb = new Clipboard(getDisplay());
+	// Object content = cb.getContents(transfer);
+	// cb.dispose();
+	//
+	// if (content == null) {
+	// return;
+	// }
+	//
+	// var project = getEditorInput().getFile().getProject();
+	//
+	// var copyElements = ((IStructuredSelection) content).toArray();
+	//
+	// List<ObjectModel> pasteModels = new ArrayList<>();
+	//
+	// // create the copies
+	//
+	// for (var obj : copyElements) {
+	// if (obj instanceof JSONObject) {
+	// var data = (JSONObject) obj;
+	// if (data.has(SCENE_COPY_STAMP)) {
+	//
+	// String type = data.getString("-type");
+	//
+	// var newModel = SceneModel.createModel(type);
+	//
+	// newModel.read(data, project);
+	//
+	// pasteModels.add(newModel);
+	//
+	// }
+	// }
+	//
+	// }
+	//
+	// // remove the children
+	//
+	// pasteModels = filterChidlren(pasteModels);
+	//
+	// var cursorPoint = toControl(getDisplay().getCursorLocation());
+	// var localCursorPoint = _renderer.sceneToLocal(parent, cursorPoint.x,
+	// cursorPoint.y);
+	//
+	// // set new id and editorName
+	//
+	// var sceneModel = getSceneModel();
+	//
+	// var nameComputer = new NameComputer(sceneModel.getDisplayList());
+	//
+	// float[] offsetPoint;
+	//
+	// {
+	// var minX = Float.MAX_VALUE;
+	// var minY = Float.MAX_VALUE;
+	//
+	// for (var model : pasteModels) {
+	// if (model instanceof TransformComponent) {
+	// var x = TransformComponent.get_x(model);
+	// var y = TransformComponent.get_y(model);
+	//
+	// minX = Math.min(minX, x);
+	// minY = Math.min(minY, y);
+	// }
+	// }
+	//
+	// offsetPoint = new float[] { minX - localCursorPoint[0], minY -
+	// localCursorPoint[1] };
+	// }
+	//
+	// for (var model : pasteModels) {
+	// model.visit(model2 -> {
+	// model2.setId(UUID.randomUUID().toString());
+	//
+	// var name = VariableComponent.get_variableName(model2);
+	//
+	// name = nameComputer.newName(name);
+	//
+	// VariableComponent.set_variableName(model2, name);
+	// });
+	//
+	// if (model instanceof TransformComponent) {
+	// // TODO: honor the snapping settings
+	//
+	// var x = TransformComponent.get_x(model);
+	// var y = TransformComponent.get_y(model);
+	//
+	// if (placeAtCursorPosition) {
+	//
+	// TransformComponent.set_x(model, sceneModel.snapValueX(x - offsetPoint[0]));
+	// TransformComponent.set_y(model, sceneModel.snapValueY(y - offsetPoint[1]));
+	//
+	// } else {
+	//
+	// var point = _renderer.sceneToLocal(parent, x, y);
+	//
+	// TransformComponent.set_x(model, sceneModel.snapValueX(point[0]));
+	// TransformComponent.set_y(model, sceneModel.snapValueY(point[1]));
+	// }
+	// }
+	// }
+	//
+	// // add to the root object
+	//
+	// for (var model : pasteModels) {
+	// ParentComponent.utils_addChild(parent, model);
+	// }
+	//
+	// refreshOutline();
+	//
+	// setSelection(pasteModels);
+	//
+	// setDirty(true);
+	//
+	// var afterData = WorldSnapshotOperation.takeSnapshot(this);
+	//
+	// executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Paste
+	// objects."));
+	// }
+
+	private Display getDisplay() {
+		return getEditorSite().getShell().getDisplay();
+	}
+
+	public static List<ObjectModel> filterChidlren(List<ObjectModel> models) {
+		var result = new ArrayList<>(models);
+
+		for (var i = 0; i < models.size(); i++) {
+			for (var j = 0; j < models.size(); j++) {
+				if (i != j) {
+					var a = models.get(i);
+					var b = models.get(j);
+					if (ParentComponent.utils_isDescendentOf(a, b)) {
+						result.remove(a);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 }

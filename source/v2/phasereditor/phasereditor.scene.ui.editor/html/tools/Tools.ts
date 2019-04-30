@@ -64,12 +64,7 @@ namespace PhaserEditor2D {
         }
 
         protected getScenePoint(toolX: number, toolY: number) {
-            const cam = this.objScene.cameras.main;
-
-            const sceneX = toolX / cam.zoom + cam.scrollX;
-            const sceneY = toolY / cam.zoom + cam.scrollY;
-
-            return new Phaser.Math.Vector2(sceneX, sceneY);
+            return this.objScene.getScenePoint(toolX, toolY);
         }
 
         protected objectGlobalAngle(obj: Phaser.GameObjects.GameObject) {

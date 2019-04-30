@@ -40,6 +40,7 @@ import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.ui.editor.messages.CreateGameMessage;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
 import phasereditor.scene.ui.editor.messages.LoadAssetsMessage;
+import phasereditor.scene.ui.editor.messages.ResetSceneMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SetCameraStateMessage;
 import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
@@ -152,12 +153,37 @@ public class SceneEditorBroker {
 			case "SetTransformProperties":
 				onSetTransformProperties(msg);
 				break;
+			case "PasteEvent":
+				onPasteEvent(msg);
+				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 			SceneUIEditor.logError(e);
 		}
+	}
+
+	private void onPasteEvent(JSONObject msg) {
+		var x = msg.getFloat("x");
+		var y = msg.getFloat("y");
+		var parentId = msg.optString("parent");
+
+		ObjectModel parent = _editor.getSceneModel().getDisplayList();
+
+		if (parentId != null) {
+			var obj = _editor.getSceneModel().getDisplayList().findById(parentId);
+			if (obj != null) {
+				parent = obj;
+			}
+		}
+
+		var parent2 = parent;
+
+		swtRun(() -> {
+			_editor.paste(parent2, x, y);
+			sendAll(new ResetSceneMessage(_editor));
+		});
 	}
 
 	private void onSetTileSpriteProperties(JSONObject msg) {
@@ -180,7 +206,7 @@ public class SceneEditorBroker {
 			TransformComponent.set_y(model, data.getFloat(TransformComponent.y_name));
 		});
 	}
-	
+
 	private void onSetTransformProperties(JSONObject msg) {
 		setObjectCustomProperties(msg, (model, data) -> {
 			TransformComponent.set_x(model, data.getFloat(TransformComponent.x_name));

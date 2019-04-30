@@ -352,6 +352,27 @@ var PhaserEditor2D;
         Editor.prototype.onSetTransformCoords = function (msg) {
             this._transformLocalCoords = msg.transformLocalCoords;
         };
+        Editor.prototype.onGetPastePosition = function (msg) {
+            var x = 0;
+            var y = 0;
+            if (msg.placeAtCursorPosition) {
+                var pointer = this.getObjectScene().input.activePointer;
+                var point = this.getObjectScene().getScenePoint(pointer.x, pointer.y);
+                x = point.x;
+                y = point.y;
+            }
+            else {
+                var cam = this.getObjectScene().cameras.main;
+                x = cam.midPoint.x;
+                y = cam.midPoint.y;
+            }
+            this.sendMessage({
+                method: "PasteEvent",
+                parent: msg.parent,
+                x: x,
+                y: y
+            });
+        };
         Editor.prototype.processMessageList = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
@@ -398,6 +419,9 @@ var PhaserEditor2D;
                         break;
                     case "SetTransformCoords":
                         this.onSetTransformCoords(msg);
+                        break;
+                    case "GetPastePosition":
+                        this.onGetPastePosition(msg);
                         break;
                 }
             }

@@ -51,6 +51,12 @@ var PhaserEditor2D;
             }
             this.sys.displayList.removeAll(false);
         };
+        ObjectScene.prototype.getScenePoint = function (pointerX, pointerY) {
+            var cam = this.cameras.main;
+            var sceneX = pointerX / cam.zoom + cam.scrollX;
+            var sceneY = pointerY / cam.zoom + cam.scrollY;
+            return new Phaser.Math.Vector2(sceneX, sceneY);
+        };
         ObjectScene.prototype.initBackground = function () {
             this.scene.launch("BackgroundScene");
             this._backgroundScene = this.scene.get("BackgroundScene");

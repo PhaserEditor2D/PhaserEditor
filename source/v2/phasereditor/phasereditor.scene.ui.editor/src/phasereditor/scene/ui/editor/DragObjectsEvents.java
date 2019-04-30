@@ -113,7 +113,7 @@ public class DragObjectsEvents {
 
 		var selection = (IStructuredSelection) _scene.getEditor().getEditorSite().getSelectionProvider().getSelection();
 
-		_objects = SceneCanvas.filterChidlren(
+		_objects = SceneEditor.filterChidlren(
 
 				Arrays.stream(selection.toArray()).map(obj -> (ObjectModel) obj).collect(toList())
 

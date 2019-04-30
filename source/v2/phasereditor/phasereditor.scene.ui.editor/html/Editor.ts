@@ -61,7 +61,7 @@ namespace PhaserEditor2D {
                 } else {
                     self.getObjectScene().getDragManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
-                }                
+                }
             })
 
             this._game.canvas.addEventListener("mousemove", function (e: MouseEvent) {
@@ -70,7 +70,7 @@ namespace PhaserEditor2D {
                 } else {
                     self.getObjectScene().getDragManager().onMouseMove(e);
                 }
-                
+
             })
 
             this._game.canvas.addEventListener("mouseup", function () {
@@ -327,7 +327,7 @@ namespace PhaserEditor2D {
 
         };
 
-        private _loaderIntervalID : number;
+        private _loaderIntervalID: number;
 
         private onLoadAssets(index: number, list: any[]) {
             let loadMsg = list[index];
@@ -341,7 +341,7 @@ namespace PhaserEditor2D {
                         return function () {
                             console.log("Loader complete.");
 
-                            console.log("Cancel " + self._loaderIntervalID);                            
+                            console.log("Cancel " + self._loaderIntervalID);
                             clearInterval(self._loaderIntervalID);
 
                             self.processMessageList(index2, list2);
@@ -454,9 +454,9 @@ namespace PhaserEditor2D {
         private onSetInteractiveTool(msg: any) {
             const tools = [];
 
-            for(let name of msg.list) {
+            for (let name of msg.list) {
                 const tools2 = ToolFactory.createByName(name);
-                for(let tool of tools2) {
+                for (let tool of tools2) {
                     tools.push(tool);
                 }
             }
@@ -468,8 +468,31 @@ namespace PhaserEditor2D {
             return this._transformLocalCoords;
         }
 
-        private onSetTransformCoords(msg: any): any {
+        private onSetTransformCoords(msg: any) {
             this._transformLocalCoords = msg.transformLocalCoords;
+        }
+
+        private onGetPastePosition(msg: any) {
+            let x = 0;
+            let y = 0;
+
+            if (msg.placeAtCursorPosition) {
+                const pointer = this.getObjectScene().input.activePointer;
+                const point = this.getObjectScene().getScenePoint(pointer.x, pointer.y);
+                x = point.x;
+                y = point.y;
+            } else {
+                let cam = this.getObjectScene().cameras.main;
+                x = cam.midPoint.x;
+                y = cam.midPoint.y;
+            }
+            
+            this.sendMessage({
+                method: "PasteEvent",
+                parent: msg.parent,
+                x : x,
+                y: y
+            });
         }
 
         private processMessageList(startIndex: number, list: any[]) {
@@ -520,8 +543,11 @@ namespace PhaserEditor2D {
                     case "SetInteractiveTool":
                         this.onSetInteractiveTool(msg);
                         break;
-                        case "SetTransformCoords":
+                    case "SetTransformCoords":
                         this.onSetTransformCoords(msg);
+                        break;
+                    case "GetPastePosition":
+                        this.onGetPastePosition(msg);
                         break;
                 }
             }

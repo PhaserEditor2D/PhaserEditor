@@ -1,7 +1,7 @@
 namespace PhaserEditor2D {
 
     export class ObjectScene extends Phaser.Scene {
-
+        
         private _toolScene: ToolScene;
         private _dragManager: DragManager;
         private _pickManager: PickManager;
@@ -63,6 +63,15 @@ namespace PhaserEditor2D {
                 obj.destroy();
             }
             this.sys.displayList.removeAll(false);
+        }
+
+        getScenePoint(pointerX: number, pointerY: number): any {
+            const cam = this.cameras.main;
+
+            const sceneX = pointerX / cam.zoom + cam.scrollX;
+            const sceneY = pointerY / cam.zoom + cam.scrollY;
+
+            return new Phaser.Math.Vector2(sceneX, sceneY);
         }
 
         private initBackground() {

@@ -64,10 +64,38 @@ public class SceneWebView extends Composite {
 				}
 
 				if (_webView.isFocusControl()) {
-					if (event.keyCode == SWT.DEL) {
-						_lastTime = event.time;
-						getEditor().delete();
+					var stateMask = event.stateMask;
+
+					var controlPressed = (stateMask & SWT.MOD1) == SWT.MOD1;
+
+					if (controlPressed) {
+						switch (event.keyCode) {
+						case 'c':
+							_lastTime = event.time;
+							_editor.copy();
+							break;
+						case 'x':
+							_lastTime = event.time;
+							_editor.cut();
+							break;
+						case 'v':
+							_lastTime = event.time;
+							_editor.paste();
+							break;
+						default:
+							break;
+						}
+					} else {
+						switch (event.keyCode) {
+						case SWT.DEL:
+							_lastTime = event.time;
+							getEditor().delete();
+							break;
+						default:
+							break;
+						}
 					}
+
 				}
 			}
 		};
