@@ -373,6 +373,16 @@ var PhaserEditor2D;
                 y: y
             });
         };
+        Editor.prototype.onRevealObject = function (msg) {
+            var sprite = this.getObjectScene().sys.displayList.getByName(msg.id);
+            if (sprite) {
+                var tx = sprite.getWorldTransformMatrix();
+                var p = new Phaser.Math.Vector2();
+                tx.transformPoint(0, 0, p);
+                var cam = this.getObjectScene().cameras.main;
+                cam.setScroll(p.x - cam.width / 2, p.y - cam.height / 2);
+            }
+        };
         Editor.prototype.processMessageList = function (startIndex, list) {
             for (var i = startIndex; i < list.length; i++) {
                 var msg = list[i];
@@ -422,6 +432,9 @@ var PhaserEditor2D;
                         break;
                     case "GetPastePosition":
                         this.onGetPastePosition(msg);
+                        break;
+                    case "RevealObject":
+                        this.onRevealObject(msg);
                         break;
                 }
             }

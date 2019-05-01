@@ -486,13 +486,24 @@ namespace PhaserEditor2D {
                 x = cam.midPoint.x;
                 y = cam.midPoint.y;
             }
-            
+
             this.sendMessage({
                 method: "PasteEvent",
                 parent: msg.parent,
-                x : x,
+                x: x,
                 y: y
             });
+        }
+
+        private onRevealObject(msg) {
+            const sprite: Phaser.GameObjects.Sprite = <any>this.getObjectScene().sys.displayList.getByName(msg.id);
+            if (sprite) {
+                const tx = sprite.getWorldTransformMatrix();
+                let p = new Phaser.Math.Vector2();
+                tx.transformPoint(0, 0, p);
+                const cam = this.getObjectScene().cameras.main;
+                cam.setScroll(p.x - cam.width / 2, p.y - cam.height / 2);
+            }
         }
 
         private processMessageList(startIndex: number, list: any[]) {
@@ -548,6 +559,9 @@ namespace PhaserEditor2D {
                         break;
                     case "GetPastePosition":
                         this.onGetPastePosition(msg);
+                        break;
+                    case "RevealObject":
+                        this.onRevealObject(msg);
                         break;
                 }
             }

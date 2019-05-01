@@ -220,8 +220,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	protected void revealSelectedObjectInScene() {
 		var obj = _viewer.getTree().getUtils().getOverObject();
 		if (obj != null && obj instanceof ObjectModel) {
-			// TODO: move this to the editor
-			// _editor.getScene().reveal((ObjectModel) obj);
+			_editor.reveal((ObjectModel) obj);
 		}
 	}
 

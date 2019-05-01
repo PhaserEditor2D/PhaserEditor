@@ -79,6 +79,7 @@ import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.messages.DeleteObjectsMessage;
 import phasereditor.scene.ui.editor.messages.GetPastePositionMessage;
 import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
+import phasereditor.scene.ui.editor.messages.RevealObjectMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
@@ -935,131 +936,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	}
 
-	// public void paste(ObjectModel parent, boolean placeAtCursorPosition) {
-	//
-	//
-	// var beforeData = WorldSnapshotOperation.takeSnapshot(this);
-	//
-	// LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-	//
-	// Clipboard cb = new Clipboard(getDisplay());
-	// Object content = cb.getContents(transfer);
-	// cb.dispose();
-	//
-	// if (content == null) {
-	// return;
-	// }
-	//
-	// var project = getEditorInput().getFile().getProject();
-	//
-	// var copyElements = ((IStructuredSelection) content).toArray();
-	//
-	// List<ObjectModel> pasteModels = new ArrayList<>();
-	//
-	// // create the copies
-	//
-	// for (var obj : copyElements) {
-	// if (obj instanceof JSONObject) {
-	// var data = (JSONObject) obj;
-	// if (data.has(SCENE_COPY_STAMP)) {
-	//
-	// String type = data.getString("-type");
-	//
-	// var newModel = SceneModel.createModel(type);
-	//
-	// newModel.read(data, project);
-	//
-	// pasteModels.add(newModel);
-	//
-	// }
-	// }
-	//
-	// }
-	//
-	// // remove the children
-	//
-	// pasteModels = filterChidlren(pasteModels);
-	//
-	// var cursorPoint = toControl(getDisplay().getCursorLocation());
-	// var localCursorPoint = _renderer.sceneToLocal(parent, cursorPoint.x,
-	// cursorPoint.y);
-	//
-	// // set new id and editorName
-	//
-	// var sceneModel = getSceneModel();
-	//
-	// var nameComputer = new NameComputer(sceneModel.getDisplayList());
-	//
-	// float[] offsetPoint;
-	//
-	// {
-	// var minX = Float.MAX_VALUE;
-	// var minY = Float.MAX_VALUE;
-	//
-	// for (var model : pasteModels) {
-	// if (model instanceof TransformComponent) {
-	// var x = TransformComponent.get_x(model);
-	// var y = TransformComponent.get_y(model);
-	//
-	// minX = Math.min(minX, x);
-	// minY = Math.min(minY, y);
-	// }
-	// }
-	//
-	// offsetPoint = new float[] { minX - localCursorPoint[0], minY -
-	// localCursorPoint[1] };
-	// }
-	//
-	// for (var model : pasteModels) {
-	// model.visit(model2 -> {
-	// model2.setId(UUID.randomUUID().toString());
-	//
-	// var name = VariableComponent.get_variableName(model2);
-	//
-	// name = nameComputer.newName(name);
-	//
-	// VariableComponent.set_variableName(model2, name);
-	// });
-	//
-	// if (model instanceof TransformComponent) {
-	// // TODO: honor the snapping settings
-	//
-	// var x = TransformComponent.get_x(model);
-	// var y = TransformComponent.get_y(model);
-	//
-	// if (placeAtCursorPosition) {
-	//
-	// TransformComponent.set_x(model, sceneModel.snapValueX(x - offsetPoint[0]));
-	// TransformComponent.set_y(model, sceneModel.snapValueY(y - offsetPoint[1]));
-	//
-	// } else {
-	//
-	// var point = _renderer.sceneToLocal(parent, x, y);
-	//
-	// TransformComponent.set_x(model, sceneModel.snapValueX(point[0]));
-	// TransformComponent.set_y(model, sceneModel.snapValueY(point[1]));
-	// }
-	// }
-	// }
-	//
-	// // add to the root object
-	//
-	// for (var model : pasteModels) {
-	// ParentComponent.utils_addChild(parent, model);
-	// }
-	//
-	// refreshOutline();
-	//
-	// setSelection(pasteModels);
-	//
-	// setDirty(true);
-	//
-	// var afterData = WorldSnapshotOperation.takeSnapshot(this);
-	//
-	// executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Paste
-	// objects."));
-	// }
-
 	private Display getDisplay() {
 		return getEditorSite().getShell().getDisplay();
 	}
@@ -1080,6 +956,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		return result;
+	}
+
+	public void reveal(ObjectModel obj) {
+		getBroker().sendAll(new RevealObjectMessage(obj));
 	}
 
 }
