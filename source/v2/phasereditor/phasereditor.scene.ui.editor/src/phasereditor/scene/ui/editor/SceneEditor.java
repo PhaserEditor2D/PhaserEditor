@@ -786,7 +786,8 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 					// convert the local position to a global position
 
-					// TODO: I don't know why we should this
+					// TODO: this maybe be needed to support containers. This info could be
+					// part of SetObjectDisplayProperties message.
 
 					// if (model instanceof TransformComponent) {
 					//
@@ -821,7 +822,11 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void paste() {
-		getBroker().sendAll(new GetPastePositionMessage(Optional.empty(), true));
+		paste(Optional.empty(), true);
+	}
+
+	public void paste(Optional<ObjectModel> parent, boolean pasteAtCursorPosition) {
+		getBroker().sendAll(new GetPastePositionMessage(parent, pasteAtCursorPosition));
 	}
 
 	public void paste(ObjectModel parent, float pasteX, float pasteY) {
@@ -927,6 +932,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		var afterData = WorldSnapshotOperation.takeSnapshot(this);
 
 		executeOperation(new WorldSnapshotOperation(beforeData, afterData, "Paste objects."));
+
 	}
 
 	// public void paste(ObjectModel parent, boolean placeAtCursorPosition) {

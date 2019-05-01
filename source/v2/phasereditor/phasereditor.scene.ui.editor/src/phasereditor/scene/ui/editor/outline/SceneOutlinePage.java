@@ -25,9 +25,9 @@ import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -53,11 +53,9 @@ import phasereditor.scene.core.GroupsModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
-import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -133,24 +131,21 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 		_viewer.setInput(_editor.getSceneModel());
 
-		// TODO: move this to the editor
-		// var scene = _editor.getScene();
-		//
-		// _viewer.getTree().setEditActions(scene::copy, scene::cut, () -> {
-		//
-		// var sel = _viewer.getStructuredSelection().toArray();
-		//
-		// ObjectModel pasteParent = getEditor().getSceneModel().getDisplayList();
-		//
-		// if (sel.length == 1) {
-		// if (sel[0] instanceof ObjectModel) {
-		// pasteParent = (ObjectModel) sel[0];
-		// }
-		// }
-		//
-		// scene.paste(pasteParent, false);
-		//
-		// });
+		_viewer.getTree().setEditActions(_editor::copy, _editor::cut, () -> {
+
+			var sel = _viewer.getStructuredSelection().toArray();
+
+			ObjectModel pasteParent = getEditor().getSceneModel().getDisplayList();
+
+			if (sel.length == 1) {
+				if (sel[0] instanceof ObjectModel) {
+					pasteParent = (ObjectModel) sel[0];
+				}
+			}
+
+			_editor.paste(Optional.of(pasteParent), false);
+
+		});
 
 		init_DND();
 

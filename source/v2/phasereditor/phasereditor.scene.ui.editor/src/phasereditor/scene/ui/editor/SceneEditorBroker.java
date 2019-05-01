@@ -182,7 +182,13 @@ public class SceneEditorBroker {
 
 		swtRun(() -> {
 			_editor.paste(parent2, x, y);
-			sendAll(new ResetSceneMessage(_editor));
+			sendAll(new BatchMessage(
+
+					new ResetSceneMessage(_editor),
+
+					new SelectObjectsMessage(_editor)
+
+			));
 		});
 	}
 
