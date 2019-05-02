@@ -6,9 +6,6 @@ namespace PhaserEditor2D {
 
         protected toolScene: ToolScene = Editor.getInstance().getToolScene();
         protected objScene: ObjectScene = Editor.getInstance().getObjectScene();
-
-
-
         requestRepaint = false;
 
         constructor() {
@@ -31,6 +28,10 @@ namespace PhaserEditor2D {
 
         clear() {
 
+        }
+
+        activated() {
+            
         }
 
         update() {
@@ -94,14 +95,14 @@ namespace PhaserEditor2D {
             return new Phaser.Math.Vector2(scaleX, scaleY);
         }
 
-        protected angle2(a : Phaser.Math.Vector2, b : Phaser.Math.Vector2) {
+        protected angle2(a: Phaser.Math.Vector2, b: Phaser.Math.Vector2) {
             return this.angle(a.x, a.y, b.x, b.y);
         }
 
-        protected angle(x1 : number,y1 : number, x2 : number, y2 : number) {
+        protected angle(x1: number, y1: number, x2: number, y2: number) {
 
             const delta = (x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
-    
+
             if (delta > 1.0) {
                 return 0;
             }
@@ -109,15 +110,15 @@ namespace PhaserEditor2D {
             if (delta < -1.0) {
                 return 180;
             }
-    
+
             return Phaser.Math.RadToDeg(Math.acos(delta));
         }
 
-        protected snapValueX(x : number) {
+        protected snapValueX(x: number) {
             return this.toolScene.snapValueX(x);
         }
 
-        protected snapValueY(y : number) {
+        protected snapValueY(y: number) {
             return this.toolScene.snapValueY(y);
         }
 
@@ -179,7 +180,7 @@ namespace PhaserEditor2D {
             super();
 
             this._color = color;
-            
+
             this._tool1 = tool1;
             this._tool2 = tool2;
 
@@ -296,6 +297,10 @@ namespace PhaserEditor2D {
                         new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
                 }
+                case "Hand": {
+                    return [new HandTool()];
+                }
+
             }
 
             return [];

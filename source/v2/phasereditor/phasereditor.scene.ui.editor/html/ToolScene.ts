@@ -249,6 +249,10 @@ namespace PhaserEditor2D {
                 tool.clear();
             }
 
+            for(let tool of tools) {
+                tool.activated();
+            }
+
             this._tools = tools;
         }
 

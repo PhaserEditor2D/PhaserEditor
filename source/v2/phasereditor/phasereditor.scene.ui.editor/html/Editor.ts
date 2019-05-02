@@ -460,6 +460,7 @@ namespace PhaserEditor2D {
                     tools.push(tool);
                 }
             }
+            
             this._transformLocalCoords = msg.transformLocalCoords;
             this.getToolScene().setTools(tools);
         }

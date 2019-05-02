@@ -21,9 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
-import static java.lang.System.out;
-
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -56,8 +55,29 @@ public class SceneWebView extends Composite {
 
 		_webView = new Browser(this, SWT.NONE);
 
-		out.println("Add filter " + this);
-		var listener = new Listener() {
+		var keyDownListener = new Listener() {
+
+			private int _lastTime;
+
+			@Override
+			public void handleEvent(Event event) {
+
+				if (event.time == _lastTime) {
+					return;
+				}
+				
+				if (_webView.isFocusControl()) {
+					if (event.keyCode == SWT.SPACE) {
+						_lastTime = event.time;
+						if (!editor.hasInteractiveTools(Set.of("Hand"))) {
+							editor.setInteractiveTools(Set.of("Hand"));
+						}
+					}
+				}
+			}
+		};
+
+		var keyUpListener = new Listener() {
 
 			private int _lastTime;
 
@@ -68,6 +88,7 @@ public class SceneWebView extends Composite {
 				}
 
 				if (_webView.isFocusControl()) {
+
 					var stateMask = event.stateMask;
 
 					var controlPressed = (stateMask & SWT.MOD1) == SWT.MOD1;
@@ -100,6 +121,11 @@ public class SceneWebView extends Composite {
 							editor.setSelection(List.of());
 							editor.getBroker().sendAll(new SelectObjectsMessage(editor));
 							break;
+						case SWT.SPACE:
+							if (editor.hasInteractiveTools(Set.of("Hand"))) {
+								editor.setInteractiveTools(Set.of());
+							}
+							break;
 						default:
 							break;
 						}
@@ -108,8 +134,13 @@ public class SceneWebView extends Composite {
 				}
 			}
 		};
-		getDisplay().addFilter(SWT.KeyUp, listener);
-		addDisposeListener(e -> getDisplay().removeFilter(SWT.KeyUp, listener));
+		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
+		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
+
+		addDisposeListener(e -> {
+			getDisplay().removeFilter(SWT.KeyDown, keyUpListener);
+			getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
+		});
 
 		_webView.addFocusListener(new FocusListener() {
 

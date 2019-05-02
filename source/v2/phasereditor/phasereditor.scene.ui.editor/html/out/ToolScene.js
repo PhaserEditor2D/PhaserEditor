@@ -190,6 +190,10 @@ var PhaserEditor2D;
                 var tool = _a[_i];
                 tool.clear();
             }
+            for (var _b = 0, tools_1 = tools; _b < tools_1.length; _b++) {
+                var tool = tools_1[_b];
+                tool.activated();
+            }
             this._tools = tools;
         };
         ToolScene.prototype.updateTools = function () {

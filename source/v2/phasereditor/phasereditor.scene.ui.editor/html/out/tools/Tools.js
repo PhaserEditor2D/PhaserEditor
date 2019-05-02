@@ -30,6 +30,8 @@ var PhaserEditor2D;
         };
         InteractiveTool.prototype.clear = function () {
         };
+        InteractiveTool.prototype.activated = function () {
+        };
         InteractiveTool.prototype.update = function () {
             var list = this.getObjects();
             if (list.length === 0) {
@@ -239,6 +241,9 @@ var PhaserEditor2D;
                         new SimpleLineTool(toolXY, toolX, 0xff0000),
                         new SimpleLineTool(toolXY, toolY, 0x00ff00),
                     ];
+                }
+                case "Hand": {
+                    return [new PhaserEditor2D.HandTool()];
                 }
             }
             return [];

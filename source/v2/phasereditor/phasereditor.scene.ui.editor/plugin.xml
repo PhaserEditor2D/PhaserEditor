@@ -261,6 +261,7 @@
                   </equals>
                </with>
             </and>
+            <!--
             <with
                   variable="activeContexts">
                <iterate
@@ -271,6 +272,7 @@
                   </equals>
                </iterate>
             </with>
+            -->
          </or>
       </definition>
       <definition
@@ -314,7 +316,8 @@
             </reference>
             <reference
                   definitionId="phasereditor.scene.ui.editor.sceneContextHasSelection">
-            </reference></or>
+            </reference>
+        </or>
       </definition>
       <definition
             id="phasereditor.scene.ui.editor.sceneOrToolbar">
