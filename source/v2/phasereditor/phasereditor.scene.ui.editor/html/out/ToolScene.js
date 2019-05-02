@@ -51,22 +51,6 @@ var PhaserEditor2D;
             this._axisToken = "";
             this.renderAxis();
         };
-        ToolScene.prototype.snapValueX = function (x) {
-            var props = PhaserEditor2D.Editor.getInstance().sceneProperties;
-            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(props)) {
-                var snap = PhaserEditor2D.ScenePropertiesComponent.get_snapWidth(props);
-                return Math.round(x / snap) * snap;
-            }
-            return x;
-        };
-        ToolScene.prototype.snapValueY = function (y) {
-            var props = PhaserEditor2D.Editor.getInstance().sceneProperties;
-            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(props)) {
-                var snap = PhaserEditor2D.ScenePropertiesComponent.get_snapHeight(props);
-                return Math.round(y / snap) * snap;
-            }
-            return y;
-        };
         ToolScene.prototype.renderAxis = function () {
             var editor = PhaserEditor2D.Editor.getInstance();
             var cam = editor.getObjectScene().cameras.main;

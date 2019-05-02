@@ -50,24 +50,6 @@ namespace PhaserEditor2D {
             this.renderAxis();
         }
 
-        snapValueX(x: number) {
-            const props = Editor.getInstance().sceneProperties;
-            if (ScenePropertiesComponent.get_snapEnabled(props)) {
-                const snap = ScenePropertiesComponent.get_snapWidth(props);
-                return Math.round(x / snap) * snap;
-            }
-            return x;
-        }
-
-        snapValueY(y: number) {
-            const props = Editor.getInstance().sceneProperties;
-            if (ScenePropertiesComponent.get_snapEnabled(props)) {
-                const snap = ScenePropertiesComponent.get_snapHeight(props);
-                return Math.round(y / snap) * snap;
-            }
-            return y;
-        }
-
         private _axisToken: string = null;
         private _axisLabels: Phaser.GameObjects.Text[] = [];
 

@@ -1,10 +1,11 @@
 namespace PhaserEditor2D {
 
     export class ObjectScene extends Phaser.Scene {
-        
+
         private _toolScene: ToolScene;
-        private _dragManager: DragManager;
-        private _pickManager: PickManager;
+        private _dragCameraManager: DragCameraManager;
+        private _dragObjectsManager: DragObjectsManager;
+        private _pickManager: PickObjectManager;
         private _backgroundScene: Phaser.Scene;
         private _initData: any;
 
@@ -25,9 +26,11 @@ namespace PhaserEditor2D {
         create() {
             Editor.getInstance().stop();
 
-            this._dragManager = new DragManager(this);
+            this._dragCameraManager = new DragCameraManager(this);
 
-            this._pickManager = new PickManager();
+            this._dragObjectsManager = new DragObjectsManager();
+
+            this._pickManager = new PickObjectManager();
 
             new DropManager();
 
@@ -53,8 +56,12 @@ namespace PhaserEditor2D {
             return this._pickManager;
         }
 
-        getDragManager() {
-            return this._dragManager;
+        getDragCameraManager() {
+            return this._dragCameraManager;
+        }
+
+        getDragObjectsManager() {
+            return this._dragObjectsManager;
         }
 
         removeAllObjects() {
@@ -156,19 +163,22 @@ namespace PhaserEditor2D {
         }
     }
 
-    class PickManager {
+    class PickObjectManager {
 
         onMouseDown(e: MouseEvent) {
+
             const editor = Editor.getInstance();
 
             const scene = editor.getObjectScene();
             const pointer = scene.input.activePointer;
 
-            if (pointer.buttons !== 1) {
+            if (e.buttons !== 1) {
                 return;
             }
 
             const result = scene.input.hitTestPointer(pointer);
+
+            console.log(result);
 
             let gameObj = result.pop();
 
@@ -177,11 +187,97 @@ namespace PhaserEditor2D {
                 ctrl: e.ctrlKey,
                 shift: e.shiftKey,
                 id: gameObj ? gameObj.name : undefined
-            })
+            });
+
+            return gameObj;
         }
     }
 
-    class DragManager {
+    class DragObjectsManager {
+
+        private _startPoint: Phaser.Math.Vector2;
+        private _dragging: boolean;
+
+        constructor() {
+            this._startPoint = null;
+            this._dragging = false;
+        }
+
+        private getScene() {
+            return Editor.getInstance().getObjectScene();
+        }
+
+        private getScelectedObjects() {
+            return Editor.getInstance().getToolScene().getSelectedObjects();
+        }
+
+        private getPointer() {
+            return this.getScene().input.activePointer;
+        }
+
+        onMouseDown(e: MouseEvent) {
+
+            if (e.buttons !== 1 || this.getScelectedObjects().length === 0) {
+                return;
+            }
+
+            this._startPoint = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
+
+            const tx = new Phaser.GameObjects.Components.TransformMatrix();
+            const p = new Phaser.Math.Vector2();
+
+            for (let obj of this.getScelectedObjects()) {
+                const sprite: Phaser.GameObjects.Sprite = <any>obj;
+                sprite.getWorldTransformMatrix(tx);
+                tx.transformPoint(0, 0, p);
+                sprite.setData("DragObjectsManager", {
+                    initX: p.x,
+                    initY: p.y
+                });
+            }
+        }
+
+        onMouseMove(e: MouseEvent) {
+            if (e.buttons !== 1 || this._startPoint === null) {
+                return;
+            }
+
+            this._dragging = true;
+
+            const pos = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
+            const dx = pos.x - this._startPoint.x;
+            const dy = pos.y - this._startPoint.y;
+
+            for (let obj of this.getScelectedObjects()) {
+                const sprite: Phaser.GameObjects.Sprite = <any>obj;
+                const data = sprite.getData("DragObjectsManager");
+
+                const x = Editor.getInstance().snapValueX(data.initX + dx);
+                const y = Editor.getInstance().snapValueX(data.initY + dy);
+
+                if (sprite.parentContainer) {
+                    const tx = sprite.parentContainer.getWorldTransformMatrix();
+                    const p = new Phaser.Math.Vector2();
+                    tx.applyInverse(x, y, p);
+                    sprite.setPosition(p.x, p.y);
+                } else {
+                    sprite.setPosition(x, y);
+                }
+            }
+
+            Editor.getInstance().repaint();
+        }
+
+        onMouseUp() {
+            if (this._startPoint !== null && this._dragging) {
+                this._dragging = false;
+                this._startPoint = null;
+                Editor.getInstance().sendMessage(BuildMessage.SetTransformProperties(this.getScelectedObjects()));
+            }
+        }
+    }
+
+    class DragCameraManager {
         private _scene: ObjectScene;
         private _dragStartPoint: Phaser.Math.Vector2;
         private _dragStartCameraScroll: Phaser.Math.Vector2;

@@ -31,7 +31,7 @@ namespace PhaserEditor2D {
         }
 
         activated() {
-            
+
         }
 
         update() {
@@ -115,11 +115,11 @@ namespace PhaserEditor2D {
         }
 
         protected snapValueX(x: number) {
-            return this.toolScene.snapValueX(x);
+            return Editor.getInstance().snapValueX(x);
         }
 
         protected snapValueY(y: number) {
-            return this.toolScene.snapValueY(y);
+            return Editor.getInstance().snapValueY(y);
         }
 
         protected createArrowShape() {

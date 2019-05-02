@@ -9,6 +9,7 @@ namespace PhaserEditor2D {
         private _objectScene: ObjectScene;
         private _create: Create;
         private _transformLocalCoords: boolean;
+        private _pendingMouseDownEvent: MouseEvent;
 
         sceneProperties: any;
         selection: any[] = [];
@@ -59,8 +60,9 @@ namespace PhaserEditor2D {
                 if (self.getToolScene().containsPointer()) {
                     self.getToolScene().onMouseDown();
                 } else {
-                    self.getObjectScene().getDragManager().onMouseDown(e);
+                    self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
+                    self._pendingMouseDownEvent = e;
                 }
             })
 
@@ -68,7 +70,8 @@ namespace PhaserEditor2D {
                 if (self.getToolScene().isEditing()) {
                     self.getToolScene().onMouseMove();
                 } else {
-                    self.getObjectScene().getDragManager().onMouseMove(e);
+                    self.getObjectScene().getDragObjectsManager().onMouseMove(e);
+                    self.getObjectScene().getDragCameraManager().onMouseMove(e);
                 }
 
             })
@@ -77,12 +80,17 @@ namespace PhaserEditor2D {
                 if (self.getToolScene().isEditing()) {
                     self.getToolScene().onMouseUp();
                 } else {
-                    self.getObjectScene().getDragManager().onMouseUp();
+                    //self.getObjectScene().getDragObjectsManager().onMouseUp();
+                    self.getObjectScene().getDragCameraManager().onMouseUp();
+                    setTimeout(function () {
+                        self.getObjectScene().getDragObjectsManager().onMouseUp();
+                    }, 30)
                 }
             })
 
             this._game.canvas.addEventListener("mouseleave", function () {
-                self.getObjectScene().getDragManager().onMouseUp();
+                self.getObjectScene().getDragObjectsManager().onMouseUp();
+                self.getObjectScene().getDragCameraManager().onMouseUp();
             })
 
 
@@ -180,6 +188,12 @@ namespace PhaserEditor2D {
                 method: "SetObjectDisplayProperties",
                 list: list
             });
+
+            if (this._pendingMouseDownEvent) {
+                const e = this._pendingMouseDownEvent;
+                this._pendingMouseDownEvent = null;
+                this.getObjectScene().getDragObjectsManager().onMouseDown(e);
+            }
         };
 
         private onUpdateObjects(msg) {
@@ -271,6 +285,24 @@ namespace PhaserEditor2D {
             });
 
             this.updateBodyColor();
+        }
+
+        snapValueX(x: number) {
+            const props = this.sceneProperties;
+            if (ScenePropertiesComponent.get_snapEnabled(props)) {
+                const snap = ScenePropertiesComponent.get_snapWidth(props);
+                return Math.round(x / snap) * snap;
+            }
+            return x;
+        }
+
+        snapValueY(y: number) {
+            const props = this.sceneProperties;
+            if (ScenePropertiesComponent.get_snapEnabled(props)) {
+                const snap = ScenePropertiesComponent.get_snapHeight(props);
+                return Math.round(y / snap) * snap;
+            }
+            return y;
         }
 
         private onDropObjects(msg: any) {
@@ -460,7 +492,7 @@ namespace PhaserEditor2D {
                     tools.push(tool);
                 }
             }
-            
+
             this._transformLocalCoords = msg.transformLocalCoords;
             this.getToolScene().setTools(tools);
         }

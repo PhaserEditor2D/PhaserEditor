@@ -37,8 +37,9 @@ var PhaserEditor2D;
                     self.getToolScene().onMouseDown();
                 }
                 else {
-                    self.getObjectScene().getDragManager().onMouseDown(e);
+                    self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
+                    self._pendingMouseDownEvent = e;
                 }
             });
             this._game.canvas.addEventListener("mousemove", function (e) {
@@ -46,7 +47,8 @@ var PhaserEditor2D;
                     self.getToolScene().onMouseMove();
                 }
                 else {
-                    self.getObjectScene().getDragManager().onMouseMove(e);
+                    self.getObjectScene().getDragObjectsManager().onMouseMove(e);
+                    self.getObjectScene().getDragCameraManager().onMouseMove(e);
                 }
             });
             this._game.canvas.addEventListener("mouseup", function () {
@@ -54,11 +56,15 @@ var PhaserEditor2D;
                     self.getToolScene().onMouseUp();
                 }
                 else {
-                    self.getObjectScene().getDragManager().onMouseUp();
+                    self.getObjectScene().getDragCameraManager().onMouseUp();
+                    setTimeout(function () {
+                        self.getObjectScene().getDragObjectsManager().onMouseUp();
+                    }, 30);
                 }
             });
             this._game.canvas.addEventListener("mouseleave", function () {
-                self.getObjectScene().getDragManager().onMouseUp();
+                self.getObjectScene().getDragObjectsManager().onMouseUp();
+                self.getObjectScene().getDragCameraManager().onMouseUp();
             });
             this.sendMessage({
                 method: "GetInitialState"
@@ -133,6 +139,11 @@ var PhaserEditor2D;
                 method: "SetObjectDisplayProperties",
                 list: list
             });
+            if (this._pendingMouseDownEvent) {
+                var e = this._pendingMouseDownEvent;
+                this._pendingMouseDownEvent = null;
+                this.getObjectScene().getDragObjectsManager().onMouseDown(e);
+            }
         };
         ;
         Editor.prototype.onUpdateObjects = function (msg) {
@@ -200,6 +211,22 @@ var PhaserEditor2D;
                 self.repaint();
             });
             this.updateBodyColor();
+        };
+        Editor.prototype.snapValueX = function (x) {
+            var props = this.sceneProperties;
+            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(props)) {
+                var snap = PhaserEditor2D.ScenePropertiesComponent.get_snapWidth(props);
+                return Math.round(x / snap) * snap;
+            }
+            return x;
+        };
+        Editor.prototype.snapValueY = function (y) {
+            var props = this.sceneProperties;
+            if (PhaserEditor2D.ScenePropertiesComponent.get_snapEnabled(props)) {
+                var snap = PhaserEditor2D.ScenePropertiesComponent.get_snapHeight(props);
+                return Math.round(y / snap) * snap;
+            }
+            return y;
         };
         Editor.prototype.onDropObjects = function (msg) {
             var list = msg.list;

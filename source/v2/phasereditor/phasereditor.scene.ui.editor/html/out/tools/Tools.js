@@ -88,10 +88,10 @@ var PhaserEditor2D;
             return Phaser.Math.RadToDeg(Math.acos(delta));
         };
         InteractiveTool.prototype.snapValueX = function (x) {
-            return this.toolScene.snapValueX(x);
+            return PhaserEditor2D.Editor.getInstance().snapValueX(x);
         };
         InteractiveTool.prototype.snapValueY = function (y) {
-            return this.toolScene.snapValueY(y);
+            return PhaserEditor2D.Editor.getInstance().snapValueY(y);
         };
         InteractiveTool.prototype.createArrowShape = function () {
             var s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
