@@ -65,7 +65,7 @@ public class SceneWebView extends Composite {
 				if (event.time == _lastTime) {
 					return;
 				}
-				
+
 				if (_webView.isFocusControl()) {
 					if (event.keyCode == SWT.SPACE) {
 						_lastTime = event.time;
@@ -106,6 +106,10 @@ public class SceneWebView extends Composite {
 						case 'v':
 							_lastTime = event.time;
 							_editor.paste();
+							break;
+						case 'a':
+							_lastTime = event.time;
+							_editor.selectAll();
 							break;
 						default:
 							break;

@@ -774,6 +774,18 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
+	public void selectAll() {
+		var list = new ArrayList<ObjectModel>();
+
+		var root = getSceneModel().getDisplayList();
+
+		root.visitChildren(model -> list.add(model));
+
+		setSelection(list);
+
+		getBroker().sendAll(new SelectObjectsMessage(this));
+	}
+
 	public void copy() {
 		var sel = new StructuredSelection(filterChidlren(getSelectionList())
 
