@@ -147,6 +147,12 @@
             id="phasereditor.ui.previewTilemap"
             name="Tilemap">
       </page>
+       <page
+             category="phasereditor.ui.prefs.phasereditor"
+             class="phasereditor.ui.prefs.BrowserPreferencesPage"
+             id="phasereditor.ui.webview"
+             name="WebView">
+       </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

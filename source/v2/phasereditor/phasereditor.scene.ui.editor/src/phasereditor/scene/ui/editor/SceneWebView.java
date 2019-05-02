@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
+import phasereditor.ui.IBrowser;
 
 /**
  * @author arian
@@ -39,7 +39,7 @@ import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
  */
 public class SceneWebView extends Composite {
 
-	private Browser _webView;
+	private IBrowser _webView;
 	private SceneEditor _editor;
 
 	public SceneWebView(SceneEditor editor, Composite parent, int style) {
@@ -51,7 +51,7 @@ public class SceneWebView extends Composite {
 
 		_editor = editor;
 
-		_webView = new Browser(this, SWT.NONE);
+		_webView = IBrowser.create(this, SWT.NONE);
 
 		var keyDownListener = new Listener() {
 
@@ -64,7 +64,7 @@ public class SceneWebView extends Composite {
 					return;
 				}
 
-				if (_webView.isFocusControl()) {
+				if (_webView.getControl().isFocusControl()) {
 					if (event.keyCode == SWT.SPACE) {
 						_lastTime = event.time;
 						if (!editor.hasInteractiveTools(Set.of("Hand"))) {
@@ -85,7 +85,7 @@ public class SceneWebView extends Composite {
 					return;
 				}
 
-				if (_webView.isFocusControl()) {
+				if (_webView.getControl().isFocusControl()) {
 
 					var stateMask = event.stateMask;
 

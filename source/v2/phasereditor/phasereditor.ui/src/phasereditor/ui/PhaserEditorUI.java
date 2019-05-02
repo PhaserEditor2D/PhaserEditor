@@ -130,6 +130,10 @@ import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
 
+	public static final String PREF_PROP_BROWSER_TYPE = "phasereditor.ui.browser";
+	public static final String PREF_VALUE_DEFAULT_BROWSER = "phasereditor.ui.browser.default";
+	public static final String PREF_VALUE_CHROMIUM_BROWSER = "phasereditor.ui.browser.chromium";
+
 	public static final String PREF_PROP_COLOR_DIALOG_TYPE = "phasereditor.ui.dialogs.colorDialogType";
 	public static final String PREF_VALUE_COLOR_DIALOG_JAVA = "java";
 	public static final String PREF_VALUE_COLOR_DIALOG_NATIVE = "native";
@@ -182,6 +186,9 @@ public class PhaserEditorUI {
 		// RGB _GRAY = new RGB(192, 192, 192);
 
 		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
+
+		store.setDefault(PREF_PROP_BROWSER_TYPE, PREF_VALUE_DEFAULT_BROWSER);
+
 		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
 
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_ANTIALIAS, false);
@@ -291,6 +298,10 @@ public class PhaserEditorUI {
 				break;
 			}
 		});
+	}
+
+	public static boolean useChromuiumBrowser() {
+		return getPreferenceStore().getString(PREF_PROP_BROWSER_TYPE).equals(PREF_VALUE_CHROMIUM_BROWSER);
 	}
 
 	public static RGB getRGBFromPrefEvent(PropertyChangeEvent event) {
@@ -826,7 +837,7 @@ public class PhaserEditorUI {
 		}).start();
 
 	}
-	
+
 	private static ExecutorService _runLaterExecutor = Executors.newCachedThreadPool();
 
 	public static void swtRunLater(long delay, Runnable run) {
