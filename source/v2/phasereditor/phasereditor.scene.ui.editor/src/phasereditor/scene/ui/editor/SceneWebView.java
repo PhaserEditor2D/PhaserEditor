@@ -23,6 +23,8 @@ package phasereditor.scene.ui.editor;
 
 import static java.lang.System.out;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.FocusEvent;
@@ -31,6 +33,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 
 /**
  * @author arian
@@ -90,6 +94,11 @@ public class SceneWebView extends Composite {
 						case SWT.DEL:
 							_lastTime = event.time;
 							getEditor().delete();
+							break;
+						case SWT.ESC:
+							_lastTime = event.time;
+							editor.setSelection(List.of());
+							editor.getBroker().sendAll(new SelectObjectsMessage(editor));
 							break;
 						default:
 							break;
