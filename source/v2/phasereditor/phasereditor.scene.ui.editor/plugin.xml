@@ -177,61 +177,51 @@
          point="org.eclipse.ui.bindings">
       <key
             commandId="phasereditor.scene.ui.editor.positionTool"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.scaleTool"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="S">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.angleTool"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="N">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.originTool"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="O">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.resizeTileSprite"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="L">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.order_UP"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_UP">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.order_DOWN"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_DOWN">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.order_TOP"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="HOME">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.order_BOTTOM"
-            contextId="phasereditor.scene.ui.editor.objects"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="END">
       </key>
       <key
             commandId="phasereditor.scene.ui.editor.duplicateObjects"
-            contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+D">
       </key>
@@ -240,40 +230,42 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="phasereditor.scene.ui.editor.sceneContext">
-         <or>
-            <with
-                  variable="activePartId">
-               <equals
-                     value="phasereditor.scene.ui.editor.SceneEditor">
-               </equals>
-            </with>
-            <and>
-               <with
-                     variable="activePartId">
-                  <equals
-                        value="org.eclipse.ui.views.ContentOutline">
-                  </equals>
-               </with>
-               <with
-                     variable="activeEditorId">
-                  <equals
-                        value="phasereditor.scene.ui.editor.SceneEditor">
-                  </equals>
-               </with>
-            </and>
-            <!--
-            <with
-                  variable="activeContexts">
-               <iterate
-                     ifEmpty="false"
-                     operator="or">
-                  <equals
-                        value="phasereditor.scene.ui.editor.objects">
-                  </equals>
-               </iterate>
-            </with>
-            -->
-         </or>
+         <and>
+         	<not>
+         		<with
+	                  variable="activeContexts">
+	               <iterate
+	                     ifEmpty="false"
+	                     operator="or">
+	                  <equals
+	                        value="phasereditor.scene.ui.editor.search">
+	                  </equals>
+	               </iterate>
+	            </with>
+         	</not>
+	         <or>
+	            <with
+	                  variable="activePartId">
+	               <equals
+	                     value="phasereditor.scene.ui.editor.SceneEditor">
+	               </equals>
+	            </with>
+	            <and>
+	               <with
+	                     variable="activePartId">
+	                  <equals
+	                        value="org.eclipse.ui.views.ContentOutline">
+	                  </equals>
+	               </with>
+	               <with
+	                     variable="activeEditorId">
+	                  <equals
+	                        value="phasereditor.scene.ui.editor.SceneEditor">
+	                  </equals>
+	               </with>
+	            </and>
+	         </or>
+         </and>
       </definition>
       <definition
             id="phasereditor.scene.ui.editor.hasSelection">
@@ -342,14 +334,12 @@
    <extension
          point="org.eclipse.ui.contexts">
       <context
-            description="The scene objects context, like the scene or the outline."
-            id="phasereditor.scene.ui.editor.objects"
-            name="Objects Context"
-            parentId="org.eclipse.ui.contexts.window">
-      </context>
-      <context
             id="phasereditor.scene.ui.editor.command"
             name="Scene Properties section command.">
+      </context>
+      <context
+            id="phasereditor.scene.ui.editor.search"
+            name="In Search context.">
       </context>
    </extension>
    <extension

@@ -41,6 +41,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -108,6 +110,18 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 	@Override
 	public void createControl(Composite parent) {
 		_filterTree = new FilteredTreeCanvas(parent, SWT.NONE);
+		_filterTree.getTextControl().addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				getEditor().deactivateSearchContext();
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				getEditor().activateSearchContext();
+			}
+		});
 		_viewer = new SceneObjectsViewer(_filterTree.getTree(), getEditor(), new SceneOutlineContentProvider()) {
 
 			@Override

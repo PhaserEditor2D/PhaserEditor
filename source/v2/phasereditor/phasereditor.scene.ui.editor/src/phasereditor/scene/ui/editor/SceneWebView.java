@@ -146,18 +146,6 @@ public class SceneWebView extends Composite {
 			getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
 		});
 
-		_webView.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				getEditor().deactivateObjectsContext();
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				getEditor().activateObjectsContext();
-			}
-		});
 	}
 
 	public void setUrl(String url) {

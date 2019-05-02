@@ -28,8 +28,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -93,8 +91,8 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	private static final String SCENE_COPY_STAMP = "--scene--copy--stamp--";
 	public static final String ID = "phasereditor.scene.ui.editor.SceneEditor";
-	private static String OBJECTS_CONTEXT = "phasereditor.scene.ui.editor.objects";
 	private static String COMMAND_CONTEXT = "phasereditor.scene.ui.editor.command";
+	private static String SEARCH_CONTEXT = "phasereditor.scene.ui.editor.search";
 
 	private SceneModel _model;
 	private SceneOutlinePage _outline;
@@ -119,12 +117,12 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	private UndoRedoActionGroup _undoRedoGroup;
 	protected SelectionProviderImpl _selectionProvider;
-	private IContextActivation _objectsContextActivation;
 	private IContextActivation _commandContextActivation;
 	private EditorFileStampHelper _fileStampHelper;
 	private SceneEditorBroker _broker;
 	private SceneWebView _webView;
 	private SelectionEvents _selectionEvents;
+	private IContextActivation _searchContextActivation;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -187,20 +185,20 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		return service;
 	}
 
-	public void activateObjectsContext() {
-		_objectsContextActivation = getContextService().activateContext(OBJECTS_CONTEXT);
-	}
-
-	public void deactivateObjectsContext() {
-		getContextService().deactivateContext(_objectsContextActivation);
-	}
-
 	public void activateCommandContext() {
 		_commandContextActivation = getContextService().activateContext(COMMAND_CONTEXT);
 	}
 
 	public void deactivateCommandContext() {
 		getContextService().deactivateContext(_commandContextActivation);
+	}
+
+	public void activateSearchContext() {
+		_searchContextActivation = getContextService().activateContext(SEARCH_CONTEXT);
+	}
+
+	public void deactivateSearchContext() {
+		getContextService().deactivateContext(_searchContextActivation);
 	}
 
 	@Override
@@ -412,18 +410,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 					addSelectionChangedListener(_outlinerSelectionListener);
 
-					getViewer().getTree().addFocusListener(new FocusListener() {
-
-						@Override
-						public void focusLost(FocusEvent e) {
-							deactivateObjectsContext();
-						}
-
-						@Override
-						public void focusGained(FocusEvent e) {
-							activateObjectsContext();
-						}
-					});
 				}
 			};
 
