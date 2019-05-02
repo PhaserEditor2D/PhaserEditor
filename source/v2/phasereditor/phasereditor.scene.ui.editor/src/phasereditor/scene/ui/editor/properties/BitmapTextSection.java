@@ -93,8 +93,7 @@ public class BitmapTextSection extends ScenePropertySection {
 				getModels().forEach(model -> {
 					BitmapTextComponent.set_align(model, _align);
 				});
-
-			}, true);
+			});
 
 			getEditor().setDirty(true);
 
@@ -209,8 +208,6 @@ public class BitmapTextSection extends ScenePropertySection {
 
 				});
 
-				dirtyModels(BitmapTextSection.this, getModels(), true, null);
-
 				editor.setDirty(true);
 
 			}
@@ -239,7 +236,7 @@ public class BitmapTextSection extends ScenePropertySection {
 
 				getEditor().setDirty(true);
 
-			}, true);
+			});
 
 		}
 	}

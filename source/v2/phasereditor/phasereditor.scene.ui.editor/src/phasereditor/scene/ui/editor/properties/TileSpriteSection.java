@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
@@ -376,8 +375,6 @@ public class TileSpriteSection extends ScenePropertySection {
 						if (height) {
 							TileSpriteComponent.set_height(model, size.height);
 						}
-
-						GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
 					}
 				}
 			}

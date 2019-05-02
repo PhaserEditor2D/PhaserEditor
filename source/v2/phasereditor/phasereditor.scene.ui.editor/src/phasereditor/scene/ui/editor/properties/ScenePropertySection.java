@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import java.util.List;
 import java.util.function.Function;
 
 import org.eclipse.core.commands.operations.IUndoableOperation;
@@ -31,7 +30,6 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.SceneModel;
@@ -89,7 +87,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		@Override
 		protected void accept(String value) {
-			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+			wrapOperation(() -> accept2(value));
 		}
 
 		protected abstract void accept2(String value);
@@ -110,7 +108,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		@Override
 		protected void accept(float value) {
-			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+			wrapOperation(() -> accept2(value));
 		}
 
 		protected abstract void accept2(float value);
@@ -131,40 +129,14 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		@Override
 		protected void accept(int value) {
-			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+			wrapOperation(() -> accept2(value));
 		}
 
 		protected abstract void accept2(int value);
 
 	}
 
-	protected static void dirtyModels(ScenePropertySection section, List<ObjectModel> models, boolean dirtyModels,
-			Function<ObjectModel, Boolean> filterDirtyModels) {
-
-		if (dirtyModels || filterDirtyModels != null) {
-			models.forEach(model -> {
-				if (filterDirtyModels == null || filterDirtyModels.apply(model).booleanValue()) {
-					GameObjectEditorComponent.set_gameObjectEditorDirty(model, true);
-				}
-			});
-
-			var editor = section.getEditor();
-
-			if (editor.getOutline() != null) {
-				editor.refreshOutline_basedOnId();
-			}
-		}
-	}
-
 	protected void wrapOperation(Runnable run) {
-		wrapOperation(run, false, null);
-	}
-
-	protected void wrapOperation(Runnable run, boolean dirtyModels) {
-		wrapOperation(run, dirtyModels, null);
-	}
-
-	protected void wrapOperation(Runnable run, boolean dirtyModels, Function<ObjectModel, Boolean> filterDirtyModels) {
 
 		var models = getModels();
 
@@ -174,10 +146,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-		getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property",
-				dirtyModels, filterDirtyModels));
-
-		dirtyModels(this, models, dirtyModels, filterDirtyModels);
+		getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 		getEditor().getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}
@@ -211,8 +180,6 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	}
 
 	protected abstract class SceneCheckListener extends CheckListener {
-		protected boolean dirtyModels;
-		protected Function<ObjectModel, Boolean> filterDirtyModels;
 
 		public SceneCheckListener(Button button) {
 			super(button);
@@ -220,7 +187,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		@Override
 		protected void accept(boolean value) {
-			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+			wrapOperation(() -> accept2(value));
 		}
 
 		protected abstract void accept2(boolean value);
@@ -228,8 +195,6 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	}
 
 	protected abstract class SceneScaleListener extends ScaleListener {
-		protected boolean dirtyModels;
-		protected Function<ObjectModel, Boolean> filterDirtyModels;
 
 		public SceneScaleListener(Scale scale) {
 			super(scale);
@@ -237,7 +202,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		@Override
 		protected void accept(float value) {
-			wrapOperation(() -> accept2(value), dirtyModels, filterDirtyModels);
+			wrapOperation(() -> accept2(value));
 		}
 
 		protected abstract void accept2(float value);

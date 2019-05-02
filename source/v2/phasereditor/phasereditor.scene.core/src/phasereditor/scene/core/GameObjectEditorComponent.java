@@ -28,25 +28,6 @@ package phasereditor.scene.core;
 @SuppressWarnings("boxing")
 public interface GameObjectEditorComponent {
 
-	// editorDirty
-
-	@Deprecated
-	static String gameObjecEditortDirty_name = "gameObjectEditorDirty";
-
-	
-	@Deprecated
-	static boolean gameObjectEditorDirty_default = true;
-
-	@Deprecated
-	static boolean get_gameObjectEditorDirty(ObjectModel obj) {
-		return (boolean) obj.get("gameObjectEditorDirty");
-	}
-
-	@Deprecated
-	static void set_gameObjectEditorDirty(ObjectModel obj, boolean editorDirty) {
-		obj.put("gameObjectEditorDirty", editorDirty);
-	}
-
 	// editorShow
 
 	static String gameObjectEditorShow_name = "gameObjectEditorShow";
@@ -110,7 +91,6 @@ public interface GameObjectEditorComponent {
 	}
 
 	static void init(ObjectModel obj) {
-		set_gameObjectEditorDirty(obj, gameObjectEditorDirty_default);
 		set_gameObjectEditorShow(obj, gemeObjectEditorShow_default);
 		set_gameObjectEditorClosed(obj, editorClosed_default);
 		set_gameObjectEditorTransparency(obj, gameObjectEditorTransparency_default);

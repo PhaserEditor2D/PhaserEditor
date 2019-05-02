@@ -605,11 +605,9 @@ public class SceneObjectRenderer {
 	public ScaledImage getTileSpriteImage(TileSpriteModel model) {
 		ScaledImage scaledImage;
 
-		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_textureChanged(model)) {
+		if (asset_textureChanged(model)) {
 
 			scaledImage = createTileSpriteTexture(model);
-
-			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
 
 			var old = _imageCacheMap.put(model, scaledImage);
 
@@ -814,11 +812,9 @@ public class SceneObjectRenderer {
 	public ScaledImage getBitmapTextImage(BitmapTextModel model) {
 		ScaledImage scaledImage;
 
-		if (GameObjectEditorComponent.get_gameObjectEditorDirty(model) || asset_bitmapFontChanged(model)) {
+		if (asset_bitmapFontChanged(model)) {
 
 			scaledImage = createBitmapTextImage(model);
-
-			GameObjectEditorComponent.set_gameObjectEditorDirty(model, false);
 
 			var old = _imageCacheMap.put(model, scaledImage);
 

@@ -62,7 +62,6 @@ import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
-import phasereditor.scene.core.GameObjectEditorComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
@@ -539,14 +538,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	public boolean isWaitingForProjectBuilders() {
 		boolean b = !PhaserProjectBuilder.isStartupFinished();
 		return b;
-	}
-
-	public void rebuildImageCache() {
-		getSceneModel().getDisplayList().visit(m -> {
-			GameObjectEditorComponent.set_gameObjectEditorDirty(m, true);
-		});
-
-		refreshOutline();
 	}
 
 	public void openSourceFile() {
