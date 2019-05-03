@@ -28,6 +28,7 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
 	swt-mru-visible: true;
 	swt-simple: true;
 	color: black;
+	swt-tab-height: 30px;
 }
 
 

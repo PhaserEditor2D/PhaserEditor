@@ -43,6 +43,15 @@ public class PhaserIDE2 extends ModifiedIDEApplication {
 	 */
 	private static final String WWW_NODE_JS_LOCATION = "org.eclipse.wildwebdeveloper.nodeJSLocation";
 
+//	@Override
+//	protected Display createDisplay() {
+//		var display = super.createDisplay();
+//		// display.loadFont("platform://plugin/phasereditor.ide/css/Pixellari.ttf");
+//		var b = display.loadFont("/home/arian/Downloads/ViajeHabana/fonts/pixellari/Pixellari.ttf");
+//		out.println("Load font " + b);
+//		return display;
+//	}
+
 	@Override
 	public Object start(IApplicationContext appContext) throws Exception {
 		out.println("Starting Phaser IDE application " + LicCore.PRODUCT_VERSION);

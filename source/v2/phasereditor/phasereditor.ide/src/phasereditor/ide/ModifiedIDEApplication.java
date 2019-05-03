@@ -135,7 +135,7 @@ public class ModifiedIDEApplication implements IApplication, IExecutableExtensio
 		Job.getJobManager().suspend();
 
 		Display display = createDisplay();
-
+		
 		Image shellImage;
 
 		try (InputStream openStream = new URL("platform:/plugin/phasereditor.ide/splash.bmp").openStream()) {
