@@ -176,7 +176,7 @@ public class ModifiedIDEApplication implements IApplication, IExecutableExtensio
 			// N.B. createWorkbench remembers the advisor, and also registers
 			// the workbench globally so that all UI plug-ins can find it using
 			// PlatformUI.getWorkbench() or AbstractUIPlugin.getWorkbench()
-			int returnCode = PlatformUI.createAndRunWorkbench(display, new IDEWorkbenchAdvisor(processor));
+			int returnCode = PlatformUI.createAndRunWorkbench(display, new IDEWorkbenchAdvisor2(processor));
 
 			// the workbench doesn't support relaunch yet (bug 61809) so
 			// for now restart is used, and exit data properties are checked

@@ -9,6 +9,13 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
 }
 */
 
+.MTrimBar ToolBar {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;    
+}
+
 .MTrimmedWindow {
     background-color: #d4d4d4;
 }

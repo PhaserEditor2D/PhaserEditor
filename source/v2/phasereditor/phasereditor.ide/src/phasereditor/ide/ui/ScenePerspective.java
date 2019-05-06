@@ -23,41 +23,18 @@ package phasereditor.ide.ui;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
-import phasereditor.inspect.ui.views.JsdocView;
+import phasereditor.assetexplorer.ui.views.AssetsView;
 
-public class PhaserPerspective implements IPerspectiveFactory {
+public class ScenePerspective implements IPerspectiveFactory {
 
-	private static final String PREVIEW_VIEW = "phasereditor.ui.preview";
-	private static final String ASSETS_VIEW = "phasereditor.assetpack.views.assetExplorer";
 	public static final String ID = "phasereditor.ide.ui.perspective";
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
 		layout.addView(IPageLayout.ID_PROP_SHEET, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
-		layout.addView(ASSETS_VIEW, IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
-		var folder = layout.createFolder("bottomViews", IPageLayout.LEFT, 0.5f, ASSETS_VIEW);
-		folder.addView(ProjectExplorer.VIEW_ID);
-		folder.addView(PREVIEW_VIEW);
-		folder.addView(JsdocView.ID);
-		folder.addView(IPageLayout.ID_PROBLEM_VIEW);
-		
-		
-//		layout.addView(ProjectExplorer.VIEW_ID, IPageLayout.LEFT, 0.3f, IPageLayout.ID_EDITOR_AREA);
-//		layout.addPlaceholder(ProjectExplorer.VIEW_ID + ":*", IPageLayout.BOTTOM, 0.4f, ProjectExplorer.VIEW_ID);
-//
-//		layout.addView("org.eclipse.ui.views.PropertySheet", IPageLayout.RIGHT, 0.5f, ProjectExplorer.VIEW_ID);
-//		layout.addView("org.eclipse.ui.views.ContentOutline", IPageLayout.TOP, 0.4f,
-//				"org.eclipse.ui.views.PropertySheet");
-//
-//		layout.addView(ASSETS_VIEW, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
-//		layout.addPlaceholder(ASSETS_VIEW + ":*", IPageLayout.TOP, 0.5f, ASSETS_VIEW);
-//
-//		layout.addView(PREVIEW_VIEW, IPageLayout.BOTTOM, 0.6f, ASSETS_VIEW);
-//		layout.addPlaceholder(PREVIEW_VIEW + ":*", IPageLayout.BOTTOM, 0.5f, PREVIEW_VIEW);
-//
+		layout.addView(AssetsView.ID, IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
 	}
 
 }

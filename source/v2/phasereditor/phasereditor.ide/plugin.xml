@@ -65,13 +65,56 @@
       <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="phasereditor.ide.ui.PhaserPerspective"
-            icon="platform:/plugin/phasereditor.ui/icons/phaser-ship.png"
-            id="phasereditor.ide.ui.perspective"
-            name="Phaser">
+            class="phasereditor.ide.ui.StartPerspective"
+            fixed="true"
+            icon="platform:/plugin/phasereditor.ui/icons/phaser-editor-logo.png"
+            id="phasereditor.ide.startPerspective"
+            name="Start">
          <description>
-            Main Phaser Editor perspective to create the games.
+            Start a new project.
          </description>
+      </perspective>
+      <perspective
+            class="phasereditor.ide.ui.AtlasPerspective"
+            icon="platform:/plugin/phasereditor.ui/icons/images.png"
+            id="phasereditor.ide.atlas"
+            name="Atlas">
+         <description>
+            Create texture atlases.
+         </description>
+      </perspective>
+      <perspective
+            class="phasereditor.ide.ui.PackPerspective"
+            icon="platform:/plugin/phasereditor.ui/icons/box.png"
+            id="phasereditor.ide.pack"
+            name="Pack">
+         <description>
+            Create Asset Pack files.
+         </description>
+      </perspective>
+      <perspective
+            class="phasereditor.ide.ui.AnimationsPerspective"
+            icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
+            id="phasereditor.ide.animations"
+            name="Animations">
+         <description>
+            Create sprite animations.
+            </description>
+      </perspective>
+      <perspective
+            class="phasereditor.ide.ui.ScenePerspective"
+            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
+            id="phasereditor.ide.ui.perspective"
+            name="Scene">
+         <description>
+            Create scenes.
+         </description>
+      </perspective>
+      <perspective
+            class="phasereditor.ide.ui.CodePerspective"
+            icon="platform:/plugin/org.eclipse.ui.genericeditor/icons/full/obj16/generic_editor.png"
+            id="phasereditor.ide.code"
+            name="Code">
       </perspective>
       <perspective
             class="phasereditor.ide.ui.LabsPerspectiveFactory"
@@ -79,10 +122,15 @@
             id="phasereditor.ide.ui.labs"
             name="Phaser Lab">
          <description>
-            A perspective to learn and experiment with Phaser.
+            Quick access to the Phaser API and Examples.
          </description>
       </perspective>
    </extension>
+      <perspective
+            class="phasereditor.ide.PerspectiveFactory2"
+            id="phasereditor.ide.perspective2"
+            name="name">
+      </perspective>
                   <extension
                         point="org.eclipse.e4.ui.css.swt.theme">
                      <theme
@@ -103,5 +151,42 @@
                            class="phasereditor.ide.intro.IDEStartup">
                      </startup>
                   </extension>
-
+                  <extension
+                        point="org.eclipse.ui.views">
+                     <view
+                           allowMultiple="false"
+                           category="phasereditor.ui.phaser"
+                           class="phasereditor.ide.ui.views.StartView"
+                           icon="icons/16.png"
+                           id="phasereditor.ide.views.start"
+                           name="Start"
+                           restorable="true">
+                     </view>
+                     <view
+                           allowMultiple="false"
+                           category="phasereditor.ui.phaser"
+                           class="phasereditor.ide.ui.views.PerspectivesView"
+                           id="phasereditor.ide.perspectivesView"
+                           name="Perspectives"
+                           restorable="true">
+                     </view>
+                  </extension>
+                  <extension
+                        point="org.eclipse.ui.perspectiveExtensions">
+                     <perspectiveExtension
+                           targetID="phasereditor.ide.startPerspective">
+                        <view
+                              closeable="false"
+                              id="phasereditor.ide.views.start"
+                              minimized="false"
+                              moveable="false"
+                              ratio="0.90"
+                              relationship="left"
+                              relative="org.eclipse.ui.editorss"
+                              showTitle="false"
+                              standalone="true">
+                        </view>
+                     </perspectiveExtension>
+                     
+                  </extension>
 </plugin>
