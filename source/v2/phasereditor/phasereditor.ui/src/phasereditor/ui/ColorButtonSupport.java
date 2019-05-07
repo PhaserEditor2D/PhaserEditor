@@ -89,14 +89,14 @@ public abstract class ColorButtonSupport {
 					setColor(rgb);
 					callback.accept(rgb);
 				}
-				updateContent();
+				updateProvider();
 			}
 		});
 
-		updateContent();
+		updateProvider();
 	}
 
-	public void updateContent() {
+	public void updateProvider() {
 		RGB color = getColor();
 
 		if (_image != null && !_image.isDisposed()) {
