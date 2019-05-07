@@ -29,7 +29,6 @@ import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
-import phasereditor.ui.Colors;
 import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
@@ -38,35 +37,18 @@ import phasereditor.ui.IEditorBlock;
  * @author arian
  *
  */
-public class AtlasAssetEditorBlock implements IEditorBlock {
-	private AtlasAssetModel _asset;
+public class AtlasAssetEditorBlock extends AssetKeyEditorBlock<AtlasAssetModel> {
 	private List<IEditorBlock> _children;
 
 	public AtlasAssetEditorBlock(AtlasAssetModel asset) {
-		super();
-		_asset = asset;
+		super(asset);
 		_children = asset.getSubElements().stream().map(frame -> AssetPackUI.getAssetEditorBlock(frame))
 				.collect(toList());
 	}
 
 	@Override
-	public String getId() {
-		return _asset.getPack().getName() + "$" + _asset.getKey();
-	}
-
-	@Override
 	public boolean isTerminal() {
 		return false;
-	}
-
-	@Override
-	public String getLabel() {
-		return _asset.getKey();
-	}
-
-	@Override
-	public Object getObject() {
-		return _asset;
 	}
 
 	@Override
@@ -76,17 +58,17 @@ public class AtlasAssetEditorBlock implements IEditorBlock {
 
 	@Override
 	public ICanvasCellRenderer getRenderer() {
-		return new FrameGridCellRenderer(new AtlasAssetFramesProvider(_asset), 4);
+		return new FrameGridCellRenderer(new AtlasAssetFramesProvider(getAssetKey()), 4);
 	}
 
 	@Override
 	public String getSortName() {
 		return "Atlas";
 	}
-	
+
 	@Override
 	public RGB getColor() {
-		return Colors.RED.rgb;
+		return AssetFrameEditorBlock.TEXTURE_COLOR;
 	}
 
 }

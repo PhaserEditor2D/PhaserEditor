@@ -29,7 +29,6 @@ import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
-import phasereditor.ui.Colors;
 import phasereditor.ui.FrameGridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
@@ -38,23 +37,18 @@ import phasereditor.ui.IEditorBlock;
  * @author arian
  *
  */
-public class MultiAtlasAssetEditorBlock implements IEditorBlock {
+public class MultiAtlasAssetEditorBlock extends AssetKeyEditorBlock<MultiAtlasAssetModel> {
 
-	private MultiAtlasAssetModel _asset;
 	private List<IEditorBlock> _children;
 
 	public MultiAtlasAssetEditorBlock(MultiAtlasAssetModel asset) {
-		_asset = asset;
-		_children = _asset.getSubElements().stream()
+		super(asset);
+
+		_children = asset.getSubElements().stream()
 
 				.map(frame -> AssetPackUI.getAssetEditorBlock(frame))
 
 				.collect(toList());
-	}
-
-	@Override
-	public String getId() {
-		return _asset.getPack().getName() + "$" + _asset.getKey();
 	}
 
 	@Override
@@ -63,34 +57,23 @@ public class MultiAtlasAssetEditorBlock implements IEditorBlock {
 	}
 
 	@Override
-	public String getLabel() {
-		return _asset.getKey();
-	}
-
-	@Override
-	public Object getObject() {
-		return _asset;
-	}
-
-	@Override
 	public List<IEditorBlock> getChildren() {
-
 		return _children;
 	}
 
 	@Override
 	public ICanvasCellRenderer getRenderer() {
-		return new FrameGridCellRenderer(new MultiAtlasAssetFrameProvider(_asset), 8);
+		return new FrameGridCellRenderer(new MultiAtlasAssetFrameProvider(getAssetKey()), 8);
 	}
 
 	@Override
 	public String getSortName() {
 		return "Atlas";
 	}
-	
+
 	@Override
 	public RGB getColor() {
-		return Colors.RED.rgb;
+		return AssetFrameEditorBlock.TEXTURE_COLOR;
 	}
-	
+
 }

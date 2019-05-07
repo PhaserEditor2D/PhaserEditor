@@ -38,32 +38,15 @@ import phasereditor.ui.ImageProxy;
  * @author arian
  *
  */
-public class ImageAssetEditorBlock implements IEditorBlock {
+public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> {
 
-	private ImageAssetModel _asset;
-	
 	public ImageAssetEditorBlock(ImageAssetModel asset) {
-		_asset = asset;
+		super(asset);
 	}
 
 	@Override
 	public boolean isTerminal() {
 		return true;
-	}
-	
-	@Override
-	public String getId() {
-		return _asset.getPack().getName() + "$" + getLabel();
-	}
-
-	@Override
-	public String getLabel() {
-		return _asset.getKey();
-	}
-
-	@Override
-	public Object getObject() {
-		return _asset;
 	}
 
 	@Override
@@ -77,8 +60,9 @@ public class ImageAssetEditorBlock implements IEditorBlock {
 
 			@Override
 			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-				var file = _asset.getUrlFile();
-				var fd = _asset.getFrame().getFrameData();
+				var asset = getAssetKey();
+				var file = asset.getUrlFile();
+				var fd = asset.getFrame().getFrameData();
 				var proxy = ImageProxy.get(file, fd);
 				if (proxy != null) {
 					proxy.paintScaledInArea(gc, new Rectangle(x, y, width, height));
@@ -91,7 +75,7 @@ public class ImageAssetEditorBlock implements IEditorBlock {
 	public String getSortName() {
 		return "Image";
 	}
-	
+
 	@Override
 	public RGB getColor() {
 		return Colors.ORANGE.rgb;

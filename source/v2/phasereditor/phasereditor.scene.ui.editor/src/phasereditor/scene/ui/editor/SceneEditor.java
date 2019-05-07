@@ -49,6 +49,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -127,7 +128,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private SceneWebView _webView;
 	private SelectionEvents _selectionEvents;
 	private IContextActivation _searchContextActivation;
-	private SceneIEditorBlockProvider _blocksProvider;
+	private SceneEditorBlockProvider _blocksProvider;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -424,7 +425,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 		if (adapter == IEditorBlockProvider.class) {
 			if (_blocksProvider == null) {
-				_blocksProvider = new SceneIEditorBlockProvider();
+				_blocksProvider = new SceneEditorBlockProvider();
 			}
 			return _blocksProvider;
 		}
@@ -432,7 +433,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		return super.getAdapter(adapter);
 	}
 
-	class SceneIEditorBlockProvider implements IEditorBlockProvider {
+	class SceneEditorBlockProvider implements IEditorBlockProvider {
 
 		@Override
 		public List<IEditorBlock> getBlocks() {
@@ -445,7 +446,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 					.filter(asset -> {
 						return asset instanceof ImageAssetModel || asset instanceof AtlasAssetModel
-								|| asset instanceof MultiAtlasAssetModel || asset instanceof IAssetFrameModel;
+								|| asset instanceof MultiAtlasAssetModel || asset instanceof IAssetFrameModel || asset instanceof AnimationsAssetModel;
 					})
 
 					.map(asset -> AssetPackUI.getAssetEditorBlock(asset))

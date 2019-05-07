@@ -28,8 +28,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.ui.Colors;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.ImageProxy;
@@ -38,17 +38,10 @@ import phasereditor.ui.ImageProxy;
  * @author arian
  *
  */
-public class AssetFrameEditorBlock extends AssetKeyEditorBlock<IAssetFrameModel> {
+public class AnimationAssetEditorBlock extends AssetKeyEditorBlock<AnimationModel_in_AssetPack> {
 
-	public static final RGB TEXTURE_COLOR = Colors.GREEN.rgb;
-
-	public AssetFrameEditorBlock(IAssetFrameModel frame) {
-		super(frame);
-	}
-
-	@Override
-	public String getSortName() {
-		return "Frame";
+	public AnimationAssetEditorBlock(AnimationModel_in_AssetPack assetKey) {
+		super(assetKey);
 	}
 
 	@Override
@@ -65,22 +58,50 @@ public class AssetFrameEditorBlock extends AssetKeyEditorBlock<IAssetFrameModel>
 	public ICanvasCellRenderer getRenderer() {
 		return new ICanvasCellRenderer() {
 
+			private FrameData adaptFrameData(FrameData fd1) {
+				var fd = fd1.clone();
+				fd.srcSize.x = fd.src.width;
+				fd.srcSize.y = fd.src.height;
+				fd.dst = new Rectangle(0, 0, fd.src.width, fd.src.height);
+				return fd;
+			}
+
 			@Override
 			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-				var frame = getAssetKey();
 
-				var proxy = ImageProxy.get(frame.getImageFile(), frame.getFrameData());
+				var frames = getAssetKey().getFrames();
 
-				if (proxy != null) {
-					proxy.paintScaledInArea(gc, new Rectangle(x, y, width, height));
+				if (frames.isEmpty()) {
+					return;
+				}
+
+				var size = width / 3;
+				var x2 = x;
+				var y2 = y + height / 2 - size / 2;
+
+				for (var f : new float[] { 0, 0.5f, 1f }) {
+					var frame = frames.get((int) ((frames.size() - 1) * f));
+					var asset = frame.getAssetFrame();
+					var file = asset.getImageFile();
+					var fd = adaptFrameData(asset.getFrameData());
+					var proxy = ImageProxy.get(file, fd);
+					if (proxy != null) {
+						proxy.paintScaledInArea(gc, new Rectangle(x2, y2, size, size));
+					}
+					x2 += size;
 				}
 			}
 		};
 	}
 
 	@Override
+	public String getSortName() {
+		return "AnimationFrame";
+	}
+
+	@Override
 	public RGB getColor() {
-		return TEXTURE_COLOR;
+		return AnimationsAssetEditorBlock.ANIMATION_COLOR;
 	}
 
 }

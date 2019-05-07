@@ -168,8 +168,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			_blockAreaMap = new HashMap<>();
 
 			var margin = 5;
+			var startXMargin = e.width % (_imageSize + margin) / 2;
 			var size = _imageSize;
-			var x = margin;
+			var x = startXMargin; //+ margin;
 			var y = margin;
 
 			var list = expandList(_provider.getBlocks());
@@ -178,7 +179,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				var renderer = block.getRenderer();
 
 				if (x + size + margin > e.width) {
-					x = margin;
+					x = startXMargin;
 					y += margin + size;
 				}
 
@@ -199,19 +200,19 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				}
 
 				gc.setAlpha(100);
-				gc.drawRectangle(rect);
+				//gc.drawRectangle(rect);
 				gc.setAlpha(255);
 
 				if (!terminal) {
-					gc.setAlpha(100);
-					gc.fillRectangle(x + size - 10, y, 10, size);
-
-					gc.drawRectangle(x + size - 10, y, 10, size);
-					gc.setAlpha(255);
+//					gc.setAlpha(100);
+//					gc.fillRectangle(x + size - 10, y, 10, size);
+//
+//					gc.drawRectangle(x + size - 10, y, 10, size);
+//					gc.setAlpha(255);
 
 					var expanded = isExpanded(block);
 					Image img = EditorSharedImages.getImage(expanded ? IMG_BULLET_COLLAPSE : IMG_BULLET_EXPAND);
-					gc.drawImage(img, x + size - 12, y + size / 2 - 8);
+					gc.drawImage(img, x + size - 16, y + size / 2 - 8);
 				}
 
 				x += size + margin;

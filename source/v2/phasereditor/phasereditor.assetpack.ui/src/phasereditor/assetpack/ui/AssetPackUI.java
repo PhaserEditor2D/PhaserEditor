@@ -60,6 +60,8 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
 import phasereditor.animation.ui.AnimationInformationControl;
+import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -835,6 +837,10 @@ public class AssetPackUI {
 			return new MultiAtlasAssetEditorBlock((MultiAtlasAssetModel) key);
 		} else if (key instanceof IAssetFrameModel) {
 			return new AssetFrameEditorBlock((IAssetFrameModel) key);
+		} else if (key instanceof AnimationsAssetModel) {
+			return new AnimationsAssetEditorBlock((AnimationsAssetModel) key);
+		} else if (key instanceof AnimationModel_in_AssetPack) {
+			return new AnimationAssetEditorBlock((AnimationModel_in_AssetPack) key);
 		}
 		return null;
 	}

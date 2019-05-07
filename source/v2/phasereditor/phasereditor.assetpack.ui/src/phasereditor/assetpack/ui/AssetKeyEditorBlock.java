@@ -21,66 +21,39 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import java.util.List;
-
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Canvas;
-
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.ui.Colors;
-import phasereditor.ui.ICanvasCellRenderer;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
  *
  */
-public class AssetFrameEditorBlock extends AssetKeyEditorBlock<IAssetFrameModel> {
+public abstract class AssetKeyEditorBlock<T extends IAssetKey> implements IEditorBlock {
+	private T _assetKey;
 
-	public static final RGB TEXTURE_COLOR = Colors.GREEN.rgb;
-
-	public AssetFrameEditorBlock(IAssetFrameModel frame) {
-		super(frame);
+	public AssetKeyEditorBlock(T assetKey) {
+		super();
+		_assetKey = assetKey;
+	}
+	
+	public T getAssetKey() {
+		return _assetKey;
 	}
 
 	@Override
-	public String getSortName() {
-		return "Frame";
+	public String getId() {
+		return _assetKey.getAsset().getPack().getName() + "$" + _assetKey.getAsset().getKey() + "$"
+				+ _assetKey.getKey();
 	}
-
+	
 	@Override
-	public boolean isTerminal() {
-		return true;
+	public Object getObject() {
+		return _assetKey;
 	}
-
+	
 	@Override
-	public List<IEditorBlock> getChildren() {
-		return null;
-	}
-
-	@Override
-	public ICanvasCellRenderer getRenderer() {
-		return new ICanvasCellRenderer() {
-
-			@Override
-			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-				var frame = getAssetKey();
-
-				var proxy = ImageProxy.get(frame.getImageFile(), frame.getFrameData());
-
-				if (proxy != null) {
-					proxy.paintScaledInArea(gc, new Rectangle(x, y, width, height));
-				}
-			}
-		};
-	}
-
-	@Override
-	public RGB getColor() {
-		return TEXTURE_COLOR;
+	public String getLabel() {
+		return _assetKey.getKey();
 	}
 
 }
