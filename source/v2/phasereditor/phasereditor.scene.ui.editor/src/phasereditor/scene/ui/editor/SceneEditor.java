@@ -445,8 +445,19 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 					.flatMap(pack -> pack.getAssets().stream())
 
 					.filter(asset -> {
-						return asset instanceof ImageAssetModel || asset instanceof AtlasAssetModel
-								|| asset instanceof MultiAtlasAssetModel || asset instanceof IAssetFrameModel || asset instanceof AnimationsAssetModel;
+						return asset instanceof ImageAssetModel
+
+								|| asset instanceof AtlasAssetModel
+
+								|| asset instanceof MultiAtlasAssetModel
+
+								|| asset instanceof IAssetFrameModel
+
+								|| asset instanceof AnimationsAssetModel
+
+								|| asset instanceof SpritesheetAssetModel
+
+								|| asset instanceof BitmapFontAssetModel;
 					})
 
 					.map(asset -> AssetPackUI.getAssetEditorBlock(asset))

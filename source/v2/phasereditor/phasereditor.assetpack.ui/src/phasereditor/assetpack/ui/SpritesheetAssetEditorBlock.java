@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import org.eclipse.swt.graphics.GC;
@@ -28,7 +30,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 
-import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.ui.Colors;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
@@ -38,20 +40,27 @@ import phasereditor.ui.ImageProxy;
  * @author arian
  *
  */
-public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> {
+public class SpritesheetAssetEditorBlock extends AssetKeyEditorBlock<SpritesheetAssetModel> {
 
-	public ImageAssetEditorBlock(ImageAssetModel asset) {
-		super(asset);
+	private List<IEditorBlock> _children;
+
+	public SpritesheetAssetEditorBlock(SpritesheetAssetModel assetKey) {
+		super(assetKey);
+		_children = assetKey.getFrames().stream()
+
+				.map(frame -> AssetPackUI.getAssetEditorBlock(frame))
+
+				.collect(toList());
 	}
 
 	@Override
 	public boolean isTerminal() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public List<IEditorBlock> getChildren() {
-		return null;
+		return _children;
 	}
 
 	@Override
@@ -60,10 +69,8 @@ public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> 
 
 			@Override
 			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-				var asset = getAssetKey();
-				var file = asset.getUrlFile();
-				var fd = asset.getFrame().getFrameData();
-				var proxy = ImageProxy.get(file, fd);
+				var file = getAssetKey().getUrlFile();
+				var proxy = ImageProxy.get(file, null);
 				if (proxy != null) {
 					proxy.paintScaledInArea(gc, new Rectangle(x, y, width, height));
 				}
@@ -73,12 +80,12 @@ public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> 
 
 	@Override
 	public String getSortName() {
-		return "005";
+		return "003";
 	}
 
 	@Override
 	public RGB getColor() {
-		return Colors.ORANGE.rgb;
+		return Colors.YELLOWGREEN.rgb;
 	}
 
 }

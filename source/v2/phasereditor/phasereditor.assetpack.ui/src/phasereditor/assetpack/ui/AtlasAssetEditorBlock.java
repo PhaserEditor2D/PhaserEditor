@@ -63,7 +63,7 @@ public class AtlasAssetEditorBlock extends AssetKeyEditorBlock<AtlasAssetModel> 
 
 	@Override
 	public String getSortName() {
-		return "Atlas";
+		return "002";
 	}
 
 	@Override

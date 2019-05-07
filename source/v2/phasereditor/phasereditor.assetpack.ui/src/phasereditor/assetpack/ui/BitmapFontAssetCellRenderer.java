@@ -39,9 +39,15 @@ import phasereditor.ui.ZoomCanvas.ZoomCalculator;
  */
 public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 	private BitmapFontAssetModel _model;
+	private String _text;
 
 	public BitmapFontAssetCellRenderer(BitmapFontAssetModel model) {
+		this(model, null);
+	}
+	
+	public BitmapFontAssetCellRenderer(BitmapFontAssetModel model, String text) {
 		_model = model;
+		_text = text;
 	}
 
 	@Override
@@ -51,7 +57,7 @@ public class BitmapFontAssetCellRenderer implements ICanvasCellRenderer {
 		var model = _model.getFontModel();
 
 		if (file != null) {
-			var text = "abc123";// asset.getKey();
+			var text = _text == null? "abc123" : _text;// asset.getKey();
 
 			var metrics = model.metrics(text);
 			var calc = new ZoomCalculator(metrics.getWidth(), metrics.getHeight());

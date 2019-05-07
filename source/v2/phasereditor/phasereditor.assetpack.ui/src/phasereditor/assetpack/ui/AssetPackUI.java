@@ -841,6 +841,10 @@ public class AssetPackUI {
 			return new AnimationsAssetEditorBlock((AnimationsAssetModel) key);
 		} else if (key instanceof AnimationModel_in_AssetPack) {
 			return new AnimationAssetEditorBlock((AnimationModel_in_AssetPack) key);
+		} else if (key instanceof SpritesheetAssetModel) {
+			return new SpritesheetAssetEditorBlock((SpritesheetAssetModel) key);
+		} else if (key instanceof BitmapFontAssetModel) {
+			return new BitmapFontAssetEditorBlock((BitmapFontAssetModel) key);
 		}
 		return null;
 	}

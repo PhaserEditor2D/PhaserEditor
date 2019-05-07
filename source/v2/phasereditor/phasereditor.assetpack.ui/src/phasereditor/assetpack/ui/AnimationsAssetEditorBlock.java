@@ -150,7 +150,7 @@ public class AnimationsAssetEditorBlock extends AssetKeyEditorBlock<AnimationsAs
 
 	@Override
 	public String getSortName() {
-		return "Animations";
+		return "001";
 	}
 
 	@Override

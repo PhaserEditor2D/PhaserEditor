@@ -188,15 +188,22 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				var rect = new Rectangle(x, y, size, size);
 				_blockAreaMap.put(block, rect);
 
-				gc.setAlpha(terminal ? 50 : 100);
 				gc.setBackground(SwtRM.getColor(block.getColor()));
-				gc.fillRectangle(rect);
-				gc.setAlpha(255);
-
+				
 				if (terminal) {
+					gc.setAlpha(50);
+					gc.fillRectangle(rect);
+					gc.setAlpha(255);
+					
 					renderer.render(this, gc, x, y, size, size);
 				} else {
-					renderer.render(this, gc, x, y, size - 10, size);
+					var tab = (int) (rect.height * 0.1);
+					gc.setAlpha(100);
+					gc.fillRectangle(rect.x, rect.y, rect.width / 2, tab);
+					gc.fillRectangle(rect.x, rect.y + tab, rect.width, rect.height - tab);
+					gc.setAlpha(255);
+					
+					renderer.render(this, gc, x, y + tab, size - 10, size - tab);
 				}
 
 				gc.setAlpha(100);
@@ -214,7 +221,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 					Image img = EditorSharedImages.getImage(expanded ? IMG_BULLET_COLLAPSE : IMG_BULLET_EXPAND);
 					gc.drawImage(img, x + size - 16, y + size / 2 - 8);
 				}
-
+				
 				x += size + margin;
 			}
 		}
@@ -240,9 +247,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				var rect = entry.getValue();
 				var block = entry.getKey();
 				if (!block.isTerminal()) {
-					var x = rect.x + rect.width;
-					var y = rect.y + rect.height / 2;
-					if (PhaserEditorUI.distance(x, y, e.x, e.y - _scrollUtils.getOrigin().x) < 20) {
+					var rect2 = new Rectangle(rect.x + rect.width - 16, rect.y, 16, rect.height);
+					if (rect2.contains(e.x, e.y - _scrollUtils.getOrigin().y)) {
 						var expanded = !isExpanded(block);
 						_blockExpandMap.put(block.getId(), Boolean.valueOf(expanded));
 						_scrollUtils.updateScroll();

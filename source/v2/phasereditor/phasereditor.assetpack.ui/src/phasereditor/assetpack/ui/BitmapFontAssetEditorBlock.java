@@ -23,25 +23,21 @@ package phasereditor.assetpack.ui;
 
 import java.util.List;
 
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Canvas;
 
-import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.ui.Colors;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.ImageProxy;
 
 /**
  * @author arian
  *
  */
-public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> {
+public class BitmapFontAssetEditorBlock extends AssetKeyEditorBlock<BitmapFontAssetModel> {
 
-	public ImageAssetEditorBlock(ImageAssetModel asset) {
-		super(asset);
+	public BitmapFontAssetEditorBlock(BitmapFontAssetModel assetKey) {
+		super(assetKey);
 	}
 
 	@Override
@@ -56,29 +52,17 @@ public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> 
 
 	@Override
 	public ICanvasCellRenderer getRenderer() {
-		return new ICanvasCellRenderer() {
-
-			@Override
-			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-				var asset = getAssetKey();
-				var file = asset.getUrlFile();
-				var fd = asset.getFrame().getFrameData();
-				var proxy = ImageProxy.get(file, fd);
-				if (proxy != null) {
-					proxy.paintScaledInArea(gc, new Rectangle(x, y, width, height));
-				}
-			}
-		};
+		return new BitmapFontAssetCellRenderer(getAssetKey(), "a");
 	}
 
 	@Override
 	public String getSortName() {
-		return "005";
+		return "004";
 	}
 
 	@Override
 	public RGB getColor() {
-		return Colors.ORANGE.rgb;
+		return Colors.AQUAMARINE.rgb;
 	}
 
 }

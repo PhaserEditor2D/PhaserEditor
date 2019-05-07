@@ -68,7 +68,7 @@ public class MultiAtlasAssetEditorBlock extends AssetKeyEditorBlock<MultiAtlasAs
 
 	@Override
 	public String getSortName() {
-		return "Atlas";
+		return "002";
 	}
 
 	@Override

@@ -96,7 +96,7 @@ public class AnimationAssetEditorBlock extends AssetKeyEditorBlock<AnimationMode
 
 	@Override
 	public String getSortName() {
-		return "AnimationFrame";
+		return "001";
 	}
 
 	@Override

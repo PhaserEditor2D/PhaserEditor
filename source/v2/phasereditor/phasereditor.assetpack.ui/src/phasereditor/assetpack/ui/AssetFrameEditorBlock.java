@@ -48,7 +48,7 @@ public class AssetFrameEditorBlock extends AssetKeyEditorBlock<IAssetFrameModel>
 
 	@Override
 	public String getSortName() {
-		return "Frame";
+		return "005";
 	}
 
 	@Override
