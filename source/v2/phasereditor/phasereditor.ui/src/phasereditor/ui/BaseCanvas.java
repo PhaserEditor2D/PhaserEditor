@@ -70,10 +70,6 @@ public class BaseCanvas extends Canvas {
 	}
 
 	public static void prepareGC(Graphics2D g2) {
-		if (PhaserEditorUI.get_pref_Preview_Anitialias()) {
-			g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		}
+		//
 	}
-
 }

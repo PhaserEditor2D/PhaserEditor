@@ -108,6 +108,7 @@ import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ListCanvasDialog;
 import phasereditor.ui.ListSelectionDialog2;
@@ -120,7 +121,7 @@ public class AssetPackUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 	public static final String PACK_EDITOR_ID = "phasereditor.assetpack.ui.editor.AssetPackEditor";
-	
+
 	public static boolean openElementInEditor(Object elem) {
 		if (elem == null) {
 			return false;
@@ -143,11 +144,10 @@ public class AssetPackUI {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		try {
-			var editor = (IAssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()),
-					PACK_EDITOR_ID);
+			var editor = (IAssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()), PACK_EDITOR_ID);
 			if (editor != null) {
 				JSONObject ref = pack.getAssetJSONRefrence(elem);
-				
+
 				Object elem2 = editor.getModel().getElementFromJSONReference(ref);
 				if (elem2 != null) {
 					swtRun(() -> editor.revealElement(elem2));
@@ -159,7 +159,7 @@ public class AssetPackUI {
 
 		return true;
 	}
-	
+
 	public static ImageProxy getImageProxy(IAssetFrameModel frame) {
 		if (frame == null) {
 			return null;
@@ -824,6 +824,19 @@ public class AssetPackUI {
 	public static void showError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e), StatusManager.SHOW);
+	}
+
+	public static IEditorBlock getAssetEditorBlock(IAssetKey key) {
+		if (key instanceof ImageAssetModel) {
+			return new ImageAssetEditorBlock((ImageAssetModel) key);
+		} else if (key instanceof AtlasAssetModel) {
+			return new AtlasAssetEditorBlock((AtlasAssetModel) key);
+		} else if (key instanceof MultiAtlasAssetModel) {
+			return new MultiAtlasAssetEditorBlock((MultiAtlasAssetModel) key);
+		} else if (key instanceof IAssetFrameModel) {
+			return new AssetFrameEditorBlock((IAssetFrameModel) key);
+		}
+		return null;
 	}
 
 }

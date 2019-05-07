@@ -23,6 +23,14 @@
             inject="true"
             name="Chromium Browser">
       </view>
+      <view
+            allowMultiple="true"
+            category="phasereditor.ui.phaser"
+            class="phasereditor.ui.BlocksView"
+            id="phasereditor.ui.assetsView"
+            name="Blocks"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

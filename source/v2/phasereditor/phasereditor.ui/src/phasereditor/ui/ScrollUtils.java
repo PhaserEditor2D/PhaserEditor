@@ -72,9 +72,11 @@ public abstract class ScrollUtils {
 			_origin.y = -vSelection;
 		}
 
+		vBar.setVisible(client.height < _computedScrollArea.height);
+
 		_canvas.redraw();
 	}
-	
+
 	public void scrollTo(int y) {
 		_canvas.getVerticalBar().setSelection(y);
 		_origin.y = -y;

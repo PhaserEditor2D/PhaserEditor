@@ -51,12 +51,15 @@ import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.scene.core.AnimationsComponent;
@@ -82,6 +85,8 @@ import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.IEditorBlock;
+import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.editors.EditorFileStampHelper;
 import phasereditor.webrun.core.BatchMessage;
@@ -122,6 +127,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private SceneWebView _webView;
 	private SelectionEvents _selectionEvents;
 	private IContextActivation _searchContextActivation;
+	private SceneIEditorBlockProvider _blocksProvider;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -416,7 +422,44 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 		}
 
+		if (adapter == IEditorBlockProvider.class) {
+			if (_blocksProvider == null) {
+				_blocksProvider = new SceneIEditorBlockProvider();
+			}
+			return _blocksProvider;
+		}
+
 		return super.getAdapter(adapter);
+	}
+
+	class SceneIEditorBlockProvider implements IEditorBlockProvider {
+
+		@Override
+		public List<IEditorBlock> getBlocks() {
+
+			var packs = AssetPackCore.getAssetPackModels(getProject());
+
+			var list = packs.stream()
+
+					.flatMap(pack -> pack.getAssets().stream())
+
+					.filter(asset -> {
+						return asset instanceof ImageAssetModel || asset instanceof AtlasAssetModel
+								|| asset instanceof MultiAtlasAssetModel || asset instanceof IAssetFrameModel;
+					})
+
+					.map(asset -> AssetPackUI.getAssetEditorBlock(asset))
+
+					.collect(toList());
+
+			return list;
+		}
+
+		@Override
+		public void setRefreshHandler(Runnable refresh) {
+			//
+		}
+
 	}
 
 	public void removeOutline() {

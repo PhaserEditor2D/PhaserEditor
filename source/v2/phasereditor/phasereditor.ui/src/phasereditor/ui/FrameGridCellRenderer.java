@@ -32,21 +32,35 @@ import org.eclipse.swt.widgets.Canvas;
 public class FrameGridCellRenderer implements ICanvasCellRenderer {
 
 	private IFrameProvider _provider;
+	private int _maxCount;
 
 	public FrameGridCellRenderer(IFrameProvider provider) {
+		this(provider, Integer.MAX_VALUE);
+	}
+
+	public FrameGridCellRenderer(IFrameProvider provider, int maxCount) {
 		super();
 		_provider = provider;
+		_maxCount = maxCount;
 	}
 
 	@Override
 	public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-		var frameCount = _provider.getFrameCount();
+		var realCount = _provider.getFrameCount();
+		var frameCount = realCount;
 
 		if (frameCount == 0) {
 			return;
 		}
 
-		var size = (int) (Math.sqrt(width * height / frameCount) * 0.8);
+		float step = 1;
+
+		if (frameCount > _maxCount) {
+			step = (float) frameCount / _maxCount;
+			frameCount = _maxCount;
+		}
+
+		var size = (int) (Math.sqrt(width * height / frameCount) * 0.9);
 
 		var cols = width / size;
 		var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
@@ -60,8 +74,12 @@ public class FrameGridCellRenderer implements ICanvasCellRenderer {
 		int startY = y + marginY;
 
 		for (var i = 0; i < frameCount; i++) {
-			var proxy = _provider.getFrameImageProxy(i);
+			var proxy = _provider.getFrameImageProxy(Math.min(realCount - 1, Math.round(i * step)));
 
+			if (itemY + size > height) {
+				break;
+			}
+			
 			if (proxy != null) {
 				// PhaserEditorUI.paintScaledImageInArea(gc, image, fd,
 				// new Rectangle(startX + itemX, startY + itemY, size, size));
