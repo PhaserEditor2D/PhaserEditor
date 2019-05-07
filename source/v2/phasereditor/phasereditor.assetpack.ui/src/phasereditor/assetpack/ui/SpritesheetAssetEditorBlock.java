@@ -52,6 +52,11 @@ public class SpritesheetAssetEditorBlock extends AssetKeyEditorBlock<Spritesheet
 
 				.collect(toList());
 	}
+	
+	@Override
+	public String getKeywords() {
+		return "spritesheet texture";
+	}
 
 	@Override
 	public boolean isTerminal() {

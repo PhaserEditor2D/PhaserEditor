@@ -41,6 +41,11 @@ public class BitmapFontAssetEditorBlock extends AssetKeyEditorBlock<BitmapFontAs
 	}
 
 	@Override
+	public String getKeywords() {
+		return "bitmapfont";
+	}
+	
+	@Override
 	public boolean isTerminal() {
 		return true;
 	}

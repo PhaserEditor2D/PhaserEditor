@@ -140,7 +140,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 			if (filter.length() > 0) {
 				list = list.stream().filter(block -> {
-					var test = block.getLabel().toLowerCase();
+					var test = (block.getLabel() + block.getKeywords()).toLowerCase();
 					return test.contains(filter);
 				}).collect(toList());
 			}

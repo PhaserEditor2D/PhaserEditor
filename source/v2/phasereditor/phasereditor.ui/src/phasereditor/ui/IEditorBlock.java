@@ -36,6 +36,8 @@ public interface IEditorBlock {
 	
 	public String getLabel();
 	
+	public String getKeywords();
+	
 	public Object getObject();
 	
 	public List<IEditorBlock> getChildren();

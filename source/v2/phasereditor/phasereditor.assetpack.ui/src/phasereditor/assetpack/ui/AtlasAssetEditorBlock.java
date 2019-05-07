@@ -45,6 +45,11 @@ public class AtlasAssetEditorBlock extends AssetKeyEditorBlock<AtlasAssetModel> 
 		_children = asset.getSubElements().stream().map(frame -> AssetPackUI.getAssetEditorBlock(frame))
 				.collect(toList());
 	}
+	
+	@Override
+	public String getKeywords() {
+		return "atlas texture";
+	}
 
 	@Override
 	public boolean isTerminal() {

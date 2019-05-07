@@ -45,6 +45,11 @@ public class ImageAssetEditorBlock extends AssetKeyEditorBlock<ImageAssetModel> 
 	}
 
 	@Override
+	public String getKeywords() {
+		return "image texture";
+	}
+	
+	@Override
 	public boolean isTerminal() {
 		return true;
 	}

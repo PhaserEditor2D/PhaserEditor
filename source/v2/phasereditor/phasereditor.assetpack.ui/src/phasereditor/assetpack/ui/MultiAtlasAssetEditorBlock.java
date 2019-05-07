@@ -50,6 +50,11 @@ public class MultiAtlasAssetEditorBlock extends AssetKeyEditorBlock<MultiAtlasAs
 
 				.collect(toList());
 	}
+	
+	@Override
+	public String getKeywords() {
+		return "multiatlas texture";
+	}
 
 	@Override
 	public boolean isTerminal() {

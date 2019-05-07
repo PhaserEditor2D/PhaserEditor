@@ -57,6 +57,11 @@ public class AnimationsAssetEditorBlock extends AssetKeyEditorBlock<AnimationsAs
 
 				.collect(toList());
 	}
+	
+	@Override
+	public String getKeywords() {
+		return "animation";
+	}
 
 	@Override
 	public boolean isTerminal() {

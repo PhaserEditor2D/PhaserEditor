@@ -47,6 +47,11 @@ public class AssetFrameEditorBlock extends AssetKeyEditorBlock<IAssetFrameModel>
 	}
 
 	@Override
+	public String getKeywords() {
+		return "frame texture";
+	}
+	
+	@Override
 	public String getSortName() {
 		return "005";
 	}

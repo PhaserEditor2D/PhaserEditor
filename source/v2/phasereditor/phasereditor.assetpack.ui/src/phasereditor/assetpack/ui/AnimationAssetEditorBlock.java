@@ -43,6 +43,11 @@ public class AnimationAssetEditorBlock extends AssetKeyEditorBlock<AnimationMode
 	public AnimationAssetEditorBlock(AnimationModel_in_AssetPack assetKey) {
 		super(assetKey);
 	}
+	
+	@Override
+	public String getKeywords() {
+		return "animation";
+	}
 
 	@Override
 	public boolean isTerminal() {
