@@ -38,6 +38,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.GridData;
@@ -70,6 +71,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		private MyScrollUtils _scrollUtils;
 		private int _imageSize = 64;
 		private List<IEditorBlock> _blocks;
+		private FrameCanvasUtils _frameUtils;
 
 		public BlocksCanvas(Composite parent, int style) {
 			super(parent, style | SWT.V_SCROLL);
@@ -83,6 +85,55 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			_handModeUtils = new HandModeUtils(this);
 			_scrollUtils = new MyScrollUtils();
 			_blocks = new ArrayList<>();
+			_frameUtils = new MyFrameUtils();
+			_frameUtils.setFilterInputWhenSetSelection(false);
+		}
+
+		class MyFrameUtils extends FrameCanvasUtils {
+
+			public MyFrameUtils() {
+				super(BlocksCanvas.this, true);
+			}
+
+			@Override
+			public int getFramesCount() {
+				return _blocks.size();
+			}
+
+			@Override
+			public Rectangle getSelectionFrameArea(int index) {
+				return _blockAreaMap.get(_blocks.get(index));
+			}
+
+			@Override
+			public Point viewToModel(int x, int y) {
+				return new Point(x, y - _scrollUtils.getOrigin().y);
+			}
+
+			@Override
+			public Point modelToView(int x, int y) {
+				return new Point(x, y + _scrollUtils.getOrigin().y);
+			}
+
+			@Override
+			public Object getFrameObject(int index) {
+				return _blocks.get(index).getObject();
+			}
+
+			@Override
+			public ImageProxy get_DND_Image(int index) {
+				// TODO: we should implement this in the IEditorBlock
+				return null;
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				var block = getBlockIfClickAtExpandIcon(e);
+				if (block == null) {
+					super.mouseUp(e);
+				}
+			}
+
 		}
 
 		class MyScrollUtils extends ScrollUtils {
@@ -206,21 +257,34 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				var rect = new Rectangle(x, y, size, size);
 				_blockAreaMap.put(block, rect);
 
-				gc.setBackground(SwtRM.getColor(block.getColor()));
+				var selected = _frameUtils.isSelected(block.getObject());
+
+				if (selected) {
+					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+				} else {
+					gc.setBackground(SwtRM.getColor(block.getColor()));
+				}
+
+				if (selected) {
+					gc.fillRectangle(rect);
+				}
 
 				if (terminal) {
-					gc.setAlpha(50);
-					gc.fillRectangle(rect);
-					gc.setAlpha(255);
+					if (!selected) {
+						gc.setAlpha(50);
+						gc.fillRectangle(rect);
+						gc.setAlpha(255);
+					}
 
 					renderer.render(this, gc, x, y, size, size);
 				} else {
 					var tab = (int) (rect.height * 0.1);
-					gc.setAlpha(100);
-					gc.fillRectangle(rect.x, rect.y, rect.width / 2, tab);
-					gc.fillRectangle(rect.x, rect.y + tab, rect.width, rect.height - tab);
-					gc.setAlpha(255);
-
+					if (!selected) {
+						gc.setAlpha(100);
+						gc.fillRectangle(rect.x, rect.y, rect.width / 2, tab);
+						gc.fillRectangle(rect.x, rect.y + tab, rect.width, rect.height - tab);
+						gc.setAlpha(255);
+					}
 					renderer.render(this, gc, x, y + tab, size - 10, size - tab);
 				}
 
@@ -277,21 +341,31 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		@Override
 		public void mouseUp(MouseEvent e) {
+			var block = getBlockIfClickAtExpandIcon(e);
+			if (block != null) {
+				var expanded = !isExpanded(block);
+				_blockExpandMap.put(block.getId(), Boolean.valueOf(expanded));
+				_scrollUtils.updateScroll();
+				redraw();
+			}
+		}
+
+		private IEditorBlock getBlockIfClickAtExpandIcon(MouseEvent e) {
 			for (var entry : _blockAreaMap.entrySet()) {
 				var rect = entry.getValue();
 				var block = entry.getKey();
 				if (!block.isTerminal()) {
-					var rect2 = new Rectangle(rect.x + rect.width - 16, rect.y, 16, rect.height);
+					var rect2 = getExpandIconRect(rect);
 					if (rect2.contains(e.x, e.y - _scrollUtils.getOrigin().y)) {
-						var expanded = !isExpanded(block);
-						_blockExpandMap.put(block.getId(), Boolean.valueOf(expanded));
-						_scrollUtils.updateScroll();
-						redraw();
-						return;
+						return block;
 					}
 				}
 			}
+			return null;
+		}
 
+		private Rectangle getExpandIconRect(Rectangle rect) {
+			return new Rectangle(rect.x + rect.width - 16, rect.y, 16, rect.height);
 		}
 
 		public void updateFromProvider() {
