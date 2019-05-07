@@ -68,16 +68,16 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		public BlocksCanvas(Composite parent, int style) {
 			super(parent, style | SWT.V_SCROLL);
-			
+
 			addMouseListener(this);
 			addListener(SWT.MouseVerticalWheel, this::mouseScrolled);
 			addPaintListener(this);
-			
+
 			_blockAreaMap = new HashMap<>();
 			_blockExpandMap = new HashMap<>();
 			_handModeUtils = new HandModeUtils(this);
 			_scrollUtils = new MyScrollUtils();
-			
+
 		}
 
 		class MyScrollUtils extends ScrollUtils {
@@ -142,12 +142,12 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			for (int i = 0; i < list.size(); i++) {
 				if (x + size + margin > e.width) {
 					x = margin;
-					y += margin + size;
+					y += margin + size + 20;
 				}
 				x += size + margin;
 			}
 
-			return new Rectangle(0, 0, e.width, y + margin + size);
+			return new Rectangle(0, 0, e.width, y + margin + size + 20);
 		}
 
 		@Override
@@ -155,7 +155,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			var gc = e.gc;
 
 			prepareGC(gc);
-			
+
 			{
 				Transform tx = new Transform(getDisplay());
 				tx.translate(0, _scrollUtils.getOrigin().y);
@@ -170,7 +170,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			var margin = 5;
 			var startXMargin = e.width % (_imageSize + margin) / 2;
 			var size = _imageSize;
-			var x = startXMargin; //+ margin;
+			var x = startXMargin; // + margin;
 			var y = margin;
 
 			var list = expandList(_provider.getBlocks());
@@ -180,7 +180,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 				if (x + size + margin > e.width) {
 					x = startXMargin;
-					y += margin + size;
+					y += margin + size + 20;
 				}
 
 				var terminal = block.isTerminal();
@@ -189,12 +189,12 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				_blockAreaMap.put(block, rect);
 
 				gc.setBackground(SwtRM.getColor(block.getColor()));
-				
+
 				if (terminal) {
 					gc.setAlpha(50);
 					gc.fillRectangle(rect);
 					gc.setAlpha(255);
-					
+
 					renderer.render(this, gc, x, y, size, size);
 				} else {
 					var tab = (int) (rect.height * 0.1);
@@ -202,26 +202,42 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 					gc.fillRectangle(rect.x, rect.y, rect.width / 2, tab);
 					gc.fillRectangle(rect.x, rect.y + tab, rect.width, rect.height - tab);
 					gc.setAlpha(255);
-					
+
 					renderer.render(this, gc, x, y + tab, size - 10, size - tab);
 				}
 
 				gc.setAlpha(100);
-				//gc.drawRectangle(rect);
+				// gc.drawRectangle(rect);
 				gc.setAlpha(255);
 
 				if (!terminal) {
-//					gc.setAlpha(100);
-//					gc.fillRectangle(x + size - 10, y, 10, size);
-//
-//					gc.drawRectangle(x + size - 10, y, 10, size);
-//					gc.setAlpha(255);
+					// gc.setAlpha(100);
+					// gc.fillRectangle(x + size - 10, y, 10, size);
+					//
+					// gc.drawRectangle(x + size - 10, y, 10, size);
+					// gc.setAlpha(255);
 
 					var expanded = isExpanded(block);
 					Image img = EditorSharedImages.getImage(expanded ? IMG_BULLET_COLLAPSE : IMG_BULLET_EXPAND);
 					gc.drawImage(img, x + size - 16, y + size / 2 - 8);
 				}
-				
+
+				{
+					var label = new StringBuilder(block.getLabel());
+					while (gc.textExtent(label.toString()).x > _imageSize) {
+						label.setLength(label.length() - 1);
+					}
+					if (label.length() < block.getLabel().length()) {
+						if (label.length() > 3) {
+							label.setLength(label.length() - 3);
+							label.append("...");
+						}
+					}
+					var text = label.toString();
+					var ext = gc.textExtent(text);
+					gc.drawText(text, x + _imageSize / 2 - ext.x / 2, y + _imageSize + 2, true);
+				}
+
 				x += size + margin;
 			}
 		}
