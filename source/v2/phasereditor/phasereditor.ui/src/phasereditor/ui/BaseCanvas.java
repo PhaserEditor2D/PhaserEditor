@@ -24,7 +24,6 @@ package phasereditor.ui;
 import static java.lang.System.out;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -69,6 +68,7 @@ public class BaseCanvas extends Canvas {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static void prepareGC(Graphics2D g2) {
 		//
 	}

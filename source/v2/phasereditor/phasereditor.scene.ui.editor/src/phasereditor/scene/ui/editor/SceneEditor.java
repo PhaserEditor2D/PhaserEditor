@@ -61,6 +61,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.scene.core.AnimationsComponent;
@@ -86,7 +87,6 @@ import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
-import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.SelectionProviderImpl;
@@ -441,6 +441,11 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	class SceneEditorBlockProvider implements IEditorBlockProvider {
 
 		private Runnable _refreshHandler;
+		
+		@Override
+		public IPropertySheetPage getPropertyPage() {
+			return new AssetsPropertyPage();
+		}
 
 		@Override
 		public List<IEditorBlock> getBlocks() {
@@ -481,11 +486,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		@Override
 		public void setRefreshHandler(Runnable refresh) {
 			_refreshHandler = refresh;
-		}
-
-		@Override
-		public void installTooltips(Control control, FrameCanvasUtils frameUtils) {
-			AssetPackUI.installAssetTooltips(control, frameUtils);
 		}
 	}
 

@@ -23,7 +23,7 @@ package phasereditor.ui;
 
 import java.util.List;
 
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 /**
  * @author arian
@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Control;
  */
 public interface IEditorBlockProvider {
 	
-	public void installTooltips(Control control, FrameCanvasUtils frameUtils);
-	
 	public abstract List<IEditorBlock> getBlocks();
 	
 	public abstract void setRefreshHandler(Runnable refresh);
+
+	public IPropertySheetPage getPropertyPage();
 }

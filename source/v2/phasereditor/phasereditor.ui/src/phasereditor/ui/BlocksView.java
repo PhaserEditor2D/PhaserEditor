@@ -56,6 +56,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 /**
  * @author arian
@@ -186,12 +187,12 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		}
 
 		private void updateBlockList() {
-			if (_provider == null) {
+			if (_blockProvider == null) {
 				_blocks = new ArrayList<>();
 				return;
 			}
 
-			var list = expandList(_provider.getBlocks());
+			var list = expandList(_blockProvider.getBlocks());
 
 			if (_filter != null) {
 				list = list.stream().filter(block -> {
@@ -375,9 +376,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			updateBlockList();
 			_scrollUtils.updateScroll();
 
-			if (_provider != null) {
-				_provider.installTooltips(this, _frameUtils);
-				_provider.setRefreshHandler(() -> {
+			if (_blockProvider != null) {
+				_blockProvider.setRefreshHandler(() -> {
 					swtRun(() -> {
 						updateBlockList();
 						_scrollUtils.updateScroll();
@@ -393,11 +393,15 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			_scrollUtils.updateScroll();
 		}
 
+		public FrameCanvasUtils getFrameUtils() {
+			return _frameUtils;
+		}
+
 	}
 
 	private BlocksCanvas _canvas;
 	private IEditorPart _currentEditor;
-	private IEditorBlockProvider _provider;
+	private IEditorBlockProvider _blockProvider;
 	private Text _filterText;
 	private String _filter;
 
@@ -417,6 +421,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		_canvas = new BlocksCanvas(comp, SWT.NONE);
 		_canvas.setLayoutData(new GridData(GridData.FILL_BOTH));
+		getSite().setSelectionProvider(_canvas.getFrameUtils());
 
 		PlatformUI.getWorkbench().addWindowListener(this);
 		var win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -426,6 +431,18 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		updateFromPageChange();
 
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IPropertySheetPage.class) {
+			if (_blockProvider != null) {
+				return _blockProvider.getPropertyPage();
+			}
+		}
+
+		return super.getAdapter(adapter);
 	}
 
 	@Override
@@ -449,7 +466,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		} else {
 			if (_currentEditor != editor) {
 				out.println("Process editor " + editor.getTitle());
-				_provider = editor.getAdapter(IEditorBlockProvider.class);
+				_blockProvider = editor.getAdapter(IEditorBlockProvider.class);
 				_canvas.updateFromProvider();
 			}
 		}
