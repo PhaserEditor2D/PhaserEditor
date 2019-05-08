@@ -16,6 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0",
+ org.eclipse.ui.navigator;bundle-version="3.7.100",
  org.eclipse.core.expressions;bundle-version="3.6.100",
  phasereditor.animation.ui;bundle-version="2.0.0",
  phasereditor.scene.core;bundle-version="2.0.0",
@@ -25,8 +26,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.bmpfont.core;bundle-version="2.0.0",
  phasereditor.project.core;bundle-version="2.0.0",
  phasereditor.inspect.core;bundle-version="2.0.0",
- org.eclipse.ui.navigator;bundle-version="3.7.100",
- phasereditor.project.ui;bundle-version="2.0.0"
+ phasereditor.project.ui;bundle-version="2.1.0"
 Automatic-Module-Name: phasereditor.scene.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.scene.ui,

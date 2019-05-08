@@ -36,7 +36,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.views;bundle-version="3.9.100",
  phasereditor.animation.ui;bundle-version="2.0.0",
  phasereditor.audio.ui;bundle-version="2.0.0",
- org.eclipse.jface
+ org.eclipse.jface,
+ phasereditor.project.ui;bundle-version="2.1.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui,
  phasereditor.assetpack.ui.preview,

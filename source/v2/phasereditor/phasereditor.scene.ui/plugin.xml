@@ -9,4 +9,10 @@
             order="3">
       </participant>
    </extension>
+   <extension
+         point="phasereditor.project.ui.fileRenderer">
+      <fileRenderer
+            class="phasereditor.scene.ui.SceneFileRendererProvider">
+      </fileRenderer>
+   </extension>
 </plugin>

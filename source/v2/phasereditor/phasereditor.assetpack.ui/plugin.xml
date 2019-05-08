@@ -161,5 +161,11 @@
             id="org.eclipse.ui.navigator.ProjectExplorer">
       </excludeSources>
    </extension>
+   <extension
+         point="phasereditor.project.ui.fileRenderer">
+      <fileRenderer
+            class="phasereditor.assetpack.ui.AssetFileRendererProvider">
+      </fileRenderer>
+   </extension>
    
 </plugin>

@@ -93,13 +93,38 @@ public class ProjectCore {
 
 	private static IProject _activeProject;
 	private static final ListenerList<Consumer<IProject>> _activeProjectListeners = new ListenerList<>();
+	private static final QualifiedName ACTIVE_PROJECT = new QualifiedName("phasereditor.project.core", "activeProject");
 
 	public static IProject getActiveProject() {
+		if (_activeProject == null) {
+			restoreActiveProject();
+		}
 		return _activeProject;
+	}
+
+	private static void restoreActiveProject() {
+		try {
+			var root = ResourcesPlugin.getWorkspace().getRoot();
+			var name = root.getPersistentProperty(ACTIVE_PROJECT);
+			if (name != null) {
+				var project = root.getProject(name);
+				if (project.exists()) {
+					_activeProject = project;
+				}
+			}
+		} catch (CoreException e) {
+			logError(e);
+		}
 	}
 
 	public static void setActiveProject(IProject activeProject) {
 		_activeProject = activeProject;
+
+		try {
+			ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(ACTIVE_PROJECT, activeProject.getName());
+		} catch (CoreException e) {
+			logError(e);
+		}
 
 		for (var l : _activeProjectListeners) {
 			l.accept(activeProject);

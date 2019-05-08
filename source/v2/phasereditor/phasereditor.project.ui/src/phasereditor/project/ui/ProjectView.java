@@ -21,7 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IContainer;
@@ -29,6 +31,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
@@ -42,6 +45,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 
 /**
@@ -56,8 +60,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	@Override
 	public void createPartControl(Composite parent) {
 		_filteredTree = new FilteredTreeCanvas(parent, SWT.NONE);
-		_viewer = new TreeCanvasViewer(_filteredTree.getTree(), new MyContentProvider(),
-				WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
+		_viewer = new MyTreeViewer();
 		_viewer.setInput(new Object());
 		_filteredTree.getTree().addMouseListener(new MouseAdapter() {
 			@Override
@@ -65,12 +68,52 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				openEditor();
 			}
 		});
-		
+
+		createContextMenu();
+
 		getViewSite().setSelectionProvider(_viewer);
 
 		ProjectCore.addActiveProjectListener(this);
 
 		accept(ProjectCore.getActiveProject());
+	}
+
+	class MyTreeViewer extends TreeCanvasViewer {
+
+		private List<IFileRendererProvider> _renderProviders;
+
+		public MyTreeViewer() {
+			super(_filteredTree.getTree(), new MyContentProvider(),
+					WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
+
+			_renderProviders = new ArrayList<>();
+			var elems = Platform.getExtensionRegistry()
+					.getConfigurationElementsFor("phasereditor.project.ui.fileRenderer");
+			for (var elem : elems) {
+				try {
+					IFileRendererProvider provider = (IFileRendererProvider) elem.createExecutableExtension("class");
+					_renderProviders.add(provider);
+				} catch (CoreException e) {
+					ProjectUI.logError(e);
+				}
+			}
+		}
+
+		@Override
+		protected void setItemIconProperties(TreeCanvasItem item) {
+			super.setItemIconProperties(item);
+			if (item.getData() instanceof IFile) {
+				for (var provider : _renderProviders) {
+					var renderer = provider.createRenderer(item);
+					if (renderer != null) {
+						item.setRenderer(renderer);
+					}
+				}
+			}
+		}
+	}
+
+	private void createContextMenu() {
 	}
 
 	protected void openEditor() {
