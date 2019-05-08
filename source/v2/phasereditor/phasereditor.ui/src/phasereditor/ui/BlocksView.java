@@ -179,7 +179,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			var list2 = new ArrayList<IEditorBlock>();
 			for (var block : list1) {
 				list2.add(block);
-				if (isExpanded(block) || !block.isTerminal() && _filter != null) {
+				if (isExpanded(block) || (!block.isTerminal() && _filter != null)) {
 					list2.addAll(expandList(block.getChildren()));
 				}
 			}
@@ -349,6 +349,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			if (block != null) {
 				var expanded = !isExpanded(block);
 				_blockExpandMap.put(block.getId(), Boolean.valueOf(expanded));
+				updateBlockList();
 				_scrollUtils.updateScroll();
 				redraw();
 			}
