@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.ui.Colors;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
@@ -48,9 +49,14 @@ public class AssetFrameEditorBlock extends AssetKeyEditorBlock<IAssetFrameModel>
 
 	@Override
 	public String getKeywords() {
+
+		if (getAssetKey() instanceof SpritesheetAssetModel.FrameModel) {
+			return "frame";
+		}
+
 		return "frame texture";
 	}
-	
+
 	@Override
 	public String getSortName() {
 		return "005";

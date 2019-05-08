@@ -177,7 +177,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			var list2 = new ArrayList<IEditorBlock>();
 			for (var block : list1) {
 				list2.add(block);
-				if (isExpanded(block)) {
+				if (isExpanded(block) || !block.isTerminal() && _filter != null) {
 					list2.addAll(expandList(block.getChildren()));
 				}
 			}
@@ -191,21 +191,19 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 
 			var list = expandList(_provider.getBlocks());
-			var filter = _filterText.getText().trim().toLowerCase();
 
-			if (filter.length() > 0) {
+			if (_filter != null) {
 				list = list.stream().filter(block -> {
 					var test = (block.getLabel() + block.getKeywords()).toLowerCase();
-					return test.contains(filter);
+					return test.contains(_filter);
 				}).collect(toList());
 			}
 
 			_blocks = list;
+			
 		}
 
 		public Rectangle computeScrollArea() {
-
-			updateBlockList();
 
 			var e = getClientArea();
 
@@ -383,12 +381,18 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			redraw();
 		}
 
+		public void filter() {
+			updateBlockList();
+			_scrollUtils.updateScroll();
+		}
+
 	}
 
 	private BlocksCanvas _canvas;
 	private IEditorPart _currentEditor;
 	private IEditorBlockProvider _provider;
 	private Text _filterText;
+	private String _filter;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -399,8 +403,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		_filterText.setMessage("type filter text");
 
 		_filterText.addModifyListener(e -> {
-			_canvas.updateBlockList();
-			_canvas.redraw();
+			var text = _filterText.getText().trim().toLowerCase();
+			_filter = text.length() == 0 ? null : text;
+			_canvas.filter();
 		});
 
 		_canvas = new BlocksCanvas(comp, SWT.NONE);
