@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
 import static phasereditor.ui.PhaserEditorUI.isZoomEvent;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,7 +201,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 
 			_blocks = list;
-			
+
 		}
 
 		public Rectangle computeScrollArea() {
@@ -376,6 +377,12 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 			if (_provider != null) {
 				_provider.installTooltips(this, _frameUtils);
+				_provider.setRefreshHandler(() -> {
+					swtRun(() -> {
+						updateBlockList();
+						_scrollUtils.updateScroll();
+					});
+				});
 			}
 
 			redraw();

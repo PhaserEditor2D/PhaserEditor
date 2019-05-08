@@ -261,6 +261,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 		refreshOutline();
 
+		if (_blocksProvider != null) {
+			_blocksProvider.getRefreshHandler().run();
+		}
+
 		_broker.sendAll(new ReloadPageMessage());
 	}
 
@@ -436,6 +440,8 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	class SceneEditorBlockProvider implements IEditorBlockProvider {
 
+		private Runnable _refreshHandler;
+
 		@Override
 		public List<IEditorBlock> getBlocks() {
 
@@ -468,9 +474,13 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 			return list;
 		}
 
+		public Runnable getRefreshHandler() {
+			return _refreshHandler;
+		}
+
 		@Override
 		public void setRefreshHandler(Runnable refresh) {
-			//
+			_refreshHandler = refresh;
 		}
 
 		@Override
