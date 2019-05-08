@@ -78,7 +78,6 @@ import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.IAnimationsEditor;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
-import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -598,8 +597,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 								|| asset instanceof MultiAtlasAssetModel
 
 								|| asset instanceof IAssetFrameModel
-
-								|| asset instanceof AnimationsAssetModel
 
 								|| asset instanceof SpritesheetAssetModel;
 					})
