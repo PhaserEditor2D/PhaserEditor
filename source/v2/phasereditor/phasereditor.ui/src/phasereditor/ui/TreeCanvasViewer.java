@@ -24,6 +24,7 @@ package phasereditor.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -44,7 +45,7 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider {
 
 	private ITreeContentProvider _contentProvider;
-	private LabelProvider _labelProvider;
+	private ILabelProvider _labelProvider;
 	private Object _input;
 	private TreeCanvas _tree;
 
@@ -52,7 +53,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		this(canvas, null, null);
 	}
 
-	public TreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
+	public TreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider, ILabelProvider labelProvider) {
 		super();
 		_tree = tree;
 		_contentProvider = contentProvider;
@@ -140,7 +141,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		item.setRenderer(new IconTreeCanvasItemRenderer(item, _labelProvider.getImage(item.getData())));
 	}
 
-	public LabelProvider getLabelProvider() {
+	public ILabelProvider getLabelProvider() {
 		return _labelProvider;
 	}
 

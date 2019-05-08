@@ -34,7 +34,9 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.part.ViewPart;
 import org.w3c.dom.Document;
 
+import phasereditor.ide.ui.ScenePerspective;
 import phasereditor.lic.HttpTool;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.project.ui.wizards.NewPhaserExampleProjectWizard;
 import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
 import phasereditor.ui.EditorSharedImages;
@@ -113,11 +115,11 @@ public class StartView extends ViewPart {
 
 				try {
 					var feedUrl = "https://phasereditor2d.com/blog/feed/rss";
-					
+
 					if (System.getProperty("localfeed") != null) {
 						feedUrl = "http://localhost/blog/feed/rss";
 					}
-					
+
 					var content = HttpTool.GET(feedUrl);
 
 					swtRun(() -> {
@@ -263,8 +265,20 @@ public class StartView extends ViewPart {
 
 	private static void createOpenProjects(Composite comp) {
 		for (var project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-			createLink(comp, project.getName(), null,
-					"platform:/plugin/org.eclipse.ui.ide/icons/full/obj16/prj_obj.png");
+			createLink(comp, project.getName(), new Runnable() {
+
+				@Override
+				public void run() {
+					ProjectCore.setActiveProject(project);
+					// TODO: go to the project perspective, for now, just go to the Scene
+					// perspective
+					var id = ScenePerspective.ID;
+
+					var workbench = PlatformUI.getWorkbench();
+					var page = workbench.getActiveWorkbenchWindow().getActivePage();
+					page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
+				}
+			}, "platform:/plugin/org.eclipse.ui.ide/icons/full/obj16/prj_obj.png");
 		}
 	}
 

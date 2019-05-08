@@ -239,4 +239,16 @@
          </activeWhen>
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="phasereditor.ui.phaser"
+            class="phasereditor.project.ui.ProjectView"
+            icon="platform:/plugin/org.eclipse.ui.ide/icons/full/obj16/prj_obj.png"
+            id="phasereditor.project.ui.projectView"
+            name="Project"
+            restorable="true">
+      </view>
+   </extension>
 </plugin>

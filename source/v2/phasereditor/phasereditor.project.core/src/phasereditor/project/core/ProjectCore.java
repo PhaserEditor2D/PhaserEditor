@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -52,6 +53,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -88,6 +90,29 @@ public class ProjectCore {
 	public static final String PREF_PROP_PROJECT_GAME_WIDTH = "phasereditor.project.ui.gameWidth";
 	public static final String PREF_PROP_PROJECT_GAME_HEIGHT = "phasereditor.project.ui.gameHeight";
 	public static final String PREF_PROP_PROJECT_WIZARD_LANGUAJE = "phasereditor.project.ui.projectWizardLang";
+
+	private static IProject _activeProject;
+	private static final ListenerList<Consumer<IProject>> _activeProjectListeners = new ListenerList<>();
+
+	public static IProject getActiveProject() {
+		return _activeProject;
+	}
+
+	public static void setActiveProject(IProject activeProject) {
+		_activeProject = activeProject;
+
+		for (var l : _activeProjectListeners) {
+			l.accept(activeProject);
+		}
+	}
+
+	public static void addActiveProjectListener(Consumer<IProject> listener) {
+		_activeProjectListeners.add(listener);
+	}
+
+	public static void removeActiveProjectListener(Consumer<IProject> listener) {
+		_activeProjectListeners.remove(listener);
+	}
 
 	public static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
@@ -241,19 +266,17 @@ public class ProjectCore {
 			Map<String, String> paramValues, SourceLang lang, IProgressMonitor monitor) throws CoreException {
 
 		var nullMonitor = new NullProgressMonitor();
-		
+
 		monitor.beginTask("Copying template content.", 5);
-		
+
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> {
 			openTemplateMainFileInEditor(project, template);
 		});
 
-		
 		IFolder webContentFolder = project.getFolder("WebContent");
 		webContentFolder.create(true, true, nullMonitor);
 		monitor.worked(1);
-		
-		
+
 		IFolder folder = project.getFolder("Design");
 		folder.create(true, true, nullMonitor);
 		monitor.worked(1);
