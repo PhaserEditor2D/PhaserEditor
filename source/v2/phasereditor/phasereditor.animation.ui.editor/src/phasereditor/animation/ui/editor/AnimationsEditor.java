@@ -22,6 +22,7 @@
 package phasereditor.animation.ui.editor;
 
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
@@ -77,6 +78,8 @@ import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.IAnimationsEditor;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
+import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -86,9 +89,12 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.IEditorBlock;
+import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
@@ -121,6 +127,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	private AnimationActions _animationActions;
 	private AnimationModel _initialAnimation;
 	private EditorFileStampHelper _fileStampHelper;
+	private AnimationsEditorBlockProvider _blocksProvider;
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
@@ -410,6 +417,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			_dirty = false;
 
 			firePropertyChange(PROP_DIRTY);
+			
+			refreshBlocksProvider();
 
 		} catch (JSONException | CoreException | IOException e) {
 			e.printStackTrace();
@@ -504,6 +513,14 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		}
 
 		loadAnimation(model);
+
+		refreshBlocksProvider();
+	}
+
+	private void refreshBlocksProvider() {
+		if (_blocksProvider != null) {
+			_blocksProvider.refresh();
+		}
 	}
 
 	@Override
@@ -551,7 +568,63 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			return new AnimationsPropertyPage(this);
 		}
 
+		if (adapter == IEditorBlockProvider.class) {
+			if (_blocksProvider == null) {
+				_blocksProvider = new AnimationsEditorBlockProvider();
+			}
+			return _blocksProvider;
+		}
+
 		return super.getAdapter(adapter);
+	}
+
+	class AnimationsEditorBlockProvider implements IEditorBlockProvider {
+
+		private Runnable _refresh;
+
+		@Override
+		public List<IEditorBlock> getBlocks() {
+			var packs = AssetPackCore.getAssetPackModels(getEditorInput().getFile().getProject());
+
+			var list = packs.stream()
+
+					.flatMap(pack -> pack.getAssets().stream())
+
+					.filter(asset -> {
+						return asset instanceof ImageAssetModel
+
+								|| asset instanceof AtlasAssetModel
+
+								|| asset instanceof MultiAtlasAssetModel
+
+								|| asset instanceof IAssetFrameModel
+
+								|| asset instanceof AnimationsAssetModel
+
+								|| asset instanceof SpritesheetAssetModel;
+					})
+
+					.map(asset -> AssetPackUI.getAssetEditorBlock(asset))
+
+					.collect(toList());
+
+			return list;
+		}
+
+		public void refresh() {
+			_refresh.run();
+		}
+
+		@Override
+		public void setRefreshHandler(Runnable refresh) {
+			_refresh = refresh;
+		}
+
+		@Override
+		public IPropertySheetPage getPropertyPage() {
+			return new AssetsPropertyPage();
+		}
+
 	}
 
 	public AnimationCanvas getAnimationCanvas() {

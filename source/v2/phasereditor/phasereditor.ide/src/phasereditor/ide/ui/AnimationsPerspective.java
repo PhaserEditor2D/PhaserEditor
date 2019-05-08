@@ -24,7 +24,7 @@ package phasereditor.ide.ui;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import phasereditor.assetexplorer.ui.views.AssetsView;
+import phasereditor.ui.BlocksView;
 
 /**
  * @author arian
@@ -36,7 +36,7 @@ public class AnimationsPerspective implements IPerspectiveFactory {
 	public void createInitialLayout(IPageLayout layout) {
 		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
 		layout.addView(IPageLayout.ID_PROP_SHEET, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
-		layout.addView(AssetsView.ID, IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(BlocksView.ID, IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
 	}
 
 }

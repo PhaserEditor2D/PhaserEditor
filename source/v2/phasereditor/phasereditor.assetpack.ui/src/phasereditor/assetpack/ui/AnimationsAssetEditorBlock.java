@@ -87,6 +87,10 @@ public class AnimationsAssetEditorBlock extends AssetKeyEditorBlock<AnimationsAs
 				var anims = model.getAnimations();
 
 				var frames = new ArrayList<AnimationFrameModel>();
+				
+				if (anims.isEmpty()) {
+					return;
+				}
 
 				for (var anim : anims) {
 					var animFrames = anim.getFrames();

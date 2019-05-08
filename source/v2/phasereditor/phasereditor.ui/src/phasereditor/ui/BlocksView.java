@@ -400,6 +400,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 	}
 
+	public static final String ID = "phasereditor.ui.assetsView";
+
 	private BlocksCanvas _canvas;
 	private IEditorPart _currentEditor;
 	private IEditorBlockProvider _blockProvider;
