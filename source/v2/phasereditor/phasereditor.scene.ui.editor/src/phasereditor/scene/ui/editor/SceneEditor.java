@@ -86,6 +86,7 @@ import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
+import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.SelectionProviderImpl;
@@ -472,6 +473,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 			//
 		}
 
+		@Override
+		public void installTooltips(Control control, FrameCanvasUtils frameUtils) {
+			AssetPackUI.installAssetTooltips(control, frameUtils);
+		}
 	}
 
 	public void removeOutline() {

@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
 /**
@@ -47,4 +48,9 @@ public interface IEditorBlock {
 	public String getSortName();
 	
 	public RGB getColor();
+
+	public default Image get_DND_Image() {
+		return PhaserEditorUI.createImageFromCellRenderer(getRenderer(), 256, 256);
+	}
+	
 }

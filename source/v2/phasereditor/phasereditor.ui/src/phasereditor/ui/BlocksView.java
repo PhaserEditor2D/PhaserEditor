@@ -121,9 +121,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 
 			@Override
-			public ImageProxy get_DND_Image(int index) {
-				// TODO: we should implement this in the IEditorBlock
-				return null;
+			public Image get_DND_Disposable_Image(int index) {
+				return _blocks.get(index).get_DND_Image();
 			}
 
 			@Override
@@ -186,6 +185,11 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		}
 
 		private void updateBlockList() {
+			if (_provider == null) {
+				_blocks = new ArrayList<>();
+				return;
+			}
+
 			var list = expandList(_provider.getBlocks());
 			var filter = _filterText.getText().trim().toLowerCase();
 
@@ -371,6 +375,11 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		public void updateFromProvider() {
 			updateBlockList();
 			_scrollUtils.updateScroll();
+
+			if (_provider != null) {
+				_provider.installTooltips(this, _frameUtils);
+			}
+
 			redraw();
 		}
 

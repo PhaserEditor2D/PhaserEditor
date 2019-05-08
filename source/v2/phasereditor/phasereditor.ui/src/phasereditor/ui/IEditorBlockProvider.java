@@ -23,11 +23,15 @@ package phasereditor.ui;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Control;
+
 /**
  * @author arian
  *
  */
 public interface IEditorBlockProvider {
+	
+	public void installTooltips(Control control, FrameCanvasUtils frameUtils);
 	
 	public abstract List<IEditorBlock> getBlocks();
 	

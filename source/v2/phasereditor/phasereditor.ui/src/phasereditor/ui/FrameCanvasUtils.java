@@ -42,6 +42,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
@@ -100,7 +101,15 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract Object getFrameObject(int index);
 
-	public abstract ImageProxy get_DND_Image(int index);
+	@SuppressWarnings("all")
+	public ImageProxy get_DND_Image(int index) {
+		return null;
+	}
+	
+	@SuppressWarnings({ "static-method", "unused" })
+	public Image get_DND_Disposable_Image(int index) {
+		return null;
+	}
 
 	@SuppressWarnings({ "static-method", "unused" })
 	public boolean isInformationControlValidPosition(int index, int x, int y) {
@@ -469,9 +478,16 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			_canvas.redraw();
 		}
 
+		Image img = null;
 		var proxy = get_DND_Image(index);
-		if (proxy != null) {
-			PhaserEditorUI.set_DND_Image(event, proxy.getImage());
+		
+		if (proxy == null) {
+			img = get_DND_Disposable_Image(index);
+			PhaserEditorUI.set_DND_Image(event, img);
+			img.dispose();
+		} else {
+			img = proxy.getImage();
+			PhaserEditorUI.set_DND_Image(event, img);
 		}
 
 		LocalSelectionTransfer.getTransfer().setSelection(sel);

@@ -1074,6 +1074,16 @@ public class PhaserEditorUI {
 		}
 	}
 
+	public static Image createImageFromCellRenderer(ICanvasCellRenderer renderer, int width,
+			int height) {
+		var img = createTransparentSWTImage(Display.getDefault(), width, height);
+		var gc = new GC(img);
+		BaseCanvas.prepareGC(gc);
+		renderer.render(null, gc, 0, 0, width, height);
+		gc.dispose();
+		return img;
+	}
+
 	public static Image image_Swing_To_SWT(BufferedImage img) throws IOException {
 		ByteArrayOutputStream memory = new ByteArrayOutputStream();
 		ImageIO.write(img, "png", memory);
