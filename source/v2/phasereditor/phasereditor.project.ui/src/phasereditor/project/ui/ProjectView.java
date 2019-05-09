@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,6 +88,10 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 		accept(ProjectCore.getActiveProject());
 
 		registerWorkbenchListeners();
+
+		// we need this to show the right icons, because some content types are not
+		// resolved at the first time.
+		swtRun(4000, this::refresh);
 	}
 
 	private void registerWorkbenchListeners() {
