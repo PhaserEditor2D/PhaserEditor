@@ -167,5 +167,12 @@
             class="phasereditor.assetpack.ui.AssetFileRendererProvider">
       </fileRenderer>
    </extension>
+   <extension
+         point="phasereditor.ui.formPropertySection">
+      <formPropertySection
+            class="phasereditor.assetpack.ui.properties.ProjectPropertySectionProvider"
+            pageName="ProjectView">
+      </formPropertySection>
+   </extension>
    
 </plugin>

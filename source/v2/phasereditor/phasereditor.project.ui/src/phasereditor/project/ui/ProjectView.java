@@ -53,6 +53,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONArray;
 
 import phasereditor.project.core.ProjectCore;
@@ -60,6 +61,7 @@ import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.properties.ExtensibleFormPropertyPage;
 
 /**
  * @author arian
@@ -136,6 +138,28 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 			_viewer.setExpandedElements(list.toArray());
 		}
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		
+		if (adapter == IPropertySheetPage.class) {
+			return new ExtensibleFormPropertyPage() {
+				
+				@Override
+				protected Object getDefaultModel() {
+					return ProjectCore.getActiveProject();
+				}
+
+				@Override
+				protected String getPageName() {
+					return "ProjectView";
+				}
+			};
+		}
+		
+		return super.getAdapter(adapter);
 	}
 
 	@Override
