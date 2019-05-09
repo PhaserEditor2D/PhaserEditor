@@ -231,7 +231,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		private void updateScroll() {
 			_scrollUtils.updateScroll();
-			getProviderData().scrollValue = -_scrollUtils.getOrigin().y;
+			if (_blockProvider != null) {
+				getProviderData().scrollValue = -_scrollUtils.getOrigin().y;
+			}
 		}
 
 		private List<IEditorBlock> expandList(List<IEditorBlock> list) {
