@@ -243,6 +243,15 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 							.filter(m -> !m.getName().startsWith("."))
 
+							.sorted((a, b) -> {
+
+								var a1 = a instanceof IContainer ? 0 : 1;
+								var b1 = b instanceof IContainer ? 0 : 1;
+
+								return Integer.compare(a1, b1);
+
+							})
+
 							.toArray();
 				} catch (CoreException e) {
 					e.printStackTrace();
