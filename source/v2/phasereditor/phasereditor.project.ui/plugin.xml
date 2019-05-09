@@ -252,4 +252,12 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.project.ui.ProjectViewBuildParticipant"
+            id="phasereditor.project.ui.ProjectViewBuildParticipant"
+            order="1">
+      </participant>
+   </extension>
 </plugin>

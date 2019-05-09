@@ -44,6 +44,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
@@ -54,6 +55,7 @@ import phasereditor.ui.TreeCanvasViewer;
  */
 public class ProjectView extends ViewPart implements Consumer<IProject> {
 
+	public static final String ID = "phasereditor.project.ui.projectView";
 	private FilteredTreeCanvas _filteredTree;
 	private TreeCanvasViewer _viewer;
 
@@ -101,14 +103,25 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 		@Override
 		protected void setItemIconProperties(TreeCanvasItem item) {
-			super.setItemIconProperties(item);
+			BaseTreeCanvasItemRenderer renderer = null;
+
 			if (item.getData() instanceof IFile) {
 				for (var provider : _renderProviders) {
-					var renderer = provider.createRenderer(item);
-					if (renderer != null) {
-						item.setRenderer(renderer);
+					var renderer2 = provider.createRenderer(item);
+					if (renderer2 != null) {
+						renderer = renderer2;
+						break;
 					}
 				}
+			}
+
+			if (renderer == null) {
+				
+				
+				
+				super.setItemIconProperties(item);
+			} else {
+				item.setRenderer(renderer);
 			}
 		}
 	}
@@ -193,6 +206,15 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 			return getChildren(element).length > 0;
 		}
 
+	}
+
+	public void refresh() {
+		_viewer.getTree().setRedraw(false);
+		var expanded = _viewer.getExpandedElements();
+		_viewer.refresh();
+		_viewer.setExpandedElements(expanded);
+		_viewer.getTree().setRedraw(true);
+		_viewer.getTree().redraw();
 	}
 
 }
