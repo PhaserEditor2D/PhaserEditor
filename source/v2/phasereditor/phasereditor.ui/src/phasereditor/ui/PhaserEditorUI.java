@@ -60,8 +60,10 @@ import javax.script.ScriptException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -124,6 +126,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.internal.ide.IDEInternalPreferences;
+import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -179,7 +184,63 @@ public class PhaserEditorUI {
 	private static boolean _isWindowsPlatform = Util.isWindows();
 	private static boolean _isLinux = Util.isLinux();
 
+	private static final String VARIABLE_RESOURCE = "${selected_resource_loc}"; //$NON-NLS-1$
+	private static final String VARIABLE_RESOURCE_URI = "${selected_resource_uri}"; //$NON-NLS-1$
+	private static final String VARIABLE_FOLDER = "${selected_resource_parent_loc}"; //$NON-NLS-1$
+
 	private PhaserEditorUI() {
+	}
+
+	private static String formShowInSytemExplorerCommand(File path) throws IOException {
+		String command = IDEWorkbenchPlugin.getDefault().getPreferenceStore()
+				.getString(IDEInternalPreferences.WORKBENCH_SYSTEM_EXPLORER);
+
+		command = Util.replaceAll(command, VARIABLE_RESOURCE, quotePath(path.getCanonicalPath()));
+		command = Util.replaceAll(command, VARIABLE_RESOURCE_URI, path.getCanonicalFile().toURI().toString());
+		File parent = path.getParentFile();
+		if (parent != null) {
+			command = Util.replaceAll(command, VARIABLE_FOLDER, quotePath(parent.getCanonicalPath()));
+		}
+		return command;
+	}
+
+	private static String quotePath(String path) {
+		if (Util.isLinux() || Util.isMac()) {
+			// Quote for usage inside "", man sh, topic QUOTING:
+			path = path.replaceAll("[\"$`]", "\\\\$0"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		// Windows: Can't quote, since explorer.exe has a very special command line
+		// parsing strategy.
+		return path;
+	}
+
+	public static void showInSystemExplorer(File canonicalPath) {
+		Job job = Job.create(IDEWorkbenchMessages.ShowInSystemExplorerHandler_jobTitle, monitor -> {
+			try {
+
+				String launchCmd = formShowInSytemExplorerCommand(canonicalPath);
+
+				if ("".equals(launchCmd)) { //$NON-NLS-1$
+					return Status.OK_STATUS;
+				}
+
+				File dir = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+				Process p;
+				if (Util.isLinux() || Util.isMac()) {
+					p = Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", launchCmd }, null, dir); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					p = Runtime.getRuntime().exec(launchCmd, null, dir);
+				}
+				int retCode = p.waitFor();
+				if (retCode != 0 && !Util.isWindows()) {
+					return Status.OK_STATUS;
+				}
+			} catch (IOException | InterruptedException e2) {
+				return Status.OK_STATUS;
+			}
+			return Status.OK_STATUS;
+		});
+		job.schedule();
 	}
 
 	public static void logError(Exception e) {

@@ -16,6 +16,7 @@ public class ProjectPropertySectionProvider implements IFormPropertySectionProvi
 	public void createSections(ExtensibleFormPropertyPage page, List<FormPropertySection<?>> list) {
 		list.add(new ImageFilePreviewPropertySection());
 		list.add(new ManyImageFilePreviewPropertySection());
+		list.add(new AudioFilePreviewPropertySection());
 	}
 
 }

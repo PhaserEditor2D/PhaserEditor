@@ -147,6 +147,7 @@ public interface IEditorSharedImages {
 	String IMG_REMOVE_FROM_GROUP = "icons/basket-delete.png";
 	String IMG_SELECT_GROUP = "icons/basket-go.png";
 	String IMG_SELECT_OBJECTS = "icons/shape_ungroup.png";
+	String IMG_FOLDER_GO = "icons/folder-go.png";
 
 	// lsp4e
 	String IMG_NAMESPACE = "icons/namespace.png";
@@ -166,4 +167,5 @@ public interface IEditorSharedImages {
 	String IMG_BULLET_EXPAND = "icons/blender_ICON_DISCLOSURE_TRI_RIGHT.png"; // "icons/bullet_toggle_plus.png";
 	String IMG_BULLET_COLLAPSE = "icons/blender_ICON_DISCLOSURE_TRI_DOWN.png"; // "icons/bullet_toggle_minus.png";
 	String IMG_BONE = "icons/ICON_BONE_DATA.png";
+
 }

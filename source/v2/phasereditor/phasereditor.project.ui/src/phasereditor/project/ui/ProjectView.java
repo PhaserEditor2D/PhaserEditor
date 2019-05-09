@@ -62,6 +62,7 @@ import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.ExtensibleFormPropertyPage;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
@@ -139,14 +140,14 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 			_viewer.setExpandedElements(list.toArray());
 		}
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
-		
+
 		if (adapter == IPropertySheetPage.class) {
 			return new ExtensibleFormPropertyPage() {
-				
+
 				@Override
 				protected Object getDefaultModel() {
 					return ProjectCore.getActiveProject();
@@ -156,9 +157,21 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				protected String getPageName() {
 					return "ProjectView";
 				}
+
+				@Override
+				protected List<FormPropertySection<?>> createSections() {
+
+					var list = new ArrayList<FormPropertySection<?>>();
+
+					list.add(new ResourcePropertySection());
+
+					list.addAll(super.createSections());
+
+					return list;
+				}
 			};
 		}
-		
+
 		return super.getAdapter(adapter);
 	}
 
