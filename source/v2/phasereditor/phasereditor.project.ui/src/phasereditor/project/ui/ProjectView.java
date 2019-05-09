@@ -34,10 +34,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -58,6 +63,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	public static final String ID = "phasereditor.project.ui.projectView";
 	private FilteredTreeCanvas _filteredTree;
 	private TreeCanvasViewer _viewer;
+	private IPartListener _partListener;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -78,6 +84,59 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 		ProjectCore.addActiveProjectListener(this);
 
 		accept(ProjectCore.getActiveProject());
+
+		registerWorkbenchListeners();
+	}
+
+	private void registerWorkbenchListeners() {
+		_partListener = new IPartListener() {
+
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				//
+
+			}
+
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				//
+
+			}
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				//
+
+			}
+
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				try {
+					if (part instanceof IEditorPart) {
+						var input = ((IEditorPart) part).getEditorInput();
+						if (input instanceof IFileEditorInput) {
+							var file = ((IFileEditorInput) input).getFile();
+							var project = file.getProject();
+							if (project.equals(ProjectCore.getActiveProject())) {
+								reveal(file);
+							}
+						}
+					}
+				} catch (NullPointerException e) {
+					// may happen
+				}
+			}
+		};
+		getViewSite().getPage().addPartListener(_partListener);
+	}
+
+	protected void reveal(IFile file) {
+		_viewer.setSelection(new StructuredSelection(file), true);
 	}
 
 	class MyTreeViewer extends TreeCanvasViewer {
@@ -116,9 +175,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 			}
 
 			if (renderer == null) {
-				
-				
-				
+
 				super.setItemIconProperties(item);
 			} else {
 				item.setRenderer(renderer);
@@ -146,6 +203,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	@Override
 	public void dispose() {
 		ProjectCore.removeActiveProjectListener(this);
+		getViewSite().getPage().removePartListener(_partListener);
 		super.dispose();
 	}
 

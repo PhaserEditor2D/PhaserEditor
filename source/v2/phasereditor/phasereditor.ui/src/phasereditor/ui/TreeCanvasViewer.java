@@ -182,11 +182,11 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	public void setSelection(ISelection selection, boolean reveal) {
-		_tree.getUtils().setSelection(selection);
-
 		if (reveal) {
 			_tree.reveal(((IStructuredSelection) selection).toArray());
 		}
+		
+		_tree.getUtils().setSelection(selection);
 
 		_tree.redraw();
 	}

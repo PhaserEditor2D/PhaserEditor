@@ -989,7 +989,7 @@ public class TreeCanvas extends BaseCanvas implements PaintListener {
 	public void reveal(Object... elems) {
 		for (var item : _items) {
 			for (Object elem : elems) {
-				if (item.getData() == elem) {
+				if (item.getData() == elem || item.getData() != null && item.getData().equals(elem)) {
 					itemExpandToRoot(item.getParent());
 				}
 			}

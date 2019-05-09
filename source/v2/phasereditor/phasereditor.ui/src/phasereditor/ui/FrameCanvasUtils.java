@@ -274,7 +274,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 				for (var obj : selArray) {
 					for (int i = 0; i < getFramesCount(); i++) {
 						var frameObj = getFrameObject(i);
-						if (obj == frameObj) {
+						if (obj == frameObj || obj != null && obj.equals(frameObj)) {
 							list.add(obj);
 						}
 					}
