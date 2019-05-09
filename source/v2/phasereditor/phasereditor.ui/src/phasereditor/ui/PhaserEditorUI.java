@@ -181,7 +181,7 @@ public class PhaserEditorUI {
 
 	private PhaserEditorUI() {
 	}
-	
+
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
@@ -985,7 +985,9 @@ public class PhaserEditorUI {
 	}
 
 	public static void set_DND_Image(DragSourceEvent e, Image image) {
-		set_DND_Image(e, image, image.getBounds());
+		if (image != null) {
+			set_DND_Image(e, image, image.getBounds());
+		}
 	}
 
 	public static void set_DND_Image(DragSourceEvent e, Image image, Rectangle src) {
@@ -1087,8 +1089,7 @@ public class PhaserEditorUI {
 		}
 	}
 
-	public static Image createImageFromCellRenderer(ICanvasCellRenderer renderer, int width,
-			int height) {
+	public static Image createImageFromCellRenderer(ICanvasCellRenderer renderer, int width, int height) {
 		var img = createTransparentSWTImage(Display.getDefault(), width, height);
 		var gc = new GC(img);
 		BaseCanvas.prepareGC(gc);

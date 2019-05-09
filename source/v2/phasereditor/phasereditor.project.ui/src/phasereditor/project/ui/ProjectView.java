@@ -32,7 +32,9 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -43,12 +45,15 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
+import org.json.JSONArray;
 
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
@@ -66,6 +71,12 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	private FilteredTreeCanvas _filteredTree;
 	private TreeCanvasViewer _viewer;
 	private IPartListener _partListener;
+	private JSONArray _initialExpandedPaths;
+
+	static class ProjectData {
+		public List<String> expandedPaths = new ArrayList<>();
+		public int scrollValue;
+	}
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -87,11 +98,66 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 		accept(ProjectCore.getActiveProject());
 
+		restoreState();
+
 		registerWorkbenchListeners();
 
 		// we need this to show the right icons, because some content types are not
 		// resolved at the first time.
 		swtRun(4000, this::refresh);
+	}
+
+	private void restoreState() {
+		if (_initialExpandedPaths != null) {
+			var list = new ArrayList<>();
+			var root = ResourcesPlugin.getWorkspace().getRoot();
+			for (int i = 0; i < _initialExpandedPaths.length(); i++) {
+
+				var pathname = _initialExpandedPaths.getString(i);
+				var path = new Path(pathname);
+				try {
+					var folder = root.getFolder(path);
+					if (folder.exists()) {
+						list.add(folder);
+					}
+				} catch (Exception e) {
+					//
+				}
+
+				try {
+					var project = root.getProject(pathname);
+					if (project.exists()) {
+						list.add(project);
+					}
+				} catch (Exception e) {
+					//
+				}
+			}
+
+			_viewer.setExpandedElements(list.toArray());
+		}
+	}
+
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+
+		var dataStr = memento.getString("expandedPaths");
+		if (dataStr != null) {
+			_initialExpandedPaths = new JSONArray(dataStr);
+		}
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		var data = new JSONArray();
+		var elems = _viewer.getExpandedElements();
+		for (var elem : elems) {
+			if (elem instanceof IResource) {
+				data.put(((IResource) elem).getFullPath().toPortableString());
+			}
+		}
+		memento.putString("expandedPaths", data.toString());
 	}
 
 	private void registerWorkbenchListeners() {
@@ -220,7 +286,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 	@Override
 	public void accept(IProject project) {
-		_viewer.refresh();
+		refresh();
 	}
 
 	class MyContentProvider implements ITreeContentProvider {
