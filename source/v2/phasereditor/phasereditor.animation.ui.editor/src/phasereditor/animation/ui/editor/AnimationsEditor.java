@@ -416,7 +416,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			_dirty = false;
 
 			firePropertyChange(PROP_DIRTY);
-			
+
 			refreshBlocksProvider();
 
 		} catch (JSONException | CoreException | IOException e) {
@@ -580,6 +580,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	class AnimationsEditorBlockProvider implements IEditorBlockProvider {
 
 		private Runnable _refresh;
+
+		@Override
+		public String getId() {
+			return getClass().getSimpleName() + "$" + getEditorInput().getFile().getFullPath().toString();
+		}
 
 		@Override
 		public List<IEditorBlock> getBlocks() {

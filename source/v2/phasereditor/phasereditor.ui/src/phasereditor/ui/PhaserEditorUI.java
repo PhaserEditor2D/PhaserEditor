@@ -60,6 +60,8 @@ import javax.script.ScriptException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -124,6 +126,7 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ui.ZoomCanvas.ZoomCalculator;
 import phasereditor.ui.views.PreviewView;
@@ -169,6 +172,7 @@ public class PhaserEditorUI {
 
 	public static final String PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH = "phasereditor.ui.preview.tilemapTileWidth";
 	public static final String PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT = "phasereditor.ui.preview.tilemapTileHeight";
+	private static final String PLUGIN_ID = "phasereditor.ui";
 
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
@@ -176,6 +180,15 @@ public class PhaserEditorUI {
 	private static boolean _isLinux = Util.isLinux();
 
 	private PhaserEditorUI() {
+	}
+	
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}
 
 	public static void initPreferences() {

@@ -46,17 +46,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPageListener;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.json.JSONObject;
 
 /**
  * @author arian
@@ -68,12 +73,33 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		private static final int MIN_ROW_HEIGHT = 48;
 		private Map<IEditorBlock, Rectangle> _blockAreaMap;
-		private Map<String, Boolean> _blockExpandMap;
+		private Map<String, ProviderData> _providerDataMap;
 		private HandModeUtils _handModeUtils;
 		private MyScrollUtils _scrollUtils;
 		private int _imageSize = 64;
 		private List<IEditorBlock> _blocks;
 		private FrameCanvasUtils _frameUtils;
+
+		class ProviderData {
+			public Map<String, Boolean> expandedData = new HashMap<>();
+			public int scrollValue;
+
+			public JSONObject toJSON() {
+				var json = new JSONObject();
+				json.put("scrollValue", scrollValue);
+				json.put("expandedData", expandedData);
+				return json;
+			}
+
+			@SuppressWarnings("boxing")
+			public void updateFromJSON(JSONObject data) {
+				scrollValue = data.getInt("scrollValue");
+				var expandedDataJson = data.getJSONObject("expandedData");
+				for (var key : expandedDataJson.keySet()) {
+					expandedData.put(key, expandedDataJson.getBoolean(key));
+				}
+			}
+		}
 
 		public BlocksCanvas(Composite parent, int style) {
 			super(parent, style | SWT.V_SCROLL);
@@ -83,12 +109,28 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			addPaintListener(this);
 
 			_blockAreaMap = new HashMap<>();
-			_blockExpandMap = new HashMap<>();
+			_providerDataMap = new HashMap<>();
 			_handModeUtils = new HandModeUtils(this);
 			_scrollUtils = new MyScrollUtils();
 			_blocks = new ArrayList<>();
 			_frameUtils = new MyFrameUtils();
 			_frameUtils.setFilterInputWhenSetSelection(false);
+
+			if (_initialProviderData != null) {
+				try {
+
+					var data = new JSONObject(_initialProviderData);
+					for (var key : data.keySet()) {
+						var jsonProviderData = data.getJSONObject(key);
+						var providerData = new ProviderData();
+						providerData.updateFromJSON(jsonProviderData);
+						_providerDataMap.put(key, providerData);
+					}
+
+				} catch (Exception e) {
+					PhaserEditorUI.logError(e);
+				}
+			}
 		}
 
 		class MyFrameUtils extends FrameCanvasUtils {
@@ -147,6 +189,12 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			public Rectangle computeScrollArea() {
 				return BlocksCanvas.this.computeScrollArea();
 			}
+
+			@Override
+			protected void updateFromScrollEvent(ScrollBar vBar) {
+				super.updateFromScrollEvent(vBar);
+				getProviderData().scrollValue = -getOrigin().y;
+			}
 		}
 
 		public void mouseScrolled(Event e) {
@@ -167,8 +215,23 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 
 			if (_imageSize != before) {
-				_scrollUtils.updateScroll();
+				updateScroll();
 			}
+		}
+
+		public JSONObject providerData_toJSON() {
+			var json = new JSONObject();
+
+			for (var entry : _providerDataMap.entrySet()) {
+				json.put(entry.getKey(), entry.getValue().toJSON());
+			}
+
+			return json;
+		}
+
+		private void updateScroll() {
+			_scrollUtils.updateScroll();
+			getProviderData().scrollValue = -_scrollUtils.getOrigin().y;
 		}
 
 		private List<IEditorBlock> expandList(List<IEditorBlock> list) {
@@ -328,9 +391,23 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 		}
 
+		private ProviderData getProviderData() {
+			var data = _providerDataMap.get(_blockProvider.getId());
+			if (data == null) {
+				data = new ProviderData();
+				_providerDataMap.put(_blockProvider.getId(), data);
+			}
+			return data;
+		}
+
 		private boolean isExpanded(IEditorBlock block) {
+			var map = getProviderData().expandedData;
 			var id = block.getId();
-			return _blockExpandMap.getOrDefault(id, Boolean.FALSE).booleanValue();
+			return map.getOrDefault(id, Boolean.FALSE).booleanValue();
+		}
+
+		private void setExpanded(IEditorBlock block, boolean expanded) {
+			getProviderData().expandedData.put(block.getId(), Boolean.valueOf(expanded));
 		}
 
 		@Override
@@ -348,9 +425,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			var block = getBlockIfClickAtExpandIcon(e);
 			if (block != null) {
 				var expanded = !isExpanded(block);
-				_blockExpandMap.put(block.getId(), Boolean.valueOf(expanded));
+				setExpanded(block, expanded);
 				updateBlockList();
-				_scrollUtils.updateScroll();
+				updateScroll();
 				redraw();
 			}
 		}
@@ -375,13 +452,17 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		public void updateFromProvider() {
 			updateBlockList();
-			_scrollUtils.updateScroll();
+			if (_blockProvider == null) {
+				_scrollUtils.updateScroll();
+			} else {
+				_scrollUtils.updateScroll();
+				var scrollTo = getProviderData().scrollValue;
+				_scrollUtils.scrollTo(scrollTo);
 
-			if (_blockProvider != null) {
 				_blockProvider.setRefreshHandler(() -> {
 					swtRun(() -> {
 						updateBlockList();
-						_scrollUtils.updateScroll();
+						updateScroll();
 					});
 				});
 			}
@@ -391,7 +472,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		public void filter() {
 			updateBlockList();
-			_scrollUtils.updateScroll();
+			updateScroll();
 		}
 
 		public FrameCanvasUtils getFrameUtils() {
@@ -407,6 +488,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 	private IEditorBlockProvider _blockProvider;
 	private Text _filterText;
 	private String _filter;
+
+	private String _initialProviderData;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -435,7 +518,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		updateFromPageChange();
 
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
@@ -459,6 +542,22 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		}
 
 		super.dispose();
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		{
+			var data = _canvas.providerData_toJSON();
+			memento.putString("providerData", data.toString());
+		}
+	}
+
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+		{
+			_initialProviderData = memento.getString("providerData");
+		}
 	}
 
 	private void updateFromPageChange() {

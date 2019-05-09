@@ -43,18 +43,22 @@ public abstract class ScrollUtils {
 		final ScrollBar vBar = _canvas.getVerticalBar();
 
 		vBar.addListener(SWT.Selection, e -> {
-			if (_computedScrollArea == null) {
-				return;
-			}
-
-			_origin.y = -vBar.getSelection();
-			_canvas.redraw();
+			updateFromScrollEvent(vBar);
 		});
 
 		_canvas.addListener(SWT.Resize, e -> {
 			updateScroll();
 		});
 
+	}
+
+	protected void updateFromScrollEvent(final ScrollBar vBar) {
+		if (_computedScrollArea == null) {
+			return;
+		}
+
+		_origin.y = -vBar.getSelection();
+		_canvas.redraw();
 	}
 
 	public void updateScroll() {

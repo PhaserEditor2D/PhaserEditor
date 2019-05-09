@@ -31,9 +31,11 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
  */
 public interface IEditorBlockProvider {
 	
+	public String getId();
+	
 	public abstract List<IEditorBlock> getBlocks();
 	
 	public abstract void setRefreshHandler(Runnable refresh);
-
+	
 	public IPropertySheetPage getPropertyPage();
 }

@@ -388,7 +388,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	public void dispose() {
 
 		_broker.dispose();
-
+		
 		super.dispose();
 	}
 
@@ -441,7 +441,12 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	class SceneEditorBlockProvider implements IEditorBlockProvider {
 
 		private Runnable _refreshHandler;
-		
+
+		@Override
+		public String getId() {
+			return getClass().getSimpleName() + "$" + getEditorInput().getFile().getFullPath().toString();
+		}
+
 		@Override
 		public IPropertySheetPage getPropertyPage() {
 			return new AssetsPropertyPage();
@@ -482,7 +487,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		public Runnable getRefreshHandler() {
 			return _refreshHandler;
 		}
-
+		
 		@Override
 		public void setRefreshHandler(Runnable refresh) {
 			_refreshHandler = refresh;
