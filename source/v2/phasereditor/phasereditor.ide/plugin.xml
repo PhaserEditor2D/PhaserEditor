@@ -57,6 +57,10 @@
                name="startupMessageRect"
                value="7,252,445,0">
          </property>
+         <property
+               name="rendererFactoryUri-not-now"
+               value="bundleclass://phasereditor.ide/phasereditor.ide.ui.MyRenderFactory">
+         </property>
         
       </product>
    </extension>

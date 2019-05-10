@@ -30,7 +30,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.views;bundle-version="3.9.300",
  phasereditor.project.ui;bundle-version="2.1.0",
  phasereditor.webrun.ui;bundle-version="2.0.0",
- phasereditor.assetexplorer.ui;bundle-version="2.0.3"
+ phasereditor.assetexplorer.ui;bundle-version="2.0.3",
+ org.eclipse.e4.ui.model.workbench;bundle-version="2.1.300",
+ org.eclipse.e4.core.contexts;bundle-version="1.8.0"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-11
