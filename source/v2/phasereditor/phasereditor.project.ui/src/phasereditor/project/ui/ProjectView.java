@@ -224,7 +224,9 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 					var manager2 = new MenuManager("New");
 					manager2.add(new NewWizardMenu(getSite().getWorkbenchWindow()));
 					manager.add(manager2);
-					manager.add(createOpenWizard("New Folder", "platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/newfolder_wiz.png", new BasicNewFolderResourceWizard()));
+					manager.add(createOpenWizard("New Folder",
+							"platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/newfolder_wiz.png",
+							new BasicNewFolderResourceWizard()));
 				}
 
 				manager.add(new Separator());
@@ -251,8 +253,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 						dlg.open();
 					}
 				};
-				action.setImageDescriptor(EditorSharedImages.getImageDescriptor("org.eclipse.ui.ide",
-						icon));
+				action.setImageDescriptor(EditorSharedImages.getImageDescriptor("org.eclipse.ui.ide", icon));
 				return action;
 			}
 		});
@@ -339,10 +340,11 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
-
-		var dataStr = memento.getString("expandedPaths");
-		if (dataStr != null) {
-			_initialExpandedPaths = new JSONArray(dataStr);
+		if (memento != null) {
+			var dataStr = memento.getString("expandedPaths");
+			if (dataStr != null) {
+				_initialExpandedPaths = new JSONArray(dataStr);
+			}
 		}
 	}
 

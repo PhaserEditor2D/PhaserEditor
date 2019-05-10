@@ -558,7 +558,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
 		{
-			_initialProviderData = memento.getString("providerData");
+			if (memento != null) {
+				_initialProviderData = memento.getString("providerData");
+			}
 		}
 	}
 
