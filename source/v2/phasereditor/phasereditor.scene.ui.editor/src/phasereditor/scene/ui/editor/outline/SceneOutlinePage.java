@@ -142,7 +142,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				revealSelectedObjectInScene();
 			}
 		});
-
+		
 		_viewer.setInput(_editor.getSceneModel());
 
 		_viewer.getTree().setEditActions(_editor::copy, _editor::cut, () -> {

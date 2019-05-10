@@ -187,6 +187,15 @@
                               standalone="true">
                         </view>
                      </perspectiveExtension>
+                     <perspectiveExtension
+                           targetID="*">
+                        <newWizardShortcut
+                              id="org.eclipse.ui.wizards.new.file">
+                        </newWizardShortcut>
+                        <newWizardShortcut
+                              id="org.eclipse.ui.wizards.new.folder">
+                        </newWizardShortcut>
+                     </perspectiveExtension>
                      
                   </extension>
 </plugin>

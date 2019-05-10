@@ -36,10 +36,18 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -48,17 +56,33 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.BaseSelectionListenerAction;
+import org.eclipse.ui.actions.DeleteResourceAction;
+import org.eclipse.ui.actions.MoveResourceAction;
+import org.eclipse.ui.actions.NewWizardMenu;
+import org.eclipse.ui.actions.OpenFileAction;
+import org.eclipse.ui.actions.OpenWithMenu;
+import org.eclipse.ui.actions.RenameResourceAction;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.internal.actions.CommandAction;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.wizards.newresource.BasicNewFolderResourceWizard;
 import org.json.JSONArray;
 
 import phasereditor.project.core.ProjectCore;
+import phasereditor.project.ui.internal.actions.CopyAction;
+import phasereditor.project.ui.internal.actions.PasteAction;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.ExtensibleFormPropertyPage;
@@ -75,15 +99,38 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	private TreeCanvasViewer _viewer;
 	private IPartListener _partListener;
 	private JSONArray _initialExpandedPaths;
+	private Clipboard _clipboard;
+	private CopyAction _copyAction;
+	private PasteAction _pasteAction;
+	private DeleteResourceAction _deleteAction;
+	private RenameResourceAction _renameAction;
+	private MoveResourceAction _moveAction;
 
 	static class ProjectData {
 		public List<String> expandedPaths = new ArrayList<>();
 		public int scrollValue;
 	}
 
+	class MyTreeCanvas extends TreeCanvas {
+
+		public MyTreeCanvas(Composite parent, int style) {
+			super(parent, style);
+		}
+
+		public void delete() {
+			ProjectView.this.delete();
+		}
+
+	}
+
 	@Override
 	public void createPartControl(Composite parent) {
-		_filteredTree = new FilteredTreeCanvas(parent, SWT.NONE);
+		_filteredTree = new FilteredTreeCanvas(parent, SWT.NONE) {
+			@Override
+			protected TreeCanvas createTree() {
+				return new MyTreeCanvas(this, SWT.NONE);
+			}
+		};
 		_viewer = new MyTreeViewer();
 		_viewer.setInput(new Object());
 		_filteredTree.getTree().addMouseListener(new MouseAdapter() {
@@ -93,7 +140,11 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 			}
 		});
 
-		createContextMenu();
+		_viewer.getTree().setEditActions(this::copy, null, this::paste);
+
+		createActions();
+
+		createMenus();
 
 		getViewSite().setSelectionProvider(_viewer);
 
@@ -108,6 +159,115 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 		// we need this to show the right icons, because some content types are not
 		// resolved at the first time.
 		swtRun(4000, this::refresh);
+	}
+
+	private void createActions() {
+		_clipboard = new Clipboard(getViewSite().getShell().getDisplay());
+
+		_pasteAction = new PasteAction(getViewSite().getShell(), _clipboard);
+		_pasteAction.setActionDefinitionId(ActionFactory.PASTE.getId());
+
+		_copyAction = new CopyAction(getViewSite().getShell(), _clipboard, _pasteAction);
+		_copyAction.setActionDefinitionId(ActionFactory.COPY.getId());
+
+		_deleteAction = new DeleteResourceAction(getSite());
+		_deleteAction.setActionDefinitionId(ActionFactory.DELETE.getId());
+
+		_renameAction = new RenameResourceAction(getSite());
+		_renameAction.setActionDefinitionId(ActionFactory.RENAME.getId());
+
+		_moveAction = new MoveResourceAction(getSite());
+		_moveAction.setActionDefinitionId(ActionFactory.MOVE.getId());
+
+		var actions = new BaseSelectionListenerAction[] { _pasteAction, _copyAction, _deleteAction, _renameAction,
+				_moveAction };
+
+		_viewer.addSelectionChangedListener(e -> {
+			var sel = e.getStructuredSelection();
+			for (var a : actions) {
+				a.selectionChanged(sel);
+			}
+		});
+
+		var actionBars = getViewSite().getActionBars();
+
+		for (var a : new BaseSelectionListenerAction[] { _deleteAction, _renameAction }) {
+			actionBars.setGlobalActionHandler(a.getActionDefinitionId(), a);
+		}
+
+	}
+
+	private void createMenus() {
+		_viewer.getTree().addMenuDetectListener(new MenuDetectListener() {
+
+			@Override
+			public void menuDetected(MenuDetectEvent e) {
+				var manager = new MenuManager();
+
+				{
+					var sel = _viewer.getStructuredSelection();
+					var file = sel.getFirstElement();
+					if (file != null && file instanceof IFile) {
+						var openAction = new OpenFileAction(getSite().getPage());
+						openAction.selectionChanged(sel);
+						manager.add(openAction);
+
+						var openWithManager = new MenuManager("Open With...");
+						openWithManager.add(new OpenWithMenu(getSite().getPage(), (IFile) file));
+						manager.add(openWithManager);
+					}
+
+					manager.add(new Separator());
+				}
+
+				{
+					var manager2 = new MenuManager("New");
+					manager2.add(new NewWizardMenu(getSite().getWorkbenchWindow()));
+					manager.add(manager2);
+					manager.add(createOpenWizard("New Folder", "platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/newfolder_wiz.png", new BasicNewFolderResourceWizard()));
+				}
+
+				manager.add(new Separator());
+				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.EDIT_COPY));
+				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.EDIT_PASTE));
+				manager.add(new Separator());
+				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.EDIT_DELETE));
+				manager.add(new Separator());
+				manager.add(_moveAction);
+				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.FILE_RENAME));
+				manager.add(new Separator());
+				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.FILE_PROPERTIES));
+
+				var menu = manager.createContextMenu(_viewer.getTree());
+				menu.setVisible(true);
+			}
+
+			private IAction createOpenWizard(String label, String icon, IWorkbenchWizard wizard) {
+				var action = new Action(label) {
+					@Override
+					public void run() {
+						var dlg = new WizardDialog(getSite().getShell(), wizard);
+						wizard.init(getSite().getWorkbenchWindow().getWorkbench(), _viewer.getStructuredSelection());
+						dlg.open();
+					}
+				};
+				action.setImageDescriptor(EditorSharedImages.getImageDescriptor("org.eclipse.ui.ide",
+						icon));
+				return action;
+			}
+		});
+	}
+
+	private void copy() {
+		_copyAction.run();
+	}
+
+	private void paste() {
+		_pasteAction.run();
+	}
+
+	private void delete() {
+		_deleteAction.run();
 	}
 
 	private void restoreState() {
@@ -293,9 +453,6 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 		}
 	}
 
-	private void createContextMenu() {
-	}
-
 	protected void openEditor() {
 		var sel = (IStructuredSelection) _viewer.getSelection();
 		var obj = sel.getFirstElement();
@@ -314,6 +471,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	public void dispose() {
 		ProjectCore.removeActiveProjectListener(this);
 		getViewSite().getPage().removePartListener(_partListener);
+		_clipboard.dispose();
 		super.dispose();
 	}
 
