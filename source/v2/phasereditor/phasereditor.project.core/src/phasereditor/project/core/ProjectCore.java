@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
@@ -30,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +97,8 @@ public class ProjectCore {
 	private static IProject _activeProject;
 	private static final ListenerList<Consumer<IProject>> _activeProjectListeners = new ListenerList<>();
 	private static final QualifiedName ACTIVE_PROJECT = new QualifiedName("phasereditor.project.core", "activeProject");
+	private static final QualifiedName OPEN_TIME_PROJECT = new QualifiedName("phasereditor.project.core",
+			"activeProject");
 
 	public static IProject getActiveProject() {
 		if (_activeProject == null) {
@@ -122,7 +126,9 @@ public class ProjectCore {
 		_activeProject = activeProject;
 
 		try {
-			ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(ACTIVE_PROJECT, activeProject.getName());
+			var root = ResourcesPlugin.getWorkspace().getRoot();
+			root.setPersistentProperty(ACTIVE_PROJECT, activeProject.getName());
+			activeProject.setPersistentProperty(OPEN_TIME_PROJECT, Long.toString(currentTimeMillis()));
 		} catch (CoreException e) {
 			logError(e);
 		}
@@ -130,6 +136,31 @@ public class ProjectCore {
 		for (var l : _activeProjectListeners) {
 			l.accept(activeProject);
 		}
+	}
+
+	public static Comparator<IProject> getProjectOpenTimeComparator() {
+		return new Comparator<>() {
+
+			@Override
+			public int compare(IProject o1, IProject o2) {
+				try {
+					var t1 = o1.getPersistentProperty(OPEN_TIME_PROJECT);
+					if (t1 == null) {
+						t1 = "0";
+					}
+
+					var t2 = o2.getPersistentProperty(OPEN_TIME_PROJECT);
+					if (t2 == null) {
+						t2 = "0";
+					}
+
+					return -t1.compareTo(t2);
+				} catch (CoreException e) {
+					logError(e);
+					return 0;
+				}
+			}
+		};
 	}
 
 	public static void addActiveProjectListener(Consumer<IProject> listener) {
@@ -290,6 +321,8 @@ public class ProjectCore {
 
 	public static void configureNewPhaserProject(IProject project, IProjectTemplate template,
 			Map<String, String> paramValues, SourceLang lang, IProgressMonitor monitor) throws CoreException {
+
+		ProjectCore.setActiveProject(project);
 
 		var nullMonitor = new NullProgressMonitor();
 

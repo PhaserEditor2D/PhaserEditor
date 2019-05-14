@@ -1,13 +1,21 @@
 package phasereditor.ide.ui.views;
 
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -34,6 +42,7 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.part.ViewPart;
 import org.w3c.dom.Document;
 
+import phasereditor.ide.IDEPlugin;
 import phasereditor.ide.ui.ScenePerspective;
 import phasereditor.lic.HttpTool;
 import phasereditor.project.core.ProjectCore;
@@ -45,6 +54,7 @@ import phasereditor.webrun.ui.WebRunUI;
 
 public class StartView extends ViewPart {
 
+	private static Composite _workspaceComp;
 	private Composite _mainComp;
 	private ScrolledComposite _scrolledComp;
 
@@ -74,6 +84,39 @@ public class StartView extends ViewPart {
 			updateScrolledComposite();
 		}));
 
+		registerListeners();
+
+	}
+
+	private static void registerListeners() {
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
+
+			@Override
+			public void resourceChanged(IResourceChangeEvent event) {
+				try {
+					if (event.getDelta() == null) {
+						return;
+					}
+					event.getDelta().accept(new IResourceDeltaVisitor() {
+
+						@Override
+						public boolean visit(IResourceDelta delta) throws CoreException {
+							if (delta.getResource() instanceof IProject) {
+								var v1 = delta.getMovedToPath();
+								var v2 = delta.getMovedFromPath();
+								if (v1 != null || v2 != null || delta.getKind() == IResourceDelta.REMOVED) {
+									updateProjectLinks();
+									return false;
+								}
+							}
+							return true;
+						}
+					});
+				} catch (CoreException e) {
+					IDEPlugin.logError(e);
+				}
+			}
+		});
 	}
 
 	private void updateScrolledComposite() {
@@ -193,7 +236,7 @@ public class StartView extends ViewPart {
 
 		createHeader(parent, "Workspace");
 
-		createOpenProjects(parent);
+		createWorkspaceComp(parent);
 	}
 
 	private static void createSocialChannelsComp(Composite parent) {
@@ -263,9 +306,23 @@ public class StartView extends ViewPart {
 		new Label(comp, SWT.NONE);
 	}
 
-	private static void createOpenProjects(Composite comp) {
-		for (var project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-			createLink(comp, project.getName(), new Runnable() {
+	private static void createWorkspaceComp(Composite comp) {
+		_workspaceComp = new Composite(comp, 0);
+		_workspaceComp.setLayout(new GridLayout(1, false));
+		_workspaceComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		createProjectLinks();
+	}
+
+	private static void createProjectLinks() {
+		var list = Arrays.stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
+
+				.sorted(ProjectCore.getProjectOpenTimeComparator())
+
+				.collect(toList());
+
+		for (var project : list) {
+			createLink(_workspaceComp, project.getName(), new Runnable() {
 
 				@Override
 				public void run() {
@@ -277,9 +334,21 @@ public class StartView extends ViewPart {
 					var workbench = PlatformUI.getWorkbench();
 					var page = workbench.getActiveWorkbenchWindow().getActivePage();
 					page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
+
+					updateProjectLinks();
 				}
 			}, "platform:/plugin/org.eclipse.ui.ide/icons/full/obj16/prj_obj.png");
 		}
+	}
+
+	private static void updateProjectLinks() {
+		swtRun(() -> {
+			for (var c : _workspaceComp.getChildren()) {
+				c.dispose();
+			}
+			createProjectLinks();
+			_workspaceComp.requestLayout();
+		});
 	}
 
 	private static void createHeader(Composite comp, String text) {

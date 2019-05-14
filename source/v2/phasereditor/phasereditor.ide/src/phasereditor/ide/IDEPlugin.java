@@ -21,8 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -42,6 +45,15 @@ public class IDEPlugin extends AbstractUIPlugin {
 	public IDEPlugin() {
 	}
 
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

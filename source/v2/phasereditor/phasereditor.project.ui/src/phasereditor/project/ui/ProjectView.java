@@ -484,7 +484,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 	@Override
 	public void accept(IProject project) {
-		refresh();
+		swtRun(this::refresh);
 	}
 
 	class MyContentProvider implements ITreeContentProvider {
