@@ -24,6 +24,7 @@ package phasereditor.ide.ui;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import phasereditor.project.ui.ProjectView;
 import phasereditor.ui.BlocksView;
 
 public class ScenePerspective implements IPerspectiveFactory {
@@ -35,6 +36,7 @@ public class ScenePerspective implements IPerspectiveFactory {
 		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
 		layout.addView(IPageLayout.ID_PROP_SHEET, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
 		layout.addView(BlocksView.ID, IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(ProjectView.ID, IPageLayout.LEFT, 0.4f, BlocksView.ID);
 	}
 
 }

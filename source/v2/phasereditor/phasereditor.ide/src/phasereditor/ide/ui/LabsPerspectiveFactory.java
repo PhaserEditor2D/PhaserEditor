@@ -11,6 +11,7 @@ import phasereditor.inspect.ui.views.PhaserExamplesView;
 import phasereditor.inspect.ui.views.PhaserFilesView;
 import phasereditor.inspect.ui.views.PhaserHierarchyView;
 import phasereditor.inspect.ui.views.PhaserTypesView;
+import phasereditor.project.ui.ProjectView;
 
 public class LabsPerspectiveFactory implements IPerspectiveFactory {
 
@@ -20,7 +21,7 @@ public class LabsPerspectiveFactory implements IPerspectiveFactory {
 	public void createInitialLayout(IPageLayout layout) {
 		IFolderLayout leftFolder = layout.createFolder(LEFT_FOLDER, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
 		leftFolder.addView(PhaserHierarchyView.ID);
-		leftFolder.addView(ProjectExplorer.VIEW_ID);
+		leftFolder.addView(ProjectView.ID);
 
 		layout.addView(PhaserTypesView.ID, IPageLayout.BOTTOM, 0.5f, LEFT_FOLDER);
 		layout.addView(PhaserExamplesView.ID, IPageLayout.RIGHT, 0.8f, IPageLayout.ID_EDITOR_AREA);

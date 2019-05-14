@@ -26,6 +26,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 import phasereditor.chains.ui.views.ChainsView;
 import phasereditor.inspect.ui.views.JsdocView;
+import phasereditor.project.ui.ProjectView;
 
 /**
  * @author arian
@@ -38,11 +39,14 @@ public class CodePerspective implements IPerspectiveFactory {
 		// layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f,
 		// IPageLayout.ID_EDITOR_AREA);
 
-		var folder = layout.createFolder("bottomViews", IPageLayout.BOTTOM, 0.5f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(ProjectView.ID, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
+		
+		var folder = layout.createFolder("bottomViews", IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
 		folder.addView(ChainsView.ID);
 		folder.addView(IPageLayout.ID_PROBLEM_VIEW);
 
 		layout.addView(JsdocView.ID, IPageLayout.RIGHT, 0.5f, ChainsView.ID);
+		
 
 	}
 

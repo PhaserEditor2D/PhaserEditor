@@ -24,6 +24,8 @@ package phasereditor.ide.ui;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import phasereditor.project.ui.ProjectView;
+
 /**
  * @author arian
  *
@@ -32,8 +34,10 @@ public class AtlasPerspective implements IPerspectiveFactory{
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.3f, IPageLayout.ID_EDITOR_AREA);
+		layout.addView(ProjectView.ID, IPageLayout.LEFT, 0.4f, IPageLayout.ID_OUTLINE);
 		layout.addView(IPageLayout.ID_PROP_SHEET, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
+		
 	}
 
 }
