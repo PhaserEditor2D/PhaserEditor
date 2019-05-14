@@ -22,6 +22,7 @@
 package phasereditor.project.core;
 
 import static java.lang.System.out;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.IOException;
 import java.net.URL;
@@ -319,6 +320,21 @@ public class ProjectCore {
 
 		project.build(IncrementalProjectBuilder.CLEAN_BUILD, nullMonitor);
 		monitor.worked(1);
+
+		{
+			var perspId = "phasereditor.ide.code";
+			var file = template.getOpenFile(webContentFolder);
+			if (file != null && file.getName().endsWith(".scene")) {
+				perspId = "phasereditor.ide.ui.perspective";
+			}
+
+			var finalPerspId = perspId;
+			swtRun(() -> {
+				var workbench = PlatformUI.getWorkbench();
+				var page = workbench.getActiveWorkbenchWindow().getActivePage();
+				page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(finalPerspId));
+			});
+		}
 
 	}
 

@@ -199,12 +199,14 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 					templId += ".typescript";
 				}
 
+				var workbench = getWorkbench();
+
 				template = InspectCore.getProjectTemplates().findById(templId);
 
 				ProjectCore.configureNewPhaserProject(project, template, params, lang, monitor);
 				monitor.worked(1);
 
-				getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
+				workbench.getWorkingSetManager().addToWorkingSets(project, workingSets);
 				monitor.worked(1);
 
 				return Status.OK_STATUS;
