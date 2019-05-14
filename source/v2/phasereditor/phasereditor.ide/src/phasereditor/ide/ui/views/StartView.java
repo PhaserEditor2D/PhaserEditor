@@ -5,6 +5,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
+import java.util.prefs.Preferences;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -151,6 +152,12 @@ public class StartView extends ViewPart {
 		comp.setLayout(layout);
 		comp.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+		var content = getSavedLatestNews();
+
+		if (content != null) {
+			updateNewsComp(comp, content);
+		}
+
 		var job = new Job("Fetching latest news") {
 
 			@Override
@@ -163,49 +170,11 @@ public class StartView extends ViewPart {
 						feedUrl = "http://localhost/blog/feed/rss";
 					}
 
-					var content = HttpTool.GET(feedUrl);
+					var newContent = HttpTool.GET(feedUrl);
 
-					swtRun(() -> {
-						try {
-							DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-							DocumentBuilder builder;
+					rememberLatestNews(newContent);
 
-							builder = factory.newDocumentBuilder();
-
-							Document doc = builder.parse(new ByteArrayInputStream(content.getBytes()));
-							doc.getDocumentElement().normalize();
-
-							var titleList = doc.getElementsByTagName("title");
-							var linkList = doc.getElementsByTagName("link");
-							var descriptionList = doc.getElementsByTagName("description");
-							var pubDateList = doc.getElementsByTagName("pubDate");
-
-							for (int i = 1; i < titleList.getLength(); i++) {
-								if (i > 5) {
-									break;
-								}
-								var title = titleList.item(i).getTextContent();
-								var link = linkList.item(i).getTextContent();
-								var description = descriptionList.item(i).getTextContent();
-								var pubDate = pubDateList.item(i - 1).getTextContent();
-
-								createLink(comp, title, createWebLinkRunnable("https://phasereditor2d.com" + link));
-
-								var descText = new Text(comp, SWT.WRAP | SWT.MULTI);
-								descText.setText(description);
-								var gd = new GridData(GridData.FILL_BOTH);
-								gd.minimumHeight = 50;
-								descText.setLayoutData(gd);
-								var fd = comp.getFont().getFontData()[0];
-								createLabel(comp, pubDate).setFont(SwtRM.getFont(fd.name, fd.getHeight(), SWT.ITALIC));
-							}
-
-							comp.requestLayout();
-							updateScrolledComposite();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					});
+					updateNewsComp(comp, newContent);
 
 				} catch (Exception e) {
 					// e.printStackTrace();
@@ -213,8 +182,73 @@ public class StartView extends ViewPart {
 
 				return Status.OK_STATUS;
 			}
+
 		};
 		job.schedule();
+	}
+
+	private static void rememberLatestNews(String content) {
+		var node = Preferences.userRoot().node("phasereditor.ide").node("phasereditor.ide");
+		node.put("latestnews", content);
+		try {
+			node.flush();
+		} catch (java.util.prefs.BackingStoreException e) {
+			IDEPlugin.logError(e);
+		}
+	}
+
+	private static String getSavedLatestNews() {
+		var node = Preferences.userRoot().node("phasereditor.ide").node("phasereditor.ide");
+		return node.get("latestnews", null);
+	}
+
+	private void updateNewsComp(Composite comp, String content) {
+		swtRun(() -> {
+			try {
+
+				for (var c : comp.getChildren()) {
+					c.dispose();
+				}
+
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder;
+
+				builder = factory.newDocumentBuilder();
+
+				Document doc = builder.parse(new ByteArrayInputStream(content.getBytes()));
+				doc.getDocumentElement().normalize();
+
+				var titleList = doc.getElementsByTagName("title");
+				var linkList = doc.getElementsByTagName("link");
+				var descriptionList = doc.getElementsByTagName("description");
+				var pubDateList = doc.getElementsByTagName("pubDate");
+
+				for (int i = 1; i < titleList.getLength(); i++) {
+					if (i > 5) {
+						break;
+					}
+					var title = titleList.item(i).getTextContent();
+					var link = linkList.item(i).getTextContent();
+					var description = descriptionList.item(i).getTextContent();
+					var pubDate = pubDateList.item(i - 1).getTextContent();
+
+					createLink(comp, title, createWebLinkRunnable("https://phasereditor2d.com" + link));
+
+					var descText = new Text(comp, SWT.WRAP | SWT.MULTI);
+					descText.setText(description);
+					var gd = new GridData(GridData.FILL_BOTH);
+					gd.minimumHeight = 50;
+					descText.setLayoutData(gd);
+					var fd = comp.getFont().getFontData()[0];
+					createLabel(comp, pubDate).setFont(SwtRM.getFont(fd.name, fd.getHeight(), SWT.ITALIC));
+				}
+
+				comp.requestLayout();
+				updateScrolledComposite();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	private void createLeftComp() {
