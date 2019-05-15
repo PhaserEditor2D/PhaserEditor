@@ -71,7 +71,7 @@
       <perspective
             class="phasereditor.ide.ui.StartPerspective"
             fixed="true"
-            icon="platform:/plugin/phasereditor.ui/icons/phaser-editor-logo.png"
+            icon="platform:/plugin/phasereditor.ui/icons/house.png"
             id="phasereditor.ide.startPerspective"
             name="Start">
          <description>

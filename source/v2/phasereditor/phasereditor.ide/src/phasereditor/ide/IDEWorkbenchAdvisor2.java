@@ -27,6 +27,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.internal.ide.application.DelayedEventsProcessor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchWindowAdvisor;
@@ -41,7 +42,7 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 	public IDEWorkbenchAdvisor2(DelayedEventsProcessor processor) {
 		super(processor);
 	}
-	
+
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		return new MyWindowAdvisor(this, configurer);
@@ -74,15 +75,27 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 
 	private static class MyPerspectiveListener implements IPerspectiveListener {
 
+		private boolean _toolbarVisible = true;
+
 		@Override
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
+			var window = (WorkbenchWindow) page.getWorkbenchWindow();
 			var id = perspective.getId();
+
 			if (StartPerspective.ID.equals(id)) {
+				_toolbarVisible = window.getCoolBarVisible();
+				if (_toolbarVisible) {
+					window.toggleToolbarVisibility();
+				}
+				
 				page.setEditorAreaVisible(false);
 			} else {
 				page.setEditorAreaVisible(true);
-			}
 
+				if (_toolbarVisible != window.getCoolBarVisible()) {
+					window.toggleToolbarVisibility();
+				}
+			}
 		}
 
 		@Override
