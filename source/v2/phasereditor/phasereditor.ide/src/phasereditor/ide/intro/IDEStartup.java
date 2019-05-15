@@ -1,11 +1,19 @@
 package phasereditor.ide.intro;
 
 import static java.lang.System.out;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPageListener;
 import org.eclipse.ui.IPartListener;
@@ -21,6 +29,8 @@ import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.ide.IDEPlugin;
+import phasereditor.ide.ui.StartPerspective;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.ui.SceneUI;
 
@@ -33,6 +43,43 @@ public class IDEStartup implements IStartup {
 
 		// force to start the project builders.
 		ProjectCore.getBuildParticipants();
+
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
+
+			@Override
+			public void resourceChanged(IResourceChangeEvent event) {
+				if (event.getDelta() != null) {
+					try {
+						event.getDelta().accept(new IResourceDeltaVisitor() {
+
+							@Override
+							public boolean visit(IResourceDelta delta) throws CoreException {
+								if (delta.getResource() instanceof IProject) {
+									if (delta.getKind() == IResourceDelta.REMOVED) {
+										var activeProject = ProjectCore.getActiveProject();
+										if (activeProject != null
+												&& activeProject.getName().equals(delta.getResource().getName())) {
+											swtRun(() -> {
+												ProjectCore.setActiveProject(null);
+												PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+														.setPerspective(
+																PlatformUI.getWorkbench().getPerspectiveRegistry()
+																		.findPerspectiveWithId(StartPerspective.ID));
+											});
+
+											return false;
+										}
+									}
+								}
+								return true;
+							}
+						});
+					} catch (CoreException e) {
+						IDEPlugin.logError(e);
+					}
+				}
+			}
+		});
 	}
 
 	private static void registerWorkbenchListeners() {
@@ -143,7 +190,6 @@ public class IDEStartup implements IStartup {
 		});
 	}
 
-	
 	static List<WeakReference<CommonViewer>> _used = new ArrayList<>();
 
 	static void installTooltips(IWorkbenchPart part) {

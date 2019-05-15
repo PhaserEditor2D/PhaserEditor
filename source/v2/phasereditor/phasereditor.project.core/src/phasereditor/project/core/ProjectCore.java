@@ -127,8 +127,10 @@ public class ProjectCore {
 
 		try {
 			var root = ResourcesPlugin.getWorkspace().getRoot();
-			root.setPersistentProperty(ACTIVE_PROJECT, activeProject.getName());
-			activeProject.setPersistentProperty(OPEN_TIME_PROJECT, Long.toString(currentTimeMillis()));
+			if (activeProject != null) {
+				root.setPersistentProperty(ACTIVE_PROJECT, activeProject.getName());
+				activeProject.setPersistentProperty(OPEN_TIME_PROJECT, Long.toString(currentTimeMillis()));
+			}
 		} catch (CoreException e) {
 			logError(e);
 		}

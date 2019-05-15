@@ -113,7 +113,8 @@ public class StartView extends ViewPart {
 							if (delta.getResource() instanceof IProject) {
 								var v1 = delta.getMovedToPath();
 								var v2 = delta.getMovedFromPath();
-								if (v1 != null || v2 != null || delta.getKind() == IResourceDelta.REMOVED) {
+								if (v1 != null || v2 != null || delta.getKind() == IResourceDelta.REMOVED
+										|| delta.getKind() == IResourceDelta.ADDED) {
 									updateProjectLinks();
 									return false;
 								}

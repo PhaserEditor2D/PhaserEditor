@@ -78,7 +78,10 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 			var text = new Text(comp, SWT.READ_ONLY);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
-				text.setText(getModels().get(0).getLocation().toPortableString());
+				var file = getModels().get(0);
+				if (file.exists()) {
+					text.setText(file.getLocation().toPortableString());
+				}
 			});
 		}
 
@@ -91,7 +94,9 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 					var res = getModels().get(0);
 					if (res instanceof IFile) {
 						var file = (IFile) res;
-						text.setText(PhaserEditorUI.getFileHumanSize(file.getLocation().toFile().length()));
+						if (file.exists()) {
+							text.setText(PhaserEditorUI.getFileHumanSize(file.getLocation().toFile().length()));
+						}
 					} else {
 						text.setText("");
 					}

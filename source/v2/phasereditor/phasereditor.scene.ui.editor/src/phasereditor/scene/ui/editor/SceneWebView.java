@@ -64,7 +64,7 @@ public class SceneWebView extends Composite {
 					return;
 				}
 
-				if (_webView.getControl().isFocusControl()) {
+				if (!_webView.getControl().isDisposed() && _webView.getControl().isFocusControl()) {
 					if (event.keyCode == SWT.SPACE) {
 						_lastTime = event.time;
 						if (!editor.hasInteractiveTools(Set.of("Hand"))) {
@@ -85,7 +85,7 @@ public class SceneWebView extends Composite {
 					return;
 				}
 
-				if (_webView.getControl().isFocusControl()) {
+				if (_webView.getControl().isDisposed() && _webView.getControl().isFocusControl()) {
 
 					var stateMask = event.stateMask;
 
@@ -139,8 +139,8 @@ public class SceneWebView extends Composite {
 		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
 		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
 
-		addDisposeListener(e -> {
-			getDisplay().removeFilter(SWT.KeyDown, keyUpListener);
+		_webView.getControl().addDisposeListener(e -> {
+			getDisplay().removeFilter(SWT.KeyDown, keyDownListener);
 			getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
 		});
 
