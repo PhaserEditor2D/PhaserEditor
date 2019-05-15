@@ -56,6 +56,7 @@ import phasereditor.webrun.ui.WebRunUI;
 public class StartView extends ViewPart {
 
 	private static Composite _workspaceComp;
+	private IResourceChangeListener _resourceChangeListener;
 	private Composite _mainComp;
 	private ScrolledComposite _scrolledComp;
 
@@ -89,8 +90,15 @@ public class StartView extends ViewPart {
 
 	}
 
-	private static void registerListeners() {
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
+	@Override
+	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(_resourceChangeListener);
+
+		super.dispose();
+	}
+
+	private void registerListeners() {
+		_resourceChangeListener = new IResourceChangeListener() {
 
 			@Override
 			public void resourceChanged(IResourceChangeEvent event) {
@@ -117,7 +125,8 @@ public class StartView extends ViewPart {
 					IDEPlugin.logError(e);
 				}
 			}
-		});
+		};
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(_resourceChangeListener);
 	}
 
 	private void updateScrolledComposite() {
