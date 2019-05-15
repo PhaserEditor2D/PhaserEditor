@@ -172,14 +172,6 @@
                            name="Start"
                            restorable="true">
                      </view>
-                     <view
-                           allowMultiple="false"
-                           category="phasereditor.ui.phaser"
-                           class="phasereditor.ide.ui.views.PerspectivesView"
-                           id="phasereditor.ide.perspectivesView"
-                           name="Perspectives"
-                           restorable="true">
-                     </view>
                   </extension>
                   <extension
                         point="org.eclipse.ui.perspectiveExtensions">

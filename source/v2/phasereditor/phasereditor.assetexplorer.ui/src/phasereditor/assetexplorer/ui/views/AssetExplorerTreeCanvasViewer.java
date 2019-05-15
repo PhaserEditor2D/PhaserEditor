@@ -23,9 +23,6 @@ package phasereditor.assetexplorer.ui.views;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.events.MouseEvent;
@@ -36,8 +33,6 @@ import org.eclipse.ui.ide.IDE;
 import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewExampleProjectWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewProjectWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewSceneWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.core.SceneFileAssetModel;
@@ -108,7 +103,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 
 				|| elem == AssetsView.PACK_NODE
 
-				|| elem == AssetsView.PROJECTS_NODE) {
+		) {
 			item.setRenderer(new IconTreeCanvasItemRenderer(item, null));
 		}
 
@@ -135,11 +130,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		} else if (elem == AssetsView.PACK_NODE) {
 			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_BOX, new NewAssetPackWizardLauncher()));
 			item.setHeader(true);
-		} else if (elem == AssetsView.PROJECTS_NODE) {
-			actions.add(new NewWizardLauncher_Menu_TreeItemAction(IMG_NEW_PHASER_PROJECT, "New Project...",
-					new NewProjectWizardLauncher(), new NewExampleProjectWizardLauncher()));
-			item.setHeader(true);
-		}
+		} 
 
 		if (elem instanceof SceneFile) {
 			var sceneFile = (SceneFile) elem;
@@ -183,37 +174,6 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		public void run(MouseEvent event) {
 			AssetExplorerContentProvider provider = (AssetExplorerContentProvider) getContentProvider();
 			_launcher.openWizard(provider.getProjectInContent());
-		}
-
-	}
-
-	class NewWizardLauncher_Menu_TreeItemAction extends TreeCanvasItemAction {
-		private NewWizardLancher[] _launchers;
-
-		public NewWizardLauncher_Menu_TreeItemAction(String icon, String label, NewWizardLancher... launchers) {
-			super(EditorSharedImages.getImage(icon), label);
-			_launchers = launchers;
-		}
-
-		@Override
-		public void run(MouseEvent event) {
-			AssetExplorerContentProvider provider = (AssetExplorerContentProvider) getContentProvider();
-			IProject project = provider.getProjectInContent();
-
-			MenuManager manager = new MenuManager();
-
-			for (var launcher : _launchers) {
-				manager.add(new Action(launcher.getLabel()) {
-					@Override
-					public void run() {
-						launcher.openWizard(project);
-					}
-				});
-			}
-
-			var canvas = getTree();
-			var menu = manager.createContextMenu(canvas);
-			menu.setVisible(true);
 		}
 
 	}

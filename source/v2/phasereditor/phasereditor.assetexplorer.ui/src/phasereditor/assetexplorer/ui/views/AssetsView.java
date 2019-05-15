@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
@@ -45,13 +46,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
-import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
@@ -73,12 +69,13 @@ import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.atlas.core.AtlasData;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
 @SuppressWarnings({ "boxing" })
-public class AssetsView extends ViewPart {
+public class AssetsView extends ViewPart implements Consumer<IProject> {
 	private static final String CANVAS_STATE_KEY = "canvasState";
 	private static final String FILTER_TEXT_KEY = "filterText";
 
@@ -86,7 +83,6 @@ public class AssetsView extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	private AssetExplorerContentProvider _contentProvider;
 	private TreeCanvas _treeCanvas;
-	private IPartListener _partListener;
 	private FilteredTreeCanvas _filteredTreeCanvas;
 	// private AssetExplorerLabelProvider _treeLabelProvider;
 	// private AssetExplorerContentProvider _treeContentProvider;
@@ -97,7 +93,6 @@ public class AssetsView extends ViewPart {
 	public static String ATLAS_NODE = "Texture Packer Files";
 	public static String PACK_NODE = "Pack Files";
 	public static String SCENES_NODE = "Scene Files";
-	public static String PROJECTS_NODE = "Other Projects";
 
 	public AssetsView() {
 		super();
@@ -133,21 +128,12 @@ public class AssetsView extends ViewPart {
 		return _treeCanvas;
 	}
 
-	public void forceToFocusOnProject(IProject project) {
-		_contentProvider.forceToFocuseOnProject(project);
-		_lastToken = project;
-		_viewer.refresh();
-		updatePartName();
-	}
-
 	private void handleDoubleClick(Object elem) {
 		IFile file = null;
 
 		var provider = _contentProvider;
 
-		if (elem instanceof IProject) {
-			forceToFocusOnProject((IProject) elem);
-		} else if (elem instanceof IFile) {
+		if (elem instanceof IFile) {
 			file = (IFile) elem;
 		} else if (elem instanceof AtlasData) {
 			file = ((AtlasData) elem).getFile();
@@ -205,44 +191,7 @@ public class AssetsView extends ViewPart {
 	}
 
 	private void initPartListener() {
-		_partListener = new IPartListener() {
-
-			@Override
-			public void partOpened(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partDeactivated(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partClosed(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partBroughtToTop(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partActivated(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-		};
-		getViewSite().getPage().addPartListener(_partListener);
+		ProjectCore.addActiveProjectListener(this);
 	}
 
 	IProject _lastToken = null;
@@ -264,7 +213,7 @@ public class AssetsView extends ViewPart {
 		try {
 			out.println("AssetsView.refreshViewer()");
 
-			IProject project = getActiveProject();
+			IProject project = ProjectCore.getActiveProject();
 
 			if (project != _lastToken) {
 
@@ -290,22 +239,6 @@ public class AssetsView extends ViewPart {
 			_treeCanvas.setRedraw(true);
 		}
 
-		updatePartName();
-
-	}
-
-	private void updatePartName() {
-		var name = "Assets";
-
-		if (_contentProvider != null) {
-			var project = getProjectInContent();
-
-			if (project != null && project.exists()) {
-				name = "Assets (" + project.getName() + ")";
-			}
-		}
-
-		setPartName(name);
 	}
 
 	public boolean isInitialStateRecovered() {
@@ -327,30 +260,15 @@ public class AssetsView extends ViewPart {
 			_initialExpandedIndexes = null;
 		}
 
-		_lastToken = getActiveProject();
+		_lastToken = ProjectCore.getActiveProject();
 
 		_treeCanvas.redraw();
 	}
 
-	public static IProject getActiveProject() {
-		IProject activeProjet = null;
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (editor != null) {
-			IEditorInput input = editor.getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				IFile file = ((IFileEditorInput) input).getFile();
-				activeProjet = file.getProject();
-			} else {
-				activeProjet = input.getAdapter(IProject.class);
-			}
-		}
-		return activeProjet;
-	}
-
 	@Override
 	public void dispose() {
-
-		getViewSite().getPage().removePartListener(_partListener);
+		
+		ProjectCore.removeActiveProjectListener(this);
 
 		super.dispose();
 	}
@@ -397,7 +315,7 @@ public class AssetsView extends ViewPart {
 
 		IProject currentProject = _contentProvider.getProjectInContent();
 
-		if (currentProject != null && project != currentProject && currentProject.exists()) {
+		if (project == currentProject) {
 			out.println("  Skip refresh.");
 			return;
 		}
@@ -458,7 +376,6 @@ public class AssetsView extends ViewPart {
 			_treeCanvas.setRedraw(true);
 		}
 
-		updatePartName();
 	}
 
 	@Override
@@ -505,5 +422,10 @@ public class AssetsView extends ViewPart {
 		}
 
 		// TODO: save all the mapping information of all the projects.
+	}
+
+	@Override
+	public void accept(IProject t) {
+		refreshViewer();
 	}
 }

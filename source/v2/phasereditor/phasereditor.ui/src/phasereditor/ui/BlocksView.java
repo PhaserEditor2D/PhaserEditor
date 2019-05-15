@@ -621,7 +621,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 	@Override
 	public void partClosed(IWorkbenchPart part) {
-		//
+		updateFromPageChange();
 	}
 
 	@Override

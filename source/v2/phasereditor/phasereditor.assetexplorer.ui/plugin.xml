@@ -19,24 +19,12 @@
             id="phasereditor.assetpack.ui.explorer.newview"
             name="Open New Window">
       </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            id="phasereditor.assetexplorer.ui.switchProject"
-            name="Switch Project">
-      </command>
  </extension>
  <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
             locationURI="toolbar:phasereditor.assetpack.views.assetExplorer?before=additions">
-         <command
-               commandId="phasereditor.assetexplorer.ui.switchProject"
-               icon="platform:/plugin/phasereditor.ui/icons/phaser_project.png"
-               label="Switch Project"
-               style="push"
-               tooltip="Switch To Other Project">
-         </command>
          <command
                commandId="org.eclipse.ui.project.cleanAction"
                icon="platform:/plugin/phasereditor.ui/icons/arrow_refresh.png"
@@ -158,9 +146,5 @@
  </extension>
  <extension
        point="org.eclipse.ui.handlers">
-    <handler
-          class="phasereditor.assetexplorer.ui.handlers.SwitchProjectHandler"
-          commandId="phasereditor.assetexplorer.ui.switchProject">
-    </handler>
  </extension>
 </plugin>

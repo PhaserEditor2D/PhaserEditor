@@ -22,7 +22,6 @@
 package phasereditor.assetexplorer.ui.views;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -34,12 +33,12 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.atlas.core.AtlasCore;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	private IProject _projectInContent;
-	private IProject _forceToFocuseOnProject;
 
 	public AssetExplorerContentProvider() {
 		super(true);
@@ -47,11 +46,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parent) {
-		IProject activeProjet = AssetsView.getActiveProject();
-
-		if (_forceToFocuseOnProject != null && _forceToFocuseOnProject.exists()) {
-			activeProjet = _forceToFocuseOnProject;
-		}
+		IProject activeProjet = ProjectCore.getActiveProject();
 
 		if (activeProjet == null) {
 			if (_projectInContent != null && _projectInContent.exists()) {
@@ -64,7 +59,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent == AssetsView.ROOT) {
 
 			if (activeProjet == null) {
-				return new Object[] { AssetsView.PROJECTS_NODE };
+				return new Object[0];
 			}
 
 			return new Object[] {
@@ -77,23 +72,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 					AssetsView.ATLAS_NODE,
 
-					AssetsView.PROJECTS_NODE
-
 			};
-		}
-
-		if (parent == AssetsView.PROJECTS_NODE) {
-
-			var projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-
-			var current = activeProjet;
-
-			if (current == null) {
-				return projects;
-			}
-
-			return Arrays.stream(projects).filter(p -> current != p).toArray();
-
 		}
 
 		if (parent == AssetsView.ANIMATIONS_NODE) {
@@ -161,9 +140,4 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	public IProject getProjectInContent() {
 		return _projectInContent;
 	}
-
-	void forceToFocuseOnProject(IProject project) {
-		_forceToFocuseOnProject = project;
-	}
-
 }
