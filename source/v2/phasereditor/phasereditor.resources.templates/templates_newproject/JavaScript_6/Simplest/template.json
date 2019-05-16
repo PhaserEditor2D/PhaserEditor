@@ -2,7 +2,7 @@
 	"author": {
 		"name": "Arian Fornaris",
 		"email": "developers@phasereditor2d.com",
-		"website": "phasereditor2d.com",
+		"website": "phasereditor2d.com"
 	},
 	"mainFile": "assets/scenes/Scene1.scene",
 	"eval" : {
