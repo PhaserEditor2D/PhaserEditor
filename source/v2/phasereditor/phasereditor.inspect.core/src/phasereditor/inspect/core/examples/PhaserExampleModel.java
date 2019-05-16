@@ -128,7 +128,7 @@ public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 			{
 				// copy typescript defs
 				var baseUrl = "platform:/plugin/" + InspectCore.RESOURCES_PHASER_CODE_PLUGIN
-						+ "/phaser-master/typescript/";
+						+ "/phaser-master/types/";
 				copy(new URL(baseUrl + "phaser.d.ts"), folder.getFile("typings/phaser.d.ts"), monitor);
 			}
 

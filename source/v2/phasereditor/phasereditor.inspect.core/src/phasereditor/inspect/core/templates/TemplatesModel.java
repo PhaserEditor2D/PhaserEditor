@@ -44,7 +44,7 @@ public class TemplatesModel {
 		_tsFiles = new Path[] {
 
 				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-						"phaser-master/typescript/phaser.d.ts")
+						"phaser-master/types/phaser.d.ts")
 
 		};
 
