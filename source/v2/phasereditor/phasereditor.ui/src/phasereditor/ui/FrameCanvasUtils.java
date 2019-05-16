@@ -105,7 +105,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public ImageProxy get_DND_Image(int index) {
 		return null;
 	}
-	
+
 	@SuppressWarnings({ "static-method", "unused" })
 	public Image get_DND_Disposable_Image(int index) {
 		return null;
@@ -480,11 +480,13 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 		Image img = null;
 		var proxy = get_DND_Image(index);
-		
+
 		if (proxy == null) {
 			img = get_DND_Disposable_Image(index);
-			PhaserEditorUI.set_DND_Image(event, img);
-			img.dispose();
+			if (img != null) {
+				PhaserEditorUI.set_DND_Image(event, img);
+				img.dispose();
+			}
 		} else {
 			img = proxy.getImage();
 			PhaserEditorUI.set_DND_Image(event, img);

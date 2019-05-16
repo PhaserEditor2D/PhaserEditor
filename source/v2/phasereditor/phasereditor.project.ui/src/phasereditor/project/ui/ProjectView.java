@@ -40,12 +40,17 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -62,6 +67,7 @@ import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
+import org.eclipse.ui.actions.CopyFilesAndFoldersOperation;
 import org.eclipse.ui.actions.DeleteResourceAction;
 import org.eclipse.ui.actions.MoveResourceAction;
 import org.eclipse.ui.actions.NewWizardMenu;
@@ -84,6 +90,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.properties.ExtensibleFormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -156,9 +163,53 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 		registerWorkbenchListeners();
 
+		init_DnD();
+
 		// we need this to show the right icons, because some content types are not
 		// resolved at the first time.
 		swtRun(4000, this::refresh);
+	}
+
+	private void init_DnD() {
+		Transfer[] types = { LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance() };
+
+		_viewer.addDropSupport(DND.DROP_MOVE, types, new TreeCanvasDropAdapter(_viewer) {
+
+			private IContainer _container;
+
+			@Override
+			public boolean validateDrop(Object target, int operation, TransferData transferType) {
+				if (target instanceof IContainer) {
+					_container = (IContainer) target;
+				} else {
+					if (target instanceof IResource) {
+						_container = ((IResource) target).getParent();
+					}
+				}
+
+				if (_container == null) {
+					return false;
+				}
+
+				if (FileTransfer.getInstance().isSupportedType(transferType)) {
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public boolean performDrop(Object data) {
+				var op = new CopyFilesAndFoldersOperation(getSite().getShell());
+
+				String[] filenames = (String[]) data;
+
+				op.copyFiles(filenames, _container);
+
+				return true;
+			}
+
+		});
 	}
 
 	private void createActions() {
