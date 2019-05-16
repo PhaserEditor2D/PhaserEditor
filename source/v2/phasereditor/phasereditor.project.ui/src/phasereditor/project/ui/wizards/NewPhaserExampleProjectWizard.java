@@ -70,6 +70,8 @@ public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard 
 
 	@Override
 	public void addPages() {
+		_templPage = new PhaserTemplateWizardPage();
+		
 		_projectPage = new WizardNewProjectCreationPage("project") {
 			@Override
 			public void setVisible(boolean visible) {
@@ -124,7 +126,6 @@ public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard 
 		_projectPage.setTitle("New Phaser Project");
 		_projectPage.setDescription("Set the project name.");
 
-		_templPage = new PhaserTemplateWizardPage();
 
 		addPage(_templPage);
 		addPage(_projectPage);

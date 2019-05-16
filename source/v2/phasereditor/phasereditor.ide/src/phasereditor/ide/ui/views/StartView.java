@@ -5,6 +5,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
+import java.util.function.Supplier;
 import java.util.prefs.Preferences;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -272,8 +273,9 @@ public class StartView extends ViewPart {
 
 		createHeader(parent, "Start");
 
-		createLink(parent, "New Project", createWizardRunnable(new NewPhaserProjectWizard()), "new_phaser_project.png");
-		createLink(parent, "New Example Project", createWizardRunnable(new NewPhaserExampleProjectWizard()),
+		createLink(parent, "New Project", createWizardRunnable(() -> new NewPhaserProjectWizard()),
+				"new_phaser_project.png");
+		createLink(parent, "New Example Project", createWizardRunnable(() -> new NewPhaserExampleProjectWizard()),
 				"new_phaser_project.png");
 
 		createHSpace(parent);
@@ -307,11 +309,12 @@ public class StartView extends ViewPart {
 		return () -> WebRunUI.openBrowser(url);
 	}
 
-	private static Runnable createWizardRunnable(IWizard wizard) {
+	private static Runnable createWizardRunnable(Supplier<IWizard> getWizard) {
 		return new Runnable() {
 
 			@Override
 			public void run() {
+				var wizard = getWizard.get();
 				IWorkbench wb = PlatformUI.getWorkbench();
 				var shell = wb.getActiveWorkbenchWindow().getShell();
 				var dlg = new WizardDialog(shell, wizard);
@@ -423,6 +426,7 @@ public class StartView extends ViewPart {
 					action.run();
 				}
 			}
+
 		});
 	}
 
