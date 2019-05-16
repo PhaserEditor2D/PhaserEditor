@@ -123,11 +123,6 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 		params.put("title", project.getName());
 
-		boolean pixelArt = _settingsPage.getPixelArtBtn().getSelection();
-
-		var renderConfig = new JSONObject();
-		renderConfig.put("pixelArt", pixelArt);
-
 		var config = new JSONObject();
 
 		config.put("title", project.getName());
@@ -136,6 +131,14 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		config.put("type", "#!@-" + _settingsPage.getTypeCombo().getText() + "#!@-");
 		config.put("backgroundColor", "#88F");
 		config.put("parent", "game-container");
+
+		boolean pixelArt = _settingsPage.getPixelArtBtn().getSelection();
+		if (pixelArt) {
+			var renderConfig = new JSONObject();
+			renderConfig.put("pixelArt", pixelArt);
+
+			config.put("render", renderConfig);
+		}
 
 		{
 			var physicsConfig = new JSONObject();
