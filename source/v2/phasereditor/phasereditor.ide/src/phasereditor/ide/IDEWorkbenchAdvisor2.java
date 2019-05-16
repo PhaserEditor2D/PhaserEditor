@@ -68,7 +68,9 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 			super.postWindowOpen();
 
 			var win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			win.addPerspectiveListener(new MyPerspectiveListener());
+			var listener = new MyPerspectiveListener();
+			win.addPerspectiveListener(listener);
+			listener.perspectiveActivated(win.getActivePage(), win.getActivePage().getPerspective());
 		}
 
 	}
