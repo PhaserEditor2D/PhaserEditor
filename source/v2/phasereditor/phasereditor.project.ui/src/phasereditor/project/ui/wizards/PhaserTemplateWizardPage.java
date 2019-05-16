@@ -146,6 +146,11 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		_playItem.setImage(RM.getPluginImage("phasereditor.ui", "icons/world.png"));
 
 		_filteredTree = new FilteredTree2(bottomComp, SWT.BORDER, new PatternFilter2(), 1);
+		{
+			var gd = new GridData(GridData.FILL_BOTH);
+			gd.minimumHeight = 400;
+			_filteredTree.setLayoutData(gd);
+		}
 		_treeViewer = _filteredTree.getViewer();
 		_treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -165,7 +170,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		});
 
 		_infoText = new StyledText(sashForm, SWT.BORDER);
-		sashForm.setWeights(new int[] { 2, 1 });
+		sashForm.setWeights(new int[] { 4, 1 });
 
 		afterCreateWidgets();
 	}
