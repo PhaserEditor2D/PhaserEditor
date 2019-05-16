@@ -188,6 +188,10 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 			for (AssetPackModel pack : AssetPackCore.getAssetPackModels(_project)) {
 
+				if (pack.getSections().isEmpty()) {
+					pack.addSection(new AssetSectionModel("section", pack), false);
+				}
+				
 				AssetSectionModel section = pack.getSections().get(0);
 
 				if (section == null) {

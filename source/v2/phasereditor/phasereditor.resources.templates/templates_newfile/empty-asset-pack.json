@@ -1,8 +1,12 @@
 {	
     "meta": {
         "version": "2.0",
-        "app": "Phaser Editor",
+        "app": "Phaser Editor 2D",
         "url": "https://phasereditor2d.com",
-        "copyright": "Arian Fornaris (c) 2016-2018"
-    }
+        "copyright": "Arian Fornaris (c) 2016-2019"
+    },
+
+	"section": {
+		"files": []
+	}
 }
