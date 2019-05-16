@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -11,5 +11,6 @@
  * signalling to all of its internal systems to start.
  *
  * @event Phaser.Input.Events#START
+ * @since 3.0.0
  */
 module.exports = 'start';

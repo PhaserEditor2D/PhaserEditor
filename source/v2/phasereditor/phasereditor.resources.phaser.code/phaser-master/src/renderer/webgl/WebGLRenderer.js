@@ -2,7 +2,7 @@
  * @author       Richard Davey <rich@photonstorm.com>
  * @author       Felipe Alfonso <@bitnenfer>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var BaseCamera = require('../../cameras/2d/BaseCamera');
@@ -16,7 +16,7 @@ var TransformMatrix = require('../../gameobjects/components/TransformMatrix');
 var Utils = require('./Utils');
 var WebGLSnapshot = require('../snapshot/WebGLSnapshot');
 
-// Default Pipelines
+//  Default Pipelines
 var BitmapMaskPipeline = require('./pipelines/BitmapMaskPipeline');
 var ForwardDiffuseLightPipeline = require('./pipelines/ForwardDiffuseLightPipeline');
 var TextureTintPipeline = require('./pipelines/TextureTintPipeline');
@@ -198,7 +198,7 @@ var WebGLRenderer = new Class({
          * If a non-null `callback` is set in this object, a snapshot of the canvas will be taken after the current frame is fully rendered.
          *
          * @name Phaser.Renderer.WebGL.WebGLRenderer#snapshotState
-         * @type {SnapshotState}
+         * @type {Phaser.Types.Renderer.Snapshot.SnapshotState}
          * @since 3.0.0
          */
         this.snapshotState = {
@@ -470,6 +470,52 @@ var WebGLRenderer = new Class({
          */
         this._tempMatrix4 = new TransformMatrix();
 
+        /**
+         * The total number of masks currently stacked.
+         *
+         * @name Phaser.Renderer.WebGL.WebGLRenderer#maskCount
+         * @type {integer}
+         * @since 3.17.0
+         */
+        this.maskCount = 0;
+
+        /**
+         * The mask stack.
+         *
+         * @name Phaser.Renderer.WebGL.WebGLRenderer#maskStack
+         * @type {Phaser.Display.Masks.GeometryMask[]}
+         * @since 3.17.0
+         */
+        this.maskStack = [];
+
+        /**
+         * Internal property that tracks the currently set mask.
+         *
+         * @name Phaser.Renderer.WebGL.WebGLRenderer#currentMask
+         * @type {any}
+         * @since 3.17.0
+         */
+        this.currentMask = { mask: null, camera: null };
+
+        /**
+         * Internal property that tracks the currently set camera mask.
+         *
+         * @name Phaser.Renderer.WebGL.WebGLRenderer#currentCameraMask
+         * @type {any}
+         * @since 3.17.0
+         */
+        this.currentCameraMask = { mask: null, camera: null };
+
+        /**
+         * Internal gl function mapping for uniform look-up.
+         * https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform
+         * 
+         * @name Phaser.Renderer.WebGL.WebGLRenderer#glFuncMap
+         * @type {any}
+         * @since 3.17.0
+         */
+        this.glFuncMap = null;
+
         this.init(this.config);
     },
 
@@ -534,6 +580,35 @@ var WebGLRenderer = new Class({
         this.glFormats[2] = gl.UNSIGNED_BYTE;
         this.glFormats[3] = gl.UNSIGNED_SHORT;
         this.glFormats[4] = gl.FLOAT;
+
+        //  Set the gl function map
+        this.glFuncMap = {
+
+            mat2: { func: gl.uniformMatrix2fv, length: 1, matrix: true },
+            mat3: { func: gl.uniformMatrix3fv, length: 1, matrix: true },
+            mat4: { func: gl.uniformMatrix4fv, length: 1, matrix: true },
+
+            '1f': { func: gl.uniform1f, length: 1 },
+            '1fv': { func: gl.uniform1fv, length: 1 },
+            '1i': { func: gl.uniform1i, length: 1 },
+            '1iv': { func: gl.uniform1iv, length: 1 },
+
+            '2f': { func: gl.uniform2f, length: 2 },
+            '2fv': { func: gl.uniform2fv, length: 1 },
+            '2i': { func: gl.uniform2i, length: 2 },
+            '2iv': { func: gl.uniform2iv, length: 1 },
+
+            '3f': { func: gl.uniform3f, length: 3 },
+            '3fv': { func: gl.uniform3fv, length: 1 },
+            '3i': { func: gl.uniform3i, length: 3 },
+            '3iv': { func: gl.uniform3iv, length: 1 },
+
+            '4f': { func: gl.uniform4f, length: 4 },
+            '4fv': { func: gl.uniform4fv, length: 1 },
+            '4i': { func: gl.uniform4i, length: 4 },
+            '4iv': { func: gl.uniform4iv, length: 1 }
+
+        };
 
         // Load supported extensions
         var exts = gl.getSupportedExtensions();
@@ -963,6 +1038,22 @@ var WebGLRenderer = new Class({
     },
 
     /**
+     * Is there an active stencil mask?
+     *
+     * @method Phaser.Renderer.WebGL.WebGLRenderer#hasActiveStencilMask
+     * @since 3.17.0
+     * 
+     * @return {boolean} `true` if there is an active stencil mask, otherwise `false`.
+     */
+    hasActiveStencilMask: function ()
+    {
+        var mask = this.currentMask.mask;
+        var camMask = this.currentCameraMask.mask;
+
+        return ((mask && mask.isStencil) || (camMask && camMask.isStencil));
+    },
+
+    /**
      * Use this to reset the gl context to the state that Phaser requires to continue rendering.
      * Calling this will:
      * 
@@ -987,9 +1078,17 @@ var WebGLRenderer = new Class({
 
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
-        gl.disable(gl.STENCIL_TEST);
-    
-        gl.clear(gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+
+        if (this.hasActiveStencilMask())
+        {
+            gl.clear(gl.DEPTH_BUFFER_BIT);
+        }
+        else
+        {
+            //  If there wasn't a stencil mask set before this call, we can disable it safely
+            gl.disable(gl.STENCIL_TEST);
+            gl.clear(gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+        }
 
         gl.viewport(0, 0, this.width, this.height);
 
@@ -1704,6 +1803,14 @@ var WebGLRenderer = new Class({
 
             TextureTintPipeline.projOrtho(cx, cw + cx, cy, ch + cy, -1000, 1000);
 
+            if (camera.mask)
+            {
+                this.currentCameraMask.mask = camera.mask;
+                this.currentCameraMask.camera = camera._maskCamera;
+
+                camera.mask.preRenderWebGL(this, camera, camera._maskCamera);
+            }
+
             if (color.alphaGL > 0)
             {
                 TextureTintPipeline.drawFillRect(
@@ -1719,6 +1826,14 @@ var WebGLRenderer = new Class({
         {
             this.pushScissor(cx, cy, cw, ch);
 
+            if (camera.mask)
+            {
+                this.currentCameraMask.mask = camera.mask;
+                this.currentCameraMask.camera = camera._maskCamera;
+
+                camera.mask.preRenderWebGL(this, camera, camera._maskCamera);
+            }
+
             if (color.alphaGL > 0)
             {
                 TextureTintPipeline.drawFillRect(
@@ -1728,6 +1843,24 @@ var WebGLRenderer = new Class({
                 );
             }
         }
+    },
+
+    getCurrentStencilMask: function ()
+    {
+        var prev = null;
+        var stack = this.maskStack;
+        var cameraMask = this.currentCameraMask;
+
+        if (stack.length > 0)
+        {
+            prev = stack[stack.length - 1];
+        }
+        else if (cameraMask.mask && cameraMask.mask.isStencil)
+        {
+            prev = cameraMask;
+        }
+
+        return prev;
     },
 
     /**
@@ -1789,6 +1922,13 @@ var WebGLRenderer = new Class({
             //  Force clear the current texture so that items next in the batch (like Graphics) don't try and use it
             this.setBlankTexture(true);
         }
+
+        if (camera.mask)
+        {
+            this.currentCameraMask.mask = null;
+
+            camera.mask.postRenderWebGL(this, camera._maskCamera);
+        }
     },
 
     /**
@@ -1834,6 +1974,10 @@ var WebGLRenderer = new Class({
             gl.scissor(0, (this.drawingBufferHeight - this.height), this.width, this.height);
         }
 
+        this.currentMask.mask = null;
+        this.currentCameraMask.mask = null;
+        this.maskStack.length = 0;
+
         this.setPipeline(this.pipelines.TextureTintPipeline);
     },
 
@@ -1871,6 +2015,8 @@ var WebGLRenderer = new Class({
         //   Apply scissor for cam region + render background color, if not transparent
         this.preRenderCamera(camera);
 
+        var current = this.currentMask;
+
         for (var i = 0; i < childCount; i++)
         {
             var child = list[i];
@@ -1887,18 +2033,28 @@ var WebGLRenderer = new Class({
 
             var mask = child.mask;
 
-            if (mask)
+            current = this.currentMask;
+
+            if (current.mask && current.mask !== mask)
+            {
+                //  Render out the previously set mask
+                current.mask.postRenderWebGL(this, current.camera);
+            }
+
+            if (mask && current.mask !== mask)
             {
                 mask.preRenderWebGL(this, child, camera);
-
-                child.renderWebGL(this, child, interpolationPercentage, camera);
-
-                mask.postRenderWebGL(this, child);
             }
-            else
-            {
-                child.renderWebGL(this, child, interpolationPercentage, camera);
-            }
+
+            child.renderWebGL(this, child, interpolationPercentage, camera);
+        }
+
+        current = this.currentMask;
+
+        if (current.mask)
+        {
+            //  Render out the previously set mask, if it was the last item in the display list
+            current.mask.postRenderWebGL(this, current.camera);
         }
 
         this.setBlendMode(CONST.BlendModes.NORMAL);
@@ -1954,7 +2110,7 @@ var WebGLRenderer = new Class({
      * @method Phaser.Renderer.WebGL.WebGLRenderer#snapshot
      * @since 3.0.0
      *
-     * @param {SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
      * @param {string} [type='image/png'] - The format of the image to create, usually `image/png` or `image/jpeg`.
      * @param {number} [encoderOptions=0.92] - The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`.
      *
@@ -1985,7 +2141,7 @@ var WebGLRenderer = new Class({
      * @param {integer} y - The y coordinate to grab from.
      * @param {integer} width - The width of the area to grab.
      * @param {integer} height - The height of the area to grab.
-     * @param {SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
      * @param {string} [type='image/png'] - The format of the image to create, usually `image/png` or `image/jpeg`.
      * @param {number} [encoderOptions=0.92] - The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`.
      *
@@ -2024,7 +2180,7 @@ var WebGLRenderer = new Class({
      *
      * @param {integer} x - The x coordinate of the pixel to get.
      * @param {integer} y - The y coordinate of the pixel to get.
-     * @param {SnapshotCallback} callback - The Function to invoke after the snapshot pixel data is extracted.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot pixel data is extracted.
      *
      * @return {this} This WebGL Renderer.
      */
@@ -2493,6 +2649,8 @@ var WebGLRenderer = new Class({
 
         delete this.gl;
         delete this.game;
+
+        this.maskStack.length = 0;
 
         this.contextLost = true;
         this.extensions = {};

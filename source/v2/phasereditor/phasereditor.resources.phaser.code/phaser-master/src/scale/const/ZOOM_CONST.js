@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -17,7 +17,7 @@
  * 
  * To find out what each mode does please see [Phaser.Scale.Zoom]{@link Phaser.Scale.Zoom}.
  * 
- * @typedef {(Phaser.Scale.Zoom.NO_ZOOM|Phaser.Scale.Zoom.ZOOM_2X|Phaser.Scale.Zoom.ZOOM_4X|Phaser.Scale.Zoom.MAX_ZOOM)} Phaser.Scale.ZoomType
+ * @typedef {Phaser.Scale.Zoom} Phaser.Scale.ZoomType
  * @memberof Phaser.Scale
  * @since 3.16.0
  */
@@ -28,6 +28,8 @@ module.exports = {
      * The game canvas will not be zoomed by Phaser.
      * 
      * @name Phaser.Scale.Zoom.NO_ZOOM
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     NO_ZOOM: 1,
@@ -36,6 +38,8 @@ module.exports = {
      * The game canvas will be 2x zoomed by Phaser.
      * 
      * @name Phaser.Scale.Zoom.ZOOM_2X
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     ZOOM_2X: 2,
@@ -44,6 +48,8 @@ module.exports = {
      * The game canvas will be 4x zoomed by Phaser.
      * 
      * @name Phaser.Scale.Zoom.ZOOM_4X
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     ZOOM_4X: 4,
@@ -53,6 +59,8 @@ module.exports = {
      * fit into the parent, or browser window if no parent is set.
      * 
      * @name Phaser.Scale.Zoom.MAX_ZOOM
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     MAX_ZOOM: -1

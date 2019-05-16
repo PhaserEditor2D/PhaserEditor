@@ -1,9 +1,10 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+var ArrayRemove = require('../utils/array/Remove');
 var Class = require('../utils/Class');
 var NumberTweenBuilder = require('./builders/NumberTweenBuilder');
 var PluginCache = require('../plugins/PluginCache');
@@ -375,6 +376,28 @@ var TweenManager = new Class({
     },
 
     /**
+     * Removes the given tween from the Tween Manager, regardless of its state (pending or active).
+     *
+     * @method Phaser.Tweens.TweenManager#remove
+     * @since 3.17.0
+     *
+     * @param {Phaser.Tweens.Tween} tween - The Tween to be removed.
+     *
+     * @return {Phaser.Tweens.TweenManager} This Tween Manager object.
+     */
+    remove: function (tween)
+    {
+        ArrayRemove(this._add, tween);
+        ArrayRemove(this._pending, tween);
+        ArrayRemove(this._active, tween);
+        ArrayRemove(this._destroy, tween);
+
+        tween.state = TWEEN_CONST.REMOVED;
+
+        return this;
+    },
+
+    /**
      * Checks if a Tween or Timeline is active and adds it to the Tween Manager at the start of the frame if it isn't.
      *
      * @method Phaser.Tweens.TweenManager#makeActive
@@ -388,7 +411,7 @@ var TweenManager = new Class({
     {
         if (this._add.indexOf(tween) !== -1 || this._active.indexOf(tween) !== -1)
         {
-            return;
+            return this;
         }
 
         var idx = this._pending.indexOf(tween);

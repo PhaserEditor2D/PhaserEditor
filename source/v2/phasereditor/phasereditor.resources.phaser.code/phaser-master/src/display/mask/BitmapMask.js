@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../../utils/Class');
@@ -116,7 +116,16 @@ var BitmapMask = new Class({
         this.maskFramebuffer = null;
 
         /**
-         * Whether to invert the mask's alpha.
+         * The previous framebuffer set in the renderer before this one was enabled.
+         *
+         * @name Phaser.Display.Masks.BitmapMask#prevFramebuffer
+         * @type {WebGLFramebuffer}
+         * @since 3.17.0
+         */
+        this.prevFramebuffer = null;
+
+        /**
+         * Whether to invert the masks alpha.
          *
          * If `true`, the alpha of the masking pixel will be inverted before it's multiplied with the masked pixel. Essentially, this means that a masked area will be visible only if the corresponding area in the mask is invisible.
          *
@@ -125,6 +134,16 @@ var BitmapMask = new Class({
          * @since 3.1.2
          */
         this.invertAlpha = false;
+
+        /**
+         * Is this mask a stencil mask?
+         *
+         * @name Phaser.Display.Masks.BitmapMask#isStencil
+         * @type {boolean}
+         * @readonly
+         * @since 3.17.0
+         */
+        this.isStencil = false;
 
         if (renderer && renderer.gl)
         {
@@ -137,8 +156,8 @@ var BitmapMask = new Class({
 
             this.mainTexture = renderer.createTexture2D(0, filter, filter, wrap, wrap, gl.RGBA, null, width, height);
             this.maskTexture = renderer.createTexture2D(0, filter, filter, wrap, wrap, gl.RGBA, null, width, height);
-            this.mainFramebuffer = renderer.createFramebuffer(width, height, this.mainTexture, false);
-            this.maskFramebuffer = renderer.createFramebuffer(width, height, this.maskTexture, false);
+            this.mainFramebuffer = renderer.createFramebuffer(width, height, this.mainTexture, true);
+            this.maskFramebuffer = renderer.createFramebuffer(width, height, this.maskTexture, true);
 
             renderer.onContextRestored(function (renderer)
             {
@@ -151,8 +170,8 @@ var BitmapMask = new Class({
 
                 this.mainTexture = renderer.createTexture2D(0, filter, filter, wrap, wrap, gl.RGBA, null, width, height);
                 this.maskTexture = renderer.createTexture2D(0, filter, filter, wrap, wrap, gl.RGBA, null, width, height);
-                this.mainFramebuffer = renderer.createFramebuffer(width, height, this.mainTexture, false);
-                this.maskFramebuffer = renderer.createFramebuffer(width, height, this.maskTexture, false);
+                this.mainFramebuffer = renderer.createFramebuffer(width, height, this.mainTexture, true);
+                this.maskFramebuffer = renderer.createFramebuffer(width, height, this.maskTexture, true);
 
             }, this);
         }
@@ -198,9 +217,9 @@ var BitmapMask = new Class({
      *
      * @param {(Phaser.Renderer.Canvas.CanvasRenderer|Phaser.Renderer.WebGL.WebGLRenderer)} renderer - The WebGL Renderer to clean up.
      */
-    postRenderWebGL: function (renderer)
+    postRenderWebGL: function (renderer, camera)
     {
-        renderer.pipelines.BitmapMaskPipeline.endMask(this);
+        renderer.pipelines.BitmapMaskPipeline.endMask(this, camera);
     },
 
     /**
@@ -258,6 +277,7 @@ var BitmapMask = new Class({
         this.maskTexture = null;
         this.mainFramebuffer = null;
         this.maskFramebuffer = null;
+        this.prevFramebuffer = null;
         this.renderer = null;
     }
 

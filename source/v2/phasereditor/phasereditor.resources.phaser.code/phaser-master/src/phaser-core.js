@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 require('./polyfills');
@@ -11,6 +11,13 @@ var Extend = require('./utils/object/Extend');
 
 /**
  * @namespace Phaser
+ */
+
+/**
+ * The root types namespace.
+ * 
+ * @namespace Phaser.Types
+ * @since 3.17.0
  */
 
 var Phaser = {
@@ -88,7 +95,6 @@ var Phaser = {
     Scale: require('./scale'),
     Scene: require('./scene/Scene'),
     Scenes: require('./scene'),
-    Sound: require('./sound'),
     Structs: require('./structs'),
     Textures: require('./textures'),
     Time: require('./time'),
@@ -100,6 +106,11 @@ var Phaser = {
 Phaser = Extend(false, Phaser, CONST);
 
 //  Export it
+
+if (typeof FEATURE_SOUND)
+{
+    Phaser.Sound = require('./sound');
+}
 
 module.exports = Phaser;
 

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Angle = require('../math/angle/Between');
@@ -965,7 +965,7 @@ var Pointer = new Class({
 
     /**
      * If the Pointer has a button pressed down at the time this method is called, it will return the
-     * duration since the Pointer's was pressed down.
+     * duration since the button was pressed down.
      * 
      * If no button is held down, it will return the last recorded duration, based on the time
      * the Pointer button was released.

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -14,6 +14,7 @@
  * You can also listen for an UP event from a Gamepad instance. See the [GAMEPAD_BUTTON_UP]{@linkcode Phaser.Input.Gamepad.Events#event:GAMEPAD_BUTTON_UP} event for details.
  *
  * @event Phaser.Input.Gamepad.Events#BUTTON_UP
+ * @since 3.10.0
  * 
  * @param {Phaser.Input.Gamepad} pad - A reference to the Gamepad on which the button was released.
  * @param {Phaser.Input.Gamepad.Button} button - A reference to the Button which was released.

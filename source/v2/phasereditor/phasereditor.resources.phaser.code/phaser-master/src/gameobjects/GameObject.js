@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../utils/Class');
@@ -159,7 +159,7 @@ var GameObject = new Class({
          * Not usually set directly. Instead call `GameObject.setInteractive()`.
          *
          * @name Phaser.GameObjects.GameObject#input
-         * @type {?Phaser.Input.InteractiveObject}
+         * @type {?Phaser.Types.Input.InteractiveObject}
          * @default null
          * @since 3.0.0
          */
@@ -386,8 +386,8 @@ var GameObject = new Class({
      * @method Phaser.GameObjects.GameObject#setInteractive
      * @since 3.0.0
      *
-     * @param {(Phaser.Input.InputConfiguration|any)} [shape] - Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
-     * @param {HitAreaCallback} [callback] - A callback to be invoked when the Game Object is interacted with. If you provide a shape you must also provide a callback.
+     * @param {(Phaser.Types.Input.InputConfiguration|any)} [shape] - Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - A callback to be invoked when the Game Object is interacted with. If you provide a shape you must also provide a callback.
      * @param {boolean} [dropZone=false] - Should this Game Object be treated as a drop zone target?
      *
      * @return {this} This GameObject.
@@ -475,7 +475,7 @@ var GameObject = new Class({
      * @method Phaser.GameObjects.GameObject#toJSON
      * @since 3.0.0
      *
-     * @return {JSONGameObject} A JSON representation of the Game Object.
+     * @return {Phaser.Types.GameObjects.JSONGameObject} A JSON representation of the Game Object.
      */
     toJSON: function ()
     {

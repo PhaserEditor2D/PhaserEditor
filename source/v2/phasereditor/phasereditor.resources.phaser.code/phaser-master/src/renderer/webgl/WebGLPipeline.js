@@ -2,7 +2,7 @@
  * @author       Richard Davey <rich@photonstorm.com>
  * @author       Felipe Alfonso <@bitnenfer>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../../utils/Class');
@@ -342,7 +342,7 @@ var WebGLPipeline = new Class({
                 gl.enableVertexAttribArray(location);
                 gl.vertexAttribPointer(location, element.size, element.type, element.normalized, vertexSize, element.offset);
             }
-            else
+            else if (location !== -1)
             {
                 gl.disableVertexAttribArray(location);
             }

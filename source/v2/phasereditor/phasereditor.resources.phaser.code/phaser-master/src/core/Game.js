@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var AddToDOM = require('../dom/AddToDOM');
@@ -10,6 +10,7 @@ var CacheManager = require('../cache/CacheManager');
 var CanvasPool = require('../display/canvas/CanvasPool');
 var Class = require('../utils/Class');
 var Config = require('./Config');
+var CreateDOMContainer = require('../dom/CreateDOMContainer');
 var CreateRenderer = require('./CreateRenderer');
 var DataManager = require('../data/DataManager');
 var DebugHeader = require('./DebugHeader');
@@ -22,15 +23,14 @@ var PluginCache = require('../plugins/PluginCache');
 var PluginManager = require('../plugins/PluginManager');
 var ScaleManager = require('../scale/ScaleManager');
 var SceneManager = require('../scene/SceneManager');
-var SoundManagerCreator = require('../sound/SoundManagerCreator');
 var TextureEvents = require('../textures/events');
 var TextureManager = require('../textures/TextureManager');
 var TimeStep = require('./TimeStep');
 var VisibilityHandler = require('./VisibilityHandler');
 
-if (typeof EXPERIMENTAL)
+if (typeof FEATURE_SOUND)
 {
-    var CreateDOMContainer = require('../dom/CreateDOMContainer');
+    var SoundManagerCreator = require('../sound/SoundManagerCreator');
 }
 
 if (typeof PLUGIN_FBINSTANT)
@@ -57,7 +57,7 @@ if (typeof PLUGIN_FBINSTANT)
  * @fires Phaser.Core.Events#VISIBLE
  * @since 3.0.0
  *
- * @param {GameConfig} [GameConfig] - The configuration object for your Phaser Game instance.
+ * @param {Phaser.Types.Core.GameConfig} [GameConfig] - The configuration object for your Phaser Game instance.
  */
 var Game = new Class({
 
@@ -86,22 +86,19 @@ var Game = new Class({
          */
         this.renderer = null;
 
-        if (typeof EXPERIMENTAL)
-        {
-            /**
-             * A reference to an HTML Div Element used as a DOM Element Container.
-             * 
-             * Only set if `createDOMContainer` is `true` in the game config (by default it is `false`) and
-             * if you provide a parent element to insert the Phaser Game inside.
-             *
-             * See the DOM Element Game Object for more details.
-             *
-             * @name Phaser.Game#domContainer
-             * @type {HTMLDivElement}
-             * @since 3.12.0
-             */
-            this.domContainer = null;
-        }
+        /**
+         * A reference to an HTML Div Element used as the DOM Element Container.
+         * 
+         * Only set if `createDOMContainer` is `true` in the game config (by default it is `false`) and
+         * if you provide a parent element to insert the Phaser Game inside.
+         *
+         * See the DOM Element Game Object for more details.
+         *
+         * @name Phaser.Game#domContainer
+         * @type {HTMLDivElement}
+         * @since 3.17.0
+         */
+        this.domContainer = null;
 
         /**
          * A reference to the HTML Canvas Element that Phaser uses to render the game.
@@ -247,12 +244,19 @@ var Game = new Class({
          * An instance of the base Sound Manager.
          *
          * The Sound Manager is a global system responsible for the playback and updating of all audio in your game.
+         * 
+         * You can disable the inclusion of the Sound Manager in your build by toggling the webpack `FEATURE_SOUND` flag.
          *
          * @name Phaser.Game#sound
          * @type {Phaser.Sound.BaseSoundManager}
          * @since 3.0.0
          */
-        this.sound = SoundManagerCreator.create(this);
+        this.sound = null;
+
+        if (typeof FEATURE_SOUND)
+        {
+            this.sound = SoundManagerCreator.create(this);
+        }
 
         /**
          * An instance of the Time Step.
@@ -366,10 +370,7 @@ var Game = new Class({
 
         CreateRenderer(this);
 
-        if (typeof EXPERIMENTAL)
-        {
-            CreateDOMContainer(this);
-        }
+        CreateDOMContainer(this);
 
         DebugHeader(this);
 
@@ -630,8 +631,11 @@ var Game = new Class({
     },
 
     /**
-     * Flags this Game instance as needing to be destroyed on the next frame.
+     * Flags this Game instance as needing to be destroyed on the _next frame_, making this an asynchronous operation.
+     * 
      * It will wait until the current frame has completed and then call `runDestroy` internally.
+     * 
+     * If you need to react to the games eventual destruction, listen for the `DESTROY` event.
      * 
      * If you **do not** need to run Phaser again on the same web page you can set the `noReturn` argument to `true` and it will free-up
      * memory being held by the core Phaser plugins. If you do need to create another game instance on the same page, leave this as `false`.
@@ -683,12 +687,9 @@ var Game = new Class({
             }
         }
 
-        if (typeof EXPERIMENTAL)
+        if (this.domContainer)
         {
-            if (this.domContainer)
-            {
-                this.domContainer.parentNode.removeChild(this.domContainer);
-            }
+            this.domContainer.parentNode.removeChild(this.domContainer);
         }
 
         this.loop.destroy();

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../../utils/Class');
@@ -50,16 +50,6 @@ var propertyMap = {
     wordWrapCallbackScope: [ 'wordWrap.callbackScope', null ],
     wordWrapUseAdvanced: [ 'wordWrap.useAdvancedWrap', false ]
 };
-
-/**
- * Font metrics for a Text Style object.
- *
- * @typedef {object} BitmapTextMetrics
- *
- * @property {number} ascent - The ascent of the font.
- * @property {number} descent - The descent of the font.
- * @property {number} fontSize - The size of the font.
- */
 
 /**
  * @classdesc
@@ -1015,7 +1005,7 @@ var TextStyle = new Class({
      * @method Phaser.GameObjects.TextStyle#getTextMetrics
      * @since 3.0.0
      *
-     * @return {BitmapTextMetrics} The text metrics.
+     * @return {Phaser.Types.GameObjects.Text.TextMetrics} The text metrics.
      */
     getTextMetrics: function ()
     {

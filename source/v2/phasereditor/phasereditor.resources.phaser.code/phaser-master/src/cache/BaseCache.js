@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../utils/Class');
@@ -145,6 +145,19 @@ var BaseCache = new Class({
         }
 
         return this;
+    },
+
+    /**
+     * Returns all keys in use in this cache.
+     *
+     * @method Phaser.Cache.BaseCache#getKeys
+     * @since 3.17.0
+     *
+     * @return {string[]} Array containing all the keys.
+     */
+    getKeys: function ()
+    {
+        return this.entries.keys();
     },
 
     /**

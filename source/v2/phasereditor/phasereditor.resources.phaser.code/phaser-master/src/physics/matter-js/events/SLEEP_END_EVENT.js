@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -19,6 +19,7 @@
  * Listen to it from a Scene using: `this.matter.world.on('sleepend', listener)`.
  *
  * @event Phaser.Physics.Matter.Events#SLEEP_END
+ * @since 3.0.0
  * 
  * @param {Phaser.Physics.Matter.Events.SleepEndEvent} event - The Sleep Event object.
  * @param {MatterJS.Body} body - The body that has stopped sleeping.

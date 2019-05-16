@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var BlendModes = require('../../renderer/BlendModes');
@@ -36,7 +36,6 @@ var RectangleContains = require('../../geom/rectangle/Contains');
  * @extends Phaser.GameObjects.Components.Depth
  * @extends Phaser.GameObjects.Components.GetBounds
  * @extends Phaser.GameObjects.Components.Origin
- * @extends Phaser.GameObjects.Components.ScaleMode
  * @extends Phaser.GameObjects.Components.Transform
  * @extends Phaser.GameObjects.Components.ScrollFactor
  * @extends Phaser.GameObjects.Components.Visible
@@ -55,7 +54,6 @@ var Zone = new Class({
         Components.Depth,
         Components.GetBounds,
         Components.Origin,
-        Components.ScaleMode,
         Components.Transform,
         Components.ScrollFactor,
         Components.Visible
@@ -236,7 +234,7 @@ var Zone = new Class({
      * @since 3.0.0
      *
      * @param {object} shape - A Geometry shape instance, such as Phaser.Geom.Ellipse, or your own custom shape.
-     * @param {HitAreaCallback} callback - A function that will return `true` if the given x/y coords it is sent are within the shape.
+     * @param {Phaser.Types.Input.HitAreaCallback} callback - A function that will return `true` if the given x/y coords it is sent are within the shape.
      *
      * @return {Phaser.GameObjects.Zone} This Game Object.
      */

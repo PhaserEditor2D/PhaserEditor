@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Circle = require('../geom/circle/Circle');
@@ -89,7 +89,7 @@ var InputPlugin = new Class({
          * A reference to the Scene Systems Settings.
          *
          * @name Phaser.Input.InputPlugin#settings
-         * @type {Phaser.Scenes.Settings.Object}
+         * @type {Phaser.Types.Scenes.SettingsObject}
          * @since 3.5.0
          */
         this.settings = scene.sys.settings;
@@ -209,7 +209,7 @@ var InputPlugin = new Class({
          * Internal event propagation callback container.
          *
          * @name Phaser.Input.InputPlugin#_eventContainer
-         * @type {Phaser.Input.EventData}
+         * @type {Phaser.Types.Input.EventData}
          * @private
          * @since 3.13.0
          */
@@ -404,6 +404,10 @@ var InputPlugin = new Class({
         {
             eventEmitter.on(SceneEvents.UPDATE, this.update, this);
         }
+        else
+        {
+            eventEmitter.on(SceneEvents.UPDATE, this.pluginUpdate, this);
+        }
 
         eventEmitter.once(SceneEvents.SHUTDOWN, this.shutdown, this);
 
@@ -490,7 +494,7 @@ var InputPlugin = new Class({
             {
                 current.splice(index, 1);
 
-                this.clear(gameObject);
+                this.clear(gameObject, true);
             }
         }
 
@@ -513,6 +517,34 @@ var InputPlugin = new Class({
     isActive: function ()
     {
         return (this.enabled && this.scene.sys.isActive());
+    },
+
+    /**
+     * The internal update loop for the plugins belong to this Input class.
+     * Called automatically by the Scene Systems step and only used if `useQueue` is false.
+     *
+     * @method Phaser.Input.InputPlugin#pluginUpdate
+     * @private
+     * @since 3.17.0
+     *
+     * @param {number} time - The time value from the most recent Game step. Typically a high-resolution timer value, or Date.now().
+     * @param {number} delta - The delta value since the last frame. This is smoothed to avoid delta spikes by the TimeStep class.
+     */
+    pluginUpdate: function (time, delta)
+    {
+        if (this.pollRate > -1)
+        {
+            this.update(time, delta);
+        }
+        else
+        {
+            if (!this.isActive())
+            {
+                return;
+            }
+    
+            this.pluginEvents.emit(Events.UPDATE, time, delta);
+        }
     },
 
     /**
@@ -546,7 +578,7 @@ var InputPlugin = new Class({
 
         var runUpdate = (manager.dirty || this.pollRate === 0);
 
-        if (this.pollRate > -1)
+        if (this.pollRate > 0)
         {
             this._pollTimer -= delta;
 
@@ -636,11 +668,14 @@ var InputPlugin = new Class({
      * @since 3.0.0
      *
      * @param {Phaser.GameObjects.GameObject} gameObject - The Game Object that will have its Interactive Object removed.
+     * @param {boolean} [skipQueue=false] - Skip adding this Game Object into the removal queue?
      *
      * @return {Phaser.GameObjects.GameObject} The Game Object that had its Interactive Object removed.
      */
-    clear: function (gameObject)
+    clear: function (gameObject, skipQueue)
     {
+        if (skipQueue === undefined) { skipQueue = false; }
+
         var input = gameObject.input;
 
         // If GameObject.input already cleared from higher class
@@ -649,7 +684,10 @@ var InputPlugin = new Class({
             return;
         }
 
-        this.queueForRemoval(gameObject);
+        if (!skipQueue)
+        {
+            this.queueForRemoval(gameObject);
+        }
 
         input.gameObject = undefined;
         input.target = undefined;
@@ -723,8 +761,8 @@ var InputPlugin = new Class({
      * @since 3.0.0
      *
      * @param {Phaser.GameObjects.GameObject} gameObject - The Game Object to be enabled for input.
-     * @param {(Phaser.Input.InputConfiguration|any)} [shape] - Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
-     * @param {HitAreaCallback} [callback] - The 'contains' function to invoke to check if the pointer is within the hit area.
+     * @param {(Phaser.Types.Input.InputConfiguration|any)} [shape] - Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The 'contains' function to invoke to check if the pointer is within the hit area.
      * @param {boolean} [dropZone=false] - Is this Game Object a drop zone or not?
      *
      * @return {Phaser.Input.InputPlugin} This Input Plugin.
@@ -846,7 +884,7 @@ var InputPlugin = new Class({
 
             gameObject.emit(Events.GAMEOBJECT_POINTER_DOWN, pointer, gameObject.input.localX, gameObject.input.localY, _eventContainer);
 
-            if (_eventData.cancelled)
+            if (_eventData.cancelled || !gameObject.input)
             {
                 aborted = true;
                 break;
@@ -854,7 +892,7 @@ var InputPlugin = new Class({
 
             this.emit(Events.GAMEOBJECT_DOWN, pointer, gameObject, _eventContainer);
 
-            if (_eventData.cancelled)
+            if (_eventData.cancelled || !gameObject.input)
             {
                 aborted = true;
                 break;
@@ -1077,6 +1115,8 @@ var InputPlugin = new Class({
             return list.length;
         }
 
+        var target;
+
         //  4 = Pointer actively dragging the draglist and has moved
         if (this.getDragState(pointer) === 4 && pointer.justMoved && !pointer.justUp)
         {
@@ -1090,38 +1130,42 @@ var InputPlugin = new Class({
 
                 input = gameObject.input;
 
+                target = input.target;
+
                 //  If this GO has a target then let's check it
-                if (input.target)
+                if (target)
                 {
-                    var index = dropZones.indexOf(input.target);
+                    var index = dropZones.indexOf(target);
 
                     //  Got a target, are we still over it?
                     if (index === 0)
                     {
                         //  We're still over it, and it's still the top of the display list, phew ...
-                        gameObject.emit(Events.GAMEOBJECT_DRAG_OVER, pointer, input.target);
+                        gameObject.emit(Events.GAMEOBJECT_DRAG_OVER, pointer, target);
 
-                        this.emit(Events.DRAG_OVER, pointer, gameObject, input.target);
+                        this.emit(Events.DRAG_OVER, pointer, gameObject, target);
                     }
                     else if (index > 0)
                     {
                         //  Still over it but it's no longer top of the display list (targets must always be at the top)
-                        gameObject.emit(Events.GAMEOBJECT_DRAG_LEAVE, pointer, input.target);
+                        gameObject.emit(Events.GAMEOBJECT_DRAG_LEAVE, pointer, target);
 
-                        this.emit(Events.DRAG_LEAVE, pointer, gameObject, input.target);
+                        this.emit(Events.DRAG_LEAVE, pointer, gameObject, target);
 
                         input.target = dropZones[0];
 
-                        gameObject.emit(Events.GAMEOBJECT_DRAG_ENTER, pointer, input.target);
+                        target = input.target;
 
-                        this.emit(Events.DRAG_ENTER, pointer, gameObject, input.target);
+                        gameObject.emit(Events.GAMEOBJECT_DRAG_ENTER, pointer, target);
+
+                        this.emit(Events.DRAG_ENTER, pointer, gameObject, target);
                     }
                     else
                     {
                         //  Nope, we've moved on (or the target has!), leave the old target
-                        gameObject.emit(Events.GAMEOBJECT_DRAG_LEAVE, pointer, input.target);
+                        gameObject.emit(Events.GAMEOBJECT_DRAG_LEAVE, pointer, target);
 
-                        this.emit(Events.DRAG_LEAVE, pointer, gameObject, input.target);
+                        this.emit(Events.DRAG_LEAVE, pointer, gameObject, target);
 
                         //  Anything new to replace it?
                         //  Yup!
@@ -1129,9 +1173,11 @@ var InputPlugin = new Class({
                         {
                             input.target = dropZones[0];
 
-                            gameObject.emit(Events.GAMEOBJECT_DRAG_ENTER, pointer, input.target);
+                            target = input.target;
 
-                            this.emit(Events.DRAG_ENTER, pointer, gameObject, input.target);
+                            gameObject.emit(Events.GAMEOBJECT_DRAG_ENTER, pointer, target);
+
+                            this.emit(Events.DRAG_ENTER, pointer, gameObject, target);
                         }
                         else
                         {
@@ -1140,13 +1186,15 @@ var InputPlugin = new Class({
                         }
                     }
                 }
-                else if (!input.target && dropZones[0])
+                else if (!target && dropZones[0])
                 {
                     input.target = dropZones[0];
 
-                    gameObject.emit(Events.GAMEOBJECT_DRAG_ENTER, pointer, input.target);
+                    target = input.target;
 
-                    this.emit(Events.DRAG_ENTER, pointer, gameObject, input.target);
+                    gameObject.emit(Events.GAMEOBJECT_DRAG_ENTER, pointer, target);
+
+                    this.emit(Events.DRAG_ENTER, pointer, gameObject, target);
                 }
 
                 var dragX = pointer.x - gameObject.input.dragX;
@@ -1171,7 +1219,7 @@ var InputPlugin = new Class({
 
                 input = gameObject.input;
 
-                if (input.dragState === 2)
+                if (input && input.dragState === 2)
                 {
                     input.dragState = 0;
 
@@ -1180,11 +1228,13 @@ var InputPlugin = new Class({
 
                     var dropped = false;
 
-                    if (input.target)
-                    {
-                        gameObject.emit(Events.GAMEOBJECT_DROP, pointer, input.target);
+                    target = input.target;
 
-                        this.emit(Events.DROP, pointer, gameObject, input.target);
+                    if (target)
+                    {
+                        gameObject.emit(Events.GAMEOBJECT_DROP, pointer, target);
+
+                        this.emit(Events.DROP, pointer, gameObject, target);
 
                         input.target = null;
 
@@ -1193,9 +1243,12 @@ var InputPlugin = new Class({
 
                     //  And finally the dragend event
 
-                    gameObject.emit(Events.GAMEOBJECT_DRAG_END, pointer, input.dragX, input.dragY, dropped);
+                    if (gameObject.input)
+                    {
+                        gameObject.emit(Events.GAMEOBJECT_DRAG_END, pointer, input.dragX, input.dragY, dropped);
 
-                    this.emit(Events.DRAG_END, pointer, gameObject, dropped);
+                        this.emit(Events.DRAG_END, pointer, gameObject, dropped);
+                    }
                 }
             }
 
@@ -1247,7 +1300,7 @@ var InputPlugin = new Class({
 
             gameObject.emit(Events.GAMEOBJECT_POINTER_MOVE, pointer, gameObject.input.localX, gameObject.input.localY, _eventContainer);
 
-            if (_eventData.cancelled)
+            if (_eventData.cancelled || !gameObject.input)
             {
                 aborted = true;
                 break;
@@ -1255,7 +1308,7 @@ var InputPlugin = new Class({
 
             this.emit(Events.GAMEOBJECT_MOVE, pointer, gameObject, _eventContainer);
 
-            if (_eventData.cancelled)
+            if (_eventData.cancelled || !gameObject.input)
             {
                 aborted = true;
                 break;
@@ -1373,7 +1426,7 @@ var InputPlugin = new Class({
 
                 totalInteracted++;
 
-                if (_eventData.cancelled)
+                if (_eventData.cancelled || !gameObject.input)
                 {
                     aborted = true;
                     break;
@@ -1381,7 +1434,7 @@ var InputPlugin = new Class({
 
                 this.emit(Events.GAMEOBJECT_OUT, pointer, gameObject, _eventContainer);
 
-                if (_eventData.cancelled)
+                if (_eventData.cancelled || !gameObject.input)
                 {
                     aborted = true;
                     break;
@@ -1421,7 +1474,7 @@ var InputPlugin = new Class({
 
                 totalInteracted++;
 
-                if (_eventData.cancelled)
+                if (_eventData.cancelled || !gameObject.input)
                 {
                     aborted = true;
                     break;
@@ -1429,7 +1482,7 @@ var InputPlugin = new Class({
 
                 this.emit(Events.GAMEOBJECT_OVER, pointer, gameObject, _eventContainer);
 
-                if (_eventData.cancelled)
+                if (_eventData.cancelled || !gameObject.input)
                 {
                     aborted = true;
                     break;
@@ -1489,15 +1542,15 @@ var InputPlugin = new Class({
 
             gameObject.emit(Events.GAMEOBJECT_POINTER_UP, pointer, gameObject.input.localX, gameObject.input.localY, _eventContainer);
 
-            // Clear over and emit 'pointerout' on touch.
-            if (pointer.wasTouch)
+            //  Clear over and emit 'pointerout' on touch.
+            if (pointer.wasTouch && gameObject.input)
             {
                 this._over[pointer.id] = [];
 
                 gameObject.emit(Events.GAMEOBJECT_POINTER_OUT, pointer, gameObject.input.localX, gameObject.input.localY, _eventContainer);
             }
 
-            if (_eventData.cancelled)
+            if (_eventData.cancelled || !gameObject.input)
             {
                 aborted = true;
                 break;
@@ -1505,7 +1558,7 @@ var InputPlugin = new Class({
 
             this.emit(Events.GAMEOBJECT_UP, pointer, gameObject, _eventContainer);
 
-            if (_eventData.cancelled)
+            if (_eventData.cancelled || !gameObject.input)
             {
                 aborted = true;
                 break;
@@ -1655,19 +1708,6 @@ var InputPlugin = new Class({
     },
 
     /**
-     * @typedef {object} Phaser.Input.InputConfiguration
-     *
-     * @property {any} [hitArea] - The object / shape to use as the Hit Area. If not given it will try to create a Rectangle based on the texture frame.
-     * @property {function} [hitAreaCallback] - The callback that determines if the pointer is within the Hit Area shape or not.
-     * @property {boolean} [draggable=false] - If `true` the Interactive Object will be set to be draggable and emit drag events.
-     * @property {boolean} [dropZone=false] - If `true` the Interactive Object will be set to be a drop zone for draggable objects.
-     * @property {boolean} [useHandCursor=false] - If `true` the Interactive Object will set the `pointer` hand cursor when a pointer is over it. This is a short-cut for setting `cursor: 'pointer'`.
-     * @property {string} [cursor] - The CSS string to be used when the cursor is over this Interactive Object.
-     * @property {boolean} [pixelPerfect=false] - If `true` the a pixel perfect function will be set for the hit area callback. Only works with texture based Game Objects.
-     * @property {integer} [alphaTolerance=1] - If `pixelPerfect` is set, this is the alpha tolerance threshold value used in the callback.
-     */
-
-    /**
      * Sets the hit area for the given array of Game Objects.
      *
      * A hit area is typically one of the geometric shapes Phaser provides, such as a `Phaser.Geom.Rectangle`
@@ -1684,8 +1724,8 @@ var InputPlugin = new Class({
      * @since 3.0.0
      *
      * @param {(Phaser.GameObjects.GameObject|Phaser.GameObjects.GameObject[])} gameObjects - An array of Game Objects to set the hit area on.
-     * @param {(Phaser.Input.InputConfiguration|any)} [shape] - Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
-     * @param {HitAreaCallback} [callback] - The 'contains' function to invoke to check if the pointer is within the hit area.
+     * @param {(Phaser.Types.Input.InputConfiguration|any)} [shape] - Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The 'contains' function to invoke to check if the pointer is within the hit area.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */
@@ -1705,6 +1745,7 @@ var InputPlugin = new Class({
         var dropZone = false;
         var cursor = false;
         var useHandCursor = false;
+        var pixelPerfect = false;
 
         //  Config object?
         if (IsPlainObject(shape))
@@ -1718,7 +1759,7 @@ var InputPlugin = new Class({
             cursor = GetFastValue(config, 'cursor', false);
             useHandCursor = GetFastValue(config, 'useHandCursor', false);
 
-            var pixelPerfect = GetFastValue(config, 'pixelPerfect', false);
+            pixelPerfect = GetFastValue(config, 'pixelPerfect', false);
             var alphaTolerance = GetFastValue(config, 'alphaTolerance', 1);
 
             if (pixelPerfect)
@@ -1743,8 +1784,15 @@ var InputPlugin = new Class({
         {
             var gameObject = gameObjects[i];
 
+            if (pixelPerfect && gameObject.type === 'Container')
+            {
+                console.warn('Cannot pixelPerfect test a Container. Use a custom callback.');
+                continue;
+            }
+
             var io = (!gameObject.input) ? CreateInteractiveObject(gameObject, shape, callback) : gameObject.input;
 
+            io.customHitArea = true;
             io.dropZone = dropZone;
             io.cursor = (useHandCursor) ? 'pointer' : cursor;
 
@@ -1772,7 +1820,7 @@ var InputPlugin = new Class({
      * @param {number} x - The center of the circle.
      * @param {number} y - The center of the circle.
      * @param {number} radius - The radius of the circle.
-     * @param {HitAreaCallback} [callback] - The hit area callback. If undefined it uses Circle.Contains.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The hit area callback. If undefined it uses Circle.Contains.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */
@@ -1797,7 +1845,7 @@ var InputPlugin = new Class({
      * @param {number} y - The center of the ellipse.
      * @param {number} width - The width of the ellipse.
      * @param {number} height - The height of the ellipse.
-     * @param {HitAreaCallback} [callback] - The hit area callback. If undefined it uses Ellipse.Contains.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The hit area callback. If undefined it uses Ellipse.Contains.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */
@@ -1818,7 +1866,7 @@ var InputPlugin = new Class({
      * @since 3.0.0
      *
      * @param {(Phaser.GameObjects.GameObject|Phaser.GameObjects.GameObject[])} gameObjects - An array of Game Objects to set as having an ellipse hit area.
-     * @param {HitAreaCallback} [callback] - The hit area callback. If undefined it uses Rectangle.Contains.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The hit area callback. If undefined it uses Rectangle.Contains.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */
@@ -1880,7 +1928,7 @@ var InputPlugin = new Class({
      * @param {number} y - The top-left of the rectangle.
      * @param {number} width - The width of the rectangle.
      * @param {number} height - The height of the rectangle.
-     * @param {HitAreaCallback} [callback] - The hit area callback. If undefined it uses Rectangle.Contains.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The hit area callback. If undefined it uses Rectangle.Contains.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */
@@ -1907,7 +1955,7 @@ var InputPlugin = new Class({
      * @param {number} y2 - The y coordinate of the second point of the triangle.
      * @param {number} x3 - The x coordinate of the third point of the triangle.
      * @param {number} y3 - The y coordinate of the third point of the triangle.
-     * @param {HitAreaCallback} [callback] - The hit area callback. If undefined it uses Triangle.Contains.
+     * @param {Phaser.Types.Input.HitAreaCallback} [callback] - The hit area callback. If undefined it uses Triangle.Contains.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */
@@ -1937,10 +1985,7 @@ var InputPlugin = new Class({
      */
     setPollAlways: function ()
     {
-        this.pollRate = 0;
-        this._pollTimer = 0;
-
-        return this;
+        return this.setPollRate(0);
     },
 
     /**
@@ -1956,10 +2001,7 @@ var InputPlugin = new Class({
      */
     setPollOnMove: function ()
     {
-        this.pollRate = -1;
-        this._pollTimer = 0;
-
-        return this;
+        return this.setPollRate(-1);
     },
 
     /**
@@ -1983,14 +2025,13 @@ var InputPlugin = new Class({
 
     /**
      * When set to `true` the global Input Manager will emulate DOM behavior by only emitting events from
-     * the top-most Game Objects in the Display List.
-     *
-     * If set to `false` it will emit events from all Game Objects below a Pointer, not just the top one.
+     * the top-most Scene in the Scene List. By default, if a Scene receives an input event it will then stop the event
+     * from flowing down to any Scenes below it in the Scene list. To disable this behavior call this method with `false`.
      *
      * @method Phaser.Input.InputPlugin#setGlobalTopOnly
      * @since 3.0.0
      *
-     * @param {boolean} value - `true` to only include the top-most Game Object, or `false` to include all Game Objects in a hit test.
+     * @param {boolean} value - Set to `true` to stop processing input events on the Scene that receives it, or `false` to let the event continue down the Scene list.
      *
      * @return {Phaser.Input.InputPlugin} This InputPlugin object.
      */

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -23,6 +23,7 @@
  * ```
  *
  * @event Phaser.Tweens.Events#TIMELINE_COMPLETE
+ * @since 3.0.0
  * 
  * @param {Phaser.Tweens.Timeline} timeline - A reference to the Timeline instance that emitted the event.
  */

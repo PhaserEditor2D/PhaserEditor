@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -15,6 +15,7 @@
  * errors the next time they try to render. Be sure to clear all use of the texture in this event handler.
  *
  * @event Phaser.Textures.Events#REMOVE
+ * @since 3.0.0
  * 
  * @param {string} key - The key of the Texture that was removed from the Texture Manager.
  */

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -13,6 +13,7 @@
  * the animation. For example, if you had an animation with the key 'explode' you should listen for `animationrestart-explode`.
  *
  * @event Phaser.Animations.Events#SPRITE_ANIMATION_KEY_RESTART
+ * @since 3.16.1
  * 
  * @param {Phaser.Animations.Animation} animation - A reference to the Animation that was restarted on the Sprite.
  * @param {Phaser.Animations.AnimationFrame} frame - The current Animation Frame that the Animation restarted with.

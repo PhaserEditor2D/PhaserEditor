@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var BaseCamera = require('./BaseCamera');
@@ -389,6 +389,11 @@ var Camera = new Class({
      */
     clearRenderToTexture: function ()
     {
+        if (!this.scene)
+        {
+            return;
+        }
+
         var renderer = this.scene.sys.game.renderer;
 
         if (renderer.gl)
@@ -637,7 +642,7 @@ var Camera = new Class({
      * @param {integer} [duration=1000] - The duration of the effect in milliseconds.
      * @param {(string|function)} [ease='Linear'] - The ease to use for the pan. Can be any of the Phaser Easing constants or a custom function.
      * @param {boolean} [force=false] - Force the pan effect to start immediately, even if already running.
-     * @param {CameraPanCallback} [callback] - This callback will be invoked every frame for the duration of the effect.
+     * @param {Phaser.Types.Cameras.Scene2D.CameraPanCallback} [callback] - This callback will be invoked every frame for the duration of the effect.
      * It is sent four arguments: A reference to the camera, a progress amount between 0 and 1 indicating how complete the effect is,
      * the current camera scroll x coordinate and the current camera scroll y coordinate.
      * @param {any} [context] - The context in which the callback is invoked. Defaults to the Scene to which the Camera belongs.
@@ -661,7 +666,7 @@ var Camera = new Class({
      * @param {integer} [duration=1000] - The duration of the effect in milliseconds.
      * @param {(string|function)} [ease='Linear'] - The ease to use for the pan. Can be any of the Phaser Easing constants or a custom function.
      * @param {boolean} [force=false] - Force the pan effect to start immediately, even if already running.
-     * @param {CameraPanCallback} [callback] - This callback will be invoked every frame for the duration of the effect.
+     * @param {Phaser.Types.Cameras.Scene2D.CameraPanCallback} [callback] - This callback will be invoked every frame for the duration of the effect.
      * It is sent four arguments: A reference to the camera, a progress amount between 0 and 1 indicating how complete the effect is,
      * the current camera scroll x coordinate and the current camera scroll y coordinate.
      * @param {any} [context] - The context in which the callback is invoked. Defaults to the Scene to which the Camera belongs.
@@ -707,7 +712,7 @@ var Camera = new Class({
             CenterOn(deadzone, this.midPoint.x, this.midPoint.y);
         }
 
-        if (follow)
+        if (follow && !this.panEffect.isRunning)
         {
             var fx = (follow.x - this.followOffset.x);
             var fy = (follow.y - this.followOffset.y);
@@ -883,6 +888,12 @@ var Camera = new Class({
 
         this.scrollX = fx - originX;
         this.scrollY = fy - originY;
+        
+        if (this.useBounds)
+        {
+            this.scrollX = this.clampX(this.scrollX);
+            this.scrollY = this.clampY(this.scrollY);
+        }
 
         return this;
     },
@@ -950,7 +961,7 @@ var Camera = new Class({
      * cameras are stored in a pool, ready for recycling later, and calling this directly will prevent that.
      *
      * @method Phaser.Cameras.Scene2D.Camera#destroy
-     * @fires CameraDestroyEvent
+     * @fires Phaser.Cameras.Scene2D.Events#DESTROY
      * @since 3.0.0
      */
     destroy: function ()

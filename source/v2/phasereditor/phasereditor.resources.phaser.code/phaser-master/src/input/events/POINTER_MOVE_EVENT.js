@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -21,6 +21,7 @@
  * the propagation of this event.
  *
  * @event Phaser.Input.Events#POINTER_MOVE
+ * @since 3.0.0
  * 
  * @param {Phaser.Input.Pointer} pointer - The Pointer responsible for triggering this event.
  * @param {Phaser.GameObjects.GameObject[]} currentlyOver - An array containing all interactive Game Objects that the pointer was over when the event was created.

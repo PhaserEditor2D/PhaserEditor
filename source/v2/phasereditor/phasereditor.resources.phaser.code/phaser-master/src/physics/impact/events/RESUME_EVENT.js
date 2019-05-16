@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -12,5 +12,6 @@
  * Listen to it from a Scene using: `this.impact.world.on('resume', listener)`.
  *
  * @event Phaser.Physics.Impact.Events#RESUME
+ * @since 3.0.0
  */
 module.exports = 'resume';

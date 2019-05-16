@@ -1,11 +1,22 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var CONST = require('../scale/const');
 
+/**
+ * Attempts to determine the screen orientation using the Orientation API.
+ *
+ * @function Phaser.DOM.GetScreenOrientation
+ * @since 3.16.0
+ *
+ * @param {number} width - The width of the viewport.
+ * @param {number} height - The height of the viewport.
+ *
+ * @return {string} The orientation.
+ */
 var GetScreenOrientation = function (width, height)
 {
     var screen = window.screen;

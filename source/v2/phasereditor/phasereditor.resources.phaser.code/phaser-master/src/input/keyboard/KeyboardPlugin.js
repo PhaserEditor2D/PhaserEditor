@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../../utils/Class');
@@ -94,7 +94,7 @@ var KeyboardPlugin = new Class({
          * A reference to the Scene Systems Settings.
          *
          * @name Phaser.Input.Keyboard.KeyboardPlugin#settings
-         * @type {Phaser.Scenes.Settings.Object}
+         * @type {Phaser.Types.Scenes.SettingsObject}
          * @since 3.10.0
          */
         this.settings = this.scene.sys.settings;
@@ -363,24 +363,12 @@ var KeyboardPlugin = new Class({
     },
 
     /**
-     * @typedef {object} CursorKeys
-     * @memberof Phaser.Input.Keyboard
-     * 
-     * @property {Phaser.Input.Keyboard.Key} [up] - A Key object mapping to the UP arrow key.
-     * @property {Phaser.Input.Keyboard.Key} [down] - A Key object mapping to the DOWN arrow key.
-     * @property {Phaser.Input.Keyboard.Key} [left] - A Key object mapping to the LEFT arrow key.
-     * @property {Phaser.Input.Keyboard.Key} [right] - A Key object mapping to the RIGHT arrow key.
-     * @property {Phaser.Input.Keyboard.Key} [space] - A Key object mapping to the SPACE BAR key.
-     * @property {Phaser.Input.Keyboard.Key} [shift] - A Key object mapping to the SHIFT key.
-     */
-
-    /**
      * Creates and returns an object containing 4 hotkeys for Up, Down, Left and Right, and also Space Bar and shift.
      *
      * @method Phaser.Input.Keyboard.KeyboardPlugin#createCursorKeys
      * @since 3.10.0
      *
-     * @return {CursorKeys} An object containing the properties: `up`, `down`, `left`, `right`, `space` and `shift`.
+     * @return {Phaser.Types.Input.Keyboard.CursorKeys} An object containing the properties: `up`, `down`, `left`, `right`, `space` and `shift`.
      */
     createCursorKeys: function ()
     {
@@ -509,7 +497,7 @@ var KeyboardPlugin = new Class({
 
         if (!keys[key])
         {
-            keys[key] = new Key(key);
+            keys[key] = new Key(this, key);
 
             if (enableCapture)
             {
@@ -531,12 +519,16 @@ var KeyboardPlugin = new Class({
      * @since 3.10.0
      *
      * @param {(Phaser.Input.Keyboard.Key|string|integer)} key - Either a Key object, a string, such as `A` or `SPACE`, or a key code value.
+     * @param {boolean} [destroy=false] - Call `Key.destroy` on the removed Key object?
      *
      * @return {Phaser.Input.Keyboard.KeyboardPlugin} This KeyboardPlugin object.
      */
-    removeKey: function (key)
+    removeKey: function (key, destroy)
     {
+        if (destroy === undefined) { destroy = false; }
+
         var keys = this.keys;
+        var ref;
 
         if (key instanceof Key)
         {
@@ -544,6 +536,8 @@ var KeyboardPlugin = new Class({
 
             if (idx > -1)
             {
+                ref = this.keys[idx];
+
                 this.keys[idx] = undefined;
             }
         }
@@ -554,7 +548,19 @@ var KeyboardPlugin = new Class({
 
         if (keys[key])
         {
+            ref = keys[key];
+
             keys[key] = undefined;
+        }
+
+        if (ref)
+        {
+            ref.plugin = null;
+
+            if (destroy)
+            {
+                ref.destroy();
+            }
         }
 
         return this;
@@ -593,7 +599,7 @@ var KeyboardPlugin = new Class({
      * @since 3.10.0
      *
      * @param {(string|integer[]|object[])} keys - The keys that comprise this combo.
-     * @param {KeyComboConfig} [config] - A Key Combo configuration object.
+     * @param {Phaser.Types.Input.Keyboard.KeyComboConfig} [config] - A Key Combo configuration object.
      *
      * @return {Phaser.Input.Keyboard.KeyCombo} The new KeyCombo object.
      */

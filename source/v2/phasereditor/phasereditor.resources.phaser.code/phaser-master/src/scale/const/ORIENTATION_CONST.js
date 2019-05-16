@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -17,7 +17,7 @@
  * 
  * To find out what each mode does please see [Phaser.Scale.Orientation]{@link Phaser.Scale.Orientation}.
  * 
- * @typedef {(Phaser.Scale.Orientation.LANDSCAPE|Phaser.Scale.Orientation.PORTRAIT)} Phaser.Scale.OrientationType
+ * @typedef {Phaser.Scale.Orientation} Phaser.Scale.OrientationType
  * @memberof Phaser.Scale
  * @since 3.16.0
  */
@@ -28,6 +28,8 @@ module.exports = {
      * A landscape orientation.
      * 
      * @name Phaser.Scale.Orientation.LANDSCAPE
+     * @type {string}
+     * @const
      * @since 3.16.0
      */
     LANDSCAPE: 'landscape-primary',
@@ -36,6 +38,8 @@ module.exports = {
      * A portrait orientation.
      * 
      * @name Phaser.Scale.Orientation.PORTRAIT
+     * @type {string}
+     * @const
      * @since 3.16.0
      */
     PORTRAIT: 'portrait-primary'

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var MATH_CONST = require('../../math/const');
@@ -15,7 +15,7 @@ var _FLAG = 4; // 0100
 /**
  * Provides methods used for getting and setting the position, scale and rotation of a Game Object.
  *
- * @name Phaser.GameObjects.Components.Transform
+ * @namespace Phaser.GameObjects.Components.Transform
  * @since 3.0.0
  */
 

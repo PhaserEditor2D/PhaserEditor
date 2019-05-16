@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -10,5 +10,6 @@
  * This internal event is dispatched by the Input Manager as part of its update step.
  *
  * @event Phaser.Input.Events#MANAGER_UPDATE
+ * @since 3.0.0
  */
 module.exports = 'update';

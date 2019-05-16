@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../utils/Class');
@@ -9,14 +9,14 @@ var Systems = require('./Systems');
 
 /**
  * @classdesc
- * A base Phaser.Scene class which you could extend for your own use.
+ * A base Phaser.Scene class which can be extended for your own use.
  *
  * @class Scene
  * @memberof Phaser
  * @constructor
  * @since 3.0.0
  *
- * @param {(string|Phaser.Scenes.Settings.Config)} config - Scene specific configuration settings.
+ * @param {(string|Phaser.Types.Scenes.SettingsConfig)} config - Scene specific configuration settings.
  */
 var Scene = new Class({
 
@@ -265,13 +265,25 @@ var Scene = new Class({
          * @since 3.16.2
          */
         this.scale;
+
+        /**
+         * A reference to the Plugin Manager.
+         *
+         * The Plugin Manager is a global system that allows plugins to register themselves with it, and can then install
+         * those plugins into Scenes as required.
+         *
+         * @name Phaser.Scene#plugins
+         * @type {Phaser.Plugins.PluginManager}
+         * @since 3.0.0
+         */
+        this.plugins;
     },
 
     /**
      * Should be overridden by your own Scenes.
+     * This method is called once per game step while the scene is running.
      *
      * @method Phaser.Scene#update
-     * @override
      * @since 3.0.0
      *
      * @param {number} time - The current time. Either a High Resolution Timer value if it comes from Request Animation Frame, or Date.now if using SetTimeout.
@@ -280,6 +292,36 @@ var Scene = new Class({
     update: function ()
     {
     }
+
+    /**
+     * Can be defined on your own Scenes.
+     * This method is called by the Scene Manager when the scene starts, before `preload()` and `create()`.
+     *
+     * @method Phaser.Scene#init
+     * @since 3.0.0
+     *
+     * @param {object} data - Any data passed via `ScenePlugin.add()` or `ScenePlugin.start()`. Same as Scene.settings.data.
+     */
+
+    /**
+     * Can be defined on your own Scenes. Use it to load assets.
+     * This method is called by the Scene Manager, after `init()` and before `create()`, only if the Scene has a LoaderPlugin.
+     * After this method completes, if the LoaderPlugin's queue isn't empty, the LoaderPlugin will start automatically.
+     *
+     * @method Phaser.Scene#preload
+     * @since 3.0.0
+     */
+
+    /**
+     * Can be defined on your own Scenes. Use it to create your game objects.
+     * This method is called by the Scene Manager when the scene starts, after `init()` and `preload()`.
+     * If the LoaderPlugin started after `preload()`, then this method is called only after loading is complete.
+     *
+     * @method Phaser.Scene#create
+     * @since 3.0.0
+     *
+     * @param {object} data - Any data passed via `ScenePlugin.add()` or `ScenePlugin.start()`. Same as Scene.settings.data.
+     */
 
 });
 

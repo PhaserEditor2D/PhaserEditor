@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -13,6 +13,7 @@
  * Listen to it from a Scene using: `this.load.on('load', listener)`.
  *
  * @event Phaser.Loader.Events#FILE_LOAD
+ * @since 3.0.0
  * 
  * @param {Phaser.Loader.File} file - A reference to the File which just finished loading.
  */

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -15,6 +15,7 @@
  * This same event is dispatched for all animations. To listen for a specific animation, use the `SPRITE_ANIMATION_KEY_UPDATE` event.
  *
  * @event Phaser.Animations.Events#SPRITE_ANIMATION_UPDATE
+ * @since 3.16.1
  * 
  * @param {Phaser.Animations.Animation} animation - A reference to the Animation that has updated on the Sprite.
  * @param {Phaser.Animations.AnimationFrame} frame - The current Animation Frame of the Animation.

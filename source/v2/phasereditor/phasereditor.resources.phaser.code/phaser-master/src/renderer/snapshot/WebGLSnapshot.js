@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var CanvasPool = require('../../display/canvas/CanvasPool');
@@ -18,7 +18,7 @@ var GetFastValue = require('../../utils/object/GetFastValue');
  * @since 3.0.0
  *
  * @param {HTMLCanvasElement} sourceCanvas - The canvas to take a snapshot of.
- * @param {SnapshotState} config - The snapshot configuration object.
+ * @param {Phaser.Types.Renderer.Snapshot.SnapshotState} config - The snapshot configuration object.
  */
 var WebGLSnapshot = function (sourceCanvas, config)
 {

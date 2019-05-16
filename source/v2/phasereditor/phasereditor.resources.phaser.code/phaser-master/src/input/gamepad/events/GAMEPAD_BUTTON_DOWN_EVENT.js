@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -17,6 +17,7 @@
  * You can also listen for a DOWN event from the Gamepad Plugin. See the [BUTTON_DOWN]{@linkcode Phaser.Input.Gamepad.Events#event:BUTTON_DOWN} event for details.
  *
  * @event Phaser.Input.Gamepad.Events#GAMEPAD_BUTTON_DOWN
+ * @since 3.10.0
  * 
  * @param {integer} index - The index of the button that was pressed.
  * @param {number} value - The value of the button at the time it was pressed. Between 0 and 1. Some Gamepads have pressure-sensitive buttons.

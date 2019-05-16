@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -21,6 +21,7 @@
  * 5. [TRANSITION_COMPLETE]{@linkcode Phaser.Scenes.Events#event:TRANSITION_COMPLETE} - the Target Scene will emit this event when the transition finishes.
  * 
  * @event Phaser.Scenes.Events#TRANSITION_WAKE
+ * @since 3.5.0
  * 
  * @param {Phaser.Scene} from - A reference to the Scene that is being transitioned from.
  * @param {number} duration - The duration of the transition in ms.

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../../utils/Class');
@@ -35,7 +35,6 @@ var TilemapComponents = require('../components');
  * @extends Phaser.GameObjects.Components.GetBounds
  * @extends Phaser.GameObjects.Components.Origin
  * @extends Phaser.GameObjects.Components.Pipeline
- * @extends Phaser.GameObjects.Components.ScaleMode
  * @extends Phaser.GameObjects.Components.ScrollFactor
  * @extends Phaser.GameObjects.Components.Transform
  * @extends Phaser.GameObjects.Components.Visible
@@ -60,7 +59,6 @@ var DynamicTilemapLayer = new Class({
         Components.GetBounds,
         Components.Origin,
         Components.Pipeline,
-        Components.ScaleMode,
         Components.Transform,
         Components.Visible,
         Components.ScrollFactor,
@@ -395,7 +393,7 @@ var DynamicTilemapLayer = new Class({
      * @param {(integer|array)} replacements - The tile index, or array of indexes, to change a converted
      * tile to. Set to `null` to leave the tiles unchanged. If an array is given, it is assumed to be a
      * one-to-one mapping with the indexes array.
-     * @param {SpriteConfig} spriteConfig - The config object to pass into the Sprite creator (i.e.
+     * @param {Phaser.Types.GameObjects.Sprite.SpriteConfig} spriteConfig - The config object to pass into the Sprite creator (i.e.
      * scene.make.sprite).
      * @param {Phaser.Scene} [scene=scene the map is within] - The Scene to create the Sprites within.
      * @param {Phaser.Cameras.Scene2D.Camera} [camera=main camera] - The Camera to use when determining the world XY
@@ -453,13 +451,22 @@ var DynamicTilemapLayer = new Class({
      *
      * @method Phaser.Tilemaps.DynamicTilemapLayer#destroy
      * @since 3.0.0
+     * 
+     * @param {boolean} [removeFromTilemap=true] - Remove this layer from the parent Tilemap?
      */
-    destroy: function ()
+    destroy: function (removeFromTilemap)
     {
-        // Uninstall this layer only if it is still installed on the LayerData object
+        if (removeFromTilemap === undefined) { removeFromTilemap = true; }
+
+        //  Uninstall this layer only if it is still installed on the LayerData object
         if (this.layer.tilemapLayer === this)
         {
             this.layer.tilemapLayer = undefined;
+        }
+
+        if (removeFromTilemap)
+        {
+            this.tilemap.removeLayer(this);
         }
 
         this.tilemap = undefined;
@@ -513,7 +520,7 @@ var DynamicTilemapLayer = new Class({
      * @param {integer} [tileY=0] - The top most tile index (in tile coordinates) to use as the origin of the area to filter.
      * @param {integer} [width=max width based on tileX] - How many tiles wide from the `tileX` index the area will be.
      * @param {integer} [height=max height based on tileY] - How many tiles tall from the `tileY` index the area will be.
-     * @param {object} [FilteringOptions] - Optional filters to apply when getting the tiles.
+     * @param {Phaser.Types.Tilemaps.FilteringOptions} [filteringOptions] - Optional filters to apply when getting the tiles.
      *
      * @return {Phaser.Tilemaps.Tile[]} An array of Tile objects.
      */
@@ -558,7 +565,7 @@ var DynamicTilemapLayer = new Class({
      * @param {integer} [tileY=0] - The top most tile index (in tile coordinates) to use as the origin of the area to search.
      * @param {integer} [width=max width based on tileX] - How many tiles wide from the `tileX` index the area will be.
      * @param {integer} [height=max height based on tileY] - How many tiles tall from the `tileY` index the area will be.
-     * @param {object} [FilteringOptions] - Optional filters to apply when getting the tiles.
+     * @param {Phaser.Types.Tilemaps.FilteringOptions} [filteringOptions] - Optional filters to apply when getting the tiles.
      *
      * @return {?Phaser.Tilemaps.Tile}
      */
@@ -580,7 +587,7 @@ var DynamicTilemapLayer = new Class({
      * @param {integer} [tileY=0] - The top most tile index (in tile coordinates) to use as the origin of the area to search.
      * @param {integer} [width=max width based on tileX] - How many tiles wide from the `tileX` index the area will be.
      * @param {integer} [height=max height based on tileY] - How many tiles tall from the `tileY` index the area will be.
-     * @param {object} [FilteringOptions] - Optional filters to apply when getting the tiles.
+     * @param {Phaser.Types.Tilemaps.FilteringOptions} [filteringOptions] - Optional filters to apply when getting the tiles.
      *
      * @return {Phaser.Tilemaps.DynamicTilemapLayer} This Tilemap Layer object.
      */
@@ -637,7 +644,7 @@ var DynamicTilemapLayer = new Class({
      * @param {integer} [tileY=0] - The top most tile index (in tile coordinates) to use as the origin of the area.
      * @param {integer} [width=max width based on tileX] - How many tiles wide from the `tileX` index the area will be.
      * @param {integer} [height=max height based on tileY] - How many tiles tall from the `tileY` index the area will be.
-     * @param {object} [FilteringOptions] - Optional filters to apply when getting the tiles.
+     * @param {Phaser.Types.Tilemaps.FilteringOptions} [filteringOptions] - Optional filters to apply when getting the tiles.
      *
      * @return {Phaser.Tilemaps.Tile[]} An array of Tile objects.
      */
@@ -654,7 +661,7 @@ var DynamicTilemapLayer = new Class({
      * @since 3.0.0
      *
      * @param {(Phaser.Geom.Circle|Phaser.Geom.Line|Phaser.Geom.Rectangle|Phaser.Geom.Triangle)} shape - A shape in world (pixel) coordinates
-     * @param {object} [FilteringOptions] - Optional filters to apply when getting the tiles.
+     * @param {Phaser.Types.Tilemaps.FilteringOptions} [filteringOptions] - Optional filters to apply when getting the tiles.
      * @param {Phaser.Cameras.Scene2D.Camera} [camera=main camera] - The Camera to use when factoring in which tiles to return.
      *
      * @return {Phaser.Tilemaps.Tile[]} An array of Tile objects.
@@ -674,7 +681,7 @@ var DynamicTilemapLayer = new Class({
      * @param {number} worldY - The world y coordinate for the top-left of the area.
      * @param {number} width - The width of the area.
      * @param {number} height - The height of the area.
-     * @param {object} [FilteringOptions] - Optional filters to apply when getting the tiles.
+     * @param {Phaser.Types.Tilemaps.FilteringOptions} [filteringOptions] - Optional filters to apply when getting the tiles.
      * @param {Phaser.Cameras.Scene2D.Camera} [camera=main camera] - The Camera to use when factoring in which tiles to return.
      *
      * @return {Phaser.Tilemaps.Tile[]} An array of Tile objects.
@@ -860,7 +867,7 @@ var DynamicTilemapLayer = new Class({
      * @since 3.0.0
      *
      * @param {Phaser.GameObjects.Graphics} graphics - The target Graphics object to draw upon.
-     * @param {StyleConfig} styleConfig - An object specifying the colors to use for the debug drawing.
+     * @param {Phaser.Types.Tilemaps.StyleConfig} styleConfig - An object specifying the colors to use for the debug drawing.
      *
      * @return {Phaser.Tilemaps.DynamicTilemapLayer} This Tilemap Layer object.
      */

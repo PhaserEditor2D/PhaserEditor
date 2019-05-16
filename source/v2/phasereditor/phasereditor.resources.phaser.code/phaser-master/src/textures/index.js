@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Extend = require('../utils/object/Extend');
@@ -15,14 +15,18 @@ var FilterMode = require('./const');
  * Linear filter type.
  * 
  * @name Phaser.Textures.LINEAR
- * @constant
+ * @type {integer}
+ * @const
+ * @since 3.0.0
  */
 
 /**
  * Nearest Neighbor filter type.
  * 
  * @name Phaser.Textures.NEAREST
- * @constant
+ * @type {integer}
+ * @const
+ * @since 3.0.0
  */
 
 var Textures = {

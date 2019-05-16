@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 //  Contains the plugins that Phaser uses globally and locally.
@@ -11,22 +11,6 @@ var corePlugins = {};
 //  Contains the plugins that the dev has loaded into their game
 //  These are the source objects, not instantiated.
 var customPlugins = {};
-
-/**
- * @typedef {object} CorePluginContainer
- *
- * @property {string} key - The unique name of this plugin in the core plugin cache.
- * @property {function} plugin - The plugin to be stored. Should be the source object, not instantiated.
- * @property {string} [mapping] - If this plugin is to be injected into the Scene Systems, this is the property key map used.
- * @property {boolean} [custom=false] - Core Scene plugin or a Custom Scene plugin?
- */
-
-/**
- * @typedef {object} CustomPluginContainer
- *
- * @property {string} key - The unique name of this plugin in the custom plugin cache.
- * @property {function} plugin - The plugin to be stored. Should be the source object, not instantiated.
- */
 
 var PluginCache = {};
 
@@ -110,7 +94,7 @@ PluginCache.hasCustom = function (key)
  * 
  * @param {string} key - The key of the core plugin to get.
  *
- * @return {CorePluginContainer} The core plugin object.
+ * @return {Phaser.Types.Plugins.CorePluginContainer} The core plugin object.
  */
 PluginCache.getCore = function (key)
 {
@@ -125,7 +109,7 @@ PluginCache.getCore = function (key)
  * 
  * @param {string} key - The key of the custom plugin to get.
  *
- * @return {CustomPluginContainer} The custom plugin object.
+ * @return {Phaser.Types.Plugins.CustomPluginContainer} The custom plugin object.
  */
 PluginCache.getCustom = function (key)
 {

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -12,5 +12,6 @@
  * tab, or if they simply remove focus from the browser to another app.
  *
  * @event Phaser.Core.Events#BLUR
+ * @since 3.0.0
  */
 module.exports = 'blur';

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -21,6 +21,7 @@
  * the propagation of this event.
  *
  * @event Phaser.Input.Events#POINTER_UP_OUTSIDE
+ * @since 3.16.1
  * 
  * @param {Phaser.Input.Pointer} pointer - The Pointer responsible for triggering this event.
  */

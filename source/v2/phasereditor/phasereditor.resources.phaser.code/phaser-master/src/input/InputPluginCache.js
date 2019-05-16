@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var GetValue = require('../utils/object/GetValue');
@@ -9,14 +9,6 @@ var GetValue = require('../utils/object/GetValue');
 //  Contains the plugins that Phaser uses globally and locally.
 //  These are the source objects, not instantiated.
 var inputPlugins = {};
-
-/**
- * @typedef {object} InputPluginContainer
- *
- * @property {string} key - The unique name of this plugin in the input plugin cache.
- * @property {function} plugin - The plugin to be stored. Should be the source object, not instantiated.
- * @property {string} [mapping] - If this plugin is to be injected into the Input Plugin, this is the property key map used.
- */
 
 /**
  * @namespace Phaser.Input.InputPluginCache
@@ -56,7 +48,7 @@ InputPluginCache.register = function (key, plugin, mapping, settingsKey, configK
  * 
  * @param {string} key - The key of the input plugin to get.
  *
- * @return {InputPluginContainer} The input plugin object.
+ * @return {Phaser.Types.Input.InputPluginContainer} The input plugin object.
  */
 InputPluginCache.getPlugin = function (key)
 {

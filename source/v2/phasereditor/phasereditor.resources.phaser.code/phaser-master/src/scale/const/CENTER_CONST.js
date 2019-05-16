@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -17,7 +17,7 @@
  * 
  * To find out what each mode does please see [Phaser.Scale.Center]{@link Phaser.Scale.Center}.
  * 
- * @typedef {(Phaser.Scale.Center.NO_CENTER|Phaser.Scale.Center.CENTER_BOTH|Phaser.Scale.Center.CENTER_HORIZONTALLY|Phaser.Scale.Center.CENTER_VERTICALLY)} Phaser.Scale.CenterType
+ * @typedef {Phaser.Scale.Center} Phaser.Scale.CenterType
  * @memberof Phaser.Scale
  * @since 3.16.0
  */
@@ -29,6 +29,8 @@ module.exports = {
      * You can still center it yourself via CSS.
      * 
      * @name Phaser.Scale.Center.NO_CENTER
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     NO_CENTER: 0,
@@ -41,6 +43,8 @@ module.exports = {
      * game canvas, and does not factor in any other CSS styles you may have applied.
      * 
      * @name Phaser.Scale.Center.CENTER_BOTH
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     CENTER_BOTH: 1,
@@ -53,6 +57,8 @@ module.exports = {
      * game canvas, and does not factor in any other CSS styles you may have applied.
      * 
      * @name Phaser.Scale.Center.CENTER_HORIZONTALLY
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     CENTER_HORIZONTALLY: 2,
@@ -65,6 +71,8 @@ module.exports = {
      * game canvas, and does not factor in any other CSS styles you may have applied.
      * 
      * @name Phaser.Scale.Center.CENTER_VERTICALLY
+     * @type {integer}
+     * @const
      * @since 3.16.0
      */
     CENTER_VERTICALLY: 3

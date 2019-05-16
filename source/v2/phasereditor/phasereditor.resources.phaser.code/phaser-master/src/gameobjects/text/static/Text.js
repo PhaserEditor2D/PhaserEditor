@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var AddToDOM = require('../../../dom/AddToDOM');
@@ -72,7 +72,6 @@ var TextStyle = require('../TextStyle');
  * @extends Phaser.GameObjects.Components.Mask
  * @extends Phaser.GameObjects.Components.Origin
  * @extends Phaser.GameObjects.Components.Pipeline
- * @extends Phaser.GameObjects.Components.ScaleMode
  * @extends Phaser.GameObjects.Components.ScrollFactor
  * @extends Phaser.GameObjects.Components.Tint
  * @extends Phaser.GameObjects.Components.Transform
@@ -99,7 +98,6 @@ var Text = new Class({
         Components.Mask,
         Components.Origin,
         Components.Pipeline,
-        Components.ScaleMode,
         Components.ScrollFactor,
         Components.Tint,
         Components.Transform,
@@ -534,7 +532,7 @@ var Text = new Class({
                     }
 
                     result += words[j] + ' ';
-                    spaceLeft = wordWrapWidth - wordWidth;
+                    spaceLeft = wordWrapWidth - wordWidthWithSpace;
                 }
                 else
                 {
@@ -1127,10 +1125,28 @@ var Text = new Class({
         {
             this.width = w;
         }
+        else
+        {
+            this.width = style.fixedWidth;
+        }
 
         if (style.fixedHeight === 0)
         {
             this.height = h;
+        }
+        else
+        {
+            this.height = style.fixedHeight;
+        }
+
+        if (w > this.width)
+        {
+            w = this.width;
+        }
+
+        if (h > this.height)
+        {
+            h = this.height;
         }
 
         this.updateDisplayOrigin();
@@ -1231,6 +1247,14 @@ var Text = new Class({
 
         this.dirty = true;
 
+        var input = this.input;
+
+        if (input && !input.customHitArea)
+        {
+            input.hitArea.width = this.width;
+            input.hitArea.height = this.height;
+        }
+
         return this;
     },
 
@@ -1274,7 +1298,7 @@ var Text = new Class({
      * @method Phaser.GameObjects.Text#toJSON
      * @since 3.0.0
      *
-     * @return {JSONGameObject} A JSON representation of the Text object.
+     * @return {Phaser.Types.GameObjects.JSONGameObject} A JSON representation of the Text object.
      */
     toJSON: function ()
     {
@@ -1317,6 +1341,30 @@ var Text = new Class({
 
         this.texture.destroy();
     }
+
+    /**
+     * The horizontal origin of this Game Object.
+     * The origin maps the relationship between the size and position of the Game Object.
+     * The default value is 0.5, meaning all Game Objects are positioned based on their center.
+     * Setting the value to 0 means the position now relates to the left of the Game Object.
+     *
+     * @name Phaser.GameObjects.Text#originX
+     * @type {number}
+     * @default 0
+     * @since 3.0.0
+     */
+
+    /**
+     * The vertical origin of this Game Object.
+     * The origin maps the relationship between the size and position of the Game Object.
+     * The default value is 0.5, meaning all Game Objects are positioned based on their center.
+     * Setting the value to 0 means the position now relates to the top of the Game Object.
+     *
+     * @name Phaser.GameObjects.Text#originY
+     * @type {number}
+     * @default 0
+     * @since 3.0.0
+     */
 
 });
 

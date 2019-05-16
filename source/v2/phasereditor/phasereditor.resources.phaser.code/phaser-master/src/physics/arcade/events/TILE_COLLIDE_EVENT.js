@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -17,6 +17,7 @@
  * Please note that 'collide' and 'overlap' are two different things in Arcade Physics.
  *
  * @event Phaser.Physics.Arcade.Events#TILE_COLLIDE
+ * @since 3.16.1
  * 
  * @param {Phaser.GameObjects.GameObject} gameObject - The Game Object involved in the collision. This is the parent of `body`.
  * @param {Phaser.Tilemaps.Tile} tile - The tile the body collided with.

@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -11,5 +11,6 @@
  * This hook is designed specifically for input plugins, but can also be listened to from user-land code.
  *
  * @event Phaser.Input.Events#PRE_UPDATE
+ * @since 3.0.0
  */
 module.exports = 'preupdate';

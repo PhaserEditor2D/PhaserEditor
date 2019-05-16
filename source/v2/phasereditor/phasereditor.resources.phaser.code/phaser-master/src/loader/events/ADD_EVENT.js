@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -14,6 +14,7 @@
  * If you add lots of files to a Loader from a `preload` method, it will dispatch this event for each one of them.
  *
  * @event Phaser.Loader.Events#ADD
+ * @since 3.0.0
  * 
  * @param {string} key - The unique key of the file that was added to the Loader.
  * @param {string} type - The [file type]{@link Phaser.Loader.File#type} string of the file that was added to the Loader, i.e. `image`.

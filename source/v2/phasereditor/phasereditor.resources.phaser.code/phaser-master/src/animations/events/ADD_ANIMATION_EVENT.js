@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -13,6 +13,7 @@
  * or the Animation Manager creating a new animation directly.
  *
  * @event Phaser.Animations.Events#ADD_ANIMATION
+ * @since 3.0.0
  * 
  * @param {string} key - The key of the Animation that was added to the global Animation Manager.
  * @param {Phaser.Animations.Animation} animation - An instance of the newly created Animation.

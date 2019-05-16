@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -10,7 +10,7 @@
  * Display values contain the calculated pixel values.
  * Should be applied as a mixin and not used directly.
  *
- * @name Phaser.GameObjects.Components.Origin
+ * @namespace Phaser.GameObjects.Components.Origin
  * @since 3.0.0
  */
 

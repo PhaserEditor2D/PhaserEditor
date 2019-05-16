@@ -2,7 +2,7 @@
  * @author       Richard Davey <rich@photonstorm.com>
  * @author       Felipe Alfonso <@bitnenfer>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var CanvasSnapshot = require('../snapshot/CanvasSnapshot');
@@ -158,7 +158,7 @@ var CanvasRenderer = new Class({
          * If a non-null `callback` is set in this object, a snapshot of the canvas will be taken after the current frame is fully rendered.
          *
          * @name Phaser.Renderer.Canvas.CanvasRenderer#snapshotState
-         * @type {SnapshotState}
+         * @type {Phaser.Types.Renderer.Snapshot.SnapshotState}
          * @since 3.16.0
          */
         this.snapshotState = {
@@ -426,6 +426,13 @@ var CanvasRenderer = new Class({
 
         this.currentContext = ctx;
 
+        var mask = camera.mask;
+
+        if (mask)
+        {
+            mask.preRenderCanvas(this, null, camera._maskCamera);
+        }
+
         if (!camera.transparent)
         {
             ctx.fillStyle = camera.backgroundColor.rgba;
@@ -476,6 +483,11 @@ var CanvasRenderer = new Class({
 
         camera.dirty = false;
 
+        if (mask)
+        {
+            mask.postRenderCanvas(this);
+        }
+
         //  Restore pre-clip context
         ctx.restore();
 
@@ -525,7 +537,7 @@ var CanvasRenderer = new Class({
      * @method Phaser.Renderer.Canvas.CanvasRenderer#snapshot
      * @since 3.0.0
      *
-     * @param {SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
      * @param {string} [type='image/png'] - The format of the image to create, usually `image/png` or `image/jpeg`.
      * @param {number} [encoderOptions=0.92] - The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`.
      *
@@ -554,7 +566,7 @@ var CanvasRenderer = new Class({
      * @param {integer} y - The y coordinate to grab from.
      * @param {integer} width - The width of the area to grab.
      * @param {integer} height - The height of the area to grab.
-     * @param {SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
      * @param {string} [type='image/png'] - The format of the image to create, usually `image/png` or `image/jpeg`.
      * @param {number} [encoderOptions=0.92] - The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`.
      *
@@ -593,7 +605,7 @@ var CanvasRenderer = new Class({
      *
      * @param {integer} x - The x coordinate of the pixel to get.
      * @param {integer} y - The y coordinate of the pixel to get.
-     * @param {SnapshotCallback} callback - The Function to invoke after the snapshot pixel data is extracted.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot pixel data is extracted.
      *
      * @return {this} This WebGL Renderer.
      */

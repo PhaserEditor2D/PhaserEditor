@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -19,6 +19,7 @@
  * To listen for this event from a _specific_ Game Object, use the [GAMEOBJECT_DRAG_OVER]{@linkcode Phaser.Input.Events#event:GAMEOBJECT_DRAG_OVER} event instead.
  *
  * @event Phaser.Input.Events#DRAG_OVER
+ * @since 3.0.0
  * 
  * @param {Phaser.Input.Pointer} pointer - The Pointer responsible for triggering this event.
  * @param {Phaser.GameObjects.GameObject} gameObject - The interactive Game Object that this pointer is dragging.

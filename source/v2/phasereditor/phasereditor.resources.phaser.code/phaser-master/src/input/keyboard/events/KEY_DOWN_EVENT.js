@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -26,6 +26,7 @@
  * There are others. So, please check your extensions if you find you have specific keys that don't work.
  *
  * @event Phaser.Input.Keyboard.Events#KEY_DOWN
+ * @since 3.0.0
  * 
  * @param {KeyboardEvent} event - The native DOM Keyboard Event. You can inspect this to learn more about the key that was pressed, any modifiers, etc.
  */

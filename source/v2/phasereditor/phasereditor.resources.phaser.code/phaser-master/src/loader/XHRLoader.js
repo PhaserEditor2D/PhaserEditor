@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var MergeXHRSettings = require('./MergeXHRSettings');
@@ -15,7 +15,7 @@ var MergeXHRSettings = require('./MergeXHRSettings');
  * @since 3.0.0
  *
  * @param {Phaser.Loader.File} file - The File to download.
- * @param {XHRSettingsObject} globalXHRSettings - The global XHRSettings object.
+ * @param {Phaser.Types.Loader.XHRSettingsObject} globalXHRSettings - The global XHRSettings object.
  *
  * @return {XMLHttpRequest} The XHR object.
  */

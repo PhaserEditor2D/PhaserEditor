@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var CanvasPool = require('../../display/canvas/CanvasPool');
@@ -14,7 +14,7 @@ var CanvasPool = require('../../display/canvas/CanvasPool');
  *
  * @param {Phaser.GameObjects.TextStyle} textStyle - The TextStyle object to measure.
  *
- * @return {object} An object containing the ascent, descent and fontSize of the TextStyle.
+ * @return {Phaser.Types.GameObjects.Text.TextMetrics} An object containing the ascent, descent and fontSize of the TextStyle.
  */
 var MeasureText = function (textStyle)
 {

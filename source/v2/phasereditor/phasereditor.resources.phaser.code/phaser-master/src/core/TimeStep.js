@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../utils/Class');
@@ -21,14 +21,6 @@ var RequestAnimationFrame = require('../dom/RequestAnimationFrame');
 // http://www.testufo.com/#test=animation-time-graph
 
 /**
- * @callback TimeStepCallback
- *
- * @param {number} time - The current time. Either a High Resolution Timer value if it comes from Request Animation Frame, or Date.now if using SetTimeout.
- * @param {number} average - The Delta Average.
- * @param {number} interpolation - Interpolation - how far between what is expected and where we are?
- */
-
-/**
  * @classdesc
  * [description]
  *
@@ -38,7 +30,7 @@ var RequestAnimationFrame = require('../dom/RequestAnimationFrame');
  * @since 3.0.0
  *
  * @param {Phaser.Game} game - A reference to the Phaser.Game instance that owns this Time Step.
- * @param {FPSConfig} config
+ * @param {Phaser.Types.Core.FPSConfig} config
  */
 var TimeStep = new Class({
 
@@ -174,7 +166,7 @@ var TimeStep = new Class({
          * A callback to be invoked each time the Time Step steps.
          *
          * @name Phaser.Core.TimeStep#callback
-         * @type {TimeStepCallback}
+         * @type {Phaser.Types.Core.TimeStepCallback}
          * @default NOOP
          * @since 3.0.0
          */
@@ -412,7 +404,7 @@ var TimeStep = new Class({
      * @method Phaser.Core.TimeStep#start
      * @since 3.0.0
      *
-     * @param {TimeStepCallback} callback - The callback to be invoked each time the Time Step steps.
+     * @param {Phaser.Types.Core.TimeStepCallback} callback - The callback to be invoked each time the Time Step steps.
      */
     start: function (callback)
     {
@@ -615,6 +607,32 @@ var TimeStep = new Class({
         this.running = true;
 
         this.step(window.performance.now());
+    },
+
+    /**
+     * Gets the duration which the game has been running, in seconds.
+     *
+     * @method Phaser.Core.TimeStep#getDuration
+     * @since 3.17.0
+     *
+     * @return {number} The duration in seconds.
+     */
+    getDuration: function ()
+    {
+        return Math.round(this.lastTime - this.startTime) / 1000;
+    },
+
+    /**
+     * Gets the duration which the game has been running, in ms.
+     *
+     * @method Phaser.Core.TimeStep#getDurationMS
+     * @since 3.17.0
+     *
+     * @return {number} The duration in ms.
+     */
+    getDurationMS: function ()
+    {
+        return Math.round(this.lastTime - this.startTime);
     },
 
     /**

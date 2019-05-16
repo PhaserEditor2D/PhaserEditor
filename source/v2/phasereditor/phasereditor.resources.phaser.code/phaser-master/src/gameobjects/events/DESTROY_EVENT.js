@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -12,6 +12,7 @@
  * Listen for it on a Game Object instance using `GameObject.on('destroy', listener)`.
  *
  * @event Phaser.GameObjects.Events#DESTROY
+ * @since 3.0.0
  * 
  * @param {Phaser.GameObjects.GameObject} gameObject - The Game Object which is being destroyed.
  */

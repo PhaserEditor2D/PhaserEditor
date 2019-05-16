@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Clamp = require('../math/Clamp');
@@ -607,6 +607,24 @@ var Size = new Class({
     toString: function ()
     {
         return '[{ Size (width=' + this._width + ' height=' + this._height + ' aspectRatio=' + this.aspectRatio + ' aspectMode=' + this.aspectMode + ') }]';
+    },
+
+    /**
+     * Sets the values of this Size component to the `element.style.width` and `height`
+     * properties of the given DOM Element. The properties are set as `px` values.
+     *
+     * @method Phaser.Structs.Size#setCSS
+     * @since 3.17.0
+     *
+     * @param {HTMLElement} element - The DOM Element to set the CSS style on.
+     */
+    setCSS: function (element)
+    {
+        if (element && element.style)
+        {
+            element.style.width = this._width + 'px';
+            element.style.height = this._height + 'px';
+        }
     },
 
     /**

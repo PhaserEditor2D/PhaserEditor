@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var BaseAnimation = require('../../animations/Animation');
@@ -504,7 +504,7 @@ var Animation = new Class({
      * @since 3.0.0
      *
      * @param {(string|Phaser.Animations.Animation)} key - The string-based key of the animation to play, as defined previously in the Animation Manager. Or an Animation instance.
-     * @param {boolean} [ignoreIfPlaying=false] - If an animation is already playing then ignore this call.
+     * @param {boolean} [ignoreIfPlaying=false] - If this animation is already playing then ignore this call.
      * @param {integer} [startFrame=0] - Optionally start the animation playing from this frame index.
      *
      * @return {Phaser.GameObjects.GameObject} The Game Object that owns this Animation Component.

@@ -1,10 +1,11 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Bodies = require('./lib/factory/Bodies');
+var Body = require('./lib/body/Body');
 var Class = require('../../utils/Class');
 var Common = require('./lib/core/Common');
 var Composite = require('./lib/body/Composite');
@@ -30,7 +31,7 @@ var Vector = require('./lib/geometry/Vector');
  * @since 3.0.0
  *
  * @param {Phaser.Scene} scene - The Scene to which this Matter World instance belongs.
- * @param {object} config - [description]
+ * @param {Phaser.Types.Physics.Matter.MatterWorldConfig} config - The Matter World configuration object.
  */
 var World = new Class({
 
@@ -206,8 +207,8 @@ var World = new Class({
             debugShowStaticBody: GetFastValue(config, 'debugShowStaticBody', true),
             debugShowVelocity: GetFastValue(config, 'debugShowVelocity', true),
             bodyDebugColor: GetFastValue(config, 'debugBodyColor', 0xff00ff),
-            bodyDebugFillColor: GetFastValue(config, 'bodyDebugFillColor', 0xe3a7e3),
-            staticBodyDebugColor: GetFastValue(config, 'debugBodyColor', 0x0000ff),
+            bodyDebugFillColor: GetFastValue(config, 'debugBodyFillColor', 0xe3a7e3),
+            staticBodyDebugColor: GetFastValue(config, 'debugStaticBodyColor', 0x0000ff),
             velocityDebugColor: GetFastValue(config, 'debugVelocityColor', 0x00ff00),
             debugShowJoint: GetFastValue(config, 'debugShowJoint', true),
             jointDebugColor: GetFastValue(config, 'debugJointColor', 0x000000),
@@ -1074,6 +1075,26 @@ var World = new Class({
         });
 
         return points;
+    },
+
+    /**
+     * Resets the internal collision IDs that Matter.JS uses for Body collision groups.
+     * 
+     * You should call this before destroying your game if you need to restart the game
+     * again on the same page, without first reloading the page. Or, if you wish to
+     * consistently destroy a Scene that contains Matter.js and then run it again
+     * later in the same game.
+     *
+     * @method Phaser.Physics.Matter.World#resetCollisionIDs
+     * @since 3.17.0
+     */
+    resetCollisionIDs: function ()
+    {
+        Body._nextCollidingGroupId = 1;
+        Body._nextNonCollidingGroupId = -1;
+        Body._nextCategory = 0x0001;
+
+        return this;
     },
 
     /**

@@ -1,9 +1,12 @@
 var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
     backgroundColor: '#2d2d2d',
-    parent: 'phaser-example',
+    scale: {
+        _mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        width: 800,
+        height: 600
+    },
     dom: {
         createContainer: true
     },
@@ -32,20 +35,14 @@ function create ()
     var sf = 0.5;
     var px = 64;
 
-    for (var i = 1; i <= 250; i++)
+    for (var i = 1; i <= 100; i++)
     {
-        var div = document.createElement('div');
+        var x = Phaser.Math.Between(100, 2000);
+        var y = Phaser.Math.Between(100, 2000);
 
-        div.style = 'font-size: ' + px + 'px';
-        div.innerText = Phaser.Utils.Array.GetRandom(smileys);
-
-        var x = Phaser.Math.Between(100, 3900);
-        var y = Phaser.Math.Between(100, 3900);
-
-        var element = this.add.dom(x, y, div).setScrollFactor(sf);
+        var element = this.add.dom(x, y, 'div', 'font-size: ' + px + 'px', Phaser.Utils.Array.GetRandom(smileys)).setScrollFactor(sf);
 
         element.setPerspective(800);
-        // element.rotate3d.set(0, 1, 0, 0);
 
         element.rotate3d.set(Math.random(), Math.random(), Math.random(), 0);
 

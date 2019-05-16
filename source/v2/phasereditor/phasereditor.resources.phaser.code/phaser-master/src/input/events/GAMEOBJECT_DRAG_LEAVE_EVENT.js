@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 /**
@@ -16,6 +16,7 @@
  * See [GameObject.setInteractive]{@link Phaser.GameObjects.GameObject#setInteractive} for more details.
  *
  * @event Phaser.Input.Events#GAMEOBJECT_DRAG_LEAVE
+ * @since 3.0.0
  * 
  * @param {Phaser.Input.Pointer} pointer - The Pointer responsible for triggering this event.
  * @param {Phaser.GameObjects.GameObject} target - The drag target that this pointer has left.

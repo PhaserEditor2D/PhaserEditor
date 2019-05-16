@@ -1,7 +1,7 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Class = require('../utils/Class');
@@ -141,7 +141,7 @@ var AnimationFrame = new Class({
      * @method Phaser.Animations.AnimationFrame#toJSON
      * @since 3.0.0
      *
-     * @return {Phaser.Animations.Types.JSONAnimationFrame} The AnimationFrame data.
+     * @return {Phaser.Types.Animations.JSONAnimationFrame} The AnimationFrame data.
      */
     toJSON: function ()
     {

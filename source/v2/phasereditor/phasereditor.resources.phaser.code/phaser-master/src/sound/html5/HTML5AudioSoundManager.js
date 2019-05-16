@@ -2,7 +2,7 @@
  * @author       Richard Davey <rich@photonstorm.com>
  * @author       Pavle Goloskokovic <pgoloskokovic@gmail.com> (http://prunegames.com)
  * @copyright    2019 Photon Storm Ltd.
- * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var BaseSoundManager = require('../BaseSoundManager');
@@ -133,7 +133,7 @@ var HTML5AudioSoundManager = new Class({
      * @since 3.0.0
      *
      * @param {string} key - Asset key for the sound.
-     * @param {SoundConfig} [config] - An optional config object containing default sound settings.
+     * @param {Phaser.Types.Sound.SoundConfig} [config] - An optional config object containing default sound settings.
      *
      * @return {Phaser.Sound.HTML5AudioSound} The new sound instance.
      */
