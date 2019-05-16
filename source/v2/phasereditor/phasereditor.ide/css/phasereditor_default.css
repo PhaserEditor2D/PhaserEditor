@@ -9,6 +9,8 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
 }
 */
 
+
+
 .MTrimBar ToolBar {
     margin-left: 8px;
     margin-right: 8px;
@@ -65,6 +67,12 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
 {
 	background-color: #e8e8e8;
 }
+
+.MPart Hyperlink,
+.MPart ImageHyperlink {
+	background-color: inherit;
+}
+
 
 .MPart.active Composite, 
 /*.MPart.active Tree,*/ /* For certain reason this breaks the table focusing */
@@ -149,5 +157,4 @@ TabbedPropertyList {
 	swt-tabDarkShadow-color     : #e8e8e8; /* line color of the tiny scroll triangle (at top / at bottom) */
 	color                       : #000000; /* text color in the tab / tab area */
 }
-
 
