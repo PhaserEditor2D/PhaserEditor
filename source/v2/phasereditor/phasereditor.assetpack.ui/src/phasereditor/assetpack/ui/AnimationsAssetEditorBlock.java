@@ -80,6 +80,10 @@ public class AnimationsAssetEditorBlock extends AssetKeyEditorBlock<AnimationsAs
 			@Override
 			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
 				var model = getAssetKey().getAnimationsModel();
+				
+				if (model == null) {
+					return;
+				}
 
 				var frameX = x;
 				var frameY = y;
