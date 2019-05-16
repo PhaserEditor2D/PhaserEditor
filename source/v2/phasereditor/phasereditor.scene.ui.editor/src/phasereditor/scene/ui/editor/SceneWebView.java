@@ -85,7 +85,7 @@ public class SceneWebView extends Composite {
 					return;
 				}
 
-				if (_webView.getControl().isDisposed() && _webView.getControl().isFocusControl()) {
+				if (!_webView.getControl().isDisposed() && _webView.getControl().isFocusControl()) {
 
 					var stateMask = event.stateMask;
 
@@ -124,6 +124,7 @@ public class SceneWebView extends Composite {
 							editor.getBroker().sendAll(new SelectObjectsMessage(editor));
 							break;
 						case SWT.SPACE:
+							_lastTime = event.time;
 							if (editor.hasInteractiveTools(Set.of("Hand"))) {
 								editor.setInteractiveTools(Set.of());
 							}
