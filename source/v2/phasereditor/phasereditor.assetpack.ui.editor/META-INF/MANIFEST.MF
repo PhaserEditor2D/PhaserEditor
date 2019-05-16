@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Asset Pack - Editor
 Bundle-SymbolicName: phasereditor.assetpack.ui.editor;singleton:=true
-Bundle-Version: 2.0.3.20190320
+Bundle-Version: 2.1.0.20190326
 Bundle-Activator: phasereditor.assetpack.ui.editor.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
