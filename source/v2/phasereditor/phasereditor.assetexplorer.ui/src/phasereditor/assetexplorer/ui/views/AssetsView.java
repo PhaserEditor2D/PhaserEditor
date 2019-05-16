@@ -24,6 +24,7 @@ package phasereditor.assetexplorer.ui.views;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,7 +268,7 @@ public class AssetsView extends ViewPart implements Consumer<IProject> {
 
 	@Override
 	public void dispose() {
-		
+
 		ProjectCore.removeActiveProjectListener(this);
 
 		super.dispose();
@@ -426,6 +427,6 @@ public class AssetsView extends ViewPart implements Consumer<IProject> {
 
 	@Override
 	public void accept(IProject t) {
-		refreshViewer();
+		swtRun(this::refreshViewer);
 	}
 }
