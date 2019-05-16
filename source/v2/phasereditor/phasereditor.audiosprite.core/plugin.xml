@@ -9,7 +9,7 @@
             file-extensions="json"
             id="phasereditor.core.contenttype.audiosprite"
             name="Audio Sprite"
-            priority="high">
+            priority="normal">
       </content-type>
    </extension>
 

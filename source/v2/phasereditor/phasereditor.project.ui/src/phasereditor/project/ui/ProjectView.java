@@ -167,7 +167,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 		// we need this to show the right icons, because some content types are not
 		// resolved at the first time.
-		swtRun(4000, this::refresh);
+		// swtRun(4000, this::refresh);
 	}
 
 	private void init_DnD() {
