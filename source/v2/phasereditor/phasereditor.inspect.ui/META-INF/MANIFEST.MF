@@ -16,9 +16,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0",
- phasereditor.lic;bundle-version="2.0.1"
+ org.eclipse.tm4e.languageconfiguration;bundle-version="0.3.2",
+ phasereditor.lic;bundle-version="2.0.1",
+ org.eclipse.core.filesystem;bundle-version="1.7.300"
 Automatic-Module-Name: phasereditor.inspect.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.inspect.ui,
+ phasereditor.inspect.ui.editors,
  phasereditor.inspect.ui.handlers,
  phasereditor.inspect.ui.views

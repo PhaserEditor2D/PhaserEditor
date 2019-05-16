@@ -54,7 +54,7 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.ui.showSourceCode"
+               commandId="phasereditor.inspect.ui.showSourceCode"
                style="push">
          </command>
       </menuContribution>
@@ -67,7 +67,7 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.ui.showSourceCode"
+               commandId="phasereditor.inspect.ui.showSourceCode"
                icon="platform:/plugin/phasereditor.ui/icons/source.png"
                style="push">
          </command>
@@ -84,7 +84,7 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.ui.showSourceCode"
+               commandId="phasereditor.inspect.ui.showSourceCode"
                style="push">
          </command>
       </menuContribution>
@@ -114,7 +114,7 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.ui.showSourceCode"
+               commandId="phasereditor.inspect.ui.showSourceCode"
                style="push">
          </command>
       </menuContribution>
@@ -126,7 +126,7 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.ui.showSourceCode"
+               commandId="phasereditor.inspect.ui.showSourceCode"
                style="push">
          </command>
       </menuContribution>
@@ -172,9 +172,29 @@
             </iterate>
          </activeWhen>
       </handler>
+       <handler
+            class="phasereditor.inspect.ui.handlers.ShowSourceCodeHandler"
+            commandId="phasereditor.inspect.ui.showSourceCode">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <adapt
+                        type="phasereditor.ui.ISourceLocation">
+                  </adapt>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.inspect.ui.showSourceCode"
+            name="Show Source Code">
+      </command>
       <command
             categoryId="phasereditor.ui.phaserCategory"
             id="phasereditor.inspect.ui.showPhaserJsdoc"
@@ -212,9 +232,19 @@
             icon="platform:/plugin/phasereditor.ui/icons/javadoc.png">
       </image>
       <image
-            commandId="phasereditor.ui.showSourceCode"
+            commandId="phasereditor.inspect.ui.showSourceCode"
             icon="platform:/plugin/phasereditor.ui/icons/source.png">
       </image>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="phasereditor.inspect.ui.editors.PhaserApiFileEditor"
+            default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/generic_editor.png"
+            id="phasereditor.inspect.ui.editors.PhaserApiFileEditor"
+            name="Phaser API Source File Editor">
+      </editor>
    </extension>
 
 </plugin>

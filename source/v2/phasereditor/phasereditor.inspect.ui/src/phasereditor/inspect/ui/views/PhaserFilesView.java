@@ -52,8 +52,8 @@ import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.ui.PhaserFileContentProvider;
 import phasereditor.inspect.ui.PhaserFileLabelProvider;
 import phasereditor.inspect.ui.PhaserFileStyledLabelProvider;
+import phasereditor.inspect.ui.handlers.ShowSourceCodeHandler;
 import phasereditor.ui.PatternFilter2;
-import phasereditor.ui.handlers.ShowSourceCodeHandler;
 
 /**
  * @author arian

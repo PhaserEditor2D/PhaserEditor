@@ -1,4 +1,4 @@
-package phasereditor.ui.handlers;
+package phasereditor.inspect.ui.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.inspect.ui.InspectUI;
 import phasereditor.ui.ISourceLocation;
-import phasereditor.ui.PhaserEditorUI;
 
 public class ShowSourceCodeHandler extends AbstractHandler {
 
@@ -23,7 +23,7 @@ public class ShowSourceCodeHandler extends AbstractHandler {
 		Object obj = sel.getFirstElement();
 		ISourceLocation location = Adapters.adapt(obj, ISourceLocation.class);
 		if (location != null) {
-			PhaserEditorUI.openJSEditor(location.getLine(), -1, location.getFilePath());
+			InspectUI.openJSEditor(location.getLine(), -1, location.getFilePath());
 		}
 	}
 

@@ -73,11 +73,6 @@
       </command>
       <command
             categoryId="phasereditor.ui.phaserCategory"
-            id="phasereditor.ui.showSourceCode"
-            name="Show Source Code">
-      </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
             id="phasereditor.ui.quickEdit"
             name="Quick Edit">
       </command>
@@ -94,21 +89,6 @@
       <handler
             class="phasereditor.ui.handlers.ShowInPreviewHandler"
             commandId="phasereditor.ui.commands.showInPreview">
-      </handler>
-      <handler
-            class="phasereditor.ui.handlers.ShowSourceCodeHandler"
-            commandId="phasereditor.ui.showSourceCode">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <adapt
-                        type="phasereditor.ui.ISourceLocation">
-                  </adapt>
-               </iterate>
-            </with>
-         </activeWhen>
       </handler>
    </extension>
    <extension

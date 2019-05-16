@@ -40,7 +40,7 @@
             style="push">
       </command>
       <command
-            commandId="phasereditor.ui.showSourceCode"
+            commandId="phasereditor.inspect.ui.showSourceCode"
             icon="platform:/plugin/phasereditor.ui/icons/source.png"
             style="push">
       </command>
