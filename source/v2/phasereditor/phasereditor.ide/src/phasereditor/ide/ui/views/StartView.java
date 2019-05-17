@@ -336,7 +336,7 @@ public class StartView extends ViewPart {
 		var font = label.getFont();
 		var fd = font.getFontData()[0];
 		label.setFont(SwtRM.getBoldFont(font));
-		label.setFont(SwtRM.getFont(fd.name, fd.getHeight() * 2, fd.style));
+		label.setFont(SwtRM.getFont(fd.getName(), fd.getHeight() * 2, fd.getStyle()));
 
 		label = new Label(comp2, SWT.NONE);
 		label.setText("A friendly IDE for HTML5 game development");
