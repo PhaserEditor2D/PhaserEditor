@@ -136,11 +136,6 @@
       </perspective>
       !-->
    </extension>
-      <perspective
-            class="phasereditor.ide.PerspectiveFactory2"
-            id="phasereditor.ide.perspective2"
-            name="name">
-      </perspective>
                   <extension
                         point="org.eclipse.e4.ui.css.swt.theme">
                      <theme
