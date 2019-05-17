@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.wildwebdeveloper.features"
       label="Phaser Editor - Blue Sky Support"
-      version="2.0.4.20190321"
+      version="2.1.0.20190326"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.1.v20180423-1114">

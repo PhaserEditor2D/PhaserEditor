@@ -36,3 +36,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: phasereditor.ide,
+ phasereditor.ide.intro,
+ phasereditor.ide.ui,
+ phasereditor.ide.ui.views
