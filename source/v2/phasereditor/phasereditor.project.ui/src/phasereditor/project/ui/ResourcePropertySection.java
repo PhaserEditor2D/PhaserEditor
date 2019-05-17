@@ -66,7 +66,7 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 		{
 			label(comp, "Name", "");
 
-			var text = new Text(comp, SWT.READ_ONLY);
+			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
 				text.setText(getModels().get(0).getName());
@@ -75,7 +75,7 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 
 		{
 			label(comp, "Location", "");
-			var text = new Text(comp, SWT.READ_ONLY);
+			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
 				var file = getModels().get(0);
@@ -87,7 +87,7 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 
 		{
 			label(comp, "Size", "");
-			var text = new Text(comp, SWT.READ_ONLY);
+			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
 				try {

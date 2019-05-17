@@ -62,7 +62,7 @@ public class ManyResourcesPropertySection extends FormPropertySection<IResource>
 
 		{
 			label(comp, "Size", "");
-			var text = new Text(comp, SWT.READ_ONLY);
+			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
 				try {
@@ -78,7 +78,7 @@ public class ManyResourcesPropertySection extends FormPropertySection<IResource>
 
 		{
 			label(comp, "Count", "");
-			var text = new Text(comp, SWT.READ_ONLY);
+			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
 				try {
