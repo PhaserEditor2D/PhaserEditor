@@ -308,16 +308,15 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			_blockAreaMap = new HashMap<>();
 
 			var margin = 5;
-			var startXMargin = e.width % (_imageSize + margin) / 2;
 			var size = _imageSize;
-			var x = startXMargin; // + margin;
+			var x = margin; // + margin;
 			var y = margin;
 
 			for (var block : _blocks) {
 				var renderer = block.getRenderer();
 
 				if (x + size + margin > e.width) {
-					x = startXMargin;
+					x = margin;
 					y += margin + size + 20;
 				}
 
