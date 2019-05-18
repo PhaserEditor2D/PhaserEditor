@@ -257,7 +257,7 @@
       <participant
             handler="phasereditor.project.ui.ProjectViewBuildParticipant"
             id="phasereditor.project.ui.ProjectViewBuildParticipant"
-            order="1">
+            order="1000">
       </participant>
    </extension>
 </plugin>
