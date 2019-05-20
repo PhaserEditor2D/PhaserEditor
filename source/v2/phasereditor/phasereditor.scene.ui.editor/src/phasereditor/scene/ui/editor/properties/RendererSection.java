@@ -41,7 +41,7 @@ import phasereditor.webrun.ui.WebRunUI;
 public class RendererSection extends BaseDesignSection {
 
 	public RendererSection(FormPropertyPage page) {
-		super("Renderer", page);
+		super("WebView", page);
 	}
 
 	@Override
