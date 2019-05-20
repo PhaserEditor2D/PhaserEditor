@@ -106,7 +106,7 @@ public class SceneEditorBroker {
 
 	public String getUrl() {
 		return "http://localhost:" + WebRunCore.getServerPort()
-				+ "/extension/phasereditor.scene.ui.editor/sceneEditor/index.html?channel=" + _channel;
+				+ "/extension/phasereditor.scene.ui.editor.html/sceneEditor/index.html?channel=" + _channel;
 	}
 
 	private void messageReceived(Object client, JSONObject msg) {

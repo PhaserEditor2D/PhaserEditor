@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Scene Editor HTML
+Bundle-SymbolicName: phasereditor.scene.ui.editor.html;singleton:=true
+Bundle-Version: 2.1.0.20190326
+Bundle-Vendor: Arian Fornaris
+Automatic-Module-Name: phasereditor.scene.ui.editor.html
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Eclipse-BundleShape: dir
+Require-Bundle: phasereditor.webrun.core

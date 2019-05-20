@@ -54,6 +54,7 @@
         <module>phasereditor.scene.core</module>
         <module>phasereditor.scene.ui</module>
         <module>phasereditor.scene.ui.editor</module>
+        <module>phasereditor.scene.ui.editor.html</module>
         <module>phasereditor.spritedemo.core</module>
         <module>phasereditor.ui</module>
         <module>phasereditor.webrun.core</module>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="phasereditor.webrun.core.webcontent">
+      <static
+            name="sceneEditor"
+            path="html"
+            plugin="phasereditor.scene.ui.editor.html">
+      </static>
+   </extension>
+
+</plugin>

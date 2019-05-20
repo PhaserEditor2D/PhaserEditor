@@ -338,4 +338,10 @@
          version="0.0.0"
          fragment="true"/>
 
+   <plugin
+         id="phasereditor.scene.ui.editor.html"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
