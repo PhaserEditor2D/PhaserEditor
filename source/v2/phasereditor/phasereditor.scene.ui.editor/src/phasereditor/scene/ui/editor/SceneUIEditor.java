@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 
@@ -55,6 +56,10 @@ public class SceneUIEditor {
 	public static final String COMMAND_ID_ORIGIN_TOOL = "phasereditor.scene.ui.editor.originTool";
 	public static final String COMMAND_ID_RESIZE_TILE_SPRITE_TOOL = "phasereditor.scene.ui.editor.resizeTileSprite";
 	private static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	public static final String PREF_KEY_PHASER_CONTEXT_TYPE = "phasereditor.scene.ui.editor.phaserContextType";
+	public static final String PREF_VALUE_PHASER_CONTEXT_TYPE_CANVAS = "canvas";
+	public static final String PREF_VALUE_PHASER_CONTEXT_TYPE_WEBGL = "webgl";
+	public static final String PREF_VALUE_PHASER_CONTEXT_TYPE_DEFAULT = "default";
 
 	public static void action_MorphObjectsToNewType(SceneEditor editor, List<?> models, String morphToType) {
 		var before = WorldSnapshotOperation.takeSnapshot(editor);
@@ -81,7 +86,7 @@ public class SceneUIEditor {
 			if (model.getType().equals(morphToType)) {
 				continue;
 			}
-			
+
 			if (!model.allowMorphTo(morphToType)) {
 				continue;
 			}
@@ -171,5 +176,13 @@ public class SceneUIEditor {
 
 	public static void logError(String msg) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
+	}
+
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
+
+	public static void initPreferences() {
+		getPreferenceStore().setDefault(PREF_KEY_PHASER_CONTEXT_TYPE, PREF_VALUE_PHASER_CONTEXT_TYPE_DEFAULT);
 	}
 }

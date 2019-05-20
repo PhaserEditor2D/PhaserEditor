@@ -473,5 +473,14 @@
             </reference></enablement>
       </moveParticipant>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="phasereditor.ui.prefs.phasereditor"
+            class="phasereditor.scene.ui.editor.preferences.SceneEditorPreferencePage"
+            id="phasereditor.scene.ui.editor.preferencesPage"
+            name="Scene Editor">
+      </page>
+   </extension>
 
 </plugin>

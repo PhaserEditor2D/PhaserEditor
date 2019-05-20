@@ -51,12 +51,29 @@ public class CreateGameMessage extends ApiMessage {
 		{
 			var displayListData = new JSONObject();
 			var scenePropertiesData = new JSONObject();
-			
+
 			model.getDisplayList().write(displayListData);
 			model.writeProperties(scenePropertiesData);
 
+			var webgl = true;
+
+			{
+				var pref = SceneUIEditor.getPreferenceStore().getString(SceneUIEditor.PREF_KEY_PHASER_CONTEXT_TYPE);
+
+				switch (pref) {
+				case SceneUIEditor.PREF_VALUE_PHASER_CONTEXT_TYPE_DEFAULT:
+					webgl = !Platform.getOS().equals(Platform.OS_LINUX);
+					break;
+				case SceneUIEditor.PREF_VALUE_PHASER_CONTEXT_TYPE_CANVAS:
+					webgl = false;
+					break;
+				default:
+					break;
+				}
+			}
+
 			_data.put("method", "CreateGame");
-			_data.put("webgl", !Platform.getOS().equals(Platform.OS_LINUX));
+			_data.put("webgl", webgl);
 			_data.put("displayList", displayListData);
 			_data.put("sceneProperties", scenePropertiesData);
 		}
