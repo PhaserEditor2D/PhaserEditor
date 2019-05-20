@@ -77,24 +77,21 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 
 	private static class MyPerspectiveListener implements IPerspectiveListener {
 
-		private boolean _toolbarVisible = true;
-
 		@Override
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 			var window = (WorkbenchWindow) page.getWorkbenchWindow();
 			var id = perspective.getId();
 
 			if (StartPerspective.ID.equals(id)) {
-				_toolbarVisible = window.getCoolBarVisible();
-				if (_toolbarVisible) {
+				if (window.getCoolBarVisible()) {
 					window.toggleToolbarVisibility();
 				}
-				
+
 				page.setEditorAreaVisible(false);
 			} else {
 				page.setEditorAreaVisible(true);
 
-				if (_toolbarVisible != window.getCoolBarVisible()) {
+				if (!window.getCoolBarVisible()) {
 					window.toggleToolbarVisibility();
 				}
 			}
