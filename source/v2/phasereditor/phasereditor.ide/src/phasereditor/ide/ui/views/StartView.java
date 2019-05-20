@@ -68,7 +68,7 @@ public class StartView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		_scrolledComp = new ScrolledComposite(parent, SWT.V_SCROLL);
-		_mainComp = new Composite(_scrolledComp, SWT.H_SCROLL);
+		_mainComp = new Composite(_scrolledComp, SWT.NONE);
 		var layout = new GridLayout(2, true);
 		layout.marginWidth = 50;
 		layout.marginHeight = 50;
