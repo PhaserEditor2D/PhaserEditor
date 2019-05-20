@@ -108,6 +108,11 @@ var PhaserEditor2D;
             s.setStrokeStyle(1, 0, 0.8);
             return s;
         };
+        InteractiveTool.prototype.createEllipseShape = function () {
+            var s = this.toolScene.add.ellipse(0, 0, 10, 10);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
+        };
         InteractiveTool.prototype.createLineShape = function () {
             var s = this.toolScene.add.line();
             return s;

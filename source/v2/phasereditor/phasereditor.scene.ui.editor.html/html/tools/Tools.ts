@@ -140,6 +140,12 @@ namespace PhaserEditor2D {
             return s;
         }
 
+        protected createEllipseShape() {
+            const s = this.toolScene.add.ellipse(0, 0, 10, 10);
+            s.setStrokeStyle(1, 0, 0.8);
+            return s;
+        }
+
         protected createLineShape() {
             const s = this.toolScene.add.line();
             return s;

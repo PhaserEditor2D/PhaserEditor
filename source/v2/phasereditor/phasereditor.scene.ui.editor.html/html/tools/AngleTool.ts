@@ -5,8 +5,8 @@ namespace PhaserEditor2D {
         static RADIUS = 100;
 
         private _color: number;
-        private _handlerShape: Phaser.GameObjects.Arc;
-        private _handlerShapeBorder: Phaser.GameObjects.Arc;
+        private _handlerShape: Phaser.GameObjects.Ellipse;
+        private _handlerShapeBorder: Phaser.GameObjects.Ellipse;
         private _centerShape: Phaser.GameObjects.Arc;
         private _dragging = false;
         private _cursorStartX: number;
@@ -14,19 +14,19 @@ namespace PhaserEditor2D {
 
         constructor() {
             super();
-            
+
             this._color = 0xaaaaff;
 
-            this._handlerShapeBorder = this.createCircleShape();
+            this._handlerShapeBorder = this.createEllipseShape();
             this._handlerShapeBorder.setFillStyle(0, 0);
             this._handlerShapeBorder.setStrokeStyle(4, 0);
-            this._handlerShapeBorder.setRadius(AngleTool.RADIUS);
+            this._handlerShapeBorder.setSize(AngleTool.RADIUS * 2, AngleTool.RADIUS * 2);
 
-            this._handlerShape = this.createCircleShape();
+            this._handlerShape = this.createEllipseShape();
             this._handlerShape.setFillStyle(0, 0);
             this._handlerShape.setStrokeStyle(2, this._color);
-            this._handlerShape.setRadius(AngleTool.RADIUS);
-            
+            this._handlerShape.setSize(AngleTool.RADIUS * 2, AngleTool.RADIUS * 2);
+
 
             this._centerShape = this.createCircleShape();
             this._centerShape.setFillStyle(this._color);
