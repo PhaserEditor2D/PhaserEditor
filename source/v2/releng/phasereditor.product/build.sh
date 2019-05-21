@@ -48,6 +48,17 @@ echo
 echo Copying target-path/ ...
 cp -rf target-patch/* target/
 
+echo Rehashing repository/binary
+
+unxz target/repository/artifacts.xml.xz
+./process-artifacts.py
+pushd .
+cd target/repository/
+zip -rq artifacts.jar artifacts.xml
+popd
+xz target/repository/artifacts.xml
+
+
 echo
 echo :: Set execution permissions
 echo
