@@ -55,8 +55,6 @@ Copyright (c) Arian Fornaris 2015-2019
    <launcherArgs>
       <programArgsLin>-cssTheme phasereditor.ide.theme.light
       </programArgsLin>
-      <programArgsMac>-cssTheme none
-      </programArgsMac>
       <programArgsWin>-cssTheme phasereditor.ide.theme.light
       </programArgsWin>
       <vmArgs>-Dosgi.requiredJavaVersion=10 -Declipse.p2.unsignedPolicy=allow --add-modules=ALL-SYSTEM
