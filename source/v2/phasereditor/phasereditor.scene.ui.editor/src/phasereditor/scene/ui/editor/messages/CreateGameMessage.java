@@ -79,7 +79,7 @@ public class CreateGameMessage extends ApiMessage {
 		}
 
 		{
-			var projectUrl = WebRunUI.getProjectBrowserURL(project);
+			var projectUrl = WebRunUI.getProjectBrowserURL(project, false);
 
 			_data.put("projectUrl", projectUrl);
 			var collector = new PackReferencesCollector(model, finder);

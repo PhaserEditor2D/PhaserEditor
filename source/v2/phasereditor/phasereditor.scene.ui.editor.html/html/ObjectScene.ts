@@ -170,9 +170,9 @@ namespace PhaserEditor2D {
             const editor = Editor.getInstance();
 
             const scene = editor.getObjectScene();
-            const pointer = scene.input.activePointer;
-
-            if (e.buttons !== 1) {
+            const pointer = scene.input.activePointer;            
+            
+            if (!isLeftButton(e)) {
                 return;
             }
 
@@ -217,7 +217,7 @@ namespace PhaserEditor2D {
 
         onMouseDown(e: MouseEvent) {
 
-            if (e.buttons !== 1 || this.getScelectedObjects().length === 0) {
+            if (!isLeftButton(e) || this.getScelectedObjects().length === 0) {
                 return;
             }
 
@@ -238,7 +238,7 @@ namespace PhaserEditor2D {
         }
 
         onMouseMove(e: MouseEvent) {
-            if (e.buttons !== 1 || this._startPoint === null) {
+            if (!isLeftButton(e) || this._startPoint === null) {
                 return;
             }
 
@@ -289,7 +289,7 @@ namespace PhaserEditor2D {
 
         onMouseDown(e: MouseEvent) {
             // if middle button peressed
-            if (e.buttons === 4) {
+            if (isMiddleButton(e)) {
                 this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
                 const cam = this._scene.cameras.main;
                 this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);

@@ -180,6 +180,9 @@ var PhaserEditor2D;
                 render: {
                     pixelArt: true
                 },
+                audio: {
+                    noAudio: true
+                },
                 url: "https://phasereditor2d.com",
                 scale: {
                     mode: Phaser.Scale.RESIZE
@@ -287,6 +290,7 @@ var PhaserEditor2D;
                 })(index + 1, list), this);
                 console.log("Load: ");
                 console.log(loadMsg.pack);
+                scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
                 this._loaderIntervalID = setInterval(function () {

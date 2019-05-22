@@ -2,7 +2,7 @@ namespace PhaserEditor2D {
     export class AngleLineTool extends InteractiveTool {
 
         private _shape: Phaser.GameObjects.Line;
-        private _shapeBorder: Phaser.GameObjects.Line;
+        private _shapeBorder: Phaser.GameObjects.Rectangle;
         private _start: boolean;
         private _angleTool: AngleTool;
         private _color : number;
@@ -14,10 +14,9 @@ namespace PhaserEditor2D {
             this._start = start;
 
             this._color = 0xaaaaff;
-            this._shapeBorder = this.createLineShape();
-            this._shapeBorder.setStrokeStyle(4, 0);
-            this._shapeBorder.setOrigin(0, 0);
-            this._shapeBorder.setTo(0, 0, AngleTool.RADIUS, 0);
+            this._shapeBorder = this.toolScene.add.rectangle(0, 0, AngleTool.RADIUS, 4);
+            this._shapeBorder.setFillStyle(0);
+            this._shapeBorder.setOrigin(0, 0.5);
             this._shapeBorder.depth = -1;
 
             this._shape = this.createLineShape();

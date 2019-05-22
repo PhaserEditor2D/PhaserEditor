@@ -35,7 +35,8 @@ namespace PhaserEditor2D {
 
         onMouseMove() {
             if (this._dragging) {
-                this.objScene.input.setDefaultCursor("grabbing");
+                //this.objScene.input.setDefaultCursor("grabbing");
+                this.objScene.input.setDefaultCursor("move");
                 const pointer = this.getToolPointer();
 
                 const dx = this._dragStartPoint.x - pointer.x;
@@ -53,13 +54,15 @@ namespace PhaserEditor2D {
         onMouseUp() {
             if (this._dragging) {
                 this._dragging = false;
-                this.objScene.input.setDefaultCursor("grab");
+                //this.objScene.input.setDefaultCursor("grab");
+                this.objScene.input.setDefaultCursor("move");
                 this.objScene.sendRecordCameraStateMessage();
             }
         }
 
         activated() {
-            this.objScene.input.setDefaultCursor("grab");
+            //this.objScene.input.setDefaultCursor("grab");
+            this.objScene.input.setDefaultCursor("move");
         }
 
         clear() {

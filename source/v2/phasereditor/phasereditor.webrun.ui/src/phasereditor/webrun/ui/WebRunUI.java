@@ -123,9 +123,18 @@ public class WebRunUI {
 	}
 
 	public static String getProjectBrowserURL(IProject project) {
+		return getProjectBrowserURL(project, true);
+	}
+	
+	public static String getProjectBrowserURL(IProject project, boolean includeHost) {
 		IContainer webContent = ProjectCore.getWebContentFolder(project);
 		String path = webContent.getFullPath().toPortableString();
-		String url = "http://localhost:" + (WebRunCore.getServerPort() + "/projects" + path).replace("\\\\", "/");
+		String url;
+		if (includeHost) {
+			url = "http://localhost:" + (WebRunCore.getServerPort() + "/projects" + path).replace("\\\\", "/");
+		} else {
+			url = ("/projects" + path).replace("\\\\", "/");
+		}
 		url = URIUtil.encodePath(url);
 		return url;
 	}

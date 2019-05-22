@@ -35,7 +35,7 @@ var PhaserEditor2D;
         };
         HandTool.prototype.onMouseMove = function () {
             if (this._dragging) {
-                this.objScene.input.setDefaultCursor("grabbing");
+                this.objScene.input.setDefaultCursor("move");
                 var pointer = this.getToolPointer();
                 var dx = this._dragStartPoint.x - pointer.x;
                 var dy = this._dragStartPoint.y - pointer.y;
@@ -48,12 +48,12 @@ var PhaserEditor2D;
         HandTool.prototype.onMouseUp = function () {
             if (this._dragging) {
                 this._dragging = false;
-                this.objScene.input.setDefaultCursor("grab");
+                this.objScene.input.setDefaultCursor("move");
                 this.objScene.sendRecordCameraStateMessage();
             }
         };
         HandTool.prototype.activated = function () {
-            this.objScene.input.setDefaultCursor("grab");
+            this.objScene.input.setDefaultCursor("move");
         };
         HandTool.prototype.clear = function () {
             this.objScene.input.setDefaultCursor("default");

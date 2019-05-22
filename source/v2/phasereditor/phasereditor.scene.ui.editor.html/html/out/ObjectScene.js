@@ -136,7 +136,7 @@ var PhaserEditor2D;
             var editor = PhaserEditor2D.Editor.getInstance();
             var scene = editor.getObjectScene();
             var pointer = scene.input.activePointer;
-            if (e.buttons !== 1) {
+            if (!PhaserEditor2D.isLeftButton(e)) {
                 return;
             }
             var result = scene.input.hitTestPointer(pointer);
@@ -167,7 +167,7 @@ var PhaserEditor2D;
             return this.getScene().input.activePointer;
         };
         DragObjectsManager.prototype.onMouseDown = function (e) {
-            if (e.buttons !== 1 || this.getScelectedObjects().length === 0) {
+            if (!PhaserEditor2D.isLeftButton(e) || this.getScelectedObjects().length === 0) {
                 return;
             }
             this._startPoint = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
@@ -185,7 +185,7 @@ var PhaserEditor2D;
             }
         };
         DragObjectsManager.prototype.onMouseMove = function (e) {
-            if (e.buttons !== 1 || this._startPoint === null) {
+            if (!PhaserEditor2D.isLeftButton(e) || this._startPoint === null) {
                 return;
             }
             this._dragging = true;
@@ -225,7 +225,7 @@ var PhaserEditor2D;
             this._dragStartPoint = null;
         }
         DragCameraManager.prototype.onMouseDown = function (e) {
-            if (e.buttons === 4) {
+            if (PhaserEditor2D.isMiddleButton(e)) {
                 this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
                 var cam = this._scene.cameras.main;
                 this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
