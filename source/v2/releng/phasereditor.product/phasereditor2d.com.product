@@ -53,10 +53,8 @@ Copyright (c) Arian Fornaris 2015-2019
    </configIni>
 
    <launcherArgs>
-      <programArgsLin>-cssTheme phasereditor.ide.theme.light
-      </programArgsLin>
-      <programArgsWin>-cssTheme phasereditor.ide.theme.light
-      </programArgsWin>
+      <programArgs>-cssTheme phasereditor.ide.theme.light
+      </programArgs>
       <vmArgs>-Dosgi.requiredJavaVersion=10 -Declipse.p2.unsignedPolicy=allow --add-modules=ALL-SYSTEM
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
