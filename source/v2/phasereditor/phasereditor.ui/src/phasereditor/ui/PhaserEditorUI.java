@@ -199,13 +199,15 @@ public class PhaserEditorUI {
 	}
 
 	private static String quotePath(String path) {
+		var path2 = path;
+		
 		if (Util.isLinux() || Util.isMac()) {
 			// Quote for usage inside "", man sh, topic QUOTING:
-			path = path.replaceAll("[\"$`]", "\\\\$0"); //$NON-NLS-1$ //$NON-NLS-2$
+			path2 = path.replaceAll("[\"$`]", "\\\\$0"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		// Windows: Can't quote, since explorer.exe has a very special command line
 		// parsing strategy.
-		return path;
+		return path2;
 	}
 
 	public static void showInSystemExplorer(File canonicalPath) {
