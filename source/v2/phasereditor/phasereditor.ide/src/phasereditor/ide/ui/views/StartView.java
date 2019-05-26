@@ -1,9 +1,11 @@
 package phasereditor.ide.ui.views;
 
+import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.prefs.Preferences;
@@ -166,6 +168,7 @@ public class StartView extends ViewPart {
 		var content = getSavedLatestNews();
 
 		if (content != null) {
+			out.println("Saved Phaser Editor Blog content");
 			updateNewsComp(comp, content);
 		}
 
@@ -182,6 +185,9 @@ public class StartView extends ViewPart {
 					}
 
 					var newContent = HttpTool.GET(feedUrl);
+					
+					out.println("New Phaser Editor Blog content:");
+					out.println(newContent);
 
 					rememberLatestNews(newContent);
 
@@ -226,7 +232,7 @@ public class StartView extends ViewPart {
 
 				builder = factory.newDocumentBuilder();
 
-				Document doc = builder.parse(new ByteArrayInputStream(content.getBytes()));
+				Document doc = builder.parse(new ByteArrayInputStream(content.getBytes(Charset.forName("utf8"))));
 				doc.getDocumentElement().normalize();
 
 				var titleList = doc.getElementsByTagName("title");
@@ -251,7 +257,7 @@ public class StartView extends ViewPart {
 					gd.minimumHeight = 50;
 					descText.setLayoutData(gd);
 					var fd = comp.getFont().getFontData()[0];
-					createLabel(comp, pubDate).setFont(SwtRM.getFont(fd.name, fd.getHeight(), SWT.ITALIC));
+					createLabel(comp, pubDate).setFont(SwtRM.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC));
 				}
 
 				comp.requestLayout();
