@@ -35,8 +35,10 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
@@ -130,6 +132,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private SelectionEvents _selectionEvents;
 	private IContextActivation _searchContextActivation;
 	private SceneEditorBlockProvider _blocksProvider;
+	private IPartListener _partListener;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -387,8 +390,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	@Override
 	public void dispose() {
 
+		getEditorSite().getPage().removePartListener(_partListener);
+
 		_broker.dispose();
-		
+
 		super.dispose();
 	}
 
@@ -487,7 +492,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		public Runnable getRefreshHandler() {
 			return _refreshHandler;
 		}
-		
+
 		@Override
 		public void setRefreshHandler(Runnable refresh) {
 			_refreshHandler = refresh;
@@ -536,6 +541,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	private void registerUndoRedoActions() {
+
 		var site = getEditorSite();
 
 		_undoRedoGroup = new UndoRedoActionGroup(site, undoContext, true);
@@ -545,6 +551,45 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_undoRedoGroup.fillActionBars(actionBars);
 
 		actionBars.updateActionBars();
+
+		_partListener = createUndoRedoPartListener();
+
+		getEditorSite().getPage().addPartListener(_partListener);
+
+	}
+
+	private IPartListener createUndoRedoPartListener() {
+		return new IPartListener() {
+
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				if (part == SceneEditor.this) {
+					var actionBars = getEditorSite().getActionBars();
+					_undoRedoGroup.fillActionBars(actionBars);
+					actionBars.updateActionBars();
+				}
+			}
+		};
 	}
 
 	public UndoRedoActionGroup getUndoRedoGroup() {
