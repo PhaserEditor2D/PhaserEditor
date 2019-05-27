@@ -39,9 +39,33 @@
             id="phasereditor.inspect.ui.views.PhaserHierarchyView"
             name="Phaser Hierarchy">
       </view>
+      <view
+            category="phasereditor.ui.phaser"
+            class="phasereditor.inspect.ui.views.PhaserVersionsView"
+            icon="platform:/plugin/phasereditor.ui/icons/tag-green.png"
+            id="phasereditor.inspect.ui.views.PhaserVersionsView"
+            name="Phaser Versions"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:phasereditor.inspect.ui.views.PhaserAPIHistoryView?after=additions">
+         <command
+               commandId="phasereditor.inspect.ui.showInHierarchy"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.inspect.ui.showPhaserJsdoc"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.inspect.ui.showSourceCode"
+               style="push">
+         </command>
+      </menuContribution>
       <menuContribution
             allPopups="false"
             locationURI="toolbar:phasereditor.inspect.ui.views.PhaserTypesView?after=additions">

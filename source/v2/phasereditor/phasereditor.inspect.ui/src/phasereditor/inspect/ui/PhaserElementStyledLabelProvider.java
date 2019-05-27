@@ -46,10 +46,17 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider im
 
 	private Color _secondaryColor;
 	private ILabelProvider _filterLabelProvider;
+	private boolean _showContainerName;
+
+	public PhaserElementStyledLabelProvider(ILabelProvider filterLabelProvider, boolean showContainerName) {
+		_filterLabelProvider = filterLabelProvider;
+		_showContainerName = showContainerName;
+
+		updateStyleValues();
+	}
 
 	public PhaserElementStyledLabelProvider(ILabelProvider filterLabelProvider) {
-		_filterLabelProvider = filterLabelProvider;
-		updateStyleValues();
+		this(filterLabelProvider, false);
 	}
 
 	public void updateStyleValues() {
@@ -59,12 +66,16 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider im
 	@Override
 	public void update(ViewerCell cell) {
 
-		Object element = cell.getElement();
+		Object element = adaptElement(cell.getElement());
 
 		if (element instanceof PhaserGlobalScope) {
 			cell.setText("[global]");
 			cell.setImage(JsdocRenderer.getInstance().getGlobalScopeImage());
 			return;
+		}
+
+		if (element instanceof String) {
+			cell.setText((String) element);
 		}
 
 		if (!(element instanceof IPhaserMember)) {
@@ -80,9 +91,13 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider im
 		int secondaryTextIndex = -1;
 
 		if (member instanceof PhaserNamespace) {
-			text = ((PhaserNamespace) member).getSimpleName();
+			text = _showContainerName ? member.getName() : ((PhaserNamespace) member).getSimpleName();
 		} else {
 			text = member.getName();
+
+			if (_showContainerName) {
+				text = member.getContainer().getName() + "." + text;
+			}
 
 			if (member instanceof PhaserMethod) {
 				PhaserMethod method = (PhaserMethod) member;
@@ -120,6 +135,11 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider im
 		cell.setImage(JsdocRenderer.getInstance().getImage(member));
 
 		super.update(cell);
+	}
+
+	@SuppressWarnings("static-method")
+	protected Object adaptElement(Object element) {
+		return element;
 	}
 
 	@Override

@@ -43,9 +43,11 @@ public class PhaserElementLabelProvider extends LabelProvider {
 		if (element instanceof PhaserNamespace) {
 			return ((PhaserNamespace) element).getSimpleName();
 		}
+		
 		if (element instanceof IPhaserMember) {
 			return ((IPhaserMember) element).getName();
 		}
+		
 		return super.getText(element);
 	}
 

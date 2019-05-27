@@ -43,6 +43,8 @@ public class PhaserFileStyledLabelProvider extends PhaserElementStyledLabelProvi
 
 	@Override
 	public void update(ViewerCell cell) {
+		super.update(cell);
+		
 		Object element = cell.getElement();
 
 		if (element instanceof Path) {
@@ -57,6 +59,6 @@ public class PhaserFileStyledLabelProvider extends PhaserElementStyledLabelProvi
 			}
 		}
 
-		super.update(cell);
+		
 	}
 }

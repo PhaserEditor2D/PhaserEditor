@@ -102,6 +102,8 @@ public interface IEditorSharedImages {
 	String IMG_TEXT_ABC = "icons/text_abc.png";
 	String IMG_GOTO_SOURCE = "icons/source.png";
 	String IMG_BULLET_GO = "icons/bullet-go.png";
+	String IMG_TAG_BLUE = "icons/tag-blue.png";
+	String IMG_TAG_GREEN = "icons/tag-green.png";
 
 	String IMG_TEXT_ALIGN_LEFT = "icons/text_align_left.png";
 	String IMG_TEXT_ALIGN_CENTER = "icons/text_align_center.png";

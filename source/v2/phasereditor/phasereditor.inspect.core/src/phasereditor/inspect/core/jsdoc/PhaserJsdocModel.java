@@ -297,7 +297,17 @@ public class PhaserJsdocModel implements Serializable {
 		if (member instanceof PhaserMember) {
 			var json = member.getJSON();
 			if (json.has("since")) {
-				((PhaserMember) member).setSince(json.getString("since"));
+				var since = json.getString("since").trim();
+				since = since.split("\\s")[0];
+
+				var comps = since.split("\\.");
+				if (comps.length == 3) {
+					var v0 = Integer.parseInt(comps[0]);
+					var v1 = Integer.parseInt(comps[1]);
+					var v2 = Integer.parseInt(comps[2]);
+					since = v0 + "." + v1 + "." + v2;
+					((PhaserMember) member).setSince(since);
+				}
 			}
 		}
 	}
