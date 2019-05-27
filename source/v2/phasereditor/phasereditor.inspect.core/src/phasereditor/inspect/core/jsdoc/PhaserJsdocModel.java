@@ -67,7 +67,7 @@ public class PhaserJsdocModel implements Serializable {
 
 				var size = Files.getLastModifiedTime(docsJsonFile).toMillis();
 
-				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json." + size + ".binary");
+				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json.2." + size + ".binary");
 
 				if (Files.exists(cacheFile)) {
 					try (var input = new ObjectInputStream(Files.newInputStream(cacheFile))) {
@@ -284,10 +284,20 @@ public class PhaserJsdocModel implements Serializable {
 			}
 
 			{
-				// build fires
 				for (var member : _membersMap.values()) {
 					buildFiresEventList(member);
+					buildSince(member);
 				}
+			}
+
+		}
+	}
+
+	private static void buildSince(IPhaserMember member) {
+		if (member instanceof PhaserMember) {
+			var json = member.getJSON();
+			if (json.has("since")) {
+				((PhaserMember) member).setSince(json.getString("since"));
 			}
 		}
 	}
@@ -825,9 +835,9 @@ public class PhaserJsdocModel implements Serializable {
 			for (int i = 0; i < firesArray.length(); i++) {
 				var name = firesArray.getString(i);
 				name = name.replace("#event:", ".");
-				
+
 				var event = (PhaserEventConstant) _membersMap.get(name);
-				
+
 				if (event != null) {
 					member.getFiresEventList().add(event);
 				}

@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private String _name;
 	private String _help;
@@ -39,8 +39,8 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 	private transient JSONObject _json;
 	private IMemberContainer _container;
 	private List<PhaserEventConstant> _firesEventList;
-
 	private String _filename;
+	private String _since;
 
 	public PhaserMember(JSONObject json) {
 		_static = false;
@@ -48,6 +48,15 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 		_firesEventList = new ArrayList<>();
 	}
 
+	@Override
+	public String getSince() {
+		return _since;
+	}
+	
+	public void setSince(String since) {
+		_since = since;
+	}
+	
 	@Override
 	public List<PhaserEventConstant> getFiresEventList() {
 		return _firesEventList;

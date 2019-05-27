@@ -31,6 +31,8 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.ISourceLocation;
 
 public interface IPhaserMember extends ISourceLocation, Serializable {
+	public String getSince();
+	
 	public String getName();
 	
 	public String getHelp();

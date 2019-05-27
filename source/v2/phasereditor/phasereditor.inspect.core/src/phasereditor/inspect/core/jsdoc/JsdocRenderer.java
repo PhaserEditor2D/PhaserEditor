@@ -260,6 +260,7 @@ public class JsdocRenderer {
 		if (member instanceof PhaserVariable) {
 			return renderVariable((PhaserVariable) member);
 		}
+		
 		if (member instanceof PhaserNamespace) {
 			return renderNamespace((PhaserNamespace) member);
 		}
@@ -273,6 +274,8 @@ public class JsdocRenderer {
 		sb.append("<b>" + renderImageBase64(getImage(member)) + " " + member.getName() + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(member.getHelp()) + "</p>");
+		
+		renderSince(sb, member);
 
 		return sb.toString();
 	}
@@ -295,8 +298,10 @@ public class JsdocRenderer {
 		var qname = container.getName() + "." + event.getName();
 
 		sb.append("<b>" + renderImageBase64(getImage(event)) + " event " + qname + "</b>");
-
+		
 		sb.append("<p>" + processHtmlDescription(event.getHelp()) + "</p>");
+		
+		renderSince(sb, event);
 
 		sb.append(htmlArgsDoc(event.getArgs()));
 
@@ -326,8 +331,10 @@ public class JsdocRenderer {
 		String qname = container.getName() + "." + cons.getName();
 
 		sb.append("<b>" + renderImageBase64(getImage(cons)) + returnSignature + " " + qname + "</b>");
-
+		
 		sb.append("<p>" + processHtmlDescription(cons.getHelp()) + "</p>");
+		
+		renderSince(sb, cons);
 
 		return sb.toString();
 	}
@@ -342,6 +349,8 @@ public class JsdocRenderer {
 		sb.append("<b>" + renderImageBase64(getImage(var)) + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(var.getHelp()) + "</p>");
+		
+		renderSince(sb, var);
 
 		if (var instanceof PhaserProperty && ((PhaserProperty) var).isReadOnly()) {
 			sb.append("<p><b>readonly</b></p>");
@@ -363,6 +372,8 @@ public class JsdocRenderer {
 				+ htmlArgsList(method.getArgs()) + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(method.getHelp()) + "</p>");
+		
+		renderSince(sb, method);
 
 		renderFires(sb, method);
 
@@ -401,14 +412,23 @@ public class JsdocRenderer {
 			sb.append(" <b>extends</b> " + renderExtends(type));
 		}
 		sb.append("<br>");
-
+		
 		sb.append("<p>" + processHtmlDescription(type.getHelp()) + "</p>");
+		
+		renderSince(sb, type);
 
 		renderFires(sb, type);
 
 		sb.append(htmlArgsDoc(type.getConstructorArgs()));
 
 		return sb.toString();
+	}
+
+	private void renderSince(StringBuilder sb, IPhaserMember member) {
+		var since = member.getSince();
+		if (since != null) {
+			sb.append("<p><b>Since</b>: " + since + "</p>");
+		}
 	}
 
 	private String renderExtends(PhaserType type) {
