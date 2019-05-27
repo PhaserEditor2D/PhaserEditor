@@ -213,7 +213,8 @@ namespace PhaserEditor2D {
 
         private onReloadPage() {
             this._socket.close();
-            window.location.reload();
+            // window.location.reload();
+            window.location.href = window.location.href;
         }
 
         private onUpdateSceneProperties(msg: any) {
