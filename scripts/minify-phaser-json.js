@@ -25,6 +25,7 @@ function processFile(err, data) {
 		delete entry.license;
 		delete entry.___id;
 		delete entry.tags;
+		delete entry.comment;
 
 		var meta = entry.meta;
 		
