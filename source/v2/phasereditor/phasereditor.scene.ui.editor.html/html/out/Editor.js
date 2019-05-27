@@ -157,7 +157,7 @@ var PhaserEditor2D;
         };
         Editor.prototype.onReloadPage = function () {
             this._socket.close();
-            window.location.href = window.location.href;
+            window.location.reload();
         };
         Editor.prototype.onUpdateSceneProperties = function (msg) {
             this.sceneProperties = msg.sceneProperties;

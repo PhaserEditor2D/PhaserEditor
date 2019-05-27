@@ -133,6 +133,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private IContextActivation _searchContextActivation;
 	private SceneEditorBlockProvider _blocksProvider;
 	private IPartListener _partListener;
+	private boolean _pendingBuild;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -260,6 +261,16 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void build() {
+		if (this == getEditorSite().getPage().getActiveEditor()) {
+			realBuild();
+		} else {
+			_pendingBuild = true;
+		}
+	}
+
+	private void realBuild() {
+		_pendingBuild = false;
+
 		updatePropertyPagesContentWithSelection();
 
 		refreshOutline();
@@ -587,6 +598,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 					var actionBars = getEditorSite().getActionBars();
 					_undoRedoGroup.fillActionBars(actionBars);
 					actionBars.updateActionBars();
+
+					if (_pendingBuild) {
+						realBuild();
+					}
 				}
 			}
 		};
