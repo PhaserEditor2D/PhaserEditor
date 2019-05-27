@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Phaser Examples Resources (Audio Assets)
 Bundle-SymbolicName: phasereditor.resources.phaser.examples.assets.audio
-Bundle-Version: 2.1.0.20190326
+Bundle-Version: 2.1.0.20190527
 Fragment-Host: phasereditor.resources.phaser.examples;bundle-version="2.0.0"
 Automatic-Module-Name: phasereditor.resources.phaser.examples.assets.audio
 Eclipse-BundleShape: dir

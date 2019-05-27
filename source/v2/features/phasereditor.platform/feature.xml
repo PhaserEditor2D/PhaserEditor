@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.platform.features"
       label="Phaser Editor - Eclipse Platform"
-      version="2.1.0.20190326"
+      version="2.1.0.20190527"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.1.v20180423-1114">
