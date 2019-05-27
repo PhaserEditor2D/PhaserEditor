@@ -52,7 +52,7 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:phasereditor.inspect.ui.views.PhaserAPIHistoryView?after=additions">
+            locationURI="toolbar:phasereditor.inspect.ui.views.PhaserVersionsView?after=additions">
          <command
                commandId="phasereditor.inspect.ui.showInHierarchy"
                style="push">
