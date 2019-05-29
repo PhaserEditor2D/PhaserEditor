@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Chains Core
 Bundle-SymbolicName: phasereditor.chains.core;singleton:=true
-Bundle-Version: 1.4.0.20170412
+Bundle-Version: 1.5.4.20190529
 Bundle-Activator: phasereditor.chains.core.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,

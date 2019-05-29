@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Asset Explorer
 Bundle-SymbolicName: phasereditor.assetexplorer.ui;singleton:=true
-Bundle-Version: 1.5.1.20180506
+Bundle-Version: 1.5.4.20190529
 Bundle-Vendor: Arian Fornaris
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.ui,

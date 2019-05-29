@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.bmpfont"
       label="Phaser Editor - Bitmap Font"
-      version="1.5.1.20180506"
+      version="1.5.4.20190529"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.3.v20180301-0715">

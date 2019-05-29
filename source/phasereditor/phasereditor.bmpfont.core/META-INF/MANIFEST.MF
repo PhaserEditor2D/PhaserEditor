@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - BitmapFont Core
 Bundle-SymbolicName: phasereditor.bmpfont.core;singleton:=true
-Bundle-Version: 1.5.1.20180506
+Bundle-Version: 1.5.4.20190529
 Bundle-Vendor: Arian Fornaris
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: phasereditor.bmpfont.core
