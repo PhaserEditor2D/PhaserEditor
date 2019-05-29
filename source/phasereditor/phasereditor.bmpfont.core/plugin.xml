@@ -4,9 +4,9 @@
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
-            base-type="org.eclipse.core.runtime.text"
+            base-type="org.eclipse.core.runtime.xml"
             describer="phasereditor.bmpfont.core.XmlBitmapFontContentType"
-            file-extensions="xml,fnt"
+            file-extensions="xml"
             id="phasereditor.bmpfont.core.xmlBitmapFontContentType"
             name="XML Bitmap Font"
             priority="high">
