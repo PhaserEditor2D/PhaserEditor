@@ -239,6 +239,17 @@ public class ObjectCanvas extends FXCanvas {
 
 		_root.getChildren().setAll(_backGridPane, world, _frontGridPane, _selectionPane, _handlerPane,
 				_selectionFrontPane);
+
+		// Do a second update, needed by some objects like BitmapText: see
+		// https://github.com/PhaserEditor2D/PhaserEditor/issues/124
+		getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				world.getControl().updateAllFromModel();
+			}
+		});
+
 	}
 
 	public GridPane getBackGridPane() {
