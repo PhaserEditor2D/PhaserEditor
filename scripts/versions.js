@@ -1,4 +1,4 @@
 module.exports = {
-	current_ver_tag : "v2.0.3",
-	next_ver : "2.1.0.20190527"
+	current_ver_tag : "v2.1.0",
+	next_ver : "2.1.1.20190530"
 }
