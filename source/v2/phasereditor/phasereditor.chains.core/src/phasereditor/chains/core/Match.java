@@ -31,6 +31,9 @@ public class Match implements IAdaptable {
 	public int length;
 	public StyleRange[] styles;
 	
+	public Match() {
+	}
+	
 	@Override
 	public String toString() {
 		return item.toString();

@@ -66,8 +66,15 @@ public class ChainItem implements IAdaptable {
 			_declTypeIndex = _display.length();
 			_display += declType;
 		}
+
+		{
+			var since = _phaserMember.getSince();
+			if (since != null) {
+				_display += " v" + since;
+			}
+		}
 	}
-	
+
 	public int getDeclTypeIndex() {
 		return _declTypeIndex;
 	}
