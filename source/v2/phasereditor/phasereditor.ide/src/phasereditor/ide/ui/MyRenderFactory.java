@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.ui;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_GAME_CONTROLLER;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.e4.ui.internal.workbench.swt.AbstractPartRenderer;
@@ -38,6 +40,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -48,12 +52,15 @@ import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.NewWizardDropDownAction;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ide.IDEPlugin;
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.webrun.ui.WebRunUI;
 
 /**
  * @author arian
@@ -102,7 +109,9 @@ class HugeToolbar extends Composite {
 	public HugeToolbar(Composite parent) {
 		super(parent, 0);
 
-		setLayout(new RowLayout());
+		var gridLayout = new GridLayout(3, false);
+		gridLayout.marginWidth = gridLayout.marginHeight = 0;
+		setLayout(gridLayout);
 
 		parent.addControlListener(new ControlListener() {
 
@@ -117,7 +126,22 @@ class HugeToolbar extends Composite {
 			}
 		});
 
-		new PerspectiveHandler(this);
+		var layout = new RowLayout();
+		layout.marginWidth = layout.marginHeight = 0;
+
+		var leftArea = new Composite(this, 0);
+		leftArea.setLayout(layout);
+
+		var centerArea = new Composite(this, 0);
+		centerArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		centerArea.setLayout(layout);
+
+		var rightArea = new Composite(this, 0);
+		rightArea.setLayout(layout);
+
+		new NewMenuWrapper(leftArea);
+		new RunProjectWrapper(leftArea);
+		new PerspectiveSwitcherWrapper(rightArea);
 
 		updateBounds();
 
@@ -130,12 +154,46 @@ class HugeToolbar extends Composite {
 
 }
 
-class PerspectiveHandler implements IPerspectiveListener {
+class RunProjectWrapper {
+	public RunProjectWrapper(Composite parent) {
+		var btn = new Button(parent, SWT.PUSH);
+		btn.setText("Play");
+		btn.setImage(EditorSharedImages.getImage(IMG_GAME_CONTROLLER));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> WebRunUI
+				.openBrowser(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getSelection())));
+	}
+}
+
+class NewMenuWrapper {
+
+	private Button _btn;
+
+	public NewMenuWrapper(Composite parent) {
+		var action = new NewWizardDropDownAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		_btn = new Button(parent, SWT.PUSH);
+		_btn.setText("New");
+		_btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+
+			var creator = action.getMenuCreator();
+			var menu = creator.getMenu(_btn);
+			menu.setVisible(true);
+
+		}));
+		_btn.setImage(action.getImageDescriptor().createImage());
+	}
+
+	public Button getButton() {
+		return _btn;
+	}
+
+}
+
+class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 
 	private Button _btn;
 	private IPerspectiveDescriptor _currentPersp;
 
-	public PerspectiveHandler(Composite parent) {
+	public PerspectiveSwitcherWrapper(Composite parent) {
 		_btn = new Button(parent, SWT.PUSH);
 		_btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> populateMenu()));
 		_btn.addMouseListener(MouseListener.mouseUpAdapter(this::populatePropsMenu));
