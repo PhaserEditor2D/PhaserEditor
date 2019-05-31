@@ -87,10 +87,13 @@ import phasereditor.scene.ui.editor.messages.RevealObjectMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
+import phasereditor.scene.ui.editor.properties.SceneEditorCommandAction;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
+import phasereditor.scene.ui.editor.properties.TransformSection;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.IEditorBlockProvider;
+import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.editors.EditorFileStampHelper;
 import phasereditor.webrun.core.BatchMessage;
@@ -134,6 +137,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	private SceneEditorBlockProvider _blocksProvider;
 	private IPartListener _partListener;
 	private boolean _pendingBuild;
+	private SceneEditorHugeToolbar _hugeToolbar;
 
 	public SceneEditor() {
 		_outlinerSelectionListener = new ISelectionChangedListener() {
@@ -179,8 +183,16 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_interactiveTools = interactiveTools;
 
 		updatePropertyPagesContentWithSelection();
+		
+		updateHugeToolbar();
 
 		_broker.sendAll(new SetInteractiveToolMessage(this));
+	}
+
+	private void updateHugeToolbar() {
+		if (_hugeToolbar != null) {
+			_hugeToolbar.updateActions();
+		}
 	}
 
 	public void setInteractiveTools(String... interactiveTools) {
@@ -451,7 +463,55 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 			return _blocksProvider;
 		}
 
+		if (adapter == IEditorHugeToolbar.class) {
+			if (_hugeToolbar == null) {
+				_hugeToolbar = new SceneEditorHugeToolbar();
+			}
+			return _hugeToolbar;
+		}
+
 		return super.getAdapter(adapter);
+	}
+
+	class SceneEditorHugeToolbar implements IEditorHugeToolbar {
+
+		private SceneEditorCommandAction _positionToolAction;
+		private SceneEditorCommandAction _scaleToolAction;
+		private SceneEditorCommandAction _angleToolAction;
+
+		public SceneEditorHugeToolbar() {
+
+			_positionToolAction = new SceneEditorCommandAction(SceneEditor.this,
+					SceneUIEditor.COMMAND_ID_POSITION_TOOL);
+			_positionToolAction.setChecked(false);
+			_positionToolAction.setEnabled(true);
+
+			_scaleToolAction = new SceneEditorCommandAction(SceneEditor.this, SceneUIEditor.COMMAND_ID_SCALE_TOOL);
+			_scaleToolAction.setChecked(false);
+			_scaleToolAction.setEnabled(true);
+
+			_angleToolAction = new SceneEditorCommandAction(SceneEditor.this, SceneUIEditor.COMMAND_ID_ANGLE_TOOL);
+			_angleToolAction.setChecked(false);
+			_angleToolAction.setEnabled(true);
+		}
+
+		@SuppressWarnings("unused")
+		@Override
+		public void createContent(Composite parent) {
+			new ActionButton(parent, _positionToolAction);
+			new ActionButton(parent, _scaleToolAction);
+			new ActionButton(parent, _angleToolAction);
+
+			updateActions();
+		}
+
+		public void updateActions() {
+			var editor = SceneEditor.this;
+			_positionToolAction.setChecked(editor.hasInteractiveTools(Set.of(TransformSection.POSITION_TOOL)));
+			_scaleToolAction.setChecked(editor.hasInteractiveTools(Set.of(TransformSection.SCALE_TOOL)));
+			_angleToolAction.setChecked(editor.hasInteractiveTools(Set.of(TransformSection.ANGLE_TOOL)));
+		}
+
 	}
 
 	class SceneEditorBlockProvider implements IEditorBlockProvider {

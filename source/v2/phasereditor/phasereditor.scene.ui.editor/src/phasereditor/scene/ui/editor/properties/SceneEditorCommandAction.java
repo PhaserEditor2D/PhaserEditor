@@ -24,28 +24,32 @@ package phasereditor.scene.ui.editor.properties;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.internal.actions.CommandAction;
 
+import phasereditor.scene.ui.editor.SceneEditor;
+
 /**
  * @author arian
  *
  */
-public class CommandSectionAction extends CommandAction {
+public class SceneEditorCommandAction extends CommandAction {
 
-	private ScenePropertySection _section;
+	private SceneEditor _editor;
 
-	public CommandSectionAction(ScenePropertySection section, String commandId) {
-		super(section.getEditor().getEditorSite(), commandId);
-		_section = section;
+	public SceneEditorCommandAction(SceneEditor editor, String commandId) {
+		super(editor.getEditorSite(), commandId);
+		_editor = editor;
+	}
+
+	public SceneEditorCommandAction(ScenePropertySection section, String commandId) {
+		this(section.getEditor(), commandId);
 	}
 
 	@Override
 	public void runWithEvent(Event event) {
-		var editor = _section.getEditor();
+		_editor.activateCommandContext();
 
-		editor.activateCommandContext();
-		
 		super.runWithEvent(event);
-		
-		editor.deactivateCommandContext();
+
+		_editor.deactivateCommandContext();
 
 	}
 

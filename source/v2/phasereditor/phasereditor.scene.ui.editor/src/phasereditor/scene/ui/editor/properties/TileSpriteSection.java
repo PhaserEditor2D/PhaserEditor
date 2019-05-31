@@ -350,7 +350,7 @@ public class TileSpriteSection extends ScenePropertySection {
 			}
 		};
 
-		_sizeToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_RESIZE_TILE_SPRITE_TOOL);
+		_sizeToolAction = new SceneEditorCommandAction(this, SceneUIEditor.COMMAND_ID_RESIZE_TILE_SPRITE_TOOL);
 		_sizeToolAction.setChecked(false);
 
 		addUpdate(this::updateActions);

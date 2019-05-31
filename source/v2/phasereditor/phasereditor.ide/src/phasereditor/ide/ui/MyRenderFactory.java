@@ -47,10 +47,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.NewWizardDropDownAction;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -60,6 +63,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ide.IDEPlugin;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.webrun.ui.WebRunUI;
 
 /**
@@ -103,7 +107,10 @@ class MyWBWRenderer extends WBWRenderer {
 
 }
 
-class HugeToolbar extends Composite {
+class HugeToolbar extends Composite implements IPartListener {
+
+	private Composite _centerArea;
+	private IEditorPart _activeEditor;
 
 	@SuppressWarnings("unused")
 	public HugeToolbar(Composite parent) {
@@ -131,10 +138,15 @@ class HugeToolbar extends Composite {
 
 		var leftArea = new Composite(this, 0);
 		leftArea.setLayout(layout);
+		leftArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		var centerArea = new Composite(this, 0);
-		centerArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		centerArea.setLayout(layout);
+		{
+			_centerArea = new Composite(this, 0);
+			_centerArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			var layout2 = new RowLayout();
+			layout2.marginWidth = layout2.marginHeight = 0;
+			_centerArea.setLayout(layout2);
+		}
 
 		var rightArea = new Composite(this, 0);
 		rightArea.setLayout(layout);
@@ -145,11 +157,55 @@ class HugeToolbar extends Composite {
 
 		updateBounds();
 
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().addPartListener(this);
 	}
 
 	private void updateBounds() {
 		var size = computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		setBounds(0, 0, getParent().getBounds().width, size.y);
+	}
+
+	private void updateWithCurrentEditor() {
+		var editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (editor == _activeEditor) {
+			return;
+		}
+
+		for (var c : _centerArea.getChildren()) {
+			c.dispose();
+		}
+
+		var editorToolbar = editor.getAdapter(IEditorHugeToolbar.class);
+		if (editorToolbar != null) {
+			editorToolbar.createContent(_centerArea);
+		}
+		
+		_centerArea.requestLayout();
+	}
+
+	@Override
+	public void partActivated(IWorkbenchPart part) {
+		updateWithCurrentEditor();
+	}
+
+	@Override
+	public void partBroughtToTop(IWorkbenchPart part) {
+		//
+	}
+
+	@Override
+	public void partClosed(IWorkbenchPart part) {
+		updateWithCurrentEditor();
+	}
+
+	@Override
+	public void partDeactivated(IWorkbenchPart part) {
+		//
+	}
+
+	@Override
+	public void partOpened(IWorkbenchPart part) {
+		//
 	}
 
 }

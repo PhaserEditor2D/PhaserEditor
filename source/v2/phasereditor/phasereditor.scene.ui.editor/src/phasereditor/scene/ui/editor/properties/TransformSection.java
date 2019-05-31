@@ -47,6 +47,10 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class TransformSection extends ScenePropertySection {
 
+	public static final String ANGLE_TOOL = "Angle";
+	public static final String SCALE_TOOL = "Scale";
+	public static final String POSITION_TOOL = "Position";
+
 	private Action _localTransformAction;
 	private Action _positionToolAction;
 	private Action _scaleToolAction;
@@ -290,13 +294,13 @@ public class TransformSection extends ScenePropertySection {
 
 	private void createActions() {
 		// we use the setChecked() to convert the action to a toogle button.
-		_positionToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_POSITION_TOOL);
+		_positionToolAction = new SceneEditorCommandAction(getEditor(), SceneUIEditor.COMMAND_ID_POSITION_TOOL);
 		_positionToolAction.setChecked(false);
 
-		_scaleToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_SCALE_TOOL);
+		_scaleToolAction = new SceneEditorCommandAction(getEditor(), SceneUIEditor.COMMAND_ID_SCALE_TOOL);
 		_scaleToolAction.setChecked(false);
 
-		_angleToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_ANGLE_TOOL);
+		_angleToolAction = new SceneEditorCommandAction(getEditor(), SceneUIEditor.COMMAND_ID_ANGLE_TOOL);
 		_angleToolAction.setChecked(false);
 
 		_localTransformAction = new Action("Transform in local/global coords.") {
@@ -308,9 +312,9 @@ public class TransformSection extends ScenePropertySection {
 			public void run() {
 
 				var editor = getEditor();
-				
+
 				editor.setTransformLocalCoords(!editor.isTransformLocalCoords());
-				
+
 				editor.getBroker().sendAll(new SetTransformCoordsMessage(editor));
 
 				updateActions();
@@ -324,9 +328,9 @@ public class TransformSection extends ScenePropertySection {
 
 	void updateActions() {
 		var editor = getEditor();
-		_positionToolAction.setChecked(editor.hasInteractiveTools(Set.of("Position")));
-		_scaleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Scale")));
-		_angleToolAction.setChecked(editor.hasInteractiveTools(Set.of("Angle")));
+		_positionToolAction.setChecked(editor.hasInteractiveTools(Set.of(POSITION_TOOL)));
+		_scaleToolAction.setChecked(editor.hasInteractiveTools(Set.of(SCALE_TOOL)));
+		_angleToolAction.setChecked(editor.hasInteractiveTools(Set.of(ANGLE_TOOL)));
 
 		var local = getEditor().isTransformLocalCoords();
 

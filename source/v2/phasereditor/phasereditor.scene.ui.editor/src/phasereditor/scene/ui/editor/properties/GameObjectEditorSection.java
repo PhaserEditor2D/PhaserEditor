@@ -579,16 +579,16 @@ public class GameObjectEditorSection extends ScenePropertySection {
 		// _orderActions.add(new JFaceOrderAction(editor, OrderActionValue.TOP));
 		// _orderActions.add(new JFaceOrderAction(editor, OrderActionValue.BOTTOM));
 
-		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_UP"));
-		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_DOWN"));
-		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_TOP"));
-		_orderActions.add(new CommandSectionAction(this, "phasereditor.scene.ui.editor.order_BOTTOM"));
+		_orderActions.add(new SceneEditorCommandAction(this, "phasereditor.scene.ui.editor.order_UP"));
+		_orderActions.add(new SceneEditorCommandAction(this, "phasereditor.scene.ui.editor.order_DOWN"));
+		_orderActions.add(new SceneEditorCommandAction(this, "phasereditor.scene.ui.editor.order_TOP"));
+		_orderActions.add(new SceneEditorCommandAction(this, "phasereditor.scene.ui.editor.order_BOTTOM"));
 
 		_addToGroupAction = new AddToGroupMenuAction();
 		_removeFromGroupAction = new RemoveFromGroupMenuAction();
 		_selectGroupAction = new SelectGroupMenuAction();
 
-		_duplicateAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_DUPLICATE_OBJECTS);
+		_duplicateAction = new SceneEditorCommandAction(this, SceneUIEditor.COMMAND_ID_DUPLICATE_OBJECTS);
 
 		// _showBonesAction = new ShowBonesAction();
 

@@ -121,7 +121,7 @@ public class OriginSection extends ScenePropertySection {
 			_originPresetActions.add(action);
 		}
 
-		_originToolAction = new CommandSectionAction(this, SceneUIEditor.COMMAND_ID_ORIGIN_TOOL);
+		_originToolAction = new SceneEditorCommandAction(this, SceneUIEditor.COMMAND_ID_ORIGIN_TOOL);
 		_originToolAction.setChecked(false);
 	}
 
