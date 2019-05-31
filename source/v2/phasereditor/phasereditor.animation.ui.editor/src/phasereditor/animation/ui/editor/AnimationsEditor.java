@@ -94,6 +94,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.IEditorBlockProvider;
+import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
@@ -127,6 +128,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	private AnimationModel _initialAnimation;
 	private EditorFileStampHelper _fileStampHelper;
 	private AnimationsEditorBlockProvider _blocksProvider;
+	private AnimationsEditorHugeToolbar _hugeToolbar;
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
@@ -574,7 +576,26 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			return _blocksProvider;
 		}
 
+		if (adapter == IEditorHugeToolbar.class) {
+			if (_hugeToolbar == null) {
+				_hugeToolbar = new AnimationsEditorHugeToolbar();
+			}
+			return _hugeToolbar;
+		}
+
 		return super.getAdapter(adapter);
+	}
+
+	class AnimationsEditorHugeToolbar implements IEditorHugeToolbar {
+
+		@SuppressWarnings("unused")
+		@Override
+		public void createContent(Composite parent) {
+			new ActionButton(parent, getAnimationActions().getPlayAction());
+			new ActionButton(parent, getAnimationActions().getPauseAction());
+			new ActionButton(parent, getAnimationActions().getStopAction());
+		}
+
 	}
 
 	class AnimationsEditorBlockProvider implements IEditorBlockProvider {

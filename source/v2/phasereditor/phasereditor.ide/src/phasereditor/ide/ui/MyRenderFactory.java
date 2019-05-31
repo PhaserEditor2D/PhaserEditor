@@ -22,6 +22,7 @@
 package phasereditor.ide.ui;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_GAME_CONTROLLER;
+import static phasereditor.ui.IEditorSharedImages.IMG_SEARCH;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -59,6 +60,7 @@ import org.eclipse.ui.actions.NewWizardDropDownAction;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.eclipse.ui.internal.quickaccess.QuickAccessDialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ide.IDEPlugin;
@@ -153,6 +155,8 @@ class HugeToolbar extends Composite implements IPartListener {
 
 		new NewMenuWrapper(leftArea);
 		new RunProjectWrapper(leftArea);
+
+		new QuickAccessWrapper(rightArea);
 		new PerspectiveSwitcherWrapper(rightArea);
 
 		updateBounds();
@@ -179,7 +183,7 @@ class HugeToolbar extends Composite implements IPartListener {
 		if (editorToolbar != null) {
 			editorToolbar.createContent(_centerArea);
 		}
-		
+
 		_centerArea.requestLayout();
 	}
 
@@ -208,6 +212,18 @@ class HugeToolbar extends Composite implements IPartListener {
 		//
 	}
 
+}
+
+class QuickAccessWrapper {
+	public QuickAccessWrapper(Composite parent) {
+		var btn = new Button(parent, SWT.PUSH);
+		btn.setImage(EditorSharedImages.getImage(IMG_SEARCH));
+		btn.setText("Quick Access");
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			var dlg = new QuickAccessDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), null);
+			dlg.open();
+		}));
+	}
 }
 
 class RunProjectWrapper {
@@ -343,7 +359,7 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 
 		if (_currentPersp != persp) {
 			_currentPersp = persp;
-			_btn.setText(persp.getLabel());
+			_btn.setText(persp.getLabel() + " Perspective");
 
 			var imgReg = IDEPlugin.getDefault().getImageRegistry();
 			var img = imgReg.get(persp.getId());

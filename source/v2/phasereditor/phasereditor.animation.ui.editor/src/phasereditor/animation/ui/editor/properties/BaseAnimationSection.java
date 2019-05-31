@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 
 import phasereditor.animation.ui.editor.AnimationsEditor;
@@ -61,10 +60,6 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 	@Override
 	public void fillToolbar(ToolBarManager manager) {
 		var editor = getEditor();
-
-		editor.getAnimationActions().fillToolbar(manager);
-
-		manager.add(new Separator());
 
 		manager.add(editor.getDeleteAction());
 	}
