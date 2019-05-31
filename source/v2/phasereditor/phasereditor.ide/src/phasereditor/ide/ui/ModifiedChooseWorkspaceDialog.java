@@ -13,7 +13,7 @@
  *     Jan-Ove Weichel <janove.weichel@vogella.com> - Bugs 411578, 486842, 487673
  *     Lars Vogel <Lars.Vogel@vogella.com> - Bug 492918
  *******************************************************************************/
-package phasereditor.ide;
+package phasereditor.ide.ui;
 
 import java.io.File;
 import java.net.URL;

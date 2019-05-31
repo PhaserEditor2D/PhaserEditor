@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.ide;
+package phasereditor.ide.ui;
 
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
@@ -31,8 +31,6 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.internal.ide.application.DelayedEventsProcessor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchWindowAdvisor;
-
-import phasereditor.ide.ui.StartPerspective;
 
 /**
  * @author arian
@@ -54,14 +52,14 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 			super(wbAdvisor, configurer);
 		}
 
-		// @Override
-		// public void preWindowOpen() {
-		// super.preWindowOpen();
-		//
-		// var configurer = getWindowConfigurer();
-		// configurer.setShowCoolBar(false);
-		// configurer.setShowPerspectiveBar(false);
-		// }
+		@Override
+		public void preWindowOpen() {
+			super.preWindowOpen();
+
+			var configurer = getWindowConfigurer();
+			configurer.setShowCoolBar(false);
+			configurer.setShowPerspectiveBar(false);
+		}
 
 		@Override
 		public void postWindowOpen() {

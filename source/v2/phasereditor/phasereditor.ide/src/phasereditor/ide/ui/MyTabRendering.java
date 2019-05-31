@@ -13,7 +13,7 @@
  *     Fabio Zadrozny - Bug 465711
  *     Simon Scholz <simon.scholz@vogella.com> - Bug 506540
  *******************************************************************************/
-package phasereditor.ide.intro;
+package phasereditor.ide.ui;
 
 import java.lang.reflect.Field;
 import javax.inject.Inject;

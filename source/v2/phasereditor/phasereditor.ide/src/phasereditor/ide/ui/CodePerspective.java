@@ -35,6 +35,8 @@ import phasereditor.project.ui.ProjectView;
  */
 public class CodePerspective implements IPerspectiveFactory {
 
+	public static final String ID = "phasereditor.ide.code";
+	
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		// layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.LEFT, 0.2f,

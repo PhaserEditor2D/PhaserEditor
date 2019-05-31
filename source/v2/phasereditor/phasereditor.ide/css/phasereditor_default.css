@@ -24,7 +24,7 @@ IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
 
 .MPartStack {
 	/*swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');*/
-	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.intro.MyTabRendering');	
+	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.ui.MyTabRendering');	
 	swt-selected-tab-fill:  #e8e8e8;
 	swt-unselected-tabs-color: #d4d4d4; 
 	swt-unselected-hot-tab-color-background: #d8d8d8;

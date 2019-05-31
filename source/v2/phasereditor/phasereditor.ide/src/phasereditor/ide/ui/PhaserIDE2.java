@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.ide.intro;
+package phasereditor.ide.ui;
 
 import static java.lang.System.out;
 
@@ -28,7 +28,6 @@ import java.nio.file.Paths;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplicationContext;
 
-import phasereditor.ide.ModifiedIDEApplication;
 import phasereditor.lic.LicCore;
 
 /**

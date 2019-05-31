@@ -17,7 +17,7 @@
  *     Patrik Suzzi <psuzzi@gmail.com> - Bug 514355
  *******************************************************************************/
 // Modified by Arian Fornaris
-package phasereditor.ide;
+package phasereditor.ide.ui;
 
 import static java.lang.System.out;
 

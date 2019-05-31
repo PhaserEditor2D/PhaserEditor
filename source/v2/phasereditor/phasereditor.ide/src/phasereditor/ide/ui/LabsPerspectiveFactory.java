@@ -17,6 +17,7 @@ public class LabsPerspectiveFactory implements IPerspectiveFactory {
 
 	private static final String FILES_AND_VERSIONS = "filesAndVersions";
 	private static final String LEFT_FOLDER = "phasereditor.ide.left";
+	public static final String ID = "phasereditor.ide.ui.labs";
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {

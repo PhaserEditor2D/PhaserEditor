@@ -1,4 +1,4 @@
-package phasereditor.ide.intro;
+package phasereditor.ide.ui;
 
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
@@ -30,7 +30,6 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ide.IDEPlugin;
-import phasereditor.ide.ui.StartPerspective;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.ui.SceneUI;
 

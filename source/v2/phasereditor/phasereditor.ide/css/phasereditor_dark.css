@@ -4,7 +4,7 @@
 
 
 .MPartStack {
-	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.intro.MyTabRendering');	
+	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.ui.MyTabRendering');	
 	swt-unselected-hot-tab-color-background: #222222;
 	padding: 0px 0px 0px 0px;
 }

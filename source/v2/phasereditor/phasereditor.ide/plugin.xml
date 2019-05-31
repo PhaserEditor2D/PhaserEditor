@@ -8,7 +8,7 @@
       <application
             icon="icons/64.png">
          <run
-               class="phasereditor.ide.intro.PhaserIDE2">
+               class="phasereditor.ide.ui.PhaserIDE2">
          </run>
       </application>
    </extension>
@@ -58,7 +58,7 @@
                value="7,252,445,0">
          </property>
          <property
-               name="rendererFactoryUri-not-now"
+               name="rendererFactoryUri"
                value="bundleclass://phasereditor.ide/phasereditor.ide.ui.MyRenderFactory">
          </property>
         
@@ -153,7 +153,7 @@
                   <extension
                         point="org.eclipse.ui.startup">
                      <startup
-                           class="phasereditor.ide.intro.IDEStartup">
+                           class="phasereditor.ide.ui.IDEStartup">
                      </startup>
                   </extension>
                   <extension
