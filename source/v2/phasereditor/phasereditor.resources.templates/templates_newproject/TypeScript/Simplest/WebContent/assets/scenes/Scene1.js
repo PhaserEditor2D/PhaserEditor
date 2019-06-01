@@ -1,3 +1,4 @@
+// You can write more code here
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,20 +9,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var GameScene = /** @class */ (function (_super) {
-    __extends(GameScene, _super);
-    function GameScene() {
-        return _super !== null && _super.apply(this, arguments) || this;
+/* START OF COMPILED CODE */
+var Scene1 = /** @class */ (function (_super) {
+    __extends(Scene1, _super);
+    function Scene1() {
+        return _super.call(this, 'Scene1') || this;
     }
-    GameScene.prototype.create = function () {
-        this.add.text(10, 1, "hello world!", { fill: "ff00ff" });
+    Scene1.prototype._create = function () {
     };
-    return GameScene;
+    /* START-USER-CODE */
+    Scene1.prototype.create = function () {
+        this._create();
+    };
+    Scene1.prototype.update = function () {
+    };
+    return Scene1;
 }(Phaser.Scene));
-var game = new Phaser.Game({
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    backgroundColor: '#fff',
-    scene: GameScene
-});
+/* END OF COMPILED CODE */

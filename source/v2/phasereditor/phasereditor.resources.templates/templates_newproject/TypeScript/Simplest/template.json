@@ -2,13 +2,13 @@
 	"author": {
 		"name": "Arian Fornaris",
 		"email": "developers@phasereditor2d.com",
-		"website": "phasereditor2d.com",
+		"website": "phasereditor2d.com"
 	},
-	"mainFile": "js/Main.ts",
+	"mainFile": "js/main.ts",
 	"eval" : {
-		"index.html" : ["title"], 
-		"js/Main.js" : ["game.width", "game.height", "game.renderer", "game.extra"],
-		"js/Main.ts" : ["game.width", "game.height", "game.renderer", "game.extra"]
+		"index.html" : ["title"], 		
+		"main.ts" : ["title", "config"],
+		"main.js" : ["title", "config"]
 	},
 	"description": "The simplest project structure (TypeScript)",
 	"id" : "phasereditor.project.simplest.typescript"
