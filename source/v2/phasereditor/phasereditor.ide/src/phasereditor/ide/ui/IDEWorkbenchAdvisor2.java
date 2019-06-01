@@ -21,13 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
+import org.eclipse.e4.ui.workbench.renderers.swt.TrimmedPartLayout;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.internal.ide.application.DelayedEventsProcessor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchWindowAdvisor;
@@ -69,6 +71,10 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 			var listener = new MyPerspectiveListener();
 			win.addPerspectiveListener(listener);
 			listener.perspectiveActivated(win.getActivePage(), win.getActivePage().getPerspective());
+
+			swtRun(() -> {
+				MyPerspectiveListener.updateToolbar(win.getActivePage(), win.getActivePage().getPerspective());
+			});
 		}
 
 	}
@@ -77,22 +83,18 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 
 		@Override
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-			var window = (WorkbenchWindow) page.getWorkbenchWindow();
 			var id = perspective.getId();
+			page.setEditorAreaVisible(!StartPerspective.ID.equals(id));
+			updateToolbar(page, perspective);
+		}
 
-			if (StartPerspective.ID.equals(id)) {
-				if (window.getCoolBarVisible()) {
-					window.toggleToolbarVisibility();
-				}
-
-				page.setEditorAreaVisible(false);
-			} else {
-				page.setEditorAreaVisible(true);
-
-				if (!window.getCoolBarVisible()) {
-					window.toggleToolbarVisibility();
-				}
-			}
+		public static void updateToolbar(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
+			var id = perspective.getId();
+			var isStart = StartPerspective.ID.equals(id);
+			var shell = page.getWorkbenchWindow().getShell();
+			var layout = (TrimmedPartLayout) shell.getLayout();
+			layout.gutterTop = isStart ? 0 : MyWBWRenderer.GUTTER_TOP;
+			shell.requestLayout();
 		}
 
 		@Override

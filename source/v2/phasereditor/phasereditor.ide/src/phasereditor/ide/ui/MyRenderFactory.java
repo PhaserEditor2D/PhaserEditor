@@ -92,6 +92,8 @@ public class MyRenderFactory extends WorkbenchRendererFactory {
 
 class MyWBWRenderer extends WBWRenderer {
 
+	public static int GUTTER_TOP;
+
 	@Override
 	public Object createWidget(MUIElement element, Object parent) {
 		var widget = super.createWidget(element, parent);
@@ -103,6 +105,7 @@ class MyWBWRenderer extends WBWRenderer {
 		var toolbar = new HugeToolbar(shell);
 
 		layout.gutterTop = toolbar.getBounds().height;
+		GUTTER_TOP = layout.gutterTop;
 
 		return widget;
 	}
