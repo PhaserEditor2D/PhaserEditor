@@ -185,7 +185,7 @@ public class StartView extends ViewPart {
 					}
 
 					var newContent = HttpTool.GET(feedUrl);
-					
+
 					out.println("New Phaser Editor Blog content:");
 					out.println(newContent);
 
@@ -375,22 +375,31 @@ public class StartView extends ViewPart {
 				.collect(toList());
 
 		for (var project : list) {
-			createLink(_workspaceComp, project.getName(), new Runnable() {
+			createProjectLink(project, project.getName());
+		}
+	}
 
-				@Override
-				public void run() {
-					ProjectCore.setActiveProject(project);
-					// TODO: go to the project perspective, for now, just go to the Scene
-					// perspective
-					var id = ScenePerspective.ID;
+	private static void createProjectLink(IProject project, String label) {
 
-					var workbench = PlatformUI.getWorkbench();
-					var page = workbench.getActiveWorkbenchWindow().getActivePage();
-					page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
+		var link = createLink(_workspaceComp, label, new Runnable() {
 
-					updateProjectLinks();
-				}
-			}, "platform:/plugin/org.eclipse.ui.ide/icons/full/obj16/prj_obj.png");
+			@Override
+			public void run() {
+				ProjectCore.setActiveProject(project);
+				// TODO: go to the project perspective, for now, just go to the Scene
+				// perspective
+				var id = ScenePerspective.ID;
+
+				var workbench = PlatformUI.getWorkbench();
+				var page = workbench.getActiveWorkbenchWindow().getActivePage();
+				page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
+
+				updateProjectLinks();
+			}
+		}, "platform:/plugin/org.eclipse.ui.ide/icons/full/obj16/prj_obj.png");
+
+		if (project.equals(ProjectCore.getActiveProject())) {
+			link.setFont(SwtRM.getBoldFont(link.getFont()));
 		}
 	}
 
@@ -415,7 +424,7 @@ public class StartView extends ViewPart {
 		createLink(comp, text, action, null);
 	}
 
-	private static void createLink(Composite comp, String text, Runnable action, String icon) {
+	private static ImageHyperlink createLink(Composite comp, String text, Runnable action, String icon) {
 		var label = new ImageHyperlink(comp, SWT.CENTER);
 		label.setForeground(JFaceColors.getActiveHyperlinkText(comp.getDisplay()));
 		label.setText(text);
@@ -434,6 +443,8 @@ public class StartView extends ViewPart {
 			}
 
 		});
+
+		return label;
 	}
 
 	@Override
