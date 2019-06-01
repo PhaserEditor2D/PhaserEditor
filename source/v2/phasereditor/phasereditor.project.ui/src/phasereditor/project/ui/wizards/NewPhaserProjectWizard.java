@@ -105,7 +105,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		addPage(_projectPage);
 		addPage(_settingsPage);
 	}
-
+	
 	@Override
 	public void createPageControls(Composite pageContainer) {
 		super.createPageControls(pageContainer);
