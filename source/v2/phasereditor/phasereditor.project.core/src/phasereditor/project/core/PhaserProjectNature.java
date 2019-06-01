@@ -31,13 +31,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 
-import phasereditor.project.core.codegen.SourceLang;
-
 public class PhaserProjectNature implements IProjectNature {
 
 	public static final String NATURE_IDS[] = { ProjectCore.PHASER_PROJECT_NATURE };
 
-	public static void addPhaserNature(IProject project, SourceLang lang, IProgressMonitor monitor)
+	public static void addPhaserNature(IProject project, IProgressMonitor monitor)
 			throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
@@ -59,7 +57,7 @@ public class PhaserProjectNature implements IProjectNature {
 			}
 		}
 	}
-	
+
 	public static void removePhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
@@ -111,6 +109,7 @@ public class PhaserProjectNature implements IProjectNature {
 		// add the builder
 		IProjectDescription desc = _project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
+		
 		boolean found = false;
 
 		String builderId = ProjectCore.PHASER_BUILDER_ID;
@@ -121,47 +120,18 @@ public class PhaserProjectNature implements IProjectNature {
 				break;
 			}
 		}
+		
 		if (!found) {
-
-			SourceLang lang = ProjectCore.getProjectLanguage(_project);
 
 			// Phaser builder command
 			ICommand phaserBuilderCommand = desc.newCommand();
 			phaserBuilderCommand.setBuilderName(builderId);
 			ICommand[] newCommands;
 
-			if (lang == SourceLang.JAVA_SCRIPT) {
-				newCommands = new ICommand[commands.length + 1];
-				// Add it before other builders.
-				System.arraycopy(commands, 0, newCommands, 1, commands.length);
-				newCommands[0] = phaserBuilderCommand;
-
-				// sort commands, move the javascript project to the end
-				//TODO: #RemovingWST
-//				Arrays.sort(newCommands, new Comparator<ICommand>() {
-//
-//					@Override
-//					public int compare(ICommand o1, ICommand o2) {
-//						String id1 = o1.getBuilderName();
-//						String id2 = o2.getBuilderName();
-//
-//						int v1 = (id1 == JavaScriptCore.BUILDER_ID ? 1 : 0);
-//						int v2 = (id2 == JavaScriptCore.BUILDER_ID ? 1 : 0);
-//
-//						return v1 - v2;
-//					}
-//				});
-			} else {
-				newCommands = new ICommand[commands.length + 2];
-				// Add it before other builders.
-				System.arraycopy(commands, 0, newCommands, 2, commands.length);
-
-				ICommand tsBuilderCommand = desc.newCommand();
-				tsBuilderCommand.setBuilderName("ts.eclipse.ide.core.typeScriptBuilder");
-
-				newCommands[0] = phaserBuilderCommand;
-				newCommands[1] = tsBuilderCommand;
-			}
+			newCommands = new ICommand[commands.length + 1];
+			// Add it before other builders.
+			System.arraycopy(commands, 0, newCommands, 1, commands.length);
+			newCommands[0] = phaserBuilderCommand;
 
 			desc.setBuildSpec(newCommands);
 			_project.setDescription(desc, null);

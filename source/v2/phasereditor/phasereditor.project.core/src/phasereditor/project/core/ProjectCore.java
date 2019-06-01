@@ -350,7 +350,7 @@ public class ProjectCore {
 			ProjectCore.getProjectSceneSize(project);
 		}
 
-		PhaserProjectNature.addPhaserNature(project, lang, nullMonitor);
+		PhaserProjectNature.addPhaserNature(project, nullMonitor);
 		monitor.worked(1);
 
 		project.build(IncrementalProjectBuilder.CLEAN_BUILD, nullMonitor);
@@ -590,6 +590,11 @@ public class ProjectCore {
 
 		return new Point(width, height);
 
+	}
+	
+	public static SourceLang getDefaultProjectLanguage() {
+		var str = getPreferenceStore().getString(PREF_PROP_PROJECT_WIZARD_LANGUAJE);
+		return SourceLang.valueOf(str);
 	}
 
 	public static void setProjectSceneSize(IProject project, int width, int height) {

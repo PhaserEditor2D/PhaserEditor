@@ -212,8 +212,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		_heightText.setText(store.getString(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT));
 
 		_comboLang.setInput(new Object[] { SourceLang.JAVA_SCRIPT_6, SourceLang.TYPE_SCRIPT });
-		_comboLang.setSelection(new StructuredSelection(
-				SourceLang.valueOf(store.getString(ProjectCore.PREF_PROP_PROJECT_WIZARD_LANGUAJE))));
+		_comboLang.setSelection(new StructuredSelection(ProjectCore.getDefaultProjectLanguage()));
 	}
 
 	public void setFocus() {

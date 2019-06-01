@@ -51,7 +51,6 @@ public class PhaserProjectPreferencesPage extends FieldEditorPreferencePage impl
 		addField(new IntegerFieldEditor(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT, "Default game height", parent));
 		addField(new ComboFieldEditor(ProjectCore.PREF_PROP_PROJECT_WIZARD_LANGUAJE, "Default language", new String[][] {
 
-				{ SourceLang.JAVA_SCRIPT.getDisplayName(), SourceLang.JAVA_SCRIPT.name() },
 				{ SourceLang.JAVA_SCRIPT_6.getDisplayName(), SourceLang.JAVA_SCRIPT_6.name() },
 				{ SourceLang.TYPE_SCRIPT.getDisplayName(), SourceLang.TYPE_SCRIPT.name() }
 
