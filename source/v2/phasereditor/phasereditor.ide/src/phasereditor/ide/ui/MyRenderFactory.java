@@ -41,6 +41,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -156,6 +157,7 @@ class HugeToolbar extends Composite implements IPartListener {
 		var rightArea = new Composite(this, 0);
 		rightArea.setLayout(layout);
 
+		new GoHomeWrapper(leftArea);
 		new NewMenuWrapper(leftArea);
 		new RunProjectWrapper(leftArea);
 
@@ -263,6 +265,16 @@ class NewMenuWrapper {
 
 }
 
+class GoHomeWrapper {
+	public GoHomeWrapper(Composite parent) {
+		var btn = new Button(parent, SWT.PUSH);
+		var homePersp = PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(StartPerspective.ID);
+		btn.setImage(PerspectiveSwitcherWrapper.getPerspectiveIcon(homePersp));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+				e -> PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(homePersp)));
+	}
+}
+
 class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 
 	private Button _btn;
@@ -320,15 +332,21 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 		}
 	}
 
-	private static String[] EDITOR_PERSPECTIVES = { StartPerspective.ID, CodePerspective.ID, ScenePerspective.ID,
+	private static String[] EDITOR_PERSPECTIVES = { /* StartPerspective.ID, */ CodePerspective.ID, ScenePerspective.ID,
 			LabsPerspectiveFactory.ID, "org.eclipse.egit.ui.GitRepositoryExploring" };
 
 	private void populateMenu() {
 		var manager = new MenuManager();
 
 		var reg = PlatformUI.getWorkbench().getPerspectiveRegistry();
+		var current = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getPerspective().getId();
 
 		for (var id : EDITOR_PERSPECTIVES) {
+
+			if (id.equals(current)) {
+				continue;
+			}
+
 			var persp = reg.findPerspectiveWithId(id);
 
 			if (persp == null) {
@@ -364,17 +382,22 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 			_currentPersp = persp;
 			_btn.setText(persp.getLabel() + " Perspective");
 
-			var imgReg = IDEPlugin.getDefault().getImageRegistry();
-			var img = imgReg.get(persp.getId());
-			if (img == null) {
-				img = persp.getImageDescriptor().createImage();
-				imgReg.put(persp.getId(), img);
-			}
+			var img = getPerspectiveIcon(persp);
 
 			_btn.setImage(img);
 			_btn.setToolTipText(persp.getDescription());
 
 		}
+	}
+
+	public static Image getPerspectiveIcon(IPerspectiveDescriptor persp) {
+		var imgReg = IDEPlugin.getDefault().getImageRegistry();
+		var img = imgReg.get(persp.getId());
+		if (img == null) {
+			img = persp.getImageDescriptor().createImage();
+			imgReg.put(persp.getId(), img);
+		}
+		return img;
 	}
 
 	public Button getButton() {
