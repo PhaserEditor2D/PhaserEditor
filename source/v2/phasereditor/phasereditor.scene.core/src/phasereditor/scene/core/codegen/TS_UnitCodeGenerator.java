@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,43 +19,30 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.core;
+package phasereditor.scene.core.codegen;
 
-import org.eclipse.core.resources.IProject;
-import org.json.JSONObject;
+import phasereditor.scene.core.codedom.FieldDeclDom;
+import phasereditor.scene.core.codedom.MemberDeclDom;
+import phasereditor.scene.core.codedom.UnitDom;
 
 /**
  * @author arian
  *
  */
-public abstract class VariableModel extends ParentModel implements
+public class TS_UnitCodeGenerator extends JS6_UnitCodeGenerator {
 
-		VariableComponent,
-
-		CodeDomComponent
-
-{
-
-	public VariableModel(String type) {
-		super(type);
-
-		VariableComponent.init(this);
+	public TS_UnitCodeGenerator(UnitDom unit) {
+		super(unit);
 	}
 
 	@Override
-	public void read(JSONObject data, IProject project) {
-		super.read(data, project);
-
-		VariableComponent.set_variableName(this, data.getString(variableName_name));
-		VariableComponent.set_variableField(this, data.optBoolean(variableField_name));
-	}
-
-	@Override
-	public void write(JSONObject data) {
-		super.write(data);
-
-		data.put(variableName_name, VariableComponent.get_variableName(this));
-		data.put(variableField_name, VariableComponent.get_variableField(this));
+	protected void generateMemberDecl(MemberDeclDom memberDecl) {
+		if (memberDecl instanceof FieldDeclDom) {
+			var field = (FieldDeclDom) memberDecl;
+			line("private " + field.getName() + ": " + field.getType() + ";");
+		} else {
+			super.generateMemberDecl(memberDecl);
+		}
 	}
 
 }

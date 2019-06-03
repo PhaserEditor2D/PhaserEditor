@@ -97,8 +97,9 @@ public class CompilerSection extends BaseDesignSection {
 
 						@Override
 						public void run() {
-							getSceneModel().setCompilerLang(lang);
-							update_UI_from_Model();
+							wrapOperation(() -> {
+								getSceneModel().setCompilerLang(lang);
+							});
 						}
 					});
 

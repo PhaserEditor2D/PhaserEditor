@@ -36,12 +36,14 @@ public class SceneCore {
 
 	private static SceneFileDataCache _fileDataCache;
 
-	public static IFile getSceneSourceCodeFile(IFile sceneFile) {
-		var path = sceneFile.getProjectRelativePath();
+	public static IFile getSceneSourceCodeFile(SceneModel sceneModel, IFile sceneFile) {
+		var path = sceneFile.getProjectRelativePath()
 
-		// for now it only compiles to JavaScript.
+				.removeFileExtension()
 
-		return sceneFile.getProject().getFile(path.removeFileExtension().addFileExtension("js"));
+				.addFileExtension(sceneModel.getCompilerLang().getExtension());
+		
+		return sceneFile.getProject().getFile(path);
 	}
 
 	public static void compileScene(SceneModel model, IFile sceneFile, IProgressMonitor monitor) throws Exception {

@@ -27,8 +27,19 @@ package phasereditor.scene.core.codedom;
  */
 public class FieldDeclDom extends MemberDeclDom {
 
-	public FieldDeclDom(String name) {
+	private String _type;
+
+	public FieldDeclDom(String name, String type) {
 		super(name);
+		_type = type;
+	}
+	
+	public String getType() {
+		return _type;
+	}
+
+	public void setType(String type) {
+		_type = type;
 	}
 
 }

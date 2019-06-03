@@ -153,26 +153,26 @@ public class NewSceneFileWizard extends Wizard implements INewWizard {
 						var model = getFilePage().getInitialModel();
 						SceneCore.compileScene(model, file, monitor);
 
+						getAssetPackPage().performFinish(monitor, section -> {
+							var jsFile = SceneCore.getSceneSourceCodeFile(model, file);
+
+							var pack = section.getPack();
+
+							if (_assetPackPage.getAsSceneFileButton().getSelection()) {
+								var asset = new SceneFileAssetModel(pack.createKey(jsFile), section);
+								asset.setUrl(ProjectCore.getAssetUrl(jsFile));
+								section.addAsset(asset, false);
+							} else {
+								var asset = new ScriptAssetModel(pack.createKey(jsFile), section);
+								asset.setUrl(ProjectCore.getAssetUrl(jsFile));
+								section.addAsset(asset, false);
+							}
+
+						});
+
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
-
-					getAssetPackPage().performFinish(monitor, section -> {
-						var jsFile = SceneCore.getSceneSourceCodeFile(file);
-
-						var pack = section.getPack();
-
-						if (_assetPackPage.getAsSceneFileButton().getSelection()) {
-							var asset = new SceneFileAssetModel(pack.createKey(jsFile), section);
-							asset.setUrl(ProjectCore.getAssetUrl(jsFile));
-							section.addAsset(asset, false);
-						} else {
-							var asset = new ScriptAssetModel(pack.createKey(jsFile), section);
-							asset.setUrl(ProjectCore.getAssetUrl(jsFile));
-							section.addAsset(asset, false);
-						}
-
-					});
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e1) {

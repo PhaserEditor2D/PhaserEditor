@@ -24,6 +24,7 @@ package phasereditor.scene.core.codegen;
 import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IFile;
@@ -37,7 +38,6 @@ import phasereditor.scene.core.AnimationsComponent;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.CodeDomComponent;
-import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.DynamicBitmapTextComponent;
 import phasereditor.scene.core.DynamicBitmapTextModel;
 import phasereditor.scene.core.FlipComponent;
@@ -47,6 +47,7 @@ import phasereditor.scene.core.GroupModel;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.OriginComponent;
+import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.scene.core.ScrollFactorComponent;
@@ -60,6 +61,7 @@ import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.core.VisibleComponent;
 import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.ClassDeclDom;
+import phasereditor.scene.core.codedom.FieldDeclDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
 import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
@@ -98,7 +100,9 @@ public class SceneCodeDomBuilder {
 			methods.add(preloadDom);
 		}
 
-		var createDom = buildCreateMethod(model);
+		var fieldDecls = new ArrayList<FieldDeclDom>();
+
+		var createDom = buildCreateMethod(model, fieldDecls);
 		methods.add(createDom);
 
 		var unit = new UnitDom();
@@ -124,6 +128,7 @@ public class SceneCodeDomBuilder {
 			}
 
 			clsDom.getMembers().addAll(methods);
+			clsDom.getMembers().addAll(fieldDecls);
 			unit.getElements().add(clsDom);
 		}
 
@@ -141,7 +146,7 @@ public class SceneCodeDomBuilder {
 		return methodDecl;
 	}
 
-	private MethodDeclDom buildCreateMethod(SceneModel sceneModel) {
+	private MethodDeclDom buildCreateMethod(SceneModel sceneModel, List<FieldDeclDom> fieldDecls) {
 		var methodDecl = new MethodDeclDom(sceneModel.getCreateMethodName());
 
 		var fieldModels = new ArrayList<ObjectModel>();
@@ -262,7 +267,7 @@ public class SceneCodeDomBuilder {
 			methodDecl.getInstructions().add(new RawCode(""));
 		}
 
-		buildGroups(sceneModel, methodDecl);
+		buildGroups(sceneModel, methodDecl, fieldDecls);
 
 		for (var model : fieldModels) {
 			var local = varname(model);
@@ -272,10 +277,14 @@ public class SceneCodeDomBuilder {
 			var instr = new AssignPropertyDom(fieldName, "this");
 			instr.value(local);
 
+			var fieldDecl = new FieldDeclDom(fieldName, getPhaserType(model));
+			fieldDecls.add(fieldDecl);
+
 			if (GameObjectComponent.is(model)) {
 				var type = GameObjectComponent.get_objectFactoryType(model);
 				if (!type.equals(GameObjectComponent.objectFactoryType_default)) {
 					instr.setPropertyType(type);
+					fieldDecl.setType(type);
 				}
 			}
 
@@ -288,6 +297,10 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private static String getPhaserType(ObjectModel model) {
+		return "Phaser.GameObjects." + model.getType();
 	}
 
 	private static boolean buildObjectBuildCall(MethodDeclDom methodDecl, ObjectModel model) {
@@ -362,7 +375,7 @@ public class SceneCodeDomBuilder {
 		return assignToVar;
 	}
 
-	private void buildGroups(SceneModel sceneModel, MethodDeclDom methodDecl) {
+	private void buildGroups(SceneModel sceneModel, MethodDeclDom methodDecl, List<FieldDeclDom> fieldDecls) {
 
 		var instructions = methodDecl.getInstructions();
 
@@ -378,6 +391,7 @@ public class SceneCodeDomBuilder {
 				var fieldName = JSCodeUtils.fieldOf(groupName);
 				methodCall.setReturnToVar("this." + fieldName);
 				methodCall.setDeclareReturnToVar(false);
+				fieldDecls.add(new FieldDeclDom(fieldName, "Phaser.GameObjects.Group"));
 			} else {
 				methodCall.setReturnToVar(groupName);
 			}
@@ -872,7 +886,7 @@ public class SceneCodeDomBuilder {
 		var preloadDom = new MethodDeclDom(model.getPreloadMethodName());
 
 		var collector = new PackReferencesCollector(model, _finder);
-		
+
 		var packSectionList = collector.collectKeyUrlTuples();
 
 		for (var pair : packSectionList) {

@@ -183,7 +183,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_interactiveTools = interactiveTools;
 
 		updatePropertyPagesContentWithSelection();
-		
+
 		updateHugeToolbar();
 
 		_broker.sendAll(new SetInteractiveToolMessage(this));
@@ -740,7 +740,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	public void openSourceFile(int offset) {
-		var file = SceneCore.getSceneSourceCodeFile(getEditorInput().getFile());
+		var file = SceneCore.getSceneSourceCodeFile(_model, getEditorInput().getFile());
 		if (file.exists()) {
 			try {
 				var editor = (TextEditor) IDE.openEditor(getEditorSite().getWorkbenchWindow().getActivePage(), file);

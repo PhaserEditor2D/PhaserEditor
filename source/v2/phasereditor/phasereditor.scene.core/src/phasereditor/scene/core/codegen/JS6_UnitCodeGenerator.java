@@ -101,7 +101,7 @@ public class JS6_UnitCodeGenerator extends BaseCodeGenerator {
 		line();
 	}
 
-	private void generateMemberDecl(MemberDeclDom memberDecl) {
+	protected void generateMemberDecl(MemberDeclDom memberDecl) {
 
 		if (memberDecl instanceof MethodDeclDom) {
 			generateMethodDecl((MethodDeclDom) memberDecl, false);

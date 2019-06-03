@@ -29,8 +29,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import phasereditor.project.core.codegen.BaseCodeGenerator;
+import phasereditor.scene.core.codedom.UnitDom;
 import phasereditor.scene.core.codegen.JS6_UnitCodeGenerator;
 import phasereditor.scene.core.codegen.SceneCodeDomBuilder;
+import phasereditor.scene.core.codegen.TS_UnitCodeGenerator;
 
 /**
  * @author arian
@@ -80,7 +83,7 @@ public class SceneCompiler {
 	}
 
 	public CompileResult compile() throws Exception {
-		var codeFile = SceneCore.getSceneSourceCodeFile(_sceneFile);
+		var codeFile = SceneCore.getSceneSourceCodeFile(_sceneModel, _sceneFile);
 
 		Charset charset;
 
@@ -100,9 +103,25 @@ public class SceneCompiler {
 		var builder = new SceneCodeDomBuilder(codeFile);
 		var unitDom = builder.build(_sceneModel);
 
-		var codeGenerator = new JS6_UnitCodeGenerator(unitDom);
+		var codeGenerator = getCodeGenerator(unitDom);
+
 		var code = codeGenerator.generate(replace);
 
 		return new CompileResult(code, codeFile, charset);
+	}
+
+	private BaseCodeGenerator getCodeGenerator(UnitDom unitDom) {
+		var lang = _sceneModel.getCompilerLang();
+
+		switch (lang) {
+		case JAVA_SCRIPT_6:
+			return new JS6_UnitCodeGenerator(unitDom);
+		case TYPE_SCRIPT:
+			return new TS_UnitCodeGenerator(unitDom);
+		default:
+			break;
+		}
+		
+		throw new RuntimeException("Invalid Output Language.");
 	}
 }
