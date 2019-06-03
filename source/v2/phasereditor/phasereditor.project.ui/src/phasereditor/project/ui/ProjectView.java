@@ -374,10 +374,9 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				protected List<FormPropertySection<?>> createSections() {
 
 					var list = new ArrayList<FormPropertySection<?>>();
-
-					list.add(new PhaserProjectPropertySection());
 					list.add(new ResourcePropertySection());
 					list.add(new ManyResourcesPropertySection());
+					list.add(new PhaserProjectPropertySection());
 					
 					
 					list.addAll(super.createSections());

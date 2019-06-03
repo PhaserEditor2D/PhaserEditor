@@ -47,17 +47,4 @@
             name="Project">
       </page>
    </extension>
-   <extension
-         point="org.eclipse.ui.propertyPages">
-      <page
-            class="phasereditor.project.core.prefs.PhaserProjectPropertiesPage"
-            id="phasereditor.project.core.properties.samplePropertyPage"
-            name="Phaser">
-         <enabledWhen>
-            <adapt
-                  type="org.eclipse.core.resources.IProject">
-            </adapt>
-         </enabledWhen>
-      </page>
-   </extension>
 </plugin>
