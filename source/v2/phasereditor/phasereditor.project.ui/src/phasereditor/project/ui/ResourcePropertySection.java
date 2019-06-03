@@ -25,6 +25,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -33,6 +37,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PropertyDialogAction;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
@@ -117,7 +123,44 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 			}));
 		}
 
+		{
+			var btn = new Button(comp, SWT.PUSH);
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			btn.setText("IDE Properties");
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				var action = new PropertyDialogAction(
+						() -> PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						createSelectionProvider());
+				action.run();
+			}));
+		}
+
 		return comp;
+	}
+
+	private ISelectionProvider createSelectionProvider() {
+		return new ISelectionProvider() {
+
+			@Override
+			public void setSelection(ISelection selection) {
+				//
+			}
+
+			@Override
+			public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+				//
+			}
+
+			@Override
+			public ISelection getSelection() {
+				return new StructuredSelection(getModels());
+			}
+
+			@Override
+			public void addSelectionChangedListener(ISelectionChangedListener listener) {
+				//
+			}
+		};
 	}
 
 	private void openInSystemExplorer() {
