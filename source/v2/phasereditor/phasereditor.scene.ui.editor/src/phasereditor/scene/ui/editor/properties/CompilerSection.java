@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.ui.EditorSharedImages;
@@ -83,6 +85,34 @@ public class CompilerSection extends BaseDesignSection {
 		// }
 		// };
 		// }
+
+		{
+			label(comp, "Output Language", "*The compiler's output language.");
+			var btn = new Button(comp, SWT.PUSH);
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				var manager = new MenuManager();
+				for (var lang : new SourceLang[] { SourceLang.JAVA_SCRIPT_6, SourceLang.TYPE_SCRIPT }) {
+					manager.add(new Action(lang.getDisplayName()) {
+
+						@Override
+						public void run() {
+							getSceneModel().setCompilerLang(lang);
+							update_UI_from_Model();
+						}
+					});
+
+					manager.createContextMenu(btn)
+
+							.setVisible(true);
+				}
+			}));
+
+			addUpdate(() -> {
+				btn.setText(getSceneModel().getCompilerLang().getDisplayName());
+			});
+
+		}
 
 		{
 			label(comp, "Only Generate Methods", "*Generate plain methods, without a containing class.");
@@ -278,8 +308,7 @@ public class CompilerSection extends BaseDesignSection {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					wrapOperation(() -> {
-						getSceneModel()
-								.setMethodContextType(MethodContextType.values()[combo.getSelectionIndex()]);
+						getSceneModel().setMethodContextType(MethodContextType.values()[combo.getSelectionIndex()]);
 					});
 				}
 			});

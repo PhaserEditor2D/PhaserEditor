@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.lic.LicCore;
+import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.Colors;
 
 /**
@@ -75,6 +76,7 @@ public class SceneModel {
 	private String _preloadMethodName;
 	private String _createMethodName;
 	private String _sceneKey;
+	private SourceLang _compilerLang;
 
 	public enum MethodContextType {
 		SCENE, OBJECT
@@ -117,6 +119,16 @@ public class SceneModel {
 		_methodContextType = MethodContextType.SCENE;
 
 		_sceneKey = "";
+
+		_compilerLang = SourceLang.JAVA_SCRIPT_6;
+	}
+
+	public SourceLang getCompilerLang() {
+		return _compilerLang;
+	}
+
+	public void setCompilerLang(SourceLang compilerLang) {
+		_compilerLang = compilerLang;
 	}
 
 	public boolean isOnlyGenerateMethods() {
@@ -279,6 +291,9 @@ public class SceneModel {
 		data.put("-version", VERSION);
 
 		{
+			data.put("compilerLang", _compilerLang.name());
+		}
+		{
 			// Display List
 
 			JSONObject displayListData;
@@ -344,6 +359,9 @@ public class SceneModel {
 	}
 
 	public void read(JSONObject data, IProject project) {
+		{
+			_compilerLang = SourceLang.valueOf(data.optString("compilerLang", SourceLang.JAVA_SCRIPT_6.name()));
+		}
 		{
 			var displayListData = data.optJSONObject("displayList");
 
@@ -474,5 +492,5 @@ public class SceneModel {
 
 		return data;
 	}
-	
+
 }
