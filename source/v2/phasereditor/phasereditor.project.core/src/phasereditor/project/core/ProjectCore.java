@@ -526,7 +526,7 @@ public class ProjectCore {
 	public static SourceLang getProjectLanguage(IProject project) {
 		try {
 			Map<QualifiedName, String> props = project.getPersistentProperties();
-			String name = props.getOrDefault(PROJECT_LANG, SourceLang.JAVA_SCRIPT.name());
+			String name = props.getOrDefault(PROJECT_LANG, SourceLang.JAVA_SCRIPT_6.name());
 			SourceLang lang = SourceLang.valueOf(name);
 			return lang;
 		} catch (CoreException e) {
@@ -542,7 +542,7 @@ public class ProjectCore {
 		}
 
 		if (res == null) {
-			return SourceLang.JAVA_SCRIPT;
+			return SourceLang.JAVA_SCRIPT_6;
 		}
 
 		IProject project = res.getProject();

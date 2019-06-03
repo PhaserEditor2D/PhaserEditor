@@ -152,10 +152,13 @@ public class SceneFileWizardPage extends WizardNewFileCreationPage {
 			model.setSceneKey(sceneKey);
 		}
 
-		var size = ProjectCore.getProjectSceneSize(getContainerFullPath());
+		var containerFullPath = getContainerFullPath();
+		var size = ProjectCore.getProjectSceneSize(containerFullPath);
 
 		model.setBorderWidth(size.x);
 		model.setBorderHeight(size.y);
+		
+		model.setCompilerLang(ProjectCore.getProjectLanguage(containerFullPath));
 
 		return model;
 	}

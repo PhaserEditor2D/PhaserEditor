@@ -92,7 +92,7 @@ public class CreateProjectFromExampleHandler extends AbstractHandler {
 					project.create(monitor);
 					project.open(monitor);
 
-					ProjectCore.configureNewPhaserProject(project, example, null, SourceLang.JAVA_SCRIPT, monitor);
+					ProjectCore.configureNewPhaserProject(project, example, null, SourceLang.JAVA_SCRIPT_6, monitor);
 
 					return Status.OK_STATUS;
 				}
