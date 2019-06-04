@@ -52,6 +52,7 @@ public class CodePerspective implements IPerspectiveFactory {
 			var folder = layout.createFolder("bottomViews", IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA);
 			folder.addView(ChainsView.ID);
 			folder.addView(IPageLayout.ID_PROBLEM_VIEW);
+			folder.addView("org.eclipse.tm.terminal.view.ui.TerminalsView");
 		}
 
 		layout.addView(JsdocView.ID, IPageLayout.RIGHT, 0.5f, ChainsView.ID);
