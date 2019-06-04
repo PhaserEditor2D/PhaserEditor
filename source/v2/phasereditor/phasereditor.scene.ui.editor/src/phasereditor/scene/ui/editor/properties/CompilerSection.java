@@ -100,6 +100,7 @@ public class CompilerSection extends BaseDesignSection {
 							wrapOperation(() -> {
 								getSceneModel().setCompilerLang(lang);
 							});
+							update_UI_from_Model();
 						}
 					});
 
