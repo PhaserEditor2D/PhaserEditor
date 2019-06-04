@@ -1,6 +1,7 @@
 {
-  "-app": "Scene Editor - Phaser Editor v2.0.2",
+  "-app": "Scene Editor - Phaser Editor v2.1.1",
   "-version": 1,
+  "compilerLang": "TYPE_SCRIPT",
   "displayList": {
     "-id": "8d715559-399d-42e9-9525-4a1dc0336b31",
     "-type": "DisplayList",
@@ -11,7 +12,6 @@
     "-type": "Groups",
     "children": []
   },
-  "autoLoadAssets": false,
   "borderHeight": 450,
   "createMethodName": "_create",
   "methodContextType": "SCENE",

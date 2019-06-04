@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 var Scene1 = /** @class */ (function (_super) {
     __extends(Scene1, _super);
     function Scene1() {
-        return _super.call(this, 'Scene1') || this;
+        return _super.call(this, "Scene1") || this;
     }
     Scene1.prototype._create = function () {
     };
