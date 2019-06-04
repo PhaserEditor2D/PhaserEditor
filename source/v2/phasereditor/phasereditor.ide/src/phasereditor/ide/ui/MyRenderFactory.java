@@ -21,9 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.ui;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ARROW_REFRESH;
 import static phasereditor.ui.IEditorSharedImages.IMG_GAME_CONTROLLER;
 import static phasereditor.ui.IEditorSharedImages.IMG_SEARCH;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.e4.ui.internal.workbench.swt.AbstractPartRenderer;
@@ -44,10 +49,12 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
@@ -59,6 +66,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.NewWizardDropDownAction;
 import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.quickaccess.QuickAccessDialog;
@@ -141,6 +149,7 @@ class HugeToolbar extends Composite implements IPartListener {
 
 		var layout = new RowLayout();
 		layout.marginWidth = layout.marginHeight = 0;
+		layout.center = true;
 
 		var leftArea = new Composite(this, 0);
 		leftArea.setLayout(layout);
@@ -160,8 +169,13 @@ class HugeToolbar extends Composite implements IPartListener {
 		new GoHomeWrapper(leftArea);
 		new NewMenuWrapper(leftArea);
 		new RunProjectWrapper(leftArea);
-
 		new QuickAccessWrapper(rightArea);
+
+		{
+			var sep = new Label(rightArea, SWT.SEPARATOR);
+			sep.setLayoutData(new RowData(SWT.DEFAULT, getFont().getFontData()[0].getHeight()));
+		}
+
 		new PerspectiveSwitcherWrapper(rightArea);
 
 		updateBounds();
@@ -220,6 +234,8 @@ class HugeToolbar extends Composite implements IPartListener {
 }
 
 class QuickAccessWrapper {
+	private Button _button;
+
 	public QuickAccessWrapper(Composite parent) {
 		var btn = new Button(parent, SWT.PUSH);
 		btn.setImage(EditorSharedImages.getImage(IMG_SEARCH));
@@ -228,6 +244,11 @@ class QuickAccessWrapper {
 			var dlg = new QuickAccessDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), null);
 			dlg.open();
 		}));
+		_button = btn;
+	}
+
+	public Button getButton() {
+		return _button;
 	}
 }
 
@@ -281,10 +302,38 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 	private IPerspectiveDescriptor _currentPersp;
 
 	public PerspectiveSwitcherWrapper(Composite parent) {
-		_btn = new Button(parent, SWT.PUSH);
-		_btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> populateMenu()));
-		_btn.addMouseListener(MouseListener.mouseUpAdapter(this::populatePropsMenu));
-		updateButton();
+
+		{
+			var btn = new Button(parent, SWT.PUSH);
+			PlatformUI.getWorkbench().getSharedImages().getImage(IWorkbenchGraphicConstants.IMG_ETOOL_NEW_FASTVIEW);
+			btn.setImage(EditorSharedImages.getImageDescriptor("org.eclipse.ui", "icons/full/etool16/new_fastview.png")
+					.createImage());
+			btn.setToolTipText("Add a new view to this perspective.");
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				var service = PlatformUI.getWorkbench().getService(IHandlerService.class);
+				try {
+					service.executeCommand("org.eclipse.ui.views.showView", null);
+				} catch (ExecutionException | NotDefinedException | NotEnabledException | NotHandledException e1) {
+					e1.printStackTrace();
+				}
+			}));
+		}
+
+		{
+			var btn = new Button(parent, SWT.PUSH);
+			btn.setImage(EditorSharedImages.getImage(IMG_ARROW_REFRESH));
+			btn.setToolTipText("Reset persepctive.");
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+					e -> PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().resetPerspective()));
+		}
+
+		{
+			_btn = new Button(parent, SWT.PUSH);
+			_btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> populateMenu()));
+			_btn.addMouseListener(MouseListener.mouseUpAdapter(this::populatePropsMenu));
+			_btn.setLayoutData(new RowData(150, SWT.DEFAULT));
+			updateButton();
+		}
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(this);
 	}
@@ -380,12 +429,12 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 
 		if (_currentPersp != persp) {
 			_currentPersp = persp;
-			_btn.setText(persp.getLabel() + " Perspective");
+			_btn.setText(persp.getLabel());
 
 			var img = getPerspectiveIcon(persp);
 
 			_btn.setImage(img);
-			_btn.setToolTipText(persp.getDescription());
+			_btn.setToolTipText("Perspective: " + persp.getDescription());
 
 		}
 	}
