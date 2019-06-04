@@ -14,10 +14,13 @@
 <!-- 
 		<eclipse-release.url>http://download.eclipse.org/releases/2019-03</eclipse-release.url>		
 		<eclipse-license.url>https://download.eclipse.org/cbi/updates/license/</eclipse-license.url>
-   	
+   		<eclipse-tm-terminal.url>https://download.eclipse.org/tm/updates/4.5.100-SNAPSHOT/repository/</eclipse-tm-terminal.url>
+   		<eclipse-cdt.url>https://download.eclipse.org/tools/cdt/releases/9.7/cdt-9.7.2/</eclipse-cdt.url>
 -->
 		<eclipse-release.url>http://localhost/repo-mirror/eclipse-release</eclipse-release.url>
 		<eclipse-license.url>http://localhost/repo-mirror/eclipse-license</eclipse-license.url>
+		<eclipse-tm-terminal.url>http://localhost/repo-mirror/tm-repository-4.5.100-SNAPSHOT</eclipse-tm-terminal.url>
+		<eclipse-cdt.url>http://localhost/repo-mirror/eclipse-cdt-9.7.2</eclipse-cdt.url>
 
 		<chromium-cef.url>http://localhost/repo-mirror/chromium-cef/</chromium-cef.url>
 		<chromium-swt.url>http://localhost/repo-mirror/chromium-swt/</chromium-swt.url>
@@ -25,6 +28,7 @@
 	</properties>
 
 	<repositories>
+		
 		
 
 		<repository>
@@ -49,6 +53,18 @@
 		<repository>
 			<id>chromium-cef</id>
 			<url>${chromium-cef.url}</url>
+			<layout>p2</layout>
+		</repository>
+
+		<repository>
+			<id>eclipse-tm-terminal</id>
+			<url>${eclipse-tm-terminal.url}</url>
+			<layout>p2</layout>
+		</repository>
+
+		<repository>
+			<id>eclipse-cdt</id>
+			<url>${eclipse-cdt.url}</url>
 			<layout>p2</layout>
 		</repository>
 		

@@ -103,6 +103,26 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.eclipse.swt.chromium.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.tm.terminal.connector.local.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.tm.terminal.control.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.tm.terminal.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.tm.terminal.view.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.cdt.native"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.userstorage"
          download-size="0"
