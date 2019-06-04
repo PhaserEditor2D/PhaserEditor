@@ -185,7 +185,7 @@ class HugeToolbar extends Composite implements IPartListener {
 
 	private void updateBounds() {
 		var size = computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		setBounds(0, 0, getParent().getBounds().width, size.y);
+		setBounds(0, 0, getParent().getClientArea().width, size.y);
 	}
 
 	private void updateWithCurrentEditor() {
