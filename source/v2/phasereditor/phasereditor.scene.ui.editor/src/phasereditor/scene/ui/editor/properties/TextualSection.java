@@ -63,7 +63,7 @@ public class TextualSection extends ScenePropertySection {
 			{
 				dirtyModels = true;
 			}
-			
+
 			@Override
 			protected void accept2(String value) {
 				getModels().stream().forEach(model -> {
@@ -73,10 +73,12 @@ public class TextualSection extends ScenePropertySection {
 				getEditor().setDirty(true);
 			}
 		};
-		text.setText(flatValues_to_String(getModels().stream().map(model -> TextualComponent.get_text(model))));
+
+		addUpdate(() -> {
+			text.setText(flatValues_to_String(getModels().stream().map(model -> TextualComponent.get_text(model))));
+		});
 
 		return comp;
 	}
-
 
 }
