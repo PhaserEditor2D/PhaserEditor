@@ -121,7 +121,6 @@ public class InspectUI {
 			var editor = (AbstractTextEditor) activePage.openEditor(input, PhaserApiFileEditor.ID);
 
 			StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
-			textWidget.setEditable(false);
 
 			out.println("Open " + filePath.getFileName() + " at line " + linenum);
 

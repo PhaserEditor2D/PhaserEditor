@@ -47,6 +47,11 @@ public class PhaserApiFileEditor extends AbstractDecoratedTextEditor {
 
 	public PhaserApiFileEditor() {
 	}
+	
+	@Override
+	public boolean isEditable() {
+		return false;
+	}
 
 	@Override
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
@@ -56,9 +61,6 @@ public class PhaserApiFileEditor extends AbstractDecoratedTextEditor {
 
 		viewer.setGrammar(grammar);
 		viewer.setTheme(theme);
-		viewer.setEditable(false);
-		
-		viewer.getTextWidget().setEditable(false);
 
 		return viewer;
 	}
