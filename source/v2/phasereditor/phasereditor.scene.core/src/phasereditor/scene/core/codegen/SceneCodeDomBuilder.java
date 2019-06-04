@@ -217,11 +217,11 @@ public class SceneCodeDomBuilder {
 			}
 
 			if (model instanceof BitmapTextComponent) {
-				assignToVar = buildAlignProp(methodDecl, model) || assignToVar;
 				assignToVar = buildLetterSpacingProp(methodDecl, model) || assignToVar;
 			}
 
 			if (model instanceof DynamicBitmapTextComponent) {
+				assignToVar = buildAlignProp(methodDecl, model) || assignToVar;
 				assignToVar = buildDynamicBitmapTextProps(methodDecl, model) || assignToVar;
 			}
 
@@ -706,7 +706,10 @@ public class SceneCodeDomBuilder {
 
 		call.argLiteral(TextualComponent.get_text(model));
 		call.arg(BitmapTextComponent.get_fontSize(model));
-		call.arg(BitmapTextComponent.get_align(model));
+
+		if (!DynamicBitmapTextComponent.is(model)) {
+			call.arg(BitmapTextComponent.get_align(model));
+		}
 
 		methodDecl.getInstructions().add(call);
 
