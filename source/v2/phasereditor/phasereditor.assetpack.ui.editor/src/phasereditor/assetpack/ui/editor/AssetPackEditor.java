@@ -433,6 +433,15 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					throw new RuntimeException(e);
 				}
 			});
+		case css:
+			return openNewSimpleFileListDialog(section, type, () -> {
+				try {
+					return pack.discoverTextFiles("css");
+				} catch (CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			});
 		case script:
 		case plugin:
 		case scenePlugin:

@@ -39,6 +39,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import phasereditor.assetpack.core.AbstractFileAssetModel;
 import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
@@ -49,6 +50,7 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.CssAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
@@ -137,7 +139,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof IResource) {
 			return _workbenchLabelProvider.getImage(element);
 		}
-		
+
 		{
 			// the simple image assets
 
@@ -164,7 +166,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			if (element instanceof BitmapFontAssetModel) {
 				file = ((BitmapFontAssetModel) element).getTextureFile();
 			}
-			
+
 			if (file != null && file.exists()) {
 				try {
 					return getIcon(file);
@@ -251,13 +253,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			}
 		}
 
-		if (element instanceof ScriptAssetModel) {
-			IFile file = ((ScriptAssetModel) element).getUrlFile();
+		if (element instanceof ScriptAssetModel || element instanceof CssAssetModel) {
+			IFile file = ((AbstractFileAssetModel) element).getUrlFile();
 			if (file != null) {
 				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(file);
 			}
 		}
-		
+
 		if (element instanceof SceneFileAssetModel) {
 			IFile file = ((SceneFileAssetModel) element).getUrlFile();
 			if (file != null) {
@@ -292,7 +294,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof AnimationsAssetModel) {
 			return getAnimationIcon();
 		}
-		
+
 		if (element instanceof AnimationsModel) {
 			return getAnimationIcon();
 		}

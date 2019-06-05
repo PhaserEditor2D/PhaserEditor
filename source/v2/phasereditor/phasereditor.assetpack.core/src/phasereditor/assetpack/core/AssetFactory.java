@@ -270,6 +270,20 @@ public abstract class AssetFactory {
 			}
 
 		});
+		
+		cache(new AbstractFileAssetFactory(AssetType.css, "css") {
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new CssAssetModel(jsonData, section);
+			}
+
+			@Override
+			protected AbstractFileAssetModel makeAsset(String key, AssetSectionModel section) {
+				return new CssAssetModel(key, section);
+			}
+
+		});
 
 		cache(new ShaderAssetFactory());
 

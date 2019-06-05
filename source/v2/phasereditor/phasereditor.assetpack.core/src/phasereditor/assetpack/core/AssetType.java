@@ -76,6 +76,8 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	htmlTexture("html", "HTML Texture"),
 	
 	html("html", "HTML File"),
+	
+	css("css", "CSS File"),
 
 	glsl("glsl", "Shader File"), 
 	
