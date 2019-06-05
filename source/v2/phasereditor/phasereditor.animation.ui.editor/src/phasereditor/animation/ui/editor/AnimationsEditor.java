@@ -729,8 +729,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
 			_viewer = new AnimationsTreeViewer(_filteredTreeCanvas.getTree());
 
-			AssetPackUI.installAssetTooltips(_filteredTreeCanvas.getTree(), _filteredTreeCanvas.getUtils());
-
 			{
 				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
 				DropTarget target = new DropTarget(_filteredTreeCanvas.getTree(), options);
