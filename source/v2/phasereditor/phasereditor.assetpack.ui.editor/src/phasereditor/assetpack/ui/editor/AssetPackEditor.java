@@ -71,7 +71,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -110,6 +109,7 @@ import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeArrayContentProvider;
@@ -746,20 +746,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		createActions();
 
 		var comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(2, false));
-
-		var text = new Text(comp, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		text.addModifyListener(e -> _assetsCanvas.filter(text.getText()));
-
-		var btn = new Button(comp, SWT.PUSH);
-		btn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		btn.setText("Add");
-		btn.setImage(EditorSharedImages.getImage(IMG_ADD));
-		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
+		comp.setLayout(new GridLayout(1, false));
 
 		_assetsCanvas = new PackEditorCanvas(this, comp, 0);
-		_assetsCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		_assetsCanvas.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		_assetsCanvas.getUtils().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -1018,6 +1008,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private List<AssetPackEditorPropertyPage> _propertyPageList = new ArrayList<>();
 
+	private AssetPackEditorHugeToolbar _toolbar;
+
 	List<AssetPackEditorPropertyPage> getPropertyPageList() {
 		return _propertyPageList;
 	}
@@ -1065,7 +1057,27 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			};
 		}
 
+		if (adapter == IEditorHugeToolbar.class) {
+			if (_toolbar == null) {
+				_toolbar = new AssetPackEditorHugeToolbar();
+			}
+			return _toolbar;
+		}
+
 		return super.getAdapter(adapter);
+	}
+
+	class AssetPackEditorHugeToolbar implements IEditorHugeToolbar {
+
+		@Override
+		public void createContent(Composite parent) {
+			var btn = new Button(parent, SWT.PUSH);
+			btn.setText("Add Asset Key");
+			btn.setToolTipText("Add a new asset key to the pack editor.");
+			btn.setImage(EditorSharedImages.getImage(IMG_ADD));
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
+		}
+
 	}
 
 	public PackEditorCanvas getAssetsCanvas() {
