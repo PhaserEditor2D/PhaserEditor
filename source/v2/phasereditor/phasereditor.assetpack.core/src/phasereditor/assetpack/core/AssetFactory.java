@@ -270,7 +270,7 @@ public abstract class AssetFactory {
 			}
 
 		});
-		
+
 		cache(new AbstractFileAssetFactory(AssetType.css, "css") {
 
 			@Override
@@ -298,7 +298,7 @@ public abstract class AssetFactory {
 				return new BinaryAssetModel(key, section);
 			}
 		});
-		
+
 		cache(new AbstractFileAssetFactory(AssetType.sceneFile, "js") {
 
 			@Override
@@ -312,7 +312,6 @@ public abstract class AssetFactory {
 			}
 		});
 
-
 		cache(new AbstractFileAssetFactory(AssetType.script, "js") {
 
 			@Override
@@ -325,6 +324,8 @@ public abstract class AssetFactory {
 				return new ScriptAssetModel(key, section);
 			}
 		});
+		
+		cache(new MultiScriptAssetFactory());
 
 		cache(new AssetFactory(AssetType.plugin) {
 
@@ -573,6 +574,31 @@ public abstract class AssetFactory {
 			asset.setUrl(ProjectCore.getAssetUrl(file));
 
 			return asset;
+		}
+
+	}
+
+	public static class MultiScriptAssetFactory extends AssetFactory {
+
+		public MultiScriptAssetFactory() {
+			super(AssetType.scripts);
+		}
+
+		@Override
+		public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
+			AssetPackModel pack = section.getPack();
+
+			var asset = new MultiScriptAssetModel(pack.createKey(file), section);
+
+			asset.setKey(pack.createKey(file));
+			asset.getUrls().add(ProjectCore.getAssetUrl(file));
+
+			return asset;
+		}
+
+		@Override
+		public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+			return new MultiScriptAssetModel(jsonData, section);
 		}
 
 	}

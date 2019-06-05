@@ -130,13 +130,6 @@ public class AudioAssetModel extends AssetModel {
 
 	@Override
 	public void fileChanged(IFile file, IFile newFile) {
-		String url = getUrlFromFile(file);
-		String newUrl = getUrlFromFile(newFile);
-		for (int i = 0; i < _urls.size(); i++) {
-			String url2 = _urls.get(i);
-			if (url.equals(url2)) {
-				_urls.set(i, newUrl);
-			}
-		}
+		updateUrlsListWithFileChange(file, newFile, _urls);
 	}
 }

@@ -95,6 +95,7 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.MultiScriptAssetModel;
 import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -454,6 +455,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					throw new RuntimeException(e);
 				}
 			});
+		case scripts:
+			return openNewMultiScriptsListDialog(section);
 		case bitmapFont:
 			return openNewSimpleFileListDialog(section, type, () -> {
 				try {
@@ -487,6 +490,24 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		return Collections.emptyList();
+	}
+
+	private List<AssetModel> openNewMultiScriptsListDialog(AssetSectionModel section) throws CoreException {
+		AssetPackModel pack = getModel();
+		var jsFiles = pack.discoverTextFiles("js");
+
+		var shell = getEditorSite().getShell();
+
+		List<AssetModel> list = new ArrayList<>();
+
+		List<IFile> selectedFiles = AssetPackUI.browseManyAssetFile(pack, "scripts", jsFiles, shell);
+
+		var asset = new MultiScriptAssetModel(pack.createKey("scripts"), section);
+		var urls = asset.getUrlsFromFiles(selectedFiles);
+		asset.setUrls(urls);
+		list.add(asset);
+
+		return list;
 	}
 
 	protected void openAddAssetDialog(AssetType initialType) {

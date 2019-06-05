@@ -41,6 +41,8 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	
 	script("js", "JavaScript File"),
 	
+	scripts("js", "Multiple JavaScript Files"),
+	
 	image("png", "Image"),
 
 	svg("svg", "SVG Image"),

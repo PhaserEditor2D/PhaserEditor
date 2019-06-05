@@ -54,6 +54,7 @@ import phasereditor.assetpack.core.CssAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.MultiScriptAssetModel;
 import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -251,6 +252,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 					e.printStackTrace();
 				}
 			}
+		}
+
+		if (element instanceof MultiScriptAssetModel) {
+			return EditorSharedImages.getImage(IMG_GENERIC_EDITOR);
 		}
 
 		if (element instanceof ScriptAssetModel || element instanceof CssAssetModel) {

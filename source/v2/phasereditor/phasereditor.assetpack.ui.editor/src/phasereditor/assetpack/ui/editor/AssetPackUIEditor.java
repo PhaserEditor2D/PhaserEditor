@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
@@ -37,6 +39,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -151,5 +154,14 @@ public class AssetPackUIEditor {
 		list2.stream().forEach(consumer);
 
 		return result;
+	}
+
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+	}
+
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, msg, null));
 	}
 }

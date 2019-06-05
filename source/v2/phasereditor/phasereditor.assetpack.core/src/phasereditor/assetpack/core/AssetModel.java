@@ -211,6 +211,17 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 		return _section.getPack();
 	}
 
+	public void updateUrlsListWithFileChange(IFile file, IFile newFile, List<String> _urls) {
+		String url = getUrlFromFile(file);
+		String newUrl = getUrlFromFile(newFile);
+		for (int i = 0; i < _urls.size(); i++) {
+			String url2 = _urls.get(i);
+			if (url.equals(url2)) {
+				_urls.set(i, newUrl);
+			}
+		}
+	}
+	
 	public IFile getFileFromUrl(String url) {
 		return getPack().getFileFromUrl(url);
 	}

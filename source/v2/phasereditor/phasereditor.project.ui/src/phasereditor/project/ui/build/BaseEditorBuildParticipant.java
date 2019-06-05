@@ -108,7 +108,9 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 									}
 
 								} else {
-									buildEditor(editor);
+									if (acceptDelta(editor, delta)) {
+										buildEditor(editor);
+									}
 								}
 							}
 						}
@@ -116,6 +118,11 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 				}
 			}
 		});
+	}
+
+	@SuppressWarnings({ "unused" })
+	protected boolean acceptDelta(T editor, IResourceDelta delta) {
+		return true;
 	}
 
 	@Override
