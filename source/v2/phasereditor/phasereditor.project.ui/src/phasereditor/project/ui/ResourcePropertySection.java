@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyDialogAction;
@@ -64,6 +65,7 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 		return obj instanceof IResource;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
@@ -113,20 +115,12 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 			});
 		}
 
-		{
-			var btn = new Button(comp, SWT.PUSH);
-			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-			btn.setText("Open In System Explorer");
-			btn.setImage(EditorSharedImages.getImage(IMG_FOLDER_GO));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				openInSystemExplorer();
-			}));
-		}
 
 		{
+			new Label(comp, 0);
 			var btn = new Button(comp, SWT.PUSH);
-			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-			btn.setText("IDE Properties");
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			btn.setText("All Properties");
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 				var action = new PropertyDialogAction(
 						() -> PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
@@ -176,6 +170,7 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 				openInSystemExplorer();
 			}
 		});
+		manager.add(ProjectUI.getOpenTerminalAction(() -> getModels().get(0)));
 	}
 
 }

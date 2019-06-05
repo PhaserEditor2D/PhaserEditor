@@ -377,8 +377,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 					list.add(new ResourcePropertySection());
 					list.add(new ManyResourcesPropertySection());
 					list.add(new PhaserProjectPropertySection());
-					
-					
+
 					list.addAll(super.createSections());
 
 					return list;
