@@ -122,6 +122,7 @@ public class ProjectCore {
 		}
 	}
 
+	
 	public static void setActiveProject(IProject activeProject) {
 		_activeProject = activeProject;
 
@@ -134,7 +135,7 @@ public class ProjectCore {
 		} catch (CoreException e) {
 			logError(e);
 		}
-
+		
 		for (var l : _activeProjectListeners) {
 			l.accept(activeProject);
 		}

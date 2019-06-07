@@ -181,4 +181,35 @@ namespace PhaserEditor2D {
         get_borderWidth: get_property("borderWidth", 800),
         get_borderHeight: get_property("borderHeight", 600),
     };
+
+    export const TintComponent = {
+        get_isTinted: get_property("isTinted", false),
+        get_tintFill: get_property("tintFill", false),
+        get_tintTopLeft: get_property("tintTopLeft", 0xffffff),
+        get_tintTopRight: get_property("tintTopRight", 0xffffff),
+        get_tintBottomLeft: get_property("tintBottomLeft", 0xffffff),
+        get_tintBottomRight: get_property("tintBottomRight", 0xffffff),
+
+        updateObject: function (obj: Phaser.GameObjects.Components.Tint, data: any) {
+            if (this.get_isTinted(data)) {
+                if (this.get_tintFill(data)) {
+                    obj.setTintFill(
+                        this.get_tintTopLeft(data),
+                        this.get_tintTopRight(data),
+                        this.get_tintBottomLeft(data),
+                        this.get_tintBottomRight(data)
+                    );
+                } else {
+                    obj.setTint(
+                        this.get_tintTopLeft(data),
+                        this.get_tintTopRight(data),
+                        this.get_tintBottomLeft(data),
+                        this.get_tintBottomRight(data)
+                    );
+                }
+            } else {
+                obj.clearTint();
+            }
+        }
+    };
 }

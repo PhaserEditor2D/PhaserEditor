@@ -79,6 +79,7 @@ var PhaserEditor2D;
                     PhaserEditor2D.TransformComponent.updateObject(obj, data);
                     PhaserEditor2D.OriginComponent.updateObject(obj, data);
                     PhaserEditor2D.FlipComponent.updateObject(obj, data);
+                    PhaserEditor2D.TintComponent.updateObject(obj, data);
                     break;
             }
             switch (type) {

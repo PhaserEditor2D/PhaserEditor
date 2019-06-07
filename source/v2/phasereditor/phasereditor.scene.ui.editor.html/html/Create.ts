@@ -109,6 +109,7 @@ namespace PhaserEditor2D {
                     TransformComponent.updateObject(obj, data);
                     OriginComponent.updateObject(obj, data);
                     FlipComponent.updateObject(obj, data);
+                    TintComponent.updateObject(obj, data);
                     break;
             }
 

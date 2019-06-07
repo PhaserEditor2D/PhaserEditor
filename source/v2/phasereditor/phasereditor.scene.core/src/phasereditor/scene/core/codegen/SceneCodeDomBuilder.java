@@ -56,6 +56,7 @@ import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.core.TintComponent;
 import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.core.VisibleComponent;
@@ -67,6 +68,7 @@ import phasereditor.scene.core.codedom.MethodCallDom;
 import phasereditor.scene.core.codedom.MethodDeclDom;
 import phasereditor.scene.core.codedom.RawCode;
 import phasereditor.scene.core.codedom.UnitDom;
+import phasereditor.ui.Colors;
 
 /**
  * @author arian
@@ -233,6 +235,10 @@ public class SceneCodeDomBuilder {
 				assignToVar = buildTileSpriteProps(methodDecl, model) || assignToVar;
 			}
 
+			if (model instanceof TintComponent) {
+				assignToVar = buildTintProps(methodDecl, model) || assignToVar;
+			}
+
 			// do this always at the end!
 			if (GameObjectComponent.is(model)) {
 				assignToVar = buildObjectBuildCall(methodDecl, model) || assignToVar;
@@ -297,6 +303,38 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private static boolean buildTintProps(MethodDeclDom methodDecl, ObjectModel model) {
+
+		if (TintComponent.get_isTinted(model)) {
+			var assignToVar = false;
+
+			var name = varname(model);
+
+			var tintFill = TintComponent.get_tintFill(model);
+
+			var methodName = tintFill ? "setTintFill" : "setTint";
+			var def = TintComponent.tintBottomLeft_default;
+			var topLeft = TintComponent.get_tintTopLeft(model);
+			var topRight = TintComponent.get_tintTopRight(model);
+			var bottomLeft = TintComponent.get_tintBottomLeft(model);
+			var bottomRight = TintComponent.get_tintBottomRight(model);
+
+			if (topLeft != def || topRight != def || bottomLeft != def || bottomRight != def) {
+				var call = new MethodCallDom(methodName, name);
+				call.arg("0x" + Colors.hexColor(Colors.color(topLeft)));
+				call.arg("0x" + Colors.hexColor(Colors.color(topRight)));
+				call.arg("0x" + Colors.hexColor(Colors.color(bottomLeft)));
+				call.arg("0x" + Colors.hexColor(Colors.color(bottomRight)));
+				methodDecl.getInstructions().add(call);
+				assignToVar = true;
+			}
+
+			return assignToVar;
+		}
+
+		return false;
 	}
 
 	private static String getPhaserType(ObjectModel model) {

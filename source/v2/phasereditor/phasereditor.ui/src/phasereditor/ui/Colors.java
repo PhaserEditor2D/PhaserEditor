@@ -39,8 +39,19 @@ import org.eclipse.swt.graphics.RGBA;
 public class Colors {
 
 	public static String hexColor(RGB color) {
-		var value = ((color.red & 0xFF) << 16) | ((color.green & 0xFF) << 8) | ((color.blue & 0xFF) << 0);
+		var value = intColor(color);
 		return Integer.toHexString(value);
+	}
+
+	public static int intColor(RGB color) {
+		return ((color.red & 0xFF) << 16) | ((color.green & 0xFF) << 8) | ((color.blue & 0xFF) << 0);
+	}
+
+	public static RGB color(int rgb) {
+		int r = (rgb >> 16) & 0xFF;
+		int g = (rgb >> 8) & 0xFF;
+		int b = (rgb >> 0) & 0xFF;
+		return new RGB(r, g, b);
 	}
 
 	public static Color color(String webColor) {

@@ -188,6 +188,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		@Override
 		protected void accept(boolean value) {
 			wrapOperation(() -> accept2(value));
+			getEditor().setDirty(value);
 		}
 
 		protected abstract void accept2(boolean value);

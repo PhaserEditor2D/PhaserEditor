@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public abstract class BaseSpriteModel extends TransformModel implements
+public abstract class BaseSpriteModel extends TintedModel implements
 
 		FlipComponent,
 
@@ -46,7 +46,7 @@ public abstract class BaseSpriteModel extends TransformModel implements
 		OriginComponent.init(this);
 
 		TextureComponent.init(this);
-
+		
 	}
 
 	@Override

@@ -65,11 +65,11 @@ public class ScenePropertyPage extends FormPropertyPage {
 		// Scene sections
 
 		list.add(new SnappingSection(this));
-		
+
 		list.add(new DisplaySection(this));
-		
+
 		list.add(new CompilerSection(this));
-		
+
 		list.add(new RendererSection(this));
 
 		// Object sections
@@ -87,6 +87,8 @@ public class ScenePropertyPage extends FormPropertyPage {
 		list.add(new FlipSection(this));
 
 		list.add(new ScrollFactorSection(this));
+
+		list.add(new TintSection(this));
 
 		list.add(new TextureSection(this));
 
