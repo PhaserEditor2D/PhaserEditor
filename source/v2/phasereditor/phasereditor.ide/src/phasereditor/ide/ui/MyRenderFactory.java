@@ -158,9 +158,7 @@ class HugeToolbar extends Composite implements IPartListener {
 		{
 			_centerArea = new Composite(this, 0);
 			_centerArea.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			var layout2 = new RowLayout();
-			layout2.marginWidth = layout2.marginHeight = 0;
-			_centerArea.setLayout(layout2);
+			_centerArea.setLayout(layout);
 		}
 
 		var rightArea = new Composite(this, 0);
@@ -173,7 +171,7 @@ class HugeToolbar extends Composite implements IPartListener {
 
 		{
 			var sep = new Label(rightArea, SWT.SEPARATOR);
-			sep.setLayoutData(new RowData(SWT.DEFAULT, getFont().getFontData()[0].getHeight()));
+			sep.setLayoutData(new RowData(SWT.DEFAULT, 15));
 		}
 
 		new PerspectiveSwitcherWrapper(rightArea);

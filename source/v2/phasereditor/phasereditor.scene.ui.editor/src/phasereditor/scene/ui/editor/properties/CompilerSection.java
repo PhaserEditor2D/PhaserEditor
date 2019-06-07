@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SceneModel.MethodContextType;
+import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -320,24 +321,35 @@ public class CompilerSection extends BaseDesignSection {
 		}
 
 		{
-			var btn = new Button(comp, 0);
-			btn.setAlignment(SWT.LEFT);
-			btn.setText("Compile Scene");
-			btn.setImage(EditorSharedImages.getImage(IMG_BUILD));
-			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().compile()));
+			createCompileButton(comp, getEditor())
+
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
 		}
 
 		{
-			var btn = new Button(comp, 0);
-			btn.setAlignment(SWT.LEFT);
-			btn.setText("Go To Code");
-			btn.setImage(EditorSharedImages.getImage(IMG_GOTO_SOURCE));
-			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> getEditor().openSourceFile()));
+			createGoToCodeButton(comp, getEditor())
+
+					.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		}
 
 		return comp;
+	}
+
+	public static Button createGoToCodeButton(Composite comp, SceneEditor editor) {
+		var btn = new Button(comp, 0);
+		btn.setText("Go To Code");
+		btn.setImage(EditorSharedImages.getImage(IMG_GOTO_SOURCE));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> editor.openSourceFile()));
+		return btn;
+	}
+
+	public static Button createCompileButton(Composite comp, SceneEditor editor) {
+		var btn = new Button(comp, 0);
+		btn.setText("Compile Scene");
+		btn.setImage(EditorSharedImages.getImage(IMG_BUILD));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> editor.compile()));
+		return btn;
 	}
 
 	@Override

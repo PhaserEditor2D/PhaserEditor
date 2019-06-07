@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg31"
+   sodipodi:docname="page-white-refresh.svg"
+   inkscape:export-filename="./page-white-refresh@2x.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata37">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs35">
+    <linearGradient
+       y2="6.2048368"
+       x2="4.5126086"
+       y1="-6.2048368"
+       x1="-7.897065"
+       id="arrow-backing"
+       gradientTransform="matrix(0.88640526,0,0,1.1281521,-0.889831,1.779661)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop4780"
+         stop-color="#72c466"
+         offset="0%" />
+      <stop
+         id="stop4782"
+         stop-color="#22601e"
+         offset="100%" />
+    </linearGradient>
+    <linearGradient
+       y2="4.9749372"
+       x2="3.8693956"
+       y1="-4.9749372"
+       x1="-6.0804788"
+       id="arrow-center"
+       gradientTransform="matrix(0.90453403,0,0,1.1055416,-0.889831,1.779661)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop4785"
+         stop-color="#a7d69e"
+         offset="0%" />
+      <stop
+         id="stop4787"
+         stop-color="#78bd72"
+         offset="100%" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1869"
+     inkscape:window-height="1025"
+     id="namedview33"
+     showgrid="false"
+     inkscape:zoom="20.85965"
+     inkscape:cx="5.7426298"
+     inkscape:cy="8.0349965"
+     inkscape:window-x="51"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg31" />
+  <title
+     id="title2">White Page</title>
+  <desc
+     id="desc4">White Page</desc>
+  <g
+     id="icon"
+     transform="translate(8,8)">
+    <defs
+       id="defs18">
+      <linearGradient
+         id="center"
+         x1="100%"
+         y1="0%"
+         x2="0%"
+         y2="100%">
+        <stop
+           offset="0%"
+           stop-color="#cacaca"
+           id="stop6" />
+        <stop
+           offset="10%"
+           stop-color="#e9e9e9"
+           id="stop8" />
+        <stop
+           offset="50%"
+           stop-color="#fff"
+           id="stop10" />
+      </linearGradient>
+      <linearGradient
+         id="corner"
+         x1="0%"
+         y1="100%"
+         x2="100%"
+         y2="0%">
+        <stop
+           offset="0%"
+           stop-color="#fff"
+           id="stop13" />
+        <stop
+           offset="100%"
+           stop-color="#c1c1c1"
+           id="stop15" />
+      </linearGradient>
+    </defs>
+    <path
+       fill="#000"
+       opacity="0.21"
+       d="M0,-8 h-6 a1,1 0 0,0 -1,1 v14 a1,1 0 0,0 1,1 h12 a1,1 0 0,0 1,-1 v-11.5 l-3.5,-3.5 l-4.5,0 Z"
+       id="path20" />
+    <path
+       fill="#fff"
+       d="M0,-7 h-6 v14 h12 v-11 l-3,-3 h-3 Z"
+       id="path22" />
+    <path
+       fill="url(#center)"
+       d="M0,-6 h-5 v12 h10 v-10 l-2,-2 h-2 Z"
+       id="path24" />
+    <path
+       fill="#fff"
+       d="M2,-7 h1 l3,3 v1 h-4 v-4 Z"
+       id="path26" />
+    <path
+       fill="url(#corner)"
+       d="M3,-7 l0.1,0 l3,3 l-3.1,0 v-3 Z"
+       id="path28" />
+  </g>
+  <g
+     transform="translate(11,9)"
+     id="icon-6">
+    <defs
+       id="defs4790">
+      <linearGradient
+         y2="1"
+         x2="1"
+         y1="0"
+         x1="0"
+         id="linearGradient4815">
+        <stop
+           id="stop4811"
+           stop-color="#72c466"
+           offset="0%" />
+        <stop
+           id="stop4813"
+           stop-color="#22601e"
+           offset="100%" />
+      </linearGradient>
+      <linearGradient
+         y2="1"
+         x2="1"
+         y1="0"
+         x1="0"
+         id="linearGradient4821">
+        <stop
+           id="stop4817"
+           stop-color="#a7d69e"
+           offset="0%" />
+        <stop
+           id="stop4819"
+           stop-color="#78bd72"
+           offset="100%" />
+      </linearGradient>
+    </defs>
+    <path
+       id="path4792"
+       d="m -6,-1 a 4,4 0 0 1 4,-4 H 0 V -7 L 3.5,-3.5 0,0 v -2 h -2 a 1,1 0 0 0 -1,1 H -7 M 0,1 H 4 A 4,4 0 0 1 0,5 H -2 V 7 L -5.5,3.5 -2,0 V 2 H 0 A 1,1 0 0 0 1,1 Z"
+       inkscape:connector-curvature="0"
+       style="fill:url(#arrow-backing)" />
+    <path
+       id="path4794"
+       d="m -5,-2 a 3,3 0 0 1 3,-2 h 2.5 v -1.5 l 2,2 -2,2 V -3 H -2 a 1.5,1.5 0 0 0 -1.5,1 h -2 M 1,2 H 3 A 3,3 0 0 1 0,4 h -2.5 v 1.5 l -2,-2 2,-2 V 3 H 0 A 1.5,1.5 0 0 0 1.5,2 h 2 z"
+       inkscape:connector-curvature="0"
+       style="fill:url(#arrow-center)" />
+  </g>
+</svg>

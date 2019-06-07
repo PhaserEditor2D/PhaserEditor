@@ -30,7 +30,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.scene.core.SceneModel;
+import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -38,9 +40,9 @@ import phasereditor.webrun.ui.WebRunUI;
  * @author arian
  *
  */
-public class RendererSection extends BaseDesignSection {
+public class WebViewSection extends BaseDesignSection {
 
-	public RendererSection(FormPropertyPage page) {
+	public WebViewSection(FormPropertyPage page) {
 		super("WebView", page);
 	}
 
@@ -58,21 +60,29 @@ public class RendererSection extends BaseDesignSection {
 			var btn = new Button(comp, SWT.PUSH);
 			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			btn.setText("System Browser");
+			btn.setImage(EditorSharedImages.getImage(IMG_WORLD));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 				WebRunUI.openBrowser(getEditor().getBroker().getUrl());
 			}));
 		}
 
 		{
-			var btn = new Button(comp, SWT.PUSH);
+			var btn = createRefreshButton(comp, getEditor());
 			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			btn.setText("Refresh");
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				getEditor().getBroker().sendAll(new ReloadPageMessage());
-			}));
 		}
 
 		return comp;
+	}
+
+	public static Button createRefreshButton(Composite comp, SceneEditor editor) {
+		var btn = new Button(comp, SWT.PUSH);
+
+		btn.setText("Refresh");
+		btn.setImage(EditorSharedImages.getImage(IMG_PAGE_REFRESH));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			editor.getBroker().sendAll(new ReloadPageMessage());
+		}));
+		return btn;
 	}
 
 }

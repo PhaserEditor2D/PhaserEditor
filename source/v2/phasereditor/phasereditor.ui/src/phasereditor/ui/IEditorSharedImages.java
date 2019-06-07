@@ -108,6 +108,7 @@ public interface IEditorSharedImages {
 	String IMG_TAG_GREEN = "icons/tag-green.png";
 	String IMG_MENU_SEARCH = "icons/menu-magnify.png";
 	String IMG_SEARCH = "icons/magnifier.png";
+	String IMG_PAGE_REFRESH = "icons/page-white-refresh.png";
 
 	String IMG_TEXT_ALIGN_LEFT = "icons/text_align_left.png";
 	String IMG_TEXT_ALIGN_CENTER = "icons/text_align_center.png";

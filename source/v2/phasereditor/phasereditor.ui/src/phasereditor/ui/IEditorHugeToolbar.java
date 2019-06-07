@@ -26,8 +26,10 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * @author arian
@@ -94,5 +96,11 @@ public interface IEditorHugeToolbar {
 			return _action;
 		}
 
+	}
+	
+	public default Label sep(Composite parent) {
+		var label = new Label(parent, SWT.SEPARATOR | SWT.VERTICAL);
+		label.setLayoutData(new RowData(SWT.DEFAULT, 15));
+		return label;
 	}
 }

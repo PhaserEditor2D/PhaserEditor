@@ -70,7 +70,7 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		list.add(new CompilerSection(this));
 
-		list.add(new RendererSection(this));
+		list.add(new WebViewSection(this));
 
 		// Object sections
 
