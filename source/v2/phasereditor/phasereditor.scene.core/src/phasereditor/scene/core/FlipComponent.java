@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
@@ -29,7 +31,7 @@ package phasereditor.scene.core;
 public interface FlipComponent {
 
 	// flip
-	
+
 	static String flipX_name = "flipX";
 	static String flipY_name = "flipY";
 
@@ -51,13 +53,23 @@ public interface FlipComponent {
 	static void set_flipY(ObjectModel obj, boolean flipY) {
 		obj.put("flipY", flipY);
 	}
-	
+
 	static boolean is(Object model) {
 		return model instanceof FlipComponent;
 	}
-	
+
 	static void init(ObjectModel obj) {
 		set_flipX(obj, flipX_default);
 		set_flipY(obj, flipY_default);
+	}
+
+	static void utils_write(ObjectModel model, JSONObject data) {
+		data.put(flipX_name, FlipComponent.get_flipX(model), flipX_default);
+		data.put(flipY_name, FlipComponent.get_flipY(model), flipY_default);
+	}
+
+	static void utils_read(ObjectModel model, JSONObject data) {
+		FlipComponent.set_flipX(model, data.optBoolean(flipX_name, flipX_default));
+		FlipComponent.set_flipY(model, data.optBoolean(flipY_name, flipY_default));
 	}
 }

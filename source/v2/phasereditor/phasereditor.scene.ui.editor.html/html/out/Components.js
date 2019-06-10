@@ -52,7 +52,7 @@ var PhaserEditor2D;
         get_originY: get_property("originY", 0.5),
         set_originY: set_property("originY"),
         updateObject: function (obj, data) {
-            obj.setOrigin(this.get_originX(data), this.get_originY(data));
+            obj.setOrigin(data.originX || 0.5, data.originY || 0.5);
         },
         updateData: function (obj, data) {
             this.set_originX(data, obj.originX);
@@ -147,16 +147,17 @@ var PhaserEditor2D;
             obj.style.fixedHeight = data.fixedHeight || 0;
             obj.style.baselineX = data.baselineX || 1.2;
             obj.style.baselineY = data.baselineY || 1.4;
-            obj.style.shadowOffsetX = data.shadowOffsetX || 0;
-            obj.style.shadowOffsetY = data.shadowOffsetY || 0;
-            obj.style.shadowColor = data.shadowColor || "#000";
-            obj.style.shadowBlur = data.shadowBlur || 0;
-            obj.style.shadowStroke = data.shadowStroke || false;
-            obj.style.shadowFill = data.shadowFill || false;
+            obj.style.shadowOffsetX = data["shadow.offsetX"] || 0;
+            obj.style.shadowOffsetY = data["shadow.offsetY"] || 0;
+            obj.style.shadowColor = data["shadow.color"] || "#000";
+            obj.style.shadowBlur = data["shadow.blur"] || 0;
+            obj.style.shadowStroke = data["shadow.stroke"] || false;
+            obj.style.shadowFill = data["shadow.fill"] || false;
+            obj.style.setWordWrapWidth(data["wordWrap.width"] || 0, data["wordWrap.useAdvancedWrap"] || false);
             obj.style.update(true);
             obj.setLineSpacing(data.lineSpacing || 0);
             obj.setPadding(data.paddingLeft, data.paddingTop, data.paddingRight, data.paddingBottom);
-            obj.setWordWrapWidth(data.wordWrapWidth || 0, data.wordWrapUseAdvanced || false);
+            obj.setOrigin(data.originX || 0, data.originY || 0);
         }
     };
     PhaserEditor2D.VisibleComponent = {

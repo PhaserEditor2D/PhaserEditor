@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IFile;
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -52,6 +53,8 @@ import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.SceneModel.MethodContextType;
 import phasereditor.scene.core.ScrollFactorComponent;
 import phasereditor.scene.core.SpriteModel;
+import phasereditor.scene.core.TextComponent;
+import phasereditor.scene.core.TextModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
@@ -174,6 +177,10 @@ public class SceneCodeDomBuilder {
 
 				methodCall = buildCreateImage(methodDecl, (ImageModel) model, sceneModel);
 
+			} else if (model instanceof TextModel) {
+
+				methodCall = buildCreateText(methodDecl, (TextModel) model, sceneModel);
+
 			}
 
 			var assignToVar = false;
@@ -237,6 +244,14 @@ public class SceneCodeDomBuilder {
 
 			if (model instanceof TintComponent) {
 				assignToVar = buildTintProps(methodDecl, model) || assignToVar;
+			}
+
+			if (TextComponent.is(model)) {
+				assignToVar = buildTextProps(methodDecl, (TextModel) model) || assignToVar;
+			}
+
+			if (TextComponent.is(model)) {
+				assignToVar = buildDisplayOrigin(methodDecl, model) || assignToVar;
 			}
 
 			// do this always at the end!
@@ -303,6 +318,71 @@ public class SceneCodeDomBuilder {
 		}
 
 		return methodDecl;
+	}
+
+	private static boolean buildDisplayOrigin(MethodDeclDom methodDecl, ObjectModel model) {
+
+		if (OriginComponent.get_originX(model) != OriginComponent.originX_default(model)
+				|| OriginComponent.get_originY(model) != OriginComponent.originY_default(model)) {
+
+			var name = varname(model);
+			var call = new MethodCallDom("updateDisplayOrigin", name);
+			methodDecl.getInstructions().add(call);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean buildTextProps(MethodDeclDom methodDecl, TextModel model) {
+		var assignToVar = false;
+
+		var name = varname(model);
+
+		if (TextComponent.get_lineSpacing(model) != TextComponent.lineSpacing_default) {
+			var call = new MethodCallDom("setLineSpacing", name);
+			call.arg(TextComponent.get_lineSpacing(model));
+			assignToVar = true;
+			methodDecl.getInstructions().add(call);
+		}
+
+		{
+			var l = TextComponent.get_paddingLeft(model);
+			var t = TextComponent.get_paddingTop(model);
+			var r = TextComponent.get_paddingRight(model);
+			var b = TextComponent.get_paddingBottom(model);
+
+			if (l != 0 || t != 0 || r != 0 || b != 0) {
+				var call = new MethodCallDom("setPadding", name);
+				call.arg(l);
+				call.arg(t);
+				call.arg(r);
+				call.arg(b);
+				assignToVar = true;
+				methodDecl.getInstructions().add(call);
+			}
+		}
+
+		return assignToVar;
+	}
+
+	private static MethodCallDom buildCreateText(MethodDeclDom methodDecl, TextModel model, SceneModel sceneModel) {
+		var call = new MethodCallDom(getObjectFactoryMethod("text", model), getObjectFactoryPath(sceneModel));
+
+		call.arg(TransformComponent.get_x(model));
+		call.arg(TransformComponent.get_y(model));
+
+		var text = TextualComponent.get_text(model);
+		call.argLiteral(text);
+
+		var style = new JSONObject();
+		model.writeStyle(style);
+		call.arg(style.toString(4));
+
+		methodDecl.getInstructions().add(call);
+
+		return call;
 	}
 
 	private static boolean buildTintProps(MethodDeclDom methodDecl, ObjectModel model) {

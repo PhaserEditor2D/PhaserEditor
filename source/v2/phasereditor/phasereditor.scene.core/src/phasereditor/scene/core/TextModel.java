@@ -32,6 +32,10 @@ import static phasereditor.scene.core.TextualComponent.*;
  */
 public class TextModel extends TintedModel implements
 
+		FlipComponent,
+
+		OriginComponent,
+
 		TextComponent
 
 {
@@ -40,6 +44,10 @@ public class TextModel extends TintedModel implements
 
 	public TextModel() {
 		super(TYPE);
+
+		OriginComponent.init(this);
+		FlipComponent.init(this);
+		TextComponent.init(this);
 		TextComponent.init(this);
 	}
 
@@ -47,8 +55,16 @@ public class TextModel extends TintedModel implements
 	public void write(JSONObject data) {
 		super.write(data);
 
+		OriginComponent.utils_write(this, data);
+		FlipComponent.utils_write(this, data);
+
 		data.put(text_name, get_text(this), text_default);
 
+		writeStyle(data);
+
+	}
+
+	public void writeStyle(JSONObject data) {
 		data.put(align_name, get_align(this), align_default);
 		data.put(fontFamily_name, get_fontFamily(this), fontFamily_default);
 		data.put(fontSize_name, get_fontSize(this), fontSize_default);
@@ -87,6 +103,9 @@ public class TextModel extends TintedModel implements
 	@Override
 	public void read(JSONObject data, IProject project) {
 		super.read(data, project);
+
+		OriginComponent.utils_read(this, data);
+		FlipComponent.utils_read(this, data);
 
 		set_text(this, data.optString(text_name, text_default));
 

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
@@ -34,7 +36,7 @@ public interface OriginComponent {
 
 	static float originX_default(ObjectModel obj) {
 
-		if (obj instanceof BitmapTextModel) {
+		if (obj instanceof BitmapTextModel || obj instanceof TextModel) {
 			return 0;
 		}
 
@@ -42,7 +44,7 @@ public interface OriginComponent {
 	}
 
 	static float originY_default(ObjectModel obj) {
-		if (obj instanceof BitmapTextModel) {
+		if (obj instanceof BitmapTextModel || obj instanceof TextModel) {
 			return 0;
 		}
 
@@ -65,13 +67,27 @@ public interface OriginComponent {
 		obj.put("originY", originY);
 	}
 
+	// utils
+
 	static boolean is(Object model) {
 		return model instanceof OriginComponent;
 	}
-	
+
 	static void init(ObjectModel obj) {
 		set_originX(obj, originX_default(obj));
 		set_originY(obj, originY_default(obj));
+	}
+
+	static void utils_write(ObjectModel model, JSONObject data) {
+		data.put(originX_name, OriginComponent.get_originX(model), OriginComponent.originX_default(model));
+		data.put(originY_name, OriginComponent.get_originY(model), OriginComponent.originY_default(model));
+	}
+
+	static void utils_read(ObjectModel model, JSONObject data) {
+		OriginComponent.set_originX(model,
+				(float) data.optDouble(originX_name, OriginComponent.originX_default(model)));
+		OriginComponent.set_originY(model,
+				(float) data.optDouble(originY_name, OriginComponent.originY_default(model)));
 	}
 
 }

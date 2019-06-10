@@ -52,10 +52,6 @@ public class BitmapTextModel extends TintedModel implements
 
 		OriginComponent.init(this);
 
-		// by default bitmap text has 0,0 origin
-		OriginComponent.set_originX(this, 0);
-		OriginComponent.set_originY(this, 0);
-
 		TextualComponent.init(this);
 		BitmapTextComponent.init(this);
 	}
@@ -64,8 +60,7 @@ public class BitmapTextModel extends TintedModel implements
 	public void write(JSONObject data) {
 		super.write(data);
 
-		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
-		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
+		OriginComponent.utils_write(this, data);
 
 		data.put(text_name, TextualComponent.get_text(this), text_default);
 
@@ -80,10 +75,8 @@ public class BitmapTextModel extends TintedModel implements
 	public void read(JSONObject data, IProject project) {
 		super.read(data, project);
 
-		// origin default at 0,0
-		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, 0));
-		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, 0));
-
+		OriginComponent.utils_read(this, data);
+		
 		TextualComponent.set_text(this, data.optString(text_name, text_default));
 
 		BitmapTextComponent.set_fontAssetKey(this, data.optString(fontAssetKey_name, fontAssetKey_default));

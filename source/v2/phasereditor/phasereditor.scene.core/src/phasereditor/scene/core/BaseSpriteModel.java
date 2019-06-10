@@ -54,8 +54,7 @@ public abstract class BaseSpriteModel extends TintedModel implements
 
 		super.write(data);
 
-		data.put(flipX_name, FlipComponent.get_flipX(this), flipX_default);
-		data.put(flipY_name, FlipComponent.get_flipY(this), flipY_default);
+		FlipComponent.utils_write(this, data);
 
 		data.put(originX_name, OriginComponent.get_originX(this), OriginComponent.originX_default(this));
 		data.put(originY_name, OriginComponent.get_originY(this), OriginComponent.originY_default(this));
@@ -69,8 +68,7 @@ public abstract class BaseSpriteModel extends TintedModel implements
 
 		super.read(data, project);
 
-		FlipComponent.set_flipX(this, data.optBoolean(flipX_name, flipX_default));
-		FlipComponent.set_flipY(this, data.optBoolean(flipY_name, flipY_default));
+		FlipComponent.utils_read(this, data);
 
 		OriginComponent.set_originX(this, (float) data.optDouble(originX_name, OriginComponent.originX_default(this)));
 		OriginComponent.set_originY(this, (float) data.optDouble(originY_name, OriginComponent.originY_default(this)));

@@ -181,81 +181,81 @@ public interface TextComponent extends TextualComponent {
 
 	// shadowBlur
 
-	static String shadowBlur_name = "shadowBlur";
+	static String shadowBlur_name = "shadow.blur";
 
 	static int shadowBlur_default = 0;
 
 	static int get_shadowBlur(ObjectModel obj) {
-		return (int) obj.get("shadowBlur");
+		return (int) obj.get("shadow.blur");
 	}
 
 	static void set_shadowBlur(ObjectModel obj, int shadowBlur) {
-		obj.put("shadowBlur", shadowBlur);
+		obj.put("shadow.blur", shadowBlur);
 	}
 
 	// shadowColor
 
-	static String shadowColor_name = "shadowColor";
+	static String shadowColor_name = "shadow.color";
 
 	static String shadowColor_default = "#000000";
 
 	static String get_shadowColor(ObjectModel obj) {
-		return (String) obj.get("shadowColor");
+		return (String) obj.get("shadow.color");
 	}
 
 	static void set_shadowColor(ObjectModel obj, String shadowColor) {
-		obj.put("shadowColor", shadowColor);
+		obj.put("shadow.color", shadowColor);
 	}
 
 	// shadowFill
 
-	static String shadowFill_name = "shadowFill";
+	static String shadowFill_name = "shadow.fill";
 
 	static boolean shadowFill_default = false;
 
 	static boolean get_shadowFill(ObjectModel obj) {
-		return (boolean) obj.get("shadowFill");
+		return (boolean) obj.get("shadow.fill");
 	}
 
 	static void set_shadowFill(ObjectModel obj, boolean shadowFill) {
-		obj.put("shadowFill", shadowFill);
+		obj.put("shadow.fill", shadowFill);
 	}
 
 	// shadowOffset
-	static String shadowOffsetX_name = "shadowOffsetX";
-	static String shadowOffsetY_name = "shadowOffsetY";
+	static String shadowOffsetX_name = "shadow.offsetX";
+	static String shadowOffsetY_name = "shadow.offsetY";
 
 	static int shadowOffsetX_default = 0;
 	static int shadowOffsetY_default = 0;
 
 	static int get_shadowOffsetX(ObjectModel obj) {
-		return (int) obj.get("shadowOffsetX");
+		return (int) obj.get("shadow.offsetX");
 	}
 
 	static void set_shadowOffsetX(ObjectModel obj, int shadowOffsetX) {
-		obj.put("shadowOffsetX", shadowOffsetX);
+		obj.put("shadow.offsetX", shadowOffsetX);
 	}
 
 	static int get_shadowOffsetY(ObjectModel obj) {
-		return (int) obj.get("shadowOffsetY");
+		return (int) obj.get("shadow.offsetY");
 	}
 
 	static void set_shadowOffsetY(ObjectModel obj, int shadowOffsetY) {
-		obj.put("shadowOffsetY", shadowOffsetY);
+		obj.put("shadow.offsetY", shadowOffsetY);
 	}
 
 	// shadowStroke
 
-	static String shadowStroke_name = "shadowStroke";
+	static String shadowStroke_name = "shadow.stroke";
 
 	static boolean shadowStroke_default = false;
 
 	static boolean get_shadowStroke(ObjectModel obj) {
-		return (boolean) obj.get("shadowStroke");
+		return (boolean) obj.get("shadow.stroke");
 	}
 
 	static void set_shadowStroke(ObjectModel obj, boolean shadowStroke) {
-		obj.put("shadowStroke", shadowStroke);
+		obj.put("shadow.stroke", shadowStroke);
 	}
 
 	// stroke
@@ -372,30 +372,30 @@ public interface TextComponent extends TextualComponent {
 
 	// wordWrapWidth
 
-	static String wordWrapWidth_name = "wordWrapWidth";
+	static String wordWrapWidth_name = "wordWrap.width";
 
 	static int wordWrapWidth_default = 0;
 
 	static int get_wordWrapWidth(ObjectModel obj) {
-		return (int) obj.get("wordWrapWidth");
+		return (int) obj.get("wordWrap.width");
 	}
 
 	static void set_wordWrapWidth(ObjectModel obj, int wordWrapWidth) {
-		obj.put("wordWrapWidth", wordWrapWidth);
+		obj.put("wordWrap.width", wordWrapWidth);
 	}
 
 	// wordWrapUseAdvanced
 
-	static String wordWrapUseAdvanced_name = "wordWrapUseAdvanced";
+	static String wordWrapUseAdvanced_name = "wordWrap.useAdvancedWrap";
 
 	static boolean wordWrapUseAdvanced_default = false;
 
 	static boolean get_wordWrapUseAdvanced(ObjectModel obj) {
-		return (boolean) obj.get("wordWrapUseAdvanced");
+		return (boolean) obj.get("wordWrap.useAdvancedWrap");
 	}
 
 	static void set_wordWrapUseAdvanced(ObjectModel obj, boolean wordWrapUseAdvanced) {
-		obj.put("wordWrapUseAdvanced", wordWrapUseAdvanced);
+		obj.put("wordWrap.useAdvancedWrap", wordWrapUseAdvanced);
 	}
 
 	// utils
