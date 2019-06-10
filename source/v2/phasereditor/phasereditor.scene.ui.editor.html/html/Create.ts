@@ -55,6 +55,7 @@ namespace PhaserEditor2D {
                     obj = add.tileSprite(x, y, width, height, key, frame);
 
                     break;
+
                 case "BitmapText":
                     var x = TransformComponent.get_x(data);
                     var y = TransformComponent.get_y(data);
@@ -72,6 +73,15 @@ namespace PhaserEditor2D {
                     var key = BitmapTextComponent.get_fontAssetKey(data);
 
                     obj = add.dynamicBitmapText(x, y, key);
+
+                    break;
+
+                case "Text":
+                    var x = TransformComponent.get_x(data);
+                    var y = TransformComponent.get_y(data);
+                    var text = TextualComponent.get_text(data);
+
+                    obj = add.text(x, y, text);
 
                     break;
             }
@@ -105,6 +115,7 @@ namespace PhaserEditor2D {
                 case "TileSprite":
                 case "BitmapText":
                 case "DynamicBitmapText":
+                case "Text":
                     GameObjectEditorComponent.updateObject(obj, data);
                     TransformComponent.updateObject(obj, data);
                     OriginComponent.updateObject(obj, data);
@@ -123,6 +134,10 @@ namespace PhaserEditor2D {
                 case "DynamicBitmapText":
                     BitmapTextComponent.updateObject(obj, data);
                     DynamicBitmapTextComponent.updateObject(obj, data);
+                    break;
+                case "Text":
+                    TextualComponent.updateObject(obj, data);
+                    TextComponent.updateObject(obj, data);
                     break;
             }
         }
@@ -146,7 +161,7 @@ namespace PhaserEditor2D {
             if (sprite.flipY) {
                 y = 2 * sprite.displayOriginY - y;
             }
-            
+
             var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
 
             return alpha >= alphaTolerance;

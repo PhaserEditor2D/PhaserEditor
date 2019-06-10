@@ -127,7 +127,37 @@ var PhaserEditor2D;
         }
     };
     PhaserEditor2D.TextualComponent = {
-        get_text: get_property("text", "")
+        get_text: get_property("text", ""),
+        updateObject: function (obj, data) {
+            obj.text = data.text;
+        }
+    };
+    PhaserEditor2D.TextComponent = {
+        updateObject: function (obj, data) {
+            obj.style.align = data.align || "left";
+            obj.style.fontFamily = data.fontFamily || "Courier";
+            obj.style.fontSize = data.fontSize || "16px";
+            obj.style.fontStyle = data.fontStyle || "normal";
+            obj.style.backgroundColor = data.backgroundColor || null;
+            obj.style.color = data.color || "#fff";
+            obj.style.stroke = data.stroke || "#fff";
+            obj.style.strokeThickness = data.strokeThickness || 0;
+            obj.style.maxLines = data.maxLines || 0;
+            obj.style.fixedWidth = data.fixedWidth || 0;
+            obj.style.fixedHeight = data.fixedHeight || 0;
+            obj.style.baselineX = data.baselineX || 1.2;
+            obj.style.baselineY = data.baselineY || 1.4;
+            obj.style.shadowOffsetX = data.shadowOffsetX || 0;
+            obj.style.shadowOffsetY = data.shadowOffsetY || 0;
+            obj.style.shadowColor = data.shadowColor || "#000";
+            obj.style.shadowBlur = data.shadowBlur || 0;
+            obj.style.shadowStroke = data.shadowStroke || false;
+            obj.style.shadowFill = data.shadowFill || false;
+            obj.style.update(true);
+            obj.setLineSpacing(data.lineSpacing || 0);
+            obj.setPadding(data.paddingLeft, data.paddingTop, data.paddingRight, data.paddingBottom);
+            obj.setWordWrapWidth(data.wordWrapWidth || 0, data.wordWrapUseAdvanced || false);
+        }
     };
     PhaserEditor2D.VisibleComponent = {
         get_visible: get_property("visible", true),

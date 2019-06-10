@@ -23,6 +23,7 @@ package phasereditor.scene.ui.editor;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.action.Action;
@@ -33,12 +34,20 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.scene.core.NameComputer;
+import phasereditor.scene.core.TextModel;
+import phasereditor.scene.core.TextualComponent;
+import phasereditor.scene.core.VariableComponent;
+import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
+import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.properties.CompilerSection;
 import phasereditor.scene.ui.editor.properties.SceneEditorCommandAction;
 import phasereditor.scene.ui.editor.properties.TransformSection;
 import phasereditor.scene.ui.editor.properties.WebViewSection;
+import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
+import phasereditor.webrun.core.BatchMessage;
 
 class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 
@@ -114,7 +123,39 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 
 		@Override
 		public void run() {
-			//
+
+			var displayList = _editor.getSceneModel().getDisplayList();
+			var computer = new NameComputer(displayList);
+			var name = computer.newName("text");
+
+			var textModel = new TextModel();
+
+			VariableComponent.set_variableName(textModel, name);
+			TextualComponent.set_text(textModel, "Text...");
+
+			var before = WorldSnapshotOperation.takeSnapshot(_editor);
+
+			displayList.getChildren().add(textModel);
+
+			var after = WorldSnapshotOperation.takeSnapshot(_editor);
+
+			_editor.executeOperation(new WorldSnapshotOperation(before, after, "Create Text"));
+
+			_editor.refreshOutline();
+
+			_editor.setSelection(List.of(textModel));
+			
+			_editor.updatePropertyPagesContentWithSelection();
+
+			_editor.setDirty(true);
+
+			_editor.getBroker().sendAll(new BatchMessage(
+
+					new DropObjectsMessage(List.of(textModel)),
+
+					new SelectObjectsMessage(_editor)
+
+			));
 		}
 	}
 

@@ -69,6 +69,10 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		_updates.add(update);
 	}
 
+	protected void addUpdate_Text(Text text, Function<T, Object> mapper) {
+		text.setText(flatValues_to_String(getModels().stream().map(model -> mapper.apply(model))));
+	}
+
 	public boolean isFillSpace() {
 		return _fillSpace;
 	}
@@ -134,6 +138,19 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		if (set.size() == 1) {
 			var value = set.toArray()[0];
 			return (int) value;
+		}
+
+		return def;
+	}
+
+	@SuppressWarnings("boxing")
+	protected static float flatValues_to_float(Stream<Float> values, float def) {
+		var set = new HashSet<>();
+		values.forEach(v -> set.add(v));
+
+		if (set.size() == 1) {
+			var value = set.toArray()[0];
+			return (float) value;
 		}
 
 		return def;
@@ -242,7 +259,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 	public boolean isStartCollapsed() {
 		return _startCollapsed;
 	}
-	
+
 	public void setStartCollapsed(boolean startCollapsed) {
 		_startCollapsed = startCollapsed;
 	}

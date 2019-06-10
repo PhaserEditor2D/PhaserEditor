@@ -153,7 +153,7 @@ public class BitmapTextSection extends ScenePropertySection {
 		}
 
 		{
-			label(comp, "Leter Spacing", "Phaser.GameObjects.BitmapText.letterSpacing");
+			label(comp, "Letter Spacing", "Phaser.GameObjects.BitmapText.letterSpacing");
 
 			_letterSpacingText = new Text(comp, SWT.BORDER);
 			_letterSpacingText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

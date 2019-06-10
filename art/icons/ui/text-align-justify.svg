@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg16"
+   sodipodi:docname="text-align-justify.svg"
+   inkscape:export-filename="./text-align-justify@2x.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata22">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs20">
+    <defs
+       id="defs11">
+      <linearGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(1.0444659,0,0,0.95742711,8,8)"
+         y2="5.2223296"
+         x2="5.7445626"
+         y1="-6.2667956"
+         x1="-5.7445626"
+         id="backing"
+         xlink:href="#shape2-5">
+        <stop
+           id="stop6"
+           stop-color="#767676"
+           offset="0%" />
+        <stop
+           id="stop8"
+           stop-color="#070707"
+           offset="100%" />
+      </linearGradient>
+    </defs>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0606602,0,0,0.94280904,7.9999994,8.0000003)"
+       id="shape1-7"
+       x1="-5.6568542"
+       y1="-6.3639612"
+       x2="2.8284271"
+       y2="2.1213202">
+      <stop
+         offset="0%"
+         stop-color="#afcbf5"
+         id="stop6-9" />
+      <stop
+         offset="100%"
+         stop-color="#90b6f3"
+         id="stop8-2" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0801234,0,0,0.9258201,7.9999994,8.0000003)"
+       id="shape1inner-0"
+       x1="-4.6291003"
+       y1="-5.4006171"
+       x2="1.8516402"
+       y2="1.0801234">
+      <stop
+         offset="0%"
+         stop-color="#c0d6f7"
+         id="stop11-2" />
+      <stop
+         offset="100%"
+         stop-color="#adc9f6"
+         id="stop13-37" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0606602,0,0,0.94280904,7.9999994,8.0000003)"
+       id="shape2-5"
+       x1="-2.8284271"
+       y1="-2.1213202"
+       x2="5.6568542"
+       y2="6.3639612">
+      <stop
+         offset="0%"
+         stop-color="#8cb3e6"
+         id="stop16-9" />
+      <stop
+         offset="100%"
+         stop-color="#5883d2"
+         id="stop18-2" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0801234,0,0,0.9258201,7.9999994,8.0000003)"
+       id="shape2inner-2"
+       x1="-1.8516402"
+       y1="-1.0801234"
+       x2="4.6291003"
+       y2="5.4006171">
+      <stop
+         offset="0%"
+         stop-color="#a7c5ec"
+         id="stop21-8" />
+      <stop
+         offset="100%"
+         stop-color="#81a1de"
+         id="stop23-9" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#shape2-5"
+       id="linearGradient4808"
+       x1="2"
+       y1="7.5"
+       x2="14"
+       y2="7.5"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1869"
+     inkscape:window-height="1025"
+     id="namedview18"
+     showgrid="false"
+     inkscape:zoom="10.429825"
+     inkscape:cx="-18.474004"
+     inkscape:cy="21.763822"
+     inkscape:window-x="51"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg16" />
+  <title
+     id="title2">Text Align Justify</title>
+  <desc
+     id="desc4">Text Align Justify</desc>
+  <path
+     inkscape:connector-curvature="0"
+     style="fill:url(#linearGradient4808);fill-opacity:1.0;stroke-width:0.99999994"
+     id="path13"
+     d="M 0,0.83300096 H 16 V 2.1663646 H 0 M 0,3.4997281 H 16 V 4.8330917 H 0 M 0,6.1664553 H 16 V 7.4998188 H 0 M 0,8.8331824 H 16 V 10.166546 H 0 m 0,1.333363 h 16 v 1.333364 H 0 m 0,1.333363 H 16 V 15.5 H 0" />
+</svg>

@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.scene.core.DisplayListModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.core.SceneModel;
@@ -71,6 +72,10 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 	public SceneModel getSceneModel() {
 		return getEditor().getSceneModel();
+	}
+
+	public DisplayListModel getDisplayList() {
+		return getSceneModel().getDisplayList();
 	}
 
 	protected abstract class SceneText extends phasereditor.ui.properties.TextListener {
@@ -146,7 +151,8 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 
 		var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
-		getEditor().executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+		getEditor()
+				.executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
 
 		getEditor().getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}
@@ -217,6 +223,12 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		}
 
 		return InspectCore.getPhaserHelp().getMemberHelp(helpHint);
+	}
+
+	@Override
+	public void addUpdate_Text(Text text, Function<ObjectModel, Object> mapper) {
+		super.addUpdate_Text(text, mapper);
+		getEditor().setDirty(true);
 	}
 
 }

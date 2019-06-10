@@ -40,7 +40,11 @@ public class Colors {
 
 	public static String hexColor(RGB color) {
 		var value = intColor(color);
-		return Integer.toHexString(value);
+		return toHexString(value);
+	}
+
+	private static String toHexString(int value) {
+		return String.format("%06X", value);
 	}
 
 	public static int intColor(RGB color) {

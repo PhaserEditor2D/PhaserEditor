@@ -100,6 +100,8 @@ public class ScenePropertyPage extends FormPropertyPage {
 
 		list.add(new DynamicBitmapTextSection(this));
 
+		list.add(new TextObjectSection(this));
+
 		list.add(new AnimationsSection(this));
 
 		list.add(new GroupSection(this));

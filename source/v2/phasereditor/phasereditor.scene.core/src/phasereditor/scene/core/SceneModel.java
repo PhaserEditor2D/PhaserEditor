@@ -278,7 +278,7 @@ public class SceneModel {
 		return y;
 	}
 
-	public ParentModel getDisplayList() {
+	public DisplayListModel getDisplayList() {
 		return _displayList;
 	}
 
@@ -479,6 +479,9 @@ public class SceneModel {
 
 		case DynamicBitmapTextModel.TYPE:
 			return new DynamicBitmapTextModel();
+
+		case TextModel.TYPE:
+			return new TextModel();
 		}
 
 		return null;

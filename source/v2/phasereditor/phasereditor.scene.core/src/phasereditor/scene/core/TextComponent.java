@@ -31,6 +31,10 @@ public interface TextComponent extends TextualComponent {
 		left, center, right, justified
 	}
 
+	enum FontStyle {
+		normal, italic, oblique
+	}
+
 	// align
 
 	static String align_name = "align";
@@ -95,19 +99,6 @@ public interface TextComponent extends TextualComponent {
 	static void set_color(ObjectModel obj, String color) {
 		obj.put("color", color);
 	}
-	// fill
-
-	static String fill_name = "fill";
-
-	static String fill_default = null;
-
-	static String get_fill(ObjectModel obj) {
-		return (String) obj.get("fill");
-	}
-
-	static void set_fill(ObjectModel obj, String fill) {
-		obj.put("fill", fill);
-	}
 
 	// fixed
 	static String fixedWidth_name = "fixedWidth";
@@ -164,13 +155,13 @@ public interface TextComponent extends TextualComponent {
 
 	static String fontStyle_name = "fontStyle";
 
-	static String fontStyle_default = null;
+	static FontStyle fontStyle_default = FontStyle.normal;
 
-	static String get_fontStyle(ObjectModel obj) {
-		return (String) obj.get("fontStyle");
+	static FontStyle get_fontStyle(ObjectModel obj) {
+		return (FontStyle) obj.get("fontStyle");
 	}
 
-	static void set_fontStyle(ObjectModel obj, String fontStyle) {
+	static void set_fontStyle(ObjectModel obj, FontStyle fontStyle) {
 		obj.put("fontStyle", fontStyle);
 	}
 
@@ -295,15 +286,137 @@ public interface TextComponent extends TextualComponent {
 		obj.put("strokeThickness", strokeThickness);
 	}
 
+	// paddingLeft
+
+	static String paddingLeft_name = "paddingLeft";
+
+	static float paddingLeft_default = 0;
+
+	static float get_paddingLeft(ObjectModel obj) {
+		return (float) obj.get("paddingLeft");
+	}
+
+	static void set_paddingLeft(ObjectModel obj, float paddingLeft) {
+		obj.put("paddingLeft", paddingLeft);
+	}
+
+	// paddingRight
+
+	static String paddingRight_name = "paddingRight";
+
+	static float paddingRight_default = 0;
+
+	static float get_paddingRight(ObjectModel obj) {
+		return (float) obj.get("paddingRight");
+	}
+
+	static void set_paddingRight(ObjectModel obj, float paddingRight) {
+		obj.put("paddingRight", paddingRight);
+	}
+
+	// paddingTop
+
+	static String paddingTop_name = "paddingTop";
+
+	static float paddingTop_default = 0;
+
+	static float get_paddingTop(ObjectModel obj) {
+		return (float) obj.get("paddingTop");
+	}
+
+	static void set_paddingTop(ObjectModel obj, float paddingTop) {
+		obj.put("paddingTop", paddingTop);
+	}
+
+	// paddingBottom
+
+	static String paddingBottom_name = "paddingBottom";
+
+	static float paddingBottom_default = 0;
+
+	static float get_paddingBottom(ObjectModel obj) {
+		return (float) obj.get("paddingBottom");
+	}
+
+	static void set_paddingBottom(ObjectModel obj, float paddingBottom) {
+		obj.put("paddingBottom", paddingBottom);
+	}
+
+	// autoRound
+
+	static String autoRound_name = "autoRound";
+
+	static boolean autoRound_default = true;
+
+	static boolean get_autoRound(ObjectModel obj) {
+		return (boolean) obj.get("autoRound");
+	}
+
+	static void set_autoRound(ObjectModel obj, boolean autoRound) {
+		obj.put("autoRound", autoRound);
+	}
+
+	// lineSpacing
+
+	static String lineSpacing_name = "lineSpacing";
+
+	static float lineSpacing_default = 0;
+
+	static float get_lineSpacing(ObjectModel obj) {
+		return (float) obj.get("lineSpacing");
+	}
+
+	static void set_lineSpacing(ObjectModel obj, float lineSpacing) {
+		obj.put("lineSpacing", lineSpacing);
+	}
+
+	// wordWrapWidth
+
+	static String wordWrapWidth_name = "wordWrapWidth";
+
+	static int wordWrapWidth_default = 0;
+
+	static int get_wordWrapWidth(ObjectModel obj) {
+		return (int) obj.get("wordWrapWidth");
+	}
+
+	static void set_wordWrapWidth(ObjectModel obj, int wordWrapWidth) {
+		obj.put("wordWrapWidth", wordWrapWidth);
+	}
+
+	// wordWrapUseAdvanced
+
+	static String wordWrapUseAdvanced_name = "wordWrapUseAdvanced";
+
+	static boolean wordWrapUseAdvanced_default = false;
+
+	static boolean get_wordWrapUseAdvanced(ObjectModel obj) {
+		return (boolean) obj.get("wordWrapUseAdvanced");
+	}
+
+	static void set_wordWrapUseAdvanced(ObjectModel obj, boolean wordWrapUseAdvanced) {
+		obj.put("wordWrapUseAdvanced", wordWrapUseAdvanced);
+	}
+
 	// utils
 
+	static boolean is(ObjectModel model) {
+		return model instanceof TextComponent;
+	}
+
 	static void init(ObjectModel model) {
+		set_paddingLeft(model, paddingLeft_default);
+		set_paddingRight(model, paddingRight_default);
+		set_paddingTop(model, paddingTop_default);
+		set_paddingBottom(model, paddingBottom_default);
+		set_autoRound(model, autoRound_default);
+		set_lineSpacing(model, lineSpacing_default);
+
 		set_align(model, align_default);
 		set_backgroundColor(model, backgroundColor_default);
 		set_baselineX(model, baselineX_default);
 		set_baselineY(model, baselineY_default);
 		set_color(model, backgroundColor_default);
-		set_fill(model, fill_default);
 		set_fixedHeight(model, fixedHeight_default);
 		set_fixedWidth(model, fixedWidth_default);
 		set_fontFamily(model, fontFamily_default);

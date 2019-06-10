@@ -46,6 +46,7 @@ public abstract class ColorButtonSupport {
 	private Button _button;
 	Image _image;
 	private Consumer<RGB> _callback;
+	private boolean _showText;
 
 	public static ColorButtonSupport createDefault(Button btn, Consumer<RGB> callback) {
 		return new ColorButtonSupport(btn, callback) {
@@ -93,7 +94,17 @@ public abstract class ColorButtonSupport {
 			}
 		});
 
+		_showText = true;
+
 		updateProvider();
+	}
+
+	public boolean isShowText() {
+		return _showText;
+	}
+
+	public void setShowText(boolean showText) {
+		_showText = showText;
 	}
 
 	public void updateProvider() {
@@ -107,7 +118,11 @@ public abstract class ColorButtonSupport {
 		ImageData mask = id.getTransparencyMask();
 		_image = new Image(_button.getDisplay(), id, mask);
 		_button.setImage(_image);
-		_button.setText(color == null ? "NULL" : ColorButtonSupport.getHexString(color));
+		if (_showText) {
+			_button.setText(color == null ? "" : ColorButtonSupport.getHexString(color));
+		} else {
+			_button.setText("");
+		}
 	}
 
 	private static ImageData createColorImage(Control w, RGB color) {
@@ -152,16 +167,11 @@ public abstract class ColorButtonSupport {
 	}
 
 	public static String getHexString(RGB rgb) {
-		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+		return "#" + Colors.hexColor(rgb);
 	}
 
 	public static String getHexString2(RGB rgb) {
-		return "0x" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
-	}
-
-	public static String toHexString(int n) {
-		String s = Integer.toHexString(n);
-		return (s.length() == 1 ? "0" : "") + s;
+		return "0x" + Colors.hexColor(rgb);
 	}
 
 	public static String getRGBString(RGB rgb) {

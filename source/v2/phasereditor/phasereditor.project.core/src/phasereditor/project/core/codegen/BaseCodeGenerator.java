@@ -21,9 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core.codegen;
 
+import static phasereditor.ui.Colors.hexColor;
+
 import java.util.List;
 
 import org.eclipse.swt.graphics.RGB;
+
+import phasereditor.ui.Colors;
 
 /**
  * @author arian
@@ -192,17 +196,13 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	}
 
 	public static String getHexString(RGB rgb) {
-		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+		return "#" + hexColor(rgb);
 	}
 
 	public static String getHexString2(RGB rgb) {
-		return "0x" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+		return "0x" + Colors.hexColor(rgb);
 	}
 
-	public static String toHexString(int n) {
-		String s = Integer.toHexString(n);
-		return (s.length() == 1 ? "0" : "") + s;
-	}
 
 	public static String getRGBString(RGB rgb) {
 		return "rgb(" + rgb.red + "," + rgb.green + "," + rgb.blue + ")";
