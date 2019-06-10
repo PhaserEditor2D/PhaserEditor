@@ -56,6 +56,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	public ScenePropertySection(String name, FormPropertyPage page) {
 		super(name);
 		_page = page;
+		setStartCollapsed(true);
 	}
 
 	public FormPropertyPage getPage() {
