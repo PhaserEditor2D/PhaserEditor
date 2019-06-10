@@ -94,8 +94,10 @@ namespace PhaserEditor2D {
                 case "DynamicBitmapText":
                     obj.setInteractive(BitmapTextHitHandler);
                     break;
+                case "Text":
+                    obj.setInteractive();
+                    break;
                 default:
-                    //obj.setInteractive(scene.input.makePixelPerfect());
                     obj.setInteractive(PixelPerfectHandler);
                     break;
             }
