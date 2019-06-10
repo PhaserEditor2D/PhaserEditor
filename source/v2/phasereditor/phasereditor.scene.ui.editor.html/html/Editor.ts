@@ -10,6 +10,7 @@ namespace PhaserEditor2D {
         private _create: Create;
         private _transformLocalCoords: boolean;
         private _pendingMouseDownEvent: MouseEvent;
+        private _closed = false;
 
         sceneProperties: any;
         selection: any[] = [];
@@ -57,6 +58,10 @@ namespace PhaserEditor2D {
 
 
             this._game.canvas.addEventListener("mousedown", function (e: MouseEvent) {
+                if (self._closed) {
+                    return;
+                }
+
                 if (self.getToolScene().containsPointer()) {
                     self.getToolScene().onMouseDown();
                 } else {
@@ -67,6 +72,10 @@ namespace PhaserEditor2D {
             })
 
             this._game.canvas.addEventListener("mousemove", function (e: MouseEvent) {
+                if (self._closed) {
+                    return;
+                }
+
                 if (self.getToolScene().isEditing()) {
                     self.getToolScene().onMouseMove();
                 } else {
@@ -77,6 +86,10 @@ namespace PhaserEditor2D {
             })
 
             this._game.canvas.addEventListener("mouseup", function () {
+                if (self._closed) {
+                    return;
+                }
+
                 if (self.getToolScene().isEditing()) {
                     self.getToolScene().onMouseUp();
                 } else {
@@ -89,6 +102,10 @@ namespace PhaserEditor2D {
             })
 
             this._game.canvas.addEventListener("mouseleave", function () {
+                if (self._closed) {
+                    return;
+                }
+
                 self.getObjectScene().getDragObjectsManager().onMouseUp();
                 self.getObjectScene().getDragCameraManager().onMouseUp();
             })
@@ -148,10 +165,13 @@ namespace PhaserEditor2D {
 
         private onClosedSocket() {
             console.log("Socket closed");
+            this._closed = true;
             this._game.destroy(true, false);
             let body = document.getElementById("body");
-            body.innerHTML = "<div class='lostConnection'><p>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button></div>";
-            body.style.backgroundColor = "gray";
+            var elem = document.createElement("div");
+            elem.innerHTML = "<p><br><br><br>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button>";
+            elem.setAttribute("class", "lostConnection");
+            body.appendChild(elem);
         }
 
         private onSelectObjects(msg: any) {
@@ -271,6 +291,9 @@ namespace PhaserEditor2D {
             const self = this;
 
             window.addEventListener('resize', function (event) {
+                if (self._closed) {
+                    return;
+                }
 
                 self._resizeToken += 1;
                 setTimeout((function (token) {
@@ -283,6 +306,10 @@ namespace PhaserEditor2D {
             }, false);
 
             window.addEventListener("wheel", function (e) {
+                if (self._closed) {
+                    return;
+                }
+
                 self.getObjectScene().onMouseWheel(e);
                 self.repaint();
             });

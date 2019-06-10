@@ -2,6 +2,7 @@ var PhaserEditor2D;
 (function (PhaserEditor2D) {
     var Editor = (function () {
         function Editor() {
+            this._closed = false;
             this.selection = [];
             Editor._instance = this;
             this.openSocket();
@@ -33,6 +34,9 @@ var PhaserEditor2D;
         Editor.prototype.sceneCreated = function () {
             var self = this;
             this._game.canvas.addEventListener("mousedown", function (e) {
+                if (self._closed) {
+                    return;
+                }
                 if (self.getToolScene().containsPointer()) {
                     self.getToolScene().onMouseDown();
                 }
@@ -43,6 +47,9 @@ var PhaserEditor2D;
                 }
             });
             this._game.canvas.addEventListener("mousemove", function (e) {
+                if (self._closed) {
+                    return;
+                }
                 if (self.getToolScene().isEditing()) {
                     self.getToolScene().onMouseMove();
                 }
@@ -52,6 +59,9 @@ var PhaserEditor2D;
                 }
             });
             this._game.canvas.addEventListener("mouseup", function () {
+                if (self._closed) {
+                    return;
+                }
                 if (self.getToolScene().isEditing()) {
                     self.getToolScene().onMouseUp();
                 }
@@ -63,6 +73,9 @@ var PhaserEditor2D;
                 }
             });
             this._game.canvas.addEventListener("mouseleave", function () {
+                if (self._closed) {
+                    return;
+                }
                 self.getObjectScene().getDragObjectsManager().onMouseUp();
                 self.getObjectScene().getDragCameraManager().onMouseUp();
             });
@@ -106,10 +119,13 @@ var PhaserEditor2D;
         };
         Editor.prototype.onClosedSocket = function () {
             console.log("Socket closed");
+            this._closed = true;
             this._game.destroy(true, false);
             var body = document.getElementById("body");
-            body.innerHTML = "<div class='lostConnection'><p>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button></div>";
-            body.style.backgroundColor = "gray";
+            var elem = document.createElement("div");
+            elem.innerHTML = "<p><br><br><br>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button>";
+            elem.setAttribute("class", "lostConnection");
+            body.appendChild(elem);
         };
         Editor.prototype.onSelectObjects = function (msg) {
             this.selection = msg.objectIds;
@@ -200,6 +216,9 @@ var PhaserEditor2D;
             this._resizeToken = 0;
             var self = this;
             window.addEventListener('resize', function (event) {
+                if (self._closed) {
+                    return;
+                }
                 self._resizeToken += 1;
                 setTimeout((function (token) {
                     return function () {
@@ -210,6 +229,9 @@ var PhaserEditor2D;
                 })(self._resizeToken), 200);
             }, false);
             window.addEventListener("wheel", function (e) {
+                if (self._closed) {
+                    return;
+                }
                 self.getObjectScene().onMouseWheel(e);
                 self.repaint();
             });
