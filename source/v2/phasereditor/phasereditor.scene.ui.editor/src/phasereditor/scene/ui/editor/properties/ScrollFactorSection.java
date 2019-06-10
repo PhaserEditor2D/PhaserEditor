@@ -39,7 +39,6 @@ public class ScrollFactorSection extends ScenePropertySection {
 
 	public ScrollFactorSection(FormPropertyPage page) {
 		super("Scroll Factor", page);
-		setStartCollapsed(true);
 	}
 
 	@Override

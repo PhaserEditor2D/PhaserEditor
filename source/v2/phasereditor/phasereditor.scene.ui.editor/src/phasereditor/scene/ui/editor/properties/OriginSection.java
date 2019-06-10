@@ -52,8 +52,6 @@ public class OriginSection extends ScenePropertySection {
 
 	public OriginSection(ScenePropertyPage page) {
 		super("Origin", page);
-
-		setStartCollapsed(true);
 	}
 
 	@Override

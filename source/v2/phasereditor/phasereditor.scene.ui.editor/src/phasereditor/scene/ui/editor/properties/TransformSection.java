@@ -58,7 +58,6 @@ public class TransformSection extends ScenePropertySection {
 
 	public TransformSection(ScenePropertyPage page) {
 		super("Transform", page);
-		setStartCollapsed(true);
 	}
 
 	@Override
