@@ -653,7 +653,7 @@ var Tween = new Class({
     {
         if (resetFromTimeline === undefined) { resetFromTimeline = false; }
 
-        if (this.state === TWEEN_CONST.ACTIVE || this.state === TWEEN_CONST.PENDING_ADD)
+        if (this.state === TWEEN_CONST.ACTIVE || (this.state === TWEEN_CONST.PENDING_ADD && this._pausedState === TWEEN_CONST.PENDING_ADD))
         {
             return this;
         }
@@ -1261,7 +1261,7 @@ var Tween = new Class({
      * @param {Phaser.Types.Tweens.TweenDataConfig} tweenData - The TweenData property to update.
      * @param {number} delta - Either a value in ms, or 1 if Tween.useFrames is true
      *
-     * @return {boolean} [description]
+     * @return {boolean} True if the tween is not complete (e.g., playing), or false if the tween is complete.
      */
     updateTweenData: function (tween, tweenData, delta)
     {
@@ -1423,7 +1423,7 @@ Tween.TYPES = [
  * @method Phaser.GameObjects.GameObjectFactory#tween
  * @since 3.0.0
  *
- * @param {object} config - The Tween configuration.
+ * @param {Phaser.Types.Tweens.TweenBuilderConfig|object} config - The Tween configuration.
  *
  * @return {Phaser.Tweens.Tween} The Tween that was created.
  */
@@ -1448,7 +1448,7 @@ GameObjectFactory.register('tween', function (config)
  * @method Phaser.GameObjects.GameObjectCreator#tween
  * @since 3.0.0
  *
- * @param {object} config - The Tween configuration.
+ * @param {Phaser.Types.Tweens.TweenBuilderConfig|object} config - The Tween configuration.
  *
  * @return {Phaser.Tweens.Tween} The Tween that was created.
  */

@@ -271,11 +271,6 @@ var Config = new Class({
         this.inputSmoothFactor = GetValue(config, 'input.smoothFactor', 0);
 
         /**
-         * @const {boolean} Phaser.Core.Config#inputQueue - Should Phaser use a queued input system for native DOM Events or not?
-         */
-        this.inputQueue = GetValue(config, 'input.queue', false);
-
-        /**
          * @const {boolean} Phaser.Core.Config#inputWindowEvents - Should Phaser listen for input events on the Window? If you disable this, events like 'POINTER_UP_OUTSIDE' will no longer fire.
          */
         this.inputWindowEvents = GetValue(config, 'input.windowEvents', true);
@@ -341,6 +336,11 @@ var Config = new Class({
          * @const {boolean} Phaser.Core.Config#antialias - When set to `true`, WebGL uses linear interpolation to draw scaled or rotated textures, giving a smooth appearance. When set to `false`, WebGL uses nearest-neighbor interpolation, giving a crisper appearance. `false` also disables antialiasing of the game canvas itself, if the browser supports it, when the game canvas is scaled.
          */
         this.antialias = GetValue(renderConfig, 'antialias', true);
+
+        /**
+         * @const {boolean} Phaser.Core.Config#desynchronized - When set to `true` it will create a desynchronized context for both 2D and WebGL. See https://developers.google.com/web/updates/2019/05/desynchronized for details.
+         */
+        this.desynchronized = GetValue(renderConfig, 'desynchronized', false);
 
         /**
          * @const {boolean} Phaser.Core.Config#roundPixels - Draw texture-based Game Objects at only whole-integer positions. Game Objects without textures, like Graphics, ignore this property.

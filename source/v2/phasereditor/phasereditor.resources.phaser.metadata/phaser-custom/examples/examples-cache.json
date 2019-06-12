@@ -5182,8 +5182,8 @@
                 "orig": "src/game objects/dom element/video element.js",
                 "dst": "video element.js"
               },
-              {"orig": "assets/sprites/phaser3-logo-x2.png"},
-              {"orig": "assets/video/skull.mp4"}
+              {"orig": "assets/video/skull.mp4"},
+              {"orig": "assets/sprites/phaser3-logo-x2.png"}
             ]
           }
         ]
@@ -6050,9 +6050,7 @@
                 "orig": "src/game objects/images/image edge points.js",
                 "dst": "image edge points.js"
               },
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"},
-              {"orig": "assets/sprites/tetrisblock1.png"},
-              {"orig": "assets/sprites/bunny.png"}
+              {"orig": "assets/sprites/phaser3-logo.png"}
             ]
           },
           {
@@ -7513,11 +7511,11 @@
                 "orig": "src/game objects/shaders/change shader texture.js",
                 "dst": "change shader texture.js"
               },
-              {"orig": "assets/textures/alien-metal.jpg"},
-              {"orig": "assets/textures/grass.png"},
-              {"orig": "assets/textures/tiles.jpg"},
               {"orig": "assets/sprites/phaser3-logo-small.png"},
-              {"orig": "assets/shaders/bundle.glsl.js"}
+              {"orig": "assets/textures/alien-metal.jpg"},
+              {"orig": "assets/textures/tiles.jpg"},
+              {"orig": "assets/shaders/bundle.glsl.js"},
+              {"orig": "assets/textures/grass.png"}
             ]
           },
           {
@@ -7547,9 +7545,9 @@
                 "orig": "src/game objects/shaders/shader as a mask.js",
                 "dst": "shader as a mask.js"
               },
-              {"orig": "assets/shaders/shader1.frag"},
               {"orig": "assets/pics/sao-sinon.png"},
-              {"orig": "assets/pics/purple-dots.png"}
+              {"orig": "assets/pics/purple-dots.png"},
+              {"orig": "assets/shaders/shader1.frag"}
             ]
           },
           {
@@ -7560,6 +7558,17 @@
                 "dst": "shader bundle.js"
               },
               {"orig": "assets/shaders/bundle2.glsl.js"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shaders/shader transforms.js",
+            "map": [
+              {
+                "orig": "src/game objects/shaders/shader transforms.js",
+                "dst": "shader transforms.js"
+              },
+              {"orig": "assets/pics/birdy.png"},
+              {"orig": "assets/shaders/marble.glsl.js"}
             ]
           }
         ]
@@ -8409,9 +8418,9 @@
                     "orig": "src/game objects/tilemap/collision/simple map.js",
                     "dst": "simple map.js"
                   },
+                  {"orig": "assets/sprites/phaser-dude.png"},
                   {"orig": "assets/tilemaps/tiles/gridtiles.png"},
-                  {"orig": "assets/tilemaps/maps/simple-map.json"},
-                  {"orig": "assets/sprites/phaser-dude.png"}
+                  {"orig": "assets/tilemaps/maps/simple-map.json"}
                 ]
               },
               {
@@ -8421,10 +8430,10 @@
                     "orig": "src/game objects/tilemap/collision/tile callbacks.js",
                     "dst": "tile callbacks.js"
                   },
-                  {"orig": "assets/tilemaps/tiles/ground_1x1.png"},
+                  {"orig": "assets/sprites/phaser-dude.png"},
                   {"orig": "assets/sprites/coin.png"},
-                  {"orig": "assets/tilemaps/maps/tile-collision-test.json"},
-                  {"orig": "assets/sprites/phaser-dude.png"}
+                  {"orig": "assets/tilemaps/tiles/ground_1x1.png"},
+                  {"orig": "assets/tilemaps/maps/tile-collision-test.json"}
                 ]
               },
               {
@@ -11562,6 +11571,26 @@
             ]
           },
           {
+            "mainFile": "src/input/mouse/mouse wheel.js",
+            "map": [
+              {
+                "orig": "src/input/mouse/mouse wheel.js",
+                "dst": "mouse wheel.js"
+              },
+              {"orig": "assets/textures/soil.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/mouse/mouse wheel over gameobject.js",
+            "map": [
+              {
+                "orig": "src/input/mouse/mouse wheel over gameobject.js",
+                "dst": "mouse wheel over gameobject.js"
+              },
+              {"orig": "assets/sprites/poo.png"}
+            ]
+          },
+          {
             "mainFile": "src/input/mouse/move event.js",
             "map": [
               {
@@ -11723,6 +11752,21 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/input/multitouch/multi down test.js",
+            "map": [
+              {
+                "orig": "src/input/multitouch/multi down test.js",
+                "dst": "multi down test.js"
+              },
+              {"orig": "assets/input/h.png"},
+              {"orig": "assets/input/s.png"},
+              {"orig": "assets/input/r.png"},
+              {"orig": "assets/input/a.png"},
+              {"orig": "assets/input/e.png"},
+              {"orig": "assets/input/p.png"}
+            ]
+          },
+          {
             "mainFile": "src/input/multitouch/multi drag.js",
             "map": [
               {
@@ -11730,6 +11774,21 @@
                 "dst": "multi drag.js"
               },
               {"orig": "assets/sprites/phaser3-logo.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/multitouch/multi over test.js",
+            "map": [
+              {
+                "orig": "src/input/multitouch/multi over test.js",
+                "dst": "multi over test.js"
+              },
+              {"orig": "assets/input/h.png"},
+              {"orig": "assets/input/s.png"},
+              {"orig": "assets/input/r.png"},
+              {"orig": "assets/input/a.png"},
+              {"orig": "assets/input/e.png"},
+              {"orig": "assets/input/p.png"}
             ]
           },
           {
@@ -11916,9 +11975,9 @@
                 "orig": "src/input/pointer/multiple scene down event.js",
                 "dst": "multiple scene down event.js"
               },
+              {"orig": "assets/ui/down-bubble.png"},
               {"orig": "assets/ui/undersea-bg.png"},
-              {"orig": "assets/ui/up-bubble.png"},
-              {"orig": "assets/ui/down-bubble.png"}
+              {"orig": "assets/ui/up-bubble.png"}
             ]
           },
           {
@@ -13688,6 +13747,16 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/loader/tile maps/load tile map from local json.js",
+            "map": [
+              {
+                "orig": "src/loader/tile maps/load tile map from local json.js",
+                "dst": "load tile map from local json.js"
+              },
+              {"orig": "assets/tilemaps/tiles/cybernoid.png"}
+            ]
+          },
+          {
             "mainFile": "src/loader/tile maps/load tile map json.js",
             "map": [
               {
@@ -14111,8 +14180,8 @@
                 "dst": "body stack test.js"
               },
               {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/box-item-boxed.png"}
+              {"orig": "assets/sprites/box-item-boxed.png"},
+              {"orig": "assets/sprites/crate.png"}
             ]
           },
           {
@@ -14122,20 +14191,20 @@
                 "orig": "src/physics/arcade/body stack test 10.js",
                 "dst": "body stack test 10.js"
               },
-              {"orig": "assets/sprites/16x16.png"},
-              {"orig": "assets/sprites/1bitblock0.png"},
-              {"orig": "assets/sprites/1bitblock1.png"},
-              {"orig": "assets/sprites/1bitblock2.png"},
-              {"orig": "assets/sprites/1bitblock3.png"},
-              {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bluebar.png"},
               {"orig": "assets/sprites/flectrum.png"},
               {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/1bitblock3.png"},
+              {"orig": "assets/sprites/crate.png"},
               {"orig": "assets/sprites/platform.png"},
-              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock1.png"},
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/16x16.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/vu.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/1bitblock2.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock0.png"}
             ]
           },
           {
@@ -14145,11 +14214,11 @@
                 "orig": "src/physics/arcade/body stack test 2.js",
                 "dst": "body stack test 2.js"
               },
-              {"orig": "assets/sprites/bluebar.png"},
               {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/bluebar.png"},
               {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bullet.png"},
-              {"orig": "assets/sprites/car90.png"}
+              {"orig": "assets/sprites/bullet.png"}
             ]
           },
           {
@@ -14170,8 +14239,8 @@
                 "dst": "body stack test 4.js"
               },
               {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/mushroom2.png"}
+              {"orig": "assets/sprites/mushroom2.png"},
+              {"orig": "assets/sprites/crate.png"}
             ]
           },
           {
@@ -14181,20 +14250,20 @@
                 "orig": "src/physics/arcade/body stack test 5.js",
                 "dst": "body stack test 5.js"
               },
-              {"orig": "assets/sprites/16x16.png"},
-              {"orig": "assets/sprites/1bitblock0.png"},
-              {"orig": "assets/sprites/1bitblock1.png"},
-              {"orig": "assets/sprites/1bitblock3.png"},
-              {"orig": "assets/sprites/1bitblock2.png"},
-              {"orig": "assets/sprites/bluebar.png"},
-              {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bullet.png"},
               {"orig": "assets/sprites/flectrum.png"},
               {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/1bitblock3.png"},
+              {"orig": "assets/sprites/crate.png"},
               {"orig": "assets/sprites/platform.png"},
+              {"orig": "assets/sprites/1bitblock1.png"},
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/16x16.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/vu.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/1bitblock2.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock0.png"}
             ]
           },
           {
@@ -14204,11 +14273,11 @@
                 "orig": "src/physics/arcade/body stack test 5B.js",
                 "dst": "body stack test 5B.js"
               },
-              {"orig": "assets/sprites/bluebar.png"},
               {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/bluebar.png"},
               {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bullet.png"},
-              {"orig": "assets/sprites/car90.png"}
+              {"orig": "assets/sprites/bullet.png"}
             ]
           },
           {
@@ -14218,20 +14287,20 @@
                 "orig": "src/physics/arcade/body stack test 6.js",
                 "dst": "body stack test 6.js"
               },
-              {"orig": "assets/sprites/16x16.png"},
-              {"orig": "assets/sprites/1bitblock0.png"},
-              {"orig": "assets/sprites/1bitblock1.png"},
-              {"orig": "assets/sprites/1bitblock2.png"},
-              {"orig": "assets/sprites/1bitblock3.png"},
-              {"orig": "assets/sprites/bluebar.png"},
-              {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bullet.png"},
-              {"orig": "assets/sprites/platform.png"},
               {"orig": "assets/sprites/flectrum.png"},
               {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/1bitblock3.png"},
+              {"orig": "assets/sprites/crate.png"},
+              {"orig": "assets/sprites/platform.png"},
+              {"orig": "assets/sprites/1bitblock1.png"},
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/16x16.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/vu.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/1bitblock2.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock0.png"}
             ]
           },
           {
@@ -14241,20 +14310,20 @@
                 "orig": "src/physics/arcade/body stack test 7.js",
                 "dst": "body stack test 7.js"
               },
-              {"orig": "assets/sprites/16x16.png"},
-              {"orig": "assets/sprites/1bitblock0.png"},
-              {"orig": "assets/sprites/1bitblock1.png"},
-              {"orig": "assets/sprites/1bitblock2.png"},
-              {"orig": "assets/sprites/bluebar.png"},
-              {"orig": "assets/sprites/1bitblock3.png"},
-              {"orig": "assets/sprites/bullet.png"},
-              {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
               {"orig": "assets/sprites/flectrum.png"},
-              {"orig": "assets/sprites/platform.png"},
-              {"orig": "assets/sprites/vu.png"},
               {"orig": "assets/sprites/car90.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/1bitblock3.png"},
+              {"orig": "assets/sprites/crate.png"},
+              {"orig": "assets/sprites/platform.png"},
+              {"orig": "assets/sprites/1bitblock1.png"},
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/16x16.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
+              {"orig": "assets/sprites/vu.png"},
+              {"orig": "assets/sprites/1bitblock2.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock0.png"}
             ]
           },
           {
@@ -14264,20 +14333,20 @@
                 "orig": "src/physics/arcade/body stack test 8.js",
                 "dst": "body stack test 8.js"
               },
-              {"orig": "assets/sprites/16x16.png"},
-              {"orig": "assets/sprites/1bitblock0.png"},
-              {"orig": "assets/sprites/1bitblock1.png"},
-              {"orig": "assets/sprites/1bitblock2.png"},
-              {"orig": "assets/sprites/bluebar.png"},
-              {"orig": "assets/sprites/1bitblock3.png"},
-              {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bullet.png"},
-              {"orig": "assets/sprites/car90.png"},
               {"orig": "assets/sprites/flectrum.png"},
+              {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/1bitblock3.png"},
+              {"orig": "assets/sprites/crate.png"},
               {"orig": "assets/sprites/platform.png"},
+              {"orig": "assets/sprites/1bitblock1.png"},
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/16x16.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/vu.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/1bitblock2.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock0.png"}
             ]
           },
           {
@@ -14287,20 +14356,20 @@
                 "orig": "src/physics/arcade/body stack test 9.js",
                 "dst": "body stack test 9.js"
               },
-              {"orig": "assets/sprites/16x16.png"},
-              {"orig": "assets/sprites/1bitblock0.png"},
-              {"orig": "assets/sprites/1bitblock1.png"},
-              {"orig": "assets/sprites/1bitblock2.png"},
-              {"orig": "assets/sprites/1bitblock3.png"},
-              {"orig": "assets/sprites/bluebar.png"},
-              {"orig": "assets/sprites/crate32.png"},
-              {"orig": "assets/sprites/crate.png"},
-              {"orig": "assets/sprites/bullet.png"},
-              {"orig": "assets/sprites/car90.png"},
-              {"orig": "assets/sprites/platform.png"},
-              {"orig": "assets/sprites/vu.png"},
               {"orig": "assets/sprites/flectrum.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/car90.png"},
+              {"orig": "assets/sprites/1bitblock3.png"},
+              {"orig": "assets/sprites/crate.png"},
+              {"orig": "assets/sprites/platform.png"},
+              {"orig": "assets/sprites/1bitblock1.png"},
+              {"orig": "assets/sprites/crate32.png"},
+              {"orig": "assets/sprites/16x16.png"},
+              {"orig": "assets/sprites/bluebar.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
+              {"orig": "assets/sprites/vu.png"},
+              {"orig": "assets/sprites/1bitblock2.png"},
+              {"orig": "assets/sprites/bullet.png"},
+              {"orig": "assets/sprites/1bitblock0.png"}
             ]
           },
           {
@@ -14396,10 +14465,10 @@
                 "orig": "src/physics/arcade/drag through open face.js",
                 "dst": "drag through open face.js"
               },
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/p2.jpg"},
-              {"orig": "assets/sprites/steelbox.png"},
               {"orig": "assets/sprites/chunk.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/steelbox.png"}
             ]
           },
           {
@@ -14429,9 +14498,9 @@
                 "orig": "src/physics/arcade/fast moving body test.js",
                 "dst": "fast moving body test.js"
               },
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/p2.jpg"},
-              {"orig": "assets/sprites/steelbox.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/steelbox.png"}
             ]
           },
           {
@@ -14441,9 +14510,9 @@
                 "orig": "src/physics/arcade/fast moving body test 2.js",
                 "dst": "fast moving body test 2.js"
               },
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/p2.jpg"},
-              {"orig": "assets/sprites/steelbox.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/steelbox.png"}
             ]
           },
           {
@@ -14558,9 +14627,9 @@
                 "orig": "src/physics/arcade/move through open face.js",
                 "dst": "move through open face.js"
               },
+              {"orig": "assets/tests/32pxstrip.png"},
               {"orig": "assets/sprites/p2.jpg"},
-              {"orig": "assets/sprites/steelbox.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/steelbox.png"}
             ]
           },
           {
@@ -14603,10 +14672,10 @@
                 "orig": "src/physics/arcade/one way collision.js",
                 "dst": "one way collision.js"
               },
-              {"orig": "assets/sprites/atari130xe.png"},
-              {"orig": "assets/sprites/mushroom2.png"},
               {"orig": "assets/sprites/mushroom16x16.png"},
-              {"orig": "assets/tests/32pxstrip.png"}
+              {"orig": "assets/sprites/mushroom2.png"},
+              {"orig": "assets/tests/32pxstrip.png"},
+              {"orig": "assets/sprites/atari130xe.png"}
             ]
           },
           {

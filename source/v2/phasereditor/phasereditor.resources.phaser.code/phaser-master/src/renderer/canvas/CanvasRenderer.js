@@ -10,6 +10,7 @@ var CameraEvents = require('../../cameras/2d/events');
 var Class = require('../../utils/Class');
 var CONST = require('../../const');
 var GetBlendModes = require('./utils/GetBlendModes');
+var ScaleEvents = require('../../scale/events');
 var ScaleModes = require('../ScaleModes');
 var Smoothing = require('../../display/canvas/Smoothing');
 var TransformMatrix = require('../../gameobjects/components/TransformMatrix');
@@ -110,6 +111,11 @@ var CanvasRenderer = new Class({
          */
         this.gameCanvas = game.canvas;
 
+        var contextOptions = {
+            alpha: game.config.transparent,
+            desynchronized: game.config.desynchronized
+        };
+
         /**
          * The canvas context used to render all Cameras in all Scenes during the game loop.
          *
@@ -117,7 +123,7 @@ var CanvasRenderer = new Class({
          * @type {CanvasRenderingContext2D}
          * @since 3.0.0
          */
-        this.gameContext = (this.game.config.context) ? this.game.config.context : this.gameCanvas.getContext('2d');
+        this.gameContext = (this.game.config.context) ? this.game.config.context : this.gameCanvas.getContext('2d', contextOptions);
 
         /**
          * The canvas context currently used by the CanvasRenderer for all rendering operations.
@@ -223,7 +229,7 @@ var CanvasRenderer = new Class({
      */
     init: function ()
     {
-        this.game.scale.on('resize', this.onResize, this);
+        this.game.scale.on(ScaleEvents.RESIZE, this.onResize, this);
 
         var baseSize = this.game.scale.baseSize;
 

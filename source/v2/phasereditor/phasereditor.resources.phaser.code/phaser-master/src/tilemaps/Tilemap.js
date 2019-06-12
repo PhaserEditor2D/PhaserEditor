@@ -464,16 +464,16 @@ var Tilemap = new Class({
      * @param {integer} [tileWidth] - The width of the tiles the layer uses for calculations. If not specified, it will default to the map's tileWidth.
      * @param {integer} [tileHeight] - The height of the tiles the layer uses for calculations. If not specified, it will default to the map's tileHeight.
      *
-     * @return {?Phaser.Tilemaps.DynamicTilemapLayer} Returns the new layer was created, or null if it failed.
+     * @return {?Phaser.Tilemaps.DynamicTilemapLayer} Returns the new layer that was created, or `null` if it failed.
      */
     createBlankDynamicLayer: function (name, tileset, x, y, width, height, tileWidth, tileHeight)
     {
-        if (tileWidth === undefined) { tileWidth = tileset.tileWidth; }
-        if (tileHeight === undefined) { tileHeight = tileset.tileHeight; }
-        if (width === undefined) { width = this.width; }
-        if (height === undefined) { height = this.height; }
         if (x === undefined) { x = 0; }
         if (y === undefined) { y = 0; }
+        if (width === undefined) { width = this.width; }
+        if (height === undefined) { height = this.height; }
+        if (tileWidth === undefined) { tileWidth = this.tileWidth; }
+        if (tileHeight === undefined) { tileHeight = this.tileHeight; }
 
         var index = this.getLayerIndex(name);
 
@@ -534,8 +534,8 @@ var Tilemap = new Class({
      *
      * @param {(integer|string)} layerID - The layer array index value, or if a string is given, the layer name from Tiled.
      * @param {(string|string[]|Phaser.Tilemaps.Tileset|Phaser.Tilemaps.Tileset[])} tileset - The tileset, or an array of tilesets, used to render this layer. Can be a string or a Tileset object.
-     * @param {number} x - The x position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
-     * @param {number} y - The y position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
+     * @param {number} [x=0] - The x position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
+     * @param {number} [y=0] - The y position to place the layer in the world. If not specified, it will default to the layer offset from Tiled or 0.
      *
      * @return {?Phaser.Tilemaps.DynamicTilemapLayer} Returns the new layer was created, or null if it failed.
      */
@@ -561,8 +561,16 @@ var Tilemap = new Class({
         this.currentLayerIndex = index;
 
         //  Default the x/y position to match Tiled layer offset, if it exists.
-        if (x === undefined && this.layers[index].x) { x = this.layers[index].x; }
-        if (y === undefined && this.layers[index].y) { y = this.layers[index].y; }
+
+        if (x === undefined)
+        {
+            x = layerData.x;
+        }
+
+        if (y === undefined)
+        {
+            y = layerData.y;
+        }
 
         var layer = new DynamicTilemapLayer(this.scene, this, index, tileset, x, y);
 
@@ -601,6 +609,7 @@ var Tilemap = new Class({
         if (scene === undefined) { scene = this.scene; }
 
         var objectLayer = this.getObjectLayer(name);
+
         if (!objectLayer)
         {
             console.warn('Cannot create from object. Invalid objectgroup name given: ' + name);
@@ -1447,7 +1456,7 @@ var Tilemap = new Class({
 
     /**
      * Randomizes the indexes of a rectangular region of tiles (in tile coordinates) within the
-     * specified layer. Each tile will recieve a new index. If an array of indexes is passed in, then
+     * specified layer. Each tile will receive a new index. If an array of indexes is passed in, then
      * those will be used for randomly assigning new tile indexes. If an array is not provided, the
      * indexes found within the region (excluding -1) will be used for randomly assigning new tile
      * indexes. This method only modifies tile indexes and does not change collision information.

@@ -81,7 +81,7 @@ var TextStyle = require('../TextStyle');
  * @param {number} x - The horizontal position of this Game Object in the world.
  * @param {number} y - The vertical position of this Game Object in the world.
  * @param {(string|string[])} text - The text this Text object will display.
- * @param {object} style - The text style configuration object.
+ * @param {Phaser.Types.GameObjects.Text.TextSyle} style - The text style configuration object.
  */
 var Text = new Class({
 
@@ -185,7 +185,7 @@ var Text = new Class({
          * @private
          * @since 3.12.0
          */
-        this._text = '';
+        this._text = undefined;
 
         /**
          * Specify a padding value which is added to the line width and height when calculating the Text size.
@@ -276,6 +276,8 @@ var Text = new Class({
 
         this.initRTL();
 
+        this.setText(text);
+
         if (style && style.padding)
         {
             this.setPadding(style.padding);
@@ -285,8 +287,6 @@ var Text = new Class({
         {
             this.lineSpacing = style.lineSpacing;
         }
-
-        this.setText(text);
 
         if (scene.sys.game.config.renderType === CONST.WEBGL)
         {
@@ -1015,7 +1015,7 @@ var Text = new Class({
      * @method Phaser.GameObjects.Text#setPadding
      * @since 3.0.0
      *
-     * @param {(number|object)} left - The left padding value, or a padding config object.
+     * @param {(number|Phaser.Types.GameObjects.Text.TextPadding)} left - The left padding value, or a padding config object.
      * @param {number} top - The top padding value.
      * @param {number} right - The right padding value.
      * @param {number} bottom - The bottom padding value.
@@ -1118,36 +1118,37 @@ var Text = new Class({
 
         var padding = this.padding;
 
-        var w = textSize.width + padding.left + padding.right;
-        var h = textSize.height + padding.top + padding.bottom;
+        var textWidth;
 
         if (style.fixedWidth === 0)
         {
-            this.width = w;
+            this.width = textSize.width + padding.left + padding.right;
+
+            textWidth = textSize.width;
         }
         else
         {
             this.width = style.fixedWidth;
+
+            textWidth = this.width - padding.left - padding.right;
+
+            if (textWidth < textSize.width)
+            {
+                textWidth = textSize.width;
+            }
         }
 
         if (style.fixedHeight === 0)
         {
-            this.height = h;
+            this.height = textSize.height + padding.top + padding.bottom;
         }
         else
         {
             this.height = style.fixedHeight;
         }
 
-        if (w > this.width)
-        {
-            w = this.width;
-        }
-
-        if (h > this.height)
-        {
-            h = this.height;
-        }
+        var w = this.width;
+        var h = this.height;
 
         this.updateDisplayOrigin();
 
@@ -1164,7 +1165,8 @@ var Text = new Class({
 
             this.frame.setSize(w, h);
 
-            style.syncFont(canvas, context); // Resizing resets the context
+            //  Because resizing the canvas resets the context
+            style.syncFont(canvas, context);
         }
         else
         {
@@ -1208,11 +1210,11 @@ var Text = new Class({
             }
             else if (style.align === 'right')
             {
-                linePositionX += textSize.width - textSize.lineWidths[i];
+                linePositionX += textWidth - textSize.lineWidths[i];
             }
             else if (style.align === 'center')
             {
-                linePositionX += (textSize.width - textSize.lineWidths[i]) / 2;
+                linePositionX += (textWidth - textSize.lineWidths[i]) / 2;
             }
 
             if (this.autoRound)

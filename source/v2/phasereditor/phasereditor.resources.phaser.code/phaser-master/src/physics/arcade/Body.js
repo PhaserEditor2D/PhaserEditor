@@ -516,7 +516,7 @@ var Body = new Class({
         this.mass = 1;
 
         /**
-         * The calculated angle of this Body's velocity vector, in degrees, during the last step.
+         * The calculated angle of this Body's velocity vector, in radians, during the last step.
          *
          * @name Phaser.Physics.Arcade.Body#angle
          * @type {number}
@@ -1208,7 +1208,14 @@ var Body = new Class({
 
         gameObject.setPosition(x, y);
 
-        gameObject.getTopLeft(this.position);
+        if (gameObject.getTopLeft)
+        {
+            gameObject.getTopLeft(this.position);
+        }
+        else
+        {
+            this.position.set(x, y);
+        }
 
         this.prev.copy(this.position);
 

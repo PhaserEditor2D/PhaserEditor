@@ -61,6 +61,7 @@ var BaseShader = new Class({
 
                 'uniform mat4 uProjectionMatrix;',
                 'uniform mat4 uViewMatrix;',
+                'uniform vec2 uResolution;',
 
                 'attribute vec2 inPosition;',
 
@@ -68,7 +69,7 @@ var BaseShader = new Class({
 
                 'void main () {',
                 'gl_Position = uProjectionMatrix * uViewMatrix * vec4(inPosition, 1.0, 1.0);',
-                'fragCoord = inPosition;',
+                'fragCoord = vec2(inPosition.x, uResolution.y - inPosition.y);',
                 '}'
             ].join('\n');
         }

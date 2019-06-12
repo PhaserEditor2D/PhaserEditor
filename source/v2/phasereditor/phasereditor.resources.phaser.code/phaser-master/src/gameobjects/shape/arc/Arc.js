@@ -109,7 +109,9 @@ var Arc = new Class({
         this._iterations = 0.01;
 
         this.setPosition(x, y);
-        this.setSize(this.geom.radius, this.geom.radius);
+
+        var diameter = this.geom.radius * 2;
+        this.setSize(diameter, diameter);
 
         if (fillColor !== undefined)
         {
@@ -164,6 +166,8 @@ var Arc = new Class({
         {
             this.geom.radius = value;
 
+            this.setSize(value, value);
+            this.updateDisplayOrigin();
             this.updateData();
         }
 
