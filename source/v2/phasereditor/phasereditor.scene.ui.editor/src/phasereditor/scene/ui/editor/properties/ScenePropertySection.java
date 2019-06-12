@@ -143,6 +143,10 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 	}
 
 	protected void wrapOperation(Runnable run) {
+		wrapOperation(run, false);
+	}
+	
+	protected void wrapOperation(Runnable run, boolean needsFullReload) {
 
 		var models = getModels();
 
@@ -153,7 +157,7 @@ public abstract class ScenePropertySection extends FormPropertySection<ObjectMod
 		var afterData = SingleObjectSnapshotOperation.takeSnapshot(models);
 
 		getEditor()
-				.executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property"));
+				.executeOperation(new SingleObjectSnapshotOperation(beforeData, afterData, "Change object property", needsFullReload));
 
 		getEditor().getBroker().sendAll(UpdateObjectsMessage.createFromSnapshot(afterData));
 	}

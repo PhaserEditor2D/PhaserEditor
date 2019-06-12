@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -22,68 +22,58 @@
 package phasereditor.scene.ui.editor.undo;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.json.JSONObject;
 
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.messages.UpdateScenePropertiesMessage;
+import phasereditor.scene.ui.editor.messages.ReloadPageMessage;
 
 /**
  * @author arian
  *
  */
-public class ScenePropertiesSnapshotOperation extends SceneEditorOperation {
+public abstract class SceneEditorOperation extends AbstractOperation {
 
-	public static JSONObject takeSnapshot(SceneEditor editor) {
-		var data = new JSONObject();
+	private boolean _needsFullReload;
 
-		editor.getSceneModel().writeProperties(data);
-
-		return data;
+	public SceneEditorOperation(String label) {
+		this(label, false);
 	}
 
-	private JSONObject _beforeData;
-	private JSONObject _afterData;
-
-	public ScenePropertiesSnapshotOperation(JSONObject before, JSONObject after, String label) {
+	public SceneEditorOperation(String label, boolean needsFullReload) {
 		super(label);
+		_needsFullReload = needsFullReload;
+	}
 
-		_beforeData = before;
-		_afterData = after;
+	public boolean isNeedsFullReload() {
+		return _needsFullReload;
 	}
 
 	@Override
-	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return Status.OK_STATUS;
+	public final IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		var status = undo2(monitor, info);
+		reloadIfNeeded(info);
+		return status;
+	}
+
+	private void reloadIfNeeded(IAdaptable info) {
+		if (_needsFullReload) {
+			var editor = info.getAdapter(SceneEditor.class);
+			editor.getBroker().sendAll(new ReloadPageMessage());
+		}
 	}
 
 	@Override
-	public IStatus redo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-
-		loadSnapshot(info, _afterData);
-
-		return Status.OK_STATUS;
+	public final IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		var status = redo2(monitor, info);
+		reloadIfNeeded(info);
+		return status;
 	}
 
-	@Override
-	public IStatus undo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	protected abstract IStatus undo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException;
 
-		loadSnapshot(info, _beforeData);
+	protected abstract IStatus redo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException;
 
-		return Status.OK_STATUS;
-	}
-
-	private static void loadSnapshot(IAdaptable info, JSONObject snapshot) {
-		var editor = info.getAdapter(SceneEditor.class);
-
-		editor.getSceneModel().readProperties(snapshot);
-
-		editor.updatePropertyPagesContentWithSelection();
-		editor.setDirty(true);
-
-		editor.getBroker().sendAll(new UpdateScenePropertiesMessage(snapshot));
-	}
 }

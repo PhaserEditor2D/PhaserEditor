@@ -22,7 +22,6 @@
 package phasereditor.scene.ui.editor.undo;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -35,7 +34,7 @@ import phasereditor.scene.ui.editor.SceneEditor;
  * @author arian
  *
  */
-public class GroupListSnapshotOperation extends AbstractOperation {
+public class GroupListSnapshotOperation extends SceneEditorOperation {
 
 	private JSONObject _beforeData;
 	private JSONObject _afterData;
@@ -61,13 +60,13 @@ public class GroupListSnapshotOperation extends AbstractOperation {
 	}
 
 	@Override
-	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	public IStatus redo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		loadSnapshot(info, _afterData);
 		return Status.OK_STATUS;
 	}
 
 	@Override
-	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	public IStatus undo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		loadSnapshot(info, _beforeData);
 
 		return Status.OK_STATUS;

@@ -184,7 +184,7 @@ public class TextureSection extends ScenePropertySection {
 							TextureComponent.set_textureFrame(model, null);
 						});
 						update_UI_from_Model();
-					});
+					}, true);
 					getEditor().setDirty(true);
 				}));
 			}

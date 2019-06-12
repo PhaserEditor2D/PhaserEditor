@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -38,9 +37,8 @@ import phasereditor.scene.ui.editor.messages.UpdateObjectsMessage;
 
 /**
  * @author arian
- *
  */
-public class SingleObjectSnapshotOperation extends AbstractOperation {
+public class SingleObjectSnapshotOperation extends SceneEditorOperation {
 
 	public static List<JSONObject> takeSnapshot(List<ObjectModel> models) {
 		var list = new ArrayList<JSONObject>();
@@ -57,12 +55,15 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 	private List<JSONObject> _beforeData;
 	private List<JSONObject> _afterData;
 
-	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label) {
-		super(label);
-
+	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label,
+			boolean needsFullReload) {
+		super(label, needsFullReload);
 		_beforeData = beforeData;
 		_afterData = afterData;
+	}
 
+	public SingleObjectSnapshotOperation(List<JSONObject> beforeData, List<JSONObject> afterData, String label) {
+		this(beforeData, afterData, label, false);
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 	}
 
 	@Override
-	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	public IStatus redo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 
 		loadSnapshot(info, _afterData);
 
@@ -80,7 +81,7 @@ public class SingleObjectSnapshotOperation extends AbstractOperation {
 	}
 
 	@Override
-	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	public IStatus undo2(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 
 		loadSnapshot(info, _beforeData);
 
