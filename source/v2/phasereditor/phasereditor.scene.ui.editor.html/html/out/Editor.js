@@ -3,6 +3,7 @@ var PhaserEditor2D;
     var Editor = (function () {
         function Editor() {
             this._closed = false;
+            this._isReloading = false;
             this.selection = [];
             Editor._instance = this;
             this.openSocket();
@@ -119,6 +120,10 @@ var PhaserEditor2D;
         };
         Editor.prototype.onClosedSocket = function () {
             console.log("Socket closed");
+            if (this._isReloading) {
+                console.log("Closed because a reload.");
+                return;
+            }
             this._closed = true;
             var body = document.getElementById("body");
             var elem = document.createElement("div");
@@ -171,6 +176,7 @@ var PhaserEditor2D;
             }
         };
         Editor.prototype.onReloadPage = function () {
+            this._isReloading = true;
             this._socket.close();
             window.location.reload();
         };

@@ -11,6 +11,7 @@ namespace PhaserEditor2D {
         private _transformLocalCoords: boolean;
         private _pendingMouseDownEvent: MouseEvent;
         private _closed = false;
+        private _isReloading = false;
 
         sceneProperties: any;
         selection: any[] = [];
@@ -165,6 +166,10 @@ namespace PhaserEditor2D {
 
         private onClosedSocket() {
             console.log("Socket closed");
+            if (this._isReloading) {
+                console.log("Closed because a reload.");
+                return;
+            }
             this._closed = true;
             let body = document.getElementById("body");
             var elem = document.createElement("div");
@@ -231,6 +236,7 @@ namespace PhaserEditor2D {
         }
 
         private onReloadPage() {
+            this._isReloading = true;
             this._socket.close();
             window.location.reload();
         }
