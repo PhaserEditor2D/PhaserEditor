@@ -34,6 +34,7 @@ public abstract class BaseDesignSection extends ScenePropertySection {
 
 	public BaseDesignSection(String name, FormPropertyPage page) {
 		super(name, page);
+		setStartCollapsed(false);
 	}
 
 	@Override

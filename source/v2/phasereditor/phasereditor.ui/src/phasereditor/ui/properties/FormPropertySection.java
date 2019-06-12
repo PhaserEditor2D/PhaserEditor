@@ -59,7 +59,7 @@ public abstract class FormPropertySection<T> implements IEditorSharedImages {
 		_models = new ArrayList<>();
 		_fillSpace = false;
 		_updates = new ArrayList<>();
-		_startCollapsed = true;
+		_startCollapsed = false;
 	}
 
 	public List<Runnable> getUpdates() {
