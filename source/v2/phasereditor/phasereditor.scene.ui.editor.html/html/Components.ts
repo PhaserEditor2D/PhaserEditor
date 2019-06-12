@@ -1,12 +1,16 @@
 namespace PhaserEditor2D {
 
+    function get_value(data: any, name: string, defaultValue?: any) {
+        var value = data[name];
+        if (value === undefined) {
+            return defaultValue;
+        }
+        return value;
+    }
+
     function get_property(name: string, defaultValue?: any) {
         return function (data: any) {
-            var value = data[name];
-            if (value == undefined) {
-                return defaultValue;
-            }
-            return value;
+            return get_value(data, name, defaultValue);
         };
     }
 
@@ -56,21 +60,18 @@ namespace PhaserEditor2D {
             this.set_scaleY(data, obj.scaleY);
             this.set_angle(data, obj.angle);
         }
+        
     };
 
     export const OriginComponent = {
-        get_originX: get_property("originX", 0.5),
-        set_originX: set_property("originX"),
-        get_originY: get_property("originY", 0.5),
-        set_originY: set_property("originY"),
 
         updateObject: function (obj: Phaser.GameObjects.Components.Origin, data: any) {
-            obj.setOrigin(data.originX || 0.5, data.originY || 0.5);
+            obj.setOrigin(get_value(data, "originX", 0.5), get_value(data, "originY", 0.5));
         },
 
         updateData: function (obj: Phaser.GameObjects.Components.Origin, data: any) {
-            this.set_originX(data, obj.originX);
-            this.set_originY(data, obj.originY);
+            data.originX = obj.originX;
+            data.originY = obj.originY;
         }
     };
 
@@ -177,7 +178,7 @@ namespace PhaserEditor2D {
             obj.style.color = data.color || "#fff";
             obj.style.stroke = data.stroke || "#fff";
             obj.style.strokeThickness = data.strokeThickness || 0;
-            
+
             obj.style.maxLines = data.maxLines || 0;
             obj.style.fixedWidth = data.fixedWidth || 0;
             obj.style.fixedHeight = data.fixedHeight || 0;
@@ -189,15 +190,15 @@ namespace PhaserEditor2D {
             obj.style.shadowColor = data["shadow.color"] || "#000";
             obj.style.shadowBlur = data["shadow.blur"] || 0;
             obj.style.shadowStroke = data["shadow.stroke"] || false;
-            obj.style.shadowFill = data["shadow.fill"] || false; 
+            obj.style.shadowFill = data["shadow.fill"] || false;
 
             obj.style.setWordWrapWidth(data["wordWrap.width"] || 0, data["wordWrap.useAdvancedWrap"] || false);
 
             obj.style.update(true);
 
             obj.setLineSpacing(data.lineSpacing || 0);
-            obj.setPadding(data.paddingLeft, data.paddingTop, data.paddingRight, data.paddingBottom);  
-            
+            obj.setPadding(data.paddingLeft, data.paddingTop, data.paddingRight, data.paddingBottom);
+
             // Text object has default origin at 0,0
             obj.setOrigin(data.originX || 0, data.originY || 0);
         }

@@ -1,12 +1,15 @@
 var PhaserEditor2D;
 (function (PhaserEditor2D) {
+    function get_value(data, name, defaultValue) {
+        var value = data[name];
+        if (value === undefined) {
+            return defaultValue;
+        }
+        return value;
+    }
     function get_property(name, defaultValue) {
         return function (data) {
-            var value = data[name];
-            if (value == undefined) {
-                return defaultValue;
-            }
-            return value;
+            return get_value(data, name, defaultValue);
         };
     }
     function set_property(name) {
@@ -47,16 +50,12 @@ var PhaserEditor2D;
         }
     };
     PhaserEditor2D.OriginComponent = {
-        get_originX: get_property("originX", 0.5),
-        set_originX: set_property("originX"),
-        get_originY: get_property("originY", 0.5),
-        set_originY: set_property("originY"),
         updateObject: function (obj, data) {
-            obj.setOrigin(data.originX || 0.5, data.originY || 0.5);
+            obj.setOrigin(get_value(data, "originX", 0.5), get_value(data, "originY", 0.5));
         },
         updateData: function (obj, data) {
-            this.set_originX(data, obj.originX);
-            this.set_originY(data, obj.originY);
+            data.originX = obj.originX;
+            data.originY = obj.originY;
         }
     };
     PhaserEditor2D.TextureComponent = {
