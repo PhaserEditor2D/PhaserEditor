@@ -120,7 +120,6 @@ var PhaserEditor2D;
         Editor.prototype.onClosedSocket = function () {
             console.log("Socket closed");
             this._closed = true;
-            this._game.destroy(true, false);
             var body = document.getElementById("body");
             var elem = document.createElement("div");
             elem.innerHTML = "<p><br><br><br>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button>";
