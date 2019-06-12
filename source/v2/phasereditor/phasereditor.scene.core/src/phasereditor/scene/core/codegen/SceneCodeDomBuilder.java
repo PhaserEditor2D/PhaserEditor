@@ -976,18 +976,14 @@ public class SceneCodeDomBuilder {
 
 	private IAssetFrameModel getTexture(ObjectModel model) {
 		var frame = TextureComponent.utils_getTexture(model, _finder);
-
-		if (frame == null) {
-			// TODO: we should not generate code if there is any error, so it is missing a
-			// previous validation
-			throw new RuntimeException("Texture not found (" + TextureComponent.get_textureKey(model) + ","
-					+ TextureComponent.get_textureFrame(model) + ")");
-		}
-
 		return frame;
 	}
 
 	private static void buildTextureArguments(MethodCallDom call, IAssetFrameModel frame) {
+		if (frame == null) {
+			return;
+		}
+		
 		var asset = frame.getAsset();
 
 		if (asset instanceof ImageAssetModel) {

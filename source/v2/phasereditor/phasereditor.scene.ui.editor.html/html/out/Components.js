@@ -60,7 +60,13 @@ var PhaserEditor2D;
     };
     PhaserEditor2D.TextureComponent = {
         get_textureKey: get_property("textureKey"),
-        get_textureFrame: get_property("textureFrame")
+        get_textureFrame: get_property("textureFrame"),
+        updateObject: function (obj, data) {
+            var key = this.get_textureKey(data);
+            if (!key) {
+                obj.setTexture("<empty>");
+            }
+        }
     };
     PhaserEditor2D.TileSpriteComponent = {
         get_tilePositionX: get_property("tilePositionX", 0),

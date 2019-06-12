@@ -77,7 +77,14 @@ namespace PhaserEditor2D {
 
     export const TextureComponent = {
         get_textureKey: get_property("textureKey"),
-        get_textureFrame: get_property("textureFrame")
+        get_textureFrame: get_property("textureFrame"),
+
+        updateObject: function (obj: Phaser.GameObjects.Sprite, data: any) {
+            var key = this.get_textureKey(data);            
+            if (!key) {
+                obj.setTexture("<empty>");
+            }
+        }
     };
 
     export const TileSpriteComponent = {

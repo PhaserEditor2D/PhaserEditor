@@ -82,6 +82,13 @@ var PhaserEditor2D;
                 case "Image":
                 case "Sprite":
                 case "TileSprite":
+                    PhaserEditor2D.TextureComponent.updateObject(obj, data);
+                    break;
+            }
+            switch (type) {
+                case "Image":
+                case "Sprite":
+                case "TileSprite":
                 case "BitmapText":
                 case "DynamicBitmapText":
                 case "Text":

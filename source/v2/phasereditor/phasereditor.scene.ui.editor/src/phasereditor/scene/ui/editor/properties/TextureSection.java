@@ -145,12 +145,12 @@ public class TextureSection extends ScenePropertySection {
 		createActions();
 
 		var comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new GridLayout(1, false));
+		comp.setLayout(new GridLayout(2, false));
 
 		{
 			var canvas = new SingleFrameCanvas(comp, SWT.BORDER);
 			canvas.setToolTipText("Click to change the texture.");
-			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 			gd.heightHint = 100;
 			gd.minimumWidth = 100;
 			canvas.setLayoutData(gd);
@@ -172,11 +172,26 @@ public class TextureSection extends ScenePropertySection {
 		{
 			Button btn = new Button(comp, 0);
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> selectFrame()));
-			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+			{
+				var btnRemove = new Button(comp, SWT.PUSH);
+				btnRemove.setImage(EditorSharedImages.getImage(IMG_DELETE));
+				btnRemove.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							TextureComponent.set_textureKey(model, null);
+							TextureComponent.set_textureFrame(model, null);
+						});
+						update_UI_from_Model();
+					});
+					getEditor().setDirty(true);
+				}));
+			}
 
 			Label label = new Label(comp, SWT.WRAP);
 			label.setText("Frame");
-			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 			addUpdate(() -> {
 
@@ -212,6 +227,7 @@ public class TextureSection extends ScenePropertySection {
 
 				}
 			});
+
 		}
 
 		return comp;

@@ -115,6 +115,14 @@ namespace PhaserEditor2D {
                 case "Image":
                 case "Sprite":
                 case "TileSprite":
+                    TextureComponent.updateObject(obj, data);
+                    break;
+            }
+
+            switch (type) {
+                case "Image":
+                case "Sprite":
+                case "TileSprite":
                 case "BitmapText":
                 case "DynamicBitmapText":
                 case "Text":
