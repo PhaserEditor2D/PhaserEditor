@@ -411,6 +411,8 @@ public interface TextComponent extends TextualComponent {
 		set_paddingBottom(model, paddingBottom_default);
 		set_autoRound(model, autoRound_default);
 		set_lineSpacing(model, lineSpacing_default);
+		set_wordWrapUseAdvanced(model, wordWrapUseAdvanced_default);
+		set_wordWrapWidth(model, wordWrapWidth_default);
 
 		set_align(model, align_default);
 		set_backgroundColor(model, backgroundColor_default);
