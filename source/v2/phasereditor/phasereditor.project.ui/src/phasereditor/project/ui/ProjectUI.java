@@ -32,8 +32,13 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.tm.terminal.connector.local.launcher.LocalLauncherDelegate;
 import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.ResourceUtil;
+import org.eclipse.ui.internal.WorkbenchPartReference;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
+
+import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -72,5 +77,38 @@ public class ProjectUI {
 		props.put(ITerminalsConnectorConstants.PROP_SELECTION, new StructuredSelection(folder));
 
 		new LocalLauncherDelegate().execute(props, null);
+	}
+
+	public static void updateTitleOfParts() {
+		try {
+			var refs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
+
+			for (var ref : refs) {
+				var input = ref.getEditorInput();
+				var file = ResourceUtil.getFile(input);
+				if (file != null) {
+					var project = file.getProject();
+					var wRef = (WorkbenchPartReference) ref;
+					var part = wRef.getModel();
+					String label;
+					if (project == ProjectCore.getActiveProject()) {
+						label = input.getName();
+					} else {
+						label = input.getName() + " ^" + project.getName();
+					}
+					part.setLabel(label);
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void start() {
+		ProjectCore.addActiveProjectListener(project -> {
+			updateTitleOfParts();
+		});
 	}
 }

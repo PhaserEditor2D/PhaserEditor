@@ -93,7 +93,6 @@ public class MyRenderFactory extends WorkbenchRendererFactory {
 			}
 			return _winRenderer;
 		}
-
 		return super.getRenderer(uiElement, parent);
 	}
 

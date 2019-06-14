@@ -24,15 +24,20 @@ package phasereditor.ide.ui;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import org.eclipse.e4.ui.workbench.renderers.swt.TrimmedPartLayout;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.ide.application.DelayedEventsProcessor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchWindowAdvisor;
+
+import phasereditor.project.ui.ProjectUI;
 
 /**
  * @author arian
@@ -75,6 +80,39 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 			swtRun(() -> {
 				MyPerspectiveListener.updateToolbar(win.getActivePage(), win.getActivePage().getPerspective());
 			});
+
+			win.getActivePage().addPartListener(new MyPartListener());
+		}
+
+	}
+
+	private static class MyPartListener implements IPartListener {
+
+		@Override
+		public void partActivated(IWorkbenchPart part) {
+			//
+		}
+
+		@Override
+		public void partBroughtToTop(IWorkbenchPart part) {
+			//
+		}
+
+		@Override
+		public void partClosed(IWorkbenchPart part) {
+			//
+		}
+
+		@Override
+		public void partDeactivated(IWorkbenchPart part) {
+			//
+		}
+
+		@Override
+		public void partOpened(IWorkbenchPart part) {
+			if (part instanceof IEditorPart) {
+				ProjectUI.updateTitleOfParts();
+			}
 		}
 
 	}
