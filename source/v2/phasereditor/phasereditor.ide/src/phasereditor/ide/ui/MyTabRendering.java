@@ -16,8 +16,12 @@
 package phasereditor.ide.ui;
 
 import java.lang.reflect.Field;
+
 import javax.inject.Inject;
+
 import org.eclipse.e4.ui.internal.css.swt.ICTabRendering;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPlaceholder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolderRenderer;
@@ -31,6 +35,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+
+import phasereditor.ui.SwtRM;
 
 @SuppressWarnings("all")
 public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering {
@@ -226,13 +232,40 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 		case PART_HEADER:
 			this.drawTabHeader(gc, bounds, state);
 			// Changed: Arian Fornaris (we do not want corners)
-			//this.drawCorners(gc, bounds);
+			// this.drawCorners(gc, bounds);
 			return;
 		default:
 			if (0 <= part && part < parent.getItemCount()) {
 				gc.setAdvanced(true);
 				if (bounds.width == 0 || bounds.height == 0)
 					return;
+
+				// Arian
+				var item = parent.getItem(part);
+				var data = item.getData("modelElement");
+				MUIElement uiElement = null;
+				if (data instanceof MPlaceholder) {
+					uiElement = ((MPlaceholder) data).getRef();
+				} else if (data instanceof MUIElement) {
+					uiElement = (MUIElement) data;
+				}
+
+				var selectionFg = parent.getSelectionForeground();
+				var fg = parent.getForeground();
+				var font = parent.getFont();
+
+				if (uiElement != null) {
+					var otherProject = uiElement.getTags().contains("OtherProjectEditor");
+					if (otherProject) {
+						var color = gc.getDevice().getSystemColor(SWT.COLOR_DARK_GRAY);
+						parent.setSelectionForeground(color);
+						parent.setForeground(color);
+						var fd = font.getFontData()[0];
+						parent.setFont(SwtRM.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC));
+					}
+				}
+				//
+
 				if ((state & SWT.SELECTED) != 0) {
 					drawSelectedTab(part, gc, bounds);
 					state &= ~SWT.BACKGROUND;
@@ -249,6 +282,12 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 						super.draw(part, state, bounds, gc);
 					}
 				}
+
+				// Arian
+				parent.setSelectionForeground(selectionFg);
+				parent.setForeground(fg);
+				parent.setFont(font);
+				//
 				return;
 			}
 		}
@@ -353,7 +392,7 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 			outerKeyline = gc.getDevice().getSystemColor(SWT.COLOR_BLACK);
 		gc.setForeground(outerKeyline);
 		// Changed: Arian Fornaris
-//		gc.drawPolyline(shape);
+		// gc.drawPolyline(shape);
 	}
 
 	void drawTabBody(GC gc, Rectangle bounds) {
@@ -422,9 +461,7 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 		int circY = onBottom ? bounds.y + bounds.height + 1 - header - radius : bounds.y - 1 + radius;
 		int selectionX1, selectionY1, selectionX2, selectionY2;
 		int bottomY = onBottom ? bounds.y - header : bounds.y + bounds.height;
-		if (itemIndex == 0
-				&& bounds.x == -computeTrim(CTabFolderRenderer.PART_HEADER,
-						SWT.NONE, 0, 0, 0, 0).x) {
+		if (itemIndex == 0 && bounds.x == -computeTrim(CTabFolderRenderer.PART_HEADER, SWT.NONE, 0, 0, 0, 0).x) {
 			circX -= 1;
 			points[index++] = circX - radius;
 			points[index++] = bottomY;
@@ -485,14 +522,10 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 		}
 
 		// Changed: Arian Fornaris
-//		int[] tmpPoints = new int[index];
-//		System.arraycopy(points, 0, tmpPoints, 0, index);
-		int[] tmpPoints = new int[] {
-				bounds.x - 1, bounds.y, 
-				bounds.x + bounds.width, bounds.y,
-				bounds.x + bounds.width, bounds.y + bounds.height + 1,
-				bounds.x - 1, bounds.y + bounds.height + 1
-				};
+		// int[] tmpPoints = new int[index];
+		// System.arraycopy(points, 0, tmpPoints, 0, index);
+		int[] tmpPoints = new int[] { bounds.x - 1, bounds.y, bounds.x + bounds.width, bounds.y,
+				bounds.x + bounds.width, bounds.y + bounds.height + 1, bounds.x - 1, bounds.y + bounds.height + 1 };
 		gc.fillPolygon(tmpPoints);
 		gc.drawLine(selectionX1, selectionY1, selectionX2, selectionY2);
 		if (tabOutlineColor == null)
@@ -509,13 +542,14 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 			gc.setForegroundPattern(foregroundPattern);
 		}
 		// Changed: Arian Fornaris
-		//gc.drawPolyline(tmpPoints);
-//		gc.setAlpha(80);
-//		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_LIST_SELECTION));
-//		gc.drawLine(bounds.x - 2, bounds.y, bounds.x + bounds.width, bounds.y);
-//		gc.drawLine(bounds.x - 2, bounds.y + 1, bounds.x + bounds.width, bounds.y + 1);
-//		gc.setAlpha(255);
-		
+		// gc.drawPolyline(tmpPoints);
+		// gc.setAlpha(80);
+		// gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_LIST_SELECTION));
+		// gc.drawLine(bounds.x - 2, bounds.y, bounds.x + bounds.width, bounds.y);
+		// gc.drawLine(bounds.x - 2, bounds.y + 1, bounds.x + bounds.width, bounds.y +
+		// 1);
+		// gc.setAlpha(255);
+
 		Rectangle rect = null;
 		gc.setClipping(rect);
 
@@ -524,7 +558,7 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 				outerKeyline = gc.getDevice().getSystemColor(SWT.COLOR_RED);
 			gc.setForeground(outerKeyline);
 			// Changed: Arian Fornaris
-//			gc.drawPolyline(shape);
+			// gc.drawPolyline(shape);
 		} else {
 			if (!onBottom) {
 				gc.drawLine(startX, 0, endX, 0);
@@ -606,7 +640,7 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 				inactive[inactive_index] -= 1;
 				inactive_index += 2;
 			}
-			
+
 			gc.setClipping(points[0], onBottom ? bounds.y - header : bounds.y,
 					parent.getSize().x - (shadowEnabled ? SIDE_DROP_WIDTH : 0 + INNER_KEYLINE + OUTER_KEYLINE),
 					bounds.y + bounds.height);
@@ -620,11 +654,11 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 			gc.setBackground(color);
 			int[] tmpPoints = new int[index];
 			System.arraycopy(points, 0, tmpPoints, 0, index);
-			
+
 			// Changed: Arian Fornaris. We just want to paint a rect tab
-//			gc.fillPolygon(tmpPoints);
+			// gc.fillPolygon(tmpPoints);
 			gc.fillRectangle(bounds);
-			
+
 			gc.fillRectangle(leftIndex, bottomY, width, rightIndex);
 			// CHANGE: Arian Fornaris
 			// Color tempBorder = new Color(gc.getDevice(), 182, 188, 204);
@@ -848,8 +882,7 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 		return dst;
 	}
 
-	private void convolve(float[] kernel, int[] inPixels, int[] outPixels,
-			int width, int height, boolean alpha) {
+	private void convolve(float[] kernel, int[] inPixels, int[] outPixels, int width, int height, boolean alpha) {
 		int kernelWidth = kernel.length;
 		int kernelMid = kernelWidth / 2;
 		for (int y = 0; y < height; y++) {
@@ -1019,8 +1052,8 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 		drawTabBackground(gc, partHeaderBounds, state, vertical, defaultBackground);
 	}
 
-	private void drawUnselectedTabBackground(GC gc, Rectangle partHeaderBounds,
-			int state, boolean vertical, Color defaultBackground) {
+	private void drawUnselectedTabBackground(GC gc, Rectangle partHeaderBounds, int state, boolean vertical,
+			Color defaultBackground) {
 		if (unselectedTabsColors == null) {
 			boolean selected = (state & SWT.SELECTED) != 0;
 			unselectedTabsColors = selected ? parentWrapper.getSelectionGradientColors()
@@ -1033,12 +1066,12 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 			unselectedTabsPercents = new int[] { 100 };
 		}
 
-		drawBackground(gc, partHeaderBounds.x, partHeaderBounds.y - 1, partHeaderBounds.width,
-				partHeaderBounds.height, defaultBackground, unselectedTabsColors, unselectedTabsPercents, vertical);
+		drawBackground(gc, partHeaderBounds.x, partHeaderBounds.y - 1, partHeaderBounds.width, partHeaderBounds.height,
+				defaultBackground, unselectedTabsColors, unselectedTabsPercents, vertical);
 	}
 
-	private void drawTabBackground(GC gc, Rectangle partHeaderBounds,
-			int state, boolean vertical, Color defaultBackground) {
+	private void drawTabBackground(GC gc, Rectangle partHeaderBounds, int state, boolean vertical,
+			Color defaultBackground) {
 		Color[] colors = selectedTabFillColors;
 		int[] percents = selectedTabFillPercents;
 
@@ -1060,8 +1093,8 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 
 	/*
 	 * Copied the relevant parts from the package private
-	 * org.eclipse.swt.custom.CTabFolderRenderer.drawBackground(GC, int[], int,
-	 * int, int, int, Color, Image, Color[], int[], boolean) method.
+	 * org.eclipse.swt.custom.CTabFolderRenderer.drawBackground(GC, int[], int, int,
+	 * int, int, Color, Image, Color[], int[], boolean) method.
 	 */
 	private void drawBackground(GC gc, int x, int y, int width, int height, Color defaultBackground, Color[] colors,
 			int[] percents, boolean vertical) {

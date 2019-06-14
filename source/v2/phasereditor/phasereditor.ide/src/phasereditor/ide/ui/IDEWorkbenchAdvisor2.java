@@ -111,7 +111,7 @@ public class IDEWorkbenchAdvisor2 extends IDEWorkbenchAdvisor {
 		@Override
 		public void partOpened(IWorkbenchPart part) {
 			if (part instanceof IEditorPart) {
-				ProjectUI.updateTitleOfParts();
+				ProjectUI.updateTitleOfEditors();
 			}
 		}
 

@@ -45,7 +45,11 @@ import phasereditor.project.core.ProjectCore;
  *
  */
 public class ProjectUI {
+	/**
+	 * 
+	 */
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	private static final String OTHER_PROJECT_EDITOR = "OtherProjectEditor";
 
 	public static void logError(Exception e) {
 		e.printStackTrace();
@@ -79,7 +83,7 @@ public class ProjectUI {
 		new LocalLauncherDelegate().execute(props, null);
 	}
 
-	public static void updateTitleOfParts() {
+	public static void updateTitleOfEditors() {
 		try {
 			var refs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
 
@@ -93,8 +97,10 @@ public class ProjectUI {
 					String label;
 					if (project == ProjectCore.getActiveProject()) {
 						label = input.getName();
+						part.getTags().remove(OTHER_PROJECT_EDITOR);
 					} else {
-						label = input.getName() + " ^" + project.getName();
+						label = input.getName() + "^" + project.getName();
+						part.getTags().add(OTHER_PROJECT_EDITOR);
 					}
 					part.setLabel(label);
 				}
@@ -108,7 +114,7 @@ public class ProjectUI {
 
 	public static void start() {
 		ProjectCore.addActiveProjectListener(project -> {
-			updateTitleOfParts();
+			updateTitleOfEditors();
 		});
 	}
 }
