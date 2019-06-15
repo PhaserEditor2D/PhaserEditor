@@ -50,6 +50,7 @@ namespace PhaserEditor2D {
 
             editor.repaint();
 
+            this.sendRecordCameraStateMessage();
         }
 
         getPickManager() {
@@ -128,6 +129,8 @@ namespace PhaserEditor2D {
                 cameraState: {
                     scrollX: cam.scrollX,
                     scrollY: cam.scrollY,
+                    width: cam.width,
+                    height: cam.height,
                     zoom: cam.zoom
                 }
             });

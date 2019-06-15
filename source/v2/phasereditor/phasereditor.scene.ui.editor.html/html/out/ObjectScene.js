@@ -37,6 +37,7 @@ var PhaserEditor2D;
             this.initBackground();
             editor.sceneCreated();
             editor.repaint();
+            this.sendRecordCameraStateMessage();
         };
         ObjectScene.prototype.getPickManager = function () {
             return this._pickManager;
@@ -97,6 +98,8 @@ var PhaserEditor2D;
                 cameraState: {
                     scrollX: cam.scrollX,
                     scrollY: cam.scrollY,
+                    width: cam.width,
+                    height: cam.height,
                     zoom: cam.zoom
                 }
             });

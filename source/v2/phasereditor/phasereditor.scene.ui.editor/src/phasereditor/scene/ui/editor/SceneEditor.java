@@ -79,6 +79,7 @@ import phasereditor.scene.core.SpriteModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TransformComponent;
+import phasereditor.scene.core.TransformModel;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.messages.DeleteObjectsMessage;
 import phasereditor.scene.ui.editor.messages.GetPastePositionMessage;
@@ -813,6 +814,13 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 				newModels.add(textModel);
 
+			} else if (obj instanceof TransformModel) {
+				var model = (TransformModel) obj;
+				
+				TransformComponent.set_x(model, x);
+				TransformComponent.set_y(model, y);
+				
+				newModels.add(model);
 			}
 		}
 
@@ -881,6 +889,11 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	private JSONObject _cameraState = new JSONObject();
+	private float _cameraStateScrollX;
+	private float _cameraStateScrollY;
+	private float _cameraStateWidth;
+	private float _cameraStateHeight;
+	private float _cameraStateZoom;
 
 	public JSONObject getCameraState() {
 		return _cameraState;
@@ -888,6 +901,20 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	public void setCameraState(JSONObject cameraState) {
 		_cameraState = cameraState;
+		_cameraStateScrollX = cameraState.getFloat("scrollX");
+		_cameraStateScrollY = cameraState.getFloat("scrollY");
+		_cameraStateWidth = cameraState.getFloat("width");
+		_cameraStateHeight = cameraState.getFloat("height");
+		_cameraStateZoom = cameraState.getFloat("zoom");
+		if (_cameraStateZoom == 0) {
+			_cameraStateZoom = 0.0001f;
+		}
+	}
+
+	public float[] getCameraCenter() {
+		var x = _cameraStateScrollX + _cameraStateWidth / _cameraStateZoom / 2;
+		var y = _cameraStateScrollY + _cameraStateHeight / _cameraStateZoom / 2;
+		return new float[] { x, y };
 	}
 
 	@Override

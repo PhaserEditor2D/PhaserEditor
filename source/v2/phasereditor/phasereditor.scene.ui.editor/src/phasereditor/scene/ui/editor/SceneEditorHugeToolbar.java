@@ -37,6 +37,7 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.TextModel;
 import phasereditor.scene.core.TextualComponent;
+import phasereditor.scene.core.TransformComponent;
 import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
@@ -123,12 +124,51 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 
 		@Override
 		public void run() {
-
-			var displayList = _editor.getSceneModel().getDisplayList();
+			var sceneModel = _editor.getSceneModel();
+			var displayList = sceneModel.getDisplayList();
 			var computer = new NameComputer(displayList);
 			var name = computer.newName("text");
 
 			var textModel = new TextModel();
+
+			VariableComponent.set_variableName(textModel, name);
+			TextualComponent.set_text(textModel, "Text...");
+
+			var pos = _editor.getCameraCenter();
+
+			var models = _editor.selectionDropped(pos[0], pos[1], new Object[] { textModel });
+
+			_editor.getBroker().sendAllBatch(
+
+					new DropObjectsMessage(models),
+
+					new SelectObjectsMessage(_editor)
+
+			);
+
+		}
+
+		public void run2() {
+
+			var sceneModel = _editor.getSceneModel();
+			var displayList = sceneModel.getDisplayList();
+			var computer = new NameComputer(displayList);
+			var name = computer.newName("text");
+
+			var textModel = new TextModel();
+
+			{
+				var pos = _editor.getCameraCenter();
+
+				var x = pos[0];
+				var y = pos[1];
+
+				x = sceneModel.snapValueX(x);
+				y = sceneModel.snapValueY(y);
+
+				TransformComponent.set_x(textModel, x);
+				TransformComponent.set_y(textModel, y);
+			}
 
 			VariableComponent.set_variableName(textModel, name);
 			TextualComponent.set_text(textModel, "Text...");
@@ -144,7 +184,7 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 			_editor.refreshOutline();
 
 			_editor.setSelection(List.of(textModel));
-			
+
 			_editor.updatePropertyPagesContentWithSelection();
 
 			_editor.setDirty(true);
