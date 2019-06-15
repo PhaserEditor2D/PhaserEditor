@@ -44,6 +44,7 @@ import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.ui.QuickSelectAssetDialog;
 import phasereditor.assetpack.ui.ShowAnimationKeyInAnimationsEditorAction;
 import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.scene.core.AnimationsComponent;

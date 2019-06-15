@@ -34,9 +34,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteComponent;
 import phasereditor.scene.core.TileSpriteModel;
+import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertyPage;
@@ -361,22 +363,7 @@ public class TileSpriteSection extends ScenePropertySection {
 
 		wrapOperation(() -> {
 			for (var obj : getModels()) {
-				var model = (TileSpriteModel) obj;
-				var frame = TextureComponent.utils_getTexture(model, getEditor().getAssetFinder());
-				if (frame != null) {
-					var fd = frame.getFrameData();
-					if (fd != null) {
-						var size = fd.src;
-
-						if (width) {
-							TileSpriteComponent.set_width(model, size.width);
-						}
-
-						if (height) {
-							TileSpriteComponent.set_height(model, size.height);
-						}
-					}
-				}
+				resetToTextureSize(getEditor(), width, height, obj);
 			}
 		});
 
@@ -388,6 +375,25 @@ public class TileSpriteSection extends ScenePropertySection {
 			editor.refreshOutline_basedOnId();
 		}
 
+	}
+
+	public static void resetToTextureSize(SceneEditor editor, boolean width, boolean height, ObjectModel obj) {
+		var model = (TileSpriteModel) obj;
+		var frame = TextureComponent.utils_getTexture(model, editor.getAssetFinder());
+		if (frame != null) {
+			var fd = frame.getFrameData();
+			if (fd != null) {
+				var size = fd.src;
+
+				if (width) {
+					TileSpriteComponent.set_width(model, size.width);
+				}
+
+				if (height) {
+					TileSpriteComponent.set_height(model, size.height);
+				}
+			}
+		}
 	}
 
 	private void updateActions() {

@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.ui.QuickSelectAssetDialog;
 import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.BitmapTextModel;

@@ -23,32 +23,20 @@ package phasereditor.scene.ui.editor;
 
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 
-import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.inspect.core.InspectCore;
-import phasereditor.scene.core.NameComputer;
-import phasereditor.scene.core.TextModel;
-import phasereditor.scene.core.TextualComponent;
-import phasereditor.scene.core.TransformComponent;
-import phasereditor.scene.core.VariableComponent;
-import phasereditor.scene.ui.editor.messages.DropObjectsMessage;
-import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.properties.CompilerSection;
 import phasereditor.scene.ui.editor.properties.SceneEditorCommandAction;
 import phasereditor.scene.ui.editor.properties.TransformSection;
 import phasereditor.scene.ui.editor.properties.WebViewSection;
-import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
-import phasereditor.webrun.core.BatchMessage;
 
 class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 
@@ -88,7 +76,10 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 			btn.setImage(EditorSharedImages.getImage(IMG_ADD));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 				var manager = new MenuManager();
-				manager.add(new AddTextAction());
+				manager.add(new AddImageAction(_editor));
+				manager.add(new AddSpriteAction(_editor));
+				manager.add(new AddTileSpriteAction(_editor));
+				manager.add(new AddTextAction(_editor));
 				manager.createContextMenu(btn).setVisible(true);
 			}));
 		}
@@ -114,89 +105,6 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 		}
 
 		updateActions();
-	}
-
-	class AddTextAction extends Action {
-		public AddTextAction() {
-			super("Text");
-			setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("Phaser.GameObjects.Text"));
-		}
-
-		@Override
-		public void run() {
-			var sceneModel = _editor.getSceneModel();
-			var displayList = sceneModel.getDisplayList();
-			var computer = new NameComputer(displayList);
-			var name = computer.newName("text");
-
-			var textModel = new TextModel();
-
-			VariableComponent.set_variableName(textModel, name);
-			TextualComponent.set_text(textModel, "Text...");
-
-			var pos = _editor.getCameraCenter();
-
-			var models = _editor.selectionDropped(pos[0], pos[1], new Object[] { textModel });
-
-			_editor.getBroker().sendAllBatch(
-
-					new DropObjectsMessage(models),
-
-					new SelectObjectsMessage(_editor)
-
-			);
-
-		}
-
-		public void run2() {
-
-			var sceneModel = _editor.getSceneModel();
-			var displayList = sceneModel.getDisplayList();
-			var computer = new NameComputer(displayList);
-			var name = computer.newName("text");
-
-			var textModel = new TextModel();
-
-			{
-				var pos = _editor.getCameraCenter();
-
-				var x = pos[0];
-				var y = pos[1];
-
-				x = sceneModel.snapValueX(x);
-				y = sceneModel.snapValueY(y);
-
-				TransformComponent.set_x(textModel, x);
-				TransformComponent.set_y(textModel, y);
-			}
-
-			VariableComponent.set_variableName(textModel, name);
-			TextualComponent.set_text(textModel, "Text...");
-
-			var before = WorldSnapshotOperation.takeSnapshot(_editor);
-
-			displayList.getChildren().add(textModel);
-
-			var after = WorldSnapshotOperation.takeSnapshot(_editor);
-
-			_editor.executeOperation(new WorldSnapshotOperation(before, after, "Create Text"));
-
-			_editor.refreshOutline();
-
-			_editor.setSelection(List.of(textModel));
-
-			_editor.updatePropertyPagesContentWithSelection();
-
-			_editor.setDirty(true);
-
-			_editor.getBroker().sendAll(new BatchMessage(
-
-					new DropObjectsMessage(List.of(textModel)),
-
-					new SelectObjectsMessage(_editor)
-
-			));
-		}
 	}
 
 	public void updateActions() {

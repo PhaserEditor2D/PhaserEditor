@@ -28,8 +28,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -846,6 +848,35 @@ public class AssetPackUI {
 		} else if (key instanceof BitmapFontAssetModel) {
 			return new BitmapFontAssetEditorBlock((BitmapFontAssetModel) key);
 		}
+		return null;
+	}
+	
+	public static IAssetKey openAssetDialog(IProject project, Predicate<IAssetKey> filter) {
+
+		var list = new ArrayList<>();
+
+		for (var pack : AssetPackCore.getAssetPackModels(project)) {
+			for (var asset : pack.getAssets()) {
+				if (filter.test(asset)) {
+					list.add(asset);
+				}
+
+				for (var frame : asset.getAllFrames()) {
+					if (filter.test(frame)) {
+						list.add(frame);
+					}
+				}
+			}
+		}
+
+		var dlg = new QuickSelectAssetDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+		dlg.setTitle("Select Asset Key");
+		dlg.setInput(list);
+
+		if (dlg.open() == Window.OK) {
+			return (IAssetKey) dlg.getSingleResult();
+		}
+
 		return null;
 	}
 

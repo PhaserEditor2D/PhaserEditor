@@ -46,6 +46,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.QuickSelectAssetDialog;
 import phasereditor.assetpack.ui.ShowKeyInAssetPackEditorAction;
 import phasereditor.assetpack.ui.ShowTextureInTexturePackerAction;
 import phasereditor.assetpack.ui.preview.SingleFrameCanvas;
