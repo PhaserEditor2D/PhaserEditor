@@ -250,18 +250,10 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 					uiElement = (MUIElement) data;
 				}
 
-				var selectionFg = parent.getSelectionForeground();
-				var fg = parent.getForeground();
-				var font = parent.getFont();
-
 				if (uiElement != null) {
 					var otherProject = uiElement.getTags().contains("OtherProjectEditor");
 					if (otherProject) {
-						var color = gc.getDevice().getSystemColor(SWT.COLOR_DARK_GRAY);
-						parent.setSelectionForeground(color);
-						parent.setForeground(color);
-						var fd = font.getFontData()[0];
-						parent.setFont(SwtRM.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC));
+						gc.setAlpha(100);
 					}
 				}
 				//
@@ -284,9 +276,7 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 				}
 
 				// Arian
-				parent.setSelectionForeground(selectionFg);
-				parent.setForeground(fg);
-				parent.setFont(font);
+				gc.setAlpha(255);
 				//
 				return;
 			}
