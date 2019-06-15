@@ -26,10 +26,12 @@ import java.util.ArrayList;
 import org.eclipse.jface.action.Action;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
@@ -59,6 +61,10 @@ public abstract class AddObjectAction<T extends ObjectModel> extends Action {
 	@Override
 	public void run() {
 		var model = createModel();
+
+		if (model == null) {
+			return;
+		}
 
 		var sceneModel = _editor.getSceneModel();
 		var displayList = sceneModel.getDisplayList();
@@ -107,6 +113,19 @@ public abstract class AddObjectAction<T extends ObjectModel> extends Action {
 		}
 
 		return computer.newName(basename2);
+	}
+
+	protected BitmapFontAssetModel selectAndSetBitmapText(ObjectModel model) {
+		var asset = AssetPackUI.openAssetDialog(getEditor().getProject(), key -> key instanceof BitmapFontAssetModel);
+
+		if (asset != null) {
+			if (asset instanceof BitmapFontAssetModel) {
+				BitmapTextComponent.set_fontAssetKey(model, asset.getKey());
+			} else {
+				return null;
+			}
+		}
+		return (BitmapFontAssetModel) asset;
 	}
 
 	protected IAssetKey selectAndSetTexture(ObjectModel model) {

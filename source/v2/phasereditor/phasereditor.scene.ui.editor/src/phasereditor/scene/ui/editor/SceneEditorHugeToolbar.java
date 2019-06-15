@@ -26,6 +26,7 @@ import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import java.util.Set;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -79,6 +80,8 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 				manager.add(new AddImageAction(_editor));
 				manager.add(new AddSpriteAction(_editor));
 				manager.add(new AddTileSpriteAction(_editor));
+				manager.add(new Separator());
+				manager.add(new AddBitmapTextAction(_editor));
 				manager.add(new AddTextAction(_editor));
 				manager.createContextMenu(btn).setVisible(true);
 			}));
