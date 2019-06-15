@@ -105,6 +105,7 @@ public class PhaserJsdocModel implements Serializable {
 	private Map<String, IPhaserMember> _membersMap;
 	private List<IPhaserMember> _rootNamespaces;
 	private Set<String> _elementsWithMembers;
+	private Set<String> _elementsUsedAsBaseClass;
 
 	private transient Path _srcFolder;
 	private PhaserGlobalScope _globalScope;
@@ -145,6 +146,7 @@ public class PhaserJsdocModel implements Serializable {
 		_membersMap = new HashMap<>();
 		_rootNamespaces = new ArrayList<>();
 		_elementsWithMembers = new HashSet<>();
+		_elementsUsedAsBaseClass = new HashSet<>();
 
 		if (!Files.exists(docsJsonFile)) {
 			return;
@@ -166,6 +168,12 @@ public class PhaserJsdocModel implements Serializable {
 				JSONObject obj = jsdocElements.getJSONObject(i);
 
 				buildElementsWidthMembers(obj);
+			}
+
+			for (int i = 0; i < jsdocElements.length(); i++) {
+				JSONObject obj = jsdocElements.getJSONObject(i);
+
+				buildElementsUsedAsBaseClass(obj);
 			}
 
 			// pass to get all the namespaces in the map
@@ -290,6 +298,16 @@ public class PhaserJsdocModel implements Serializable {
 				}
 			}
 
+		}
+	}
+
+	private void buildElementsUsedAsBaseClass(JSONObject obj) {
+		var a = obj.optJSONArray("augments");
+		if (a != null) {
+			for (int j = 0; j < a.length(); j++) {
+				String typename = a.getString(j);
+				_elementsUsedAsBaseClass.add(typename);
+			}
 		}
 	}
 
@@ -647,6 +665,10 @@ public class PhaserJsdocModel implements Serializable {
 		if (kind.equals("namespace")) {
 
 			String longname = obj.getString("longname");
+			
+			if (_elementsUsedAsBaseClass.contains(longname)) {
+				return;
+			}
 
 			// out.println("Parsing namespace: " + name);
 
@@ -746,9 +768,10 @@ public class PhaserJsdocModel implements Serializable {
 		String longname = obj.getString("longname");
 
 		var hasMembers = _elementsWithMembers.contains(longname);
+		var isUsedAsBaseClass = _elementsUsedAsBaseClass.contains(longname);
 		var isEnum = obj.optBoolean("isEnum");
 
-		if (kind.equals("class") || kind.equals("member") && hasMembers && !isEnum) {
+		if (kind.equals("class") || kind.equals("member") && hasMembers && !isEnum || isUsedAsBaseClass) {
 
 			// out.println("Parsing class: " + name);
 
