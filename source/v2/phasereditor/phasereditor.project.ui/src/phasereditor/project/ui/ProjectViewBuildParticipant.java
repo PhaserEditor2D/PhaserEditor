@@ -35,11 +35,16 @@ public class ProjectViewBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	private static void refreshViews() {
-		swtRun(() -> {
-			for (var view : getOpenViews()) {
-				view.refresh();
-			}
-		});
+		swtRun(ProjectViewBuildParticipant::realRefreshViews);
+
+		// lets do this because there are screenshot builders that run async.
+		swtRun(500, ProjectViewBuildParticipant::realRefreshViews);
+	}
+
+	private static void realRefreshViews() {
+		for (var view : getOpenViews()) {
+			view.refresh();
+		}
 	}
 
 	@Override
