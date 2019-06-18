@@ -200,7 +200,7 @@ public class PhaserEditorUI {
 
 	private static String quotePath(String path) {
 		var path2 = path;
-		
+
 		if (Util.isLinux() || Util.isMac()) {
 			// Quote for usage inside "", man sh, topic QUOTING:
 			path2 = path.replaceAll("[\"$`]", "\\\\$0"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -424,8 +424,6 @@ public class PhaserEditorUI {
 		return new Point(store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH),
 				store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT));
 	}
-
-	
 
 	public static boolean isMacPlatform() {
 		return _isCocoaPlatform;
@@ -852,31 +850,22 @@ public class PhaserEditorUI {
 	}
 
 	public static void swtRun(long delayMillis, Runnable run) {
-		new Thread(() -> {
-			try {
-				Thread.sleep(delayMillis);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		_runLaterExecutor.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(delayMillis);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				swtRun(run);
 			}
-
-			swtRun(run);
-
-		}).start();
-
+		});
 	}
 
 	private static ExecutorService _runLaterExecutor = Executors.newCachedThreadPool();
-
-	public static void swtRunLater(long delay, Runnable run) {
-		_runLaterExecutor.execute(() -> {
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			swtRun(run);
-		});
-	}
 
 	public static void swtRun(Runnable run) {
 		try {
@@ -1626,5 +1615,38 @@ public class PhaserEditorUI {
 			}
 		}
 		return null;
+	}
+
+	public static void makeScreenshot(Control control, Path writeTo) {
+		control.setRedraw(false);
+		var size = control.getBounds();
+		var img = new Image(control.getDisplay(), size.width, size.height);
+		try {
+
+			var gc = new GC(img);
+
+			control.print(gc);
+
+			gc.dispose();
+
+			control.setRedraw(true);
+
+			saveImage(writeTo, img);
+
+		} catch (IOException e) {
+			logError(e);
+		} finally {
+			img.dispose();
+		}
+	}
+
+	public static void saveImage(Path writeTo, Image img) throws IOException {
+		var loader = new ImageLoader();
+		loader.data = new ImageData[] { img.getImageData() };
+
+		Files.createDirectories(writeTo.getParent());
+		try (var os = Files.newOutputStream(writeTo)) {
+			loader.save(os, SWT.IMAGE_PNG);
+		}
 	}
 }

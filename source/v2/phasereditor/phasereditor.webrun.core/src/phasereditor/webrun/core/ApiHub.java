@@ -56,7 +56,9 @@ public class ApiHub extends WebSocketAdapter {
 				_channelSocketListMap.put(channel, list);
 			}
 
-			list.add(this);
+			synchronized (list) {
+				list.add(this);
+			}
 
 		}
 	}
@@ -78,7 +80,9 @@ public class ApiHub extends WebSocketAdapter {
 			var list = _channelSocketListMap.get(_channel);
 
 			if (list != null) {
-				list.remove(this);
+				synchronized (list) {
+					list.remove(this);
+				}
 			}
 		}
 
@@ -155,12 +159,14 @@ public class ApiHub extends WebSocketAdapter {
 			var list = _channelSocketListMap.get(channel);
 
 			if (list != null) {
-				for (var socket : list) {
-					try {
-						out.println(socket.hashCode() + "@ ApiHub.sendMessageAllClients: " + message.toString());
-						socket.getRemote().sendString(message.toString());
-					} catch (IOException e) {
-						WebRunCore.logError(e);
+				synchronized (list) {
+					for (var socket : list) {
+						try {
+							out.println(socket.hashCode() + "@ ApiHub.sendMessageAllClients: " + message.toString());
+							socket.getRemote().sendString(message.toString());
+						} catch (IOException e) {
+							WebRunCore.logError(e);
+						}
 					}
 				}
 			}

@@ -107,7 +107,7 @@ import phasereditor.assetpack.ui.SvgResourceDialog;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
-import phasereditor.scene.ui.SceneUI;
+import phasereditor.scene.core.SceneCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.IEditorHugeToolbar;
@@ -970,7 +970,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					if (elem instanceof SceneFileAssetModel) {
 						var asset = (SceneFileAssetModel) elem;
-						var imgFile = SceneUI.getSceneScreenshotFile(asset);
+						var imgFile = SceneCore.getSceneScreenshotFile(asset);
 						if (imgFile != null) {
 							item.setRenderer(new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(imgFile, null)));
 						}

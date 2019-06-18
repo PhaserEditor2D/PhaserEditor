@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.HashMap;
 import java.util.function.Supplier;
 
@@ -114,7 +116,7 @@ public class ProjectUI {
 
 	public static void start() {
 		ProjectCore.addActiveProjectListener(project -> {
-			updateTitleOfEditors();
+			swtRun(() -> updateTitleOfEditors());
 		});
 	}
 }

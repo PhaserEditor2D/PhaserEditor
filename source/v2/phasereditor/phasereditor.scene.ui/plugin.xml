@@ -4,7 +4,7 @@
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
-            handler="phasereditor.scene.ui.build.SceneScreenshotBuildParticipant"
+            handler="phasereditor.scene.ui.build.SceneScreenshotBuildParticipant2"
             id="phasereditor.scene.ui.build.SceneScreenshotBuildParticipant"
             order="3">
       </participant>

@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.bmpfont.core;bundle-version="2.0.0",
  phasereditor.project.core;bundle-version="2.0.0",
  phasereditor.inspect.core;bundle-version="2.0.0",
- phasereditor.project.ui;bundle-version="2.1.0"
+ phasereditor.project.ui;bundle-version="2.1.0",
+ phasereditor.webrun.core;bundle-version="2.1.0"
 Automatic-Module-Name: phasereditor.scene.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.scene.ui,

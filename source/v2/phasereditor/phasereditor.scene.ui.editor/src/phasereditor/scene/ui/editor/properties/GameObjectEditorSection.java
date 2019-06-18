@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.properties;
 
-import static phasereditor.ui.PhaserEditorUI.swtRunLater;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,7 +213,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 			addUpdate(() -> {
 				{
-					swtRunLater(100, () -> {
+					swtRun(100, () -> {
 						var snap = computeSelectionSnap();
 
 						if (snap != null) {

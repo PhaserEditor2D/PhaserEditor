@@ -21,18 +21,34 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core;
 
+import static java.lang.System.out;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.UUID;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
 
+import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.FileDataCache;
+import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
  *
  */
 public class SceneCore {
+
+	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
 	private static SceneFileDataCache _fileDataCache;
 
@@ -42,7 +58,7 @@ public class SceneCore {
 				.removeFileExtension()
 
 				.addFileExtension(sceneModel.getCompilerLang().getExtension());
-		
+
 		return sceneFile.getProject().getFile(path);
 	}
 
@@ -104,4 +120,93 @@ public class SceneCore {
 
 		return false;
 	}
+
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
+	}
+
+	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.scene.core",
+			"snapshot-file");
+
+	public static Path getSceneScreenshotFile(IFile file) {
+		if (file == null) {
+			return null;
+		}
+
+		try {
+			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
+
+			if (filename == null) {
+				filename = file.getName() + "_" + UUID.randomUUID().toString() + ".png";
+			}
+
+			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
+
+			Path writeTo;
+
+			writeTo = dir.resolve(filename);
+
+			return writeTo;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void saveScreenshotPath(IFile file, Path writeTo) {
+		var filename = writeTo.getFileName().toString();
+
+		try {
+			file.setPersistentProperty(SceneCore.SNAPSHOT_FILENAME_KEY, filename);
+		} catch (CoreException e) {
+			logError(e);
+		}
+	}
+
+	public static void clearSceneScreenshot(IFile file) {
+		try {
+			if (!file.exists()) {
+				return;
+			}
+
+			String fname = file.getPersistentProperty(SceneCore.SNAPSHOT_FILENAME_KEY);
+			if (fname == null) {
+				return;
+			}
+
+			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
+			Path snapshot = dir.resolve(fname);
+			if (Files.exists(snapshot)) {
+				out.println("Removing snapshot from " + file);
+				Files.delete(snapshot);
+			}
+			file.setPersistentProperty(SceneCore.SNAPSHOT_FILENAME_KEY, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static File getSceneScreenshotFile(SceneFileAssetModel asset) {
+		var file = asset.getUrlFile();
+		if (file != null) {
+			var file2 = file.getProject()
+					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
+			if (file2.exists()) {
+				var screenPath = getSceneScreenshotFile(file2);
+				if (screenPath != null) {
+					var screenFile = screenPath.toFile();
+					if (screenFile.exists()) {
+						return screenFile;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 }

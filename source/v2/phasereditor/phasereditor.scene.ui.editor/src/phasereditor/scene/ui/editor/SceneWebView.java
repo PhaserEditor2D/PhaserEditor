@@ -42,7 +42,6 @@ public class SceneWebView extends Composite {
 	private IBrowser _webView;
 	private SceneEditor _editor;
 
-	
 	public SceneWebView(SceneEditor editor, Composite parent, int style) {
 		super(parent, style);
 		var layout = new FillLayout();
@@ -51,7 +50,6 @@ public class SceneWebView extends Composite {
 		setLayout(layout);
 
 		_editor = editor;
-		
 
 		_webView = IBrowser.create(this, SWT.NONE);
 
@@ -156,5 +154,4 @@ public class SceneWebView extends Composite {
 	public SceneEditor getEditor() {
 		return _editor;
 	}
-
 }

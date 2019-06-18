@@ -307,7 +307,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		try {
 
 			_model.save(file, monitor);
-
 			setDirty(false);
 
 		} catch (Exception e) {
@@ -816,10 +815,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 			} else if (obj instanceof TransformModel) {
 				var model = (TransformModel) obj;
-				
+
 				TransformComponent.set_x(model, x);
 				TransformComponent.set_y(model, y);
-				
+
 				newModels.add(model);
 			}
 		}

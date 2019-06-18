@@ -81,7 +81,7 @@ public class ImageProxy {
 
 	public static ImageProxy get(IFile file, FrameData fd) {
 
-		if (file == null) {
+		if (file == null || !file.exists()) {
 			return null;
 		}
 

@@ -37,6 +37,7 @@ import phasereditor.assetexplorer.ui.views.newactions.NewSceneWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
+import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.EditorSharedImages;
@@ -68,7 +69,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 
 			var asset = (SceneFileAssetModel) elem;
 
-			var imgFile = SceneUI.getSceneScreenshotFile(asset);
+			var imgFile = SceneCore.getSceneScreenshotFile(asset);
 
 			if (imgFile == null) {
 				super.setItemIconProperties(item);
@@ -81,7 +82,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		} else if (elem instanceof SceneFile) {
 
 			var file = ((SceneFile) elem).getFile();
-			var imgFile = SceneUI.getSceneScreenshotFile(file, false);
+			var imgFile = SceneCore.getSceneScreenshotFile(file);
 
 			if (imgFile == null) {
 				super.setItemIconProperties(item);

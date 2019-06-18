@@ -1,7 +1,9 @@
 var PhaserEditor2D;
 (function (PhaserEditor2D) {
     var Create = (function () {
-        function Create() {
+        function Create(interactive) {
+            if (interactive === void 0) { interactive = true; }
+            this._interactive = interactive;
         }
         Create.prototype.createWorld = function (scene, displayList) {
             var list = displayList.children;
@@ -57,20 +59,22 @@ var PhaserEditor2D;
                     obj = add.text(x, y, text);
                     break;
             }
-            switch (type) {
-                case "TileSprite":
-                    obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
-                    break;
-                case "BitmapText":
-                case "DynamicBitmapText":
-                    obj.setInteractive(BitmapTextHitHandler);
-                    break;
-                case "Text":
-                    obj.setInteractive();
-                    break;
-                default:
-                    obj.setInteractive(PixelPerfectHandler);
-                    break;
+            if (this._interactive) {
+                switch (type) {
+                    case "TileSprite":
+                        obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+                        break;
+                    case "BitmapText":
+                    case "DynamicBitmapText":
+                        obj.setInteractive(BitmapTextHitHandler);
+                        break;
+                    case "Text":
+                        obj.setInteractive();
+                        break;
+                    default:
+                        obj.setInteractive(PixelPerfectHandler);
+                        break;
+                }
             }
             this.updateObject(obj, data);
         };

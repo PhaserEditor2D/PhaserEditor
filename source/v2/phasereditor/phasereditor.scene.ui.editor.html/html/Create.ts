@@ -1,7 +1,9 @@
 namespace PhaserEditor2D {
     export class Create {
-        constructor() {
+        private _interactive: boolean;
 
+        constructor(interactive: boolean = true) {
+            this._interactive = interactive;
         }
 
         createWorld(scene: Phaser.Scene, displayList: any) {
@@ -86,20 +88,22 @@ namespace PhaserEditor2D {
                     break;
             }
 
-            switch (type) {
-                case "TileSprite":
-                    obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
-                    break;
-                case "BitmapText":
-                case "DynamicBitmapText":
-                    obj.setInteractive(BitmapTextHitHandler);
-                    break;
-                case "Text":
-                    obj.setInteractive();
-                    break;
-                default:
-                    obj.setInteractive(PixelPerfectHandler);
-                    break;
+            if (this._interactive) {
+                switch (type) {
+                    case "TileSprite":
+                        obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+                        break;
+                    case "BitmapText":
+                    case "DynamicBitmapText":
+                        obj.setInteractive(BitmapTextHitHandler);
+                        break;
+                    case "Text":
+                        obj.setInteractive();
+                        break;
+                    default:
+                        obj.setInteractive(PixelPerfectHandler);
+                        break;
+                }
             }
 
             this.updateObject(obj, data);

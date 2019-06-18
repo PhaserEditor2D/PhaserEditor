@@ -26,10 +26,14 @@ import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.nio.file.Path;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -38,16 +42,35 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.URIUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.project.core.ProjectCore;
 
 public class WebRunCore {
-	
+
 	private static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
+	public static String getProjectBrowserURL(IProject project) {
+		return getProjectBrowserURL(project, true);
+	}
+	
+	public static String getProjectBrowserURL(IProject project, boolean includeHost) {
+		IContainer webContent = ProjectCore.getWebContentFolder(project);
+		String path = webContent.getFullPath().toPortableString();
+		String url;
+		if (includeHost) {
+			url = "http://localhost:" + (WebRunCore.getServerPort() + "/projects" + path).replace("\\\\", "/");
+		} else {
+			url = ("/projects" + path).replace("\\\\", "/");
+		}
+		url = URIUtil.encodePath(url);
+		return url;
+	}
+	
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
@@ -56,7 +79,7 @@ public class WebRunCore {
 	public static void logError(String msg) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}
-	
+
 	private static Server _server;
 
 	public static synchronized void startServerIfNotRunning() {
@@ -129,11 +152,22 @@ public class WebRunCore {
 		var extensions = extensionPoint.getExtensions();
 		for (var extension : extensions) {
 			var elems = extension.getConfigurationElements();
+
 			for (var elem : elems) {
-				var name = elem.getAttribute("name");
-				var path = elem.getAttribute("path");
-				var plugin = elem.getAttribute("plugin");
-				addPluginResourcesHandler(handlerList, "/extension/" + plugin + "/" + name, plugin, path);
+
+				if (elem.getName().equals("static")) {
+					var name = elem.getAttribute("name");
+					var path = elem.getAttribute("path");
+					var plugin = elem.getAttribute("plugin");
+					addPluginResourcesHandler(handlerList, "/extension/" + plugin + "/" + name, plugin, path);
+				} else if (elem.getName().equals("dynamic")) {
+					try {
+						var handler = (Handler) elem.createExecutableExtension("handler");
+						handlerList.addHandler(handler);
+					} catch (CoreException e) {
+						WebRunCore.logError(e);
+					}
+				}
 			}
 		}
 	}

@@ -61,5 +61,12 @@
             </reference></enablement>
       </moveParticipant>
    </extension>
+   <extension
+         point="phasereditor.webrun.core.webcontent">
+      <dynamic
+            handler="phasereditor.scene.core.web.SceneScreenshotHandler"
+            path="/sceneService">
+      </dynamic>
+   </extension>
 
 </plugin>

@@ -19,43 +19,36 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.scene.ui;
+package phasereditor.scene.ui.build;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.project.ui.IFileRendererProvider;
-import phasereditor.scene.core.SceneCore;
-import phasereditor.ui.BaseTreeCanvasItemRenderer;
-import phasereditor.ui.ImageProxy;
-import phasereditor.ui.ImageTreeCanvasItemRenderer;
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.webrun.core.WebRunCore;
 
-/**
- * @author arian
- *
- */
-public class SceneFileRendererProvider implements IFileRendererProvider {
+public class HeadlessSceneScreenshotBrowser {
 
-	@Override
-	public BaseTreeCanvasItemRenderer createRenderer(TreeCanvasItem item) {
-		var file = (IFile) item.getData();
-		if (SceneCore.isSceneFile(file)) {
+	public static void start() {
+		var display = Display.getDefault();
 
-			return new ImageTreeCanvasItemRenderer(item, () -> {
+		var shell = new Shell(display, SWT.NO_TRIM);
+		shell.setLayout(new FillLayout());
+		shell.setSize(420, 380);
 
-				var screenshotFile = SceneCore.getSceneScreenshotFile((IFile) item.getData());
+		var browser = new Browser(shell, 0);
 
-				if (screenshotFile == null) {
-					return null;
-				}
+		shell.setAlpha(0);
 
-				var proxy = ImageProxy.get(screenshotFile.toFile(), null);
+		shell.open();
 
-				return proxy == null ? null : proxy.getImage();
-			});
-		}
+		var port = WebRunCore.getServerPort();
+		var url = "http://localhost:" + port
+				+ "/extension/phasereditor.scene.ui.editor.html/sceneEditor/screenshot.html?channel="
+				+ SceneScreenshotBuildParticipant2.SOCKET_CHANNEL;
 
-		return null;
+		browser.setUrl(url);
 	}
-
 }

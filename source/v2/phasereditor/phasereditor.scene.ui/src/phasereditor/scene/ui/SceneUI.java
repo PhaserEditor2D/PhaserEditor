@@ -21,32 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui;
 
-import static java.lang.System.currentTimeMillis;
-import static java.lang.System.out;
-
-import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -54,14 +38,9 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationCont
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
-import phasereditor.assetpack.core.AssetFinder;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
-import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneFile;
-import phasereditor.scene.core.SceneModel;
 import phasereditor.ui.CanvasUtilsInformationControlProvider;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -72,9 +51,7 @@ import phasereditor.ui.TreeCanvasViewer;
 public class SceneUI {
 
 	private static final String PLUGIN_ID = Activator.PLUGIN_ID;
-	private static final int SCENE_SCREENSHOT_SIZE = 256;
-	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.scene.core",
-			"snapshot-file");
+	// private static final int SCENE_SCREENSHOT_SIZE = 256;
 
 	public static void logError(Exception e) {
 		e.printStackTrace();
@@ -115,7 +92,7 @@ public class SceneUI {
 						}
 
 						if (file != null) {
-							Path path = getSceneScreenshotFile(file, false);
+							Path path = SceneCore.getSceneScreenshotFile(file);
 							return path.toFile();
 						}
 
@@ -142,193 +119,4 @@ public class SceneUI {
 		});
 		return creators;
 	}
-
-	public static void clearSceneScreenshot(IFile file) {
-		try {
-			if (!file.exists()) {
-				return;
-			}
-
-			String fname = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
-			if (fname == null) {
-				return;
-			}
-
-			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
-			Path snapshot = dir.resolve(fname);
-			if (Files.exists(snapshot)) {
-				out.println("Removing snapshot from " + file);
-				Files.delete(snapshot);
-			}
-			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static Path getSceneScreenshotFile(IFile file, boolean makeIfNotExist) {
-		if (file == null) {
-			return null;
-		}
-
-		try {
-			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
-			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
-			Path writeTo;
-			if (filename == null) {
-				filename = file.getName() + "_" + UUID.randomUUID().toString() + ".png";
-			}
-			writeTo = dir.resolve(filename);
-
-			if (makeIfNotExist) {
-				if (!Files.exists(writeTo)) {
-					makeSceneScreenshot(file, writeTo);
-				}
-			}
-
-			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, filename);
-
-			return writeTo;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static File getSceneScreenshotFile(SceneFileAssetModel asset) {
-		var file = asset.getUrlFile();
-		if (file != null) {
-			var file2 = file.getProject()
-					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
-			if (file2.exists()) {
-				var screenPath = SceneUI.getSceneScreenshotFile(file2, false);
-				if (screenPath != null) {
-					var screenFile = screenPath.toFile();
-					if (screenFile.exists()) {
-						return screenFile;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	private static class OfflineSceneRendererContext implements ISceneObjectRendererContext, Closeable {
-
-		private AssetFinder _finder;
-		private Device _device;
-		private float _scale;
-
-		public OfflineSceneRendererContext(AssetFinder finder, Device device, float scale) {
-			_finder = finder;
-			_device = device;
-			_scale = scale;
-		}
-
-		@Override
-		public AssetFinder getAssetFinder() {
-			return _finder;
-		}
-
-		@Override
-		public int getOffsetX() {
-			return 0;
-		}
-
-		@Override
-		public int getOffsetY() {
-			return 0;
-		}
-
-		@Override
-		public float getScale() {
-			return _scale;
-		}
-
-		public void setScale(float scale) {
-			_scale = scale;
-		}
-
-		@Override
-		public Device getDevice() {
-			return _device;
-		}
-
-		@Override
-		public void close() {
-			//
-		}
-	}
-
-	public static Image makeSceneScreenshot_SWTImage(IFile file, int maxSize) {
-		try {
-			var display = PlatformUI.getWorkbench().getDisplay();
-
-			var model = new SceneModel();
-			model.read(file);
-
-			var finder = AssetPackCore.getAssetFinder(file.getProject());
-
-			Image img = null;
-
-			try (var context = new OfflineSceneRendererContext(finder, display, 1)) {
-
-				var renderer = new SceneObjectRenderer(context);
-
-				// just for now, until we do a better job with position and dimension
-				// computations
-				var width = model.getBorderWidth();
-				var height = model.getBorderHeight();
-
-				var max = Math.max(width, height);
-				var scale = 1f;
-				if (max > maxSize) {
-					scale = (float) maxSize / max;
-				}
-
-				context.setScale(scale);
-
-				width *= scale;
-				height *= scale;
-
-				img = new Image(context.getDevice(), width, height);
-
-				var gc = new GC(img);
-				var tx = new Transform(gc.getDevice());
-
-				// yes, lets do this in the UI thread
-				display.syncExec(() -> {
-					renderer.renderScene(gc, tx, model);
-				});
-
-			}
-
-			return img;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static void makeSceneScreenshot(IFile file, Path writeTo) {
-		long t = currentTimeMillis();
-
-		var image = makeSceneScreenshot_SWTImage(file, SCENE_SCREENSHOT_SIZE);
-
-		var loader = new ImageLoader();
-
-		try {
-			Files.createDirectories(writeTo.getParent());
-			loader.data = new ImageData[] { image.getImageData() };
-			loader.save(writeTo.toString(), SWT.IMAGE_PNG);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			image.dispose();
-		}
-
-		out.println(
-				"Ready scene snapshot src:" + file + " --> dst:" + writeTo + " " + (currentTimeMillis() - t) + "ms");
-	}
-
 }

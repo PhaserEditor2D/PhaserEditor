@@ -34,7 +34,7 @@ import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.webrun.core.ApiMessage;
-import phasereditor.webrun.ui.WebRunUI;
+import phasereditor.webrun.core.WebRunCore;
 
 /**
  * @author arian
@@ -79,9 +79,9 @@ public class CreateGameMessage extends ApiMessage {
 		}
 
 		{
-			var projectUrl = WebRunUI.getProjectBrowserURL(project, false);
-
+			var projectUrl = WebRunCore.getProjectBrowserURL(project, false);
 			_data.put("projectUrl", projectUrl);
+			
 			var collector = new PackReferencesCollector(model, finder);
 
 			try {

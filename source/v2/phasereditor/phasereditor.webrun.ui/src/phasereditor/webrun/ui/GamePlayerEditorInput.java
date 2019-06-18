@@ -29,6 +29,7 @@ import org.eclipse.ui.IPersistableElement;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.webrun.core.WebRunCore;
 
 /**
  * @author arian
@@ -42,7 +43,7 @@ public class GamePlayerEditorInput implements IEditorInput {
 	private boolean _rotated;
 
 	public GamePlayerEditorInput(IProject project) {
-		_url = WebRunUI.getProjectBrowserURL(project);
+		_url = WebRunCore.getProjectBrowserURL(project);
 		_project = project;
 	}
 	

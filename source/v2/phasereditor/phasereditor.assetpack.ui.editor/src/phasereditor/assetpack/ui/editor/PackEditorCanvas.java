@@ -68,7 +68,7 @@ import phasereditor.assetpack.ui.BitmapFontAssetCellRenderer;
 import phasereditor.assetpack.ui.preview.AtlasAssetFramesProvider;
 import phasereditor.assetpack.ui.preview.MultiAtlasAssetFrameProvider;
 import phasereditor.audio.ui.AudioCellRenderer;
-import phasereditor.scene.ui.SceneUI;
+import phasereditor.scene.core.SceneCore;
 import phasereditor.ui.BaseCanvas;
 import phasereditor.ui.Colors;
 import phasereditor.ui.EditorSharedImages;
@@ -593,7 +593,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 	}
 
 	private static FrameCellRenderer getSceneScreenshot(SceneFileAssetModel asset) {
-		var screenFile = SceneUI.getSceneScreenshotFile(asset);
+		var screenFile = SceneCore.getSceneScreenshotFile(asset);
 
 		if (screenFile != null) {
 			return new FrameCellRenderer(screenFile, null);

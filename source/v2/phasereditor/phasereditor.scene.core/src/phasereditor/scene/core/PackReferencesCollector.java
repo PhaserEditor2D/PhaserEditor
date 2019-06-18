@@ -109,8 +109,7 @@ public class PackReferencesCollector {
 		return collectNewPack(assetModels);
 	}
 
-	@SuppressWarnings("static-method")
-	public JSONObject collectNewPack(Set<AssetModel> assets) {
+	public static JSONObject collectNewPack(Set<AssetModel> assets) {
 		var pack = new JSONObject();
 		var section = new JSONObject();
 		pack.put("section", section);

@@ -25,12 +25,10 @@ import static java.lang.System.out;
 
 import java.net.URL;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jetty.util.URIUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -70,7 +68,7 @@ public class WebRunUI {
 			throw new RuntimeException(e);
 		}
 
-		String url = getProjectBrowserURL(project);
+		String url = WebRunCore.getProjectBrowserURL(project);
 		openBrowser(url);
 
 	}
@@ -106,7 +104,7 @@ public class WebRunUI {
 			throw new RuntimeException(e);
 		}
 
-		String url = getProjectBrowserURL(project);
+		String url = WebRunCore.getProjectBrowserURL(project);
 		WebRunCore.startServerIfNotRunning();
 
 		out.println("Open " + url);
@@ -120,23 +118,6 @@ public class WebRunUI {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static String getProjectBrowserURL(IProject project) {
-		return getProjectBrowserURL(project, true);
-	}
-	
-	public static String getProjectBrowserURL(IProject project, boolean includeHost) {
-		IContainer webContent = ProjectCore.getWebContentFolder(project);
-		String path = webContent.getFullPath().toPortableString();
-		String url;
-		if (includeHost) {
-			url = "http://localhost:" + (WebRunCore.getServerPort() + "/projects" + path).replace("\\\\", "/");
-		} else {
-			url = ("/projects" + path).replace("\\\\", "/");
-		}
-		url = URIUtil.encodePath(url);
-		return url;
 	}
 
 	public static IProject findProject(ISelection sel) {
