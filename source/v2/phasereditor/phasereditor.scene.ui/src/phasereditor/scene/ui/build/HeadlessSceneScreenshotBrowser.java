@@ -21,26 +21,25 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.build;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import phasereditor.webrun.core.WebRunCore;
 
 public class HeadlessSceneScreenshotBrowser {
 
 	public static void start() {
-		var display = Display.getDefault();
+		// var display = Display.getDefault();
 
-		var shell = new Shell(display, SWT.NO_TRIM);
-		shell.setLayout(new FillLayout());
-		shell.setSize(420, 380);
+		// var shell = new Shell(display, SWT.NO_TRIM);
+		// shell.setLayout(new FillLayout());
+		// shell.setSize(420, 380);
 
+		var shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		var browser = new Browser(shell, 0);
+		browser.setBounds(0, 0, 100, 100);
 
-		shell.setAlpha(0);
+		// shell.setAlpha(0);
 
 		shell.open();
 

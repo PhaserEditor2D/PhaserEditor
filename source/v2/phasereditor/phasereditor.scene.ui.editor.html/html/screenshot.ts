@@ -122,7 +122,7 @@ namespace PhaserEditor2D.Screenshot {
                 } else {
                     game.scene.start("Level");
                 }
-            })
+            });
         }
 
     }
