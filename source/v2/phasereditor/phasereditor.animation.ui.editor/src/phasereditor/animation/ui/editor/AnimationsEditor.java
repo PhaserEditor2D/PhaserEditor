@@ -413,22 +413,24 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	private void init_DND_Support() {
 		{
 			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
-			DropTarget target = new DropTarget(_animCanvas, options);
-			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
-			target.setTransfer(types);
-			target.addDropListener(new DropTargetAdapter() {
+			for (var comp : new Composite[] { _animCanvas, _multiAnimationsComp }) {
+				DropTarget target = new DropTarget(comp, options);
+				Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+				target.setTransfer(types);
+				target.addDropListener(new DropTargetAdapter() {
 
-				@Override
-				public void drop(DropTargetEvent event) {
-					if (event.data instanceof Object[]) {
-						createAnimationsWithDrop((Object[]) event.data);
-					}
+					@Override
+					public void drop(DropTargetEvent event) {
+						if (event.data instanceof Object[]) {
+							createAnimationsWithDrop((Object[]) event.data);
+						}
 
-					if (event.data instanceof IStructuredSelection) {
-						createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
+						if (event.data instanceof IStructuredSelection) {
+							createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 	}
 
@@ -1188,8 +1190,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	@SuppressWarnings("boxing")
 	public void createAnimationsWithDrop(Object[] data) {
 
-		var openFirstAnim = _model.getAnimations().isEmpty();
-
 		var splitter = new AssetsSplitter();
 
 		for (var obj : data) {
@@ -1215,14 +1215,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			}
 		}
 
+		var anims = new ArrayList<AnimationModel>();
+
 		for (var group : result) {
 			var anim = new AnimationModel(_model);
+			anims.add(anim);
 
 			_model.getAnimation(group.getPrefix());
 
 			anim.setKey(_model.getNewAnimationName(group.getPrefix()));
-
-			_model.getAnimations().add(anim);
 
 			for (var frame : group.getAssets()) {
 
@@ -1243,21 +1244,21 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			anim.buildTimeline();
 		}
 
-		// sort animations
-
+		_model.getAnimations().addAll(anims);
 		_model.getAnimations().sort((a, b) -> a.getKey().compareTo(b.getKey()));
+
+		if (!anims.isEmpty()) {
+			var sel = new StructuredSelection(anims);
+			if (_outliner == null) {
+				setExternalSelection(sel);
+			} else {
+				_outliner.refresh();
+				_outliner.setSelection(sel);
+			}
+		}
 
 		if (_outliner != null) {
 			_outliner.refresh();
-		}
-
-		if (openFirstAnim) {
-
-			if (!_model.getAnimations().isEmpty()) {
-				var anim = _model.getAnimations().get(0);
-				selectAnimation(anim);
-			}
-
 		}
 
 		setDirty();
