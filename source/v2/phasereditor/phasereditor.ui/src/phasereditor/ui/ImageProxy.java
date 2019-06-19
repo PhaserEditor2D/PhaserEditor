@@ -269,7 +269,7 @@ public class ImageProxy {
 
 		_trash = new ArrayList<>(trash2);
 
-		for (var proxy : _proxyList) {
+		for (var proxy :  new ArrayList<>(_proxyList)) {
 			if (!proxy._file.exists() && proxy._swtImage != null) {
 				out.println("ImageProxy: the file " + proxy._file.getName()
 						+ " as deleted, disposing its alive proxy image.");
