@@ -143,7 +143,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			
+
 			addUpdate(() -> {
 				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getDuration())));
 			});

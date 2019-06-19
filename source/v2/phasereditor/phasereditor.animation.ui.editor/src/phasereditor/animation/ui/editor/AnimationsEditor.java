@@ -23,10 +23,13 @@ package phasereditor.animation.ui.editor;
 
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
+import static phasereditor.ui.IEditorSharedImages.IMG_PLAY;
+import static phasereditor.ui.IEditorSharedImages.IMG_STOP;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -46,15 +49,20 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
@@ -129,9 +137,23 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	private EditorFileStampHelper _fileStampHelper;
 	private AnimationsEditorBlockProvider _blocksProvider;
 	private AnimationsEditorHugeToolbar _hugeToolbar;
+	private Composite _stackComp;
+	private StackLayout _stackLayout;
+	private SashForm _singleAnimComp;
+	private MultiAnimsComp _multiAnimationsComp;
+	private Action _playAllAction;
+	private Action _stopAllAction;
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
+	}
+
+	public Action getPlayAllAction() {
+		return _playAllAction;
+	}
+
+	public Action getStopAllAction() {
+		return _stopAllAction;
 	}
 
 	public ImageCanvas_Zoom_1_1_Action getZoom_1_1_action() {
@@ -160,9 +182,137 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	@Override
 	public void createPartControl(Composite parent) {
-		SashForm sash = new SashForm(parent, SWT.VERTICAL);
+		_stackComp = new Composite(parent, 0);
+		_stackLayout = new StackLayout();
+		_stackComp.setLayout(_stackLayout);
 
-		Composite topComp = new Composite(sash, SWT.BORDER);
+		// animation
+
+		createSingleAnimationComp();
+
+		// multiple animations
+
+		createMultiAnimationsComp();
+
+		_stackLayout.topControl = _singleAnimComp;
+		_stackComp.requestLayout();
+
+		afterCreateWidgets();
+	}
+
+	private void createMultiAnimationsComp() {
+		_multiAnimationsComp = new MultiAnimsComp(_stackComp, 0);
+	}
+
+	class MultiAnimsComp extends Composite {
+
+		public MultiAnimsComp(Composite parent, int style) {
+			super(parent, style);
+
+			var layout = new GridLayout(3, true);
+			layout.marginWidth = layout.marginHeight = 20;
+			setLayout(layout);
+		}
+
+		class MyAnimCanvas extends AnimationCanvas implements MouseTrackListener, MouseListener {
+
+			public MyAnimCanvas(Composite parent, int style) {
+				super(parent, style);
+
+				addControlListener(this);
+				addMouseTrackListener(this);
+				addMouseListener(this);
+			}
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				resetZoom();
+			}
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				//
+			}
+
+			@Override
+			public void mouseHover(MouseEvent e) {
+				//
+			}
+
+			@Override
+			public void mouseExit(MouseEvent e) {
+				setBackground(getParent().getBackground());
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent e) {
+				setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				mouseUp(e);
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				//
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				var sel = new StructuredSelection(getModel());
+				if (_outliner == null) {
+					setExternalSelection(sel);
+				} else {
+					_outliner.setSelection(sel);
+				}
+			}
+
+		}
+
+		public void updateContent(Object[] anims) {
+			for (var c : getChildren()) {
+				c.dispose();
+			}
+
+			for (var anim : anims) {
+				var animCanvas = new MyAnimCanvas(this, 0);
+				animCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				animCanvas.setModel((AnimationModel) anim, false);
+			}
+
+			requestLayout();
+
+		}
+
+		public void disposeContent() {
+			for (var c : getChildren()) {
+				var canvas = (AnimationCanvas) c;
+				canvas.stop();
+				swtRun(10, canvas::dispose);
+			}
+		}
+
+		public void play() {
+			for (var c : getChildren()) {
+				var canvas = (AnimationCanvas) c;
+				canvas.play();
+			}
+		}
+
+		public void stop() {
+			for (var c : getChildren()) {
+				var canvas = (AnimationCanvas) c;
+				canvas.stop();
+			}
+		}
+	}
+
+	private void createSingleAnimationComp() {
+		_singleAnimComp = new SashForm(_stackComp, SWT.VERTICAL);
+
+		Composite topComp = new Composite(_singleAnimComp, SWT.BORDER);
 		GridLayout layout = new GridLayout(1, false);
 		layout.verticalSpacing = 0;
 		layout.marginWidth = 0;
@@ -172,12 +322,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_animCanvas = new AnimationCanvas(topComp, SWT.NONE);
 		_animCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		_timelineCanvas = new AnimationTimelineCanvas_in_Editor(sash, SWT.BORDER);
+		_timelineCanvas = new AnimationTimelineCanvas_in_Editor(_singleAnimComp, SWT.BORDER);
 		_timelineCanvas.setEditor(this);
 
-		sash.setWeights(new int[] { 2, 1 });
-
-		afterCreateWidgets();
+		_singleAnimComp.setWeights(new int[] { 2, 1 });
 	}
 
 	private void afterCreateWidgets() {
@@ -329,7 +477,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		_zoom_1_1_action.setEnabled(false);
 		_zoom_fitWindow_action.setEnabled(false);
-		_deleteAction.setEnabled(false);
 	}
 
 	public void dirtyPropertyChanged() {
@@ -360,11 +507,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		_deleteAction = new Action("Delete",
 				Workbench.getInstance().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public void run() {
-				var anim = getAnimationCanvas().getModel();
-				if (anim != null) {
-					deleteAnimations(List.of(anim));
+				var elems = ((IStructuredSelection) getEditorSite().getSelectionProvider().getSelection()).toArray();
+
+				if (elems.length > 0) {
+					deleteAnimations((List) List.of(elems));
 				}
 			}
 		};
@@ -393,6 +542,20 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 						selectAnimation(selected);
 					}
 				}
+			}
+		};
+
+		_playAllAction = new Action("", EditorSharedImages.getImageDescriptor(IMG_PLAY)) {
+			@Override
+			public void run() {
+				_multiAnimationsComp.play();
+			}
+		};
+
+		_stopAllAction = new Action("", EditorSharedImages.getImageDescriptor(IMG_STOP)) {
+			@Override
+			public void run() {
+				_multiAnimationsComp.stop();
 			}
 		};
 	}
@@ -588,12 +751,51 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	class AnimationsEditorHugeToolbar implements IEditorHugeToolbar {
 
+		private List<ActionButton> _singleAnimationButtons;
+		private List<ActionButton> _multiAnimationButtons;
+		private Composite _parent;
+
 		@SuppressWarnings("unused")
 		@Override
 		public void createContent(Composite parent) {
-			new ActionButton(parent, getAnimationActions().getPlayAction());
-			new ActionButton(parent, getAnimationActions().getPauseAction());
-			new ActionButton(parent, getAnimationActions().getStopAction());
+			_parent = parent;
+
+			_singleAnimationButtons = new ArrayList<>();
+			_multiAnimationButtons = new ArrayList<>();
+
+			_singleAnimationButtons.add(new ActionButton(parent, getAnimationActions().getPlayAction()));
+			_singleAnimationButtons.add(new ActionButton(parent, getAnimationActions().getPauseAction()));
+			_singleAnimationButtons.add(new ActionButton(parent, getAnimationActions().getStopAction()));
+
+			_multiAnimationButtons.add(new ActionButton(parent, getPlayAllAction()));
+			_multiAnimationButtons.add(new ActionButton(parent, getStopAllAction()));
+
+			new ActionButton(parent, getDeleteAction());
+
+			updateButtons();
+		}
+
+		public List<ActionButton> getSingleAnimationButtons() {
+			return _singleAnimationButtons;
+		}
+
+		public void updateButtons() {
+			var visible = isSingleAnimationMode();
+
+			for (var btn : _singleAnimationButtons) {
+				btn.getButton().setVisible(visible);
+				btn.getButton().setLayoutData(new RowData(visible ? SWT.DEFAULT : 0, visible ? SWT.DEFAULT : 0));
+			}
+
+			visible = !visible;
+
+			for (var btn : _multiAnimationButtons) {
+				btn.getButton().setVisible(visible);
+				btn.getButton().setLayoutData(new RowData(visible ? SWT.DEFAULT : 0, visible ? SWT.DEFAULT : 0));
+			}
+
+			_parent.requestLayout();
+
 		}
 
 	}
@@ -690,10 +892,38 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	}
 
 	protected void outliner_selectionChanged(SelectionChangedEvent event) {
-		var elem = event.getStructuredSelection().getFirstElement();
-		var anim = (AnimationModel) elem;
-		loadAnimation(anim);
-		getEditorSite().getSelectionProvider().setSelection(event.getStructuredSelection());
+		var sel = event.getStructuredSelection();
+
+		setExternalSelection(sel);
+	}
+
+	private void setExternalSelection(IStructuredSelection sel) {
+		var elems = sel.toArray();
+
+		Composite top;
+
+		if (elems.length > 1) {
+			top = _multiAnimationsComp;
+			loadAnimation(null);
+			_multiAnimationsComp.updateContent(elems);
+		} else {
+			top = _singleAnimComp;
+			var elem = sel.getFirstElement();
+			var anim = (AnimationModel) elem;
+			loadAnimation(anim);
+			_multiAnimationsComp.disposeContent();
+		}
+
+		_stackLayout.topControl = top;
+		_stackComp.requestLayout();
+
+		getEditorSite().getSelectionProvider().setSelection(sel);
+
+		_deleteAction.setEnabled(!sel.isEmpty());
+
+		if (_hugeToolbar != null) {
+			_hugeToolbar.updateButtons();
+		}
 	}
 
 	public void selectAnimation(AnimationModel anim) {
@@ -878,14 +1108,18 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	public void deleteAnimations(List<AnimationModel> animations) {
 		_model.getAnimations().removeAll(animations);
 
-		if (_outliner != null) {
-			_outliner.refresh();
+		if (isSingleAnimationMode()) {
+			if (_animCanvas.getModel() != null && animations.contains(_animCanvas.getModel())) {
+				selectAnimation(null);
+			}
+		} else {
+			var provider = getEditorSite().getSelectionProvider();
+			provider.setSelection(StructuredSelection.EMPTY);
+			_multiAnimationsComp.updateContent(new Object[] {});
 		}
 
-		if (animations.contains(_animCanvas.getModel())) {
-			var anim = _model.getAnimations().isEmpty() ? null : _model.getAnimations().get(0);
-
-			selectAnimation(anim);
+		if (_outliner != null) {
+			_outliner.refresh();
 		}
 
 		setDirty();
@@ -1034,6 +1268,22 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		var anim = getModel().getAnimation(key);
 		if (anim != null) {
 			selectAnimation(anim);
+		}
+	}
+
+	public boolean isSingleAnimationMode() {
+		return _stackLayout.topControl == _singleAnimComp;
+	}
+
+	public void resetPlayback() {
+		if (isSingleAnimationMode()) {
+			if (!isStopped()) {
+				getAnimationActions().getStopAction().run();
+				getAnimationActions().getPlayAction().run();
+			}
+		} else {
+			getStopAllAction().run();
+			getPlayAllAction().run();
 		}
 	}
 }
