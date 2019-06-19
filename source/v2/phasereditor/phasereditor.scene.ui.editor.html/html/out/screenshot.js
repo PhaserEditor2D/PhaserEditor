@@ -17,10 +17,17 @@ var PhaserEditor2D;
         var MODEL_LIST = [];
         var CURRENT_MODEL;
         function mainScreenshot() {
-            ws = new WebSocket(getWebSocketUrl());
-            ws.addEventListener("message", onMessage);
+            connect();
         }
         Screenshot.mainScreenshot = mainScreenshot;
+        function connect() {
+            ws = new WebSocket(getWebSocketUrl());
+            ws.addEventListener("message", onMessage);
+            ws.addEventListener("close", onClose);
+        }
+        function onClose() {
+            connect();
+        }
         function createGame() {
             game = new Phaser.Game({
                 width: CURRENT_MODEL,

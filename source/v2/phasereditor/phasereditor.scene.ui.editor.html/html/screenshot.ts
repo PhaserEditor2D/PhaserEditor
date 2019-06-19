@@ -7,8 +7,17 @@ namespace PhaserEditor2D.Screenshot {
     let CURRENT_MODEL: any;
 
     export function mainScreenshot() {
+       connect();
+    }
+
+    function connect() {
         ws = new WebSocket(getWebSocketUrl());
         ws.addEventListener("message", onMessage);
+        ws.addEventListener("close", onClose);
+    }
+
+    function onClose() {
+        connect();
     }
 
     function createGame() {
