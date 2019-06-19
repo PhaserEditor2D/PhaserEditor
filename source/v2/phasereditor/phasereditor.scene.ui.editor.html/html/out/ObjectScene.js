@@ -32,12 +32,14 @@ var PhaserEditor2D;
             this.initCamera();
             this.initSelectionScene();
             var editor = PhaserEditor2D.Editor.getInstance();
-            this.initBackground();
             editor.getCreate().createWorld(this, this._initData.displayList);
-            this.initBackground();
             editor.sceneCreated();
             editor.repaint();
             this.sendRecordCameraStateMessage();
+        };
+        ObjectScene.prototype.updateBackground = function () {
+            var rgb = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Editor.getInstance().sceneProperties) + ")";
+            this.cameras.main.setBackgroundColor(rgb);
         };
         ObjectScene.prototype.getPickManager = function () {
             return this._pickManager;
@@ -62,11 +64,6 @@ var PhaserEditor2D;
             var sceneY = pointerY / cam.zoom + cam.scrollY;
             return new Phaser.Math.Vector2(sceneX, sceneY);
         };
-        ObjectScene.prototype.initBackground = function () {
-            this.scene.launch("BackgroundScene");
-            this._backgroundScene = this.scene.get("BackgroundScene");
-            this.scene.moveDown("BackgroundScene");
-        };
         ObjectScene.prototype.initSelectionScene = function () {
             this.scene.launch("ToolScene");
             this._toolScene = this.scene.get("ToolScene");
@@ -75,14 +72,12 @@ var PhaserEditor2D;
             var cam = this.cameras.main;
             cam.setOrigin(0, 0);
             cam.setRoundPixels(true);
+            this.updateBackground();
             this.scale.resize(window.innerWidth, window.innerHeight);
         };
         ;
         ObjectScene.prototype.getToolScene = function () {
             return this._toolScene;
-        };
-        ObjectScene.prototype.getBackgroundScene = function () {
-            return this._backgroundScene;
         };
         ObjectScene.prototype.onMouseWheel = function (e) {
             var cam = this.cameras.main;
@@ -106,32 +101,10 @@ var PhaserEditor2D;
         };
         ObjectScene.prototype.performResize = function () {
             this.cameras.main.setSize(window.innerWidth, window.innerHeight);
-            this._backgroundScene.cameras.main.setSize(window.innerWidth, window.innerHeight);
         };
         return ObjectScene;
     }(Phaser.Scene));
     PhaserEditor2D.ObjectScene = ObjectScene;
-    var BackgroundScene = (function (_super) {
-        __extends(BackgroundScene, _super);
-        function BackgroundScene() {
-            return _super.call(this, "BackgroundScene") || this;
-        }
-        BackgroundScene.prototype.create = function () {
-            this._bg = this.add.graphics();
-            this.repaint();
-        };
-        BackgroundScene.prototype.repaint = function () {
-            this._bg.clear();
-            var bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Editor.getInstance().sceneProperties) + ")");
-            this._bg.fillStyle(bgColor.color, 1);
-            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        };
-        BackgroundScene.prototype.update = function () {
-            this.repaint();
-        };
-        return BackgroundScene;
-    }(Phaser.Scene));
-    PhaserEditor2D.BackgroundScene = BackgroundScene;
     var PickObjectManager = (function () {
         function PickObjectManager() {
         }

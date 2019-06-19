@@ -50,10 +50,6 @@ namespace PhaserEditor2D {
             return this.getObjectScene().getToolScene();
         }
 
-        getBackgroundScene() {
-            return this.getObjectScene().getBackgroundScene();
-        }
-
         sceneCreated() {
             const self = this;
 
@@ -121,7 +117,9 @@ namespace PhaserEditor2D {
         private onResize() {
 
             for (let scene of this._game.scene.scenes) {
-                scene.cameras.main.setSize(window.innerWidth, window.innerHeight);
+                const scene2 = <Phaser.Scene>scene;
+                scene2.cameras.main.setSize(window.innerWidth, window.innerHeight);
+                scene2.scale.resize(window.innerWidth, window.innerHeight);
             }
 
             this.repaint();
@@ -243,6 +241,8 @@ namespace PhaserEditor2D {
 
         private onUpdateSceneProperties(msg: any) {
             this.sceneProperties = msg.sceneProperties;
+
+            this.getObjectScene().updateBackground();
             this.getToolScene().updateFromSceneProperties();
 
             this.updateBodyColor();
@@ -283,7 +283,6 @@ namespace PhaserEditor2D {
             this._objectScene = new ObjectScene();
 
             this._game.scene.add("ObjectScene", this._objectScene);
-            this._game.scene.add("BackgroundScene", BackgroundScene);
             this._game.scene.add("ToolScene", ToolScene);
             this._game.scene.start("ObjectScene", {
                 displayList: msg.displayList,

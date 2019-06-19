@@ -6,7 +6,6 @@ namespace PhaserEditor2D {
         private _dragCameraManager: DragCameraManager;
         private _dragObjectsManager: DragObjectsManager;
         private _pickManager: PickObjectManager;
-        private _backgroundScene: Phaser.Scene;
         private _initData: any;
 
         constructor() {
@@ -40,17 +39,18 @@ namespace PhaserEditor2D {
 
             const editor = Editor.getInstance();
 
-            this.initBackground();
-
-            editor.getCreate().createWorld(this, this._initData.displayList);
-
-            this.initBackground();
+            editor.getCreate().createWorld(this, this._initData.displayList);            
 
             editor.sceneCreated();
 
             editor.repaint();
 
             this.sendRecordCameraStateMessage();
+        }
+
+        updateBackground() {
+            const rgb = "rgb(" + ScenePropertiesComponent.get_backgroundColor(Editor.getInstance().sceneProperties) + ")";
+            this.cameras.main.setBackgroundColor(rgb);
         }
 
         getPickManager() {
@@ -82,12 +82,7 @@ namespace PhaserEditor2D {
             return new Phaser.Math.Vector2(sceneX, sceneY);
         }
 
-        private initBackground() {
-            this.scene.launch("BackgroundScene");
-            this._backgroundScene = this.scene.get("BackgroundScene");
-            this.scene.moveDown("BackgroundScene");
-        }
-
+    
         private initSelectionScene() {
             this.scene.launch("ToolScene");
             this._toolScene = <ToolScene>this.scene.get("ToolScene");
@@ -98,16 +93,14 @@ namespace PhaserEditor2D {
             cam.setOrigin(0, 0);
             cam.setRoundPixels(true);
 
+            this.updateBackground();
+
             this.scale.resize(window.innerWidth, window.innerHeight);
         };
 
         getToolScene() {
             return this._toolScene;
-        }
-
-        getBackgroundScene() {
-            return this._backgroundScene;
-        }
+        }        
 
         onMouseWheel(e: WheelEvent) {
             var cam = this.cameras.main;
@@ -137,32 +130,7 @@ namespace PhaserEditor2D {
         }
 
         performResize() {
-            this.cameras.main.setSize(window.innerWidth, window.innerHeight);
-            this._backgroundScene.cameras.main.setSize(window.innerWidth, window.innerHeight);
-        }
-    }
-
-    export class BackgroundScene extends Phaser.Scene {
-        private _bg: Phaser.GameObjects.Graphics;
-
-        constructor() {
-            super("BackgroundScene");
-        }
-
-        create() {
-            this._bg = this.add.graphics();
-            this.repaint();
-        }
-
-        private repaint() {
-            this._bg.clear();
-            const bgColor = Phaser.Display.Color.RGBStringToColor("rgb(" + ScenePropertiesComponent.get_backgroundColor(Editor.getInstance().sceneProperties) + ")");
-            this._bg.fillStyle(bgColor.color, 1);
-            this._bg.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        }
-
-        update() {
-            this.repaint();
+            this.cameras.main.setSize(window.innerWidth, window.innerHeight);            
         }
     }
 

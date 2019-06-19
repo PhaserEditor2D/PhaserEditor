@@ -29,9 +29,6 @@ var PhaserEditor2D;
         Editor.prototype.getToolScene = function () {
             return this.getObjectScene().getToolScene();
         };
-        Editor.prototype.getBackgroundScene = function () {
-            return this.getObjectScene().getBackgroundScene();
-        };
         Editor.prototype.sceneCreated = function () {
             var self = this;
             this._game.canvas.addEventListener("mousedown", function (e) {
@@ -87,7 +84,9 @@ var PhaserEditor2D;
         Editor.prototype.onResize = function () {
             for (var _i = 0, _a = this._game.scene.scenes; _i < _a.length; _i++) {
                 var scene = _a[_i];
-                scene.cameras.main.setSize(window.innerWidth, window.innerHeight);
+                var scene2 = scene;
+                scene2.cameras.main.setSize(window.innerWidth, window.innerHeight);
+                scene2.scale.resize(window.innerWidth, window.innerHeight);
             }
             this.repaint();
         };
@@ -182,6 +181,7 @@ var PhaserEditor2D;
         };
         Editor.prototype.onUpdateSceneProperties = function (msg) {
             this.sceneProperties = msg.sceneProperties;
+            this.getObjectScene().updateBackground();
             this.getToolScene().updateFromSceneProperties();
             this.updateBodyColor();
         };
@@ -211,7 +211,6 @@ var PhaserEditor2D;
             });
             this._objectScene = new PhaserEditor2D.ObjectScene();
             this._game.scene.add("ObjectScene", this._objectScene);
-            this._game.scene.add("BackgroundScene", PhaserEditor2D.BackgroundScene);
             this._game.scene.add("ToolScene", PhaserEditor2D.ToolScene);
             this._game.scene.start("ObjectScene", {
                 displayList: msg.displayList,

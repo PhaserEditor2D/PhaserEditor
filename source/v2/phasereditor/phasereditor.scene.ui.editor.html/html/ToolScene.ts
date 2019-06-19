@@ -196,7 +196,7 @@ namespace PhaserEditor2D {
             this._gridGraphics.lineStyle(2, 0xffffff, 1);
 
             this._gridGraphics.strokeRect(
-                (bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom,
+                ((bx - cam.scrollX) * cam.zoom), (by - cam.scrollY) * cam.zoom,
                 bw * cam.zoom, bh * cam.zoom);
         }
 
@@ -231,7 +231,7 @@ namespace PhaserEditor2D {
                 tool.clear();
             }
 
-            for(let tool of tools) {
+            for (let tool of tools) {
                 tool.activated();
             }
 
@@ -247,7 +247,6 @@ namespace PhaserEditor2D {
 
         private renderSelection() {
             this._selectionGraphics.clear();
-
 
             const g2 = this._selectionGraphics;
 
