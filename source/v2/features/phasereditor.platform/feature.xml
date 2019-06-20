@@ -40,59 +40,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
    </license>
 
    <includes
-         id="org.eclipse.epp.mpc"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.ecf.filetransfer.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.ecf.core.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.platform"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.rcp"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.help"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.common"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.ecore"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.p2.core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.p2.discovery.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.p2.extras.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.p2.rcp.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.p2.user.ui"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.ecf.filetransfer.httpclient4.feature"
          version="0.0.0"/>
 
    <includes
@@ -123,154 +71,16 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.eclipse.cdt.native"
          version="0.0.0"/>
 
-   <plugin
-         id="org.eclipse.userstorage"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.egit"
+         version="0.0.0"/>
 
-   <plugin
-         id="org.eclipse.userstorage.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.jgit"
+         version="0.0.0"/>
 
-   <plugin
-         id="org.apache.commons.codec"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.emf.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.draw2d"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.xerces"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.xml.resolver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.xml.serializer"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.xsd"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.httpclient"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ui.views.log"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.userstorage.oauth"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.sun.jna"
-         os="win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.sun.jna.platform"
-         os="win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.xml"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.httpcomponents.httpclient"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.httpcomponents.httpclient.win"
-         os="win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.httpcomponents.httpcore"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.concurrent"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.ds"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.eclipse.epp.mpc"
+         version="0.0.0"/>
 
 </feature>
