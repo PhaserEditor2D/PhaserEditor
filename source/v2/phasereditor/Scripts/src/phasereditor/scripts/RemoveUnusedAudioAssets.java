@@ -46,7 +46,7 @@ public class RemoveUnusedAudioAssets {
 		Path examplesPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN)
 				.resolve("phaser3-examples/public/");
 		Path examplesAudioPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_AUDIO_PLUGIN)
-				.resolve("phaser3-examples/public/assets/audio");
+				.resolve("phaser3-examples/public/assets/");
 
 		Files.walk(examplesPath)
 
