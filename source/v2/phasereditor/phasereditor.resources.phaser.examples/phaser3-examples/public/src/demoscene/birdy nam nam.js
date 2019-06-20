@@ -10,7 +10,10 @@ var demoSceneConfig = {
     active: false,
     visible: false,
     preload: preload,
-    create: create
+    create: create,
+    extend: {
+        startDemo: startDemo
+    }
 };
 
 var config = {
@@ -27,23 +30,25 @@ var egg = 0;
 var chick1;
 var chick2;
 var chick3;
+var loadImage;
 
 var game = new Phaser.Game(config);
 
 function bootLoader ()
 {
     this.load.image('loader', 'assets/demoscene/birdy-nam-nam-loader.png');
+    this.load.image('click', 'assets/demoscene/birdy-nam-nam-click.png');
 }
 
 function bootCreate ()
 {
-    this.add.image(0, 0, 'loader').setOrigin(0);
-
-    this.scene.launch('demo');
+    this.scene.start('demo');
 }
 
 function preload ()
 {
+    loadImage = this.add.image(0, 0, 'loader').setOrigin(0);
+
     this.load.audio('jungle', [ 'assets/audio/jungle.ogg', 'assets/audio/jungle.mp3' ]);
     this.load.animation('birdyAnims', 'assets/demoscene/birdy.json');
     this.load.image('bg1', 'assets/demoscene/birdy-nam-nam-bg1.png');
@@ -57,22 +62,41 @@ function create ()
 
     track = this.sound.add('jungle');
 
-    this.add.image(0, 0, 'bg1').setOrigin(0);
-
     this.anims.create({
         key: 'lay',
         frames: this.anims.generateFrameNames('birdy', { prefix: 'lay', start: 0, end: 19 }),
         frameRate: 28,
-        delay: 1,
-        onComplete: dropEgg,
-        callbackScope: this
+        delay: 1
     });
+
+    if (this.sound.locked)
+    {
+        loadImage.setTexture('click');
+
+        this.sound.once('unlocked', function ()
+        {
+            this.startDemo();
+        }, this);
+    }
+    else
+    {
+        this.startDemo();
+    }
+}
+
+function startDemo ()
+{
+    loadImage.setVisible(false);
+
+    this.add.image(0, 0, 'bg1').setOrigin(0);
 
     bird = this.add.sprite(328, 152, 'birdy', 'lay0').setOrigin(0).setDepth(10);
 
+    bird.on('animationcomplete', dropEgg, this);
+
     track.once('play', function ()
     {
-        bird.anims.delayedPlay(1.5, 'lay');
+        bird.anims.delayedPlay(2250, 'lay');
     });
 
     track.play();
@@ -86,8 +110,9 @@ function dropEgg ()
         targets: smallEgg,
         y: 288,
         ease: 'Linear',
-        delay: 500,
+        delay: 800,
         duration: 200,
+        completeDelay: 800,
         onComplete: moveBird,
         callbackScope: this
     });
@@ -120,11 +145,11 @@ function changeScene ()
     chick2 = this.add.sprite(260, 72, 'birdy', 'hatch1').setOrigin(0);
     chick3 = this.add.sprite(420, 72, 'birdy', 'hatch1').setOrigin(0);
 
-    chick1.anims.delayedPlay(1.2, 'hatch');
-    chick2.anims.delayedPlay(2.2, 'hatch');
-    chick3.anims.delayedPlay(3.2, 'hatch');
+    chick1.anims.delayedPlay(1000-200, 'hatch');
+    chick2.anims.delayedPlay(2000-200, 'hatch');
+    chick3.anims.delayedPlay(3000-200, 'hatch');
 
-    this.time.addEvent({ delay: 5500, callback: checkDisOut, callbackScope: this });
+    this.time.addEvent({ delay: 4500, callback: checkDisOut, callbackScope: this });
 }
 
 function checkDisOut ()

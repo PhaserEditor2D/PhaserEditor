@@ -531,6 +531,9 @@ var InputPlugin = new Class({
      *
      * @method Phaser.Input.InputPlugin#updatePoll
      * @since 3.18.0
+     * 
+     * @param {number} time - The current time. Either a High Resolution Timer value if it comes from Request Animation Frame, or Date.now if using SetTimeout.
+     * @param {number} delta - The delta time in ms since the last frame. This is a smoothed and capped value based on the FPS rate.
      *
      * @return {boolean} `true` if the plugin and the Scene it belongs to is active.
      */
@@ -1095,11 +1098,14 @@ var InputPlugin = new Class({
 
             input.dragState = 2;
 
-            input.dragX = pointer.x - gameObject.x;
-            input.dragY = pointer.y - gameObject.y;
-
             input.dragStartX = gameObject.x;
             input.dragStartY = gameObject.y;
+
+            input.dragStartXGlobal = pointer.x;
+            input.dragStartYGlobal = pointer.y;
+
+            input.dragX = input.dragStartXGlobal - input.dragStartX;
+            input.dragY = input.dragStartYGlobal - input.dragStartY;
 
             gameObject.emit(Events.GAMEOBJECT_DRAG_START, pointer, input.dragX, input.dragY);
 
@@ -1288,8 +1294,27 @@ var InputPlugin = new Class({
                 this.emit(Events.DRAG_ENTER, pointer, gameObject, target);
             }
 
-            var dragX = pointer.x - gameObject.input.dragX;
-            var dragY = pointer.y - gameObject.input.dragY;
+            var dragX;
+            var dragY;
+
+            if (!gameObject.parentContainer)
+            {
+                dragX = pointer.x - input.dragX;
+                dragY = pointer.y - input.dragY;
+            }
+            else
+            {
+                var dx = pointer.x - input.dragStartXGlobal;
+                var dy = pointer.y - input.dragStartYGlobal;
+
+                var rotation = gameObject.getParentRotation();
+    
+                var dxRotated = dx * Math.cos(rotation) + dy * Math.sin(rotation);
+                var dyRotated = dy * Math.cos(rotation) - dx * Math.sin(rotation);
+
+                dragX = dxRotated + input.dragStartX;
+                dragY = dyRotated + input.dragStartY;
+            }
 
             gameObject.emit(Events.GAMEOBJECT_DRAG, pointer, dragX, dragY);
 

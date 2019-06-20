@@ -638,73 +638,6 @@
         ]
       },
       {
-        "mainFile": "src/animation/spine test 1.js",
-        "map": [
-          {
-            "orig": "src/animation/spine test 1.js",
-            "dst": "spine test 1.js"
-          },
-          {"orig": "assets/animations/spine/spineboy-pro.atlas"},
-          {"orig": "assets/animations/spine/spineboy-pro.png"},
-          {"orig": "assets/animations/spine/spineboy-pro2.png"},
-          {"orig": "assets/animations/spine/spineboy-pro.json"}
-        ]
-      },
-      {
-        "mainFile": "src/animation/spine test 2.js",
-        "map": [
-          {
-            "orig": "src/animation/spine test 2.js",
-            "dst": "spine test 2.js"
-          },
-          {"orig": "assets/animations/spine/spineboy-ess.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "assets/animations/spine/spineboy.png"}
-        ]
-      },
-      {
-        "mainFile": "src/animation/spine test 3.js",
-        "map": [
-          {
-            "orig": "src/animation/spine test 3.js",
-            "dst": "spine test 3.js"
-          },
-          {"orig": "assets/animations/spine/webgl/goblins-pro.json"},
-          {"orig": "assets/animations/spine/webgl/stretchyman.atlas"},
-          {"orig": "assets/animations/spine/webgl/raptor-pro.json"},
-          {"orig": "assets/animations/spine/webgl/tank-pro.json"},
-          {"orig": "assets/animations/spine/webgl/spineboy-pma.png"},
-          {"orig": "assets/animations/spine/webgl/goblins.atlas"},
-          {"orig": "assets/animations/spine/webgl/spineboy.atlas"},
-          {"orig": "assets/animations/spine/webgl/tank.atlas"},
-          {"orig": "assets/animations/spine/webgl/tank.png"},
-          {"orig": "assets/animations/spine/webgl/vine.png"},
-          {"orig": "assets/animations/spine/webgl/coin.png"},
-          {"orig": "assets/animations/spine/webgl/spineboy-ess.json"},
-          {"orig": "assets/animations/spine/webgl/stretchyman-pro.json"},
-          {"orig": "assets/animations/spine/webgl/raptor.png"},
-          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
-          {"orig": "assets/animations/spine/webgl/stretchyman.png"},
-          {"orig": "assets/animations/spine/webgl/raptor.atlas"},
-          {"orig": "assets/animations/spine/webgl/goblins.png"},
-          {"orig": "assets/animations/spine/webgl/vine.atlas"},
-          {"orig": "assets/animations/spine/webgl/vine-pro.json"},
-          {"orig": "assets/animations/spine/webgl/coin.atlas"}
-        ]
-      },
-      {
-        "mainFile": "src/animation/spine test 4.js",
-        "map": [
-          {
-            "orig": "src/animation/spine test 4.js",
-            "dst": "spine test 4.js"
-          },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "assets/animations/spine/spineboy.png"}
-        ]
-      },
-      {
         "mainFile": "src/animation/stagger play.js",
         "map": [
           {
@@ -1124,6 +1057,23 @@
             ]
           },
           {
+            "mainFile": "src/audio/Web Audio/play sound on keypress.js",
+            "map": [
+              {
+                "orig": "src/audio/Web Audio/play sound on keypress.js",
+                "dst": "play sound on keypress.js"
+              },
+              {"orig": "assets/audio/tech/drums.ogg"},
+              {"orig": "assets/audio/tech/synth2.ogg"},
+              {"orig": "assets/pics/touhou1.png"},
+              {"orig": "assets/audio/tech/bass.ogg"},
+              {"orig": "assets/audio/tech/top2.ogg"},
+              {"orig": "assets/audio/tech/percussion.ogg"},
+              {"orig": "assets/audio/tech/synth1.ogg"},
+              {"orig": "assets/audio/tech/top1.ogg"}
+            ]
+          },
+          {
             "mainFile": "src/audio/Web Audio/Reuse AudioContext.js",
             "map": [
               {
@@ -1202,8 +1152,8 @@
             "orig": "src/bugs/ap postupdate.js",
             "dst": "ap postupdate.js"
           },
-          {"orig": "assets/sprites/50x50-black.png"},
-          {"orig": "assets/sprites/50x50-white.png"}
+          {"orig": "assets/sprites/phaser3-logo.png"},
+          {"orig": "assets/sprites/longarrow.png"}
         ]
       },
       {
@@ -1250,6 +1200,16 @@
         ]
       },
       {
+        "mainFile": "src/bugs/container drag.js",
+        "map": [
+          {
+            "orig": "src/bugs/container drag.js",
+            "dst": "container drag.js"
+          },
+          {"orig": "assets/pics/lance-overdose-loader-eye.png"}
+        ]
+      },
+      {
         "mainFile": "src/bugs/container tilesprite.js",
         "map": [
           {
@@ -1259,6 +1219,13 @@
           {"orig": "assets/sprites/advanced_wars_land.png"},
           {"orig": "assets/sprites/mushroom2.png"}
         ]
+      },
+      {
+        "mainFile": "src/bugs/dom resize.js",
+        "map": [{
+          "orig": "src/bugs/dom resize.js",
+          "dst": "dom resize.js"
+        }]
       },
       {
         "mainFile": "src/bugs/extern.js",
@@ -1478,6 +1445,16 @@
         ]
       },
       {
+        "mainFile": "src/bugs/skip tile.js",
+        "map": [
+          {
+            "orig": "src/bugs/skip tile.js",
+            "dst": "skip tile.js"
+          },
+          {"orig": "assets/tilemaps/tiles/tiles2.png"}
+        ]
+      },
+      {
         "mainFile": "src/bugs/stroke.js",
         "map": [{
           "orig": "src/bugs/stroke.js",
@@ -1490,6 +1467,17 @@
           "orig": "src/bugs/text.js",
           "dst": "text.js"
         }]
+      },
+      {
+        "mainFile": "src/bugs/tilemap resize.js",
+        "map": [
+          {
+            "orig": "src/bugs/tilemap resize.js",
+            "dst": "tilemap resize.js"
+          },
+          {"orig": "assets/tilemaps/tiles/gridtiles.png"},
+          {"orig": "assets/sprites/128x128.png"}
+        ]
       },
       {
         "mainFile": "src/bugs/tint.js",
@@ -2284,6 +2272,7 @@
           {"orig": "assets/demoscene/birdy-nam-nam-loader.png"},
           {"orig": "assets/demoscene/budbrain.json"},
           {"orig": "assets/demoscene/birdy-nam-nam-bg1.png"},
+          {"orig": "assets/demoscene/birdy-nam-nam-click.png"},
           {"orig": "assets/audio/jungle.ogg"},
           {"orig": "assets/demoscene/birdy.json"},
           {"orig": "assets/demoscene/budbrain.png"}
@@ -3670,10 +3659,13 @@
       },
       {
         "mainFile": "src/game config/custom canvas.js",
-        "map": [{
-          "orig": "src/game config/custom canvas.js",
-          "dst": "custom canvas.js"
-        }]
+        "map": [
+          {
+            "orig": "src/game config/custom canvas.js",
+            "dst": "custom canvas.js"
+          },
+          {"orig": "assets/pics/baal-loader.png"}
+        ]
       },
       {
         "mainFile": "src/game config/custom webgl canvas.js",
@@ -7840,6 +7832,18 @@
             ]
           },
           {
+            "mainFile": "src/game objects/sprites/rotate around a sprite.js",
+            "map": [
+              {
+                "orig": "src/game objects/sprites/rotate around a sprite.js",
+                "dst": "rotate around a sprite.js"
+              },
+              {"orig": "assets/demoscene/blue_ball.png"},
+              {"orig": "assets/demoscene/ball.png"},
+              {"orig": "assets/demoscene/ball-tlb.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/sprites/single sprite.js",
             "map": [
               {
@@ -11030,6 +11034,16 @@
             ]
           },
           {
+            "mainFile": "src/input/dragging/scrolling text box.js",
+            "map": [
+              {
+                "orig": "src/input/dragging/scrolling text box.js",
+                "dst": "scrolling text box.js"
+              },
+              {"orig": "assets/pics/tvzor-lazur.png"}
+            ]
+          },
+          {
             "mainFile": "src/input/dragging/stack of cards.js",
             "map": [
               {
@@ -11501,6 +11515,19 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/input/mouse/check button released.js",
+            "map": [
+              {
+                "orig": "src/input/mouse/check button released.js",
+                "dst": "check button released.js"
+              },
+              {"orig": "assets/sprites/oz_pov_melting_disk.png"},
+              {"orig": "assets/sprites/asuna_by_vali233.png"},
+              {"orig": "assets/sprites/palm-tree-left.png"},
+              {"orig": "assets/sprites/phaser.png"}
+            ]
+          },
+          {
             "mainFile": "src/input/mouse/circle hit area.js",
             "map": [
               {
@@ -11789,6 +11816,29 @@
               {"orig": "assets/input/a.png"},
               {"orig": "assets/input/e.png"},
               {"orig": "assets/input/p.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/multitouch/multi touch test.js",
+            "map": [
+              {
+                "orig": "src/input/multitouch/multi touch test.js",
+                "dst": "multi touch test.js"
+              },
+              {"orig": "assets/tests/piano/G3.mp3"},
+              {"orig": "assets/tests/piano/piano.png"},
+              {"orig": "assets/tests/piano/Eb3.mp3"},
+              {"orig": "assets/tests/piano/C3.mp3"},
+              {"orig": "assets/tests/piano/Db3.mp3"},
+              {"orig": "assets/tests/piano/Gb3.mp3"},
+              {"orig": "assets/tests/piano/Ab3.mp3"},
+              {"orig": "assets/tests/piano/E3.mp3"},
+              {"orig": "assets/tests/piano/B3.mp3"},
+              {"orig": "assets/tests/piano/F3.mp3"},
+              {"orig": "assets/tests/piano/Bb3.mp3"},
+              {"orig": "assets/tests/piano/piano.json"},
+              {"orig": "assets/tests/piano/A3.mp3"},
+              {"orig": "assets/tests/piano/D3.mp3"}
             ]
           },
           {
@@ -16272,6 +16322,19 @@
           },
           {"orig": "assets/pics/thalion-rain.png"},
           {"orig": "assets/sprites/phaser3-logo-x2.png"}
+        ]
+      },
+      {
+        "mainFile": "src/scalemanager/resize on click.js",
+        "map": [
+          {
+            "orig": "src/scalemanager/resize on click.js",
+            "dst": "resize on click.js"
+          },
+          {"orig": "assets/pics/monika-krawinkel-amberstar-title.png"},
+          {"orig": "assets/pics/game14-angel-dawn.png"},
+          {"orig": "assets/pics/neuromancer.jpg"},
+          {"orig": "assets/pics/ninja-masters2.png"}
         ]
       },
       {
