@@ -91,7 +91,11 @@ namespace PhaserEditor2D {
             if (this._interactive) {
                 switch (type) {
                     case "TileSprite":
-                        obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+                        if (Editor.getInstance().isWebGL()) {
+                            obj.setInteractive();
+                        } else {
+                            obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+                        }
                         break;
                     case "BitmapText":
                     case "DynamicBitmapText":

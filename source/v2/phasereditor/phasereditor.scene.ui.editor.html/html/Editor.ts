@@ -15,6 +15,7 @@ namespace PhaserEditor2D {
 
         sceneProperties: any;
         selection: any[] = [];
+        private _webgl: boolean;
 
         constructor() {
             Editor._instance = this;
@@ -256,7 +257,7 @@ namespace PhaserEditor2D {
         private onCreateGame(msg: any) {
             // update the model
 
-            const webgl = msg.webgl;
+            this._webgl = msg.webgl;
             this.sceneProperties = msg.sceneProperties;
 
             // create the game
@@ -267,7 +268,7 @@ namespace PhaserEditor2D {
                 width: window.innerWidth,
                 height: window.innerWidth,
                 // WEBGL is problematic on Linux
-                type: webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                type: this._webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
                     pixelArt: true
                 },
@@ -534,6 +535,10 @@ namespace PhaserEditor2D {
 
         isTransformLocalCoords() {
             return this._transformLocalCoords;
+        }
+
+        isWebGL() {
+            return this._webgl;
         }
 
         private onSetTransformCoords(msg: any) {

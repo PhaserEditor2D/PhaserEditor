@@ -190,14 +190,14 @@ var PhaserEditor2D;
             body.style.backgroundColor = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(this.sceneProperties) + ")";
         };
         Editor.prototype.onCreateGame = function (msg) {
-            var webgl = msg.webgl;
+            this._webgl = msg.webgl;
             this.sceneProperties = msg.sceneProperties;
             this._create = new PhaserEditor2D.Create();
             this._game = new Phaser.Game({
                 title: "Phaser Editor 2D - Web Scene Editor",
                 width: window.innerWidth,
                 height: window.innerWidth,
-                type: webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                type: this._webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
                     pixelArt: true
                 },
@@ -405,6 +405,9 @@ var PhaserEditor2D;
         };
         Editor.prototype.isTransformLocalCoords = function () {
             return this._transformLocalCoords;
+        };
+        Editor.prototype.isWebGL = function () {
+            return this._webgl;
         };
         Editor.prototype.onSetTransformCoords = function (msg) {
             this._transformLocalCoords = msg.transformLocalCoords;
