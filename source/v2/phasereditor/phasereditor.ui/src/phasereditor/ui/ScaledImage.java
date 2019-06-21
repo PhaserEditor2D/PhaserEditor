@@ -122,7 +122,46 @@ public class ScaledImage {
 
 	public void paint(GC gc, int x, int y) {
 		var b = _image.getBounds();
-		gc.drawImage(_image, x, y, b.width, b.height, x, y, _viewWidth, _viewHeight);
+		gc.drawImage(_image, 0, 0, b.width, b.height, x, y, _viewWidth, _viewHeight);
+	}
+
+	public void paintScaledInArea(GC gc, Rectangle renderArea, boolean center) {
+
+		var image = getImage();
+
+		if (image == null) {
+			return;
+		}
+
+		var bounds = image.getBounds();
+
+		int renderHeight = renderArea.height;
+		int renderWidth = renderArea.width;
+
+		double imgW = bounds.width;
+		double imgH = bounds.height;
+
+		// compute the right width
+		imgW = imgW * (renderHeight / imgH);
+		imgH = renderHeight;
+
+		// fix width if it goes beyond the area
+		if (imgW > renderWidth) {
+			imgH = imgH * (renderWidth / imgW);
+			imgW = renderWidth;
+		}
+
+		double scale = imgW / bounds.width;
+
+		var imgX = renderArea.x + (center ? renderWidth / 2 - imgW / 2 : 0);
+		var imgY = renderArea.y + renderHeight / 2 - imgH / 2;
+
+		double imgDstW = bounds.width * scale;
+		double imgDstH = bounds.height * scale;
+
+		if (imgDstW > 0 && imgDstH > 0) {
+			gc.drawImage(image, 0, 0, bounds.width, bounds.height, (int) imgX, (int) imgY, (int) imgDstW, (int) imgDstH);
+		}
 	}
 
 	public Image getImage() {

@@ -102,7 +102,7 @@ public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItem
 			area = new Rectangle(x + 2, y + 2, e.width - x - 5, rowHeight - textHeight - 10);
 		}
 
-		paintScaledInArea(gc, area, true);
+		paintScaledInArea(gc, area);
 	}
 
 	@SuppressWarnings("static-method")
@@ -110,5 +110,5 @@ public abstract class BaseImageTreeCanvasItemRenderer extends BaseTreeCanvasItem
 		return imgSize <= 64;
 	}
 
-	protected abstract void paintScaledInArea(GC gc, Rectangle area, boolean b);
+	protected abstract void paintScaledInArea(GC gc, Rectangle area);
 }

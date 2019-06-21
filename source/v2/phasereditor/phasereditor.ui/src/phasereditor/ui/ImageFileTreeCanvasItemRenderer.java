@@ -38,7 +38,7 @@ public class ImageFileTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRend
 	}
 
 	@Override
-	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
+	protected void paintScaledInArea(GC gc, Rectangle area) {
 		var proxy = getImage();
 		if (proxy != null) {
 			proxy.paintScaledInArea(gc, area);

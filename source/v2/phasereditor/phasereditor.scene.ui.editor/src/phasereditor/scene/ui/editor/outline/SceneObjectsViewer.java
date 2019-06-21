@@ -33,6 +33,7 @@ import phasereditor.scene.core.BitmapTextModel;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
+import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -45,6 +46,7 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 		super(canvas, contentProvider, new SceneOutlineLabelProvider(editor));
 
 		_editor = editor;
+
 	}
 
 	@Override
@@ -72,6 +74,8 @@ public class SceneObjectsViewer extends TreeCanvasViewer {
 				}
 			});
 
+		} else if (data instanceof TileSpriteModel) {
+			item.setRenderer(new TileSpriteTreeItemRenderer(item, getFinder()));
 		} else if (data instanceof TextureComponent) {
 			var frame = TextureComponent.utils_getTexture((ObjectModel) data, finder);
 			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);

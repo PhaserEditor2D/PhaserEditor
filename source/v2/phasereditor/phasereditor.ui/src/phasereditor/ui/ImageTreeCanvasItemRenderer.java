@@ -47,7 +47,7 @@ public class ImageTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRenderer
 	}
 
 	@Override
-	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
+	protected void paintScaledInArea(GC gc, Rectangle area) {
 		var _image = _getImage.get();
 		if (_image != null && !_image.isDisposed()) {
 			PhaserEditorUI.paintScaledImageInArea(gc, _image, FrameData.fromImage(_image), area);

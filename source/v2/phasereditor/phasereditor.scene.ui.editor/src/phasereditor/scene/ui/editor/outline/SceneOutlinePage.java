@@ -73,7 +73,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	protected SceneEditor _editor;
 	private FilteredTreeCanvas _filterTree;
-	protected TreeCanvasViewer _viewer;
+	protected SceneObjectsViewer _viewer;
 
 	public SceneOutlinePage(SceneEditor editor) {
 		_editor = editor;

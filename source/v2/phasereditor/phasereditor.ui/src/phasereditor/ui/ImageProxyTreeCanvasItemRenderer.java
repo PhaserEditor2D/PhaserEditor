@@ -45,7 +45,7 @@ public class ImageProxyTreeCanvasItemRenderer extends BaseImageTreeCanvasItemRen
 	}
 
 	@Override
-	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
+	protected void paintScaledInArea(GC gc, Rectangle area) {
 		if (_image != null) {
 			_image.paintScaledInArea(gc, area, false);
 		}

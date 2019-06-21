@@ -27,7 +27,7 @@ public class MultiAtlasAssetTreeCanvasItemRenderer extends BaseImageTreeCanvasIt
 	}
 
 	@Override
-	protected void paintScaledInArea(GC gc, Rectangle area, boolean b) {
+	protected void paintScaledInArea(GC gc, Rectangle area) {
 		var asset = (MultiAtlasAssetModel) _item.getData();
 		var frames = asset.getSubElements();
 		var proxies = frames.stream()
