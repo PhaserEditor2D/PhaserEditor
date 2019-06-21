@@ -2,7 +2,7 @@
 
 export root=~/Documents/PhaserEditor
 export ver=2.1.1
-export fullver=2.1.1.20190530
+export fullver=2.1.1.20190623
 export prever=2.1.0
 export fullprever=2.1.0.20190527
 
