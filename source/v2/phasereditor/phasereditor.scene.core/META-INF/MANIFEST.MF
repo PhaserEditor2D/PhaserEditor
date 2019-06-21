@@ -28,3 +28,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.scene.core,
  phasereditor.scene.core.codedom,
  phasereditor.scene.core.codegen
+Bundle-RequiredExecutionEnvironment: JavaSE-11

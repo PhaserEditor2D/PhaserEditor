@@ -22,3 +22,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.core,
  phasereditor.assetpack.core.animations
 Automatic-Module-Name: phasereditor.assetpack.core
+Bundle-RequiredExecutionEnvironment: JavaSE-11

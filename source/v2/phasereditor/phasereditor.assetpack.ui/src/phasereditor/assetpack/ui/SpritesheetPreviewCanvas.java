@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -47,7 +46,7 @@ import phasereditor.ui.ImageProxyCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 public class SpritesheetPreviewCanvas extends ImageProxyCanvas
-		implements MouseMoveListener, KeyListener, MouseListener {
+		implements MouseMoveListener, MouseListener {
 
 	private SpritesheetAssetModel _spritesheet;
 	private List<FrameData> _rects;

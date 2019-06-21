@@ -6,3 +6,4 @@ Bundle-Version: 2.1.0.20190527
 Bundle-Vendor: Arian Fornaris
 Eclipse-BundleShape: dir
 Automatic-Module-Name: phasereditor.resources.phaser.code
+Bundle-RequiredExecutionEnvironment: JavaSE-11

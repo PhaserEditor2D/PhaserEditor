@@ -31,3 +31,4 @@ Automatic-Module-Name: phasereditor.assetpack.ui.editor
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui.editor,
  phasereditor.assetpack.ui.editor.wizards
+Bundle-RequiredExecutionEnvironment: JavaSE-11

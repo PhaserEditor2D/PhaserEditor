@@ -25,7 +25,6 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import phasereditor.project.ui.ProjectView;
-import phasereditor.ui.BlocksView;
 
 /**
  * @author arian

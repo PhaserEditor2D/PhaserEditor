@@ -64,8 +64,7 @@
    <extension
          point="phasereditor.webrun.core.webcontent">
       <dynamic
-            handler="phasereditor.scene.core.web.SceneScreenshotHandler"
-            path="/sceneService">
+            handler="phasereditor.scene.core.web.SceneScreenshotHandler">
       </dynamic>
    </extension>
 

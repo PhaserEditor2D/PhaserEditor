@@ -61,13 +61,6 @@
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>
-         <command
-               commandId="phasereditor.canvas.ui.compile"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
          <menu
                label="References">
             <command
