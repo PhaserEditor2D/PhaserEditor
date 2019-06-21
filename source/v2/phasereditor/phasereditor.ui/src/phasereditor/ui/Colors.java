@@ -59,7 +59,12 @@ public class Colors {
 	}
 
 	public static Color color(String webColor) {
-		return SwtRM.getColor(rgb(webColor).rgb);
+		var rgb = rgb(webColor);
+		
+		if (rgb == null) {
+			return null;
+		}
+		return SwtRM.getColor(rgb.rgb);
 	}
 
 	public static Color color(int r, int g, int b) {
@@ -193,10 +198,10 @@ public class Colors {
 	 */
 	public static RGBA rgb(String colorString, double opacity) {
 		if (colorString == null) {
-			throw new NullPointerException("The color components or name must be specified");
+			return null;
 		}
 		if (colorString.isEmpty()) {
-			throw new IllegalArgumentException("Invalid color specification");
+			return null;
 		}
 
 		String color = colorString.toLowerCase(Locale.ROOT);

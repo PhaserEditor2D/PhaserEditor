@@ -73,7 +73,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	protected SceneEditor _editor;
 	private FilteredTreeCanvas _filterTree;
-	protected SceneObjectsViewer _viewer;
+	protected SceneOutlineViewer _viewer;
 
 	public SceneOutlinePage(SceneEditor editor) {
 		_editor = editor;
@@ -122,7 +122,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				getEditor().activateSearchContext();
 			}
 		});
-		_viewer = new SceneObjectsViewer(_filterTree.getTree(), getEditor(), new SceneOutlineContentProvider()) {
+		_viewer = new SceneOutlineViewer(_filterTree.getTree(), getEditor(), new SceneOutlineContentProvider()) {
 
 			@Override
 			protected void setItemProperties(TreeCanvasItem item) {

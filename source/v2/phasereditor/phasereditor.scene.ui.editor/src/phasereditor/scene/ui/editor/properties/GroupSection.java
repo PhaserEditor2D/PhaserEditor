@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.scene.core.GroupComponent;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
-import phasereditor.scene.ui.editor.outline.SceneObjectsViewer;
+import phasereditor.scene.ui.editor.outline.SceneOutlineViewer;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeArrayContentProvider;
@@ -103,7 +103,7 @@ public class GroupSection extends ScenePropertySection {
 		_selectInSceneButton.setEnabled(!_childrenViewer.getStructuredSelection().isEmpty());
 	}
 
-	class GroupChildrenViewer extends SceneObjectsViewer {
+	class GroupChildrenViewer extends SceneOutlineViewer {
 
 		public GroupChildrenViewer(TreeCanvas canvas) {
 			super(canvas, getEditor(), new TreeArrayContentProvider());
