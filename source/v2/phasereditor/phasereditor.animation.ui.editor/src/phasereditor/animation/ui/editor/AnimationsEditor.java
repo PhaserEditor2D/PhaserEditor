@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -438,8 +439,12 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		String initialName = "untitled";
 
-		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "New Animation",
-				"Enter the name of the new animation.", initialName, new IInputValidator() {
+		var msg = "Enter the name of the new animation:\n\n"
+				+ "Tip: You can automatically create many animations by dragging "
+				+ "Atlas, Image or Frame keys from the Blocks view and dropping them into the Outline view or the center of the editor."
+				+ "The animations are created by grouping textures with a common prefix.";
+		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "New Animation", msg, initialName,
+				new IInputValidator() {
 
 					@Override
 					public String isValid(String newText) {
@@ -520,8 +525,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			}
 		};
 
-		_newAction = new Action("New Animation",
-				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_NEW_FRAME_ANIMATION)) {
+		_newAction = new Action("New Animation", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ADD)) {
 			@Override
 			public void run() {
 				openNewAnimationDialog(null);
@@ -772,7 +776,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			_multiAnimationButtons.add(new ActionButton(parent, getPlayAllAction()));
 			_multiAnimationButtons.add(new ActionButton(parent, getStopAllAction()));
 
-			new ActionButton(parent, getDeleteAction());
+			new ActionButton(parent, getNewAction()).getButton().setText("Add Animation");
+			new ActionButton(parent, getDeleteAction()).getButton();
 
 			updateButtons();
 		}
@@ -1108,6 +1113,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	}
 
 	public void deleteAnimations(List<AnimationModel> animations) {
+		if (!MessageDialog.openConfirm(getEditorSite().getShell(), "Delete",
+				"Do you really want to delete " + animations.size() + " animations? This operation is not undoable.")) {
+			return;
+		}
+
 		_model.getAnimations().removeAll(animations);
 
 		if (isSingleAnimationMode()) {
