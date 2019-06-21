@@ -3,8 +3,10 @@ package phasereditor.scene.ui.editor.build;
 import static java.util.stream.Collectors.toSet;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
@@ -20,6 +22,13 @@ public class SceneEditorProjectBuildParticipant extends BaseEditorBuildParticipa
 		super(SceneEditor.ID);
 	}
 
+	@Override
+	public void startupOnInitialize(IProject project, Map<String, Object> env) {
+		super.startupOnInitialize(project, env);
+		
+		rebuildEditors();
+	}
+	
 	@Override
 	protected void buildEditor(SceneEditor editor) {
 		editor.build();

@@ -60,7 +60,7 @@ public abstract class BaseEditorBuildParticipant<T extends EditorPart> implement
 		// rebuildEditors();
 	}
 
-	private void rebuildEditors() {
+	protected void rebuildEditors() {
 		rebuildEditors(null);
 	}
 

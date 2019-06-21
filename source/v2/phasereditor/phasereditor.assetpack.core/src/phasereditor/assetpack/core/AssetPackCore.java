@@ -664,7 +664,7 @@ public class AssetPackCore {
 	 * 
 	 * @return A list with the asset pack models.
 	 */
-	static List<AssetPackModel> discoverAssetPackModels() {
+	public static List<AssetPackModel> discoverAssetPackModels() {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (IProject project : projects) {
 			discoverAssetPackModels(project);
@@ -675,7 +675,7 @@ public class AssetPackCore {
 		}
 	}
 
-	static void discoverAssetPackModels(IProject project) {
+	public static void discoverAssetPackModels(IProject project) {
 		if (!project.isAccessible()) {
 			return;
 		}
