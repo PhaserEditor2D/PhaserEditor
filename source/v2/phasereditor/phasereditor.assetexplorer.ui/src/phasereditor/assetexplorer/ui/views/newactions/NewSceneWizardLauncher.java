@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_NEW_CANVAS;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -28,6 +30,7 @@ import org.eclipse.ui.INewWizard;
 
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.ui.editor.wizards.NewSceneFileWizard;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -36,7 +39,7 @@ import phasereditor.scene.ui.editor.wizards.NewSceneFileWizard;
 public class NewSceneWizardLauncher extends NewWizardLancher {
 
 	public NewSceneWizardLauncher() {
-		super("Create a new Scene file.");
+		super("Scene File", "Create a new Scene file.", EditorSharedImages.getImage(IMG_NEW_CANVAS));
 	}
 
 	@Override

@@ -72,6 +72,7 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.quickaccess.QuickAccessDialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import phasereditor.assetexplorer.ui.views.newactions.NewWizardLauncherDialog;
 import phasereditor.ide.IDEPlugin;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
@@ -264,16 +265,19 @@ class NewMenuWrapper {
 	private Button _btn;
 
 	public NewMenuWrapper(Composite parent) {
-		var action = new NewWizardDropDownAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		_btn = new Button(parent, SWT.PUSH);
 		_btn.setText("New");
 		_btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 
-			var creator = action.getMenuCreator();
-			var menu = creator.getMenu(_btn);
-			menu.setVisible(true);
+			// var creator = action.getMenuCreator();
+			// var menu = creator.getMenu(_btn);
+			// menu.setVisible(true);
+
+			var dlg = new NewWizardLauncherDialog(_btn.getShell());
+			dlg.open();
 
 		}));
+		var action = new NewWizardDropDownAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		_btn.setImage(action.getImageDescriptor().createImage());
 	}
 

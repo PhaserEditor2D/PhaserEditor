@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_BOX_ADD;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -28,6 +30,7 @@ import org.eclipse.ui.INewWizard;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.editor.wizards.NewAssetPackWizard;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -36,7 +39,7 @@ import phasereditor.assetpack.ui.editor.wizards.NewAssetPackWizard;
 public class NewAssetPackWizardLauncher extends NewWizardLancher {
 
 	public NewAssetPackWizardLauncher() {
-		super("Create a new Asset Pack file.");
+		super("Asset Pack File", "Create a new Asset Pack file.", EditorSharedImages.getImage(IMG_BOX_ADD));
 	}
 
 	@Override

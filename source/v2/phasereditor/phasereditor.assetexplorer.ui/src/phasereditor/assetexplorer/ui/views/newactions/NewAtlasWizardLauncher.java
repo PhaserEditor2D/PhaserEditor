@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ATLAS_ADD;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -28,6 +30,7 @@ import org.eclipse.ui.INewWizard;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.atlas.ui.editor.wizards.NewAtlasMakerWizard;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -36,7 +39,7 @@ import phasereditor.atlas.ui.editor.wizards.NewAtlasMakerWizard;
 public class NewAtlasWizardLauncher extends NewWizardLancher {
 
 	public NewAtlasWizardLauncher() {
-		super("Create a new Textures Packer file.");
+		super("Texture Packer File", "Create a new Textures Packer file.", EditorSharedImages.getImage(IMG_ATLAS_ADD));
 	}
 
 	@Override

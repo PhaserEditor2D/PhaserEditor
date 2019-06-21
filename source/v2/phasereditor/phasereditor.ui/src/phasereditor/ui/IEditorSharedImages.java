@@ -27,6 +27,7 @@ public interface IEditorSharedImages {
 	String IMG_NEW_PHASER_PROJECT = "icons/new_phaser_project.png";
 	String IMG_PHASER_PROJECT = "icons/phaser_project.png";
 	String IMG_GENERIC_EDITOR = "icons/generic_editor.png";
+	String IMG_NEW_GENERIC_EDITOR = "icons/new_generic_editor.png";
 	String IMG_CHECK_OFF = "icons/blender_ICON_CHECKBOX_DEHLT.png";
 	String IMG_CHECK_ON = "icons/blender_ICON_CHECKBOX_HLT.png";
 	String IMG_SHAPE_ADD = "icons/shape-duplicate.png";
@@ -46,6 +47,7 @@ public interface IEditorSharedImages {
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";
 	String IMG_GENERIC_ELEMENT = "icons/generic_element.png";
 	String IMG_IMAGES = "icons/images.png";
+	String IMG_ATLAS_ADD = "icons/atlas_add.png";
 	String IMG_IMAGES_GO = "icons/images-go.png";
 	String IMG_FILM_GO = "icons/film-go.png";
 	String IMG_NEW_ATLAS = "icons/atlas_add.png";
@@ -63,6 +65,7 @@ public interface IEditorSharedImages {
 	String IMG_PACKAGE_SEARCH = "icons/box.png";
 	String IMG_PACKAGE_GO = "icons/box-go.png";
 	String IMG_BOX = "icons/box.png";
+	String IMG_BOX_ADD = "icons/box_add.png";
 	String IMG_NEW_BOX = "icons/box_add.png";
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";
 	String IMG_TEMPLATE_OBJ = "icons/template_obj.png";

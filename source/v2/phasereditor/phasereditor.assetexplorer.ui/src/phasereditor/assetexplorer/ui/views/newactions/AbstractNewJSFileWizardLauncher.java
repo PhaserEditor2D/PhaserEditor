@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,25 +21,50 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
-import static phasereditor.ui.IEditorSharedImages.IMG_NEW_PHASER_PROJECT;
+import static phasereditor.ui.IEditorSharedImages.IMG_NEW_GENERIC_EDITOR;
 
-import org.eclipse.ui.INewWizard;
+import java.util.ArrayList;
 
-import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class NewProjectWizardLauncher extends NewWizardLancher {
+public abstract class AbstractNewJSFileWizardLauncher extends NewWizardLancher{
 
-	public NewProjectWizardLauncher() {
-		super("Phaser Project", "Create a new Phaser Project", EditorSharedImages.getImage(IMG_NEW_PHASER_PROJECT));
+	public AbstractNewJSFileWizardLauncher(String name, String description) {
+		super(name, description, EditorSharedImages.getImage(IMG_NEW_GENERIC_EDITOR));
 	}
-
+	
 	@Override
-	protected INewWizard getWizard() {
-		return new NewPhaserProjectWizard();
+	protected IStructuredSelection getSelection(IProject project) {
+		var folder = ProjectCore.getWebContentFolder(project);
+		var files = new ArrayList<IFile>();
+		try {
+			folder.accept(r -> {
+				if (r instanceof IFile && r.getFullPath().getFileExtension().equals("js")) {
+					files.add((IFile) r);
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+
+		if (!files.isEmpty()) {
+			files.sort(this::compare_getNewerFile);
+			folder = files.get(0).getParent();
+		}
+
+		return new StructuredSelection(folder);
 	}
+
 }

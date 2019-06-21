@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,25 +21,25 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
-import static phasereditor.ui.IEditorSharedImages.IMG_NEW_PHASER_PROJECT;
-
 import org.eclipse.ui.INewWizard;
 
-import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
-import phasereditor.ui.EditorSharedImages;
+import phasereditor.project.ui.wizards.NewJSClassFileWizard;
 
 /**
  * @author arian
  *
  */
-public class NewProjectWizardLauncher extends NewWizardLancher {
+public class NewJavaScriptClassWizardLauncher extends AbstractNewJSFileWizardLauncher {
 
-	public NewProjectWizardLauncher() {
-		super("Phaser Project", "Create a new Phaser Project", EditorSharedImages.getImage(IMG_NEW_PHASER_PROJECT));
+	public NewJavaScriptClassWizardLauncher() {
+		super("JavaScript Class File", "Create a new JavaScript file.");
 	}
 
 	@Override
 	protected INewWizard getWizard() {
-		return new NewPhaserProjectWizard();
+		return new NewJSClassFileWizard();
 	}
+
+	
+
 }

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_NEW_FRAME_ANIMATION;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -28,6 +30,7 @@ import org.eclipse.ui.INewWizard;
 
 import phasereditor.animation.ui.editor.wizards.NewAnimationsFileWizard;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -36,7 +39,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 public class NewAnimationWizardLauncher extends NewWizardLancher {
 
 	public NewAnimationWizardLauncher() {
-		super("Create a new Animations file.");
+		super("Animations File", "Create a new Animations file.", EditorSharedImages.getImage(IMG_NEW_FRAME_ANIMATION));
 	}
 
 	@Override

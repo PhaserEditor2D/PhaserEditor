@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -33,24 +34,33 @@ import org.eclipse.ui.PlatformUI;
 /**
  * @author arian
  *
- */	
+ */
 public abstract class NewWizardLancher {
-	private String _label;
+	private String _description;
+	private String _name;
+	private Image _image;
 
 	protected abstract INewWizard getWizard();
 
-	public NewWizardLancher(String label) {
-		_label = label;
+	public NewWizardLancher(String name, String description, Image image) {
+		_name = name;
+		_description = description;
+		_image = image;
 	}
 
-	public void setLabel(String label) {
-		_label = label;
-	}
-	
-	public String getLabel() {
-		return _label;
+	public Image getImage() {
+		return _image;
 	}
 
+	public String getName() {
+		return _name;
+	}
+
+	public String getDescription() {
+		return _description;
+	}
+
+	@SuppressWarnings("static-method")
 	public int compare_getNewerFile(IResource a, IResource b) {
 		return -Long.compare(a.getLocalTimeStamp(), b.getLocalTimeStamp());
 	}
@@ -66,7 +76,7 @@ public abstract class NewWizardLancher {
 
 	@Override
 	public String toString() {
-		return _label;
+		return _description;
 	}
 
 	public void openWizard(IProject project) {

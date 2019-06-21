@@ -167,7 +167,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		private NewWizardLancher _launcher;
 
 		public NewWizardLauncherTreeItemAction(String icon, NewWizardLancher launcher) {
-			super(EditorSharedImages.getImage(icon), launcher.getLabel());
+			super(EditorSharedImages.getImage(icon), launcher.getDescription());
 			_launcher = launcher;
 		}
 

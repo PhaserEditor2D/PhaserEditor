@@ -21,9 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_NEW_PHASER_PROJECT;
+
 import org.eclipse.ui.INewWizard;
 
 import phasereditor.project.ui.wizards.NewPhaserExampleProjectWizard;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -32,7 +35,7 @@ import phasereditor.project.ui.wizards.NewPhaserExampleProjectWizard;
 public class NewExampleProjectWizardLauncher extends NewWizardLancher {
 	
 	public NewExampleProjectWizardLauncher() {
-		super("Phaser Example Project...");
+		super("Phaser Example Project", "Create a new Phaser Example Project", EditorSharedImages.getImage(IMG_NEW_PHASER_PROJECT));
 	}
 
 	@Override
