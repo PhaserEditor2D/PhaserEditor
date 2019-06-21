@@ -19,27 +19,25 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetexplorer.ui.views.newactions;
+package phasereditor.ide.ui.wizards;
 
 import org.eclipse.ui.INewWizard;
 
-import phasereditor.project.ui.wizards.NewJSClassFileWizard;
+import phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard;
 
 /**
  * @author arian
  *
  */
-public class NewJavaScriptClassWizardLauncher extends AbstractNewJSFileWizardLauncher {
+public class NewFactoryJSClassWizardLauncher extends AbstractNewJSFileWizardLauncher {
 
-	public NewJavaScriptClassWizardLauncher() {
-		super("JavaScript Class File", "Create a new JavaScript file.");
+	public NewFactoryJSClassWizardLauncher() {
+		super("Factory Class File", "Creates a new Game Object factory file.");
 	}
 
 	@Override
 	protected INewWizard getWizard() {
-		return new NewJSClassFileWizard();
+		return new NewFactoryJSFileWizard();
 	}
-
-	
 
 }

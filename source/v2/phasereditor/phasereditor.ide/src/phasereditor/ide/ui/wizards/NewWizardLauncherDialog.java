@@ -19,11 +19,12 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetexplorer.ui.views.newactions;
+package phasereditor.ide.ui.wizards;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -31,6 +32,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.NewWizardAction;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
@@ -43,6 +46,10 @@ import phasereditor.ui.TreeArrayContentProvider;
  */
 public class NewWizardLauncherDialog extends Dialog {
 
+	/**
+	 * 
+	 */
+	private static final int OTHER_ID = IDialogConstants.CLIENT_ID + 1;
 	private FilteredTree _filteredTree;
 	private TreeViewer _viewer;
 
@@ -117,6 +124,23 @@ public class NewWizardLauncherDialog extends Dialog {
 
 	private static void runLauncher(NewWizardLancher launcher) {
 		launcher.openWizard(ProjectCore.getActiveProject());
+	}
+
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		super.createButtonsForButtonBar(parent);
+		createButton(parent, OTHER_ID, "Other", false);
+	}
+
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == OTHER_ID) {
+			swtRun(() -> {
+				new NewWizardAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow()).run();
+			});
+			close();
+		}
+		super.buttonPressed(buttonId);
 	}
 
 }

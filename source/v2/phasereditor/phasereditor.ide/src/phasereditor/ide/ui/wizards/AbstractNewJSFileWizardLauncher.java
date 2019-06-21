@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,47 +19,52 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetexplorer.ui.views.newactions;
+package phasereditor.ide.ui.wizards;
 
-import static phasereditor.ui.IEditorSharedImages.IMG_ATLAS_ADD;
+import static phasereditor.ui.IEditorSharedImages.IMG_NEW_GENERIC_EDITOR;
 
+import java.util.ArrayList;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.INewWizard;
 
-import phasereditor.atlas.core.AtlasCore;
-import phasereditor.atlas.ui.editor.wizards.NewAtlasMakerWizard;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class NewAtlasWizardLauncher extends NewWizardLancher {
+public abstract class AbstractNewJSFileWizardLauncher extends NewWizardLancher{
 
-	public NewAtlasWizardLauncher() {
-		super("Texture Packer File", "Create a new Textures Packer file.", EditorSharedImages.getImage(IMG_ATLAS_ADD));
+	public AbstractNewJSFileWizardLauncher(String name, String description) {
+		super(name, description, EditorSharedImages.getImage(IMG_NEW_GENERIC_EDITOR));
 	}
-
-	@Override
-	protected INewWizard getWizard() {
-		return new NewAtlasMakerWizard();
-	}
-
+	
 	@Override
 	protected IStructuredSelection getSelection(IProject project) {
-
-		var models = AtlasCore.getAtlasFileCache().getProjectData(project);
-
-		if (!models.isEmpty()) {
-
-			var file = models.stream().map(a -> a.getFile()).sorted(this::compare_getNewerFile).findFirst().get();
-
-			return new StructuredSelection(file.getParent());
+		var folder = ProjectCore.getWebContentFolder(project);
+		var files = new ArrayList<IFile>();
+		try {
+			folder.accept(r -> {
+				if (r instanceof IFile && r.getFullPath().getFileExtension().equals("js")) {
+					files.add((IFile) r);
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 
-		return super.getSelection(project);
+		if (!files.isEmpty()) {
+			files.sort(this::compare_getNewerFile);
+			folder = files.get(0).getParent();
+		}
+
+		return new StructuredSelection(folder);
 	}
 
 }

@@ -24,7 +24,6 @@ package phasereditor.assetexplorer.ui.views;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.scene.core.SceneFile;
 import phasereditor.ui.EditorSharedImages;
@@ -51,10 +50,6 @@ class AssetExplorerLabelProvider extends LabelProvider {
 			return getCanvasImage();
 		}
 		
-		if (element instanceof NewWizardLancher) {
-			return EditorSharedImages.getImage(IEditorSharedImages.IMG_ADD);
-		}
-
 		return AssetLabelProvider.GLOBAL_16.getImage(element);
 	}
 

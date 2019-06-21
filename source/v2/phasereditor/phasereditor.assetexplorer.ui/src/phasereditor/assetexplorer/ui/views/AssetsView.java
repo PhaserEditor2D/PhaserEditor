@@ -60,7 +60,6 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
 
-import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -132,8 +131,6 @@ public class AssetsView extends ViewPart implements Consumer<IProject> {
 	private void handleDoubleClick(Object elem) {
 		IFile file = null;
 
-		var provider = _contentProvider;
-
 		if (elem instanceof IFile) {
 			file = (IFile) elem;
 		} else if (elem instanceof AtlasData) {
@@ -142,8 +139,6 @@ public class AssetsView extends ViewPart implements Consumer<IProject> {
 			file = ((AnimationsModel) elem).getFile();
 		} else if (elem instanceof SceneFile) {
 			file = ((SceneFile) elem).getFile();
-		} else if (elem instanceof NewWizardLancher) {
-			((NewWizardLancher) elem).openWizard(provider.getProjectInContent());
 		}
 
 		if (file != null) {

@@ -19,43 +19,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetexplorer.ui.views.newactions;
+package phasereditor.ide.ui.wizards;
 
-import static phasereditor.ui.IEditorSharedImages.IMG_NEW_CANVAS;
+import static phasereditor.ui.IEditorSharedImages.IMG_BOX_ADD;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.INewWizard;
 
-import phasereditor.scene.core.SceneCore;
-import phasereditor.scene.ui.editor.wizards.NewSceneFileWizard;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.ui.editor.wizards.NewAssetPackWizard;
 import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class NewSceneWizardLauncher extends NewWizardLancher {
+public class NewAssetPackWizardLauncher extends NewWizardLancher {
 
-	public NewSceneWizardLauncher() {
-		super("Scene File", "Create a new Scene file.", EditorSharedImages.getImage(IMG_NEW_CANVAS));
+	public NewAssetPackWizardLauncher() {
+		super("Asset Pack File", "Create a new Asset Pack file.", EditorSharedImages.getImage(IMG_BOX_ADD));
 	}
 
 	@Override
 	protected INewWizard getWizard() {
-		return new NewSceneFileWizard();
+		return new NewAssetPackWizard();
 	}
 
 	@Override
 	protected IStructuredSelection getSelection(IProject project) {
 
-		var sceneFiles = SceneCore.getSceneFileDataCache().getProjectData(project);
-
-		if (!sceneFiles.isEmpty()) {
-
-			var file = sceneFiles.stream().map(a -> a.getFile()).sorted(this::compare_getNewerFile).findFirst().get();
-
+		var packs = AssetPackCore.getAssetPackModels(project);
+		if (!packs.isEmpty()) {
+			var file = packs.stream().map(p -> p.getFile()).sorted(this::compare_getNewerFile).findFirst().get();
 			return new StructuredSelection(file.getParent());
 		}
 

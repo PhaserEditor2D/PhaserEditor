@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2019 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,25 +19,47 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetexplorer.ui.views.newactions;
+package phasereditor.ide.ui.wizards;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ATLAS_ADD;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.INewWizard;
 
-import phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard;
+import phasereditor.atlas.core.AtlasCore;
+import phasereditor.atlas.ui.editor.wizards.NewAtlasMakerWizard;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class NewFactoryJSClassWizardLauncher extends AbstractNewJSFileWizardLauncher {
+public class NewAtlasWizardLauncher extends NewWizardLancher {
 
-	public NewFactoryJSClassWizardLauncher() {
-		super("Factory Class File", "Creates a new Game Object factory file.");
+	public NewAtlasWizardLauncher() {
+		super("Texture Packer File", "Create a new Textures Packer file.", EditorSharedImages.getImage(IMG_ATLAS_ADD));
 	}
 
 	@Override
 	protected INewWizard getWizard() {
-		return new NewFactoryJSFileWizard();
+		return new NewAtlasMakerWizard();
+	}
+
+	@Override
+	protected IStructuredSelection getSelection(IProject project) {
+
+		var models = AtlasCore.getAtlasFileCache().getProjectData(project);
+
+		if (!models.isEmpty()) {
+
+			var file = models.stream().map(a -> a.getFile()).sorted(this::compare_getNewerFile).findFirst().get();
+
+			return new StructuredSelection(file.getParent());
+		}
+
+		return super.getSelection(project);
 	}
 
 }

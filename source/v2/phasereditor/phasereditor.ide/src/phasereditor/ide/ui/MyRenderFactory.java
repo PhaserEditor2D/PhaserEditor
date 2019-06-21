@@ -72,8 +72,8 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.quickaccess.QuickAccessDialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import phasereditor.assetexplorer.ui.views.newactions.NewWizardLauncherDialog;
 import phasereditor.ide.IDEPlugin;
+import phasereditor.ide.ui.wizards.NewWizardLauncherDialog;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.webrun.ui.WebRunUI;

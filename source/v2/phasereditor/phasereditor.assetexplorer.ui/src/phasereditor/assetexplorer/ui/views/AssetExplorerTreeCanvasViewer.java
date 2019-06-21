@@ -30,11 +30,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
-import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewSceneWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.SceneCore;
@@ -119,20 +114,6 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		var actions = new ArrayList<TreeCanvasItemAction>();
 		item.setActions(actions);
 
-		if (elem == AssetsView.SCENES_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_CANVAS, new NewSceneWizardLauncher()));
-			item.setHeader(true);
-		} else if (elem == AssetsView.ANIMATIONS_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_FRAME_ANIMATION, new NewAnimationWizardLauncher()));
-			item.setHeader(true);
-		} else if (elem == AssetsView.ATLAS_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_ATLAS, new NewAtlasWizardLauncher()));
-			item.setHeader(true);
-		} else if (elem == AssetsView.PACK_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(IMG_NEW_BOX, new NewAssetPackWizardLauncher()));
-			item.setHeader(true);
-		} 
-
 		if (elem instanceof SceneFile) {
 			var sceneFile = (SceneFile) elem;
 			actions.add(new TreeCanvasItemAction(EditorSharedImages.getImage(IMG_GENERIC_EDITOR), "Open source file.") {
@@ -160,22 +141,6 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 		}
 
 		item.setParentByNature(item.isHeader());
-
-	}
-
-	class NewWizardLauncherTreeItemAction extends TreeCanvasItemAction {
-		private NewWizardLancher _launcher;
-
-		public NewWizardLauncherTreeItemAction(String icon, NewWizardLancher launcher) {
-			super(EditorSharedImages.getImage(icon), launcher.getDescription());
-			_launcher = launcher;
-		}
-
-		@Override
-		public void run(MouseEvent event) {
-			AssetExplorerContentProvider provider = (AssetExplorerContentProvider) getContentProvider();
-			_launcher.openWizard(provider.getProjectInContent());
-		}
 
 	}
 
