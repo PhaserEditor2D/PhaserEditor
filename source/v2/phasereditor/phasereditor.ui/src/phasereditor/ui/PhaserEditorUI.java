@@ -336,7 +336,7 @@ public class PhaserEditorUI {
 			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS, "-r");
 			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_PROJECT_ARGS, "${project}");
 			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_FILE_ARGS, "${file}");
-			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS, "${file}:${line}");
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS, "-g ${file}:${line}");
 		}
 
 		getPreferenceStore().addPropertyChangeListener(event -> {
@@ -397,7 +397,7 @@ public class PhaserEditorUI {
 		var common = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS);
 		var project = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROJECT_ARGS);
 		project = project.replace("${project}", res.getProject().getLocation().toOSString());
-		
+
 		var pb = new ProcessBuilder(prog, common, project);
 		try {
 			pb.start();
@@ -422,12 +422,27 @@ public class PhaserEditorUI {
 	}
 
 	public static void externalEditor_openFileLine(IResource res, int line) {
-		var prog = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROGRAM);
-		var common = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS);
-		var fileline = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS);
-		fileline = fileline.replace("${file}", res.getLocation().toOSString());
-		fileline = fileline.replace("${line}", Integer.toString(line));
-		var pb = new ProcessBuilder(prog, common, fileline);
+		var list = new ArrayList<String>();
+
+		{
+			var progArgs = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROGRAM);
+			list.add(progArgs);
+		}
+		{
+			var commonArgs = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS);
+			list.addAll(Arrays.asList(commonArgs.split(" ")));
+		}
+		{
+			var filepath = res.getLocation().toOSString();
+			var filelineArgs = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS);
+			for (var str : filelineArgs.split(" ")) {
+				str = str.replace("${file}", filepath);
+				str = str.replace("${line}", Integer.toString(line));
+				list.add(str);
+			}
+		}
+
+		var pb = new ProcessBuilder(list);
 		try {
 			pb.start();
 		} catch (IOException e) {

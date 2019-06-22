@@ -2,6 +2,8 @@ package phasereditor.scene.ui.editor;
 
 import static java.util.stream.Collectors.toList;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -93,6 +95,7 @@ import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.IEditorBlock;
 import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.editors.EditorFileStampHelper;
 import phasereditor.webrun.core.BatchMessage;
@@ -699,27 +702,53 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	public void openSourceFile(int offset) {
 		var file = SceneCore.getSceneSourceCodeFile(_model, getEditorInput().getFile());
 		if (file.exists()) {
-			try {
-				var editor = (TextEditor) IDE.openEditor(getEditorSite().getWorkbenchWindow().getActivePage(), file);
 
-				if (offset != -1) {
-
-					StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
-
+			if (PhaserEditorUI.externalEditor_enabled()) {
+				if (offset < 0) {
+					PhaserEditorUI.externalEditor_openFile(file);
+				} else {
 					try {
-						textWidget.setCaretOffset(offset);
-						var index = textWidget.getLineAtOffset(offset);
-						textWidget.setTopIndex(index);
-					} catch (IllegalArgumentException e) {
-						// protect from index out of bounds
-						e.printStackTrace();
+						var lines = Files.readAllLines(file.getLocation().toFile().toPath());
+						int offset2 = offset;
+						int linenum = 0;
+						for (var line : lines) {
+							if (offset2 <= 0) {
+								break;
+							}
+							offset2 -= line.length();
+							linenum++;
+						}
+						PhaserEditorUI.externalEditor_openFileLine(file, linenum);
+					} catch (IOException e) {
+						SceneUIEditor.logError(e);
+						throw new RuntimeException();
+					}
+				}
+			} else {
+
+				try {
+					var editor = (TextEditor) IDE.openEditor(getEditorSite().getWorkbenchWindow().getActivePage(),
+							file);
+
+					if (offset != -1) {
+
+						StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
+
+						try {
+							textWidget.setCaretOffset(offset);
+							var index = textWidget.getLineAtOffset(offset);
+							textWidget.setTopIndex(index);
+						} catch (IllegalArgumentException e) {
+							// protect from index out of bounds
+							e.printStackTrace();
+						}
+
 					}
 
+				} catch (PartInitException e1) {
+					e1.printStackTrace();
+					throw new RuntimeException(e1);
 				}
-
-			} catch (PartInitException e1) {
-				e1.printStackTrace();
-				throw new RuntimeException(e1);
 			}
 		}
 	}
