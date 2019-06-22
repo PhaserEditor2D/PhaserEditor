@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import static phasereditor.ui.PhaserEditorUI.logError;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
@@ -88,6 +90,7 @@ import phasereditor.project.ui.internal.actions.PasteAction;
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasDropAdapter;
@@ -510,6 +513,38 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 		var sel = (IStructuredSelection) _viewer.getSelection();
 		var obj = sel.getFirstElement();
 		if (obj != null) {
+			if (PhaserEditorUI.externalEditor_enabled()) {
+
+				var useExternal = true;
+
+				if (obj instanceof IFile) {
+					var file = (IFile) obj;
+					IContentDescription desc;
+					try {
+						desc = file.getContentDescription();
+						var contentType = desc == null ? null : desc.getContentType();
+						if (contentType != null) {
+							if (contentType.getId().startsWith("phasereditor")) {
+								useExternal = false;
+							}
+						}
+					} catch (CoreException e) {
+						logError(e);
+					}
+
+				}
+
+				if (useExternal) {
+					if (obj instanceof IProject) {
+						PhaserEditorUI.externalEditor_openProject((IResource) obj);
+					} else {
+						PhaserEditorUI.externalEditor_openFile((IResource) obj);
+					}
+					return;
+				}
+			}
+			
+			
 			if (obj instanceof IFile) {
 				try {
 					IDE.openEditor(getViewSite().getPage(), (IFile) obj);
@@ -517,6 +552,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 					ProjectCore.logError(e);
 				}
 			}
+
 		}
 	}
 

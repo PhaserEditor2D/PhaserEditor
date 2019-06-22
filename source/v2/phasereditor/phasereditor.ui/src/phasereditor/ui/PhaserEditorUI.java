@@ -57,6 +57,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -131,6 +132,13 @@ import phasereditor.ui.ZoomCanvas.ZoomCalculator;
 import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
+
+	public static final String PREF_PROP_ALIEN_EDITOR_ENABLED = "phasereditor.ui.alieneditor.enabled";
+	public static final String PREF_PROP_ALIEN_EDITOR_PROGRAM = "phasereditor.ui.alieneditor.program";
+	public static final String PREF_PROP_ALIEN_EDITOR_COMMON_ARGS = "phasereditor.ui.alieneditor.commonArgs";
+	public static final String PREF_PROP_ALIEN_EDITOR_PROJECT_ARGS = "phasereditor.ui.alieneditor.projectArgs";
+	public static final String PREF_PROP_ALIEN_EDITOR_FILE_ARGS = "phasereditor.ui.alieneditor.fileArgs";
+	public static final String PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS = "phasereditor.ui.alieneditor.fileLineArgs";
 
 	public static final String PREF_PROP_BROWSER_TYPE = "phasereditor.ui.browser";
 	public static final String PREF_VALUE_DEFAULT_BROWSER = "phasereditor.ui.browser.default";
@@ -321,6 +329,16 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = SwtRM.getColor(rgb);
 		}
 
+		{
+			// external editor
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_ENABLED, false);
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_PROGRAM, "code");
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS, "-r");
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_PROJECT_ARGS, "${project}");
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_FILE_ARGS, "${file}");
+			getPreferenceStore().setDefault(PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS, "${file}:${line}");
+		}
+
 		getPreferenceStore().addPropertyChangeListener(event -> {
 
 			String prop = event.getProperty();
@@ -368,6 +386,54 @@ public class PhaserEditorUI {
 				break;
 			}
 		});
+	}
+
+	public static boolean externalEditor_enabled() {
+		return getPreferenceStore().getBoolean(PREF_PROP_ALIEN_EDITOR_ENABLED);
+	}
+
+	public static void externalEditor_openProject(IResource res) {
+		var prog = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROGRAM);
+		var common = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS);
+		var project = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROJECT_ARGS);
+		project = project.replace("${project}", res.getProject().getLocation().toOSString());
+		
+		var pb = new ProcessBuilder(prog, common, project);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void externalEditor_openFile(IResource res) {
+		var prog = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROGRAM);
+		var common = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS);
+		var file = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_FILE_ARGS);
+		file = file.replace("${file}", res.getLocation().toOSString());
+		var pb = new ProcessBuilder(prog, common, file);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void externalEditor_openFileLine(IResource res, int line) {
+		var prog = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_PROGRAM);
+		var common = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_COMMON_ARGS);
+		var fileline = getPreferenceStore().getString(PREF_PROP_ALIEN_EDITOR_FILE_LINE_ARGS);
+		fileline = fileline.replace("${file}", res.getLocation().toOSString());
+		fileline = fileline.replace("${line}", Integer.toString(line));
+		var pb = new ProcessBuilder(prog, common, fileline);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static boolean useChromuiumBrowser() {

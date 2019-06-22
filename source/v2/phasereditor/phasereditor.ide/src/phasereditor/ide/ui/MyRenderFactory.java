@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.ui;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ALIEN_EDITOR;
 import static phasereditor.ui.IEditorSharedImages.IMG_ARROW_REFRESH;
 import static phasereditor.ui.IEditorSharedImages.IMG_GAME_CONTROLLER;
 import static phasereditor.ui.IEditorSharedImages.IMG_SEARCH;
@@ -74,8 +75,10 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ide.IDEPlugin;
 import phasereditor.ide.ui.wizards.NewWizardLauncherDialog;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.webrun.ui.WebRunUI;
 
 /**
@@ -167,6 +170,7 @@ class HugeToolbar extends Composite implements IPartListener {
 		new GoHomeWrapper(leftArea);
 		new NewMenuWrapper(leftArea);
 		new RunProjectWrapper(leftArea);
+		new AlienEditorWrapper(leftArea);
 		new QuickAccessWrapper(rightArea);
 
 		{
@@ -227,6 +231,37 @@ class HugeToolbar extends Composite implements IPartListener {
 	@Override
 	public void partOpened(IWorkbenchPart part) {
 		//
+	}
+
+}
+
+class AlienEditorWrapper {
+	private Button _btn;
+
+	public AlienEditorWrapper(Composite parent) {
+		_btn = new Button(parent, SWT.PUSH);
+		_btn.setText("Editor");
+		_btn.setToolTipText("Open this project in the configured External Editor.");
+		_btn.setImage(EditorSharedImages.getImage(IMG_ALIEN_EDITOR));
+		_btn.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> PhaserEditorUI.externalEditor_openProject(ProjectCore.getActiveProject())));
+		PhaserEditorUI.getPreferenceStore().addPropertyChangeListener(e -> {
+			if (PhaserEditorUI.PREF_PROP_ALIEN_EDITOR_ENABLED.equals(e.getProperty())) {
+				updateButton();
+			}
+		});
+
+		updateButton();
+	}
+
+	private void updateButton() {
+		var visible = PhaserEditorUI.externalEditor_enabled();
+		_btn.setLayoutData(new RowData(visible ? SWT.DEFAULT : 0, visible ? SWT.DEFAULT : 0));
+		_btn.getParent().requestLayout();
+	}
+
+	public Button getButton() {
+		return _btn;
 	}
 
 }

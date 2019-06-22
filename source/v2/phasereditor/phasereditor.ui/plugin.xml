@@ -143,9 +143,12 @@
              id="phasereditor.ui.webview"
              name="WebView">
        </page>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
+       <page
+             category="phasereditor.ui.prefs.phasereditor"
+             class="phasereditor.ui.prefs.ExternalEditorPreferencePage"
+             id="phasereditor.ui.prefs.ExternalEditorPreferencePage"
+             name="External Code Editor">
+       </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
