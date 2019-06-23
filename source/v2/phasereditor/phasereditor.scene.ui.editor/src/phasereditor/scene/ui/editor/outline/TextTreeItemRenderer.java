@@ -21,16 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.outline;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.scene.core.TextComponent;
 import phasereditor.scene.core.TextModel;
 import phasereditor.scene.core.TextualComponent;
-import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.ui.BaseImageTreeCanvasItemRenderer;
 import phasereditor.ui.Colors;
 import phasereditor.ui.FrameData;
@@ -59,29 +56,30 @@ public class TextTreeItemRenderer extends BaseImageTreeCanvasItemRenderer {
 
 		var size = gc.textExtent(text);
 
-		try {
-			var img = PhaserEditorUI.image_Swing_To_SWT(new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB));
-			var g2 = new GC(img);
-			
-			if (fg == null) {
-				fg = Colors.color(Colors.WHITE);
-			}
-			g2.setForeground(fg);
-			
-			if (bg != null) {
-				g2.setBackground(bg);
-				g2.fillRectangle(img.getBounds());
-			}
-			
-			g2.drawText(text, 0, 0, true);
-			g2.dispose();
+		var img = new Image(gc.getDevice(), size.x, size.y);
+		var g2 = new GC(img);
 
-			PhaserEditorUI.paintScaledImageInArea(gc, img, FrameData.fromImage(img), area);
-
-			img.dispose();
-		} catch (IOException e) {
-			SceneUIEditor.logError(e);
+		if (fg == null) {
+			fg = Colors.color(Colors.WHITE);
 		}
+
+		g2.setForeground(fg);
+
+		if (bg == null) {
+			var sel = _item.getCanvas().getUtils().isSelectedIndex(_item.getIndex());
+			var bg2 = sel ? PhaserEditorUI.getListSelectionColor() : _item.getCanvas().getParent().getBackground();
+			g2.setBackground(bg2);
+		} else {
+			g2.setBackground(bg);
+		}
+		g2.fillRectangle(img.getBounds());
+
+		g2.drawText(text, 0, 0, true);
+		g2.dispose();
+
+		PhaserEditorUI.paintScaledImageInArea(gc, img, FrameData.fromImage(img), area);
+
+		img.dispose();
 
 	}
 
