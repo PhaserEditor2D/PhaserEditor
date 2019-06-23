@@ -361,7 +361,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 		}
 
 		if (_model.getFrames().isEmpty()) {
-			String msg = "Please, drop some frames here, from the Assets window.";
+			String msg = "Drag some frame or image keys \nfrom the Blocks view and drop them here.";
 			var b = e.gc.textExtent(msg);
 			int x = Math.max(0, e.width / 2 - b.x / 2);
 			int y = e.height / 2 - b.y / 2;

@@ -61,6 +61,8 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -195,7 +197,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		createMultiAnimationsComp();
 
-		_stackLayout.topControl = _singleAnimComp;
+		_stackLayout.topControl = _multiAnimationsComp;
 		_stackComp.requestLayout();
 
 		afterCreateWidgets();
@@ -205,7 +207,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_multiAnimationsComp = new MultiAnimsComp(_stackComp, 0);
 	}
 
-	class MultiAnimsComp extends Composite {
+	class MultiAnimsComp extends Composite implements PaintListener {
 
 		public MultiAnimsComp(Composite parent, int style) {
 			super(parent, style);
@@ -213,6 +215,16 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			var layout = new GridLayout(3, true);
 			layout.marginWidth = layout.marginHeight = 20;
 			setLayout(layout);
+			addPaintListener(this);
+		}
+
+		@Override
+		public void paintControl(PaintEvent e) {
+			if (getChildren().length == 0) {
+				var str = "Drag some atlas, frame or image keys from the Blocks view\nand drop theme here to create new animations.";
+				var size = e.gc.textExtent(str);
+				e.gc.drawText(str, e.width / 2 - size.x / 2, e.height / 2 - size.y / 2, true);
+			}
 		}
 
 		class MyAnimCanvas extends AnimationCanvas implements MouseTrackListener, MouseListener {
@@ -404,7 +416,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		if (PhaserProjectBuilder.isStartupFinished()) {
 
 			if (_initialAnimation != null) {
-				loadAnimation(_initialAnimation);
+				setExternalSelection(new StructuredSelection(_initialAnimation));
 				_initialAnimation = null;
 			}
 		}
@@ -909,16 +921,16 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		Composite top;
 
-		if (elems.length > 1) {
-			top = _multiAnimationsComp;
-			loadAnimation(null);
-			_multiAnimationsComp.updateContent(elems);
-		} else {
+		if (elems.length == 1) {
 			top = _singleAnimComp;
 			var elem = sel.getFirstElement();
 			var anim = (AnimationModel) elem;
 			loadAnimation(anim);
 			_multiAnimationsComp.disposeContent();
+		} else {
+			top = _multiAnimationsComp;
+			loadAnimation(null);
+			_multiAnimationsComp.updateContent(elems);
 		}
 
 		_stackLayout.topControl = top;
