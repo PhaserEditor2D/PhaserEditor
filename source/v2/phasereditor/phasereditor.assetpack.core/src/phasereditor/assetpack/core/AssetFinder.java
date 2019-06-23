@@ -112,6 +112,8 @@ public class AssetFinder {
 
 			if (assetKey instanceof IAssetFrameModel) {
 				return (IAssetFrameModel) assetKey;
+			} else if (assetKey instanceof ImageAssetModel) {
+				return ((ImageAssetModel) assetKey).getFrame();
 			}
 
 		}

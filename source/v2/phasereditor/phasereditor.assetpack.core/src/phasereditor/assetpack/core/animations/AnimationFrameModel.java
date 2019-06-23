@@ -125,6 +125,6 @@ public class AnimationFrameModel {
 
 	public IAssetFrameModel getAssetFrame() {
 		var finder = getAnimation().getAnimations().getFinder();
-		return finder.findTexture(_textureKey, _frameName + "");
+		return finder.findTexture(_textureKey, _frameName == null? null : _frameName.toString());
 	}
 }
