@@ -122,7 +122,6 @@ public class ProjectCore {
 		}
 	}
 
-	
 	public static void setActiveProject(IProject activeProject) {
 		_activeProject = activeProject;
 
@@ -135,7 +134,7 @@ public class ProjectCore {
 		} catch (CoreException e) {
 			logError(e);
 		}
-		
+
 		for (var l : _activeProjectListeners) {
 			l.accept(activeProject);
 		}
@@ -530,8 +529,9 @@ public class ProjectCore {
 			String name = props.getOrDefault(PROJECT_LANG, SourceLang.JAVA_SCRIPT_6.name());
 			SourceLang lang = SourceLang.valueOf(name);
 			return lang;
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			logError(e);
+			return SourceLang.JAVA_SCRIPT_6;
 		}
 	}
 
@@ -592,7 +592,7 @@ public class ProjectCore {
 		return new Point(width, height);
 
 	}
-	
+
 	public static SourceLang getDefaultProjectLanguage() {
 		var str = getPreferenceStore().getString(PREF_PROP_PROJECT_WIZARD_LANGUAJE);
 		return SourceLang.valueOf(str);
