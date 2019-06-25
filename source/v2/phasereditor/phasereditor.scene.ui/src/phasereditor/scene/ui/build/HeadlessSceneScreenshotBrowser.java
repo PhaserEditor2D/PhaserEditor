@@ -37,7 +37,7 @@ public class HeadlessSceneScreenshotBrowser {
 
 		var shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		var browser = new Browser(shell, 0);
-		browser.setBounds(0, 0, 100, 100);
+		browser.setBounds(-100, -100, 100, 100);
 
 		// shell.setAlpha(0);
 
