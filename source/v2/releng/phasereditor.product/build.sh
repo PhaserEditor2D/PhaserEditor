@@ -24,7 +24,18 @@ else
 	exit;	
 fi
 echo
-echo 
+echo
+
+echo :: Testing phasereditor2d.com.executable.cocoa.macosx.x86_64_2.1.1 has the right version...
+echo
+if ls target-patch/repository/binary | grep $ver; then
+	echo +Info.plist ok!
+else 
+	echo +Wrong plugin version. Good bye!
+	exit;	
+fi
+echo
+echo
 
 
 echo :: Testing phasereditor2d.com.product has the right version...
