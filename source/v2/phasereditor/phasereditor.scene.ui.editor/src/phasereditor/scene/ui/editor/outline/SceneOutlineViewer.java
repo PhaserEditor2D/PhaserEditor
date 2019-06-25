@@ -22,6 +22,8 @@
 package phasereditor.scene.ui.editor.outline;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.AssetFinder;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -36,6 +38,8 @@ import phasereditor.scene.core.TextualComponent;
 import phasereditor.scene.core.TextureComponent;
 import phasereditor.scene.core.TileSpriteModel;
 import phasereditor.scene.ui.editor.SceneEditor;
+import phasereditor.ui.BaseImageTreeCanvasItemRenderer;
+import phasereditor.ui.ImageProxy;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
@@ -79,16 +83,43 @@ public class SceneOutlineViewer extends TreeCanvasViewer {
 		} else if (data instanceof TileSpriteModel) {
 			item.setRenderer(new TileSpriteTreeItemRenderer(item, getFinder()));
 		} else if (data instanceof TextureComponent) {
-			var frame = TextureComponent.utils_getTexture((ObjectModel) data, finder);
-			var renderer = AssetsTreeCanvasViewer.createImageRenderer(item, frame);
-			if (renderer != null) {
-				item.setRenderer(renderer);
-			}
+			item.setRenderer(new TextureComponentRenderer(item, getFinder()));
 		} else if (data instanceof ObjectModel) {
 			var model = (ObjectModel) data;
 			var type = model.getType();
 			item.setKeywords(type);
 		}
+	}
+
+	static class TextureComponentRenderer extends BaseImageTreeCanvasItemRenderer {
+
+		private AssetFinder _finder;
+
+		public TextureComponentRenderer(TreeCanvasItem item, AssetFinder finder) {
+			super(item);
+			_finder = finder;
+		}
+
+		@Override
+		protected void paintScaledInArea(GC gc, Rectangle area) {
+			var proxy = getImageProxy();
+			if (proxy != null) {
+				proxy.paintScaledInArea(gc, area);
+			}
+		}
+
+		private ImageProxy getImageProxy() {
+			var data = _item.getData();
+			var frame = TextureComponent.utils_getTexture((ObjectModel) data, _finder);
+			var proxy = AssetsTreeCanvasViewer.getAssetKeyImageProxy(frame);
+			return proxy;
+		}
+
+		@Override
+		public ImageProxy get_DND_Image() {
+			return getImageProxy();
+		}
+
 	}
 
 	private AssetFinder getFinder() {

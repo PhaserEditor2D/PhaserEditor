@@ -105,6 +105,12 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 
 	public static ImageProxyTreeCanvasItemRenderer createImageRenderer(TreeCanvasItem item, Object element) {
 
+		ImageProxy proxy = getAssetKeyImageProxy(element);
+
+		return new ImageProxyTreeCanvasItemRenderer(item, proxy);
+	}
+
+	public static ImageProxy getAssetKeyImageProxy(Object element) {
 		ImageProxy proxy = null;
 
 		if (element instanceof IAssetFrameModel) {
@@ -133,8 +139,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 		if (proxy == null) {
 			return null;
 		}
-
-		return new ImageProxyTreeCanvasItemRenderer(item, proxy);
+		return proxy;
 	}
 
 	@SuppressWarnings("static-method")
