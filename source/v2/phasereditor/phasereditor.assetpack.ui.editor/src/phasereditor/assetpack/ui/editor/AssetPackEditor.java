@@ -293,7 +293,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		@Override
 		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText("Asset Type");
+			newShell.setText("File Type");
 		}
 
 		@Override
@@ -1102,8 +1102,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		@Override
 		public void createContent(Composite parent) {
 			var btn = new Button(parent, SWT.PUSH);
-			btn.setText("Add Asset Key");
-			btn.setToolTipText("Add a new asset key to the pack editor.");
+			btn.setText("Add File Key");
+			btn.setToolTipText("Add a new file key to the pack editor.");
 			btn.setImage(EditorSharedImages.getImage(IMG_ADD));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
 		}
