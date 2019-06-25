@@ -139,7 +139,6 @@ public class TintSection extends ScenePropertySection {
 
 			var row = new Composite(comp, 0);
 			row.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			row.setBackground(Colors.color(250, 0, 0));
 			var layout = new GridLayout(2, true);
 			layout.marginWidth = layout.marginHeight = 0;
 			row.setLayout(layout);
@@ -153,7 +152,6 @@ public class TintSection extends ScenePropertySection {
 
 			var row = new Composite(comp, 0);
 			row.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			row.setBackground(Colors.color(250, 0, 0));
 			var layout = new GridLayout(2, true);
 			layout.marginWidth = layout.marginHeight = 0;
 			row.setLayout(layout);
