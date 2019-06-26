@@ -102,7 +102,9 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 
 	public PackEditorCanvas(AssetPackEditor editor, Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
-
+		
+		setBackgroundMode(SWT.INHERIT_DEFAULT);
+		
 		addPaintListener(this);
 		addListener(SWT.MouseVerticalWheel, this::mouseScrolled);
 		addMouseMoveListener(this);
