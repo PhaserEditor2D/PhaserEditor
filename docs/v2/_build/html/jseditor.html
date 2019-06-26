@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67206336-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67206336-2');
+</script>
+
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Coding The Game: The JavaScript Editor &mdash; Phaser Editor Help</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Phaser Editor Help" href="index.html"/>
+        <link rel="next" title="Chains: Search on the Phaser Docs" href="chains.html"/>
+        <link rel="prev" title="Canvas, The Scene Editor" href="canvas.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Phaser Editor
+          
+
+          
+            <img src="_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.5.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="first-steps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assets-manager.html">Assets Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="canvas.html">Canvas, The Scene Editor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Coding The Game: The JavaScript Editor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#phaser-api-smart-code-completion">Phaser API smart code completion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-annotation-on-a-var-declaration">Type annotation on a var declaration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-annotation-on-a-method-declaration">Type annotation on a method declaration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-annotation-on-prototype-declaration">Type annotation on prototype declaration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phaser-api-hover-help">Phaser API hover help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-templates">Code templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asset-keys-proposals">Asset keys proposals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#file-names-proposals">File names proposals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#easing-names-proposals">Easing names proposals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#errors-warnings-and-quick-fix">Errors, warnings and quick fix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preview">Preview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chains.html">Chains: Search on the Phaser Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preview-window.html">The Preview Window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="texture-packer.html">Texture Packing Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optipng.html">Optimize The PNG Image Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio-sprites.html">Audio Sprites Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update and Upgrade</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Phaser Editor</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Coding The Game: The JavaScript Editor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="coding-the-game-the-javascript-editor">
+<h1>Coding The Game: The JavaScript Editor<a class="headerlink" href="#coding-the-game-the-javascript-editor" title="Permalink to this headline">¶</a></h1>
+<p>With Phaser, you write the game with JavaScript as the main language (there is also support for TypeScript). In Phaser Editor the JavaScript programming is a first citizen, the JavaScript editor is the more important component for us, and we do an extra effort to build the best experience for the Phaser developer.</p>
+<p>The JavaScript editor is part of the JSDT (Eclipse Web Tools) and we extended and modified it to adjust it to the Phaser API and style.</p>
+<p>When you create a Phaser Project the main JS file is opened in the editor. To open the JS editor manually you can navigate to the JS file in the Project Explorer and double-click on it.</p>
+<div class="section" id="phaser-api-smart-code-completion">
+<h2>Phaser API smart code completion<a class="headerlink" href="#phaser-api-smart-code-completion" title="Permalink to this headline">¶</a></h2>
+<p>The JS editor has a <em>“a complex inference engine”</em> to bind JS elements with static type information. We think it works very well with the Phaser API. We made a Phaser API library to make it easier for the inference engine to compute the static type of the JS expressions.</p>
+<p>If you follow certain coding structure you will enjoy a smart completion of the Phaser methods, properties and classes. JavaScript is a dynamic language and there are cases where compute the type of an expression is hard or impossible. However, in Phaser Editor you can annotate with static type information different statements like var declarations, method returns, method parameters and prototypes. See the next section.</p>
+<p>Member proposals:</p>
+<img alt="Auto-complete Phaser API." src="_images/ApiSmartCompletion.png" />
+<p>Arguments proposals:</p>
+<img alt="Method args completion." src="_images/APISmartCompletionsParams.png" />
+<p>Drawbacks:</p>
+<p>Note in the proposals you see types like <code class="docutils literal"><span class="pre">Phaser_Game</span></code> or <code class="docutils literal"><span class="pre">Phaser_Sprite</span></code>, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can auto-complete <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> but also <code class="docutils literal"><span class="pre">Phaser_Sprite</span></code>, however, the last one is not valid in Phaser. We are working on replacing the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.</p>
+</div>
+<div class="section" id="type-annotation-on-a-var-declaration">
+<h2>Type annotation on a var declaration<a class="headerlink" href="#type-annotation-on-a-var-declaration" title="Permalink to this headline">¶</a></h2>
+<p>Annotate var declarations is the general way to set the static type of a variable:</p>
+<img alt="Type of var declarations." src="_images/TypeDecl_Var.png" />
+<p>This is something that you would like to use in a callback function:</p>
+<img alt="Context type declaration." src="_images/TypeDecl_Context.png" />
+</div>
+<div class="section" id="type-annotation-on-a-method-declaration">
+<h2>Type annotation on a method declaration<a class="headerlink" href="#type-annotation-on-a-method-declaration" title="Permalink to this headline">¶</a></h2>
+<p>In a method you can declare the type of the return and the parameters:</p>
+<img alt="Method args and return type annotation." src="_images/TypeDecl_Method.png" />
+<img alt="The return type is set to the var." src="_images/VarTypeFromMethodReturn.png" />
+<p>Unfortunately, for now, the type annotations are not supported in anonymous functions.</p>
+</div>
+<div class="section" id="type-annotation-on-prototype-declaration">
+<h2>Type annotation on prototype declaration<a class="headerlink" href="#type-annotation-on-prototype-declaration" title="Permalink to this headline">¶</a></h2>
+<p>In Phaser you are not forced to use type inheritance, however, a recommended practice is to split your game into functional components like game states, custom sprites and groups. In Phaser Editor we encourage to use prototype inheritance between other reasons because it helps with auto-completion.</p>
+<p>In JavaScript you can define a prototype like this:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">NewClass</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">BaseClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">NewClass</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">BaseClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="nx">NewClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">NewClass</span><span class="p">;</span>
+
+<span class="nx">NewClass</span><span class="p">.</span><span class="nx">myNewMethod</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>In Phaser Editor if you annotate the prototype with the <code class="docutils literal"><span class="pre">BaseClass</span></code> then in the context of the prototype functions you will get the smart completions of the <code class="docutils literal"><span class="pre">BaseClass</span></code> too. Just take a look to the files generated by the <code class="docutils literal"><span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code>, that creates a custom group:</p>
+<img alt="Prototype type annotation." src="_images/TypeDecl_Prototype.png" />
+<p>Note that we annotate an intermediate <code class="docutils literal"><span class="pre">MyGroup_proto</span></code> var with the <code class="docutils literal"><span class="pre">Phaser.Group</span></code> type, then we assign this var to the new prototype declaration.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="cm">/** @type Phaser.Group */</span>
+<span class="kd">var</span> <span class="nx">MyGroup_proto</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="nx">MyGroup</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">proto</span><span class="p">;</span>
+<span class="nx">MyGroup</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">MyGroup</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This is not the more beautiful thing of the world, we prefer to use something like a <code class="docutils literal"><span class="pre">&#64;extends</span></code> JSDoc tag, but for now, it is not possible. We recommend to use the new file wizards, they generated a code that can be “understood” by the JavaScript editor.</p>
+</div>
+<div class="section" id="phaser-api-hover-help">
+<h2>Phaser API hover help<a class="headerlink" href="#phaser-api-hover-help" title="Permalink to this headline">¶</a></h2>
+<p>The hover help is about to get the documentation of a Phaser API element just with a mouse hover. It works pretty similar to the smart completions, the type inference engine should be able to compute the static type of the hover element, so you have to follow the same coding style (annotating the declarations with JSDoc tags) explained in the previous section.</p>
+<img alt="Hover the mouse on a method to open a doc popup." src="_images/HoverAPI.png" />
+</div>
+<div class="section" id="code-templates">
+<h2>Code templates<a class="headerlink" href="#code-templates" title="Permalink to this headline">¶</a></h2>
+<p>With the code templates, you can get snippets of code to cover specific Phaser tasks. These templates are the same are used in the official Phaser [online editor][10].</p>
+<img alt="Code templates." src="_images/CodeTemplates.png" />
+</div>
+<div class="section" id="asset-keys-proposals">
+<h2>Asset keys proposals<a class="headerlink" href="#asset-keys-proposals" title="Permalink to this headline">¶</a></h2>
+<p>When you define your assets in an asset pack file then the JS editor read the asset keys and show them in the proposals popup. These proposals are listed when the content assist popup is invoked in a string context:</p>
+<img alt="Assets key proposals." src="_images/AssetKeysCompletion.png" />
+<p>As you can see in the above screenshot, the asset keys are shown in the information control of the content assist popup. In the case of audio files, it plays the sound.</p>
+</div>
+<div class="section" id="file-names-proposals">
+<h2>File names proposals<a class="headerlink" href="#file-names-proposals" title="Permalink to this headline">¶</a></h2>
+<p>Also, file names are shown in the content assist popup and they are visualized in the information control. In the next image are listed all the file names that match the <code class="docutils literal"><span class="pre">png</span></code> string:</p>
+<img alt="File names completions." src="_images/FilesCompletion.png" />
+</div>
+<div class="section" id="easing-names-proposals">
+<h2>Easing names proposals<a class="headerlink" href="#easing-names-proposals" title="Permalink to this headline">¶</a></h2>
+<p>Tweens are part of any Phaser game. When you create a tween you should provide the easing to be used in the animation. A common way to identify the easing is giving the easing function:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="nx">y</span><span class="o">:</span> <span class="mi">240</span><span class="p">},</span> <span class="mi">2400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>But also you can write the easing name:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="nx">y</span><span class="o">:</span> <span class="mi">240</span><span class="p">},</span> <span class="mi">2400</span><span class="p">,</span> <span class="s2">&quot;Bounce.easeOut&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In Phaser Editor you get easing names completions:</p>
+<img alt="Easing names proposals and preview." src="_images/EasingLiteralAssist.png" />
+<p>Look the ball is animated with the selected easing.</p>
+</div>
+<div class="section" id="errors-warnings-and-quick-fix">
+<h2>Errors, warnings and quick fix<a class="headerlink" href="#errors-warnings-and-quick-fix" title="Permalink to this headline">¶</a></h2>
+<p>By default Phaser Editor checks for syntax and semantic problems (errors and warnings). These problems are shown in the Problems view. In the JS editor, the expression with problems is underlined with a yellow or red color in dependence of if it is a warning or an error.</p>
+<p>Many of these problems can be fixed automatically with the Quick Fix command. When you get a problem, put the cursor on the error and press <code class="docutils literal"><span class="pre">CTRL+1</span></code>, the Quick Fix dialog is shown with different options.</p>
+<p>Hover the mouse on the error marker:</p>
+<img alt="Error tip." src="_images/QuickFix_1.png" />
+<p>Then press <code class="docutils literal"><span class="pre">Ctrl+1</span></code> to fix it:</p>
+<img alt="Fix options." src="_images/QuickFix_2.png" />
+<p>You can change the validator settings to ignore a kind of problem or treat it as a warning or error. These settings can be changed in a specific project (right click on the project and select Properties) or for the whole workspace (in the main menu <code class="docutils literal"><span class="pre">Windows</span> <span class="pre">&gt;</span> <span class="pre">Preferences</span></code>).</p>
+<img alt="JavaScript validation preferences." src="_images/JSValidationSettings.png" />
+</div>
+<div class="section" id="preview">
+<h2>Preview<a class="headerlink" href="#preview" title="Permalink to this headline">¶</a></h2>
+<p>The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an <a class="reference external" href="assets-manager.html">asset entry in the asset pack</a>, then it shows a popup with a preview of the identified asset.</p>
+<p>To quick preview an object you can hover its name but also you can put the cursor in the middle of the name and type <code class="docutils literal"><span class="pre">Ctrl+Alt+V</span></code> that command opens the identified object in the <a class="reference external" href="preview-window.html">Preview window</a>.</p>
+<img alt="Hover the mouse to preview the assets." src="_images/JSEditorAssetPreview.png" />
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="chains.html" class="btn btn-neutral float-right" title="Chains: Search on the Phaser Docs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="canvas.html" class="btn btn-neutral" title="Canvas, The Scene Editor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2018, Arian Fornaris.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.5.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+</body>
+</html>
