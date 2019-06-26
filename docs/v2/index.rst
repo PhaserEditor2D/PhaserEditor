@@ -12,6 +12,7 @@ Documentation
    animations-editor
    scene-editor
    code-editors
+   assets-view
    phaser-labs
 
 Indices and tables

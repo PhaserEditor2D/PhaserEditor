@@ -3,42 +3,51 @@ IDE Overview
 
 
 Perspectives, views and editors
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 
 Workspace and projects
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 
-Preferences
-~~~~~~~~~~~
+Preferences and themes
+----------------------
 
 
+Main toolbar
+------------
 
-Themes
-------
 
+Properties view
+---------------
+
+
+Outline view
+------------
+
+
+Blocks view
+-----------
+
+
+Projects view
+-------------
+
+
+Terminal view
+-------------
+
+
+Common perspectives
+-------------------
 
 Start perspective
 ~~~~~~~~~~~~~~~~~
 
 
-Main toolbar
-~~~~~~~~~~~~
+Scene perspective
+~~~~~~~~~~~~~~~~~
 
 
-Properties view
+Git perspective
 ~~~~~~~~~~~~~~~
-
-
-Outline view
-~~~~~~~~~~~~
-
-
-Blocks view
-~~~~~~~~~~~
-
-
-Projects view
-~~~~~~~~~~~~~
-
