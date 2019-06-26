@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="TP 2.1.2">
+	<locations>
+		<location path="${eclipse_home}" type="Profile"/>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="file:/home/arian/Documents/PhaserEditor/Releases/v2.1.2/IDE-TP-repository/"/>
+			<unit id="com.make.chromium.cef.feature.feature.group" version="0.4.0.201904250337"/>
+			<unit id="org.eclipse.cdt.native.feature.group" version="9.8.0.201903190044"/>
+			<unit id="org.eclipse.epp.mpc.feature.group" version="1.7.7.v20190521-1752"/>
+			<unit id="org.eclipse.swt.chromium.feature.feature.group" version="0.9.1.201904260302"/>
+			<unit id="org.eclipse.tm.terminal.connector.local.feature.feature.group" version="4.5.100.201904091701"/>
+			<unit id="org.eclipse.tm.terminal.connector.ssh.feature.feature.group" version="4.5.100.201904091701"/>
+			<unit id="org.eclipse.tm.terminal.connector.telnet.feature.feature.group" version="4.5.100.201904091701"/>
+			<unit id="org.eclipse.tm.terminal.control.feature.feature.group" version="4.5.100.201904091701"/>
+			<unit id="org.eclipse.tm.terminal.feature.feature.group" version="4.5.100.201904091701"/>
+			<unit id="org.eclipse.tm.terminal.view.feature.feature.group" version="4.5.100.201904091701"/>
+			<unit id="org.eclipse.wildwebdeveloper.feature.feature.group" version="0.4.0.201906100807"/>
+		</location>
+	</locations>
+	<environment>
+		<arch>x86_64</arch>
+		<os>linux</os>
+		<ws>gtk</ws>
+		<nl>en_US</nl>
+	</environment>
+	<launcherArgs>
+		<vmArgs>-Dosgi.requiredJavaVersion=1.8 -Dosgi.instance.area.default=@user.home/eclipse-workspace -XX:+UseG1GC -XX:+UseStringDeduplication --add-modules=ALL-SYSTEM -Dosgi.requiredJavaVersion=1.8 -Dosgi.dataAreaRequiresExplicitInit=true -Xms256m -Xmx1024m --add-modules=ALL-SYSTEM</vmArgs>
+	</launcherArgs>
+</target>

@@ -5,7 +5,7 @@
 	<key>CFBundleExecutable</key>
 		<string>PhaserEditor2D</string>
 	<key>CFBundleGetInfoString</key>
-		<string>Phaser Editor 2D v2.1.1</string>
+		<string>Phaser Editor 2D v2.1.2</string>
 	<key>CFBundleIconFile</key>
 		<string>Eclipse.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 		<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-		<string>2.1.1</string>
+		<string>2.1.2</string>
 	<key>CFBundleSignature</key>
 		<string>????</string>
 	<key>CFBundleVersion</key>
-		<string>2.1.1</string>
+		<string>2.1.2</string>
 	<key>NSHighResolutionCapable</key>
 		<true/>
 	<key>CFBundleDevelopmentRegion</key>

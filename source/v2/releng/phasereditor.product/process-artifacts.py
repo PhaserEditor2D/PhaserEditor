@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-VER = "2.1.1.20190623"
+VER = "2.1.2.20190626"
 
 import os
 

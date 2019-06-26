@@ -1,10 +1,10 @@
 #!/bin/bash
 
 export root=~/Documents/PhaserEditor
-export ver=2.1.1
-export fullver=2.1.1.20190623
-export prever=2.1.0
-export fullprever=2.1.0.20190527
+export ver=2.1.2
+export fullver=2.1.2.20190626
+export prever=2.1.1
+export fullprever=2.1.0.20190623
 
 echo ----------------------------------------
 echo Applying Phaser Editor 2D products patch
@@ -26,10 +26,10 @@ fi
 echo
 echo
 
-echo :: Testing phasereditor2d.com.executable.cocoa.macosx.x86_64_2.1.1 has the right version...
+echo :: Testing phasereditor2d.com.executable.cocoa.macosx.x86_64 has the right version...
 echo
-if ls target-patch/repository/binary | grep $ver; then
-	echo +Info.plist ok!
+if ls target-patch/repository/binary | grep $fullver; then
+	echo +phasereditor2d.com.executable.cocoa.macosx.x86_64 ok!
 else 
 	echo +Wrong plugin version. Good bye!
 	exit;	
