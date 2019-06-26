@@ -249,7 +249,7 @@ public class StartView extends ViewPart {
 					var description = descriptionList.item(i).getTextContent();
 					var pubDate = pubDateList.item(i - 1).getTextContent();
 
-					createLink(comp, title, createWebLinkRunnable("https://phasereditor2d.com" + link));
+					createLink(comp, title, createWebLinkRunnable(link));
 
 					var descText = new Text(comp, SWT.WRAP | SWT.MULTI);
 					descText.setText(description);
