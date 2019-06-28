@@ -21,13 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
@@ -52,7 +57,27 @@ public class ProjectUI {
 	 */
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static final String OTHER_PROJECT_EDITOR = "OtherProjectEditor";
+	public static final String CMD_OPEN_PROJECT = "phasereditor.project.ui.openProjectDialog";
 
+	public static List<IProject> getWorkspaceProjects_Sorted() {
+		return Arrays.stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
+
+				.sorted(ProjectCore.getProjectOpenTimeComparator())
+
+				.collect(toList());
+	}
+	
+	public static void openProject(IProject project) {
+		ProjectCore.setActiveProject(project);
+		// TODO: go to the project perspective, for now, just go to the Scene
+		// perspective
+		var id = "phasereditor.ide.ui.perspective";
+
+		var workbench = PlatformUI.getWorkbench();
+		var page = workbench.getActiveWorkbenchWindow().getActivePage();
+		page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
+	}
+	
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));

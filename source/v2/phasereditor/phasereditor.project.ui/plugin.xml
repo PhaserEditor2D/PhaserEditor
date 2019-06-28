@@ -239,6 +239,10 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.project.ui.handlers.OpenProjectDialogHandler"
+            commandId="phasereditor.project.ui.openProjectDialog">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -259,5 +263,22 @@
             id="phasereditor.project.ui.ProjectViewBuildParticipant"
             order="1000">
       </participant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.project.ui.openProjectDialog"
+            name="Open Project Dialog">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="phasereditor.project.ui.openProjectDialog"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+P">
+      </key>
    </extension>
 </plugin>

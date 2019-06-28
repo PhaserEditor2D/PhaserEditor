@@ -26,6 +26,7 @@ import static phasereditor.ui.IEditorSharedImages.IMG_ARROW_REFRESH;
 import static phasereditor.ui.IEditorSharedImages.IMG_GAME_CONTROLLER;
 import static phasereditor.ui.IEditorSharedImages.IMG_SEARCH;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
@@ -67,6 +68,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.NewWizardDropDownAction;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchMessages;
@@ -76,8 +78,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ide.IDEPlugin;
 import phasereditor.ide.ui.wizards.NewWizardLauncherDialog;
-import phasereditor.ide.ui.wizards.OpenProjectDialog;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.project.ui.ProjectUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.PhaserEditorUI;
@@ -329,7 +331,12 @@ class GoHomeWrapper {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (e.button == 3) {
-					new OpenProjectDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()).open();
+					var serv = PlatformUI.getWorkbench().getService(ICommandService.class);
+					try {
+						serv.getCommand(ProjectUI.CMD_OPEN_PROJECT).executeWithChecks(new ExecutionEvent());
+					} catch (Exception e1) {
+						IDEPlugin.logError(e1);
+					}
 				}
 			}
 		});

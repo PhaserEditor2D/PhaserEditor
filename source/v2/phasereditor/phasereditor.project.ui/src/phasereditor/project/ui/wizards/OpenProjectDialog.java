@@ -1,4 +1,4 @@
-package phasereditor.ide.ui.wizards;
+package phasereditor.project.ui.wizards;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
@@ -13,7 +13,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import phasereditor.ide.ui.views.StartView;
+import phasereditor.project.ui.ProjectUI;
 import phasereditor.ui.TreeArrayContentProvider;
 
 public class OpenProjectDialog extends Dialog {
@@ -38,7 +38,7 @@ public class OpenProjectDialog extends Dialog {
 		_viewer = _filteredTree.getViewer();
 		_viewer.setContentProvider(new TreeArrayContentProvider());
 		_viewer.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
-		_viewer.setInput(StartView.getWorkspaceProjects());
+		_viewer.setInput(ProjectUI.getWorkspaceProjects_Sorted());
 
 		_viewer.addDoubleClickListener(e -> {
 			this.okPressed();
@@ -52,9 +52,7 @@ public class OpenProjectDialog extends Dialog {
 		var selection = _viewer.getSelection();
 		if (!selection.isEmpty()) {
 			var project = (IProject) _viewer.getStructuredSelection().getFirstElement();
-			swtRun(() -> {
-				StartView.openProject(project);
-			});
+			swtRun(() -> ProjectUI.openProject(project));
 		}
 		super.okPressed();
 	}
