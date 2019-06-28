@@ -56,18 +56,19 @@ The **New Project** link opens a wizard where you can set some settings like the
 
 The **New Example Project** opens a wizard where you can select an example to be cloned as a project.
 
+You can create new projects at any time, by clicking the **New** button of the main toolbar.
+
+.. image:: images/toolbar-new-button.png
 
 Regular Project
 ~~~~~~~~~~~~~~~
 
-In the wizard to create a regular project you can set some settings related to the game configuration: game size, canvas type, scale mode, etc... In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.
+The regular project wizard shows settings related to the game configuration: game size, canvas type, scale mode, etc... In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.
 
 .. image:: images/new-project-wizard.png
 
 
-The project structure is pretty similar to a static web project. It has a ``Design`` folder, to store files related to the design process. Is very common to store in that folder the original images used by the `Texture Packer Editor <texture-packer-editor.html>`_, to generate the Phaser atlas files.
-
-The other top-level folder of the project is the ``WebContent``. There is where the action happens. It contains all the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
+The project structure is pretty similar to a static web project. It contain a ``WebContent`` folder with the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
 
 In the following table we provide a short description of each file of the ``WebContent`` folder:
 
@@ -85,18 +86,50 @@ In the following table we provide a short description of each file of the ``WebC
 ``assets/scenes/Scene1.js``        The compiled scene file. It is included in the ``pack.json`` file and is the thing you see when play the project.
 ================================== =======================================================
 
+
+The other top-level folder is the ``Design`` folder, where you can store files related to the design process. Is very common to store there the original images used by the `Texture Packer Editor <texture-packer-editor.html>`_, to generate the Phaser atlas files.
+
 Example Project
 ~~~~~~~~~~~~~~~
 
+You can create a project based in some of the official Phaser examples or the Phaser Editor examples. It is a valuable resource to learn Phaser.
+
+.. image:: images/new-example-project.png
 
 
 Play the project
 ----------------
 
+Phaser Editor has a built-in HTTP server that you can use to play the game project. When you click the **Play** button in the main toolbar, the built-in server is started and the default OS default browser is launched. You can configure the default browser in `Preferences → General → Web Browser`.
+
+.. image:: images/play-project.png
+
+
+Switching projects
+------------------
+
+Phaser Editor allows to to work with many projects at the same time ---it is a feature inherited from the Eclipse IDE-- however, in Phaser game development you don't create references between projects, so we decided to use the **Active project** concept. This means that you are going to say to the IDE what's the project you are working on and the UI will show only the content and commands related to that project.
+
+You can select the **active project** at any time switching to the **Start** perspective or right-clicking on the **Start** button.
+
+TODO missing image of start button menu.
+
+`Learn more about the Start perspective <workbench.html#start-perspective>`_
 
 
 External editor integration
 ---------------------------
+
+Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations and packs, but use VS Code or any other editor to code the game logic.
+
+In Phaser Editor you can configure an external editor, and some functions will be delagated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the `Scene Editor <scene-editor.html>`_ and the `Project view <workbench.html#project-view>`_ will launch the external editor too, to edit the code files.
+
+.. image:: images/external-editor-button.png
+
+
+To configure the external editor go to `Preferences → Phaser Editor → External Code Editor`. You should check the parameter **Open source files in an external editor** to enable the external editor integration. The other paremeters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the **Program path** parameter you should set the full path to the editor executable.
+
+.. image:: images/external-editor-config.png
 
 
 

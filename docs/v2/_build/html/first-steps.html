@@ -123,6 +123,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#play-the-project">Play the project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#switching-projects">Switching projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#external-editor-integration">External editor integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#unlock-phaser-editor-2d">Unlock Phaser Editor 2D</a></li>
 </ul>
@@ -232,12 +233,13 @@
 <img alt="_images/start-perspective.png" src="_images/start-perspective.png" />
 <p>The <strong>New Project</strong> link opens a wizard where you can set some settings like the initial game size or programming language (JavaScript or TypeScript).</p>
 <p>The <strong>New Example Project</strong> opens a wizard where you can select an example to be cloned as a project.</p>
+<p>You can create new projects at any time, by clicking the <strong>New</strong> button of the main toolbar.</p>
+<img alt="_images/toolbar-new-button.png" src="_images/toolbar-new-button.png" />
 <div class="section" id="regular-project">
 <h3>Regular Project<a class="headerlink" href="#regular-project" title="Permalink to this headline">¶</a></h3>
-<p>In the wizard to create a regular project you can set some settings related to the game configuration: game size, canvas type, scale mode, etc… In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.</p>
+<p>The regular project wizard shows settings related to the game configuration: game size, canvas type, scale mode, etc… In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.</p>
 <img alt="_images/new-project-wizard.png" src="_images/new-project-wizard.png" />
-<p>The project structure is pretty similar to a static web project. It has a <code class="docutils literal"><span class="pre">Design</span></code> folder, to store files related to the design process. Is very common to store in that folder the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the Phaser atlas files.</p>
-<p>The other top-level folder of the project is the <code class="docutils literal"><span class="pre">WebContent</span></code>. There is where the action happens. It contains all the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
+<p>The project structure is pretty similar to a static web project. It contain a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
 <p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -280,16 +282,33 @@
 </tr>
 </tbody>
 </table>
+<p>The other top-level folder is the <code class="docutils literal"><span class="pre">Design</span></code> folder, where you can store files related to the design process. Is very common to store there the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the Phaser atlas files.</p>
 </div>
 <div class="section" id="example-project">
 <h3>Example Project<a class="headerlink" href="#example-project" title="Permalink to this headline">¶</a></h3>
+<p>You can create a project based in some of the official Phaser examples or the Phaser Editor examples. It is a valuable resource to learn Phaser.</p>
+<img alt="_images/new-example-project.png" src="_images/new-example-project.png" />
 </div>
 </div>
 <div class="section" id="play-the-project">
 <h2>Play the project<a class="headerlink" href="#play-the-project" title="Permalink to this headline">¶</a></h2>
+<p>Phaser Editor has a built-in HTTP server that you can use to play the game project. When you click the <strong>Play</strong> button in the main toolbar, the built-in server is started and the default OS default browser is launched. You can configure the default browser in <cite>Preferences → General → Web Browser</cite>.</p>
+<img alt="_images/play-project.png" src="_images/play-project.png" />
+</div>
+<div class="section" id="switching-projects">
+<h2>Switching projects<a class="headerlink" href="#switching-projects" title="Permalink to this headline">¶</a></h2>
+<p>Phaser Editor allows to to work with many projects at the same time —it is a feature inherited from the Eclipse IDE– however, in Phaser game development you don’t create references between projects, so we decided to use the <strong>Active project</strong> concept. This means that you are going to say to the IDE what’s the project you are working on and the UI will show only the content and commands related to that project.</p>
+<p>You can select the <strong>active project</strong> at any time switching to the <strong>Start</strong> perspective or right-clicking on the <strong>Start</strong> button.</p>
+<p>TODO missing image of start button menu.</p>
+<p><a class="reference external" href="workbench.html#start-perspective">Learn more about the Start perspective</a></p>
 </div>
 <div class="section" id="external-editor-integration">
 <h2>External editor integration<a class="headerlink" href="#external-editor-integration" title="Permalink to this headline">¶</a></h2>
+<p>Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations and packs, but use VS Code or any other editor to code the game logic.</p>
+<p>In Phaser Editor you can configure an external editor, and some functions will be delagated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the <a class="reference external" href="scene-editor.html">Scene Editor</a> and the <a class="reference external" href="workbench.html#project-view">Project view</a> will launch the external editor too, to edit the code files.</p>
+<img alt="_images/external-editor-button.png" src="_images/external-editor-button.png" />
+<p>To configure the external editor go to <cite>Preferences → Phaser Editor → External Code Editor</cite>. You should check the parameter <strong>Open source files in an external editor</strong> to enable the external editor integration. The other paremeters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the <strong>Program path</strong> parameter you should set the full path to the editor executable.</p>
+<img alt="_images/external-editor-config.png" src="_images/external-editor-config.png" />
 </div>
 <div class="section" id="unlock-phaser-editor-2d">
 <h2>Unlock Phaser Editor 2D<a class="headerlink" href="#unlock-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
