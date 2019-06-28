@@ -52,7 +52,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Phaser Editor Help" href="index.html"/>
-        <link rel="next" title="IDE Overview" href="ide-overview.html"/>
+        <link rel="next" title="Workbench Overview" href="workbench.html"/>
         <link rel="prev" title="Documentation" href="index.html"/> 
 
   
@@ -114,18 +114,20 @@
 <li class="toctree-l2"><a class="reference internal" href="#run-phaser-editor-2d">Run Phaser Editor 2D</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#windows">Windows</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#macos">macOS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gnu-linux">GNU/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#create-your-first-game">Create your first game</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#typescript">TypeScript</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#regular-project">Regular Project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-project">Example Project</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#play-the-project">Play the project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#external-editor-integration">External editor integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unlock-phaser-editor-2d">Unlock Phaser Editor 2D</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ide-overview.html">IDE Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workbench.html">Workbench Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">Texture Packer Editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">Asset Pack Editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="animations-editor.html">Animations Editor</a></li>
@@ -196,32 +198,101 @@
             
   <div class="section" id="first-steps">
 <h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
+<p>In this section we explain step by step some of the common tasks you may do when start with Phaser Editor 2D.</p>
 <div class="section" id="download-and-install">
 <h2>Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h2>
+<p>Binaries are available in the <a class="reference external" href="https://phasereditor2d.com/blog/downloads">Downloads</a> page of the Phaser Editor’s website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS and Linux.</p>
 </div>
 <div class="section" id="run-phaser-editor-2d">
 <h2>Run Phaser Editor 2D<a class="headerlink" href="#run-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
+<p>Uncompress the ZIP file and double click on the executable file <code class="docutils literal"><span class="pre">PhaserEditor2D.exe</span></code>. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state.</p>
+<p>When Phaser Editor starts, it shows a splash screen and later a <strong>Launcher Dialog</strong>. In this dialog you should select the path to the workspace. Usually, the default path is fine (a <code class="docutils literal"><span class="pre">workspace</span></code> subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. <a class="reference external" href="workbench.html#workbench.html#workspace-and-projects">Learn more about the workspace</a>. You can change the list of workspaces and other settings in <cite>Preferences → General → Startup and Shutdown → Workspaces</cite>.</p>
+<img alt="_images/WorkspaceLauncher.png" src="_images/WorkspaceLauncher.png" />
 <div class="section" id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>To run Phaser Editor on Windows run the file <code class="docutils literal"><span class="pre">PhaserEditor2D.exe</span></code>.</p>
+<p>Execute the file <code class="docutils literal"><span class="pre">Debug.bat</span></code> to run the editor in debug mode.</p>
 </div>
 <div class="section" id="macos">
 <h3>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>
+<p>Phaser Editor is distributed in macOS as an application (<code class="docutils literal"><span class="pre">.app</span></code> folder). To run it the first time, you should right-click on the <code class="docutils literal"><span class="pre">Phaser</span> <span class="pre">Editor</span> <span class="pre">2D</span></code> application and select <code class="docutils literal"><span class="pre">Open</span></code>. This step is needed because the editor is not certified by Apple. The second time, you can run the editor with the a double click.</p>
+<p>To run the editor in debug mode, you can execute the <code class="docutils literal"><span class="pre">Debug.sh</span></code> script in a terminal.</p>
+<p>When we build the editor for macOS we add execution permission to a series of files, but if the OS shows a message about execution permissions, you can set them again using the <code class="docutils literal"><span class="pre">SetExecPermissions.sh</span></code> script.</p>
 </div>
-<div class="section" id="gnu-linux">
-<h3>GNU/Linux<a class="headerlink" href="#gnu-linux" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>To run Phaser Editor on Linux, executes the file <code class="docutils literal"><span class="pre">PhaserEditor2D</span></code>.</p>
+<p>To run the editor in debug mode, execute the script <code class="docutils literal"><span class="pre">Debug.sh</span></code>.</p>
+<p>When we build the editor distribution, we set execution permission to a couple of files, however, if for any reason you need to set these permissions again, run the script <code class="docutils literal"><span class="pre">SetExecPermissions.sh</span></code> in a terminal.</p>
 </div>
 </div>
 <div class="section" id="create-your-first-game">
 <h2>Create your first game<a class="headerlink" href="#create-your-first-game" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="typescript">
-<h3>TypeScript<a class="headerlink" href="#typescript" title="Permalink to this headline">¶</a></h3>
+<p>When the editor opens the first time (or an empty workspace) it shows the <strong>Start</strong> perspective. That perspective provides the links to create a project or an example project:</p>
+<img alt="_images/start-perspective.png" src="_images/start-perspective.png" />
+<p>The <strong>New Project</strong> link opens a wizard where you can set some settings like the initial game size or programming language (JavaScript or TypeScript).</p>
+<p>The <strong>New Example Project</strong> opens a wizard where you can select an example to be cloned as a project.</p>
+<div class="section" id="regular-project">
+<h3>Regular Project<a class="headerlink" href="#regular-project" title="Permalink to this headline">¶</a></h3>
+<p>In the wizard to create a regular project you can set some settings related to the game configuration: game size, canvas type, scale mode, etc… In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.</p>
+<img alt="_images/new-project-wizard.png" src="_images/new-project-wizard.png" />
+<p>The project structure is pretty similar to a static web project. It has a <code class="docutils literal"><span class="pre">Design</span></code> folder, to store files related to the design process. Is very common to store in that folder the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the Phaser atlas files.</p>
+<p>The other top-level folder of the project is the <code class="docutils literal"><span class="pre">WebContent</span></code>. There is where the action happens. It contains all the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
+<p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">index.html</span></code></td>
+<td>The entry point of the game. It is very basic, and loads the <code class="docutils literal"><span class="pre">main.js</span></code> file.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">main.js</span></code></td>
+<td>The Phaser game instance is created. It starts a <code class="docutils literal"><span class="pre">Boot</span></code> scene that is part of this file too.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">jsconfig.json</span></code></td>
+<td>This is the “project” file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a <code class="docutils literal"><span class="pre">tsconfig.json</span></code> file instead.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">typings/phaser.d.ts</span></code></td>
+<td>The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">lib/phaser.js</span></code></td>
+<td>Contains the Phaser framework. You can replace it by a newer version or a custom build. It is loaded by the <code class="docutils literal"><span class="pre">index.html</span></code> file, so you have full control to load the Phaser runtime.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/pack.json</span></code></td>
+<td>A manifest of the assets used by the game. This file is loaded in the <code class="docutils literal"><span class="pre">Boot</span></code> scene, but you are free to change it. Actually, you are free to change anything. <a class="reference external" href="asset-pack-editor.html">Learn more about the Asset Pack Editor and pack files</a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/animations.json</span></code></td>
+<td>An empty animations file. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file. <a class="reference external" href="animations-editor.html">Learn more about sprite animations and the Animations editor</a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.atlas</span></code></td>
+<td>An empty texture atlas file. <a class="reference external" href="texture-packer-editor.html">Learn more about the Texture Packer Editor and atlas file</a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.json</span></code></td>
+<td>The Phaser atlas file derived from the <code class="docutils literal"><span class="pre">texture.atlas</span></code> file —generated by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>—. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.scene</span></code></td>
+<td>An empty scene file. You can add objects to this scene using the <a class="reference external" href="scene-editor.html">Scene Editor</a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.js</span></code></td>
+<td>The compiled scene file. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file and is the thing you see when play the project.</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="section" id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="example-project">
+<h3>Example Project<a class="headerlink" href="#example-project" title="Permalink to this headline">¶</a></h3>
 </div>
+</div>
+<div class="section" id="play-the-project">
+<h2>Play the project<a class="headerlink" href="#play-the-project" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="external-editor-integration">
 <h2>External editor integration<a class="headerlink" href="#external-editor-integration" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="unlock-phaser-editor-2d">
+<h2>Unlock Phaser Editor 2D<a class="headerlink" href="#unlock-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -235,7 +306,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ide-overview.html" class="btn btn-neutral float-right" title="IDE Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="workbench.html" class="btn btn-neutral float-right" title="Workbench Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

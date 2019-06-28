@@ -11,6 +11,5 @@ Refactoring: rename and remove file keys
 ----------------------------------------
 
 
-
 Asset Pack state of the project
 -------------------------------

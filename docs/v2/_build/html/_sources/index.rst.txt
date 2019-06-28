@@ -6,7 +6,7 @@ Documentation
    :caption: Contents:
 
    first-steps
-   ide-overview
+   workbench
    texture-packer-editor
    asset-pack-editor
    animations-editor

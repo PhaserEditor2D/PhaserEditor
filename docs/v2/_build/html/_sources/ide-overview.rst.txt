@@ -1,5 +1,5 @@
-IDE Overview
-============
+Workbench Overview
+==================
 
 
 Perspectives, views and editors
@@ -51,3 +51,7 @@ Scene perspective
 
 Git perspective
 ~~~~~~~~~~~~~~~
+
+
+Update
+------
