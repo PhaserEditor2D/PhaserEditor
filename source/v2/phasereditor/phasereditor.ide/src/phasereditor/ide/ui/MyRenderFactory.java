@@ -43,6 +43,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -75,6 +76,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.ide.IDEPlugin;
 import phasereditor.ide.ui.wizards.NewWizardLauncherDialog;
+import phasereditor.ide.ui.wizards.OpenProjectDialog;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorHugeToolbar;
@@ -303,14 +305,8 @@ class NewMenuWrapper {
 		_btn = new Button(parent, SWT.PUSH);
 		_btn.setText("New");
 		_btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-
-			// var creator = action.getMenuCreator();
-			// var menu = creator.getMenu(_btn);
-			// menu.setVisible(true);
-
 			var dlg = new NewWizardLauncherDialog(_btn.getShell());
 			dlg.open();
-
 		}));
 		var action = new NewWizardDropDownAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		_btn.setImage(action.getImageDescriptor().createImage());
@@ -329,6 +325,14 @@ class GoHomeWrapper {
 		btn.setImage(PerspectiveSwitcherWrapper.getPerspectiveIcon(homePersp));
 		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(
 				e -> PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(homePersp)));
+		btn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (e.button == 3) {
+					new OpenProjectDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()).open();
+				}
+			}
+		});
 	}
 }
 

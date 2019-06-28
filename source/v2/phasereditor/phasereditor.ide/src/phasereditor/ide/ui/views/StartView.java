@@ -7,6 +7,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.prefs.Preferences;
 
@@ -368,15 +369,19 @@ public class StartView extends ViewPart {
 	}
 
 	private static void createProjectLinks() {
-		var list = Arrays.stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
-
-				.sorted(ProjectCore.getProjectOpenTimeComparator())
-
-				.collect(toList());
+		var list = getWorkspaceProjects();
 
 		for (var project : list) {
 			createProjectLink(project, project.getName());
 		}
+	}
+
+	public static List<IProject> getWorkspaceProjects() {
+		return Arrays.stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
+
+				.sorted(ProjectCore.getProjectOpenTimeComparator())
+
+				.collect(toList());
 	}
 
 	private static void createProjectLink(IProject project, String label) {
@@ -385,14 +390,7 @@ public class StartView extends ViewPart {
 
 			@Override
 			public void run() {
-				ProjectCore.setActiveProject(project);
-				// TODO: go to the project perspective, for now, just go to the Scene
-				// perspective
-				var id = ScenePerspective.ID;
-
-				var workbench = PlatformUI.getWorkbench();
-				var page = workbench.getActiveWorkbenchWindow().getActivePage();
-				page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
+				openProject(project);
 
 				updateProjectLinks();
 			}
@@ -445,6 +443,17 @@ public class StartView extends ViewPart {
 		});
 
 		return label;
+	}
+
+	public static void openProject(IProject project) {
+		ProjectCore.setActiveProject(project);
+		// TODO: go to the project perspective, for now, just go to the Scene
+		// perspective
+		var id = ScenePerspective.ID;
+
+		var workbench = PlatformUI.getWorkbench();
+		var page = workbench.getActiveWorkbenchWindow().getActivePage();
+		page.setPerspective(workbench.getPerspectiveRegistry().findPerspectiveWithId(id));
 	}
 
 	@Override
