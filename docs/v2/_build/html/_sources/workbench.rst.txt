@@ -1,8 +1,14 @@
 Workbench Overview
 ==================
 
+Phaser Editor is based on the Eclipse IDE and shares a lot of the concepts and features. In this chapter we explain some key concepts that are common to modern editors and IDEs but could be different in Phaser Editor.
 
-Perspectives, views and editors
+The Eclipse IDE is a general purpose tool that is open, flexible and powerful. Maybe for this reason it could result complex to some users to perform certain tasks, but we belive that we can customize and transform the Eclipse IDE in a tool more friendly and productive for game developers.
+
+
+
+
+Views, editors and perspectives
 -------------------------------
 
 
@@ -38,8 +44,9 @@ Terminal view
 -------------
 
 
-Common perspectives
--------------------
+Main perspectives
+-----------------
+
 
 Start perspective
 ~~~~~~~~~~~~~~~~~

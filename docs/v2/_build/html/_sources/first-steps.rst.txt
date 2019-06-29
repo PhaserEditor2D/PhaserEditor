@@ -8,7 +8,6 @@ Download and install
 
 Binaries are available in the `Downloads <https://phasereditor2d.com/blog/downloads>`_ page of the Phaser Editor's website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS and Linux.
 
-
 Run Phaser Editor 2D
 --------------------
 
@@ -17,7 +16,6 @@ Uncompress the ZIP file and double click on the executable file ``PhaserEditor2D
 When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in `Preferences → General → Startup and Shutdown → Workspaces`.
 
 .. image:: images/WorkspaceLauncher.png
-
 
 Windows
 ~~~~~~~
@@ -51,7 +49,6 @@ When the editor opens the first time (or an empty workspace) it shows the `Start
 
 .. image:: images/start-perspective.png
 
-
 The **New Project** link opens a wizard where you can set some settings like the initial game size or programming language (JavaScript or TypeScript). 
 
 The **New Example Project** opens a wizard where you can select an example to be cloned as a project.
@@ -67,13 +64,12 @@ The regular project wizard shows settings related to the game configuration: gam
 
 .. image:: images/new-project-wizard.png
 
-
 The project structure is pretty similar to a static web project. It contain a ``WebContent`` folder with the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
 
 In the following table we provide a short description of each file of the ``WebContent`` folder:
 
 ================================== =======================================================
-``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file.    
+``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file. 
 ``main.js``                        The Phaser game instance is created. It starts a ``Boot`` scene that is part of this file too.
 ``jsconfig.json``                  This is the "project" file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a ``tsconfig.json`` file instead.
 ``typings/phaser.d.ts``            The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.
@@ -86,7 +82,6 @@ In the following table we provide a short description of each file of the ``WebC
 ``assets/scenes/Scene1.js``        The compiled scene file. It is included in the ``pack.json`` file and is the thing you see when play the project.
 ================================== =======================================================
 
-
 The other top-level folder is the ``Design`` folder, where you can store files related to the design process. Is very common to store there the original images used by the `Texture Packer Editor <texture-packer-editor.html>`_, to generate the Phaser atlas files.
 
 Example Project
@@ -96,14 +91,12 @@ You can create a project based in some of the official Phaser examples or the Ph
 
 .. image:: images/new-example-project.png
 
-
 Play the project
 ----------------
 
 Phaser Editor has a built-in HTTP server that you can use to play the game project. When you click the **Play** button in the main toolbar, the built-in server is started and the default OS default browser is launched. You can configure the default browser in `Preferences → General → Web Browser`.
 
 .. image:: images/play-project.png
-
 
 Switching projects
 ------------------
@@ -116,21 +109,18 @@ You can select the **active project** at any time switching to the `Start <workb
 
 `Learn more about the Start perspective <workbench.html#start-perspective>`_
 
-
 External editor integration
 ---------------------------
 
 Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations and packs, but use VS Code or any other editor to code the game logic.
 
-In Phaser Editor you can configure an external editor, and some functions will be delagated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the `Scene Editor <scene-editor.html>`_ and the `Project view <workbench.html#project-view>`_ will launch the external editor too, to edit the code files.
+In Phaser Editor you can configure an external editor, and some functions will be delegated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the `Scene Editor <scene-editor.html>`_ and the `Project view <workbench.html#project-view>`_ will launch the external editor too, to edit the code files.
 
 .. image:: images/external-editor-button.png
 
-
-To configure the external editor go to `Preferences → Phaser Editor → External Code Editor`. You should check the parameter **Open source files in an external editor** to enable the external editor integration. The other paremeters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the **Program path** parameter you should set the full path to the editor executable.
+To configure the external editor go to `Preferences → Phaser Editor → External Code Editor`. You should check the parameter **Open source files in an external editor** to enable the external editor integration. The other parameters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the **Program path** parameter you should set the full path to the editor executable.
 
 .. image:: images/external-editor-config.png
-
 
 
 Unlock Phaser Editor 2D
@@ -139,7 +129,6 @@ Unlock Phaser Editor 2D
 Phaser Editor is commercial product, you `should purchase a license key <https://gumroad.com/l/phasereditor/>`_ to use it in all its potential (**Premium** mode). However, by default it runs in a **Free** mode that provides all the features and tools but is limited to certain number of game assets.
 
 To activate the editor, click on `Help → Unlock Phaser Editor`, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
-
 
 This is a table with a comparison between the **Free** and **Premium** mode:
 
