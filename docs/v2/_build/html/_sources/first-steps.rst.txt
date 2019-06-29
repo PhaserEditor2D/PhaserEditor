@@ -47,7 +47,7 @@ When we build the editor distribution, we set execution permission to a couple o
 Create your first game
 ----------------------
 
-When the editor opens the first time (or an empty workspace) it shows the **Start** perspective. That perspective provides the links to create a project or an example project:
+When the editor opens the first time (or an empty workspace) it shows the `Start <workbench.html#start-perspective>`_ perspective. That perspective provides the links to create a project or an example project:
 
 .. image:: images/start-perspective.png
 
@@ -110,9 +110,9 @@ Switching projects
 
 Phaser Editor allows to to work with many projects at the same time ---it is a feature inherited from the Eclipse IDE-- however, in Phaser game development you don't create references between projects, so we decided to use the **Active project** concept. This means that you are going to say to the IDE what's the project you are working on and the UI will show only the content and commands related to that project.
 
-You can select the **active project** at any time switching to the **Start** perspective or right-clicking on the **Start** button.
+You can select the **active project** at any time switching to the `Start <workbench.html#start-perspective>`_ perspective or launching the **Open Project Dialog** (``Ctrl+Alt+P`` or right-click on the **Start** button).
 
-TODO missing image of start button menu.
+.. image:: images/open-project-dialog.png
 
 `Learn more about the Start perspective <workbench.html#start-perspective>`_
 
@@ -136,4 +136,29 @@ To configure the external editor go to `Preferences → Phaser Editor → Extern
 Unlock Phaser Editor 2D
 -----------------------
 
+Phaser Editor is commercial product, you `should purchase a license key <https://gumroad.com/l/phasereditor/>`_ to use it in all its potential (**Premium** mode). However, by default it runs in a **Free** mode that provides all the features and tools but is limited to certain number of game assets.
 
+To activate the editor, click on `Help → Unlock Phaser Editor`, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
+
+
+This is a table with a comparison between the **Free** and **Premium** mode:
+
+=========================== =============== ================
+Assets                      Free mode       Premium mode
+=========================== =============== ================
+Image keys                  Limited to 10   No limits
+Texture Atlas keys          Limited to 3    No limits
+Tilemap keys                Limited to 5    No limits
+Scene (``.scene`` files)    Limited to 5    No limits
+Others                      No limits       No limits
+=========================== =============== ================
+
+The **keys** are defined in the `asset pack files <asset-pack-editor.html>`_.
+
+There are three type of licenses:
+
+* One year license.
+* Two years license.
+* Life-time license.
+
+As the name suggests, the difference is only about the expiration date. Important: a license is valid for all versions of Phaser Editor, they are just limited by the purchase/expiration dates.
