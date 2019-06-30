@@ -1,19 +1,19 @@
 First Steps
 ===========
 
-In this section we explain step by step some of the common tasks you may do when start with Phaser Editor 2D.
+In this section, we explain step by step some of the common tasks you may do when starting with Phaser Editor 2D.
 
 Download and install
 --------------------
 
-Binaries are available in the `Downloads <https://phasereditor2d.com/blog/downloads>`_ page of the Phaser Editor's website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS and Linux.
+Binaries are available in the `Downloads <https://phasereditor2d.com/blog/downloads>`_ page of the Phaser Editor's website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS, and Linux.
 
 Run Phaser Editor 2D
 --------------------
 
-Uncompress the ZIP file and double click on the executable file ``PhaserEditor2D.exe``. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state. 
+Uncompress the ZIP file and double click on the executable file ``PhaserEditor2D.exe``. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable, there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state. 
 
-When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in `Preferences → General → Startup and Shutdown → Workspaces`.
+When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in `Preferences → General → Startup and Shutdown → Workspaces`.
 
 .. image:: images/WorkspaceLauncher.png
 
@@ -27,7 +27,7 @@ Execute the file ``Debug.bat`` to run the editor in debug mode.
 macOS
 ~~~~~
 
-Phaser Editor is distributed in macOS as an application (``.app`` folder). To run it the first time, you should right-click on the ``Phaser Editor 2D`` application and select ``Open``. This step is needed because the editor is not certified by Apple. The second time, you can run the editor with the a double click.
+Phaser Editor is distributed in macOS as an application (``.app`` folder). To run it the first time, you should right-click on the ``Phaser Editor 2D`` application and select ``Open``. This step is needed because the editor is not certified by Apple. The second time, you can run the editor with a double click.
 
 To run the editor in debug mode, you can execute the ``Debug.sh`` script in a terminal.
 
@@ -36,7 +36,7 @@ When we build the editor for macOS we add execution permission to a series of fi
 Linux
 ~~~~~~~~~
 
-To run Phaser Editor on Linux, executes the file ``PhaserEditor2D``.
+To run Phaser Editor on Linux executes the file ``PhaserEditor2D``.
 
 To run the editor in debug mode, execute the script ``Debug.sh``.
 
@@ -64,7 +64,7 @@ The regular project wizard shows settings related to the game configuration: gam
 
 .. image:: images/new-project-wizard.png
 
-The project structure is pretty similar to a static web project. It contain a ``WebContent`` folder with the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
+The project structure is pretty similar to a static web project. It contains a ``WebContent`` folder with the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
 
 In the following table we provide a short description of each file of the ``WebContent`` folder:
 
@@ -101,7 +101,7 @@ Phaser Editor has a built-in HTTP server that you can use to play the game proje
 Switching projects
 ------------------
 
-Phaser Editor allows to to work with many projects at the same time ---it is a feature inherited from the Eclipse IDE-- however, in Phaser game development you don't create references between projects, so we decided to use the **Active project** concept. This means that you are going to say to the IDE what's the project you are working on and the UI will show only the content and commands related to that project.
+Phaser Editor allows to work with many projects at the same time ---it is a feature inherited from the Eclipse IDE-- however, in Phaser game development you don't create references between projects, so we decided to use the **Active project** concept. This means that you are going to say to the IDE what's the project you are working on and the UI will show only the content and commands related to that project.
 
 You can select the **active project** at any time switching to the `Start <workbench.html#start-perspective>`_ perspective or launching the **Open Project Dialog** (``Ctrl+Alt+P`` or right-click on the **Start** button).
 
@@ -112,7 +112,7 @@ You can select the **active project** at any time switching to the `Start <workb
 External editor integration
 ---------------------------
 
-Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations and packs, but use VS Code or any other editor to code the game logic.
+Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON, and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations, and packs, but use VS Code or any other editor to code the game logic.
 
 In Phaser Editor you can configure an external editor, and some functions will be delegated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the `Scene Editor <scene-editor.html>`_ and the `Project view <workbench.html#project-view>`_ will launch the external editor too, to edit the code files.
 
@@ -126,9 +126,9 @@ To configure the external editor go to `Preferences → Phaser Editor → Extern
 Unlock Phaser Editor 2D
 -----------------------
 
-Phaser Editor is commercial product, you `should purchase a license key <https://gumroad.com/l/phasereditor/>`_ to use it in all its potential (**Premium** mode). However, by default it runs in a **Free** mode that provides all the features and tools but is limited to certain number of game assets.
+Phaser Editor is a commercial product, you `should purchase a license key <https://gumroad.com/l/phasereditor/>`_ to use it in all its potential (**Premium** mode). However, by default, it runs in a **Free** mode that provides all the features and tools but is limited to a certain number of game assets.
 
-To activate the editor, click on `Help → Unlock Phaser Editor`, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
+To activate the editor, click on `Help → Unlock Phaser Editor`, it shows an activation dialog, write the purchased license key and click on the **Activate** button.
 
 This is a table with a comparison between the **Free** and **Premium** mode:
 
@@ -144,10 +144,10 @@ Others                      No limits       No limits
 
 The **keys** are defined in the `asset pack files <asset-pack-editor.html>`_.
 
-There are three type of licenses:
+There are three types of licenses:
 
 * One year license.
 * Two years license.
-* Life-time license.
+* Lifetime license.
 
 As the name suggests, the difference is only about the expiration date. Important: a license is valid for all versions of Phaser Editor, they are just limited by the purchase/expiration dates.

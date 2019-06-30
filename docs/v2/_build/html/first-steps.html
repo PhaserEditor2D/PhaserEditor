@@ -199,15 +199,15 @@
             
   <div class="section" id="first-steps">
 <h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
-<p>In this section we explain step by step some of the common tasks you may do when start with Phaser Editor 2D.</p>
+<p>In this section, we explain step by step some of the common tasks you may do when starting with Phaser Editor 2D.</p>
 <div class="section" id="download-and-install">
 <h2>Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h2>
-<p>Binaries are available in the <a class="reference external" href="https://phasereditor2d.com/blog/downloads">Downloads</a> page of the Phaser Editor’s website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS and Linux.</p>
+<p>Binaries are available in the <a class="reference external" href="https://phasereditor2d.com/blog/downloads">Downloads</a> page of the Phaser Editor’s website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS, and Linux.</p>
 </div>
 <div class="section" id="run-phaser-editor-2d">
 <h2>Run Phaser Editor 2D<a class="headerlink" href="#run-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
-<p>Uncompress the ZIP file and double click on the executable file <code class="docutils literal"><span class="pre">PhaserEditor2D.exe</span></code>. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state.</p>
-<p>When Phaser Editor starts, it shows a splash screen and later a <strong>Launcher Dialog</strong>. In this dialog you should select the path to the workspace. Usually, the default path is fine (a <code class="docutils literal"><span class="pre">workspace</span></code> subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. <a class="reference external" href="workbench.html#workbench.html#workspace-and-projects">Learn more about the workspace</a>. You can change the list of workspaces and other settings in <cite>Preferences → General → Startup and Shutdown → Workspaces</cite>.</p>
+<p>Uncompress the ZIP file and double click on the executable file <code class="docutils literal"><span class="pre">PhaserEditor2D.exe</span></code>. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable, there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state.</p>
+<p>When Phaser Editor starts, it shows a splash screen and later a <strong>Launcher Dialog</strong>. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a <code class="docutils literal"><span class="pre">workspace</span></code> subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. <a class="reference external" href="workbench.html#workbench.html#workspace-and-projects">Learn more about the workspace</a>. You can change the list of workspaces and other settings in <cite>Preferences → General → Startup and Shutdown → Workspaces</cite>.</p>
 <img alt="_images/WorkspaceLauncher.png" src="_images/WorkspaceLauncher.png" />
 <div class="section" id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
@@ -216,13 +216,13 @@
 </div>
 <div class="section" id="macos">
 <h3>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>
-<p>Phaser Editor is distributed in macOS as an application (<code class="docutils literal"><span class="pre">.app</span></code> folder). To run it the first time, you should right-click on the <code class="docutils literal"><span class="pre">Phaser</span> <span class="pre">Editor</span> <span class="pre">2D</span></code> application and select <code class="docutils literal"><span class="pre">Open</span></code>. This step is needed because the editor is not certified by Apple. The second time, you can run the editor with the a double click.</p>
+<p>Phaser Editor is distributed in macOS as an application (<code class="docutils literal"><span class="pre">.app</span></code> folder). To run it the first time, you should right-click on the <code class="docutils literal"><span class="pre">Phaser</span> <span class="pre">Editor</span> <span class="pre">2D</span></code> application and select <code class="docutils literal"><span class="pre">Open</span></code>. This step is needed because the editor is not certified by Apple. The second time, you can run the editor with a double click.</p>
 <p>To run the editor in debug mode, you can execute the <code class="docutils literal"><span class="pre">Debug.sh</span></code> script in a terminal.</p>
 <p>When we build the editor for macOS we add execution permission to a series of files, but if the OS shows a message about execution permissions, you can set them again using the <code class="docutils literal"><span class="pre">SetExecPermissions.sh</span></code> script.</p>
 </div>
 <div class="section" id="linux">
 <h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
-<p>To run Phaser Editor on Linux, executes the file <code class="docutils literal"><span class="pre">PhaserEditor2D</span></code>.</p>
+<p>To run Phaser Editor on Linux executes the file <code class="docutils literal"><span class="pre">PhaserEditor2D</span></code>.</p>
 <p>To run the editor in debug mode, execute the script <code class="docutils literal"><span class="pre">Debug.sh</span></code>.</p>
 <p>When we build the editor distribution, we set execution permission to a couple of files, however, if for any reason you need to set these permissions again, run the script <code class="docutils literal"><span class="pre">SetExecPermissions.sh</span></code> in a terminal.</p>
 </div>
@@ -239,7 +239,7 @@
 <h3>Regular Project<a class="headerlink" href="#regular-project" title="Permalink to this headline">¶</a></h3>
 <p>The regular project wizard shows settings related to the game configuration: game size, canvas type, scale mode, etc… In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.</p>
 <img alt="_images/new-project-wizard.png" src="_images/new-project-wizard.png" />
-<p>The project structure is pretty similar to a static web project. It contain a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
+<p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
 <p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -297,14 +297,14 @@
 </div>
 <div class="section" id="switching-projects">
 <h2>Switching projects<a class="headerlink" href="#switching-projects" title="Permalink to this headline">¶</a></h2>
-<p>Phaser Editor allows to to work with many projects at the same time —it is a feature inherited from the Eclipse IDE– however, in Phaser game development you don’t create references between projects, so we decided to use the <strong>Active project</strong> concept. This means that you are going to say to the IDE what’s the project you are working on and the UI will show only the content and commands related to that project.</p>
+<p>Phaser Editor allows to work with many projects at the same time —it is a feature inherited from the Eclipse IDE– however, in Phaser game development you don’t create references between projects, so we decided to use the <strong>Active project</strong> concept. This means that you are going to say to the IDE what’s the project you are working on and the UI will show only the content and commands related to that project.</p>
 <p>You can select the <strong>active project</strong> at any time switching to the <a class="reference external" href="workbench.html#start-perspective">Start</a> perspective or launching the <strong>Open Project Dialog</strong> (<code class="docutils literal"><span class="pre">Ctrl+Alt+P</span></code> or right-click on the <strong>Start</strong> button).</p>
 <img alt="_images/open-project-dialog.png" src="_images/open-project-dialog.png" />
 <p><a class="reference external" href="workbench.html#start-perspective">Learn more about the Start perspective</a></p>
 </div>
 <div class="section" id="external-editor-integration">
 <h2>External editor integration<a class="headerlink" href="#external-editor-integration" title="Permalink to this headline">¶</a></h2>
-<p>Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations and packs, but use VS Code or any other editor to code the game logic.</p>
+<p>Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON, and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations, and packs, but use VS Code or any other editor to code the game logic.</p>
 <p>In Phaser Editor you can configure an external editor, and some functions will be delegated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the <a class="reference external" href="scene-editor.html">Scene Editor</a> and the <a class="reference external" href="workbench.html#project-view">Project view</a> will launch the external editor too, to edit the code files.</p>
 <img alt="_images/external-editor-button.png" src="_images/external-editor-button.png" />
 <p>To configure the external editor go to <cite>Preferences → Phaser Editor → External Code Editor</cite>. You should check the parameter <strong>Open source files in an external editor</strong> to enable the external editor integration. The other parameters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the <strong>Program path</strong> parameter you should set the full path to the editor executable.</p>
@@ -312,8 +312,8 @@
 </div>
 <div class="section" id="unlock-phaser-editor-2d">
 <h2>Unlock Phaser Editor 2D<a class="headerlink" href="#unlock-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
-<p>Phaser Editor is commercial product, you <a class="reference external" href="https://gumroad.com/l/phasereditor/">should purchase a license key</a> to use it in all its potential (<strong>Premium</strong> mode). However, by default it runs in a <strong>Free</strong> mode that provides all the features and tools but is limited to certain number of game assets.</p>
-<p>To activate the editor, click on <cite>Help → Unlock Phaser Editor</cite>, it shows an activation dialog, write the purchased license key there and click on the <strong>Activate</strong> button.</p>
+<p>Phaser Editor is a commercial product, you <a class="reference external" href="https://gumroad.com/l/phasereditor/">should purchase a license key</a> to use it in all its potential (<strong>Premium</strong> mode). However, by default, it runs in a <strong>Free</strong> mode that provides all the features and tools but is limited to a certain number of game assets.</p>
+<p>To activate the editor, click on <cite>Help → Unlock Phaser Editor</cite>, it shows an activation dialog, write the purchased license key and click on the <strong>Activate</strong> button.</p>
 <p>This is a table with a comparison between the <strong>Free</strong> and <strong>Premium</strong> mode:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -351,11 +351,11 @@
 </tbody>
 </table>
 <p>The <strong>keys</strong> are defined in the <a class="reference external" href="asset-pack-editor.html">asset pack files</a>.</p>
-<p>There are three type of licenses:</p>
+<p>There are three types of licenses:</p>
 <ul class="simple">
 <li>One year license.</li>
 <li>Two years license.</li>
-<li>Life-time license.</li>
+<li>Lifetime license.</li>
 </ul>
 <p>As the name suggests, the difference is only about the expiration date. Important: a license is valid for all versions of Phaser Editor, they are just limited by the purchase/expiration dates.</p>
 </div>
