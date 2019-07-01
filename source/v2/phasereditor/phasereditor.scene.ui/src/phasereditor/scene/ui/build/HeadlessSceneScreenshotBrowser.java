@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.build;
 
+import static java.lang.System.out;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.ui.PlatformUI;
 
@@ -29,17 +32,19 @@ import phasereditor.webrun.core.WebRunCore;
 public class HeadlessSceneScreenshotBrowser {
 
 	public static void start() {
-		// var display = Display.getDefault();
-
-		// var shell = new Shell(display, SWT.NO_TRIM);
-		// shell.setLayout(new FillLayout());
-		// shell.setSize(420, 380);
+		out.println("HeadlessSceneScreenshotBrowser.start() -> Create Browser");
 
 		var shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		shell.addDisposeListener(e -> {
+			out.println("HeadlessSceneScreenshotBrowser -> Browser disposed.");
+			// restart the browser again, if the IDE is not closing
+			if (!PlatformUI.getWorkbench().isClosing()) {
+				swtRun(() -> start());
+			}
+		});
+
 		var browser = new Browser(shell, 0);
 		browser.setBounds(-100, -100, 100, 100);
-
-		// shell.setAlpha(0);
 
 		shell.open();
 
