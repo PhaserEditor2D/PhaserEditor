@@ -193,6 +193,17 @@ public class PhaserEditorUI {
 	private PhaserEditorUI() {
 	}
 
+	public static IWorkbenchWindow getWorkbenchWindow(Control control) {
+		var shell = control.getShell();
+		var windows = PlatformUI.getWorkbench().getWorkbenchWindows();
+		for (var win : windows) {
+			if (win.getShell() == shell) {
+				return win;
+			}
+		}
+		return null;
+	}
+
 	private static String formShowInSytemExplorerCommand(File path) throws IOException {
 		String command = IDEWorkbenchPlugin.getDefault().getPreferenceStore()
 				.getString(IDEInternalPreferences.WORKBENCH_SYSTEM_EXPLORER);
