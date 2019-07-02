@@ -256,7 +256,6 @@ public final class AssetPackModel {
 		meta.put("app", "Phaser Editor 2D - " + LicCore.PRODUCT_VERSION);
 		meta.put("url", "https://phasereditor2d.com");
 		meta.put("version", "1.0");
-		meta.put("copyright", "Arian Fornaris (c) 2015,2019");
 	}
 
 	public void save(IProgressMonitor monitor) {
