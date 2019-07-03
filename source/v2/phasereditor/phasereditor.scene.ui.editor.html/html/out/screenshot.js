@@ -52,8 +52,8 @@ var PhaserEditor2D;
         }
         function onMessage(event) {
             var data = JSON.parse(event.data);
-            console.log("message: " + data.method);
-            console.log(data);
+            consoleLog("message: " + data.method);
+            consoleLog(data);
             if (data.method === "CreateScreenshot") {
                 MODEL_LIST.push(data);
                 if (MODEL_LIST.length === 1) {
@@ -67,7 +67,7 @@ var PhaserEditor2D;
             }
             if (MODEL_LIST.length > 0) {
                 CURRENT_MODEL = MODEL_LIST.pop();
-                console.log("Start processing new model at project " + CURRENT_MODEL.projectUrl);
+                consoleLog("Start processing new model at project " + CURRENT_MODEL.projectUrl);
                 createGame();
                 game.scene.start("Preload");
             }
@@ -110,7 +110,7 @@ var PhaserEditor2D;
                     }
                     else {
                         var file = sceneInfo.file;
-                        console.log("Sending screenshot data of " + file);
+                        consoleLog("Sending screenshot data of " + file);
                         var loc = document.location;
                         var url = "http://" + loc.host + "/sceneScreenshotService/sceneInfo?" + file;
                         var req = new XMLHttpRequest();

@@ -17,7 +17,7 @@ namespace PhaserEditor2D {
         }
 
         preload() {
-            console.log("preload()");
+            consoleLog("preload()");
             this.load.setBaseURL(this._initData.projectUrl);
             this.load.pack("pack", this._initData.pack);
         }
@@ -149,7 +149,7 @@ namespace PhaserEditor2D {
 
             const result = scene.input.hitTestPointer(pointer);
 
-            console.log(result);
+            consoleLog(result);
 
             let gameObj = result.pop();
 

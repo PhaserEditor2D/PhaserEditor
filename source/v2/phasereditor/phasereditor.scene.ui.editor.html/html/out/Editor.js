@@ -91,7 +91,7 @@ var PhaserEditor2D;
             this.repaint();
         };
         Editor.prototype.openSocket = function () {
-            console.log("Open socket");
+            consoleLog("Open socket");
             this._socket = new WebSocket(this.getWebSocketUrl());
             var self = this;
             this._socket.onopen = function () {
@@ -108,7 +108,7 @@ var PhaserEditor2D;
             };
             window.addEventListener("beforeunload", function (event) {
                 if (self._socket) {
-                    console.log("Closing socket...");
+                    consoleLog("Closing socket...");
                     self.closeSocket();
                 }
             });
@@ -118,9 +118,9 @@ var PhaserEditor2D;
             this._socket.close();
         };
         Editor.prototype.onClosedSocket = function () {
-            console.log("Socket closed");
+            consoleLog("Socket closed");
             if (this._isReloading) {
-                console.log("Closed because a reload.");
+                consoleLog("Closed because a reload.");
                 return;
             }
             this._closed = true;
@@ -293,9 +293,9 @@ var PhaserEditor2D;
             }
         };
         Editor.prototype.onServerMessage = function (batch) {
-            console.log("onServerMessage:");
-            console.log(batch);
-            console.log("----");
+            consoleLog("onServerMessage:");
+            consoleLog(batch);
+            consoleLog("----");
             var list = batch.list;
             this.processMessageList(0, list);
         };
@@ -307,15 +307,15 @@ var PhaserEditor2D;
                 var scene = this.getObjectScene();
                 scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
                     return function () {
-                        console.log("Loader complete.");
-                        console.log("Cancel " + self._loaderIntervalID);
+                        consoleLog("Loader complete.");
+                        consoleLog("Cancel " + self._loaderIntervalID);
                         clearInterval(self._loaderIntervalID);
                         self.processMessageList(index2, list2);
                         self.repaint();
                     };
                 })(index + 1, list), this);
-                console.log("Load: ");
-                console.log(loadMsg.pack);
+                consoleLog("Load: ");
+                consoleLog(loadMsg.pack);
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
@@ -501,9 +501,9 @@ var PhaserEditor2D;
             this.repaint();
         };
         Editor.prototype.sendMessage = function (msg) {
-            console.log("Sending message:");
-            console.log(msg);
-            console.log("----");
+            consoleLog("Sending message:");
+            consoleLog(msg);
+            consoleLog("----");
             this._socket.send(JSON.stringify(msg));
         };
         Editor.prototype.getWebSocketUrl = function () {

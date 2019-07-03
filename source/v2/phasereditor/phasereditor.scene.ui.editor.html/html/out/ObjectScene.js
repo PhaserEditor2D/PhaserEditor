@@ -19,7 +19,7 @@ var PhaserEditor2D;
             this._initData = initData;
         };
         ObjectScene.prototype.preload = function () {
-            console.log("preload()");
+            consoleLog("preload()");
             this.load.setBaseURL(this._initData.projectUrl);
             this.load.pack("pack", this._initData.pack);
         };
@@ -116,7 +116,7 @@ var PhaserEditor2D;
                 return;
             }
             var result = scene.input.hitTestPointer(pointer);
-            console.log(result);
+            consoleLog(result);
             var gameObj = result.pop();
             editor.sendMessage({
                 method: "ClickObject",

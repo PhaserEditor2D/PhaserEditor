@@ -127,7 +127,7 @@ namespace PhaserEditor2D {
         }
 
         openSocket() {
-            console.log("Open socket");
+            consoleLog("Open socket");
             this._socket = new WebSocket(this.getWebSocketUrl());
 
             const self = this;
@@ -150,7 +150,7 @@ namespace PhaserEditor2D {
 
             window.addEventListener("beforeunload", (event) => {
                 if (self._socket) {
-                    console.log("Closing socket...");
+                    consoleLog("Closing socket...");
                     self.closeSocket();
                 }
                 //event.preventDefault();
@@ -164,9 +164,9 @@ namespace PhaserEditor2D {
         }
 
         private onClosedSocket() {
-            console.log("Socket closed");
+            consoleLog("Socket closed");
             if (this._isReloading) {
-                console.log("Closed because a reload.");
+                consoleLog("Closed because a reload.");
                 return;
             }
             this._closed = true;
@@ -384,9 +384,9 @@ namespace PhaserEditor2D {
         }
 
         private onServerMessage(batch: any) {
-            console.log("onServerMessage:");
-            console.log(batch);
-            console.log("----");
+            consoleLog("onServerMessage:");
+            consoleLog(batch);
+            consoleLog("----");
 
             var list = batch.list;
 
@@ -406,9 +406,9 @@ namespace PhaserEditor2D {
 
                     (function (index2, list2) {
                         return function () {
-                            console.log("Loader complete.");
+                            consoleLog("Loader complete.");
 
-                            console.log("Cancel " + self._loaderIntervalID);
+                            consoleLog("Cancel " + self._loaderIntervalID);
                             clearInterval(self._loaderIntervalID);
 
                             self.processMessageList(index2, list2);
@@ -419,8 +419,8 @@ namespace PhaserEditor2D {
 
 
                     , this);
-                console.log("Load: ");
-                console.log(loadMsg.pack);
+                consoleLog("Load: ");
+                consoleLog(loadMsg.pack);
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
@@ -643,9 +643,9 @@ namespace PhaserEditor2D {
         }
 
         sendMessage(msg: any) {
-            console.log("Sending message:");
-            console.log(msg);
-            console.log("----");
+            consoleLog("Sending message:");
+            consoleLog(msg);
+            consoleLog("----");
             this._socket.send(JSON.stringify(msg));
         }
 

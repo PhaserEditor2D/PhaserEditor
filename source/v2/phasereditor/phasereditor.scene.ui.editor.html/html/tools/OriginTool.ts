@@ -167,10 +167,10 @@ namespace PhaserEditor2D {
                 const originDX = dx / width;
                 const originDY = dy / height;
 
-                console.log("---");
-                console.log("width " + width);
-                console.log("dx " + dx);
-                console.log("originDX " + originDX);
+                consoleLog("---");
+                consoleLog("width " + width);
+                consoleLog("dx " + dx);
+                consoleLog("originDX " + originDX);
 
                 const newOriginX = data.initOriginX + (this._changeX ? originDX : 0);
                 const newOriginY = data.initOriginY + (this._changeY ? originDY : 0);
