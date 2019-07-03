@@ -134,3 +134,5 @@ var PhaserEditor2D;
     })(Screenshot = PhaserEditor2D.Screenshot || (PhaserEditor2D.Screenshot = {}));
 })(PhaserEditor2D || (PhaserEditor2D = {}));
 window.addEventListener("load", PhaserEditor2D.Screenshot.mainScreenshot);
+function consoleLog(msg) {
+}
