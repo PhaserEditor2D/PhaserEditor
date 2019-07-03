@@ -20,10 +20,11 @@ namespace PhaserEditor2D {
             consoleLog("preload()");
             this.load.setBaseURL(this._initData.projectUrl);
             this.load.pack("pack", this._initData.pack);
+            setTimeout(() => Editor.getInstance().stop(), 500);
         }
 
         create() {
-            Editor.getInstance().stop();
+            const editor = Editor.getInstance();
 
             this._dragCameraManager = new DragCameraManager(this);
 
@@ -37,9 +38,7 @@ namespace PhaserEditor2D {
 
             this.initSelectionScene();
 
-            const editor = Editor.getInstance();
-
-            editor.getCreate().createWorld(this, this._initData.displayList);            
+            editor.getCreate().createWorld(this, this._initData.displayList);
 
             editor.sceneCreated();
 
@@ -82,7 +81,7 @@ namespace PhaserEditor2D {
             return new Phaser.Math.Vector2(sceneX, sceneY);
         }
 
-    
+
         private initSelectionScene() {
             this.scene.launch("ToolScene");
             this._toolScene = <ToolScene>this.scene.get("ToolScene");
@@ -100,7 +99,7 @@ namespace PhaserEditor2D {
 
         getToolScene() {
             return this._toolScene;
-        }        
+        }
 
         onMouseWheel(e: WheelEvent) {
             var cam = this.cameras.main;
@@ -130,7 +129,7 @@ namespace PhaserEditor2D {
         }
 
         performResize() {
-            this.cameras.main.setSize(window.innerWidth, window.innerHeight);            
+            this.cameras.main.setSize(window.innerWidth, window.innerHeight);
         }
     }
 
@@ -141,8 +140,8 @@ namespace PhaserEditor2D {
             const editor = Editor.getInstance();
 
             const scene = editor.getObjectScene();
-            const pointer = scene.input.activePointer;            
-            
+            const pointer = scene.input.activePointer;
+
             if (!isLeftButton(e)) {
                 return;
             }

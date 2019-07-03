@@ -16,6 +16,7 @@ var PhaserEditor2D;
             this._game.loop.step(Date.now());
         };
         Editor.prototype.stop = function () {
+            consoleLog("loop.stop");
             this._game.loop.stop();
         };
         Editor.prototype.getCreate = function () {
@@ -255,6 +256,7 @@ var PhaserEditor2D;
                 self.repaint();
             });
             this.updateBodyColor();
+            this.stop();
         };
         Editor.prototype.snapValueX = function (x) {
             var props = this.sceneProperties;
@@ -320,6 +322,10 @@ var PhaserEditor2D;
             var self = this;
             if (loadMsg.pack) {
                 var scene = this.getObjectScene();
+                this._loaderIntervalID = setInterval(function () {
+                    self.repaint();
+                }, 20);
+                setTimeout(function () { return self.stop(); }, 1500);
                 scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
                     return function () {
                         consoleLog("Loader complete.");
@@ -334,9 +340,6 @@ var PhaserEditor2D;
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
-                this._loaderIntervalID = setInterval(function () {
-                    self.repaint();
-                }, 20);
             }
             else {
                 this.processMessageList(index + 1, list);

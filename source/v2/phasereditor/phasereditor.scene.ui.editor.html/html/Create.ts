@@ -177,6 +177,7 @@ namespace PhaserEditor2D {
     }
 
     function PixelPerfectHandler(hitArea, x, y, sprite: Phaser.GameObjects.Sprite) {
+        
         if (sprite.flipX) {
             x = 2 * sprite.displayOriginX - x;
         }

@@ -22,16 +22,16 @@ var PhaserEditor2D;
             consoleLog("preload()");
             this.load.setBaseURL(this._initData.projectUrl);
             this.load.pack("pack", this._initData.pack);
+            setTimeout(function () { return PhaserEditor2D.Editor.getInstance().stop(); }, 500);
         };
         ObjectScene.prototype.create = function () {
-            PhaserEditor2D.Editor.getInstance().stop();
+            var editor = PhaserEditor2D.Editor.getInstance();
             this._dragCameraManager = new DragCameraManager(this);
             this._dragObjectsManager = new DragObjectsManager();
             this._pickManager = new PickObjectManager();
             new DropManager();
             this.initCamera();
             this.initSelectionScene();
-            var editor = PhaserEditor2D.Editor.getInstance();
             editor.getCreate().createWorld(this, this._initData.displayList);
             editor.sceneCreated();
             editor.repaint();

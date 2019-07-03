@@ -35,6 +35,7 @@ namespace PhaserEditor2D {
         }
 
         stop() {
+            consoleLog("loop.stop");
             this._game.loop.stop();
         }
 
@@ -339,6 +340,8 @@ namespace PhaserEditor2D {
             });
 
             this.updateBodyColor();
+
+            this.stop();
         }
 
         snapValueX(x: number) {
@@ -421,6 +424,13 @@ namespace PhaserEditor2D {
 
             if (loadMsg.pack) {
                 let scene = this.getObjectScene();
+
+                this._loaderIntervalID = setInterval(function () {
+                    self.repaint();
+                }, 20);
+
+                setTimeout(() => self.stop(), 1500);
+
                 scene.load.once(Phaser.Loader.Events.COMPLETE,
 
                     (function (index2, list2) {
@@ -443,9 +453,6 @@ namespace PhaserEditor2D {
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
-                this._loaderIntervalID = setInterval(function () {
-                    self.repaint();
-                }, 20);
             } else {
                 this.processMessageList(index + 1, list);
             }

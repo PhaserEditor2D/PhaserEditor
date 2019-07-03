@@ -1,11 +1,14 @@
 namespace PhaserEditor2D {
 
+    var TICK_COUNT = 0;
+
     export class ToolScene extends Phaser.Scene {
 
 
         private _selectedObjects: Phaser.GameObjects.GameObject[];
         private _selectionGraphics: Phaser.GameObjects.Graphics;
         private _gridGraphics: Phaser.GameObjects.Graphics;
+        private _tick: Phaser.GameObjects.Text;
         private _tools: InteractiveTool[];
 
 
@@ -36,6 +39,9 @@ namespace PhaserEditor2D {
             });
 
             this._selectionGraphics.depth = -1;
+
+            this._tick = this.add.text(10, 10, "");
+            this._tick.depth = -1;
         }
 
         initCamera() {
@@ -113,6 +119,7 @@ namespace PhaserEditor2D {
 
             let label: Phaser.GameObjects.Text = null;
             let labelHeight = 0;
+            this._axisLabels = [];
 
             for (let x = sx; ; x += dx) {
                 const x2 = (x - cam.scrollX) * cam.zoom;
@@ -223,6 +230,9 @@ namespace PhaserEditor2D {
             this.renderAxis();
             this.renderSelection();
             this.updateTools();
+
+            this._tick.text = TICK_COUNT + "";
+            TICK_COUNT += 1;
         }
 
         setTools(tools: InteractiveTool[]) {
