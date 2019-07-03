@@ -4,6 +4,7 @@ var PhaserEditor2D;
         function Editor() {
             this._closed = false;
             this._isReloading = false;
+            this._sendKeyData = false;
             this.selection = [];
             Editor._instance = this;
             this.openSocket();
@@ -80,6 +81,19 @@ var PhaserEditor2D;
             this.sendMessage({
                 method: "GetInitialState"
             });
+        };
+        Editor.prototype.sendKeyDown = function (e) {
+            if (this._sendKeyData) {
+                var data = {
+                    keyCode: e.keyCode,
+                    ctrlKey: e.ctrlKey,
+                    shiftKey: e.shiftKey
+                };
+                this.sendMessage({
+                    method: "KeyDown",
+                    data: data
+                });
+            }
         };
         Editor.prototype.onResize = function () {
             for (var _i = 0, _a = this._game.scene.scenes; _i < _a.length; _i++) {
@@ -191,6 +205,7 @@ var PhaserEditor2D;
         };
         Editor.prototype.onCreateGame = function (msg) {
             this._webgl = msg.webgl;
+            this._sendKeyData = msg.sendKeyData || false;
             this.sceneProperties = msg.sceneProperties;
             this._create = new PhaserEditor2D.Create();
             this._game = new Phaser.Game({

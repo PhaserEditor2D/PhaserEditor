@@ -6,6 +6,15 @@ window.addEventListener("onerror", function (e) {
 (<any>window).AudioContext = function () {};
 
 
+// disable log on production
+var CONSOLE_LOG = false;
+function consoleLog(msg: any) {
+    if (CONSOLE_LOG) {
+        console.log(msg);
+    }
+}
+
+
 namespace PhaserEditor2D {
     export function isLeftButton(e : MouseEvent) {
         if (e.buttons === undefined) {

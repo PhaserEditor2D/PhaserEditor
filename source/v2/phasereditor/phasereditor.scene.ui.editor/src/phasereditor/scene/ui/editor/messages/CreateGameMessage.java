@@ -33,6 +33,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.scene.core.PackReferencesCollector;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.core.WebRunCore;
 
@@ -71,9 +72,12 @@ public class CreateGameMessage extends ApiMessage {
 					break;
 				}
 			}
-
+			
+			var sendKeyData = PhaserEditorUI.useChromuiumBrowser();
+			
 			_data.put("method", "CreateGame");
 			_data.put("webgl", webgl);
+			_data.put("sendKeyData", sendKeyData);
 			_data.put("displayList", displayListData);
 			_data.put("sceneProperties", scenePropertiesData);
 		}

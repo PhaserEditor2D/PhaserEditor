@@ -138,7 +138,3 @@ namespace PhaserEditor2D.Screenshot {
 }
 
 window.addEventListener("load", PhaserEditor2D.Screenshot.mainScreenshot);
-
-function consoleLog(msg) {
-    // do nothing
-}

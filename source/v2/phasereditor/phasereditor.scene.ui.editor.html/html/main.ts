@@ -2,18 +2,11 @@ function main() {
     new PhaserEditor2D.Editor();
 }
 
-window.addEventListener("keydown", function (e) {
+window.addEventListener("keydown", function (e : KeyboardEvent) {
+    PhaserEditor2D.Editor.getInstance().sendKeyDown(e);
     e.preventDefault();
     e.stopImmediatePropagation();
 });
 
 
 window.addEventListener("load", main);
-
-
-var CONSOLE_LOG = false;
-function consoleLog(msg: any) {
-    if (CONSOLE_LOG) {
-        console.log(msg);
-    }
-}

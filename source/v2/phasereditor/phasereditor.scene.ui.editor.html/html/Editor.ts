@@ -1,6 +1,8 @@
 namespace PhaserEditor2D {
 
+
     export class Editor {
+
 
         private static _instance: Editor;
         private _socket: WebSocket;
@@ -12,6 +14,7 @@ namespace PhaserEditor2D {
         private _pendingMouseDownEvent: MouseEvent;
         private _closed = false;
         private _isReloading = false;
+        private _sendKeyData = false;
 
         sceneProperties: any;
         selection: any[] = [];
@@ -113,6 +116,21 @@ namespace PhaserEditor2D {
                 method: "GetInitialState"
             });
 
+        }
+
+        sendKeyDown(e: KeyboardEvent) {
+            if (this._sendKeyData) {
+                const data = {
+                    keyCode: e.keyCode,
+                    ctrlKey: e.ctrlKey,
+                    shiftKey: e.shiftKey,
+                };
+
+                this.sendMessage({
+                    method: "KeyDown",
+                    data: data
+                })
+            }
         }
 
         private onResize() {
@@ -258,6 +276,7 @@ namespace PhaserEditor2D {
             // update the model
 
             this._webgl = msg.webgl;
+            this._sendKeyData = msg.sendKeyData || false;
             this.sceneProperties = msg.sceneProperties;
 
             // create the game
