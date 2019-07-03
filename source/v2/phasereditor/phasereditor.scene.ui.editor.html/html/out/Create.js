@@ -18,18 +18,12 @@ var PhaserEditor2D;
             var add = scene.add;
             switch (type) {
                 case "Image":
-                    var x = PhaserEditor2D.TransformComponent.get_x(data);
-                    var y = PhaserEditor2D.TransformComponent.get_y(data);
-                    var key = PhaserEditor2D.TextureComponent.get_textureKey(data);
-                    var frame = PhaserEditor2D.TextureComponent.get_textureFrame(data);
-                    obj = add.image(x, y, key, frame);
-                    break;
                 case "Sprite":
                     var x = PhaserEditor2D.TransformComponent.get_x(data);
                     var y = PhaserEditor2D.TransformComponent.get_y(data);
                     var key = PhaserEditor2D.TextureComponent.get_textureKey(data);
                     var frame = PhaserEditor2D.TextureComponent.get_textureFrame(data);
-                    obj = add.sprite(x, y, key, frame);
+                    obj = add.image(x, y, key, frame);
                     break;
                 case "TileSprite":
                     var x = PhaserEditor2D.TransformComponent.get_x(data);

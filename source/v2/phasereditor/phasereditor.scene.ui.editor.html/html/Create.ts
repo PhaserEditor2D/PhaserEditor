@@ -23,6 +23,7 @@ namespace PhaserEditor2D {
 
             switch (type) {
                 case "Image":
+                case "Sprite":
                     var x = TransformComponent.get_x(data);
                     var y = TransformComponent.get_y(data);
 
@@ -31,19 +32,7 @@ namespace PhaserEditor2D {
 
                     obj = add.image(x, y, key, frame);
 
-                    break;
-
-                case "Sprite":
-                    var x = TransformComponent.get_x(data);
-                    var y = TransformComponent.get_y(data);
-
-                    var key = TextureComponent.get_textureKey(data);
-                    var frame = TextureComponent.get_textureFrame(data);
-
-                    obj = add.sprite(x, y, key, frame);
-
-                    break;
-
+                    break;                
                 case "TileSprite":
                     var x = TransformComponent.get_x(data);
                     var y = TransformComponent.get_y(data);
