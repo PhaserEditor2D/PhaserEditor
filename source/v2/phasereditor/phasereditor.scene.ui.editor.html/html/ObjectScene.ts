@@ -20,7 +20,6 @@ namespace PhaserEditor2D {
             consoleLog("preload()");
             this.load.setBaseURL(this._initData.projectUrl);
             this.load.pack("pack", this._initData.pack);
-            setTimeout(() => Editor.getInstance().stop(), 500);
         }
 
         create() {
@@ -42,9 +41,9 @@ namespace PhaserEditor2D {
 
             editor.sceneCreated();
 
-            editor.repaint();
-
-            this.sendRecordCameraStateMessage();
+            this.sendRecordCameraStateMessage();  
+            
+            editor.stop();
         }
 
         updateBackground() {

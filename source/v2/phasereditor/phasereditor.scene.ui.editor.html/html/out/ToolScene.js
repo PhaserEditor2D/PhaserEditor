@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var PhaserEditor2D;
 (function (PhaserEditor2D) {
-    var TICK_COUNT = 0;
+    var PAINT_COUNT = 0;
     var ToolScene = (function (_super) {
         __extends(ToolScene, _super);
         function ToolScene() {
@@ -43,8 +43,8 @@ var PhaserEditor2D;
                 }
             });
             this._selectionGraphics.depth = -1;
-            this._tick = this.add.text(10, 10, "");
-            this._tick.depth = -1;
+            this._paintCallsLabel = this.add.text(10, 10, "", { "color": "black", "backgroundColor": "white" });
+            this._paintCallsLabel.depth = 1000;
         };
         ToolScene.prototype.initCamera = function () {
             this.cameras.main.setRoundPixels(true);
@@ -172,8 +172,8 @@ var PhaserEditor2D;
             this.renderAxis();
             this.renderSelection();
             this.updateTools();
-            this._tick.text = TICK_COUNT + "";
-            TICK_COUNT += 1;
+            this._paintCallsLabel.text = PAINT_COUNT.toString();
+            PAINT_COUNT += 1;
         };
         ToolScene.prototype.setTools = function (tools) {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {

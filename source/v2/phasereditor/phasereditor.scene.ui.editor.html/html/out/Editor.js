@@ -13,7 +13,8 @@ var PhaserEditor2D;
             return Editor._instance;
         };
         Editor.prototype.repaint = function () {
-            this._game.loop.step(Date.now());
+            consoleLog("repaint");
+            this._game.loop.tick();
         };
         Editor.prototype.stop = function () {
             consoleLog("loop.stop");
@@ -205,6 +206,7 @@ var PhaserEditor2D;
             body.style.backgroundColor = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(this.sceneProperties) + ")";
         };
         Editor.prototype.onCreateGame = function (msg) {
+            var self = this;
             this._webgl = msg.webgl;
             this._sendKeyData = msg.sendKeyData || false;
             this.sceneProperties = msg.sceneProperties;
@@ -225,6 +227,10 @@ var PhaserEditor2D;
                     mode: Phaser.Scale.RESIZE
                 }
             });
+            this._game.config.postBoot = function (game) {
+                consoleLog("Game booted");
+                setTimeout(function () { return self.stop(); }, 500);
+            };
             this._objectScene = new PhaserEditor2D.ObjectScene();
             this._game.scene.add("ObjectScene", this._objectScene);
             this._game.scene.add("ToolScene", PhaserEditor2D.ToolScene);
@@ -234,7 +240,6 @@ var PhaserEditor2D;
                 pack: msg.pack
             });
             this._resizeToken = 0;
-            var self = this;
             window.addEventListener('resize', function (event) {
                 if (self._closed) {
                     return;
@@ -256,7 +261,6 @@ var PhaserEditor2D;
                 self.repaint();
             });
             this.updateBodyColor();
-            this.stop();
         };
         Editor.prototype.snapValueX = function (x) {
             var props = this.sceneProperties;
@@ -275,11 +279,13 @@ var PhaserEditor2D;
             return y;
         };
         Editor.prototype.onDropObjects = function (msg) {
+            consoleLog("onDropObjects()");
             var list = msg.list;
             for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
                 var model = list_1[_i];
                 this._create.createObject(this.getObjectScene(), model);
             }
+            this.repaint();
         };
         Editor.prototype.onDeleteObjects = function (msg) {
             var scene = this.getObjectScene();
@@ -322,17 +328,10 @@ var PhaserEditor2D;
             var self = this;
             if (loadMsg.pack) {
                 var scene = this.getObjectScene();
-                this._loaderIntervalID = setInterval(function () {
-                    self.repaint();
-                }, 20);
-                setTimeout(function () { return self.stop(); }, 1500);
                 scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
                     return function () {
                         consoleLog("Loader complete.");
-                        consoleLog("Cancel " + self._loaderIntervalID);
-                        clearInterval(self._loaderIntervalID);
                         self.processMessageList(index2, list2);
-                        self.repaint();
                     };
                 })(index + 1, list), this);
                 consoleLog("Load: ");

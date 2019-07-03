@@ -31,7 +31,8 @@ namespace PhaserEditor2D {
         }
 
         repaint() {
-            this._game.loop.step(Date.now());
+            consoleLog("repaint");
+            this._game.loop.tick();
         }
 
         stop() {
@@ -274,6 +275,9 @@ namespace PhaserEditor2D {
         }
 
         private onCreateGame(msg: any) {
+
+            const self = this;
+
             // update the model
 
             this._webgl = msg.webgl;
@@ -301,6 +305,11 @@ namespace PhaserEditor2D {
                 }
             });
 
+            (<any>this._game.config).postBoot = function (game : Phaser.Game) {
+                consoleLog("Game booted");
+                setTimeout(() => self.stop(), 500);
+            };
+
             this._objectScene = new ObjectScene();
 
             this._game.scene.add("ObjectScene", this._objectScene);
@@ -312,8 +321,6 @@ namespace PhaserEditor2D {
             });
 
             this._resizeToken = 0;
-
-            const self = this;
 
             window.addEventListener('resize', function (event) {
                 if (self._closed) {
@@ -340,8 +347,6 @@ namespace PhaserEditor2D {
             });
 
             this.updateBodyColor();
-
-            this.stop();
         }
 
         snapValueX(x: number) {
@@ -363,11 +368,15 @@ namespace PhaserEditor2D {
         }
 
         private onDropObjects(msg: any) {
+            consoleLog("onDropObjects()");
+
             const list = msg.list;
 
             for (let model of list) {
                 this._create.createObject(this.getObjectScene(), model);
             }
+
+            this.repaint();
         }
 
         private onDeleteObjects(msg) {
@@ -416,8 +425,6 @@ namespace PhaserEditor2D {
 
         };
 
-        private _loaderIntervalID: number;
-
         private onLoadAssets(index: number, list: any[]) {
             let loadMsg = list[index];
             const self = this;
@@ -425,28 +432,15 @@ namespace PhaserEditor2D {
             if (loadMsg.pack) {
                 let scene = this.getObjectScene();
 
-                this._loaderIntervalID = setInterval(function () {
-                    self.repaint();
-                }, 20);
-
-                setTimeout(() => self.stop(), 1500);
-
                 scene.load.once(Phaser.Loader.Events.COMPLETE,
 
                     (function (index2, list2) {
                         return function () {
                             consoleLog("Loader complete.");
 
-                            consoleLog("Cancel " + self._loaderIntervalID);
-                            clearInterval(self._loaderIntervalID);
-
                             self.processMessageList(index2, list2);
-
-                            self.repaint();
                         };
                     })(index + 1, list)
-
-
                     , this);
                 consoleLog("Load: ");
                 consoleLog(loadMsg.pack);

@@ -22,7 +22,6 @@ var PhaserEditor2D;
             consoleLog("preload()");
             this.load.setBaseURL(this._initData.projectUrl);
             this.load.pack("pack", this._initData.pack);
-            setTimeout(function () { return PhaserEditor2D.Editor.getInstance().stop(); }, 500);
         };
         ObjectScene.prototype.create = function () {
             var editor = PhaserEditor2D.Editor.getInstance();
@@ -34,8 +33,8 @@ var PhaserEditor2D;
             this.initSelectionScene();
             editor.getCreate().createWorld(this, this._initData.displayList);
             editor.sceneCreated();
-            editor.repaint();
             this.sendRecordCameraStateMessage();
+            editor.stop();
         };
         ObjectScene.prototype.updateBackground = function () {
             var rgb = "rgb(" + PhaserEditor2D.ScenePropertiesComponent.get_backgroundColor(PhaserEditor2D.Editor.getInstance().sceneProperties) + ")";
