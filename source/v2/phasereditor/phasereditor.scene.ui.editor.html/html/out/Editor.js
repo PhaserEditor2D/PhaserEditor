@@ -9,6 +9,15 @@ var PhaserEditor2D;
             Editor._instance = this;
             this.openSocket();
         }
+        Editor.prototype.hitTestPointer = function (scene, pointer) {
+            var input = scene.game.input;
+            var real = input.real_hitTest;
+            var fake = input.hitTest;
+            input.hitTest = real;
+            var result = scene.input.hitTestPointer(pointer);
+            input.hitTest = fake;
+            return result;
+        };
         Editor.getInstance = function () {
             return Editor._instance;
         };
@@ -230,6 +239,11 @@ var PhaserEditor2D;
             this._game.config.postBoot = function (game) {
                 consoleLog("Game booted");
                 setTimeout(function () { return self.stop(); }, 500);
+            };
+            var input = this._game.input;
+            input.real_hitTest = input.hitTest;
+            input.hitTest = function () {
+                return [];
             };
             this._objectScene = new PhaserEditor2D.ObjectScene();
             this._game.scene.add("ObjectScene", this._objectScene);

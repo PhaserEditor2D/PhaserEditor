@@ -145,7 +145,7 @@ namespace PhaserEditor2D {
                 return;
             }
 
-            const result = scene.input.hitTestPointer(pointer);
+            const result = editor.hitTestPointer(scene, pointer);
 
             consoleLog(result);
 

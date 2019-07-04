@@ -114,7 +114,7 @@ var PhaserEditor2D;
             if (!PhaserEditor2D.isLeftButton(e)) {
                 return;
             }
-            var result = scene.input.hitTestPointer(pointer);
+            var result = editor.hitTestPointer(scene, pointer);
             consoleLog(result);
             var gameObj = result.pop();
             editor.sendMessage({

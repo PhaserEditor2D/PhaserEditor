@@ -3,6 +3,21 @@ namespace PhaserEditor2D {
 
     export class Editor {
 
+        hitTestPointer(scene: Phaser.Scene, pointer: Phaser.Input.Pointer): any {
+            const input: any = scene.game.input;
+
+            const real = input.real_hitTest;
+            const fake = input.hitTest;
+            
+            input.hitTest = real;
+            
+            const result = scene.input.hitTestPointer(pointer);
+
+            input.hitTest = fake;
+
+            return result;
+        }
+
 
         private static _instance: Editor;
         private _socket: WebSocket;
@@ -305,10 +320,18 @@ namespace PhaserEditor2D {
                 }
             });
 
-            (<any>this._game.config).postBoot = function (game : Phaser.Game) {
+            (<any>this._game.config).postBoot = function (game: Phaser.Game) {
                 consoleLog("Game booted");
                 setTimeout(() => self.stop(), 500);
             };
+
+            // default hitTest is a NOOP, so it does not run heavy tests in all mouse moves.
+            const input: any = this._game.input;
+            input.real_hitTest = input.hitTest;
+            input.hitTest = function () {
+                return [];
+            };
+            // --
 
             this._objectScene = new ObjectScene();
 
@@ -448,7 +471,7 @@ namespace PhaserEditor2D {
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
-                setTimeout( ()=> this.repaint(), 100);
+                setTimeout(() => this.repaint(), 100);
             } else {
                 this.processMessageList(index + 1, list);
             }
