@@ -324,10 +324,12 @@ var PhaserEditor2D;
         };
         ;
         Editor.prototype.onLoadAssets = function (index, list) {
+            var _this = this;
             var loadMsg = list[index];
             var self = this;
             if (loadMsg.pack) {
                 var scene = this.getObjectScene();
+                Editor.getInstance().stop();
                 scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
                     return function () {
                         consoleLog("Loader complete.");
@@ -339,6 +341,7 @@ var PhaserEditor2D;
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
+                setTimeout(function () { return _this.repaint(); }, 100);
             }
             else {
                 this.processMessageList(index + 1, list);

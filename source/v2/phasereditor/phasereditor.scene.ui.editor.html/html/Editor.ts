@@ -432,6 +432,7 @@ namespace PhaserEditor2D {
             if (loadMsg.pack) {
                 let scene = this.getObjectScene();
 
+                Editor.getInstance().stop();
                 scene.load.once(Phaser.Loader.Events.COMPLETE,
 
                     (function (index2, list2) {
@@ -447,6 +448,7 @@ namespace PhaserEditor2D {
                 scene.load.crossOrigin = "anonymous";
                 scene.load.addPack(loadMsg.pack);
                 scene.load.start();
+                setTimeout( ()=> this.repaint(), 100);
             } else {
                 this.processMessageList(index + 1, list);
             }

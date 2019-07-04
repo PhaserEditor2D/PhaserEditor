@@ -77,6 +77,7 @@ public class SceneModel {
 	private String _createMethodName;
 	private String _sceneKey;
 	private SourceLang _compilerLang;
+	private boolean _debugPaintCalls;
 
 	public enum MethodContextType {
 		SCENE, OBJECT
@@ -121,8 +122,18 @@ public class SceneModel {
 		_sceneKey = "";
 
 		_compilerLang = SourceLang.JAVA_SCRIPT_6;
+
+		_debugPaintCalls = false;
 	}
 
+	public boolean isDebugPaintCalls() {
+		return _debugPaintCalls;
+	}
+	
+	public void setDebugPaintCalls(boolean debugPaintCalls) {
+		_debugPaintCalls = debugPaintCalls;
+	}
+	
 	public SourceLang getCompilerLang() {
 		return _compilerLang;
 	}
@@ -379,6 +390,9 @@ public class SceneModel {
 				_groupsModel.read(groupsData, project);
 			}
 		}
+		{
+			_debugPaintCalls = data.optBoolean("debugPaintCalls", false);
+		}
 	}
 
 	public void writeProperties(JSONObject data) {
@@ -408,6 +422,10 @@ public class SceneModel {
 			data.put("createMethodName", _createMethodName, "create");
 			data.put("methodContextType", _methodContextType.name());
 			data.put("sceneKey", _sceneKey, "");
+		}
+
+		{
+			data.put("debugPaintCalls", _debugPaintCalls, false);
 		}
 	}
 

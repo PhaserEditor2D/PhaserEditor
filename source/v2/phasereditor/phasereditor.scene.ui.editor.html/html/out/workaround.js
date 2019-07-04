@@ -2,7 +2,7 @@ window.addEventListener("onerror", function (e) {
     alert("WebView ERROR: " + e);
 });
 window.AudioContext = function () { };
-var CONSOLE_LOG = true;
+var CONSOLE_LOG = false;
 function consoleLog(msg) {
     if (CONSOLE_LOG) {
         console.log(msg);

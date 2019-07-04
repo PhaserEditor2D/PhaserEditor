@@ -54,11 +54,11 @@ public class WebViewSection extends BaseDesignSection {
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(1, false));
+		comp.setLayout(new GridLayout(2, false));
 
 		{
 			var btn = new Button(comp, SWT.PUSH);
-			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			btn.setText("System Browser");
 			btn.setImage(EditorSharedImages.getImage(IMG_WORLD));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
@@ -68,7 +68,19 @@ public class WebViewSection extends BaseDesignSection {
 
 		{
 			var btn = createRefreshButton(comp, getEditor());
-			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		}
+
+		{
+			label(comp, "Debug Paint Calls",
+					"*Check to count how many paint calls are requested.\nPaint calls should be requested by demand, not in a loop.");
+			var btn = new Button(comp, SWT.CHECK);
+			addUpdate(() -> {
+				btn.setSelection(getSceneModel().isDebugPaintCalls());
+			});
+			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				wrapOperation(() -> getSceneModel().setDebugPaintCalls(btn.getSelection()));
+			}));
 		}
 
 		return comp;

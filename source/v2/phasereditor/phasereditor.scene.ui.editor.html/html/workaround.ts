@@ -7,7 +7,7 @@ window.addEventListener("onerror", function (e) {
 
 
 // disable log on production
-var CONSOLE_LOG = true;
+var CONSOLE_LOG = false;
 function consoleLog(msg: any) {
     if (CONSOLE_LOG) {
         console.log(msg);

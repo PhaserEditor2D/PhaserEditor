@@ -43,7 +43,7 @@ var PhaserEditor2D;
                 }
             });
             this._selectionGraphics.depth = -1;
-            this._paintCallsLabel = this.add.text(10, 10, "", { "color": "black", "backgroundColor": "white" });
+            this._paintCallsLabel = this.add.text(10, 10, "", { "color": "blue", "backgroundColor": "red" });
             this._paintCallsLabel.depth = 1000;
         };
         ToolScene.prototype.initCamera = function () {
@@ -172,8 +172,11 @@ var PhaserEditor2D;
             this.renderAxis();
             this.renderSelection();
             this.updateTools();
-            this._paintCallsLabel.text = PAINT_COUNT.toString();
-            PAINT_COUNT += 1;
+            this._paintCallsLabel.visible = PhaserEditor2D.Editor.getInstance().sceneProperties.debugPaintCalls;
+            if (this._paintCallsLabel.visible) {
+                this._paintCallsLabel.text = PAINT_COUNT.toString();
+                PAINT_COUNT += 1;
+            }
         };
         ToolScene.prototype.setTools = function (tools) {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {

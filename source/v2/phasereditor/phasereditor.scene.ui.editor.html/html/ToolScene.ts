@@ -40,7 +40,7 @@ namespace PhaserEditor2D {
 
             this._selectionGraphics.depth = -1;
 
-            this._paintCallsLabel = this.add.text(10, 10, "", {"color": "black", "backgroundColor": "white"});
+            this._paintCallsLabel = this.add.text(10, 10, "", { "color": "blue", "backgroundColor": "red" });
             this._paintCallsLabel.depth = 1000;
         }
 
@@ -231,8 +231,13 @@ namespace PhaserEditor2D {
             this.renderSelection();
             this.updateTools();
 
-            this._paintCallsLabel.text = PAINT_COUNT.toString();
-            PAINT_COUNT += 1;
+            
+            this._paintCallsLabel.visible = Editor.getInstance().sceneProperties.debugPaintCalls;
+
+            if (this._paintCallsLabel.visible) {
+                this._paintCallsLabel.text = PAINT_COUNT.toString();
+                PAINT_COUNT += 1;
+            }
         }
 
         setTools(tools: InteractiveTool[]) {
