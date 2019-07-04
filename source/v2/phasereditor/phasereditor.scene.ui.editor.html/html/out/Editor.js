@@ -94,7 +94,7 @@ var PhaserEditor2D;
             });
         };
         Editor.prototype.sendKeyDown = function (e) {
-            if (this._sendKeyData) {
+            if (this._sendKeyData || true) {
                 var data = {
                     keyCode: e.keyCode,
                     ctrlKey: e.ctrlKey,

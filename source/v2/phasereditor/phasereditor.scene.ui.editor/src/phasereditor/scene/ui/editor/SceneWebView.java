@@ -21,16 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
-import java.util.List;
-import java.util.Set;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
-import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.ui.IBrowser;
 
 /**
@@ -52,99 +46,6 @@ public class SceneWebView extends Composite {
 		_editor = editor;
 
 		_webView = IBrowser.create(this, SWT.NONE);
-
-		var keyDownListener = new Listener() {
-
-			private int _lastTime;
-
-			@Override
-			public void handleEvent(Event event) {
-
-				if (event.time == _lastTime) {
-					return;
-				}
-
-				if (!_webView.getControl().isDisposed() && _webView.getControl().isFocusControl()) {
-					if (event.keyCode == SWT.SPACE) {
-						_lastTime = event.time;
-						if (!editor.hasInteractiveTools(Set.of("Hand"))) {
-							editor.setInteractiveTools(Set.of("Hand"));
-						}
-					}
-				}
-			}
-		};
-
-		var keyUpListener = new Listener() {
-
-			private int _lastTime;
-
-			@Override
-			public void handleEvent(Event event) {
-				if (event.time == _lastTime) {
-					return;
-				}
-
-				if (!_webView.getControl().isDisposed() && _webView.getControl().isFocusControl()) {
-
-					var stateMask = event.stateMask;
-
-					var controlPressed = (stateMask & SWT.MOD1) == SWT.MOD1;
-
-					if (controlPressed) {
-						switch (event.keyCode) {
-						case 'c':
-							_lastTime = event.time;
-							_editor.copy();
-							break;
-						case 'x':
-							_lastTime = event.time;
-							_editor.cut();
-							break;
-						case 'v':
-							_lastTime = event.time;
-							_editor.paste();
-							break;
-						case 'a':
-							_lastTime = event.time;
-							_editor.selectAll();
-							break;
-						default:
-							break;
-						}
-					} else {
-						switch (event.keyCode) {
-						case SWT.DEL:
-							_lastTime = event.time;
-							getEditor().delete();
-							break;
-						case SWT.ESC:
-							_lastTime = event.time;
-							editor.setSelection(List.of());
-							editor.getBroker().sendAll(new SelectObjectsMessage(editor));
-							break;
-						case SWT.SPACE:
-							_lastTime = event.time;
-							if (editor.hasInteractiveTools(Set.of("Hand"))) {
-								editor.setInteractiveTools(Set.of());
-							}
-							break;
-						default:
-							break;
-						}
-					}
-
-				}
-			}
-		};
-		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
-		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
-
-		_webView.getControl().addDisposeListener(e -> {
-			getDisplay().removeFilter(SWT.KeyDown, keyDownListener);
-			getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
-		});
-
 	}
 
 	public void setUrl(String url) {
@@ -154,4 +55,6 @@ public class SceneWebView extends Composite {
 	public SceneEditor getEditor() {
 		return _editor;
 	}
+
+	
 }

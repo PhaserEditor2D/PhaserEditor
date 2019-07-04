@@ -24,17 +24,11 @@ package phasereditor.scene.ui.editor;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import org.eclipse.jface.bindings.Binding;
-import org.eclipse.jface.bindings.keys.KeySequence;
-import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.keys.IBindingService;
 import org.json.JSONObject;
 
 import phasereditor.scene.core.DisplayComponent;
@@ -176,42 +170,12 @@ public class SceneEditorBroker {
 	private void onKeyDown(JSONObject msg) {
 		var args = msg.getJSONObject("data");
 		int keyCode = args.optInt("keyCode");
-		boolean isCtrl = args.optBoolean("ctrl");
-		boolean isShift = args.optBoolean("shift");
+		boolean isCtrl = args.optBoolean("ctrlKey");
+		boolean isShift = args.optBoolean("shiftKey");
 
-		var bindingService = _editor.getSite().getService(IBindingService.class);
-		int modifier = 0;
-		if (isCtrl)
-			modifier = SWT.CTRL;
-		if (isShift)
-			modifier = SWT.SHIFT | modifier;
-		if (keyCode == 46 || keyCode == 8)
-			keyCode = SWT.DEL;
-		else if (keyCode == 115)
-			keyCode = SWT.F4;
-		var perfectMatch = bindingService
-				.getPerfectMatch(KeySequence.getInstance(KeyStroke.getInstance(modifier, keyCode)));
-		if (perfectMatch == null) {
-			@SuppressWarnings("unchecked")
-			Collection<Binding> partialMatches = bindingService
-					.getConflictsFor(KeySequence.getInstance(KeyStroke.getInstance(modifier, keyCode)));
-			if (partialMatches != null)
-				for (Binding bid : partialMatches) {
-					if (bid.getParameterizedCommand().getCommand().isEnabled()) {
-						perfectMatch = bid;
-					}
-				}
-		}
-		if (perfectMatch != null && perfectMatch.getParameterizedCommand().getCommand().isEnabled()) {
-			var perfectMatch2 = perfectMatch;
-			swtRun(() -> {
-				try {
-					perfectMatch2.getParameterizedCommand().executeWithChecks(null, null);
-				} catch (Exception e) {
-					SceneUIEditor.logError(e);
-				}
-			});
-		}
+		swtRun(() -> {
+			_editor.handleWebViewEvent(isCtrl, isShift, keyCode);
+		});
 	}
 
 	private void onPasteEvent(JSONObject msg) {

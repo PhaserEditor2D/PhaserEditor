@@ -30,6 +30,9 @@ namespace PhaserEditor2D {
         private _closed = false;
         private _isReloading = false;
         private _sendKeyData = false;
+        private _width = 1;
+        private _height = 1;
+
 
         sceneProperties: any;
         selection: any[] = [];
@@ -136,7 +139,7 @@ namespace PhaserEditor2D {
         }
 
         sendKeyDown(e: KeyboardEvent) {
-            if (this._sendKeyData || true) {
+            if (this._sendKeyData) {
                 const data = {
                     keyCode: e.keyCode,
                     ctrlKey: e.ctrlKey,
@@ -151,14 +154,27 @@ namespace PhaserEditor2D {
         }
 
         private onResize() {
+            const ratio = window.innerWidth / window.innerHeight;
+
+            this._width = 800;
+            this._height = this._width / ratio;
+
+            this._game.scale.setGameSize(this._width, this._height);
 
             for (let scene of this._game.scene.scenes) {
                 const scene2 = <Phaser.Scene>scene;
-                scene2.cameras.main.setSize(window.innerWidth, window.innerHeight);
-                scene2.scale.resize(window.innerWidth, window.innerHeight);
+                scene2.cameras.main.setSize(this._width, this._height);
+                scene2.scale.resize(this._width, this._height);
             }
-
             this.repaint();
+        }
+
+        getWidth() {
+            return this._width;
+        }
+
+        getHeight() {
+            return this._height;
         }
 
         openSocket() {
@@ -300,12 +316,15 @@ namespace PhaserEditor2D {
             this.sceneProperties = msg.sceneProperties;
 
             // create the game
+            const ratio = window.innerWidth / window.innerHeight;
+            var w = 800;
+            var h = 800 / ratio;
 
             this._create = new Create();
             this._game = new Phaser.Game({
                 title: "Phaser Editor 2D - Web Scene Editor",
-                width: window.innerWidth,
-                height: window.innerWidth,
+                width: w,
+                height: h,
                 // WEBGL is problematic on Linux
                 type: this._webgl ? Phaser.WEBGL : Phaser.CANVAS,
                 render: {
@@ -316,7 +335,9 @@ namespace PhaserEditor2D {
                 },
                 url: "https://phasereditor2d.com",
                 scale: {
-                    mode: Phaser.Scale.RESIZE
+                   // mode: Phaser.Scale.RESIZE
+                   mode: Phaser.Scale.FIT,
+                   autoCenter: Phaser.Scale.CENTER_BOTH
                 }
             });
 
@@ -370,6 +391,8 @@ namespace PhaserEditor2D {
             });
 
             this.updateBodyColor();
+
+            this.onResize();
         }
 
         snapValueX(x: number) {

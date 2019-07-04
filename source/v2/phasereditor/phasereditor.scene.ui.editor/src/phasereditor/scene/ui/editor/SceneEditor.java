@@ -1,10 +1,12 @@
 package phasereditor.scene.ui.editor;
 
 import static java.util.stream.Collectors.toList;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.bindings.Binding;
+import org.eclipse.jface.bindings.keys.KeySequence;
+import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -46,6 +51,7 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -1156,6 +1162,97 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 	public void reveal(ObjectModel obj) {
 		getBroker().sendAll(new RevealObjectMessage(obj));
+	}
+
+	public void handleWebViewEvent(boolean isCtrl, boolean isShift, int webKeyCode) {
+		int keyCode = webKeyCode;
+
+		int modifier = 0;
+
+		if (isCtrl) {
+			modifier = SWT.CTRL;
+		}
+
+		if (isShift) {
+			modifier = SWT.SHIFT | modifier;
+		}
+
+		if (keyCode == 46 || keyCode == 8) {
+			keyCode = SWT.DEL;
+		} else if (keyCode == 115) {
+			keyCode = SWT.F4;
+		}
+
+		if (isCtrl) {
+			switch (keyCode) {
+			case 'c':
+			case 'C':
+				copy();
+				break;
+			case 'x':
+			case 'X':
+				cut();
+				break;
+			case 'v':
+			case 'V':
+				paste();
+				break;
+			case 'a':
+			case 'A':
+				selectAll();
+				break;
+			default:
+				break;
+			}
+		} else {
+			switch (keyCode) {
+			case SWT.DEL:
+				delete();
+				break;
+			case SWT.ESC:
+				setSelection(List.of());
+				getBroker().sendAll(new SelectObjectsMessage(this));
+				break;
+			case SWT.SPACE:
+				if (hasInteractiveTools(Set.of("Hand"))) {
+					setInteractiveTools(Set.of());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		if (PhaserEditorUI.useChromuiumBrowser()) {
+
+			var bindingService = getSite().getService(IBindingService.class);
+
+			var perfectMatch = bindingService
+					.getPerfectMatch(KeySequence.getInstance(KeyStroke.getInstance(modifier, keyCode)));
+			if (perfectMatch == null) {
+				@SuppressWarnings("unchecked")
+				Collection<Binding> partialMatches = bindingService
+						.getConflictsFor(KeySequence.getInstance(KeyStroke.getInstance(modifier, keyCode)));
+				if (partialMatches != null)
+					for (Binding bid : partialMatches) {
+						if (bid.getParameterizedCommand().getCommand().isEnabled()) {
+							perfectMatch = bid;
+						}
+					}
+			}
+
+			if (perfectMatch != null && perfectMatch.getParameterizedCommand().getCommand().isEnabled()) {
+				var perfectMatch2 = perfectMatch;
+				swtRun(() -> {
+					try {
+						perfectMatch2.getParameterizedCommand().executeWithChecks(null, null);
+					} catch (Exception e) {
+						SceneUIEditor.logError(e);
+					}
+				});
+			}
+
+		}
 	}
 
 }
