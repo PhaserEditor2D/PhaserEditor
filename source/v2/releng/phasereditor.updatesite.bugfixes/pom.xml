@@ -1,0 +1,14 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.phasereditor2d</groupId>
+		<artifactId>com.phasereditor2d.releng</artifactId>
+		<version>2.1.2-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>com.phasereditor2d</groupId>
+	<artifactId>phasereditor.updatesite.bugfixes</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<version>2.1.2-SNAPSHOT</version>
+    
+</project>

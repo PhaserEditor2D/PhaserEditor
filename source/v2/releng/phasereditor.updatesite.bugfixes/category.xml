@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="phasereditor.ide.features">
+      <category name="bugfixes"/>
+   </feature>
+   <category-def name="bugfixes" label="Phaser Editor Bug Fixes">
+      <description>
+         Patches to support user issues.
+      </description>
+   </category-def>
+</site>
