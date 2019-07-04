@@ -182,7 +182,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </plugins>
 
    <features>
-      <feature id="phasereditor.ide.features"/>
+      <feature id="phasereditor.ide.features" installMode="root"/>
+      <feature id="phasereditor.resources.assets" installMode="root"/>
+      <feature id="phasereditor.resources.executables.features" installMode="root"/>
+      <feature id="phasereditor.resources.templates.features" installMode="root"/>
       <feature id="phasereditor.platform.features"/>
       <feature id="phasereditor.wildwebdeveloper.features"/>
    </features>
