@@ -21,11 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import org.eclipse.core.resources.FileInfoMatcherDescription;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceFilterDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -35,8 +37,7 @@ public class PhaserProjectNature implements IProjectNature {
 
 	public static final String NATURE_IDS[] = { ProjectCore.PHASER_PROJECT_NATURE };
 
-	public static void addPhaserNature(IProject project, IProgressMonitor monitor)
-			throws CoreException {
+	public static void addPhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
@@ -109,7 +110,7 @@ public class PhaserProjectNature implements IProjectNature {
 		// add the builder
 		IProjectDescription desc = _project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
-		
+
 		boolean found = false;
 
 		String builderId = ProjectCore.PHASER_BUILDER_ID;
@@ -120,7 +121,7 @@ public class PhaserProjectNature implements IProjectNature {
 				break;
 			}
 		}
-		
+
 		if (!found) {
 
 			// Phaser builder command
@@ -142,6 +143,30 @@ public class PhaserProjectNature implements IProjectNature {
 		// javaProv.configure();
 
 		_project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+
+		{
+			_project.createFilter(
+
+					IResourceFilterDescription.EXCLUDE_ALL
+
+							| IResourceFilterDescription.FOLDERS
+
+							| IResourceFilterDescription.INHERITABLE
+
+					, new FileInfoMatcherDescription("org.eclipse.ui.ide.patternFilterMatcher", "node_modules"),
+					IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
+			
+			_project.createFilter(
+
+					IResourceFilterDescription.EXCLUDE_ALL
+
+							| IResourceFilterDescription.FOLDERS
+
+							| IResourceFilterDescription.INHERITABLE
+
+					, new FileInfoMatcherDescription("org.eclipse.ui.ide.patternFilterMatcher", ".git"),
+					IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
+		}
 	}
 
 	@Override
