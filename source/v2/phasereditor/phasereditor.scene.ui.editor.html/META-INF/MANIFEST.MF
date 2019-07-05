@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Scene Editor HTML
 Bundle-SymbolicName: phasereditor.scene.ui.editor.html;singleton:=true
-Bundle-Version: 2.1.2.20190626
+Bundle-Version: 2.1.2.20190705
 Bundle-Vendor: Arian Fornaris
 Automatic-Module-Name: phasereditor.scene.ui.editor.html
 Bundle-RequiredExecutionEnvironment: JavaSE-11

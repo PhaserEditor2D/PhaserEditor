@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.1.2.20190626" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor 2D" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.1.2.20190705" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 2D - 2.1.2.20190626
+         Phaser Editor 2D - 2.1.2.20190705
 
 Includes Phaser v3.18.1
 
