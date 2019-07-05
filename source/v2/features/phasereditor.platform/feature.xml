@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="phasereditor.platform.features"
-      label="Phaser Editor - Eclipse Platform"
+      label="Phaser Editor 2D - Eclipse Platform"
       version="2.1.1.20190623"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"

@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.resources.templates.features"
       label="Phaser Editor 2D - Templates Resources"
-      version="2.1.2.20190626"
+      version="2.1.2.20190705"
       provider-name="Arian Fornaris">
 
    <description url="http://www.example.com/description">

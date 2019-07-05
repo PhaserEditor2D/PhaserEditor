@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="phasereditor.ide.features"
-      label="Phaser Editor IDE"
-      version="2.1.2.20190626"
+      label="Phaser Editor 2D - Workbench"
+      version="2.1.2.20190705"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.1.v20180423-1114">
