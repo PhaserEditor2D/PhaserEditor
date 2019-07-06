@@ -37,7 +37,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.ISuperWorkbenchListener;
@@ -121,7 +120,7 @@ public class HugeToolbar extends Composite implements ISuperWorkbenchListener {
 	}
 
 	private void updateWithCurrentEditor() {
-		var editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		var editor = _window.getActivePage().getActiveEditor();
 		if (editor == _activeEditor) {
 			return;
 		}
