@@ -4,7 +4,6 @@ var PhaserEditor2D;
         function Editor() {
             this._closed = false;
             this._isReloading = false;
-            this._sendKeyData = false;
             this.selection = [];
             Editor._instance = this;
             this.openSocket();
@@ -94,17 +93,15 @@ var PhaserEditor2D;
             });
         };
         Editor.prototype.sendKeyDown = function (e) {
-            if (this._sendKeyData || true) {
-                var data = {
-                    keyCode: e.keyCode,
-                    ctrlKey: e.ctrlKey,
-                    shiftKey: e.shiftKey
-                };
-                this.sendMessage({
-                    method: "KeyDown",
-                    data: data
-                });
-            }
+            var data = {
+                keyCode: e.keyCode,
+                ctrlKey: e.ctrlKey || e.metaKey,
+                shiftKey: e.shiftKey
+            };
+            this.sendMessage({
+                method: "KeyDown",
+                data: data
+            });
         };
         Editor.prototype.onResize = function () {
             for (var _i = 0, _a = this._game.scene.scenes; _i < _a.length; _i++) {

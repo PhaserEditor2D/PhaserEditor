@@ -8,9 +8,9 @@ namespace PhaserEditor2D {
 
             const real = input.real_hitTest;
             const fake = input.hitTest;
-            
+
             input.hitTest = real;
-            
+
             const result = scene.input.hitTestPointer(pointer);
 
             input.hitTest = fake;
@@ -29,7 +29,6 @@ namespace PhaserEditor2D {
         private _pendingMouseDownEvent: MouseEvent;
         private _closed = false;
         private _isReloading = false;
-        private _sendKeyData = false;
 
         sceneProperties: any;
         selection: any[] = [];
@@ -136,18 +135,16 @@ namespace PhaserEditor2D {
         }
 
         sendKeyDown(e: KeyboardEvent) {
-            if (this._sendKeyData || true) {
-                const data = {
-                    keyCode: e.keyCode,
-                    ctrlKey: e.ctrlKey,
-                    shiftKey: e.shiftKey,
-                };
+            const data = {
+                keyCode: e.keyCode,
+                ctrlKey: e.ctrlKey || e.metaKey,
+                shiftKey: e.shiftKey,
+            };
 
-                this.sendMessage({
-                    method: "KeyDown",
-                    data: data
-                })
-            }
+            this.sendMessage({
+                method: "KeyDown",
+                data: data
+            });
         }
 
         private onResize() {
