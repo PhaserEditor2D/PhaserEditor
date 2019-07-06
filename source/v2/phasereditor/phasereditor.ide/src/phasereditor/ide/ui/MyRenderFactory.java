@@ -29,6 +29,8 @@ import org.eclipse.e4.ui.workbench.renderers.swt.WBWRenderer;
 import org.eclipse.e4.ui.workbench.renderers.swt.WorkbenchRendererFactory;
 import org.eclipse.swt.widgets.Shell;
 
+import phasereditor.ide.ui.toolbar.HugeToolbar;
+
 /**
  * @author arian
  *
