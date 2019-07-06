@@ -13,9 +13,6 @@
 
     <modules>        
         <module>phasereditor.ide.features</module>
-        <module>phasereditor.resources.executables.features</module>
-        <module>phasereditor.resources.phaser.features</module>
-        <module>phasereditor.resources.templates.features</module>
         <module>phasereditor.platform</module>
         <module>phasereditor.wildwebdeveloper</module>        
     </modules>

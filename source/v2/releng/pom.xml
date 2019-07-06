@@ -13,6 +13,6 @@
 
     <modules>
         <module>phasereditor.product</module>
-        <module>phasereditor.updatesite.bugfixes</module>
+        <!-- <module>phasereditor.updatesite.bugfixes</module> -->
     </modules>
 </project>

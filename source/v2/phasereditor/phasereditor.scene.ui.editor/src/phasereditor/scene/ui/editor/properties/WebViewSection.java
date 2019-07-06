@@ -59,7 +59,7 @@ public class WebViewSection extends BaseDesignSection {
 		{
 			var btn = new Button(comp, SWT.PUSH);
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-			btn.setText("System Browser");
+			btn.setText("System Browser - pepe");
 			btn.setImage(EditorSharedImages.getImage(IMG_WORLD));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 				WebRunUI.openBrowser(getEditor().getBroker().getUrl());

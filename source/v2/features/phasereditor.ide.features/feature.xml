@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.ide.features"
       label="Phaser Editor 2D - Workbench"
-      version="2.1.2.20190705"
+      version="2.1.2.20190706"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.1.v20180423-1114">
@@ -279,6 +279,64 @@
 
    <plugin
          id="phasereditor.scene.ui.editor.html"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.executables"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.executables.linux"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="phasereditor.resources.executables.macos"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="phasereditor.resources.executables.win32"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.code"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.examples"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.examples.assets.audio"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.metadata"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.templates"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
