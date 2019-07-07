@@ -291,6 +291,7 @@
 
    <plugin
          id="phasereditor.resources.executables.linux"
+         os="linux"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -298,6 +299,7 @@
 
    <plugin
          id="phasereditor.resources.executables.macos"
+         os="macosx"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -305,6 +307,7 @@
 
    <plugin
          id="phasereditor.resources.executables.win32"
+         os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"

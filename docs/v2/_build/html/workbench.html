@@ -114,10 +114,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#views">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#editors">Editors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#perspectives">Perspectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workspace-and-projects">Workspace and projects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#active-project">Active project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workspace-and-projects">Workspace and projects</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#import-wizard">Import wizard</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#preferences-and-themes">Preferences and themes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#offline-help">Offline help</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-main-toolbar">The main toolbar</a></li>
@@ -205,29 +205,31 @@
             
   <div class="section" id="workbench-overview">
 <h1>Workbench Overview<a class="headerlink" href="#workbench-overview" title="Permalink to this headline">¶</a></h1>
-<p>Phaser Editor is based on the Eclipse IDE and shares a lot of the concepts and features. In this chapter we explain some key concepts that are common to modern editors and IDEs but could be different in Phaser Editor.</p>
-<p>The Eclipse IDE is a general purpose tool that is open, flexible and powerful. Maybe for this reason it could result complex to some users to perform certain tasks, but we belive that we can customize and transform the Eclipse IDE in a tool more friendly and productive for game development.</p>
-<p>When you run the editor it opens the workbench in the selected workspace. The workbench contains windows, and each window contains views, editors, main toolbar and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contains different perspective.</p>
-<p><a class="reference external" href="TODO.todo">Learn more about the workbench in the Eclipse Help</a></p>
+<p>Phaser Editor is based on the Eclipse IDE and inherites its concepts and features. In this chapter we explain some key concepts that are common to modern editors and IDEs but could be different in Phaser Editor.</p>
+<p>The Eclipse IDE is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we belive that we can customize and transform the Eclipse IDE into a friendly and productive tool for game development.</p>
+<p>When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, main toolbar and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.</p>
+<img alt="_images/workbench-overview.png" src="_images/workbench-overview.png" />
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0">Learn more about the workbench in the Eclipse Help</a></p>
 <div class="section" id="views">
 <h2>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
 <p>A view is a small window, or better say, a <strong>part</strong>, inside the workbench window. They are commonly used to present the information of certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affects the view’s content.</p>
 <img alt="_images/view-menu-toolbar.png" src="_images/view-menu-toolbar.png" />
 <p>Most of the view are about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the <strong>dirty</strong> concept available in editors. A view may persists its state in the workspace metadata.</p>
 <p>You can add, close, stack, dock, minimize/maximize views. The views layout are part of the perspective and is persisted across sessions or perspective switching.</p>
-<p><a class="reference external" href="TODO.todo">Learn more about the views in the Eclipse Help</a></p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1">Learn more about views in the Eclipse Help</a></p>
 </div>
 <div class="section" id="editors">
 <h2>Editors<a class="headerlink" href="#editors" title="Permalink to this headline">¶</a></h2>
-<p>The editors are, like the views, <strong>parts</strong> of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout are not part of the perspective. This means, when you switch to other perspective, the editors remains open.</p>
-<p>Editors have input. The common input of an editor is a file. The editors have a <strong>dirty</strong> state, that is activated when the content is modified but not saved. When you close the workbench, if an editor is <strong>dirty</strong> then a confirmation dialog is shown.</p>
-<p>An editor can contribute items to the <a class="reference external" href="#the-main-toolbar">main toolbar</a>. When an editor is activated the center of the toolbar is filled with its contributions.</p>
-<p><a class="reference external" href="TODO.todo">Learn more about the editors in the Eclipse Help</a></p>
+<p>The editors are, like the views, <strong>parts</strong> of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout are not part of the perspective. This means, when you switch to other perspective, the editors remains open. Only the editor area is affected.</p>
+<p>Editors have input. The common input of an editor is a file. The editors have a <strong>dirty</strong> state, that is activated when the content is modified but not saved. When you close an editor it shows a confirmation dialog if its state is <strong>dirty</strong>.</p>
+<p>An editor can contribute items to the <a class="reference external" href="#the-main-toolbar">main toolbar</a>. When an editor is activated, the center of the toolbar is filled with its contributions.</p>
+<img alt="_images/toolbar-contributions.png" src="_images/toolbar-contributions.png" />
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0">Learn more about the editors in the Eclipse Help</a></p>
 </div>
 <div class="section" id="perspectives">
 <h2>Perspectives<a class="headerlink" href="#perspectives" title="Permalink to this headline">¶</a></h2>
-<p>A perspective groups views and menu items with the goal of focus a series of related tasks. For example, the <a class="reference external" href="#scene">Scene perspective</a> provides the views to better design scenes and related assets.</p>
-<p>The layout of the views and the editor area is persisted in the perspective across sessions. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective.</p>
+<p>A perspective groups views and menu items with a common purpose. For example, the <a class="reference external" href="#scene">Scene perspective</a> provides the views to better design scenes and related assets.</p>
+<p>The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective.</p>
 <p>In the <cite>Window → Perspective</cite> menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:</p>
 <img alt="_images/toolbar-perspective-section.png" src="_images/toolbar-perspective-section.png" />
 <ol class="arabic simple">
@@ -235,15 +237,19 @@
 <li>Reset the perspective.</li>
 <li>Switch to other perspective.</li>
 </ol>
-<p><a class="reference external" href="TODO.todo">Learn more about perspectives in the Eclipse Help</a></p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15">Learn more about perspectives in the Eclipse Help</a></p>
 </div>
 <div class="section" id="workspace-and-projects">
 <h2>Workspace and projects<a class="headerlink" href="#workspace-and-projects" title="Permalink to this headline">¶</a></h2>
+<p>The workspace if a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first <a class="reference external" href="first-steps.html#run-phaser-editor-2d">opens the launcher</a>, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.</p>
+<p>Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don’t really need for Phaser development. A common setup is to create a workspace for each game, with the main game project game and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.</p>
+<p>To simplify the workflow, Phaser Editor uses the concept of <strong>active project</strong>. The idea is to provide a group of views, editors and menus that are attached to the <strong>active project</strong>.</p>
+<p><a class="reference external" href="first-steps.html#switching-projects">Learn more about the active project</a></p>
+</div>
+</div>
+<div class="section" id="import-wizard">
+<h1>Import wizard<a class="headerlink" href="#import-wizard" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="TODO.todo">Learn more about the workspace in the Eclipse Help</a></p>
-<div class="section" id="active-project">
-<h3>Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
 <div class="section" id="preferences-and-themes">
 <h2>Preferences and themes<a class="headerlink" href="#preferences-and-themes" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="TODO.todo">Learn more about preferences in the Eclipse Help</a></p>
