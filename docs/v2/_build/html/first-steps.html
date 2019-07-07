@@ -201,12 +201,12 @@
 <p>In this section, we explain step by step some of the common tasks you may do when starting with Phaser Editor 2D.</p>
 <div class="section" id="download-and-install">
 <h2>1.1&nbsp;&nbsp;&nbsp;Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h2>
-<p>Binaries are available in the <a class="reference external" href="https://phasereditor2d.com/blog/downloads">Downloads</a> page of the Phaser Editor’s website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can uncompress and run. Note there are three different files, one for each supported platform: Windows, macOS, and Linux.</p>
+<p>Binaries are available in the <a class="reference external" href="https://phasereditor2d.com/blog/downloads">Downloads</a> page of the Phaser Editor’s website. Phaser Editor is not an installable application, it is distributed in form of ZIP files that you can un-compress and run. Note there are three different files, one for each supported platform: Windows, macOS, and Linux.</p>
 </div>
 <div class="section" id="run-phaser-editor-2d">
 <h2>1.2&nbsp;&nbsp;&nbsp;Run Phaser Editor 2D<a class="headerlink" href="#run-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
-<p>Uncompress the ZIP file and double click on the executable file <code class="docutils literal"><span class="pre">PhaserEditor2D.exe</span></code>. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable, there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state.</p>
-<p>When Phaser Editor starts, it shows a splash screen and later a <strong>Launcher Dialog</strong>. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a <code class="docutils literal"><span class="pre">workspace</span></code> subfolder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. <a class="reference external" href="workbench.html#workbench.html#workspace-and-projects">Learn more about the workspace</a>. You can change the list of workspaces and other settings in <cite>Preferences → General → Startup and Shutdown → Workspaces</cite>.</p>
+<p>Un-compress the ZIP file and double click on the executable file <code class="docutils literal"><span class="pre">PhaserEditor2D.exe</span></code>. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable, there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state.</p>
+<p>When Phaser Editor starts, it shows a splash screen and later a <strong>Launcher Dialog</strong>. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a <code class="docutils literal"><span class="pre">workspace</span></code> sub-folder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. <a class="reference external" href="workbench.html#workbench.html#workspace-and-projects">Learn more about the workspace</a>. You can change the list of workspaces and other settings in <cite>Preferences → General → Startup and Shutdown → Workspaces</cite>.</p>
 <img alt="_images/WorkspaceLauncher.png" src="_images/WorkspaceLauncher.png" />
 <div class="section" id="windows">
 <h3>1.2.1&nbsp;&nbsp;&nbsp;Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
@@ -238,50 +238,8 @@
 <h3>1.3.1&nbsp;&nbsp;&nbsp;Regular Project<a class="headerlink" href="#regular-project" title="Permalink to this headline">¶</a></h3>
 <p>The regular project wizard shows settings related to the game configuration: game size, canvas type, scale mode, etc… In addition, you can select the language to be used in the project: JavaScript 6 or TypeScript.</p>
 <img alt="_images/new-project-wizard.png" src="_images/new-project-wizard.png" />
-<p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
-<p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="12%" />
-<col width="88%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">index.html</span></code></td>
-<td>The entry point of the game. It is very basic, and loads the <code class="docutils literal"><span class="pre">main.js</span></code> file.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">main.js</span></code></td>
-<td>The Phaser game instance is created. It starts a <code class="docutils literal"><span class="pre">Boot</span></code> scene that is part of this file too.</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">jsconfig.json</span></code></td>
-<td>This is the “project” file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a <code class="docutils literal"><span class="pre">tsconfig.json</span></code> file instead.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">typings/phaser.d.ts</span></code></td>
-<td>The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">lib/phaser.js</span></code></td>
-<td>Contains the Phaser framework. You can replace it by a newer version or a custom build. It is loaded by the <code class="docutils literal"><span class="pre">index.html</span></code> file, so you have full control to load the Phaser runtime.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/pack.json</span></code></td>
-<td>A manifest of the assets used by the game. This file is loaded in the <code class="docutils literal"><span class="pre">Boot</span></code> scene, but you are free to change it. Actually, you are free to change anything. <a class="reference external" href="asset-pack-editor.html">Learn more about the Asset Pack Editor and pack files</a>.</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/animations.json</span></code></td>
-<td>An empty animations file. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file. <a class="reference external" href="animations-editor.html">Learn more about sprite animations and the Animations editor</a>.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.atlas</span></code></td>
-<td>An empty texture atlas file. <a class="reference external" href="texture-packer-editor.html">Learn more about the Texture Packer Editor and atlas file</a>.</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.json</span></code></td>
-<td>The Phaser atlas file derived from the <code class="docutils literal"><span class="pre">texture.atlas</span></code> file —generated by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>—. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.scene</span></code></td>
-<td>An empty scene file. You can add objects to this scene using the <a class="reference external" href="scene-editor.html">Scene Editor</a>.</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.js</span></code></td>
-<td>The compiled scene file. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file and is the thing you see when play the project.</td>
-</tr>
-</tbody>
-</table>
-<p>The other top-level folder is the <code class="docutils literal"><span class="pre">Design</span></code> folder, where you can store files related to the design process. Is very common to store there the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the Phaser atlas files.</p>
+<p>The wizard creates a project with a <a class="reference external" href="#workbench.html#project-structure">basic structure</a> and a few files common in many projects, like an <a class="reference external" href="asset-pack-editor.html">Asset Pack file</a>, a <a class="reference external" href="texture-packer-editor.html">Texture Atlas file</a> and a <a class="reference external" href="scene-editor.html">Scene file</a>.</p>
+<p><a class="reference external" href="workbench.html#phaser-project-wizard">Learn more about the Phaser Project wizard</a></p>
 </div>
 <div class="section" id="example-project">
 <h3>1.3.2&nbsp;&nbsp;&nbsp;Example Project<a class="headerlink" href="#example-project" title="Permalink to this headline">¶</a></h3>

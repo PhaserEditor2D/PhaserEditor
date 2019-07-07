@@ -2,8 +2,11 @@
     "restructuredtext.confPath": "${workspaceFolder}",
     "cSpell.words": [
         "Tilemap",
+        "genindex",
         "installable",
+        "maxdepth",
         "sectnum",
+        "toctree",
         "workspaces"
     ]
 }
