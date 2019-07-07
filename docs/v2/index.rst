@@ -1,6 +1,10 @@
 Documentation
 =============
 
+.. |date| date::
+
+Last update: |date|
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -12,7 +16,6 @@ Documentation
    animations-editor
    scene-editor
    code-editors
-   assets-view
    phaser-labs
 
 Indices and tables

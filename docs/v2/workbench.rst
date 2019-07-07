@@ -1,5 +1,10 @@
-Workbench Overview
-==================
+
+.. sectnum::
+   :depth: 3
+   :start: 2
+
+Workbench
+=========
 
 Phaser Editor is based on the Eclipse IDE and inherites its concepts and features. In this chapter we explain some key concepts that are common to modern editors and IDEs but could be different in Phaser Editor.
 
@@ -56,23 +61,40 @@ In the `Window → Perspective` menu is listed the operations you can do with pe
 `Learn more about perspectives in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15>`_
 
 
-Workspace and projects
-----------------------
+Workspace, projects and resources
+---------------------------------
 
-The workspace if a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first `opens the launcher <first-steps.html#run-phaser-editor-2d>`_, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.
+The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first `opens the launcher <first-steps.html#run-phaser-editor-2d>`_, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.
 
-Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don't really need for Phaser development. A common setup is to create a workspace for each game, with the main game project game and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.
+Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don't really need for Phaser development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.
 
-To simplify the workflow, Phaser Editor uses the concept of **active project**. The idea is to provide a group of views, editors and menus that are attached to the **active project**.
+Phaser Editor introduces the concept of `active project <#active-project>`_. It is a project selected by the user as the working project, and many of the UI (views, toolbars, dialogs, commands) presents only the information in the scope of that project.
 
-`Learn more about the active project <first-steps.html#switching-projects>`_
+Resources
+~~~~~~~~~
 
-Import wizard
-=============
+The resources are the logical elements of the workspace, and follow this hierarchy:
 
-`Learn more about the workspace in the Eclipse Help <TODO.todo>`_
+* Workspace Root
+
+    * Projects
+
+        * Folders and files
 
 
+Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private user space, but place the projects in shared repositories.
+
+Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem.
+
+The **resources** is a powerful and flexible tool you have to adapt your project to different scenerios. Phaser Editor introduced the `Project view <#project-view>`_ to navigate and create the resources or the `active project <#active-project>`_, but the Eclipse IDE provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
+
+`Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
+
+
+Resource properties
+~~~~~~~~~~~~~~~~~~~
+
+The resources has properties. When you select a resource in the `Project view <#project-view>`_, the main properties are shown in the `Properties view <#properties-view>`_
 
 Preferences and themes
 ----------------------
@@ -80,15 +102,35 @@ Preferences and themes
 
 `Learn more about preferences in the Eclipse Help <TODO.todo>`_
 
+
+Active project
+--------------
+
+To simplify the workflow, Phaser Editor uses the concept of **active project**. The idea is to put some of the UI elements in the scope of that project.
+
+* `Project <#project-view>`_ and `Assets <#assets-view>`_ views: only show the content of the active project.
+* The **New** button of the `toolbar <#the-main-toolbar>`_: the resources are created in the active project.
+* The **Play** button of the `toolbar <#the-main-toolbar>`_: it opens the active project in the browser.
+
+You can activate any project at any time. There different ways to do this:
+
+* When you create a new project, it is set as the active project.
+* In the **Home** button of the `toolbar <#the-main-toolbar>`_, right click and select the active project.
+.. image:: images/open-project-dialog.png
+   :alt: Dialog to change the active project.
+* In the `Start <#start-perspective>`_ view, click on a project link.
+.. image:: images/workbench/start-project-links.png
+
+
+`Learn more about the active project <first-steps.html#switching-projects>`_
+
 Offline help
 ------------
 
-TODO
 
 The main toolbar
 ----------------
 
-TODO
 
 Properties view
 ---------------
@@ -102,8 +144,8 @@ Blocks view
 -----------
 
 
-Projects view
--------------
+Project view
+------------
 
 
 Terminal view
@@ -126,7 +168,7 @@ Git perspective
 ~~~~~~~~~~~~~~~
 
 
-Update
-------
+Update the IDE
+--------------
 
 `Learn more about the update system in the Eclipse Help <TODO.todo>`_

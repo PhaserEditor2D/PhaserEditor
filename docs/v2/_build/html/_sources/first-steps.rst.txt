@@ -1,3 +1,9 @@
+
+.. sectnum::
+   :depth: 3
+   :start: 1
+
+
 First Steps
 ===========
 

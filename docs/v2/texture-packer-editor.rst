@@ -1,3 +1,7 @@
+.. sectnum::
+   :depth: 3
+   :start: 3
+   
 Texture Packer Editor
 =====================
 
