@@ -94,13 +94,30 @@ The **resources** is a powerful and flexible tool you have to adapt your project
 Resource properties
 ~~~~~~~~~~~~~~~~~~~
 
-The resources has properties. When you select a resource in the `Project view <#project-view>`_, the main properties are shown in the `Properties view <#properties-view>`_
+When you select a resource in the `Project view <#project-view>`_, the main properties are shown in the `Properties view <#properties-view>`_, together with some actions like open the resource in the `Terminal view <#the-terminal-view>`_ or the OS explorer. The project resource has special properties like the Scene size and language.
 
-Preferences and themes
-----------------------
+.. image:: images/workbench/project-properties.png
+   :alt: Project properties.
 
+Cleaning projects
+~~~~~~~~~~~~~~~~~
 
-`Learn more about preferences in the Eclipse Help <TODO.todo>`_
+Phaser Editor builds an internal model of many of the objects you define in the different files. When you add, delete or modify a set of resources, the project builders are executed and process the affected resources, and update the internal model. Let's see an example:
+
+All the asset keys you define in the `pack files <asset-pack-editor.html>`_ are part of the internal model, and UI parts like the `Animations Editor <animations-editor.html>`_ and the `Scene Editor <scene-editor.html>`_ read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content, if it is the case.
+
+If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the **Clean** dialog in `Project → Clean...`
+
+.. image:: images/workbench/clean-project-dialog.png
+   :alt: Clean project dialog.
+
+...or you can select a project in the `Project view <#project-view>`_ and click on the **Clean** button of the **Project** section of the `Properties view <#properties-view>`_.
+
+.. image:: images/workbench/clean-project-button.png
+   :alt: Clean project button in the Properties view.
+   
+Phaser Project structure
+------------------------
 
 
 Active project
@@ -109,66 +126,100 @@ Active project
 To simplify the workflow, Phaser Editor uses the concept of **active project**. The idea is to put some of the UI elements in the scope of that project.
 
 * `Project <#project-view>`_ and `Assets <#assets-view>`_ views: only show the content of the active project.
+
 * The **New** button of the `toolbar <#the-main-toolbar>`_: the resources are created in the active project.
+
 * The **Play** button of the `toolbar <#the-main-toolbar>`_: it opens the active project in the browser.
 
 You can activate any project at any time. There different ways to do this:
 
 * When you create a new project, it is set as the active project.
+
 * In the **Home** button of the `toolbar <#the-main-toolbar>`_, right click and select the active project.
-.. image:: images/open-project-dialog.png
-   :alt: Dialog to change the active project.
+  
+  .. image:: images/open-project-dialog.png
+     :alt: Dialog to change the active project.
+
 * In the `Start <#start-perspective>`_ view, click on a project link.
-.. image:: images/workbench/start-project-links.png
+
+  .. image:: images/workbench/start-project-links.png
+     :alt: Start perspective open project links.
 
 
 `Learn more about the active project <first-steps.html#switching-projects>`_
 
+Preferences
+-----------
+
+In construction.
+
+
 Offline help
 ------------
+
+In construction.
 
 
 The main toolbar
 ----------------
 
+In construction.
+
 
 Properties view
 ---------------
+
+In construction.
 
 
 Outline view
 ------------
 
+In construction.
+
 
 Blocks view
 -----------
+
+In construction.
 
 
 Project view
 ------------
 
+In construction.
 
-Terminal view
--------------
+
+The Terminal view
+-----------------
+
+In construction.
 
 
 Main perspectives
 -----------------
 
+In construction.
+
 
 Start perspective
 ~~~~~~~~~~~~~~~~~
+
+In construction.
 
 
 Scene perspective
 ~~~~~~~~~~~~~~~~~
 
+In construction.
+
 
 Git perspective
 ~~~~~~~~~~~~~~~
 
+In construction.
 
 Update the IDE
 --------------
 
-`Learn more about the update system in the Eclipse Help <TODO.todo>`_
+In construction.

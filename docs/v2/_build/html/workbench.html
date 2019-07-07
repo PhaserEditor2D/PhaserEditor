@@ -117,24 +117,26 @@
 <li class="toctree-l2"><a class="reference internal" href="#workspace-projects-and-resources">2.4&nbsp;&nbsp;&nbsp;Workspace, projects and resources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#resources">2.4.1&nbsp;&nbsp;&nbsp;Resources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#resource-properties">2.4.2&nbsp;&nbsp;&nbsp;Resource properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleaning-projects">2.4.3&nbsp;&nbsp;&nbsp;Cleaning projects</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#preferences-and-themes">2.5&nbsp;&nbsp;&nbsp;Preferences and themes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">2.6&nbsp;&nbsp;&nbsp;Active project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#offline-help">2.7&nbsp;&nbsp;&nbsp;Offline help</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-main-toolbar">2.8&nbsp;&nbsp;&nbsp;The main toolbar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">2.9&nbsp;&nbsp;&nbsp;Properties view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#outline-view">2.10&nbsp;&nbsp;&nbsp;Outline view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#blocks-view">2.11&nbsp;&nbsp;&nbsp;Blocks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">2.12&nbsp;&nbsp;&nbsp;Project view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#terminal-view">2.13&nbsp;&nbsp;&nbsp;Terminal view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.14&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#start-perspective">2.14.1&nbsp;&nbsp;&nbsp;Start perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">2.14.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.14.3&nbsp;&nbsp;&nbsp;Git perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phaser-project-structure">2.5&nbsp;&nbsp;&nbsp;Phaser Project structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">2.6&nbsp;&nbsp;&nbsp;Active project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preferences">2.7&nbsp;&nbsp;&nbsp;Preferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#offline-help">2.8&nbsp;&nbsp;&nbsp;Offline help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-main-toolbar">2.9&nbsp;&nbsp;&nbsp;The main toolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">2.10&nbsp;&nbsp;&nbsp;Properties view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#outline-view">2.11&nbsp;&nbsp;&nbsp;Outline view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blocks-view">2.12&nbsp;&nbsp;&nbsp;Blocks view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">2.13&nbsp;&nbsp;&nbsp;Project view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-terminal-view">2.14&nbsp;&nbsp;&nbsp;The Terminal view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.15&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#start-perspective">2.15.1&nbsp;&nbsp;&nbsp;Start perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">2.15.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.15.3&nbsp;&nbsp;&nbsp;Git perspective</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#update-the-ide">2.15&nbsp;&nbsp;&nbsp;Update the IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-the-ide">2.16&nbsp;&nbsp;&nbsp;Update the IDE</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">3&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
@@ -270,15 +272,24 @@
 </div>
 <div class="section" id="resource-properties">
 <h3>2.4.2&nbsp;&nbsp;&nbsp;Resource properties<a class="headerlink" href="#resource-properties" title="Permalink to this headline">¶</a></h3>
-<p>The resources has properties. When you select a resource in the <a class="reference external" href="#project-view">Project view</a>, the main properties are shown in the <a class="reference external" href="#properties-view">Properties view</a></p>
+<p>When you select a resource in the <a class="reference external" href="#project-view">Project view</a>, the main properties are shown in the <a class="reference external" href="#properties-view">Properties view</a>, together with some actions like open the resource in the <a class="reference external" href="#the-terminal-view">Terminal view</a> or the OS explorer. The project resource has special properties like the Scene size and language.</p>
+<img alt="Project properties." src="_images/project-properties.png" />
+</div>
+<div class="section" id="cleaning-projects">
+<h3>2.4.3&nbsp;&nbsp;&nbsp;Cleaning projects<a class="headerlink" href="#cleaning-projects" title="Permalink to this headline">¶</a></h3>
+<p>Phaser Editor builds an internal model of many of the objects you define in the different files. When you add, delete or modify a set of resources, the project builders are executed and process the affected resources, and update the internal model. Let’s see an example:</p>
+<p>All the asset keys you define in the <a class="reference external" href="asset-pack-editor.html">pack files</a> are part of the internal model, and UI parts like the <a class="reference external" href="animations-editor.html">Animations Editor</a> and the <a class="reference external" href="scene-editor.html">Scene Editor</a> read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content, if it is the case.</p>
+<p>If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the <strong>Clean</strong> dialog in <cite>Project → Clean…</cite></p>
+<img alt="Clean project dialog." src="_images/clean-project-dialog.png" />
+<p>…or you can select a project in the <a class="reference external" href="#project-view">Project view</a> and click on the <strong>Clean</strong> button of the <strong>Project</strong> section of the <a class="reference external" href="#properties-view">Properties view</a>.</p>
+<img alt="Clean project button in the Properties view." src="_images/clean-project-button.png" />
 </div>
 </div>
-<div class="section" id="preferences-and-themes">
-<h2>2.5&nbsp;&nbsp;&nbsp;Preferences and themes<a class="headerlink" href="#preferences-and-themes" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="TODO.todo">Learn more about preferences in the Eclipse Help</a></p>
+<div class="section" id="phaser-project-structure">
+<h2>2.5&nbsp;&nbsp;&nbsp;Phaser Project structure<a class="headerlink" href="#phaser-project-structure" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="id3">
-<h2>2.6&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>2.6&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>To simplify the workflow, Phaser Editor uses the concept of <strong>active project</strong>. The idea is to put some of the UI elements in the scope of that project.</p>
 <ul class="simple">
 <li><a class="reference external" href="#project-view">Project</a> and <a class="reference external" href="#assets-view">Assets</a> views: only show the content of the active project.</li>
@@ -286,53 +297,69 @@
 <li>The <strong>Play</strong> button of the <a class="reference external" href="#the-main-toolbar">toolbar</a>: it opens the active project in the browser.</li>
 </ul>
 <p>You can activate any project at any time. There different ways to do this:</p>
-<ul class="simple">
-<li>When you create a new project, it is set as the active project.</li>
-<li>In the <strong>Home</strong> button of the <a class="reference external" href="#the-main-toolbar">toolbar</a>, right click and select the active project.</li>
-</ul>
+<ul>
+<li><p class="first">When you create a new project, it is set as the active project.</p>
+</li>
+<li><p class="first">In the <strong>Home</strong> button of the <a class="reference external" href="#the-main-toolbar">toolbar</a>, right click and select the active project.</p>
 <img alt="Dialog to change the active project." src="_images/open-project-dialog.png" />
-<ul class="simple">
-<li>In the <a class="reference external" href="#start-perspective">Start</a> view, click on a project link.</li>
+</li>
+<li><p class="first">In the <a class="reference external" href="#start-perspective">Start</a> view, click on a project link.</p>
+<img alt="Start perspective open project links." src="_images/start-project-links.png" />
+</li>
 </ul>
-<img alt="_images/start-project-links.png" src="_images/start-project-links.png" />
 <p><a class="reference external" href="first-steps.html#switching-projects">Learn more about the active project</a></p>
 </div>
+<div class="section" id="preferences">
+<h2>2.7&nbsp;&nbsp;&nbsp;Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
 <div class="section" id="offline-help">
-<h2>2.7&nbsp;&nbsp;&nbsp;Offline help<a class="headerlink" href="#offline-help" title="Permalink to this headline">¶</a></h2>
+<h2>2.8&nbsp;&nbsp;&nbsp;Offline help<a class="headerlink" href="#offline-help" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
 </div>
 <div class="section" id="the-main-toolbar">
-<h2>2.8&nbsp;&nbsp;&nbsp;The main toolbar<a class="headerlink" href="#the-main-toolbar" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="id6">
-<h2>2.9&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="outline-view">
-<h2>2.10&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="blocks-view">
-<h2>2.11&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="id7">
-<h2>2.12&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="terminal-view">
-<h2>2.13&nbsp;&nbsp;&nbsp;Terminal view<a class="headerlink" href="#terminal-view" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="main-perspectives">
-<h2>2.14&nbsp;&nbsp;&nbsp;Main perspectives<a class="headerlink" href="#main-perspectives" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="start-perspective">
-<h3>2.14.1&nbsp;&nbsp;&nbsp;Start perspective<a class="headerlink" href="#start-perspective" title="Permalink to this headline">¶</a></h3>
+<h2>2.9&nbsp;&nbsp;&nbsp;The main toolbar<a class="headerlink" href="#the-main-toolbar" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
 </div>
 <div class="section" id="id8">
-<h3>2.14.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<h2>2.10&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="outline-view">
+<h2>2.11&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="blocks-view">
+<h2>2.12&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="id9">
+<h2>2.13&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="the-terminal-view">
+<h2>2.14&nbsp;&nbsp;&nbsp;The Terminal view<a class="headerlink" href="#the-terminal-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="main-perspectives">
+<h2>2.15&nbsp;&nbsp;&nbsp;Main perspectives<a class="headerlink" href="#main-perspectives" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+<div class="section" id="start-perspective">
+<h3>2.15.1&nbsp;&nbsp;&nbsp;Start perspective<a class="headerlink" href="#start-perspective" title="Permalink to this headline">¶</a></h3>
+<p>In construction.</p>
+</div>
+<div class="section" id="id10">
+<h3>2.15.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>In construction.</p>
 </div>
 <div class="section" id="git-perspective">
-<h3>2.14.3&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
+<h3>2.15.3&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
+<p>In construction.</p>
 </div>
 </div>
 <div class="section" id="update-the-ide">
-<h2>2.15&nbsp;&nbsp;&nbsp;Update the IDE<a class="headerlink" href="#update-the-ide" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="TODO.todo">Learn more about the update system in the Eclipse Help</a></p>
+<h2>2.16&nbsp;&nbsp;&nbsp;Update the IDE<a class="headerlink" href="#update-the-ide" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
 </div>
 </div>
 

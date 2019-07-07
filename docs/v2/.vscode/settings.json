@@ -1,3 +1,9 @@
 {
-    "restructuredtext.confPath": "${workspaceFolder}"
+    "restructuredtext.confPath": "${workspaceFolder}",
+    "cSpell.words": [
+        "Tilemap",
+        "installable",
+        "sectnum",
+        "workspaces"
+    ]
 }
