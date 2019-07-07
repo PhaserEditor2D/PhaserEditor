@@ -4,7 +4,7 @@
 	<locations>
 		<location path="${eclipse_home}" type="Profile"/>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="file:/home/arian/Documents/PhaserEditor/Releases/v2.1.2/IDE-TP-repository/"/>
+			<repository location="file:/home/arian/Documents/PhaserEditor/Releases/v2.1.3/IDE-TP-repository/"/>
 			<unit id="com.make.chromium.cef.feature.feature.group" version="0.4.0.201904250337"/>
 			<unit id="org.eclipse.cdt.native.feature.group" version="9.8.0.201903190044"/>
 			<unit id="org.eclipse.epp.mpc.feature.group" version="1.7.7.v20190521-1752"/>
