@@ -1185,7 +1185,7 @@ Canvas support common editing operations like:
 
 * Cut, Copy and Paste of the objects.
 * Undo, Redo of all major operations on nodes.
-* Zoom in/out/restore. Scroll the wheel of the mouse to zoom in/out, and the Zoom 1:1 button in the toolbar.
+* Zoom in/out/restore. Scroll the wheel of the mouse to zoom in/out, and the Zoom 1:1 button in the toolbar. You can use the ``I`` and ``O`` keys too.
 * Pan the scene, by holding the middle mouse button and dragging in any direction.
 * Object selection, by clicking it or dragging the mouse and create a selection box.
 * Object moving, first you select the objects and then you drag them.
