@@ -120,24 +120,33 @@
 <li class="toctree-l3"><a class="reference internal" href="#cleaning-projects">2.4.3&nbsp;&nbsp;&nbsp;Cleaning projects</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#wizards-for-resource-creation">2.5&nbsp;&nbsp;&nbsp;Wizards for resource creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#resource-wizards">2.5&nbsp;&nbsp;&nbsp;Resource wizards</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#phaser-project-wizard">2.5.1&nbsp;&nbsp;&nbsp;Phaser Project Wizard</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#project-structure">Project structure</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#phaser-example-project-wizard">2.5.2&nbsp;&nbsp;&nbsp;Phaser Example Project Wizard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#import-and-export-wizards">2.5.3&nbsp;&nbsp;&nbsp;Import and Export wizards</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">2.6&nbsp;&nbsp;&nbsp;Active project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#preferences">2.7&nbsp;&nbsp;&nbsp;Preferences</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quick-access-dialog">2.8&nbsp;&nbsp;&nbsp;Quick Access Dialog</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#offline-help">2.9&nbsp;&nbsp;&nbsp;Offline help</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main-toolbar">2.10&nbsp;&nbsp;&nbsp;Main toolbar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#properties-view">2.11&nbsp;&nbsp;&nbsp;Properties view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#outline-view">2.12&nbsp;&nbsp;&nbsp;Outline view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#blocks-view">2.13&nbsp;&nbsp;&nbsp;Blocks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#project-view">2.14&nbsp;&nbsp;&nbsp;Project view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#terminal-view">2.15&nbsp;&nbsp;&nbsp;Terminal view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preferences">2.7&nbsp;&nbsp;&nbsp;Preferences</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phaser-editor-preferences">2.7.1&nbsp;&nbsp;&nbsp;Phaser Editor preferences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#themes">2.7.2&nbsp;&nbsp;&nbsp;Themes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-bindings">2.7.3&nbsp;&nbsp;&nbsp;Key Bindings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#offline-help">2.8&nbsp;&nbsp;&nbsp;Offline help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-toolbar">2.9&nbsp;&nbsp;&nbsp;Main toolbar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#quick-access-dialog">2.9.1&nbsp;&nbsp;&nbsp;Quick Access dialog</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#properties-view">2.10&nbsp;&nbsp;&nbsp;Properties view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#outline-view">2.11&nbsp;&nbsp;&nbsp;Outline view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blocks-view">2.12&nbsp;&nbsp;&nbsp;Blocks view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-view">2.13&nbsp;&nbsp;&nbsp;Project view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminal-view">2.14&nbsp;&nbsp;&nbsp;Terminal view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-explorer-view">2.15&nbsp;&nbsp;&nbsp;Project Explorer view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.16&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#start-perspective">2.16.1&nbsp;&nbsp;&nbsp;Start perspective</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">2.16.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
@@ -217,29 +226,30 @@
   <div class="section" id="workbench">
 <h1>2&nbsp;&nbsp;&nbsp;Workbench<a class="headerlink" href="#workbench" title="Permalink to this headline">¶</a></h1>
 <p>Phaser Editor is based on the Eclipse IDE and inherits its concepts and features. In this chapter we explain some key concepts that are common to modern editors and IDEs but could be different in Phaser Editor.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0">Learn more about the workbench in the Eclipse Help</a></p>
 <p>The Eclipse IDE is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we believe that we can customize and transform the Eclipse IDE into a friendly and productive tool for game development.</p>
 <p>When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, <a class="reference internal" href="#main-toolbar">main toolbar</a> and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.</p>
 <img alt="_images/workbench-overview.png" src="_images/workbench-overview.png" />
-<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0">Learn more about the workbench in the Eclipse Help</a></p>
 <div class="section" id="views">
 <h2>2.1&nbsp;&nbsp;&nbsp;Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
 <p>A view is a small window, or better say, a <strong>part</strong>, inside the workbench window. They are commonly used to present the information of certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affects the view’s content.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1">Learn more about views in the Eclipse Help</a></p>
 <img alt="_images/view-menu-toolbar.png" src="_images/view-menu-toolbar.png" />
 <p>Most of the view are about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the <strong>dirty</strong> concept available in editors. A view may persists its state in the workspace metadata.</p>
 <p>You can add, close, stack, dock, minimize/maximize views. The views layout are part of the perspective and is persisted across sessions or perspective switching.</p>
-<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1">Learn more about views in the Eclipse Help</a></p>
 </div>
 <div class="section" id="editors">
 <h2>2.2&nbsp;&nbsp;&nbsp;Editors<a class="headerlink" href="#editors" title="Permalink to this headline">¶</a></h2>
 <p>The editors are, like the views, <strong>parts</strong> of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout are not part of the perspective. This means, when you switch to other perspective, the editors remains open. Only the editor area is affected.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0">Learn more about editors in the Eclipse Help</a></p>
 <p>Editors have input. The common input of an editor is a file. The editors have a <strong>dirty</strong> state, that is activated when the content is modified but not saved. When you close an editor it shows a confirmation dialog if its state is <strong>dirty</strong>.</p>
 <p>An editor can contribute items to the <a class="reference internal" href="#main-toolbar">main toolbar</a>. When an editor is activated, the center of the toolbar is filled with its contributions.</p>
 <img alt="_images/toolbar-contributions.png" src="_images/toolbar-contributions.png" />
-<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0">Learn more about the editors in the Eclipse Help</a></p>
 </div>
 <div class="section" id="perspectives">
 <h2>2.3&nbsp;&nbsp;&nbsp;Perspectives<a class="headerlink" href="#perspectives" title="Permalink to this headline">¶</a></h2>
 <p>A perspective groups views and menu items with a common purpose. For example, the <a class="reference external" href="#scene">Scene perspective</a> provides the views to better design scenes and related assets.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15">Learn more about perspectives in the Eclipse Help</a></p>
 <p>The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective.</p>
 <p>In the <em>Window → Perspective</em> menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:</p>
 <img alt="_images/toolbar-perspective-section.png" src="_images/toolbar-perspective-section.png" />
@@ -248,11 +258,11 @@
 <li>Reset the perspective.</li>
 <li>Switch to other perspective.</li>
 </ol>
-<p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15">Learn more about perspectives in the Eclipse Help</a></p>
 </div>
 <div class="section" id="workspace-projects-and-resources">
 <h2>2.4&nbsp;&nbsp;&nbsp;Workspace, projects and resources<a class="headerlink" href="#workspace-projects-and-resources" title="Permalink to this headline">¶</a></h2>
 <p>The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first <a class="reference external" href="first-steps.html#run-phaser-editor-2d">opens the launcher</a>, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0">Learn more about resources in the Eclipse Help</a></p>
 <p>Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don’t really need for Phaser development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.</p>
 <p>Phaser Editor introduces the concept of <a class="reference external" href="#active-project">active project</a>. It is a project selected by the user as the working project, and many of the UI (views, toolbars, dialogs, commands) presents only the information in the scope of that project.</p>
 <div class="section" id="resources">
@@ -274,9 +284,9 @@
 </li>
 </ul>
 <p>Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private user space, but place the projects in shared repositories.</p>
-<p>Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem.</p>
+<p>Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the Eclipse workspace tree, and have no file system location.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3">Learn more about virtual folder in the Eclipse Help</a></p>
 <p>The <strong>resources</strong> is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the <a class="reference internal" href="#project-view">Project view</a> to navigate and create the resources or the <a class="reference external" href="#active-project">active project</a>, but the Eclipse IDE provides more <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6">advanced and general tools</a>.</p>
-<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0">Learn more about resources in the Eclipse Help</a></p>
 </div>
 <div class="section" id="resource-properties">
 <h3>2.4.2&nbsp;&nbsp;&nbsp;Resource properties<a class="headerlink" href="#resource-properties" title="Permalink to this headline">¶</a></h3>
@@ -293,18 +303,68 @@
 <img alt="Clean project button in the Properties view." src="_images/clean-project-button.png" />
 </div>
 </div>
-<div class="section" id="wizards-for-resource-creation">
-<h2>2.5&nbsp;&nbsp;&nbsp;Wizards for resource creation<a class="headerlink" href="#wizards-for-resource-creation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="resource-wizards">
+<h2>2.5&nbsp;&nbsp;&nbsp;Resource wizards<a class="headerlink" href="#resource-wizards" title="Permalink to this headline">¶</a></h2>
 <p>Phaser Editor uses wizards to create any type of resource and set the initial parameters. All these wizards share a set parameters common to all resources, like the name, the path inside the workspace and the physical location (it maybe a link). You can open the wizards in different parts of the IDE:</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/nav/0_4_4_2">Learn more about wizards in the Eclipse Help</a></p>
 <ul class="simple">
 <li>In the main menu: <em>File → New</em>.</li>
-<li>In the context menu of the <a class="reference external" href="#project-view">Project</a> or <strong>Project Explorer</strong>.</li>
+<li>In the context menu of the <a class="reference external" href="#project-view">Project</a> or <a class="reference internal" href="#project-explorer-view">Project Explorer view</a>.</li>
 <li>In the <strong>New</strong> button of the <a class="reference internal" href="#main-toolbar">main toolbar</a>.</li>
-<li>In the <a class="reference internal" href="#quick-access-dialog">Quick Access Dialog</a> (search for <code class="docutils literal"><span class="pre">new</span> <span class="pre">item</span></code>).</li>
+<li>In the <a class="reference internal" href="#quick-access-dialog">Quick Access dialog</a> (search for <code class="docutils literal"><span class="pre">new</span> <span class="pre">item</span></code>).</li>
+<li>In the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> or <a class="reference external" href="chains.html#phaser-examples-view">Phaser Examples</a> views, where you can create a project with the selected example.</li>
 </ul>
+<p>Note you can group the wizards in two groups: file wizards and project wizards. Phaser Editor provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn Phaser or Phaser Editor features.</p>
 <div class="section" id="phaser-project-wizard">
 <h3>2.5.1&nbsp;&nbsp;&nbsp;Phaser Project Wizard<a class="headerlink" href="#phaser-project-wizard" title="Permalink to this headline">¶</a></h3>
-<p>TODO</p>
+<p>This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters to all the projects:</p>
+<img alt="Phaser Project wizard: common parameters." src="_images/project-wizard-page-1.png" />
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Project name</strong></td>
+<td>Should be unique in the workspace.</td>
+</tr>
+<tr class="row-odd"><td><strong>Default location</strong></td>
+<td>By default, the project is physically created inside the workspace folder, but you can choose other location.</td>
+</tr>
+<tr class="row-even"><td>Working sets</td>
+<td>You can add the project to a <a class="reference external" href="https://help.eclipse.org/2019-06/help/index.jsp?nav=%2F0_4_4_2">working  set</a>, where you can logically group of your projects. This is a concept used by the <a class="reference internal" href="#project-explorer-view">Project Explorer view</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>The second page shows the parameters used to customize the project content. There are two groups, the <strong>Game Configuration</strong> and the <strong>Code</strong> parameters. The first group uses a subset of the Phaser Game Configuration and are included in the code.</p>
+<img alt="Phaser Project wizard: game parameters." src="_images/project-wizard-page-2.png" />
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Width</strong> and <strong>Height</strong></td>
+<td>The width and height of the game, in game pixels.</td>
+</tr>
+<tr class="row-odd"><td><strong>Type</strong></td>
+<td>Which renderer to use. <code class="docutils literal"><span class="pre">Phaser.AUTO</span></code>, <code class="docutils literal"><span class="pre">Phaser.CANVAS</span></code>, <code class="docutils literal"><span class="pre">Phaser.HEADLESS</span></code>, or <code class="docutils literal"><span class="pre">Phaser.WEBGL</span></code>. <code class="docutils literal"><span class="pre">AUTO</span></code> picks <code class="docutils literal"><span class="pre">WEBGL</span></code> if available, otherwise <code class="docutils literal"><span class="pre">CANVAS</span></code>.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
 <div class="section" id="project-structure">
 <h4>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h4>
 <p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
@@ -361,12 +421,13 @@
 </tbody>
 </table>
 <p>The other top-level folder is the <code class="docutils literal"><span class="pre">Design</span></code> folder, where you can store files related to the design process. Is very common to store there the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the Phaser atlas files.</p>
-<p>TODO</p>
 </div>
 </div>
 <div class="section" id="phaser-example-project-wizard">
 <h3>2.5.2&nbsp;&nbsp;&nbsp;Phaser Example Project Wizard<a class="headerlink" href="#phaser-example-project-wizard" title="Permalink to this headline">¶</a></h3>
-<p>TODO</p>
+</div>
+<div class="section" id="import-and-export-wizards">
+<h3>2.5.3&nbsp;&nbsp;&nbsp;Import and Export wizards<a class="headerlink" href="#import-and-export-wizards" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="id4">
@@ -388,42 +449,52 @@
 <img alt="Start perspective open project links." src="_images/start-project-links.png" />
 </li>
 </ul>
-<p><a class="reference external" href="first-steps.html#switching-projects">Learn more about the active project</a></p>
 </div>
 <div class="section" id="preferences">
 <h2>2.7&nbsp;&nbsp;&nbsp;Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="phaser-editor-preferences">
+<h3>2.7.1&nbsp;&nbsp;&nbsp;Phaser Editor preferences<a class="headerlink" href="#phaser-editor-preferences" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="themes">
+<h3>2.7.2&nbsp;&nbsp;&nbsp;Themes<a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="key-bindings">
+<h3>2.7.3&nbsp;&nbsp;&nbsp;Key Bindings<a class="headerlink" href="#key-bindings" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
-<div class="section" id="quick-access-dialog">
-<h2>2.8&nbsp;&nbsp;&nbsp;Quick Access Dialog<a class="headerlink" href="#quick-access-dialog" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
 </div>
 <div class="section" id="offline-help">
-<h2>2.9&nbsp;&nbsp;&nbsp;Offline help<a class="headerlink" href="#offline-help" title="Permalink to this headline">¶</a></h2>
+<h2>2.8&nbsp;&nbsp;&nbsp;Offline help<a class="headerlink" href="#offline-help" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="main-toolbar">
-<h2>2.10&nbsp;&nbsp;&nbsp;Main toolbar<a class="headerlink" href="#main-toolbar" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
+<h2>2.9&nbsp;&nbsp;&nbsp;Main toolbar<a class="headerlink" href="#main-toolbar" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="quick-access-dialog">
+<h3>2.9.1&nbsp;&nbsp;&nbsp;Quick Access dialog<a class="headerlink" href="#quick-access-dialog" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 <div class="section" id="properties-view">
-<h2>2.11&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#properties-view" title="Permalink to this headline">¶</a></h2>
+<h2>2.10&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#properties-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="outline-view">
-<h2>2.12&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+<h2>2.11&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="blocks-view">
-<h2>2.13&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
+<h2>2.12&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="project-view">
-<h2>2.14&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
+<h2>2.13&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="terminal-view">
-<h2>2.15&nbsp;&nbsp;&nbsp;Terminal view<a class="headerlink" href="#terminal-view" title="Permalink to this headline">¶</a></h2>
+<h2>2.14&nbsp;&nbsp;&nbsp;Terminal view<a class="headerlink" href="#terminal-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="project-explorer-view">
+<h2>2.15&nbsp;&nbsp;&nbsp;Project Explorer view<a class="headerlink" href="#project-explorer-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="main-perspectives">

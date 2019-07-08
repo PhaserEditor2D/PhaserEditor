@@ -8,19 +8,22 @@ Workbench
 
 Phaser Editor is based on the Eclipse IDE and inherits its concepts and features. In this chapter we explain some key concepts that are common to modern editors and IDEs but could be different in Phaser Editor.
 
+`Learn more about the workbench in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0>`_
+
 The Eclipse IDE is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we believe that we can customize and transform the Eclipse IDE into a friendly and productive tool for game development.
+
 
 When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, `main toolbar`_ and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.
 
 
 .. image:: images/workbench-overview.png
 
-`Learn more about the workbench in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0>`_
-
 Views
 -----
 
 A view is a small window, or better say, a **part**, inside the workbench window. They are commonly used to present the information of certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affects the view's content.
+
+`Learn more about views in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1>`_
 
 .. image:: images/view-menu-toolbar.png
 
@@ -28,12 +31,12 @@ Most of the view are about to navigate content or show the properties of an obje
 
 You can add, close, stack, dock, minimize/maximize views. The views layout are part of the perspective and is persisted across sessions or perspective switching.
 
-`Learn more about views in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1>`_
-
 Editors
 -------
 
 The editors are, like the views, **parts** of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout are not part of the perspective. This means, when you switch to other perspective, the editors remains open. Only the editor area is affected.
+
+`Learn more about editors in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0>`_
 
 Editors have input. The common input of an editor is a file. The editors have a **dirty** state, that is activated when the content is modified but not saved. When you close an editor it shows a confirmation dialog if its state is **dirty**.
 
@@ -41,12 +44,12 @@ An editor can contribute items to the `main toolbar`_. When an editor is activat
 
 .. image:: images/workbench/toolbar-contributions.png
 
-`Learn more about the editors in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0>`_
-
 Perspectives
 ------------
 
 A perspective groups views and menu items with a common purpose. For example, the `Scene perspective <#scene>`_ provides the views to better design scenes and related assets.
+
+`Learn more about perspectives in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15>`_
 
 The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective. 
 
@@ -58,13 +61,13 @@ In the *Window → Perspective* menu is listed the operations you can do with pe
 2. Reset the perspective.
 3. Switch to other perspective.
 
-`Learn more about perspectives in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15>`_
-
-
 Workspace, projects and resources
 ---------------------------------
 
 The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first `opens the launcher <first-steps.html#run-phaser-editor-2d>`_, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.
+
+`Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
+
 
 Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don't really need for Phaser development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.
 
@@ -84,11 +87,11 @@ The resources are the logical elements of the workspace, and follow this hierarc
 
 Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private user space, but place the projects in shared repositories.
 
-Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem.
+Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the Eclipse workspace tree, and have no file system location.
+
+`Learn more about virtual folder in the Eclipse Help <https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3>`_
 
 The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the `Project view`_ to navigate and create the resources or the `active project <#active-project>`_, but the Eclipse IDE provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
-
-`Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
 
 
 Resource properties
@@ -117,20 +120,58 @@ If for any reason, you think the editors or views are showing outdated or wrong 
    :alt: Clean project button in the Properties view.
 
 
-Wizards for resource creation
------------------------------
+Resource wizards
+----------------
 
 Phaser Editor uses wizards to create any type of resource and set the initial parameters. All these wizards share a set parameters common to all resources, like the name, the path inside the workspace and the physical location (it maybe a link). You can open the wizards in different parts of the IDE:
 
+`Learn more about wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/nav/0_4_4_2>`_
+
 * In the main menu: *File → New*.
-* In the context menu of the `Project <#project-view>`_ or **Project Explorer**.
+* In the context menu of the `Project <#project-view>`_ or `Project Explorer view`_.
 * In the **New** button of the `main toolbar`_.
-* In the `Quick Access Dialog`_ (search for ``new item``).
+* In the `Quick Access dialog`_ (search for ``new item``).
+* In the `Chains <phaser-labs.html#chains-view>`_ or `Phaser Examples <chains.html#phaser-examples-view>`_ views, where you can create a project with the selected example.
+
+Note you can group the wizards in two groups: file wizards and project wizards. Phaser Editor provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn Phaser or Phaser Editor features.
+
 
 Phaser Project Wizard
 ~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters to all the projects:
+
+.. image:: images/workbench/project-wizard-page-1.png
+   :alt: Phaser Project wizard: common parameters. 
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+   * - **Project name**
+     - Should be unique in the workspace.
+   * - **Default location**
+     - By default, the project is physically created inside the workspace folder, but you can choose other location.
+   * - Working sets
+     - You can add the project to a `working  set <https://help.eclipse.org/2019-06/help/index.jsp?nav=%2F0_4_4_2>`_, where you can logically group of your projects. This is a concept used by the `Project Explorer view`_.
+
+The second page shows the parameters used to customize the project content. There are two groups, the **Game Configuration** and the **Code** parameters. The first group uses a subset of the Phaser Game Configuration and are included in the code.
+
+.. image:: images/workbench/project-wizard-page-2.png
+   :alt: Phaser Project wizard: game parameters. 
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+   * - **Width** and **Height**
+     - The width and height of the game, in game pixels.
+   * - **Type**
+     - Which renderer to use. ``Phaser.AUTO``, ``Phaser.CANVAS``, ``Phaser.HEADLESS``, or ``Phaser.WEBGL``. ``AUTO`` picks ``WEBGL`` if available, otherwise ``CANVAS``.
+   * - 
+     -
 
 Project structure
 +++++++++++++++++
@@ -139,7 +180,7 @@ The project structure is pretty similar to a static web project. It contains a `
 
 In the following table we provide a short description of each file of the ``WebContent`` folder.
 
-.. table:: Files common to all Phaser projects
+.. table:: Files common to all Phaser projects   
 
    ================================== =======================================================
    ``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file. 
@@ -164,12 +205,13 @@ In the following table we provide a short description of each file of the ``WebC
 The other top-level folder is the ``Design`` folder, where you can store files related to the design process. Is very common to store there the original images used by the `Texture Packer Editor <texture-packer-editor.html>`_, to generate the Phaser atlas files.
 
 
-TODO
-
 Phaser Example Project Wizard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+
+Import and Export wizards
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Active project
 --------------
@@ -196,18 +238,18 @@ You can activate any project at any time. There different ways to do this:
   .. image:: images/workbench/start-project-links.png
      :alt: Start perspective open project links.
 
-
-`Learn more about the active project <first-steps.html#switching-projects>`_
-
 Preferences
 -----------
- 
 
-In construction.
+Phaser Editor preferences
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Themes
+~~~~~~
 
-Quick Access Dialog
--------------------
+Key Bindings
+~~~~~~~~~~~~
+
 
 In construction.
 
@@ -221,7 +263,8 @@ In construction.
 Main toolbar
 ------------
 
-In construction.
+Quick Access dialog
+~~~~~~~~~~~~~~~~~~~
 
 
 Properties view
@@ -253,6 +296,10 @@ Terminal view
 
 In construction.
 
+Project Explorer view
+---------------------
+
+In construction.
 
 Main perspectives
 -----------------

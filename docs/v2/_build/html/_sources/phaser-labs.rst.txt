@@ -5,23 +5,25 @@
 Phaser Labs
 ===========
 
-Phaser Files
-------------
+Phaser Files view
+-----------------
 
 
-Phaser Types
-------------
+Phaser Types view
+-----------------
 
 
-Phaser Hierarchy
-----------------
+Phaser Hierarchy view
+---------------------
 
 
-Phaser Versions
----------------
+Phaser Versions view
+--------------------
+
+Phaser Examples view
+--------------------
 
 
-
-Chains
-------
+Chains view
+-----------
 
