@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Atlas Core
 Bundle-SymbolicName: phasereditor.atlas.core;singleton:=true
-Bundle-Version: 2.0.3.20190320
+Bundle-Version: 2.1.3.20190707
 Bundle-Activator: phasereditor.atlas.core.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -38,3 +38,4 @@ Export-Package: org.yaml.snakeyaml,
 Automatic-Module-Name: phasereditor.atlas.core
 Bundle-ClassPath: lib/snakeyaml-1.21.jar,
  .
+Bundle-RequiredExecutionEnvironment: JavaSE-11
