@@ -10,7 +10,7 @@ Phaser Editor is based on the Eclipse IDE and inherits its concepts and features
 
 The Eclipse IDE is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we believe that we can customize and transform the Eclipse IDE into a friendly and productive tool for game development.
 
-When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, main toolbar and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.
+When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, `main toolbar`_ and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.
 
 
 .. image:: images/workbench-overview.png
@@ -37,7 +37,7 @@ The editors are, like the views, **parts** of the workbench window. You can clos
 
 Editors have input. The common input of an editor is a file. The editors have a **dirty** state, that is activated when the content is modified but not saved. When you close an editor it shows a confirmation dialog if its state is **dirty**.
 
-An editor can contribute items to the `main toolbar <#the-main-toolbar>`_. When an editor is activated, the center of the toolbar is filled with its contributions.
+An editor can contribute items to the `main toolbar`_. When an editor is activated, the center of the toolbar is filled with its contributions.
 
 .. image:: images/workbench/toolbar-contributions.png
 
@@ -50,7 +50,7 @@ A perspective groups views and menu items with a common purpose. For example, th
 
 The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective. 
 
-In the `Window → Perspective` menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:
+In the *Window → Perspective* menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:
 
 .. image:: images/toolbar-perspective-section.png
 
@@ -86,7 +86,7 @@ Physically, a project could be created in any location of the filesystem, but th
 
 Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem.
 
-The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the `Project view <#project-view>`_ to navigate and create the resources or the `active project <#active-project>`_, but the Eclipse IDE provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
+The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the `Project view`_ to navigate and create the resources or the `active project <#active-project>`_, but the Eclipse IDE provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
 
 `Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
 
@@ -94,7 +94,7 @@ The **resources** is a powerful and flexible tool you have to adapt your project
 Resource properties
 ~~~~~~~~~~~~~~~~~~~
 
-When you select a resource in the `Project view <#project-view>`_, the main properties are shown in the `Properties view <#properties-view>`_, together with some actions like open the resource in the `Terminal view <#the-terminal-view>`_ or the OS explorer. The project resource has special properties like the Scene size and language.
+When you select a resource in the `Project view`_, the main properties are shown in the `Properties view`_, together with some actions like open the resource in the `Terminal view`_ or the OS explorer. The project resource has special properties like the Scene size and language.
 
 .. image:: images/workbench/project-properties.png
    :alt: Project properties.
@@ -106,12 +106,12 @@ Phaser Editor builds an internal model of many of the objects you define in the 
 
 All the asset keys you define in the `pack files <asset-pack-editor.html>`_ are part of the internal model, and UI parts like the `Animations Editor <animations-editor.html>`_ and the `Scene Editor <scene-editor.html>`_ read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content, if it is the case.
 
-If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the **Clean** dialog in `Project → Clean...`
+If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the **Clean** dialog in *Project → Clean...*
 
 .. image:: images/workbench/clean-project-dialog.png
    :alt: Clean project dialog.
 
-...or you can select a project in the `Project view <#project-view>`_ and click on the **Clean** button of the **Project** section of the `Properties view <#properties-view>`_.
+...or you can select a project in the `Project view`_ and click on the **Clean** button of the **Project** section of the `Properties view`_.
 
 .. image:: images/workbench/clean-project-button.png
    :alt: Clean project button in the Properties view.
@@ -120,7 +120,12 @@ If for any reason, you think the editors or views are showing outdated or wrong 
 Wizards for resource creation
 -----------------------------
 
-Phaser Editor uses wizards to create any type of resource and set the initial parameters.
+Phaser Editor uses wizards to create any type of resource and set the initial parameters. All these wizards share a set parameters common to all resources, like the name, the path inside the workspace and the physical location (it maybe a link). You can open the wizards in different parts of the IDE:
+
+* In the main menu: *File → New*.
+* In the context menu of the `Project <#project-view>`_ or **Project Explorer**.
+* In the **New** button of the `main toolbar`_.
+* In the `Quick Access Dialog`_ (search for ``new item``).
 
 Phaser Project Wizard
 ~~~~~~~~~~~~~~~~~~~~~
@@ -132,21 +137,29 @@ Project structure
 
 The project structure is pretty similar to a static web project. It contains a ``WebContent`` folder with the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
 
-In the following table we provide a short description of each file of the ``WebContent`` folder:
+In the following table we provide a short description of each file of the ``WebContent`` folder.
 
-================================== =======================================================
-``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file. 
-``main.js``                        The Phaser game instance is created. It starts a ``Boot`` scene that is part of this file too.
-``jsconfig.json``                  This is the "project" file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a ``tsconfig.json`` file instead.
-``typings/phaser.d.ts``            The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.
-``lib/phaser.js``                  Contains the Phaser framework. You can replace it by a newer version or a custom build. It is loaded by the ``index.html`` file, so you have full control to load the Phaser runtime.
-``assets/pack.json``               A manifest of the assets used by the game. This file is loaded in the ``Boot`` scene, but you are free to change it. Actually, you are free to change anything. `Learn more about the Asset Pack Editor and pack files <asset-pack-editor.html>`_.
-``assets/animations.json``         An empty animations file. It is included in the ``pack.json`` file. `Learn more about sprite animations and the Animations editor <animations-editor.html>`_.
-``assets/atlas/textures.atlas``    An empty texture atlas file. `Learn more about the Texture Packer Editor and atlas file <texture-packer-editor.html>`_.
-``assets/atlas/textures.json``     The Phaser atlas file derived from the ``texture.atlas`` file ---generated by the `Texture Packer Editor <texture-packer-editor.html>`_---. It is included in the ``pack.json`` file.
-``assets/scenes/Scene1.scene``     An empty scene file. You can add objects to this scene using the `Scene Editor <scene-editor.html>`_.
-``assets/scenes/Scene1.js``        The compiled scene file. It is included in the ``pack.json`` file and is the thing you see when play the project.
-================================== =======================================================
+.. table:: Files common to all Phaser projects
+
+   ================================== =======================================================
+   ``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file. 
+   ``main.js``                        The Phaser game instance is created. It starts a ``Boot`` scene that is part of this file too.
+   ``jsconfig.json``                  This is the "project" file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a ``tsconfig.json`` file instead.
+   ``typings/phaser.d.ts``            The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.
+   ``lib/phaser.js``                  Contains the Phaser framework. You can replace it by a newer version or a custom build. It is loaded by the ``index.html`` file, so you have full control to load the Phaser runtime.
+   ================================== =======================================================
+
+
+.. table:: Files created by the Phaser Project wizard:
+
+   ================================== =======================================================
+   ``assets/pack.json``               A manifest of the assets used by the game. This file is loaded in the ``Boot`` scene, but you are free to change it. Actually, you are free to change anything. `Learn more about the Asset Pack Editor and pack files <asset-pack-editor.html>`_.
+   ``assets/animations.json``         An empty animations file. It is included in the ``pack.json`` file. `Learn more about sprite animations and the Animations editor <animations-editor.html>`_.
+   ``assets/atlas/textures.atlas``    An empty texture atlas file. `Learn more about the Texture Packer Editor and atlas file <texture-packer-editor.html>`_.
+   ``assets/atlas/textures.json``     The Phaser atlas file derived from the ``texture.atlas`` file ---generated by the `Texture Packer Editor <texture-packer-editor.html>`_---. It is included in the ``pack.json`` file.
+   ``assets/scenes/Scene1.scene``     An empty scene file. You can add objects to this scene using the `Scene Editor <scene-editor.html>`_.
+   ``assets/scenes/Scene1.js``        The compiled scene file. It is included in the ``pack.json`` file and is the thing you see when play the project.
+   ================================== =======================================================
 
 The other top-level folder is the ``Design`` folder, where you can store files related to the design process. Is very common to store there the original images used by the `Texture Packer Editor <texture-packer-editor.html>`_, to generate the Phaser atlas files.
 
@@ -165,15 +178,15 @@ To simplify the workflow, Phaser Editor uses the concept of **active project**. 
 
 * `Project <#project-view>`_ and `Assets <#assets-view>`_ views: only show the content of the active project.
 
-* The **New** button of the `toolbar <#the-main-toolbar>`_: the resources are created in the active project.
+* The **New** button of the `main toolbar`_: the resources are created in the active project.
 
-* The **Play** button of the `toolbar <#the-main-toolbar>`_: it opens the active project in the browser.
+* The **Play** button of the `main toolbar`_: it opens the active project in the browser.
 
 You can activate any project at any time. There different ways to do this:
 
 * When you create a new project, it is set as the active project.
 
-* In the **Home** button of the `toolbar <#the-main-toolbar>`_, right click and select the active project.
+* In the **Home** button of the `main toolbar`_, right click and select the active project.
   
   .. image:: images/open-project-dialog.png
      :alt: Dialog to change the active project.
@@ -193,14 +206,20 @@ Preferences
 In construction.
 
 
+Quick Access Dialog
+-------------------
+
+In construction.
+
+
 Offline help
 ------------
 
 In construction.
 
 
-The main toolbar
-----------------
+Main toolbar
+------------
 
 In construction.
 
@@ -229,8 +248,8 @@ Project view
 In construction.
 
 
-The Terminal view
------------------
+Terminal view
+-------------
 
 In construction.
 

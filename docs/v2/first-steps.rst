@@ -19,7 +19,7 @@ Run Phaser Editor 2D
 
 Un-compress the ZIP file and double click on the executable file ``PhaserEditor2D.exe``. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable, there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state. 
 
-When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` sub-folder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in `Preferences → General → Startup and Shutdown → Workspaces`.
+When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` sub-folder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in *Preferences → General → Startup and Shutdown → Workspaces*.
 
 .. image:: images/WorkspaceLauncher.png
 
@@ -84,7 +84,7 @@ You can create a project based in some of the official Phaser examples or the Ph
 Play the project
 ----------------
 
-Phaser Editor has a built-in HTTP server that you can use to play the game project. When you click the **Play** button in the main toolbar, the built-in server is started and the default OS default browser is launched. You can configure the default browser in `Preferences → General → Web Browser`.
+Phaser Editor has a built-in HTTP server that you can use to play the game project. When you click the **Play** button in the main toolbar, the built-in server is started and the default OS default browser is launched. You can configure the default browser in *Preferences → General → Web Browser*.
 
 .. image:: images/play-project.png
 
@@ -108,7 +108,7 @@ In Phaser Editor you can configure an external editor, and some functions will b
 
 .. image:: images/external-editor-button.png
 
-To configure the external editor go to `Preferences → Phaser Editor → External Code Editor`. You should check the parameter **Open source files in an external editor** to enable the external editor integration. The other parameters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the **Program path** parameter you should set the full path to the editor executable.
+To configure the external editor go to *Preferences → Phaser Editor → External Code Editor*. You should check the parameter **Open source files in an external editor** to enable the external editor integration. The other parameters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the **Program path** parameter you should set the full path to the editor executable.
 
 .. image:: images/external-editor-config.png
 
@@ -118,7 +118,7 @@ Unlock Phaser Editor 2D
 
 Phaser Editor is a commercial product, you `should purchase a license key <https://gumroad.com/l/phasereditor/>`_ to use it in all its potential (**Premium** mode). However, by default, it runs in a **Free** mode that provides all the features and tools but is limited to a certain number of game assets.
 
-To activate the editor, click on `Help → Unlock Phaser Editor`, it shows an activation dialog, write the purchased license key and click on the **Activate** button.
+To activate the editor, click on *Help → Unlock Phaser Editor*, it shows an activation dialog, write the purchased license key and click on the **Activate** button.
 
 This is a table with a comparison between the **Free** and **Premium** mode:
 
