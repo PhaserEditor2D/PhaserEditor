@@ -171,7 +171,8 @@ public class AtlasCore {
 	 */
 	public static String getAtlasFormat(IFile file) throws Exception {
 		String format = null;
-		String ext = file.getFileExtension().toLowerCase();
+		String ext = file.getFileExtension();
+		ext = ext == null ? "" : ext.toLowerCase();
 		if (ext.equals("json")) {
 			var str = new String(Files.readAllBytes(file.getLocation().toFile().toPath()));
 			format = getAtlasJSONFormat(str);

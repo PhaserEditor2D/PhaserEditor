@@ -211,11 +211,13 @@ public class AssetPackCore {
 	}
 
 	public static boolean isSvg(IResource resource) {
-		return resource instanceof IFile && resource.getFullPath().getFileExtension().toLowerCase().equals("svg");
+		var ext = resource.getFullPath().getFileExtension();
+		return ext != null && resource instanceof IFile && ext.toLowerCase().equals("svg");
 	}
 
 	public static boolean isShader(IResource resource) {
-		return resource instanceof IFile && _shaderExtensions.contains(resource.getFullPath().getFileExtension());
+		var ext = resource.getFullPath().getFileExtension();
+		return ext != null && resource instanceof IFile && _shaderExtensions.contains(ext);
 	}
 
 	/**

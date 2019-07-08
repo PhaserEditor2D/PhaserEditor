@@ -619,7 +619,9 @@ public class PhaserEditorUI {
 	}
 
 	public static boolean isEditorSupportedImage(IFile file) {
-		return _supportedImageExts.contains(file.getFileExtension().toLowerCase());
+		var ext = file.getFileExtension();
+		ext = ext == null ? "" : ext;
+		return _supportedImageExts.contains(ext.toLowerCase());
 	}
 
 	public static IFile pickFileWithoutExtension(List<IFile> files, String... exts) {
@@ -631,7 +633,8 @@ public class PhaserEditorUI {
 			set.add(ext.toLowerCase());
 		}
 		for (IFile file : files) {
-			String ext = file.getFileExtension().toLowerCase();
+			String ext = file.getFileExtension();
+			ext = ext == null? "" : ext.toLowerCase();
 			if (!set.contains(ext)) {
 				return file;
 			}

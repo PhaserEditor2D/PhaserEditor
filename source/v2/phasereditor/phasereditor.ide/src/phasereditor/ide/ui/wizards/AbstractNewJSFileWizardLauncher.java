@@ -38,19 +38,19 @@ import phasereditor.ui.EditorSharedImages;
  * @author arian
  *
  */
-public abstract class AbstractNewJSFileWizardLauncher extends NewWizardLancher{
+public abstract class AbstractNewJSFileWizardLauncher extends NewWizardLancher {
 
 	public AbstractNewJSFileWizardLauncher(String name, String description) {
 		super(name, description, EditorSharedImages.getImage(IMG_NEW_GENERIC_EDITOR));
 	}
-	
+
 	@Override
 	protected IStructuredSelection getSelection(IProject project) {
 		var folder = ProjectCore.getWebContentFolder(project);
 		var files = new ArrayList<IFile>();
 		try {
 			folder.accept(r -> {
-				if (r instanceof IFile && r.getFullPath().getFileExtension().equals("js")) {
+				if (r instanceof IFile && "js".equals(r.getFileExtension())) {
 					files.add((IFile) r);
 				}
 				return true;

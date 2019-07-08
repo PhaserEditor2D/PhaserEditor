@@ -120,6 +120,7 @@ public class OptiPNGCore {
 	}
 
 	public static boolean isPNG(IResource res) {
-		return res != null && res instanceof IFile && res.getFileExtension().toLowerCase().equals("png");
+		return res != null && res instanceof IFile && res.getFileExtension() != null
+				&& res.getFileExtension().toLowerCase().equals("png");
 	}
 }
