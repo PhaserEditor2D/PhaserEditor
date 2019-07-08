@@ -129,7 +129,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#import-and-export-wizards">2.5.3&nbsp;&nbsp;&nbsp;Import and Export wizards</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">2.6&nbsp;&nbsp;&nbsp;Active project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#active-project">2.6&nbsp;&nbsp;&nbsp;Active project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#preferences">2.7&nbsp;&nbsp;&nbsp;Preferences</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#phaser-editor-preferences">2.7.1&nbsp;&nbsp;&nbsp;Phaser Editor preferences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#themes">2.7.2&nbsp;&nbsp;&nbsp;Themes</a></li>
@@ -149,8 +149,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#project-explorer-view">2.15&nbsp;&nbsp;&nbsp;Project Explorer view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.16&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#start-perspective">2.16.1&nbsp;&nbsp;&nbsp;Start perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">2.16.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.16.3&nbsp;&nbsp;&nbsp;Git perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scene-perspective">2.16.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-perspective">2.16.3&nbsp;&nbsp;&nbsp;Code perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.16.4&nbsp;&nbsp;&nbsp;Git perspective</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#update-the-ide">2.17&nbsp;&nbsp;&nbsp;Update the IDE</a></li>
@@ -248,7 +249,7 @@
 </div>
 <div class="section" id="perspectives">
 <h2>2.3&nbsp;&nbsp;&nbsp;Perspectives<a class="headerlink" href="#perspectives" title="Permalink to this headline">¶</a></h2>
-<p>A perspective groups views and menu items with a common purpose. For example, the <a class="reference external" href="#scene">Scene perspective</a> provides the views to better design scenes and related assets.</p>
+<p>A perspective groups views and menu items with a common purpose. For example, the <a class="reference internal" href="#scene-perspective">Scene perspective</a> provides the views to better design scenes and related assets.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15">Learn more about perspectives in the Eclipse Help</a></p>
 <p>The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective.</p>
 <p>In the <em>Window → Perspective</em> menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:</p>
@@ -263,8 +264,8 @@
 <h2>2.4&nbsp;&nbsp;&nbsp;Workspace, projects and resources<a class="headerlink" href="#workspace-projects-and-resources" title="Permalink to this headline">¶</a></h2>
 <p>The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first <a class="reference external" href="first-steps.html#run-phaser-editor-2d">opens the launcher</a>, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0">Learn more about resources in the Eclipse Help</a></p>
-<p>Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don’t really need for Phaser development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.</p>
-<p>Phaser Editor introduces the concept of <a class="reference external" href="#active-project">active project</a>. It is a project selected by the user as the working project, and many of the UI (views, toolbars, dialogs, commands) presents only the information in the scope of that project.</p>
+<p>Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don’t really need for <a class="reference external" href="https://phaser.io">Phaser</a> development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some <a class="reference external" href="https://phaser.io">Phaser</a> features or develop ideas related to the game.</p>
+<p>Phaser Editor introduces the concept of <a class="reference internal" href="#active-project">active project</a>. It is a project selected by the user as the working project, and many of the UI (views, toolbars, dialogs, commands) presents only the information in the scope of that project.</p>
 <div class="section" id="resources">
 <h3>2.4.1&nbsp;&nbsp;&nbsp;Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h3>
 <p>The resources are the logical elements of the workspace, and follow this hierarchy:</p>
@@ -286,7 +287,7 @@
 <p>Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private user space, but place the projects in shared repositories.</p>
 <p>Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the Eclipse workspace tree, and have no file system location.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3">Learn more about virtual folder in the Eclipse Help</a></p>
-<p>The <strong>resources</strong> is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the <a class="reference internal" href="#project-view">Project view</a> to navigate and create the resources or the <a class="reference external" href="#active-project">active project</a>, but the Eclipse IDE provides more <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6">advanced and general tools</a>.</p>
+<p>The <strong>resources</strong> is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the <a class="reference internal" href="#project-view">Project view</a> to navigate and create the resources or the <a class="reference internal" href="#active-project">active project</a>, but the Eclipse IDE provides more <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6">advanced and general tools</a>.</p>
 </div>
 <div class="section" id="resource-properties">
 <h3>2.4.2&nbsp;&nbsp;&nbsp;Resource properties<a class="headerlink" href="#resource-properties" title="Permalink to this headline">¶</a></h3>
@@ -314,7 +315,7 @@
 <li>In the <a class="reference internal" href="#quick-access-dialog">Quick Access dialog</a> (search for <code class="docutils literal"><span class="pre">new</span> <span class="pre">item</span></code>).</li>
 <li>In the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> or <a class="reference external" href="chains.html#phaser-examples-view">Phaser Examples</a> views, where you can create a project with the selected example.</li>
 </ul>
-<p>Note you can group the wizards in two groups: file wizards and project wizards. Phaser Editor provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn Phaser or Phaser Editor features.</p>
+<p>Note you can group the wizards in two groups: file wizards and project wizards. Phaser Editor provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn <a class="reference external" href="https://phaser.io">Phaser</a> or Phaser Editor features.</p>
 <div class="section" id="phaser-project-wizard">
 <h3>2.5.1&nbsp;&nbsp;&nbsp;Phaser Project Wizard<a class="headerlink" href="#phaser-project-wizard" title="Permalink to this headline">¶</a></h3>
 <p>This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters to all the projects:</p>
@@ -341,7 +342,7 @@
 </tr>
 </tbody>
 </table>
-<p>The second page shows the parameters used to customize the project content. There are two groups, the <strong>Game Configuration</strong> and the <strong>Code</strong> parameters. The first group uses a subset of the Phaser Game Configuration and are included in the code.</p>
+<p>The second page shows the parameters used to customize the project content. There are two groups, the <strong>Game Configuration</strong> and the <strong>Code</strong> parameters. The first group uses a subset of the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/docs/Phaser.Types.Core.html#.GameConfig">Phaser Game Configuration</a> and are included in the code.</p>
 <img alt="Phaser Project wizard: game parameters." src="_images/project-wizard-page-2.png" />
 <table border="1" class="docutils">
 <colgroup>
@@ -360,8 +361,20 @@
 <tr class="row-odd"><td><strong>Type</strong></td>
 <td>Which renderer to use. <code class="docutils literal"><span class="pre">Phaser.AUTO</span></code>, <code class="docutils literal"><span class="pre">Phaser.CANVAS</span></code>, <code class="docutils literal"><span class="pre">Phaser.HEADLESS</span></code>, or <code class="docutils literal"><span class="pre">Phaser.WEBGL</span></code>. <code class="docutils literal"><span class="pre">AUTO</span></code> picks <code class="docutils literal"><span class="pre">WEBGL</span></code> if available, otherwise <code class="docutils literal"><span class="pre">CANVAS</span></code>.</td>
 </tr>
-<tr class="row-even"><td>&#160;</td>
-<td>&#160;</td>
+<tr class="row-even"><td><strong>Pixel Art</strong></td>
+<td>Prevent pixel art from becoming blurred when scaled. It will remain crisp (tells the WebGL renderer to automatically create textures using a linear filter mode).</td>
+</tr>
+<tr class="row-odd"><td><strong>Physics</strong></td>
+<td>The Physics system (<code class="docutils literal"><span class="pre">NONE</span></code>, <code class="docutils literal"><span class="pre">ARCADE</span></code>, <code class="docutils literal"><span class="pre">IMPACT</span></code>, <code class="docutils literal"><span class="pre">MATTER</span></code>).</td>
+</tr>
+<tr class="row-even"><td><strong>Scale Mode</strong></td>
+<td>The scale mode as used by the Scale Manager.</td>
+</tr>
+<tr class="row-odd"><td><strong>Scale Auto Center</strong></td>
+<td>Automatically center the canvas within the parent?</td>
+</tr>
+<tr class="row-even"><td><strong>Language</strong></td>
+<td>The language to be used to code the game: JavaScript or TypeScript. In both cases the project will be configured to be compatible with Visual Studio Code</td>
 </tr>
 </tbody>
 </table>
@@ -369,8 +382,8 @@
 <h4>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h4>
 <p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
 <p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder.</p>
-<table border="1" class="docutils" id="id7">
-<caption><span class="caption-text">Files common to all Phaser projects</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<table border="1" class="docutils" id="id6">
+<caption><span class="caption-text">Files common to all Phaser projects</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="12%" />
 <col width="88%" />
@@ -380,21 +393,21 @@
 <td>The entry point of the game. It is very basic, and loads the <code class="docutils literal"><span class="pre">main.js</span></code> file.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">main.js</span></code></td>
-<td>The Phaser game instance is created. It starts a <code class="docutils literal"><span class="pre">Boot</span></code> scene that is part of this file too.</td>
+<td>The <a class="reference external" href="https://phaser.io">Phaser</a> game instance is created. It starts a <code class="docutils literal"><span class="pre">Boot</span></code> scene that is part of this file too.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">jsconfig.json</span></code></td>
 <td>This is the “project” file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a <code class="docutils literal"><span class="pre">tsconfig.json</span></code> file instead.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">typings/phaser.d.ts</span></code></td>
-<td>The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.</td>
+<td>The type definitions of the <a class="reference external" href="https://phaser.io">Phaser</a> API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">lib/phaser.js</span></code></td>
-<td>Contains the Phaser framework. You can replace it by a newer version or a custom build. It is loaded by the <code class="docutils literal"><span class="pre">index.html</span></code> file, so you have full control to load the Phaser runtime.</td>
+<td>Contains the <a class="reference external" href="https://phaser.io">Phaser</a> framework. You can replace it by a newer version or a custom build. It is loaded by the <code class="docutils literal"><span class="pre">index.html</span></code> file, so you have full control to load the <a class="reference external" href="https://phaser.io">Phaser</a> runtime.</td>
 </tr>
 </tbody>
 </table>
-<table border="1" class="docutils" id="id8">
-<caption><span class="caption-text">Files created by the Phaser Project wizard:</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-text">Files created by the Phaser Project wizard:</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="12%" />
 <col width="88%" />
@@ -410,7 +423,7 @@
 <td>An empty texture atlas file. <a class="reference external" href="texture-packer-editor.html">Learn more about the Texture Packer Editor and atlas file</a>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.json</span></code></td>
-<td>The Phaser atlas file derived from the <code class="docutils literal"><span class="pre">texture.atlas</span></code> file —generated by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>—. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file.</td>
+<td>The <a class="reference external" href="https://phaser.io">Phaser</a> atlas file derived from the <code class="docutils literal"><span class="pre">texture.atlas</span></code> file —generated by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>—. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.scene</span></code></td>
 <td>An empty scene file. You can add objects to this scene using the <a class="reference external" href="scene-editor.html">Scene Editor</a>.</td>
@@ -425,13 +438,17 @@
 </div>
 <div class="section" id="phaser-example-project-wizard">
 <h3>2.5.2&nbsp;&nbsp;&nbsp;Phaser Example Project Wizard<a class="headerlink" href="#phaser-example-project-wizard" title="Permalink to this headline">¶</a></h3>
+<p>Learn by examples is a common practice in <a class="reference external" href="https://phaser.io">Phaser</a>. The <a class="reference external" href="https://phaser.io">Phaser</a> team spend a lot of time on create examples that showcase certain features or concepts. In Phaser Editor we follow that practice and provide a few number of examples that show how you can use the different tools in the editor.</p>
+<p>In the Phaser Example Project wizard you can select any example from Phaser Editor or from the <a class="reference external" href="https://phaser.io/examples">Phaser Official Examples</a>, and create a project.</p>
+<img alt="The Phaser Example Project." src="_images/new-example-project.png" />
+<p>This wizard can be open as any other wizard, but also from views that display the <a class="reference external" href="https://phaser.io/examples">Phaser Official Examples</a>, like the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> and the <a class="reference external" href="chains.html#phaser-examples-view">Phaser Examples</a> view.</p>
 </div>
 <div class="section" id="import-and-export-wizards">
 <h3>2.5.3&nbsp;&nbsp;&nbsp;Import and Export wizards<a class="headerlink" href="#import-and-export-wizards" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
-<div class="section" id="id4">
-<h2>2.6&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="active-project">
+<h2>2.6&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h2>
 <p>To simplify the workflow, Phaser Editor uses the concept of <strong>active project</strong>. The idea is to put some of the UI elements in the scope of that project.</p>
 <ul class="simple">
 <li><a class="reference external" href="#project-view">Project</a> and <a class="reference external" href="#assets-view">Assets</a> views: only show the content of the active project.</li>
@@ -449,6 +466,8 @@
 <img alt="Start perspective open project links." src="_images/start-project-links.png" />
 </li>
 </ul>
+<p>However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, Phaser Editor shows the name of the project in the editor’s tab, if the file belongs to a non-active project.</p>
+<img alt="Editor tab shows the name of the project if the file does not belong to the active project." src="_images/editor-tab-project-name.png" />
 </div>
 <div class="section" id="preferences">
 <h2>2.7&nbsp;&nbsp;&nbsp;Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h2>
@@ -504,12 +523,16 @@
 <h3>2.16.1&nbsp;&nbsp;&nbsp;Start perspective<a class="headerlink" href="#start-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
-<div class="section" id="id6">
-<h3>2.16.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="scene-perspective">
+<h3>2.16.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#scene-perspective" title="Permalink to this headline">¶</a></h3>
+<p>In construction.</p>
+</div>
+<div class="section" id="code-perspective">
+<h3>2.16.3&nbsp;&nbsp;&nbsp;Code perspective<a class="headerlink" href="#code-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
 <div class="section" id="git-perspective">
-<h3>2.16.3&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
+<h3>2.16.4&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
 </div>

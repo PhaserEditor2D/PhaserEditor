@@ -3,6 +3,12 @@
    :depth: 3
    :start: 2
 
+
+.. _Phaser: https://phaser.io
+
+.. |PhaserOfficialExamples| replace:: Phaser Official Examples
+.. _PhaserOfficialExamples: https://phaser.io/examples
+
 Workbench
 =========
 
@@ -47,7 +53,7 @@ An editor can contribute items to the `main toolbar`_. When an editor is activat
 Perspectives
 ------------
 
-A perspective groups views and menu items with a common purpose. For example, the `Scene perspective <#scene>`_ provides the views to better design scenes and related assets.
+A perspective groups views and menu items with a common purpose. For example, the `Scene perspective`_ provides the views to better design scenes and related assets.
 
 `Learn more about perspectives in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15>`_
 
@@ -69,9 +75,9 @@ The workspace is a folder that stores the projects and metadata (like preference
 `Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
 
 
-Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don't really need for Phaser development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser features or develop ideas related to the game.
+Usually, to develop a game you only need a project. The Eclipse IDE supports references between projects but it is something that you don't really need for Phaser_ development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser_ features or develop ideas related to the game.
 
-Phaser Editor introduces the concept of `active project <#active-project>`_. It is a project selected by the user as the working project, and many of the UI (views, toolbars, dialogs, commands) presents only the information in the scope of that project.
+Phaser Editor introduces the concept of `active project`_. It is a project selected by the user as the working project, and many of the UI (views, toolbars, dialogs, commands) presents only the information in the scope of that project.
 
 Resources
 ~~~~~~~~~
@@ -91,7 +97,7 @@ Folders and files are always logically inside the project. Usually, folders and 
 
 `Learn more about virtual folder in the Eclipse Help <https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3>`_
 
-The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the `Project view`_ to navigate and create the resources or the `active project <#active-project>`_, but the Eclipse IDE provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
+The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. Phaser Editor introduced the `Project view`_ to navigate and create the resources or the `active project`_, but the Eclipse IDE provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
 
 
 Resource properties
@@ -133,7 +139,7 @@ Phaser Editor uses wizards to create any type of resource and set the initial pa
 * In the `Quick Access dialog`_ (search for ``new item``).
 * In the `Chains <phaser-labs.html#chains-view>`_ or `Phaser Examples <chains.html#phaser-examples-view>`_ views, where you can create a project with the selected example.
 
-Note you can group the wizards in two groups: file wizards and project wizards. Phaser Editor provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn Phaser or Phaser Editor features.
+Note you can group the wizards in two groups: file wizards and project wizards. Phaser Editor provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn Phaser_ or Phaser Editor features.
 
 
 Phaser Project Wizard
@@ -156,7 +162,7 @@ This wizard creates a project ready to start making your game. The wizard contai
    * - Working sets
      - You can add the project to a `working  set <https://help.eclipse.org/2019-06/help/index.jsp?nav=%2F0_4_4_2>`_, where you can logically group of your projects. This is a concept used by the `Project Explorer view`_.
 
-The second page shows the parameters used to customize the project content. There are two groups, the **Game Configuration** and the **Code** parameters. The first group uses a subset of the Phaser Game Configuration and are included in the code.
+The second page shows the parameters used to customize the project content. There are two groups, the **Game Configuration** and the **Code** parameters. The first group uses a subset of the `Phaser Game Configuration <https://photonstorm.github.io/phaser3-docs/docs/Phaser.Types.Core.html#.GameConfig>`_ and are included in the code.
 
 .. image:: images/workbench/project-wizard-page-2.png
    :alt: Phaser Project wizard: game parameters. 
@@ -170,8 +176,17 @@ The second page shows the parameters used to customize the project content. Ther
      - The width and height of the game, in game pixels.
    * - **Type**
      - Which renderer to use. ``Phaser.AUTO``, ``Phaser.CANVAS``, ``Phaser.HEADLESS``, or ``Phaser.WEBGL``. ``AUTO`` picks ``WEBGL`` if available, otherwise ``CANVAS``.
-   * - 
-     -
+   * - **Pixel Art**
+     - Prevent pixel art from becoming blurred when scaled. It will remain crisp (tells the WebGL renderer to automatically create textures using a linear filter mode).
+   * - **Physics**
+     - The Physics system (``NONE``, ``ARCADE``, ``IMPACT``, ``MATTER``).
+   * - **Scale Mode**
+     - The scale mode as used by the Scale Manager.
+   * - **Scale Auto Center**
+     - Automatically center the canvas within the parent?
+   * - **Language**
+     - The language to be used to code the game: JavaScript or TypeScript. In both cases the project will be configured to be compatible with Visual Studio Code
+    
 
 Project structure
 +++++++++++++++++
@@ -184,10 +199,10 @@ In the following table we provide a short description of each file of the ``WebC
 
    ================================== =======================================================
    ``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file. 
-   ``main.js``                        The Phaser game instance is created. It starts a ``Boot`` scene that is part of this file too.
+   ``main.js``                        The Phaser_ game instance is created. It starts a ``Boot`` scene that is part of this file too.
    ``jsconfig.json``                  This is the "project" file used by the Language Server include in Phaser Editor. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a ``tsconfig.json`` file instead.
-   ``typings/phaser.d.ts``            The type definitions of the Phaser API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.
-   ``lib/phaser.js``                  Contains the Phaser framework. You can replace it by a newer version or a custom build. It is loaded by the ``index.html`` file, so you have full control to load the Phaser runtime.
+   ``typings/phaser.d.ts``            The type definitions of the Phaser_ API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.
+   ``lib/phaser.js``                  Contains the Phaser_ framework. You can replace it by a newer version or a custom build. It is loaded by the ``index.html`` file, so you have full control to load the Phaser_ runtime.
    ================================== =======================================================
 
 
@@ -197,7 +212,7 @@ In the following table we provide a short description of each file of the ``WebC
    ``assets/pack.json``               A manifest of the assets used by the game. This file is loaded in the ``Boot`` scene, but you are free to change it. Actually, you are free to change anything. `Learn more about the Asset Pack Editor and pack files <asset-pack-editor.html>`_.
    ``assets/animations.json``         An empty animations file. It is included in the ``pack.json`` file. `Learn more about sprite animations and the Animations editor <animations-editor.html>`_.
    ``assets/atlas/textures.atlas``    An empty texture atlas file. `Learn more about the Texture Packer Editor and atlas file <texture-packer-editor.html>`_.
-   ``assets/atlas/textures.json``     The Phaser atlas file derived from the ``texture.atlas`` file ---generated by the `Texture Packer Editor <texture-packer-editor.html>`_---. It is included in the ``pack.json`` file.
+   ``assets/atlas/textures.json``     The Phaser_ atlas file derived from the ``texture.atlas`` file ---generated by the `Texture Packer Editor <texture-packer-editor.html>`_---. It is included in the ``pack.json`` file.
    ``assets/scenes/Scene1.scene``     An empty scene file. You can add objects to this scene using the `Scene Editor <scene-editor.html>`_.
    ``assets/scenes/Scene1.js``        The compiled scene file. It is included in the ``pack.json`` file and is the thing you see when play the project.
    ================================== =======================================================
@@ -207,6 +222,15 @@ The other top-level folder is the ``Design`` folder, where you can store files r
 
 Phaser Example Project Wizard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Learn by examples is a common practice in Phaser_. The Phaser_ team spend a lot of time on create examples that showcase certain features or concepts. In Phaser Editor we follow that practice and provide a few number of examples that show how you can use the different tools in the editor. 
+
+In the Phaser Example Project wizard you can select any example from Phaser Editor or from the |PhaserOfficialExamples|_, and create a project.
+
+.. image:: images/workbench/new-example-project.png
+   :alt: The Phaser Example Project.
+
+This wizard can be open as any other wizard, but also from views that display the |PhaserOfficialExamples|_, like the `Chains <phaser-labs.html#chains-view>`_ and the `Phaser Examples <chains.html#phaser-examples-view>`_ view.
 
 
 Import and Export wizards
@@ -237,6 +261,12 @@ You can activate any project at any time. There different ways to do this:
 
   .. image:: images/workbench/start-project-links.png
      :alt: Start perspective open project links.
+
+
+However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, Phaser Editor shows the name of the project in the editor's tab, if the file belongs to a non-active project.
+
+.. image:: images/workbench/editor-tab-project-name.png
+   :alt: Editor tab shows the name of the project if the file does not belong to the active project.
 
 Preferences
 -----------
@@ -318,6 +348,11 @@ Scene perspective
 
 In construction.
 
+
+Code perspective
+~~~~~~~~~~~~~~~~
+
+In construction.
 
 Git perspective
 ~~~~~~~~~~~~~~~

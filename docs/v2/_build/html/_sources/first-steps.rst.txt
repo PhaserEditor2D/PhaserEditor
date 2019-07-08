@@ -79,7 +79,8 @@ Example Project
 
 You can create a project based in some of the official Phaser examples or the Phaser Editor examples. It is a valuable resource to learn Phaser.
 
-.. image:: images/new-example-project.png
+.. image:: images/workbench/new-example-project.png
+   :alt: The Phaser Example Project.
 
 Play the project
 ----------------
