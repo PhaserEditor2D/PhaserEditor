@@ -52,7 +52,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Phaser Editor Help" href="index.html"/>
-        <link rel="next" title="2   Workbench" href="workbench.html"/>
+        <link rel="next" title="Workbench" href="workbench.html"/>
         <link rel="prev" title="Documentation" href="index.html"/> 
 
   
@@ -124,17 +124,17 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#play-the-project">1.4&nbsp;&nbsp;&nbsp;Play the project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#switching-projects">1.5&nbsp;&nbsp;&nbsp;Switching projects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#external-editor-integration">1.6&nbsp;&nbsp;&nbsp;External editor integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-editors-integration">1.6&nbsp;&nbsp;&nbsp;External editors integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#unlock-phaser-editor-2d">1.7&nbsp;&nbsp;&nbsp;Unlock Phaser Editor 2D</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="workbench.html">2&nbsp;&nbsp;&nbsp;Workbench</a></li>
-<li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">3&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">4&nbsp;&nbsp;&nbsp;Asset Pack Editor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="animations-editor.html">5&nbsp;&nbsp;&nbsp;Animations Editor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scene-editor.html">6&nbsp;&nbsp;&nbsp;Scene Editor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code-editors.html">7&nbsp;&nbsp;&nbsp;Code Editors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="phaser-labs.html">8&nbsp;&nbsp;&nbsp;Phaser Labs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workbench.html">Workbench</a></li>
+<li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">Texture Packer Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">Asset Pack Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animations-editor.html">Animations Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scene-editor.html">Scene Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code-editors.html">Code Editors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phaser-labs.html">Phaser Labs</a></li>
 </ul>
 
             
@@ -259,13 +259,13 @@
 <img alt="_images/open-project-dialog.png" src="_images/open-project-dialog.png" />
 <p><a class="reference external" href="workbench.html#start-perspective">Learn more about the Start perspective</a></p>
 </div>
-<div class="section" id="external-editor-integration">
-<h2>1.6&nbsp;&nbsp;&nbsp;External editor integration<a class="headerlink" href="#external-editor-integration" title="Permalink to this headline">¶</a></h2>
-<p>Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON, and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations, and packs, but use VS Code or any other editor to code the game logic.</p>
-<p>In Phaser Editor you can configure an external editor, and some functions will be delegated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the <a class="reference external" href="scene-editor.html">Scene Editor</a> and the <a class="reference external" href="workbench.html#project-view">Project view</a> will launch the external editor too, to edit the code files.</p>
+<div class="section" id="external-editors-integration">
+<h2>1.6&nbsp;&nbsp;&nbsp;External editors integration<a class="headerlink" href="#external-editors-integration" title="Permalink to this headline">¶</a></h2>
+<p>The “war” of code editors and IDEs is bloody and there is not a clear winner. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> allows to edit all common web files (JS, TS, HTML, CSS,…) and provides a acceptable tooling. However, it is very important for us that you can use your loved, alien code editor to write the game logic.</p>
+<p><a class="reference external" href="code-editors.html#integration-with-external-editors">Learn more about the external editors integration</a></p>
+<p>We choose <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a> as the first option, and generate full compatible projects, but you can configure any other code editor.</p>
+<p><em>Window</em> → <em>Preferences</em> → <em>Phaser Editor</em> → <em>External Code Editor</em></p>
 <img alt="_images/external-editor-button.png" src="_images/external-editor-button.png" />
-<p>To configure the external editor go to <em>Preferences → Phaser Editor → External Code Editor</em>. You should check the parameter <strong>Open source files in an external editor</strong> to enable the external editor integration. The other parameters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the <strong>Program path</strong> parameter you should set the full path to the editor executable.</p>
-<img alt="_images/external-editor-config.png" src="_images/external-editor-config.png" />
 </div>
 <div class="section" id="unlock-phaser-editor-2d">
 <h2>1.7&nbsp;&nbsp;&nbsp;Unlock Phaser Editor 2D<a class="headerlink" href="#unlock-phaser-editor-2d" title="Permalink to this headline">¶</a></h2>
@@ -328,7 +328,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="workbench.html" class="btn btn-neutral float-right" title="2   Workbench" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="workbench.html" class="btn btn-neutral float-right" title="Workbench" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

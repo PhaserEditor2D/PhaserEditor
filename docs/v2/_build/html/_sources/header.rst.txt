@@ -1,0 +1,23 @@
+
+.. sectnum::
+   :depth: 3
+   :start: 2
+
+
+.. _Phaser: https://phaser.io
+
+.. |PhaserOfficialExamples| replace:: Phaser Official Examples
+
+.. _PhaserOfficialExamples: https://phaser.io/examples
+
+.. |PhaserEditor| replace:: Phaser Editor
+
+.. _PhaserEditor: https://phasereditor2d.com
+
+.. |EclipseIDE| replace:: Eclipse IDE
+
+.. _EclipseIDE: https://eclipse.org
+
+.. |-| replace:: →
+
+.. _workspace: #workspace-projects-and-resources

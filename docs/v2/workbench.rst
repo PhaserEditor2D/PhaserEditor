@@ -1,26 +1,8 @@
+.. include:: _header.rst
 
 .. sectnum::
    :depth: 3
    :start: 2
-
-
-.. _Phaser: https://phaser.io
-
-.. |PhaserOfficialExamples| replace:: Phaser Official Examples
-
-.. _PhaserOfficialExamples: https://phaser.io/examples
-
-.. |PhaserEditor| replace:: Phaser Editor
-
-.. _PhaserEditor: https://phasereditor2d.com
-
-.. |EclipseIDE| replace:: Eclipse IDE
-
-.. _EclipseIDE: https://eclipse.org
-
-.. |-| replace:: →
-
-.. _workspace: #workspace-projects-and-resources
 
 Workbench
 =========
@@ -198,7 +180,7 @@ The second page shows the parameters used to customize the project content. Ther
    * - **Scale Auto Center**
      - Automatically center the canvas within the parent?
    * - **Language**
-     - The language to be used to code the game: JavaScript or TypeScript. In both cases the project will be configured to be compatible with Visual Studio Code
+     - The language to be used to code the game: JavaScript or TypeScript. In both cases the project will be configured to be compatible with |vscode|_
     
 
 Project structure
@@ -213,7 +195,7 @@ In the following table we provide a short description of each file of the ``WebC
    ================================== =======================================================
    ``index.html``                     The entry point of the game. It is very basic, and loads the ``main.js`` file. 
    ``main.js``                        The Phaser_ game instance is created. It starts a ``Boot`` scene that is part of this file too.
-   ``jsconfig.json``                  This is the "project" file used by the Language Server include in |PhaserEditor|_. If you are familiar with Visual Studio Code you know what this file is. If you create a TypeScript project, then you will find a ``tsconfig.json`` file instead.
+   ``jsconfig.json``                  This is the "project" file used by the Language Server include in |PhaserEditor|_. If you are familiar with |vscode|_ you know what this file is. If you create a TypeScript project, then you will find a ``tsconfig.json`` file instead.
    ``typings/phaser.d.ts``            The type definitions of the Phaser_ API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.
    ``lib/phaser.js``                  Contains the Phaser_ framework. You can replace it by a newer version or a custom build. It is loaded by the ``index.html`` file, so you have full control to load the Phaser_ runtime.
    ================================== =======================================================
@@ -293,6 +275,11 @@ Commands key bindings is a powerful tool in |EclipseIDE|_. You can assign keys t
 
 Phaser Editor preferences
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The **Phaser Editor** category in the **Preferences Dialog** provides the settings related to the specific tools introduced by |PhaserEditor|_.
+
+
+
 
 
 Offline help

@@ -1,6 +1,4 @@
-.. sectnum::
-   :depth: 3
-   :start: 8
+.. include:: _header.rst
    
 Phaser Labs
 ===========

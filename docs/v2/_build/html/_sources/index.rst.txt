@@ -15,7 +15,7 @@ Last update: |date|
    asset-pack-editor
    animations-editor
    scene-editor
-   code-editors
+   code-editors   
    phaser-labs
 
 Indices and tables

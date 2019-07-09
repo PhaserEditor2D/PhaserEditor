@@ -1,3 +1,4 @@
+.. include:: _header.rst
 
 .. sectnum::
    :depth: 3
@@ -100,18 +101,18 @@ You can select the **active project** at any time switching to the `Start <workb
 
 `Learn more about the Start perspective <workbench.html#start-perspective>`_
 
-External editor integration
----------------------------
+External editors integration
+----------------------------
 
-Phaser Editor uses the Language Server Protocol to edit the HTML, JavaScript, JSON, and other web files. It is a protocol used by Visual Studio Code so both editors share a similar experience and configuration. However, is a common practice to use Phaser Editor to design the levels, animations, and packs, but use VS Code or any other editor to code the game logic.
+The "war" of code editors and IDEs is bloody and there is not a clear winner. |PhaserEditor|_ allows to edit all common web files (JS, TS, HTML, CSS,...) and provides a acceptable tooling. However, it is very important for us that you can use your loved, alien code editor to write the game logic.
 
-In Phaser Editor you can configure an external editor, and some functions will be delegated to that editor. The main toolbar will show a button to launch the external editor and open the current project in it. Other parts of the IDE, like the `Scene Editor <scene-editor.html>`_ and the `Project view <workbench.html#project-view>`_ will launch the external editor too, to edit the code files.
+`Learn more about the external editors integration <code-editors.html#integration-with-external-editors>`_
 
-.. image:: images/external-editor-button.png
+We choose |vscode|_ as the first option, and generate full compatible projects, but you can configure any other code editor. 
 
-To configure the external editor go to *Preferences → Phaser Editor → External Code Editor*. You should check the parameter **Open source files in an external editor** to enable the external editor integration. The other parameters are about to configure the command line arguments. By default, it uses the Visual Studio Code arguments. Important: in the **Program path** parameter you should set the full path to the editor executable.
+*Window* |-| *Preferences* |-| *Phaser Editor* |-| *External Code Editor*
 
-.. image:: images/external-editor-config.png
+.. image:: images/code-editors/external-editor-button.png
 
 
 Unlock Phaser Editor 2D

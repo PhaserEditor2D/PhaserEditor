@@ -9,5 +9,13 @@
         "theming",
         "toctree",
         "workspaces"
-    ]
+    ],
+    "editor.wordWrap": "on",
+    "files.exclude": {
+        "**/_build": true,
+        "**/_static": true,
+        "**/_themes": true,
+        "**/*.sh": true,
+        "**/*.py": true
+    }
 }
