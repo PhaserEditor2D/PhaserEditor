@@ -115,12 +115,6 @@
       </page>
       <page
             category="phasereditor.ui.prefs.phasereditor"
-            class="phasereditor.ui.prefs.DialogsPreferencesPage"
-            id="phasereditor.ui.dialogsPrefPage"
-            name="Dialogs">
-      </page>
-      <page
-            category="phasereditor.ui.prefs.phasereditor"
             class="phasereditor.ui.prefs.PreviewPreferencePage"
             id="phasereditor.ui.previewPrefPage"
             name="Preview">

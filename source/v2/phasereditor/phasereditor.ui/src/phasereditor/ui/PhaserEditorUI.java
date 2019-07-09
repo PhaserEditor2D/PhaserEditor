@@ -144,10 +144,6 @@ public class PhaserEditorUI {
 	public static final String PREF_VALUE_DEFAULT_BROWSER = "phasereditor.ui.browser.default";
 	public static final String PREF_VALUE_CHROMIUM_BROWSER = "phasereditor.ui.browser.chromium";
 
-	public static final String PREF_PROP_COLOR_DIALOG_TYPE = "phasereditor.ui.dialogs.colorDialogType";
-	public static final String PREF_VALUE_COLOR_DIALOG_JAVA = "java";
-	public static final String PREF_VALUE_COLOR_DIALOG_NATIVE = "native";
-
 	public static final String PREF_PROP_PREVIEW_ANTIALIAS = "phasereditor.ui.preview.antialiasing";
 	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = "phasereditor.ui.preview.imageBackgroundType";
 	public static final String PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT = "0";
@@ -277,8 +273,6 @@ public class PhaserEditorUI {
 		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
 
 		store.setDefault(PREF_PROP_BROWSER_TYPE, PREF_VALUE_DEFAULT_BROWSER);
-
-		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
 
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_ANTIALIAS, false);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE,
@@ -473,10 +467,6 @@ public class PhaserEditorUI {
 
 		}
 		return StringConverter.asRGB((String) newValue);
-	}
-
-	public static boolean get_pref_Dialog_Color_Java() {
-		return getPreferenceStore().getString(PREF_PROP_COLOR_DIALOG_TYPE).equals(PREF_VALUE_COLOR_DIALOG_JAVA);
 	}
 
 	public static boolean get_pref_Preview_Anitialias() {
