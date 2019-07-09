@@ -6,6 +6,7 @@
         "installable",
         "maxdepth",
         "sectnum",
+        "theming",
         "toctree",
         "workspaces"
     ]

@@ -126,14 +126,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#phaser-example-project-wizard">2.5.2&nbsp;&nbsp;&nbsp;Phaser Example Project Wizard</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#import-and-export-wizards">2.5.3&nbsp;&nbsp;&nbsp;Import and Export wizards</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#active-project">2.6&nbsp;&nbsp;&nbsp;Active project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-and-export-wizards">2.6&nbsp;&nbsp;&nbsp;Import and Export wizards</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#preferences">2.7&nbsp;&nbsp;&nbsp;Preferences</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#phasereditor-preferences">2.7.1&nbsp;&nbsp;&nbsp;Phaser Editor preferences</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#themes">2.7.2&nbsp;&nbsp;&nbsp;Themes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#key-bindings">2.7.3&nbsp;&nbsp;&nbsp;Key Bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#themes">2.7.1&nbsp;&nbsp;&nbsp;Themes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-bindings">2.7.2&nbsp;&nbsp;&nbsp;Key Bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phaser-editor-preferences">2.7.3&nbsp;&nbsp;&nbsp;Phaser Editor preferences</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#offline-help">2.8&nbsp;&nbsp;&nbsp;Offline help</a></li>
@@ -144,17 +143,18 @@
 <li class="toctree-l2"><a class="reference internal" href="#properties-view">2.10&nbsp;&nbsp;&nbsp;Properties view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#outline-view">2.11&nbsp;&nbsp;&nbsp;Outline view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#blocks-view">2.12&nbsp;&nbsp;&nbsp;Blocks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#project-view">2.13&nbsp;&nbsp;&nbsp;Project view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#terminal-view">2.14&nbsp;&nbsp;&nbsp;Terminal view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#active-project">2.13&nbsp;&nbsp;&nbsp;Active project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-view">2.14&nbsp;&nbsp;&nbsp;Project view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#project-explorer-view">2.15&nbsp;&nbsp;&nbsp;Project Explorer view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.16&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#start-perspective">2.16.1&nbsp;&nbsp;&nbsp;Start perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#scene-perspective">2.16.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#code-perspective">2.16.3&nbsp;&nbsp;&nbsp;Code perspective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.16.4&nbsp;&nbsp;&nbsp;Git perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminal-view">2.16&nbsp;&nbsp;&nbsp;Terminal view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.17&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#start-perspective">2.17.1&nbsp;&nbsp;&nbsp;Start perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scene-perspective">2.17.2&nbsp;&nbsp;&nbsp;Scene perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-perspective">2.17.3&nbsp;&nbsp;&nbsp;Code perspective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.17.4&nbsp;&nbsp;&nbsp;Git perspective</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#update-the-ide">2.17&nbsp;&nbsp;&nbsp;Update the IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-the-ide">2.18&nbsp;&nbsp;&nbsp;Update the IDE</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">3&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
@@ -433,12 +433,59 @@
 <img alt="The Phaser Example Project." src="_images/new-example-project.png" />
 <p>This wizard can be open as any other wizard, but also from views that display the <a class="reference external" href="https://phaser.io/examples">Phaser Official Examples</a>, like the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> and the <a class="reference external" href="chains.html#phaser-examples-view">Phaser Examples</a> view.</p>
 </div>
-<div class="section" id="import-and-export-wizards">
-<h3>2.5.3&nbsp;&nbsp;&nbsp;Import and Export wizards<a class="headerlink" href="#import-and-export-wizards" title="Permalink to this headline">¶</a></h3>
 </div>
+<div class="section" id="import-and-export-wizards">
+<h2>2.6&nbsp;&nbsp;&nbsp;Import and Export wizards<a class="headerlink" href="#import-and-export-wizards" title="Permalink to this headline">¶</a></h2>
+<p>The Import wizards are very useful, especially the one to import projects into the workspace. The workspace use to be private, local, and the projects are often shared in SCM systems or any other place, and then imported into the workspace. You can zip a project and publish it in your blog, in a tutorial article.</p>
+<p>When you import a project, you have the option of create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.</p>
+<p>To open the import wizard click on <em>File</em> → <em>Import…</em>. The dialog shows the elements you can import, in the case of the projects, select the <strong>Existing Projects into the Workspace</strong>. Note other useful element you can import are preferences. <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4">Learn more about the import wizards in the Eclipse Help</a>.</p>
+<img alt="Import wizard." src="_images/import-wizard.png" />
+<p>The export wizard is similar to the import wizard. Open it on the menu <em>File</em> → <em>Export…</em>. It opens a dialog with the elements you can export, for example, the preferences.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-71.htm?cp=0_4_4_2_5">Learn more about the export wizard in the Eclipse Help</a></p>
+</div>
+<div class="section" id="preferences">
+<h2>2.7&nbsp;&nbsp;&nbsp;Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h2>
+<p>Almost every customization you can do in the IDE is via the Preferences. The preferences are stored in the workspace and you can <a class="reference external" href="#import-and-export-wizards">import or export</a> them, or part of them. You can open the <strong>Preferences Dialog</strong> in the menu <em>Window</em> → <em>Preferences</em>.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-72.htm?cp=0_4_1">Learn more about Preferences in the Eclipse Help</a></p>
+<div class="section" id="themes">
+<h3>2.7.1&nbsp;&nbsp;&nbsp;Themes<a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
+<p>The UI and editors themes is a subject where many of you have very personal preference. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor</a> provides a default light theme in addition to those provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>. You can change the theme in <em>General</em> → <em>Appearance</em>.</p>
+<img alt="The theme preferences." src="_images/preferences-theme.png" />
+<p>You can even disable theming, and the editor will look more like a native application (it requires a restart).</p>
+</div>
+<div class="section" id="key-bindings">
+<h3>2.7.2&nbsp;&nbsp;&nbsp;Key Bindings<a class="headerlink" href="#key-bindings" title="Permalink to this headline">¶</a></h3>
+<p>Commands key bindings is a powerful tool in <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>. You can assign keys to a command in the <em>General</em> → <em>Keys</em> preferences.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/accessibility/keyboardshortcuts.htm?cp=0_4_1_33">Learn more about keys preferences in the Eclipse Help</a></p>
+<img alt="Keys preferences." src="_images/keys-preferences.png" />
+</div>
+<div class="section" id="phaser-editor-preferences">
+<h3>2.7.3&nbsp;&nbsp;&nbsp;Phaser Editor preferences<a class="headerlink" href="#phaser-editor-preferences" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="offline-help">
+<h2>2.8&nbsp;&nbsp;&nbsp;Offline help<a class="headerlink" href="#offline-help" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="main-toolbar">
+<h2>2.9&nbsp;&nbsp;&nbsp;Main toolbar<a class="headerlink" href="#main-toolbar" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="quick-access-dialog">
+<h3>2.9.1&nbsp;&nbsp;&nbsp;Quick Access dialog<a class="headerlink" href="#quick-access-dialog" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="properties-view">
+<h2>2.10&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#properties-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
+<div class="section" id="outline-view">
+<h2>2.11&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="blocks-view">
+<h2>2.12&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
 </div>
 <div class="section" id="active-project">
-<h2>2.6&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h2>
+<h2>2.13&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h2>
 <p>To simplify the workflow, <a class="reference external" href="https://phasereditor2d.com">Phaser Editor</a> uses the concept of <strong>active project</strong>. The idea is to put some of the UI elements in the scope of that project.</p>
 <ul class="simple">
 <li><a class="reference external" href="#project-view">Project</a> and <a class="reference external" href="#assets-view">Assets</a> views: only show the content of the active project.</li>
@@ -459,75 +506,40 @@
 <p>However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, <a class="reference external" href="https://phasereditor2d.com">Phaser Editor</a> shows the name of the project in the editor’s tab, if the file belongs to a non-active project.</p>
 <img alt="Editor tab shows the name of the project if the file does not belong to the active project." src="_images/editor-tab-project-name.png" />
 </div>
-<div class="section" id="preferences">
-<h2>2.7&nbsp;&nbsp;&nbsp;Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="phasereditor-preferences">
-<h3>2.7.1&nbsp;&nbsp;&nbsp;<a class="reference external" href="https://phasereditor2d.com">Phaser Editor</a> preferences<a class="headerlink" href="#phasereditor-preferences" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="themes">
-<h3>2.7.2&nbsp;&nbsp;&nbsp;Themes<a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="key-bindings">
-<h3>2.7.3&nbsp;&nbsp;&nbsp;Key Bindings<a class="headerlink" href="#key-bindings" title="Permalink to this headline">¶</a></h3>
-<p>In construction.</p>
-</div>
-</div>
-<div class="section" id="offline-help">
-<h2>2.8&nbsp;&nbsp;&nbsp;Offline help<a class="headerlink" href="#offline-help" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
-</div>
-<div class="section" id="main-toolbar">
-<h2>2.9&nbsp;&nbsp;&nbsp;Main toolbar<a class="headerlink" href="#main-toolbar" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="quick-access-dialog">
-<h3>2.9.1&nbsp;&nbsp;&nbsp;Quick Access dialog<a class="headerlink" href="#quick-access-dialog" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="properties-view">
-<h2>2.10&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#properties-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
-</div>
-<div class="section" id="outline-view">
-<h2>2.11&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
-</div>
-<div class="section" id="blocks-view">
-<h2>2.12&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
-</div>
 <div class="section" id="project-view">
-<h2>2.13&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
-</div>
-<div class="section" id="terminal-view">
-<h2>2.14&nbsp;&nbsp;&nbsp;Terminal view<a class="headerlink" href="#terminal-view" title="Permalink to this headline">¶</a></h2>
+<h2>2.14&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 <div class="section" id="project-explorer-view">
 <h2>2.15&nbsp;&nbsp;&nbsp;Project Explorer view<a class="headerlink" href="#project-explorer-view" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
+<div class="section" id="terminal-view">
+<h2>2.16&nbsp;&nbsp;&nbsp;Terminal view<a class="headerlink" href="#terminal-view" title="Permalink to this headline">¶</a></h2>
+<p>In construction.</p>
+</div>
 <div class="section" id="main-perspectives">
-<h2>2.16&nbsp;&nbsp;&nbsp;Main perspectives<a class="headerlink" href="#main-perspectives" title="Permalink to this headline">¶</a></h2>
+<h2>2.17&nbsp;&nbsp;&nbsp;Main perspectives<a class="headerlink" href="#main-perspectives" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 <div class="section" id="start-perspective">
-<h3>2.16.1&nbsp;&nbsp;&nbsp;Start perspective<a class="headerlink" href="#start-perspective" title="Permalink to this headline">¶</a></h3>
+<h3>2.17.1&nbsp;&nbsp;&nbsp;Start perspective<a class="headerlink" href="#start-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
 <div class="section" id="scene-perspective">
-<h3>2.16.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#scene-perspective" title="Permalink to this headline">¶</a></h3>
+<h3>2.17.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#scene-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
 <div class="section" id="code-perspective">
-<h3>2.16.3&nbsp;&nbsp;&nbsp;Code perspective<a class="headerlink" href="#code-perspective" title="Permalink to this headline">¶</a></h3>
+<h3>2.17.3&nbsp;&nbsp;&nbsp;Code perspective<a class="headerlink" href="#code-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
 <div class="section" id="git-perspective">
-<h3>2.16.4&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
+<h3>2.17.4&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
 <p>In construction.</p>
 </div>
 </div>
 <div class="section" id="update-the-ide">
-<h2>2.17&nbsp;&nbsp;&nbsp;Update the IDE<a class="headerlink" href="#update-the-ide" title="Permalink to this headline">¶</a></h2>
+<h2>2.18&nbsp;&nbsp;&nbsp;Update the IDE<a class="headerlink" href="#update-the-ide" title="Permalink to this headline">¶</a></h2>
 <p>In construction.</p>
 </div>
 </div>

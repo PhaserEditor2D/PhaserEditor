@@ -20,6 +20,8 @@
 
 .. |-| replace:: →
 
+.. _workspace: #workspace-projects-and-resources
+
 Workbench
 =========
 
@@ -245,7 +247,81 @@ This wizard can be open as any other wizard, but also from views that display th
 
 
 Import and Export wizards
+-------------------------
+
+The Import wizards are very useful, especially the one to import projects into the workspace. The workspace use to be private, local, and the projects are often shared in SCM systems or any other place, and then imported into the workspace. You can zip a project and publish it in your blog, in a tutorial article.
+
+When you import a project, you have the option of create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.
+
+To open the import wizard click on *File* |-| *Import...*. The dialog shows the elements you can import, in the case of the projects, select the **Existing Projects into the Workspace**. Note other useful element you can import are preferences. `Learn more about the import wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4>`_.
+
+.. image:: images/workbench/import-wizard.png
+   :alt: Import wizard.
+
+
+The export wizard is similar to the import wizard. Open it on the menu *File* |-| *Export...*. It opens a dialog with the elements you can export, for example, the preferences.
+
+`Learn more about the export wizard in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-71.htm?cp=0_4_4_2_5>`_
+
+Preferences
+-----------
+
+Almost every customization you can do in the IDE is via the Preferences. The preferences are stored in the workspace and you can `import or export <#import-and-export-wizards>`_ them, or part of them. You can open the **Preferences Dialog** in the menu *Window* |-| *Preferences*.
+
+`Learn more about Preferences in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-72.htm?cp=0_4_1>`_
+
+Themes
+~~~~~~
+
+The UI and editors themes is a subject where many of you have very personal preference. |PhaserEditor|_ provides a default light theme in addition to those provided by the |EclipseIDE|_. You can change the theme in *General* |-| *Appearance*. 
+
+.. image:: images/workbench/preferences-theme.png
+   :alt: The theme preferences.
+
+You can even disable theming, and the editor will look more like a native application (it requires a restart).
+
+Key Bindings
+~~~~~~~~~~~~
+
+Commands key bindings is a powerful tool in |EclipseIDE|_. You can assign keys to a command in the *General* |-| *Keys* preferences. 
+
+`Learn more about keys preferences in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/accessibility/keyboardshortcuts.htm?cp=0_4_1_33>`_
+
+.. image:: images/workbench/keys-preferences.png
+   :alt: Keys preferences.
+
+
+Phaser Editor preferences
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Offline help
+------------
+
+In construction.
+
+Main toolbar
+------------
+
+Quick Access dialog
+~~~~~~~~~~~~~~~~~~~
+
+
+Properties view
+---------------
+
+In construction.
+
+
+Outline view
+------------
+
+
+
+Blocks view
+-----------
+
+In construction.
 
 
 Active project
@@ -279,52 +355,6 @@ However the common is to work on a single project at the same time, you may crea
 .. image:: images/workbench/editor-tab-project-name.png
    :alt: Editor tab shows the name of the project if the file does not belong to the active project.
 
-Preferences
------------
-
-|PhaserEditor|_ preferences
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Themes
-~~~~~~
-
-Key Bindings
-~~~~~~~~~~~~
-
-
-In construction.
-
-
-Offline help
-------------
-
-In construction.
-
-
-Main toolbar
-------------
-
-Quick Access dialog
-~~~~~~~~~~~~~~~~~~~
-
-
-Properties view
----------------
-
-In construction.
-
-
-Outline view
-------------
-
-In construction.
-
-
-Blocks view
------------
-
-In construction.
-
 
 Project view
 ------------
@@ -332,13 +362,15 @@ Project view
 In construction.
 
 
-Terminal view
--------------
 
-In construction.
 
 Project Explorer view
 ---------------------
+
+In construction.
+
+Terminal view
+-------------
 
 In construction.
 
