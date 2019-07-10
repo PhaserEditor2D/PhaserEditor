@@ -102,6 +102,27 @@ When you select a resource in the `Project view`_, the main properties are shown
 .. image:: images/workbench/project-properties.png
    :alt: Project properties.
 
+Resource filters
+~~~~~~~~~~~~~~~~
+
+When you create a project, it automatically configures two resource filters to exclude ``node_modules`` and ``.git`` folders.
+
+It is important to exclude from the project all the files that are not related directly to the game. |PhaserEditor|_ performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in other project ---actually, you can consider other IDE, like |vscode|_.
+
+If you include source repositories it may be worst, because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).
+
+`Learn more in the Eclipse Help about resource filters <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5>`_
+
+To manage the resource filters, open the **Properties dialog** of a resource. Select the folder or project and do any of these actions: 
+
+* Press ``Alt+Enter``.
+* Open the context menu (right-click) and select *Properties*.
+* Click the **All Properties** button of the **Resource** section in the `Properties view`_.
+
+.. image:: images/workbench/resource-filter.png
+   :alt: Create resource filters in the Properties dialog.
+
+
 Cleaning projects
 ~~~~~~~~~~~~~~~~~
 
@@ -486,9 +507,43 @@ However the common is to work on a single project at the same time, you may crea
 Project view
 ------------
 
-In construction.
+This view shows the `active project`_ content and provides the common resource operations. There are a couple of features that make this view friendly with game development and a better alternative than the other resource navigation views provided by |EclipseIDE|_ (`Project Explorer view`_ and **Navigator**).
+
+Quick resource search
+~~~~~~~~~~~~~~~~~~~~~
+
+You can perform a quick search for the resources name.
+
+.. image:: images/workbench/project-view-search.png
+  :alt: Project view filtering.
 
 
+In-line preview of files
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Many of the files with a visual content are in-line previewed. It is the case of images, sounds and scenes.  
+
+.. image:: images/workbench/project-view-inline-preview.png
+   :alt: Inline preview of files.
+
+Zooming
+~~~~~~~
+
+As many other UI in the IDE, you can zoom-in/out the **Project view** images. Hold any of these keys: ``Alt``, ``Ctrl`` or ``Shift`` and scroll the mouse wheel.
+
+.. image:: images/workbench/project-view-zooming.png
+
+Properties support
+~~~~~~~~~~~~~~~~~~
+
+The **Project** view contributes information and actions to the `Properties view`_.
+
+.. image:: images/workbench/project-view-resource-properties.png
+   :alt: Properties of a resource selected in the Project view.
+
+#. A button to locate the resource in your OS and a button to open the `Terminal view`_ in the directory of the resource.
+#. Open the **Properties dialog** provided by |EclipseIDE|_. It shows additional properties like encoding and `resource filters`_.
+#. Some graphical files are previewed (media and scene files).
 
 
 Project Explorer view

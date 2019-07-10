@@ -117,7 +117,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#workspace-projects-and-resources">2.4&nbsp;&nbsp;&nbsp;Workspace, projects and resources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#resources">2.4.1&nbsp;&nbsp;&nbsp;Resources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#resource-properties">2.4.2&nbsp;&nbsp;&nbsp;Resource properties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleaning-projects">2.4.3&nbsp;&nbsp;&nbsp;Cleaning projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-filters">2.4.3&nbsp;&nbsp;&nbsp;Resource filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleaning-projects">2.4.4&nbsp;&nbsp;&nbsp;Cleaning projects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#resource-wizards">2.5&nbsp;&nbsp;&nbsp;Resource wizards</a><ul>
@@ -150,7 +151,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#outline-view">2.10&nbsp;&nbsp;&nbsp;Outline view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#blocks-view">2.11&nbsp;&nbsp;&nbsp;Blocks view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#active-project">2.12&nbsp;&nbsp;&nbsp;Active project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#project-view">2.13&nbsp;&nbsp;&nbsp;Project view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-view">2.13&nbsp;&nbsp;&nbsp;Project view</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#quick-resource-search">2.13.1&nbsp;&nbsp;&nbsp;Quick resource search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-line-preview-of-files">2.13.2&nbsp;&nbsp;&nbsp;In-line preview of files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zooming">2.13.3&nbsp;&nbsp;&nbsp;Zooming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties-support">2.13.4&nbsp;&nbsp;&nbsp;Properties support</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#project-explorer-view">2.14&nbsp;&nbsp;&nbsp;Project Explorer view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#terminal-view">2.15&nbsp;&nbsp;&nbsp;Terminal view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-perspectives">2.16&nbsp;&nbsp;&nbsp;Main perspectives</a><ul>
@@ -292,8 +299,22 @@
 <p>When you select a resource in the <a class="reference internal" href="#project-view">Project view</a>, the main properties are shown in the <a class="reference internal" href="#properties-view">Properties view</a>, together with some actions like open the resource in the <a class="reference internal" href="#terminal-view">Terminal view</a> or the OS explorer. The project resource has special properties like the Scene size and language.</p>
 <img alt="Project properties." src="_images/project-properties.png" />
 </div>
+<div class="section" id="resource-filters">
+<h3>2.4.3&nbsp;&nbsp;&nbsp;Resource filters<a class="headerlink" href="#resource-filters" title="Permalink to this headline">¶</a></h3>
+<p>When you create a project, it automatically configures two resource filters to exclude <code class="docutils literal"><span class="pre">node_modules</span></code> and <code class="docutils literal"><span class="pre">.git</span></code> folders.</p>
+<p>It is important to exclude from the project all the files that are not related directly to the game. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in other project —actually, you can consider other IDE, like <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a>.</p>
+<p>If you include source repositories it may be worst, because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5">Learn more in the Eclipse Help about resource filters</a></p>
+<p>To manage the resource filters, open the <strong>Properties dialog</strong> of a resource. Select the folder or project and do any of these actions:</p>
+<ul class="simple">
+<li>Press <code class="docutils literal"><span class="pre">Alt+Enter</span></code>.</li>
+<li>Open the context menu (right-click) and select <em>Properties</em>.</li>
+<li>Click the <strong>All Properties</strong> button of the <strong>Resource</strong> section in the <a class="reference internal" href="#properties-view">Properties view</a>.</li>
+</ul>
+<img alt="Create resource filters in the Properties dialog." src="_images/resource-filter.png" />
+</div>
 <div class="section" id="cleaning-projects">
-<h3>2.4.3&nbsp;&nbsp;&nbsp;Cleaning projects<a class="headerlink" href="#cleaning-projects" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.4&nbsp;&nbsp;&nbsp;Cleaning projects<a class="headerlink" href="#cleaning-projects" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> builds an internal model of many of the objects you define in the different files. When you add, delete or modify a set of resources, the project builders are executed and process the affected resources, and update the internal model. Let’s see an example:</p>
 <p>All the asset keys you define in the <a class="reference external" href="asset-pack-editor.html">pack files</a> are part of the internal model, and UI parts like the <a class="reference external" href="animations-editor.html">Animations Editor</a> and the <a class="reference external" href="scene-editor.html">Scene Editor</a> read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content, if it is the case.</p>
 <p>If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the <strong>Clean</strong> dialog in <em>Project</em> → <em>Clean…</em></p>
@@ -612,7 +633,32 @@
 </div>
 <div class="section" id="project-view">
 <h2>2.13&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
+<p>This view shows the <a class="reference internal" href="#active-project">active project</a> content and provides the common resource operations. There are a couple of features that make this view friendly with game development and a better alternative than the other resource navigation views provided by <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> (<a class="reference internal" href="#project-explorer-view">Project Explorer view</a> and <strong>Navigator</strong>).</p>
+<div class="section" id="quick-resource-search">
+<h3>2.13.1&nbsp;&nbsp;&nbsp;Quick resource search<a class="headerlink" href="#quick-resource-search" title="Permalink to this headline">¶</a></h3>
+<p>You can perform a quick search for the resources name.</p>
+<img alt="Project view filtering." src="_images/project-view-search.png" />
+</div>
+<div class="section" id="in-line-preview-of-files">
+<h3>2.13.2&nbsp;&nbsp;&nbsp;In-line preview of files<a class="headerlink" href="#in-line-preview-of-files" title="Permalink to this headline">¶</a></h3>
+<p>Many of the files with a visual content are in-line previewed. It is the case of images, sounds and scenes.</p>
+<img alt="Inline preview of files." src="_images/project-view-inline-preview.png" />
+</div>
+<div class="section" id="zooming">
+<h3>2.13.3&nbsp;&nbsp;&nbsp;Zooming<a class="headerlink" href="#zooming" title="Permalink to this headline">¶</a></h3>
+<p>As many other UI in the IDE, you can zoom-in/out the <strong>Project view</strong> images. Hold any of these keys: <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel.</p>
+<img alt="_images/project-view-zooming.png" src="_images/project-view-zooming.png" />
+</div>
+<div class="section" id="properties-support">
+<h3>2.13.4&nbsp;&nbsp;&nbsp;Properties support<a class="headerlink" href="#properties-support" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>Project</strong> view contributes information and actions to the <a class="reference internal" href="#properties-view">Properties view</a>.</p>
+<img alt="Properties of a resource selected in the Project view." src="_images/project-view-resource-properties.png" />
+<ol class="arabic simple">
+<li>A button to locate the resource in your OS and a button to open the <a class="reference internal" href="#terminal-view">Terminal view</a> in the directory of the resource.</li>
+<li>Open the <strong>Properties dialog</strong> provided by <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>. It shows additional properties like encoding and <a class="reference internal" href="#resource-filters">resource filters</a>.</li>
+<li>Some graphical files are previewed (media and scene files).</li>
+</ol>
+</div>
 </div>
 <div class="section" id="project-explorer-view">
 <h2>2.14&nbsp;&nbsp;&nbsp;Project Explorer view<a class="headerlink" href="#project-explorer-view" title="Permalink to this headline">¶</a></h2>
