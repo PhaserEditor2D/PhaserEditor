@@ -586,37 +586,22 @@ You can open the **Terminal view** with the `Show View dialog <#add-view-button>
 Main perspectives
 -----------------
 
-In construction.
-
-
 Start perspective
 ~~~~~~~~~~~~~~~~~
-
-In construction.
 
 
 Scene perspective
 ~~~~~~~~~~~~~~~~~
 
-In construction.
-
 
 Code perspective
 ~~~~~~~~~~~~~~~~
 
-In construction.
-
 Git perspective
 ~~~~~~~~~~~~~~~
-
-In construction.
 
 Update the IDE
 --------------
 
-In construction.
-
 Built-in Help
 -------------
-
-In construction.
