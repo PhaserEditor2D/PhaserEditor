@@ -385,30 +385,71 @@ You can open this dialog with the keys ``Ctrl+3``.
 Add view button
 ~~~~~~~~~~~~~~~
 
+This button launches the **Show View** dialog. Alternatives to the button is the *Window* |-| *Show View* menu and the keys ``Alt+Shift+Q, Q``.
+
+.. image:: images/workbench/open-view-dialog.png
+   :alt: Launches the Show View dialog.
+
 Reset perspective button
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
+It resets the current `perspective <#perspectives>`_ to the default layout. You can click on *Window* |-| *Perspective* |-| *Reset Perspective...* too.
 
 Open perspective button
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+It shows a menu with the most used perspectives, so you can open one of them. The **Other** option launches the **Open Perspective** dialog. Also, there is the menu option *Window* |-| *Perspective* |-| *Open Perspective*.
 
+.. image:: images/workbench/open-perspective-button.png
+   :alt: Open perspective toolbar's button.
 
 Properties view
 ---------------
 
-In construction.
+The Properties view is an important |EclipseIDE|_ part. It is like the Inspector view in other visual development tools. It shows the properties of the selected elements of the active part of the workbench. When you select something in an editor or a view, if it provides properties adapters, then the selection properties are shown in the Properties view.
 
+`Learn more in the Eclipse Help about the Properties view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-29.htm?cp=0_4_4_1_6>`_
+
+.. image:: images/workbench/properties-view.png
+   :alt: Properties view.
+
+This view can play a role of information or editor. In the image above, the Properties show the information of the animation ``acorn`` selected in the `Blocks view`_. However, if you select the same animation in the `Animations editor <animations-editor.html>`_, the Properties view shows text editors for the animation attributes.
+
+.. image:: images/workbench/properties-view-edit.png
+   :alt: The Properties view as fields editor.
+
+By default, the Properties view shows the content of the workbench's selection, if the selection changes, the content changes, but you can pin the current selection. And you can create a new Properties window, which is great when you want to pin certain information but want to see the properties of other objects.
+
+.. image:: images/workbench/properties-view-menu.png
+   :alt: Properties view menu (pin to selection).
 
 Outline view
 ------------
 
+The Outline view is a general view to display hierarchical information. It is provided by the |EclipseIDE|_ and used widely by the |PhaserEditor|_ specific editors. When an editor is activated, the Outline view connects with it and display the editor content with certain structure (often as a tree or a list).
 
+`Learn more in the Eclipse Help about the Outline view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6>`_
+
+This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.
+
+It is very common that the Outline view shows the name of the elements, aso you can perform a content filtering by name.
+
+.. image:: images/workbench/outline-view-animations-editor.png
+   :alt: The Outline view of the Animations Editor.
 
 Blocks view
 -----------
 
-In construction.
+This view is a recent concept in |PhaserEditor|_. Its purpose is to provide, in a visual and clean way,  the different building blocks needed to create the objects in the active editor. So you can drag a block and drop it on the editor.
 
+When an editor is activated, the **Blocks view** request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapts to the **Blocks view**. Actually, at this moment only two editors provides building blocks: the `Scene Editor <scene-editor.html#building-blocks>`_ and the `Animations Editor <animations-editor.html#building-blocks>`_.
+
+The content in the **Blocks view** could be nested. It can show **terminal** and **no-terminal** elements. In the next image, it shows the blocks of a Scene Editor, note the texture atlas ``atlas-props`` **no-terminal** block can be expanded/collapsed and shows the atlas frames.
+
+.. image:: images/workbench/blocks-view.png
+   :alt: Blocks view.
+
+Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually the same color is assigned to blocks of the same "type".
 
 Active project
 --------------

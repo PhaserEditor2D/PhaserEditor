@@ -380,8 +380,8 @@
 <h4>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h4>
 <p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
 <p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder.</p>
-<table border="1" class="docutils" id="id8">
-<caption><span class="caption-text">Files common to all Phaser projects</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-text">Files common to all Phaser projects</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="13%" />
 <col width="87%" />
@@ -404,8 +404,8 @@
 </tr>
 </tbody>
 </table>
-<table border="1" class="docutils" id="id9">
-<caption><span class="caption-text">Files created by the Phaser Project wizard:</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<table border="1" class="docutils" id="id12">
+<caption><span class="caption-text">Files created by the Phaser Project wizard:</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="12%" />
 <col width="88%" />
@@ -549,24 +549,44 @@
 </div>
 <div class="section" id="add-view-button">
 <h3>2.8.6&nbsp;&nbsp;&nbsp;Add view button<a class="headerlink" href="#add-view-button" title="Permalink to this headline">¶</a></h3>
+<p>This button launches the <strong>Show View</strong> dialog. Alternatives to the button is the <em>Window</em> → <em>Show View</em> menu and the keys <code class="docutils literal"><span class="pre">Alt+Shift+Q,</span> <span class="pre">Q</span></code>.</p>
+<img alt="Launches the Show View dialog." src="_images/open-view-dialog.png" />
 </div>
 <div class="section" id="reset-perspective-button">
 <h3>2.8.7&nbsp;&nbsp;&nbsp;Reset perspective button<a class="headerlink" href="#reset-perspective-button" title="Permalink to this headline">¶</a></h3>
+<p>It resets the current <a class="reference external" href="#perspectives">perspective</a> to the default layout. You can click on <em>Window</em> → <em>Perspective</em> → <em>Reset Perspective…</em> too.</p>
 </div>
 <div class="section" id="open-perspective-button">
 <h3>2.8.8&nbsp;&nbsp;&nbsp;Open perspective button<a class="headerlink" href="#open-perspective-button" title="Permalink to this headline">¶</a></h3>
+<p>It shows a menu with the most used perspectives, so you can open one of them. The <strong>Other</strong> option launches the <strong>Open Perspective</strong> dialog. Also, there is the menu option <em>Window</em> → <em>Perspective</em> → <em>Open Perspective</em>.</p>
+<img alt="Open perspective toolbar's button." src="_images/open-perspective-button.png" />
 </div>
 </div>
 <div class="section" id="properties-view">
 <h2>2.9&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#properties-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
+<p>The Properties view is an important <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> part. It is like the Inspector view in other visual development tools. It shows the properties of the selected elements of the active part of the workbench. When you select something in an editor or a view, if it provides properties adapters, then the selection properties are shown in the Properties view.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-29.htm?cp=0_4_4_1_6">Learn more in the Eclipse Help about the Properties view</a></p>
+<img alt="Properties view." src="_images/properties-view.png" />
+<p>This view can play a role of information or editor. In the image above, the Properties show the information of the animation <code class="docutils literal"><span class="pre">acorn</span></code> selected in the <a class="reference internal" href="#blocks-view">Blocks view</a>. However, if you select the same animation in the <a class="reference external" href="animations-editor.html">Animations editor</a>, the Properties view shows text editors for the animation attributes.</p>
+<img alt="The Properties view as fields editor." src="_images/properties-view-edit.png" />
+<p>By default, the Properties view shows the content of the workbench’s selection, if the selection changes, the content changes, but you can pin the current selection. And you can create a new Properties window, which is great when you want to pin certain information but want to see the properties of other objects.</p>
+<img alt="Properties view menu (pin to selection)." src="_images/properties-view-menu.png" />
 </div>
 <div class="section" id="outline-view">
 <h2>2.10&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+<p>The Outline view is a general view to display hierarchical information. It is provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> and used widely by the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> specific editors. When an editor is activated, the Outline view connects with it and display the editor content with certain structure (often as a tree or a list).</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6">Learn more in the Eclipse Help about the Outline view</a></p>
+<p>This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.</p>
+<p>It is very common that the Outline view shows the name of the elements, aso you can perform a content filtering by name.</p>
+<img alt="The Outline view of the Animations Editor." src="_images/outline-view-animations-editor.png" />
 </div>
 <div class="section" id="blocks-view">
 <h2>2.11&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
+<p>This view is a recent concept in <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>. Its purpose is to provide, in a visual and clean way,  the different building blocks needed to create the objects in the active editor. So you can drag a block and drop it on the editor.</p>
+<p>When an editor is activated, the <strong>Blocks view</strong> request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapts to the <strong>Blocks view</strong>. Actually, at this moment only two editors provides building blocks: the <a class="reference external" href="scene-editor.html#building-blocks">Scene Editor</a> and the <a class="reference external" href="animations-editor.html#building-blocks">Animations Editor</a>.</p>
+<p>The content in the <strong>Blocks view</strong> could be nested. It can show <strong>terminal</strong> and <strong>no-terminal</strong> elements. In the next image, it shows the blocks of a Scene Editor, note the texture atlas <code class="docutils literal"><span class="pre">atlas-props</span></code> <strong>no-terminal</strong> block can be expanded/collapsed and shows the atlas frames.</p>
+<img alt="Blocks view." src="_images/blocks-view.png" />
+<p>Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually the same color is assigned to blocks of the same “type”.</p>
 </div>
 <div class="section" id="active-project">
 <h2>2.12&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h2>

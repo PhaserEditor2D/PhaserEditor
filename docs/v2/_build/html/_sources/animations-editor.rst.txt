@@ -8,4 +8,5 @@
 Animations Editor
 =================
 
-TODO
+Building blocks
+---------------
