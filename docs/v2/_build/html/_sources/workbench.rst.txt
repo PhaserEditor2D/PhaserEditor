@@ -9,10 +9,9 @@ Workbench
 
 |PhaserEditor|_ is based on the |EclipseIDE|_ and inherits its concepts and tools. In this chapter we explain some key concepts of the workbench, that is the term used in |EclipseIDE|_ to refers to the desktop development environment.
 
-`Learn more about the workbench in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0>`_
+`Learn more in the Eclipse Help about the workbench <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0>`_
 
 The |EclipseIDE|_ is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we believe that we can customize and transform it into a friendly, modern and productive tool for game development.
-
 
 When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, `main toolbar`_ and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.
 
@@ -276,22 +275,122 @@ Commands key bindings is a powerful tool in |EclipseIDE|_. You can assign keys t
 Phaser Editor preferences
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The **Phaser Editor** category in the **Preferences Dialog** provides the settings related to the specific tools introduced by |PhaserEditor|_.
+The **Phaser Editor** category in the **Preferences Dialog** provides the settings related to the specific tools introduced by |PhaserEditor|_:
 
+.. topic:: External Code Editor
 
+   Configures the |ExternalEditor|_.
 
+.. topic:: Optimize PNG
 
+   Configures the `PNG images optimizer <misc.html#optimize-png-images>`_.
 
-Offline help
-------------
+.. topic:: Preview
 
-In construction.
+   Configures how images and other visual resources are shown in the IDE.
+
+   .. image:: images/workbench/preferences-preview.png
+      :alt: The Preview settings.
+
+   Note there are other two subcategories, **Spritesheet** and **Tilemap**.
+
+.. topic:: Project
+
+   Some default values for every project in the workspace. When you open a `Phaser Project Wizard`_, it will use these default values. The same when you open a `Scene File Wizard <scene-editor.html#create-new-scene-file>`_.
+
+   .. image:: images/workbench/preferences-project.png
+      :alt: The default project settings.
+
+.. topic:: Scene Editor
+
+   Configures the `Scene Editor preferences <scene-editor.html#scene-editor-preferences>`_.
+
+.. topic:: WebView
+
+   There are a couple of components that use a WebView or embedded browser. |PhaserEditor|_ provides two WebView implementations:
+
+   * Platform dependent browser.
+   * Chromium browser.
+
+   In this preferences page, you can select the WebView implementation to be used. The Chromium browser is very experimental, we just recommend it in Windows systems, if the system browser does not fit your needs.
+
+   .. image:: images/workbench/preferences-webview.png
+      :alt: Default embedded browser settings.
 
 Main toolbar
 ------------
 
-Quick Access dialog
+The main toolbar provides buttons for common actions.
+
+.. image:: images/workbench/main-toolbar.png
+   :alt: The main toolbar.
+
+#. `Home button`_
+#. `New button`_
+#. `Play button`_
+#. `Toolbar editor area`_
+#. `Quick Access button`_
+#. `Add view button`_
+#. `Reset perspective button`_
+#. `Open perspective button`_
+
+.. _`Quick Access dialog`: #quick-access-button
+
+Home button
+~~~~~~~~~~~
+
+Click on this button to switch to the `Start perspective`_. If you intention is to open other project, you can right-click on the button and select it.
+
+You can open the same dialog with the keys ``Ctrl+Alt+P``, or searching in the `Quick Access dialog`_ for ``open project dialog``.
+
+.. image:: images/workbench/home-button-open-project.png
+   :alt: Home button launches Open project dialog.
+
+
+New button
+~~~~~~~~~~
+
+This button shows a list of the most common wizards to create new resources.
+
+.. image:: images/workbench/new-button.png
+   :alt: New button opens the resource wizards.
+
+Play button
+~~~~~~~~~~~
+
+This button launches the `local web server <misc.html/#built-in-web-server>`_ and the system browser and points to the ``WebContent`` of the project. In other words, it runs the game.
+
+Other ways to run the game is pressing the keys ``Ctrl+Alt+F5`` or searching in the `Quick Access dialog`_ for ``run phaser project``.
+
+You can configure the system browser in the `Web Browser preferences <http://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-42.htm?cp=0_4_1_53>`_.
+
+
+Toolbar editor area
 ~~~~~~~~~~~~~~~~~~~
+
+The center area of the toolbar is reserved for the active editor. The active editor can contributes its own buttons, with actions that affect only the editor. For example, the `Scene Editor <scene-editor.html>`_ provides buttons to select a transformation tool, or a button to add a new object. The `Animations Editor <animations-editor.html>`_ provides button for the animations playback.
+
+Quick Access button
+~~~~~~~~~~~~~~~~~~~
+
+This button opens the **Quick Access dialog**, where you can search for editors, views, perspectives, commands, menus, wizards, preference pages, and other sources that can be contributed by third-party plugins.
+
+You can open this dialog with the keys ``Ctrl+3``.
+
+`Learn more in the Eclipse Help about Navigating the user interface using the keyboard <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/accessibility/navigation.htm?cp=0_2_12_0>`_
+
+.. image:: images/workbench/quick-access-dialog.png
+
+
+Add view button
+~~~~~~~~~~~~~~~
+
+Reset perspective button
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Open perspective button
+~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 Properties view
@@ -391,5 +490,10 @@ In construction.
 
 Update the IDE
 --------------
+
+In construction.
+
+Built-in Help
+-------------
 
 In construction.

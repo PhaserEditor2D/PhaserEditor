@@ -17,6 +17,7 @@ Last update: |date|
    scene-editor
    code-editors   
    phaser-labs
+   misc
 
 Indices and tables
 ==================

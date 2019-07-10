@@ -7,4 +7,8 @@
 Scene Editor
 ============
 
-TODO
+Create a new Scene file
+-----------------------
+
+Scene Editor preferences
+------------------------

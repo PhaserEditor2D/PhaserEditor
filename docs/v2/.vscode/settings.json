@@ -1,6 +1,7 @@
 {
     "restructuredtext.confPath": "${workspaceFolder}",
     "cSpell.words": [
+        "Spritesheet",
         "Tilemap",
         "genindex",
         "installable",
@@ -8,6 +9,7 @@
         "sectnum",
         "theming",
         "toctree",
+        "webview",
         "workspaces"
     ],
     "editor.wordWrap": "on",
