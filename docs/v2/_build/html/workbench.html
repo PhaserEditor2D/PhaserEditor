@@ -114,7 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#views">2.1&nbsp;&nbsp;&nbsp;Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#editors">2.2&nbsp;&nbsp;&nbsp;Editors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#perspectives">2.3&nbsp;&nbsp;&nbsp;Perspectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workspace-projects-and-resources">2.4&nbsp;&nbsp;&nbsp;Workspace, projects and resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workspace-projects-and-resources">2.4&nbsp;&nbsp;&nbsp;Workspace, projects, and resources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#resources">2.4.1&nbsp;&nbsp;&nbsp;Resources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#resource-properties">2.4.2&nbsp;&nbsp;&nbsp;Resource properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#resource-filters">2.4.3&nbsp;&nbsp;&nbsp;Resource filters</a></li>
@@ -156,6 +156,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#in-line-preview-of-files">2.13.2&nbsp;&nbsp;&nbsp;In-line preview of files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#zooming">2.13.3&nbsp;&nbsp;&nbsp;Zooming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#properties-support">2.13.4&nbsp;&nbsp;&nbsp;Properties support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#context-menu">2.13.5&nbsp;&nbsp;&nbsp;Context menu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#project-explorer-view">2.14&nbsp;&nbsp;&nbsp;Project Explorer view</a></li>
@@ -243,20 +244,20 @@
 <h1>2&nbsp;&nbsp;&nbsp;Workbench<a class="headerlink" href="#workbench" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> is based on the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> and inherits its concepts and tools. In this chapter we explain some key concepts of the workbench, that is the term used in <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> to refers to the desktop development environment.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0">Learn more in the Eclipse Help about the workbench</a></p>
-<p>The <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we believe that we can customize and transform it into a friendly, modern and productive tool for game development.</p>
-<p>When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, <a class="reference internal" href="#main-toolbar">main toolbar</a> and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.</p>
+<p>The <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> is a general purpose tool that is open, flexible and powerful. Maybe, for this reason, it is complex for some users, but we believe that we can customize and transform it into a friendly, modern and productive tool for game development.</p>
+<p>When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, <a class="reference internal" href="#main-toolbar">main toolbar</a> and main menu. All these elements are grouped and layout in a perspective, and you can switch perspectives. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in another window, that you can move to a second monitor.</p>
 <img alt="_images/workbench-overview.png" src="_images/workbench-overview.png" />
 <div class="section" id="views">
 <h2>2.1&nbsp;&nbsp;&nbsp;Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
-<p>A view is a small window, or better say, a <strong>part</strong>, inside the workbench window. They are commonly used to present the information of certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affects the view’s content.</p>
+<p>A view is a small window, or better say, a <strong>part</strong>, inside the workbench window. They are commonly used to present the information of a certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affect the view’s content.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1">Learn more about views in the Eclipse Help</a></p>
 <img alt="_images/view-menu-toolbar.png" src="_images/view-menu-toolbar.png" />
-<p>Most of the view are about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the <strong>dirty</strong> concept available in editors. A view may persists its state in the workspace metadata.</p>
+<p>Most of the view is about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the <strong>dirty</strong> concept available in editors. A view may persist its state in the workspace metadata.</p>
 <p>You can add, close, stack, dock, minimize/maximize views. The views layout are part of the perspective and is persisted across sessions or perspective switching.</p>
 </div>
 <div class="section" id="editors">
 <h2>2.2&nbsp;&nbsp;&nbsp;Editors<a class="headerlink" href="#editors" title="Permalink to this headline">¶</a></h2>
-<p>The editors are, like the views, <strong>parts</strong> of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout are not part of the perspective. This means, when you switch to other perspective, the editors remains open. Only the editor area is affected.</p>
+<p>The editors are, like the views, <strong>parts</strong> of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout is not part of the perspective. This means, when you switch to another perspective, the editors remain open. Only the editor area is affected.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0">Learn more about editors in the Eclipse Help</a></p>
 <p>Editors have input. The common input of an editor is a file. The editors have a <strong>dirty</strong> state, that is activated when the content is modified but not saved. When you close an editor it shows a confirmation dialog if its state is <strong>dirty</strong>.</p>
 <p>An editor can contribute items to the <a class="reference internal" href="#main-toolbar">main toolbar</a>. When an editor is activated, the center of the toolbar is filled with its contributions.</p>
@@ -267,16 +268,16 @@
 <p>A perspective groups views and menu items with a common purpose. For example, the <a class="reference internal" href="#scene-perspective">Scene perspective</a> provides the views to better design scenes and related assets.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-43.htm?cp=0_1_0_15">Learn more about perspectives in the Eclipse Help</a></p>
 <p>The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective.</p>
-<p>In the <em>Window</em> → <em>Perspective</em> menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:</p>
+<p>In the <em>Window</em> → <em>Perspective</em> menu has listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:</p>
 <img alt="_images/toolbar-perspective-section.png" src="_images/toolbar-perspective-section.png" />
 <ol class="arabic simple">
 <li>Open a view.</li>
 <li>Reset the perspective.</li>
-<li>Switch to other perspective.</li>
+<li>Switch to another perspective.</li>
 </ol>
 </div>
 <div class="section" id="workspace-projects-and-resources">
-<h2>2.4&nbsp;&nbsp;&nbsp;Workspace, projects and resources<a class="headerlink" href="#workspace-projects-and-resources" title="Permalink to this headline">¶</a></h2>
+<h2>2.4&nbsp;&nbsp;&nbsp;Workspace, projects, and resources<a class="headerlink" href="#workspace-projects-and-resources" title="Permalink to this headline">¶</a></h2>
 <p>The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first <a class="reference external" href="first-steps.html#run-phaser-editor-2d">opens the launcher</a>, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0">Learn more about resources in the Eclipse Help</a></p>
 <p>Usually, to develop a game you only need a project. The <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> supports references between projects but it is something that you don’t really need for <a class="reference external" href="https://phaser.io">Phaser</a> development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some <a class="reference external" href="https://phaser.io">Phaser</a> features or develop ideas related to the game.</p>
@@ -289,9 +290,9 @@
 <li>Projects</li>
 <li>Folders and files</li>
 </ul>
-<p>Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private user space, but place the projects in shared repositories.</p>
-<p>Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> workspace tree, and have no file system location.</p>
-<p><a class="reference external" href="https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3">Learn more about virtual folder in the Eclipse Help</a></p>
+<p>Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private location, but place the projects in shared repositories.</p>
+<p>Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> workspace tree and have no file system location.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3">Learn more about virtual folders in the Eclipse Help</a></p>
 <p>The <strong>resources</strong> is a powerful and flexible tool you have to adapt your project to different scenarios. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> introduced the <a class="reference internal" href="#project-view">Project view</a> to navigate and create the resources or the <a class="reference internal" href="#active-project">active project</a>, but the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> provides more <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6">advanced and general tools</a>.</p>
 </div>
 <div class="section" id="resource-properties">
@@ -302,8 +303,8 @@
 <div class="section" id="resource-filters">
 <h3>2.4.3&nbsp;&nbsp;&nbsp;Resource filters<a class="headerlink" href="#resource-filters" title="Permalink to this headline">¶</a></h3>
 <p>When you create a project, it automatically configures two resource filters to exclude <code class="docutils literal"><span class="pre">node_modules</span></code> and <code class="docutils literal"><span class="pre">.git</span></code> folders.</p>
-<p>It is important to exclude from the project all the files that are not related directly to the game. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in other project —actually, you can consider other IDE, like <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a>.</p>
-<p>If you include source repositories it may be worst, because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).</p>
+<p>It is important to exclude from the project all the files that are not related directly to the game. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in another project—actually, you can consider other IDE, like <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a>.</p>
+<p>If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5">Learn more in the Eclipse Help about resource filters</a></p>
 <p>To manage the resource filters, open the <strong>Properties dialog</strong> of a resource. Select the folder or project and do any of these actions:</p>
 <ul class="simple">
@@ -316,7 +317,7 @@
 <div class="section" id="cleaning-projects">
 <h3>2.4.4&nbsp;&nbsp;&nbsp;Cleaning projects<a class="headerlink" href="#cleaning-projects" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> builds an internal model of many of the objects you define in the different files. When you add, delete or modify a set of resources, the project builders are executed and process the affected resources, and update the internal model. Let’s see an example:</p>
-<p>All the asset keys you define in the <a class="reference external" href="asset-pack-editor.html">pack files</a> are part of the internal model, and UI parts like the <a class="reference external" href="animations-editor.html">Animations Editor</a> and the <a class="reference external" href="scene-editor.html">Scene Editor</a> read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content, if it is the case.</p>
+<p>All the asset keys you define in the <a class="reference external" href="asset-pack-editor.html">pack files</a> are part of the internal model, and UI parts like the <a class="reference external" href="animations-editor.html">Animations Editor</a> and the <a class="reference external" href="scene-editor.html">Scene Editor</a> read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content if it is the case.</p>
 <p>If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the <strong>Clean</strong> dialog in <em>Project</em> → <em>Clean…</em></p>
 <img alt="Clean project dialog." src="_images/clean-project-dialog.png" />
 <p>…or you can select a project in the <a class="reference internal" href="#project-view">Project view</a> and click on the <strong>Clean</strong> button of the <strong>Project</strong> section of the <a class="reference internal" href="#properties-view">Properties view</a>.</p>
@@ -325,7 +326,7 @@
 </div>
 <div class="section" id="resource-wizards">
 <h2>2.5&nbsp;&nbsp;&nbsp;Resource wizards<a class="headerlink" href="#resource-wizards" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> uses wizards to create any type of resource and set the initial parameters. All these wizards share a set parameters common to all resources, like the name, the path inside the workspace and the physical location (it maybe a link). You can open the wizards in different parts of the IDE:</p>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> uses wizards to create any type of resource and set the initial parameters. All these wizards share a group of parameters common to all resources, like the name, the path inside the workspace and the physical location (it may be a link). You can open the wizards in different parts of the IDE:</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/nav/0_4_4_2">Learn more about wizards in the Eclipse Help</a></p>
 <ul class="simple">
 <li>In the main menu: <em>File</em> → <em>New</em>.</li>
@@ -334,10 +335,10 @@
 <li>In the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> (search for <code class="docutils literal"><span class="pre">new</span> <span class="pre">item</span></code>).</li>
 <li>In the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> or <a class="reference external" href="chains.html#phaser-examples-view">Phaser Examples</a> views, where you can create a project with the selected example.</li>
 </ul>
-<p>Note you can group the wizards in two groups: file wizards and project wizards. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn <a class="reference external" href="https://phaser.io">Phaser</a> or <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> features.</p>
+<p>Note you can group the wizards in two groups: file wizards and project wizards. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides a wizard to create a game project with a basic structure, ready to start coding the game, and another wizard to create a project based on an example, that you can read and modify to learn <a class="reference external" href="https://phaser.io">Phaser</a> or <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> features.</p>
 <div class="section" id="phaser-project-wizard">
 <h3>2.5.1&nbsp;&nbsp;&nbsp;Phaser Project Wizard<a class="headerlink" href="#phaser-project-wizard" title="Permalink to this headline">¶</a></h3>
-<p>This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters to all the projects:</p>
+<p>This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters for all the projects:</p>
 <img alt="Phaser Project wizard: common parameters." src="_images/project-wizard-page-1.png" />
 <table border="1" class="docutils">
 <colgroup>
@@ -354,7 +355,7 @@
 <td>Should be unique in the workspace.</td>
 </tr>
 <tr class="row-odd"><td><strong>Default location</strong></td>
-<td>By default, the project is physically created inside the workspace folder, but you can choose other location.</td>
+<td>By default, the project is physically created inside the workspace folder, but you can choose another location.</td>
 </tr>
 <tr class="row-even"><td>Working sets</td>
 <td>You can add the project to a <a class="reference external" href="https://help.eclipse.org/2019-06/help/index.jsp?nav=%2F0_4_4_2">working  set</a>, where you can logically group of your projects. This is a concept used by the <a class="reference internal" href="#project-explorer-view">Project Explorer view</a>.</td>
@@ -375,7 +376,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><strong>Width</strong> and <strong>Height</strong></td>
-<td>The width and height of the game, in game pixels.</td>
+<td>The width and height of the game, in pixels.</td>
 </tr>
 <tr class="row-odd"><td><strong>Type</strong></td>
 <td>Which renderer to use. <code class="docutils literal"><span class="pre">Phaser.AUTO</span></code>, <code class="docutils literal"><span class="pre">Phaser.CANVAS</span></code>, <code class="docutils literal"><span class="pre">Phaser.HEADLESS</span></code>, or <code class="docutils literal"><span class="pre">Phaser.WEBGL</span></code>. <code class="docutils literal"><span class="pre">AUTO</span></code> picks <code class="docutils literal"><span class="pre">WEBGL</span></code> if available, otherwise <code class="docutils literal"><span class="pre">CANVAS</span></code>.</td>
@@ -393,14 +394,14 @@
 <td>Automatically center the canvas within the parent?</td>
 </tr>
 <tr class="row-even"><td><strong>Language</strong></td>
-<td>The language to be used to code the game: JavaScript or TypeScript. In both cases the project will be configured to be compatible with <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a></td>
+<td>The language to be used to code the game: JavaScript or TypeScript. In both cases, the project will be configured to be compatible with <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a></td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="project-structure">
 <h4>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h4>
 <p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
-<p>In the following table we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder.</p>
+<p>In the following table, we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder.</p>
 <table border="1" class="docutils" id="id11">
 <caption><span class="caption-text">Files common to all Phaser projects</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -457,8 +458,8 @@
 </div>
 <div class="section" id="phaser-example-project-wizard">
 <h3>2.5.2&nbsp;&nbsp;&nbsp;Phaser Example Project Wizard<a class="headerlink" href="#phaser-example-project-wizard" title="Permalink to this headline">¶</a></h3>
-<p>Learn by examples is a common practice in <a class="reference external" href="https://phaser.io">Phaser</a>. The <a class="reference external" href="https://phaser.io">Phaser</a> team spend a lot of time on create examples that showcase certain features or concepts. In <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> we follow that practice and provide a few number of examples that show how you can use the different tools in the editor.</p>
-<p>In the Phaser Example Project wizard you can select any example from <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> or from the <a class="reference external" href="https://phaser.io/examples">Phaser Official Examples</a>, and create a project.</p>
+<p>Learn by examples is a common practice in <a class="reference external" href="https://phaser.io">Phaser</a>. The <a class="reference external" href="https://phaser.io">Phaser</a> team spend a lot of time on creating examples that showcase certain features or concepts. In <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> we follow that practice and provide a few numbers of examples that show how you can use the different tools in the editor.</p>
+<p>In the Phaser Example Project wizard, you can select an example from <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> or from the <a class="reference external" href="https://phaser.io/examples">Phaser Official Examples</a>, and create a project.</p>
 <img alt="The Phaser Example Project." src="_images/new-example-project.png" />
 <p>This wizard can be open as any other wizard, but also from views that display the <a class="reference external" href="https://phaser.io/examples">Phaser Official Examples</a>, like the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> and the <a class="reference external" href="chains.html#phaser-examples-view">Phaser Examples</a> view.</p>
 </div>
@@ -466,8 +467,8 @@
 <div class="section" id="import-and-export-wizards">
 <h2>2.6&nbsp;&nbsp;&nbsp;Import and Export wizards<a class="headerlink" href="#import-and-export-wizards" title="Permalink to this headline">¶</a></h2>
 <p>The Import wizards are very useful, especially the one to import projects into the workspace. The workspace use to be private, local, and the projects are often shared in SCM systems or any other place, and then imported into the workspace. You can zip a project and publish it in your blog, in a tutorial article.</p>
-<p>When you import a project, you have the option of create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.</p>
-<p>To open the import wizard click on <em>File</em> → <em>Import…</em>. The dialog shows the elements you can import, in the case of the projects, select the <strong>Existing Projects into the Workspace</strong>. Note other useful element you can import are preferences. <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4">Learn more about the import wizards in the Eclipse Help</a>.</p>
+<p>When you import a project, you have the option to create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.</p>
+<p>To open the import wizard click on <em>File</em> → <em>Import…</em>. The dialog shows the elements you can import, in the case of the projects, select the <strong>Existing Projects into the Workspace</strong>. Note another useful element you can import are preferences. <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4">Learn more about the import wizards in the Eclipse Help</a>.</p>
 <img alt="Import wizard." src="_images/import-wizard.png" />
 <p>The export wizard is similar to the import wizard. Open it on the menu <em>File</em> → <em>Export…</em>. It opens a dialog with the elements you can export, for example, the preferences.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-71.htm?cp=0_4_4_2_5">Learn more about the export wizard in the Eclipse Help</a></p>
@@ -478,7 +479,7 @@
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-72.htm?cp=0_4_1">Learn more about Preferences in the Eclipse Help</a></p>
 <div class="section" id="themes">
 <h3>2.7.1&nbsp;&nbsp;&nbsp;Themes<a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
-<p>The UI and editors themes is a subject where many of you have very personal preference. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides a default light theme in addition to those provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>. You can change the theme in <em>General</em> → <em>Appearance</em>.</p>
+<p>The UI and editors themes is a subject where many of you have a very personal preference. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides a default light theme in addition to those provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>. You can change the theme in <em>General</em> → <em>Appearance</em>.</p>
 <img alt="The theme preferences." src="_images/preferences-theme.png" />
 <p>You can even disable theming, and the editor will look more like a native application (it requires a restart).</p>
 </div>
@@ -503,7 +504,7 @@
 <p class="topic-title first">Preview</p>
 <p>Configures how images and other visual resources are shown in the IDE.</p>
 <img alt="The Preview settings." src="_images/preferences-preview.png" />
-<p>Note there are other two subcategories, <strong>Spritesheet</strong> and <strong>Tilemap</strong>.</p>
+<p>Note there are other two subcategories, <strong>Spritesheet</strong>, and <strong>Tilemap</strong>.</p>
 </div>
 <div class="topic">
 <p class="topic-title first">Project</p>
@@ -542,7 +543,7 @@
 </ol>
 <div class="section" id="home-button">
 <h3>2.8.1&nbsp;&nbsp;&nbsp;Home button<a class="headerlink" href="#home-button" title="Permalink to this headline">¶</a></h3>
-<p>Click on this button to switch to the <a class="reference internal" href="#start-perspective">Start perspective</a>. If you intention is to open other project, you can right-click on the button and select it.</p>
+<p>Click on this button to switch to the <a class="reference internal" href="#start-perspective">Start perspective</a>. If your intention is to open another project, you can right-click on the button and select it.</p>
 <p>You can open the same dialog with the keys <code class="docutils literal"><span class="pre">Ctrl+Alt+P</span></code>, or searching in the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> for <code class="docutils literal"><span class="pre">open</span> <span class="pre">project</span> <span class="pre">dialog</span></code>.</p>
 <img alt="Home button launches Open project dialog." src="_images/home-button-open-project.png" />
 </div>
@@ -559,7 +560,7 @@
 </div>
 <div class="section" id="toolbar-editor-area">
 <h3>2.8.4&nbsp;&nbsp;&nbsp;Toolbar editor area<a class="headerlink" href="#toolbar-editor-area" title="Permalink to this headline">¶</a></h3>
-<p>The center area of the toolbar is reserved for the active editor. The active editor can contributes its own buttons, with actions that affect only the editor. For example, the <a class="reference external" href="scene-editor.html">Scene Editor</a> provides buttons to select a transformation tool, or a button to add a new object. The <a class="reference external" href="animations-editor.html">Animations Editor</a> provides button for the animations playback.</p>
+<p>The center area of the toolbar is reserved for the active editor. The active editor can contribute its own buttons, with actions that affect only the editor. For example, the <a class="reference external" href="scene-editor.html">Scene Editor</a> provides buttons to select a transformation tool, or a button to add a new object. The <a class="reference external" href="animations-editor.html">Animations Editor</a> provides the buttons for the playback of the animations.</p>
 </div>
 <div class="section" id="quick-access-button">
 <h3>2.8.5&nbsp;&nbsp;&nbsp;Quick Access button<a class="headerlink" href="#quick-access-button" title="Permalink to this headline">¶</a></h3>
@@ -598,16 +599,16 @@
 <p>The Outline view is a general view to display hierarchical information. It is provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> and used widely by the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> specific editors. When an editor is activated, the Outline view connects with it and display the editor content with certain structure (often as a tree or a list).</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6">Learn more in the Eclipse Help about the Outline view</a></p>
 <p>This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.</p>
-<p>It is very common that the Outline view shows the name of the elements, aso you can perform a content filtering by name.</p>
+<p>It is very common that the Outline view shows the name of the elements, also you can perform a content filtering by name.</p>
 <img alt="The Outline view of the Animations Editor." src="_images/outline-view-animations-editor.png" />
 </div>
 <div class="section" id="blocks-view">
 <h2>2.11&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
 <p>This view is a recent concept in <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>. Its purpose is to provide, in a visual and clean way,  the different building blocks needed to create the objects in the active editor. So you can drag a block and drop it on the editor.</p>
-<p>When an editor is activated, the <strong>Blocks view</strong> request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapts to the <strong>Blocks view</strong>. Actually, at this moment only two editors provides building blocks: the <a class="reference external" href="scene-editor.html#building-blocks">Scene Editor</a> and the <a class="reference external" href="animations-editor.html#building-blocks">Animations Editor</a>.</p>
+<p>When an editor is activated, the <strong>Blocks view</strong> request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapt to the <strong>Blocks view</strong>. Actually, at this moment only two editors provide building blocks: the <a class="reference external" href="scene-editor.html#building-blocks">Scene Editor</a> and the <a class="reference external" href="animations-editor.html#building-blocks">Animations Editor</a>.</p>
 <p>The content in the <strong>Blocks view</strong> could be nested. It can show <strong>terminal</strong> and <strong>no-terminal</strong> elements. In the next image, it shows the blocks of a Scene Editor, note the texture atlas <code class="docutils literal"><span class="pre">atlas-props</span></code> <strong>no-terminal</strong> block can be expanded/collapsed and shows the atlas frames.</p>
 <img alt="Blocks view." src="_images/blocks-view.png" />
-<p>Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually the same color is assigned to blocks of the same “type”.</p>
+<p>Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually, the same color is assigned to blocks of the same “type”.</p>
 </div>
 <div class="section" id="active-project">
 <h2>2.12&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h2>
@@ -628,12 +629,12 @@
 <img alt="Start perspective open project links." src="_images/start-project-links.png" />
 </li>
 </ul>
-<p>However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> shows the name of the project in the editor’s tab, if the file belongs to a non-active project.</p>
+<p>However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> shows the name of the project in the editor’s tab if the file belongs to a non-active project.</p>
 <img alt="Editor tab shows the name of the project if the file does not belong to the active project." src="_images/editor-tab-project-name.png" />
 </div>
 <div class="section" id="project-view">
 <h2>2.13&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
-<p>This view shows the <a class="reference internal" href="#active-project">active project</a> content and provides the common resource operations. There are a couple of features that make this view friendly with game development and a better alternative than the other resource navigation views provided by <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> (<a class="reference internal" href="#project-explorer-view">Project Explorer view</a> and <strong>Navigator</strong>).</p>
+<p>This view shows the <a class="reference internal" href="#active-project">active project</a> content and provides common resource operations. There are a couple of features that make this view friendly with game development and a better alternative than the other resource navigation views provided by <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> (<a class="reference internal" href="#project-explorer-view">Project Explorer view</a> and <strong>Navigator</strong>).</p>
 <div class="section" id="quick-resource-search">
 <h3>2.13.1&nbsp;&nbsp;&nbsp;Quick resource search<a class="headerlink" href="#quick-resource-search" title="Permalink to this headline">¶</a></h3>
 <p>You can perform a quick search for the resources name.</p>
@@ -641,7 +642,7 @@
 </div>
 <div class="section" id="in-line-preview-of-files">
 <h3>2.13.2&nbsp;&nbsp;&nbsp;In-line preview of files<a class="headerlink" href="#in-line-preview-of-files" title="Permalink to this headline">¶</a></h3>
-<p>Many of the files with a visual content are in-line previewed. It is the case of images, sounds and scenes.</p>
+<p>Many of the files with visual content are in-line previewed. It is the case of images, sounds, and scenes.</p>
 <img alt="Inline preview of files." src="_images/project-view-inline-preview.png" />
 </div>
 <div class="section" id="zooming">
@@ -659,14 +660,30 @@
 <li>Some graphical files are previewed (media and scene files).</li>
 </ol>
 </div>
+<div class="section" id="context-menu">
+<h3>2.13.5&nbsp;&nbsp;&nbsp;Context menu<a class="headerlink" href="#context-menu" title="Permalink to this headline">¶</a></h3>
+<p>The context menu of the <strong>Project view</strong> provides a few options if you compares it with the <cite>Project Explorer view</cite>, however, it covers the most common operations.</p>
+<ul class="simple">
+<li>Open a file with other editor.</li>
+<li>Create a new resource.</li>
+<li>Remove, move, rename and delete resources.</li>
+<li>Open the <strong>Properties dialog</strong>.</li>
+</ul>
+<img alt="Context menu of the project view." src="_images/project-view-context-menu.png" />
+</div>
 </div>
 <div class="section" id="project-explorer-view">
 <h2>2.14&nbsp;&nbsp;&nbsp;Project Explorer view<a class="headerlink" href="#project-explorer-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
+<p>This view is the default project navigator provided by <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>. All third-party plugins, like the <a class="reference external" href="#git-perspective">Git tooling</a>, is integrated with it. If you experience any issue with the <a class="reference internal" href="#project-view">Project view</a>, you can open the <strong>Project Explorer</strong> and complete the task.</p>
+<p>In previous version of <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> we used this view to navigate the resources, but it is not as friendly for game development as we wish. With the time, we should implement many of the features provided by this view in the <a class="reference internal" href="#project-view">Project view</a> and short the gap.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-27.htm?cp=0_4_4_1_4">Learn more in the Eclipse Help about the Project Explorer view</a></p>
 </div>
 <div class="section" id="terminal-view">
 <h2>2.15&nbsp;&nbsp;&nbsp;Terminal view<a class="headerlink" href="#terminal-view" title="Permalink to this headline">¶</a></h2>
-<p>In construction.</p>
+<p>This is a terminal implementation provided by the <a href="#id15"><span class="problematic" id="id16">|EclipseHelp|_</span></a>. It could be especially useful for TypeScript projects.</p>
+<p>You can open the <strong>Terminal view</strong> with the <a class="reference external" href="#add-view-button">Show View dialog</a> or with the <a class="reference external" href="#properties-support">Terminal button of the Properties of a resource</a>.</p>
+<img alt="Open Terminal view with Properties button." src="_images/terminal-open-in-properties.png" />
+<p><a class="reference external" href="https://marketplace.eclipse.org/content/tm-terminal">Visit the Terminal TM plugin in the Eclipse Marketplace</a></p>
 </div>
 <div class="section" id="main-perspectives">
 <h2>2.16&nbsp;&nbsp;&nbsp;Main perspectives<a class="headerlink" href="#main-perspectives" title="Permalink to this headline">¶</a></h2>

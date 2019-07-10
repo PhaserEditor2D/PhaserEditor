@@ -18,9 +18,3 @@ Last update: |date|
    code-editors   
    phaser-labs
    misc
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`

@@ -11,9 +11,9 @@ Workbench
 
 `Learn more in the Eclipse Help about the workbench <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02a.htm?cp=0_1_0_0>`_
 
-The |EclipseIDE|_ is a general purpose tool that is open, flexible and powerful. Maybe for this reason, it results complex for some users, but we believe that we can customize and transform it into a friendly, modern and productive tool for game development.
+The |EclipseIDE|_ is a general purpose tool that is open, flexible and powerful. Maybe, for this reason, it is complex for some users, but we believe that we can customize and transform it into a friendly, modern and productive tool for game development.
 
-When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, `main toolbar`_ and main menu. All these elements are grouped and layout in a perspective, and you can switch from one perspective to other. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in other window, that you can move to a second monitor.
+When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, `main toolbar`_ and main menu. All these elements are grouped and layout in a perspective, and you can switch perspectives. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in another window, that you can move to a second monitor.
 
 
 .. image:: images/workbench-overview.png
@@ -21,20 +21,20 @@ When you run the editor, it opens the workbench in the selected workspace. The w
 Views
 -----
 
-A view is a small window, or better say, a **part**, inside the workbench window. They are commonly used to present the information of certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affects the view's content.
+A view is a small window, or better say, a **part**, inside the workbench window. They are commonly used to present the information of a certain resource (workspace, project or file). A view may have a menu or/and a toolbar, with commands that only affect the view's content.
 
 `Learn more about views in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1>`_
 
 .. image:: images/view-menu-toolbar.png
 
-Most of the view are about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the **dirty** concept available in editors. A view may persists its state in the workspace metadata.
+Most of the view is about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the **dirty** concept available in editors. A view may persist its state in the workspace metadata.
 
 You can add, close, stack, dock, minimize/maximize views. The views layout are part of the perspective and is persisted across sessions or perspective switching.
 
 Editors
 -------
 
-The editors are, like the views, **parts** of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout are not part of the perspective. This means, when you switch to other perspective, the editors remains open. Only the editor area is affected.
+The editors are, like the views, **parts** of the workbench window. You can close, add, stack, dock, minimize/maximize editors, but the editor layout is not part of the perspective. This means, when you switch to another perspective, the editors remain open. Only the editor area is affected.
 
 `Learn more about editors in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02d.xhtml?cp=0_1_0_1_0>`_
 
@@ -53,15 +53,15 @@ A perspective groups views and menu items with a common purpose. For example, th
 
 The layout of the views and the editor area is persisted in the perspective. If you change the layout, the perspective is modified. Actually, you can reset a perspective or save its layout as a new perspective. 
 
-In the *Window* |-| *Perspective* menu is listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:
+In the *Window* |-| *Perspective* menu has listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:
 
 .. image:: images/toolbar-perspective-section.png
 
 1. Open a view.
 2. Reset the perspective.
-3. Switch to other perspective.
+3. Switch to another perspective.
 
-Workspace, projects and resources
+Workspace, projects, and resources
 ---------------------------------
 
 The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first `opens the launcher <first-steps.html#run-phaser-editor-2d>`_, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.
@@ -85,11 +85,11 @@ The resources are the logical elements of the workspace, and follow this hierarc
 * Folders and files
 
 
-Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private user space, but place the projects in shared repositories.
+Physically, a project could be created in any location of the filesystem, but the workspace keeps a reference to it. It is a common practice to create the workspace folder in a private location, but place the projects in shared repositories.
 
-Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the |EclipseIDE|_ workspace tree, and have no file system location.
+Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the |EclipseIDE|_ workspace tree and have no file system location.
 
-`Learn more about virtual folder in the Eclipse Help <https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3>`_
+`Learn more about virtual folders in the Eclipse Help <https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3>`_
 
 The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. |PhaserEditor|_ introduced the `Project view`_ to navigate and create the resources or the `active project`_, but the |EclipseIDE|_ provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
 
@@ -107,9 +107,9 @@ Resource filters
 
 When you create a project, it automatically configures two resource filters to exclude ``node_modules`` and ``.git`` folders.
 
-It is important to exclude from the project all the files that are not related directly to the game. |PhaserEditor|_ performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in other project ---actually, you can consider other IDE, like |vscode|_.
+It is important to exclude from the project all the files that are not related directly to the game. |PhaserEditor|_ performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in another project---actually, you can consider other IDE, like |vscode|_.
 
-If you include source repositories it may be worst, because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).
+If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).
 
 `Learn more in the Eclipse Help about resource filters <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5>`_
 
@@ -128,7 +128,7 @@ Cleaning projects
 
 |PhaserEditor|_ builds an internal model of many of the objects you define in the different files. When you add, delete or modify a set of resources, the project builders are executed and process the affected resources, and update the internal model. Let's see an example:
 
-All the asset keys you define in the `pack files <asset-pack-editor.html>`_ are part of the internal model, and UI parts like the `Animations Editor <animations-editor.html>`_ and the `Scene Editor <scene-editor.html>`_ read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content, if it is the case.
+All the asset keys you define in the `pack files <asset-pack-editor.html>`_ are part of the internal model, and UI parts like the `Animations Editor <animations-editor.html>`_ and the `Scene Editor <scene-editor.html>`_ read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content if it is the case.
 
 If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the **Clean** dialog in *Project* |-| *Clean...*
 
@@ -144,7 +144,7 @@ If for any reason, you think the editors or views are showing outdated or wrong 
 Resource wizards
 ----------------
 
-|PhaserEditor|_ uses wizards to create any type of resource and set the initial parameters. All these wizards share a set parameters common to all resources, like the name, the path inside the workspace and the physical location (it maybe a link). You can open the wizards in different parts of the IDE:
+|PhaserEditor|_ uses wizards to create any type of resource and set the initial parameters. All these wizards share a group of parameters common to all resources, like the name, the path inside the workspace and the physical location (it may be a link). You can open the wizards in different parts of the IDE:
 
 `Learn more about wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/nav/0_4_4_2>`_
 
@@ -154,13 +154,13 @@ Resource wizards
 * In the `Quick Access dialog`_ (search for ``new item``).
 * In the `Chains <phaser-labs.html#chains-view>`_ or `Phaser Examples <chains.html#phaser-examples-view>`_ views, where you can create a project with the selected example.
 
-Note you can group the wizards in two groups: file wizards and project wizards. |PhaserEditor|_ provides a wizard to create a game project with a basic structure, ready to start coding the game, and other wizard to create a project based on an example, that you can read and modify to learn Phaser_ or |PhaserEditor|_ features.
+Note you can group the wizards in two groups: file wizards and project wizards. |PhaserEditor|_ provides a wizard to create a game project with a basic structure, ready to start coding the game, and another wizard to create a project based on an example, that you can read and modify to learn Phaser_ or |PhaserEditor|_ features.
 
 
 Phaser Project Wizard
 ~~~~~~~~~~~~~~~~~~~~~
 
-This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters to all the projects:
+This wizard creates a project ready to start making your game. The wizard contains two pages. The first page shows the common parameters for all the projects:
 
 .. image:: images/workbench/project-wizard-page-1.png
    :alt: Phaser Project wizard: common parameters. 
@@ -173,7 +173,7 @@ This wizard creates a project ready to start making your game. The wizard contai
    * - **Project name**
      - Should be unique in the workspace.
    * - **Default location**
-     - By default, the project is physically created inside the workspace folder, but you can choose other location.
+     - By default, the project is physically created inside the workspace folder, but you can choose another location.
    * - Working sets
      - You can add the project to a `working  set <https://help.eclipse.org/2019-06/help/index.jsp?nav=%2F0_4_4_2>`_, where you can logically group of your projects. This is a concept used by the `Project Explorer view`_.
 
@@ -188,7 +188,7 @@ The second page shows the parameters used to customize the project content. Ther
    * - Parameter
      - Description
    * - **Width** and **Height**
-     - The width and height of the game, in game pixels.
+     - The width and height of the game, in pixels.
    * - **Type**
      - Which renderer to use. ``Phaser.AUTO``, ``Phaser.CANVAS``, ``Phaser.HEADLESS``, or ``Phaser.WEBGL``. ``AUTO`` picks ``WEBGL`` if available, otherwise ``CANVAS``.
    * - **Pixel Art**
@@ -200,7 +200,7 @@ The second page shows the parameters used to customize the project content. Ther
    * - **Scale Auto Center**
      - Automatically center the canvas within the parent?
    * - **Language**
-     - The language to be used to code the game: JavaScript or TypeScript. In both cases the project will be configured to be compatible with |vscode|_
+     - The language to be used to code the game: JavaScript or TypeScript. In both cases, the project will be configured to be compatible with |vscode|_
     
 
 Project structure
@@ -208,7 +208,7 @@ Project structure
 
 The project structure is pretty similar to a static web project. It contains a ``WebContent`` folder with the files that are part of the game. Especially, it contains the ``index.html`` file. It is the root of the game.
 
-In the following table we provide a short description of each file of the ``WebContent`` folder.
+In the following table, we provide a short description of each file of the ``WebContent`` folder.
 
 .. table:: Files common to all Phaser projects   
 
@@ -238,9 +238,9 @@ The other top-level folder is the ``Design`` folder, where you can store files r
 Phaser Example Project Wizard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Learn by examples is a common practice in Phaser_. The Phaser_ team spend a lot of time on create examples that showcase certain features or concepts. In |PhaserEditor|_ we follow that practice and provide a few number of examples that show how you can use the different tools in the editor. 
+Learn by examples is a common practice in Phaser_. The Phaser_ team spend a lot of time on creating examples that showcase certain features or concepts. In |PhaserEditor|_ we follow that practice and provide a few numbers of examples that show how you can use the different tools in the editor. 
 
-In the Phaser Example Project wizard you can select any example from |PhaserEditor|_ or from the |PhaserOfficialExamples|_, and create a project.
+In the Phaser Example Project wizard, you can select an example from |PhaserEditor|_ or from the |PhaserOfficialExamples|_, and create a project.
 
 .. image:: images/workbench/new-example-project.png
    :alt: The Phaser Example Project.
@@ -253,9 +253,9 @@ Import and Export wizards
 
 The Import wizards are very useful, especially the one to import projects into the workspace. The workspace use to be private, local, and the projects are often shared in SCM systems or any other place, and then imported into the workspace. You can zip a project and publish it in your blog, in a tutorial article.
 
-When you import a project, you have the option of create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.
+When you import a project, you have the option to create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.
 
-To open the import wizard click on *File* |-| *Import...*. The dialog shows the elements you can import, in the case of the projects, select the **Existing Projects into the Workspace**. Note other useful element you can import are preferences. `Learn more about the import wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4>`_.
+To open the import wizard click on *File* |-| *Import...*. The dialog shows the elements you can import, in the case of the projects, select the **Existing Projects into the Workspace**. Note another useful element you can import are preferences. `Learn more about the import wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4>`_.
 
 .. image:: images/workbench/import-wizard.png
    :alt: Import wizard.
@@ -275,7 +275,7 @@ Almost every customization you can do in the IDE is via the Preferences. The pre
 Themes
 ~~~~~~
 
-The UI and editors themes is a subject where many of you have very personal preference. |PhaserEditor|_ provides a default light theme in addition to those provided by the |EclipseIDE|_. You can change the theme in *General* |-| *Appearance*. 
+The UI and editors themes is a subject where many of you have a very personal preference. |PhaserEditor|_ provides a default light theme in addition to those provided by the |EclipseIDE|_. You can change the theme in *General* |-| *Appearance*. 
 
 .. image:: images/workbench/preferences-theme.png
    :alt: The theme preferences.
@@ -313,7 +313,7 @@ The **Phaser Editor** category in the **Preferences Dialog** provides the settin
    .. image:: images/workbench/preferences-preview.png
       :alt: The Preview settings.
 
-   Note there are other two subcategories, **Spritesheet** and **Tilemap**.
+   Note there are other two subcategories, **Spritesheet**, and **Tilemap**.
 
 .. topic:: Project
 
@@ -360,7 +360,7 @@ The main toolbar provides buttons for common actions.
 Home button
 ~~~~~~~~~~~
 
-Click on this button to switch to the `Start perspective`_. If you intention is to open other project, you can right-click on the button and select it.
+Click on this button to switch to the `Start perspective`_. If your intention is to open another project, you can right-click on the button and select it.
 
 You can open the same dialog with the keys ``Ctrl+Alt+P``, or searching in the `Quick Access dialog`_ for ``open project dialog``.
 
@@ -389,7 +389,7 @@ You can configure the system browser in the `Web Browser preferences <http://hel
 Toolbar editor area
 ~~~~~~~~~~~~~~~~~~~
 
-The center area of the toolbar is reserved for the active editor. The active editor can contributes its own buttons, with actions that affect only the editor. For example, the `Scene Editor <scene-editor.html>`_ provides buttons to select a transformation tool, or a button to add a new object. The `Animations Editor <animations-editor.html>`_ provides button for the animations playback.
+The center area of the toolbar is reserved for the active editor. The active editor can contribute its own buttons, with actions that affect only the editor. For example, the `Scene Editor <scene-editor.html>`_ provides buttons to select a transformation tool, or a button to add a new object. The `Animations Editor <animations-editor.html>`_ provides the buttons for the playback of the animations.
 
 Quick Access button
 ~~~~~~~~~~~~~~~~~~~
@@ -453,7 +453,7 @@ The Outline view is a general view to display hierarchical information. It is pr
 
 This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.
 
-It is very common that the Outline view shows the name of the elements, aso you can perform a content filtering by name.
+It is very common that the Outline view shows the name of the elements, also you can perform a content filtering by name.
 
 .. image:: images/workbench/outline-view-animations-editor.png
    :alt: The Outline view of the Animations Editor.
@@ -463,14 +463,14 @@ Blocks view
 
 This view is a recent concept in |PhaserEditor|_. Its purpose is to provide, in a visual and clean way,  the different building blocks needed to create the objects in the active editor. So you can drag a block and drop it on the editor.
 
-When an editor is activated, the **Blocks view** request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapts to the **Blocks view**. Actually, at this moment only two editors provides building blocks: the `Scene Editor <scene-editor.html#building-blocks>`_ and the `Animations Editor <animations-editor.html#building-blocks>`_.
+When an editor is activated, the **Blocks view** request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapt to the **Blocks view**. Actually, at this moment only two editors provide building blocks: the `Scene Editor <scene-editor.html#building-blocks>`_ and the `Animations Editor <animations-editor.html#building-blocks>`_.
 
 The content in the **Blocks view** could be nested. It can show **terminal** and **no-terminal** elements. In the next image, it shows the blocks of a Scene Editor, note the texture atlas ``atlas-props`` **no-terminal** block can be expanded/collapsed and shows the atlas frames.
 
 .. image:: images/workbench/blocks-view.png
    :alt: Blocks view.
 
-Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually the same color is assigned to blocks of the same "type".
+Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually, the same color is assigned to blocks of the same "type".
 
 Active project
 --------------
@@ -498,7 +498,7 @@ You can activate any project at any time. There different ways to do this:
      :alt: Start perspective open project links.
 
 
-However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, |PhaserEditor|_ shows the name of the project in the editor's tab, if the file belongs to a non-active project.
+However the common is to work on a single project at the same time, you may create other projects and open the files in editors. To reduce the confusion, |PhaserEditor|_ shows the name of the project in the editor's tab if the file belongs to a non-active project.
 
 .. image:: images/workbench/editor-tab-project-name.png
    :alt: Editor tab shows the name of the project if the file does not belong to the active project.
@@ -507,7 +507,8 @@ However the common is to work on a single project at the same time, you may crea
 Project view
 ------------
 
-This view shows the `active project`_ content and provides the common resource operations. There are a couple of features that make this view friendly with game development and a better alternative than the other resource navigation views provided by |EclipseIDE|_ (`Project Explorer view`_ and **Navigator**).
+This view shows the `active project`_ content and provides common resource operations. There are a couple of features that make this view friendly with game development and a better alternative than the other resource navigation views provided by |EclipseIDE|_ (`Project Explorer view`_ and **Navigator**).
+
 
 Quick resource search
 ~~~~~~~~~~~~~~~~~~~~~
@@ -521,7 +522,7 @@ You can perform a quick search for the resources name.
 In-line preview of files
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Many of the files with a visual content are in-line previewed. It is the case of images, sounds and scenes.  
+Many of the files with visual content are in-line previewed. It is the case of images, sounds, and scenes.  
 
 .. image:: images/workbench/project-view-inline-preview.png
    :alt: Inline preview of files.
@@ -545,51 +546,62 @@ The **Project** view contributes information and actions to the `Properties view
 #. Open the **Properties dialog** provided by |EclipseIDE|_. It shows additional properties like encoding and `resource filters`_.
 #. Some graphical files are previewed (media and scene files).
 
+Context menu
+~~~~~~~~~~~~
+
+The context menu of the **Project view** provides a few options if you compares it with the `Project Explorer view`, however, it covers the most common operations.
+
+* Open a file with other editor.
+
+* Create a new resource.
+
+* Remove, move, rename and delete resources.
+
+* Open the **Properties dialog**.
+
+.. image:: images/workbench/project-view-context-menu.png
+   :alt: Context menu of the project view.
 
 Project Explorer view
 ---------------------
 
-In construction.
+This view is the default project navigator provided by |EclipseIDE|_. All third-party plugins, like the `Git tooling <#git-perspective>`_, is integrated with it. If you experience any issue with the `Project view`_, you can open the **Project Explorer** and complete the task. 
+
+In previous version of |PhaserEditor|_ we used this view to navigate the resources, but it is not as friendly for game development as we wish. With the time, we should implement many of the features provided by this view in the `Project view`_ and short the gap.
+
+`Learn more in the Eclipse Help about the Project Explorer view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-27.htm?cp=0_4_4_1_4>`_
 
 Terminal view
 -------------
 
-In construction.
+This is a terminal implementation provided by the |EclipseHelp|_. It could be especially useful for TypeScript projects.
+
+You can open the **Terminal view** with the `Show View dialog <#add-view-button>`_ or with the `Terminal button of the Properties of a resource <#properties-support>`_.
+
+.. image:: images/workbench/terminal-open-in-properties.png
+   :alt: Open Terminal view with Properties button.
+
+`Visit the Terminal TM plugin in the Eclipse Marketplace <https://marketplace.eclipse.org/content/tm-terminal>`_
 
 Main perspectives
 -----------------
 
-In construction.
-
-
 Start perspective
 ~~~~~~~~~~~~~~~~~
-
-In construction.
 
 
 Scene perspective
 ~~~~~~~~~~~~~~~~~
 
-In construction.
-
 
 Code perspective
 ~~~~~~~~~~~~~~~~
 
-In construction.
-
 Git perspective
 ~~~~~~~~~~~~~~~
-
-In construction.
 
 Update the IDE
 --------------
 
-In construction.
-
 Built-in Help
 -------------
-
-In construction.
