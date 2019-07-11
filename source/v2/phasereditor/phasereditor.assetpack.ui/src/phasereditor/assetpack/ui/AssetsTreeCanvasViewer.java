@@ -106,6 +106,10 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 	public static ImageProxyTreeCanvasItemRenderer createImageRenderer(TreeCanvasItem item, Object element) {
 
 		ImageProxy proxy = getAssetKeyImageProxy(element);
+		
+		if (proxy == null) {
+			return null;
+		}
 
 		return new ImageProxyTreeCanvasItemRenderer(item, proxy);
 	}
