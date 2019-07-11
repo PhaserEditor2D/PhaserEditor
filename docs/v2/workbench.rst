@@ -660,8 +660,27 @@ The `Eclipse Git <https://www.eclipse.org/egit/>`_ plugin provides this perspect
    :alt: Git perspective.
 
 
-Update the IDE
---------------
+Automatic updates
+-----------------
+
+|PhaserEditor|_ checks for updates at the startup, but you can force an update check in the menu option *Help* |-| *Check for Updates*.
+
+The updates are incremental (only modified/new plugins are downloaded), and it may be faster than download the whole editor from the website, especially if the update does not include a new Phaser version ---that may contain new examples and assets--- or a new |EclipseIDE|_ version (approximately every four months). 
+
+You can disable the automatic update in the `preferences`_ page *Install/Update* |-| *Automatic Updates*.
+
+`Learn more in the Eclipse Help about updating and installing software <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-129.htm?cp=0_3_17>`_
+
+Possible issues
+~~~~~~~~~~~~~~~
+
+The updating is a complex operation, especially when it includes a new |EclipseIDE|_ version. If the IDE does not start, execute the ``Debug.bat`` script ( or ``Debug.sh`` in the other platforms), it cleans the plugins cache.
+
+Sometimes, an update includes new data, new views or new perspectives, that are not present in the workspace you are working on. In that case, if you experience any issue, you can `start with a new workspace <first-steps.html#run-phaser-editor-2d>`_ and `import <#import-and-export-wizards>`_ the projects.
 
 Built-in Help
 -------------
+
+The |PhaserEditor|_ installation includes this help and the workbench help (provided by |EclipseIDE|_). Many tools only provide online help, but this is an integrated environment, and the help is part of that integration. Eventually, we should integrate all the Phaser related views and editors with the help, providing contextual assistance.
+
+`Learn more in the Eclipse Help about the Help System <https://help.eclipse.com/help/topic/org.eclipse.platform.doc.user/tasks/help.xhtml?cp=0_3_15>`_

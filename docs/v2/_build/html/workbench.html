@@ -169,7 +169,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#git-perspective">2.17.4&nbsp;&nbsp;&nbsp;Git perspective</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#update-the-ide">2.18&nbsp;&nbsp;&nbsp;Update the IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-updates">2.18&nbsp;&nbsp;&nbsp;Automatic updates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#possible-issues">2.18.1&nbsp;&nbsp;&nbsp;Possible issues</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#built-in-help">2.19&nbsp;&nbsp;&nbsp;Built-in Help</a></li>
 </ul>
 </li>
@@ -735,11 +738,22 @@
 <img alt="Git perspective." src="_images/git-perspective.png" />
 </div>
 </div>
-<div class="section" id="update-the-ide">
-<h2>2.18&nbsp;&nbsp;&nbsp;Update the IDE<a class="headerlink" href="#update-the-ide" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="automatic-updates">
+<h2>2.18&nbsp;&nbsp;&nbsp;Automatic updates<a class="headerlink" href="#automatic-updates" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> checks for updates at the startup, but you can force an update check in the menu option <em>Help</em> → <em>Check for Updates</em>.</p>
+<p>The updates are incremental (only modified/new plugins are downloaded), and it may be faster than download the whole editor from the website, especially if the update does not include a new Phaser version —that may contain new examples and assets— or a new <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> version (approximately every four months).</p>
+<p>You can disable the automatic update in the <a class="reference internal" href="#preferences">preferences</a> page <em>Install/Update</em> → <em>Automatic Updates</em>.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-129.htm?cp=0_3_17">Learn more in the Eclipse Help about updating and installing software</a></p>
+<div class="section" id="possible-issues">
+<h3>2.18.1&nbsp;&nbsp;&nbsp;Possible issues<a class="headerlink" href="#possible-issues" title="Permalink to this headline">¶</a></h3>
+<p>The updating is a complex operation, especially when it includes a new <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> version. If the IDE does not start, execute the <code class="docutils literal"><span class="pre">Debug.bat</span></code> script ( or <code class="docutils literal"><span class="pre">Debug.sh</span></code> in the other platforms), it cleans the plugins cache.</p>
+<p>Sometimes, an update includes new data, new views or new perspectives, that are not present in the workspace you are working on. In that case, if you experience any issue, you can <a class="reference external" href="first-steps.html#run-phaser-editor-2d">start with a new workspace</a> and <a class="reference external" href="#import-and-export-wizards">import</a> the projects.</p>
+</div>
 </div>
 <div class="section" id="built-in-help">
 <h2>2.19&nbsp;&nbsp;&nbsp;Built-in Help<a class="headerlink" href="#built-in-help" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> installation includes this help and the workbench help (provided by <a class="reference external" href="https://eclipse.org">Eclipse IDE</a>). Many tools only provide online help, but this is an integrated environment, and the help is part of that integration. Eventually, we should integrate all the Phaser related views and editors with the help, providing contextual assistance.</p>
+<p><a class="reference external" href="https://help.eclipse.com/help/topic/org.eclipse.platform.doc.user/tasks/help.xhtml?cp=0_3_15">Learn more in the Eclipse Help about the Help System</a></p>
 </div>
 </div>
 

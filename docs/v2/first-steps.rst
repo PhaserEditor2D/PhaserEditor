@@ -20,7 +20,7 @@ Run Phaser Editor 2D
 
 Un-compress the ZIP file and double click on the executable file ``PhaserEditor2D.exe``. Well, each platform has a different executable name, you can find more details about your platform in the next sections. Together with the executable, there is a script to run the editor in debug mode. This mode is useful to get debug messages or start an instance with a clean state. 
 
-When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` sub-folder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in *Preferences → General → Startup and Shutdown → Workspaces*.
+When Phaser Editor starts, it shows a splash screen and later a **Launcher Dialog**. In this dialog, you should select the path to the workspace. Usually, the default path is fine (a ``workspace`` sub-folder in the current dialog), but you can change it. The workspace is a special folder to store the projects and other data like preferences. `Learn more about the workspace <workbench.html#workspace-and-projects>`_. You can change the list of workspaces and other settings in *Preferences → General → Startup and Shutdown → Workspaces*.
 
 .. image:: images/WorkspaceLauncher.png
 
