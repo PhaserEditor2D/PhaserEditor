@@ -18,3 +18,13 @@
 
 .. |vscode| replace:: Visual Studio Code
 .. _vscode: https://code.visualstudio.com
+
+.. _`texture atlas files`: texture-packer-editor.html
+.. _`animations files`: animations-editor.html
+.. _`pack files`: asset-pack-editor.html
+
+.. |SceneEditor| replace:: Scene Editor
+.. _SceneEditor: scene-editor.html
+
+.. |AnimationsEditor| replace:: Animations Editor
+.. _AnimationsEditor: animations-editor.html
