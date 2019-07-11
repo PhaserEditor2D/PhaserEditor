@@ -532,7 +532,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				var elems = ((IStructuredSelection) getEditorSite().getSelectionProvider().getSelection()).toArray();
 
 				if (elems.length > 0) {
-					deleteAnimations((List) List.of(elems));
+					var list = List.of(elems);
+					deleteAnimations((List) list.stream().filter(e -> e instanceof AnimationModel).collect(toList()));
+					deleteFrames((List) list.stream().filter(e -> e instanceof AnimationFrameModel).collect(toList()));
 				}
 			}
 		};
@@ -1125,6 +1127,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	}
 
 	public void deleteAnimations(List<AnimationModel> animations) {
+		if (animations.isEmpty()) {
+			return;
+		}
+
 		if (!MessageDialog.openConfirm(getEditorSite().getShell(), "Delete",
 				"Do you really want to delete " + animations.size() + " animations? This operation is not undoable.")) {
 			return;
@@ -1150,6 +1156,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	}
 
 	public void deleteFrames(List<AnimationFrameModel> frames) {
+		if (frames.isEmpty()) {
+			return;
+		}
 
 		boolean running = !_animCanvas.isStopped();
 
