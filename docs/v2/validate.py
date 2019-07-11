@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import re
+import os
 
 fail = False
 
@@ -8,19 +9,19 @@ print('''
 Validating eclipse help links
 ''')
 
-rst_files = ["first-steps.rst", "workbench.rst"]
+rst_files = [n for n in os.listdir(".") if n.endswith(".rst")]
 
 eclipse_help_pattern = re.compile("htt.*://help.eclipse.org.*>")
 phaser_help_pattern = re.compile("htt.*://photonstorm.github.io/phaser3-docs.*>")
 
 for name in rst_files:
 	
-	print("\nTesting " + name + "\n")
+	print("\n=== " + name + " ===\n")
 	
 	f = open(name)
 	s = f.read()
 	
-	print("\tTesing Eclipse Help links")
+	print("\tTesting Eclipse Help links")
 
 	res = eclipse_help_pattern.findall(s)
 
@@ -36,7 +37,7 @@ for name in rst_files:
 
 
 
-	print("\tTesing Phaser Docs links")
+	print("\tTesting Phaser Docs links")
 
 	res = phaser_help_pattern.findall(s)
 

@@ -152,7 +152,7 @@ Resource wizards
 * In the context menu of the `Project <#project-view>`_ or `Project Explorer view`_.
 * In the **New** button of the `main toolbar`_.
 * In the `Quick Access dialog`_ (search for ``new item``).
-* In the `Chains <phaser-labs.html#chains-view>`_ or `Phaser Examples <chains.html#phaser-examples-view>`_ views, where you can create a project with the selected example.
+* In the `Chains <phaser-labs.html#chains-view>`_ or `Phaser Examples <phaser-labs.html#phaser-examples-view>`_ views, where you can create a project with the selected example.
 
 Note you can group the wizards in two groups: file wizards and project wizards. |PhaserEditor|_ provides a wizard to create a game project with a basic structure, ready to start coding the game, and another wizard to create a project based on an example, that you can read and modify to learn Phaser_ or |PhaserEditor|_ features.
 
@@ -245,7 +245,7 @@ In the Phaser Example Project wizard, you can select an example from |PhaserEdit
 .. image:: images/workbench/new-example-project.png
    :alt: The Phaser Example Project.
 
-This wizard can be open as any other wizard, but also from views that display the |PhaserOfficialExamples|_, like the `Chains <phaser-labs.html#chains-view>`_ and the `Phaser Examples <chains.html#phaser-examples-view>`_ view.
+This wizard can be open as any other wizard, but also from views that display the |PhaserOfficialExamples|_, like the `Chains <phaser-labs.html#chains-view>`_ and the `Phaser Examples <phaser-labs.html#phaser-examples-view>`_ view.
 
 
 Import and Export wizards
@@ -379,7 +379,7 @@ This button shows a list of the most common wizards to create new resources.
 Play button
 ~~~~~~~~~~~
 
-This button launches the `local web server <misc.html/#built-in-web-server>`_ and the system browser and points to the ``WebContent`` of the project. In other words, it runs the game.
+This button launches the `local web server <misc.html#built-in-web-server>`_ and the system browser and points to the ``WebContent`` of the project. In other words, it runs the game.
 
 Other ways to run the game is pressing the keys ``Ctrl+Alt+F5`` or searching in the `Quick Access dialog`_ for ``run phaser project``.
 
@@ -643,7 +643,7 @@ It includes the views: `Outline view`_, `Properties view`_, `Project view`_, `As
 Code perspective
 ~~~~~~~~~~~~~~~~
 
-Dedicated to JavaScript/TypeScript coding, this perspective provides the views `Project view`_, `Assets view`_, `Phaser Chains <phaser-labs.html/#phaser-chains-view>`_, `Problems view <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/cprbview.htm?cp=0_2_4_5>`_, `Terminal view`_, `Jsdoc view <phaser-labs.html#jsdoc-view>`_, and `Properties view`_.
+Dedicated to JavaScript/TypeScript coding, this perspective provides the views `Project view`_, `Assets view`_, `Phaser Chains <phaser-labs.html#phaser-chains-view>`_, `Problems view <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/cprbview.htm?cp=0_2_4_5>`_, `Terminal view`_, `Jsdoc view <phaser-labs.html#jsdoc-view>`_, and `Properties view`_.
 
 .. image:: images/workbench/code-perspective.png
    :alt: Code perspective.
