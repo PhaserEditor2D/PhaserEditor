@@ -600,7 +600,7 @@
 <p>The Outline view is a general view to display hierarchical information. It is provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> and used widely by the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> specific editors. When an editor is activated, the Outline view connects with it and display the editor content with certain structure (often as a tree or a list).</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6">Learn more in the Eclipse Help about the Outline view</a></p>
 <p>This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.</p>
-<p>It is very common that the Outline view shows the name of the elements, also you can perform a content filtering by name.</p>
+<p>It is very common that the Outline view shows the name of the elements, so you can perform a content filtering by name. In graphical editors, the element icons may reflect the real appearance of the element and it can be zoomed in/out (just hold one of the keys <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel).</p>
 <img alt="The Outline view of the Animations Editor." src="_images/outline-view-animations-editor.png" />
 </div>
 <div class="section" id="blocks-view">
@@ -610,6 +610,11 @@
 <p>The content in the <strong>Blocks view</strong> could be nested. It can show <strong>terminal</strong> and <strong>no-terminal</strong> elements. In the next image, it shows the blocks of a <a class="reference external" href="scene-editor.html">Scene Editor</a>, note the texture atlas <code class="docutils literal"><span class="pre">atlas-props</span></code> <strong>no-terminal</strong> block can be expanded/collapsed and shows the atlas frames.</p>
 <img alt="Blocks view." src="_images/blocks-view.png" />
 <p>Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually, the same color is assigned to blocks of the same “type”.</p>
+<p>Other key aspects of this view are:</p>
+<ul class="simple">
+<li>You can perform a quick search for the element names.</li>
+<li>It is zoomable: hold one of the keys <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel.</li>
+</ul>
 </div>
 <div class="section" id="active-project">
 <h2>2.12&nbsp;&nbsp;&nbsp;Active project<a class="headerlink" href="#active-project" title="Permalink to this headline">¶</a></h2>
@@ -635,7 +640,15 @@
 </div>
 <div class="section" id="assets-view">
 <h2>2.13&nbsp;&nbsp;&nbsp;Assets view<a class="headerlink" href="#assets-view" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<p>This view displays files of the <a class="reference internal" href="#active-project">active project</a> related to the process of create the scenes. It keeps these assets organized sou you have direct access to them. In case of the <a class="reference external" href="asset-pack-editor.html">pack files</a>, it shows all the keys defined in the files, and you can drag and drop them into the editors.</p>
+<p>Some key aspects of this view:</p>
+<ul class="simple">
+<li>It shows the content of the <a class="reference internal" href="#active-project">active project</a>.</li>
+<li>You can do quick search on the element names.</li>
+<li>It is zoomable: hold one of the keys <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel.</li>
+<li>You can drag the pack keys and drop them in editors like the <a class="reference external" href="scene-editor.html">Scene Editor</a> and the <a class="reference external" href="animations-editor.html">Animations Editor</a>.</li>
+</ul>
+<img alt="The Assets view." src="_images/assets-view.png" />
 </div>
 <div class="section" id="project-view">
 <h2>2.14&nbsp;&nbsp;&nbsp;Project view<a class="headerlink" href="#project-view" title="Permalink to this headline">¶</a></h2>
@@ -707,14 +720,19 @@
 <div class="section" id="scene-perspective">
 <h3>2.17.2&nbsp;&nbsp;&nbsp;Scene perspective<a class="headerlink" href="#scene-perspective" title="Permalink to this headline">¶</a></h3>
 <p>This perspective is focused on design the scenes and other related files, like the <a class="reference external" href="texture-packer-editor.html">texture atlas files</a>, <a class="reference external" href="asset-pack-editor.html">pack files</a> and <a class="reference external" href="animations-editor.html">animations files</a>.</p>
-<p>It includes the <a class="reference internal" href="#outline-view">Outline view</a>, <a class="reference internal" href="#properties-view">Properties view</a>, <a class="reference internal" href="#project-view">Project view</a>, <a class="reference internal" href="#assets-view">Assets view</a> and <a class="reference internal" href="#blocks-view">Blocks view</a>.</p>
+<p>It includes the views: <a class="reference internal" href="#outline-view">Outline view</a>, <a class="reference internal" href="#properties-view">Properties view</a>, <a class="reference internal" href="#project-view">Project view</a>, <a class="reference internal" href="#assets-view">Assets view</a> and <a class="reference internal" href="#blocks-view">Blocks view</a>.</p>
 <img alt="Scene perspective." src="_images/perspective-scene.png" />
 </div>
 <div class="section" id="code-perspective">
 <h3>2.17.3&nbsp;&nbsp;&nbsp;Code perspective<a class="headerlink" href="#code-perspective" title="Permalink to this headline">¶</a></h3>
+<p>Dedicated to JavaScript/TypeScript coding, this perspective provides the views <a class="reference internal" href="#project-view">Project view</a>, <a class="reference internal" href="#assets-view">Assets view</a>, <a class="reference external" href="phaser-labs.html/#phaser-chains-view">Phaser Chains</a>, <a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/cprbview.htm?cp=0_2_4_5">Problems view</a>, <a class="reference internal" href="#terminal-view">Terminal view</a>, <a class="reference external" href="phaser-labs.html#jsdoc-view">Jsdoc view</a>, and <a class="reference internal" href="#properties-view">Properties view</a>.</p>
+<img alt="Code perspective." src="_images/code-perspective.png" />
 </div>
 <div class="section" id="git-perspective">
 <h3>2.17.4&nbsp;&nbsp;&nbsp;Git perspective<a class="headerlink" href="#git-perspective" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://www.eclipse.org/egit/">Eclipse Git</a> plugin provides this perspective to manage your Git repositories.</p>
+<p><a class="reference external" href="https://help.eclipse.org/2019-06/help/topic/org.eclipse.egit.doc/help/EGit/User_Guide/User-Guide.html?cp=2">Learn more in the Eclipse Help about the Eclipse Git tools</a></p>
+<img alt="Git perspective." src="_images/git-perspective.png" />
 </div>
 </div>
 <div class="section" id="update-the-ide">

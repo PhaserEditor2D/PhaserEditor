@@ -453,7 +453,7 @@ The Outline view is a general view to display hierarchical information. It is pr
 
 This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.
 
-It is very common that the Outline view shows the name of the elements, also you can perform a content filtering by name.
+It is very common that the Outline view shows the name of the elements, so you can perform a content filtering by name. In graphical editors, the element icons may reflect the real appearance of the element and it can be zoomed in/out (just hold one of the keys ``Alt``, ``Ctrl`` or ``Shift`` and scroll the mouse wheel).
 
 .. image:: images/workbench/outline-view-animations-editor.png
    :alt: The Outline view of the Animations Editor.
@@ -471,6 +471,13 @@ The content in the **Blocks view** could be nested. It can show **terminal** and
    :alt: Blocks view.
 
 Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually, the same color is assigned to blocks of the same "type".
+
+Other key aspects of this view are:
+
+* You can perform a quick search for the element names.
+
+* It is zoomable: hold one of the keys ``Alt``, ``Ctrl`` or ``Shift`` and scroll the mouse wheel.
+
 
 Active project
 --------------
@@ -507,7 +514,22 @@ However the common is to work on a single project at the same time, you may crea
 Assets view
 -----------
 
-TODO
+This view displays files of the `active project`_ related to the process of create the scenes. It keeps these assets organized sou you have direct access to them. In case of the `pack files`_, it shows all the keys defined in the files, and you can drag and drop them into the editors.
+
+Some key aspects of this view:
+
+* It shows the content of the `active project`_.
+
+* You can do quick search on the element names.
+
+* It is zoomable: hold one of the keys ``Alt``, ``Ctrl`` or ``Shift`` and scroll the mouse wheel.
+
+* You can drag the pack keys and drop them in editors like the |SceneEditor|_ and the |AnimationsEditor|_.
+
+.. image:: images/workbench/assets-view.png
+   :alt: The Assets view.
+
+
 
 Project view
 ------------
@@ -613,7 +635,7 @@ Scene perspective
 
 This perspective is focused on design the scenes and other related files, like the `texture atlas files`_, `pack files`_ and `animations files`_. 
 
-It includes the `Outline view`_, `Properties view`_, `Project view`_, `Assets view`_ and `Blocks view`_.
+It includes the views: `Outline view`_, `Properties view`_, `Project view`_, `Assets view`_ and `Blocks view`_.
 
 .. image:: images/workbench/perspective-scene.png
    :alt: Scene perspective.
@@ -621,8 +643,22 @@ It includes the `Outline view`_, `Properties view`_, `Project view`_, `Assets vi
 Code perspective
 ~~~~~~~~~~~~~~~~
 
+Dedicated to JavaScript/TypeScript coding, this perspective provides the views `Project view`_, `Assets view`_, `Phaser Chains <phaser-labs.html/#phaser-chains-view>`_, `Problems view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/cprbview.htm?cp=0_2_4_5>`_, `Terminal view`_, `Jsdoc view <phaser-labs.html#jsdoc-view>`_, and `Properties view`_.
+
+.. image:: images/workbench/code-perspective.png
+   :alt: Code perspective.
+
+
 Git perspective
 ~~~~~~~~~~~~~~~
+
+The `Eclipse Git <https://www.eclipse.org/egit/>`_ plugin provides this perspective to manage your Git repositories. 
+
+`Learn more in the Eclipse Help about the Eclipse Git tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.egit.doc/help/EGit/User_Guide/User-Guide.html?cp=2>`_
+
+.. image:: images/workbench/git-perspective.png
+   :alt: Git perspective.
+
 
 Update the IDE
 --------------

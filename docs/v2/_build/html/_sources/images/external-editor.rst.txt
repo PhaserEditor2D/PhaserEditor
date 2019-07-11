@@ -1,4 +1,0 @@
-External Editor
-===============
-
-Hello |PhaserEditor|_.

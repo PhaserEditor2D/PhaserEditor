@@ -22,6 +22,8 @@ Phaser Examples view
 --------------------
 
 
-Chains view
------------
+Phaser Chains view
+------------------
 
+Jsdoc view
+----------
