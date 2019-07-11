@@ -16,7 +16,7 @@ The |EclipseIDE|_ is a general purpose tool that is open, flexible and powerful.
 When you run the editor, it opens the workbench in the selected workspace. The workbench contains windows, and each window contains parts (views and editors), an editor area, `main toolbar`_ and main menu. All these elements are grouped and layout in a perspective, and you can switch perspectives. Different windows may contain different perspectives. For example, you can open the Scene design perspective in a window and the Phaser Labs perspective in another window, that you can move to a second monitor.
 
 
-.. image:: images/workbench-overview.png
+.. image:: images/workbench/workbench-overview.png
 
 Views
 -----
@@ -25,7 +25,7 @@ A view is a small window, or better say, a **part**, inside the workbench window
 
 `Learn more about views in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/gettingStarted/qs-02e.htm?cp=0_1_0_1_1>`_
 
-.. image:: images/view-menu-toolbar.png
+.. image:: images/workbench/view-menu-toolbar.png
 
 Most of the view is about to navigate content or show the properties of an object. However, some views allow to edit content, but that content is modified at the moment, there is not the **dirty** concept available in editors. A view may persist its state in the workspace metadata.
 
@@ -55,7 +55,7 @@ The layout of the views and the editor area is persisted in the perspective. If 
 
 In the *Window* |-| *Perspective* menu has listed the operations you can do with perspectives (Open, Customize, Save As, Reset, Close, Close All). In addition, in the toolbar you can do a few of them:
 
-.. image:: images/toolbar-perspective-section.png
+.. image:: images/workbench/toolbar-perspective-section.png
 
 1. Open a view.
 2. Reset the perspective.
@@ -66,7 +66,7 @@ Workspace, projects, and resources
 
 The workspace is a folder that stores the projects and metadata (like preferences or any other data needed by the plugins). When you run the editor, it first `opens the launcher <first-steps.html#run-phaser-editor-2d>`_, to select the workspace folder. Then, the workbench is opened and presents all the data of the selected workspace.
 
-`Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
+`Learn more about resources in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/concepts-12.htm?cp=0_2_1_0>`_
 
 
 Usually, to develop a game you only need a project. The |EclipseIDE|_ supports references between projects but it is something that you don't really need for Phaser_ development. A common setup is to create a workspace for each game, with the main game project and maybe other projects related to the game: to test or learn some Phaser_ features or develop ideas related to the game.
@@ -89,9 +89,9 @@ Physically, a project could be created in any location of the filesystem, but th
 
 Folders and files are always logically inside the project. Usually, folders and files are physically stored in the project, but you can create links to folders and files located in any location of the filesystem. In addition to links, you can create virtual folders. Virtual folders are folders that exist only in the |EclipseIDE|_ workspace tree and have no file system location.
 
-`Learn more about virtual folders in the Eclipse Help <https://help.eclipse.org/2019-06/http://127.0.0.1:49685/help/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3>`_
+`Learn more about virtual folders in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/virtualfolders.htm?cp=0_2_1_3>`_
 
-The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. |PhaserEditor|_ introduced the `Project view`_ to navigate and create the resources or the `active project`_, but the |EclipseIDE|_ provides more `advanced and general tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
+The **resources** is a powerful and flexible tool you have to adapt your project to different scenarios. |PhaserEditor|_ introduced the `Project view`_ to navigate and create the resources or the `active project`_, but the |EclipseIDE|_ provides more `advanced and general tools <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/tasks/tasks-1c.htm?cp=0_3_6>`_.
 
 
 Resource properties
@@ -111,7 +111,7 @@ It is important to exclude from the project all the files that are not related d
 
 If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).
 
-`Learn more in the Eclipse Help about resource filters <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5>`_
+`Learn more in the Eclipse Help about resource filters <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5>`_
 
 To manage the resource filters, open the **Properties dialog** of a resource. Select the folder or project and do any of these actions: 
 
@@ -146,7 +146,7 @@ Resource wizards
 
 |PhaserEditor|_ uses wizards to create any type of resource and set the initial parameters. All these wizards share a group of parameters common to all resources, like the name, the path inside the workspace and the physical location (it may be a link). You can open the wizards in different parts of the IDE:
 
-`Learn more about wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/nav/0_4_4_2>`_
+`Learn more about wizards in the Eclipse Help <https://help.eclipse.org/2019-06/nav/0_4_4_2>`_
 
 * In the main menu: *File* |-| *New*.
 * In the context menu of the `Project <#project-view>`_ or `Project Explorer view`_.
@@ -175,9 +175,9 @@ This wizard creates a project ready to start making your game. The wizard contai
    * - **Default location**
      - By default, the project is physically created inside the workspace folder, but you can choose another location.
    * - Working sets
-     - You can add the project to a `working  set <https://help.eclipse.org/2019-06/help/index.jsp?nav=%2F0_4_4_2>`_, where you can logically group of your projects. This is a concept used by the `Project Explorer view`_.
+     - You can add the project to a `working set <https://help.eclipse.org/2019-06/index.jsp?nav=%2F0_4_4_2>`_, where you can logically group of your projects. This is a concept used by the `Project Explorer view`_.
 
-The second page shows the parameters used to customize the project content. There are two groups, the **Game Configuration** and the **Code** parameters. The first group uses a subset of the `Phaser Game Configuration <https://photonstorm.github.io/phaser3-docs/docs/Phaser.Types.Core.html#.GameConfig>`_ and are included in the code.
+The second page shows the parameters used to customize the project content. There are two groups, the **Game Configuration** and the **Code** parameters. The first group uses a subset of the `Phaser Game Configuration <https://photonstorm.github.io/phaser3-docs/Phaser.Types.Core.html#.GameConfig>`_ and are included in the code.
 
 .. image:: images/workbench/project-wizard-page-2.png
    :alt: Phaser Project wizard: game parameters. 
@@ -255,7 +255,7 @@ The Import wizards are very useful, especially the one to import projects into t
 
 When you import a project, you have the option to create a copy in the workspace or link the project in the workspace. You have to be careful, because if the project is part of a source repository (like a Git repository) and you copy it in the workspace, then the changes are not part of the repository, in that case, the correct is to import a link to the project.
 
-To open the import wizard click on *File* |-| *Import...*. The dialog shows the elements you can import, in the case of the projects, select the **Existing Projects into the Workspace**. Note another useful element you can import are preferences. `Learn more about the import wizards in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4>`_.
+To open the import wizard click on *File* |-| *Import...*. The dialog shows the elements you can import, in the case of the projects, select the **Existing Projects into the Workspace**. Note another useful element you can import are preferences. `Learn more about the import wizards in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-70.htm?cp=0_4_4_2_4>`_.
 
 .. image:: images/workbench/import-wizard.png
    :alt: Import wizard.
@@ -263,14 +263,14 @@ To open the import wizard click on *File* |-| *Import...*. The dialog shows the 
 
 The export wizard is similar to the import wizard. Open it on the menu *File* |-| *Export...*. It opens a dialog with the elements you can export, for example, the preferences.
 
-`Learn more about the export wizard in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-71.htm?cp=0_4_4_2_5>`_
+`Learn more about the export wizard in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-71.htm?cp=0_4_4_2_5>`_
 
 Preferences
 -----------
 
 Almost every customization you can do in the IDE is via the Preferences. The preferences are stored in the workspace and you can `import or export <#import-and-export-wizards>`_ them, or part of them. You can open the **Preferences Dialog** in the menu *Window* |-| *Preferences*.
 
-`Learn more about Preferences in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-72.htm?cp=0_4_1>`_
+`Learn more about Preferences in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-72.htm?cp=0_4_1>`_
 
 Themes
 ~~~~~~
@@ -287,7 +287,7 @@ Key Bindings
 
 Commands key bindings is a powerful tool in |EclipseIDE|_. You can assign keys to a command in the *General* |-| *Keys* preferences. 
 
-`Learn more about keys preferences in the Eclipse Help <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/accessibility/keyboardshortcuts.htm?cp=0_4_1_33>`_
+`Learn more about keys preferences in the Eclipse Help <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/accessibility/keyboardshortcuts.htm?cp=0_4_1_33>`_
 
 .. image:: images/workbench/keys-preferences.png
    :alt: Keys preferences.
@@ -383,7 +383,7 @@ This button launches the `local web server <misc.html/#built-in-web-server>`_ an
 
 Other ways to run the game is pressing the keys ``Ctrl+Alt+F5`` or searching in the `Quick Access dialog`_ for ``run phaser project``.
 
-You can configure the system browser in the `Web Browser preferences <http://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-42.htm?cp=0_4_1_53>`_.
+You can configure the system browser in the `Web Browser preferences <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-42.htm?cp=0_4_1_53>`_.
 
 
 Toolbar editor area
@@ -398,7 +398,7 @@ This button opens the **Quick Access dialog**, where you can search for editors,
 
 You can open this dialog with the keys ``Ctrl+3``.
 
-`Learn more in the Eclipse Help about Navigating the user interface using the keyboard <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/accessibility/navigation.htm?cp=0_2_12_0>`_
+`Learn more in the Eclipse Help about Navigating the user interface using the keyboard <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/accessibility/navigation.htm?cp=0_2_12_0>`_
 
 .. image:: images/workbench/quick-access-dialog.png
 
@@ -429,7 +429,7 @@ Properties view
 
 The Properties view is an important |EclipseIDE|_ part. It is like the Inspector view in other visual development tools. It shows the properties of the selected elements of the active part of the workbench. When you select something in an editor or a view, if it provides properties adapters, then the selection properties are shown in the Properties view.
 
-`Learn more in the Eclipse Help about the Properties view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-29.htm?cp=0_4_4_1_6>`_
+`Learn more in the Eclipse Help about the Properties view <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-29.htm?cp=0_4_4_1_6>`_
 
 .. image:: images/workbench/properties-view.png
    :alt: Properties view.
@@ -449,7 +449,7 @@ Outline view
 
 The Outline view is a general view to display hierarchical information. It is provided by the |EclipseIDE|_ and used widely by the |PhaserEditor|_ specific editors. When an editor is activated, the Outline view connects with it and display the editor content with certain structure (often as a tree or a list).
 
-`Learn more in the Eclipse Help about the Outline view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6>`_
+`Learn more in the Eclipse Help about the Outline view <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6>`_
 
 This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.
 
@@ -496,7 +496,7 @@ You can activate any project at any time. There different ways to do this:
 
 * In the **Home** button of the `main toolbar`_, right click and select the active project.
   
-  .. image:: images/open-project-dialog.png
+  .. image:: images/workbench/open-project-dialog.png
      :alt: Dialog to change the active project.
 
 * In the `Start <#start-perspective>`_ view, click on a project link.
@@ -514,13 +514,13 @@ However the common is to work on a single project at the same time, you may crea
 Assets view
 -----------
 
-This view displays files of the `active project`_ related to the process of create the scenes. It keeps these assets organized sou you have direct access to them. In case of the `pack files`_, it shows all the keys defined in the files, and you can drag and drop them into the editors.
+This view displays files of the `active project`_ related to the process of create the scenes. It keeps these assets organized so you have direct access to them. In case of the `pack files`_, it shows all the keys defined in the files, and you can drag and drop them into the editors.
 
 Some key aspects of this view:
 
 * It shows the content of the `active project`_.
 
-* You can do quick search on the element names.
+* You can do a quick search on the element names.
 
 * It is zoomable: hold one of the keys ``Alt``, ``Ctrl`` or ``Shift`` and scroll the mouse wheel.
 
@@ -576,9 +576,9 @@ The **Project** view contributes information and actions to the `Properties view
 Context menu
 ~~~~~~~~~~~~
 
-The context menu of the **Project view** provides a few options if you compares it with the `Project Explorer view`, however, it covers the most common operations.
+The context menu of the **Project view** provides a few options if you compare it with the `Project Explorer view`, however, it covers the most common operations.
 
-* Open a file with other editor.
+* Open a file with another editor.
 
 * Create a new resource.
 
@@ -594,9 +594,9 @@ Project Explorer view
 
 This view is the default project navigator provided by |EclipseIDE|_. All third-party plugins, like the `Git tooling <#git-perspective>`_, is integrated with it. If you experience any issue with the `Project view`_, you can open the **Project Explorer** and complete the task. 
 
-In previous version of |PhaserEditor|_ we used this view to navigate the resources, but it is not as friendly for game development as we wish. With the time, we should implement many of the features provided by this view in the `Project view`_ and short the gap.
+In the previous version of |PhaserEditor|_, we used this view to navigate the resources, but it is not as friendly for game development as we wish. Eventually, we should implement many of the features provided by this view in the `Project view`_ and short the gap.
 
-`Learn more in the Eclipse Help about the Project Explorer view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/reference/ref-27.htm?cp=0_4_4_1_4>`_
+`Learn more in the Eclipse Help about the Project Explorer view <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-27.htm?cp=0_4_4_1_4>`_
 
 Terminal view
 -------------
@@ -613,7 +613,7 @@ You can open the **Terminal view** with the `Show View dialog <#add-view-button>
 Perspectives overview
 ---------------------
 
-In this section we present the most common perspectives provided by |PhaserEditor|_.
+In this section, we present the most common perspectives provided by |PhaserEditor|_.
 
 
 Start perspective
@@ -643,7 +643,7 @@ It includes the views: `Outline view`_, `Properties view`_, `Project view`_, `As
 Code perspective
 ~~~~~~~~~~~~~~~~
 
-Dedicated to JavaScript/TypeScript coding, this perspective provides the views `Project view`_, `Assets view`_, `Phaser Chains <phaser-labs.html/#phaser-chains-view>`_, `Problems view <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/concepts/cprbview.htm?cp=0_2_4_5>`_, `Terminal view`_, `Jsdoc view <phaser-labs.html#jsdoc-view>`_, and `Properties view`_.
+Dedicated to JavaScript/TypeScript coding, this perspective provides the views `Project view`_, `Assets view`_, `Phaser Chains <phaser-labs.html/#phaser-chains-view>`_, `Problems view <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/cprbview.htm?cp=0_2_4_5>`_, `Terminal view`_, `Jsdoc view <phaser-labs.html#jsdoc-view>`_, and `Properties view`_.
 
 .. image:: images/workbench/code-perspective.png
    :alt: Code perspective.
@@ -654,7 +654,7 @@ Git perspective
 
 The `Eclipse Git <https://www.eclipse.org/egit/>`_ plugin provides this perspective to manage your Git repositories. 
 
-`Learn more in the Eclipse Help about the Eclipse Git tools <https://help.eclipse.org/2019-06/help/topic/org.eclipse.egit.doc/help/EGit/User_Guide/User-Guide.html?cp=2>`_
+`Learn more in the Eclipse Help about the Eclipse Git tools <https://help.eclipse.org/2019-06/topic/org.eclipse.egit.doc/help/EGit/User_Guide/User-Guide.html?cp=2>`_
 
 .. image:: images/workbench/git-perspective.png
    :alt: Git perspective.
@@ -669,7 +669,7 @@ The updates are incremental (only modified/new plugins are downloaded), and it m
 
 You can disable the automatic update in the `preferences`_ page *Install/Update* |-| *Automatic Updates*.
 
-`Learn more in the Eclipse Help about updating and installing software <https://help.eclipse.org/2019-06/help/topic/org.eclipse.platform.doc.user/tasks/tasks-129.htm?cp=0_3_17>`_
+`Learn more in the Eclipse Help about updating and installing software <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/tasks/tasks-129.htm?cp=0_3_17>`_
 
 Possible issues
 ~~~~~~~~~~~~~~~
@@ -678,9 +678,9 @@ The updating is a complex operation, especially when it includes a new |EclipseI
 
 Sometimes, an update includes new data, new views or new perspectives, that are not present in the workspace you are working on. In that case, if you experience any issue, you can `start with a new workspace <first-steps.html#run-phaser-editor-2d>`_ and `import <#import-and-export-wizards>`_ the projects.
 
-Built-in Help
--------------
+Help System
+-----------
 
 The |PhaserEditor|_ installation includes this help and the workbench help (provided by |EclipseIDE|_). Many tools only provide online help, but this is an integrated environment, and the help is part of that integration. Eventually, we should integrate all the Phaser related views and editors with the help, providing contextual assistance.
 
-`Learn more in the Eclipse Help about the Help System <https://help.eclipse.com/help/topic/org.eclipse.platform.doc.user/tasks/help.xhtml?cp=0_3_15>`_
+`Learn more in the Eclipse Help about the Help System <https://help.eclipse.com/topic/org.eclipse.platform.doc.user/tasks/help.xhtml?cp=0_3_15>`_

@@ -24,7 +24,7 @@ When |PhaserEditor|_ starts, it shows a splash screen and later a **Launcher Dia
 
 `Learn more about the workspace <workbench.html#workspace-and-projects>`_
 
-.. image:: images/WorkspaceLauncher.png
+.. image:: images/first-steps/WorkspaceLauncher.png
 
 Windows
 ~~~~~~~
@@ -58,7 +58,7 @@ When the editor opens the first time (or an empty workspace) it shows the `Start
 
 `Learn more about the Start perspective <workbench.html#start-perspective>`_
 
-.. image:: images/start-perspective.png
+.. image:: images/first-steps/start-perspective.png
 
 The **New Project** link opens a wizard where you can set some settings like the initial game size or programming language (JavaScript or TypeScript). 
 
@@ -68,7 +68,7 @@ You can create new projects at any time, by clicking the **New** button of the m
 
 `Learn more about wizards <workbench.html#resource-wizards>`_
 
-.. image:: images/toolbar-new-button.png
+.. image:: images/first-steps/toolbar-new-button.png
 
 Regular Project
 ~~~~~~~~~~~~~~~
@@ -77,7 +77,7 @@ The regular project wizard shows settings related to the game configuration: gam
 
 `Learn more about the Phaser Project wizard <workbench.html#phaser-project-wizard>`_
 
-.. image:: images/new-project-wizard.png
+.. image:: images/first-steps/new-project-wizard.png
 
 The wizard creates a project with a `basic structure <workbench.html#project-structure>`_ and a few files common in many projects, like an `Asset Pack file <asset-pack-editor.html>`_, a `Texture Atlas file <texture-packer-editor.html>`_ and a `Scene file <scene-editor.html>`_.
 
@@ -99,7 +99,7 @@ Play the project
 
 `Learn more about running the game <workbench.html#play-button>`_
 
-.. image:: images/play-project.png
+.. image:: images/first-steps/play-project.png
 
 Switching projects
 ------------------
@@ -108,12 +108,12 @@ Switching projects
 
 You can select the `active project`_ at any time switching to the `Start <workbench.html#start-perspective>`_ perspective or launching the **Open Project Dialog** (``Ctrl+Alt+P`` or right-click on the **Start** button).
 
-.. image:: images/open-project-dialog.png
+.. image:: images/workbench/open-project-dialog.png
 
 External editors integration
 ----------------------------
 
-The "war" of code editors and IDEs is bloody and there is not a clear winner. |PhaserEditor|_ allows to edit all common web files (JS, TS, HTML, CSS,...) and provides a acceptable tooling. However, it is very important for us that you can use your loved, alien code editor to write the game logic.
+The "war" of code editors and IDEs is bloody and there is not a clear winner. |PhaserEditor|_ allows to edit all common web files (JS, TS, HTML, CSS,...) and provides acceptable tooling. However, it is very important for us that you can use your loved, alien code editor to write the game logic.
 
 `Learn more about the external editors integration <code-editors.html#integration-with-external-editors>`_
 
@@ -129,7 +129,7 @@ Unlock Phaser Editor 2D
 
 |PhaserEditor|_ is a commercial product, you `should purchase a license key <https://gumroad.com/l/phasereditor/>`_ to use it in all its potential (**Premium** mode). However, by default, it runs in a **Free** mode that provides all the features and tools but is limited to a certain number of game assets.
 
-To activate the editor, click on *Help → Unlock Phaser Editor*, it shows an activation dialog, write the purchased license key and click on the **Activate** button.
+To unlock the **Premium** mode, click on *Help → Unlock Phaser Editor* to open the activation dialog. Write the purchased license key and click on the **Activate** button.
 
 This is a table with a comparison between the **Free** and **Premium** mode:
 
@@ -143,7 +143,7 @@ Scene (``.scene`` files)    Limited to 5    No limits
 Others                      No limits       No limits
 =========================== =============== ================
 
-The **keys** are defined in the `asset pack files <asset-pack-editor.html>`_.
+The **file keys** are defined in the `asset pack files <asset-pack-editor.html>`_.
 
 There are three types of licenses:
 
@@ -151,4 +151,4 @@ There are three types of licenses:
 * Two years license.
 * Lifetime license.
 
-As the name suggests, the difference is only about the expiration date. Important: a license is valid for all versions of |PhaserEditor|_, they are just limited by the purchase/expiration dates.
+All license types unlock all features and all |PhaserEditor|_ versions, but have different expiration date ---and price---.
