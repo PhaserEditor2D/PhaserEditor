@@ -71,9 +71,11 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -101,8 +103,10 @@ import com.badlogic.gdx.utils.StringBuilder;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.atlas.ui.ITexturePackerEditor;
+import phasereditor.ui.BaseImageTreeCanvasItemRenderer;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
@@ -159,11 +163,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			Object[] sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
 
 			if (sel.length > 0) {
-				List<IFile> toRemove = new ArrayList<>();
+				var toRemove = new ArrayList<IFile>();
+
 				for (Object item : sel) {
-					TexturePackerEditorFrame frame = (TexturePackerEditorFrame) item;
-					IFile file = findFile(frame);
-					toRemove.add(file);
+					addToRemoveList(toRemove, item);
 				}
 
 				_model.getImageFiles().removeAll(toRemove);
@@ -173,6 +176,23 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 				selectSettings();
 
+			}
+		}
+	}
+
+	private void addToRemoveList(ArrayList<IFile> toRemove, Object item) {
+		if (item instanceof TexturePackerEditorFrame) {
+			var file = findFile((TexturePackerEditorFrame) item);
+			toRemove.add(file);
+		} else if (item instanceof EditorPage) {
+			var page = (EditorPage) item;
+			for (var frame : page) {
+				addToRemoveList(toRemove, frame);
+			}
+		} else if (item instanceof TexturePackerEditorModel) {
+			var model = (TexturePackerEditorModel) item;
+			for (var page : model.getPages()) {
+				addToRemoveList(toRemove, page);
 			}
 		}
 	}
@@ -275,12 +295,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			}
 		};
 		getEditorSite().setSelectionProvider(_selectionProvider);
-
-		_selectionProvider.addSelectionChangedListener(e -> {
-			if (_toolbar != null) {
-				_toolbar.updateWithSelection();
-			}
-		});
 
 		createMenu();
 
@@ -432,7 +446,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			build();
 			setDirty(false);
 
-			updatePropertyPagesWithSelection();
+			updatePropertyPagesAndToolbarWithSelection();
 
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);
@@ -939,7 +953,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		_selectionProvider.setSelection(empty);
 
-		updatePropertyPagesWithSelection();
+		updatePropertyPagesAndToolbarWithSelection();
 
 	}
 
@@ -1089,9 +1103,25 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					var element = item.getData();
 
 					if (element instanceof EditorPage) {
-						EditorPage page = (EditorPage) element;
-						item.setRenderer(
-								new ImageProxyTreeCanvasItemRenderer(item, ImageProxy.get(page.getImageFile(), null)));
+						var page = (EditorPage) element;
+						// item.setRenderer(
+						// new ImageProxyTreeCanvasItemRenderer(item,
+						// ImageProxy.get(page.getImageFile(), null)));
+						item.setRenderer(new BaseImageTreeCanvasItemRenderer(item) {
+
+							@Override
+							public ImageProxy get_DND_Image() {
+								return null;
+							}
+
+							@Override
+							protected void paintScaledInArea(GC gc, Rectangle area) {
+								var img = page.getImage();
+								if (img != null && !img.isDisposed()) {
+									PhaserEditorUI.paintScaledImageInArea(gc, img, FrameData.fromImage(img), area);
+								}
+							}
+						});
 					}
 
 					if (element instanceof TexturePackerEditorFrame) {
@@ -1113,11 +1143,19 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private TexturePackerEditorToolbar _toolbar;
 
-	public void updatePropertyPagesWithSelection() {
+	public void updatePropertyPagesAndToolbarWithSelection() {
 		var sel = _selectionProvider.getSelection();
 
 		for (var page : _propertyPages) {
 			page.selectionChanged(getEditorSite().getPart(), sel);
+		}
+
+		updateToolbarSelection((IStructuredSelection) sel);
+	}
+
+	private void updateToolbarSelection(IStructuredSelection selection) {
+		if (_toolbar != null) {
+			_toolbar.updateToolbarWithSelection(selection);
 		}
 	}
 
@@ -1125,6 +1163,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		private Button _deleteBtn;
 
+		
 		@Override
 		public void createContent(Composite parent) {
 
@@ -1165,23 +1204,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> manuallyBuild()));
 			}
 
-			updateWithSelection();
+			updateToolbarWithSelection((IStructuredSelection) _selectionProvider.getSelection());
 
 		}
 
-		public void updateWithSelection() {
-			var list = ((IStructuredSelection) _selectionProvider.getSelection()).toArray();
-
-			var enable = list.length > 0;
-
-			for (var e : list) {
-				if (!(e instanceof TexturePackerEditorFrame)) {
-					enable = false;
-					break;
-				}
-			}
-
-			_deleteBtn.setEnabled(enable);
+		public void updateToolbarWithSelection(IStructuredSelection selection) {
+			var empty = selection.isEmpty();
+			_deleteBtn.setEnabled(!empty);
 		}
 
 	}
@@ -1286,6 +1315,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		_canvasClicked = null;
+		
+		updateToolbarSelection(selection);
 	}
 
 	private void selectTab(int i) {

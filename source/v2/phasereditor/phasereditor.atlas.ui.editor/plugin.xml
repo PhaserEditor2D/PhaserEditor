@@ -60,31 +60,28 @@
       <handler
             class="phasereditor.atlas.ui.editor.handlers.DeleteAtlasSelectionHandler"
             commandId="org.eclipse.ui.edit.delete">
-         <enabledWhen>
-            <and>
+         <activeWhen>
+            <or>
+               <and>
+                  <with
+                        variable="activePartId">
+                     <equals
+                           value="org.eclipse.ui.views.ContentOutline">
+                     </equals>
+                  </with>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="phasereditor.atlas.ui.editor.TexturePackerEditor">
+                     </equals>
+                  </with>
+               </and>
                <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <instanceof
-                           value="phasereditor.atlas.ui.editor.TexturePackerEditorFrame">
-                     </instanceof>
-                  </iterate>
-               </with>
-               <with
-                     variable="activeEditorId">
+                     variable="activePartId">
                   <equals
                         value="phasereditor.atlas.ui.editor.TexturePackerEditor">
                   </equals>
-               </with></and>
-         </enabledWhen>
-         <activeWhen>
-            <with
-                  variable="activeEditorId">
-               <equals
-                     value="phasereditor.atlas.ui.editor.TexturePackerEditor">
-               </equals>
-            </with>
+               </with></or>
          </activeWhen>
       </handler>
    </extension>
