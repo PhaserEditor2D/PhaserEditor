@@ -187,11 +187,20 @@
             
   <div class="section" id="texture-packer-editor">
 <h1>3&nbsp;&nbsp;&nbsp;Texture Packer Editor<a class="headerlink" href="#texture-packer-editor" title="Permalink to this headline">¶</a></h1>
+<p>The packing of images in a textures atlas is a widely used technique for game development. It improves the game performance (especially in a WebGL context) and reduce the size of the game (a plus for browser games).</p>
+<p>There are several tools, free and commercial, to create a texture atlas. In the <a class="reference external" href="https://phaser.io">Phaser</a> community, the <a class="reference external" href="https://www.codeandweb.com/texturepacker">TexturePacker</a> developed by <a class="reference external" href="https://www.codeandweb.com">CodeAndWeb</a> is very popular and has built-in support for <a class="reference external" href="https://phaser.io">Phaser</a>.</p>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> has its own texture packer, based on the <a class="reference external" href="https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools">LibGDX tools</a>. It uses the MaxRects  algorithm, that provides a high packing ratio.</p>
 <div class="section" id="create-a-new-atlas-file">
 <h2>3.1&nbsp;&nbsp;&nbsp;Create a new atlas file<a class="headerlink" href="#create-a-new-atlas-file" title="Permalink to this headline">¶</a></h2>
+<p>The Texture Packer uses <code class="docutils literal"><span class="pre">.atlas</span></code> files as configurations. To pack your images, you should create an atlas file with the wizard <strong>New Texture Packer File</strong>.</p>
+<p><a class="reference external" href="workbench.html#resource-wizards">Learn more about resource wizards</a></p>
+<p>The <strong>Texture Packer File</strong> wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. The second page allows you to automatically add the generated atlas files (<code class="docutils literal"><span class="pre">.json</span></code> + <code class="docutils literal"><span class="pre">.png</span></code>) in a selected <a class="reference external" href="asset-pack-editor.html">pack file</a>.</p>
+<img alt="Atlas file wizard." src="_images/atlas-file-wizard.png" />
 </div>
 <div class="section" id="add-images-to-the-atlas">
 <h2>3.2&nbsp;&nbsp;&nbsp;Add images to the atlas<a class="headerlink" href="#add-images-to-the-atlas" title="Permalink to this headline">¶</a></h2>
+<p>To add more images to the atlas, drag the files from the <a class="reference external" href="workbench.html#project-view">Project view</a> and drop them into Texture Packer Editor. You can drop folders too, the editor will scan for the images and add them.</p>
+<img alt="_images/drop-images-1.png" src="_images/drop-images-1.png" />
 </div>
 <div class="section" id="delete-images-from-the-atlas">
 <h2>3.3&nbsp;&nbsp;&nbsp;Delete images from the atlas<a class="headerlink" href="#delete-images-from-the-atlas" title="Permalink to this headline">¶</a></h2>

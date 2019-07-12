@@ -2,6 +2,7 @@
     "restructuredtext.confPath": "${workspaceFolder}",
     "cSpell.words": [
         "Jsdoc",
+        "Rects",
         "Spritesheet",
         "Tilemap",
         "genindex",
