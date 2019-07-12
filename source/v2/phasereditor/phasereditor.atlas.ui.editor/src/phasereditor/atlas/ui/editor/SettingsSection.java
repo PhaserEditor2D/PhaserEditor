@@ -62,21 +62,11 @@ public class SettingsSection extends TexturePackerSection<TexturePackerEditorMod
 		return obj instanceof TexturePackerEditorModel;
 	}
 
-	@Override
-	protected void createActions() {
-
-		super.createActions();
-
-		getSettingsAction().setEnabled(false);
-	}
-
 	@SuppressWarnings({ "unused" })
 	@Override
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(5, false));
-
-		createActions();
 
 		// Layout
 

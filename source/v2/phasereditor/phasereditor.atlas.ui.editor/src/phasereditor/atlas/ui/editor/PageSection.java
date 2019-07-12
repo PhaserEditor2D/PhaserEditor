@@ -55,8 +55,6 @@ public class PageSection extends TexturePackerSection<EditorPage> {
 	@Override
 	public Control createContent(Composite parent) {
 
-		createActions();
-
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
 

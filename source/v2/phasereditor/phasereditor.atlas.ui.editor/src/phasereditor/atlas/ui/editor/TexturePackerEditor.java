@@ -70,10 +70,12 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -101,6 +103,7 @@ import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.atlas.ui.ITexturePackerEditor;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
 import phasereditor.ui.ImageProxy;
@@ -272,6 +275,12 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			}
 		};
 		getEditorSite().setSelectionProvider(_selectionProvider);
+
+		_selectionProvider.addSelectionChangedListener(e -> {
+			if (_toolbar != null) {
+				_toolbar.updateWithSelection();
+			}
+		});
 
 		createMenu();
 
@@ -1102,12 +1111,79 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private List<TexturePackerPropertyPage> _propertyPages = new ArrayList<>();
 
+	private TexturePackerEditorToolbar _toolbar;
+
 	public void updatePropertyPagesWithSelection() {
 		var sel = _selectionProvider.getSelection();
 
 		for (var page : _propertyPages) {
 			page.selectionChanged(getEditorSite().getPart(), sel);
 		}
+	}
+
+	class TexturePackerEditorToolbar implements IEditorHugeToolbar {
+
+		private Button _deleteBtn;
+
+		@Override
+		public void createContent(Composite parent) {
+
+			{
+				var btn = new Button(parent, SWT.PUSH);
+				btn.setToolTipText("Add images.");
+				btn.setImage(EditorSharedImages.getImage(IMG_ADD));
+				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					MessageDialog.openInformation(getEditorSite().getShell(), "Add",
+							"Drag files or folders from the Project view and drop them in the editor.");
+				}));
+
+				_deleteBtn = btn;
+			}
+
+			{
+				var btn = new Button(parent, SWT.PUSH);
+				btn.setToolTipText("Remove selected images.");
+				btn.setImage(EditorSharedImages.getImage(IMG_DELETE));
+				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> deleteSelection()));
+
+				_deleteBtn = btn;
+			}
+
+			sep(parent);
+
+			{
+				var btn = new Button(parent, SWT.PUSH);
+				btn.setToolTipText("Show packer settings.");
+				btn.setImage(EditorSharedImages.getImage(IMG_SETTINGS));
+				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> selectSettings()));
+			}
+
+			{
+				var btn = new Button(parent, SWT.PUSH);
+				btn.setToolTipText("Generate Phaser atlas files.");
+				btn.setImage(EditorSharedImages.getImage(IMG_BUILD));
+				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> manuallyBuild()));
+			}
+
+			updateWithSelection();
+
+		}
+
+		public void updateWithSelection() {
+			var list = ((IStructuredSelection) _selectionProvider.getSelection()).toArray();
+
+			var enable = list.length > 0;
+
+			for (var e : list) {
+				if (!(e instanceof TexturePackerEditorFrame)) {
+					enable = false;
+					break;
+				}
+			}
+
+			_deleteBtn.setEnabled(enable);
+		}
+
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1153,6 +1229,14 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 			};
 		}
+
+		if (adapter.equals(IEditorHugeToolbar.class)) {
+			if (_toolbar == null) {
+				_toolbar = new TexturePackerEditorToolbar();
+			}
+			return _toolbar;
+		}
+
 		return super.getAdapter(adapter);
 	}
 
