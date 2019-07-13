@@ -164,24 +164,27 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	public void deleteSelection() {
-		if (_outliner != null) {
+		Object[] sel;
+		
+		if (_outliner == null) {
+			sel = ((IStructuredSelection) _selectionProvider.getSelection()).toArray();
+		} else {
+			sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
+		}
+		
+		if (sel.length > 0) {
+			var toRemove = new ArrayList<IFile>();
 
-			Object[] sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
-
-			if (sel.length > 0) {
-				var toRemove = new ArrayList<IFile>();
-
-				for (Object item : sel) {
-					addToRemoveList(toRemove, item);
-				}
-
-				_model.getImageFiles().removeAll(toRemove);
-
-				setDirty(true);
-				build();
-
-				selectSettings();
+			for (Object item : sel) {
+				addToRemoveList(toRemove, item);
 			}
+
+			_model.getImageFiles().removeAll(toRemove);
+
+			setDirty(true);
+			build();
+
+			selectSettings();
 		}
 	}
 
@@ -1162,19 +1165,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		for (var page : _propertyPages) {
 			page.selectionChanged(getEditorSite().getPart(), sel);
 		}
-
-		updateToolbarSelection((IStructuredSelection) sel);
-	}
-
-	private void updateToolbarSelection(IStructuredSelection selection) {
-		if (_toolbar != null) {
-			_toolbar.updateToolbarWithSelection(selection);
-		}
 	}
 
 	class TexturePackerEditorToolbar implements IEditorHugeToolbar {
-
-		private Button _deleteBtn;
 
 		@Override
 		public void createContent(Composite parent) {
@@ -1187,8 +1180,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 					MessageDialog.openInformation(getEditorSite().getShell(), "Add",
 							"Drag files or folders from the Project view and drop them in the editor.");
 				}));
-
-				_deleteBtn = btn;
 			}
 
 			{
@@ -1196,8 +1187,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 				btn.setToolTipText("Remove selected images.");
 				btn.setImage(EditorSharedImages.getImage(IMG_DELETE));
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> deleteSelection()));
-
-				_deleteBtn = btn;
 			}
 
 			sep(parent);
@@ -1215,16 +1204,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 				btn.setImage(EditorSharedImages.getImage(IMG_BUILD));
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> manuallyBuild()));
 			}
-
-			updateToolbarWithSelection((IStructuredSelection) _selectionProvider.getSelection());
-
 		}
-
-		public void updateToolbarWithSelection(IStructuredSelection selection) {
-			var empty = selection.isEmpty();
-			_deleteBtn.setEnabled(!empty);
-		}
-
 	}
 
 	@Override
@@ -1411,8 +1391,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		_canvasClicked = null;
-
-		updateToolbarSelection(selection);
 	}
 
 	private void selectTab(int i) {
