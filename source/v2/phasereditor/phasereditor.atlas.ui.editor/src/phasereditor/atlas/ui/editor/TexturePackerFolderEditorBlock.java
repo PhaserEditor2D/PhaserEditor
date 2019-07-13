@@ -25,6 +25,7 @@ import static phasereditor.ui.PhaserEditorUI.isImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -49,9 +50,11 @@ public class TexturePackerFolderEditorBlock extends ResourceEditorBlock<IContain
 	private List<IEditorBlock> _children;
 	private long _countImages;
 	private List<ImageFileEditorBlock> _images;
+	private Set<IFile> _usedImages;
 
-	public TexturePackerFolderEditorBlock(IContainer resource) throws CoreException {
+	public TexturePackerFolderEditorBlock(IContainer resource, Set<IFile> usedImages) throws CoreException {
 		super(resource);
+		_usedImages = usedImages;
 		_children = new ArrayList<>();
 		_images = new ArrayList<>();
 		build(_images);
@@ -61,14 +64,14 @@ public class TexturePackerFolderEditorBlock extends ResourceEditorBlock<IContain
 
 		for (var member : getResource().members()) {
 			if (member instanceof IContainer) {
-				var folderBlock = new TexturePackerFolderEditorBlock((IContainer) member);
+				var folderBlock = new TexturePackerFolderEditorBlock((IContainer) member, _usedImages);
 				images.addAll(folderBlock.getImagesinTree());
 
 				if (!folderBlock._children.isEmpty()) {
 					_children.add(folderBlock);
 				}
 			} else {
-				if (isImage(member)) {
+				if (!_usedImages.contains(member) && isImage(member)) {
 					var image = new ImageFileEditorBlock((IFile) member);
 					_children.add(image);
 					images.add(image);

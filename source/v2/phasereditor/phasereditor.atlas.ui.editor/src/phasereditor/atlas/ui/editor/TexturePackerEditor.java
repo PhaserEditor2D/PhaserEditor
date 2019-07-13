@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -100,6 +101,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.StringBuilder;
 
+import phasereditor.atlas.core.AtlasCore;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.atlas.ui.ITexturePackerEditor;
@@ -179,7 +181,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 				build();
 
 				selectSettings();
-
 			}
 		}
 	}
@@ -675,6 +676,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 							if (whenDone != null) {
 								whenDone.run();
 							}
+							
+							setFocus();
 						}
 					});
 				} catch (
@@ -836,6 +839,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			swtRun(() -> firePropertyChange(PROP_DIRTY));
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
+		}
+		
+		if (_blocksProvider != null) {
+			_blocksProvider.getRefreshHandler().run();
 		}
 	}
 
@@ -1242,9 +1249,24 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			try {
 				var webContent = ProjectCore.getWebContentFolder(project);
 
+				var atlasFiles = AtlasCore.getAtlasFileCache().getProjectData(project);
+				var set = new HashSet<IFile>();
+				for (var atlasFile : atlasFiles) {
+					var file = atlasFile.getFile();
+
+					try {
+						var model = new TexturePackerEditorModel(null, file);
+						set.addAll(model.getImageFiles());
+					} catch (IOException e) {
+						AtlasUIEditor.logError(e);
+					}
+				}
+				
+				out.println("TexturePackerBlocks: used images " + set.size());
+
 				for (var member : project.members()) {
 					if (member instanceof IContainer && !member.equals(webContent)) {
-						var block = new TexturePackerFolderEditorBlock((IContainer) member);
+						var block = new TexturePackerFolderEditorBlock((IContainer) member, set);
 						if (!block.getChildren().isEmpty()) {
 							if (block.getCountImagesInChildren() == 0) {
 								list.addAll(block.getChildren());

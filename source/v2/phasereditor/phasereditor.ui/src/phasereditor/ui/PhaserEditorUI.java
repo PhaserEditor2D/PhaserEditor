@@ -194,7 +194,7 @@ public class PhaserEditorUI {
 	private static final Set<String> _imageExtensions = Set.of(IMAGE_EXTS);
 
 	public static boolean isImage(IResource resource) {
-		return resource instanceof IFile && _imageExtensions.contains(resource.getFullPath().getFileExtension());
+		return resource != null && resource instanceof IFile && resource.getFileExtension() != null && _imageExtensions.contains(resource.getFileExtension());
 	}
 	
 	public static IWorkbenchWindow getWorkbenchWindow(Control control) {
