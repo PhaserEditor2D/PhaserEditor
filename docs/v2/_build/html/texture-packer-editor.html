@@ -116,6 +116,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#add-images-to-the-atlas">3.2&nbsp;&nbsp;&nbsp;Add images to the atlas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#delete-images-from-the-atlas">3.3&nbsp;&nbsp;&nbsp;Delete images from the atlas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-atlas">3.4&nbsp;&nbsp;&nbsp;Build atlas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#packing-settings">3.5&nbsp;&nbsp;&nbsp;Packing settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#properties-of-frames-and-pages">3.6&nbsp;&nbsp;&nbsp;Properties of frames and pages</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">4&nbsp;&nbsp;&nbsp;Asset Pack Editor</a></li>
@@ -194,7 +196,9 @@
 <h2>3.1&nbsp;&nbsp;&nbsp;Create a new atlas file<a class="headerlink" href="#create-a-new-atlas-file" title="Permalink to this headline">¶</a></h2>
 <p>The Texture Packer uses <code class="docutils literal"><span class="pre">.atlas</span></code> files as configurations. To pack your images, you should create an atlas file with the wizard <strong>New Texture Packer File</strong>.</p>
 <p><a class="reference external" href="workbench.html#resource-wizards">Learn more about resource wizards</a></p>
-<p>The <strong>Texture Packer File</strong> wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. The second page allows you to automatically add the generated atlas files (<code class="docutils literal"><span class="pre">.json</span></code> + <code class="docutils literal"><span class="pre">.png</span></code>) in a selected <a class="reference external" href="asset-pack-editor.html">pack file</a>.</p>
+<p>The <strong>Texture Packer File</strong> wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. We recommend to create the atlas file in the “assets” folder of your game, because the output files will be placed in the same folder.</p>
+<p>The second page allows you to automatically add the generated atlas files (<code class="docutils literal"><span class="pre">.json</span></code> + <code class="docutils literal"><span class="pre">.png</span></code>) in a selected <a class="reference external" href="asset-pack-editor.html">pack file</a>.</p>
+<p>The <code class="docutils literal"><span class="pre">.atlas</span></code> file may be excluded from the distribution of your game. Only the output files: the packed textures and the <a class="reference external" href="https://phaser.io">Phaser</a> JSON atlas file are needed.</p>
 <img alt="Atlas file wizard." src="_images/atlas-file-wizard.png" />
 </div>
 <div class="section" id="add-images-to-the-atlas">
@@ -212,9 +216,66 @@
 </div>
 <div class="section" id="delete-images-from-the-atlas">
 <h2>3.3&nbsp;&nbsp;&nbsp;Delete images from the atlas<a class="headerlink" href="#delete-images-from-the-atlas" title="Permalink to this headline">¶</a></h2>
+<p>Select the images in the editor or the <a class="reference external" href="workbench.html#outline-view">Outline view</a>  and click the <strong>Delete button</strong> of the editor toolbar, or press the <code class="docutils literal"><span class="pre">Del</span></code> key. You have to save the editor to persist the changes.</p>
+<img alt="Delete selected images." src="_images/delete-images.png" />
 </div>
 <div class="section" id="build-atlas">
 <h2>3.4&nbsp;&nbsp;&nbsp;Build atlas<a class="headerlink" href="#build-atlas" title="Permalink to this headline">¶</a></h2>
+<p>When you add or remove images in the <strong>Texture Packer Editor</strong>, it re-builds the atlas. However, you may want to force a build when you change an atlas settings or the source images. Note when you perform a build you should save the editor to persist the changes, including the output files.</p>
+<p>The editor builds an atlas with the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#multiatlas__anchor">multi-atlas</a> format. It means, multiple images will be generated if needed.</p>
+<p>Click on the <strong>Build button</strong> to force a build.</p>
+<img alt="Force an atlas build." src="_images/build-atlas.png" />
+</div>
+<div class="section" id="packing-settings">
+<h2>3.5&nbsp;&nbsp;&nbsp;Packing settings<a class="headerlink" href="#packing-settings" title="Permalink to this headline">¶</a></h2>
+<p>You can adjust the texture packing with the following parameters:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Documentation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Min/Max Size</strong></td>
+<td>To change the size of the texture image. There are cases where the editor generates more than one page (images), to fit the given size. However, you can change the max size of the texture to make space for all the sprites.</td>
+</tr>
+<tr class="row-odd"><td><strong>Size constraints</strong></td>
+<td>You can select <strong>Any Size</strong> (default) or <strong>POT (Power of 2)</strong>. In the second case the editor generates a texture with a size power of 2. In some platforms this kind of textures performs better.</td>
+</tr>
+<tr class="row-even"><td><strong>Padding</strong></td>
+<td>It controls the spacing between the sprites. It is useful to remove artifacts from sprites animations, tile sprites, in general when the source images has color pixels in the borders. By default it puts 2.</td>
+</tr>
+<tr class="row-odd"><td><strong>Strip white spaces</strong></td>
+<td>To remove the extra space of sprites. If your source images have extra space (transparent areas) around the picture, then activating these parameters the editor generates a texture that removes that spaces and a JSON file that specify to Phaser to render the sprites with the right spacing. By default these parameters are on.</td>
+</tr>
+<tr class="row-even"><td><strong>Use parent’s folder name</strong></td>
+<td>Prepends the parent folders name to the frames name. Many times developers group the source images in different folders with a special meaning, for example, the images are grouped in an <strong>Attacking</strong> and <strong>Idle</strong> folders, so, by enabling this parameter, the names of the folders are prepended to the name of the frames: <strong>Attacking_001</strong> .. <strong>Attacking_010</strong>, <strong>Idle_001</strong> .. <strong>Idle_010</strong>. This naming convention may be useful for <a class="reference external" href="animations-editor.html">automatic animations creation</a>.</td>
+</tr>
+<tr class="row-odd"><td><strong>Use indexes</strong></td>
+<td>To sort the sprites by using a <strong>_01.png</strong> suffix in the source files.</td>
+</tr>
+<tr class="row-even"><td><strong>Grid Layout</strong></td>
+<td>To pack the images in a uniform grid. You can use this together with the Indexes option to create spritesheets.</td>
+</tr>
+<tr class="row-odd"><td><strong>Debug</strong></td>
+<td>Paints the bound of the sprites in the output image.</td>
+</tr>
+</tbody>
+</table>
+<p>Click on the <strong>settings button</strong> to open the packing parameters in the <a class="reference external" href="workbench.html#properties-view">Properties view</a>.</p>
+<img alt="Texture packer settings." src="_images/packing-properties.png" />
+</div>
+<div class="section" id="properties-of-frames-and-pages">
+<h2>3.6&nbsp;&nbsp;&nbsp;Properties of frames and pages<a class="headerlink" href="#properties-of-frames-and-pages" title="Permalink to this headline">¶</a></h2>
+<p>When you select a frame or a page in the <a class="reference external" href="workbench.html#outline-view">Outline view</a> or the editor, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> will show the correspondent information.</p>
+<p>Selected page properties:</p>
+<img alt="Page settings." src="_images/page-properties.png" />
+<p>Selected frame properties:</p>
+<img alt="Frame properties." src="_images/frame-properties.png" />
 </div>
 </div>
 
