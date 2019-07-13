@@ -31,9 +31,22 @@ The **Texture Packer File** wizard shows two pages. The first page is common to 
 Add images to the atlas
 -----------------------
 
-To add more images to the atlas, drag the files from the `Project view <workbench.html#project-view>`_ and drop them into Texture Packer Editor. You can drop folders too, the editor will scan for the images and add them.
+To add images to the atlas, drag the files from the `Project view <workbench.html#project-view>`_ or the `Blocks view <workbench.html#blocks-view>`_ and drop them into **Texture Packer Editor**. You can drop folders too, the editor will scan for the images and add them.
+
+The `Blocks view`_ shows the candidates images to be added to the atlas. The criterions to include an image file in the `Blocks view`_ is:
+
+* The image file does not belong to the ``WebContent`` folder tree.
+* The image file is not included in any **Texture Packer Editor** file (``*.atlas``).
+
+If you have a lot of huge images in your project, it may impact in the IDE performance. We strongly recommend to keep your project clean of images that are not used by any of the |PhaserEditor|_ files or the game files.
+
+`Learn more about resource filters <workbench.html#resource-filters>`_
 
 .. image:: images/texture-packer-editor/drop-images-1.png
+   :alt: Add images to the Texture Packer Editor.
+
+.. image:: images/texture-packer-editor/drop-images-2.png
+   :alt: Images in the Texture Packer Editor are not shown in the Blocks view.
 
 Delete images from the atlas
 ----------------------------
