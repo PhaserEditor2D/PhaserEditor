@@ -423,7 +423,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		getEditorSite().getPage().removePartListener(_partListener);
 
 		_broker.dispose();
-
+		
 		super.dispose();
 	}
 

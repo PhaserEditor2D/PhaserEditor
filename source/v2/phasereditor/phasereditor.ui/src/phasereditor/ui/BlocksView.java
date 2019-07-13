@@ -574,6 +574,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		if (editor == null) {
 			out.println("Disconnect from editor");
+			_currentEditor = null;
+			_blockProvider = null;
+			_canvas.updateFromProvider();
 		} else {
 			if (_currentEditor != editor) {
 				out.println("Process editor " + editor.getTitle());
