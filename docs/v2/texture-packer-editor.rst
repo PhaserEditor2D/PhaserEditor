@@ -7,11 +7,11 @@
 Texture Packer Editor
 =====================
 
-The packing of images in a textures atlas is a widely used technique for game development. It improves the game performance (especially in a WebGL context) and reduce the size of the game (a plus for browser games).
+The packing of images in a textures atlas is a widely used technique for game development. It improves the game performance (especially in a WebGL context) and reduces the size of the game (a plus for browser games).
 
 There are several tools, free and commercial, to create a texture atlas. In the Phaser_ community, the `TexturePacker <https://www.codeandweb.com/texturepacker>`_ developed by `CodeAndWeb <https://www.codeandweb.com>`_ is very popular and has built-in support for Phaser_.
 
-|PhaserEditor|_ has its own texture packer, based on the `LibGDX tools <https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools>`_. It uses the MaxRects  algorithm, that provides a high packing ratio.
+|PhaserEditor|_ has its own texture packer, based on the `LibGDX tools <https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools>`_. It uses the MaxRects algorithm, that provides a high packing ratio.
 
 Create a new atlas file
 -----------------------
@@ -20,7 +20,7 @@ The Texture Packer uses ``.atlas`` files as configurations. To pack your images,
 
 `Learn more about resource wizards <workbench.html#resource-wizards>`_
 
-The **Texture Packer File** wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. We recommend to create the atlas file in the "assets" folder of your game, because the output files will be placed in the same folder.
+The **Texture Packer File** wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. We recommend creating the atlas file in the "assets" folder of your game because the output files will be placed in the same folder.
 
 The second page allows you to automatically add the generated atlas files (``.json`` + ``.png``) in a selected `pack file <asset-pack-editor.html>`_.
 
@@ -41,7 +41,7 @@ The `Blocks view`_ shows the candidates images to be added to the atlas. The cri
 * The image file does not belong to the ``WebContent`` folder tree.
 * The image file is not included in any **Texture Packer Editor** file (``*.atlas``).
 
-If you have a lot of huge images in your project, it may impact in the IDE performance. We strongly recommend to keep your project clean of images that are not used by any of the |PhaserEditor|_ files or the game files.
+If you have a lot of huge images in your project, it may impact the IDE performance. We strongly recommend keeping your project clean of images that are not used by any of the |PhaserEditor|_ files or the game files.
 
 `Learn more about resource filters <workbench.html#resource-filters>`_
 
@@ -64,9 +64,9 @@ Select the images in the editor or the `Outline view <workbench.html#outline-vie
 Build atlas
 -----------
 
-When you add or remove images in the **Texture Packer Editor**, it re-builds the atlas. However, you may want to force a build when you change an atlas settings or the source images. Note when you perform a build you should save the editor to persist the changes, including the output files.
+When you add or remove images in the **Texture Packer Editor**, it re-builds the atlas. However, you may want to force a build when you change atlas settings or the source images. Note when you perform a build you should save the editor to persist the changes, including the output files.
 
-The editor builds an atlas with the `multi-atlas <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#multiatlas__anchor>`_ format. It means, multiple images will be generated if needed.
+The editor builds an atlas with the `multi-atlas <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#multiatlas__anchor>`_ format. It means multiple images will be generated if needed.
 
 Click on the **Build button** to force a build.
 

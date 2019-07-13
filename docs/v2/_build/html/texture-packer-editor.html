@@ -189,14 +189,14 @@
             
   <div class="section" id="texture-packer-editor">
 <h1>3&nbsp;&nbsp;&nbsp;Texture Packer Editor<a class="headerlink" href="#texture-packer-editor" title="Permalink to this headline">¶</a></h1>
-<p>The packing of images in a textures atlas is a widely used technique for game development. It improves the game performance (especially in a WebGL context) and reduce the size of the game (a plus for browser games).</p>
+<p>The packing of images in a textures atlas is a widely used technique for game development. It improves the game performance (especially in a WebGL context) and reduces the size of the game (a plus for browser games).</p>
 <p>There are several tools, free and commercial, to create a texture atlas. In the <a class="reference external" href="https://phaser.io">Phaser</a> community, the <a class="reference external" href="https://www.codeandweb.com/texturepacker">TexturePacker</a> developed by <a class="reference external" href="https://www.codeandweb.com">CodeAndWeb</a> is very popular and has built-in support for <a class="reference external" href="https://phaser.io">Phaser</a>.</p>
-<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> has its own texture packer, based on the <a class="reference external" href="https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools">LibGDX tools</a>. It uses the MaxRects  algorithm, that provides a high packing ratio.</p>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> has its own texture packer, based on the <a class="reference external" href="https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools">LibGDX tools</a>. It uses the MaxRects algorithm, that provides a high packing ratio.</p>
 <div class="section" id="create-a-new-atlas-file">
 <h2>3.1&nbsp;&nbsp;&nbsp;Create a new atlas file<a class="headerlink" href="#create-a-new-atlas-file" title="Permalink to this headline">¶</a></h2>
 <p>The Texture Packer uses <code class="docutils literal"><span class="pre">.atlas</span></code> files as configurations. To pack your images, you should create an atlas file with the wizard <strong>New Texture Packer File</strong>.</p>
 <p><a class="reference external" href="workbench.html#resource-wizards">Learn more about resource wizards</a></p>
-<p>The <strong>Texture Packer File</strong> wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. We recommend to create the atlas file in the “assets” folder of your game, because the output files will be placed in the same folder.</p>
+<p>The <strong>Texture Packer File</strong> wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. We recommend creating the atlas file in the “assets” folder of your game because the output files will be placed in the same folder.</p>
 <p>The second page allows you to automatically add the generated atlas files (<code class="docutils literal"><span class="pre">.json</span></code> + <code class="docutils literal"><span class="pre">.png</span></code>) in a selected <a class="reference external" href="asset-pack-editor.html">pack file</a>.</p>
 <p>The <code class="docutils literal"><span class="pre">.atlas</span></code> file may be excluded from the distribution of your game. Only the output files: the packed textures and the <a class="reference external" href="https://phaser.io">Phaser</a> JSON atlas file are needed.</p>
 <img alt="Atlas file wizard." src="_images/atlas-file-wizard.png" />
@@ -209,7 +209,7 @@
 <li>The image file does not belong to the <code class="docutils literal"><span class="pre">WebContent</span></code> folder tree.</li>
 <li>The image file is not included in any <strong>Texture Packer Editor</strong> file (<code class="docutils literal"><span class="pre">*.atlas</span></code>).</li>
 </ul>
-<p>If you have a lot of huge images in your project, it may impact in the IDE performance. We strongly recommend to keep your project clean of images that are not used by any of the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> files or the game files.</p>
+<p>If you have a lot of huge images in your project, it may impact the IDE performance. We strongly recommend keeping your project clean of images that are not used by any of the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> files or the game files.</p>
 <p><a class="reference external" href="workbench.html#resource-filters">Learn more about resource filters</a></p>
 <img alt="Add images to the Texture Packer Editor." src="_images/drop-images-1.png" />
 <img alt="Images in the Texture Packer Editor are not shown in the Blocks view." src="_images/drop-images-2.png" />
@@ -221,8 +221,8 @@
 </div>
 <div class="section" id="build-atlas">
 <h2>3.4&nbsp;&nbsp;&nbsp;Build atlas<a class="headerlink" href="#build-atlas" title="Permalink to this headline">¶</a></h2>
-<p>When you add or remove images in the <strong>Texture Packer Editor</strong>, it re-builds the atlas. However, you may want to force a build when you change an atlas settings or the source images. Note when you perform a build you should save the editor to persist the changes, including the output files.</p>
-<p>The editor builds an atlas with the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#multiatlas__anchor">multi-atlas</a> format. It means, multiple images will be generated if needed.</p>
+<p>When you add or remove images in the <strong>Texture Packer Editor</strong>, it re-builds the atlas. However, you may want to force a build when you change atlas settings or the source images. Note when you perform a build you should save the editor to persist the changes, including the output files.</p>
+<p>The editor builds an atlas with the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#multiatlas__anchor">multi-atlas</a> format. It means multiple images will be generated if needed.</p>
 <p>Click on the <strong>Build button</strong> to force a build.</p>
 <img alt="Force an atlas build." src="_images/build-atlas.png" />
 </div>
