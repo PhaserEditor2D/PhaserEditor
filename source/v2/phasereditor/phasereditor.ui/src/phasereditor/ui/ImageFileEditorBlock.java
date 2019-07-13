@@ -19,56 +19,58 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.properties;
+package phasereditor.ui;
+
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.ui.ExplainFrameDataCanvas;
-import phasereditor.ui.ImageProxy;
-import phasereditor.ui.properties.FormPropertySection;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 
 /**
  * @author arian
  *
  */
-public class ImageFilePreviewPropertySection extends FormPropertySection<IFile> {
+public class ImageFileEditorBlock extends ResourceEditorBlock<IFile> {
 
-	public ImageFilePreviewPropertySection() {
-		super("Image Preview");
-		setFillSpace(true);
+	public ImageFileEditorBlock(IFile file) {
+		super(file);
+	}
+	
+
+	@Override
+	public String getKeywords() {
+		return "image";
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof IFile && AssetPackCore.isImage((IResource) obj);
+	public List<IEditorBlock> getChildren() {
+		return null;
 	}
 
 	@Override
-	public boolean supportThisNumberOfModels(int number) {
-		return number == 1;
-	}
+	public ICanvasCellRenderer getRenderer() {
+		return new ICanvasCellRenderer() {
 
-	@Override
-	public Control createContent(Composite parent) {
-		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(1, false));
-		var preview = new ExplainFrameDataCanvas(comp, 0);
-		addUpdate(() -> {
-			var file = getModels().get(0);
-			var proxy = ImageProxy.get(file, null);
-			if (proxy != null) {
-				var fd = proxy.getFinalFrameData();
-				preview.setImageInfo(file, fd);
+			@Override
+			public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
+				var img = ImageProxy.get(getResource(), null);
+				if (img != null) {
+					img.paintScaledInArea(gc, new Rectangle(x, y, width, height));
+				}
 			}
-		});
-		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
-		return comp;
+		};
 	}
 
+	@Override
+	public String getSortName() {
+		return "002";
+	}
+
+	@Override
+	public RGB getColor() {
+		return Colors.ORANGE.rgb;
+	}
 }

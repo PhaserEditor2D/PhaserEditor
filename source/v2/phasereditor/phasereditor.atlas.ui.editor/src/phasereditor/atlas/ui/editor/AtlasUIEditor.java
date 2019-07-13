@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015, 2019 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,23 +19,24 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.ui;
+package phasereditor.atlas.ui.editor;
 
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * @author arian
  *
  */
-public interface  ICanvasCellRenderer {
-	ICanvasCellRenderer EMPTY = new ICanvasCellRenderer() {
-		
-		@Override
-		public void render(Canvas canvas, GC gc, int x, int y, int width, int height) {
-			//
-		}
-	};
+public class AtlasUIEditor {
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+	}
 
-	public void render(Canvas canvas, GC gc, int x, int y, int width, int height);
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, msg, null));
+	}
+
 }

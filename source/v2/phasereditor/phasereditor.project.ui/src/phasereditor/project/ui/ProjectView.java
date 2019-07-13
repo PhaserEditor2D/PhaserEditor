@@ -95,8 +95,6 @@ import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
-import phasereditor.ui.properties.ExtensibleFormPropertyPage;
-import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
@@ -361,31 +359,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	public Object getAdapter(Class adapter) {
 
 		if (adapter == IPropertySheetPage.class) {
-			return new ExtensibleFormPropertyPage() {
-
-				@Override
-				protected Object getDefaultModel() {
-					return ProjectCore.getActiveProject();
-				}
-
-				@Override
-				protected String getPageName() {
-					return "ProjectView";
-				}
-
-				@Override
-				protected List<FormPropertySection<?>> createSections() {
-
-					var list = new ArrayList<FormPropertySection<?>>();
-					list.add(new ResourcePropertySection());
-					list.add(new ManyResourcesPropertySection());
-					list.add(new PhaserProjectPropertySection());
-
-					list.addAll(super.createSections());
-
-					return list;
-				}
-			};
+			return new ProjectPropertyPage();
 		}
 
 		return super.getAdapter(adapter);
@@ -543,8 +517,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 					return;
 				}
 			}
-			
-			
+
 			if (obj instanceof IFile) {
 				try {
 					IDE.openEditor(getViewSite().getPage(), (IFile) obj);

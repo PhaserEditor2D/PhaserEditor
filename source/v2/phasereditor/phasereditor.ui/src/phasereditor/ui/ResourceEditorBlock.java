@@ -19,56 +19,45 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.properties;
+package phasereditor.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.ui.ExplainFrameDataCanvas;
-import phasereditor.ui.ImageProxy;
-import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class ImageFilePreviewPropertySection extends FormPropertySection<IFile> {
+public abstract class ResourceEditorBlock<T extends IResource> implements IEditorBlock {
 
-	public ImageFilePreviewPropertySection() {
-		super("Image Preview");
-		setFillSpace(true);
+	private T _resource;
+
+	public ResourceEditorBlock(T resource) {
+		super();
+		_resource = resource;
+	}
+	
+	public T getResource() {
+		return _resource;
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof IFile && AssetPackCore.isImage((IResource) obj);
+	public String getId() {
+		return _resource.getFullPath().toString();
 	}
 
 	@Override
-	public boolean supportThisNumberOfModels(int number) {
-		return number == 1;
+	public boolean isTerminal() {
+		return _resource instanceof IFile;
 	}
 
 	@Override
-	public Control createContent(Composite parent) {
-		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(1, false));
-		var preview = new ExplainFrameDataCanvas(comp, 0);
-		addUpdate(() -> {
-			var file = getModels().get(0);
-			var proxy = ImageProxy.get(file, null);
-			if (proxy != null) {
-				var fd = proxy.getFinalFrameData();
-				preview.setImageInfo(file, fd);
-			}
-		});
-		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
-		return comp;
+	public String getLabel() {
+		return _resource.getName();
 	}
 
+	@Override
+	public Object getObject() {
+		return _resource;
+	}
 }

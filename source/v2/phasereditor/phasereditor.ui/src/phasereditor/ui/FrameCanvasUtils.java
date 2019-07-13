@@ -168,9 +168,11 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		Object newObj = null;
 		for (int i = 0; i < getFramesCount(); i++) {
 			Rectangle rect = getSelectionFrameArea(i);
-			if (rect.contains(viewToModel(e.x, e.y))) {
-				newObj = getFrameObject(i);
-				break;
+			if (rect != null) {
+				if (rect.contains(viewToModel(e.x, e.y))) {
+					newObj = getFrameObject(i);
+					break;
+				}
 			}
 		}
 		if (old != newObj) {

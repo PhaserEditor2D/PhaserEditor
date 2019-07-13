@@ -188,7 +188,15 @@ public class PhaserEditorUI {
 
 	private PhaserEditorUI() {
 	}
+	
+	public static final String[] IMAGE_EXTS = { "png", "jpg", "jpeg", "gif", "bmp" };
+	
+	private static final Set<String> _imageExtensions = Set.of(IMAGE_EXTS);
 
+	public static boolean isImage(IResource resource) {
+		return resource instanceof IFile && _imageExtensions.contains(resource.getFullPath().getFileExtension());
+	}
+	
 	public static IWorkbenchWindow getWorkbenchWindow(Control control) {
 		var shell = control.getShell();
 		var windows = PlatformUI.getWorkbench().getWorkbenchWindows();

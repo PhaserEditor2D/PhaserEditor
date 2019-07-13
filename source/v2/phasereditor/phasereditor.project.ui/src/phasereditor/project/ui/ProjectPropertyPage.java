@@ -19,56 +19,41 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.properties;
+package phasereditor.project.ui;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import java.util.ArrayList;
+import java.util.List;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.ui.ExplainFrameDataCanvas;
-import phasereditor.ui.ImageProxy;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.properties.ExtensibleFormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class ImageFilePreviewPropertySection extends FormPropertySection<IFile> {
-
-	public ImageFilePreviewPropertySection() {
-		super("Image Preview");
-		setFillSpace(true);
+public class ProjectPropertyPage extends ExtensibleFormPropertyPage {
+	@Override
+	protected Object getDefaultModel() {
+		return ProjectCore.getActiveProject();
 	}
 
 	@Override
-	public boolean canEdit(Object obj) {
-		return obj instanceof IFile && AssetPackCore.isImage((IResource) obj);
+	protected String getPageName() {
+		return "ProjectView";
 	}
 
 	@Override
-	public boolean supportThisNumberOfModels(int number) {
-		return number == 1;
-	}
+	protected List<FormPropertySection<?>> createSections() {
 
-	@Override
-	public Control createContent(Composite parent) {
-		var comp = new Composite(parent, 0);
-		comp.setLayout(new GridLayout(1, false));
-		var preview = new ExplainFrameDataCanvas(comp, 0);
-		addUpdate(() -> {
-			var file = getModels().get(0);
-			var proxy = ImageProxy.get(file, null);
-			if (proxy != null) {
-				var fd = proxy.getFinalFrameData();
-				preview.setImageInfo(file, fd);
-			}
-		});
-		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
-		return comp;
+		var list = new ArrayList<FormPropertySection<?>>();
+		list.add(new ResourcePropertySection());
+		list.add(new ManyResourcesPropertySection());
+		list.add(new PhaserProjectPropertySection());
+
+		list.addAll(super.createSections());
+
+		return list;
 	}
 
 }

@@ -103,10 +103,14 @@ import com.badlogic.gdx.utils.StringBuilder;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.atlas.ui.ITexturePackerEditor;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.project.ui.ProjectPropertyPage;
 import phasereditor.ui.BaseImageTreeCanvasItemRenderer;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.FrameData;
+import phasereditor.ui.IEditorBlock;
+import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
@@ -974,7 +978,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	public IFile getEditorInputFile() {
-		return ((IFileEditorInput) getEditorInput()).getFile();
+		return ((IFileEditorInput) super.getEditorInput()).getFile();
 	}
 
 	protected void updateTitle() {
@@ -1143,6 +1147,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private TexturePackerEditorToolbar _toolbar;
 
+	private TexturePackerBlocksProvider _blocksProvider;
+
 	public void updatePropertyPagesAndToolbarWithSelection() {
 		var sel = _selectionProvider.getSelection();
 
@@ -1163,7 +1169,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		private Button _deleteBtn;
 
-		
 		@Override
 		public void createContent(Composite parent) {
 
@@ -1211,6 +1216,68 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		public void updateToolbarWithSelection(IStructuredSelection selection) {
 			var empty = selection.isEmpty();
 			_deleteBtn.setEnabled(!empty);
+		}
+
+	}
+
+	@Override
+	public IFileEditorInput getEditorInput() {
+		return (IFileEditorInput) super.getEditorInput();
+	}
+
+	class TexturePackerBlocksProvider implements IEditorBlockProvider {
+
+		private Runnable _refreshHandler;
+
+		@Override
+		public String getId() {
+			return getClass().getSimpleName() + "$" + getEditorInput().getFile().getFullPath().toString();
+		}
+
+		@Override
+		public List<IEditorBlock> getBlocks() {
+			var list = new ArrayList<IEditorBlock>();
+			var project = getEditorInput().getFile().getProject();
+
+			try {
+				var webContent = ProjectCore.getWebContentFolder(project);
+
+				for (var member : project.members()) {
+					if (member instanceof IContainer && !member.equals(webContent)) {
+						var block = new TexturePackerFolderEditorBlock((IContainer) member);
+						if (!block.getChildren().isEmpty()) {
+							if (block.getCountImagesInChildren() == 0) {
+								list.addAll(block.getChildren());
+							} else {
+								list.add(block);
+							}
+						}
+					}
+				}
+			} catch (CoreException e) {
+				AtlasUIEditor.logError(e);
+			}
+
+			return list;
+		}
+
+		@Override
+		public void setRefreshHandler(Runnable refresh) {
+			_refreshHandler = refresh;
+		}
+
+		public Runnable getRefreshHandler() {
+			return _refreshHandler;
+		}
+
+		@Override
+		public IPropertySheetPage getPropertyPage() {
+			return new ProjectPropertyPage() {
+				@Override
+				protected Object getDefaultModel() {
+					return getEditorInput().getFile().getProject();
+				}
+			};
 		}
 
 	}
@@ -1266,6 +1333,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			return _toolbar;
 		}
 
+		if (adapter.equals(IEditorBlockProvider.class)) {
+			if (_blocksProvider == null) {
+				_blocksProvider = new TexturePackerBlocksProvider();
+			}
+			return _blocksProvider;
+		}
+
 		return super.getAdapter(adapter);
 	}
 
@@ -1315,7 +1389,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		_canvasClicked = null;
-		
+
 		updateToolbarSelection(selection);
 	}
 

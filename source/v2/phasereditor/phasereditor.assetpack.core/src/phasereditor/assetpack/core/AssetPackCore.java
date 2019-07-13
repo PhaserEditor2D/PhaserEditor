@@ -69,6 +69,7 @@ import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * Utilities related to the assets and resources.
@@ -81,7 +82,6 @@ public class AssetPackCore {
 	public static final String ASSET_EDITOR_ID = "phasereditor.assetpack.ui.editor.AssetPackEditor";
 	public static final String ASSET_EDITOR_GOTO_MARKER_ATTR = "gotoMarker";
 
-	private static final Set<String> _imageExtensions;
 	private static final Set<String> _shaderExtensions;
 	private static final Set<String> _audioExtensions;
 	private static final Set<String> _videoExtensions;
@@ -89,15 +89,12 @@ public class AssetPackCore {
 	public static final String ASSET_PACK_PROBLEM_ID = "phasereditor.assetpack.core.problem";
 	private static final QualifiedName TILEMAP_TILESET_KEY = new QualifiedName("phasereditor2d.com", "tilemapCSV.data");
 
-	public static final String[] IMAGE_EXTS = { "png", "jpg", "jpeg", "gif", "bmp" };
+	public static final String[] IMAGE_EXTS = PhaserEditorUI.IMAGE_EXTS;
 	public static final String[] AUDIO_EXTS = { "wav", "ogg", "mp3", "flac", "wma", "au" };
 	public static final String[] VIDEO_EXTS = { "mp4", "ogv", "webm", "flv", "wmv", "avi", "mpg" };
 	public static final String[] SHADER_EXTS = { "vert", "frag", "tesc", "tese", "geom", "comp" };
 
 	static {
-		_imageExtensions = new HashSet<>();
-		_imageExtensions.addAll(Arrays.asList(IMAGE_EXTS));
-
 		_audioExtensions = new HashSet<>();
 		// TODO: missing audio extensions
 		_audioExtensions.addAll(Arrays.asList(AUDIO_EXTS));
@@ -207,7 +204,7 @@ public class AssetPackCore {
 	 * @return If it is an image.
 	 */
 	public static boolean isImage(IResource resource) {
-		return resource instanceof IFile && _imageExtensions.contains(resource.getFullPath().getFileExtension());
+		return PhaserEditorUI.isImage(resource);
 	}
 
 	public static boolean isSvg(IResource resource) {

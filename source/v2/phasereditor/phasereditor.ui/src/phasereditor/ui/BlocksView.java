@@ -69,7 +69,7 @@ import org.json.JSONObject;
  */
 public class BlocksView extends ViewPart implements IWindowListener, IPageListener, IPartListener {
 
-	class BlocksCanvas extends BaseCanvas implements PaintListener, MouseListener {
+	public class BlocksCanvas extends BaseCanvas implements PaintListener, MouseListener {
 
 		private static final int MIN_ROW_HEIGHT = 48;
 		private Map<IEditorBlock, Rectangle> _blockAreaMap;
@@ -315,6 +315,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			for (var block : _blocks) {
 				var renderer = block.getRenderer();
 
+				var expanded = !block.isTerminal() && isExpanded(block);
+
 				if (x + size + margin > e.width) {
 					x = margin;
 					y += margin + size + 20;
@@ -327,18 +329,20 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 				var selected = _frameUtils.isSelected(block.getObject());
 
-				if (selected) {
-					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-				} else {
-					gc.setBackground(SwtRM.getColor(block.getColor()));
-				}
+				var hasBackground = block.getColor() != null;
 
 				if (selected) {
+					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 					gc.fillRectangle(rect);
 				}
 
+				if (hasBackground) {
+					gc.setBackground(SwtRM.getColor(block.getColor()));
+				}
+
 				if (terminal) {
-					if (!selected) {
+
+					if (!selected && hasBackground) {
 						gc.setAlpha(50);
 						gc.fillRectangle(rect);
 						gc.setAlpha(255);
@@ -347,13 +351,16 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 					renderer.render(this, gc, x, y, size, size);
 				} else {
 					var tab = (int) (rect.height * 0.1);
-					if (!selected) {
-						gc.setAlpha(100);
-						gc.fillRectangle(rect.x, rect.y, rect.width / 2, tab);
-						gc.fillRectangle(rect.x, rect.y + tab, rect.width, rect.height - tab);
-						gc.setAlpha(255);
+
+					gc.setAlpha(selected ? 30 : 100);
+					gc.fillRectangle(rect.x, rect.y, rect.width / 2, tab);
+					gc.fillRectangle(rect.x, rect.y + tab, rect.width, rect.height - tab);
+					gc.setAlpha(255);
+
+					// dont render content if it is expanded
+					if (!expanded) {
+						renderer.render(this, gc, x, y + tab, size - 10, size - tab);
 					}
-					renderer.render(this, gc, x, y + tab, size - 10, size - tab);
 				}
 
 				gc.setAlpha(100);
@@ -367,7 +374,6 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 					// gc.drawRectangle(x + size - 10, y, 10, size);
 					// gc.setAlpha(255);
 
-					var expanded = isExpanded(block);
 					Image img = EditorSharedImages.getImage(expanded ? IMG_BULLET_COLLAPSE : IMG_BULLET_EXPAND);
 					gc.drawImage(img, x + size - 16, y + size / 2 - 8);
 				}
@@ -401,7 +407,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			return data;
 		}
 
-		private boolean isExpanded(IEditorBlock block) {
+		public boolean isExpanded(IEditorBlock block) {
 			var map = getProviderData().expandedData;
 			var id = block.getId();
 			return map.getOrDefault(id, Boolean.FALSE).booleanValue();
