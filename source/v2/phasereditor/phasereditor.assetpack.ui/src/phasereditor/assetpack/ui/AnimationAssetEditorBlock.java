@@ -43,7 +43,7 @@ public class AnimationAssetEditorBlock extends AssetKeyEditorBlock<AnimationMode
 	public AnimationAssetEditorBlock(AnimationModel_in_AssetPack assetKey) {
 		super(assetKey);
 	}
-	
+
 	@Override
 	public String getKeywords() {
 		return "animation";
@@ -87,11 +87,13 @@ public class AnimationAssetEditorBlock extends AssetKeyEditorBlock<AnimationMode
 				for (var f : new float[] { 0, 0.5f, 1f }) {
 					var frame = frames.get((int) ((frames.size() - 1) * f));
 					var asset = frame.getAssetFrame();
-					var file = asset.getImageFile();
-					var fd = adaptFrameData(asset.getFrameData());
-					var proxy = ImageProxy.get(file, fd);
-					if (proxy != null) {
-						proxy.paintScaledInArea(gc, new Rectangle(x2, y2, size, size));
+					if (asset != null) {
+						var file = asset.getImageFile();
+						var fd = adaptFrameData(asset.getFrameData());
+						var proxy = ImageProxy.get(file, fd);
+						if (proxy != null) {
+							proxy.paintScaledInArea(gc, new Rectangle(x2, y2, size, size));
+						}
 					}
 					x2 += size;
 				}

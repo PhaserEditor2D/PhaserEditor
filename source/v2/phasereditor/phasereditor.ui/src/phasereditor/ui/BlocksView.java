@@ -73,6 +73,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 		private static final int MIN_ROW_HEIGHT = 48;
 		private Map<IEditorBlock, Rectangle> _blockAreaMap;
+		private Map<IEditorBlock, Integer> _blockDepthMap;
+		private Map<IEditorBlock, IEditorBlock> _blockParentMap;
 		private Map<String, ProviderData> _providerDataMap;
 		private HandModeUtils _handModeUtils;
 		private MyScrollUtils _scrollUtils;
@@ -109,6 +111,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			addPaintListener(this);
 
 			_blockAreaMap = new HashMap<>();
+			_blockDepthMap = new HashMap<>();
+			_blockParentMap = new HashMap<>();
 			_providerDataMap = new HashMap<>();
 			_handModeUtils = new HandModeUtils(this);
 			_scrollUtils = new MyScrollUtils();
@@ -236,28 +240,39 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 		}
 
-		private List<IEditorBlock> expandList(List<IEditorBlock> list) {
+		@SuppressWarnings("boxing")
+		private List<IEditorBlock> expandList(List<IEditorBlock> list, int depth) {
 			var list1 = new ArrayList<>(list);
 
 			list1.sort((a, b) -> a.getSortName().compareTo(b.getSortName()));
 
 			var list2 = new ArrayList<IEditorBlock>();
 			for (var block : list1) {
+				_blockDepthMap.put(block, depth);
 				list2.add(block);
+
 				if (isExpanded(block) || (!block.isTerminal() && _filter != null)) {
-					list2.addAll(expandList(block.getChildren()));
+					for (var child : block.getChildren()) {
+						_blockParentMap.put(child, block);
+					}
+					list2.addAll(expandList(block.getChildren(), depth + 1));
 				}
+
 			}
 			return list2;
 		}
 
 		private void updateBlockList() {
+
+			_blockDepthMap = new HashMap<>();
+			_blockParentMap = new HashMap<>();
+
 			if (_blockProvider == null) {
 				_blocks = new ArrayList<>();
 				return;
 			}
 
-			var list = expandList(_blockProvider.getBlocks());
+			var list = expandList(_blockProvider.getBlocks(), 0);
 
 			if (_filter != null) {
 				list = list.stream().filter(block -> {
@@ -338,6 +353,24 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 				if (hasBackground) {
 					gc.setBackground(SwtRM.getColor(block.getColor()));
+				}
+
+				{
+					var depth = _blockDepthMap.get(block);
+					if (depth != null && depth.intValue() > 0) {
+						var parent = _blockParentMap.get(block);
+						if (parent != null) {
+							gc.setBackground(Colors.color(parent.getColor()));
+						}
+
+						var h = size / (depth.intValue() + 2);
+						gc.setAlpha(100);
+						for (var k = 1; k <= depth.intValue(); k++) {
+							var y2 = y + k * h + h / 2;
+							gc.fillRectangle(x - 5, y2 - 1, 5, 2);
+						}
+						gc.setAlpha(255);
+					}
 				}
 
 				if (terminal) {
