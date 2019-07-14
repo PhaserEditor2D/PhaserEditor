@@ -289,15 +289,16 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 			var e = getClientArea();
 
-			var margin = 5;
 			var size = _imageSize;
-			var x = margin;
-			var y = margin;
+			var margin = 20;
+			var marginLeft = 5;
+			var x = marginLeft;
+			var y = marginLeft;
 
 			for (int i = 0; i < _blocks.size(); i++) {
 				if (x + size + margin > e.width) {
-					x = margin;
-					y += margin + size + 20;
+					x = marginLeft;
+					y += marginLeft + size + 40;
 				}
 				x += size + margin;
 			}
@@ -322,10 +323,11 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 			_blockAreaMap = new HashMap<>();
 
-			var margin = 5;
+			var margin = 20;
 			var size = _imageSize;
-			var x = margin; // + margin;
-			var y = margin;
+			var marginLeft = 5;
+			var x = marginLeft; // margin;
+			var y = marginLeft;
 
 			for (var block : _blocks) {
 				var renderer = block.getRenderer();
@@ -333,8 +335,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				var expanded = !block.isTerminal() && isExpanded(block);
 
 				if (x + size + margin > e.width) {
-					x = margin;
-					y += margin + size + 20;
+					x = marginLeft;
+					y += marginLeft + size + 40;
 				}
 
 				var terminal = block.isTerminal();
@@ -348,7 +350,11 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 				if (selected) {
 					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-					gc.fillRectangle(rect);
+					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
+					//gc.fillRectangle(rect);
+					gc.fillRectangle(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4);
+				} else {
+					gc.setForeground(getForeground());
 				}
 
 				if (hasBackground) {
@@ -367,7 +373,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 						gc.setAlpha(100);
 						for (var k = 1; k <= depth.intValue(); k++) {
 							var y2 = y + k * h + h / 2;
-							gc.fillRectangle(x - 5, y2 - 1, 5, 2);
+							gc.fillRectangle(x - margin, y2 - 1, margin, 2);
 						}
 						gc.setAlpha(255);
 					}
@@ -396,9 +402,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 					}
 				}
 
-				gc.setAlpha(100);
+//				gc.setAlpha(100);
 				// gc.drawRectangle(rect);
-				gc.setAlpha(255);
+//				gc.setAlpha(255);
 
 				if (!terminal) {
 					// gc.setAlpha(100);
@@ -412,19 +418,49 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				}
 
 				{
-					var label = new StringBuilder(block.getLabel());
-					while (gc.textExtent(label.toString()).x > _imageSize) {
-						label.setLength(label.length() - 1);
+
+					var label = block.getLabel();
+
+					var label2 = new StringBuilder();
+
+					var textSize = _imageSize - 4;
+
+					while (gc.textExtent(label2.toString()).x < textSize && label2.length() < label.length()) {
+						label2.append(label.charAt(label2.length()));
 					}
-					if (label.length() < block.getLabel().length()) {
-						if (label.length() > 3) {
-							label.setLength(label.length() - 3);
-							label.append("...");
+
+					if (label2.length() < label.length()) {
+						var label3 = new StringBuilder();
+						var c = label2.length();
+
+						while (gc.textExtent(label3.toString()).x < textSize && c < label.length()) {
+							label3.append(label.charAt(c));
+							c++;
 						}
+
+						if (c < label.length()) {
+							if (label3.length() > 2) {
+								label3.setLength(label3.length() - 2);
+								label3.append("..");
+							}
+						}
+
+						label2.append("\n");
+						label2.append(label3);
+
 					}
-					var text = label.toString();
-					var ext = gc.textExtent(text);
-					gc.drawText(text, x + _imageSize / 2 - ext.x / 2, y + _imageSize + 2, true);
+
+					{
+						var text = label2.toString();
+						var ext = gc.textExtent(text);
+						var x1 = x + textSize / 2 - ext.x / 2 + 1;
+						var y1 = y + textSize + 5;
+						if (selected) {
+							gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+							gc.fillRoundRectangle(x1 - 5, y1 - 5, ext.x + 10, ext.y + 10, 5, 5);
+						}
+						gc.drawText(text, x1, y1, true);
+					}
 				}
 
 				x += size + margin;
