@@ -49,6 +49,7 @@ import phasereditor.project.core.ProjectCore;
 public class SceneCore {
 
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	public static final String EDITOR_SCENE_FILE_CONTENT_TYPE = SceneContentTypeDescriber.CONTENT_TYPE_ID;
 
 	private static SceneFileDataCache _fileDataCache;
 

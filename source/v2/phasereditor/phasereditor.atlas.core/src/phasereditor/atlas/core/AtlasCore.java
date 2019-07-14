@@ -44,6 +44,7 @@ public class AtlasCore {
 	public static final String TEXTURE_ATLAS_JSON_HASH = "TEXTURE_ATLAS_JSON_HASH";
 	public static final String TEXTURE_ATLAS_XML_STARLING = "TEXTURE_ATLAS_XML_STARLING";
 	public static final String TEXTURE_ATLAS_UNITY = "TEXTURE_ATLAS_UNITY";
+	public static final String EDITOR_ATLAS_FILE_CONTENT_TYPE_ID = "phasereditor.atlas.core.atlasContentType";
 
 	private static final Set<String> IMG_EXTS = new HashSet<>(Arrays.asList("png", "jpg", "gif", "bmp"));
 

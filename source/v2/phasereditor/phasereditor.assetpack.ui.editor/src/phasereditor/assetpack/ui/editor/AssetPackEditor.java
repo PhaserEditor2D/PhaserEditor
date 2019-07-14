@@ -110,6 +110,7 @@ import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
+import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
@@ -1040,6 +1041,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private AssetPackEditorHugeToolbar _toolbar;
 
+	private AssetPackEditorBlocksProvider _blocksProvider;
+
 	List<AssetPackEditorPropertyPage> getPropertyPageList() {
 		return _propertyPageList;
 	}
@@ -1092,6 +1095,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				_toolbar = new AssetPackEditorHugeToolbar();
 			}
 			return _toolbar;
+		}
+
+		if (adapter == IEditorBlockProvider.class) {
+			if (_blocksProvider == null) {
+				_blocksProvider = new AssetPackEditorBlocksProvider(this);
+			}
+			return _blocksProvider;
 		}
 
 		return super.getAdapter(adapter);

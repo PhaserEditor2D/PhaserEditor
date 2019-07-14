@@ -23,6 +23,7 @@ package phasereditor.assetpack.core;
 
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -58,7 +59,23 @@ public class MultiAtlasAssetModel extends AssetModel {
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getUrlFile() };
+		var files = new HashSet<>();
+
+		{
+			var file = getUrlFile();
+			if (file != null) {
+				files.add(file);
+			}
+		}
+		
+		for(var frame : getSubElements()) {
+			var file = frame.getImageFile();
+			if (file != null) {
+				files.add(file);
+			}
+		}
+
+		return files.toArray(IFile[]::new);
 	}
 
 	@Override

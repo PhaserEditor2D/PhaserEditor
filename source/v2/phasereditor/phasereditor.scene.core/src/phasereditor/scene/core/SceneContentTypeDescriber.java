@@ -11,7 +11,7 @@ import org.json.JSONTokener;
 
 public class SceneContentTypeDescriber implements IContentDescriber {
 	private static final QualifiedName[] NO_OPTIONS = {};
-	public static final Object CONTENT_TYPE_ID = "phasereditor.scene.core.SceneContentType";
+	public static final String CONTENT_TYPE_ID = "phasereditor.scene.core.SceneContentType";
 
 	public SceneContentTypeDescriber() {
 	}
