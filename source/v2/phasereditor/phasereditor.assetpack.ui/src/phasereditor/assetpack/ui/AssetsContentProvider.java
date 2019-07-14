@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import static phasereditor.ui.PhaserEditorUI.get_pref_Preview_Spritesheet_maxFrames;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -119,8 +121,14 @@ public class AssetsContentProvider implements ITreeContentProvider {
 				case atlasXML:
 				case unityAtlas:
 				case multiatlas:
-				case spritesheet:
 					return asset.getSubElements().toArray();
+				case spritesheet:
+					var elems = asset.getSubElements();
+					var maxFrames = get_pref_Preview_Spritesheet_maxFrames();
+					if (elems.size() > maxFrames) {
+						elems = elems.subList(0, maxFrames);
+					}
+					return elems.toArray();
 				case tilemapTiledJSON: {
 					TilemapAssetModel tilemapAsset = (TilemapAssetModel) asset;
 					TilemapJSON tilemap = tilemapAsset.getTilemapJSON();

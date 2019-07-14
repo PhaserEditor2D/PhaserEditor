@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import static phasereditor.ui.PhaserEditorUI.get_pref_Preview_Spritesheet_maxFrames;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.List;
@@ -59,6 +60,7 @@ import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.TruncatedFrameProvider;
 
 public class SpritesheetAssetPreviewComp extends Composite {
 
@@ -159,6 +161,12 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		{
 			// frames
 			var provider = _model == null ? IFrameProvider.NULL : new SpritesheetAssetFrameProvider(_model);
+
+			var maxFrames = get_pref_Preview_Spritesheet_maxFrames();
+			if (provider.getFrameCount() > maxFrames) {
+				provider = new TruncatedFrameProvider(provider, maxFrames);
+			}
+
 			_gridCanvas.loadFrameProvider(provider);
 		}
 

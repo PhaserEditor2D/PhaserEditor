@@ -160,10 +160,12 @@ public class PhaserEditorUI {
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = "phasereditor.ui.preview.spritesheetBorderColor";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = "phasereditor.ui.preview.spritesheetPaintLabels";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = "phasereditor.ui.preview.spritesheetLabelsColor";
+	public static final String PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES = "phasereditor.ui.preview.spritesheetMaxFrames";
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = true;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR;
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = true;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
+	public static int _PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES = 50;
 
 	public static final String PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = "phasereditor.ui.preview.tilemapOverTileBorderColor";
 	public static final String PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = "phasereditor.ui.preview.tilemapLabelsColor";
@@ -298,6 +300,7 @@ public class PhaserEditorUI {
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR,
 				StringConverter.asString(_RED));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, StringConverter.asString(_YELLOW));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES, 50);
 
 		// tilemap
 
@@ -330,6 +333,10 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SwtRM.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR));
 			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(rgb);
+		}
+		
+		{
+			_PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES = getPreferenceStore().getInt(PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES);
 		}
 
 		{
@@ -382,6 +389,10 @@ public class PhaserEditorUI {
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
 				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
+				break;
+			case PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES:
+				_PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES= getPreferenceStore()
+						.getInt(PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES);
 				break;
 
 			// tilemap
@@ -495,6 +506,10 @@ public class PhaserEditorUI {
 
 	public static Color get_pref_Preview_Spritesheet_labelsColor() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
+	}
+	
+	public static int get_pref_Preview_Spritesheet_maxFrames() {
+		return _PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES;
 	}
 
 	public static Color get_pref_Preview_Tilemap_overTileBorderColor() {

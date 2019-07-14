@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui;
 
 import static java.util.stream.Collectors.toList;
+import static phasereditor.ui.PhaserEditorUI.get_pref_Preview_Spritesheet_maxFrames;
 
 import java.util.List;
 
@@ -51,12 +52,13 @@ public class SpritesheetAssetEditorBlock extends AssetKeyEditorBlock<Spritesheet
 				.map(frame -> AssetPackUI.getAssetEditorBlock(frame))
 
 				.collect(toList());
-		
-		if (_children.size() > 50) {
-			_children = _children.subList(0, 50);
+
+		var maxFrames = get_pref_Preview_Spritesheet_maxFrames();
+		if (_children.size() > maxFrames) {
+			_children = _children.subList(0, maxFrames);
 		}
 	}
-	
+
 	@Override
 	public String getKeywords() {
 		return "spritesheet texture";
