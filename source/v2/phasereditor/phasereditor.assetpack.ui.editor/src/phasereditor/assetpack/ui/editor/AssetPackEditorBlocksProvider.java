@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static phasereditor.ui.PhaserEditorUI.isImage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -40,7 +41,10 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.atlas.core.AtlasCore;
+import phasereditor.audio.core.AudioCore;
+import phasereditor.audio.ui.AudioFileEditorBlock;
 import phasereditor.project.ui.ProjectPropertyPage;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.ui.Colors;
@@ -72,8 +76,22 @@ public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
 
 	@Override
 	public List<IEditorBlock> getBlocks() {
+		var editorFile = getEditorFile();
 
-		var packs = AssetPackCore.getAssetPackModels(getEditorFile().getProject());
+		var packs = new ArrayList<AssetPackModel>();
+		{
+			var sharedPacks = AssetPackCore.getAssetPackModels(editorFile.getProject());
+
+			for (var pack : sharedPacks) {
+				if (!pack.getFile().equals(editorFile)) {
+					packs.add(pack);
+				}
+			}
+		}
+		
+		// always use the alive version of the editor pack
+		packs.add(_editor.getModel());
+
 		var usedFiles =
 
 				new HashSet<>(packs.stream()
@@ -84,9 +102,9 @@ public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
 
 						.collect(toSet()));
 
-		usedFiles.add(getEditorFile());
+		usedFiles.add(editorFile);
 
-		var root = new AssetPackFolderBlock(getEditorFile().getParent(), usedFiles);
+		var root = new AssetPackFolderBlock(editorFile.getParent(), usedFiles);
 
 		return root.getChildren();
 	}
@@ -100,8 +118,8 @@ public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
 		_refreshHandler = refresh;
 	}
 
-	public Runnable getRefreshHandler() {
-		return _refreshHandler;
+	public void refresh() {
+		_refreshHandler.run();
 	}
 
 	@Override
@@ -113,6 +131,7 @@ public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
 			}
 		};
 	}
+
 }
 
 class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
@@ -125,7 +144,9 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 
 			AtlasCore.EDITOR_ATLAS_FILE_CONTENT_TYPE_ID,
 
-			SceneCore.EDITOR_SCENE_FILE_CONTENT_TYPE
+			SceneCore.EDITOR_SCENE_FILE_CONTENT_TYPE,
+			
+			AssetPackCore.EDITOR_ASSET_PACK_FILE_CONTENT_TYPE,
 
 	});
 
@@ -171,6 +192,8 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 
 							if (isImage(file)) {
 								return new ImageFileEditorBlock(file);
+							} else if (AudioCore.isSupportedAudio(file)) {
+								return new AudioFileEditorBlock(file);
 							}
 
 							return new FileEditorBlock((IFile) r);

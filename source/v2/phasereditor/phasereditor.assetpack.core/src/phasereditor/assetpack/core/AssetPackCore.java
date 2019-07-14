@@ -82,6 +82,8 @@ public class AssetPackCore {
 	public static final String ASSET_EDITOR_ID = "phasereditor.assetpack.ui.editor.AssetPackEditor";
 	public static final String ASSET_EDITOR_GOTO_MARKER_ATTR = "gotoMarker";
 
+	public static final String EDITOR_ASSET_PACK_FILE_CONTENT_TYPE = AssetPackContentDescriber.CONTENT_TYPE_ID;
+
 	private static final Set<String> _shaderExtensions;
 	private static final Set<String> _audioExtensions;
 	private static final Set<String> _videoExtensions;
@@ -1101,20 +1103,20 @@ public class AssetPackCore {
 		if (asset instanceof MultiAtlasAssetModel) {
 			getAtlasTexturePackerFile((MultiAtlasAssetModel) asset);
 		}
-		
+
 		return null;
 	}
 
 	public static IFile getAtlasTexturePackerFile(MultiAtlasAssetModel atlasAsset) {
 		var jsonFile = atlasAsset.getUrlFile();
-		
+
 		var packerFile = jsonFile.getParent()
 				.getFile(new Path(jsonFile.getName()).removeFileExtension().addFileExtension("atlas"));
-		
+
 		if (packerFile.exists()) {
 			return packerFile;
 		}
-		
+
 		return null;
 	}
 }

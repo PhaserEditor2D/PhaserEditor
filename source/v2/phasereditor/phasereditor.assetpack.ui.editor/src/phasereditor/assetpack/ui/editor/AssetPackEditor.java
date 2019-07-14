@@ -180,6 +180,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		_assetsCanvas.redraw();
+		
+		if (_blocksProvider != null) {
+			_blocksProvider.refresh();
+		}
 	}
 
 	public void saveEditingPoint() {
