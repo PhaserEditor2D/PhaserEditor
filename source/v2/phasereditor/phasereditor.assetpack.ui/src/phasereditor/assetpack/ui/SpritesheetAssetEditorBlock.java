@@ -51,6 +51,10 @@ public class SpritesheetAssetEditorBlock extends AssetKeyEditorBlock<Spritesheet
 				.map(frame -> AssetPackUI.getAssetEditorBlock(frame))
 
 				.collect(toList());
+		
+		if (_children.size() > 50) {
+			_children = _children.subList(0, 50);
+		}
 	}
 	
 	@Override
