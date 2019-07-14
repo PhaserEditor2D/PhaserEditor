@@ -19,125 +19,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editor;
+package phasereditor.assetpack.ui.editor.blocks;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static phasereditor.ui.PhaserEditorUI.isImage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.audio.ui.AudioFileEditorBlock;
-import phasereditor.project.ui.ProjectPropertyPage;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.ui.Colors;
 import phasereditor.ui.FileEditorBlock;
 import phasereditor.ui.GridCellRenderer;
 import phasereditor.ui.ICanvasCellRenderer;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.ImageFileEditorBlock;
 import phasereditor.ui.ResourceEditorBlock;
-
-/**
- * @author arian
- *
- */
-public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
-
-	private AssetPackEditor _editor;
-	private Runnable _refreshHandler;
-
-	public AssetPackEditorBlocksProvider(AssetPackEditor editor) {
-		_editor = editor;
-	}
-
-	@Override
-	public String getId() {
-		return getClass().getCanonicalName() + "@" + getEditorFile().toString();
-	}
-
-	@Override
-	public List<IEditorBlock> getBlocks() {
-		var editorFile = getEditorFile();
-
-		var packs = new ArrayList<AssetPackModel>();
-		{
-			var sharedPacks = AssetPackCore.getAssetPackModels(editorFile.getProject());
-
-			for (var pack : sharedPacks) {
-				if (!pack.getFile().equals(editorFile)) {
-					packs.add(pack);
-				}
-			}
-		}
-		
-		// always use the alive version of the editor pack
-		packs.add(_editor.getModel());
-
-		var usedFiles =
-
-				new HashSet<>(packs.stream()
-
-						.flatMap(pack -> pack.getAssets().stream())
-
-						.flatMap(asset -> Arrays.stream(asset.computeUsedFiles()))
-
-						.collect(toSet()));
-
-		usedFiles.add(editorFile);
-
-		var root = new AssetPackFolderBlock(editorFile.getParent(), usedFiles);
-
-		return root.getChildren();
-	}
-
-	private IFile getEditorFile() {
-		return _editor.getEditorInput().getFile();
-	}
-
-	@Override
-	public void setRefreshHandler(Runnable refresh) {
-		_refreshHandler = refresh;
-	}
-
-	public void refresh() {
-		_refreshHandler.run();
-	}
-
-	@Override
-	public IPropertySheetPage getPropertyPage() {
-		return new ProjectPropertyPage() {
-			@Override
-			protected Object getDefaultModel() {
-				return getEditorFile().getParent();
-			}
-		};
-	}
-
-}
 
 class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 
 	private Set<IFile> _usedFiles;
-	private List<ResourceEditorBlock<? extends IResource>> _children;
+	private List<IEditorBlock> _children;
 	private GridCellRenderer _renderer;
 
 	private static Set<String> SKIP_CONTENT_TYPE_ID = Set.of(new String[] {
@@ -145,7 +60,7 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 			AtlasCore.EDITOR_ATLAS_FILE_CONTENT_TYPE_ID,
 
 			SceneCore.EDITOR_SCENE_FILE_CONTENT_TYPE,
-			
+
 			AssetPackCore.EDITOR_ASSET_PACK_FILE_CONTENT_TYPE,
 
 	});
@@ -165,6 +80,12 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 
 						if (r instanceof IFile) {
 							var file = (IFile) r;
+
+							// skip TypeScript files.
+							if ("ts".equals(file.getFileExtension())) {
+								return false;
+							}
+
 							IContentDescription desc;
 							try {
 								desc = file.getContentDescription();
@@ -221,10 +142,9 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 		return "";
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<IEditorBlock> getChildren() {
-		return (List) _children;
+		return _children;
 	}
 
 	@Override

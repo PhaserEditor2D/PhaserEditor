@@ -104,6 +104,7 @@ import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.assetpack.ui.IAssetPackEditor;
 import phasereditor.assetpack.ui.ImageResourceDialog;
 import phasereditor.assetpack.ui.SvgResourceDialog;
+import phasereditor.assetpack.ui.editor.blocks.AssetPackEditorBlocksProvider;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;

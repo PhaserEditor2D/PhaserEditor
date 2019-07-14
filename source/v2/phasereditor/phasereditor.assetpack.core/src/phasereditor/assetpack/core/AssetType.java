@@ -38,15 +38,15 @@ import phasereditor.inspect.core.jsdoc.PhaserType;
 
 public enum AssetType implements IAssetPackEelement, IAdaptable {
 	sceneFile("js", "Scene File (JavaScript)"),
-	
+
 	script("js", "JavaScript File"),
-	
+
 	scripts("js", "Multiple JavaScript Files"),
-	
+
 	image("png", "Image"),
 
 	svg("svg", "SVG Image"),
-	
+
 	spritesheet("png", "Sprite-Sheet"),
 
 	atlas("json", "Atlas"),
@@ -54,53 +54,51 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	atlasXML("xml", "Atlas (XML)"),
 
 	unityAtlas("meta", "Atlas (Unity)"),
-	
+
 	multiatlas("json", "Atlas (Multi)"),
 
 	animation("json", "Animations"),
 
-	bitmapFont("xml", "Bitmap Font"), 
-	
+	bitmapFont("xml", "Bitmap Font"),
+
 	tilemapCSV("csv", "Tilemap (CSV)"),
 
 	tilemapTiledJSON("json", "Tilemap (Tiled)"),
 
 	tilemapImpact("json", "Tilemap (Impact)"),
-	
+
 	audio("mp3", "Audio"),
 
 	audioSprite("json", "Audio Sprite"),
 
 	video("mp4", "Video"),
 
-	physics("json", "Physics"), 
-	
+	physics("json", "Physics"),
+
 	htmlTexture("html", "HTML Texture"),
-	
+
 	html("html", "HTML File"),
-	
+
 	css("css", "CSS File"),
 
-	glsl("glsl", "Shader File"), 
-	
-	text("txt", "Text File"), 
-	
-	json("json", "JSON File"), 
-	
-	xml("xml", "XML File"), 
-	
+	glsl("glsl", "Shader File"),
+
+	text("txt", "Text File"),
+
+	json("json", "JSON File"),
+
+	xml("xml", "XML File"),
+
 	plugin("js", "Plugin File"),
-	
+
 	scenePlugin("js", "Scene Plugin"),
-	
+
 	binary("dat", "Binary File");
 
-	
 	private AssetType(String fileExt, String capitalName) {
 		_fileExt = fileExt;
 		_capitalName = capitalName;
 	}
-	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -140,7 +138,9 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 				Map<String, IPhaserMember> map = phaserType.getMemberMap();
 
 				for (AssetType assetType : AssetType.values()) {
-					PhaserMethod method = (PhaserMethod) map.get(assetType.name());
+					var name = assetType.name();
+
+					PhaserMethod method = (PhaserMethod) map.get(name);
 					_methodMap.put(assetType, method);
 				}
 			}
@@ -156,11 +156,10 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	private final String _fileExt;
 	private final String _capitalName;
 
-
 	public String getFileExtension() {
 		return _fileExt;
 	}
-	
+
 	public String getCapitalName() {
 		return _capitalName;
 	}

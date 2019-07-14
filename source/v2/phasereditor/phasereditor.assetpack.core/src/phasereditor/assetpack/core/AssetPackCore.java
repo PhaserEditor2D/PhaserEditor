@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,6 +108,79 @@ public class AssetPackCore {
 
 		_shaderExtensions = new HashSet<>();
 		_shaderExtensions.addAll(Arrays.asList(SHADER_EXTS));
+	}
+
+	public static Collection<ImportAssetFileInfo> getImportFileInfoByContentType(IFile file) {
+		var list = new ArrayList<ImportAssetFileInfo>();
+		var fileExt = file.getFileExtension() == null ? "" : file.getFileExtension();
+		if (isImage(file)) {
+			list.add(new ImportAssetFileInfo(file, AssetType.image));
+			list.add(new ImportAssetFileInfo(file, AssetType.spritesheet));
+		} else if (AssetPackCore.isAudio(file)) {
+			list.add(new ImportAssetFileInfo(file, AssetType.audio));
+		} else if (AssetPackCore.isAnimationsFile(file)) {
+			list.add(new ImportAssetFileInfo(file, AssetType.animation));
+		} else if ("js".equals(fileExt) && file.getProject()
+				.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene")).exists()) {
+			list.add(new ImportAssetFileInfo(file, AssetType.sceneFile));
+		}
+
+		else {
+			String format;
+			try {
+
+				format = AtlasCore.getAtlasFormat(file);
+
+				if (format != null) {
+					var type = getAtlasTypeForFormat(format);
+					if (type != null) {
+						list.add(new ImportAssetFileInfo(file, type));
+					}
+				}
+			} catch (Exception e) {
+				logError(e);
+			}
+		}
+
+		return list;
+	}
+
+	private static AssetType[] KNOWN_ASSET_TYPES_CONTENT_TYPE = { AssetType.scripts,
+
+			AssetType.atlas,
+
+			AssetType.multiatlas,
+
+			AssetType.unityAtlas,
+
+			AssetType.atlasXML,
+
+			AssetType.image,
+
+			AssetType.spritesheet,
+
+			AssetType.audio
+			
+	};			
+
+	public static Collection<ImportAssetFileInfo> getImportFileInfoByFileExtension(IFile file, Set<AssetType> used) {
+		var used2 = new HashSet<>(used);
+		used2.add(AssetType.scripts);
+		// physics are not supported by Phaser v3
+		used2.add(AssetType.physics);
+		
+		used2.addAll(List.of(KNOWN_ASSET_TYPES_CONTENT_TYPE));
+
+		var list = new ArrayList<ImportAssetFileInfo>();
+
+		var fileExt = file.getFileExtension() == null ? "" : file.getFileExtension().toLowerCase();
+		for (var type : AssetType.values()) {
+			if (!used2.contains(type) && type.getFileExtension().equals(fileExt)) {
+				list.add(new ImportAssetFileInfo(file, type));
+			}
+		}
+
+		return list;
 	}
 
 	public static void saveCSVTilemapData(TilemapAssetModel tilemapAsset, ImageAssetModel imageModel, int tileWidth,
@@ -1022,6 +1096,23 @@ public class AssetPackCore {
 			return new String[] { AtlasCore.TEXTURE_ATLAS_UNITY };
 		default:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_JSON_HASH, AtlasCore.TEXTURE_ATLAS_JSON_ARRAY };
+		}
+	}
+
+	public static AssetType getAtlasTypeForFormat(String atlasFormat) {
+		switch (atlasFormat) {
+		case AtlasCore.TEXTURE_ATLAS_MULTI:
+			return AssetType.multiatlas;
+		case AtlasCore.TEXTURE_ATLAS_XML_STARLING:
+			return AssetType.atlasXML;
+		case AtlasCore.TEXTURE_ATLAS_UNITY:
+			return AssetType.unityAtlas;
+		case AtlasCore.TEXTURE_ATLAS_JSON_HASH:
+			return AssetType.atlas;
+		case AtlasCore.TEXTURE_ATLAS_JSON_ARRAY:
+			return AssetType.atlas;
+		default:
+			return null;
 		}
 	}
 
