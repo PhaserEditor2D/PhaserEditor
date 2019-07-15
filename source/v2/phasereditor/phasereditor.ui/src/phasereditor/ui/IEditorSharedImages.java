@@ -65,6 +65,7 @@ public interface IEditorSharedImages {
 	String IMG_PACKAGE_SEARCH = "icons/box.png";
 	String IMG_PACKAGE_GO = "icons/box-go.png";
 	String IMG_BOX = "icons/box.png";
+	String IMG_BOX_IMPORT = "icons/box-import.png";
 	String IMG_BOX_ADD = "icons/box_add.png";
 	String IMG_NEW_BOX = "icons/box_add.png";
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";

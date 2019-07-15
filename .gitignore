@@ -22,4 +22,9 @@ hs_err_pid*
 #*.dylib
 #*.DS_Store
 
-docs/_build/**
+
+# docs build folders
+
+docs/v1/_build/**
+docs/v2/_build/**
+

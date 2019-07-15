@@ -145,13 +145,15 @@ public class AssetPackCore {
 		return list;
 	}
 
-	private static AssetType[] KNOWN_ASSET_TYPES_CONTENT_TYPE = { AssetType.scripts,
-
+	private static AssetType[] KNOWN_ASSET_TYPES_CONTENT_TYPE = { 
+			
 			AssetType.atlas,
 
 			AssetType.multiatlas,
 
 			AssetType.unityAtlas,
+			
+			AssetType.animation,
 
 			AssetType.atlasXML,
 

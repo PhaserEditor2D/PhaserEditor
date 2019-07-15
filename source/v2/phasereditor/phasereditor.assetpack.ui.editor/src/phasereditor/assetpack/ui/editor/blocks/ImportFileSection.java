@@ -46,6 +46,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImportAssetFileInfo;
 import phasereditor.ui.BlocksView;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -148,6 +149,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 
 	private Button createImportButton(Composite comp, AssetFactory factory, List<IFile> files) {
 		var btn = new Button(comp, SWT.PUSH);
+		btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
 		btn.setAlignment(SWT.LEFT);
 		btn.setText("Import " + files.size() + " '" + factory.getType() + "' files");
 		var sb = new StringBuilder();
