@@ -24,7 +24,6 @@ package phasereditor.assetpack.ui.editor;
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import static phasereditor.ui.IEditorSharedImages.IMG_DELETE;
 import static phasereditor.ui.IEditorSharedImages.IMG_RENAME;
-import static phasereditor.ui.IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -53,29 +52,21 @@ import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
@@ -115,7 +106,6 @@ import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
-import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.editors.EditorFileStampHelper;
@@ -285,77 +275,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			swtRun(() -> openAddAssetDialog(result));
 		}
 
-	}
-
-	static class AssetTypeDialog extends Dialog {
-
-		private TreeViewer _viewer;
-		private AssetType _result;
-
-		protected AssetTypeDialog(IShellProvider parentShell) {
-			super(parentShell);
-			setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
-		}
-
-		@Override
-		protected void configureShell(Shell newShell) {
-			super.configureShell(newShell);
-			newShell.setText("File Type");
-		}
-
-		@Override
-		protected Control createDialogArea(Composite parent) {
-			var container = super.createDialogArea(parent);
-
-			var tree = new FilteredTree((Composite) container, SWT.SINGLE | SWT.BORDER, new PatternFilter(), true);
-			var gd = new GridData();
-			gd.heightHint = 400;
-			tree.setLayoutData(gd);
-			_viewer = tree.getViewer();
-			_viewer.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					var type = (AssetType) element;
-					return type.getCapitalName() + " - " + type.name();
-				}
-
-				@Override
-				public Image getImage(Object element) {
-					return EditorSharedImages.getImage(IMG_TYPE_VARIABLE_OBJ);
-				}
-			});
-			_viewer.setContentProvider(new TreeArrayContentProvider());
-			_viewer.setInput(Arrays.stream(AssetType.values())
-
-					.filter(v -> AssetType.isTypeSupported(v.name()))
-
-					.toArray()
-
-			);
-
-			_viewer.addDoubleClickListener(e -> okPressed());
-
-			return container;
-		}
-
-		@Override
-		protected void okPressed() {
-			var sel = _viewer.getStructuredSelection();
-			var result = (AssetType) sel.getFirstElement();
-			if (result == null && _viewer.getTree().getItemCount() > 0) {
-				result = (AssetType) _viewer.getTree().getItem(0).getData();
-			}
-			setResult(result);
-			super.okPressed();
-		}
-
-		private void setResult(AssetType result) {
-			_result = result;
-		}
-
-		public AssetType getResult() {
-			return _result;
-		}
 	}
 
 	@SuppressWarnings({ "boxing" })

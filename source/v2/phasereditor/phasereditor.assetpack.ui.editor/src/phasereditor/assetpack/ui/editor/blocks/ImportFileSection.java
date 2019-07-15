@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -45,6 +47,8 @@ import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImportAssetFileInfo;
+import phasereditor.assetpack.ui.editor.AssetPackEditor;
+import phasereditor.assetpack.ui.editor.AssetTypeDialog;
 import phasereditor.ui.BlocksView;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.FormPropertySection;
@@ -135,8 +139,16 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 					new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL)
 							.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 					var btn = new Button(comp, SWT.PUSH);
+					btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
 					btn.setText(getModels().size() + " files...");
 					btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+					btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+						var dlg = new AssetTypeDialog(_blocksView.getSite());
+						if (dlg.open() == Window.OK) {
+							var result = dlg.getResult();
+							swtRun(() -> getEditor().importFiles(AssetFactory.getFactory(result), getModels()));
+						}
+					}));
 				}
 
 				comp.requestLayout();
@@ -166,10 +178,13 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 		btn.setToolTipText(sb.toString());
 		btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-			var provider = (AssetPackEditorBlocksProvider) _blocksView.getBlockProvider();
-			provider.getEditor().importFiles(factory, files);
+			getEditor().importFiles(factory, files);
 		}));
 		return btn;
+	}
+
+	private AssetPackEditor getEditor() {
+		return ((AssetPackEditorBlocksProvider) _blocksView.getBlockProvider()).getEditor();
 	}
 
 }
