@@ -62,7 +62,7 @@ public class SceneCore {
 
 		return sceneFile.getProject().getFile(path);
 	}
-
+	
 	public static void compileScene(SceneModel model, IFile sceneFile, IProgressMonitor monitor) throws Exception {
 
 		{
@@ -100,6 +100,10 @@ public class SceneCore {
 		return _fileDataCache;
 	}
 
+	public static IFile getSceneFileFromSourceFile(IFile sourceFile) {
+		return sourceFile.getProject().getFile(sourceFile.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
+	}
+	
 	public static boolean isSceneFile(IFile file) {
 
 		try {
@@ -209,5 +213,4 @@ public class SceneCore {
 		}
 		return null;
 	}
-
 }

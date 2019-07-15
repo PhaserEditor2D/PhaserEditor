@@ -45,7 +45,7 @@ import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImportAssetFileInfo;
-import phasereditor.assetpack.ui.editor.AssetPackEditor;
+import phasereditor.ui.BlocksView;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -54,12 +54,12 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public class ImportFileSection extends FormPropertySection<IFile> {
 
-	private AssetPackEditor _editor;
+	private BlocksView _blocksView;
 
-	public ImportFileSection(AssetPackEditor editor) {
+	public ImportFileSection(BlocksView blocksView) {
 		super("Import");
 
-		_editor = editor;
+		_blocksView = blocksView;
 	}
 
 	@Override
@@ -163,11 +163,10 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 
 		btn.setToolTipText(sb.toString());
 		btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-
-				e -> _editor.importFiles(factory, files)
-
-		));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			var provider = (AssetPackEditorBlocksProvider) _blocksView.getBlockProvider();
+			provider.getEditor().importFiles(factory, files);
+		}));
 		return btn;
 	}
 

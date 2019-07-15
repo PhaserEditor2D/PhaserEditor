@@ -50,6 +50,10 @@ public class AssetPackEditorBlocksProvider extends EditorBlockProvider {
 	public AssetPackEditorBlocksProvider(AssetPackEditor editor) {
 		_editor = editor;
 	}
+	
+	public AssetPackEditor getEditor() {
+		return _editor;
+	}
 
 	@Override
 	public String getId() {
@@ -107,7 +111,7 @@ public class AssetPackEditorBlocksProvider extends EditorBlockProvider {
 			protected List<FormPropertySection<?>> createSections() {
 				var list = new ArrayList<FormPropertySection<?>>();
 
-				list.add(new ImportFileSection(_editor));
+				list.add(new ImportFileSection(getView()));
 
 				list.addAll(super.createSections());
 

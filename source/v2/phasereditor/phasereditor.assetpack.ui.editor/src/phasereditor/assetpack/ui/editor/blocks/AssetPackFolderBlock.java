@@ -115,6 +115,8 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 								return new ImageFileEditorBlock(file);
 							} else if (AudioCore.isSupportedAudio(file)) {
 								return new AudioFileEditorBlock(file);
+							} else if (isSceneSourceFile(file)) {
+								return new SceneSourceFileBlock(file);
 							}
 
 							return new FileEditorBlock((IFile) r);
@@ -135,6 +137,14 @@ class AssetPackFolderBlock extends ResourceEditorBlock<IContainer> {
 			AssetPackUIEditor.logError(e);
 			_children = Collections.emptyList();
 		}
+	}
+
+	private static boolean isSceneSourceFile(IFile file) {
+		if ("js".equals(file.getFileExtension())) {
+			var sceneFile = file.getProject().getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene"));
+			return  sceneFile.exists() && SceneCore.isSceneFile(sceneFile);
+		}
+		return false;
 	}
 
 	@Override

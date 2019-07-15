@@ -279,6 +279,7 @@ public abstract class FormPropertyPage extends Page implements IPropertySheetPag
 
 	protected abstract List<FormPropertySection<?>> createSections();
 
+	
 	@Override
 	public void createControl(Composite parent) {
 

@@ -252,7 +252,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				_blockDepthMap.put(block, depth);
 				list2.add(block);
 
-				if (isExpanded(block) || (!block.isTerminal() && _filter != null)) {
+				if (!block.isTerminal() && (isExpanded(block) || _filter != null)) {
 					for (var child : block.getChildren()) {
 						_blockParentMap.put(child, block);
 					}
@@ -601,12 +601,19 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 	}
 
+	public EditorBlockProvider getBlockProvider() {
+		return _blockProvider;
+	}
+
 	private List<IPropertySheetPage> _propertyPageList = new ArrayList<>();
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySheetPage.class) {
+
+			out.println("BlocksView.requestProvider: " + _blockProvider);
+
 			if (_blockProvider != null) {
 				removeDisposedPropertyPages();
 				var page = _blockProvider.createPropertyPage();
@@ -618,10 +625,20 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		return super.getAdapter(adapter);
 	}
 
+	@Override
+	public int hashCode() {
+		if (_blockProvider == null) {
+			return super.hashCode();
+		}
+
+		return _blockProvider.hashCode() * 2;
+	}
+
 	private void removeDisposedPropertyPages() {
 		var list = new ArrayList<>(_propertyPageList);
 		for (var page : list) {
 			if (((Page) page).getSite() == null) {
+				out.println("BlocksView.removeDisposedPropertyPages: " + page);
 				_propertyPageList.remove(page);
 			}
 		}
@@ -678,6 +695,8 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				out.println("Process editor " + editor.getTitle());
 				_blockProvider = editor.getAdapter(EditorBlockProvider.class);
 				_canvas.updateFromProvider();
+
+				removeDisposedPropertyPages();
 			}
 		}
 
