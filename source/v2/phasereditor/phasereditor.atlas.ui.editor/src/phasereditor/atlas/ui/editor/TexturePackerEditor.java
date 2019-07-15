@@ -112,7 +112,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.IEditorBlockProvider;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
@@ -165,13 +165,13 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	public void deleteSelection() {
 		Object[] sel;
-		
+
 		if (_outliner == null) {
 			sel = ((IStructuredSelection) _selectionProvider.getSelection()).toArray();
 		} else {
 			sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
 		}
-		
+
 		if (sel.length > 0) {
 			var toRemove = new ArrayList<IFile>();
 
@@ -679,7 +679,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 							if (whenDone != null) {
 								whenDone.run();
 							}
-							
+
 							setFocus();
 						}
 					});
@@ -843,9 +843,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		if (_blocksProvider != null) {
-			_blocksProvider.getRefreshHandler().run();
+			_blocksProvider.refresh();
 		}
 	}
 
@@ -1212,9 +1212,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		return (IFileEditorInput) super.getEditorInput();
 	}
 
-	class TexturePackerBlocksProvider implements IEditorBlockProvider {
-
-		private Runnable _refreshHandler;
+	class TexturePackerBlocksProvider extends EditorBlockProvider {
 
 		@Override
 		public String getId() {
@@ -1241,7 +1239,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 						AtlasUIEditor.logError(e);
 					}
 				}
-				
+
 				out.println("TexturePackerBlocks: used images " + set.size());
 
 				for (var member : project.members()) {
@@ -1264,16 +1262,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		@Override
-		public void setRefreshHandler(Runnable refresh) {
-			_refreshHandler = refresh;
-		}
-
-		public Runnable getRefreshHandler() {
-			return _refreshHandler;
-		}
-
-		@Override
-		public IPropertySheetPage getPropertyPage() {
+		public IPropertySheetPage createPropertyPage() {
 			return new ProjectPropertyPage() {
 				@Override
 				protected Object getDefaultModel() {
@@ -1335,7 +1324,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			return _toolbar;
 		}
 
-		if (adapter.equals(IEditorBlockProvider.class)) {
+		if (adapter.equals(EditorBlockProvider.class)) {
 			if (_blocksProvider == null) {
 				_blocksProvider = new TexturePackerBlocksProvider();
 			}

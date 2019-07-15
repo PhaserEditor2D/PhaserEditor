@@ -104,7 +104,7 @@ import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.IEditorBlockProvider;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
@@ -752,7 +752,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			return new AnimationsPropertyPage(this);
 		}
 
-		if (adapter == IEditorBlockProvider.class) {
+		if (adapter == EditorBlockProvider.class) {
 			if (_blocksProvider == null) {
 				_blocksProvider = new AnimationsEditorBlockProvider();
 			}
@@ -821,9 +821,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	}
 
-	class AnimationsEditorBlockProvider implements IEditorBlockProvider {
-
-		private Runnable _refresh;
+	class AnimationsEditorBlockProvider extends EditorBlockProvider {
 
 		@Override
 		public String getId() {
@@ -857,17 +855,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			return list;
 		}
 
-		public void refresh() {
-			_refresh.run();
-		}
-
 		@Override
-		public void setRefreshHandler(Runnable refresh) {
-			_refresh = refresh;
-		}
-
-		@Override
-		public IPropertySheetPage getPropertyPage() {
+		public IPropertySheetPage createPropertyPage() {
 			return new AssetsPropertyPage();
 		}
 

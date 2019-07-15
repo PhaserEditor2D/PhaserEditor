@@ -35,18 +35,17 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.ui.editor.AssetPackEditor;
 import phasereditor.project.ui.ProjectPropertyPage;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.IEditorBlockProvider;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
+public class AssetPackEditorBlocksProvider extends EditorBlockProvider {
 
 	private AssetPackEditor _editor;
-	private Runnable _refreshHandler;
 
 	public AssetPackEditorBlocksProvider(AssetPackEditor editor) {
 		_editor = editor;
@@ -97,17 +96,8 @@ public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
 	}
 
 	@Override
-	public void setRefreshHandler(Runnable refresh) {
-		_refreshHandler = refresh;
-	}
-
-	public void refresh() {
-		_refreshHandler.run();
-	}
-
-	@Override
-	public IPropertySheetPage getPropertyPage() {
-		return new ProjectPropertyPage() {
+	public IPropertySheetPage createPropertyPage() {
+		var page = new ProjectPropertyPage() {
 			@Override
 			protected Object getDefaultModel() {
 				return getEditorFile().getParent();
@@ -117,13 +107,13 @@ public class AssetPackEditorBlocksProvider implements IEditorBlockProvider {
 			protected List<FormPropertySection<?>> createSections() {
 				var list = new ArrayList<FormPropertySection<?>>();
 
-				list.add(new ImportFileSection());
+				list.add(new ImportFileSection(_editor));
 
 				list.addAll(super.createSections());
 
 				return list;
 			}
 		};
+		return page;
 	}
-
 }

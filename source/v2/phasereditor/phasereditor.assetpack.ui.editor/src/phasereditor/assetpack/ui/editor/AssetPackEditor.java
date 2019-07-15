@@ -111,7 +111,7 @@ import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
-import phasereditor.ui.IEditorBlockProvider;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
@@ -181,7 +181,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		_assetsCanvas.redraw();
-		
+		_assetsCanvas.updateScroll();
+
 		if (_blocksProvider != null) {
 			_blocksProvider.refresh();
 		}
@@ -516,22 +517,29 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return list;
 	}
 
+	public void importFiles(AssetFactory factory, List<IFile> files) {
+
+		if (isEvaluationProductOutOfLimits()) {
+			return;
+		}
+
+		var section = ensureThereIsASection();
+
+		var assets = new ArrayList<AssetModel>();
+
+		for (var file : files) {
+			create_Asset_from_File_and_add_to_List(assets, section, factory.getType(), file);
+		}
+
+		addNewAssets(section, assets);
+	}
+
 	protected void openAddAssetDialog(AssetType initialType) {
-		if (_model.getSections().isEmpty()) {
-			_model.addSection(new AssetSectionModel("section", _model), false);
+		if (isEvaluationProductOutOfLimits()) {
+			return;
 		}
 
-		var section = _model.getSections().get(0);
-		if (LicCore.isEvaluationProduct()) {
-
-			IProject project = getEditorInput().getFile().getProject();
-
-			String rule = AssetPackCore.isFreeVersionAllowed(project);
-			if (rule != null) {
-				LicCore.launchGoPremiumDialogs(rule);
-				return;
-			}
-		}
+		var section = ensureThereIsASection();
 
 		try {
 			AssetFactory factory = AssetFactory.getFactory(initialType);
@@ -539,30 +547,76 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			if (factory != null) {
 				var assets = openNewAssetListDialog(factory);
 
-				if (!assets.isEmpty()) {
-
-					for (var asset : assets) {
-						section.addAsset(asset, false);
-					}
-
-					_model.build();
-
-					_assetsCanvas.getUtils().setSelectionList(assets);
-					if (!assets.isEmpty()) {
-						_assetsCanvas.reveal(assets.get(0));
-					} else {
-						_assetsCanvas.redraw();
-					}
-
-					_model.setDirty(true);
-
-				}
+				addNewAssets(section, assets);
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			AssetPackUIEditor.logError(e);
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void addNewAssets(AssetSectionModel section, List<AssetModel> assets) {
+		if (!assets.isEmpty()) {
+
+			for (var asset : assets) {
+				section.addAsset(asset, false);
+			}
+
+			_model.build();
+
+			_model.setDirty(true);
+
+			if (_blocksProvider != null) {
+				_blocksProvider.refresh();
+				_blocksProvider.updateProperties();
+			}
+
+			_assetsCanvas.redraw();
+
+			if (_outliner != null) {
+				_outliner.refresh();
+			}
+
+			swtRun(() -> {
+				_assetsCanvas.getUtils().setSelectionList(assets);
+
+				if (_outliner != null) {
+					_outliner.revealAndSelect(new StructuredSelection(assets));
+				}
+
+				if (!assets.isEmpty()) {
+					_assetsCanvas.reveal(assets.get(0));
+				}
+
+				_assetsCanvas.updateScroll();
+			});
+		}
+	}
+
+	private boolean isEvaluationProductOutOfLimits() {
+		if (LicCore.isEvaluationProduct()) {
+
+			IProject project = getEditorInput().getFile().getProject();
+
+			String rule = AssetPackCore.isFreeVersionAllowed(project);
+			if (rule != null) {
+				LicCore.launchGoPremiumDialogs(rule);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private AssetSectionModel ensureThereIsASection() {
+		AssetSectionModel section;
+		if (_model.getSections().isEmpty()) {
+			_model.addSection(section = new AssetSectionModel("section", _model), false);
+		} else {
+			section = _model.getSections().get(0);
+		}
+		return section;
 	}
 
 	private List<AssetModel> openNewTilemapListDialog(AssetSectionModel section, AssetType type) throws Exception {
@@ -707,7 +761,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private static void create_Asset_from_File_and_add_to_List(List<AssetModel> list, AssetSectionModel section,
 			AssetType type, IFile file) {
 		try {
-			list.add(AssetFactory.getFactory(type).createAsset(section, file));
+			var asset = AssetFactory.getFactory(type).createAsset(section, file);
+			list.add(asset);
 		} catch (Exception e) {
 			AssetPackUI.logError(e);
 			throw new RuntimeException(e);
@@ -1102,7 +1157,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return _toolbar;
 		}
 
-		if (adapter == IEditorBlockProvider.class) {
+		if (adapter == EditorBlockProvider.class) {
 			if (_blocksProvider == null) {
 				_blocksProvider = new AssetPackEditorBlocksProvider(this);
 			}
@@ -1148,8 +1203,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public void clearSelection() {
 		if (_outliner != null) {
 			_outliner.setSelection(StructuredSelection.EMPTY);
-			_assetsCanvas.getUtils().setSelectionList(List.of());
 		}
+		_assetsCanvas.getUtils().setSelectionList(List.of());
 	}
 
 }

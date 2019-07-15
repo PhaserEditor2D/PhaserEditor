@@ -29,13 +29,29 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
  * @author arian
  *
  */
-public interface IEditorBlockProvider {
-	
-	public String getId();
-	
+public abstract class EditorBlockProvider {
+
+	private BlocksView _view;
+
+	public abstract String getId();
+
 	public abstract List<IEditorBlock> getBlocks();
-	
-	public abstract void setRefreshHandler(Runnable refresh);
-	
-	public IPropertySheetPage getPropertyPage();
+
+	public abstract IPropertySheetPage createPropertyPage();
+
+	public void setView(BlocksView view) {
+		_view = view;
+	}
+
+	public BlocksView getView() {
+		return _view;
+	}
+
+	public void refresh() {
+		_view.refresh();
+	}
+
+	public void updateProperties() {
+		_view.updatePropertyPagesWithSelection();
+	}
 }

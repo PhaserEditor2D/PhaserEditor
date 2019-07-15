@@ -23,10 +23,10 @@ package phasereditor.ui;
 
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_COLLAPSE;
 import static phasereditor.ui.IEditorSharedImages.IMG_BULLET_EXPAND;
 import static phasereditor.ui.PhaserEditorUI.isZoomEvent;
-import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +59,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.Page;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
@@ -283,6 +284,17 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 			_blocks = list;
 
+			cleanSelection();
+		}
+
+		private void cleanSelection() {
+			var currentSel = _frameUtils.getSelectedObjects();
+			if (currentSel.isEmpty()) {
+				return;
+			}
+			var shownObjects = _blocks.stream().map(block -> block.getObject()).collect(toSet());
+			var newSel = currentSel.stream().filter(obj -> shownObjects.contains(obj)).collect(toList());
+			_frameUtils.setSelectionList(newSel);
 		}
 
 		public Rectangle computeScrollArea() {
@@ -351,7 +363,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				if (selected) {
 					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
-					//gc.fillRectangle(rect);
+					// gc.fillRectangle(rect);
 					gc.fillRectangle(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4);
 				} else {
 					gc.setForeground(getForeground());
@@ -402,9 +414,9 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 					}
 				}
 
-//				gc.setAlpha(100);
+				// gc.setAlpha(100);
 				// gc.drawRectangle(rect);
-//				gc.setAlpha(255);
+				// gc.setAlpha(255);
 
 				if (!terminal) {
 					// gc.setAlpha(100);
@@ -534,13 +546,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 				_scrollUtils.updateScroll();
 				var scrollTo = getProviderData().scrollValue;
 				_scrollUtils.scrollTo(scrollTo);
-
-				_blockProvider.setRefreshHandler(() -> {
-					swtRun(() -> {
-						updateBlockList();
-						updateScroll();
-					});
-				});
+				_blockProvider.setView(BlocksView.this);
 			}
 
 			redraw();
@@ -561,7 +567,7 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 	private BlocksCanvas _canvas;
 	private IEditorPart _currentEditor;
-	private IEditorBlockProvider _blockProvider;
+	private EditorBlockProvider _blockProvider;
 	private Text _filterText;
 	private String _filter;
 
@@ -595,16 +601,37 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 
 	}
 
+	private List<IPropertySheetPage> _propertyPageList = new ArrayList<>();
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySheetPage.class) {
 			if (_blockProvider != null) {
-				return _blockProvider.getPropertyPage();
+				removeDisposedPropertyPages();
+				var page = _blockProvider.createPropertyPage();
+				_propertyPageList.add(page);
+				return page;
 			}
 		}
 
 		return super.getAdapter(adapter);
+	}
+
+	private void removeDisposedPropertyPages() {
+		var list = new ArrayList<>(_propertyPageList);
+		for (var page : list) {
+			if (((Page) page).getSite() == null) {
+				_propertyPageList.remove(page);
+			}
+		}
+	}
+
+	public void updatePropertyPagesWithSelection() {
+		removeDisposedPropertyPages();
+		for (var page : _propertyPageList) {
+			page.selectionChanged(this, getSite().getSelectionProvider().getSelection());
+		}
 	}
 
 	@Override
@@ -649,11 +676,16 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 		} else {
 			if (_currentEditor != editor) {
 				out.println("Process editor " + editor.getTitle());
-				_blockProvider = editor.getAdapter(IEditorBlockProvider.class);
+				_blockProvider = editor.getAdapter(EditorBlockProvider.class);
 				_canvas.updateFromProvider();
 			}
 		}
 
+	}
+
+	public void refresh() {
+		_canvas.updateBlockList();
+		_canvas.updateScroll();
 	}
 
 	@Override

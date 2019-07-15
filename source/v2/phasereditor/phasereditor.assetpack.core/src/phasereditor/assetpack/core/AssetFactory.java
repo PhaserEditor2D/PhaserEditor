@@ -117,13 +117,13 @@ public abstract class AssetFactory {
 
 			@Override
 			public AssetModel createAsset(AssetSectionModel section, IFile file) throws Exception {
-
-				AssetPackModel pack = section.getPack();
-
-				AudioAssetModel asset = new AudioAssetModel(pack.createKey(file), section);
-
-				initAudioFiles(asset, pack);
-
+				var pack = section.getPack();
+				
+				var asset = new AudioAssetModel(pack.createKey(file), section);
+				
+				var urls = asset.getUrlsFromFiles(List.of(file));
+				asset.setUrls(urls);
+				
 				return asset;
 			}
 		});
@@ -324,7 +324,7 @@ public abstract class AssetFactory {
 				return new ScriptAssetModel(key, section);
 			}
 		});
-		
+
 		cache(new MultiScriptAssetFactory());
 
 		cache(new AssetFactory(AssetType.plugin) {
@@ -379,15 +379,6 @@ public abstract class AssetFactory {
 
 	public static AssetFactory getFactory(AssetType type) {
 		return _cache[type.ordinal()];
-	}
-
-	static void initAudioFiles(AudioAssetModel asset, AssetPackModel pack) throws CoreException {
-		List<IFile> files = pack.pickAudioFiles();
-		if (!files.isEmpty()) {
-			asset.setKey(pack.createKey(files.get(0)));
-			List<String> urls = asset.getUrlsFromFiles(files);
-			asset.setUrls(urls);
-		}
 	}
 
 	static void initVideoFiles(VideoAssetModel asset, AssetPackModel pack) throws CoreException {

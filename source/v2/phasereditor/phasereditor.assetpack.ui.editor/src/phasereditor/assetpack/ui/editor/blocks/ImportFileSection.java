@@ -33,6 +33,7 @@ import java.util.function.Function;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -44,6 +45,7 @@ import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImportAssetFileInfo;
+import phasereditor.assetpack.ui.editor.AssetPackEditor;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -52,8 +54,12 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public class ImportFileSection extends FormPropertySection<IFile> {
 
-	public ImportFileSection() {
+	private AssetPackEditor _editor;
+
+	public ImportFileSection(AssetPackEditor editor) {
 		super("Import");
+
+		_editor = editor;
 	}
 
 	@Override
@@ -140,7 +146,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 		return comp;
 	}
 
-	private static Button createImportButton(Composite comp, AssetFactory factory, List<IFile> files) {
+	private Button createImportButton(Composite comp, AssetFactory factory, List<IFile> files) {
 		var btn = new Button(comp, SWT.PUSH);
 		btn.setAlignment(SWT.LEFT);
 		btn.setText("Import " + files.size() + " '" + factory.getType() + "' files");
@@ -157,6 +163,11 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 
 		btn.setToolTipText(sb.toString());
 		btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+
+				e -> _editor.importFiles(factory, files)
+
+		));
 		return btn;
 	}
 

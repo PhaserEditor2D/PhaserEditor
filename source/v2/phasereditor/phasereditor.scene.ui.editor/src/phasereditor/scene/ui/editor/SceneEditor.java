@@ -99,7 +99,7 @@ import phasereditor.scene.ui.editor.outline.SceneOutlinePage;
 import phasereditor.scene.ui.editor.properties.ScenePropertyPage;
 import phasereditor.scene.ui.editor.undo.WorldSnapshotOperation;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.IEditorBlockProvider;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SelectionProviderImpl;
@@ -296,7 +296,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		refreshOutline();
 
 		if (_blocksProvider != null) {
-			_blocksProvider.getRefreshHandler().run();
+			_blocksProvider.refresh();
 		}
 
 		_broker.sendAll(new ReloadPageMessage());
@@ -463,7 +463,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 		}
 
-		if (adapter == IEditorBlockProvider.class) {
+		if (adapter == EditorBlockProvider.class) {
 			if (_blocksProvider == null) {
 				_blocksProvider = new SceneEditorBlockProvider();
 			}
@@ -480,9 +480,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		return super.getAdapter(adapter);
 	}
 
-	class SceneEditorBlockProvider implements IEditorBlockProvider {
-
-		private Runnable _refreshHandler;
+	class SceneEditorBlockProvider extends EditorBlockProvider {
 
 		@Override
 		public String getId() {
@@ -490,7 +488,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		@Override
-		public IPropertySheetPage getPropertyPage() {
+		public IPropertySheetPage createPropertyPage() {
 			return new AssetsPropertyPage();
 		}
 
@@ -524,15 +522,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 					.collect(toList());
 
 			return list;
-		}
-
-		public Runnable getRefreshHandler() {
-			return _refreshHandler;
-		}
-
-		@Override
-		public void setRefreshHandler(Runnable refresh) {
-			_refreshHandler = refresh;
 		}
 	}
 
