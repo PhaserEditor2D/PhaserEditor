@@ -127,6 +127,12 @@ public class AssetPackCore {
 				list.add(new ImportAssetFileInfo(file, AssetType.sceneFile));
 			} else if (BitmapFontCore.isBitmapFontJsonFile(file) || BitmapFontCore.isBitmapFontXmlFile(file)) {
 				list.add(new ImportAssetFileInfo(file, AssetType.bitmapFont));
+			} else if (isTilemapImpactFile(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.tilemapImpact));
+			} else if (isTilemapJSONFile(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.tilemapTiledJSON));
+			} else if (isTilemapCSVFile(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.tilemapCSV));
 			} else {
 				String format;
 				try {
@@ -166,7 +172,13 @@ public class AssetPackCore {
 
 			AssetType.spritesheet,
 
-			AssetType.audio
+			AssetType.audio,
+
+			AssetType.tilemapCSV,
+
+			AssetType.tilemapImpact,
+
+			AssetType.tilemapTiledJSON
 
 	};
 
@@ -636,6 +648,10 @@ public class AssetPackCore {
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static boolean isTilemapCSVFile(IFile file) {
+		return "csv".equals(file.getFileExtension());
 	}
 
 	/**
