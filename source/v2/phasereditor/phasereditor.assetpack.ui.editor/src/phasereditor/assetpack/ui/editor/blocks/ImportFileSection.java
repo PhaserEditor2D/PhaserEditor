@@ -122,7 +122,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 
 				var label = new Label(comp, SWT.NONE);
 				label.setText("Guess by content type:");
-				var used = createImportButtons(comp, AssetPackCore::getImportFileInfoByContentType);
+				var used = createImportButtons(comp, AssetPackCore::guessImportFileInfoByContentType);
 				if (used.isEmpty()) {
 					label.dispose();
 				}
@@ -130,7 +130,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 				label = new Label(comp, SWT.NONE);
 				label.setText("Guess by file extension:");
 				var used2 = createImportButtons(comp,
-						file -> AssetPackCore.getImportFileInfoByFileExtension(file, used));
+						file -> AssetPackCore.guessImportFileInfoByFileExtension(file, used));
 				if (used2.isEmpty()) {
 					label.dispose();
 				}

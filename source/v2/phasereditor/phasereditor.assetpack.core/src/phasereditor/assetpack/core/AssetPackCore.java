@@ -68,6 +68,7 @@ import org.json.JSONTokener;
 import phasereditor.assetpack.core.animations.AnimationsFileDataCache;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
+import phasereditor.bmpfont.core.BitmapFontCore;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
@@ -110,49 +111,53 @@ public class AssetPackCore {
 		_shaderExtensions.addAll(Arrays.asList(SHADER_EXTS));
 	}
 
-	public static Collection<ImportAssetFileInfo> getImportFileInfoByContentType(IFile file) {
+	public static Collection<ImportAssetFileInfo> guessImportFileInfoByContentType(IFile file) {
 		var list = new ArrayList<ImportAssetFileInfo>();
-		var fileExt = file.getFileExtension() == null ? "" : file.getFileExtension();
-		if (isImage(file)) {
-			list.add(new ImportAssetFileInfo(file, AssetType.image));
-			list.add(new ImportAssetFileInfo(file, AssetType.spritesheet));
-		} else if (AssetPackCore.isAudio(file)) {
-			list.add(new ImportAssetFileInfo(file, AssetType.audio));
-		} else if (AssetPackCore.isAnimationsFile(file)) {
-			list.add(new ImportAssetFileInfo(file, AssetType.animation));
-		} else if ("js".equals(fileExt) && file.getProject()
-				.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene")).exists()) {
-			list.add(new ImportAssetFileInfo(file, AssetType.sceneFile));
-		}
+		try {
+			var fileExt = file.getFileExtension() == null ? "" : file.getFileExtension();
+			if (isImage(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.image));
+				list.add(new ImportAssetFileInfo(file, AssetType.spritesheet));
+			} else if (AssetPackCore.isAudio(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.audio));
+			} else if (AssetPackCore.isAnimationsFile(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.animation));
+			} else if ("js".equals(fileExt) && file.getProject()
+					.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("scene")).exists()) {
+				list.add(new ImportAssetFileInfo(file, AssetType.sceneFile));
+			} else if (BitmapFontCore.isBitmapFontJsonFile(file) || BitmapFontCore.isBitmapFontXmlFile(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.bitmapFont));
+			} else {
+				String format;
+				try {
 
-		else {
-			String format;
-			try {
+					format = AtlasCore.getAtlasFormat(file);
 
-				format = AtlasCore.getAtlasFormat(file);
-
-				if (format != null) {
-					var type = getAtlasTypeForFormat(format);
-					if (type != null) {
-						list.add(new ImportAssetFileInfo(file, type));
+					if (format != null) {
+						var type = getAtlasTypeForFormat(format);
+						if (type != null) {
+							list.add(new ImportAssetFileInfo(file, type));
+						}
 					}
+				} catch (Exception e) {
+					logError(e);
 				}
-			} catch (Exception e) {
-				logError(e);
 			}
+		} catch (Exception e) {
+			logError(e);
 		}
 
 		return list;
 	}
 
-	private static AssetType[] KNOWN_ASSET_TYPES_CONTENT_TYPE = { 
-			
+	private static AssetType[] KNOWN_ASSET_TYPES_CONTENT_TYPE = {
+
 			AssetType.atlas,
 
 			AssetType.multiatlas,
 
 			AssetType.unityAtlas,
-			
+
 			AssetType.animation,
 
 			AssetType.atlasXML,
@@ -162,15 +167,15 @@ public class AssetPackCore {
 			AssetType.spritesheet,
 
 			AssetType.audio
-			
-	};			
 
-	public static Collection<ImportAssetFileInfo> getImportFileInfoByFileExtension(IFile file, Set<AssetType> used) {
+	};
+
+	public static Collection<ImportAssetFileInfo> guessImportFileInfoByFileExtension(IFile file, Set<AssetType> used) {
 		var used2 = new HashSet<>(used);
 		used2.add(AssetType.scripts);
 		// physics are not supported by Phaser v3
 		used2.add(AssetType.physics);
-		
+
 		used2.addAll(List.of(KNOWN_ASSET_TYPES_CONTENT_TYPE));
 
 		var list = new ArrayList<ImportAssetFileInfo>();

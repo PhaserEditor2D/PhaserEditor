@@ -27,10 +27,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.content.IContentDescription;
-import org.eclipse.core.runtime.content.IContentType;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.w3c.dom.Document;
@@ -40,6 +37,9 @@ import org.w3c.dom.Document;
  *
  */
 public class BitmapFontCore {
+
+	public static final String BITMAPFONT_XML_CONTENT_TYPE = XmlBitmapFontContentType.CONTENT_TYPE_ID;
+	public static final String BITMAPFONT_JSON_CONTENT_TYPE = JsonBitmapFontContentType.CONTENT_TYPE_ID;
 
 	public static boolean isXmlBitmapFontContent(InputStream input) throws Exception {
 
@@ -75,30 +75,46 @@ public class BitmapFontCore {
 	}
 
 	public static boolean isBitmapFontJsonFile(IFile file) throws CoreException {
-		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
+		if (!file.exists()) {
 			return false;
 		}
-		IContentDescription desc = file.getContentDescription();
+
+		var desc = file.getContentDescription();
+
 		if (desc == null) {
 			return false;
 		}
 
-		IContentType contentType = desc.getContentType();
-		String id = contentType.getId();
+		var contentType = desc.getContentType();
+
+		if (contentType == null) {
+			return false;
+		}
+
+		var id = contentType.getId();
+
 		return id.equals(JsonBitmapFontContentType.CONTENT_TYPE_ID);
 	}
 
 	public static boolean isBitmapFontXmlFile(IFile file) throws CoreException {
-		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
+		if (!file.exists()) {
 			return false;
 		}
-		IContentDescription desc = file.getContentDescription();
+
+		var desc = file.getContentDescription();
+
 		if (desc == null) {
 			return false;
 		}
 
-		IContentType contentType = desc.getContentType();
-		String id = contentType.getId();
+		var contentType = desc.getContentType();
+
+		if (contentType == null) {
+			return false;
+		}
+
+		var id = contentType.getId();
+
 		return id.equals(XmlBitmapFontContentType.CONTENT_TYPE_ID);
 	}
 }
