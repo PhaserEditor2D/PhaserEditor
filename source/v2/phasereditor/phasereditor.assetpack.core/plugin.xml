@@ -17,7 +17,7 @@
             describer="phasereditor.assetpack.core.TilemapJSONDescriber"
             file-extensions="json"
             id="phasereditor.assetpack.tilemapJson"
-            name="Phaser Tilemap"
+            name="Tiled JSON Tilemap"
             priority="normal">
       </content-type>
       <content-type
@@ -26,6 +26,13 @@
             file-extensions="json"
             id="phasereditor.assetpack.tilemapImpact"
             name="Impact Tilemap"
+            priority="normal">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="csv"
+            id="phasereditor.assetpack.core.tilemapCSV"
+            name="CSV Tilemap"
             priority="normal">
       </content-type>
       <content-type

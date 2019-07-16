@@ -174,5 +174,24 @@
             pageName="ProjectView">
       </formPropertySection>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.ui.internal.genericeditor.ExtensionBasedTextEditor"
+            default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/tiled.png"
+            id="phasereditor.assetpack.ui.genericTilemapEditor"
+            name="Generic Tilemap Editor">
+         <contentTypeBinding
+               contentTypeId="phasereditor.assetpack.tilemapImpact">
+         </contentTypeBinding>
+         <contentTypeBinding
+               contentTypeId="phasereditor.assetpack.tilemapJson">
+         </contentTypeBinding>
+         <contentTypeBinding
+               contentTypeId="phasereditor.assetpack.core.tilemapCSV">
+         </contentTypeBinding>
+      </editor>      
+   </extension>
    
 </plugin>
