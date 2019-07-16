@@ -133,6 +133,8 @@ public class AssetPackCore {
 				list.add(new ImportAssetFileInfo(file, AssetType.tilemapTiledJSON));
 			} else if (isTilemapCSVFile(file)) {
 				list.add(new ImportAssetFileInfo(file, AssetType.tilemapCSV));
+			} else if (AudioSpriteCore.isAudioSpriteFile(file)) {
+				list.add(new ImportAssetFileInfo(file, AssetType.audioSprite));
 			} else {
 				String format;
 				try {
@@ -178,7 +180,9 @@ public class AssetPackCore {
 
 			AssetType.tilemapImpact,
 
-			AssetType.tilemapTiledJSON
+			AssetType.tilemapTiledJSON,
+
+			AssetType.audioSprite
 
 	};
 

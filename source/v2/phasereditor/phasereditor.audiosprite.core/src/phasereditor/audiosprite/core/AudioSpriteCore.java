@@ -24,6 +24,7 @@ package phasereditor.audiosprite.core;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.eclipseFileToJavaPath;
 import static phasereditor.ui.PhaserEditorUI.getNameFromFilename;
+import static phasereditor.ui.PhaserEditorUI.logError;
 import static phasereditor.ui.PhaserEditorUI.pickFileWithoutExtension;
 
 import java.io.ByteArrayInputStream;
@@ -45,8 +46,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.content.IContentDescription;
-import org.eclipse.core.runtime.content.IContentType;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -65,8 +64,8 @@ public class AudioSpriteCore {
 	 *            The content to test.
 	 * @param deepTest
 	 *            If true, it also check the 'spritemap' has a valid syntax.
-	 * @return Return <code>null</code> if the content has a valid format, else
-	 *         it return an error message.
+	 * @return Return <code>null</code> if the content has a valid format, else it
+	 *         return an error message.
 	 */
 	public static String isAudioSpriteJSONContent(InputStream contents, boolean deepTest) {
 		try {
@@ -103,16 +102,27 @@ public class AudioSpriteCore {
 		}
 
 		try {
-			IContentDescription desc = file.getContentDescription();
+			var desc = file.getContentDescription();
+
 			if (desc == null) {
 				return false;
 			}
-			IContentType contentType = desc.getContentType();
-			String id = contentType.getId();
+
+			var contentType = desc.getContentType();
+
+			if (contentType == null) {
+				return false;
+			}
+
+			var id = contentType.getId();
+
 			return id.equals(AudioSpritesDescriber.CONTENT_TYPE_ID);
+
 		} catch (CoreException e) {
-			throw new RuntimeException(e);
+			logError(e);
 		}
+
+		return false;
 	}
 
 	public static IFile makeAudioSprite(List<IFile> audioFiles, IContainer dstDir, String audioSpritesName,
