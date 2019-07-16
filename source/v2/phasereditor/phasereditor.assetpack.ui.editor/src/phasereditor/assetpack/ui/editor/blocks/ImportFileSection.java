@@ -140,7 +140,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 							.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 					var btn = new Button(comp, SWT.PUSH);
 					btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
-					btn.setText(getModels().size() + " files...");
+					btn.setText("Import " + getModels().size() + " files...");
 					btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 					btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 						var dlg = new AssetTypeDialog(_blocksView.getSite());
