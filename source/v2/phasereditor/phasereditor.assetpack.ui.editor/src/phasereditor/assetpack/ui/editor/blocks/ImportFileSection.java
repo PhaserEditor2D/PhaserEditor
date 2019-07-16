@@ -83,9 +83,9 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 
 				.map(info -> info.getFactory())
 
-				.sorted((a, b) -> Integer.compare(a.getType().ordinal(), b.getType().ordinal()))
-
 				.distinct()
+
+				.sorted(AssetPackCore.IMPORT_RELEVANCE_COMPARATOR)
 
 				.collect(toList());
 
@@ -139,7 +139,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 					new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL)
 							.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 					var btn = new Button(comp, SWT.PUSH);
-					btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
+					 btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
 					btn.setText("Import " + getModels().size() + " files...");
 					btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 					btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
@@ -160,9 +160,8 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 	}
 
 	private Button createImportButton(Composite comp, AssetFactory factory, List<IFile> files) {
-		var btn = new Button(comp, SWT.PUSH);
+		var btn = new Button(comp, SWT.NONE);
 		btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
-		btn.setAlignment(SWT.LEFT);
 		btn.setText("Import " + files.size() + " '" + factory.getType() + "' files");
 		var sb = new StringBuilder();
 		sb.append("Files:\n\n");
@@ -176,7 +175,6 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 		}
 
 		btn.setToolTipText(sb.toString());
-		btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 			getEditor().importFiles(factory, files);
 		}));

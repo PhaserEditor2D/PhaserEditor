@@ -111,6 +111,42 @@ public class AssetPackCore {
 		_shaderExtensions.addAll(Arrays.asList(SHADER_EXTS));
 	}
 
+	@SuppressWarnings("boxing")
+	private static HashMap<AssetType, Integer> IMPORT_RELEVANCE = new HashMap<>() {
+		private static final long serialVersionUID = 1L;
+
+		{
+			for (var type : AssetType.values()) {
+				put(type, type.ordinal() * 2000);
+			}
+
+			for (var type : new AssetType[] {
+
+					AssetType.atlas,
+
+					AssetType.multiatlas,
+
+					AssetType.unityAtlas,
+
+					AssetType.bitmapFont,
+
+					AssetType.audioSprite,
+
+					AssetType.tilemapImpact,
+
+					AssetType.tilemapTiledJSON
+
+			}) {
+				put(type, type.ordinal());
+			}
+
+		}
+	};
+
+	public static Comparator<AssetFactory> IMPORT_RELEVANCE_COMPARATOR = (a, b) -> Integer.compare(
+			IMPORT_RELEVANCE.get(a.getType()).intValue(),
+			IMPORT_RELEVANCE.get(b.getType()).intValue());
+
 	public static Collection<ImportAssetFileInfo> guessImportFileInfoByContentType(IFile file) {
 		var list = new ArrayList<ImportAssetFileInfo>();
 		try {
