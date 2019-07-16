@@ -100,9 +100,9 @@ import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.SceneCore;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
-import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
@@ -781,11 +781,23 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		swtRun(this::refresh);
 
+		_assetsCanvas.getUtils().addSelectionChangedListener(e -> updateActions());
+
+	}
+
+	private void updateActions() {
+		var sel = _assetsCanvas.getUtils().getSelectedObjects();
+		_deleteSelectionAction.setEnabled(!sel.isEmpty());
+		_renameSelectionAction.setEnabled(!sel.isEmpty());
 	}
 
 	private void createActions() {
-		_deleteSelectionAction = new Action("Delete selection (Refactoring)",
-				EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+		_deleteSelectionAction = new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
+
+			{
+				setDescription("Delete selection (Refactoring)");
+			}
+
 			@Override
 			public void run() {
 				var selection = getSelection();
@@ -793,8 +805,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 		};
 
-		_renameSelectionAction = new Action("Rename object (Refactoring)",
-				EditorSharedImages.getImageDescriptor(IMG_RENAME)) {
+		_renameSelectionAction = new Action("Rename", EditorSharedImages.getImageDescriptor(IMG_RENAME)) {
+			{
+				setDescription("Rename object (Refactoring)");
+			}
+
 			@Override
 			public void run() {
 				var selection = getSelection();
@@ -1088,13 +1103,21 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	class AssetPackEditorHugeToolbar implements IEditorHugeToolbar {
 
+		@SuppressWarnings("unused")
 		@Override
 		public void createContent(Composite parent) {
-			var btn = new Button(parent, SWT.PUSH);
-			btn.setText("Add File Key");
-			btn.setToolTipText("Add a new file key to the pack editor.");
-			btn.setImage(EditorSharedImages.getImage(IMG_ADD));
-			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
+			{
+				var btn = new Button(parent, SWT.PUSH);
+				btn.setText("Add File Key");
+				btn.setToolTipText("Add a new file key to the pack editor.");
+				btn.setImage(EditorSharedImages.getImage(IMG_ADD));
+				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
+			}
+
+			{
+				new ActionButton(parent, getDeleteSelectionAction());
+				new ActionButton(parent, getRenameSelectionAction());
+			}
 		}
 
 	}
