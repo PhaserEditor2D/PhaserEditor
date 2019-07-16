@@ -714,7 +714,9 @@ public class BitmapFontModel {
 			renderer.lineStart();
 
 			for (var c : line) {
-				renderer.render(c.c, c.x, c.y, c.width, c.height, c.srcX, c.srcY, c.srcW, c.srcH);
+				if (c.width > 0 && c.height > 0) {
+					renderer.render(c.c, c.x, c.y, c.width, c.height, c.srcX, c.srcY, c.srcW, c.srcH);
+				}
 			}
 
 			renderer.lineEnd();
