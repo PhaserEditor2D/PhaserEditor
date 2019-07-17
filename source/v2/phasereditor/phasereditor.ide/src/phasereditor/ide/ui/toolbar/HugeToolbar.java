@@ -121,13 +121,15 @@ public class HugeToolbar extends Composite implements ISuperWorkbenchListener {
 
 	private void updateWithCurrentEditor() {
 		var editor = _window.getActivePage().getActiveEditor();
+		
 		if (editor == _activeEditor) {
+			if (editor == null && _activeEditor == null) {
+				cleanEditorArea();
+			}
 			return;
 		}
 
-		for (var c : _centerArea.getChildren()) {
-			c.dispose();
-		}
+		cleanEditorArea();
 
 		var editorToolbar = editor.getAdapter(IEditorHugeToolbar.class);
 		if (editorToolbar != null) {
@@ -135,6 +137,12 @@ public class HugeToolbar extends Composite implements ISuperWorkbenchListener {
 		}
 
 		_centerArea.requestLayout();
+	}
+
+	private void cleanEditorArea() {
+		for (var c : _centerArea.getChildren()) {
+			c.dispose();
+		}
 	}
 
 	@Override
