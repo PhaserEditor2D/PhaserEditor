@@ -138,6 +138,10 @@ public class BlocksView extends ViewPart implements IWindowListener, IPageListen
 			}
 		}
 
+		public void selectAll() {
+			_frameUtils.selectAll();
+		}
+
 		class MyFrameUtils extends FrameCanvasUtils {
 
 			public MyFrameUtils() {
