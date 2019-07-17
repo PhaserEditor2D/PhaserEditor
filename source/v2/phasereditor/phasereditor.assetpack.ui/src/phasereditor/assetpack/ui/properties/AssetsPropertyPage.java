@@ -21,28 +21,29 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import phasereditor.ui.properties.FormPropertyPage;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.project.ui.ProjectPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public class AssetsPropertyPage extends FormPropertyPage {
+public class AssetsPropertyPage extends ProjectPropertyPage {
 
 	@Override
 	protected Object getDefaultModel() {
-		return null;
+		return ProjectCore.getActiveProject();
 	}
 
 	@Override
 	protected List<FormPropertySection<?>> createSections() {
-		var list = new ArrayList<FormPropertySection<?>>();
-
+		var list = super.createSections();
+		
 		createAssetKeySection(list);
+		
 		// list.add(new AssetFilesSection());
 
 		list.add(new SingleSpritesheetPreviewSection());
@@ -74,7 +75,7 @@ public class AssetsPropertyPage extends FormPropertyPage {
 	}
 
 	@SuppressWarnings("static-method")
-	protected void createAssetKeySection(ArrayList<FormPropertySection<?>> list) {
+	protected void createAssetKeySection(List<FormPropertySection<?>> list) {
 		list.add(new AssetKeySection());
 	}
 

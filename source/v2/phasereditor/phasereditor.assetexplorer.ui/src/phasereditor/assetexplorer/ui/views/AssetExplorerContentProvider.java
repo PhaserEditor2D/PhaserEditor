@@ -76,11 +76,12 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		}
 
 		if (parent == AssetsView.ANIMATIONS_NODE) {
-			return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).toArray();
+			return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).stream().map(d -> d.getFile())
+					.toArray();
 		}
 
 		if (parent == AssetsView.ATLAS_NODE) {
-			return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
+			return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).stream().map(d -> d.getFile()).toArray();
 		}
 
 		if (parent == AssetsView.PACK_NODE) {
@@ -104,7 +105,8 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		}
 
 		if (parent == AssetsView.SCENES_NODE) {
-			return SceneCore.getSceneFileDataCache().getProjectData(activeProjet).toArray();
+			return SceneCore.getSceneFileDataCache().getProjectData(activeProjet).stream().map(d -> d.getFile())
+					.toArray();
 		}
 
 		// if (parent instanceof CanvasType) {

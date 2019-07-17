@@ -106,7 +106,7 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 	}
 
 	@Override
-	protected void createAssetKeySection(ArrayList<FormPropertySection<?>> list) {
+	protected void createAssetKeySection(List<FormPropertySection<?>> list) {
 
 		list.add(new AssetKeySection() {
 			@Override
