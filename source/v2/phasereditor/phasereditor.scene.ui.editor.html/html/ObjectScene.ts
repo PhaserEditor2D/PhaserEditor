@@ -166,17 +166,21 @@ namespace PhaserEditor2D {
 
         private _startPoint: Phaser.Math.Vector2;
         private _dragging: boolean;
+        private _now : integer;
+        private _filterPaintOnMove : boolean;
 
         constructor() {
             this._startPoint = null;
             this._dragging = false;
+            this._now = 0;
+            this._filterPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
         }
 
         private getScene() {
             return Editor.getInstance().getObjectScene();
         }
 
-        private getScelectedObjects() {
+        private getSelectedObjects() {
             return Editor.getInstance().getToolScene().getSelectedObjects();
         }
 
@@ -186,8 +190,12 @@ namespace PhaserEditor2D {
 
         onMouseDown(e: MouseEvent) {
 
-            if (!isLeftButton(e) || this.getScelectedObjects().length === 0) {
+            if (!isLeftButton(e) || this.getSelectedObjects().length === 0) {
                 return;
+            }
+
+            if (this._filterPaintOnMove) {
+                this._now = Date.now();
             }
 
             this._startPoint = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
@@ -195,7 +203,7 @@ namespace PhaserEditor2D {
             const tx = new Phaser.GameObjects.Components.TransformMatrix();
             const p = new Phaser.Math.Vector2();
 
-            for (let obj of this.getScelectedObjects()) {
+            for (let obj of this.getSelectedObjects()) {
                 const sprite: Phaser.GameObjects.Sprite = <any>obj;
                 sprite.getWorldTransformMatrix(tx);
                 tx.transformPoint(0, 0, p);
@@ -217,7 +225,7 @@ namespace PhaserEditor2D {
             const dx = pos.x - this._startPoint.x;
             const dy = pos.y - this._startPoint.y;
 
-            for (let obj of this.getScelectedObjects()) {
+            for (let obj of this.getSelectedObjects()) {
                 const sprite: Phaser.GameObjects.Sprite = <any>obj;
                 const data = sprite.getData("DragObjectsManager");
 
@@ -234,15 +242,25 @@ namespace PhaserEditor2D {
                 }
             }
 
-            Editor.getInstance().repaint();
+            if (this._filterPaintOnMove) {
+                const now = Date.now();
+                if (now - this._now > 40) {
+                    this._now = now;
+                    Editor.getInstance().repaint();    
+                }
+            } else {
+                Editor.getInstance().repaint();
+            }
+            
         }
 
         onMouseUp() {
             if (this._startPoint !== null && this._dragging) {
                 this._dragging = false;
                 this._startPoint = null;
-                Editor.getInstance().sendMessage(BuildMessage.SetTransformProperties(this.getScelectedObjects()));
+                Editor.getInstance().sendMessage(BuildMessage.SetTransformProperties(this.getSelectedObjects()));
             }
+            Editor.getInstance().repaint();
         }
     }
 

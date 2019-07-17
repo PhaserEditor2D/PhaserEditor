@@ -10,7 +10,8 @@ namespace PhaserEditor2D {
         private _gridGraphics: Phaser.GameObjects.Graphics;
         private _paintCallsLabel: Phaser.GameObjects.Text;
         private _tools: InteractiveTool[];
-
+        private _delayPaintOnMove : boolean;
+        private _now : integer;
 
         constructor() {
             super("ToolScene");
@@ -18,6 +19,7 @@ namespace PhaserEditor2D {
             this._selectedObjects = [];
             this._selectionGraphics = null;
             this._tools = [];
+            this._delayPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
         }
 
         create() {
@@ -356,6 +358,10 @@ namespace PhaserEditor2D {
         }
 
         onMouseDown() {
+            if (this._delayPaintOnMove) {
+                this._now = Date.now();
+            }
+
             for (let tool of this._tools) {
                 tool.onMouseDown();
             }
@@ -368,7 +374,15 @@ namespace PhaserEditor2D {
                 tool.onMouseMove();
             }
 
-            this.testRepaint();
+            if (this._delayPaintOnMove) {
+                const now = Date.now();
+                if (now - this._now > 40) {
+                    this._now = now;
+                    this.testRepaint();
+                }
+            } else {
+                this.testRepaint();
+            }
         }
 
         onMouseUp() {

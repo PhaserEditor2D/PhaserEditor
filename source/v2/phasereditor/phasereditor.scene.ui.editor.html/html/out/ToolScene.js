@@ -26,6 +26,7 @@ var PhaserEditor2D;
             _this._selectedObjects = [];
             _this._selectionGraphics = null;
             _this._tools = [];
+            _this._delayPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
             return _this;
         }
         ToolScene.prototype.create = function () {
@@ -267,6 +268,9 @@ var PhaserEditor2D;
             }
         };
         ToolScene.prototype.onMouseDown = function () {
+            if (this._delayPaintOnMove) {
+                this._now = Date.now();
+            }
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
                 var tool = _a[_i];
                 tool.onMouseDown();
@@ -278,7 +282,16 @@ var PhaserEditor2D;
                 var tool = _a[_i];
                 tool.onMouseMove();
             }
-            this.testRepaint();
+            if (this._delayPaintOnMove) {
+                var now = Date.now();
+                if (now - this._now > 40) {
+                    this._now = now;
+                    this.testRepaint();
+                }
+            }
+            else {
+                this.testRepaint();
+            }
         };
         ToolScene.prototype.onMouseUp = function () {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {

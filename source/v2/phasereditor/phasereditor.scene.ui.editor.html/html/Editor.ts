@@ -21,7 +21,7 @@ namespace PhaserEditor2D {
 
         private static _instance: Editor;
         private _socket: WebSocket;
-        private _game: Phaser.Game;
+        private _game: Phaser.Game;        
         private _resizeToken: integer;
         private _objectScene: ObjectScene;
         private _create: Create;
@@ -33,6 +33,7 @@ namespace PhaserEditor2D {
         sceneProperties: any;
         selection: any[] = [];
         private _webgl: boolean;
+        private _chromiumWebview : boolean;
 
         constructor() {
             Editor._instance = this;
@@ -293,7 +294,7 @@ namespace PhaserEditor2D {
             // update the model
 
             this._webgl = msg.webgl;
-            this._sendKeyData = msg.sendKeyData || false;
+            this._chromiumWebview = msg.chromiumWebview;
             this.sceneProperties = msg.sceneProperties;
 
             // create the game
@@ -581,6 +582,10 @@ namespace PhaserEditor2D {
 
         isWebGL() {
             return this._webgl;
+        }
+
+        isChromiumWebview() {
+            return this._chromiumWebview;
         }
 
         private onSetTransformCoords(msg: any) {

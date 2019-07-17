@@ -214,7 +214,7 @@ var PhaserEditor2D;
         Editor.prototype.onCreateGame = function (msg) {
             var self = this;
             this._webgl = msg.webgl;
-            this._sendKeyData = msg.sendKeyData || false;
+            this._chromiumWebview = msg.chromiumWebview;
             this.sceneProperties = msg.sceneProperties;
             this._create = new PhaserEditor2D.Create();
             this._game = new Phaser.Game({
@@ -439,6 +439,9 @@ var PhaserEditor2D;
         };
         Editor.prototype.isWebGL = function () {
             return this._webgl;
+        };
+        Editor.prototype.isChromiumWebview = function () {
+            return this._chromiumWebview;
         };
         Editor.prototype.onSetTransformCoords = function (msg) {
             this._transformLocalCoords = msg.transformLocalCoords;
