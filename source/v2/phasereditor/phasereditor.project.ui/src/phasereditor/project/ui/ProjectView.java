@@ -36,7 +36,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -78,7 +77,6 @@ import org.eclipse.ui.actions.OpenWithMenu;
 import org.eclipse.ui.actions.RenameResourceAction;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.actions.CommandAction;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.wizards.newresource.BasicNewFolderResourceWizard;
@@ -87,12 +85,10 @@ import org.json.JSONArray;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.project.ui.internal.actions.CopyAction;
 import phasereditor.project.ui.internal.actions.PasteAction;
-import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas;
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -103,7 +99,7 @@ import phasereditor.ui.TreeCanvasViewer;
 public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 	public static final String ID = "phasereditor.project.ui.projectView";
-	private FilteredTreeCanvas _filteredTree;
+	FilteredTreeCanvas _filteredTree;
 	private TreeCanvasViewer _viewer;
 	private IPartListener _partListener;
 	private JSONArray _initialExpandedPaths;
@@ -139,8 +135,11 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				return new MyTreeCanvas(this, SWT.NONE);
 			}
 		};
-		_viewer = new MyTreeViewer();
+		
+		_viewer = new ProjectTreeViewer(_filteredTree.getTree(), new MyContentProvider());
+		
 		_viewer.setInput(new Object());
+		
 		_filteredTree.getTree().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -437,50 +436,6 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 
 	protected void reveal(IFile file) {
 		_viewer.setSelection(new StructuredSelection(file), true);
-	}
-
-	class MyTreeViewer extends TreeCanvasViewer {
-
-		private List<IFileRendererProvider> _renderProviders;
-
-		public MyTreeViewer() {
-			super(_filteredTree.getTree(), new MyContentProvider(),
-					WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
-
-			_renderProviders = new ArrayList<>();
-			var elems = Platform.getExtensionRegistry()
-					.getConfigurationElementsFor("phasereditor.project.ui.fileRenderer");
-			for (var elem : elems) {
-				try {
-					IFileRendererProvider provider = (IFileRendererProvider) elem.createExecutableExtension("class");
-					_renderProviders.add(provider);
-				} catch (CoreException e) {
-					ProjectUI.logError(e);
-				}
-			}
-		}
-
-		@Override
-		protected void setItemIconProperties(TreeCanvasItem item) {
-			BaseTreeCanvasItemRenderer renderer = null;
-
-			if (item.getData() instanceof IFile) {
-				for (var provider : _renderProviders) {
-					var renderer2 = provider.createRenderer(item);
-					if (renderer2 != null) {
-						renderer = renderer2;
-						break;
-					}
-				}
-			}
-
-			if (renderer == null) {
-
-				super.setItemIconProperties(item);
-			} else {
-				item.setRenderer(renderer);
-			}
-		}
 	}
 
 	protected void openEditor() {

@@ -39,13 +39,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
@@ -157,16 +155,6 @@ public class AssetsView extends ViewPart implements Consumer<IProject> {
 		// selection provider
 
 		getViewSite().setSelectionProvider(_treeCanvas.getUtils());
-
-		{
-
-			// menu
-			MenuManager manager = new MenuManager();
-			Menu menu = manager.createContextMenu(_treeCanvas);
-			_treeCanvas.setMenu(menu);
-
-			getViewSite().registerContextMenu(manager, _treeCanvas.getUtils());
-		}
 
 		// undo context
 

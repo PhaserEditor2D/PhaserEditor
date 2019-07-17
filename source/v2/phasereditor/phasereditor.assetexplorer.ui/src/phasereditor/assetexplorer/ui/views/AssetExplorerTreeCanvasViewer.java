@@ -34,7 +34,6 @@ import phasereditor.assetpack.core.SceneFileAssetModel;
 import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.scene.core.SceneCore;
 import phasereditor.scene.core.SceneFile;
-import phasereditor.scene.ui.SceneUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
 import phasereditor.ui.ImageProxy;
@@ -52,8 +51,6 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 	public AssetExplorerTreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
 		super(canvas, contentProvider, labelProvider);
-
-		SceneUI.installSceneTooltips(this);
 	}
 
 	@Override

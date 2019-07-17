@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.joining;
 import java.util.LinkedHashSet;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 
@@ -45,23 +46,20 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
+import phasereditor.project.ui.ProjectTreeViewer;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
-import phasereditor.ui.TreeCanvasViewer;
 
 /**
  * @author arian
  *
  */
-public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
+public class AssetsTreeCanvasViewer extends ProjectTreeViewer {
 
 	public AssetsTreeCanvasViewer(TreeCanvas tree, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
-
 		super(tree, contentProvider, labelProvider);
-
-		AssetPackUI.installAssetTooltips(tree, tree.getUtils());
 	}
 
 	public AssetsTreeCanvasViewer(TreeCanvas tree) {
@@ -71,6 +69,11 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 	@Override
 	protected void setItemIconProperties(TreeCanvasItem item) {
 		var elem = item.getData();
+
+		if (elem instanceof IResource) {
+			super.setItemIconProperties(item);
+			return;
+		}
 
 		LinkedHashSet<String> keywords = new LinkedHashSet<>();
 
@@ -106,7 +109,7 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 	public static ImageProxyTreeCanvasItemRenderer createImageRenderer(TreeCanvasItem item, Object element) {
 
 		ImageProxy proxy = getAssetKeyImageProxy(element);
-		
+
 		if (proxy == null) {
 			return null;
 		}
