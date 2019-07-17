@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkingSet;
-import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.InspectCore;
@@ -51,7 +50,7 @@ import phasereditor.project.core.codegen.SourceLang;
  *
  */
 public class NewPhaserProjectWizard extends Wizard implements INewWizard {
-	protected WizardNewProjectCreationPage _projectPage;
+	protected WizardNewProjectCreationPage2 _projectPage;
 	protected NewPhaserProjectSettingsWizardPage _settingsPage;
 	private IStructuredSelection _selection;
 	private IWorkbench _workbench;
@@ -75,7 +74,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		_projectPage = new WizardNewProjectCreationPage("project") {
+		_projectPage = new WizardNewProjectCreationPage2("project") {
 			@Override
 			public void createControl(Composite parent) {
 				super.createControl(parent);

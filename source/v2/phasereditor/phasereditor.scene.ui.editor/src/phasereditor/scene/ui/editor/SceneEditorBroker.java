@@ -45,6 +45,7 @@ import phasereditor.scene.ui.editor.messages.SelectObjectsMessage;
 import phasereditor.scene.ui.editor.messages.SetCameraStateMessage;
 import phasereditor.scene.ui.editor.messages.SetInteractiveToolMessage;
 import phasereditor.scene.ui.editor.undo.SingleObjectSnapshotOperation;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.webrun.core.ApiHub;
 import phasereditor.webrun.core.ApiMessage;
 import phasereditor.webrun.core.BatchMessage;
@@ -384,8 +385,15 @@ public class SceneEditorBroker {
 		ObjectModel obj = id == null ? null : _editor.getSceneModel().getDisplayList().findById(id);
 
 		swtRun(() -> {
-			_editor.getSelectionEvents().updateSelection(obj, ctrl);
-			send(client, new SelectObjectsMessage(_editor));
+
+			if (PhaserEditorUI.useChromuiumBrowser()) {
+				_editor.getWebView().getParent().setFocus();
+			}
+
+			swtRun(() -> {
+				_editor.getSelectionEvents().updateSelection(obj, ctrl);
+				send(client, new SelectObjectsMessage(_editor));
+			});
 		});
 	}
 }

@@ -427,6 +427,10 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		super.dispose();
 	}
 
+	public SceneWebView getWebView() {
+		return _webView;
+	}
+	
 	@Override
 	public void setFocus() {
 		_webView.setFocus();

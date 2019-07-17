@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkingSet;
-import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.project.core.ProjectCore;
@@ -46,7 +45,7 @@ import phasereditor.project.core.codegen.SourceLang;
 
 public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard {
 
-	protected WizardNewProjectCreationPage _projectPage;
+	protected WizardNewProjectCreationPage2 _projectPage;
 	protected PhaserTemplateWizardPage _templPage;
 	private IWorkbench _workbench;
 	private IStructuredSelection _selection;
@@ -72,7 +71,7 @@ public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard 
 	public void addPages() {
 		_templPage = new PhaserTemplateWizardPage();
 		
-		_projectPage = new WizardNewProjectCreationPage("project") {
+		_projectPage = new WizardNewProjectCreationPage2("project") {
 			@Override
 			public void setVisible(boolean visible) {
 				super.setVisible(visible);
