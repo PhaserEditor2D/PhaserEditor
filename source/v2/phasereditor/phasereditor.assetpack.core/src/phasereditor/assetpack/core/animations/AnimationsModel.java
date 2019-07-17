@@ -41,6 +41,10 @@ import phasereditor.assetpack.core.AssetPackCore;
  */
 public class AnimationsModel {
 
+	/**
+	 * 
+	 */
+	public static final String PHASER_V3_ANIMATIONS_CONTENT_TYPE = "Phaser v3 Animations";
 	private List<AnimationModel> _animations;
 	private IFile _file;
 	private String _dataKey;
@@ -116,7 +120,7 @@ public class AnimationsModel {
 
 		var jsonMeta = new JSONObject();
 		jsonMeta.put("app", "Phaser Editor v2");
-		jsonMeta.put("contentType", "Phaser v3 Animations");
+		jsonMeta.put("contentType", PHASER_V3_ANIMATIONS_CONTENT_TYPE);
 		jsonData.put("meta", jsonMeta);
 
 		return jsonData;

@@ -66,6 +66,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.animations.AnimationsFileDataCache;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.bmpfont.core.BitmapFontCore;
@@ -717,7 +718,7 @@ public class AssetPackCore {
 				var contentType = meta.getString("contentType");
 				return contentType.equals(AssetPackModel.PHASER_V3_ASSET_PACK_CONTENT_TYPE);
 			}
-			
+
 			return true;
 		} catch (Exception e) {
 			// nothing
@@ -1192,7 +1193,10 @@ public class AssetPackCore {
 		try {
 			JSONObject jsonData = new JSONObject(new JSONTokener(contents));
 			jsonData.getJSONArray("anims");
-			return true;
+			var meta = jsonData.getJSONObject("meta");
+			var type = meta.getString("contentType");
+			var equals = type.equals(AnimationsModel.PHASER_V3_ANIMATIONS_CONTENT_TYPE);
+			return equals;
 		} catch (Exception e) {
 			// nothing
 		}
