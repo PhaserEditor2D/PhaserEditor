@@ -13,10 +13,10 @@
     }
   ]},
   "meta": {
-    "generated": "1551817163918",
-    "app": "Phaser Editor",
+    "generated": "1563370061543",
+    "app": "Phaser Editor 2D - Asset Pack Editor - 2.1.3",
+    "contentType": "Phaser v3 Asset Pack",
     "url": "https://phasereditor2d.com",
-    "version": "1.0",
-    "copyright": "Arian Fornaris (c) 2015,2018"
+    "version": "2"
   }
 }

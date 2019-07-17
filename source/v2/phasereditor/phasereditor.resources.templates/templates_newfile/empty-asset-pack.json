@@ -1,12 +1,10 @@
-{	
-    "meta": {
-        "version": "2.0",
-        "app": "Phaser Editor 2D",
-        "url": "https://phasereditor2d.com",
-        "copyright": "Arian Fornaris (c) 2016-2019"
-    },
-
-	"section": {
-		"files": []
-	}
+{
+  "section": {"files": []},
+  "meta": {
+    "generated": "1563369967361",
+    "app": "Phaser Editor 2D - Asset Pack Editor - 2.1.3",
+    "contentType": "Phaser v3 Asset Pack",
+    "url": "https://phasereditor2d.com",
+    "version": "2"
+  }
 }

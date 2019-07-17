@@ -8,7 +8,7 @@
     {
       "type": "sceneFile",
       "key": "Scene1",
-      "url": "assets/scenes/Scene1.ts"
+      "url": "assets/scenes/Scene1.js"
     },
     {
       "type": "multiatlas",
@@ -18,10 +18,10 @@
     }
   ]},
   "meta": {
-    "generated": "1559389596617",
-    "app": "Phaser Editor 2D - 2.1.1",
+    "generated": "1563370262414",
+    "app": "Phaser Editor 2D - Asset Pack Editor - 2.1.3",
+    "contentType": "Phaser v3 Asset Pack",
     "url": "https://phasereditor2d.com",
-    "version": "1.0",
-    "copyright": "Arian Fornaris (c) 2015,2019"
+    "version": "2"
   }
 }
