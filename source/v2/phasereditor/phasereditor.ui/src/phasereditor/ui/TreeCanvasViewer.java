@@ -130,7 +130,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		item.setActions(new ArrayList<>());
 		setItemProperties(item);
 	}
-	
+
 	protected void setItemProperties(TreeCanvasItem item) {
 		item.setLabel(_labelProvider.getText(item.getData()));
 
@@ -138,7 +138,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 	}
 
 	protected void setItemIconProperties(TreeCanvasItem item) {
-		item.setRenderer(new IconTreeCanvasItemRenderer(item, _labelProvider.getImage(item.getData())));
+		item.setRenderer(new IconTreeCanvasItemRenderer(item, () -> _labelProvider.getImage(item.getData())));
 	}
 
 	public ILabelProvider getLabelProvider() {
@@ -185,7 +185,7 @@ public class TreeCanvasViewer implements IEditorSharedImages, ISelectionProvider
 		if (reveal) {
 			_tree.reveal(((IStructuredSelection) selection).toArray());
 		}
-		
+
 		_tree.getUtils().setSelection(selection);
 
 		_tree.redraw();

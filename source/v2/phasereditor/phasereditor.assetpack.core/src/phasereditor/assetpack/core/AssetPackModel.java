@@ -65,6 +65,10 @@ import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 
 public final class AssetPackModel {
+	/**
+	 * 
+	 */
+	public static final String PHASER_V3_ASSET_PACK_CONTENT_TYPE = "Phaser v3 Asset Pack";
 	public static final String MEMENT_PROJECT_KEY = "projectName";
 	static final String MEMENTO_KEY = "phasereditor.assetpack.core.AssetPackModel";
 	public static final String PROP_DIRTY = "dirty";
@@ -253,9 +257,10 @@ public final class AssetPackModel {
 		JSONObject meta = new JSONObject();
 		pack.put("meta", meta);
 		meta.put("generated", Long.toString(System.currentTimeMillis()));
-		meta.put("app", "Phaser Editor 2D - " + LicCore.PRODUCT_VERSION);
+		meta.put("app", "Phaser Editor 2D - Asset Pack Editor - " + LicCore.PRODUCT_VERSION);
+		meta.put("contentType", PHASER_V3_ASSET_PACK_CONTENT_TYPE);
 		meta.put("url", "https://phasereditor2d.com");
-		meta.put("version", "1.0");
+		meta.put("version", "2");
 	}
 
 	public void save(IProgressMonitor monitor) {

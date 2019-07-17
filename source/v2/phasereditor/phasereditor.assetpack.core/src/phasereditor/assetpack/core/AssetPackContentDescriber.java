@@ -37,7 +37,7 @@ public class AssetPackContentDescriber implements IContentDescriber {
 	@Override
 	public int describe(InputStream contents, IContentDescription description)
 			throws IOException {
-		boolean valid = AssetPackCore.isAssetPackContent(contents) == null;
+		boolean valid = AssetPackCore.isAssetPackContent(contents);
 		return valid ? VALID : INVALID;
 	}
 

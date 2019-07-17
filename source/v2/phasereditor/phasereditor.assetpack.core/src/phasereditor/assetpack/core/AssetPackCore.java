@@ -143,9 +143,8 @@ public class AssetPackCore {
 		}
 	};
 
-	public static Comparator<AssetFactory> IMPORT_RELEVANCE_COMPARATOR = (a, b) -> Integer.compare(
-			IMPORT_RELEVANCE.get(a.getType()).intValue(),
-			IMPORT_RELEVANCE.get(b.getType()).intValue());
+	public static Comparator<AssetFactory> IMPORT_RELEVANCE_COMPARATOR = (a, b) -> Integer
+			.compare(IMPORT_RELEVANCE.get(a.getType()).intValue(), IMPORT_RELEVANCE.get(b.getType()).intValue());
 
 	public static Collection<ImportAssetFileInfo> guessImportFileInfoByContentType(IFile file) {
 		var list = new ArrayList<ImportAssetFileInfo>();
@@ -702,18 +701,28 @@ public class AssetPackCore {
 	 * @return Return <code>null</code> if the content has a valid format, else it
 	 *         return an error message.
 	 */
-	public static String isAssetPackContent(InputStream contents) {
+	public static boolean isAssetPackContent(InputStream contents) {
 		try {
-			JSONTokener tokener = new JSONTokener(new InputStreamReader(contents));
-			JSONObject obj = new JSONObject(tokener);
-			JSONObject meta = obj.getJSONObject("meta");
-			meta.get("generated");
-			meta.get("version");
-			meta.get("app");
-		} catch (JSONException e) {
-			return e.getMessage();
+			var tokener = new JSONTokener(new InputStreamReader(contents));
+			var obj = new JSONObject(tokener);
+			var meta = obj.getJSONObject("meta");
+
+			var ver = meta.getString("version");
+
+			if (ver.equals("1.0")) {
+				meta.get("generated");
+				var str = meta.getString("app");
+				return str.startsWith("Phaser Editor");
+			} else if (ver.equals("2")) {
+				var contentType = meta.getString("contentType");
+				return contentType.equals(AssetPackModel.PHASER_V3_ASSET_PACK_CONTENT_TYPE);
+			}
+			
+			return true;
+		} catch (Exception e) {
+			// nothing
 		}
-		return null;
+		return false;
 	}
 
 	/**

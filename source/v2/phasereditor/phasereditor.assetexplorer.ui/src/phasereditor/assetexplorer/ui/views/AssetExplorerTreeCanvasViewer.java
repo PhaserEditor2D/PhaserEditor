@@ -97,7 +97,7 @@ public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 				|| elem == AssetsView.PACK_NODE
 
 		) {
-			item.setRenderer(new IconTreeCanvasItemRenderer(item, null));
+			item.setRenderer(new IconTreeCanvasItemRenderer(item));
 		}
 
 	}

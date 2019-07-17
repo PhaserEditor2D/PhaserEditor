@@ -43,7 +43,7 @@ public class ProjectTreeViewer extends TreeCanvasViewer {
 	private List<IFileRendererProvider> _renderProviders;
 
 	public ProjectTreeViewer(TreeCanvas tree, ITreeContentProvider contentProvider) {
-		this(tree, contentProvider, new WorkbenchLabelProvider());
+		this(tree, contentProvider, new LabelProvider());
 	}
 
 	public ProjectTreeViewer(TreeCanvas tree, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
@@ -64,7 +64,6 @@ public class ProjectTreeViewer extends TreeCanvasViewer {
 
 	static class CompoundLabelProvider extends LabelProvider {
 		private LabelProvider _base;
-		private WorkbenchLabelProvider _workbenchProvider = new WorkbenchLabelProvider();
 
 		public CompoundLabelProvider(LabelProvider base) {
 			_base = base;
@@ -73,7 +72,7 @@ public class ProjectTreeViewer extends TreeCanvasViewer {
 		@Override
 		public String getText(Object element) {
 			if (element instanceof IResource) {
-				return _workbenchProvider.getText(element);
+				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getText(element);
 			}
 			return _base.getText(element);
 		}
@@ -81,7 +80,7 @@ public class ProjectTreeViewer extends TreeCanvasViewer {
 		@Override
 		public Image getImage(Object element) {
 			if (element instanceof IResource) {
-				return _workbenchProvider.getImage(element);
+				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(element);
 			}
 			return _base.getImage(element);
 		}

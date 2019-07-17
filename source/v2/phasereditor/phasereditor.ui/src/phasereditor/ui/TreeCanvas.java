@@ -719,7 +719,7 @@ public class TreeCanvas extends BaseCanvas implements PaintListener {
 			_actions = new ArrayList<>();
 			_alpha = 1;
 			_canvas = canvas;
-			_renderer = new IconTreeCanvasItemRenderer(this, null);
+			_renderer = new IconTreeCanvasItemRenderer(this);
 		}
 
 		public boolean isChecked() {

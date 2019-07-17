@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.util.function.Supplier;
+
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 
@@ -28,11 +30,19 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
 public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 
-	private Image _icon;
+	private Supplier<Image> _getIcon;
+
+	public IconTreeCanvasItemRenderer(TreeCanvasItem item) {
+		this(item, (Image) null);
+	}
 
 	public IconTreeCanvasItemRenderer(TreeCanvasItem item, Image icon) {
+		this(item, () -> icon);
+	}
+
+	public IconTreeCanvasItemRenderer(TreeCanvasItem item, Supplier<Image> getIcon) {
 		super(item);
-		_icon = icon;
+		_getIcon = getIcon;
 	}
 
 	@Override
@@ -44,7 +54,9 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 		int textX = x;
 		int rowHeight = computeRowHeight(canvas);
 
-		var iconBounds = _icon == null ? null : _icon.getBounds();
+		var icon = _getIcon.get();
+
+		var iconBounds = icon == null ? null : icon.getBounds();
 
 		if (iconBounds != null) {
 			textX += iconBounds.width + ICON_AND_TEXT_SPACE;
@@ -77,9 +89,9 @@ public class IconTreeCanvasItemRenderer extends BaseTreeCanvasItemRenderer {
 			// paint icon
 
 			if (_item.isHeader()) {
-				gc.drawImage(_icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
+				gc.drawImage(icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
 			} else {
-				gc.drawImage(_icon, x, y + (rowHeight - iconBounds.height) / 2);
+				gc.drawImage(icon, x, y + (rowHeight - iconBounds.height) / 2);
 			}
 		}
 	}
