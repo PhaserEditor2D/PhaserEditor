@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.ArrayList;
@@ -386,8 +387,18 @@ public class SceneEditorBroker {
 
 		swtRun(() -> {
 
-			if (PhaserEditorUI.useChromuiumBrowser()) {
-				_editor.getWebView().getParent().setFocus();
+			if (PhaserEditorUI.isUsingChromium()) {
+				try {
+					var activeEditor = _editor.getSite().getPage().getActivePart();
+					out.println("Active part: " + activeEditor + " ?= " + _editor);
+					
+					if (_editor != activeEditor) {
+						out.println("Activating " + _editor);
+						_editor.getSite().getPage().activate(_editor);
+					}
+				} catch (Exception e) {
+					SceneUIEditor.logError(e);
+				}
 			}
 
 			swtRun(() -> {

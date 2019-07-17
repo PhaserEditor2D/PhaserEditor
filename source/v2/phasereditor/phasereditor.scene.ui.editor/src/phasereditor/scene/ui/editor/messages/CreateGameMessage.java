@@ -73,7 +73,7 @@ public class CreateGameMessage extends ApiMessage {
 				}
 			}
 			
-			var sendKeyData = PhaserEditorUI.useChromuiumBrowser();
+			var sendKeyData = PhaserEditorUI.isUsingChromium();
 			
 			_data.put("method", "CreateGame");
 			_data.put("webgl", webgl);

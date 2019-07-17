@@ -475,7 +475,7 @@ public class PhaserEditorUI {
 		}
 	}
 
-	public static boolean useChromuiumBrowser() {
+	public static boolean isUsingChromium() {
 		return getPreferenceStore().getString(PREF_PROP_BROWSER_TYPE).equals(PREF_VALUE_CHROMIUM_BROWSER);
 	}
 

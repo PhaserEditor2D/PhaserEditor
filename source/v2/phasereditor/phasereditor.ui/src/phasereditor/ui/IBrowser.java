@@ -36,7 +36,7 @@ public interface IBrowser {
 	public void setUrl(String url);
 
 	public static IBrowser create(Composite parent, int style) {
-		if (PhaserEditorUI.useChromuiumBrowser()) {
+		if (PhaserEditorUI.isUsingChromium()) {
 			return createChromiumBrowser(parent, style);
 		}
 

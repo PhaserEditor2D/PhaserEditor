@@ -1216,7 +1216,7 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 			}
 		}
 
-		if (PhaserEditorUI.useChromuiumBrowser()) {
+		if (PhaserEditorUI.isUsingChromium()) {
 
 			var bindingService = getSite().getService(IBindingService.class);
 
