@@ -1178,7 +1178,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 				btn.setImage(EditorSharedImages.getImage(IMG_ADD));
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 					MessageDialog.openInformation(getEditorSite().getShell(), "Add",
-							"Drag files or folders from the Project view and drop them in the editor.");
+							"Drag files or folders from the Project view or Block view and drop them in the editor.");
 				}));
 			}
 
