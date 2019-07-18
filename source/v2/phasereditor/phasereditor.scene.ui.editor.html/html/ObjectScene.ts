@@ -41,8 +41,8 @@ namespace PhaserEditor2D {
 
             editor.sceneCreated();
 
-            this.sendRecordCameraStateMessage();  
-            
+            this.sendRecordCameraStateMessage();
+
             editor.stop();
         }
 
@@ -107,7 +107,22 @@ namespace PhaserEditor2D {
 
             var zoom = (delta > 0 ? 0.9 : 1.1);
 
+            const pointer = this.input.activePointer;
+
+            const point1 = cam.getWorldPoint(pointer.x, pointer.y);
+            
             cam.zoom *= zoom;
+
+            // update the camera matrix
+            (<any>cam).preRender(this.scale.resolution);
+            
+            const point2 = cam.getWorldPoint(pointer.x, pointer.y);
+
+            const dx = point2.x - point1.x;
+            const dy = point2.y - point1.y;
+
+            cam.scrollX += -dx;
+            cam.scrollY += -dy;
 
             this.sendRecordCameraStateMessage();
 
@@ -166,8 +181,8 @@ namespace PhaserEditor2D {
 
         private _startPoint: Phaser.Math.Vector2;
         private _dragging: boolean;
-        private _now : integer;
-        private _filterPaintOnMove : boolean;
+        private _now: integer;
+        private _filterPaintOnMove: boolean;
 
         constructor() {
             this._startPoint = null;
@@ -246,12 +261,12 @@ namespace PhaserEditor2D {
                 const now = Date.now();
                 if (now - this._now > 40) {
                     this._now = now;
-                    Editor.getInstance().repaint();    
+                    Editor.getInstance().repaint();
                 }
             } else {
                 Editor.getInstance().repaint();
             }
-            
+
         }
 
         onMouseUp() {

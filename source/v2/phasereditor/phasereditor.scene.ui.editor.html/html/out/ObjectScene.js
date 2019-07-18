@@ -82,7 +82,15 @@ var PhaserEditor2D;
             var cam = this.cameras.main;
             var delta = e.deltaY;
             var zoom = (delta > 0 ? 0.9 : 1.1);
+            var pointer = this.input.activePointer;
+            var point1 = cam.getWorldPoint(pointer.x, pointer.y);
             cam.zoom *= zoom;
+            cam.preRender(this.scale.resolution);
+            var point2 = cam.getWorldPoint(pointer.x, pointer.y);
+            var dx = point2.x - point1.x;
+            var dy = point2.y - point1.y;
+            cam.scrollX += -dx;
+            cam.scrollY += -dy;
             this.sendRecordCameraStateMessage();
         };
         ObjectScene.prototype.sendRecordCameraStateMessage = function () {
