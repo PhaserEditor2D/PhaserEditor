@@ -128,13 +128,29 @@ var PhaserEditor2D;
         return x >= 0 && y >= 0 && x <= w && y <= h;
     }
     function TileSpriteCallback(hitArea, x, y, obj) {
-        console.log({
-            x: x,
-            y: y,
-            w: obj.width,
-            h: obj.height
-        });
         return x >= 0 && y >= 0 && x <= obj.width && y <= obj.height;
+    }
+    function CreatePixelPerfectCanvasTextureHandler_WebGL() {
+        return function (hitArea, x, y, sprite) {
+            var hitBounds = x >= 0 && y >= 0 && x <= sprite.width && y <= sprite.height;
+            if (!hitBounds) {
+                return false;
+            }
+            if (sprite.flipX) {
+                x = 2 * sprite.displayOriginX - x;
+            }
+            if (sprite.flipY) {
+                y = 2 * sprite.displayOriginY - y;
+            }
+            var scene = PhaserEditor2D.Editor.getInstance().getObjectScene();
+            var renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, sprite.displayWidth, sprite.displayHeight);
+            renderTexture.setOrigin(0, 0);
+            renderTexture.draw([sprite], sprite.displayOriginX * sprite.scaleX, sprite.displayOriginY * sprite.scaleY);
+            scene.sys.displayList.add(renderTexture);
+            var canvasTexture = renderTexture.texture;
+            var alpha = getCanvasTexturePixelAlpha(x, y, canvasTexture);
+            return alpha == 1;
+        };
     }
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {
         return function (hitArea, x, y, sprite) {
@@ -148,6 +164,18 @@ var PhaserEditor2D;
             return alpha >= alphaTolerance;
         };
     }
+    function getCanvasTexturePixelAlpha(x, y, canvasTexture) {
+        if (canvasTexture) {
+            var imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
+            console.log(x + " " + y);
+            console.log(canvasTexture.getPixel(x, y));
+            console.log(imgData);
+            var rgb = imgData.data;
+            var alpha = rgb[3];
+            return alpha;
+        }
+        return 0;
+    }
     function PixelPerfectHandler(hitArea, x, y, sprite) {
         if (sprite.flipX) {
             x = 2 * sprite.displayOriginX - x;
@@ -160,15 +188,4 @@ var PhaserEditor2D;
         return alpha;
     }
     ;
-    function getCanvasTexturePixelAlpha(x, y, canvasTexture) {
-        if (canvasTexture) {
-            {
-                var imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
-                var rgb = imgData.data;
-                var alpha = rgb[3];
-                return alpha;
-            }
-        }
-        return 0;
-    }
 })(PhaserEditor2D || (PhaserEditor2D = {}));

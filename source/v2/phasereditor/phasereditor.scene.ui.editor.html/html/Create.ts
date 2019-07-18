@@ -82,6 +82,7 @@ namespace PhaserEditor2D {
                     case "TileSprite":
                         if (Editor.getInstance().isWebGL()) {
                             obj.setInteractive(TileSpriteCallback);
+                            //obj.setInteractive(CreatePixelPerfectCanvasTextureHandler_WebGL());
                         } else {
                             obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
                         }
@@ -159,13 +160,39 @@ namespace PhaserEditor2D {
     }
 
     function TileSpriteCallback(hitArea: any, x: integer, y: integer, obj: Phaser.GameObjects.TileSprite) {
-        console.log({
-            x: x,
-            y: y,
-            w: obj.width,
-            h: obj.height
-        });
         return x >= 0 && y >= 0 && x <= obj.width && y <= obj.height;
+    }
+
+    // this is not working at this moment!
+    function CreatePixelPerfectCanvasTextureHandler_WebGL() {
+
+        return function (hitArea: any, x: number, y: number, sprite: Phaser.GameObjects.TileSprite) {
+            var hitBounds = x >= 0 && y >= 0 && x <= sprite.width && y <= sprite.height;
+
+            if (!hitBounds) {
+                return false;
+            }
+            if (sprite.flipX) {
+                x = 2 * sprite.displayOriginX - x;
+            }
+
+            if (sprite.flipY) {
+                y = 2 * sprite.displayOriginY - y;
+            }
+
+            const scene = Editor.getInstance().getObjectScene();
+
+            const renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, sprite.displayWidth, sprite.displayHeight);
+            renderTexture.setOrigin(0, 0);
+            renderTexture.draw([sprite], sprite.displayOriginX * sprite.scaleX, sprite.displayOriginY * sprite.scaleY);
+            scene.sys.displayList.add(renderTexture);
+            const canvasTexture = <Phaser.Textures.CanvasTexture>renderTexture.texture;
+
+            const alpha = getCanvasTexturePixelAlpha(x, y, canvasTexture);
+
+            return alpha == 1;
+        };
+
     }
 
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance: number) {
@@ -186,6 +213,20 @@ namespace PhaserEditor2D {
 
     }
 
+    function getCanvasTexturePixelAlpha(x: number, y: number, canvasTexture: Phaser.Textures.CanvasTexture) {
+        if (canvasTexture) {
+            //if (x >= 0 && x < canvasTexture.width && y >= 0 && y < canvasTexture.height) 
+            let imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
+            console.log(x + " " + y);
+            console.log(canvasTexture.getPixel(x, y));
+            console.log(imgData);
+            let rgb = imgData.data;
+            let alpha = rgb[3];
+            return alpha;
+        }
+        return 0;
+    }
+
     function PixelPerfectHandler(hitArea, x, y, sprite: Phaser.GameObjects.Sprite) {
 
         if (sprite.flipX) {
@@ -201,17 +242,4 @@ namespace PhaserEditor2D {
 
         return alpha;
     };
-
-    function getCanvasTexturePixelAlpha(x: number, y: number, canvasTexture: Phaser.Textures.CanvasTexture) {
-        if (canvasTexture) {
-            //if (x >= 0 && x < canvasTexture.width && y >= 0 && y < canvasTexture.height) 
-            {
-                let imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
-                let rgb = imgData.data;
-                let alpha = rgb[3];
-                return alpha;
-            }
-        }
-        return 0;
-    }
 }
