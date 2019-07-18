@@ -181,11 +181,6 @@ var PhaserEditor2D;
                 method: "SetObjectDisplayProperties",
                 list: list
             });
-            if (this._pendingMouseDownEvent) {
-                var e = this._pendingMouseDownEvent;
-                this._pendingMouseDownEvent = null;
-                this.getObjectScene().getDragObjectsManager().onMouseDown(e);
-            }
         };
         ;
         Editor.prototype.onUpdateObjects = function (msg) {

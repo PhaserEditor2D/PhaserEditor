@@ -26,7 +26,6 @@ namespace PhaserEditor2D {
         private _objectScene: ObjectScene;
         private _create: Create;
         private _transformLocalCoords: boolean;
-        private _pendingMouseDownEvent: MouseEvent;
         private _closed = false;
         private _isReloading = false;
 
@@ -247,12 +246,6 @@ namespace PhaserEditor2D {
                 method: "SetObjectDisplayProperties",
                 list: list
             });
-
-            if (this._pendingMouseDownEvent) {
-                const e = this._pendingMouseDownEvent;
-                this._pendingMouseDownEvent = null;
-                this.getObjectScene().getDragObjectsManager().onMouseDown(e);
-            }
         };
 
         private onUpdateObjects(msg) {
