@@ -57,7 +57,7 @@ var PhaserEditor2D;
                 switch (type) {
                     case "TileSprite":
                         if (PhaserEditor2D.Editor.getInstance().isWebGL()) {
-                            obj.setInteractive();
+                            obj.setInteractive(TileSpriteCallback);
                         }
                         else {
                             obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
@@ -126,6 +126,15 @@ var PhaserEditor2D;
         var w = gameObject.width / gameObject.scaleX;
         var h = gameObject.height / gameObject.scaleY;
         return x >= 0 && y >= 0 && x <= w && y <= h;
+    }
+    function TileSpriteCallback(hitArea, x, y, obj) {
+        console.log({
+            x: x,
+            y: y,
+            w: obj.width,
+            h: obj.height
+        });
+        return x >= 0 && y >= 0 && x <= obj.width && y <= obj.height;
     }
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {
         return function (hitArea, x, y, sprite) {

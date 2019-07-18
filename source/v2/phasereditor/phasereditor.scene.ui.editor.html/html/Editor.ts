@@ -85,7 +85,6 @@ namespace PhaserEditor2D {
                     self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
                     self.getObjectScene().getDragObjectsManager().onMouseDown(e);
-                    //self._pendingMouseDownEvent = e;
                 }
             })
 

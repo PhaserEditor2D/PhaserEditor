@@ -32,7 +32,7 @@ namespace PhaserEditor2D {
 
                     obj = add.image(x, y, key, frame);
 
-                    break;                
+                    break;
                 case "TileSprite":
                     var x = TransformComponent.get_x(data);
                     var y = TransformComponent.get_y(data);
@@ -81,7 +81,7 @@ namespace PhaserEditor2D {
                 switch (type) {
                     case "TileSprite":
                         if (Editor.getInstance().isWebGL()) {
-                            obj.setInteractive();
+                            obj.setInteractive(TileSpriteCallback);
                         } else {
                             obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
                         }
@@ -158,6 +158,16 @@ namespace PhaserEditor2D {
         return x >= 0 && y >= 0 && x <= w && y <= h;
     }
 
+    function TileSpriteCallback(hitArea: any, x: integer, y: integer, obj: Phaser.GameObjects.TileSprite) {
+        console.log({
+            x: x,
+            y: y,
+            w: obj.width,
+            h: obj.height
+        });
+        return x >= 0 && y >= 0 && x <= obj.width && y <= obj.height;
+    }
+
     function CreatePixelPerfectCanvasTextureHandler(alphaTolerance: number) {
 
         return function (hitArea: any, x: number, y: number, sprite: any) {
@@ -177,7 +187,7 @@ namespace PhaserEditor2D {
     }
 
     function PixelPerfectHandler(hitArea, x, y, sprite: Phaser.GameObjects.Sprite) {
-        
+
         if (sprite.flipX) {
             x = 2 * sprite.displayOriginX - x;
         }
