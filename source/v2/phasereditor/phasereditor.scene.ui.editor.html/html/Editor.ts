@@ -85,7 +85,8 @@ namespace PhaserEditor2D {
                 } else {
                     self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
-                    self._pendingMouseDownEvent = e;
+                    self.getObjectScene().getDragObjectsManager().onMouseDown(e);
+                    //self._pendingMouseDownEvent = e;
                 }
             })
 
@@ -103,7 +104,7 @@ namespace PhaserEditor2D {
 
             })
 
-            this._game.canvas.addEventListener("mouseup", function () {
+            this._game.canvas.addEventListener("mouseup", function (e : MouseEvent) {
                 if (self._closed) {
                     return;
                 }
@@ -113,6 +114,8 @@ namespace PhaserEditor2D {
                 } else {
                     //self.getObjectScene().getDragObjectsManager().onMouseUp();
                     self.getObjectScene().getDragCameraManager().onMouseUp();
+                    self.getObjectScene().getPickManager().onMouseUp(e);
+
                     setTimeout(function () {
                         self.getObjectScene().getDragObjectsManager().onMouseUp();
                     }, 30)

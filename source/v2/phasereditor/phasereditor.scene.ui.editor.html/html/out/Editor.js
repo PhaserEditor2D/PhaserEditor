@@ -52,7 +52,7 @@ var PhaserEditor2D;
                 else {
                     self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
-                    self._pendingMouseDownEvent = e;
+                    self.getObjectScene().getDragObjectsManager().onMouseDown(e);
                 }
             });
             this._game.canvas.addEventListener("mousemove", function (e) {
@@ -67,7 +67,7 @@ var PhaserEditor2D;
                     self.getObjectScene().getDragCameraManager().onMouseMove(e);
                 }
             });
-            this._game.canvas.addEventListener("mouseup", function () {
+            this._game.canvas.addEventListener("mouseup", function (e) {
                 if (self._closed) {
                     return;
                 }
@@ -76,6 +76,7 @@ var PhaserEditor2D;
                 }
                 else {
                     self.getObjectScene().getDragCameraManager().onMouseUp();
+                    self.getObjectScene().getPickManager().onMouseUp(e);
                     setTimeout(function () {
                         self.getObjectScene().getDragObjectsManager().onMouseUp();
                     }, 30);

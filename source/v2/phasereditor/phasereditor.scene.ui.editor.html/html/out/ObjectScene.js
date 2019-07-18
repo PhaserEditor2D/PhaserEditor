@@ -116,12 +116,15 @@ var PhaserEditor2D;
         function PickObjectManager() {
         }
         PickObjectManager.prototype.onMouseDown = function (e) {
+            this._down = e;
+        };
+        PickObjectManager.prototype.onMouseUp = function (e) {
+            if (!this._down || this._down.x !== e.x || this._down.y !== e.y || !PhaserEditor2D.isLeftButton(this._down)) {
+                return;
+            }
             var editor = PhaserEditor2D.Editor.getInstance();
             var scene = editor.getObjectScene();
             var pointer = scene.input.activePointer;
-            if (!PhaserEditor2D.isLeftButton(e)) {
-                return;
-            }
             var result = editor.hitTestPointer(scene, pointer);
             consoleLog(result);
             var gameObj = result.pop();
@@ -152,7 +155,13 @@ var PhaserEditor2D;
             return this.getScene().input.activePointer;
         };
         DragObjectsManager.prototype.onMouseDown = function (e) {
-            if (!PhaserEditor2D.isLeftButton(e) || this.getSelectedObjects().length === 0) {
+            if (!PhaserEditor2D.isLeftButton(e)) {
+                return;
+            }
+            var set1 = new Phaser.Structs.Set(PhaserEditor2D.Editor.getInstance().hitTestPointer(this.getScene(), this.getPointer()));
+            var set2 = new Phaser.Structs.Set(this.getSelectedObjects());
+            var hit = set1.intersect(set2).size > 0;
+            if (!hit) {
                 return;
             }
             if (this._filterPaintOnMove) {
@@ -184,6 +193,9 @@ var PhaserEditor2D;
                 var obj = _a[_i];
                 var sprite = obj;
                 var data = sprite.getData("DragObjectsManager");
+                if (!data) {
+                    continue;
+                }
                 var x = PhaserEditor2D.Editor.getInstance().snapValueX(data.initX + dx);
                 var y = PhaserEditor2D.Editor.getInstance().snapValueX(data.initY + dy);
                 if (sprite.parentContainer) {
@@ -211,6 +223,13 @@ var PhaserEditor2D;
             if (this._startPoint !== null && this._dragging) {
                 this._dragging = false;
                 this._startPoint = null;
+                for (var _i = 0, _a = this.getSelectedObjects(); _i < _a.length; _i++) {
+                    var obj = _a[_i];
+                    var sprite = obj;
+                    if (sprite.data) {
+                        sprite.data.remove("DragObjectsManager");
+                    }
+                }
                 PhaserEditor2D.Editor.getInstance().sendMessage(PhaserEditor2D.BuildMessage.SetTransformProperties(this.getSelectedObjects()));
             }
             PhaserEditor2D.Editor.getInstance().repaint();
