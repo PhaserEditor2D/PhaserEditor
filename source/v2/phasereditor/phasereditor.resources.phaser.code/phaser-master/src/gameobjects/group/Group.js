@@ -349,14 +349,15 @@ var Group = new Class({
         var randomKey = GetFastValue(options, 'randomKey', false);
         var randomFrame = GetFastValue(options, 'randomFrame', false);
         var yoyo = GetFastValue(options, 'yoyo', false);
-        var quantity = GetFastValue(options, 'frameQuantity', 1);
+        var quantity = GetFastValue(options, 'quantity', false);
+        var frameQuantity = GetFastValue(options, 'frameQuantity', 1);
         var max = GetFastValue(options, 'max', 0);
 
-        //  If a grid is set we use that to override the quantity?
+        //  If a quantity value is set we use that to override the frameQuantity
 
         var range = Range(key, frame, {
             max: max,
-            qty: quantity,
+            qty: (quantity) ? quantity : frameQuantity,
             random: randomKey,
             randomB: randomFrame,
             repeat: repeat,
@@ -1133,22 +1134,7 @@ var Group = new Class({
             return;
         }
 
-        if (destroyChildren)
-        {
-            var children = this.children;
-
-            for (var i = 0; i < children.size; i++)
-            {
-                var gameObject = children.entries[i];
-
-                //  Remove the event hook first or it'll go all recursive hell on us
-                gameObject.off(Events.DESTROY, this.remove, this);
-
-                gameObject.destroy();
-            }
-        }
-
-        this.children.clear();
+        this.clear(false, destroyChildren);
 
         this.scene = undefined;
         this.children = undefined;

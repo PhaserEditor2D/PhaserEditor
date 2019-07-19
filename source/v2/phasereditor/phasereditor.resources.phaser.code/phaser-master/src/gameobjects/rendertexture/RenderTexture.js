@@ -260,6 +260,17 @@ var RenderTexture = new Class({
          */
         this.gl = null;
 
+        /**
+         * A reference to the WebGLTexture that is being rendered to in a WebGL Context.
+         *
+         * @name Phaser.GameObjects.RenderTexture#glTexture
+         * @type {WebGLTexture}
+         * @default null
+         * @readonly
+         * @since 3.19.0
+         */
+        this.glTexture = null;
+
         var renderer = this.renderer;
 
         if (renderer.type === CONST.WEBGL)
@@ -267,8 +278,9 @@ var RenderTexture = new Class({
             var gl = renderer.gl;
 
             this.gl = gl;
+            this.glTexture = this.frame.source.glTexture;
             this.drawGameObject = this.batchGameObjectWebGL;
-            this.framebuffer = renderer.createFramebuffer(width, height, this.frame.source.glTexture, false);
+            this.framebuffer = renderer.createFramebuffer(width, height, this.glTexture, false);
         }
         else if (renderer.type === CONST.CANVAS)
         {
@@ -333,7 +345,8 @@ var RenderTexture = new Class({
         {
             if (this.frame.name === '__BASE')
             {
-                //  Tesize the texture
+                //  Resize the texture
+
                 this.canvas.width = width;
                 this.canvas.height = height;
 
@@ -344,10 +357,14 @@ var RenderTexture = new Class({
                     this.renderer.deleteTexture(this.frame.source.glTexture);
                     this.renderer.deleteFramebuffer(this.framebuffer);
 
-                    this.frame.source.glTexture = this.renderer.createTexture2D(0, gl.NEAREST, gl.NEAREST, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.RGBA, null, width, height, false);
-                    this.framebuffer = this.renderer.createFramebuffer(width, height, this.frame.source.glTexture, false);
+                    var glTexture = this.renderer.createTexture2D(0, gl.NEAREST, gl.NEAREST, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE, gl.RGBA, null, width, height, false);
 
-                    this.frame.glTexture = this.frame.source.glTexture;
+                    this.framebuffer = this.renderer.createFramebuffer(width, height, glTexture, false);
+
+                    this.frame.source.isRenderTexture = true;
+
+                    this.frame.glTexture = glTexture;
+                    this.glTexture = glTexture;
                 }
 
                 this.frame.source.width = width;
@@ -1000,8 +1017,6 @@ var RenderTexture = new Class({
      * @param {number} [y=0] - The y position to offset the Game Object by.
      * @param {number} [alpha] - The alpha to use. If not specified it uses the `globalAlpha` property.
      * @param {number} [tint] - The tint color to use. If not specified it uses the `globalTint` property.
-     * 
-     * @return {boolean} `true` if the frame was found and drawn, otherwise `false`.
      */
     batchTextureFrameKey: function (key, frame, x, y, alpha, tint)
     {
@@ -1054,6 +1069,114 @@ var RenderTexture = new Class({
     },
 
     /**
+     * Takes a snapshot of the given area of this Render Texture.
+     * 
+     * The snapshot is taken immediately.
+     * 
+     * To capture the whole Render Texture see the `snapshot` method. To capture a specific pixel, see `snapshotPixel`.
+     * 
+     * Snapshots work by using the WebGL `readPixels` feature to grab every pixel from the frame buffer into an ArrayBufferView.
+     * It then parses this, copying the contents to a temporary Canvas and finally creating an Image object from it,
+     * which is the image returned to the callback provided. All in all, this is a computationally expensive and blocking process,
+     * which gets more expensive the larger the canvas size gets, so please be careful how you employ this in your game.
+     *
+     * @method Phaser.GameObjects.RenderTexture#snapshotArea
+     * @since 3.19.0
+     *
+     * @param {integer} x - The x coordinate to grab from.
+     * @param {integer} y - The y coordinate to grab from.
+     * @param {integer} width - The width of the area to grab.
+     * @param {integer} height - The height of the area to grab.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
+     * @param {string} [type='image/png'] - The format of the image to create, usually `image/png` or `image/jpeg`.
+     * @param {number} [encoderOptions=0.92] - The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`.
+     *
+     * @return {this} This Render Texture instance.
+     */
+    snapshotArea: function (x, y, width, height, callback, type, encoderOptions)
+    {
+        if (this.gl)
+        {
+            this.renderer.snapshotFramebuffer(this.framebuffer, this.width, this.height, callback, false, x, y, width, height, type, encoderOptions);
+        }
+        else
+        {
+            this.renderer.snapshotCanvas(this.canvas, callback, false, x, y, width, height, type, encoderOptions);
+        }
+
+        return this;
+    },
+
+    /**
+     * Takes a snapshot of the whole of this Render Texture.
+     * 
+     * The snapshot is taken immediately.
+     * 
+     * To capture just a portion of the Render Texture see the `snapshotArea` method. To capture a specific pixel, see `snapshotPixel`.
+     * 
+     * Snapshots work by using the WebGL `readPixels` feature to grab every pixel from the frame buffer into an ArrayBufferView.
+     * It then parses this, copying the contents to a temporary Canvas and finally creating an Image object from it,
+     * which is the image returned to the callback provided. All in all, this is a computationally expensive and blocking process,
+     * which gets more expensive the larger the canvas size gets, so please be careful how you employ this in your game.
+     *
+     * @method Phaser.GameObjects.RenderTexture#snapshot
+     * @since 3.19.0
+     *
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot image is created.
+     * @param {string} [type='image/png'] - The format of the image to create, usually `image/png` or `image/jpeg`.
+     * @param {number} [encoderOptions=0.92] - The image quality, between 0 and 1. Used for image formats with lossy compression, such as `image/jpeg`.
+     *
+     * @return {this} This Render Texture instance.
+     */
+    snapshot: function (callback, type, encoderOptions)
+    {
+        if (this.gl)
+        {
+            this.renderer.snapshotFramebuffer(this.framebuffer, this.width, this.height, callback, false, 0, 0, this.width, this.height, type, encoderOptions);
+        }
+        else
+        {
+            this.renderer.snapshotCanvas(this.canvas, callback, false, 0, 0, this.width, this.height, type, encoderOptions);
+        }
+
+        return this;
+    },
+
+    /**
+     * Takes a snapshot of the given pixel from this Render Texture.
+     * 
+     * The snapshot is taken immediately.
+     * 
+     * To capture the whole Render Texture see the `snapshot` method. To capture a specific portion, see `snapshotArea`.
+     * 
+     * Unlike the other two snapshot methods, this one will send your callback a `Color` object containing the color data for
+     * the requested pixel. It doesn't need to create an internal Canvas or Image object, so is a lot faster to execute,
+     * using less memory, than the other snapshot methods.
+     *
+     * @method Phaser.GameObjects.RenderTexture#snapshotPixel
+     * @since 3.19.0
+     *
+     * @param {integer} x - The x coordinate of the pixel to get.
+     * @param {integer} y - The y coordinate of the pixel to get.
+     * @param {Phaser.Types.Renderer.Snapshot.SnapshotCallback} callback - The Function to invoke after the snapshot pixel data is extracted.
+     *
+     * @return {this} This Render Texture instance.
+     */
+    snapshotPixel: function (x, y, callback)
+    {
+        if (this.gl)
+        {
+            this.renderer.snapshotFramebuffer(this.framebuffer, this.width, this.height, callback, true, x, y);
+        }
+        else
+        {
+            this.renderer.snapshotCanvas(this.canvas, callback, true, x, y);
+        }
+
+        return this;
+    },
+
+    /**
      * Internal destroy handler, called as part of the destroy process.
      *
      * @method Phaser.GameObjects.RenderTexture#preDestroy
@@ -1078,6 +1201,7 @@ var RenderTexture = new Class({
             this.context = null;
             this.framebuffer = null;
             this.texture = null;
+            this.glTexture = null;
         }
     }
 

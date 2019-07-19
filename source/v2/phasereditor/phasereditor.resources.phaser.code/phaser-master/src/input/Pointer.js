@@ -439,13 +439,20 @@ var Pointer = new Class({
         this.active = (id === 0) ? true : false;
 
         /**
-         * Time when this Pointer was most recently updated by a DOM Event.
+         * Is this pointer Pointer Locked?
+         * 
+         * Only a mouse pointer can be locked and it only becomes locked when requested via
+         * the browsers Pointer Lock API.
+         * 
+         * You can request this by calling the `this.input.mouse.requestPointerLock()` method from
+         * a `pointerdown` or `pointerup` event handler.
          *
-         * @name Phaser.Input.Pointer#time
-         * @type {number}
-         * @since 3.16.0
+         * @name Phaser.Input.Pointer#locked
+         * @readonly
+         * @type {boolean}
+         * @since 3.19.0
          */
-        this.time = 0;
+        this.locked = false;
 
         /**
          * The horizontal scroll amount that occurred due to the user moving a mouse wheel or similar input device.
@@ -643,11 +650,11 @@ var Pointer = new Class({
         //  Sets the local x/y properties
         this.manager.transformPointer(this, event.pageX, event.pageY, true);
 
-        if (this.manager.mouse.locked)
+        if (this.locked)
         {
             //  Multiple DOM events may occur within one frame, but only one Phaser event will fire
-            this.movementX += event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-            this.movementY += event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+            this.movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+            this.movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
         }
 
         this.moveTime = event.timeStamp;
@@ -716,7 +723,7 @@ var Pointer = new Class({
         this.primaryDown = true;
         this.downX = this.x;
         this.downY = this.y;
-        this.downTime = touch.timeStamp;
+        this.downTime = event.timeStamp;
 
         this.isDown = true;
 
@@ -743,7 +750,7 @@ var Pointer = new Class({
         //  Sets the local x/y properties
         this.manager.transformPointer(this, touch.pageX, touch.pageY, true);
 
-        this.moveTime = touch.timeStamp;
+        this.moveTime = event.timeStamp;
 
         this.wasTouch = true;
 
@@ -774,7 +781,7 @@ var Pointer = new Class({
         this.primaryDown = false;
         this.upX = this.x;
         this.upY = this.y;
-        this.upTime = touch.timeStamp;
+        this.upTime = event.timeStamp;
 
         this.isDown = false;
 
@@ -810,7 +817,7 @@ var Pointer = new Class({
         this.primaryDown = false;
         this.upX = this.x;
         this.upY = this.y;
-        this.upTime = touch.timeStamp;
+        this.upTime = event.timeStamp;
 
         this.isDown = false;
 
@@ -1054,7 +1061,7 @@ var Pointer = new Class({
     {
         if (this.isDown)
         {
-            return (this.time - this.downTime);
+            return (this.manager.time - this.downTime);
         }
         else
         {
@@ -1197,6 +1204,25 @@ var Pointer = new Class({
         set: function (value)
         {
             this.position.y = value;
+        }
+
+    },
+
+    /**
+     * Time when this Pointer was most recently updated by a DOM Event.
+     * This comes directly from the `event.timeStamp` property.
+     * If no event has yet taken place, it will return zero.
+     *
+     * @name Phaser.Input.Pointer#time
+     * @type {number}
+     * @readonly
+     * @since 3.16.0
+     */
+    time: {
+
+        get: function ()
+        {
+            return (this.event) ? this.event.timeStamp : 0;
         }
 
     }

@@ -334,8 +334,8 @@
             "orig": "src/animation/animation repeat event.js",
             "dst": "animation repeat event.js"
           },
-          {"orig": "assets/animations/mummy37x45.png"},
-          {"orig": "assets/sprites/poo.png"}
+          {"orig": "assets/sprites/poo.png"},
+          {"orig": "assets/animations/mummy37x45.png"}
         ]
       },
       {
@@ -1136,6 +1136,17 @@
     "subCategories": [],
     "examples": [
       {
+        "mainFile": "src/bugs/anim remove.js",
+        "map": [
+          {
+            "orig": "src/bugs/anim remove.js",
+            "dst": "anim remove.js"
+          },
+          {"orig": "assets/pics/ayu2.png"},
+          {"orig": "assets/pics/ayu.png"}
+        ]
+      },
+      {
         "mainFile": "src/bugs/ap origin.js",
         "map": [
           {
@@ -1219,6 +1230,13 @@
           {"orig": "assets/sprites/advanced_wars_land.png"},
           {"orig": "assets/sprites/mushroom2.png"}
         ]
+      },
+      {
+        "mainFile": "src/bugs/destroy.js",
+        "map": [{
+          "orig": "src/bugs/destroy.js",
+          "dst": "destroy.js"
+        }]
       },
       {
         "mainFile": "src/bugs/dom resize.js",
@@ -1339,6 +1357,21 @@
             "dst": "order.js"
           },
           {"orig": "assets/sprites/chunk.png"}
+        ]
+      },
+      {
+        "mainFile": "src/bugs/pivot.js",
+        "map": [
+          {
+            "orig": "src/bugs/pivot.js",
+            "dst": "pivot.js"
+          },
+          {"orig": "assets/tests/zombie-no-pivot.png"},
+          {"orig": "assets/tests/zombie-no-pivot.json"},
+          {"orig": "assets/tests/zombie-pivot.png"},
+          {"orig": "assets/tests/zombie-pivot.json"},
+          {"orig": "assets/tests/zombie-pivot-absolute.json"},
+          {"orig": "assets/tests/zombie-pivot-absolute.png"}
         ]
       },
       {
@@ -7497,6 +7530,26 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/game objects/shaders/buffer a.js",
+            "map": [
+              {
+                "orig": "src/game objects/shaders/buffer a.js",
+                "dst": "buffer a.js"
+              },
+              {"orig": "assets/shaders/bundle.glsl.js"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shaders/buffer b.js",
+            "map": [
+              {
+                "orig": "src/game objects/shaders/buffer b.js",
+                "dst": "buffer b.js"
+              },
+              {"orig": "assets/shaders/bundle.glsl.js"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/shaders/change shader texture.js",
             "map": [
               {
@@ -7518,6 +7571,16 @@
                 "dst": "load shader.js"
               },
               {"orig": "assets/shaders/shader0.frag"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shaders/save shader as texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/shaders/save shader as texture.js",
+                "dst": "save shader as texture.js"
+              },
+              {"orig": "assets/shaders/bundle2.glsl.js"}
             ]
           },
           {
@@ -7553,6 +7616,16 @@
             ]
           },
           {
+            "mainFile": "src/game objects/shaders/shader mass texture test.js",
+            "map": [
+              {
+                "orig": "src/game objects/shaders/shader mass texture test.js",
+                "dst": "shader mass texture test.js"
+              },
+              {"orig": "assets/shaders/bundle.glsl.js"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/shaders/shader transforms.js",
             "map": [
               {
@@ -7561,6 +7634,18 @@
               },
               {"orig": "assets/pics/birdy.png"},
               {"orig": "assets/shaders/marble.glsl.js"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/shaders/using a shader as a buffer.js",
+            "map": [
+              {
+                "orig": "src/game objects/shaders/using a shader as a buffer.js",
+                "dst": "using a shader as a buffer.js"
+              },
+              {"orig": "assets/sprites/phaser3-logo-small.png"},
+              {"orig": "assets/shaders/bundle.glsl.js"},
+              {"orig": "assets/shaders/bundle2.glsl.js"}
             ]
           }
         ]
@@ -10839,36 +10924,6 @@
         "subCategories": [],
         "examples": [
           {
-            "mainFile": "src/input/dom events/add move callback.js",
-            "map": [
-              {
-                "orig": "src/input/dom events/add move callback.js",
-                "dst": "add move callback.js"
-              },
-              {"orig": "assets/sprites/chunk.png"}
-            ]
-          },
-          {
-            "mainFile": "src/input/dom events/add move callback loop.js",
-            "map": [
-              {
-                "orig": "src/input/dom events/add move callback loop.js",
-                "dst": "add move callback loop.js"
-              },
-              {"orig": "assets/sprites/chunk.png"}
-            ]
-          },
-          {
-            "mainFile": "src/input/dom events/add up callback.js",
-            "map": [
-              {
-                "orig": "src/input/dom events/add up callback.js",
-                "dst": "add up callback.js"
-              },
-              {"orig": "assets/pics/lance-overdose-loader-eye.png"}
-            ]
-          },
-          {
             "mainFile": "src/input/dom events/on canvas out.js",
             "map": [
               {
@@ -11370,6 +11425,16 @@
                 "dst": "cursor keys.js"
               },
               {"orig": "assets/sprites/block.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/keyboard/cursors time.js",
+            "map": [
+              {
+                "orig": "src/input/keyboard/cursors time.js",
+                "dst": "cursors time.js"
+              },
+              {"orig": "assets/sprites/elephant.png"}
             ]
           },
           {
@@ -12046,6 +12111,16 @@
               {
                 "orig": "src/input/pointer/pointer buttons debug.js",
                 "dst": "pointer buttons debug.js"
+              },
+              {"orig": "assets/sprites/balls.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/pointer/pointer debug.js",
+            "map": [
+              {
+                "orig": "src/input/pointer/pointer debug.js",
+                "dst": "pointer debug.js"
               },
               {"orig": "assets/sprites/balls.png"}
             ]
@@ -14434,6 +14509,17 @@
             ]
           },
           {
+            "mainFile": "src/physics/arcade/bullets group.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/bullets group.js",
+                "dst": "bullets group.js"
+              },
+              {"orig": "assets/sprites/bullets/bullet7.png"},
+              {"orig": "assets/sprites/bsquadron1.png"}
+            ]
+          },
+          {
             "mainFile": "src/physics/arcade/circular body.js",
             "map": [
               {
@@ -16544,16 +16630,70 @@
     "subCategories": [],
     "examples": [
       {
+        "mainFile": "src/spine/add hit area.js",
+        "map": [
+          {
+            "orig": "src/spine/add hit area.js",
+            "dst": "add hit area.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/spine/demos/demos.json"},
+          {"orig": "assets/spine/demos/atlas1.atlas"},
+          {"orig": "assets/spine/demos/atlas1.png"}
+        ]
+      },
+      {
+        "mainFile": "src/spine/arcade physics spine body.js",
+        "map": [
+          {
+            "orig": "src/spine/arcade physics spine body.js",
+            "dst": "arcade physics spine body.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/spine/coin/coin-pro.json"},
+          {"orig": "assets/spine/coin/coin.atlas"},
+          {"orig": "assets/spine/coin/coin.png"}
+        ]
+      },
+      {
         "mainFile": "src/spine/basic spineboy.js",
         "map": [
           {
             "orig": "src/spine/basic spineboy.js",
             "dst": "basic spineboy.js"
           },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
+          {"orig": "assets/animations/spine/spineboy.png"}
+        ]
+      },
+      {
+        "mainFile": "src/spine/batch test.js",
+        "map": [
+          {
+            "orig": "src/spine/batch test.js",
+            "dst": "batch test.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
+          {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "assets/animations/spine/spineboy.png"}
+        ]
+      },
+      {
+        "mainFile": "src/spine/camera pipeline test.js",
+        "map": [
+          {
+            "orig": "src/spine/camera pipeline test.js",
+            "dst": "camera pipeline test.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16572,17 +16712,43 @@
         ]
       },
       {
+        "mainFile": "src/spine/destroy test.js",
+        "map": [
+          {
+            "orig": "src/spine/destroy test.js",
+            "dst": "destroy test.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/spine/coin/coin-pro.json"},
+          {"orig": "assets/spine/coin/coin.atlas"},
+          {"orig": "assets/spine/coin/coin.png"}
+        ]
+      },
+      {
         "mainFile": "src/spine/draw debug bounds.js",
         "map": [
           {
             "orig": "src/spine/draw debug bounds.js",
             "dst": "draw debug bounds.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpineWebGLPlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/animations/spine/spineboy.png"}
+        ]
+      },
+      {
+        "mainFile": "src/spine/image changes.js",
+        "map": [
+          {
+            "orig": "src/spine/image changes.js",
+            "dst": "image changes.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/spine/demos/demos.json"},
+          {"orig": "assets/spine/demos/atlas1.atlas"},
+          {"orig": "assets/spine/demos/atlas1.png"}
         ]
       },
       {
@@ -17667,6 +17833,16 @@
         ]
       },
       {
+        "mainFile": "src/tweens/from and to.js",
+        "map": [
+          {
+            "orig": "src/tweens/from and to.js",
+            "dst": "from and to.js"
+          },
+          {"orig": "assets/pics/makoto.png"}
+        ]
+      },
+      {
         "mainFile": "src/tweens/global time scale.js",
         "map": [
           {
@@ -17983,6 +18159,26 @@
           {
             "orig": "src/tweens/stagger.js",
             "dst": "stagger.js"
+          },
+          {"orig": "assets/sprites/block.png"}
+        ]
+      },
+      {
+        "mainFile": "src/tweens/stagger compare.js",
+        "map": [
+          {
+            "orig": "src/tweens/stagger compare.js",
+            "dst": "stagger compare.js"
+          },
+          {"orig": "assets/sprites/50x50-white.png"}
+        ]
+      },
+      {
+        "mainFile": "src/tweens/stagger delay.js",
+        "map": [
+          {
+            "orig": "src/tweens/stagger delay.js",
+            "dst": "stagger delay.js"
           },
           {"orig": "assets/sprites/block.png"}
         ]

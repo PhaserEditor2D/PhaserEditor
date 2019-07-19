@@ -544,14 +544,32 @@ var InputPlugin = new Class({
             return false;
         }
 
-        //  So the Gamepad and Keyboard update, regardless
+        //  The plugins should update every frame, regardless if there has been
+        //  any DOM input events or not (such as the Gamepad and Keyboard)
         this.pluginEvents.emit(Events.UPDATE, time, delta);
 
-        //  Nothing else? Let's leave
-        if (this._list.length === 0 || this._updatedThisFrame)
+        //  We can leave now if we've already updated once this frame via the immediate DOM event handlers
+        if (this._updatedThisFrame)
         {
             this._updatedThisFrame = false;
 
+            return false;
+        }
+
+        var i;
+        var manager = this.manager;
+
+        var pointers = manager.pointers;
+        var pointersTotal = manager.pointersTotal;
+
+        for (i = 0; i < pointersTotal; i++)
+        {
+            pointers[i].updateMotion();
+        }
+
+        //  No point going any further if there aren't any interactive objects
+        if (this._list.length === 0)
+        {
             return false;
         }
 
@@ -578,15 +596,12 @@ var InputPlugin = new Class({
         }
 
         //  We got this far? Then we should poll for movement
-        var manager = this.manager;
-
-        var pointers = manager.pointers;
-        var pointersTotal = manager.pointersTotal;
         var captured = false;
 
-        for (var i = 0; i < pointersTotal; i++)
+        for (i = 0; i < pointersTotal; i++)
         {
             var total = 0;
+
             var pointer = pointers[i];
 
             //  Always reset this array
@@ -969,7 +984,7 @@ var InputPlugin = new Class({
         }
 
         //  If they released outside the canvas, but pressed down inside it, we'll still dispatch the event.
-        if (!aborted)
+        if (!aborted && this.manager)
         {
             if (pointer.downElement === this.manager.game.canvas)
             {
@@ -1921,7 +1936,7 @@ var InputPlugin = new Class({
         }
 
         //  If they released outside the canvas, but pressed down inside it, we'll still dispatch the event.
-        if (!aborted)
+        if (!aborted && this.manager)
         {
             if (pointer.upElement === this.manager.game.canvas)
             {
@@ -2101,6 +2116,7 @@ var InputPlugin = new Class({
         var cursor = false;
         var useHandCursor = false;
         var pixelPerfect = false;
+        var customHitArea = true;
 
         //  Config object?
         if (IsPlainObject(shape))
@@ -2127,6 +2143,7 @@ var InputPlugin = new Class({
             if (!shape || !callback)
             {
                 this.setHitAreaFromTexture(gameObjects);
+                customHitArea = false;
             }
         }
         else if (typeof shape === 'function' && !callback)
@@ -2147,7 +2164,7 @@ var InputPlugin = new Class({
 
             var io = (!gameObject.input) ? CreateInteractiveObject(gameObject, shape, callback) : gameObject.input;
 
-            io.customHitArea = true;
+            io.customHitArea = customHitArea;
             io.dropZone = dropZone;
             io.cursor = (useHandCursor) ? 'pointer' : cursor;
 

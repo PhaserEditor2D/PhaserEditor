@@ -289,6 +289,10 @@ var TextureManager = new Class({
      * Gets an existing texture frame and converts it into a base64 encoded image and returns the base64 data.
      * 
      * You can also provide the image type and encoder options.
+     * 
+     * This will only work with bitmap based texture frames, such as those created from Texture Atlases.
+     * It will not work with GL Texture objects, such as Shaders, or Render Textures. For those please
+     * see the WebGL Snapshot function instead.
      *
      * @method Phaser.Textures.TextureManager#getBase64
      * @since 3.12.0
@@ -309,7 +313,11 @@ var TextureManager = new Class({
 
         var textureFrame = this.getFrame(key, frame);
 
-        if (textureFrame)
+        if (textureFrame && (textureFrame.source.isRenderTexture || textureFrame.source.isGLTexture))
+        {
+            console.warn('Cannot getBase64 from WebGL Texture');
+        }
+        else if (textureFrame)
         {
             var cd = textureFrame.canvasData;
 
@@ -363,6 +371,38 @@ var TextureManager = new Class({
             {
                 texture.setDataSource(dataSource);
             }
+
+            this.emit(Events.ADD, key, texture);
+        }
+        
+        return texture;
+    },
+
+    /**
+     * Takes a WebGL Texture and creates a Phaser Texture from it, which is added to the Texture Manager using the given key.
+     * 
+     * This allows you to then use the Texture as a normal texture for texture based Game Objects like Sprites.
+     * 
+     * This is a WebGL only feature.
+     *
+     * @method Phaser.Textures.TextureManager#addGLTexture
+     * @fires Phaser.Textures.Events#ADD
+     * @since 3.19.0
+     *
+     * @param {string} key - The unique string-based key of the Texture.
+     * @param {WebGLTexture} glTexture - The source Render Texture.
+     *
+     * @return {?Phaser.Textures.Texture} The Texture that was created, or `null` if the key is already in use.
+     */
+    addGLTexture: function (key, glTexture, width, height)
+    {
+        var texture = null;
+
+        if (this.checkKey(key))
+        {
+            texture = this.create(key, glTexture, width, height);
+
+            texture.add('__BASE', 0, 0, 0, width, height);
 
             this.emit(Events.ADD, key, texture);
         }
