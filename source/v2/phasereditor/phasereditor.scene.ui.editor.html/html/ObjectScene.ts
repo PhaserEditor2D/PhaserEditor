@@ -287,18 +287,19 @@ namespace PhaserEditor2D {
         }
 
         onMouseUp() {
+            
             if (this._startPoint !== null && this._dragging) {
                 this._dragging = false;
                 this._startPoint = null;
 
-                for (let obj of this.getSelectedObjects()) {
-                    const sprite: Phaser.GameObjects.Sprite = <any>obj;
-                    if (sprite.data) {
-                        sprite.data.remove("DragObjectsManager");
-                    }
-                }
-
                 Editor.getInstance().sendMessage(BuildMessage.SetTransformProperties(this.getSelectedObjects()));
+            }
+
+            for (let obj of this.getSelectedObjects()) {
+                const sprite: Phaser.GameObjects.Sprite = <any>obj;
+                if (sprite.data) {
+                    sprite.data.remove("DragObjectsManager");
+                }
             }
 
             Editor.getInstance().repaint();

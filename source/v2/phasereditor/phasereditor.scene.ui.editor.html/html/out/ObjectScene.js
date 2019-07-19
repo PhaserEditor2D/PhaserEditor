@@ -223,14 +223,14 @@ var PhaserEditor2D;
             if (this._startPoint !== null && this._dragging) {
                 this._dragging = false;
                 this._startPoint = null;
-                for (var _i = 0, _a = this.getSelectedObjects(); _i < _a.length; _i++) {
-                    var obj = _a[_i];
-                    var sprite = obj;
-                    if (sprite.data) {
-                        sprite.data.remove("DragObjectsManager");
-                    }
-                }
                 PhaserEditor2D.Editor.getInstance().sendMessage(PhaserEditor2D.BuildMessage.SetTransformProperties(this.getSelectedObjects()));
+            }
+            for (var _i = 0, _a = this.getSelectedObjects(); _i < _a.length; _i++) {
+                var obj = _a[_i];
+                var sprite = obj;
+                if (sprite.data) {
+                    sprite.data.remove("DragObjectsManager");
+                }
             }
             PhaserEditor2D.Editor.getInstance().repaint();
         };
