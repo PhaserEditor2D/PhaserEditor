@@ -82,20 +82,20 @@ namespace PhaserEditor2D {
                     case "TileSprite":
                         if (Editor.getInstance().isWebGL()) {
                             //obj.setInteractive(TileSpriteCallback);
-                            obj.setInteractive(CreatePixelPerfectCanvasTextureHandler_WebGL());
+                            obj.setInteractive(getAlpha_RenderTexture);
                         } else {
-                            obj.setInteractive(CreatePixelPerfectCanvasTextureHandler());
+                            obj.setInteractive(getAlpha_CanvasTexture);
                         }
                         break;
                     case "BitmapText":
                     case "DynamicBitmapText":
-                        obj.setInteractive(BitmapTextHitHandler);
+                        obj.setInteractive(inBounds_BitmapText);
                         break;
                     case "Text":
                         obj.setInteractive();
                         break;
                     default:
-                        obj.setInteractive(PixelPerfectHandler);
+                        obj.setInteractive(getAlpha_SharedTexture);
                         break;
                 }
             }
@@ -151,7 +151,7 @@ namespace PhaserEditor2D {
         }
     }
 
-    function BitmapTextHitHandler(hitArea: any, x: number, y: number, gameObject: Phaser.GameObjects.BitmapText) {
+    function inBounds_BitmapText(hitArea: any, x: number, y: number, gameObject: Phaser.GameObjects.BitmapText) {
         // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
         let w = gameObject.width / gameObject.scaleX;
         let h = gameObject.height / gameObject.scaleY;
@@ -159,68 +159,60 @@ namespace PhaserEditor2D {
         return x >= 0 && y >= 0 && x <= w && y <= h;
     }
 
-    function TileSpriteCallback(hitArea: any, x: integer, y: integer, obj: Phaser.GameObjects.TileSprite) {
+    function inBounds_TileSprite(hitArea: any, x: integer, y: integer, obj: Phaser.GameObjects.TileSprite) {
         return x >= 0 && y >= 0 && x <= obj.width && y <= obj.height;
     }
 
     // this is not working at this moment!
-    function CreatePixelPerfectCanvasTextureHandler_WebGL() {
+    function getAlpha_RenderTexture(hitArea: any, x: number, y: number, sprite: Phaser.GameObjects.Sprite) {
+        var hitBounds = x >= 0 && y >= 0 && x <= sprite.width && y <= sprite.height;
 
-        return function (hitArea: any, x: number, y: number, sprite: Phaser.GameObjects.TileSprite) {
-            var hitBounds = x >= 0 && y >= 0 && x <= sprite.width && y <= sprite.height;
+        if (!hitBounds) {
+            return false;
+        }
 
-            if (!hitBounds) {
-                return false;
-            }
+        const scene = Editor.getInstance().getObjectScene();
 
-            const scene = Editor.getInstance().getObjectScene();
+        const renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, sprite.displayWidth, sprite.displayHeight);
+        renderTexture.setOrigin(0, 0);
+        renderTexture.flipX = sprite.flipX;
+        renderTexture.flipY = sprite.flipY;
+        const angle = sprite.angle;
+        sprite.angle = 0;
+        renderTexture.draw([sprite], sprite.displayOriginX * sprite.scaleX, sprite.displayOriginY * sprite.scaleY);
+        sprite.angle = angle;
+        const colorArray: Phaser.Display.Color[] = [];
+        x = x * sprite.scaleX;
+        y = y * sprite.scaleY;
+        renderTexture.snapshotPixel(x, y, (function (colorArray) {
+            return function (c: Phaser.Display.Color) {
+                colorArray[0] = c;
+            };
+        })(colorArray));
 
-            const renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, sprite.displayWidth, sprite.displayHeight);
-            renderTexture.setOrigin(0, 0);
-            renderTexture.flipX = sprite.flipX;
-            renderTexture.flipY = sprite.flipY;
-            const angle = sprite.angle;
-            sprite.angle = 0;
-            renderTexture.draw([sprite], sprite.displayOriginX * sprite.scaleX, sprite.displayOriginY * sprite.scaleY);
-            sprite.angle = angle;
-            const colorArray: Phaser.Display.Color[] = [];
-            x = x * sprite.scaleX;
-            y = y * sprite.scaleY;
-            renderTexture.snapshotPixel(x, y, (function (colorArray) {
-                return function (c : Phaser.Display.Color) {
-                    colorArray[0] = c;
-                };
-            })(colorArray));
-            
-            //Editor.getInstance().getObjectScene().sys.displayList.add(renderTexture);
-            renderTexture.destroy();
-            
-            const color = colorArray[0];
-            const alpha = color.alpha;
+        //Editor.getInstance().getObjectScene().sys.displayList.add(renderTexture);
+        renderTexture.destroy();
 
-            return alpha > 0;
-        };
+        const color = colorArray[0];
+        const alpha = color.alpha;
 
+        return alpha > 0;
     }
 
 
 
-    function CreatePixelPerfectCanvasTextureHandler() {
+    function getAlpha_CanvasTexture(hitArea: any, x: number, y: number, sprite: any) {
+        if (sprite.flipX) {
+            x = 2 * sprite.displayOriginX - x;
+        }
 
-        return function (hitArea: any, x: number, y: number, sprite: any) {
-            if (sprite.flipX) {
-                x = 2 * sprite.displayOriginX - x;
-            }
+        if (sprite.flipY) {
+            y = 2 * sprite.displayOriginY - y;
+        }
 
-            if (sprite.flipY) {
-                y = 2 * sprite.displayOriginY - y;
-            }
+        var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
 
-            var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
-
-            return alpha > 0;
-        };
-
+        return alpha > 0;
     }
 
     function getCanvasTexturePixelAlpha(x: number, y: number, canvasTexture: Phaser.Textures.CanvasTexture) {
@@ -234,7 +226,7 @@ namespace PhaserEditor2D {
         return 0;
     }
 
-    function PixelPerfectHandler(hitArea, x, y, sprite: Phaser.GameObjects.Sprite) {
+    function getAlpha_SharedTexture(hitArea, x, y, sprite: Phaser.GameObjects.Sprite) {
 
         if (sprite.flipX) {
             x = 2 * sprite.displayOriginX - x;
