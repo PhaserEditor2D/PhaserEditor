@@ -43,6 +43,10 @@ var PhaserEditor2D;
                 var sprite = list_1[_i];
                 var flipX = sprite.flipX ? -1 : 1;
                 var flipY = sprite.flipY ? -1 : 1;
+                if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                    flipX = 1;
+                    flipY = 1;
+                }
                 angle += this.objectGlobalAngle(sprite);
                 var width = sprite.width * flipX;
                 var height = sprite.height * flipY;
@@ -112,6 +116,10 @@ var PhaserEditor2D;
                 worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
                 var flipX = sprite.flipX ? -1 : 1;
                 var flipY = sprite.flipY ? -1 : 1;
+                if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                    flipX = 1;
+                    flipY = 1;
+                }
                 var dx = (localPos.x - initLocalPos.x) * flipX;
                 var dy = (localPos.y - initLocalPos.y) * flipY;
                 var width = data.initWidth - sprite.displayOriginX;
