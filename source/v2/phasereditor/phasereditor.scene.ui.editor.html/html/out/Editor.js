@@ -47,12 +47,15 @@ var PhaserEditor2D;
                     return;
                 }
                 if (self.getToolScene().containsPointer()) {
-                    self.getToolScene().onMouseDown();
+                    self.getToolScene().onToolsMouseDown();
                 }
                 else {
                     self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
-                    self.getObjectScene().getDragObjectsManager().onMouseDown(e);
+                    var dragging = self.getObjectScene().getDragObjectsManager().onMouseDown(e);
+                    if (!dragging) {
+                        self.getToolScene().onSelectionDragMouseDown(e);
+                    }
                 }
             });
             this._game.canvas.addEventListener("mousemove", function (e) {
@@ -60,11 +63,15 @@ var PhaserEditor2D;
                     return;
                 }
                 if (self.getToolScene().isEditing()) {
-                    self.getToolScene().onMouseMove();
+                    self.getToolScene().onToolsMouseMove();
                 }
                 else {
                     self.getObjectScene().getDragObjectsManager().onMouseMove(e);
                     self.getObjectScene().getDragCameraManager().onMouseMove(e);
+                    var repaint = self.getToolScene().onSelectionDragMouseMove(e);
+                    if (repaint) {
+                        self.repaint();
+                    }
                 }
             });
             this._game.canvas.addEventListener("mouseup", function (e) {
@@ -72,14 +79,18 @@ var PhaserEditor2D;
                     return;
                 }
                 if (self.getToolScene().isEditing()) {
-                    self.getToolScene().onMouseUp();
+                    self.getToolScene().onToolsMouseUp();
                 }
                 else {
                     self.getObjectScene().getDragCameraManager().onMouseUp();
-                    self.getObjectScene().getPickManager().onMouseUp(e);
-                    setTimeout(function () {
-                        self.getObjectScene().getDragObjectsManager().onMouseUp();
-                    }, 30);
+                    var found = self.getObjectScene().getPickManager().onMouseUp(e);
+                    self.getObjectScene().getDragObjectsManager().onMouseUp();
+                    if (found) {
+                        self.getToolScene().selectionDragClear();
+                    }
+                    else {
+                        self.getToolScene().onSelectionDragMouseUp(e);
+                    }
                 }
             });
             this._game.canvas.addEventListener("mouseleave", function () {
@@ -546,6 +557,34 @@ var PhaserEditor2D;
             var i = s.indexOf("=");
             var c = s.substring(i + 1);
             return c;
+        };
+        Editor.prototype.getWorldBounds = function (sprite, points) {
+            var w = sprite.width;
+            var h = sprite.height;
+            if (sprite instanceof Phaser.GameObjects.BitmapText) {
+                w = w / sprite.scaleX;
+                h = h / sprite.scaleY;
+            }
+            var flipX = sprite.flipX ? -1 : 1;
+            var flipY = sprite.flipY ? -1 : 1;
+            if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                flipX = 1;
+                flipY = 1;
+            }
+            var ox = sprite.originX;
+            var oy = sprite.originY;
+            var x = -w * ox * flipX;
+            var y = -h * oy * flipY;
+            var worldTx = sprite.getWorldTransformMatrix();
+            worldTx.transformPoint(x, y, points[0]);
+            worldTx.transformPoint(x + w * flipX, y, points[1]);
+            worldTx.transformPoint(x + w * flipX, y + h * flipY, points[2]);
+            worldTx.transformPoint(x, y + h * flipY, points[3]);
+            var cam = this.getObjectScene().cameras.main;
+            for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
+                var p = points_1[_i];
+                p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom);
+            }
         };
         return Editor;
     }());

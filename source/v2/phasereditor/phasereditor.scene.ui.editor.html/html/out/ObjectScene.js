@@ -114,13 +114,19 @@ var PhaserEditor2D;
     PhaserEditor2D.ObjectScene = ObjectScene;
     var PickObjectManager = (function () {
         function PickObjectManager() {
+            this._temp = [
+                new Phaser.Math.Vector2(0, 0),
+                new Phaser.Math.Vector2(0, 0),
+                new Phaser.Math.Vector2(0, 0),
+                new Phaser.Math.Vector2(0, 0)
+            ];
         }
         PickObjectManager.prototype.onMouseDown = function (e) {
             this._down = e;
         };
         PickObjectManager.prototype.onMouseUp = function (e) {
             if (!this._down || this._down.x !== e.x || this._down.y !== e.y || !PhaserEditor2D.isLeftButton(this._down)) {
-                return;
+                return null;
             }
             var editor = PhaserEditor2D.Editor.getInstance();
             var scene = editor.getObjectScene();
@@ -135,6 +141,44 @@ var PhaserEditor2D;
                 id: gameObj ? gameObj.name : undefined
             });
             return gameObj;
+        };
+        PickObjectManager.prototype.selectArea = function (start, end) {
+            console.log("---");
+            var editor = PhaserEditor2D.Editor.getInstance();
+            var scene = editor.getObjectScene();
+            var list = scene.children.getAll();
+            var x = start.x;
+            var y = start.y;
+            var width = end.x - start.x;
+            var height = end.y - start.y;
+            if (width < 0) {
+                x = end.x;
+                width = -width;
+            }
+            if (height < 0) {
+                y = end.y;
+                height = -height;
+            }
+            var area = new Phaser.Geom.Rectangle(x, y, width, height);
+            var selection = [];
+            for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
+                var obj = list_2[_i];
+                if (obj.name) {
+                    var sprite = obj;
+                    var points = this._temp;
+                    editor.getWorldBounds(sprite, points);
+                    if (area.contains(points[0].x, points[0].y)
+                        && area.contains(points[1].x, points[1].y)
+                        && area.contains(points[2].x, points[2].y)
+                        && area.contains(points[3].x, points[3].y)) {
+                        selection.push(sprite.name);
+                    }
+                }
+            }
+            editor.sendMessage({
+                method: "SetSelection",
+                list: selection
+            });
         };
         return PickObjectManager;
     }());
@@ -156,13 +200,13 @@ var PhaserEditor2D;
         };
         DragObjectsManager.prototype.onMouseDown = function (e) {
             if (!PhaserEditor2D.isLeftButton(e)) {
-                return;
+                return false;
             }
             var set1 = new Phaser.Structs.Set(PhaserEditor2D.Editor.getInstance().hitTestPointer(this.getScene(), this.getPointer()));
             var set2 = new Phaser.Structs.Set(this.getSelectedObjects());
             var hit = set1.intersect(set2).size > 0;
             if (!hit) {
-                return;
+                return false;
             }
             if (this._filterPaintOnMove) {
                 this._now = Date.now();
@@ -180,6 +224,7 @@ var PhaserEditor2D;
                     initY: p.y
                 });
             }
+            return true;
         };
         DragObjectsManager.prototype.onMouseMove = function (e) {
             if (!PhaserEditor2D.isLeftButton(e) || this._startPoint === null) {

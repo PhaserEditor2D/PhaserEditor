@@ -80,11 +80,14 @@ namespace PhaserEditor2D {
                 }
 
                 if (self.getToolScene().containsPointer()) {
-                    self.getToolScene().onMouseDown();
+                    self.getToolScene().onToolsMouseDown();
                 } else {
                     self.getObjectScene().getDragCameraManager().onMouseDown(e);
                     self.getObjectScene().getPickManager().onMouseDown(e);
-                    self.getObjectScene().getDragObjectsManager().onMouseDown(e);
+                    const dragging = self.getObjectScene().getDragObjectsManager().onMouseDown(e);
+                    if (!dragging) {
+                        self.getToolScene().onSelectionDragMouseDown(e);
+                    }
                 }
             })
 
@@ -94,10 +97,14 @@ namespace PhaserEditor2D {
                 }
 
                 if (self.getToolScene().isEditing()) {
-                    self.getToolScene().onMouseMove();
+                    self.getToolScene().onToolsMouseMove();
                 } else {
                     self.getObjectScene().getDragObjectsManager().onMouseMove(e);
                     self.getObjectScene().getDragCameraManager().onMouseMove(e);
+                    const repaint = self.getToolScene().onSelectionDragMouseMove(e);
+                    if (repaint) {
+                        self.repaint();
+                    }
                 }
 
             })
@@ -108,15 +115,17 @@ namespace PhaserEditor2D {
                 }
 
                 if (self.getToolScene().isEditing()) {
-                    self.getToolScene().onMouseUp();
+                    self.getToolScene().onToolsMouseUp();
                 } else {
                     //self.getObjectScene().getDragObjectsManager().onMouseUp();
                     self.getObjectScene().getDragCameraManager().onMouseUp();
-                    self.getObjectScene().getPickManager().onMouseUp(e);
-
-                    setTimeout(function () {
-                        self.getObjectScene().getDragObjectsManager().onMouseUp();
-                    }, 30)
+                    const found = self.getObjectScene().getPickManager().onMouseUp(e);
+                    self.getObjectScene().getDragObjectsManager().onMouseUp();
+                    if (found) {
+                        self.getToolScene().selectionDragClear();
+                    } else {
+                        self.getToolScene().onSelectionDragMouseUp(e);
+                    }
                 }
             })
 
@@ -702,6 +711,43 @@ namespace PhaserEditor2D {
             var i = s.indexOf("=");
             var c = s.substring(i + 1);
             return c;
+        }
+
+        public getWorldBounds(sprite : Phaser.GameObjects.Sprite, points : Phaser.Math.Vector2[]) {
+            let w = sprite.width;
+            let h = sprite.height;
+
+            if (sprite instanceof Phaser.GameObjects.BitmapText) {
+                // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
+                w = w / sprite.scaleX;
+                h = h / sprite.scaleY;
+            }
+
+            let flipX = sprite.flipX ? -1 : 1;
+            let flipY = sprite.flipY ? -1 : 1;
+
+            if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                flipX = 1;
+                flipY = 1;
+            }
+
+            const ox = sprite.originX;
+            const oy = sprite.originY;
+
+            const x = -w * ox * flipX;
+            const y = -h * oy * flipY;
+
+            let worldTx = sprite.getWorldTransformMatrix();
+
+            worldTx.transformPoint(x, y, points[0]);
+            worldTx.transformPoint(x + w * flipX, y, points[1]);
+            worldTx.transformPoint(x + w * flipX, y + h * flipY, points[2]);
+            worldTx.transformPoint(x, y + h * flipY, points[3]);
+
+            let cam = this.getObjectScene().cameras.main;
+            for (let p of points) {
+                p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom);  
+            }
         }
     }
 }

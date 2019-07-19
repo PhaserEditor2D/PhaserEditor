@@ -155,9 +155,9 @@ namespace PhaserEditor2D {
             this._down = e;
         }
 
-        onMouseUp(e: MouseEvent) {
+        onMouseUp(e: MouseEvent) : any {
             if (!this._down || this._down.x !== e.x || this._down.y !== e.y || !isLeftButton(this._down)) {
-                return;
+                return null;
             }
 
             const editor = Editor.getInstance();
@@ -180,6 +180,57 @@ namespace PhaserEditor2D {
             });
 
             return gameObj;
+        }
+
+        private _temp: Phaser.Math.Vector2[] = [
+            new Phaser.Math.Vector2(0, 0),
+            new Phaser.Math.Vector2(0, 0),
+            new Phaser.Math.Vector2(0, 0),
+            new Phaser.Math.Vector2(0, 0)
+        ];
+
+        selectArea(start: Phaser.Math.Vector2, end: Phaser.Math.Vector2) {
+            console.log("---");
+            const editor = Editor.getInstance();
+            const scene = editor.getObjectScene();
+            const list = scene.children.getAll();
+            let x = start.x;
+            let y = start.y;
+            let width = end.x - start.x;
+            let height = end.y - start.y;
+
+            if (width < 0) {
+                x = end.x;
+                width = -width;
+            }
+
+            if (height < 0) {
+                y = end.y;
+                height = -height;
+            }
+
+            const area = new Phaser.Geom.Rectangle(x, y, width, height);
+            const selection = [];
+            for (let obj of list) {
+                if (obj.name) {
+                    const sprite: Phaser.GameObjects.Sprite = <any>obj;
+                    const points = this._temp;
+                    editor.getWorldBounds(sprite, points);
+                    if (
+                        area.contains(points[0].x, points[0].y)
+                        && area.contains(points[1].x, points[1].y)
+                        && area.contains(points[2].x, points[2].y)
+                        && area.contains(points[3].x, points[3].y)
+                    ) {
+                        selection.push(sprite.name);
+                    }
+                }
+            }
+
+            editor.sendMessage({
+                method: "SetSelection",
+                list: selection
+            });
         }
     }
 
@@ -209,9 +260,9 @@ namespace PhaserEditor2D {
             return this.getScene().input.activePointer;
         }
 
-        onMouseDown(e: MouseEvent) {
+        onMouseDown(e: MouseEvent): boolean {
             if (!isLeftButton(e)) {
-                return;
+                return false;
             }
 
             const set1 = new Phaser.Structs.Set(Editor.getInstance().hitTestPointer(this.getScene(), this.getPointer()));
@@ -219,7 +270,7 @@ namespace PhaserEditor2D {
             const hit = set1.intersect(set2).size > 0;
 
             if (!hit) {
-                return;
+                return false;
             }
 
             if (this._filterPaintOnMove) {
@@ -240,6 +291,8 @@ namespace PhaserEditor2D {
                     initY: p.y
                 });
             }
+
+            return true;
         }
 
         onMouseMove(e: MouseEvent) {
@@ -287,7 +340,7 @@ namespace PhaserEditor2D {
         }
 
         onMouseUp() {
-            
+
             if (this._startPoint !== null && this._dragging) {
                 this._dragging = false;
                 this._startPoint = null;

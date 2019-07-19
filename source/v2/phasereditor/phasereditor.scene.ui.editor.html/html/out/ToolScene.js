@@ -23,6 +23,8 @@ var PhaserEditor2D;
                 new Phaser.Math.Vector2(0, 0),
                 new Phaser.Math.Vector2(0, 0)
             ];
+            _this._selectionDragStart = null;
+            _this._selectionDragEnd = null;
             _this._selectedObjects = [];
             _this._selectionGraphics = null;
             _this._tools = [];
@@ -199,44 +201,24 @@ var PhaserEditor2D;
         ToolScene.prototype.renderSelection = function () {
             this._selectionGraphics.clear();
             var g2 = this._selectionGraphics;
-            var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
-            var point = new Phaser.Math.Vector2(0, 0);
             for (var _i = 0, _a = this._selectedObjects; _i < _a.length; _i++) {
                 var obj = _a[_i];
-                var worldTx = obj.getWorldTransformMatrix();
-                worldTx.transformPoint(0, 0, point);
-                point.x = (point.x - cam.scrollX) * cam.zoom;
-                point.y = (point.y - cam.scrollY) * cam.zoom;
                 this.paintSelectionBox(g2, obj);
+            }
+            if (this._selectionDragStart) {
+                var x = this._selectionDragStart.x;
+                var y = this._selectionDragStart.y;
+                var width = this._selectionDragEnd.x - x;
+                var height = this._selectionDragEnd.y - y;
+                var g2_1 = this._selectionGraphics;
+                g2_1.lineStyle(4, 0x000000);
+                g2_1.strokeRect(x, y, width, height);
+                g2_1.lineStyle(2, 0x00ff00);
+                g2_1.strokeRect(x, y, width, height);
             }
         };
         ToolScene.prototype.paintSelectionBox = function (graphics, sprite) {
-            var w = sprite.width;
-            var h = sprite.height;
-            if (sprite instanceof Phaser.GameObjects.BitmapText) {
-                w = w / sprite.scaleX;
-                h = h / sprite.scaleY;
-            }
-            var flipX = sprite.flipX ? -1 : 1;
-            var flipY = sprite.flipY ? -1 : 1;
-            if (sprite instanceof Phaser.GameObjects.TileSprite) {
-                flipX = 1;
-                flipY = 1;
-            }
-            var ox = sprite.originX;
-            var oy = sprite.originY;
-            var x = -w * ox * flipX;
-            var y = -h * oy * flipY;
-            var worldTx = sprite.getWorldTransformMatrix();
-            worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
-            worldTx.transformPoint(x + w * flipX, y, this._selectionBoxPoints[1]);
-            worldTx.transformPoint(x + w * flipX, y + h * flipY, this._selectionBoxPoints[2]);
-            worldTx.transformPoint(x, y + h * flipY, this._selectionBoxPoints[3]);
-            var cam = PhaserEditor2D.Editor.getInstance().getObjectScene().cameras.main;
-            for (var _i = 0, _a = this._selectionBoxPoints; _i < _a.length; _i++) {
-                var p = _a[_i];
-                p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom);
-            }
+            PhaserEditor2D.Editor.getInstance().getWorldBounds(sprite, this._selectionBoxPoints);
             graphics.lineStyle(4, 0x000000);
             graphics.strokePoints(this._selectionBoxPoints, true);
             graphics.lineStyle(2, 0x00ff00);
@@ -271,7 +253,7 @@ var PhaserEditor2D;
                 }
             }
         };
-        ToolScene.prototype.onMouseDown = function () {
+        ToolScene.prototype.onToolsMouseDown = function () {
             if (this._delayPaintOnMove) {
                 this._now = Date.now();
             }
@@ -281,7 +263,7 @@ var PhaserEditor2D;
             }
             this.testRepaint();
         };
-        ToolScene.prototype.onMouseMove = function () {
+        ToolScene.prototype.onToolsMouseMove = function () {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
                 var tool = _a[_i];
                 tool.onMouseMove();
@@ -297,12 +279,38 @@ var PhaserEditor2D;
                 this.testRepaint();
             }
         };
-        ToolScene.prototype.onMouseUp = function () {
+        ToolScene.prototype.onToolsMouseUp = function () {
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
                 var tool = _a[_i];
                 tool.onMouseUp();
             }
             this.testRepaint();
+        };
+        ToolScene.prototype.onSelectionDragMouseDown = function (e) {
+            if (!PhaserEditor2D.isLeftButton(e)) {
+                return;
+            }
+            var pointer = this.input.activePointer;
+            this._selectionDragStart = new Phaser.Math.Vector2(pointer.x, pointer.y);
+            this._selectionDragEnd = this._selectionDragStart.clone();
+        };
+        ToolScene.prototype.onSelectionDragMouseMove = function (e) {
+            if (this._selectionDragStart) {
+                var pointer = this.input.activePointer;
+                this._selectionDragEnd.set(pointer.x, pointer.y);
+                return true;
+            }
+            return false;
+        };
+        ToolScene.prototype.selectionDragClear = function () {
+            this._selectionDragStart = null;
+            this._selectionDragEnd = null;
+        };
+        ToolScene.prototype.onSelectionDragMouseUp = function (e) {
+            if (this._selectionDragStart) {
+                PhaserEditor2D.Editor.getInstance().getObjectScene().getPickManager().selectArea(this._selectionDragStart, this._selectionDragEnd);
+                this.selectionDragClear();
+            }
         };
         return ToolScene;
     }(Phaser.Scene));

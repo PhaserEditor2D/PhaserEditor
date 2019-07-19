@@ -10,8 +10,8 @@ namespace PhaserEditor2D {
         private _gridGraphics: Phaser.GameObjects.Graphics;
         private _paintCallsLabel: Phaser.GameObjects.Text;
         private _tools: InteractiveTool[];
-        private _delayPaintOnMove : boolean;
-        private _now : integer;
+        private _delayPaintOnMove: boolean;
+        private _now: integer;
 
         constructor() {
             super("ToolScene");
@@ -233,7 +233,7 @@ namespace PhaserEditor2D {
             this.renderSelection();
             this.updateTools();
 
-            
+
             this._paintCallsLabel.visible = Editor.getInstance().sceneProperties.debugPaintCalls;
 
             if (this._paintCallsLabel.visible) {
@@ -267,19 +267,20 @@ namespace PhaserEditor2D {
 
             const g2 = this._selectionGraphics;
 
-            const cam = Editor.getInstance().getObjectScene().cameras.main;
-
-            const point = new Phaser.Math.Vector2(0, 0);
-
             for (let obj of this._selectedObjects) {
-                let worldTx = (<Phaser.GameObjects.Components.Transform><any>obj).getWorldTransformMatrix();
-
-                worldTx.transformPoint(0, 0, point);
-
-                point.x = (point.x - cam.scrollX) * cam.zoom;
-                point.y = (point.y - cam.scrollY) * cam.zoom;
-
                 this.paintSelectionBox(g2, <any>obj);
+            }
+
+            if (this._selectionDragStart) {
+                const x = this._selectionDragStart.x;
+                const y = this._selectionDragStart.y;
+                const width = this._selectionDragEnd.x - x;
+                const height = this._selectionDragEnd.y - y;
+                const g2 = this._selectionGraphics;
+                g2.lineStyle(4, 0x000000);
+                g2.strokeRect(x, y, width, height);
+                g2.lineStyle(2, 0x00ff00);
+                g2.strokeRect(x, y, width, height);
             }
         }
 
@@ -291,40 +292,7 @@ namespace PhaserEditor2D {
         ];
 
         private paintSelectionBox(graphics: Phaser.GameObjects.Graphics, sprite: Phaser.GameObjects.Sprite) {
-            let w = sprite.width;
-            let h = sprite.height;
-
-            if (sprite instanceof Phaser.GameObjects.BitmapText) {
-                // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
-                w = w / sprite.scaleX;
-                h = h / sprite.scaleY;
-            }
-
-            let flipX = sprite.flipX ? -1 : 1;
-            let flipY = sprite.flipY ? -1 : 1;
-
-            if (sprite instanceof Phaser.GameObjects.TileSprite) {
-                flipX = 1;
-                flipY = 1;
-            }
-
-            const ox = sprite.originX;
-            const oy = sprite.originY;
-
-            const x = -w * ox * flipX;
-            const y = -h * oy * flipY;
-
-            let worldTx = sprite.getWorldTransformMatrix();
-
-            worldTx.transformPoint(x, y, this._selectionBoxPoints[0]);
-            worldTx.transformPoint(x + w * flipX, y, this._selectionBoxPoints[1]);
-            worldTx.transformPoint(x + w * flipX, y + h * flipY, this._selectionBoxPoints[2]);
-            worldTx.transformPoint(x, y + h * flipY, this._selectionBoxPoints[3]);
-
-            let cam = Editor.getInstance().getObjectScene().cameras.main;
-            for (let p of this._selectionBoxPoints) {
-                p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom)
-            }
+            Editor.getInstance().getWorldBounds(sprite, this._selectionBoxPoints);
 
             graphics.lineStyle(4, 0x000000);
             graphics.strokePoints(this._selectionBoxPoints, true);
@@ -362,7 +330,7 @@ namespace PhaserEditor2D {
             }
         }
 
-        onMouseDown() {
+        onToolsMouseDown() {
             if (this._delayPaintOnMove) {
                 this._now = Date.now();
             }
@@ -374,7 +342,7 @@ namespace PhaserEditor2D {
             this.testRepaint();
         }
 
-        onMouseMove() {
+        onToolsMouseMove() {
             for (let tool of this._tools) {
                 tool.onMouseMove();
             }
@@ -390,7 +358,7 @@ namespace PhaserEditor2D {
             }
         }
 
-        onMouseUp() {
+        onToolsMouseUp() {
             for (let tool of this._tools) {
                 tool.onMouseUp();
             }
@@ -398,5 +366,40 @@ namespace PhaserEditor2D {
             this.testRepaint();
         }
 
+
+        private _selectionDragStart: Phaser.Math.Vector2 = null;
+        private _selectionDragEnd: Phaser.Math.Vector2 = null;
+
+        onSelectionDragMouseDown(e: MouseEvent) {
+            if (!isLeftButton(e)) {
+                return;
+            }
+            const pointer = this.input.activePointer;
+            this._selectionDragStart = new Phaser.Math.Vector2(pointer.x, pointer.y);
+            this._selectionDragEnd = this._selectionDragStart.clone();
+        }
+
+        onSelectionDragMouseMove(e: MouseEvent): boolean {
+            if (this._selectionDragStart) {
+                const pointer = this.input.activePointer;
+                this._selectionDragEnd.set(pointer.x, pointer.y);
+                return true;
+            }
+            return false;
+        }
+
+        selectionDragClear() {
+            this._selectionDragStart = null;
+            this._selectionDragEnd = null;
+        }
+
+        onSelectionDragMouseUp(e: MouseEvent) {
+            if (this._selectionDragStart) {
+                Editor.getInstance().getObjectScene().getPickManager().selectArea(this._selectionDragStart, this._selectionDragEnd);
+                this.selectionDragClear();
+            }
+        }
+
     }
+
 }

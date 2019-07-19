@@ -161,6 +161,9 @@ public class SceneEditorBroker {
 			case "KeyDown":
 				onKeyDown(msg);
 				break;
+			case "SetSelection":
+				onSetSelection(client, msg);
+				break;
 			default:
 				break;
 			}
@@ -377,6 +380,30 @@ public class SceneEditorBroker {
 
 		}
 	}
+	
+	private void onSetSelection(Object client, JSONObject msg) {
+		var list = msg.getJSONArray("list");
+		var selected = new ArrayList<ObjectModel>();
+		for(var i = 0; i < list.length(); i++) {
+			var id = list.getString(i);
+			var obj = _editor.getSceneModel().getDisplayList().findById(id);
+			if (obj != null) {
+				selected.add(obj);
+			}
+		}
+		
+		swtRun(() -> {
+
+			activateEditor();
+
+			swtRun(() -> {
+				_editor.setSelection(selected);
+				send(client, new SelectObjectsMessage(_editor));
+			});
+		});
+		
+		
+	}
 
 	private void onClickObject(Object client, JSONObject msg) {
 
@@ -387,24 +414,28 @@ public class SceneEditorBroker {
 
 		swtRun(() -> {
 
-			if (PhaserEditorUI.isUsingChromium()) {
-				try {
-					var activeEditor = _editor.getSite().getPage().getActivePart();
-					out.println("Active part: " + activeEditor + " ?= " + _editor);
-					
-					if (_editor != activeEditor) {
-						out.println("Activating " + _editor);
-						_editor.getSite().getPage().activate(_editor);
-					}
-				} catch (Exception e) {
-					SceneUIEditor.logError(e);
-				}
-			}
+			activateEditor();
 
 			swtRun(() -> {
 				_editor.getSelectionEvents().updateSelection(obj, ctrl);
 				send(client, new SelectObjectsMessage(_editor));
 			});
 		});
+	}
+
+	private void activateEditor() {
+		if (PhaserEditorUI.isUsingChromium()) {
+			try {
+				var activeEditor = _editor.getSite().getPage().getActivePart();
+				out.println("Active part: " + activeEditor + " ?= " + _editor);
+				
+				if (_editor != activeEditor) {
+					out.println("Activating " + _editor);
+					_editor.getSite().getPage().activate(_editor);
+				}
+			} catch (Exception e) {
+				SceneUIEditor.logError(e);
+			}
+		}
 	}
 }
