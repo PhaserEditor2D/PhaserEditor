@@ -57,10 +57,10 @@ var PhaserEditor2D;
                 switch (type) {
                     case "TileSprite":
                         if (PhaserEditor2D.Editor.getInstance().isWebGL()) {
-                            obj.setInteractive(TileSpriteCallback);
+                            obj.setInteractive(CreatePixelPerfectCanvasTextureHandler_WebGL());
                         }
                         else {
-                            obj.setInteractive(CreatePixelPerfectCanvasTextureHandler(1));
+                            obj.setInteractive(CreatePixelPerfectCanvasTextureHandler());
                         }
                         break;
                     case "BitmapText":
@@ -136,23 +136,30 @@ var PhaserEditor2D;
             if (!hitBounds) {
                 return false;
             }
-            if (sprite.flipX) {
-                x = 2 * sprite.displayOriginX - x;
-            }
-            if (sprite.flipY) {
-                y = 2 * sprite.displayOriginY - y;
-            }
             var scene = PhaserEditor2D.Editor.getInstance().getObjectScene();
             var renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, sprite.displayWidth, sprite.displayHeight);
             renderTexture.setOrigin(0, 0);
+            renderTexture.flipX = sprite.flipX;
+            renderTexture.flipY = sprite.flipY;
+            var angle = sprite.angle;
+            sprite.angle = 0;
             renderTexture.draw([sprite], sprite.displayOriginX * sprite.scaleX, sprite.displayOriginY * sprite.scaleY);
-            scene.sys.displayList.add(renderTexture);
-            var canvasTexture = renderTexture.texture;
-            var alpha = getCanvasTexturePixelAlpha(x, y, canvasTexture);
-            return alpha == 1;
+            sprite.angle = angle;
+            var colorArray = [];
+            x = x * sprite.scaleX;
+            y = y * sprite.scaleY;
+            renderTexture.snapshotPixel(x, y, (function (colorArray) {
+                return function (c) {
+                    colorArray[0] = c;
+                };
+            })(colorArray));
+            renderTexture.destroy();
+            var color = colorArray[0];
+            var alpha = color.alpha;
+            return alpha > 0;
         };
     }
-    function CreatePixelPerfectCanvasTextureHandler(alphaTolerance) {
+    function CreatePixelPerfectCanvasTextureHandler() {
         return function (hitArea, x, y, sprite) {
             if (sprite.flipX) {
                 x = 2 * sprite.displayOriginX - x;
@@ -161,15 +168,12 @@ var PhaserEditor2D;
                 y = 2 * sprite.displayOriginY - y;
             }
             var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
-            return alpha >= alphaTolerance;
+            return alpha > 0;
         };
     }
     function getCanvasTexturePixelAlpha(x, y, canvasTexture) {
         if (canvasTexture) {
             var imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
-            console.log(x + " " + y);
-            console.log(canvasTexture.getPixel(x, y));
-            console.log(imgData);
             var rgb = imgData.data;
             var alpha = rgb[3];
             return alpha;
