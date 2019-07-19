@@ -172,25 +172,38 @@ namespace PhaserEditor2D {
         }
 
         const scene = Editor.getInstance().getObjectScene();
-
-        const renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, sprite.displayWidth, sprite.displayHeight);
-        renderTexture.setOrigin(0, 0);
-        renderTexture.flipX = sprite.flipX;
-        renderTexture.flipY = sprite.flipY;
+        
+        const renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, 1, 1);
+        
+        const scaleX = sprite.scaleX;
+        const scaleY = sprite.scaleY;
+        const originX = sprite.originX;
+        const originY = sprite.originY;
         const angle = sprite.angle;
+
+        sprite.scaleX = 1;
+        sprite.scaleY = 1;
+        sprite.originX = 0;
+        sprite.originY = 0;
         sprite.angle = 0;
-        renderTexture.draw([sprite], sprite.displayOriginX * sprite.scaleX, sprite.displayOriginY * sprite.scaleY);
+
+        renderTexture.draw([sprite], -x, -y);
+        
+        sprite.scaleX = scaleX;
+        sprite.scaleY = scaleY;
+        sprite.originX = originX;
+        sprite.originY = originY;
         sprite.angle = angle;
+
         const colorArray: Phaser.Display.Color[] = [];
-        x = x * sprite.scaleX;
-        y = y * sprite.scaleY;
-        renderTexture.snapshotPixel(x, y, (function (colorArray) {
+
+        renderTexture.snapshotPixel(0, 0, (function (colorArray) {
             return function (c: Phaser.Display.Color) {
+                consoleLog(c);
                 colorArray[0] = c;
             };
         })(colorArray));
 
-        //Editor.getInstance().getObjectScene().sys.displayList.add(renderTexture);
         renderTexture.destroy();
 
         const color = colorArray[0];
