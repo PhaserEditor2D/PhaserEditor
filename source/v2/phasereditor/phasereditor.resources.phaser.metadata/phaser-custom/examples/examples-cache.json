@@ -334,8 +334,8 @@
             "orig": "src/animation/animation repeat event.js",
             "dst": "animation repeat event.js"
           },
-          {"orig": "assets/sprites/poo.png"},
-          {"orig": "assets/animations/mummy37x45.png"}
+          {"orig": "assets/animations/mummy37x45.png"},
+          {"orig": "assets/sprites/poo.png"}
         ]
       },
       {
@@ -1142,8 +1142,8 @@
             "orig": "src/bugs/anim remove.js",
             "dst": "anim remove.js"
           },
-          {"orig": "assets/pics/ayu2.png"},
-          {"orig": "assets/pics/ayu.png"}
+          {"orig": "assets/pics/ayu.png"},
+          {"orig": "assets/pics/ayu2.png"}
         ]
       },
       {
@@ -1366,12 +1366,12 @@
             "orig": "src/bugs/pivot.js",
             "dst": "pivot.js"
           },
-          {"orig": "assets/tests/zombie-no-pivot.png"},
-          {"orig": "assets/tests/zombie-no-pivot.json"},
           {"orig": "assets/tests/zombie-pivot.png"},
-          {"orig": "assets/tests/zombie-pivot.json"},
           {"orig": "assets/tests/zombie-pivot-absolute.json"},
-          {"orig": "assets/tests/zombie-pivot-absolute.png"}
+          {"orig": "assets/tests/zombie-pivot-absolute.png"},
+          {"orig": "assets/tests/zombie-no-pivot.json"},
+          {"orig": "assets/tests/zombie-pivot.json"},
+          {"orig": "assets/tests/zombie-no-pivot.png"}
         ]
       },
       {
@@ -7644,8 +7644,8 @@
                 "dst": "using a shader as a buffer.js"
               },
               {"orig": "assets/sprites/phaser3-logo-small.png"},
-              {"orig": "assets/shaders/bundle.glsl.js"},
-              {"orig": "assets/shaders/bundle2.glsl.js"}
+              {"orig": "assets/shaders/bundle2.glsl.js"},
+              {"orig": "assets/shaders/bundle.glsl.js"}
             ]
           }
         ]
@@ -16636,10 +16636,10 @@
             "orig": "src/spine/add hit area.js",
             "dst": "add hit area.js"
           },
-          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/spine/demos/demos.json"},
           {"orig": "assets/spine/demos/atlas1.atlas"},
-          {"orig": "assets/spine/demos/atlas1.png"}
+          {"orig": "assets/spine/demos/atlas1.png"},
+          {"orig": "plugins/SpinePlugin.js"}
         ]
       },
       {
@@ -16649,9 +16649,9 @@
             "orig": "src/spine/arcade physics spine body.js",
             "dst": "arcade physics spine body.js"
           },
-          {"orig": "plugins/SpinePlugin.js"},
-          {"orig": "assets/spine/coin/coin-pro.json"},
           {"orig": "assets/spine/coin/coin.atlas"},
+          {"orig": "assets/spine/coin/coin-pro.json"},
+          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/spine/coin/coin.png"}
         ]
       },
@@ -16662,10 +16662,10 @@
             "orig": "src/spine/basic spineboy.js",
             "dst": "basic spineboy.js"
           },
-          {"orig": "plugins/SpinePlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16676,10 +16676,10 @@
             "orig": "src/spine/batch test.js",
             "dst": "batch test.js"
           },
+          {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16690,10 +16690,10 @@
             "orig": "src/spine/camera pipeline test.js",
             "dst": "camera pipeline test.js"
           },
-          {"orig": "plugins/SpinePlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16718,9 +16718,9 @@
             "orig": "src/spine/destroy test.js",
             "dst": "destroy test.js"
           },
-          {"orig": "plugins/SpinePlugin.js"},
-          {"orig": "assets/spine/coin/coin-pro.json"},
           {"orig": "assets/spine/coin/coin.atlas"},
+          {"orig": "assets/spine/coin/coin-pro.json"},
+          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/spine/coin/coin.png"}
         ]
       },
@@ -16731,10 +16731,10 @@
             "orig": "src/spine/draw debug bounds.js",
             "dst": "draw debug bounds.js"
           },
-          {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
+          {"orig": "plugins/SpineWebGLPlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16745,10 +16745,10 @@
             "orig": "src/spine/image changes.js",
             "dst": "image changes.js"
           },
-          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/spine/demos/demos.json"},
           {"orig": "assets/spine/demos/atlas1.atlas"},
-          {"orig": "assets/spine/demos/atlas1.png"}
+          {"orig": "assets/spine/demos/atlas1.png"},
+          {"orig": "plugins/SpinePlugin.js"}
         ]
       },
       {
