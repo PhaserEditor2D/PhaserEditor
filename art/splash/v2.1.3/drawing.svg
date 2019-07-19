@@ -209,9 +209,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="810.80115"
-     inkscape:cy="550.30752"
+     inkscape:zoom="0.7071068"
+     inkscape:cx="670.63231"
+     inkscape:cy="419.30951"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -298,7 +298,7 @@
          x="229.19612"
          y="141.9688"
          style="font-size:2.82222223px;fill:#ffffff;stroke-width:0.26458332"
-         id="tspan4273-7-9-1">Includes Phaser v3.18.1</tspan></text>
+         id="tspan4273-7-9-1">Includes Phaser v3.19.1</tspan></text>
     <path
        style="opacity:0.216;fill:#c0becb;fill-opacity:1;stroke:#000000;stroke-width:1.29962909;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter7170-9-8)"
        d="M 591.44171,469.20993 V 868.57204 H 1207.5508 V 469.20993 Z m 20.02822,15.38666 h 576.05257 v 368.5888 H 611.46993 Z"
