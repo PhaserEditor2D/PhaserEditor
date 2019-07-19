@@ -219,6 +219,10 @@ var PhaserEditor2D;
             }
             var flipX = sprite.flipX ? -1 : 1;
             var flipY = sprite.flipY ? -1 : 1;
+            if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                flipX = 1;
+                flipY = 1;
+            }
             var ox = sprite.originX;
             var oy = sprite.originY;
             var x = -w * ox * flipX;

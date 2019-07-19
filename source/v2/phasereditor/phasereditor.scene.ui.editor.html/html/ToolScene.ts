@@ -300,8 +300,13 @@ namespace PhaserEditor2D {
                 h = h / sprite.scaleY;
             }
 
-            const flipX = sprite.flipX ? -1 : 1;
-            const flipY = sprite.flipY ? -1 : 1;
+            let flipX = sprite.flipX ? -1 : 1;
+            let flipY = sprite.flipY ? -1 : 1;
+
+            if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                flipX = 1;
+                flipY = 1;
+            }
 
             const ox = sprite.originX;
             const oy = sprite.originY;
