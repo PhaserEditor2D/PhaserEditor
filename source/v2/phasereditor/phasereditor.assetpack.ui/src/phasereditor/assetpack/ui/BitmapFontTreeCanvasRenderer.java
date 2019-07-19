@@ -52,11 +52,17 @@ public class BitmapFontTreeCanvasRenderer extends BaseTreeCanvasItemRenderer {
 
 		var canvas = _item.getCanvas();
 
+		var rowHeight = computeRowHeight(canvas);
+
 		var asset = getBitmapFontAsset();
+
+		if (asset == null) {
+			return;
+		}
+
 		var frame = asset.getFrame();
 		var file = frame.getImageFile();
 		var model = asset.getFontModel();
-		var rowHeight = computeRowHeight(canvas);
 
 		var text = getPreviewText();// asset.getKey();
 
