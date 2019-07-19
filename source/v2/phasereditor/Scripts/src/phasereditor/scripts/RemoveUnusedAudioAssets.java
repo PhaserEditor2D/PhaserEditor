@@ -43,8 +43,7 @@ public class RemoveUnusedAudioAssets {
 		StringBuilder sb = new StringBuilder();
 
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path examplesPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN)
-				.resolve("phaser3-examples/public/");
+		Path examplesPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN).resolve("phaser3-examples/public/");
 		Path examplesAudioPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_AUDIO_PLUGIN)
 				.resolve("phaser3-examples/public/assets/");
 
@@ -55,7 +54,7 @@ public class RemoveUnusedAudioAssets {
 						&& (path.toString().endsWith(".js") || path.toString().endsWith(".json")))
 
 				.forEach(path -> {
-					
+
 					try {
 						List<String> lines = Files.readAllLines(path);
 						for (String line : lines) {
@@ -81,12 +80,22 @@ public class RemoveUnusedAudioAssets {
 				int last = name.lastIndexOf(".");
 				if (last >= 0) {
 					name = name.substring(0, last);
-					if (allCode.contains(name)) {
+
+					var contains = false;
+
+					for (var str : new String[] { "'" + name, "\"" + name, "/" + name, name + "'", name + "\"" }) {
+						if (allCode.contains(str)) {
+							contains = true;
+							break;
+						}
+					}
+
+					if (contains) {
 						out.println("Keep " + path.getFileName());
 					} else {
 						out.println("Delete " + path.getFileName());
 						toDeleteSize[0] += Files.size(path);
-						Files.delete(path);
+						 Files.delete(path);
 						toDelete[0]++;
 					}
 				}
