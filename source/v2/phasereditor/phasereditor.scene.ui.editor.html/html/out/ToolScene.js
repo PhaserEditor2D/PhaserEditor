@@ -205,7 +205,7 @@ var PhaserEditor2D;
                 var obj = _a[_i];
                 this.paintSelectionBox(g2, obj);
             }
-            if (this._selectionDragStart) {
+            if (this._selectionDragStart && !this._selectionDragStart.equals(this._selectionDragEnd)) {
                 var x = this._selectionDragStart.x;
                 var y = this._selectionDragStart.y;
                 var width = this._selectionDragEnd.x - x;

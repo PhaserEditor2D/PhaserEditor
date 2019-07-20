@@ -271,7 +271,7 @@ namespace PhaserEditor2D {
                 this.paintSelectionBox(g2, <any>obj);
             }
 
-            if (this._selectionDragStart) {
+            if (this._selectionDragStart && !this._selectionDragStart.equals(this._selectionDragEnd)) {
                 const x = this._selectionDragStart.x;
                 const y = this._selectionDragStart.y;
                 const width = this._selectionDragEnd.x - x;
