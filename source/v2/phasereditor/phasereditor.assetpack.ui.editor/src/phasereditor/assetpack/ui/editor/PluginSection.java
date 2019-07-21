@@ -75,12 +75,12 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setUrl(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
+
 				}
 			};
 
@@ -96,13 +96,11 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setUrl(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(url);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -134,7 +132,11 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 
 				@Override
 				protected void accept(boolean value) {
-					getModels().get(0).setStart(value);
+					wrapOperation(() -> {
+						getModels().get(0).setStart(value);
+					});
+
+					
 				}
 			};
 
@@ -152,7 +154,9 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().get(0).setMapping(value.trim().length() == 0 ? null : value);
+					wrapOperation(() -> {
+						getModels().get(0).setMapping(value.trim().length() == 0 ? null : value);
+					});
 				}
 			};
 

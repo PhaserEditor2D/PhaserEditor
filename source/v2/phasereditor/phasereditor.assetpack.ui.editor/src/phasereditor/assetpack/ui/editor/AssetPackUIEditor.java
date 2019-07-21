@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
-import static java.lang.System.arraycopy;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,27 +30,12 @@ import java.util.function.Consumer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
-import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
-import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editor.refactorings.AssetDeleteProcessor;
-import phasereditor.assetpack.ui.editor.refactorings.AssetDeleteWizard;
-import phasereditor.assetpack.ui.editor.refactorings.AssetMoveProcessor;
-import phasereditor.assetpack.ui.editor.refactorings.AssetMoveWizard;
-import phasereditor.assetpack.ui.editor.refactorings.AssetRenameProcessor;
-import phasereditor.assetpack.ui.editor.refactorings.AssetRenameWizard;
-import phasereditor.assetpack.ui.editor.refactorings.AssetSectionRenameProcessor;
-import phasereditor.assetpack.ui.editor.refactorings.BaseAssetRenameProcessor;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -70,56 +53,6 @@ public class AssetPackUIEditor {
 			}
 		}
 		return result;
-	}
-
-	public static void launchMoveWizard(AssetSectionModel section, IStructuredSelection selection, AssetPackEditor editor) {
-		Object[] selarray = selection.toArray();
-
-		AssetModel[] assets = new AssetModel[selarray.length];
-
-		arraycopy(selarray, 0, assets, 0, selarray.length);
-
-		AssetMoveWizard wizard = new AssetMoveWizard(
-				new MoveRefactoring(new AssetMoveProcessor(section, assets, editor)));
-
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Move Assets");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void launchRenameWizard(Object element, AssetPackEditor editor) {
-		BaseAssetRenameProcessor processor;
-		
-		if (element instanceof AssetModel) {
-			processor = new AssetRenameProcessor((AssetModel) element, editor);
-		} else {
-			processor = new AssetSectionRenameProcessor((AssetSectionModel) element, editor);
-		}
-
-		AssetRenameWizard wizard = new AssetRenameWizard(new RenameRefactoring(processor));
-
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Rename Element");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
-	}
-
-	public static void launchDeleteWizard(Object[] selection, AssetPackEditor editor) {
-		AssetDeleteWizard wizard = new AssetDeleteWizard(
-				new DeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
-
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Delete Asset");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	public static List<AssetModel> findAssetResourceReferencesInEditors(IFile assetFile) {

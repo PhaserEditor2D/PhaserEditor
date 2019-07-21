@@ -43,6 +43,11 @@ public class BitmapFontAssetModel extends AssetModel {
 
 	public BitmapFontAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_textureURL = jsonData.optString("textureURL", null);
 		_fontDataURL = jsonData.optString("fontDataURL", null);
 		_normalMap = jsonData.optString("normalMap", null);
@@ -75,7 +80,6 @@ public class BitmapFontAssetModel extends AssetModel {
 
 	public void setNormalMap(String normalMap) {
 		_normalMap = normalMap;
-		firePropertyChange("normalMap");
 	}
 
 	public IFile getNormalMapFile() {
@@ -92,7 +96,6 @@ public class BitmapFontAssetModel extends AssetModel {
 
 	public void setTextureURL(String textureURL) {
 		_textureURL = textureURL;
-		firePropertyChange("textureURL");
 	}
 
 	public IFile getTextureFile() {
@@ -105,26 +108,25 @@ public class BitmapFontAssetModel extends AssetModel {
 
 	public void setFontDataURL(String fontDataURL) {
 		_fontDataURL = fontDataURL;
-		firePropertyChange("fontDataURL");
 	}
 
 	@Override
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "textureURL", _textureURL);
 		validateUrl(problems, "fontDataURL", _fontDataURL);
-		
+
 		if (_normalMap != null) {
 			validateUrl(problems, "normalMap", _normalMap);
 		}
 
 		try {
-			
+
 			_fontModel = null;
-			
+
 			getFontModel();
-			
+
 			buildFrame();
-			
+
 		} catch (Exception e) {
 			problems.add(errorStatus(e.getMessage()));
 		}

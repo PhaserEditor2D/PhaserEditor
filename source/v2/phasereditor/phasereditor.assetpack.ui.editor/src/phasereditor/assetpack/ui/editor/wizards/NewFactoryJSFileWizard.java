@@ -99,7 +99,7 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 						var pack = section.getPack();
 						var asset = new ScriptAssetModel(pack.createKey(file), section);
 						asset.setUrl(ProjectCore.getAssetUrl(file));
-						section.addAsset(asset, false);
+						section.addAsset(asset);
 					});
 
 					return Status.OK_STATUS;

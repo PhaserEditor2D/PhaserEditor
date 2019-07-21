@@ -45,7 +45,7 @@ public class TilemapSection extends AssetPackEditorSection<TilemapAssetModel> {
 	public TilemapSection(AssetPackEditorPropertyPage page) {
 		super(page, "Tilemap");
 	}
-	
+
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
@@ -64,9 +64,9 @@ public class TilemapSection extends AssetPackEditorSection<TilemapAssetModel> {
 	public Control createContent(Composite parent) {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(3, false));
-		
+
 		var type = getModels().get(0).getType();
-		
+
 		{
 			// url
 
@@ -78,12 +78,11 @@ public class TilemapSection extends AssetPackEditorSection<TilemapAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setUrl(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -93,7 +92,7 @@ public class TilemapSection extends AssetPackEditorSection<TilemapAssetModel> {
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
 			btn.addSelectionListener(new BrowseTilemapFileListener(type));
 		}
-		
+
 		return comp;
 	}
 

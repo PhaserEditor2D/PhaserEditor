@@ -49,6 +49,11 @@ public class AnimationsAssetModel extends AssetModel {
 	public AnimationsAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
 
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_url = jsonData.optString("url", null);
 		_dataKey = jsonData.optString("dataKey", null);
 	}
@@ -85,7 +90,6 @@ public class AnimationsAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public String getDataKey() {
@@ -94,7 +98,6 @@ public class AnimationsAssetModel extends AssetModel {
 
 	public void setDataKey(String dataKey) {
 		_dataKey = dataKey;
-		firePropertyChange("dataKey");
 	}
 
 	public IFile getUrlFile() {

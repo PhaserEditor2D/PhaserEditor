@@ -101,7 +101,7 @@ public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 					var pack = section.getPack();
 					var asset = new AnimationsAssetModel(pack.createKey(file), section);
 					asset.setUrl(ProjectCore.getAssetUrl(file));
-					section.addAsset(asset, false);
+					section.addAsset(asset);
 				});
 
 				return Status.OK_STATUS;

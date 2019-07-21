@@ -44,6 +44,11 @@ public class AudioAssetModel extends AssetModel {
 
 	public AudioAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		JSONArray urls;
 
 		if (jsonData.has("urls")) {
@@ -82,13 +87,11 @@ public class AudioAssetModel extends AssetModel {
 
 	public void setUrls(List<String> url) {
 		_urls = url;
-		firePropertyChange("url");
 	}
 
 	public void setUrlsJSONString(String urlsJSONString) throws JSONException {
 		JSONArray urls = parseUrlsJSONArray(urlsJSONString);
 		setUrls(JSONUtils.toList(urls));
-		firePropertyChange("urlsJSONString");
 	}
 
 	public static JSONArray parseUrlsJSONArray(String json) throws JSONException {

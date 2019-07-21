@@ -47,7 +47,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 	public SpritesheetSection(AssetPackEditorPropertyPage page) {
 		super(page, "Sprite Sheet");
 	}
-	
+
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof SpritesheetAssetModel;
@@ -70,12 +70,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setUrl(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 
@@ -91,12 +90,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setUrl(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(url);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -110,7 +108,8 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		{
 			// normal map
-			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.SpriteSheetFileConfig.normalMap"));
+			label(comp, "Normal Map",
+					InspectCore.phaserHelp("Phaser.Loader.FileTypes.SpriteSheetFileConfig.normalMap"));
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -118,11 +117,14 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setNormalMap(value));
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setNormalMap(value));
+					});
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
+			addUpdate(
+					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getNormalMap()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
@@ -134,7 +136,9 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setNormalMap(url));
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setNormalMap(url));
+					});
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -155,12 +159,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setFrameWidth(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setFrameWidth(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getFrameWidth));
@@ -176,12 +179,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setFrameHeight(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setFrameHeight(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getFrameHeight));
@@ -197,12 +199,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setStartFrame(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setStartFrame(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getStartFrame));
@@ -218,12 +219,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setEndFrame(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setEndFrame(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getEndFrame));
@@ -239,12 +239,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setSpacing(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setSpacing(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getSpacing));
@@ -260,12 +259,11 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setMargin(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setMargin(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), SpritesheetAssetModel::getMargin));

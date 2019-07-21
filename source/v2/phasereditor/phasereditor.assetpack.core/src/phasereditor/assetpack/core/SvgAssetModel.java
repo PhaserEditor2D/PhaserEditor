@@ -77,10 +77,14 @@ public class SvgAssetModel extends AssetModel {
 		super(key, AssetType.svg, section);
 	}
 
-	public SvgAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
-		super(definition, section);
+	public SvgAssetModel(JSONObject data, AssetSectionModel section) throws JSONException {
+		super(data, section);
+		readInfo(data);
+	}
 
-		_url = definition.optString("url");
+	@Override
+	public void readInfo(JSONObject data) {
+		_url = data.optString("url");
 	}
 
 	@Override
@@ -99,7 +103,6 @@ public class SvgAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	@Override

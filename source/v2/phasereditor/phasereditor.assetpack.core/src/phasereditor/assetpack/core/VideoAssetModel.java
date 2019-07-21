@@ -47,6 +47,11 @@ public class VideoAssetModel extends AssetModel {
 
 	public VideoAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
 		super(definition, section);
+		readInfo(definition);
+	}
+
+	@Override
+	public void readInfo(JSONObject definition) {
 		JSONArray urls = definition.getJSONArray("urls");
 		_urls = JSONUtils.toList(urls);
 		_asBlob = definition.getBoolean("asBlob");
@@ -73,7 +78,6 @@ public class VideoAssetModel extends AssetModel {
 	public void setUrlsJSONString(String urlsJSONString) throws JSONException {
 		JSONArray urls = AudioAssetModel.parseUrlsJSONArray(urlsJSONString);
 		setUrls(JSONUtils.toList(urls));
-		firePropertyChange("urlsJSONString");
 	}
 
 	public String getUrlsJSONString() {
@@ -101,7 +105,6 @@ public class VideoAssetModel extends AssetModel {
 
 	public void setAsBlob(boolean asBlob) {
 		_asBlob = asBlob;
-		firePropertyChange("asBlob");
 	}
 
 	public List<String> getUrls() {
@@ -110,7 +113,6 @@ public class VideoAssetModel extends AssetModel {
 
 	public void setUrls(List<String> urls) {
 		_urls = urls;
-		firePropertyChange("urls");
 	}
 
 	public List<IFile> getUrlFiles() {

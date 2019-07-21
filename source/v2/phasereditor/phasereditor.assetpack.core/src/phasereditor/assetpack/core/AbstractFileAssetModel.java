@@ -34,6 +34,11 @@ public abstract class AbstractFileAssetModel extends AssetModel {
 
 	public AbstractFileAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
+		readInfo(jsonDoc);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonDoc) {
 		_url = jsonDoc.optString("url", null);
 	}
 
@@ -58,7 +63,6 @@ public abstract class AbstractFileAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public IFile getUrlFile() {

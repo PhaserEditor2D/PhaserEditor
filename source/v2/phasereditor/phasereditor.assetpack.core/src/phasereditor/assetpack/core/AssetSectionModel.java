@@ -71,28 +71,21 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement, IEdita
 		_pack = pack;
 	}
 
-	public void addAsset(int index, AssetModel asset, boolean notify) {
-		asset.setSection(this, notify);
+	public void addAsset(int index, AssetModel asset) {
+		asset.setSection(this);
 		_assets.add(index, asset);
-		if (notify) {
-			getPack().setDirty(true);
-		}
 	}
 
-	public void addAllAssets(int index, List<AssetModel> assets, boolean notify) {
+	public void addAllAssets(int index, List<AssetModel> assets) {
 		for (var asset : assets) {
-			asset.setSection(this, false);
+			asset.setSection(this);
 		}
 
 		_assets.addAll(index, assets);
-		
-		if (notify) {
-			getPack().setDirty(true);
-		}
 	}
 
-	public void addAsset(AssetModel asset, boolean notify) {
-		this.addAsset(_assets.size(), asset, notify);
+	public void addAsset(AssetModel asset) {
+		this.addAsset(_assets.size(), asset);
 	}
 
 	@Override
@@ -134,21 +127,11 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement, IEdita
 	
 
 	public void removeAsset(AssetModel asset) {
-		removeAsset(asset, true);
-	}
-
-	public void removeAsset(AssetModel asset, boolean notify) {
 		_assets.remove(asset);
-		if (notify) {
-			getPack().setDirty(true);
-		}
 	}
 
-	public void removeAllAssets(List<AssetModel> assets, boolean notify) {
+	public void removeAllAssets(List<AssetModel> assets) {
 		_assets.removeAll(assets);
-		if (notify) {
-			getPack().setDirty(true);
-		}
 	}
 
 	public void removeGroup(AssetGroupModel group) {
@@ -192,7 +175,6 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement, IEdita
 
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
-		getPack().setDirty(true);
 	}
 
 	@SuppressWarnings("unchecked")

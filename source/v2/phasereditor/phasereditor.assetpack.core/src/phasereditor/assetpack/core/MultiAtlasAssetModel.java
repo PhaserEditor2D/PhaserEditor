@@ -52,6 +52,11 @@ public class MultiAtlasAssetModel extends AssetModel {
 	public MultiAtlasAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
 
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_url = jsonData.optString("url", null);
 		_path = jsonData.optString("path", null);
 		_frames = null;
@@ -67,8 +72,8 @@ public class MultiAtlasAssetModel extends AssetModel {
 				files.add(file);
 			}
 		}
-		
-		for(var frame : getSubElements()) {
+
+		for (var frame : getSubElements()) {
 			var file = frame.getImageFile();
 			if (file != null) {
 				files.add(file);
@@ -92,7 +97,6 @@ public class MultiAtlasAssetModel extends AssetModel {
 
 	public void setUrl(String atlasURL) {
 		_url = atlasURL;
-		firePropertyChange("url");
 	}
 
 	public IFile getUrlFile() {
@@ -105,7 +109,6 @@ public class MultiAtlasAssetModel extends AssetModel {
 
 	public void setPath(String path) {
 		_path = path;
-		firePropertyChange("path");
 	}
 
 	@Override

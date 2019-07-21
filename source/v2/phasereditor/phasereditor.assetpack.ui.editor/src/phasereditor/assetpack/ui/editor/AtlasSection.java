@@ -76,12 +76,11 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setTextureURL(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setTextureURL(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -98,12 +97,11 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setTextureURL(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setTextureURL(url);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -128,12 +126,11 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setAtlasURL(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setAtlasURL(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -149,27 +146,24 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setAtlasURL(url);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setAtlasURL(url);
 
-						var file = model.getFileFromUrl(url);
-						if (file != null) {
-							String format;
-							try {
-								format = AtlasCore.getAtlasFormat(file);
-								if (format != null) {
-									model.setFormat(format);
+							var file = model.getFileFromUrl(url);
+							if (file != null) {
+								String format;
+								try {
+									format = AtlasCore.getAtlasFormat(file);
+									if (format != null) {
+										model.setFormat(format);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
-							} catch (Exception e) {
-								e.printStackTrace();
 							}
-						}
-
-						model.build(null);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -196,8 +190,10 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setNormalMap(value);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setNormalMap(value);
+						});
 					});
 				}
 			};
@@ -215,7 +211,9 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setNormalMap(url));
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setNormalMap(url));
+					});
 				}
 
 				@SuppressWarnings("synthetic-access")

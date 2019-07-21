@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,6 +53,8 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 		AssetPackModel pack = getPack();
 		return pack.isSharedVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
 	}
+	
+	public abstract void readInfo(JSONObject data);
 
 	@Override
 	public final AssetModel getSharedVersion() {
@@ -168,7 +168,6 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 	public void setKey(String key, boolean notify) {
 		_key = key;
 		if (notify) {
-			firePropertyChange("key");
 			AssetPackModel model = getPack();
 			if (model != null) {
 				model.firePropertyChange(AssetPackModel.PROP_ASSET_KEY);
@@ -192,15 +191,8 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 	}
 
 	public void setSection(AssetSectionModel section) {
-		setSection(section, true);
-	}
-
-	public void setSection(AssetSectionModel section, boolean notify) {
 		Assert.isNotNull(section);
 		_section = section;
-		if (notify) {
-			firePropertyChange("section");
-		}
 	}
 
 	public AssetGroupModel getGroup() {
@@ -239,29 +231,6 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 		}
 
 		return folder;
-	}
-
-	private transient final PropertyChangeSupport _support = new PropertyChangeSupport(this);
-
-	public void addPropertyChangeListener(PropertyChangeListener l) {
-		_support.addPropertyChangeListener(l);
-	}
-
-	public void removePropertyChangeListener(PropertyChangeListener l) {
-		_support.removePropertyChangeListener(l);
-	}
-
-	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
-		_support.addPropertyChangeListener(property, l);
-	}
-
-	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
-		_support.removePropertyChangeListener(property, l);
-	}
-
-	public void firePropertyChange(String property) {
-		_support.firePropertyChange(property, true, false);
-		getPack().setDirty(true);
 	}
 
 	@SuppressWarnings("static-method")

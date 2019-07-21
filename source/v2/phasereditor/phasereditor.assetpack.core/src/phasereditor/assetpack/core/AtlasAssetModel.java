@@ -61,6 +61,11 @@ public class AtlasAssetModel extends AssetModel {
 
 	public AtlasAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_textureURL = jsonData.optString("textureURL", null);
 		_normalMap = jsonData.optString("normalMap", null);
 		_atlasURL = jsonData.optString("atlasURL", null);
@@ -103,7 +108,6 @@ public class AtlasAssetModel extends AssetModel {
 
 	public void setTextureURL(String textureURL) {
 		_textureURL = textureURL;
-		firePropertyChange("textureURL");
 	}
 
 	public IFile getNormalMapFile() {
@@ -116,7 +120,6 @@ public class AtlasAssetModel extends AssetModel {
 
 	public void setNormalMap(String normalMap) {
 		_normalMap = normalMap;
-		firePropertyChange("normalMap");
 	}
 
 	public String getAtlasURL() {
@@ -125,7 +128,6 @@ public class AtlasAssetModel extends AssetModel {
 
 	public void setAtlasURL(String atlasURL) {
 		_atlasURL = atlasURL;
-		firePropertyChange("atlasURL");
 	}
 
 	public String getFormat() {
@@ -134,7 +136,6 @@ public class AtlasAssetModel extends AssetModel {
 
 	public void setFormat(String format) {
 		_format = format;
-		firePropertyChange("format");
 	}
 
 	@SuppressWarnings("unchecked")

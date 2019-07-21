@@ -67,9 +67,9 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 
 			@Override
 			protected void accept(String value) {
-				getModels().forEach(model -> model.setKey(value));
-				getEditor().refresh();
-
+				wrapOperation(() -> {
+					getModels().forEach(model -> model.setKey(value));
+				});
 			}
 		};
 

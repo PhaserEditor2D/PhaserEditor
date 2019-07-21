@@ -39,6 +39,11 @@ public class PluginAssetModel extends AssetModel {
 
 	public PluginAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
+		readInfo(jsonDoc);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonDoc) {
 		_url = jsonDoc.optString("url", null);
 		_start = jsonDoc.optBoolean("start", false);
 		_mapping = jsonDoc.optString("mapping", null);
@@ -69,7 +74,6 @@ public class PluginAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public IFile getUrlFile() {
@@ -82,7 +86,6 @@ public class PluginAssetModel extends AssetModel {
 
 	public void setStart(boolean start) {
 		_start = start;
-		firePropertyChange("start");
 	}
 
 	public String getMapping() {
@@ -91,7 +94,6 @@ public class PluginAssetModel extends AssetModel {
 
 	public void setMapping(String mapping) {
 		_mapping = mapping;
-		firePropertyChange("mapping");
 	}
 
 	@Override

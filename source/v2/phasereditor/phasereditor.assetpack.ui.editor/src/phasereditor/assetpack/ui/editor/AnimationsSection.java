@@ -73,12 +73,11 @@ public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetMod
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setUrl(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -94,13 +93,11 @@ public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetMod
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setUrl(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(url);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -126,13 +123,11 @@ public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetMod
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setDataKey(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setDataKey(value);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), AnimationsAssetModel::getDataKey));

@@ -68,12 +68,11 @@ public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setUrl(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 
@@ -89,12 +88,11 @@ public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setUrl(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(url);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -116,7 +114,9 @@ public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> model.setNormalMap(value));
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setNormalMap(value));
+					});
 				}
 			};
 
@@ -133,7 +133,9 @@ public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setNormalMap(url));
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setNormalMap(url));
+					});
 				}
 
 				@SuppressWarnings("synthetic-access")

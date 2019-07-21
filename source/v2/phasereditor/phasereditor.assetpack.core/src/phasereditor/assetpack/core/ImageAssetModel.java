@@ -80,11 +80,16 @@ public class ImageAssetModel extends AssetModel {
 		super(key, AssetType.image, section);
 	}
 
-	public ImageAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
-		super(definition, section);
+	public ImageAssetModel(JSONObject data, AssetSectionModel section) throws JSONException {
+		super(data, section);
 
-		_url = definition.optString("url");
-		_normalMap = definition.optString("normalMap");
+		readInfo(data);
+	}
+
+	@Override
+	public void readInfo(JSONObject data) {
+		_url = data.optString("url");
+		_normalMap = data.optString("normalMap");
 	}
 
 	@Override
@@ -104,7 +109,6 @@ public class ImageAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public String getNormalMap() {
@@ -113,7 +117,6 @@ public class ImageAssetModel extends AssetModel {
 
 	public void setNormalMap(String normalMap) {
 		_normalMap = normalMap;
-		firePropertyChange("normalMap");
 	}
 
 	public IFile getNormalMapFile() {

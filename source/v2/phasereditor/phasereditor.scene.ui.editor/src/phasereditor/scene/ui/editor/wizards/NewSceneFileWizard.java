@@ -161,11 +161,11 @@ public class NewSceneFileWizard extends Wizard implements INewWizard {
 							if (_assetPackPage.getAsSceneFileButton().getSelection()) {
 								var asset = new SceneFileAssetModel(pack.createKey(jsFile), section);
 								asset.setUrl(ProjectCore.getAssetUrl(jsFile));
-								section.addAsset(asset, false);
+								section.addAsset(asset);
 							} else {
 								var asset = new ScriptAssetModel(pack.createKey(jsFile), section);
 								asset.setUrl(ProjectCore.getAssetUrl(jsFile));
-								section.addAsset(asset, false);
+								section.addAsset(asset);
 							}
 
 						});

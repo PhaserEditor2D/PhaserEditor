@@ -117,7 +117,7 @@ public class NewAtlasMakerWizard extends Wizard implements INewWizard {
 					asset.setUrl(ProjectCore.getAssetUrl(jsonFile));
 					asset.setPath(ProjectCore.getAssetUrl(jsonFile.getProject(), file.getParent().getFullPath()));
 
-					section.addAsset(asset, false);
+					section.addAsset(asset);
 				});
 
 				swtRun(() -> {

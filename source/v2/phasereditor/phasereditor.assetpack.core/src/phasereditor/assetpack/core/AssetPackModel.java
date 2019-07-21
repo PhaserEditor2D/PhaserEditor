@@ -77,7 +77,6 @@ public final class AssetPackModel {
 	protected List<AssetSectionModel> _sections;
 	private Map<AssetType, AssetGroupModel> _groupMap;
 	private IFile _file;
-	private boolean _dirty;
 
 	public AssetPackModel(IFile file) throws Exception {
 		this(readJSON(file), file);
@@ -85,10 +84,10 @@ public final class AssetPackModel {
 
 	public AssetPackModel(JSONObject jsonDoc, IFile file) throws Exception {
 		_file = file;
-		build(jsonDoc);
+		read(jsonDoc);
 	}
 
-	private void build(JSONObject jsonRoot) throws Exception {
+	public void read(JSONObject jsonRoot) throws Exception {
 		_sections = new ArrayList<>();
 		_groupMap = new HashMap<>();
 
@@ -153,7 +152,7 @@ public final class AssetPackModel {
 				}
 
 				AssetSectionModel section = new AssetSectionModel(sectionKey, jsonSectionFilesArray, this);
-				addSection(section, false);
+				addSection(section);
 			}
 		}
 	}
@@ -270,18 +269,6 @@ public final class AssetPackModel {
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
-		}
-		setDirty(false);
-	}
-
-	public boolean isDirty() {
-		return _dirty;
-	}
-
-	public void setDirty(boolean dirty) {
-		if (_dirty != dirty) {
-			_dirty = dirty;
-			firePropertyChange(PROP_DIRTY);
 		}
 	}
 
@@ -578,37 +565,25 @@ public final class AssetPackModel {
 		return file;
 	}
 
-	public void addSection(AssetSectionModel section, boolean notify) {
-		addSection(_sections.size(), section, notify);
+	public void addSection(AssetSectionModel section) {
+		addSection(_sections.size(), section);
 	}
 
-	public void addSection(int index, AssetSectionModel section, boolean notify) {
+	public void addSection(int index, AssetSectionModel section) {
 		section.setPack(this);
 		_sections.add(index, section);
-		if (notify) {
-			setDirty(true);
-		}
 	}
 
-	public void removeSection(AssetSectionModel section, boolean notify) {
+	public void removeSection(AssetSectionModel section) {
 		_sections.remove(section);
-		if (notify) {
-			setDirty(true);
-		}
 	}
 
-	public void removeAllSections(List<AssetSectionModel> sections, boolean notify) {
+	public void removeAllSections(List<AssetSectionModel> sections) {
 		_sections.removeAll(sections);
-		if (notify) {
-			setDirty(true);
-		}
 	}
 
-	public void addAllSections(int index, List<AssetSectionModel> sections, boolean notify) {
+	public void addAllSections(int index, List<AssetSectionModel> sections) {
 		_sections.addAll(index, sections);
-		if (notify) {
-			setDirty(true);
-		}
 	}
 
 	public List<AssetSectionModel> getSections() {

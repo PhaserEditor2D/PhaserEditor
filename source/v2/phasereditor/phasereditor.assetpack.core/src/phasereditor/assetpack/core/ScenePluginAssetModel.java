@@ -39,6 +39,11 @@ public class ScenePluginAssetModel extends AssetModel {
 
 	public ScenePluginAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_url = jsonData.optString("url", null);
 		_systemKey = jsonData.optString("systemKey", null);
 		_sceneKey = jsonData.optString("sceneKey", null);
@@ -69,7 +74,6 @@ public class ScenePluginAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public IFile getUrlFile() {
@@ -82,7 +86,6 @@ public class ScenePluginAssetModel extends AssetModel {
 
 	public void setSystemKey(String systemKey) {
 		_systemKey = systemKey;
-		firePropertyChange("systemKey");
 	}
 
 	public String getSceneKey() {
@@ -91,7 +94,6 @@ public class ScenePluginAssetModel extends AssetModel {
 
 	public void setSceneKey(String sceneKey) {
 		_sceneKey = sceneKey;
-		firePropertyChange("sceneKey");
 	}
 
 	@Override

@@ -80,12 +80,11 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setUrl(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -101,13 +100,11 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setUrl(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setUrl(url);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -139,12 +136,11 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setWidth(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setWidth(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), HtmlTextureAssetModel::getWidth));
@@ -159,12 +155,11 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
-						model.setHeight(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setHeight(value);
+						});
 					});
-					update_UI_from_Model();
-					getEditor().refresh();
 				}
 			};
 			addUpdate(() -> setValues_to_Text(text, getModels(), HtmlTextureAssetModel::getHeight));

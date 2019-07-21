@@ -75,12 +75,11 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setJsonURL(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setJsonURL(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -96,13 +95,11 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setJsonURL(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setJsonURL(url);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -117,8 +114,8 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 				}
 
 			});
-		}		
-		
+		}
+
 		{
 
 			// audioURL
@@ -138,10 +135,9 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 
 				@Override
 				protected void setUrls(List<String> value) {
-					getModels().forEach(model -> model.setUrls(value));
-
-					getEditor().refresh();
-					update_UI_from_Model();
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setUrls(value));
+					});
 				}
 
 				@SuppressWarnings({ "unchecked", "synthetic-access" })
@@ -152,11 +148,10 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 			});
 
 		}
-		
+
 		return comp;
 	}
-	
-	
+
 	private static String urlsToString(AudioAssetModel model) {
 		return "[" + model.getUrls().stream().collect(Collectors.joining(",")) + "]";
 	}

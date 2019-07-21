@@ -174,14 +174,12 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 						if (section == null) {
 							section = new AssetSectionModel("section", pack);
-							pack.addSection(section, true);
+							pack.addSection(section);
 						}
 
 						addElementsToSection.accept(section);
 
 						editor.build();
-
-						pack.setDirty(false);
 					}
 				}
 			});
@@ -189,14 +187,14 @@ public class NewPage_AssetPackSection extends WizardPage {
 			for (AssetPackModel pack : AssetPackCore.getAssetPackModels(_project)) {
 
 				if (pack.getSections().isEmpty()) {
-					pack.addSection(new AssetSectionModel("section", pack), false);
+					pack.addSection(new AssetSectionModel("section", pack));
 				}
 				
 				AssetSectionModel section = pack.getSections().get(0);
 
 				if (section == null) {
 					section = new AssetSectionModel("section", pack);
-					pack.addSection(section, true);
+					pack.addSection(section);
 				}
 
 				addElementsToSection.accept(section);

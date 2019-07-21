@@ -41,6 +41,11 @@ public class MultiScriptAssetModel extends AssetModel {
 	public MultiScriptAssetModel(JSONObject jsonDef, AssetSectionModel section) throws JSONException {
 		super(jsonDef, section);
 
+		readInfo(jsonDef);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonDef) {
 		_urls = new ArrayList<>();
 
 		var urlsData = jsonDef.getJSONArray("url");

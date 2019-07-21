@@ -44,6 +44,11 @@ public class PhysicsAssetModel extends AssetModel {
 
 	public PhysicsAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
+		readInfo(jsonDoc);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonDoc) {
 		_url = jsonDoc.optString("url", null);
 		{
 			JSONObject data = jsonDoc.optJSONObject("data");
@@ -135,7 +140,6 @@ public class PhysicsAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 		buildSprites();
 	}
 
@@ -145,7 +149,6 @@ public class PhysicsAssetModel extends AssetModel {
 
 	public void setData(String data) {
 		_data = data;
-		firePropertyChange("data");
 		buildSprites();
 	}
 
@@ -155,7 +158,6 @@ public class PhysicsAssetModel extends AssetModel {
 
 	public void setFormat(String format) {
 		_format = format;
-		firePropertyChange("format");
 	}
 
 	@Override

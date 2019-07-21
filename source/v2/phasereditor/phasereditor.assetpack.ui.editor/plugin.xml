@@ -97,52 +97,6 @@
          </enabledWhen>
       </handler>
       
-       <handler
-            class="phasereditor.assetpack.ui.editor.handlers.RenameAssetHandler"
-            commandId="org.eclipse.ui.edit.rename">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false">
-                     <or>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetSectionModel">
-                        </instanceof>
-                     </or>
-                  </iterate>
-               </and>
-            </with>
-         </enabledWhen>
-         <activeWhen>
-            <with
-                  variable="selection">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false">
-                     <or>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetModel">
-                        </instanceof>
-                        <instanceof
-                              value="phasereditor.assetpack.core.AssetSectionModel">
-                        </instanceof>
-                     </or>
-                  </iterate>
-               </and>
-            </with>
-         </activeWhen>
-      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -203,63 +157,6 @@
       </commonWizard>
    </extension>
    
-   <extension
-         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
-      <deleteParticipant
-            class="phasereditor.assetpack.ui.editor.refactorings.AssetFileDeleteParticipant"
-            id="phasereditor.assetpack.ui.assetFileDeleteParticipant"
-            name="Asset File Delete Participant">
-         <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof></enablement>
-      </deleteParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.renameParticipants">
-      <renameParticipant
-            class="phasereditor.assetpack.ui.editor.refactorings.AssetFileRenameParticipant"
-            id="phasereditor.assetpack.ui.assetFileRenameParticipant"
-            name="Asset File Rename Participant">
-         <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof>
-         </enablement>
-      </renameParticipant>
-      <renameParticipant
-            class="phasereditor.assetpack.ui.editor.refactorings.RenameAssetPackEditorInput"
-            id="phasereditor.assetpack.ui.editor.refactorings.RenameAssetPackEditorInput"
-            name="Rename Asset Pack Editor input">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.assetpack.core.assetPackContentTypeTest">
-            </reference>
-         </enablement>
-      </renameParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.moveParticipants">
-      <moveParticipant
-            class="phasereditor.assetpack.ui.editor.refactorings.AssetFileMoveParticipant"
-            id="phasereditor.assetpack.ui.assetFileMoveParticipant"
-            name="Asset File Move Participant">
-         <enablement>
-            <instanceof
-                  value="org.eclipse.core.resources.IFile">
-            </instanceof>
-         </enablement>
-      </moveParticipant>
-      <moveParticipant
-            class="phasereditor.assetpack.ui.editor.refactorings.MoveAssetPackEditorInput"
-            id="phasereditor.assetpack.ui.editor.refactorings.MoveAssetPackEditorInput"
-            name="Move Asset Pack Editor Input">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.assetpack.core.assetPackContentTypeTest">
-            </reference></enablement>
-      </moveParticipant>
-   </extension>
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant

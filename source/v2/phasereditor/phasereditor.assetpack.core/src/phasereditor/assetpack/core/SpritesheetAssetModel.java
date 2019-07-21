@@ -62,6 +62,11 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public SpritesheetAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_url = jsonData.optString("url", null);
 
 		JSONObject jsonFrameConfig = jsonData.optJSONObject("frameConfig");
@@ -103,7 +108,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public String getNormalMap() {
@@ -112,7 +116,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setNormalMap(String normalMap) {
 		_normalMap = normalMap;
-		firePropertyChange("normalMap");
 	}
 
 	public IFile getNormalMapFile() {
@@ -133,7 +136,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setFrameWidth(int frameWidth) {
 		_frameWidth = frameWidth;
-		firePropertyChange("frameWidth");
 	}
 
 	public int getFrameHeight() {
@@ -142,7 +144,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setFrameHeight(int frameHeight) {
 		_frameHeight = frameHeight;
-		firePropertyChange("frameHeight");
 	}
 
 	public int getStartFrame() {
@@ -151,7 +152,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setStartFrame(int startFrame) {
 		_startFrame = startFrame;
-		firePropertyChange("startFrame");
 	}
 
 	public int getEndFrame() {
@@ -160,7 +160,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setEndFrame(int endFrame) {
 		_endFrame = endFrame;
-		firePropertyChange("endFrame");
 	}
 
 	public void setFrames(List<FrameModel> frames) {
@@ -173,7 +172,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setMargin(int margin) {
 		_margin = margin;
-		firePropertyChange("margin");
 	}
 
 	public int getSpacing() {
@@ -182,7 +180,6 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	public void setSpacing(int spacing) {
 		_spacing = spacing;
-		firePropertyChange("spacing");
 	}
 
 	public List<FrameModel> getFrames() {

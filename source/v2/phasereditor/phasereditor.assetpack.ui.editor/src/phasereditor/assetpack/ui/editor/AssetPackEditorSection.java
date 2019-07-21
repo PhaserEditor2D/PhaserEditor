@@ -32,11 +32,13 @@ import org.eclipse.swt.events.SelectionEvent;
 
 import com.phasereditor2d.json.JSONUtils;
 
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.editor.undo.AssetsOperation;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -53,7 +55,20 @@ public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> {
 		_page = page;
 
 	}
-	
+
+	protected void wrapOperation(Runnable op) {
+		var assets = getModels().stream().map(a -> (AssetModel) a).collect(toList());
+		var before = AssetsOperation.readState(assets);
+		op.run();
+		var after = AssetsOperation.readState(assets);
+		
+		var editor = getEditor();
+		editor.executeOperation(new AssetsOperation("Modify assets", before, after));
+		for(var asset : assets) {
+			asset.build(null);
+		}
+	}
+
 	@Override
 	protected String getHelp(String helpHint) {
 		return helpHint;
@@ -191,14 +206,12 @@ public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> {
 
 		@Override
 		protected void setUrl(String url) {
-			getModels().forEach(obj -> {
-				var model = (TilemapAssetModel) obj;
-				model.setUrl(url);
-				model.build(null);
-			});
-
-			update_UI_from_Model();
-			getEditor().refresh();
+			wrapOperation( () -> {
+				getModels().forEach(obj -> {
+					var model = (TilemapAssetModel) obj;
+					model.setUrl(url);
+				});
+			} );
 		}
 
 		@SuppressWarnings("synthetic-access")

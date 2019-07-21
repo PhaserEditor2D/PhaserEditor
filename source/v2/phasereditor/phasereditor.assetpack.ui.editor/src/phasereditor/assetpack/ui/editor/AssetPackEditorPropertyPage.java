@@ -63,8 +63,6 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
-		list.add(new PackSection(this));
-
 		list.add(new KeySection(this));
 
 		list.add(new ImageSection(this));

@@ -21,9 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor;
 
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
 import static phasereditor.ui.IEditorSharedImages.IMG_DELETE;
-import static phasereditor.ui.IEditorSharedImages.IMG_RENAME;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
@@ -66,9 +65,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -96,6 +97,7 @@ import phasereditor.assetpack.ui.IAssetPackEditor;
 import phasereditor.assetpack.ui.ImageResourceDialog;
 import phasereditor.assetpack.ui.SvgResourceDialog;
 import phasereditor.assetpack.ui.editor.blocks.AssetPackEditorBlocksProvider;
+import phasereditor.assetpack.ui.editor.undo.GlobalOperation;
 import phasereditor.audio.ui.AudioResourceDialog;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
@@ -122,7 +124,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		@Override
 		public boolean matches(IUndoContext context) {
-			return context == this || WorkspaceUndoUtil.getWorkspaceUndoContext().matches(context);
+			return context == this;
 		}
 
 		@Override
@@ -140,6 +142,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private PackEditorCanvas _assetsCanvas;
 
 	private EditorFileStampHelper _fileStampHelper;
+
+	private boolean _dirty;
+
+	private UndoRedoActionGroup _undoRedoGroup;
+
+	private IPartListener _partListener;
 
 	public AssetPackEditor() {
 		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
@@ -160,7 +168,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private void saveMethod(IProgressMonitor monitor) {
 		_model.save(monitor);
-		firePropertyChange(PROP_DIRTY);
+		setDirty(false);
 		saveEditingPoint();
 		refresh();
 	}
@@ -175,6 +183,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		if (_blocksProvider != null) {
 			_blocksProvider.refresh();
+			_blocksProvider.updateProperties();
 		}
 	}
 
@@ -252,14 +261,70 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void registerUndoRedoActions() {
-		IEditorSite site = getEditorSite();
-		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
-		group.fillActionBars(site.getActionBars());
+
+		var site = getEditorSite();
+
+		_undoRedoGroup = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+
+		var actionBars = site.getActionBars();
+
+		_undoRedoGroup.fillActionBars(actionBars);
+
+		actionBars.updateActionBars();
+
+		_partListener = createUndoRedoPartListener();
+
+		getEditorSite().getPage().addPartListener(_partListener);
+
+	}
+	
+	private IPartListener createUndoRedoPartListener() {
+		return new IPartListener() {
+
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				if (part == AssetPackEditor.this) {
+					var actionBars = getEditorSite().getActionBars();
+					_undoRedoGroup.fillActionBars(actionBars);
+					actionBars.updateActionBars();
+//					if (_pendingBuild) {
+//						realBuild();
+//					}
+				}
+			}
+		};
+	}
+
+	public void setDirty(boolean dirty) {
+		if (dirty != _dirty) {
+			_dirty = dirty;
+			firePropertyChange(PROP_DIRTY);
+		}
 	}
 
 	@Override
 	public boolean isDirty() {
-		return _model.isDirty();
+		return _dirty;
 	}
 
 	@Override
@@ -477,25 +542,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private void addNewAssets(AssetSectionModel section, List<AssetModel> assets) {
 		if (!assets.isEmpty()) {
+			
+			var before = GlobalOperation.readState(this);
 
 			for (var asset : assets) {
-				section.addAsset(asset, false);
+				section.addAsset(asset);
 			}
 
-			_model.build();
-
-			_model.setDirty(true);
-
-			if (_blocksProvider != null) {
-				_blocksProvider.refresh();
-				_blocksProvider.updateProperties();
-			}
-
-			_assetsCanvas.redraw();
-
-			if (_outliner != null) {
-				_outliner.refresh();
-			}
+			var after = GlobalOperation.readState(this);
+			
+			executeOperation(new GlobalOperation("Add new assets", before, after));
 
 			swtRun(() -> {
 				_assetsCanvas.getUtils().setSelectionList(assets);
@@ -531,7 +587,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private AssetSectionModel ensureThereIsASection() {
 		AssetSectionModel section;
 		if (_model.getSections().isEmpty()) {
-			_model.addSection(section = new AssetSectionModel("section", _model), false);
+			_model.addSection(section = new AssetSectionModel("section", _model));
 		} else {
 			section = _model.getSections().get(0);
 		}
@@ -748,8 +804,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private Action _deleteSelectionAction;
 
-	private Action _renameSelectionAction;
-
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -788,7 +842,31 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private void updateActions() {
 		var sel = _assetsCanvas.getUtils().getSelectedObjects();
 		_deleteSelectionAction.setEnabled(!sel.isEmpty());
-		_renameSelectionAction.setEnabled(!sel.isEmpty());
+	}
+
+	public void deleteSelection() {
+
+		var selectedAssets = Arrays.stream(getSelection())
+
+				.filter(obj -> obj instanceof AssetModel)
+
+				.map(obj -> (AssetModel) obj)
+
+				.collect(toList());
+
+		if (!selectedAssets.isEmpty()) {
+
+			var before = GlobalOperation.readState(this);
+
+			for (var asset : selectedAssets) {
+				asset.getSection().removeAsset(asset);
+			}
+
+			var after = GlobalOperation.readState(this);
+
+			executeOperation(new GlobalOperation("Delete assets", before, after));
+		}
+
 	}
 
 	private void createActions() {
@@ -800,30 +878,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			@Override
 			public void run() {
-				var selection = getSelection();
-				AssetPackUIEditor.launchDeleteWizard(selection, AssetPackEditor.this);
-			}
-		};
-
-		_renameSelectionAction = new Action("Rename", EditorSharedImages.getImageDescriptor(IMG_RENAME)) {
-			{
-				setDescription("Rename object (Refactoring)");
-			}
-
-			@Override
-			public void run() {
-				var selection = getSelection();
-				AssetPackUIEditor.launchRenameWizard(selection[0], AssetPackEditor.this);
+				deleteSelection();
 			}
 		};
 	}
 
 	public Action getDeleteSelectionAction() {
 		return _deleteSelectionAction;
-	}
-
-	public Action getRenameSelectionAction() {
-		return _renameSelectionAction;
 	}
 
 	@Override
@@ -919,13 +980,15 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_assetsCanvas.setFocus();
 	}
 
-	void executeOperation(IUndoableOperation op) {
-		IOperationHistory history = getEditorSite().getWorkbenchWindow().getWorkbench().getOperationSupport()
-				.getOperationHistory();
+	public void executeOperation(IUndoableOperation operation) {
+		operation.addContext(UNDO_CONTEXT);
+		IWorkbench workbench = getSite().getWorkbenchWindow().getWorkbench();
 		try {
-			history.execute(op, null, this);
-		} catch (ExecutionException e) {
-			AssetPackUI.showError(e);
+			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();
+			history.execute(operation, null, this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1116,7 +1179,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			{
 				new ActionButton(parent, getDeleteSelectionAction());
-				new ActionButton(parent, getRenameSelectionAction());
 			}
 		}
 
@@ -1124,10 +1186,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	public PackEditorCanvas getAssetsCanvas() {
 		return _assetsCanvas;
-	}
-
-	public void launchRenameWizard() {
-		AssetPackUIEditor.launchRenameWizard(getSelection()[0], this);
 	}
 
 	private Object[] getSelection() {
@@ -1148,5 +1206,4 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 		_assetsCanvas.getUtils().setSelectionList(List.of());
 	}
-
 }

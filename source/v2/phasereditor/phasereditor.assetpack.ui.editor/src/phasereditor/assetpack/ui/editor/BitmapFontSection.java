@@ -56,7 +56,7 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
 	}
-	
+
 	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof BitmapFontAssetModel;
@@ -65,7 +65,7 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 	@SuppressWarnings("unused")
 	@Override
 	public Control createContent(Composite parent) {
-		
+
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(3, false));
 
@@ -82,16 +82,16 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setFontDataURL(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setFontDataURL(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
-			addUpdate(() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getFontDataURL()))));
+			addUpdate(() -> text
+					.setText(flatValues_to_String(getModels().stream().map(model -> model.getFontDataURL()))));
 
 			var btn = new Button(comp, 0);
 			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
@@ -103,13 +103,11 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setFontDataURL(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setFontDataURL(url);
+						});
 					});
-
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -137,12 +135,11 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setTextureURL(value);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setTextureURL(value);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 			};
 
@@ -159,12 +156,11 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> {
-						model.setTextureURL(url);
-						model.build(null);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setTextureURL(url);
+						});
 					});
-					getEditor().refresh();
-					update_UI_from_Model();
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -175,7 +171,7 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 			});
 		}
-		
+
 		{
 			// normal map
 			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.ImageFileConfig.normalMap"));
@@ -186,8 +182,10 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-						model.setNormalMap(value);
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setNormalMap(value);
+						});
 					});
 				}
 			};
@@ -205,7 +203,9 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 				@Override
 				protected void setUrl(String url) {
-					getModels().forEach(model -> model.setNormalMap(url));
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setNormalMap(url));
+					});
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -216,7 +216,6 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 			});
 		}
 
-		
 		return comp;
 	}
 

@@ -49,7 +49,14 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 	public AudioSpriteAssetModel(JSONObject definition,
 			AssetSectionModel section) throws JSONException {
 		super(definition, section);
-		_jsonURL = definition.optString("jsonURL", null);
+		readInfo(definition);
+	}
+
+	@Override
+	public void readInfo(JSONObject data) {
+		super.readInfo(data);
+		
+		_jsonURL = data.optString("jsonURL", null);
 	}
 
 	public AudioSpriteAssetModel(String key, AssetSectionModel section)
@@ -69,7 +76,6 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 
 	public void setJsonURL(String jsonURL) {
 		_jsonURL = jsonURL;
-		firePropertyChange("jsonURL");
 	}
 
 	public IFile getJsonURLFile() {

@@ -40,6 +40,11 @@ public class HtmlTextureAssetModel extends AssetModel {
 	public HtmlTextureAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
 		
+		readInfo(jsonData);
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonData) {
 		_url = jsonData.optString("url", null);
 		_width = jsonData.optInt("width", 512);
 		_height = jsonData.optInt("height", 512);
@@ -72,7 +77,6 @@ public class HtmlTextureAssetModel extends AssetModel {
 
 	public void setUrl(String url) {
 		_url = url;
-		firePropertyChange("url");
 	}
 
 	public int getHeight() {
@@ -81,7 +85,6 @@ public class HtmlTextureAssetModel extends AssetModel {
 
 	public void setHeight(int height) {
 		_height = height;
-		firePropertyChange("height");
 	}
 
 	public int getWidth() {
@@ -90,7 +93,6 @@ public class HtmlTextureAssetModel extends AssetModel {
 
 	public void setWidth(int width) {
 		_width = width;
-		firePropertyChange("width");
 	}
 
 	public IFile getUrlFile() {

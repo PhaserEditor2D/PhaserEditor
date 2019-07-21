@@ -77,10 +77,9 @@ public class AudioSection extends AssetPackEditorSection<AudioAssetModel> {
 
 				@Override
 				protected void setUrls(List<String> value) {
-					getModels().forEach(model -> model.setUrls(value));
-
-					getEditor().refresh();
-					update_UI_from_Model();
+					wrapOperation(() -> {
+						getModels().forEach(model -> model.setUrls(value));
+					});
 				}
 
 				@SuppressWarnings({ "unchecked", "synthetic-access" })
