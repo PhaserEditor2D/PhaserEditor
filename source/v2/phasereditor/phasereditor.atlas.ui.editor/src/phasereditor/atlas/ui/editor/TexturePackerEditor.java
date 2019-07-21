@@ -69,6 +69,7 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -853,7 +854,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		}
 
 		if (_blocksProvider != null) {
-			_blocksProvider.refresh();
+			swtRun(() -> _blocksProvider.refresh());
 		}
 	}
 
@@ -921,7 +922,22 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	private AtlasCanvas_Unmanaged createAtlasCanvas(Composite parent) {
-		AtlasCanvas_Unmanaged canvas = new AtlasCanvas_Unmanaged(parent, SWT.NONE, false);
+		AtlasCanvas_Unmanaged canvas = new AtlasCanvas_Unmanaged(parent, SWT.NONE, false) {
+			@Override
+			public void customPaintControl(PaintEvent e) {
+
+				if (getModel().getPages().isEmpty()) {
+					var str = "Drag files from the Blocks or Project views\n" + "and drop them here.";
+					var gc = e.gc;
+					var size = gc.textExtent(str);
+					var b = getClientArea();
+					gc.drawText(str, b.width / 2 - size.x / 2, b.height / 2 - size.y / 2, true);
+					return;
+				}
+
+				super.customPaintControl(e);
+			}
+		};
 		canvas.setZoomWhenShiftPressed(false);
 		// we handle the cache
 
@@ -1182,25 +1198,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 			{
 				var btn = new Button(parent, SWT.PUSH);
-				btn.setToolTipText("Add images.");
-				btn.setImage(EditorSharedImages.getImage(IMG_ADD));
-				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-					MessageDialog.openInformation(getEditorSite().getShell(), "Add",
-							"Drag files or folders from the Project view or Block view and drop them in the editor.");
-				}));
-			}
-
-			{
-				var btn = new Button(parent, SWT.PUSH);
-				btn.setToolTipText("Remove selected images.");
-				btn.setImage(EditorSharedImages.getImage(IMG_DELETE));
-				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> deleteSelection()));
-			}
-
-			sep(parent);
-
-			{
-				var btn = new Button(parent, SWT.PUSH);
+				btn.setText("Settings");
 				btn.setToolTipText("Show packer settings.");
 				btn.setImage(EditorSharedImages.getImage(IMG_SETTINGS));
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> selectSettings()));
@@ -1208,6 +1206,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 			{
 				var btn = new Button(parent, SWT.PUSH);
+				btn.setText("Build Atlas");
 				btn.setToolTipText("Generate Phaser atlas files.");
 				btn.setImage(EditorSharedImages.getImage(IMG_BUILD));
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> manuallyBuild()));
