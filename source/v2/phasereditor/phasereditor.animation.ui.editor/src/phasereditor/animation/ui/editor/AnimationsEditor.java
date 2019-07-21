@@ -332,7 +332,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		public MultiAnimsComp(Composite parent, int style) {
 			super(parent, style);
 
-			var layout = new GridLayout(3, true);
+			var layout = new GridLayout(4, true);
 			layout.marginWidth = layout.marginHeight = 20;
 			setLayout(layout);
 			addPaintListener(this);
@@ -363,12 +363,22 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		class MyAnimCanvas extends AnimationCanvas implements MouseTrackListener, MouseListener {
 
+			private boolean _mouseOver;
+
 			public MyAnimCanvas(Composite parent, int style) {
 				super(parent, style);
 
 				addControlListener(this);
 				addMouseTrackListener(this);
 				addMouseListener(this);
+			}
+
+			@Override
+			protected void customPaintControl(PaintEvent e) {
+				super.customPaintControl(e);
+				if (_mouseOver) {
+					e.gc.drawRectangle(1, 1, e.width - 2, e.height - 2);
+				}
 			}
 
 			@Override
@@ -388,12 +398,14 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 			@Override
 			public void mouseExit(MouseEvent e) {
-				setBackground(getParent().getBackground());
+				_mouseOver = false;
+				redraw();
 			}
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
-				setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
+				_mouseOver = true;
+				redraw();
 			}
 
 			@Override
@@ -403,11 +415,18 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				//
+				_mouseOver = false;
+				setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 			}
 
 			@Override
 			public void mouseUp(MouseEvent e) {
+				setBackground(getParent().getBackground());
+
+				if (e.button != 1) {
+					return;
+				}
+
 				var sel = new StructuredSelection(getModel());
 				if (_outliner == null) {
 					setExternalSelection(sel);
@@ -422,6 +441,19 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			for (var c : getChildren()) {
 				c.dispose();
 			}
+
+			var len = anims.length;
+			var cols = (int) Math.round(Math.sqrt(len));
+
+			if ((float) len / cols > cols) {
+				cols++;
+			}
+
+			if (len < 4) {
+				cols = 3;
+			}
+
+			setLayout(new GridLayout(cols, false));
 
 			for (var anim : anims) {
 				var animCanvas = new MyAnimCanvas(this, 0);
@@ -473,7 +505,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_timelineCanvas.setEditor(this);
 
 		_singleAnimComp.setWeights(new int[] { 2, 1 });
-		
+
 		_animationActions = new AnimationActions(_animCanvas, _timelineCanvas);
 	}
 
@@ -1038,7 +1070,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		setExternalSelection(sel);
 	}
-	
+
 	public void setSelection(IStructuredSelection sel) {
 		if (_outliner == null) {
 			setExternalSelection(sel);
@@ -1078,7 +1110,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		if (_hugeToolbar != null) {
 			_hugeToolbar.updateButtons();
 		}
-		
+
 		getStopAllAction().run();
 		getAnimationActions().getStopAction().run();
 	}
