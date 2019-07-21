@@ -51,18 +51,16 @@ import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPartListener;
@@ -334,7 +332,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	@SuppressWarnings("unused")
-	public void showAddAssetMenu(Control parent) {
+	public void showAddAssetMenu() {
 		var dlg = new AssetTypeDialog(getSite());
 		if (dlg.open() == Window.OK) {
 			var result = dlg.getResult();
@@ -805,6 +803,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private Action _deleteSelectionAction;
 
+	private MenuManager _menuManager;
+
+	private Action _addAssetsAction;
+
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -861,6 +863,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			parent.addDisposeListener(e -> helper.dispose());
 		}
 
+		_assetsCanvas.setMenu(getMenuManager().createContextMenu(_assetsCanvas));
+	}
+
+	public MenuManager getMenuManager() {
+		return _menuManager;
 	}
 
 	private void updateActions() {
@@ -894,6 +901,18 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void createActions() {
+		_addAssetsAction = new Action("Add File Key") {
+			{
+				setToolTipText("Add new files");
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_ADD));
+			}
+
+			@Override
+			public void run() {
+				showAddAssetMenu();
+			}
+
+		};
 		_deleteSelectionAction = new Action("Delete", EditorSharedImages.getImageDescriptor(IMG_DELETE)) {
 
 			{
@@ -905,6 +924,19 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				deleteSelection();
 			}
 		};
+
+		_menuManager = new MenuManager();
+		_menuManager.add(_addAssetsAction);
+		_menuManager.add(_deleteSelectionAction);
+		_menuManager.addMenuListener(m -> {
+			_deleteSelectionAction.setEnabled(Arrays.stream(getSelection())
+
+					.filter(obj -> obj instanceof AssetModel)
+
+					.map(obj -> (AssetModel) obj)
+
+					.count() > 0);
+		});
 	}
 
 	public Action getDeleteSelectionAction() {
@@ -1096,7 +1128,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			viewer.setInput(getModel());
 
-			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
+			viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
 		}
 
 		@Override
@@ -1182,15 +1214,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	class AssetPackEditorHugeToolbar implements IEditorHugeToolbar {
 
+		@SuppressWarnings("unused")
 		@Override
 		public void createContent(Composite parent) {
-			{
-				var btn = new Button(parent, SWT.PUSH);
-				btn.setText("Add File Key");
-				btn.setToolTipText("Add a new file key to the pack editor.");
-				btn.setImage(EditorSharedImages.getImage(IMG_ADD));
-				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
-			}
+			new ActionButton(parent, _addAssetsAction, true);
 		}
 
 	}
