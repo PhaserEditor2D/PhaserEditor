@@ -51,6 +51,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -146,6 +147,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	private ISelectionChangedListener _outlinerSelectionListener;
 
 	private EditorFileStampHelper _fileStampHelper;
+
+	private Action _deleteAction;
 
 	public TexturePackerEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -334,12 +337,30 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	}
 
+	private void createActions() {
+		_deleteAction = new Action("Delete") {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_DELETE));
+			}
+
+			@Override
+			public void run() {
+				deleteSelection();
+			}
+		};
+	}
+
+	Action getDeleteAction() {
+		return _deleteAction;
+	}
+
 	private void createMenu() {
+		
+		createActions();
+		
 		_selectionProvider.setSelection(StructuredSelection.EMPTY);
-
 		_menuManager = new MenuManager();
-
-		getEditorSite().registerContextMenu(_menuManager, _selectionProvider, false);
+		_menuManager.add(getDeleteAction());
 	}
 
 	class AtlasEditorSelectionProvider implements ISelectionProvider {
