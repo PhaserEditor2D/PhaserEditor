@@ -101,16 +101,17 @@ import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.project.core.PhaserProjectBuilder;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.SelectionProviderImpl;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.editors.EditorFileMoveHelper;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
 /**
@@ -201,6 +202,31 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_stackComp.requestLayout();
 
 		afterCreateWidgets();
+
+		{
+			var helper = new EditorFileMoveHelper<>(this) {
+
+				@Override
+				protected IFile getEditorFile(AnimationsEditor editor) {
+					return getEditorInput().getFile();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void setEditorFile(AnimationsEditor editor, IFile file) {
+					swtRun(() -> {
+						AnimationsEditor.super.setInput(new FileEditorInput(file));
+
+						_model.setFile(file);
+
+						setPartName(file.getName());
+
+						firePropertyChange(PROP_TITLE);
+					});
+				}
+			};
+			parent.addDisposeListener(e -> helper.dispose());
+		}
 	}
 
 	private void createMultiAnimationsComp() {
@@ -222,10 +248,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		public void paintControl(PaintEvent e) {
 			if (getChildren().length == 0) {
 				var str = "To create new animations:\n\n"
-				+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
-				+ "New animations will be created by grouping the keys with a common prefix.\n\n"
-				+ "- Press the Add Animation button to create an empty animation.";
-				
+						+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
+						+ "New animations will be created by grouping the keys with a common prefix.\n\n"
+						+ "- Press the Add Animation button to create an empty animation.";
+
 				var size = e.gc.textExtent(str);
 				e.gc.drawText(str, e.width / 2 - size.x / 2, e.height / 2 - size.y / 2, true);
 			}
@@ -640,17 +666,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	public void handleFileMoved(IFile file) {
-		super.setInput(new FileEditorInput(file));
-
-		_model.setFile(file);
-
-		setPartName(file.getName());
-
-		firePropertyChange(PROP_TITLE);
-
 	}
 
 	public void reloadFile() {
