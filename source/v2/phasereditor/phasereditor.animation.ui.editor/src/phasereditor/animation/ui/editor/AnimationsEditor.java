@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -73,10 +76,14 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.Page;
@@ -148,6 +155,93 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	private Action _playAllAction;
 	private Action _stopAllAction;
 	private MenuManager _menuManager;
+	private UndoRedoActionGroup _undoRedoGroup;
+	private IPartListener _partListener;
+
+	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
+
+		@Override
+		public boolean matches(IUndoContext context) {
+			return context == this;
+		}
+
+		@Override
+		public String getLabel() {
+			return "ANIMATIONS_EDITOR_CONTEXT";
+		}
+	};
+
+	public void executeOperation(IUndoableOperation operation) {
+		operation.addContext(UNDO_CONTEXT);
+		IWorkbench workbench = getSite().getWorkbenchWindow().getWorkbench();
+		try {
+			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();
+			history.execute(operation, null, this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void registerUndoRedoActions() {
+
+		var site = getEditorSite();
+
+		_undoRedoGroup = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+
+		var actionBars = site.getActionBars();
+
+		_undoRedoGroup.fillActionBars(actionBars);
+
+		actionBars.updateActionBars();
+
+		_partListener = createUndoRedoPartListener();
+
+		getEditorSite().getPage().addPartListener(_partListener);
+
+	}
+
+	private IPartListener createUndoRedoPartListener() {
+		return new IPartListener() {
+
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				//
+			}
+
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				if (part == AnimationsEditor.this) {
+					var actionBars = getEditorSite().getActionBars();
+					_undoRedoGroup.fillActionBars(actionBars);
+					actionBars.updateActionBars();
+				}
+			}
+		};
+	}
+
+	@Override
+	public void dispose() {
+
+		getEditorSite().getPage().removePartListener(_partListener);
+
+		super.dispose();
+	}
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
@@ -249,15 +343,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		@Override
 		public void paintControl(PaintEvent e) {
 			if (getChildren().length == 0) {
-				
+
 				String str;
-				
+
 				if (getModel().getAnimations().isEmpty()) {
-				
-				str = "To create new animations:\n\n"
-						+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
-						+ "New animations will be created by grouping the keys with a common prefix.\n\n"
-						+ "- Press the Add Animation button to create an empty animation.";
+
+					str = "To create new animations:\n\n"
+							+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
+							+ "New animations will be created by grouping the keys with a common prefix.\n\n"
+							+ "- Press the Add Animation button to create an empty animation.";
 				} else {
 					str = "Select the animations in the Outline view";
 				}
@@ -379,6 +473,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_timelineCanvas.setEditor(this);
 
 		_singleAnimComp.setWeights(new int[] { 2, 1 });
+		
+		_animationActions = new AnimationActions(_animCanvas, _timelineCanvas);
 	}
 
 	private void afterCreateWidgets() {
@@ -438,10 +534,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		disableToolbar();
 
-		if (!_model.getAnimations().isEmpty()) {
-			_initialAnimation = _model.getAnimations().get(0);
-		}
-
 		if (_initialAnimtionKey != null) {
 			var opt = _model.getAnimations().stream().filter(a -> a.getKey().equals(_initialAnimtionKey)).findFirst();
 			if (opt.isPresent()) {
@@ -453,8 +545,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		if (PhaserProjectBuilder.isStartupFinished()) {
 
-			if (_initialAnimation != null) {
-				setExternalSelection(new StructuredSelection(_initialAnimation));
+			if (_initialAnimation == null) {
+				setSelection(StructuredSelection.EMPTY);
+			} else {
+				setSelection(new StructuredSelection(_initialAnimation));
 				_initialAnimation = null;
 			}
 		}
@@ -557,22 +651,33 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	private void createActions() {
 
-		_animationActions = new AnimationActions(_animCanvas, _timelineCanvas);
-
 		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animCanvas);
 		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animCanvas);
 
 		_deleteAction = new Action("Delete",
 				Workbench.getInstance().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
-			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@SuppressWarnings({ "unchecked", "rawtypes", "cast" })
 			@Override
 			public void run() {
 				var elems = ((IStructuredSelection) getEditorSite().getSelectionProvider().getSelection()).toArray();
 
 				if (elems.length > 0) {
 					var list = List.of(elems);
-					deleteAnimations((List) list.stream().filter(e -> e instanceof AnimationModel).collect(toList()));
-					deleteFrames((List) list.stream().filter(e -> e instanceof AnimationFrameModel).collect(toList()));
+
+					var list1 = (List) list.stream().filter(e -> e instanceof AnimationModel).collect(toList());
+
+					if (list.isEmpty()) {
+						var list2 = (List) list.stream().filter(e -> e instanceof AnimationFrameModel)
+								.collect(toList());
+						if (!list2.isEmpty()) {
+							deleteFrames(list2);
+						}
+					} else {
+						var before = GlobalOperation.readState(AnimationsEditor.this);
+						deleteAnimations(list1);
+						var after = GlobalOperation.readState(AnimationsEditor.this);
+						executeOperation(new GlobalOperation("Delete animations and frames", before, after));
+					}
 				}
 			}
 		};
@@ -651,6 +756,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
+
+		registerUndoRedoActions();
 	}
 
 	@Override
@@ -706,23 +813,28 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	public void build() {
 		_model.build();
 
-		if (_outliner != null) {
-			_outliner.refresh();
+		refreshOutline();
+		refreshBlocksProvider();
+
+		var animModel = _animCanvas.getModel();
+
+		if (animModel != null) {
+			animModel = _model.getAnimation(animModel.getKey());
 		}
 
-		AnimationModel model = _animCanvas.getModel();
-
 		if (_initialAnimation != null) {
-			model = _initialAnimation;
+			animModel = _initialAnimation;
 			_initialAnimation = null;
 		}
 
-		loadAnimation(model);
-
-		refreshBlocksProvider();
+		if (animModel == null) {
+			setSelection(StructuredSelection.EMPTY);
+		} else {
+			setSelection(new StructuredSelection(animModel));
+		}
 	}
 
-	private void refreshBlocksProvider() {
+	public void refreshBlocksProvider() {
 		if (_blocksProvider != null) {
 			_blocksProvider.refresh();
 		}
@@ -926,6 +1038,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		setExternalSelection(sel);
 	}
+	
+	public void setSelection(IStructuredSelection sel) {
+		if (_outliner == null) {
+			setExternalSelection(sel);
+		} else {
+			_outliner.refresh();
+			_outliner.setSelection(sel);
+		}
+	}
 
 	private void setExternalSelection(IStructuredSelection sel) {
 		var elems = sel.toArray();
@@ -941,6 +1062,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		} else {
 			top = _multiAnimationsComp;
 			loadAnimation(null);
+			if (elems.length == 0) {
+				elems = _model.getAnimations().toArray();
+			}
 			_multiAnimationsComp.updateContent(elems);
 		}
 
@@ -954,6 +1078,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		if (_hugeToolbar != null) {
 			_hugeToolbar.updateButtons();
 		}
+		
+		getStopAllAction().run();
+		getAnimationActions().getStopAction().run();
 	}
 
 	public void selectAnimation(AnimationModel anim) {
@@ -1199,7 +1326,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	@Override
 	public void saveState(IMemento memento) {
-		var anim = getAnimationCanvas().getModel();
+		AnimationModel anim = getAnimationCanvas().getModel();
 
 		if (anim != null) {
 			memento.putString(ANIMATION_KEY, anim.getKey());
@@ -1257,6 +1384,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			}
 		}
 
+		var before = GlobalOperation.readState(this);
+
 		var anims = new ArrayList<AnimationModel>();
 
 		for (var group : result) {
@@ -1289,14 +1418,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_model.getAnimations().addAll(anims);
 		_model.getAnimations().sort((a, b) -> a.getKey().compareTo(b.getKey()));
 
+		var after = GlobalOperation.readState(this);
+
+		executeOperation(new GlobalOperation("Auto-create animations", before, after));
+
 		if (!anims.isEmpty()) {
 			var sel = new StructuredSelection(anims);
-			if (_outliner == null) {
-				setExternalSelection(sel);
-			} else {
-				_outliner.refresh();
-				_outliner.setSelection(sel);
-			}
+			setSelection(sel);
 		}
 
 		if (_outliner != null) {

@@ -41,13 +41,13 @@ public class AnimationActions {
 	private Action _pauseAction;
 	private Action _stopAction;
 
-	private AnimationCanvas _animationCanvas;
 	private AnimationTimelineCanvas<AnimationModel> _timelineCanvas;
+	private AnimationCanvas _animationCanvas;
 
 	public AnimationActions(AnimationCanvas animationCanvas, AnimationTimelineCanvas<AnimationModel> timelineCanvas) {
 		_animationCanvas = animationCanvas;
 		_timelineCanvas = timelineCanvas;
-		
+
 		createActions();
 	}
 

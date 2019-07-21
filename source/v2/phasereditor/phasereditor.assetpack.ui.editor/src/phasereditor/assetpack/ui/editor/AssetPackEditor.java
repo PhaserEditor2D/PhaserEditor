@@ -234,6 +234,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		if (_model != null && _model.getFile().exists()) {
 			saveEditingPoint();
 		}
+		
+		getEditorSite().getPage().removePartListener(_partListener);
 
 		super.dispose();
 	}

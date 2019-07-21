@@ -67,12 +67,7 @@ public class AnimationsModel {
 			}
 		}
 
-		var jsonAnims = jsonData2.getJSONArray("anims");
-		for (int i = 0; i < jsonAnims.length(); i++) {
-			var jsonAnim = jsonAnims.getJSONObject(i);
-			var anim = createAnimation(jsonAnim);
-			_animations.add(anim);
-		}
+		read(jsonData2);
 	}
 
 	public AnimationsModel(JSONObject jsonData) {
@@ -106,6 +101,17 @@ public class AnimationsModel {
 
 	public List<AnimationModel> getAnimations() {
 		return _animations;
+	}
+
+	public void read(JSONObject data) {
+		_animations = new ArrayList<>();
+
+		var jsonAnims = data.getJSONArray("anims");
+		for (int i = 0; i < jsonAnims.length(); i++) {
+			var jsonAnim = jsonAnims.getJSONObject(i);
+			var anim = createAnimation(jsonAnim);
+			_animations.add(anim);
+		}
 	}
 
 	public JSONObject toJSON() {
@@ -163,7 +169,6 @@ public class AnimationsModel {
 			result.add(_file);
 		}
 
-		
 		for (var anim : _animations) {
 			var animFiles = anim.computeUsedFiles();
 			result.addAll(animFiles);
