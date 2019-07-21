@@ -54,7 +54,7 @@ If you have a lot of huge images in your project, it may impact the IDE performa
 Delete images from the atlas
 ----------------------------
 
-Select the images in the editor or the `Outline view <workbench.html#outline-view>`_  and click the **Delete button** of the editor toolbar, or press the ``Del`` key. You have to save the editor to persist the changes.
+Select the images in the editor or the `Outline view <workbench.html#outline-view>`_  and press the  ``Del`` key or the **Delete** option of the context menu. You have to save the editor to persist the changes.
 
 .. image:: images/texture-packer-editor/delete-images.png
    :alt: Delete selected images.
@@ -68,7 +68,7 @@ When you add or remove images in the **Texture Packer Editor**, it re-builds the
 
 The editor builds an atlas with the `multi-atlas <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#multiatlas__anchor>`_ format. It means multiple images will be generated if needed.
 
-Click on the **Build button** to force a build.
+Click on the **Build Atlas** button to force a build.
 
 .. image:: images/texture-packer-editor/build-atlas.png
    :alt: Force an atlas build.
