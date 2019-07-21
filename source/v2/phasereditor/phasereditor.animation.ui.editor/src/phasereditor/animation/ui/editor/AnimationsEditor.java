@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -135,7 +136,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	JSONObject _initialOutlinerState;
 	private Action _deleteAction;
 	private Action _newAction;
-	private Action _outlineAction;
 	private AnimationActions _animationActions;
 	private AnimationModel _initialAnimation;
 	private EditorFileStampHelper _fileStampHelper;
@@ -147,6 +147,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	private MultiAnimsComp _multiAnimationsComp;
 	private Action _playAllAction;
 	private Action _stopAllAction;
+	private MenuManager _menuManager;
 
 	public AnimationActions getAnimationActions() {
 		return _animationActions;
@@ -176,16 +177,14 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		return _newAction;
 	}
 
-	public Action getOutlineAction() {
-		return _outlineAction;
-	}
-
 	public AnimationsEditor() {
 		_fileStampHelper = new EditorFileStampHelper(this, this::reloadMethod, this::saveMethod);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
+		createActions();
+
 		_stackComp = new Composite(parent, 0);
 		_stackLayout = new StackLayout();
 		_stackComp.setLayout(_stackLayout);
@@ -225,6 +224,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			};
 			parent.addDisposeListener(e -> helper.dispose());
 		}
+
+		_animCanvas.setMenu(_menuManager.createContextMenu(_animCanvas));
+		_timelineCanvas.setMenu(_menuManager.createContextMenu(_timelineCanvas));
 	}
 
 	private void createMultiAnimationsComp() {
@@ -240,15 +242,25 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			layout.marginWidth = layout.marginHeight = 20;
 			setLayout(layout);
 			addPaintListener(this);
+
+			setMenu(_menuManager.createContextMenu(this));
 		}
 
 		@Override
 		public void paintControl(PaintEvent e) {
 			if (getChildren().length == 0) {
-				var str = "To create new animations:\n\n"
+				
+				String str;
+				
+				if (getModel().getAnimations().isEmpty()) {
+				
+				str = "To create new animations:\n\n"
 						+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
 						+ "New animations will be created by grouping the keys with a common prefix.\n\n"
 						+ "- Press the Add Animation button to create an empty animation.";
+				} else {
+					str = "Select the animations in the Outline view";
+				}
 
 				var size = e.gc.textExtent(str);
 				e.gc.drawText(str, e.width / 2 - size.x / 2, e.height / 2 - size.y / 2, true);
@@ -371,11 +383,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	private void afterCreateWidgets() {
 
-		createActions();
-
 		getEditorSite().setSelectionProvider(new ISelectionProvider() {
 
-			private ISelection _selection;
+			private ISelection _selection = StructuredSelection.EMPTY;
 			private ListenerList<ISelectionChangedListener> _listeners = new ListenerList<>();
 
 			@Override
@@ -417,9 +427,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_animCanvas.setPlaybackCallback(_animationActions::animationStatusChanged);
 		_animCanvas.addPaintListener(e -> {
 			if (_animCanvas.getModel() != null) {
-				e.gc.setAlpha(40);
+				e.gc.setAlpha(255);
 				e.gc.setForeground(_animCanvas.getForeground());
-				e.gc.drawText(_animCanvas.getModel().getKey(), 0, 0, true);
+				e.gc.drawText(_animCanvas.getModel().getKey(), 5, 5, true);
 			}
 		});
 		_animCanvas.setZoomWhenShiftPressed(false);
@@ -483,7 +493,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				+ "Tip: You can automatically create many animations by dragging "
 				+ "Atlas, Image or Frame keys from the Blocks view and dropping them into the Outline view or the center of the editor."
 				+ "The animations are created by grouping textures with a common prefix.";
-		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "New Animation", msg, initialName,
+		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "Add Animation", msg, initialName,
 				new IInputValidator() {
 
 					@Override
@@ -567,29 +577,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			}
 		};
 
-		_newAction = new Action("New Animation", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ADD)) {
+		_newAction = new Action("Add Animation", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ADD)) {
 			@Override
 			public void run() {
 				openNewAnimationDialog(null);
-			}
-		};
-
-		_outlineAction = new Action("Quick Outline",
-				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_OUTLINE)) {
-			@Override
-			public void run() {
-				var model = getModel();
-
-				var dlg = new QuickOutlineDialog(getEditorSite().getShell());
-				dlg.setModel(model);
-				dlg.setSelected(getAnimationCanvas().getModel());
-
-				if (dlg.open() == Window.OK) {
-					var selected = dlg.getSelected();
-					if (selected != null) {
-						selectAnimation(selected);
-					}
-				}
 			}
 		};
 
@@ -606,6 +597,19 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				_multiAnimationsComp.stop();
 			}
 		};
+
+		_menuManager = new MenuManager();
+
+		_menuManager.add(_newAction);
+		_menuManager.add(_deleteAction);
+		_menuManager.addMenuListener(m -> {
+			var selectionProvider = getEditorSite().getSelectionProvider();
+			var elems = ((IStructuredSelection) selectionProvider.getSelection()).toArray();
+			var list = List.of(elems);
+			var count = list.stream().filter(e -> e instanceof AnimationModel).count();
+			count += list.stream().filter(e -> e instanceof AnimationFrameModel).count();
+			_deleteAction.setEnabled(count > 0);
+		});
 	}
 
 	@Override
@@ -807,8 +811,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			_multiAnimationButtons.add(new ActionButton(parent, getPlayAllAction()));
 			_multiAnimationButtons.add(new ActionButton(parent, getStopAllAction()));
 
-			new ActionButton(parent, getNewAction()).getButton().setText("Add Animation");
-			new ActionButton(parent, getDeleteAction()).getButton();
+			new ActionButton(parent, getNewAction(), true);
 
 			updateButtons();
 		}
@@ -1027,6 +1030,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				_outliner.getFilteredTreeCanvas().getTree().restoreState(_initialOutlinerState);
 				_initialOutlinerState = null;
 			}
+
+			_viewer.getControl().setMenu(_menuManager.createContextMenu(_viewer.getControl()));
 
 		}
 
