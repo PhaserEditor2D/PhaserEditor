@@ -368,6 +368,10 @@ public class ImageProxy {
 			get(_file, _fd);
 
 			var newFileBufferedImage = _fileBufferedImageMap.get(_file);
+			
+			if (newFileBufferedImage == null) {
+				return;
+			}
 
 			if (_currentFileBufferedImage != newFileBufferedImage || _swtImage == null) {
 

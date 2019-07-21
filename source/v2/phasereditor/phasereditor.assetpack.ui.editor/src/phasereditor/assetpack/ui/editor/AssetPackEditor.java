@@ -110,6 +110,7 @@ import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.editors.EditorFileMoveHelper;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
 /**
@@ -277,7 +278,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		getEditorSite().getPage().addPartListener(_partListener);
 
 	}
-	
+
 	private IPartListener createUndoRedoPartListener() {
 		return new IPartListener() {
 
@@ -307,9 +308,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					var actionBars = getEditorSite().getActionBars();
 					_undoRedoGroup.fillActionBars(actionBars);
 					actionBars.updateActionBars();
-//					if (_pendingBuild) {
-//						realBuild();
-//					}
+					// if (_pendingBuild) {
+					// realBuild();
+					// }
 				}
 			}
 		};
@@ -542,7 +543,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private void addNewAssets(AssetSectionModel section, List<AssetModel> assets) {
 		if (!assets.isEmpty()) {
-			
+
 			var before = GlobalOperation.readState(this);
 
 			for (var asset : assets) {
@@ -550,7 +551,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 
 			var after = GlobalOperation.readState(this);
-			
+
 			executeOperation(new GlobalOperation("Add new assets", before, after));
 
 			swtRun(() -> {
@@ -837,6 +838,32 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		_assetsCanvas.getUtils().addSelectionChangedListener(e -> updateActions());
 
+		{
+			var helper = new EditorFileMoveHelper<>(this) {
+
+				@Override
+				protected IFile getEditorFile(AssetPackEditor editor) {
+					return getEditorInput().getFile();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void setEditorFile(AssetPackEditor editor, IFile file) {
+					swtRun(() -> {
+						_model.setFile(file);
+
+						AssetPackEditor.super.setInput(new FileEditorInput(file));
+
+						setPartName(_model.getName());
+					});
+
+				}
+
+			};
+
+			parent.addDisposeListener(e -> helper.dispose());
+		}
+
 	}
 
 	private void updateActions() {
@@ -911,14 +938,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		setPartName(_model.getName());
 
-	}
-
-	public void handleFileMoved(IFile file) {
-		_model.setFile(file);
-
-		super.setInput(new FileEditorInput(file));
-
-		setPartName(_model.getName());
 	}
 
 	public void build() {
