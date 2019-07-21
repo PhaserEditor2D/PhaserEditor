@@ -122,6 +122,7 @@ import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SwtRM;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvasViewer;
+import phasereditor.ui.editors.EditorFileMoveHelper;
 import phasereditor.ui.editors.EditorFileStampHelper;
 
 public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, ITexturePackerEditor {
@@ -161,6 +162,25 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 		_tabsFolder.setSelection(0);
 
 		afterCreateWidgets();
+
+		{
+			var helper = new EditorFileMoveHelper<>(this) {
+
+				@Override
+				protected IFile getEditorFile(TexturePackerEditor editor) {
+					return getEditorInputFile();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void setEditorFile(TexturePackerEditor editor, IFile file) {
+					setInput(new FileEditorInput(file));
+					updateTitle();
+					reloadFile();
+				}
+			};
+			parent.addDisposeListener(e -> helper.dispose());
+		}
 	}
 
 	public void deleteSelection() {
@@ -425,18 +445,6 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			throw new RuntimeException(e);
 		}
 
-	}
-
-	public void handleFileMoved(IFile newFile) {
-		setInput(new FileEditorInput(newFile));
-
-		swtRun(() -> {
-
-			updateTitle();
-
-			reloadFile();
-
-		});
 	}
 
 	public void reloadFile() {

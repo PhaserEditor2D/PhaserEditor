@@ -93,32 +93,6 @@
             order="1000">
       </participant>
    </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.renameParticipants">
-      <renameParticipant
-            class="phasereditor.atlas.ui.editor.refactorings.RenameTexturePackerEditorInput"
-            id="phasereditor.atlas.ui.editor.refactorings.RenameTexturePackerEditorInput"
-            name="Rename Texture Packer Editor Input">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.atlas.core.atlasContentTypeTest">
-            </reference>
-         </enablement>
-      </renameParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.moveParticipants">
-      <moveParticipant
-            class="phasereditor.atlas.ui.editor.refactorings.MoveTexturePackerEditorInput"
-            id="phasereditor.atlas.ui.editor.refactorings.MoveTexturePackerEditorInput"
-            name="Move Texture Packer Editor Input">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.atlas.core.atlasContentTypeTest">
-            </reference>
-         </enablement>
-      </moveParticipant>
-   </extension>
 
 
 </plugin>
