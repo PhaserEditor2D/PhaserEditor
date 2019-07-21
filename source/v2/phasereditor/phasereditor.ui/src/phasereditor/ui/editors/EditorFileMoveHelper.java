@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.editors;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -62,7 +64,9 @@ public abstract class EditorFileMoveHelper<T extends EditorPart> implements IRes
 
 					if (getEditorFile(_editor).getFullPath().equals(from)) {
 						if (kind == IResourceDelta.ADDED) {
-							setEditorFile(_editor, (IFile) res);
+							swtRun(() -> {
+								setEditorFile(_editor, (IFile) res);
+							});
 						}
 					}
 

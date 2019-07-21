@@ -103,6 +103,7 @@ import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.SelectionProviderImpl;
+import phasereditor.ui.editors.EditorFileMoveHelper;
 import phasereditor.ui.editors.EditorFileStampHelper;
 import phasereditor.webrun.core.BatchMessage;
 
@@ -355,12 +356,6 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		}
 	}
 
-	public void handleFileMoved(IFile file) {
-		setInput(new FileEditorInput(file));
-		setPartName(file.getName());
-		firePropertyChange(PROP_TITLE);
-	}
-
 	public void generateCode(IProgressMonitor monitor) {
 		try {
 
@@ -411,6 +406,24 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		_broker = new SceneEditorBroker(this);
 		_webView = new SceneWebView(this, parent, SWT.NONE);
 		_webView.setUrl(_broker.getUrl());
+		{
+			var helper = new EditorFileMoveHelper<>(this) {
+
+				@Override
+				protected IFile getEditorFile(SceneEditor editor) {
+					return getEditorInput().getFile();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected void setEditorFile(SceneEditor editor, IFile file) {
+					setInput(new FileEditorInput(file));
+					setPartName(file.getName());
+					firePropertyChange(PROP_TITLE);
+				}
+			};
+			parent.addDisposeListener(e -> helper.dispose());
+		}
 	}
 
 	public SceneEditorBroker getBroker() {
@@ -423,14 +436,14 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		getEditorSite().getPage().removePartListener(_partListener);
 
 		_broker.dispose();
-		
+
 		super.dispose();
 	}
 
 	public SceneWebView getWebView() {
 		return _webView;
 	}
-	
+
 	@Override
 	public void setFocus() {
 		_webView.setFocus();

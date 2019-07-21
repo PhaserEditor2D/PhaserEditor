@@ -449,31 +449,6 @@
       </image>
    </extension>
    <extension
-         point="org.eclipse.ltk.core.refactoring.renameParticipants">
-      <renameParticipant
-            class="phasereditor.scene.ui.editor.refactorings.RenameSceneEditorInput"
-            id="phasereditor.scene.ui.editor.refactorings.RenameSceneEditorInput"
-            name="Rename Scene Editor">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
-            </reference>
-         </enablement>
-      </renameParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.ltk.core.refactoring.moveParticipants">
-      <moveParticipant
-            class="phasereditor.scene.ui.editor.refactorings.MoveSceneEditorInput"
-            id="phasereditor.scene.ui.editor.refactorings.MoveSceneEditorInput"
-            name="Move Scene Editor Input">
-         <enablement>
-            <reference
-                  definitionId="phasereditor.scene.core.sceneContentTypeTest">
-            </reference></enablement>
-      </moveParticipant>
-   </extension>
-   <extension
          point="org.eclipse.ui.preferencePages">
       <page
             category="phasereditor.ui.prefs.phasereditor"

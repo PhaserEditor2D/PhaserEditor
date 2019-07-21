@@ -849,14 +849,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				@SuppressWarnings("synthetic-access")
 				@Override
 				protected void setEditorFile(AssetPackEditor editor, IFile file) {
-					swtRun(() -> {
-						_model.setFile(file);
+					_model.setFile(file);
 
-						AssetPackEditor.super.setInput(new FileEditorInput(file));
+					AssetPackEditor.super.setInput(new FileEditorInput(file));
 
-						setPartName(_model.getName());
-					});
-
+					setPartName(_model.getName());
 				}
 
 			};

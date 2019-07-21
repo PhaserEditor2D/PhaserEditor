@@ -214,15 +214,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				@SuppressWarnings("synthetic-access")
 				@Override
 				protected void setEditorFile(AnimationsEditor editor, IFile file) {
-					swtRun(() -> {
-						AnimationsEditor.super.setInput(new FileEditorInput(file));
+					AnimationsEditor.super.setInput(new FileEditorInput(file));
 
-						_model.setFile(file);
+					_model.setFile(file);
 
-						setPartName(file.getName());
+					setPartName(file.getName());
 
-						firePropertyChange(PROP_TITLE);
-					});
+					firePropertyChange(PROP_TITLE);
 				}
 			};
 			parent.addDisposeListener(e -> helper.dispose());
