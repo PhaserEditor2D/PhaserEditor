@@ -309,6 +309,10 @@
 <p>When you create a project, it automatically configures two resource filters to exclude <code class="docutils literal"><span class="pre">node_modules</span></code> and <code class="docutils literal"><span class="pre">.git</span></code> folders.</p>
 <p>It is important to exclude from the project all the files that are not related directly to the game. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in another project—actually, you can consider other IDE, like <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a>.</p>
 <p>If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Don’t exclude the <code class="docutils literal"><span class="pre">.project</span></code> file of your project. It is required by the IDE and excluding it may create unexpected behaviors.</p>
+</div>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5">Learn more in the Eclipse Help about resource filters</a></p>
 <p>To manage the resource filters, open the <strong>Properties dialog</strong> of a resource. Select the folder or project and do any of these actions:</p>
 <ul class="simple">

@@ -111,6 +111,8 @@ It is important to exclude from the project all the files that are not related d
 
 If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).
 
+.. warning:: Don't exclude the ``.project`` file of your project. It is required by the IDE and excluding it may create unexpected behaviors.
+
 `Learn more in the Eclipse Help about resource filters <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5>`_
 
 To manage the resource filters, open the **Properties dialog** of a resource. Select the folder or project and do any of these actions: 
