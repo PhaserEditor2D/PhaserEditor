@@ -221,7 +221,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		@Override
 		public void paintControl(PaintEvent e) {
 			if (getChildren().length == 0) {
-				var str = "Drag some atlas, frame or image keys from the Blocks view\nand drop theme here to create new animations.";
+				var str = "To create new animations:\n\n"
+				+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
+				+ "New animations will be created by grouping the keys with a common prefix.\n\n"
+				+ "- Press the Add Animation button to create an empty animation.";
+				
 				var size = e.gc.textExtent(str);
 				e.gc.drawText(str, e.width / 2 - size.x / 2, e.height / 2 - size.y / 2, true);
 			}
