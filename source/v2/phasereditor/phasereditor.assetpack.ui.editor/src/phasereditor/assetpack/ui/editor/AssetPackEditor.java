@@ -1185,7 +1185,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	class AssetPackEditorHugeToolbar implements IEditorHugeToolbar {
 
-		@SuppressWarnings("unused")
 		@Override
 		public void createContent(Composite parent) {
 			{
@@ -1194,10 +1193,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				btn.setToolTipText("Add a new file key to the pack editor.");
 				btn.setImage(EditorSharedImages.getImage(IMG_ADD));
 				btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showAddAssetMenu(btn)));
-			}
-
-			{
-				new ActionButton(parent, getDeleteSelectionAction());
 			}
 		}
 
