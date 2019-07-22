@@ -21,6 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor;
 
+import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
@@ -30,55 +36,90 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.animations.AnimationModel;
+
 /**
  * @author arian
  *
  */
-public class GlobalOperation extends AbstractOperation {
+public class AnimationOperation extends AbstractOperation {
 
-	private JSONObject _before;
-	private JSONObject _after;
+	private List<State> _before;
+	private List<State> _after;
+	private boolean _updateEditorOnExecute;
 
-	public GlobalOperation(String label, JSONObject before, JSONObject after) {
+	public static class State {
+		private int index;
+		private JSONObject data;
+
+		public State(int index, JSONObject data) {
+			this.index = index;
+			this.data = data;
+		}
+
+		@Override
+		public String toString() {
+			return data.toString();
+		}
+	}
+
+	public AnimationOperation(String label, List<State> before, List<State> after, boolean updateEditorOnExecute) {
 		super(label);
 		_before = before;
 		_after = after;
+		_updateEditorOnExecute = updateEditorOnExecute;
 	}
 
-	public static JSONObject readState(AnimationsEditor editor) {
-		var state = editor.getModel().toJSON();
-		return state;
+	public static List<State> readState(List<AnimationModel> animations) {
+		return animations.stream()
+
+				.map(a -> new State(a.getAnimations().getAnimations().indexOf(a), a.toJSON()))
+
+				.collect(toList());
 	}
 
-	private static void loadState(JSONObject state, IAdaptable info) {
+	private static IStatus loadState(IAdaptable info, List<State> stateList) {
 		var editor = info.getAdapter(AnimationsEditor.class);
-		var model = editor.getModel();
+		var anims = new ArrayList<>();
+		for (var state : stateList) {
+			var anim = editor.getModel().getAnimations().get(state.index);
+			out.println(state.data);
+			anim.read(state.data);
+			anims.add(anim);
+		}
 
-		model.read(state);
-		model.build();
-		
-		editor.setSelection(StructuredSelection.EMPTY);
-		
-		editor.refreshBlocksProvider();
-		
-		editor.setDirty(true);
+		editor.getModel().build();
+		editor.updatePropertyPagesContentWithSelection();
+		var stopped = editor.isStopped();
+		editor.setSelection(new StructuredSelection(anims));
+		editor.getTimelineCanvas().redraw();
+		editor.resetPlayback(stopped);
+		editor.setDirty();
+
+		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		// nothing for now
+		if (_updateEditorOnExecute) {
+			var editor = info.getAdapter(AnimationsEditor.class);
+			editor.getModel().build();
+			editor.updatePropertyPagesContentWithSelection();
+			editor.getTimelineCanvas().redraw();
+			editor.resetPlayback();
+			editor.setDirty();
+		}
 		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		loadState(_after, info);
-		return Status.OK_STATUS;
+		return loadState(info, _after);
 	}
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		loadState(_before, info);
-		return Status.OK_STATUS;
+		return loadState(info, _before);
 	}
+
 }

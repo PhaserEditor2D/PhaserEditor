@@ -21,9 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
-import org.eclipse.jface.action.ToolBarManager;
+import java.util.List;
+import java.util.function.Consumer;
 
+import phasereditor.animation.ui.editor.AnimationOperation;
 import phasereditor.animation.ui.editor.AnimationsEditor;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -52,11 +55,17 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 		getEditor().resetPlayback();
 	}
 
-	@Override
-	public void fillToolbar(ToolBarManager manager) {
-		var editor = getEditor();
+	protected void wrapOperation(List<AnimationModel> animations, Consumer<AnimationModel> change) {
+		wrapOperation(animations, () -> {
+			animations.forEach(change);
+		});
+	}
 
-		manager.add(editor.getDeleteAction());
+	protected void wrapOperation(List<AnimationModel> animations, Runnable action) {
+		var before = AnimationOperation.readState(animations);
+		action.run();
+		var after = AnimationOperation.readState(animations);
+		getEditor().executeOperation(new AnimationOperation("Change Animation", before, after, true));
 	}
 
 }

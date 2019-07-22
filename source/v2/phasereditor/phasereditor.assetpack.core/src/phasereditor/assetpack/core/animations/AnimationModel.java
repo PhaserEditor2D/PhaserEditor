@@ -64,6 +64,12 @@ public class AnimationModel implements IAdaptable {
 	public AnimationModel(AnimationsModel animations, JSONObject jsonData) {
 		this(animations);
 
+		read(jsonData);
+	}
+
+	public void read(JSONObject jsonData) {
+		_frames = new ArrayList<>();
+		
 		_key = jsonData.getString("key");
 
 		var defaultTextureKey = jsonData.optString("defaultTextureKey", null);

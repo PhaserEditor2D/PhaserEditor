@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -60,7 +62,13 @@ public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<A
 			return;
 		}
 
+		var before = AnimationOperation.readState(List.of(anim));
+		
 		super.selectionDropped(data);
+		
+		var after = AnimationOperation.readState(List.of(anim));
+		
+		_editor.executeOperation(new AnimationOperation("Drop frames", before, after, false));
 
 		if (_editor.getAnimationCanvas().getFile() == null) {
 			if (!anim.getFrames().isEmpty()) {

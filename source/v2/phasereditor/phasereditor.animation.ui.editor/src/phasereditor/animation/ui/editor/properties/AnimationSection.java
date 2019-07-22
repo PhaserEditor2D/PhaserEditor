@@ -72,12 +72,8 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(String value) {
-					getModels().forEach(model -> {
-
+					wrapOperation(getModels(), model -> {
 						model.setKey(value);
-
-						model.buildTimeline();
-
 					});
 
 					var editor = getEditor();
@@ -112,20 +108,10 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(float value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setFrameRate(value);
 						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-
-					editor.getTimelineCanvas().redraw();
-
-					restartPlayback();
-
-					editor.setDirty();
-
-					update_UI_from_Model();
 				}
 			};
 
@@ -159,19 +145,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setDuration(value);
-						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-
-					editor.getTimelineCanvas().redraw();
-					restartPlayback();
-					editor.setDirty();
-
-					update_UI_from_Model();
-
 				}
 			};
 
@@ -199,17 +175,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setDelay(value);
-						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-					editor.getTimelineCanvas().redraw();
-					restartPlayback();
-					editor.setDirty();
-
-					update_UI_from_Model();
 				}
 			};
 
@@ -232,16 +200,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setRepeat(value);
-						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-					editor.getTimelineCanvas().redraw();
-					restartPlayback();
-					editor.setDirty();
-
 				}
 			};
 			addUpdate(() -> {
@@ -262,13 +223,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(int value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setRepeatDelay(value);
 					});
-
-					restartPlayback();
-					getEditor().setDirty();
-
 				}
 			};
 			addUpdate(() -> {
@@ -288,12 +245,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(boolean value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setYoyo(value);
 					});
-
-					restartPlayback();
-					getEditor().setDirty();
 				}
 			};
 
@@ -323,14 +277,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(boolean value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setShowOnStart(value);
-						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-					editor.getTimelineCanvas().redraw();
-					editor.setDirty();
 				}
 			};
 
@@ -352,14 +301,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(boolean value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setHideOnComplete(value);
-						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-					editor.getTimelineCanvas().redraw();
-					editor.setDirty();
 				}
 			};
 
@@ -381,14 +325,9 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 				@Override
 				protected void accept(boolean value) {
-					getModels().forEach(model -> {
+					wrapOperation(getModels(), model -> {
 						model.setSkipMissedFrames(value);
-						model.buildTimeline();
 					});
-
-					var editor = getEditor();
-					editor.getTimelineCanvas().redraw();
-					editor.setDirty();
 				}
 			};
 

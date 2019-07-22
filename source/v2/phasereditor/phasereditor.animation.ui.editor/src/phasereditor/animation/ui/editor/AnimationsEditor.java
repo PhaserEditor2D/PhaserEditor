@@ -688,7 +688,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		_deleteAction = new Action("Delete",
 				Workbench.getInstance().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
-			@SuppressWarnings({ "unchecked", "rawtypes", "cast" })
 			@Override
 			public void run() {
 				var elems = ((IStructuredSelection) getEditorSite().getSelectionProvider().getSelection()).toArray();
@@ -696,19 +695,33 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				if (elems.length > 0) {
 					var list = List.of(elems);
 
-					var list1 = (List) list.stream().filter(e -> e instanceof AnimationModel).collect(toList());
+					var list1 = list.stream()
 
-					if (list.isEmpty()) {
-						var list2 = (List) list.stream().filter(e -> e instanceof AnimationFrameModel)
+							.filter(e -> e instanceof AnimationModel)
+
+							.map(e -> (AnimationModel) e)
+
+							.collect(toList());
+
+					if (list1.isEmpty()) {
+						var list2 = list.stream().filter(e -> e instanceof AnimationFrameModel)
+
+								.map(e -> (AnimationFrameModel) e)
+
 								.collect(toList());
+
 						if (!list2.isEmpty()) {
+							var animations = List.of(list2.get(0).getAnimation());
+							var before = AnimationOperation.readState(animations);
 							deleteFrames(list2);
+							var after = AnimationOperation.readState(animations);
+							executeOperation(new AnimationOperation("Delte frames", before, after, false));
 						}
 					} else {
-						var before = GlobalOperation.readState(AnimationsEditor.this);
+						var before = AnimationsGlobalOperation.readState(AnimationsEditor.this);
 						deleteAnimations(list1);
-						var after = GlobalOperation.readState(AnimationsEditor.this);
-						executeOperation(new GlobalOperation("Delete animations and frames", before, after));
+						var after = AnimationsGlobalOperation.readState(AnimationsEditor.this);
+						executeOperation(new AnimationsGlobalOperation("Delete animations and frames", before, after));
 					}
 				}
 			}
@@ -904,6 +917,14 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		return false;
 	}
 
+	private List<AnimationsPropertyPage> _propertyPages = new ArrayList<>();
+
+	public void updatePropertyPagesContentWithSelection() {
+		for (var page : _propertyPages) {
+			page.selectionChanged(this, getEditorSite().getSelectionProvider().getSelection());
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
@@ -913,8 +934,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		}
 
 		if (adapter == IPropertySheetPage.class) {
-			// return new AnimationsPGridPage(this);
-			return new AnimationsPropertyPage(this);
+			var page = new AnimationsPropertyPage(this) {
+				@Override
+				public void dispose() {
+					_propertyPages.remove(this);
+					super.dispose();
+				}
+			};
+			_propertyPages.add(page);
+			return page;
 		}
 
 		if (adapter == EditorBlockProvider.class) {
@@ -1416,7 +1444,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			}
 		}
 
-		var before = GlobalOperation.readState(this);
+		var before = AnimationsGlobalOperation.readState(this);
 
 		var anims = new ArrayList<AnimationModel>();
 
@@ -1450,9 +1478,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		_model.getAnimations().addAll(anims);
 		_model.getAnimations().sort((a, b) -> a.getKey().compareTo(b.getKey()));
 
-		var after = GlobalOperation.readState(this);
+		var after = AnimationsGlobalOperation.readState(this);
 
-		executeOperation(new GlobalOperation("Auto-create animations", before, after));
+		executeOperation(new AnimationsGlobalOperation("Auto-create animations", before, after));
 
 		if (!anims.isEmpty()) {
 			var sel = new StructuredSelection(anims);
@@ -1479,8 +1507,12 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	}
 
 	public void resetPlayback() {
+		resetPlayback(isStopped());
+	}
+
+	public void resetPlayback(boolean stopped) {
 		if (isSingleAnimationMode()) {
-			if (!isStopped()) {
+			if (!stopped) {
 				getAnimationActions().getStopAction().run();
 				getAnimationActions().getPlayAction().run();
 			}

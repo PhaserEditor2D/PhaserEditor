@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.editor.properties;
 
+import static java.util.stream.Collectors.toList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -48,7 +50,7 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 	public boolean canEdit(Object obj) {
 		return obj instanceof AnimationFrameModel;
 	}
-	
+
 	@Override
 	public boolean supportThisNumberOfModels(int number) {
 		return number == 1;
@@ -74,21 +76,13 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 
 				@Override
 				protected void accept(int value) {
-					getModels().stream().forEach(model -> {
-
-						model.setDuration(value);
-						var animation = model.getAnimation();
-						animation.buildTimeline();
-
+					var animations = getModels().stream().map(model -> model.getAnimation()).distinct()
+							.collect(toList());
+					wrapOperation(animations, () -> {
+						getModels().forEach(model -> {
+							model.setDuration(value);
+						});
 					});
-
-					var editor = getEditor();
-					editor.getTimelineCanvas().redraw();
-					editor.setDirty();
-					restartPlayback();
-
-					update_UI_from_Model();
-
 				}
 			};
 
