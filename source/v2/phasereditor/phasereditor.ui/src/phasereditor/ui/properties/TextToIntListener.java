@@ -41,6 +41,11 @@ public abstract class TextToIntListener extends TextListener {
 			accept(result.intValue());
 		}
 	}
+	
+	@Override
+	protected String format(String text) {
+		return "" + evalNumberExpression(text);
+	}
 
 	protected abstract void accept(int value);
 

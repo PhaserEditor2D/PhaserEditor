@@ -44,6 +44,11 @@ public abstract class TextToFloatListener extends TextListener {
 		}
 
 	}
+	
+	@Override
+	protected String format(String text) {
+		return evalNumberExpression(text) + "";
+	}
 
 	protected abstract void accept(float value);
 

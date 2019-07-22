@@ -41,7 +41,7 @@ public abstract class TextListener implements FocusListener, KeyListener {
 
 	public TextListener(Text widget) {
 		_text = widget;
-		
+
 		widget.addFocusListener(this);
 		widget.addKeyListener(this);
 	}
@@ -54,10 +54,13 @@ public abstract class TextListener implements FocusListener, KeyListener {
 	private void fireChanged() {
 		var value = _text.getText();
 
-		if (!value.equals(_initial)) {
-			
+		var a = format(_initial);
+		var b = format(value);
+
+		if (!a.equals(b)) {
+
 			accept(value);
-			
+
 			_initial = value;
 		}
 	}
@@ -66,6 +69,11 @@ public abstract class TextListener implements FocusListener, KeyListener {
 	public void focusGained(FocusEvent e) {
 		_initial = _text.getText();
 		e.display.asyncExec(_text::selectAll);
+	}
+
+	@SuppressWarnings("static-method")
+	protected String format(String text) {
+		return text;
 	}
 
 	@Override
@@ -80,7 +88,6 @@ public abstract class TextListener implements FocusListener, KeyListener {
 		}
 	}
 
-	
 	@SuppressWarnings("boxing")
 	Number evalNumberExpression(String value) {
 		Number result = null;
