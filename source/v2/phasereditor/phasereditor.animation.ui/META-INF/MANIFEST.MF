@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Animation UI
 Bundle-SymbolicName: phasereditor.animation.ui;singleton:=true
-Bundle-Version: 2.0.1.20190219
+Bundle-Version: 2.1.3.20190707
 Bundle-Activator: phasereditor.animation.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
@@ -23,3 +23,4 @@ Automatic-Module-Name: phasereditor.animation.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.animation.ui,
  phasereditor.animation.ui.model
+Bundle-RequiredExecutionEnvironment: JavaSE-11
