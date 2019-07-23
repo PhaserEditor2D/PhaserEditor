@@ -200,6 +200,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		getEditorSite().getPage().addPartListener(_partListener);
 
 	}
+	
+	public UndoRedoActionGroup getUndoRedoGroup() {
+		return _undoRedoGroup;
+	}
 
 	private IPartListener createUndoRedoPartListener() {
 		return new IPartListener() {
@@ -1220,6 +1224,12 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 			_viewer.getControl().setMenu(_menuManager.createContextMenu(_viewer.getControl()));
 
+			registerUndoRedoActions();
+			
+		}
+		
+		private void registerUndoRedoActions() {
+			getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 		}
 
 		@Override

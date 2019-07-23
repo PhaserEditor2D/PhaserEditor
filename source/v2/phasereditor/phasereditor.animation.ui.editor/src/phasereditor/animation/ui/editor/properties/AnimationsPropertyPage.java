@@ -24,6 +24,8 @@ package phasereditor.animation.ui.editor.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Composite;
+
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.ui.properties.FormPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
@@ -60,6 +62,18 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 	@Override
 	protected Object getDefaultModel() {
 		return null;
+	}
+	
+	@Override
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		
+		registerUndoRedoActions();
+		
+	}
+	
+	private void registerUndoRedoActions() {
+		_editor.getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 	}
 
 }

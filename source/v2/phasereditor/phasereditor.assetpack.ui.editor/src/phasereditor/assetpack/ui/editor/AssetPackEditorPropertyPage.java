@@ -24,6 +24,8 @@ package phasereditor.assetpack.ui.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Composite;
+
 import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetFactory.AbstractFileAssetFactory;
 import phasereditor.assetpack.core.IAssetElementModel;
@@ -59,6 +61,17 @@ public class AssetPackEditorPropertyPage extends AssetsPropertyPage {
 		return getEditor().getModel();
 	}
 
+	@Override
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		
+		registerUndoRedoActions();
+	}
+	
+	private void registerUndoRedoActions() {
+		_editor.getUndoRedoGroup().fillActionBars(getSite().getActionBars());
+	}
+	
 	@Override
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();

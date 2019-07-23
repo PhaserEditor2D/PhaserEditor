@@ -278,6 +278,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		getEditorSite().getPage().addPartListener(_partListener);
 
 	}
+	
+	public UndoRedoActionGroup getUndoRedoGroup() {
+		return _undoRedoGroup;
+	}
 
 	private IPartListener createUndoRedoPartListener() {
 		return new IPartListener() {
@@ -1131,6 +1135,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			viewer.setInput(getModel());
 
 			viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
+			
+			registerUndoRedoActions();
+		}
+		
+		private void registerUndoRedoActions() {
+			getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 		}
 
 		@Override
