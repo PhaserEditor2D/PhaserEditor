@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import static phasereditor.ui.IEditorSharedImages.IMG_ARROW_REFRESH;
 import static phasereditor.ui.PhaserEditorUI.logError;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
@@ -109,6 +110,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	private DeleteResourceAction _deleteAction;
 	private RenameResourceAction _renameAction;
 	private MoveResourceAction _moveAction;
+	private Action _cleanProjectAction;
 
 	static class ProjectData {
 		public List<String> expandedPaths = new ArrayList<>();
@@ -135,11 +137,11 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				return new MyTreeCanvas(this, SWT.NONE);
 			}
 		};
-		
+
 		_viewer = new ProjectTreeViewer(_filteredTree.getTree(), new MyContentProvider());
-		
+
 		_viewer.setInput(new Object());
-		
+
 		_filteredTree.getTree().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -246,6 +248,13 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 			actionBars.setGlobalActionHandler(a.getActionDefinitionId(), a);
 		}
 
+		_cleanProjectAction = new Action("Clean Project", EditorSharedImages.getImageDescriptor(IMG_ARROW_REFRESH)) {
+			@Override
+			public void run() {
+				ProjectCore.cleanActiveProject();
+			}
+		};
+
 	}
 
 	private void createMenus() {
@@ -289,6 +298,8 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				manager.add(_moveAction);
 				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.FILE_RENAME));
 				manager.add(new Separator());
+				manager.add(_cleanProjectAction);
+				manager.add(new Separator());
 				manager.add(new CommandAction(getSite(), IWorkbenchCommandConstants.FILE_PROPERTIES));
 
 				var menu = manager.createContextMenu(_viewer.getTree());
@@ -308,6 +319,12 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 				return action;
 			}
 		});
+
+		{
+			var manager = getViewSite().getActionBars().getToolBarManager();
+			manager.add(_cleanProjectAction);
+			manager.update(true);
+		}
 	}
 
 	private void copy() {

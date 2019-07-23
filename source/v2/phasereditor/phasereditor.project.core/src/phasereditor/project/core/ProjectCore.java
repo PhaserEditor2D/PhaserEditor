@@ -62,6 +62,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Point;
@@ -702,5 +703,23 @@ public class ProjectCore {
 		store.setDefault(ProjectCore.PREF_PROP_PROJECT_GAME_WIDTH, 800);
 		store.setDefault(ProjectCore.PREF_PROP_PROJECT_GAME_HEIGHT, 450);
 		store.setDefault(ProjectCore.PREF_PROP_PROJECT_WIZARD_LANGUAJE, SourceLang.JAVA_SCRIPT_6.name());
+	}
+
+	public static void cleanActiveProject() {
+		new Job("Clean project") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					var project = getActiveProject();
+					if (project != null) {
+						project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+					}
+				} catch (CoreException e2) {
+					ProjectCore.logError(e2);
+				}
+				return Status.OK_STATUS;
+			}
+		}.schedule();
 	}
 }

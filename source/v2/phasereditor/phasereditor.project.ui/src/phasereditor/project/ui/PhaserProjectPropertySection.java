@@ -22,12 +22,6 @@
 package phasereditor.project.ui;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -147,19 +141,7 @@ public class PhaserProjectPropertySection extends FormPropertySection<IProject> 
 			btn.setImage(EditorSharedImages.getImage(IMG_FOLDER_BRUSH));
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				new Job("Clean project") {
-
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						try {
-							getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
-						} catch (CoreException e2) {
-							ProjectUI.logError(e2);
-						}
-						return Status.OK_STATUS;
-					}
-				}.schedule();
-
+				ProjectCore.cleanActiveProject();
 			}));
 		}
 
