@@ -328,8 +328,10 @@
 <p>All the asset keys you define in the <a class="reference external" href="asset-pack-editor.html">pack files</a> are part of the internal model, and UI parts like the <a class="reference external" href="animations-editor.html">Animations Editor</a> and the <a class="reference external" href="scene-editor.html">Scene Editor</a> read that model to find the resources needed to render the objects. The scene files and animations files do not keep a reference to the physical images, else they store the name of the asset keys, and at render time, they look into the internal project model the asset associated to a key and get the physical image location from the asset properties. When you modify a pack file, the internal model is updated, and the editors are refreshed so they will show the new content if it is the case.</p>
 <p>If for any reason, you think the editors or views are showing outdated or wrong information, you can force to build the internal model of the project. To do this, you can open the <strong>Clean</strong> dialog in <em>Project</em> → <em>Clean…</em></p>
 <img alt="Clean project dialog." src="_images/clean-project-dialog.png" />
-<p>…or you can select a project in the <a class="reference internal" href="#project-view">Project view</a> and click on the <strong>Clean</strong> button of the <strong>Project</strong> section of the <a class="reference internal" href="#properties-view">Properties view</a>.</p>
+<p>Also, or you can select a project in the <a class="reference internal" href="#project-view">Project view</a> and click on the <strong>Clean</strong> button of the <strong>Project</strong> section of the <a class="reference internal" href="#properties-view">Properties view</a>.</p>
 <img alt="Clean project button in the Properties view." src="_images/clean-project-button.png" />
+<p>Or just click on the <strong>Refresh</strong> button in the <a class="reference internal" href="#project-view">Project view</a> toolbar:</p>
+<img alt="Clean project button in the toolbar." src="_images/clean-project-button-toolbar.png" />
 </div>
 </div>
 <div class="section" id="resource-wizards">
@@ -668,6 +670,10 @@
 <div class="section" id="in-line-preview-of-files">
 <h3>2.14.2&nbsp;&nbsp;&nbsp;In-line preview of files<a class="headerlink" href="#in-line-preview-of-files" title="Permalink to this headline">¶</a></h3>
 <p>Many of the files with visual content are in-line previewed. It is the case of images, sounds, and scenes.</p>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Some preview images (like scenes) are created by incremental builders. If there is a missing or out-dated image, you can <a class="reference external" href="#cleaning-projects">re-build the whole project internal state</a>.</p>
+</div>
 <img alt="Inline preview of files." src="_images/project-view-inline-preview.png" />
 </div>
 <div class="section" id="zooming">

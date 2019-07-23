@@ -137,10 +137,15 @@ If for any reason, you think the editors or views are showing outdated or wrong 
 .. image:: images/workbench/clean-project-dialog.png
    :alt: Clean project dialog.
 
-...or you can select a project in the `Project view`_ and click on the **Clean** button of the **Project** section of the `Properties view`_.
+Also, or you can select a project in the `Project view`_ and click on the **Clean** button of the **Project** section of the `Properties view`_.
 
 .. image:: images/workbench/clean-project-button.png
    :alt: Clean project button in the Properties view.
+
+Or just click on the **Refresh** button in the `Project view`_ toolbar:
+
+.. image:: images/workbench/clean-project-button-toolbar.png
+   :alt: Clean project button in the toolbar.
 
 
 Resource wizards
@@ -551,7 +556,9 @@ You can perform a quick search for the resources name.
 In-line preview of files
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Many of the files with visual content are in-line previewed. It is the case of images, sounds, and scenes.  
+Many of the files with visual content are in-line previewed. It is the case of images, sounds, and scenes.
+
+.. hint:: Some preview images (like scenes) are created by incremental builders. If there is a missing or out-dated image, you can `re-build the whole project internal state <#cleaning-projects>`_. 
 
 .. image:: images/workbench/project-view-inline-preview.png
    :alt: Inline preview of files.
