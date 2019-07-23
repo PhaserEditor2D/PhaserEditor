@@ -21,14 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editor.undo;
 
+import java.util.Arrays;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.ui.editor.AssetPackEditor;
 import phasereditor.assetpack.ui.editor.AssetPackUIEditor;
 
@@ -48,7 +53,21 @@ public class GlobalOperation extends AbstractOperation {
 	}
 
 	public static JSONObject readState(AssetPackEditor editor) {
-		var state = editor.getModel().toJSON();
+		var state = new JSONObject();
+
+		var data = editor.getModel().toJSON();
+		var selection = (IStructuredSelection) editor.getSite().getSelectionProvider().getSelection();
+		var selKeys = Arrays.stream(selection.toArray())
+
+				.filter(o -> o instanceof AssetModel)
+
+				.map(o -> ((AssetModel) o).getKey())
+
+				.toArray();
+
+		state.put("data", data);
+		state.put("selKeys", selKeys);
+
 		return state;
 	}
 
@@ -59,8 +78,21 @@ public class GlobalOperation extends AbstractOperation {
 		// var selectionIds = editor.getSelectionIdList();
 		//
 		try {
-			model.read(state);
+			var data = state.getJSONObject("data");
+			model.read(data);
 			model.build();
+
+			var selKeys = (Object[]) state.get("selKeys");
+			var section = model.getSections().get(0);
+			var sel = Arrays.stream(selKeys)
+
+					.map(o -> section.findAsset((String) o))
+
+					.filter(a -> a != null)
+
+					.toArray();
+
+			editor.getSite().getSelectionProvider().setSelection(new StructuredSelection(sel));
 		} catch (Exception e) {
 			AssetPackUIEditor.logError(e);
 			throw new RuntimeException(e);

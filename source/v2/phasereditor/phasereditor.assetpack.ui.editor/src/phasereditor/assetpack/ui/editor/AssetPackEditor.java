@@ -234,7 +234,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		if (_model != null && _model.getFile().exists()) {
 			saveEditingPoint();
 		}
-		
+
 		getEditorSite().getPage().removePartListener(_partListener);
 
 		super.dispose();
@@ -278,7 +278,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		getEditorSite().getPage().addPartListener(_partListener);
 
 	}
-	
+
 	public UndoRedoActionGroup getUndoRedoGroup() {
 		return _undoRedoGroup;
 	}
@@ -902,6 +902,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			var after = GlobalOperation.readState(this);
 
 			executeOperation(new GlobalOperation("Delete assets", before, after));
+
+			getSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
 		}
 
 	}
@@ -1135,10 +1137,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			viewer.setInput(getModel());
 
 			viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
-			
+
 			registerUndoRedoActions();
 		}
-		
+
 		private void registerUndoRedoActions() {
 			getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 		}
