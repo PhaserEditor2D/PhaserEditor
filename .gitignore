@@ -25,6 +25,4 @@ hs_err_pid*
 
 # docs build folders
 
-docs/v1/_build/**
-docs/v2/_build/**
-
+*.doctree

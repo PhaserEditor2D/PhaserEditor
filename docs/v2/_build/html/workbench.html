@@ -170,7 +170,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#automatic-updates">2.18&nbsp;&nbsp;&nbsp;Automatic updates</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#possible-issues">2.18.1&nbsp;&nbsp;&nbsp;Possible issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phaser-version-update">2.18.1&nbsp;&nbsp;&nbsp;Phaser version update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#possible-issues">2.18.2&nbsp;&nbsp;&nbsp;Possible issues</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#help-system">2.19&nbsp;&nbsp;&nbsp;Help System</a></li>
@@ -306,17 +307,17 @@
 </div>
 <div class="section" id="resource-filters">
 <h3>2.4.3&nbsp;&nbsp;&nbsp;Resource filters<a class="headerlink" href="#resource-filters" title="Permalink to this headline">¶</a></h3>
-<p>When you create a project, it automatically configures two resource filters to exclude <code class="docutils literal"><span class="pre">node_modules</span></code> and <code class="docutils literal"><span class="pre">.git</span></code> folders.</p>
+<p>When you create a project, it automatically configures two resource filters to exclude <code class="docutils literal notranslate"><span class="pre">node_modules</span></code> and <code class="docutils literal notranslate"><span class="pre">.git</span></code> folders.</p>
 <p>It is important to exclude from the project all the files that are not related directly to the game. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in another project—actually, you can consider other IDE, like <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a>.</p>
 <p>If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Don’t exclude the <code class="docutils literal"><span class="pre">.project</span></code> file of your project. It is required by the IDE and excluding it may create unexpected behaviors.</p>
+<p class="last">Don’t exclude the <code class="docutils literal notranslate"><span class="pre">.project</span></code> file of your project. It is required by the IDE and excluding it may create unexpected behaviors.</p>
 </div>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/resourcefilters.htm?cp=0_2_1_5">Learn more in the Eclipse Help about resource filters</a></p>
 <p>To manage the resource filters, open the <strong>Properties dialog</strong> of a resource. Select the folder or project and do any of these actions:</p>
 <ul class="simple">
-<li>Press <code class="docutils literal"><span class="pre">Alt+Enter</span></code>.</li>
+<li>Press <code class="docutils literal notranslate"><span class="pre">Alt+Enter</span></code>.</li>
 <li>Open the context menu (right-click) and select <em>Properties</em>.</li>
 <li>Click the <strong>All Properties</strong> button of the <strong>Resource</strong> section in the <a class="reference internal" href="#properties-view">Properties view</a>.</li>
 </ul>
@@ -342,7 +343,7 @@
 <li>In the main menu: <em>File</em> → <em>New</em>.</li>
 <li>In the context menu of the <a class="reference external" href="#project-view">Project</a> or <a class="reference internal" href="#project-explorer-view">Project Explorer view</a>.</li>
 <li>In the <strong>New</strong> button of the <a class="reference internal" href="#main-toolbar">main toolbar</a>.</li>
-<li>In the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> (search for <code class="docutils literal"><span class="pre">new</span> <span class="pre">item</span></code>).</li>
+<li>In the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> (search for <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">item</span></code>).</li>
 <li>In the <a class="reference external" href="phaser-labs.html#chains-view">Chains</a> or <a class="reference external" href="phaser-labs.html#phaser-examples-view">Phaser Examples</a> views, where you can create a project with the selected example.</li>
 </ul>
 <p>Note you can group the wizards in two groups: file wizards and project wizards. <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides a wizard to create a game project with a basic structure, ready to start coding the game, and another wizard to create a project based on an example, that you can read and modify to learn <a class="reference external" href="https://phaser.io">Phaser</a> or <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> features.</p>
@@ -389,13 +390,13 @@
 <td>The width and height of the game, in pixels.</td>
 </tr>
 <tr class="row-odd"><td><strong>Type</strong></td>
-<td>Which renderer to use. <code class="docutils literal"><span class="pre">Phaser.AUTO</span></code>, <code class="docutils literal"><span class="pre">Phaser.CANVAS</span></code>, <code class="docutils literal"><span class="pre">Phaser.HEADLESS</span></code>, or <code class="docutils literal"><span class="pre">Phaser.WEBGL</span></code>. <code class="docutils literal"><span class="pre">AUTO</span></code> picks <code class="docutils literal"><span class="pre">WEBGL</span></code> if available, otherwise <code class="docutils literal"><span class="pre">CANVAS</span></code>.</td>
+<td>Which renderer to use. <code class="docutils literal notranslate"><span class="pre">Phaser.AUTO</span></code>, <code class="docutils literal notranslate"><span class="pre">Phaser.CANVAS</span></code>, <code class="docutils literal notranslate"><span class="pre">Phaser.HEADLESS</span></code>, or <code class="docutils literal notranslate"><span class="pre">Phaser.WEBGL</span></code>. <code class="docutils literal notranslate"><span class="pre">AUTO</span></code> picks <code class="docutils literal notranslate"><span class="pre">WEBGL</span></code> if available, otherwise <code class="docutils literal notranslate"><span class="pre">CANVAS</span></code>.</td>
 </tr>
 <tr class="row-even"><td><strong>Pixel Art</strong></td>
 <td>Prevent pixel art from becoming blurred when scaled. It will remain crisp (tells the WebGL renderer to automatically create textures using a linear filter mode).</td>
 </tr>
 <tr class="row-odd"><td><strong>Physics</strong></td>
-<td>The Physics system (<code class="docutils literal"><span class="pre">NONE</span></code>, <code class="docutils literal"><span class="pre">ARCADE</span></code>, <code class="docutils literal"><span class="pre">IMPACT</span></code>, <code class="docutils literal"><span class="pre">MATTER</span></code>).</td>
+<td>The Physics system (<code class="docutils literal notranslate"><span class="pre">NONE</span></code>, <code class="docutils literal notranslate"><span class="pre">ARCADE</span></code>, <code class="docutils literal notranslate"><span class="pre">IMPACT</span></code>, <code class="docutils literal notranslate"><span class="pre">MATTER</span></code>).</td>
 </tr>
 <tr class="row-even"><td><strong>Scale Mode</strong></td>
 <td>The scale mode as used by the Scale Manager.</td>
@@ -410,8 +411,8 @@
 </table>
 <div class="section" id="project-structure">
 <h4>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h4>
-<p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
-<p>In the following table, we provide a short description of each file of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder.</p>
+<p>The project structure is pretty similar to a static web project. It contains a <code class="docutils literal notranslate"><span class="pre">WebContent</span></code> folder with the files that are part of the game. Especially, it contains the <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file. It is the root of the game.</p>
+<p>In the following table, we provide a short description of each file of the <code class="docutils literal notranslate"><span class="pre">WebContent</span></code> folder.</p>
 <table border="1" class="docutils" id="id6">
 <caption><span class="caption-text">Files common to all Phaser projects</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -419,20 +420,20 @@
 <col width="87%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">index.html</span></code></td>
-<td>The entry point of the game. It is very basic, and loads the <code class="docutils literal"><span class="pre">main.js</span></code> file.</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">index.html</span></code></td>
+<td>The entry point of the game. It is very basic, and loads the <code class="docutils literal notranslate"><span class="pre">main.js</span></code> file.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">main.js</span></code></td>
-<td>The <a class="reference external" href="https://phaser.io">Phaser</a> game instance is created. It starts a <code class="docutils literal"><span class="pre">Boot</span></code> scene that is part of this file too.</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">main.js</span></code></td>
+<td>The <a class="reference external" href="https://phaser.io">Phaser</a> game instance is created. It starts a <code class="docutils literal notranslate"><span class="pre">Boot</span></code> scene that is part of this file too.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">jsconfig.json</span></code></td>
-<td>This is the “project” file used by the Language Server include in <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>. If you are familiar with <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a> you know what this file is. If you create a TypeScript project, then you will find a <code class="docutils literal"><span class="pre">tsconfig.json</span></code> file instead.</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">jsconfig.json</span></code></td>
+<td>This is the “project” file used by the Language Server include in <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>. If you are familiar with <a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a> you know what this file is. If you create a TypeScript project, then you will find a <code class="docutils literal notranslate"><span class="pre">tsconfig.json</span></code> file instead.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">typings/phaser.d.ts</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">typings/phaser.d.ts</span></code></td>
 <td>The type definitions of the <a class="reference external" href="https://phaser.io">Phaser</a> API. It is used by the Language Server in both type of projects, JavaScript and TypeScript.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">lib/phaser.js</span></code></td>
-<td>Contains the <a class="reference external" href="https://phaser.io">Phaser</a> framework. You can replace it by a newer version or a custom build. It is loaded by the <code class="docutils literal"><span class="pre">index.html</span></code> file, so you have full control to load the <a class="reference external" href="https://phaser.io">Phaser</a> runtime.</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">lib/phaser.js</span></code></td>
+<td>Contains the <a class="reference external" href="https://phaser.io">Phaser</a> framework. You can replace it by a newer version or a custom build. It is loaded by the <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file, so you have full control to load the <a class="reference external" href="https://phaser.io">Phaser</a> runtime.</td>
 </tr>
 </tbody>
 </table>
@@ -443,27 +444,27 @@
 <col width="88%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/pack.json</span></code></td>
-<td>A manifest of the assets used by the game. This file is loaded in the <code class="docutils literal"><span class="pre">Boot</span></code> scene, but you are free to change it. Actually, you are free to change anything. <a class="reference external" href="asset-pack-editor.html">Learn more about the Asset Pack Editor and pack files</a>.</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">assets/pack.json</span></code></td>
+<td>A manifest of the assets used by the game. This file is loaded in the <code class="docutils literal notranslate"><span class="pre">Boot</span></code> scene, but you are free to change it. Actually, you are free to change anything. <a class="reference external" href="asset-pack-editor.html">Learn more about the Asset Pack Editor and pack files</a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/animations.json</span></code></td>
-<td>An empty animations file. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file. <a class="reference external" href="animations-editor.html">Learn more about sprite animations and the Animations editor</a>.</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">assets/animations.json</span></code></td>
+<td>An empty animations file. It is included in the <code class="docutils literal notranslate"><span class="pre">pack.json</span></code> file. <a class="reference external" href="animations-editor.html">Learn more about sprite animations and the Animations editor</a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.atlas</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">assets/atlas/textures.atlas</span></code></td>
 <td>An empty texture atlas file. <a class="reference external" href="texture-packer-editor.html">Learn more about the Texture Packer Editor and atlas file</a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/atlas/textures.json</span></code></td>
-<td>The <a class="reference external" href="https://phaser.io">Phaser</a> atlas file derived from the <code class="docutils literal"><span class="pre">texture.atlas</span></code> file —generated by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>—. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file.</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">assets/atlas/textures.json</span></code></td>
+<td>The <a class="reference external" href="https://phaser.io">Phaser</a> atlas file derived from the <code class="docutils literal notranslate"><span class="pre">texture.atlas</span></code> file —generated by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>—. It is included in the <code class="docutils literal notranslate"><span class="pre">pack.json</span></code> file.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.scene</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">assets/scenes/Scene1.scene</span></code></td>
 <td>An empty scene file. You can add objects to this scene using the <a class="reference external" href="scene-editor.html">Scene Editor</a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">assets/scenes/Scene1.js</span></code></td>
-<td>The compiled scene file. It is included in the <code class="docutils literal"><span class="pre">pack.json</span></code> file and is the thing you see when play the project.</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">assets/scenes/Scene1.js</span></code></td>
+<td>The compiled scene file. It is included in the <code class="docutils literal notranslate"><span class="pre">pack.json</span></code> file and is the thing you see when play the project.</td>
 </tr>
 </tbody>
 </table>
-<p>The other top-level folder is the <code class="docutils literal"><span class="pre">Design</span></code> folder, where you can store files related to the design process. Is very common to store there the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the <a class="reference external" href="https://phaser.io">Phaser</a> atlas files.</p>
+<p>The other top-level folder is the <code class="docutils literal notranslate"><span class="pre">Design</span></code> folder, where you can store files related to the design process. Is very common to store there the original images used by the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, to generate the <a class="reference external" href="https://phaser.io">Phaser</a> atlas files.</p>
 </div>
 </div>
 <div class="section" id="phaser-example-project-wizard">
@@ -554,7 +555,7 @@
 <div class="section" id="home-button">
 <h3>2.8.1&nbsp;&nbsp;&nbsp;Home button<a class="headerlink" href="#home-button" title="Permalink to this headline">¶</a></h3>
 <p>Click on this button to switch to the <a class="reference internal" href="#start-perspective">Start perspective</a>. If your intention is to open another project, you can right-click on the button and select it.</p>
-<p>You can open the same dialog with the keys <code class="docutils literal"><span class="pre">Ctrl+Alt+P</span></code>, or searching in the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> for <code class="docutils literal"><span class="pre">open</span> <span class="pre">project</span> <span class="pre">dialog</span></code>.</p>
+<p>You can open the same dialog with the keys <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+P</span></code>, or searching in the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> for <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">project</span> <span class="pre">dialog</span></code>.</p>
 <img alt="Home button launches Open project dialog." src="_images/home-button-open-project.png" />
 </div>
 <div class="section" id="new-button">
@@ -564,8 +565,8 @@
 </div>
 <div class="section" id="play-button">
 <h3>2.8.3&nbsp;&nbsp;&nbsp;Play button<a class="headerlink" href="#play-button" title="Permalink to this headline">¶</a></h3>
-<p>This button launches the <a class="reference external" href="misc.html#built-in-web-server">local web server</a> and the system browser and points to the <code class="docutils literal"><span class="pre">WebContent</span></code> of the project. In other words, it runs the game.</p>
-<p>Other ways to run the game is pressing the keys <code class="docutils literal"><span class="pre">Ctrl+Alt+F5</span></code> or searching in the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> for <code class="docutils literal"><span class="pre">run</span> <span class="pre">phaser</span> <span class="pre">project</span></code>.</p>
+<p>This button launches the <a class="reference external" href="misc.html#built-in-web-server">local web server</a> and the system browser and points to the <code class="docutils literal notranslate"><span class="pre">WebContent</span></code> of the project. In other words, it runs the game.</p>
+<p>Other ways to run the game is pressing the keys <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+F5</span></code> or searching in the <a class="reference external" href="#quick-access-button">Quick Access dialog</a> for <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">phaser</span> <span class="pre">project</span></code>.</p>
 <p>You can configure the system browser in the <a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-42.htm?cp=0_4_1_53">Web Browser preferences</a>.</p>
 </div>
 <div class="section" id="toolbar-editor-area">
@@ -575,13 +576,13 @@
 <div class="section" id="quick-access-button">
 <h3>2.8.5&nbsp;&nbsp;&nbsp;Quick Access button<a class="headerlink" href="#quick-access-button" title="Permalink to this headline">¶</a></h3>
 <p>This button opens the <strong>Quick Access dialog</strong>, where you can search for editors, views, perspectives, commands, menus, wizards, preference pages, and other sources that can be contributed by third-party plugins.</p>
-<p>You can open this dialog with the keys <code class="docutils literal"><span class="pre">Ctrl+3</span></code>.</p>
+<p>You can open this dialog with the keys <code class="docutils literal notranslate"><span class="pre">Ctrl+3</span></code>.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/accessibility/navigation.htm?cp=0_2_12_0">Learn more in the Eclipse Help about Navigating the user interface using the keyboard</a></p>
 <img alt="_images/quick-access-dialog.png" src="_images/quick-access-dialog.png" />
 </div>
 <div class="section" id="add-view-button">
 <h3>2.8.6&nbsp;&nbsp;&nbsp;Add view button<a class="headerlink" href="#add-view-button" title="Permalink to this headline">¶</a></h3>
-<p>This button launches the <strong>Show View</strong> dialog. Alternatives to the button is the <em>Window</em> → <em>Show View</em> menu and the keys <code class="docutils literal"><span class="pre">Alt+Shift+Q,</span> <span class="pre">Q</span></code>.</p>
+<p>This button launches the <strong>Show View</strong> dialog. Alternatives to the button is the <em>Window</em> → <em>Show View</em> menu and the keys <code class="docutils literal notranslate"><span class="pre">Alt+Shift+Q,</span> <span class="pre">Q</span></code>.</p>
 <img alt="Launches the Show View dialog." src="_images/open-view-dialog.png" />
 </div>
 <div class="section" id="reset-perspective-button">
@@ -599,7 +600,7 @@
 <p>The Properties view is an important <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> part. It is like the Inspector view in other visual development tools. It shows the properties of the selected elements of the active part of the workbench. When you select something in an editor or a view, if it provides properties adapters, then the selection properties are shown in the Properties view.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/reference/ref-29.htm?cp=0_4_4_1_6">Learn more in the Eclipse Help about the Properties view</a></p>
 <img alt="Properties view." src="_images/properties-view.png" />
-<p>This view can play a role of information or editor. In the image above, the Properties show the information of the animation <code class="docutils literal"><span class="pre">acorn</span></code> selected in the <a class="reference internal" href="#blocks-view">Blocks view</a>. However, if you select the same animation in the <a class="reference external" href="animations-editor.html">Animations Editor</a>, the Properties view shows text editors for the animation attributes.</p>
+<p>This view can play a role of information or editor. In the image above, the Properties show the information of the animation <code class="docutils literal notranslate"><span class="pre">acorn</span></code> selected in the <a class="reference internal" href="#blocks-view">Blocks view</a>. However, if you select the same animation in the <a class="reference external" href="animations-editor.html">Animations Editor</a>, the Properties view shows text editors for the animation attributes.</p>
 <img alt="The Properties view as fields editor." src="_images/properties-view-edit.png" />
 <p>By default, the Properties view shows the content of the workbench’s selection, if the selection changes, the content changes, but you can pin the current selection. And you can create a new Properties window, which is great when you want to pin certain information but want to see the properties of other objects.</p>
 <img alt="Properties view menu (pin to selection)." src="_images/properties-view-menu.png" />
@@ -609,20 +610,20 @@
 <p>The Outline view is a general view to display hierarchical information. It is provided by the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> and used widely by the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> specific editors. When an editor is activated, the Outline view connects with it and display the editor content with certain structure (often as a tree or a list).</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/concepts/coutline.htm?cp=0_2_4_6">Learn more in the Eclipse Help about the Outline view</a></p>
 <p>This connection with the active editor also includes the selection. Both shares the same selection, that is updated when it is changed in one of the two places.</p>
-<p>It is very common that the Outline view shows the name of the elements, so you can perform a content filtering by name. In graphical editors, the element icons may reflect the real appearance of the element and it can be zoomed in/out (just hold one of the keys <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel).</p>
+<p>It is very common that the Outline view shows the name of the elements, so you can perform a content filtering by name. In graphical editors, the element icons may reflect the real appearance of the element and it can be zoomed in/out (just hold one of the keys <code class="docutils literal notranslate"><span class="pre">Alt</span></code>, <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code> and scroll the mouse wheel).</p>
 <img alt="The Outline view of the Animations Editor." src="_images/outline-view-animations-editor.png" />
 </div>
 <div class="section" id="blocks-view">
 <h2>2.11&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
 <p>This view is a recent concept in <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>. Its purpose is to provide, in a visual and clean way,  the different building blocks needed to create the objects in the active editor. So you can drag a block and drop it on the editor.</p>
 <p>When an editor is activated, the <strong>Blocks view</strong> request to it all the elements (blocks) that can be used to create the objects in the editor. Not all the editors adapt to the <strong>Blocks view</strong>. Actually, at this moment only two editors provide building blocks: the <a class="reference external" href="scene-editor.html#building-blocks">Scene Editor blocks</a> and the <a class="reference external" href="animations-editor.html#building-blocks">Animations Editor blocks</a>.</p>
-<p>The content in the <strong>Blocks view</strong> could be nested. It can show <strong>terminal</strong> and <strong>no-terminal</strong> elements. In the next image, it shows the blocks of a <a class="reference external" href="scene-editor.html">Scene Editor</a>, note the texture atlas <code class="docutils literal"><span class="pre">atlas-props</span></code> <strong>no-terminal</strong> block can be expanded/collapsed and shows the atlas frames.</p>
+<p>The content in the <strong>Blocks view</strong> could be nested. It can show <strong>terminal</strong> and <strong>no-terminal</strong> elements. In the next image, it shows the blocks of a <a class="reference external" href="scene-editor.html">Scene Editor</a>, note the texture atlas <code class="docutils literal notranslate"><span class="pre">atlas-props</span></code> <strong>no-terminal</strong> block can be expanded/collapsed and shows the atlas frames.</p>
 <img alt="Blocks view." src="_images/blocks-view.png" />
 <p>Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually, the same color is assigned to blocks of the same “type”.</p>
 <p>Other key aspects of this view are:</p>
 <ul class="simple">
 <li>You can perform a quick search for the element names.</li>
-<li>It is zoomable: hold one of the keys <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel.</li>
+<li>It is zoomable: hold one of the keys <code class="docutils literal notranslate"><span class="pre">Alt</span></code>, <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code> and scroll the mouse wheel.</li>
 </ul>
 </div>
 <div class="section" id="active-project">
@@ -654,7 +655,7 @@
 <ul class="simple">
 <li>It shows the content of the <a class="reference internal" href="#active-project">active project</a>.</li>
 <li>You can do a quick search on the element names.</li>
-<li>It is zoomable: hold one of the keys <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel.</li>
+<li>It is zoomable: hold one of the keys <code class="docutils literal notranslate"><span class="pre">Alt</span></code>, <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code> and scroll the mouse wheel.</li>
 <li>You can drag the pack keys and drop them in editors like the <a class="reference external" href="scene-editor.html">Scene Editor</a> and the <a class="reference external" href="animations-editor.html">Animations Editor</a>.</li>
 </ul>
 <img alt="The Assets view." src="_images/assets-view.png" />
@@ -678,7 +679,7 @@
 </div>
 <div class="section" id="zooming">
 <h3>2.14.3&nbsp;&nbsp;&nbsp;Zooming<a class="headerlink" href="#zooming" title="Permalink to this headline">¶</a></h3>
-<p>As many other UI in the IDE, you can zoom-in/out the <strong>Project view</strong> images. Hold any of these keys: <code class="docutils literal"><span class="pre">Alt</span></code>, <code class="docutils literal"><span class="pre">Ctrl</span></code> or <code class="docutils literal"><span class="pre">Shift</span></code> and scroll the mouse wheel.</p>
+<p>As many other UI in the IDE, you can zoom-in/out the <strong>Project view</strong> images. Hold any of these keys: <code class="docutils literal notranslate"><span class="pre">Alt</span></code>, <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code> and scroll the mouse wheel.</p>
 <img alt="_images/project-view-zooming.png" src="_images/project-view-zooming.png" />
 </div>
 <div class="section" id="properties-support">
@@ -754,9 +755,14 @@
 <p>The updates are incremental (only modified/new plugins are downloaded), and it may be faster than download the whole editor from the website, especially if the update does not include a new Phaser version —that may contain new examples and assets— or a new <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> version (approximately every four months).</p>
 <p>You can disable the automatic update in the <a class="reference internal" href="#preferences">preferences</a> page <em>Install/Update</em> → <em>Automatic Updates</em>.</p>
 <p><a class="reference external" href="https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/tasks/tasks-129.htm?cp=0_3_17">Learn more in the Eclipse Help about updating and installing software</a></p>
+<div class="section" id="phaser-version-update">
+<h3>2.18.1&nbsp;&nbsp;&nbsp;Phaser version update<a class="headerlink" href="#phaser-version-update" title="Permalink to this headline">¶</a></h3>
+<p>The editor always provides the latest <a class="reference external" href="https://phaser.io">Phaser</a> version. If the <a class="reference external" href="https://photonstorm.com">Phaser developers</a> release a new version of <a class="reference external" href="https://phaser.io">Phaser</a>, we release a new version of <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> —the editor files could take around a week to be ready—, with the latest <a class="reference external" href="https://phaser.io">Phaser</a> release.</p>
+<p>This means, all the tools that consume the <a class="reference external" href="https://phaser.io">Phaser</a> resources display always an updated information. However, your project <a class="reference external" href="https://phaser.io">Phaser</a> runtime is not updated. By default, <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> copies the <code class="docutils literal notranslate"><span class="pre">phaser.js</span></code> runtime in the <code class="docutils literal notranslate"><span class="pre">WebContent/lib</span></code> folder, and it is never updated automatically. If you wish to update your game to the latest <a class="reference external" href="https://phaser.io">Phaser</a> you should do it manually, by replacing the <code class="docutils literal notranslate"><span class="pre">phaser.js</span></code> file (or your custom <a class="reference external" href="https://phaser.io">Phaser</a> build) with the desired version.</p>
+</div>
 <div class="section" id="possible-issues">
-<h3>2.18.1&nbsp;&nbsp;&nbsp;Possible issues<a class="headerlink" href="#possible-issues" title="Permalink to this headline">¶</a></h3>
-<p>The updating is a complex operation, especially when it includes a new <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> version. If the IDE does not start, execute the <code class="docutils literal"><span class="pre">Debug.bat</span></code> script ( or <code class="docutils literal"><span class="pre">Debug.sh</span></code> in the other platforms), it cleans the plugins cache.</p>
+<h3>2.18.2&nbsp;&nbsp;&nbsp;Possible issues<a class="headerlink" href="#possible-issues" title="Permalink to this headline">¶</a></h3>
+<p>The updating is a complex operation, especially when it includes a new <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> version. If the IDE does not start, execute the <code class="docutils literal notranslate"><span class="pre">Debug.bat</span></code> script ( or <code class="docutils literal notranslate"><span class="pre">Debug.sh</span></code> in the other platforms), to clean the plugins cache and other metadata and fix possible incompatibilities.</p>
 <p>Sometimes, an update includes new data, new views or new perspectives, that are not present in the workspace you are working on. In that case, if you experience any issue, you can <a class="reference external" href="first-steps.html#run-phaser-editor-2d">start with a new workspace</a> and <a class="reference external" href="#import-and-export-wizards">import</a> the projects.</p>
 </div>
 </div>
@@ -820,6 +826,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

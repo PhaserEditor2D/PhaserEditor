@@ -194,11 +194,11 @@
 <p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> has its own texture packer, based on the <a class="reference external" href="https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools">LibGDX tools</a>. It uses the MaxRects algorithm, that provides a high packing ratio.</p>
 <div class="section" id="create-a-new-atlas-file">
 <h2>3.1&nbsp;&nbsp;&nbsp;Create a new atlas file<a class="headerlink" href="#create-a-new-atlas-file" title="Permalink to this headline">¶</a></h2>
-<p>The Texture Packer uses <code class="docutils literal"><span class="pre">.atlas</span></code> files as configurations. To pack your images, you should create an atlas file with the wizard <strong>New Texture Packer File</strong>.</p>
+<p>The Texture Packer uses <code class="docutils literal notranslate"><span class="pre">.atlas</span></code> files as configurations. To pack your images, you should create an atlas file with the wizard <strong>New Texture Packer File</strong>.</p>
 <p><a class="reference external" href="workbench.html#resource-wizards">Learn more about resource wizards</a></p>
 <p>The <strong>Texture Packer File</strong> wizard shows two pages. The first page is common to all the file wizards, you should set the name and path of the file. We recommend creating the atlas file in the “assets” folder of your game because the output files will be placed in the same folder.</p>
-<p>The second page allows you to automatically add the generated atlas files (<code class="docutils literal"><span class="pre">.json</span></code> + <code class="docutils literal"><span class="pre">.png</span></code>) in a selected <a class="reference external" href="asset-pack-editor.html">pack file</a>.</p>
-<p>The <code class="docutils literal"><span class="pre">.atlas</span></code> file may be excluded from the distribution of your game. Only the output files: the packed textures and the <a class="reference external" href="https://phaser.io">Phaser</a> JSON atlas file are needed.</p>
+<p>The second page allows you to automatically add the generated atlas files (<code class="docutils literal notranslate"><span class="pre">.json</span></code> + <code class="docutils literal notranslate"><span class="pre">.png</span></code>) in a selected <a class="reference external" href="asset-pack-editor.html">pack file</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.atlas</span></code> file may be excluded from the distribution of your game. Only the output files: the packed textures and the <a class="reference external" href="https://phaser.io">Phaser</a> JSON atlas file are needed.</p>
 <img alt="Atlas file wizard." src="_images/atlas-file-wizard.png" />
 </div>
 <div class="section" id="add-images-to-the-atlas">
@@ -206,8 +206,8 @@
 <p>To add images to the atlas, drag the files from the <a class="reference external" href="workbench.html#project-view">Project view</a> or the <a class="reference external" href="workbench.html#blocks-view">Blocks view</a> and drop them into <strong>Texture Packer Editor</strong>. You can drop folders too, the editor will scan for the images and add them.</p>
 <p>The <a class="reference external" href="workbench.html#blocks-view">Blocks view</a> shows the candidates images to be added to the atlas. The criterions to include an image file in the <a class="reference external" href="workbench.html#blocks-view">Blocks view</a> is:</p>
 <ul class="simple">
-<li>The image file does not belong to the <code class="docutils literal"><span class="pre">WebContent</span></code> folder tree.</li>
-<li>The image file is not included in any <strong>Texture Packer Editor</strong> file (<code class="docutils literal"><span class="pre">*.atlas</span></code>).</li>
+<li>The image file does not belong to the <code class="docutils literal notranslate"><span class="pre">WebContent</span></code> folder tree.</li>
+<li>The image file is not included in any <strong>Texture Packer Editor</strong> file (<code class="docutils literal notranslate"><span class="pre">*.atlas</span></code>).</li>
 </ul>
 <p>If you have a lot of huge images in your project, it may impact the IDE performance. We strongly recommend keeping your project clean of images that are not used by any of the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> files or the game files.</p>
 <p><a class="reference external" href="workbench.html#resource-filters">Learn more about resource filters</a></p>
@@ -216,7 +216,7 @@
 </div>
 <div class="section" id="delete-images-from-the-atlas">
 <h2>3.3&nbsp;&nbsp;&nbsp;Delete images from the atlas<a class="headerlink" href="#delete-images-from-the-atlas" title="Permalink to this headline">¶</a></h2>
-<p>Select the images in the editor or the <a class="reference external" href="workbench.html#outline-view">Outline view</a>  and press the  <code class="docutils literal"><span class="pre">Del</span></code> key or the <strong>Delete</strong> option of the context menu. You have to save the editor to persist the changes.</p>
+<p>Select the images in the editor or the <a class="reference external" href="workbench.html#outline-view">Outline view</a>  and press the  <code class="docutils literal notranslate"><span class="pre">Del</span></code> key or the <strong>Delete</strong> option of the context menu. You have to save the editor to persist the changes.</p>
 <img alt="Delete selected images." src="_images/delete-images.png" />
 </div>
 <div class="section" id="build-atlas">
@@ -332,6 +332,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

@@ -680,10 +680,18 @@ You can disable the automatic update in the `preferences`_ page *Install/Update*
 
 `Learn more in the Eclipse Help about updating and installing software <https://help.eclipse.org/2019-06/topic/org.eclipse.platform.doc.user/tasks/tasks-129.htm?cp=0_3_17>`_
 
+Phaser version update
+~~~~~~~~~~~~~~~~~~~~~
+
+The editor always provides the latest Phaser_ version. If the |PhaserDevs|_ release a new version of Phaser_, we release a new version of |PhaserEditor|_ ---the editor files could take around a week to be ready---, with the latest Phaser_ release. 
+
+This means, all the tools that consume the Phaser_ resources display always an updated information. However, your project Phaser_ runtime is not updated. By default, |PhaserEditor|_ copies the ``phaser.js`` runtime in the ``WebContent/lib`` folder, and it is never updated automatically. If you wish to update your game to the latest Phaser_ you should do it manually, by replacing the ``phaser.js`` file (or your custom Phaser_ build) with the desired version.
+
+
 Possible issues
 ~~~~~~~~~~~~~~~
 
-The updating is a complex operation, especially when it includes a new |EclipseIDE|_ version. If the IDE does not start, execute the ``Debug.bat`` script ( or ``Debug.sh`` in the other platforms), it cleans the plugins cache.
+The updating is a complex operation, especially when it includes a new |EclipseIDE|_ version. If the IDE does not start, execute the ``Debug.bat`` script ( or ``Debug.sh`` in the other platforms), to clean the plugins cache and other metadata and fix possible incompatibilities.
 
 Sometimes, an update includes new data, new views or new perspectives, that are not present in the workspace you are working on. In that case, if you experience any issue, you can `start with a new workspace <first-steps.html#run-phaser-editor-2d>`_ and `import <#import-and-export-wizards>`_ the projects.
 

@@ -1,5 +1,8 @@
 .. _Phaser: https://phaser.io
 
+.. |PhaserDevs| replace:: Phaser developers
+.. _PhaserDevs: https://photonstorm.com
+
 .. |PhaserOfficialExamples| replace:: Phaser Official Examples
 .. _PhaserOfficialExamples: https://phaser.io/examples
 
