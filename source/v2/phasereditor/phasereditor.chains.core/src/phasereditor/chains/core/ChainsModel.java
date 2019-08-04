@@ -53,9 +53,15 @@ public class ChainsModel {
 	private List<PhaserExampleModel> _exampleItems;
 	private List<Line> _examplesLines;
 	private PhaserJsdocModel _jsdoc;
+	private PhaserExamplesRepoModel _examplesModel;
 
 	public ChainsModel() {
-		_jsdoc = PhaserJsdocModel.getInstance();
+		this(InspectCore.getPhaserHelp(), InspectCore.getPhaserExamplesRepoModel());
+	}
+	
+	public ChainsModel(PhaserJsdocModel jsdocModel, PhaserExamplesRepoModel examplesModel) {
+		_jsdoc = jsdocModel;
+		_examplesModel = examplesModel;
 		build();
 	}
 
@@ -99,8 +105,7 @@ public class ChainsModel {
 		_examplesLines = new ArrayList<>();
 
 		try {
-			PhaserExamplesRepoModel examples = InspectCore.getPhaserExamplesRepoModel();
-			for (PhaserExampleCategoryModel category : examples.getExamplesCategories()) {
+			for (PhaserExampleCategoryModel category : _examplesModel.getExamplesCategories()) {
 				processCategory(category);
 			}
 		} catch (Exception e) {

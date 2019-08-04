@@ -99,7 +99,7 @@ public class JsdocRenderer {
 			parser.parse(html);
 
 			var html2 = writer.toString();
-			
+
 			html2 = expandCodeTag(html2);
 
 			html2 = expandLinksInHtml(html2);
@@ -208,6 +208,12 @@ public class JsdocRenderer {
 	}
 
 	public Image getImage(IPhaserMember member) {
+		String key = getImageName(member);
+
+		return EditorSharedImages.getImage(key);
+	}
+
+	public static String getImageName(IPhaserMember member) {
 		String key = null;
 
 		IMemberContainer container = member.getContainer();
@@ -236,7 +242,7 @@ public class JsdocRenderer {
 			key = IEditorSharedImages.IMG_PACKAGE_OBJ;
 		}
 
-		return EditorSharedImages.getImage(key);
+		return key;
 	}
 
 	public Image getGlobalScopeImage() {
