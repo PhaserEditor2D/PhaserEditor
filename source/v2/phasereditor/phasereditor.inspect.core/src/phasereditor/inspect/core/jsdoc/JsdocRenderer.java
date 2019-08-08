@@ -55,13 +55,24 @@ import phasereditor.ui.SwtRM;
  */
 @SuppressWarnings({ "static-method" })
 public class JsdocRenderer {
-	private static JsdocRenderer _instance = new JsdocRenderer();
+	private static JsdocRenderer _instance;
+	private boolean _insidePhaserEditor;
+	private PhaserJsdocModel _phaserHelp;
 
 	public JsdocRenderer() {
+		this(true, InspectCore.getPhaserHelp());
+	}
+
+	public JsdocRenderer(boolean insidePhaserEditor, PhaserJsdocModel phaserHelp) {
+		_insidePhaserEditor = insidePhaserEditor;
+		_phaserHelp = phaserHelp;
 		_linkPattern = Pattern.compile("\\{@link (?<href>[^\\}]*)\\}");
 	}
 
 	public static JsdocRenderer getInstance() {
+		if (_instance == null) {
+			_instance = new JsdocRenderer();
+		}
 		return _instance;
 	}
 
@@ -90,24 +101,28 @@ public class JsdocRenderer {
 	private Pattern _linkPattern;
 
 	public String processHtmlDescription(String html) {
-		try (StringWriter writer = new StringWriter()) {
-			var builder = new HtmlDocumentBuilder(writer, true);
-			builder.setEmitAsDocument(false);
-			var parser = new MarkupParser();
-			parser.setMarkupLanguage(new MarkdownLanguage());
-			parser.setBuilder(builder);
-			parser.parse(html);
+		if (_insidePhaserEditor) {
+			try (StringWriter writer = new StringWriter()) {
+				var builder = new HtmlDocumentBuilder(writer, true);
+				builder.setEmitAsDocument(false);
+				var parser = new MarkupParser();
+				parser.setMarkupLanguage(new MarkdownLanguage());
+				parser.setBuilder(builder);
+				parser.parse(html);
 
-			var html2 = writer.toString();
+				var html2 = writer.toString();
 
-			html2 = expandCodeTag(html2);
+				html2 = expandCodeTag(html2);
 
-			html2 = expandLinksInHtml(html2);
+				html2 = expandLinksInHtml(html2);
 
-			return html2;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+				return html2;
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
+
+		return html;
 
 		// var html2 = expandCodeTag(html);
 		//
@@ -284,7 +299,7 @@ public class JsdocRenderer {
 	private String renderNamespace(PhaserNamespace member) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<b>" + renderImageBase64(getImage(member)) + " " + member.getName() + "</b>");
+		sb.append("<b>" + renderImageTag(member) + " " + member.getName() + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(member.getHelp()) + "</p>");
 
@@ -310,7 +325,7 @@ public class JsdocRenderer {
 
 		var qname = container.getName() + "." + event.getName();
 
-		sb.append("<b>" + renderImageBase64(getImage(event)) + " event " + qname + "</b>");
+		sb.append("<b>" + renderImageTag(event) + " event " + qname + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(event.getHelp()) + "</p>");
 
@@ -318,8 +333,8 @@ public class JsdocRenderer {
 
 		sb.append(htmlArgsDoc(event.getArgs()));
 
-		var callers = InspectCore.getPhaserHelp().getMembersMap().values().stream()
-				.filter(m -> m.getFiresEventList().contains(event)).collect(toList());
+		var callers = _phaserHelp.getMembersMap().values().stream().filter(m -> m.getFiresEventList().contains(event))
+				.collect(toList());
 
 		if (!callers.isEmpty()) {
 
@@ -343,7 +358,7 @@ public class JsdocRenderer {
 
 		String qname = container.getName() + "." + cons.getName();
 
-		sb.append("<b>" + renderImageBase64(getImage(cons)) + returnSignature + " " + qname + "</b>");
+		sb.append("<b>" + renderImageTag(cons) + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(cons.getHelp()) + "</p>");
 
@@ -359,7 +374,7 @@ public class JsdocRenderer {
 		IMemberContainer container = var.getContainer();
 		String qname = container.getName() + "." + var.getName();
 
-		sb.append("<b>" + renderImageBase64(getImage(var)) + returnSignature + " " + qname + "</b>");
+		sb.append("<b>" + renderImageTag(var) + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(var.getHelp()) + "</p>");
 
@@ -381,8 +396,8 @@ public class JsdocRenderer {
 
 		String qname = method.getContainer().getName() + "." + method.getName();
 
-		sb.append("<b>" + renderImageBase64(getImage(method)) + returnSignature + " " + qname
-				+ htmlArgsList(method.getArgs()) + "</b>");
+		sb.append("<b>" + renderImageTag(method) + returnSignature + " " + qname + htmlArgsList(method.getArgs())
+				+ "</b>");
 
 		sb.append("<p>" + processHtmlDescription(method.getHelp()) + "</p>");
 
@@ -420,7 +435,7 @@ public class JsdocRenderer {
 	public String renderType(PhaserType type) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<b>" + renderImageBase64(getImage(type)) + "class</b> " + type.getName());
+		sb.append("<b>" + renderImageTag(type) + "class</b> " + type.getName());
 		if (!type.getExtends().isEmpty()) {
 			sb.append(" <b>extends</b> " + renderExtends(type));
 		}
@@ -435,6 +450,13 @@ public class JsdocRenderer {
 		sb.append(htmlArgsDoc(type.getConstructorArgs()));
 
 		return sb.toString();
+	}
+
+	public String renderImageTag(IPhaserMember member) {
+		if (_insidePhaserEditor) {
+			return renderImageBase64(getImage(member));
+		}
+		return "";
 	}
 
 	private void renderSince(StringBuilder sb, IPhaserMember member) {
