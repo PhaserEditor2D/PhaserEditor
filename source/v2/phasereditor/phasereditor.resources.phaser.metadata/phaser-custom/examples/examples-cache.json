@@ -4974,14 +4974,10 @@
           },
           {
             "mainFile": "src/game objects/container/twirl 2.js",
-            "map": [
-              {
-                "orig": "src/game objects/container/twirl 2.js",
-                "dst": "twirl 2.js"
-              },
-              {"orig": "assets/demoscene/blue-raster.png"},
-              {"orig": "assets/demoscene/large-raster32.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/container/twirl 2.js",
+              "dst": "twirl 2.js"
+            }]
           },
           {
             "mainFile": "src/game objects/container/twirl 3.js",
@@ -4996,13 +4992,10 @@
           },
           {
             "mainFile": "src/game objects/container/twirl 4.js",
-            "map": [
-              {
-                "orig": "src/game objects/container/twirl 4.js",
-                "dst": "twirl 4.js"
-              },
-              {"orig": "assets/demoscene/rastercarpet32.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/container/twirl 4.js",
+              "dst": "twirl 4.js"
+            }]
           },
           {
             "mainFile": "src/game objects/container/twirl 5.js",
@@ -5017,13 +5010,10 @@
           },
           {
             "mainFile": "src/game objects/container/twirl 6.js",
-            "map": [
-              {
-                "orig": "src/game objects/container/twirl 6.js",
-                "dst": "twirl 6.js"
-              },
-              {"orig": "assets/demoscene/rastercarpet32.png"}
-            ]
+            "map": [{
+              "orig": "src/game objects/container/twirl 6.js",
+              "dst": "twirl 6.js"
+            }]
           }
         ]
       },
@@ -9887,6 +9877,16 @@
             }]
           },
           {
+            "mainFile": "src/geom/line/inverse line.js",
+            "map": [
+              {
+                "orig": "src/geom/line/inverse line.js",
+                "dst": "inverse line.js"
+              },
+              {"orig": "assets/demoscene/rastercarpet32.png"}
+            ]
+          },
+          {
             "mainFile": "src/geom/line/length.js",
             "map": [{
               "orig": "src/geom/line/length.js",
@@ -11135,6 +11135,20 @@
                 "dst": "custom shape hit area.js"
               },
               {"orig": "assets/sprites/spikedball.png"}
+            ]
+          },
+          {
+            "mainFile": "src/input/game object/debug hitarea.js",
+            "map": [
+              {
+                "orig": "src/input/game object/debug hitarea.js",
+                "dst": "debug hitarea.js"
+              },
+              {"orig": "assets/sprites/budbrain_chick.png"},
+              {"orig": "assets/pics/lance-overdose-loader-eye.png"},
+              {"orig": "assets/sprites/wizball.png"},
+              {"orig": "assets/sprites/thrust_ship2.png"},
+              {"orig": "assets/pics/supercars-parsec.png"}
             ]
           },
           {
@@ -15617,6 +15631,13 @@
             ]
           },
           {
+            "mainFile": "src/physics/matterjs/compound body from physics editor.js",
+            "map": [{
+              "orig": "src/physics/matterjs/compound body from physics editor.js",
+              "dst": "compound body from physics editor.js"
+            }]
+          },
+          {
             "mainFile": "src/physics/matterjs/compound sensors.js",
             "map": [
               {
@@ -16636,10 +16657,9 @@
             "orig": "src/spine/add hit area.js",
             "dst": "add hit area.js"
           },
-          {"orig": "assets/spine/demos/demos.json"},
-          {"orig": "assets/spine/demos/atlas1.atlas"},
-          {"orig": "assets/spine/demos/atlas1.png"},
-          {"orig": "plugins/SpinePlugin.js"}
+          {"orig": "assets/sprites/green_ball.png"},
+          {"orig": "assets/physics/compound.json"},
+          {"orig": "assets/physics/compound.png"}
         ]
       },
       {
@@ -16651,23 +16671,15 @@
           },
           {"orig": "assets/spine/coin/coin.atlas"},
           {"orig": "assets/spine/coin/coin-pro.json"},
-          {"orig": "plugins/SpinePlugin.js"},
-          {"orig": "assets/spine/coin/coin.png"}
+          {"orig": "plugins/SpinePlugin.js"}
         ]
       },
       {
         "mainFile": "src/spine/basic spineboy.js",
-        "map": [
-          {
-            "orig": "src/spine/basic spineboy.js",
-            "dst": "basic spineboy.js"
-          },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpinePlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/spineboy.png"}
-        ]
+        "map": [{
+          "orig": "src/spine/basic spineboy.js",
+          "dst": "basic spineboy.js"
+        }]
       },
       {
         "mainFile": "src/spine/batch test.js",
@@ -16676,11 +16688,11 @@
             "orig": "src/spine/batch test.js",
             "dst": "batch test.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/spineboy.png"}
+          {"orig": "assets/spine/demos/demos.json"},
+          {"orig": "assets/spine/demos/atlas1.atlas"},
+          {"orig": "assets/spine/demos/atlas1.png"}
         ]
       },
       {
@@ -16690,11 +16702,11 @@
             "orig": "src/spine/camera pipeline test.js",
             "dst": "camera pipeline test.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/spine/demos/demos.json"},
           {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/spineboy.png"}
+          {"orig": "assets/spine/demos/atlas1.atlas"},
+          {"orig": "assets/spine/demos/atlas1.png"}
         ]
       },
       {
@@ -16704,11 +16716,25 @@
             "orig": "src/spine/canvas test 1.js",
             "dst": "canvas test 1.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "plugins/SpineCanvasPlugin.js"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
           {"orig": "assets/animations/spine/spineboy.png"}
+        ]
+      },
+      {
+        "mainFile": "src/spine/control bones.js",
+        "map": [
+          {
+            "orig": "src/spine/control bones.js",
+            "dst": "control bones.js"
+          },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/spine/stretchyman/stretchyman-pro.json"},
+          {"orig": "assets/spine/stretchyman/stretchyman-pma.atlas"},
+          {"orig": "assets/spine/stretchyman/stretchyman-pma.png"}
         ]
       },
       {
@@ -16731,11 +16757,16 @@
             "orig": "src/spine/draw debug bounds.js",
             "dst": "draw debug bounds.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/spineboy.png"}
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/tests/scenes/toggle-on.png"},
+          {"orig": "assets/tests/scenes/toggle-off.png"},
+          {"orig": "assets/spine/demos/atlas1.atlas"},
+          {"orig": "assets/spine/demos/demos.json"},
+          {"orig": "assets/spine/demos/heroes.atlas"},
+          {"orig": "assets/spine/demos/atlas2.atlas"},
+          {"orig": "assets/spine/demos/atlas1.png"},
+          {"orig": "assets/spine/demos/heroes.png"},
+          {"orig": "assets/spine/demos/atlas2.png"}
         ]
       },
       {
@@ -16758,14 +16789,14 @@
             "orig": "src/spine/spine inside container.js",
             "dst": "spine inside container.js"
           },
-          {"orig": "assets/animations/spine/webgl/coin.png"},
-          {"orig": "assets/animations/spine/webgl/spineboy-ess.json"},
-          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
-          {"orig": "assets/animations/spine/webgl/spineboy-pma.png"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/animations/spine/webgl/spineboy.atlas"},
+          {"orig": "plugins/SpinePluginDebug.js"},
           {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/webgl/coin.atlas"}
+          {"orig": "assets/animations/spine/webgl/spineboy-ess.json"},
+          {"orig": "assets/animations/spine/webgl/spineboy.atlas"},
+          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
+          {"orig": "assets/animations/spine/webgl/coin.atlas"},
+          {"orig": "assets/animations/spine/webgl/coin.png"},
+          {"orig": "assets/animations/spine/webgl/spineboy-pma.png"}
         ]
       },
       {
@@ -16775,26 +16806,11 @@
             "orig": "src/spine/spine rotation test.js",
             "dst": "spine rotation test.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
+          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/sprites/arrow.png"},
+          {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.png"}
-        ]
-      },
-      {
-        "mainFile": "src/spine/stretchy man.js",
-        "map": [
-          {
-            "orig": "src/spine/stretchy man.js",
-            "dst": "stretchy man.js"
-          },
-          {"orig": "assets/animations/spine/webgl/atlas2.png"},
-          {"orig": "assets/animations/spine/webgl/demos.json"},
-          {"orig": "assets/animations/spine/webgl/atlas2.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"}
         ]
       },
       {
@@ -16804,10 +16820,10 @@
             "orig": "src/spine/webgl test 1.js",
             "dst": "webgl test 1.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
+          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
+          {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16818,10 +16834,10 @@
             "orig": "src/spine/webgl test 2.js",
             "dst": "webgl test 2.js"
           },
-          {"orig": "assets/animations/spine/spineboy.json"},
-          {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
+          {"orig": "plugins/SpinePlugin.js"},
           {"orig": "assets/sprites/phaser.png"},
+          {"orig": "assets/animations/spine/spineboy.atlas"},
+          {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16832,10 +16848,10 @@
             "orig": "src/spine/webgl test 3.js",
             "dst": "webgl test 3.js"
           },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.json"},
           {"orig": "assets/animations/spine/spineboy.atlas"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
-          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/spineboy.png"}
         ]
       },
@@ -16846,11 +16862,11 @@
             "orig": "src/spine/webgl test 4.js",
             "dst": "webgl test 4.js"
           },
-          {"orig": "assets/animations/spine/webgl/raptor.png"},
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/webgl/raptor-pro.json"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
           {"orig": "assets/animations/spine/webgl/raptor.atlas"},
-          {"orig": "assets/sprites/phaser.png"}
+          {"orig": "assets/animations/spine/webgl/raptor.png"}
         ]
       },
       {
@@ -16860,20 +16876,20 @@
             "orig": "src/spine/webgl test 5.js",
             "dst": "webgl test 5.js"
           },
+          {"orig": "plugins/SpinePlugin.js"},
+          {"orig": "assets/sprites/phaser.png"},
           {"orig": "assets/animations/spine/webgl/raptor-pro.json"},
+          {"orig": "assets/animations/spine/webgl/raptor.atlas"},
+          {"orig": "assets/animations/spine/webgl/vine-pro.json"},
+          {"orig": "assets/animations/spine/webgl/vine.atlas"},
+          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
+          {"orig": "assets/animations/spine/webgl/coin.atlas"},
           {"orig": "assets/animations/spine/webgl/tank-pro.json"},
-          {"orig": "plugins/SpineWebGLPlugin.js"},
           {"orig": "assets/animations/spine/webgl/tank.atlas"},
-          {"orig": "assets/animations/spine/webgl/tank.png"},
+          {"orig": "assets/animations/spine/webgl/raptor.png"},
           {"orig": "assets/animations/spine/webgl/vine.png"},
           {"orig": "assets/animations/spine/webgl/coin.png"},
-          {"orig": "assets/animations/spine/webgl/raptor.png"},
-          {"orig": "assets/animations/spine/webgl/coin-pro.json"},
-          {"orig": "assets/animations/spine/webgl/raptor.atlas"},
-          {"orig": "assets/animations/spine/webgl/vine.atlas"},
-          {"orig": "assets/animations/spine/webgl/vine-pro.json"},
-          {"orig": "assets/sprites/phaser.png"},
-          {"orig": "assets/animations/spine/webgl/coin.atlas"}
+          {"orig": "assets/animations/spine/webgl/tank.png"}
         ]
       }
     ]

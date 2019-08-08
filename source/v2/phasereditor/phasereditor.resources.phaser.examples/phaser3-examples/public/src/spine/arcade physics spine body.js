@@ -33,13 +33,19 @@ function preload ()
 
 function create ()
 {
-    var b = this.add.spine(400, 200, 'coin', 'animation', true).setScale(1);
+    var coin = this.add.spine(400, 200, 'coin', 'animation', true);
 
-    this.physics.add.existing(b);
+    //  Resize the Spine dimensions because the original skeleton includes the shine bone,
+    //  rendering a simple bounds check useless. Not all Spine objects will require this, but this one does.
+    coin.setSize(280, 280);
 
-    b.body.setVelocity(100, 200);
-    b.body.setBounce(1, 1);
-    b.body.setCollideWorldBounds(true);
+    this.physics.add.existing(coin);
 
-    b.setScale(0.25);
+    coin.body.setOffset(0, 50);
+    coin.body.setVelocity(100, 200);
+    coin.body.setBounce(1, 1);
+    coin.body.setCollideWorldBounds(true);
+
+    //  Otherwise it's massive :)
+    coin.setScale(0.3);
 }

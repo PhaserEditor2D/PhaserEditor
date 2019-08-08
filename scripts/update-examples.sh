@@ -12,14 +12,3 @@ mv ${PE}/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples/ph
 mv ${PE}/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples/phaser3-examples/public/assets/tests/piano/*.mp3 ${PE}/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples.assets.audio/phaser3-examples/public/assets/tests/piano/
 mv ${PE}/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples/phaser3-examples/public/assets/video ${PE}/Public/source/v2/phasereditor/phasereditor.resources.phaser.examples.assets.audio/phaser3-examples/public/assets/
 
-echo
-echo
-echo "REMEMBER TO:"
-echo
-echo "1) Build the examples cache (phasereditor.scripts.BuildExamplesCache)"
-echo
-echo "2) Delete unused audio assets (phasereditor.scripts.RemoveUnusedAudioAssets)"
-echo
-echo "3) Run the script delete-unussed-assets.js"
-echo
-echo

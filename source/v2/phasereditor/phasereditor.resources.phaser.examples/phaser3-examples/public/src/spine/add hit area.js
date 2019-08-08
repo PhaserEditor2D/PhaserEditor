@@ -19,42 +19,40 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
+    this.load.image('logo', 'assets/sprites/phaser.png');
+
     this.load.setPath('assets/spine/demos/');
 
-    this.load.spine('set1', 'demos.json', 'atlas1.atlas');
+    this.load.spine('set1', 'demos.json', [ 'atlas1.atlas', 'atlas2.atlas', 'heroes.atlas' ], true);
 }
 
 function create ()
 {
-    var b = this.add.spine(400, 500, 'set1.alien').setScale(0.4);
+    this.add.text(10, 10, 'Click the alien', { font: '16px Courier', fill: '#ffffff' }).setShadow(1, 1);
 
-    // console.log(b.getBounds());
+    var b = this.add.spine(400, 500, 'set1.alien').setScale(0.5);
 
-    var d = b.getBounds();
+    // var b = this.add.spine(400, 500, 'set1.armorgirl').setScale(0.2);
+    // var b = this.add.spine(400, 500, 'set1.dragon').setScale(0.5);
+    // var b = this.add.spine(600, 750, 'set1.greengirl').setScale(0.8);
+    // var b = this.add.spine(400, 500, 'set1.heroes').setSkinByName('Assassin');
+    // var b = this.add.spine(400, 700, 'set1.orangegirl').setScale(1);
+    // var b = this.add.spine(400, 500, 'set1.raptor').setScale(0.6);
+    // var b = this.add.spine(400, 500, 'set1.spineboy').setScale(1);
+    // var b = this.add.spine(400, 500, 'set1.stretchyman').setScale(0.4);
+    // var b = this.add.spine(400, 500, 'set1.tank').setScale(0.1);
+    // var b = this.add.spine(400, 500, 'set1.vine').setScale(0.5);
 
-    var r = new Phaser.Geom.Rectangle(0, -d.size.y / 2, d.size.x, d.size.y);
+    b.setInteractive();
 
-    b.setInteractive(r, Phaser.Geom.Rectangle.Contains);
+    //  Toggle to view the hit area
+    this.input.enableDebug(b, 0xff00ff);
 
-    // console.log(b);
-
-    var text = this.add.text(10, 10, 'click it', { font: '16px Courier', fill: '#00ff00' }).setShadow(1, 1);
-
-    b.on('pointerover', function () {
-
-        text.setText('Over');
-
-    });
-
-    b.on('pointerout', function () {
-
-        text.setText('Out');
-
-    });
+    var anims = b.getAnimationList();
 
     b.once('pointerdown', function () {
 
-        b.play('death', false);
+        b.play(anims[0], false);
 
-    });
+    }, this);
 }
