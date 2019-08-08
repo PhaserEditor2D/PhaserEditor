@@ -67,7 +67,7 @@ public class PhaserJsdocModel implements Serializable {
 
 				var size = Files.getLastModifiedTime(docsJsonFile).toMillis();
 
-				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json.2." + size + ".binary");
+				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json.3." + size + ".binary");
 
 				if (Files.exists(cacheFile)) {
 					try (var input = new ObjectInputStream(Files.newInputStream(cacheFile))) {
