@@ -99,9 +99,7 @@ public class BuildOnlineChains {
 			tuple.put("chain", chain.getChain());
 			tuple.put("retType", chain.getReturnTypeName());
 			{
-				var icon = JsdocRenderer.getImageName(phaserMember);
-				icon = icon.substring("icons/".length());
-				icon = icon.substring(0, icon.length() - 4);
+				var icon = JsdocRenderer.getIconName(phaserMember);
 				tuple.put("icon", icon);
 			}
 			tuple.put("id", phaserMember.getFullName());

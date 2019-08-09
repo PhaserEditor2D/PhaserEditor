@@ -228,6 +228,13 @@ public class JsdocRenderer {
 		return EditorSharedImages.getImage(key);
 	}
 
+	public static String getIconName(IPhaserMember member) {
+		var icon = getImageName(member);
+		icon = icon.substring("icons/".length());
+		icon = icon.substring(0, icon.length() - 4);
+		return icon;
+	}
+
 	public static String getImageName(IPhaserMember member) {
 		String key = null;
 
@@ -299,13 +306,52 @@ public class JsdocRenderer {
 	private String renderNamespace(PhaserNamespace member) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<b>" + renderImageTag(member) + " " + member.getName() + "</b>");
+		sb.append("<b>" + renderImageTag(member) + " namespace " + member.getName() + "</b>");
 
 		sb.append("<p>" + processHtmlDescription(member.getHelp()) + "</p>");
 
 		renderSince(sb, member);
 
+		renderContainingMembers(sb, member);
+
 		return sb.toString();
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void renderContainingMembers(StringBuilder sb, IMemberContainer container) {
+		var list = new Object[] {
+
+				container.getConstants(),
+
+				container.getProperties(),
+
+				container.getMethods(),
+
+				container.getNamespaces(),
+
+				container.getTypes(),
+
+		};
+		sb.append("<p><b class='doc-section'>Members:</b></p>");
+		for (var members : list) {
+			for (var member : (List) members) {
+				var member2 = (IPhaserMember) member;
+				if (member2 instanceof IMemberContainer) {
+					sb.append(renderLink(member2.getName()) + "<br>");
+				} else {
+					sb.append(renderImageTag(member2));
+					if (member2 instanceof PhaserMethod) {
+						sb.append(renderLink(container, member2.getName()));
+						var args = htmlArgsList(((PhaserMethod) member2).getArgs());
+						sb.append("<b>" + args + "</b>");
+					} else {
+						sb.append(renderLink(container, member2.getName()));
+					}
+					sb.append("<br>");
+				}
+			}
+		}
+		sb.append("</p>");
 	}
 
 	private String renderImageBase64(Image image) {
@@ -323,7 +369,7 @@ public class JsdocRenderer {
 
 		var container = event.getContainer();
 
-		var qname = container.getName() + "." + event.getName();
+		var qname = renderLink(container.getName()) + "." + event.getName();
 
 		sb.append("<b>" + renderImageTag(event) + " event " + qname + "</b>");
 
@@ -356,9 +402,9 @@ public class JsdocRenderer {
 
 		IMemberContainer container = cons.getContainer();
 
-		String qname = container.getName() + "." + cons.getName();
+		String qname = renderLink(container.getName()) + "." + cons.getName();
 
-		sb.append("<b>" + renderImageTag(cons) + returnSignature + " " + qname + "</b>");
+		sb.append("<b>" + renderImageTag(cons) + qname + "</b> : " + returnSignature);
 
 		sb.append("<p>" + processHtmlDescription(cons.getHelp()) + "</p>");
 
@@ -372,9 +418,9 @@ public class JsdocRenderer {
 
 		String returnSignature = htmlTypes(var.getTypes());
 		IMemberContainer container = var.getContainer();
-		String qname = container.getName() + "." + var.getName();
+		String qname = renderLink(container.getName()) + "." + var.getName();
 
-		sb.append("<b>" + renderImageTag(var) + returnSignature + " " + qname + "</b>");
+		sb.append("<b>" + renderImageTag(var) + qname + "</b> : " + returnSignature);
 
 		sb.append("<p>" + processHtmlDescription(var.getHelp()) + "</p>");
 
@@ -394,9 +440,9 @@ public class JsdocRenderer {
 
 		String returnSignature = htmlTypes(method.getReturnTypes());
 
-		String qname = method.getContainer().getName() + "." + method.getName();
+		String qname = renderLink(method.getContainer().getName()) + "." + method.getName();
 
-		sb.append("<b>" + renderImageTag(method) + returnSignature + " " + qname + htmlArgsList(method.getArgs())
+		sb.append("<b>" + renderImageTag(method) + qname + htmlArgsList(method.getArgs()) + " : " + returnSignature
 				+ "</b>");
 
 		sb.append("<p>" + processHtmlDescription(method.getHelp()) + "</p>");
@@ -423,7 +469,7 @@ public class JsdocRenderer {
 
 		if (!list.isEmpty()) {
 
-			sb.append("<br><b>Fires:</b><br>");
+			sb.append("<br><b class='doc-section'>Fires:</b><br>");
 
 			for (var event : list) {
 				sb.append("<a href='" + event.getContainer().getName() + "." + event.getName() + "'>" + event.getName()
@@ -449,20 +495,34 @@ public class JsdocRenderer {
 
 		sb.append(htmlArgsDoc(type.getConstructorArgs()));
 
+		renderSubtypes(sb, type);
+
+		renderContainingMembers(sb, type);
+
 		return sb.toString();
+	}
+
+	private void renderSubtypes(StringBuilder sb, PhaserType type) {
+		var extenders = type.getExtenders();
+		if (!extenders.isEmpty()) {
+			sb.append("<p><b class='doc-section'>Subtypes:</b></p>");
+			for (var subtype : extenders) {
+				sb.append(renderLink(subtype.getName()) + "<br>");
+			}
+		}
 	}
 
 	public String renderImageTag(IPhaserMember member) {
 		if (_insidePhaserEditor) {
 			return renderImageBase64(getImage(member));
 		}
-		return "";
+		return "<span class='icon-" + getIconName(member) + " api-icon'></span>";
 	}
 
 	private void renderSince(StringBuilder sb, IPhaserMember member) {
 		var since = member.getSince();
 		if (since != null) {
-			sb.append("<p><b>Since</b>: " + since + "</p>");
+			sb.append("<p><b class='doc-section'>Since</b>: " + since + "</p>");
 		}
 	}
 
@@ -479,7 +539,7 @@ public class JsdocRenderer {
 	private String htmlArgsDoc(List<PhaserMethodArg> args) {
 		StringBuilder sb = new StringBuilder();
 		if (!args.isEmpty()) {
-			sb.append("<br><b>Parameters:</b><br>");
+			sb.append("<br><b class='doc-section'>Parameters:</b><br>");
 		}
 
 		for (PhaserVariable var : args) {
@@ -512,7 +572,7 @@ public class JsdocRenderer {
 		return sb.toString();
 	}
 
-	private String htmlTypes(String[] types) {
+	private String htmlTypes(String... types) {
 		if (types.length == 0) {
 			return "void";
 		}
@@ -535,6 +595,10 @@ public class JsdocRenderer {
 
 	private String renderLink(String name) {
 		return "<a href='" + name + "'>" + name + "</a>";
+	}
+
+	private static String renderLink(IMemberContainer container, String memberName) {
+		return "<a href='" + container.getName() + "." + memberName + "'>" + memberName + "</a>";
 	}
 
 }
