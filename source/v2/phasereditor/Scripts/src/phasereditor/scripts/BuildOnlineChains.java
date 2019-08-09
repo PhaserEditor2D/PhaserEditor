@@ -77,6 +77,7 @@ public class BuildOnlineChains {
 			elemData.put("doc", doc);
 			elemData.put("file", member.getFile());
 			elemData.put("line", member.getLine());
+			elemData.put("since", member.getSince());
 
 			data.put(member.getFullName(), elemData);
 		}
@@ -93,20 +94,17 @@ public class BuildOnlineChains {
 		for (var chain : chainsModel.getChains()) {
 			var phaserMember = chain.getPhaserMember();
 
-			var tuple = new JSONArray();
+			var tuple = new JSONObject();
 
-			tuple.put(chain.getChain());
-			tuple.put(chain.getReturnTypeName());
-			tuple.put(phaserMember.getSince());
+			tuple.put("chain", chain.getChain());
+			tuple.put("retType", chain.getReturnTypeName());
 			{
 				var icon = JsdocRenderer.getImageName(phaserMember);
 				icon = icon.substring("icons/".length());
 				icon = icon.substring(0, icon.length() - 4);
-				tuple.put(icon);
+				tuple.put("icon", icon);
 			}
-			tuple.put(phaserMember.getFullName());
-			tuple.put(phaserMember.getFile());
-			tuple.put(phaserMember.getLine());
+			tuple.put("id", phaserMember.getFullName());
 
 			chainsData.put(tuple);
 		}
@@ -174,8 +172,8 @@ public class BuildOnlineChains {
 				throw new RuntimeException(e);
 			}
 		}
-		
-		for(var cat2 : cat.getSubCategories()) {
+
+		for (var cat2 : cat.getSubCategories()) {
 			generateExamplesData(examplesModel, examplesData, cat2);
 		}
 	}
