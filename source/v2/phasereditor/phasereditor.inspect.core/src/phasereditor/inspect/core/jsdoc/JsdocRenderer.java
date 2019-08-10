@@ -319,6 +319,10 @@ public class JsdocRenderer {
 
 	@SuppressWarnings("rawtypes")
 	private void renderContainingMembers(StringBuilder sb, IMemberContainer container) {
+		if (_insidePhaserEditor) {
+			return;
+		}
+		
 		var list = new Object[] {
 
 				container.getConstants(),
