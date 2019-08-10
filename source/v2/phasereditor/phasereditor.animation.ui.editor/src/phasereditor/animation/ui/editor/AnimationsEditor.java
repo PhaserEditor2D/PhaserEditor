@@ -43,7 +43,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -1336,11 +1335,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 	public void deleteAnimations(List<AnimationModel> animations) {
 		if (animations.isEmpty()) {
-			return;
-		}
-
-		if (!MessageDialog.openConfirm(getEditorSite().getShell(), "Delete",
-				"Do you really want to delete " + animations.size() + " animations? This operation is not undoable.")) {
 			return;
 		}
 
