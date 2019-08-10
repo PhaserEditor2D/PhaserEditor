@@ -43,7 +43,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class BuildOnlineChains {
-	private static int chainsVersion = 1;
+	private static int chainsVersion = 2;
 
 	public static void main(String[] args) throws Exception {
 
