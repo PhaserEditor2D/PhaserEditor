@@ -584,7 +584,7 @@ public class PackEditorCanvas extends BaseCanvas implements PaintListener, Mouse
 			}
 		}
 
-		return new IconCellRenderer(AssetLabelProvider.GLOBAL_64.getImage(asset));
+		return new IconCellRenderer(AssetLabelProvider.GLOBAL_16.getImage(asset));
 	}
 
 	private static FrameCellRenderer getSceneScreenshot(SceneFileAssetModel asset) {

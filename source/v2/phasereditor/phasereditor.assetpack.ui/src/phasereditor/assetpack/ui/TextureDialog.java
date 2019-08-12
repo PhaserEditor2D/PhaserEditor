@@ -67,7 +67,7 @@ public class TextureDialog extends Dialog {
 		super(parentShell);
 
 		_contentProvider = new TextureListContentProvider();
-		_labelProvider = new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48);
+		_labelProvider = new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_16);
 	}
 
 	/**

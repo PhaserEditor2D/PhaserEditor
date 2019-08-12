@@ -52,7 +52,7 @@ public class SelectTextureDialog extends Dialog implements IEditorSharedImages {
 	private FilteredTree _filteredTree;
 	private TreeViewer _viewer;
 	private Object _selected;
-	private IBaseLabelProvider _labelProvider = new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48);
+	private IBaseLabelProvider _labelProvider = new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_16);
 	private IContentProvider _contentProvider = new TextureListContentProvider();
 	private String _title;
 
