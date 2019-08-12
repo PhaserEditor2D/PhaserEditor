@@ -1,7 +1,10 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -187,7 +190,7 @@ var PhaserEditor2D;
             this._startPoint = null;
             this._dragging = false;
             this._now = 0;
-            this._filterPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
+            this._paintDelayUtil = new PhaserEditor2D.PaintDelayUtil();
         }
         DragObjectsManager.prototype.getScene = function () {
             return PhaserEditor2D.Editor.getInstance().getObjectScene();
@@ -208,9 +211,7 @@ var PhaserEditor2D;
             if (!hit) {
                 return false;
             }
-            if (this._filterPaintOnMove) {
-                this._now = Date.now();
-            }
+            this._paintDelayUtil.startPaintLoop();
             this._startPoint = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
             var tx = new Phaser.GameObjects.Components.TransformMatrix();
             var p = new Phaser.Math.Vector2();
@@ -253,14 +254,7 @@ var PhaserEditor2D;
                     sprite.setPosition(x, y);
                 }
             }
-            if (this._filterPaintOnMove) {
-                var now = Date.now();
-                if (now - this._now > 40) {
-                    this._now = now;
-                    PhaserEditor2D.Editor.getInstance().repaint();
-                }
-            }
-            else {
+            if (this._paintDelayUtil.shouldPaintThisTime()) {
                 PhaserEditor2D.Editor.getInstance().repaint();
             }
         };

@@ -10,8 +10,7 @@ namespace PhaserEditor2D {
         private _gridGraphics: Phaser.GameObjects.Graphics;
         private _paintCallsLabel: Phaser.GameObjects.Text;
         private _tools: InteractiveTool[];
-        private _delayPaintOnMove: boolean;
-        private _now: integer;
+        private _paintDelayUtils: PaintDelayUtil;
 
         constructor() {
             super("ToolScene");
@@ -19,7 +18,7 @@ namespace PhaserEditor2D {
             this._selectedObjects = [];
             this._selectionGraphics = null;
             this._tools = [];
-            this._delayPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
+            this._paintDelayUtils = new PaintDelayUtil();
         }
 
         create() {
@@ -331,9 +330,7 @@ namespace PhaserEditor2D {
         }
 
         onToolsMouseDown() {
-            if (this._delayPaintOnMove) {
-                this._now = Date.now();
-            }
+            this._paintDelayUtils.startPaintLoop();
 
             for (let tool of this._tools) {
                 tool.onMouseDown();
@@ -347,13 +344,7 @@ namespace PhaserEditor2D {
                 tool.onMouseMove();
             }
 
-            if (this._delayPaintOnMove) {
-                const now = Date.now();
-                if (now - this._now > 40) {
-                    this._now = now;
-                    this.testRepaint();
-                }
-            } else {
+            if (this._paintDelayUtils.shouldPaintThisTime()) {
                 this.testRepaint();
             }
         }
@@ -374,6 +365,9 @@ namespace PhaserEditor2D {
             if (!isLeftButton(e)) {
                 return;
             }
+
+            this._paintDelayUtils.startPaintLoop();
+
             const pointer = this.input.activePointer;
             this._selectionDragStart = new Phaser.Math.Vector2(pointer.x, pointer.y);
             this._selectionDragEnd = this._selectionDragStart.clone();
@@ -381,12 +375,16 @@ namespace PhaserEditor2D {
 
         onSelectionDragMouseMove(e: MouseEvent): boolean {
             if (this._selectionDragStart) {
+
                 const pointer = this.input.activePointer;
                 this._selectionDragEnd.set(pointer.x, pointer.y);
-                return true;
+
+                return this._paintDelayUtils.shouldPaintThisTime();
             }
+
             return false;
         }
+
 
         selectionDragClear() {
             this._selectionDragStart = null;

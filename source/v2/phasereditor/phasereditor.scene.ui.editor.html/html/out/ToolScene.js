@@ -1,7 +1,10 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -28,7 +31,7 @@ var PhaserEditor2D;
             _this._selectedObjects = [];
             _this._selectionGraphics = null;
             _this._tools = [];
-            _this._delayPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
+            _this._paintDelayUtils = new PhaserEditor2D.PaintDelayUtil();
             return _this;
         }
         ToolScene.prototype.create = function () {
@@ -254,9 +257,7 @@ var PhaserEditor2D;
             }
         };
         ToolScene.prototype.onToolsMouseDown = function () {
-            if (this._delayPaintOnMove) {
-                this._now = Date.now();
-            }
+            this._paintDelayUtils.startPaintLoop();
             for (var _i = 0, _a = this._tools; _i < _a.length; _i++) {
                 var tool = _a[_i];
                 tool.onMouseDown();
@@ -268,14 +269,7 @@ var PhaserEditor2D;
                 var tool = _a[_i];
                 tool.onMouseMove();
             }
-            if (this._delayPaintOnMove) {
-                var now = Date.now();
-                if (now - this._now > 40) {
-                    this._now = now;
-                    this.testRepaint();
-                }
-            }
-            else {
+            if (this._paintDelayUtils.shouldPaintThisTime()) {
                 this.testRepaint();
             }
         };
@@ -290,6 +284,7 @@ var PhaserEditor2D;
             if (!PhaserEditor2D.isLeftButton(e)) {
                 return;
             }
+            this._paintDelayUtils.startPaintLoop();
             var pointer = this.input.activePointer;
             this._selectionDragStart = new Phaser.Math.Vector2(pointer.x, pointer.y);
             this._selectionDragEnd = this._selectionDragStart.clone();
@@ -298,7 +293,7 @@ var PhaserEditor2D;
             if (this._selectionDragStart) {
                 var pointer = this.input.activePointer;
                 this._selectionDragEnd.set(pointer.x, pointer.y);
-                return true;
+                return this._paintDelayUtils.shouldPaintThisTime();
             }
             return false;
         };

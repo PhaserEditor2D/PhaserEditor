@@ -750,4 +750,32 @@ namespace PhaserEditor2D {
             }
         }
     }
+
+    export class PaintDelayUtil {
+        
+        private _delayPaint: boolean;
+        private _now: number;
+
+        constructor() {
+            this._delayPaint = Editor.getInstance().isChromiumWebview();
+        }
+
+        startPaintLoop() {
+            if (this._delayPaint) {
+                this._now = Date.now();
+            }
+        }
+
+        shouldPaintThisTime() : boolean {
+            if (this._delayPaint) {
+                const now = Date.now();
+                if (now - this._now > 40) {
+                    this._now = now;
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+    }
 }

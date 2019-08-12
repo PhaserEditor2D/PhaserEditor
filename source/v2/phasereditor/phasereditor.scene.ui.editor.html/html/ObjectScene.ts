@@ -239,13 +239,13 @@ namespace PhaserEditor2D {
         private _startPoint: Phaser.Math.Vector2;
         private _dragging: boolean;
         private _now: integer;
-        private _filterPaintOnMove: boolean;
+        private _paintDelayUtil: PaintDelayUtil;
 
         constructor() {
             this._startPoint = null;
             this._dragging = false;
             this._now = 0;
-            this._filterPaintOnMove = PhaserEditor2D.Editor.getInstance().isChromiumWebview();
+            this._paintDelayUtil = new PaintDelayUtil();
         }
 
         private getScene() {
@@ -273,9 +273,7 @@ namespace PhaserEditor2D {
                 return false;
             }
 
-            if (this._filterPaintOnMove) {
-                this._now = Date.now();
-            }
+            this._paintDelayUtil.startPaintLoop();
 
             this._startPoint = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
 
@@ -327,16 +325,9 @@ namespace PhaserEditor2D {
                 }
             }
 
-            if (this._filterPaintOnMove) {
-                const now = Date.now();
-                if (now - this._now > 40) {
-                    this._now = now;
-                    Editor.getInstance().repaint();
-                }
-            } else {
+            if (this._paintDelayUtil.shouldPaintThisTime()) {
                 Editor.getInstance().repaint();
             }
-
         }
 
         onMouseUp() {

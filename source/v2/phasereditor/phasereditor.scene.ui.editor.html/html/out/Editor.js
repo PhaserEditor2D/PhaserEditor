@@ -589,4 +589,27 @@ var PhaserEditor2D;
         return Editor;
     }());
     PhaserEditor2D.Editor = Editor;
+    var PaintDelayUtil = (function () {
+        function PaintDelayUtil() {
+            this._delayPaint = Editor.getInstance().isChromiumWebview();
+        }
+        PaintDelayUtil.prototype.startPaintLoop = function () {
+            if (this._delayPaint) {
+                this._now = Date.now();
+            }
+        };
+        PaintDelayUtil.prototype.shouldPaintThisTime = function () {
+            if (this._delayPaint) {
+                var now = Date.now();
+                if (now - this._now > 40) {
+                    this._now = now;
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        };
+        return PaintDelayUtil;
+    }());
+    PhaserEditor2D.PaintDelayUtil = PaintDelayUtil;
 })(PhaserEditor2D || (PhaserEditor2D = {}));
