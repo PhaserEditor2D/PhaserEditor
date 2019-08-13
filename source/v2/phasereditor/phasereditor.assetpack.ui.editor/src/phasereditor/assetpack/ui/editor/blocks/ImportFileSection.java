@@ -141,7 +141,6 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 					var btn = new Button(comp, SWT.PUSH);
 					 btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
 					btn.setText("Import " + getModels().size() + " files...");
-					btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 					btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 						var dlg = new AssetTypeDialog(_blocksView.getSite());
 						if (dlg.open() == Window.OK) {
@@ -160,7 +159,7 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 	}
 
 	private Button createImportButton(Composite comp, AssetFactory factory, List<IFile> files) {
-		var btn = new Button(comp, SWT.NONE);
+		var btn = new Button(comp, SWT.PUSH);
 		btn.setImage(EditorSharedImages.getImage(IMG_BOX_IMPORT));
 		btn.setText("Import " + files.size() + " '" + factory.getType() + "' files");
 		var sb = new StringBuilder();
