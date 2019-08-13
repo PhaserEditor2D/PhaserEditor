@@ -99,7 +99,7 @@ public class GridCellRenderer implements ICanvasCellRenderer {
 			frameCount = _maxCount;
 		}
 
-		var size = (int) (Math.sqrt(width * height / frameCount) * 0.9);
+		var size = (int) (Math.sqrt(width * height / frameCount) * 0.9) + 1;
 
 		var cols = width / size;
 		var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
