@@ -107,7 +107,7 @@ Resource filters
 
 When you create a project, it automatically configures two resource filters to exclude ``node_modules`` and ``.git`` folders.
 
-It is important to exclude from the project all the files that are not related directly to the game. |PhaserEditor|_ performs intensive resource analysis to compute its internal model, detect content types, make the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in another project---actually, you can consider other IDE, like |vscode|_.
+It is important to exclude from the project all the files that are not related directly to the game. |PhaserEditor|_ performs intensive resource analysis to compute its internal model, detects content types, makes the thumbnails and other operations. If your project has hundreds of little files (like may happens in NodeJS modules), the build process could slow down the IDE. We recommend to create your Phaser game content in a project, and the server side or other related software in another project ---actually, you can consider other IDE, like |vscode|_.
 
 If you include source repositories it may be worst because files could be duplicated and it will create a mess in the internal model. The best practice is to store the projects inside the repositories, not the repositories inside the projects (or just add a resource filter to exclude it).
 
