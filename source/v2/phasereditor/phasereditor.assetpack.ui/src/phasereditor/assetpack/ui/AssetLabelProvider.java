@@ -21,13 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import static phasereditor.ui.PhaserEditorUI.getWorkbenchLabelProvider;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AbstractFileAssetModel;
 import phasereditor.assetpack.core.AnimationsAssetModel;
@@ -55,10 +56,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 	public final static AssetLabelProvider GLOBAL_16 = new AssetLabelProvider();
 
-	private WorkbenchLabelProvider _workbenchLabelProvider;
-
 	protected AssetLabelProvider() {
-		_workbenchLabelProvider = new WorkbenchLabelProvider();
 	}
 
 	public static Image getFileImage() {
@@ -88,7 +86,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		if (element instanceof IResource) {
-			return _workbenchLabelProvider.getImage(element);
+			return getWorkbenchLabelProvider().getImage(element);
 		}
 
 		if (element instanceof MultiScriptAssetModel) {
@@ -98,14 +96,14 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof ScriptAssetModel || element instanceof CssAssetModel) {
 			IFile file = ((AbstractFileAssetModel) element).getUrlFile();
 			if (file != null) {
-				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(file);
+				return getWorkbenchLabelProvider().getImage(file);
 			}
 		}
 
 		if (element instanceof SceneFileAssetModel) {
 			IFile file = ((SceneFileAssetModel) element).getUrlFile();
 			if (file != null) {
-				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(file);
+				return getWorkbenchLabelProvider().getImage(file);
 			}
 		}
 
@@ -191,7 +189,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	@Override
 	public String getText(Object element) {
 		if (element instanceof IResource) {
-			return _workbenchLabelProvider.getText(element);
+			return getWorkbenchLabelProvider().getText(element);
 		}
 
 		if (element instanceof AssetSectionModel) {

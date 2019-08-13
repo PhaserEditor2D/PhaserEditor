@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui;
 
+import static phasereditor.ui.PhaserEditorUI.getWorkbenchLabelProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.ui.BaseTreeCanvasItemRenderer;
 import phasereditor.ui.TreeCanvas;
@@ -47,8 +48,7 @@ public class ProjectTreeViewer extends TreeCanvasViewer {
 	}
 
 	public ProjectTreeViewer(TreeCanvas tree, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
-		super(tree, contentProvider, labelProvider instanceof WorkbenchLabelProvider ? labelProvider
-				: new CompoundLabelProvider(labelProvider));
+		super(tree, contentProvider, new CompoundLabelProvider(labelProvider));
 
 		_renderProviders = new ArrayList<>();
 		var elems = Platform.getExtensionRegistry().getConfigurationElementsFor("phasereditor.project.ui.fileRenderer");
@@ -72,15 +72,17 @@ public class ProjectTreeViewer extends TreeCanvasViewer {
 		@Override
 		public String getText(Object element) {
 			if (element instanceof IResource) {
-				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getText(element);
+				return getWorkbenchLabelProvider().getText(element);
 			}
 			return _base.getText(element);
 		}
-
+		
+		
 		@Override
 		public Image getImage(Object element) {
 			if (element instanceof IResource) {
-				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(element);
+				var image = getWorkbenchLabelProvider().getImage(element);
+				return image;
 			}
 			return _base.getImage(element);
 		}

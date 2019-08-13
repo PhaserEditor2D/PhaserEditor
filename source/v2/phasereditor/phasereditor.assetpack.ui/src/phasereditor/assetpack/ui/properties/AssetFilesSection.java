@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.properties;
 
 import static java.util.stream.Collectors.toList;
+import static phasereditor.ui.PhaserEditorUI.getWorkbenchLabelProvider;
 
 import java.util.Arrays;
 
@@ -32,7 +33,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.ui.properties.FormPropertySection;
@@ -66,7 +66,7 @@ public class AssetFilesSection extends FormPropertySection<AssetModel> {
 		table.setLayoutData(gd);
 
 		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
+		viewer.setLabelProvider(getWorkbenchLabelProvider());
 
 		addUpdate(() -> {
 			var files = getModels().stream().flatMap(model -> Arrays.stream(model.computeUsedFiles()))

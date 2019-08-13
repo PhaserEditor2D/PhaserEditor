@@ -79,6 +79,7 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -125,6 +126,7 @@ import org.eclipse.ui.internal.ide.IDEInternalPreferences;
 import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.internal.misc.StringMatcher;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -190,15 +192,16 @@ public class PhaserEditorUI {
 
 	private PhaserEditorUI() {
 	}
-	
+
 	public static final String[] IMAGE_EXTS = { "png", "jpg", "jpeg", "gif", "bmp" };
-	
+
 	private static final Set<String> _imageExtensions = Set.of(IMAGE_EXTS);
 
 	public static boolean isImage(IResource resource) {
-		return resource != null && resource instanceof IFile && resource.getFileExtension() != null && _imageExtensions.contains(resource.getFileExtension());
+		return resource != null && resource instanceof IFile && resource.getFileExtension() != null
+				&& _imageExtensions.contains(resource.getFileExtension());
 	}
-	
+
 	public static IWorkbenchWindow getWorkbenchWindow(Control control) {
 		var shell = control.getShell();
 		var windows = PlatformUI.getWorkbench().getWorkbenchWindows();
@@ -334,9 +337,10 @@ public class PhaserEditorUI {
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR));
 			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(rgb);
 		}
-		
+
 		{
-			_PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES = getPreferenceStore().getInt(PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES);
+			_PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES = getPreferenceStore()
+					.getInt(PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES);
 		}
 
 		{
@@ -391,7 +395,7 @@ public class PhaserEditorUI {
 				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SwtRM.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES:
-				_PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES= getPreferenceStore()
+				_PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES = getPreferenceStore()
 						.getInt(PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES);
 				break;
 
@@ -507,7 +511,7 @@ public class PhaserEditorUI {
 	public static Color get_pref_Preview_Spritesheet_labelsColor() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
 	}
-	
+
 	public static int get_pref_Preview_Spritesheet_maxFrames() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_MAX_FRAMES;
 	}
@@ -647,7 +651,7 @@ public class PhaserEditorUI {
 		}
 		for (IFile file : files) {
 			String ext = file.getFileExtension();
-			ext = ext == null? "" : ext.toLowerCase();
+			ext = ext == null ? "" : ext.toLowerCase();
 			if (!set.contains(ext)) {
 				return file;
 			}
@@ -1756,5 +1760,15 @@ public class PhaserEditorUI {
 		try (var os = Files.newOutputStream(writeTo)) {
 			loader.save(os, SWT.IMAGE_PNG);
 		}
+	}
+
+	private static LabelProvider _workbenchLabelProvider;
+
+	public static LabelProvider getWorkbenchLabelProvider() {
+		if (_workbenchLabelProvider == null) {
+//			_workbenchLabelProvider = (LabelProvider) WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider();
+			_workbenchLabelProvider = new WorkbenchLabelProvider();
+		}
+		return _workbenchLabelProvider;
 	}
 }

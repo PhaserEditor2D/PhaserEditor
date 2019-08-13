@@ -1,5 +1,6 @@
 package phasereditor.project.ui.wizards;
 
+import static phasereditor.ui.PhaserEditorUI.getWorkbenchLabelProvider;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import org.eclipse.core.resources.IProject;
@@ -11,7 +12,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.project.ui.ProjectUI;
 import phasereditor.ui.TreeArrayContentProvider;
@@ -37,7 +37,7 @@ public class OpenProjectDialog extends Dialog {
 				new PatternFilter(), true);
 		_viewer = _filteredTree.getViewer();
 		_viewer.setContentProvider(new TreeArrayContentProvider());
-		_viewer.setLabelProvider(WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider());
+		_viewer.setLabelProvider(getWorkbenchLabelProvider());
 		_viewer.setInput(ProjectUI.getWorkspaceProjects_Sorted());
 
 		_viewer.addDoubleClickListener(e -> {
