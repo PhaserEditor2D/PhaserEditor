@@ -4,36 +4,198 @@
    :depth: 3
    :start: 4
 
+.. highlight:: javascript
+
 Asset Pack Editor
 =================
 
-In a Phaser_ game you load the files using any of the `Phaser.Loader`_ methods. Many of these methods require additional information to describe the format of the file:
-
-```
-this.load.spritesheet({
-    key: "player.png",
-    width: 16,
-    height: 16
-});
-
-```
-
-There is a especial method, the `load.pack()`_ that allows to load the description of the files from a JSON file: the **Asset Pack File**. 
-
-|PhaserEditor|_ provides an editor for the Asset Pack files, making it very easy to load the assets of your game. Instead of spent a precious amount of time writing the ..
+In a Phaser_ game you load the files using the methods of the `Phaser.Loader.LoaderPlugin <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html>`_ class. This is how you can `load a sprite-sheet <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#spritesheet__anchor>`_ file:
 
 
+.. code::
 
+    this.load.spritesheet('bot', 'images/robot.png', { frameWidth: 32, frameHeight: 38 });
+
+You pass a key (``'bot'``) to identify the file in the `game cache <https://photonstorm.github.io/phaser3-docs/Phaser.Cache.CacheManager.html>`_, the URL of the file (``'images/robot.png'``) and a sprite-sheet configuration object, with other information like the frame size.
+
+Or you can load the file by passing a single argument, a `SpriteSheetFileConfig <https://photonstorm.github.io/phaser3-docs/Phaser.Types.Loader.FileTypes.html#.SpriteSheetFileConfig__anchor>`_ configuration object:
+
+.. code::
+
+    this.load.spritesheet({
+        key: 'bot',
+        url: 'images/robot.png',
+        frameConfig: {
+            frameWidth: 32,
+            frameHeight: 38
+        }
+    });
+
+
+Every file type can be loaded using its configuration object, that is just a JSON object. Following this logic, Phaser_ has a especial type of files that contains the configurations of other files, it is the `Asset Pack File <https://photonstorm.github.io/phaser3-docs/Phaser.Types.Loader.FileTypes.html#Phaser.Loader.LoaderPlugin.html#pack__anchor>`_.
+
+
+The **Asset Pack** files are loaded this way:
+
+.. code::
+
+    this.load.pack("assets/pack.json");
+
+
+|PhaserEditor|_ provides an editor for the **Asset Pack** files, making it very easy to load the assets in your game. Instead of spent a precious amount of time writing the file configurations, with the **Asset Pack Editor** you can import the files with a visual tool and semi-automatic wizards.
+
+.. image:: images/asset-pack-editor/asset-pack-editor.png
+  :alt: Asset Pack Editor.
+
+
+Relevance of the Asset Pack File
+--------------------------------
+
+The **Asset Pack File** is relevant for two main reason:
+
+* It is a Phaser_ built-in format. This means, you can create **Asset Pack** files with |PhaserEditor|_ and use them in any Phaser_ project, inside or outside |PhaserEditor|_. 
+* In the same way Phaser_ uses keys to represent the real files, many |PhaserEditor|_ tools use the files configured in the **Asset Pack** file as resource references. For example, a sprite object in the |SceneEditor|_ does not have a reference to a real image, else it uses a file key that, at rendering time, is used to find the real image under that key in any of the **Asset Pack** files of the project.
 
 Create a new Asset Pack file
 ----------------------------
 
-Add file keys
--------------
+The default project created by the `Project wizard <workbench.html#phaser-project-wizard>`_ contains a pack file, however, you may want to create other pack files with different purpose.
 
-Refactoring: rename and remove file keys
-----------------------------------------
+To create a new **Asset Pack** file: 
+
+* Click on *File* |-| *New* |-| *Asset Pack File*.
+* Or click on the main toolbar's `New <workbench.html#new-button>`_ button, and select **Asset Pack File**.
+
+
+Adding file configurations
+--------------------------
+
+You can add new file configurations in two ways:
+
+* By pressing the **Add File Key** in the main toolbar.
+
+* By importing files from the Blocks view.
+
+Adding files with the Add File Key button
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These are the steps:
+
+#. Press the **Add File Key** button of the toolbar.
+    
+    .. image:: images/asset-pack-editor/add-new-file-button.png
+      :alt: Add New File Key button.
+
+#. It opens a dialog with all the file types, select the type of file you want to add.
+
+    .. image:: images/asset-pack-editor/select-file-type-dialog.png
+      :alt: Select the file type.
+
+#. When you select a file type, it opens a dialog with a list of files selected following following rules. Select the files you want to import.
+
+    * The files belongs to the folder, or sub-folder, of the Pack File. It is not a restriction of the Pack Files, but we use it to simplify the process of import the files.    
+
+    * The content type or extension of the files are compatible with the type selected. For example, if you select to add an Image, then only image files are shown.
+
+    * Files that are not used by any pack file in the project are highlighted (in bold).
+
+
+    .. image:: images/asset-pack-editor/select-files-to-import-dialog.png
+      :alt: Files dialog.
+
+#. Change the properties of the file configurations in the `Properties view <workbench.html#properties-view>`_.
+
+
+    .. image:: images/asset-pack-editor/file-edit-properties.png
+      :alt: Edit properties of a file configuration.
+
+Importing files from the Blocks view
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `Blocks view <workbench.html#blocks-view>`_ is a general purpose view that connects with the active editor and provides the "blocks" needed to build the objects of the editor.
+
+In the case of the **Asset Pack Editor**, the `Blocks view`_ shows the files that are candidates to be imported. A file is candidate to be imported if:
+
+* The file belongs to the folder, or sub-folder, of the Asset Pack file of the editor.
+
+* The file is not present in any other pack file of the project.
+
+* If the file has a content type or file name extension that we know is never loaded in games: 
+
+    * TypeScript files (``.ts``).
+
+    * |TexturePackerEditor|_ files (``.atlas``).
+
+    * |SceneEditor|_ files (``.scene``).
+
+    * Other **Asset Pack** files.
+
+The workflow is the following:
+
+#. Select the files to be imported in the `Blocks view`_.
+
+#. Select one of the options listed in the `Properties view`_ to import the files.
+
+    .. image:: images/asset-pack-editor/import-files-from-blocks-view.png
+      :alt: Import files from Blocks view.
+
+#. Edit the new file configurations in the `Properties view`_.
+
+This is a shorter workflow, you select the files you want to import and the editor guess automatically what type of configuration needs to be created.
+
+This process to guess the type of the files provides three group of options:
+
+#. Guess the type of the file from its content type. It is the case of atlas files, animations files, bitmap files, tilemap files, image and audio files, JavaScript files associated to scenes, audio-sprites files.
+
+#. Guess the type of the file just by its extension. For example, ``.json`` and ``.xml``.
+
+#. The last option is not associated to any file type, it opens a dialog with all the file types and you should select the type you consider is the indicated from the selected files.
+
+.. image:: images/asset-pack-editor/import-files-from-blocks-view-options.png
+  :alt: The different options to import the files.
+
+Importing JavaScript files
+--------------------------
+
+In the JavaScript development world there are multiple ways to load the script files. The common is to load them using ``<script>`` tags in the ``index.html`` file. There are frameworks that allow loading script files at any time, via code. Phaser_ provides different ways to load the scripts, each one with its own purpose:
+
+* `this.load.script(...) <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#script__anchor>`_: it load and execute the provided script files.
+
+* `this.load.scripts(...) <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#scripts__anchor>`_: it loads a list of script files and execute them in the same order. Note in the ``script()`` method the files may be executed in a random order.
+
+* `this.load.scenePlugin(...) <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#scenePlugin__anchor>`_: it loads the script files and execute them, but assume them create new `Phaser.Scenes.ScenePlugin <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#Phaser.Scenes.ScenePlugin.html>`_ instances.
+
+* `this.load.sceneFile(...) <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#sceneFile__anchor>`_: it loads the script files and execute them, but assume them create `Phaser.Scene <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#Phaser.Scene.html>`_ instances.
+
+So the same Phaser_ framework can be used as a JavaScript packing/loading tool, and it has some clear advantages:
+
+* You don't need a third party tool to control the scripts loading.
+
+* You can report loading progress of the script files just like you do with the other assets.
+
+* The scripts can be added to the **Asset Pack** files using the |PhaserEditor|_ toolset.
+
+By the way, when you add a JavaScript file to a **Asset Pack** file, and that script is associated with a |SceneEditor|_ file (``.scene``), then the **Asset Pack Editor** shows a screenshot of the scene, as file icon, for easy identification.
+
+.. image:: images/asset-pack-editor/asset-pack-scene-scripts.png
+  :alt: Scene JavaScript files are displayed with a scene screenshot.
+
+
+Organizing the Asset Pack files
+-------------------------------
+
+Common operations
+-----------------
+
+Undo/Redo
+
+Rename, delete.
+
+
+
 
 
 Asset Pack state of the project
 -------------------------------
+
+Talk here about the Assets view.

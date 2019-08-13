@@ -13,11 +13,13 @@
         "spritesheets",
         "theming",
         "toctree",
+        "toolset",
         "webview",
         "workspaces",
         "zoomable"
     ],
-    "editor.wordWrap": "on",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
     "files.exclude": {
         "**/_build": true,
         "**/_static": true,

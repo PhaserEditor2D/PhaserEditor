@@ -31,3 +31,6 @@
 
 .. |AnimationsEditor| replace:: Animations Editor
 .. _AnimationsEditor: animations-editor.html
+
+.. |TexturePackerEditor| replace:: Texture Packer Editor
+.. _TexturePackerEditor: texture-packer-editor.html

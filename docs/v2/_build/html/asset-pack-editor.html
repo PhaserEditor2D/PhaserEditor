@@ -113,10 +113,17 @@
 <li class="toctree-l1"><a class="reference internal" href="workbench.html">2&nbsp;&nbsp;&nbsp;Workbench</a></li>
 <li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">3&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">4&nbsp;&nbsp;&nbsp;Asset Pack Editor</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#create-a-new-asset-pack-file">4.1&nbsp;&nbsp;&nbsp;Create a new Asset Pack file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#add-file-keys">4.2&nbsp;&nbsp;&nbsp;Add file keys</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#refactoring-rename-and-remove-file-keys">4.3&nbsp;&nbsp;&nbsp;Refactoring: rename and remove file keys</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#asset-pack-state-of-the-project">4.4&nbsp;&nbsp;&nbsp;Asset Pack state of the project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#relevance-of-the-asset-pack-file">4.1&nbsp;&nbsp;&nbsp;Relevance of the Asset Pack File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-new-asset-pack-file">4.2&nbsp;&nbsp;&nbsp;Create a new Asset Pack file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-file-configurations">4.3&nbsp;&nbsp;&nbsp;Adding file configurations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-files-with-the-add-file-key-button">4.3.1&nbsp;&nbsp;&nbsp;Adding files with the Add File Key button</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importing-files-from-the-blocks-view">4.3.2&nbsp;&nbsp;&nbsp;Importing files from the Blocks view</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#importing-javascript-files">4.4&nbsp;&nbsp;&nbsp;Importing JavaScript files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#organizing-the-asset-pack-files">4.5&nbsp;&nbsp;&nbsp;Organizing the Asset Pack files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-operations">4.6&nbsp;&nbsp;&nbsp;Common operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asset-pack-state-of-the-project">4.7&nbsp;&nbsp;&nbsp;Asset Pack state of the project</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="animations-editor.html">5&nbsp;&nbsp;&nbsp;Animations Editor</a></li>
@@ -187,28 +194,155 @@
             
   <div class="section" id="asset-pack-editor">
 <h1>4&nbsp;&nbsp;&nbsp;Asset Pack Editor<a class="headerlink" href="#asset-pack-editor" title="Permalink to this headline">¶</a></h1>
-<p>In a <a class="reference external" href="https://phaser.io">Phaser</a> game you load the files using any of the <a href="#id7"><span class="problematic" id="id8">`Phaser.Loader`_</span></a> methods. Many of these methods require additional information to describe the format of the file:</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-this.load.spritesheet({</p>
-<blockquote>
-<div>key: “player.png”,
-width: 16,
-height: 16</div></blockquote>
-<p>});</p>
-<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
-<p>There is a especial method, the <a href="#id9"><span class="problematic" id="id10">`load.pack()`_</span></a> that allows to load the description of the files from a JSON file: the <strong>Asset Pack File</strong>.</p>
-<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides an editor for the Asset Pack files, making it very easy to load the assets of your game. Instead of spent a precious amount of time writing the ..</p>
+<p>In a <a class="reference external" href="https://phaser.io">Phaser</a> game you load the files using the methods of the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html">Phaser.Loader.LoaderPlugin</a> class. This is how you can <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#spritesheet__anchor">load a sprite-sheet</a> file:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">&#39;bot&#39;</span><span class="p">,</span> <span class="s1">&#39;images/robot.png&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">frameWidth</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span> <span class="nx">frameHeight</span><span class="o">:</span> <span class="mi">38</span> <span class="p">});</span>
+</pre></div>
+</div>
+<p>You pass a key (<code class="docutils literal notranslate"><span class="pre">'bot'</span></code>) to identify the file in the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Cache.CacheManager.html">game cache</a>, the URL of the file (<code class="docutils literal notranslate"><span class="pre">'images/robot.png'</span></code>) and a sprite-sheet configuration object, with other information like the frame size.</p>
+<p>Or you can load the file by passing a single argument, a <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Types.Loader.FileTypes.html#.SpriteSheetFileConfig__anchor">SpriteSheetFileConfig</a> configuration object:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">({</span>
+    <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;bot&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;images/robot.png&#39;</span><span class="p">,</span>
+    <span class="nx">frameConfig</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">frameWidth</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="nx">frameHeight</span><span class="o">:</span> <span class="mi">38</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Every file type can be loaded using its configuration object, that is just a JSON object. Following this logic, <a class="reference external" href="https://phaser.io">Phaser</a> has a especial type of files that contains the configurations of other files, it is the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Types.Loader.FileTypes.html#Phaser.Loader.LoaderPlugin.html#pack__anchor">Asset Pack File</a>.</p>
+<p>The <strong>Asset Pack</strong> files are loaded this way:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s2">&quot;assets/pack.json&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides an editor for the <strong>Asset Pack</strong> files, making it very easy to load the assets in your game. Instead of spent a precious amount of time writing the file configurations, with the <strong>Asset Pack Editor</strong> you can import the files with a visual tool and semi-automatic wizards.</p>
+<img alt="Asset Pack Editor." src="_images/asset-pack-editor.png" />
+<div class="section" id="relevance-of-the-asset-pack-file">
+<h2>4.1&nbsp;&nbsp;&nbsp;Relevance of the Asset Pack File<a class="headerlink" href="#relevance-of-the-asset-pack-file" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Asset Pack File</strong> is relevant for two main reason:</p>
+<ul class="simple">
+<li>It is a <a class="reference external" href="https://phaser.io">Phaser</a> built-in format. This means, you can create <strong>Asset Pack</strong> files with <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> and use them in any <a class="reference external" href="https://phaser.io">Phaser</a> project, inside or outside <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>.</li>
+<li>In the same way <a class="reference external" href="https://phaser.io">Phaser</a> uses keys to represent the real files, many <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> tools use the files configured in the <strong>Asset Pack</strong> file as resource references. For example, a sprite object in the <a class="reference external" href="scene-editor.html">Scene Editor</a> does not have a reference to a real image, else it uses a file key that, at rendering time, is used to find the real image under that key in any of the <strong>Asset Pack</strong> files of the project.</li>
+</ul>
+</div>
 <div class="section" id="create-a-new-asset-pack-file">
-<h2>4.1&nbsp;&nbsp;&nbsp;Create a new Asset Pack file<a class="headerlink" href="#create-a-new-asset-pack-file" title="Permalink to this headline">¶</a></h2>
+<h2>4.2&nbsp;&nbsp;&nbsp;Create a new Asset Pack file<a class="headerlink" href="#create-a-new-asset-pack-file" title="Permalink to this headline">¶</a></h2>
+<p>The default project created by the <a class="reference external" href="workbench.html#phaser-project-wizard">Project wizard</a> contains a pack file, however, you may want to create other pack files with different purpose.</p>
+<p>To create a new <strong>Asset Pack</strong> file:</p>
+<ul class="simple">
+<li>Click on <em>File</em> → <em>New</em> → <em>Asset Pack File</em>.</li>
+<li>Or click on the main toolbar’s <a class="reference external" href="workbench.html#new-button">New</a> button, and select <strong>Asset Pack File</strong>.</li>
+</ul>
 </div>
-<div class="section" id="add-file-keys">
-<h2>4.2&nbsp;&nbsp;&nbsp;Add file keys<a class="headerlink" href="#add-file-keys" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adding-file-configurations">
+<h2>4.3&nbsp;&nbsp;&nbsp;Adding file configurations<a class="headerlink" href="#adding-file-configurations" title="Permalink to this headline">¶</a></h2>
+<p>You can add new file configurations in two ways:</p>
+<ul class="simple">
+<li>By pressing the <strong>Add File Key</strong> in the main toolbar.</li>
+<li>By importing files from the Blocks view.</li>
+</ul>
+<div class="section" id="adding-files-with-the-add-file-key-button">
+<h3>4.3.1&nbsp;&nbsp;&nbsp;Adding files with the Add File Key button<a class="headerlink" href="#adding-files-with-the-add-file-key-button" title="Permalink to this headline">¶</a></h3>
+<p>These are the steps:</p>
+<ol class="arabic">
+<li><p class="first">Press the <strong>Add File Key</strong> button of the toolbar.</p>
+<blockquote>
+<div><img alt="Add New File Key button." src="_images/add-new-file-button.png" />
+</div></blockquote>
+</li>
+<li><p class="first">It opens a dialog with all the file types, select the type of file you want to add.</p>
+<blockquote>
+<div><img alt="Select the file type." src="_images/select-file-type-dialog.png" />
+</div></blockquote>
+</li>
+<li><p class="first">When you select a file type, it opens a dialog with a list of files selected following following rules. Select the files you want to import.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The files belongs to the folder, or sub-folder, of the Pack File. It is not a restriction of the Pack Files, but we use it to simplify the process of import the files.</li>
+<li>The content type or extension of the files are compatible with the type selected. For example, if you select to add an Image, then only image files are shown.</li>
+<li>Files that are not used by any pack file in the project are highlighted (in bold).</li>
+</ul>
+<img alt="Files dialog." src="_images/select-files-to-import-dialog.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Change the properties of the file configurations in the <a class="reference external" href="workbench.html#properties-view">Properties view</a>.</p>
+<blockquote>
+<div><img alt="Edit properties of a file configuration." src="_images/file-edit-properties.png" />
+</div></blockquote>
+</li>
+</ol>
 </div>
-<div class="section" id="refactoring-rename-and-remove-file-keys">
-<h2>4.3&nbsp;&nbsp;&nbsp;Refactoring: rename and remove file keys<a class="headerlink" href="#refactoring-rename-and-remove-file-keys" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="importing-files-from-the-blocks-view">
+<h3>4.3.2&nbsp;&nbsp;&nbsp;Importing files from the Blocks view<a class="headerlink" href="#importing-files-from-the-blocks-view" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="workbench.html#blocks-view">Blocks view</a> is a general purpose view that connects with the active editor and provides the “blocks” needed to build the objects of the editor.</p>
+<p>In the case of the <strong>Asset Pack Editor</strong>, the <a class="reference external" href="workbench.html#blocks-view">Blocks view</a> shows the files that are candidates to be imported. A file is candidate to be imported if:</p>
+<ul>
+<li><p class="first">The file belongs to the folder, or sub-folder, of the Asset Pack file of the editor.</p>
+</li>
+<li><p class="first">The file is not present in any other pack file of the project.</p>
+</li>
+<li><p class="first">If the file has a content type or file name extension that we know is never loaded in games:</p>
+<blockquote>
+<div><ul class="simple">
+<li>TypeScript files (<code class="docutils literal notranslate"><span class="pre">.ts</span></code>).</li>
+<li><a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a> files (<code class="docutils literal notranslate"><span class="pre">.atlas</span></code>).</li>
+<li><a class="reference external" href="scene-editor.html">Scene Editor</a> files (<code class="docutils literal notranslate"><span class="pre">.scene</span></code>).</li>
+<li>Other <strong>Asset Pack</strong> files.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>The workflow is the following:</p>
+<ol class="arabic">
+<li><p class="first">Select the files to be imported in the <a class="reference external" href="workbench.html#blocks-view">Blocks view</a>.</p>
+</li>
+<li><p class="first">Select one of the options listed in the <a class="reference external" href="workbench.html#properties-view">Properties view</a> to import the files.</p>
+<blockquote>
+<div><img alt="Import files from Blocks view." src="_images/import-files-from-blocks-view.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Edit the new file configurations in the <a class="reference external" href="workbench.html#properties-view">Properties view</a>.</p>
+</li>
+</ol>
+<p>This is a shorter workflow, you select the files you want to import and the editor guess automatically what type of configuration needs to be created.</p>
+<p>This process to guess the type of the files provides three group of options:</p>
+<ol class="arabic simple">
+<li>Guess the type of the file from its content type. It is the case of atlas files, animations files, bitmap files, tilemap files, image and audio files, JavaScript files associated to scenes, audio-sprites files.</li>
+<li>Guess the type of the file just by its extension. For example, <code class="docutils literal notranslate"><span class="pre">.json</span></code> and <code class="docutils literal notranslate"><span class="pre">.xml</span></code>.</li>
+<li>The last option is not associated to any file type, it opens a dialog with all the file types and you should select the type you consider is the indicated from the selected files.</li>
+</ol>
+<img alt="The different options to import the files." src="_images/import-files-from-blocks-view-options.png" />
+</div>
+</div>
+<div class="section" id="importing-javascript-files">
+<h2>4.4&nbsp;&nbsp;&nbsp;Importing JavaScript files<a class="headerlink" href="#importing-javascript-files" title="Permalink to this headline">¶</a></h2>
+<p>In the JavaScript development world there are multiple ways to load the script files. The common is to load them using <code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> tags in the <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file. There are frameworks that allow loading script files at any time, via code. <a class="reference external" href="https://phaser.io">Phaser</a> provides different ways to load the scripts, each one with its own purpose:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#script__anchor">this.load.script(…)</a>: it load and execute the provided script files.</li>
+<li><a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#scripts__anchor">this.load.scripts(…)</a>: it loads a list of script files and execute them in the same order. Note in the <code class="docutils literal notranslate"><span class="pre">script()</span></code> method the files may be executed in a random order.</li>
+<li><a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#scenePlugin__anchor">this.load.scenePlugin(…)</a>: it loads the script files and execute them, but assume them create new <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#Phaser.Scenes.ScenePlugin.html">Phaser.Scenes.ScenePlugin</a> instances.</li>
+<li><a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#sceneFile__anchor">this.load.sceneFile(…)</a>: it loads the script files and execute them, but assume them create <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#Phaser.Scene.html">Phaser.Scene</a> instances.</li>
+</ul>
+<p>So the same <a class="reference external" href="https://phaser.io">Phaser</a> framework can be used as a JavaScript packing/loading tool, and it has some clear advantages:</p>
+<ul class="simple">
+<li>You don’t need a third party tool to control the scripts loading.</li>
+<li>You can report loading progress of the script files just like you do with the other assets.</li>
+<li>The scripts can be added to the <strong>Asset Pack</strong> files using the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> toolset.</li>
+</ul>
+<p>By the way, when you add a JavaScript file to a <strong>Asset Pack</strong> file, and that script is associated with a <a class="reference external" href="scene-editor.html">Scene Editor</a> file (<code class="docutils literal notranslate"><span class="pre">.scene</span></code>), then the <strong>Asset Pack Editor</strong> shows a screenshot of the scene, as file icon, for easy identification.</p>
+<img alt="Scene JavaScript files are displayed with a scene screenshot." src="_images/asset-pack-scene-scripts.png" />
+</div>
+<div class="section" id="organizing-the-asset-pack-files">
+<h2>4.5&nbsp;&nbsp;&nbsp;Organizing the Asset Pack files<a class="headerlink" href="#organizing-the-asset-pack-files" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="common-operations">
+<h2>4.6&nbsp;&nbsp;&nbsp;Common operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h2>
+<p>Undo/Redo</p>
+<p>Rename, delete.</p>
 </div>
 <div class="section" id="asset-pack-state-of-the-project">
-<h2>4.4&nbsp;&nbsp;&nbsp;Asset Pack state of the project<a class="headerlink" href="#asset-pack-state-of-the-project" title="Permalink to this headline">¶</a></h2>
+<h2>4.7&nbsp;&nbsp;&nbsp;Asset Pack state of the project<a class="headerlink" href="#asset-pack-state-of-the-project" title="Permalink to this headline">¶</a></h2>
+<p>Talk here about the Assets view.</p>
 </div>
 </div>
 
