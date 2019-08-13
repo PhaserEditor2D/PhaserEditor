@@ -123,8 +123,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#importing-javascript-files">4.4&nbsp;&nbsp;&nbsp;Importing JavaScript files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#organizing-the-asset-pack-files">4.5&nbsp;&nbsp;&nbsp;Organizing the Asset Pack files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#outline-view">4.6&nbsp;&nbsp;&nbsp;Outline view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#common-operations">4.7&nbsp;&nbsp;&nbsp;Common operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#asset-pack-state-of-the-project">4.8&nbsp;&nbsp;&nbsp;Asset Pack state of the project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.7&nbsp;&nbsp;&nbsp;Properties view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-operations">4.8&nbsp;&nbsp;&nbsp;Common operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asset-pack-state-of-the-project">4.9&nbsp;&nbsp;&nbsp;Asset Pack state of the project</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="animations-editor.html">5&nbsp;&nbsp;&nbsp;Animations Editor</a></li>
@@ -359,12 +360,19 @@
 <p>The general purpose <a class="reference external" href="workbench.html#outline-view">Outline view</a> connects with the active <strong>Asset Pack Editor</strong> and shows all the file configurations grouped by its type. In case of complex files, like atlas or sprite-sheet files, it shows the frames too.</p>
 <img alt="Outline view." src="_images/asset-pack-outline-view.png" />
 </div>
+<div class="section" id="id2">
+<h2>4.7&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="workbench.html#properties-view">Properties view</a> connects with the active <strong>Asset Pack Editor</strong> and shows property editors to change the file configurations. All these changes can be undone and redone.</p>
+<p>In addition to property editors, in some cases, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> shows a preview of the selected configuration. If the file was created by an editor inside the IDE (like the <a class="reference external" href="animations-editor.html">Animations Editor</a> or the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>) then it should provide a button to open the file in its editor.</p>
+<p>This preview section is shown when you select a file key in other parts of the IDE, like the <a class="reference external" href="workbench.html#assets-view">Assets view</a>, the <a class="reference external" href="animations-editor.html">Animations Editor</a> and the <a class="reference external" href="workbench.html#project-view">Project view</a>.</p>
+<img alt="Animation preview." src="_images/asset-pack-animation-preview.png" />
+</div>
 <div class="section" id="common-operations">
-<h2>4.7&nbsp;&nbsp;&nbsp;Common operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h2>
+<h2>4.8&nbsp;&nbsp;&nbsp;Common operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h2>
 <p>All operations like add, delete, modify the file configurations can be undone and redone. To delete file keys you can press the <code class="docutils literal notranslate"><span class="pre">Delete</span></code> key or use the context menu.</p>
 </div>
 <div class="section" id="asset-pack-state-of-the-project">
-<h2>4.8&nbsp;&nbsp;&nbsp;Asset Pack state of the project<a class="headerlink" href="#asset-pack-state-of-the-project" title="Permalink to this headline">¶</a></h2>
+<h2>4.9&nbsp;&nbsp;&nbsp;Asset Pack state of the project<a class="headerlink" href="#asset-pack-state-of-the-project" title="Permalink to this headline">¶</a></h2>
 <p>As we mentioned at the beginning of this chapter, the files configured in the <strong>Asset Pack</strong> files are used by other tools in <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>. For these reasons, the editor keeps an internal, in-memory model (or cache) of the file configurations, so it is not required to parse all the <strong>Asset Pack</strong> files each time a tool needs the information about the files.</p>
 <p>This in-memory state is computed by project builders that run each time a file is modified, and it is possible that something (like out of synchronization resources) breaks the builders or that other builders (like thumbnail builders) that run asynchronous operations are not done at a certain moment. In these cases, you can <a class="reference external" href="workbench.html#cleaning-projects">clean the state of the project</a> and run the builders again.</p>
 <p>You can see the in-memory <strong>Asset Pack</strong> files state in the <a class="reference external" href="workbench.html#assets-view">Assets view</a>.</p>

@@ -213,7 +213,6 @@ Remember the Asset Pack Editor searches for files inside the folder or sub-folde
 
 And remember the `gold rule <workbench.html#resource-filters>`_: don't add to your project (or filter them off) files that are not used by the game or any tool of the |PhaserEditor|_. For example, server-side ``node_modules`` or ``.git`` folders may pollute and slow down all the |PhaserEditor|_ experience.
 
-
 Outline view
 ------------
 
@@ -222,6 +221,18 @@ The general purpose `Outline view <workbench.html#outline-view>`_ connects with 
 .. image:: images/asset-pack-editor/asset-pack-outline-view.png
   :alt: Outline view.
 
+
+Properties view
+---------------
+
+The `Properties view`_ connects with the active **Asset Pack Editor** and shows property editors to change the file configurations. All these changes can be undone and redone.
+
+In addition to property editors, in some cases, the `Properties view`_ shows a preview of the selected configuration. If the file was created by an editor inside the IDE (like the |AnimationsEditor|_ or the |TexturePackerEditor|_) then it should provide a button to open the file in its editor.
+
+This preview section is shown when you select a file key in other parts of the IDE, like the `Assets view`_, the |AnimationsEditor|_ and the `Project view <workbench.html#project-view>`_.
+
+.. image:: images/asset-pack-editor/asset-pack-animation-preview.png
+  :alt: Animation preview.
 
 Common operations
 -----------------
