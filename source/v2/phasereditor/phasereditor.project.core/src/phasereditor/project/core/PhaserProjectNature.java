@@ -166,6 +166,28 @@ public class PhaserProjectNature implements IProjectNature {
 
 					, new FileInfoMatcherDescription("org.eclipse.ui.ide.patternFilterMatcher", ".git"),
 					IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
+			
+			_project.createFilter(
+
+					IResourceFilterDescription.EXCLUDE_ALL
+
+							| IResourceFilterDescription.FOLDERS
+
+							| IResourceFilterDescription.INHERITABLE
+
+					, new FileInfoMatcherDescription("org.eclipse.ui.ide.patternFilterMatcher", "__MACOSX"),
+					IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
+			
+			_project.createFilter(
+
+					IResourceFilterDescription.EXCLUDE_ALL
+
+							| IResourceFilterDescription.FILES
+
+							| IResourceFilterDescription.INHERITABLE
+
+					, new FileInfoMatcherDescription("org.eclipse.ui.ide.patternFilterMatcher", ".DS_Store"),
+					IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
 		}
 	}
 
