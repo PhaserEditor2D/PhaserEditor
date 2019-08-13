@@ -33,6 +33,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -82,14 +83,50 @@ public class ResourcePropertySection extends FormPropertySection<IResource> {
 		}
 
 		{
+			label(comp, "Project Path", "");
+			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			addUpdate(() -> {
+				var file = getModels().get(0);
+				if (file.exists()) {
+					text.setText(file.getProjectRelativePath().toPortableString());
+				}
+			});
+		}
+		
+		{
 			label(comp, "Location", "");
 			var text = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addUpdate(() -> {
 				var file = getModels().get(0);
 				if (file.exists()) {
-					text.setText(file.getLocation().toPortableString());
+					var location = file.getLocation();
+					text.setText(location == null? "" : location.toPortableString());
 				}
+			});
+		}
+		
+		{
+			var comp2 = new Composite(comp, 0);
+			comp2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
+			comp2.setLayout(new RowLayout());
+			var virtual = new Label(comp2, 0);
+			virtual.setText("Virtual");
+			
+			var link = new Label(comp2, 0);
+			link.setText("Link");
+			addUpdate(() -> {
+				var file = getModels().get(0);
+				var visible = false;
+				if (file.exists()) {
+					virtual.setText(file.isVirtual()? "Virtual" : "");
+					link.setText(file.isLinked()? "Linked" : "");
+					visible = file.isVirtual() || file.isLinked();
+				}
+				comp2.setVisible(visible);
+				var ld = (GridData) comp2.getLayoutData();
+				ld.heightHint = visible? -1 : 0;
 			});
 		}
 
