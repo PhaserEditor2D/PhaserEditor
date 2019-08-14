@@ -28,6 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.w3c.dom.Document;
@@ -64,13 +65,17 @@ public class BitmapFontCore {
 	}
 
 	public static boolean isJsonBitmapFontContent(InputStream contents) {
-		JSONObject doc = new JSONObject(new JSONTokener(contents));
+		try {
+			JSONObject doc = new JSONObject(new JSONTokener(contents));
 
-		if (doc.has("font")) {
-			JSONObject fontDoc = doc.getJSONObject("font");
-			return fontDoc.has("chars");
+			if (doc.has("font")) {
+				JSONObject fontDoc = doc.getJSONObject("font");
+				return fontDoc.has("chars");
+			}
+
+		} catch (JSONException e) {
+			// nothing, wrong JSON Format
 		}
-
 		return false;
 	}
 
