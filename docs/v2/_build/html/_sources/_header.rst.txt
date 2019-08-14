@@ -34,3 +34,6 @@
 
 .. |TexturePackerEditor| replace:: Texture Packer Editor
 .. _TexturePackerEditor: texture-packer-editor.html
+
+.. |AssetPackEditor| replace:: Asset Pack Editor
+.. _AssetPackEditor: asset-pack-editor.html

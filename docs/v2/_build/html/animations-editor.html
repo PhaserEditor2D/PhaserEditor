@@ -114,7 +114,11 @@
 <li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">3&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">4&nbsp;&nbsp;&nbsp;Asset Pack Editor</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">5&nbsp;&nbsp;&nbsp;Animations Editor</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#building-blocks">5.1&nbsp;&nbsp;&nbsp;Building blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-the-animations-file">5.1&nbsp;&nbsp;&nbsp;Create the animations file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-animations-to-the-file">5.2&nbsp;&nbsp;&nbsp;Adding animations to the file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-creation-of-animations">5.2.1&nbsp;&nbsp;&nbsp;Automatic creation of animations</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scene-editor.html">6&nbsp;&nbsp;&nbsp;Scene Editor</a></li>
@@ -188,8 +192,69 @@
 <p>Animation:</p>
 <img alt="Eagle animation." src="_images/eagle.gif" />
 <p>Animation frames:</p>
-<div class="section" id="building-blocks">
-<h2>5.1&nbsp;&nbsp;&nbsp;Building blocks<a class="headerlink" href="#building-blocks" title="Permalink to this headline">¶</a></h2>
+<img alt="Eagle animation frames." src="_images/eagle-spritesheet.png" />
+<p>In <a class="reference external" href="https://phaser.io">Phaser</a> v3, the animations are <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Animations.AnimationManager.html#create__anchor">created</a> as global objects, in the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Animations.AnimationManager.html">animations manager</a>:</p>
+<p>You can create a single animation:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">anims</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+    <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;acorn&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;frameRate&quot;</span><span class="o">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;repeat&quot;</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;frames&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="s2">&quot;acorn-1&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="s2">&quot;acorn-2&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="s2">&quot;acorn-3&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Or multiple animations:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">anims</span><span class="p">.</span><span class="nx">fromJSON</span><span class="p">(</span>
+    <span class="s2">&quot;anims&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;acorn&quot;</span><span class="p">,</span>
+            <span class="c1">// ....</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;player&quot;</span><span class="p">,</span>
+            <span class="c1">// ....</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>The common is to create the animations once in the game, probably in the preloader scene. Later, you can play an animation on a sprite object passing the animation key to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play(..)</a> method:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">mySprite</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;acorn&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Other way to create the animations is packing them all in a single JSON file, and load the file using the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.LoaderPlugin.html#animation__anchor">this.load.animation(..)</a> method:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">animations</span><span class="p">(</span><span class="s2">&quot;my-anims&quot;</span><span class="p">,</span> <span class="s2">&quot;assets/animations.json&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> provides the <a class="reference external" href="animations-editor.html">Animations Editor</a>, to create the animations JSON file. So, the workflow is very simple:</p>
+<ul class="simple">
+<li>Create the animations JSON file with the <a class="reference external" href="animations-editor.html">Animations Editor</a>.</li>
+<li>Import the animations JSON file into an <strong>Asset Pack</strong> file with the <a class="reference external" href="asset-pack-editor.html">Asset Pack Editor</a>.</li>
+<li>Play the animations in your code, with the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play(..)</a> method.</li>
+</ul>
+<div class="section" id="create-the-animations-file">
+<h2>5.1&nbsp;&nbsp;&nbsp;Create the animations file<a class="headerlink" href="#create-the-animations-file" title="Permalink to this headline">¶</a></h2>
+<p>The default <a class="reference external" href="workbench.html#project-structure">project template</a> contains an animations file, but you can create other animations file with the <em>File</em> → <em>New</em> → <em>Animations File</em> menu option, or pressing the <a class="reference external" href="workbench.html#new-button">New</a> button of the main toolbar and selecting the <em>Animations File</em> option.</p>
+<img alt="New Animations File." src="_images/animations-new-file.png" />
+</div>
+<div class="section" id="adding-animations-to-the-file">
+<h2>5.2&nbsp;&nbsp;&nbsp;Adding animations to the file<a class="headerlink" href="#adding-animations-to-the-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="automatic-creation-of-animations">
+<h3>5.2.1&nbsp;&nbsp;&nbsp;Automatic creation of animations<a class="headerlink" href="#automatic-creation-of-animations" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 </div>
 
