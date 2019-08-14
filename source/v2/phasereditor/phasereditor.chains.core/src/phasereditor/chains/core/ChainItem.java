@@ -40,9 +40,11 @@ public class ChainItem implements IAdaptable {
 	private String _display;
 	private int _returnTypeIndex;
 	private int _declTypeIndex;
+	private boolean _inherited;
 
-	public ChainItem(IPhaserMember phaserMember, String chain, String returnTypeName, int depth) {
+	public ChainItem(IPhaserMember phaserMember, boolean inherited, String chain, String returnTypeName, int depth) {
 		_phaserMember = phaserMember;
+		_inherited = inherited;
 		_chain = chain;
 		_returnTypeName = returnTypeName;
 		_depth = depth;
@@ -73,6 +75,10 @@ public class ChainItem implements IAdaptable {
 				_display += " v" + since;
 			}
 		}
+	}
+	
+	public boolean isInherited() {
+		return _inherited;
 	}
 
 	public int getDeclTypeIndex() {

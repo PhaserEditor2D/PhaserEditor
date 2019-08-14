@@ -40,7 +40,6 @@ import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
-import phasereditor.inspect.core.jsdoc.ITypeMember;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
@@ -89,8 +88,7 @@ public class ChainsModel {
 			private int value(ChainItem item) {
 
 				var phaser = item.getChain().contains("Phaser") ? 0 : 10;
-				var m = item.getPhaserMember();
-				var inherited = m instanceof ITypeMember && ((ITypeMember) m).isInherited() ? 10 : 0;
+				var inherited = item.isInherited() ? 10 : 0;
 				var depth = item.getDepth() + 1;
 
 				return depth * 100_000 + phaser * 1_000 + inherited;
@@ -303,13 +301,13 @@ public class ChainsModel {
 
 		if (container instanceof PhaserType) {
 			PhaserType type = (PhaserType) container;
-
+			
 			// constructor
 			if (!_usednames.contains(containerName)) {
 
 				if (type.isEnum()) {
 					String chain = "enum " + containerName;
-					_chains.add(new ChainItem(type, chain, containerName, 0));
+					_chains.add(new ChainItem(type, false, chain, containerName, 0));
 					_usedChains.add(chain);
 				} else {
 					// constructor
@@ -329,7 +327,7 @@ public class ChainsModel {
 							i++;
 						}
 
-						_chains.add(new ChainItem(type, chain, containerName, 0));
+						_chains.add(new ChainItem(type, false, chain, containerName, 0));
 					}
 				}
 
@@ -339,7 +337,7 @@ public class ChainsModel {
 			PhaserNamespace namespace = (PhaserNamespace) container;
 			String chain = "namespace " + containerName;
 			if (!_usedChains.contains(chain)) {
-				_chains.add(new ChainItem(namespace, chain, containerName, 0));
+				_chains.add(new ChainItem(namespace, false, chain, containerName, 0));
 				_usedChains.add(chain);
 			}
 
@@ -361,13 +359,15 @@ public class ChainsModel {
 		boolean is_Phaser_Scenes_Systems = containerName.equals("Phaser.Scenes.Systems");
 
 		for (PhaserVariable prop : container.getAllProperties()) {
+			var inherited = prop.getDeclType() != container;
+			
 			for (String typename : prop.getTypes()) {
 				String name = prop.getName();
 				String chain = prefix + "." + name;
 				if (_usedChains.contains(chain)) {
 					continue;
 				}
-				chains.add(new ChainItem(prop, chain, typename, currentDepth));
+				chains.add(new ChainItem(prop, inherited, chain, typename, currentDepth));
 				_usedChains.add(chain);
 
 				if (is_Phaser_Scenes_Systems) {
@@ -394,13 +394,14 @@ public class ChainsModel {
 		// constants
 
 		for (PhaserVariable cons : container.getAllConstants()) {
+			var inherited = cons.getDeclType() != container;
 			String name = cons.getName();
 			String typename = cons.getTypes()[0];
 			String chain = prefix + "." + name;
 			if (_usedChains.contains(chain)) {
 				continue;
 			}
-			chains.add(new ChainItem(cons, chain, typename, currentDepth));
+			chains.add(new ChainItem(cons, inherited, chain, typename, currentDepth));
 			_usedChains.add(chain);
 
 			buildChain(typename, chains, currentDepth + 1, depthLimit, chain);
@@ -409,6 +410,8 @@ public class ChainsModel {
 		// methods
 
 		for (PhaserMethod method : container.getAllMethods()) {
+			var inherited = method.getDeclType() != container;
+			
 			String[] methodTypes = method.getReturnTypes();
 
 			if (methodTypes.length == 0) {
@@ -431,7 +434,8 @@ public class ChainsModel {
 				if (_usedChains.contains(chain)) {
 					continue;
 				}
-				chains.add(new ChainItem(method, chain, typename, currentDepth));
+				
+				chains.add(new ChainItem(method, inherited, chain, typename, currentDepth));
 				_usedChains.add(chain);
 			}
 		}

@@ -47,6 +47,7 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 		_json = json;
 		_firesEventList = new ArrayList<>();
 	}
+	
 
 	@Override
 	public String getSince() {

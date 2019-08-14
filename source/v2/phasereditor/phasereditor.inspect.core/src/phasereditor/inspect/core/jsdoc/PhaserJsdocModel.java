@@ -67,7 +67,7 @@ public class PhaserJsdocModel implements Serializable {
 
 				var size = Files.getLastModifiedTime(docsJsonFile).toMillis();
 
-				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json.3." + size + ".binary");
+				var cacheFile = InspectCore.getUserCacheFolder().resolve("phaser.json.4." + size + ".binary");
 
 				if (Files.exists(cacheFile)) {
 					try (var input = new ObjectInputStream(Files.newInputStream(cacheFile))) {
@@ -387,9 +387,8 @@ public class PhaserJsdocModel implements Serializable {
 			for (IPhaserMember member : superTypeMap.values()) {
 				String memberName = member.getName();
 				if (!subTypeMap.containsKey(memberName)) {
-					// out.println("Add " + superTypeName + "." + memberName + "
-					// to " + type.getName() + "." + memberName);
-					subTypeMap.put(memberName, member);
+					// don't add the inherited members to the subtypes.
+//					subTypeMap.put(memberName, member);
 					inheritedMap.add(member);
 				}
 			}
