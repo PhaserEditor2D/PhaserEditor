@@ -68,6 +68,11 @@ public class ImportFileSection extends FormPropertySection<IFile> {
 	}
 
 	@Override
+	public boolean supportThisNumberOfModels(int number) {
+		return number > 0;
+	}
+	
+	@Override
 	public boolean canEdit(Object obj) {
 		return obj instanceof IFile;
 	}
