@@ -102,10 +102,6 @@ public class AssetPackEditorBlocksProvider extends EditorBlockProvider {
 	@Override
 	public IPropertySheetPage createPropertyPage() {
 		var page = new ProjectPropertyPage() {
-			@Override
-			protected Object getDefaultModel() {
-				return getEditorFile().getParent();
-			}
 
 			@Override
 			protected List<FormPropertySection<?>> createSections() {

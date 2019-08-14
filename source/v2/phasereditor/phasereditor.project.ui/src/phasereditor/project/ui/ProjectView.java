@@ -375,7 +375,7 @@ public class ProjectView extends ViewPart implements Consumer<IProject> {
 	public Object getAdapter(Class adapter) {
 
 		if (adapter == IPropertySheetPage.class) {
-			return new ProjectPropertyPage();
+			return new ProjectPropertyPage(true);
 		}
 
 		return super.getAdapter(adapter);

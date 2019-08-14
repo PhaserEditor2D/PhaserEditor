@@ -33,9 +33,20 @@ import phasereditor.ui.properties.FormPropertySection;
  *
  */
 public class ProjectPropertyPage extends ExtensibleFormPropertyPage {
+	
+	private boolean _useActiveProjectAsDefaultModel;
+	
+	public ProjectPropertyPage() {
+		this(false);
+	}
+	
+	public ProjectPropertyPage(boolean useActiveProjectAsDefaultModel) {
+		_useActiveProjectAsDefaultModel = useActiveProjectAsDefaultModel;
+	}
+
 	@Override
 	protected Object getDefaultModel() {
-		return ProjectCore.getActiveProject();
+		return _useActiveProjectAsDefaultModel? ProjectCore.getActiveProject() : null;
 	}
 
 	@Override

@@ -1291,12 +1291,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		@Override
 		public IPropertySheetPage createPropertyPage() {
-			return new ProjectPropertyPage() {
-				@Override
-				protected Object getDefaultModel() {
-					return getEditorInput().getFile().getProject();
-				}
-			};
+			return new ProjectPropertyPage();
 		}
 
 	}

@@ -23,7 +23,6 @@ package phasereditor.assetpack.ui.properties;
 
 import java.util.List;
 
-import phasereditor.project.core.ProjectCore;
 import phasereditor.project.ui.ProjectPropertyPage;
 import phasereditor.ui.properties.FormPropertySection;
 
@@ -33,17 +32,20 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public class AssetsPropertyPage extends ProjectPropertyPage {
 
-	@Override
-	protected Object getDefaultModel() {
-		return ProjectCore.getActiveProject();
+	public AssetsPropertyPage() {
+		super();
+	}
+
+	public AssetsPropertyPage(boolean useActiveProjectAsDefaultModel) {
+		super(useActiveProjectAsDefaultModel);
 	}
 
 	@Override
 	protected List<FormPropertySection<?>> createSections() {
 		var list = super.createSections();
-		
+
 		createAssetKeySection(list);
-		
+
 		// list.add(new AssetFilesSection());
 
 		list.add(new SingleSpritesheetPreviewSection());

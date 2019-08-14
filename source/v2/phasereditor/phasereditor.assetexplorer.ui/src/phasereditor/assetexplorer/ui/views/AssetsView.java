@@ -286,7 +286,7 @@ public class AssetsView extends ViewPart implements Consumer<IProject> {
 			};
 		} else if (adapter.equals(IPropertySheetPage.class)) {
 
-			return new AssetsPropertyPage();
+			return new AssetsPropertyPage(true);
 
 		}
 
