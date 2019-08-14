@@ -43,7 +43,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class BuildOnlineChains {
-	private static int chainsVersion = 2;
+	private static int chainsVersion = 3;
 
 	public static void main(String[] args) throws Exception {
 
@@ -103,6 +103,8 @@ public class BuildOnlineChains {
 				tuple.put("icon", icon);
 			}
 			tuple.put("id", phaserMember.getFullName());
+			tuple.put("depth", chain.getDepth());
+			tuple.put("inherit", chain.isInherited());
 
 			chainsData.put(tuple);
 		}
