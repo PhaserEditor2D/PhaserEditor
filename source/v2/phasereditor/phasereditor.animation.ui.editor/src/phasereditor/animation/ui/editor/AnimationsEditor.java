@@ -421,9 +421,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				_mouseOver = false;
 				setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 			}
-
+			
 			@Override
 			public void mouseUp(MouseEvent e) {
+				if (_mouseOver) {
+					return;
+				}
+				
 				setBackground(getParent().getBackground());
 
 				if (e.button != 1) {
