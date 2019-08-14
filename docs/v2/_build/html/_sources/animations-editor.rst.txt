@@ -98,7 +98,34 @@ The default `project template <workbench.html#project-structure>`_ contains an a
 Adding animations to the file
 -----------------------------
 
+To create a new, empty animation, press the **Add Animation** button in the toolbar. It shows a dialog to enter the animation name.
 
+
+.. image:: images/animations-editor/animations-new-empty.png
+  :alt: Create a new, empty animation.
+
+The new animation is empty, so you have to add some frames to it. The frames (or better said, the frame keys) could be dragged from the `Assets view <workbench.html#assets-view>`_ or the `Blocks view <workbench.html#blocks-view>`_ and dropped into the animation timeline.
+
+
+.. image:: images/animations-editor/animations-drop-frames-timeline.png
+  :alt: Drop frames to the timeline.
+
+.. image:: images/animations-editor/animations-added-frames.png
+  :alt: Frames added to the animation.
 
 Automatic creation of animations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+Animation playback buttons
+--------------------------
+
+
+Properties view
+---------------
+
+
+Outline view
+------------
