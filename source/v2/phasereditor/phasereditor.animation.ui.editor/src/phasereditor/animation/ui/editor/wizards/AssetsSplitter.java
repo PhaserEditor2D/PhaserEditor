@@ -35,6 +35,8 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
  */
 public class AssetsSplitter {
 
+	private String _commonPrefix;
+
 	public static class AssetsGroup {
 		private String _prefix;
 		private List<IAssetKey> _asset;
@@ -55,8 +57,13 @@ public class AssetsSplitter {
 
 	private List<IAssetKey> _assets;
 
-	public AssetsSplitter() {
+	public AssetsSplitter(String commonPrefix) {
 		_assets = new ArrayList<>();
+		_commonPrefix = commonPrefix;
+	}
+
+	public String getCommonPrefix() {
+		return _commonPrefix;
 	}
 
 	public void add(IAssetKey asset) {
@@ -80,7 +87,7 @@ public class AssetsSplitter {
 				prefixes.add(name);
 			} else {
 				var newName = removeTrailingSpaces(name);
-				prefixes.add(obj.getAsset().getKey() + " - " + newName);
+				prefixes.add(_commonPrefix + newName);
 			}
 		}
 

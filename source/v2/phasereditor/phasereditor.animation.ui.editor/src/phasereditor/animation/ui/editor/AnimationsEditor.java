@@ -1436,7 +1436,22 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	@SuppressWarnings("boxing")
 	public void createAnimationsWithDrop(Object[] data) {
 
-		var result = splitFramesByPrefix(data);
+		var dlg = new InputDialog(getSite().getShell(), "Create Animations",
+				"Enter a common prefix for all the animations:", "", prefix -> {
+					return null;
+				});
+
+		if (dlg.open() != Window.OK) {
+			return;
+		}
+
+		var prefix = dlg.getValue();
+		
+		var result = splitFramesByPrefix(prefix, data);
+
+		if (result.isEmpty()) {
+			return;
+		}
 
 		for (var group : result) {
 			out.println(group.getPrefix());
@@ -1495,8 +1510,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		setDirty();
 	}
 
-	public static Collection<AssetsGroup> splitFramesByPrefix(Object[] data) {
-		var splitter = new AssetsSplitter();
+	public static Collection<AssetsGroup> splitFramesByPrefix(String prefix, Object[] data) {
+		var splitter = new AssetsSplitter(prefix);
 
 		for (var obj : data) {
 			if (obj instanceof AtlasAssetModel) {
@@ -1513,6 +1528,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		}
 
 		var result = splitter.split();
+
 		return result;
 	}
 

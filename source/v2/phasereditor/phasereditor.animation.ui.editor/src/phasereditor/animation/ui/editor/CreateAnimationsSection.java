@@ -41,13 +41,16 @@ import phasereditor.ui.properties.FormPropertySection;
  */
 public class CreateAnimationsSection extends FormPropertySection<IAssetKey> {
 
-
 	private AnimationBlocksPropertyPage _page;
 
 	public CreateAnimationsSection(AnimationBlocksPropertyPage page) {
 		super("Animations");
-		
+
 		_page = page;
+	}
+
+	public AnimationsEditor getEditor() {
+		return this._page.getEditor();
 	}
 
 	@Override
@@ -70,10 +73,10 @@ public class CreateAnimationsSection extends FormPropertySection<IAssetKey> {
 			btn.setText("Create animations");
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 			btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-				_page.getEditor().createAnimationsWithDrop(getModels().toArray());
+				getEditor().createAnimationsWithDrop(getModels().toArray());
 			}));
 			addUpdate(() -> {
-				var groups = AnimationsEditor.splitFramesByPrefix(getModels().toArray());
+				var groups = AnimationsEditor.splitFramesByPrefix("", getModels().toArray());
 				var size = groups.size();
 				btn.setText("Create " + size + " " + plural("animation", size));
 				btn.setToolTipText(groups
