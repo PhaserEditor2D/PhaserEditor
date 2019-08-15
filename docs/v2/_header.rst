@@ -37,3 +37,9 @@
 
 .. |AssetPackEditor| replace:: Asset Pack Editor
 .. _AssetPackEditor: asset-pack-editor.html
+
+.. |AssetsView| replace:: Assets view
+.. _AssetsView: workbench.html#assets-view
+
+.. |PropertiesView| replace:: Properties view
+.. _PropertiesView: workbench.html#properties-view

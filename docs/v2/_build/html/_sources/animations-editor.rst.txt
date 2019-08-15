@@ -104,7 +104,7 @@ To create a new, empty animation, press the **Add Animation** button in the tool
 .. image:: images/animations-editor/animations-new-empty.png
   :alt: Create a new, empty animation.
 
-The new animation is empty, so you have to add some frames to it. The frames (or better said, the frame keys) could be dragged from the `Assets view <workbench.html#assets-view>`_ or the `Blocks view <workbench.html#blocks-view>`_ and dropped into the animation timeline.
+The new animation is empty, so you have to add some frames to it. The frames (or better said, the frame keys) could be dragged from the |AssetsView|_ or the `Blocks view`_ and dropped into the animation timeline.
 
 
 .. image:: images/animations-editor/animations-drop-frames-timeline.png
@@ -116,16 +116,171 @@ The new animation is empty, so you have to add some frames to it. The frames (or
 Automatic creation of animations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Usually, artists name the frames of the animations with certain pattern, something like this:
+
+* ``player-jump-1``
+
+* ``player-jump-2``
+
+* ``player-jump-3``
+
+* ``player-idle-1``
+
+* ``player-idle-2``
+
+* ``player-idle-3``
+
+* ``enemy_idle01``
+
+* ``enemy_idle02``
+
+* ``enemy_idle03``
+
+* ``enemy_attack01``
+
+* ``enemy_attack02``
+
+* ``enemy_attack03``
+
+There are different patterns, but the common is to use some common prefix for the frames of the same animation, with a numeric suffix.
+
+The |AnimationsEditor|_ takes advantage of these naming patterns and uses an algorithm to create multiple animations with a given set of frames. The algorithm is simple, it groups all the frames with a common prefix and create an animation for each group, with group frames. The prefix of a frame is extracted by removing all non-alphabetic chars at the end of the name.
+
+For example, the prefix of ``enemy_idle02`` is ``enemy_idle``, the prefix of ``player-jump-1`` is ``player-jump``. So, if we apply the algorithm to the frames listed before, you get the following groups:
+
+* *player-jump*
+
+  * ``player-jump-1``
+
+  * ``player-jump-2``
+
+  * ``player-jump-3``
+
+* *player-idle*
+
+  * ``player-idle-1``
+
+  * ``player-idle-2``
+  
+  * ``player-idle-3``
+ 
+* *enemy_idle*
+
+  * ``enemy_idle01``
+
+  * ``enemy_idle02``
+
+  * ``enemy_idle03``
+
+* *enemy_attack*
+
+  * ``enemy_attack01``
+
+  * ``enemy_attack02``
+
+  * ``enemy_attack03``
+
+So, the |AnimationsEditor|_ creates the animations **player-jump**, **player-idle**, **enemy-idle** and **enemy-attack**.
 
 
+Create the animations by dropping frames
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Animation playback buttons
---------------------------
+To create the animations, you can drag the frames from somewhere and drop them into:
+
+* The `Outline view`_.
+* The center of the editor (if it is not showing a particular animation, because in that case it will append the frames at the end of the animation).
+
+The frames can be taken from:
+
+* The `Blocks view`_.
+
+* The frames, atlas, sprite-sheet, image preview section of the |PropertiesView|_.
+
+* The |AssetsView|_.
+
+If you drop an atlas or sprite-sheet, the editor will use all the frames inside them.
+
+ .. image:: images/animations-editor/animations-editor-drop-frames-new-animation.png
+    :alt: Drop frames into the editor to create multiple animations.
+
+When the frames are dropped, the editor opens a dialog to enter a prefix for all the animations. It is useful if the frames use names like `idle` or `attack` but you want to organize them so you can use a prefix `enemy` to get the animations `enemy-idle` and `enemy-attack`. Sure, you can leave it blank.
+
+ .. image:: images/animations-editor/animations-enter-prefix.png
+    :alt: Enter prefix for new animations.
+
+.. image:: images/animations-editor/animations-created-by-drop.png
+    :alt: The created animations.
+
+Creating the animations with the Create Animations button
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you select the frames in the `Blocks view`_, the |PropertiesView|_ shows a **Create animations** button in the **Animations** section. The button's text shows the number of animations could be created with the selection, and the button's tooltip shows the names.
+
+Like when you `drop the frames <#create-the-animations-by-dropping-frames>`_, if you press the button, it opens a dialog to write a prefix for all the animations and finally create the animations. 
+
+.. image:: images/animations-editor/animations-create-animations-button.png
+    :alt: The Create animations button.
 
 
-Properties view
----------------
+Animations Editor layout
+------------------------
+
+The editor presents the animations in two layouts:
+
+* **Single animation layout**. When you select just one animation. It shows the animation preview and the timeline. If you press the ``Esc`` key, the animation is unselected and the editor shows all the animations.
+
+  .. image:: images/animations-editor/animations-single-animation-layout.png
+    :alt: Single animation layout.
+
+* **Multiple animations layout**. When you select zero, or more than one animation. It shows the selected animations (or all the animations if the selection is empty) in a grid layout. Here you can click one animation to select it and therefore show it in the **single animation layout**.
+
+  .. image:: images/animations-editor/animations-multiple-animations-layout.png
+    :alt: Multiple animation layout.
+
+Playing the animations
+----------------------
+
+When you select just one animation, the `main toolbar <workbench.html#main-toolbar>`_ shows the buttons to play, pause or stop the selected animation. When the animation is playing, the `timeline <#animation-timeline>`_ shows a guide-line (or cursor) with the progress of the animation. You can press the ``Space`` key to play/pause the animation.
+
+.. image:: images/animations-editor/animations-playback-one-animation.png
+    :alt: Animation playback.
+
+When you select multiple animations, the `main toolbar`_ shows the buttons to play or stop all the animations at the same time. 
+
+.. image:: images/animations-editor/animations-playing-multiple.png
+    :alt: Multiple animations playing.
+
+Animation properties
+--------------------
+
+The |PropertiesView|_ connects with the |AnimationsEditor|_ and display the properties of the animations or the animation frames.
+
+You can change the properties of many animations or frames at the same time.
+
+**Animation properties**
+
+==================== ======================
+pepe                 amarra cintas
+lula                 cuenta pulgas
+==================== ======================
+
+
+Animation frame properties
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Animation timeline
+------------------
+
+
+Blocks view 
+-----------
 
 
 Outline view
 ------------
+
+
+
+Keyboard shortcuts
+------------------

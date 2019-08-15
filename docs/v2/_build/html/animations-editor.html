@@ -83,7 +83,7 @@
             
             
               <div class="version">
-                2.1.2
+                2.1.4
               </div>
             
           
@@ -117,11 +117,20 @@
 <li class="toctree-l2"><a class="reference internal" href="#create-the-animations-file">5.1&nbsp;&nbsp;&nbsp;Create the animations file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-animations-to-the-file">5.2&nbsp;&nbsp;&nbsp;Adding animations to the file</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#automatic-creation-of-animations">5.2.1&nbsp;&nbsp;&nbsp;Automatic creation of animations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-animations-by-dropping-frames">5.2.2&nbsp;&nbsp;&nbsp;Create the animations by dropping frames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-the-animations-with-the-create-animations-button">5.2.3&nbsp;&nbsp;&nbsp;Creating the animations with the Create Animations button</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#animation-playback-buttons">5.3&nbsp;&nbsp;&nbsp;Animation playback buttons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#properties-view">5.4&nbsp;&nbsp;&nbsp;Properties view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#outline-view">5.5&nbsp;&nbsp;&nbsp;Outline view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#animations-editor-layout">5.3&nbsp;&nbsp;&nbsp;Animations Editor layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#playing-the-animations">5.4&nbsp;&nbsp;&nbsp;Playing the animations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#animation-properties">5.5&nbsp;&nbsp;&nbsp;Animation properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#animation-frame-properties">5.5.1&nbsp;&nbsp;&nbsp;Animation frame properties</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#animation-timeline">5.6&nbsp;&nbsp;&nbsp;Animation timeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blocks-view">5.7&nbsp;&nbsp;&nbsp;Blocks view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#outline-view">5.8&nbsp;&nbsp;&nbsp;Outline view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">5.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scene-editor.html">6&nbsp;&nbsp;&nbsp;Scene Editor</a></li>
@@ -257,21 +266,140 @@
 <h2>5.2&nbsp;&nbsp;&nbsp;Adding animations to the file<a class="headerlink" href="#adding-animations-to-the-file" title="Permalink to this headline">¶</a></h2>
 <p>To create a new, empty animation, press the <strong>Add Animation</strong> button in the toolbar. It shows a dialog to enter the animation name.</p>
 <img alt="Create a new, empty animation." src="_images/animations-new-empty.png" />
-<p>The new animation is empty, so you have to add some frames to it. The frames (or better said, the frame keys) could be dragged from the <a class="reference external" href="workbench.html#assets-view">Assets view</a> or the <a class="reference external" href="workbench.html#blocks-view">Blocks view</a> and dropped into the animation timeline.</p>
+<p>The new animation is empty, so you have to add some frames to it. The frames (or better said, the frame keys) could be dragged from the <a class="reference external" href="workbench.html#assets-view">Assets view</a> or the <a class="reference internal" href="#blocks-view">Blocks view</a> and dropped into the animation timeline.</p>
 <img alt="Drop frames to the timeline." src="_images/animations-drop-frames-timeline.png" />
 <img alt="Frames added to the animation." src="_images/animations-added-frames.png" />
 <div class="section" id="automatic-creation-of-animations">
 <h3>5.2.1&nbsp;&nbsp;&nbsp;Automatic creation of animations<a class="headerlink" href="#automatic-creation-of-animations" title="Permalink to this headline">¶</a></h3>
+<p>Usually, artists name the frames of the animations with certain pattern, something like this:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">player-jump-1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-jump-2</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-jump-3</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-idle-1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-idle-2</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-idle-3</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_idle01</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_idle02</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_idle03</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_attack01</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_attack02</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_attack03</span></code></li>
+</ul>
+<p>There are different patterns, but the common is to use some common prefix for the frames of the same animation, with a numeric suffix.</p>
+<p>The <a class="reference external" href="animations-editor.html">Animations Editor</a> takes advantage of these naming patterns and uses an algorithm to create multiple animations with a given set of frames. The algorithm is simple, it groups all the frames with a common prefix and create an animation for each group, with group frames. The prefix of a frame is extracted by removing all non-alphabetic chars at the end of the name.</p>
+<p>For example, the prefix of <code class="docutils literal notranslate"><span class="pre">enemy_idle02</span></code> is <code class="docutils literal notranslate"><span class="pre">enemy_idle</span></code>, the prefix of <code class="docutils literal notranslate"><span class="pre">player-jump-1</span></code> is <code class="docutils literal notranslate"><span class="pre">player-jump</span></code>. So, if we apply the algorithm to the frames listed before, you get the following groups:</p>
+<ul class="simple">
+<li><em>player-jump</em><ul>
+<li><code class="docutils literal notranslate"><span class="pre">player-jump-1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-jump-2</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-jump-3</span></code></li>
+</ul>
+</li>
+<li><em>player-idle</em><ul>
+<li><code class="docutils literal notranslate"><span class="pre">player-idle-1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-idle-2</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">player-idle-3</span></code></li>
+</ul>
+</li>
+<li><em>enemy_idle</em><ul>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_idle01</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_idle02</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_idle03</span></code></li>
+</ul>
+</li>
+<li><em>enemy_attack</em><ul>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_attack01</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_attack02</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">enemy_attack03</span></code></li>
+</ul>
+</li>
+</ul>
+<p>So, the <a class="reference external" href="animations-editor.html">Animations Editor</a> creates the animations <strong>player-jump</strong>, <strong>player-idle</strong>, <strong>enemy-idle</strong> and <strong>enemy-attack</strong>.</p>
+</div>
+<div class="section" id="create-the-animations-by-dropping-frames">
+<h3>5.2.2&nbsp;&nbsp;&nbsp;Create the animations by dropping frames<a class="headerlink" href="#create-the-animations-by-dropping-frames" title="Permalink to this headline">¶</a></h3>
+<p>To create the animations, you can drag the frames from somewhere and drop them into:</p>
+<ul class="simple">
+<li>The <a class="reference internal" href="#outline-view">Outline view</a>.</li>
+<li>The center of the editor (if it is not showing a particular animation, because in that case it will append the frames at the end of the animation).</li>
+</ul>
+<p>The frames can be taken from:</p>
+<ul class="simple">
+<li>The <a class="reference internal" href="#blocks-view">Blocks view</a>.</li>
+<li>The frames, atlas, sprite-sheet, image preview section of the <a class="reference external" href="workbench.html#properties-view">Properties view</a>.</li>
+<li>The <a class="reference external" href="workbench.html#assets-view">Assets view</a>.</li>
+</ul>
+<p>If you drop an atlas or sprite-sheet, the editor will use all the frames inside them.</p>
+<blockquote>
+<div><img alt="Drop frames into the editor to create multiple animations." src="_images/animations-editor-drop-frames-new-animation.png" />
+</div></blockquote>
+<p>When the frames are dropped, the editor opens a dialog to enter a prefix for all the animations. It is useful if the frames use names like <cite>idle</cite> or <cite>attack</cite> but you want to organize them so you can use a prefix <cite>enemy</cite> to get the animations <cite>enemy-idle</cite> and <cite>enemy-attack</cite>. Sure, you can leave it blank.</p>
+<blockquote>
+<div><img alt="Enter prefix for new animations." src="_images/animations-enter-prefix.png" />
+</div></blockquote>
+<img alt="The created animations." src="_images/animations-created-by-drop.png" />
+</div>
+<div class="section" id="creating-the-animations-with-the-create-animations-button">
+<h3>5.2.3&nbsp;&nbsp;&nbsp;Creating the animations with the Create Animations button<a class="headerlink" href="#creating-the-animations-with-the-create-animations-button" title="Permalink to this headline">¶</a></h3>
+<p>When you select the frames in the <a class="reference internal" href="#blocks-view">Blocks view</a>, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> shows a <strong>Create animations</strong> button in the <strong>Animations</strong> section. The button’s text shows the number of animations could be created with the selection, and the button’s tooltip shows the names.</p>
+<p>Like when you <a class="reference external" href="#create-the-animations-by-dropping-frames">drop the frames</a>, if you press the button, it opens a dialog to write a prefix for all the animations and finally create the animations.</p>
+<img alt="The Create animations button." src="_images/animations-create-animations-button.png" />
 </div>
 </div>
-<div class="section" id="animation-playback-buttons">
-<h2>5.3&nbsp;&nbsp;&nbsp;Animation playback buttons<a class="headerlink" href="#animation-playback-buttons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="animations-editor-layout">
+<h2>5.3&nbsp;&nbsp;&nbsp;Animations Editor layout<a class="headerlink" href="#animations-editor-layout" title="Permalink to this headline">¶</a></h2>
+<p>The editor presents the animations in two layouts:</p>
+<ul>
+<li><p class="first"><strong>Single animation layout</strong>. When you select just one animation. It shows the animation preview and the timeline. If you press the <code class="docutils literal notranslate"><span class="pre">Esc</span></code> key, the animation is unselected and the editor shows all the animations.</p>
+<img alt="Single animation layout." src="_images/animations-single-animation-layout.png" />
+</li>
+<li><p class="first"><strong>Multiple animations layout</strong>. When you select zero, or more than one animation. It shows the selected animations (or all the animations if the selection is empty) in a grid layout. Here you can click one animation to select it and therefore show it in the <strong>single animation layout</strong>.</p>
+<img alt="Multiple animation layout." src="_images/animations-multiple-animations-layout.png" />
+</li>
+</ul>
 </div>
-<div class="section" id="properties-view">
-<h2>5.4&nbsp;&nbsp;&nbsp;Properties view<a class="headerlink" href="#properties-view" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="playing-the-animations">
+<h2>5.4&nbsp;&nbsp;&nbsp;Playing the animations<a class="headerlink" href="#playing-the-animations" title="Permalink to this headline">¶</a></h2>
+<p>When you select just one animation, the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows the buttons to play, pause or stop the selected animation. When the animation is playing, the <a class="reference external" href="#animation-timeline">timeline</a> shows a guide-line (or cursor) with the progress of the animation. You can press the <code class="docutils literal notranslate"><span class="pre">Space</span></code> key to play/pause the animation.</p>
+<img alt="Animation playback." src="_images/animations-playback-one-animation.png" />
+<p>When you select multiple animations, the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows the buttons to play or stop all the animations at the same time.</p>
+<img alt="Multiple animations playing." src="_images/animations-playing-multiple.png" />
+</div>
+<div class="section" id="animation-properties">
+<h2>5.5&nbsp;&nbsp;&nbsp;Animation properties<a class="headerlink" href="#animation-properties" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="workbench.html#properties-view">Properties view</a> connects with the <a class="reference external" href="animations-editor.html">Animations Editor</a> and display the properties of the animations or the animation frames.</p>
+<p>You can change the properties of many animations or frames at the same time.</p>
+<p><strong>Animation properties</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>pepe</td>
+<td>amarra cintas</td>
+</tr>
+<tr class="row-even"><td>lula</td>
+<td>cuenta pulgas</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="animation-frame-properties">
+<h3>5.5.1&nbsp;&nbsp;&nbsp;Animation frame properties<a class="headerlink" href="#animation-frame-properties" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="animation-timeline">
+<h2>5.6&nbsp;&nbsp;&nbsp;Animation timeline<a class="headerlink" href="#animation-timeline" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="blocks-view">
+<h2>5.7&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="outline-view">
-<h2>5.5&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+<h2>5.8&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="keyboard-shortcuts">
+<h2>5.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -318,7 +446,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.1.2',
+            VERSION:'2.1.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
