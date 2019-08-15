@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Text;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.CheckListener;
-import phasereditor.ui.properties.TextListener;
 import phasereditor.ui.properties.TextToFloatListener;
 import phasereditor.ui.properties.TextToIntListener;
 
@@ -58,42 +57,6 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 		var comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
-
-		// key
-
-		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Key");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.key"));
-
-			var text = new Text(comp, SWT.BORDER);
-			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			new TextListener(text) {
-
-				@Override
-				protected void accept(String value) {
-					wrapOperation(getModels(), model -> {
-						model.setKey(value);
-					});
-
-					var editor = getEditor();
-					editor.refreshOutline();
-					editor.getTimelineCanvas().redraw();
-					editor.setDirty();
-				}
-			};
-
-			addUpdate(() -> {
-				text.setText(flatValues_to_String(getModels().stream().map(model -> model.getKey())));
-				text.setEditable(getModels().size() == 1);
-			});
-
-			var sep = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL);
-			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
-			gd.horizontalSpan = 2;
-			sep.setLayoutData(gd);
-
-		}
 
 		// frameRate
 

@@ -51,10 +51,11 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 	protected List<FormPropertySection<?>> createSections() {
 		var list = new ArrayList<FormPropertySection<?>>();
 
+		list.add(new AnimationKeySection(this));
+		list.add(new AnimationSection(this));
 		list.add(new AnimationFrameSection(this));
 		list.add(new AnimationFrameAssetKeySection(this));
 		list.add(new AnimationFramePreviewSection(this));
-		list.add(new AnimationSection(this));
 
 		return list;
 	}
@@ -63,15 +64,15 @@ public class AnimationsPropertyPage extends FormPropertyPage {
 	protected Object getDefaultModel() {
 		return null;
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		
+
 		registerUndoRedoActions();
-		
+
 	}
-	
+
 	private void registerUndoRedoActions() {
 		_editor.getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 	}
