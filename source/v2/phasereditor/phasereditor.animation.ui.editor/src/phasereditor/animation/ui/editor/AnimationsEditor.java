@@ -199,7 +199,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		getEditorSite().getPage().addPartListener(_partListener);
 
 	}
-	
+
 	public UndoRedoActionGroup getUndoRedoGroup() {
 		return _undoRedoGroup;
 	}
@@ -421,13 +421,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				_mouseOver = false;
 				setBackground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 			}
-			
+
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (_mouseOver) {
 					return;
 				}
-				
+
 				setBackground(getParent().getBackground());
 
 				if (e.button != 1) {
@@ -605,12 +605,23 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 					@Override
 					public void drop(DropTargetEvent event) {
+						Object[] data = null;
+
 						if (event.data instanceof Object[]) {
-							createAnimationsWithDrop((Object[]) event.data);
+							data = (Object[]) event.data;
 						}
 
 						if (event.data instanceof IStructuredSelection) {
-							createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
+							data = ((IStructuredSelection) event.data).toArray();
+						}
+
+						if (data != null) {
+
+							// now the animation canvas only handles the drop of frames, and append them at
+							// the end of the timeline.
+
+							_timelineCanvas.setDropIndex(-1);
+							_timelineCanvas.selectionDropped(data);
 						}
 					}
 				});
@@ -1228,9 +1239,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 			_viewer.getControl().setMenu(_menuManager.createContextMenu(_viewer.getControl()));
 
 			registerUndoRedoActions();
-			
+
 		}
-		
+
 		private void registerUndoRedoActions() {
 			getUndoRedoGroup().fillActionBars(getSite().getActionBars());
 		}

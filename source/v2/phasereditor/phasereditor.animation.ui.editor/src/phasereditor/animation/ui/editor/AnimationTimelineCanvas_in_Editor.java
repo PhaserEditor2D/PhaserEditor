@@ -46,7 +46,7 @@ public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<A
 	@Override
 	public void clearSelection() {
 		super.clearSelection();
-		
+
 		if (getModel() != null) {
 			getEditor().getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(getModel()));
 		}
@@ -56,18 +56,21 @@ public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<A
 	protected void selectionDropped(Object[] data) {
 
 		var anim = getModel();
-		
-		if (anim == null) {
-			_editor.createAnimationsWithDrop(data);
-			return;
-		}
+
+		// This should never happen, now when no animatio is selected the timeline is
+		// not shown. So let's comment it.
+		//
+		// if (anim == null) {
+		// _editor.createAnimationsWithDrop(data);
+		// return;
+		// }
 
 		var before = AnimationOperation.readState(List.of(anim));
-		
+
 		super.selectionDropped(data);
-		
+
 		var after = AnimationOperation.readState(List.of(anim));
-		
+
 		_editor.executeOperation(new AnimationOperation("Drop frames", before, after, false));
 
 		if (_editor.getAnimationCanvas().getFile() == null) {
@@ -101,6 +104,7 @@ public class AnimationTimelineCanvas_in_Editor extends AnimationTimelineCanvas<A
 
 	@Override
 	protected void updateSelectionProvider() {
-		_editor.getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(getSelectedFrames().toArray()));
+		_editor.getEditorSite().getSelectionProvider()
+				.setSelection(new StructuredSelection(getSelectedFrames().toArray()));
 	}
 }

@@ -237,11 +237,19 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 		_animCanvas = animCanvas;
 	}
 
+	public void setDropIndex(int dropIndex) {
+		_dropIndex = dropIndex;
+	}
+	
 	@SuppressWarnings("boxing")
 	protected void selectionDropped(Object[] data) {
 
 		if (_model == null) {
-			// TODO: maybe we just have to create a new animation!
+			// well, this should not happen, we hide the timeline from the editor when no
+			// animation is selected. But we have to validate in case it is used in other
+			// contexts. Actually, we should "disable" this method (something like an
+			// "editable=false" flag) by default and enable it
+			// only in the editor.
 			return;
 		}
 
@@ -310,7 +318,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseCanva
 			}
 		} else {
 			// the frames are created by dropping assets
-			if (_dropIndex == frames.size()) {
+			if (_dropIndex == frames.size() || _dropIndex < 0) {
 				frames.addAll(framesFromTheOutside);
 			} else {
 				frames.addAll(_dropIndex, framesFromTheOutside);
