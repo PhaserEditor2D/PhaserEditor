@@ -19,14 +19,35 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
+package phasereditor.animation.ui.editor;
+
+import java.util.List;
+
+import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
+import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public interface IAnimationsEditor {
+public class AnimationBlocksPropertyPage extends AssetsPropertyPage {
+	private AnimationsEditor _editor;
 
-	void revealAnimation(String key);
+	public AnimationBlocksPropertyPage(AnimationsEditor editor) {
+		_editor = editor;
+	}
 
+	public AnimationsEditor getEditor() {
+		return _editor;
+	}
+
+	@Override
+	protected List<FormPropertySection<?>> createSections() {
+
+		var list = super.createSections();
+
+		list.add(0, new CreateAnimationsSection(this));
+
+		return list;
+	}
 }

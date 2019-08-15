@@ -1771,4 +1771,8 @@ public class PhaserEditorUI {
 		}
 		return _workbenchLabelProvider;
 	}
+	
+	public static String plural(String word, int number) {
+		return word + (number > 1? "s" : "");
+	}
 }

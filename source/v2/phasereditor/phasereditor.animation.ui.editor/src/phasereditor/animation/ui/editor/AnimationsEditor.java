@@ -30,6 +30,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -96,6 +97,7 @@ import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.IAnimationsEditor;
 import phasereditor.animation.ui.editor.properties.AnimationsPropertyPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
+import phasereditor.animation.ui.editor.wizards.AssetsSplitter.AssetsGroup;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -106,7 +108,6 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.properties.AssetsPropertyPage;
 import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.EditorSharedImages;
@@ -350,11 +351,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 				String str;
 
 				if (getModel().getAnimations().isEmpty()) {
-
-					str = "To create new animations:\n\n"
-							+ "- Drop atlas, frame or image keys from the Blocks or Assets views.\n"
-							+ "New animations will be created by grouping the keys with a common prefix.\n\n"
-							+ "- Press the Add Animation button to create an empty animation.";
+					str = "Drop some frames here to create new animations.";
 				} else {
 					str = "Select the animations in the Outline view";
 				}
@@ -617,11 +614,15 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 						if (data != null) {
 
-							// now the animation canvas only handles the drop of frames, and append them at
-							// the end of the timeline.
+							if (comp == _multiAnimationsComp) {
+								createAnimationsWithDrop(data);
+							} else {
+								// now the animation canvas only handles the drop of frames, and append them at
+								// the end of the timeline.
 
-							_timelineCanvas.setDropIndex(-1);
-							_timelineCanvas.selectionDropped(data);
+								_timelineCanvas.setDropIndex(-1);
+								_timelineCanvas.selectionDropped(data);
+							}
 						}
 					}
 				});
@@ -1067,7 +1068,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		@Override
 		public IPropertySheetPage createPropertyPage() {
-			return new AssetsPropertyPage();
+			return new AnimationBlocksPropertyPage(AnimationsEditor.this);
 		}
 
 	}
@@ -1438,23 +1439,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 	@SuppressWarnings("boxing")
 	public void createAnimationsWithDrop(Object[] data) {
 
-		var splitter = new AssetsSplitter();
-
-		for (var obj : data) {
-			if (obj instanceof AtlasAssetModel) {
-				splitter.addAll(((AtlasAssetModel) obj).getSubElements());
-			} else if (obj instanceof MultiAtlasAssetModel) {
-				splitter.addAll(((MultiAtlasAssetModel) obj).getSubElements());
-			} else if (obj instanceof SpritesheetAssetModel) {
-				splitter.addAll(((SpritesheetAssetModel) obj).getFrames());
-			} else if (obj instanceof IAssetFrameModel) {
-				splitter.add((IAssetKey) obj);
-			} else if (obj instanceof ImageAssetModel) {
-				splitter.add(((ImageAssetModel) obj).getFrame());
-			}
-		}
-
-		var result = splitter.split();
+		var result = splitFramesByPrefix(data);
 
 		for (var group : result) {
 			out.println(group.getPrefix());
@@ -1511,6 +1496,27 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 		}
 
 		setDirty();
+	}
+
+	public static Collection<AssetsGroup> splitFramesByPrefix(Object[] data) {
+		var splitter = new AssetsSplitter();
+
+		for (var obj : data) {
+			if (obj instanceof AtlasAssetModel) {
+				splitter.addAll(((AtlasAssetModel) obj).getSubElements());
+			} else if (obj instanceof MultiAtlasAssetModel) {
+				splitter.addAll(((MultiAtlasAssetModel) obj).getSubElements());
+			} else if (obj instanceof SpritesheetAssetModel) {
+				splitter.addAll(((SpritesheetAssetModel) obj).getFrames());
+			} else if (obj instanceof IAssetFrameModel) {
+				splitter.add((IAssetKey) obj);
+			} else if (obj instanceof ImageAssetModel) {
+				splitter.add(((ImageAssetModel) obj).getFrame());
+			}
+		}
+
+		var result = splitter.split();
+		return result;
 	}
 
 	@Override
