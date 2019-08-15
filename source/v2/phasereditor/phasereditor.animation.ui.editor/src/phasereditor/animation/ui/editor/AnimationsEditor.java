@@ -634,11 +634,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor, 
 
 		String initialName = "untitled";
 
-		var msg = "Enter the name of the new animation:\n\n"
-				+ "Tip: You can automatically create many animations by dragging "
-				+ "Atlas, Image or Frame keys from the Blocks view and dropping them into the Outline view or the center of the editor."
-				+ "The animations are created by grouping textures with a common prefix.";
-		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "Add Animation", msg, initialName,
+		var msg = "Enter the name of the new animation:";
+		var dlg = new InputDialog(getAnimationCanvas().getShell(), "Add Animation", msg, initialName,
 				new IInputValidator() {
 
 					@Override
