@@ -29,14 +29,15 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.audio.core.AudioCore;
+import phasereditor.ui.IBrowser;
+import phasereditor.ui.IBrowser.IBrowserFunction;
+import phasereditor.webrun.core.WebRunCore;
 
 /**
  * @author arian
@@ -44,33 +45,32 @@ import phasereditor.audio.core.AudioCore;
  */
 public class Html5AudioSpritePlayer extends Composite {
 
-	private Browser _browser;
+	private IBrowser _browser;
 	private Runnable _onAudioReadyCallback;
 	private static String _playerHTML;
 
-	@SuppressWarnings("unused")
 	public Html5AudioSpritePlayer(Composite parent, int style) {
 		super(parent, style);
 
 		setLayout(new FillLayout());
 
-		_browser = new Browser(this, SWT.None);
+		_browser = IBrowser.create(this, SWT.None);
 
-		new BrowserFunction(_browser, "_log") {
+		_browser.createFunction("_log", new IBrowserFunction() {
+
 			@Override
 			public Object function(Object[] arguments) {
-				super.function(arguments);
 
 				out.println("Browser:" + arguments[0]);
 
 				return null;
 			}
-		};
+		});
 
-		new BrowserFunction(_browser, "_onAudioReady") {
+		_browser.createFunction("_onAudioReady", new IBrowserFunction() {
+
 			@Override
 			public Object function(Object[] arguments) {
-				super.function(arguments);
 
 				out.println("Call onAudioReady callback: " + _onAudioReadyCallback);
 
@@ -80,7 +80,7 @@ public class Html5AudioSpritePlayer extends Composite {
 
 				return null;
 			}
-		};
+		});
 
 		parent.addDisposeListener(e -> {
 			_browser.setText("");
@@ -110,8 +110,8 @@ public class Html5AudioSpritePlayer extends Composite {
 
 		var imageFile = AudioCore.getSoundWavesFile(audioFile);
 
-		var audioFileUrl = audioFile.getLocation().toFile().toPath().toUri().toString();
-		var imageFileUrl = imageFile == null ? "" : imageFile.toUri().toString();
+		var audioFileUrl = WebRunCore.getFileBrowserURL(audioFile);
+		var imageFileUrl = imageFile == null ? "" : WebRunCore.getUserHomeFileBrowserURL(imageFile);
 		var filename = audioFile.getName();
 
 		out.println("Load audio file :" + audioFileUrl);

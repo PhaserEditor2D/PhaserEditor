@@ -22,6 +22,7 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -35,6 +36,16 @@ public interface IBrowser {
 
 	public void setUrl(String url);
 
+	public void setText(String text);
+
+	public boolean execute(String script);
+
+	public Object createFunction(String name, IBrowserFunction function);
+
+	public interface IBrowserFunction {
+		public Object function(Object[] arguments);
+	}
+
 	public static IBrowser create(Composite parent, int style) {
 		if (PhaserEditorUI.isUsingChromium()) {
 			return createChromiumBrowser(parent, style);
@@ -46,6 +57,12 @@ public interface IBrowser {
 	private static IBrowser createDefaultBrowser(Composite parent, int style) {
 		var browser = new Browser(parent, style);
 		return new IBrowser() {
+
+			@Override
+			public boolean execute(String script) {
+				return browser.execute(script);
+			}
+
 			@Override
 			public Control getControl() {
 				return browser;
@@ -55,6 +72,23 @@ public interface IBrowser {
 			public void setUrl(String url) {
 				browser.setUrl(url);
 			}
+
+			@Override
+			public void setText(String text) {
+				browser.setText(text);
+			}
+
+			@Override
+			public Object createFunction(String name, IBrowserFunction function) {
+				return new BrowserFunction(browser, name) {
+					@Override
+					public Object function(Object[] arguments) {
+						super.function(arguments);
+						return function.function(arguments);
+					}
+				};
+			}
+
 		};
 	}
 
@@ -70,6 +104,28 @@ public interface IBrowser {
 			public void setUrl(String url) {
 				browser.setUrl(url);
 			}
+
+			@Override
+			public void setText(String text) {
+				browser.setText(text);
+			}
+
+			@Override
+			public boolean execute(String script) {
+				return browser.execute(script);
+			}
+
+			@Override
+			public Object createFunction(String name, IBrowserFunction function) {
+				return new org.eclipse.swt.chromium.BrowserFunction(browser, name) {
+					@Override
+					public Object function(Object[] arguments) {
+						super.function(arguments);
+						return function.function(arguments);
+					}
+				};
+			}
 		};
 	}
+
 }

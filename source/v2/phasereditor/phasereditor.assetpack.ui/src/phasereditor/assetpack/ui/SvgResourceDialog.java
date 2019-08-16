@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
@@ -48,12 +47,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.ui.FilteredTreeCanvas;
+import phasereditor.ui.IBrowser;
 import phasereditor.ui.ImageProxy;
 import phasereditor.ui.ImageProxyTreeCanvasItemRenderer;
 import phasereditor.ui.TreeArrayContentProvider;
 import phasereditor.ui.TreeCanvas;
-import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvasViewer;
 
 public class SvgResourceDialog extends Dialog {
 	private TreeCanvasViewer _listViewer;
@@ -103,8 +103,8 @@ public class SvgResourceDialog extends Dialog {
 		_treeCanvas = filteredTree.getTree();
 		_listViewer = createViewer();
 
-		_browser = new Browser(composite, SWT.BORDER);
-		_browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_browser = IBrowser.create(composite, SWT.BORDER);
+		_browser.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_listViewer.setContentProvider(new TreeArrayContentProvider());
 		_listViewer.setLabelProvider(new LabelProvider());
 
@@ -143,7 +143,7 @@ public class SvgResourceDialog extends Dialog {
 
 	private LabelProvider _labelProvider;
 	private Object _input;
-	private Browser _browser;
+	private IBrowser _browser;
 	private IResource _initial;
 	private String _objectName;
 	private List<Object> _multiSelection;

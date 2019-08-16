@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -39,6 +38,7 @@ import org.eclipse.ui.ISharedImages;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IBrowser;
 import phasereditor.ui.properties.TextListener;
 
 /**
@@ -114,8 +114,8 @@ public class SvgSection extends AssetPackEditorSection<SvgAssetModel> {
 		}
 
 		{
-			var browser = new Browser(comp, SWT.BORDER);
-			browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+			var browser = IBrowser.create(comp, SWT.BORDER);
+			browser.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 			addUpdate(() -> {
 				var file = flatValues_to_Object(getModels().stream().map(model -> model.getUrlFile()));
 				if (file == null) {

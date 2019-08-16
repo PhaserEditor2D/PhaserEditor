@@ -29,11 +29,12 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.audio.core.AudioCore;
+import phasereditor.ui.IBrowser;
+import phasereditor.webrun.core.WebRunCore;
 
 /**
  * @author arian
@@ -41,7 +42,7 @@ import phasereditor.audio.core.AudioCore;
  */
 public class Html5AudioPlayer extends Composite {
 
-	private Browser _browser;
+	private IBrowser _browser;
 	private static String _playerHTML;
 
 	public Html5AudioPlayer(Composite parent, int style) {
@@ -49,8 +50,8 @@ public class Html5AudioPlayer extends Composite {
 
 		setLayout(new FillLayout());
 
-		_browser = new Browser(this, SWT.None);
-		
+		_browser = IBrowser.create(this, SWT.None);
+
 		parent.addDisposeListener(e -> {
 			_browser.setText("");
 		});
@@ -69,8 +70,8 @@ public class Html5AudioPlayer extends Composite {
 
 		var imageFile = AudioCore.getSoundWavesFile(audioFile);
 
-		var audioFileUrl = audioFile.getLocation().toFile().toPath().toUri().toString();
-		var imageFileUrl = imageFile == null ? "" : imageFile.toUri().toString();
+		var audioFileUrl = WebRunCore.getFileBrowserURL(audioFile);
+		var imageFileUrl = imageFile == null ? "" : WebRunCore.getUserHomeFileBrowserURL(imageFile);
 		var filename = audioFile.getName();
 
 		out.println("Load audio file :" + audioFileUrl);
@@ -97,8 +98,8 @@ public class Html5AudioPlayer extends Composite {
 
 				.replace("$audio-url$", audioFileUrl)
 
-				.replace("$autoplay$", autoplay? "autoplay='true'" : "")
-				
+				.replace("$autoplay$", autoplay ? "autoplay='true'" : "")
+
 				.replace("$filename$", filename);
 
 		_browser.setText(html);

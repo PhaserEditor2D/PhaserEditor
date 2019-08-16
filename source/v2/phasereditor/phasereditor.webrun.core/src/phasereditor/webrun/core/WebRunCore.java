@@ -27,6 +27,7 @@ import java.net.ServerSocket;
 import java.nio.file.Path;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -57,6 +58,19 @@ public class WebRunCore {
 	public static String getProjectBrowserURL(IProject project) {
 		return getProjectBrowserURL(project, true);
 	}
+
+	public static String getFileBrowserURL(IFile file) {
+		var path = file.getFullPath().toPortableString();
+		var url = "http://localhost:" + (WebRunCore.getServerPort() + "/projects" + path);
+		url = URIUtil.encodePath(url);
+		return url;
+	}
+
+	public static String getUserHomeFileBrowserURL(Path file) {
+		var relpath = InspectCore.getUserCacheFolder().relativize(file);
+		var path = relpath.toString().replace("\\", "/");
+		return "http://localhost:" + getServerPort() + "/user-home/" + path;
+	}
 	
 	public static String getProjectBrowserURL(IProject project, boolean includeHost) {
 		IContainer webContent = ProjectCore.getWebContentFolder(project);
@@ -70,7 +84,7 @@ public class WebRunCore {
 		url = URIUtil.encodePath(url);
 		return url;
 	}
-	
+
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
@@ -124,6 +138,7 @@ public class WebRunCore {
 
 		addApiWebSocketHandler(handlerList);
 		addExtensionsHandlers(handlerList);
+		addUserHomeHandlers(handlerList);
 		addJSLibsHandler(handlerList);
 		addProjectsHandler(handlerList);
 		addExamplesHandler(handlerList);
@@ -145,6 +160,24 @@ public class WebRunCore {
 					e.getClass().getName() + ": " + e.getMessage());
 		}
 
+	}
+	
+	private static void addUserHomeHandlers(HandlerList handlerList) {
+		addStaticFilesHandler(handlerList, InspectCore.getUserCacheFolder().toString(), "/user-home");
+	}
+
+	private static void addStaticFilesHandler(HandlerList handlerList, String path, String url) {
+		out.println("Serving (" + url + ") from: " + path);
+
+		ContextHandler context = new ContextHandler(url);
+
+		ResourceHandler resourceHandler = new ResourceHandler();
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+		resourceHandler.setDirectoriesListed(true);
+		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+		resourceHandler.setResourceBase(path);
+		context.setHandler(resourceHandler);
+		handlerList.addHandler(context);
 	}
 
 	private static void addExtensionsHandlers(HandlerList handlerList) {
@@ -249,20 +282,6 @@ public class WebRunCore {
 
 		addPluginResourcesHandler(handlerList, "/plugins", InspectCore.RESOURCES_EXAMPLES_PLUGIN,
 				"phaser3-examples/public/plugins");
-	}
-
-	private static void addStaticFilesHandler(HandlerList handlerList, String path, String url) {
-		out.println("Serving (" + url + ") from: " + path);
-
-		ContextHandler context = new ContextHandler(url);
-
-		ResourceHandler resourceHandler = new ResourceHandler();
-		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
-		resourceHandler.setDirectoriesListed(true);
-		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-		resourceHandler.setResourceBase(path);
-		context.setHandler(resourceHandler);
-		handlerList.addHandler(context);
 	}
 
 	@SuppressWarnings("resource")
