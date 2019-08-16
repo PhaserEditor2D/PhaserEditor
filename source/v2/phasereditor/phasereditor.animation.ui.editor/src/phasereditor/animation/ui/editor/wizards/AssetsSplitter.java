@@ -84,7 +84,7 @@ public class AssetsSplitter {
 
 			if (obj instanceof SpritesheetAssetModel.FrameModel) {
 				name = obj.getAsset().getKey();
-				prefixes.add(name);
+				prefixes.add(_commonPrefix + name);
 			} else {
 				var newName = removeTrailingSpaces(name);
 				prefixes.add(_commonPrefix + newName);
