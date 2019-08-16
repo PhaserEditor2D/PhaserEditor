@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.IPhaserFullnames;
 import phasereditor.ui.properties.CheckListener;
 import phasereditor.ui.properties.TextToFloatListener;
 import phasereditor.ui.properties.TextToIntListener;
@@ -40,7 +41,7 @@ import phasereditor.ui.properties.TextToIntListener;
  * @author arian
  *
  */
-public class AnimationSection extends BaseAnimationSection<AnimationModel> {
+public class AnimationSection extends BaseAnimationSection<AnimationModel> implements IPhaserFullnames{
 
 	public AnimationSection(AnimationsPropertyPage page) {
 		super(page, "Animation");
@@ -61,9 +62,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		// frameRate
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Frame Rate");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.frameRate"));
+			label(comp, "Frame Rate", Animation_frameRate);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -86,10 +85,8 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		// duration
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Duration");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationFrameConfig.duration"));
-
+			label(comp, "Duration", Animation_duration);
+			
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
@@ -127,9 +124,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		// delay
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Delay");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.delay"));
+			label(comp, "Delay", Animation_delay);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -152,11 +147,8 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		// repeat
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Repeat");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeat"));
+			label(comp, "Repeat", Animation_repeat);
 
-			// here
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			new TextToIntListener(text) {
@@ -176,9 +168,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		// repeatDelay
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Repeat Delay");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
+			label(comp, "Repeat Delay", Animation_repeatDelay);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -202,7 +192,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 		{
 			var btn = new Button(comp, SWT.CHECK);
 			btn.setText("Yoyo");
-			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.repeatDelay"));
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp(Animation_yoyo));
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new CheckListener(btn) {
 
@@ -231,7 +221,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 		{
 			var btn = new Button(comp, SWT.CHECK);
-			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.showOnStart"));
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp(Animation_showOnStart));
 			btn.setText("Show On Start");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
@@ -255,7 +245,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 		{
 			var btn = new Button(comp, SWT.CHECK);
-			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.hideOnComplete"));
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp(Animation_hideOnComplete));
 			btn.setText("Hide On Complete");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;
@@ -279,7 +269,7 @@ public class AnimationSection extends BaseAnimationSection<AnimationModel> {
 
 		{
 			var btn = new Button(comp, SWT.CHECK);
-			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.skipMissedFrames"));
+			btn.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp(Animation_skipMissedFrames));
 			btn.setText("Skip Missed Frames");
 			var gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 			gd.horizontalSpan = 2;

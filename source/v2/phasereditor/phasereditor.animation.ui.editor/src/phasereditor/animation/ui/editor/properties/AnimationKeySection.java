@@ -26,18 +26,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.IPhaserFullnames;
 import phasereditor.ui.properties.TextListener;
 
 /**
  * @author arian
  *
  */
-public class AnimationKeySection extends BaseAnimationSection<AnimationModel> {
+public class AnimationKeySection extends BaseAnimationSection<AnimationModel> implements IPhaserFullnames {
 
 	public AnimationKeySection(AnimationsPropertyPage page) {
 		super(page, "Key");
@@ -63,9 +62,7 @@ public class AnimationKeySection extends BaseAnimationSection<AnimationModel> {
 		// key
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Key");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationConfig.key"));
+			label(comp, "Key", Animation_key);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

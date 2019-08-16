@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.IPhaserFullnames;
 import phasereditor.ui.properties.TextToIntListener;
 
 /**
@@ -40,7 +40,7 @@ import phasereditor.ui.properties.TextToIntListener;
  *
  */
 @SuppressWarnings("boxing")
-public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameModel> {
+public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameModel> implements IPhaserFullnames {
 
 	public AnimationFrameSection(AnimationsPropertyPage page) {
 		super(page, "Animation Frame");
@@ -66,10 +66,7 @@ public class AnimationFrameSection extends BaseAnimationSection<AnimationFrameMo
 		// duration
 
 		{
-			var label = new Label(comp, SWT.NONE);
-			label.setText("Duration");
-			label.setToolTipText(InspectCore.getPhaserHelp().getMemberHelp("AnimationFrameConfig.duration"));
-
+			label(comp, "Duration", AnimationFrame_duration);
 			Text text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			new TextToIntListener(text) {

@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 import phasereditor.animation.ui.editor.AnimationOperation;
 import phasereditor.animation.ui.editor.AnimationsEditor;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -40,6 +41,11 @@ public abstract class BaseAnimationSection<T> extends FormPropertySection<T> {
 	public BaseAnimationSection(AnimationsPropertyPage page, String name) {
 		super(name);
 		_page = page;
+	}
+
+	@Override
+	protected String getHelp(String helpHint) {
+		return helpHint.startsWith("*") ? helpHint : InspectCore.getPhaserHelp().getMemberHelp(helpHint);
 	}
 
 	@Override
