@@ -108,9 +108,12 @@
 			sprites = document.getElementById("sprites");
 		});
 
-		function canplay() {
-			_log("Can play.");
-			_onAudioReady();	
+		function canplay() {			
+			if (!audioReady) {
+				audioReady = true;
+				_log("_onAudioReady()");
+				_onAudioReady();
+			}			
 		}
 
 		function update() {			

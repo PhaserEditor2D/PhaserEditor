@@ -144,8 +144,7 @@ public class Html5AudioSpritePlayer extends Composite {
 	}
 
 	public void setTimePartitionSelection(int selectedPartition) {
-		var script = "selectSprite(" + selectedPartition + ");";
-
+		var script = "if (window.selectSprite) { selectSprite(" + selectedPartition + "); }";
 		_browser.execute(script);
 	}
 
@@ -164,9 +163,7 @@ public class Html5AudioSpritePlayer extends Composite {
 
 		out.println(script);
 
-		var result = _browser.execute(script);
-
-		out.println(result);
+		_browser.execute(script);
 	}
 
 }
