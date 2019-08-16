@@ -23,7 +23,6 @@ package phasereditor.inspect.ui;
 
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -31,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.ui.IBrowser;
 import phasereditor.ui.info.BaseInformationControl;
 
 /**
@@ -45,13 +45,13 @@ public class PhaserJsdocInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new Browser(parentComp, SWT.NONE);
+		return IBrowser.create(parentComp, SWT.NONE).getControl();
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
 		IJsdocProvider provider = Adapters.adapt(model, IJsdocProvider.class);
-		Browser browser = (Browser) control;
+		var browser = IBrowser.get(control);
 		browser.setText(JsdocRenderer.wrapDocBody(provider.getJsdoc()));
 	}
 

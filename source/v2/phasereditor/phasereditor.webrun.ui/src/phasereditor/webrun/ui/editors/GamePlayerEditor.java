@@ -13,12 +13,14 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import phasereditor.ui.IBrowser;
 import phasereditor.webrun.ui.GamePlayerEditorInput;
 
 @SuppressWarnings({ "boxing" })
@@ -34,8 +36,8 @@ public class GamePlayerEditor extends EditorPart {
 		}
 	}
 
-	private IGameBrowser _browser;
-	private Composite _browserComp;
+	private IBrowser _browser;
+	private Control _browserComp;
 	private Composite _parentComposite;
 
 	public GamePlayerEditor() {
@@ -82,7 +84,7 @@ public class GamePlayerEditor extends EditorPart {
 		parent.setLayout(gl_parentComposite);
 
 		_browser = createBrowserImpl(parent);
-		_browserComp= _browser.getComposite();
+		_browserComp = _browser.getControl();
 		_browserComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_parentComposite = parent;
@@ -90,12 +92,12 @@ public class GamePlayerEditor extends EditorPart {
 		afterCreateWidgets();
 	}
 
-	private static IGameBrowser createBrowserImpl(Composite parent) {
-		return new NativeBrowser(parent, SWT.NONE);
+	private static IBrowser createBrowserImpl(Composite parent) {
+		return IBrowser.create(parent, SWT.NONE);
 	}
 
 	private void afterCreateWidgets() {
-		_browserComp = _browser.getComposite();
+		_browserComp = _browser.getControl();
 
 		Display.getDefault().asyncExec(() -> {
 			_browser.setUrl(getEditorInput().getUrl());

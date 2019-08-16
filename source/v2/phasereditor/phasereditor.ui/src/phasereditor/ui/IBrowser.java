@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
+import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -41,6 +42,8 @@ public interface IBrowser {
 	public boolean execute(String script);
 
 	public Object createFunction(String name, IBrowserFunction function);
+	
+	public void addLocationListener(LocationListener listener);
 
 	public interface IBrowserFunction {
 		public Object function(Object[] arguments);
@@ -56,7 +59,7 @@ public interface IBrowser {
 
 	private static IBrowser createDefaultBrowser(Composite parent, int style) {
 		var browser = new Browser(parent, style);
-		return new IBrowser() {
+		var browser2 = new IBrowser() {
 
 			@Override
 			public boolean execute(String script) {
@@ -89,12 +92,21 @@ public interface IBrowser {
 				};
 			}
 
+			@Override
+			public void addLocationListener(LocationListener listener) {
+				browser.addLocationListener(listener);
+			}
+
 		};
+
+		browser.setData("phasereditor.IBrowser", browser2);
+
+		return browser2;
 	}
 
 	private static IBrowser createChromiumBrowser(Composite parent, int style) {
 		var browser = new org.eclipse.swt.chromium.Browser(parent, style);
-		return new IBrowser() {
+		var browser2 = new IBrowser() {
 			@Override
 			public Control getControl() {
 				return browser;
@@ -125,7 +137,20 @@ public interface IBrowser {
 					}
 				};
 			}
+
+			@Override
+			public void addLocationListener(LocationListener listener) {
+				browser.addLocationListener(listener);
+			}
 		};
+
+		browser.setData("phasereditor.IBrowser", browser2);
+
+		return browser2;
+	}
+
+	public static IBrowser get(Control control) {
+		return (IBrowser) control.getData("phasereditor.IBrowser");
 	}
 
 }

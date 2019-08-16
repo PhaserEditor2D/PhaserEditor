@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.HtmlTextureAssetModel;
+import phasereditor.ui.IBrowser;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
@@ -55,7 +56,7 @@ public class HtmlPreviewSection extends FormPropertySection<HtmlTextureAssetMode
 	@Override
 	public Control createContent(Composite parent) {
 
-		var browser = new Browser(parent, SWT.BORDER);
+		var browser = IBrowser.create(parent, SWT.BORDER);
 
 		addUpdate(() -> {
 			var model = getModels().get(0);
@@ -71,7 +72,7 @@ public class HtmlPreviewSection extends FormPropertySection<HtmlTextureAssetMode
 			}
 		});
 
-		return browser;
+		return browser.getControl();
 	}
 
 }
