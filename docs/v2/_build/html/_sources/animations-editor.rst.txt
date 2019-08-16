@@ -241,7 +241,7 @@ The editor presents the animations in two layouts:
 Playing the animations
 ----------------------
 
-When you select just one animation, the `main toolbar <workbench.html#main-toolbar>`_ shows the buttons to play, pause or stop the selected animation. When the animation is playing, the `timeline <#animation-timeline>`_ shows a guide-line (or cursor) with the progress of the animation. You can press the ``Space`` key to play/pause the animation.
+When you select just one animation, the `main toolbar <workbench.html#main-toolbar>`_ shows the buttons to play, pause or stop the selected animation. When the animation is playing, the `timeline <#animation-timeline>`_ shows a `vertical line <#timeline-progress-line>`_ (or cursor) with the progress of the animation. You can press the ``Space`` key to play/pause the animation.
 
 .. image:: images/animations-editor/animations-playback-one-animation.png
     :alt: Animation playback.
@@ -260,27 +260,111 @@ You can change the properties of many animations or frames at the same time.
 
 **Animation properties**
 
-==================== ======================
-pepe                 amarra cintas
-lula                 cuenta pulgas
-==================== ======================
+======================== ======================
+**Key**                  The key that the animation will be associated with. i.e. sprite.animations.play(key)
+**Frame Rate**           The frame rate of playback in frames per second (default 24 if duration is null)
+**Duration**             How long the animation should play for in milliseconds. If not given its derived from frameRate.
+**Delay**                Delay before starting playback. Value given in milliseconds.
+**Repeat**               Number of times to repeat the animation (-1 for infinity)
+**Repeat Delay**         Delay before the animation repeats. Value given in milliseconds.
+**Yoyo**                 Should the animation yoyo? (reverse back down to the start) before repeating?
+**Show On Start**        Should sprite.visible = true when the animation starts to play?
+**Hide On Complete**     Should sprite.visible = false when the animation finishes?
+**Skip Missed Frames**   Skip frames if the time lags, or always advanced anyway?
+======================== ======================
 
 
 Animation frame properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+When you select a frame the |PropertiesView|_ show its properties and you can change some of them.
+
+============================== ===========================================
+**Duration**                   Additional time (in ms) that this frame should appear for during playback.
+*Real Duration*                It is a |PhaserEditor|_, read-only property. It shows the total duration of the frame (the animation `frameRate` duration plus the extra time set in the `duration` property).
+*Texture Key*                  It is a |PhaserEditor|_, read-only property. It shows the key of the frame texture.
+============================== ===========================================
+
+In addition, the |PropertiesView|_ shows a preview of the frame texture.
+
+.. image:: images/animations-editor/animations-frame-properties.png
+  :alt: Animations properties.
+
 Animation timeline
 ------------------
 
+When you select a single animation, the |AnimationsEditor|_ shows a preview canvas and a timeline. The preview canvas displays the animation when you play it, the timeline shows the animation frames.
+
+The timeline allows to add more frames to the animation, delete the frames or modify the frame properties.
+
+Adding frames to the timeline
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add frames to the timeline you can drag texture frames (atlases, atlas frames, sprite-sheets, sprite-sheet frames, images) from the `Blocks view`_ or the |AssetsView|_ and drop them into the timeline.
+
+If the timeline contains frames, you can insert the new frames at any position.
+
+Also, you can drop the frames on the animation preview canvas, in that case the frames are appended to the timeline.
+
+.. image:: images/animations-editor/animations-insert-frames-timeline.png
+  :alt: Insert frames to the timeline.
+
+Other timeline operations
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can modify the timeline in different ways:
+
+* Change the order of frames by dragging them.
+
+* Delete the selected frames (``Delete`` key or **Delete** context menu option).
+
+* Zoom in/out of the images, by rolling the mouse wheel while pressing one of these keys: ``Ctrl``, ``Alt`` or ``Shift``.
+
+Timeline progress-line
+~~~~~~~~~~~~~~~~~~~~~~
+
+When the animation is `playing <#playing-the-animations>`_ the timeline shows a vertical line that indicates the progress of the animation.
+
+.. image:: images/animations-editor/animations-timeline-playing.png
+  :alt: Timeline cursor.
 
 Blocks view 
 -----------
 
+The `Blocks view`_ is a `general purpose view <workbench.html#blocks-view>`_ that connects with the |AnimationsEditor|_ and shows all the available `Asset Pack keys <asset-pack-editor.html>`_ related to textures and texture frames.
+
+You can drag the textures from the `Blocks view`_ and drop them on: 
+
+* The |AnimationsEditor|_ center area to `create multiple animations <#automatic-creation-of-animations>`_ or `append the frames <#adding-frames-to-the-timeline>`_ to a selected animation.
+
+* The `timeline <#animation-timeline>`_ to `insert new frames <#adding-frames-to-the-timeline>`_. 
+
+* The `Outline view`_ to `create multiple animations`_.
+
+The `Blocks view`_ allows to `zoom in/out and filter the content <workbench.html#other-blocks-view-features>`_ by its name.
 
 Outline view
 ------------
 
+The `Outline view`_ is a `workbench view <workbench.html#outline-view>`_ that connects with the |AnimationsEditor|_ and lists all the animations.
 
+You can select one or many animations, to play them or `modify their properties <#animation-properties>`_. Also, you can delete the selected frames by pressing the ``Delete`` key or using the context menu.
+
+Other function of the `Outline view`_ is as a drop-place to `create new animations <#create-the-animations-by-dropping-frames>`_, by dropping frames on it.
+
+This view, like many other visual elements of the IDE, can be zoomed in/out (mouse wheel plus one of the keys ``Ctrl``, ``Alt`` or ``Shift``) and you can filter its content by the key of the animations.
+
+.. image:: images/animations-editor/animations-outline-view.png
+  :alt: Outline view.
 
 Keyboard shortcuts
 ------------------
+
+These are the keyboard shortcuts of the |AnimationsEditor|_:
+
+=================================== ==========
+Delete animations or frames         ``Delete``
+Play/pause the animation            ``Space``
+Undo                                ``Ctrl+Z``
+Redo                                ``Ctrl+Y``
+=================================== ==========

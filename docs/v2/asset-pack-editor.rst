@@ -67,6 +67,28 @@ To create a new **Asset Pack** file:
 * Or click on the main toolbar's `New <workbench.html#new-button>`_ button, and select **Asset Pack File**.
 
 
+Asset Pack Editor layout
+------------------------
+
+The |AssetPackEditor|_ layout is focused on provides a very visual feedback of the file configurations. The editor is split in sections, and each section is dedicated to a particular file type. Inside the section, the file configurations are shown in a row layout.
+
+These are common operations you can perform:
+
+* Add file configurations, by pressing the "plus" icon of the section title.
+
+* Select multiple file configurations, by clicking on them.
+
+* Delete the selected file configurations.
+
+* Scroll up/down the content.
+
+* Zoom in/out the images, by rolling the mouse wheel while pressing one of the keys ``Ctrl``, ``Alt`` or ``Shift``.
+
+The `Outline view`_ provides an hierarchical presentation of the editor content.
+
+.. image:: images/asset-pack-editor/asset-pack-editor-layout.png
+  :alt: Asset Pack Editor layout.
+
 Adding file configurations
 --------------------------
 
@@ -83,12 +105,12 @@ These are the steps:
 
 #. Press the **Add File Key** button of the toolbar.
  
- .. image:: images/asset-pack-editor/add-new-file-button.png
+ .. image:: images/asset-pack-editor/asset-pack-editor-add-new-file-button.png
    :alt: Add New File Key button.
 
 #. It opens a dialog with all the file types, select the type of file you want to add.
 
- .. image:: images/asset-pack-editor/select-file-type-dialog.png
+ .. image:: images/asset-pack-editor/asset-pack-editor-select-file-type-dialog.png
    :alt: Select the file type.
 
 #. When you select a file type, it opens a dialog with a list of files selected following rules. Select the files you want to import.
@@ -100,13 +122,13 @@ These are the steps:
  * Files that are not used by any pack file in the project are highlighted (in bold).
 
 
- .. image:: images/asset-pack-editor/select-files-to-import-dialog.png
+ .. image:: images/asset-pack-editor/asset-pack-editor-select-files-to-import-dialog.png
    :alt: Files dialog.
 
 #. Change the properties of the file configurations in the `Properties view <workbench.html#properties-view>`_.
 
 
- .. image:: images/asset-pack-editor/file-edit-properties.png
+ .. image:: images/asset-pack-editor/asset-pack-editor-file-edit-properties.png
    :alt: Edit properties of a file configuration.
 
 The context menu also has the option **Add File Key**.
@@ -139,7 +161,7 @@ The workflow is the following:
 
 #. Select one of the options listed in the `Properties view`_ to import the files.
 
- .. image:: images/asset-pack-editor/import-files-from-blocks-view.png
+ .. image:: images/asset-pack-editor/asset-pack-editor-import-files-from-blocks-view.png
    :alt: Import files from Blocks view.
 
 #. Edit the new file configurations in the `Properties view`_.
@@ -154,7 +176,7 @@ This process to guess the type of files provides three groups of options:
 
 #. The last option is not associated with any file type, it opens a dialog with all the file types and you should select the type you consider is the indicated from the selected files.
 
-.. image:: images/asset-pack-editor/import-files-from-blocks-view-options.png
+.. image:: images/asset-pack-editor/asset-pack-editor-import-files-from-blocks-view-options.png
   :alt: The different options to import the files.
 
 Importing JavaScript files
@@ -180,7 +202,7 @@ So the same Phaser_ framework can be used as a JavaScript packing/loading tool, 
 
 By the way, when you add a JavaScript file to an **Asset Pack** file, and that script is associated with a |SceneEditor|_ file (``.scene``), then the **Asset Pack Editor** shows a screenshot of the scene, as file icon, for easy identification.
 
-.. image:: images/asset-pack-editor/asset-pack-scene-scripts.png
+.. image:: images/asset-pack-editor/asset-pack-editor-scene-scripts.png
   :alt: Scene JavaScript files are displayed with a scene screenshot.
 
 
@@ -218,7 +240,7 @@ Outline view
 
 The general purpose `Outline view <workbench.html#outline-view>`_ connects with the active **Asset Pack Editor** and shows all the file configurations grouped by its type. In case of complex files, like atlas or sprite-sheet files, it shows the frames too.
 
-.. image:: images/asset-pack-editor/asset-pack-outline-view.png
+.. image:: images/asset-pack-editor/asset-pack-editor-outline-view.png
   :alt: Outline view.
 
 
@@ -231,7 +253,7 @@ In addition to property editors, in some cases, the `Properties view`_ shows a p
 
 This preview section is shown when you select a file key in other parts of the IDE, like the `Assets view`_, the |AnimationsEditor|_ and the `Project view <workbench.html#project-view>`_.
 
-.. image:: images/asset-pack-editor/asset-pack-animation-preview.png
+.. image:: images/asset-pack-editor/asset-pack-editor-animation-preview.png
   :alt: Animation preview.
 
 Common operations

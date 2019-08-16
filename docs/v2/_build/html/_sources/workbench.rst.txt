@@ -479,6 +479,9 @@ The content in the **Blocks view** could be nested. It can show **terminal** and
 
 Blocks can be painted with a solid background. Its color depends on the active editor interests, but usually, the same color is assigned to blocks of the same "type".
 
+Other Blocks view features
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Other key aspects of this view are:
 
 * You can perform a quick search for the element names.

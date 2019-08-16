@@ -127,7 +127,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#animation-frame-properties">5.5.1&nbsp;&nbsp;&nbsp;Animation frame properties</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#animation-timeline">5.6&nbsp;&nbsp;&nbsp;Animation timeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#animation-timeline">5.6&nbsp;&nbsp;&nbsp;Animation timeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-frames-to-the-timeline">5.6.1&nbsp;&nbsp;&nbsp;Adding frames to the timeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-timeline-operations">5.6.2&nbsp;&nbsp;&nbsp;Other timeline operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeline-progress-line">5.6.3&nbsp;&nbsp;&nbsp;Timeline progress-line</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#blocks-view">5.7&nbsp;&nbsp;&nbsp;Blocks view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#outline-view">5.8&nbsp;&nbsp;&nbsp;Outline view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">5.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts</a></li>
@@ -361,7 +366,7 @@
 </div>
 <div class="section" id="playing-the-animations">
 <h2>5.4&nbsp;&nbsp;&nbsp;Playing the animations<a class="headerlink" href="#playing-the-animations" title="Permalink to this headline">¶</a></h2>
-<p>When you select just one animation, the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows the buttons to play, pause or stop the selected animation. When the animation is playing, the <a class="reference external" href="#animation-timeline">timeline</a> shows a guide-line (or cursor) with the progress of the animation. You can press the <code class="docutils literal notranslate"><span class="pre">Space</span></code> key to play/pause the animation.</p>
+<p>When you select just one animation, the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows the buttons to play, pause or stop the selected animation. When the animation is playing, the <a class="reference external" href="#animation-timeline">timeline</a> shows a <a class="reference external" href="#timeline-progress-line">vertical line</a> (or cursor) with the progress of the animation. You can press the <code class="docutils literal notranslate"><span class="pre">Space</span></code> key to play/pause the animation.</p>
 <img alt="Animation playback." src="_images/animations-playback-one-animation.png" />
 <p>When you select multiple animations, the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows the buttons to play or stop all the animations at the same time.</p>
 <img alt="Multiple animations playing." src="_images/animations-playing-multiple.png" />
@@ -373,33 +378,134 @@
 <p><strong>Animation properties</strong></p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="48%" />
-<col width="52%" />
+<col width="20%" />
+<col width="80%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td>pepe</td>
-<td>amarra cintas</td>
+<tr class="row-odd"><td><strong>Key</strong></td>
+<td>The key that the animation will be associated with. i.e. sprite.animations.play(key)</td>
 </tr>
-<tr class="row-even"><td>lula</td>
-<td>cuenta pulgas</td>
+<tr class="row-even"><td><strong>Frame Rate</strong></td>
+<td>The frame rate of playback in frames per second (default 24 if duration is null)</td>
+</tr>
+<tr class="row-odd"><td><strong>Duration</strong></td>
+<td>How long the animation should play for in milliseconds. If not given its derived from frameRate.</td>
+</tr>
+<tr class="row-even"><td><strong>Delay</strong></td>
+<td>Delay before starting playback. Value given in milliseconds.</td>
+</tr>
+<tr class="row-odd"><td><strong>Repeat</strong></td>
+<td>Number of times to repeat the animation (-1 for infinity)</td>
+</tr>
+<tr class="row-even"><td><strong>Repeat Delay</strong></td>
+<td>Delay before the animation repeats. Value given in milliseconds.</td>
+</tr>
+<tr class="row-odd"><td><strong>Yoyo</strong></td>
+<td>Should the animation yoyo? (reverse back down to the start) before repeating?</td>
+</tr>
+<tr class="row-even"><td><strong>Show On Start</strong></td>
+<td>Should sprite.visible = true when the animation starts to play?</td>
+</tr>
+<tr class="row-odd"><td><strong>Hide On Complete</strong></td>
+<td>Should sprite.visible = false when the animation finishes?</td>
+</tr>
+<tr class="row-even"><td><strong>Skip Missed Frames</strong></td>
+<td>Skip frames if the time lags, or always advanced anyway?</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="animation-frame-properties">
 <h3>5.5.1&nbsp;&nbsp;&nbsp;Animation frame properties<a class="headerlink" href="#animation-frame-properties" title="Permalink to this headline">¶</a></h3>
+<p>When you select a frame the <a class="reference external" href="workbench.html#properties-view">Properties view</a> show its properties and you can change some of them.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Duration</strong></td>
+<td>Additional time (in ms) that this frame should appear for during playback.</td>
+</tr>
+<tr class="row-even"><td><em>Real Duration</em></td>
+<td>It is a <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>, read-only property. It shows the total duration of the frame (the animation <cite>frameRate</cite> duration plus the extra time set in the <cite>duration</cite> property).</td>
+</tr>
+<tr class="row-odd"><td><em>Texture Key</em></td>
+<td>It is a <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>, read-only property. It shows the key of the frame texture.</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> shows a preview of the frame texture.</p>
+<img alt="Animations properties." src="_images/animations-frame-properties.png" />
 </div>
 </div>
 <div class="section" id="animation-timeline">
 <h2>5.6&nbsp;&nbsp;&nbsp;Animation timeline<a class="headerlink" href="#animation-timeline" title="Permalink to this headline">¶</a></h2>
+<p>When you select a single animation, the <a class="reference external" href="animations-editor.html">Animations Editor</a> shows a preview canvas and a timeline. The preview canvas displays the animation when you play it, the timeline shows the animation frames.</p>
+<p>The timeline allows to add more frames to the animation, delete the frames or modify the frame properties.</p>
+<div class="section" id="adding-frames-to-the-timeline">
+<h3>5.6.1&nbsp;&nbsp;&nbsp;Adding frames to the timeline<a class="headerlink" href="#adding-frames-to-the-timeline" title="Permalink to this headline">¶</a></h3>
+<p>To add frames to the timeline you can drag texture frames (atlases, atlas frames, sprite-sheets, sprite-sheet frames, images) from the <a class="reference internal" href="#blocks-view">Blocks view</a> or the <a class="reference external" href="workbench.html#assets-view">Assets view</a> and drop them into the timeline.</p>
+<p>If the timeline contains frames, you can insert the new frames at any position.</p>
+<p>Also, you can drop the frames on the animation preview canvas, in that case the frames are appended to the timeline.</p>
+<img alt="Insert frames to the timeline." src="_images/animations-insert-frames-timeline.png" />
+</div>
+<div class="section" id="other-timeline-operations">
+<h3>5.6.2&nbsp;&nbsp;&nbsp;Other timeline operations<a class="headerlink" href="#other-timeline-operations" title="Permalink to this headline">¶</a></h3>
+<p>You can modify the timeline in different ways:</p>
+<ul class="simple">
+<li>Change the order of frames by dragging them.</li>
+<li>Delete the selected frames (<code class="docutils literal notranslate"><span class="pre">Delete</span></code> key or <strong>Delete</strong> context menu option).</li>
+<li>Zoom in/out of the images, by rolling the mouse wheel while pressing one of these keys: <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code>, <code class="docutils literal notranslate"><span class="pre">Alt</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="timeline-progress-line">
+<h3>5.6.3&nbsp;&nbsp;&nbsp;Timeline progress-line<a class="headerlink" href="#timeline-progress-line" title="Permalink to this headline">¶</a></h3>
+<p>When the animation is <a class="reference external" href="#playing-the-animations">playing</a> the timeline shows a vertical line that indicates the progress of the animation.</p>
+<img alt="Timeline cursor." src="_images/animations-timeline-playing.png" />
+</div>
 </div>
 <div class="section" id="blocks-view">
 <h2>5.7&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="#blocks-view">Blocks view</a> is a <a class="reference external" href="workbench.html#blocks-view">general purpose view</a> that connects with the <a class="reference external" href="animations-editor.html">Animations Editor</a> and shows all the available <a class="reference external" href="asset-pack-editor.html">Asset Pack keys</a> related to textures and texture frames.</p>
+<p>You can drag the textures from the <a class="reference internal" href="#blocks-view">Blocks view</a> and drop them on:</p>
+<ul class="simple">
+<li>The <a class="reference external" href="animations-editor.html">Animations Editor</a> center area to <a class="reference external" href="#automatic-creation-of-animations">create multiple animations</a> or <a class="reference external" href="#adding-frames-to-the-timeline">append the frames</a> to a selected animation.</li>
+<li>The <a class="reference external" href="#animation-timeline">timeline</a> to <a class="reference external" href="#adding-frames-to-the-timeline">insert new frames</a>.</li>
+<li>The <a class="reference internal" href="#outline-view">Outline view</a> to <a class="reference external" href="#automatic-creation-of-animations">create multiple animations</a>.</li>
+</ul>
+<p>The <a class="reference internal" href="#blocks-view">Blocks view</a> allows to <a class="reference external" href="workbench.html#other-blocks-view-features">zoom in/out and filter the content</a> by its name.</p>
 </div>
 <div class="section" id="outline-view">
 <h2>5.8&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="#outline-view">Outline view</a> is a <a class="reference external" href="workbench.html#outline-view">workbench view</a> that connects with the <a class="reference external" href="animations-editor.html">Animations Editor</a> and lists all the animations.</p>
+<p>You can select one or many animations, to play them or <a class="reference external" href="#animation-properties">modify their properties</a>. Also, you can delete the selected frames by pressing the <code class="docutils literal notranslate"><span class="pre">Delete</span></code> key or using the context menu.</p>
+<p>Other function of the <a class="reference internal" href="#outline-view">Outline view</a> is as a drop-place to <a class="reference external" href="#create-the-animations-by-dropping-frames">create new animations</a>, by dropping frames on it.</p>
+<p>This view, like many other visual elements of the IDE, can be zoomed in/out (mouse wheel plus one of the keys <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code>, <code class="docutils literal notranslate"><span class="pre">Alt</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code>) and you can filter its content by the key of the animations.</p>
+<img alt="Outline view." src="_images/animations-outline-view.png" />
 </div>
 <div class="section" id="keyboard-shortcuts">
 <h2>5.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
+<p>These are the keyboard shortcuts of the <a class="reference external" href="animations-editor.html">Animations Editor</a>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="78%" />
+<col width="22%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Delete animations or frames</td>
+<td><code class="docutils literal notranslate"><span class="pre">Delete</span></code></td>
+</tr>
+<tr class="row-even"><td>Play/pause the animation</td>
+<td><code class="docutils literal notranslate"><span class="pre">Space</span></code></td>
+</tr>
+<tr class="row-odd"><td>Undo</td>
+<td><code class="docutils literal notranslate"><span class="pre">Ctrl+Z</span></code></td>
+</tr>
+<tr class="row-even"><td>Redo</td>
+<td><code class="docutils literal notranslate"><span class="pre">Ctrl+Y</span></code></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
