@@ -41,7 +41,7 @@ public interface IPhaserFullnames {
 	String Animation_skipMissedFrames = "Phaser.Types.Animations.Animation.skipMissedFrames";
 
 	String AnimationFrame_key = "Phaser.Types.Animations.AnimationFrame.key";
-	String AnimationFrame_duration = "Phaser.Types.Animations.AnimationFrame.duration";
+	String AnimationFrame_duration = "Phaser.Types.Animations.JSONAnimationFrame.duration";
 
 	// Loader
 
