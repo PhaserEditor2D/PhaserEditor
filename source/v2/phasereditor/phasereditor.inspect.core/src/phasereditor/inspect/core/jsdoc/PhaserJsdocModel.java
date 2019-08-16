@@ -50,6 +50,8 @@ import phasereditor.inspect.core.InspectCore;
 
 public class PhaserJsdocModel implements Serializable {
 
+	public static final String HELP_NOT_FOUND = "<Help not found>";
+
 	private static final long serialVersionUID = 1L;
 
 	private transient static PhaserJsdocModel _instance;
@@ -388,7 +390,7 @@ public class PhaserJsdocModel implements Serializable {
 				String memberName = member.getName();
 				if (!subTypeMap.containsKey(memberName)) {
 					// don't add the inherited members to the subtypes.
-//					subTypeMap.put(memberName, member);
+					// subTypeMap.put(memberName, member);
 					inheritedMap.add(member);
 				}
 			}
@@ -664,7 +666,7 @@ public class PhaserJsdocModel implements Serializable {
 		if (kind.equals("namespace")) {
 
 			String longname = obj.getString("longname");
-			
+
 			if (_elementsUsedAsBaseClass.contains(longname)) {
 				return;
 			}
@@ -885,10 +887,31 @@ public class PhaserJsdocModel implements Serializable {
 		return argTypes;
 	}
 
+	/**
+	 * Get the jsdoc of the fullname of an API element. You can get the help of a
+	 * method arguments using this syntax:
+	 * 
+	 * <pre>
+	 * getMemberHelp("Path.To.method(argName)");
+	 * </pre>
+	 */
 	public String getMemberHelp(String memberFullName) {
+
+		try {
+			if (memberFullName.endsWith(")")) {
+				var i = memberFullName.indexOf("(");
+				var method = memberFullName.substring(0, i);
+				var arg = memberFullName.substring(i + 1, memberFullName.length() - 1);
+				return getMethodArgHelp(method, arg);
+			}
+		} catch (Exception e) {
+			InspectCore.logError(e);
+		}
+
 		IPhaserMember member = _membersMap.get(memberFullName);
+
 		if (member == null) {
-			return "<No help available>";
+			return HELP_NOT_FOUND;
 		}
 		return member.getHelp();
 	}
@@ -908,6 +931,6 @@ public class PhaserJsdocModel implements Serializable {
 				return arg.getHelp();
 			}
 		}
-		return "<No help available>";
+		return HELP_NOT_FOUND;
 	}
 }
