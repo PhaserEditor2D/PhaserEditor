@@ -10,14 +10,6 @@ Miscellaneous
 
 A chapter with different topics.
 
-Optimize PNG images
--------------------
-
-
-Build-in web server
--------------------
-
-
 
 Elements preview
 ----------------
@@ -42,3 +34,14 @@ Audio preview
 Animations preview
 ~~~~~~~~~~~~~~~~~~
 
+
+WebView implementation
+----------------------
+
+
+Built-in web server
+-------------------
+
+
+Optimize PNG images
+-------------------
