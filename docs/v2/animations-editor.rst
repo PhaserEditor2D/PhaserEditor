@@ -261,15 +261,15 @@ You can change the properties of many animations or frames at the same time.
 **Animation properties**
 
 ======================== ======================
-**Key**                  The key that the animation will be associated with. i.e. sprite.animations.play(key)
+**Key**                  The key that the animation will be associated with. i.e. ``sprite.animations.play(key)``.
 **Frame Rate**           The frame rate of playback in frames per second (default 24 if duration is null)
-**Duration**             How long the animation should play for in milliseconds. If not given its derived from frameRate.
+**Duration**             How long the animation should play for in milliseconds. If not given its derived from ``frameRate``.
 **Delay**                Delay before starting playback. Value given in milliseconds.
 **Repeat**               Number of times to repeat the animation (-1 for infinity)
 **Repeat Delay**         Delay before the animation repeats. Value given in milliseconds.
 **Yoyo**                 Should the animation yoyo? (reverse back down to the start) before repeating?
-**Show On Start**        Should sprite.visible = true when the animation starts to play?
-**Hide On Complete**     Should sprite.visible = false when the animation finishes?
+**Show On Start**        Should ``sprite.visible = true`` when the animation starts to play?
+**Hide On Complete**     Should ``sprite.visible = false`` when the animation finishes?
 **Skip Missed Frames**   Skip frames if the time lags, or always advanced anyway?
 ======================== ======================
 
