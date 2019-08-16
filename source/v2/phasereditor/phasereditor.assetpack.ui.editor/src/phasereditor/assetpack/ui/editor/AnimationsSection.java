@@ -35,9 +35,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -65,7 +63,7 @@ public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetMod
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(AssetType.animation, "url"));
+			label(comp, "URL", Load_animation_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -116,7 +114,7 @@ public class AnimationsSection extends AssetPackEditorSection<AnimationsAssetMod
 
 		{
 			// dataKey
-			label(comp, "Data Key", AssetModel.getHelp(AssetType.animation));
+			label(comp, "Data Key", Load_animation_dataKey);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {

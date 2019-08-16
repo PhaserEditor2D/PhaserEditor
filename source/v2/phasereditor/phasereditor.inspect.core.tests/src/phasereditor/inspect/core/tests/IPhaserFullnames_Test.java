@@ -22,12 +22,14 @@
 package phasereditor.inspect.core.tests;
 
 import static java.lang.System.out;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotEquals;
 
 import java.nio.file.Paths;
 
 import org.junit.Test;
 
+import phasereditor.assetpack.core.AssetFactory;
+import phasereditor.assetpack.core.AssetFactory.AbstractFileAssetFactory;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IPhaserFullnames;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
@@ -46,10 +48,19 @@ public class IPhaserFullnames_Test {
 
 		var fields = IPhaserFullnames.class.getDeclaredFields();
 		for (var field : fields) {
-			var fullname = field.get(IPhaserFullnames.class);
+			var fullname = (String) field.get(IPhaserFullnames.class);
 			out.println("IPhaserFullnames_Test -> " + fullname);
-			var member = docsModel.getMembersMap().get(fullname);
-			assertNotNull("Get member " + fullname, member);
+			var help = docsModel.getMemberHelp(fullname);
+			assertNotEquals(PhaserJsdocModel.HELP_NOT_FOUND, help);
+		}
+
+		for (var factory : AssetFactory.getFactories()) {
+			if (factory instanceof AbstractFileAssetFactory) {
+				var type = factory.getType();
+				out.println(type.name() + " -> url");
+				var help = docsModel.getMemberHelp("Phaser.Loader.LoaderPlugin." + type.name() + "(url)");
+				assertNotEquals(PhaserJsdocModel.HELP_NOT_FOUND, help);
+			}
 		}
 	}
 

@@ -30,10 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -60,7 +57,7 @@ public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 		{
 			// url
-			label(comp, "URL", AssetModel.getHelp(AssetType.image, "url"));
+			label(comp, "URL", Load_image_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -106,7 +103,7 @@ public class ImageSection extends AssetPackEditorSection<ImageAssetModel> {
 
 		{
 			// normal map
-			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.ImageFileConfig.normalMap"));
+			label(comp, "Normal Map", Load_image_normalMap);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

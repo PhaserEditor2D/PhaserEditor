@@ -37,7 +37,6 @@ import org.eclipse.ui.ISharedImages;
 import phasereditor.assetpack.core.AbstractFileAssetModel;
 import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetFactory.AbstractFileAssetFactory;
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
@@ -76,7 +75,7 @@ public class FileSection extends AssetPackEditorSection<AbstractFileAssetModel> 
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(_type, "url"));
+			label(comp, "URL", "Phaser.Loader.LoaderPlugin." + _type.name() + "(url)");
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

@@ -34,12 +34,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.atlas.core.AtlasCore;
-import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -68,7 +65,7 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 			// textureURL
 
-			label(comp, "Texture URL", AssetModel.getHelp(AssetType.atlas, "textureURL"));
+			label(comp, "Texture URL", Load_atlas_textureURL);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -118,7 +115,7 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 			var atlasType = getModels().get(0).getType();
 
-			label(comp, "Atlas URL", AssetModel.getHelp(AssetType.atlas, "atlasURL"));
+			label(comp, "Atlas URL", Load_atlas_atlasURL);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -182,7 +179,7 @@ public class AtlasSection extends AssetPackEditorSection<AtlasAssetModel> {
 
 		{
 			// normal map
-			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.AtlasJSONFileConfig.normalMap"));
+			label(comp, "Normal Map", Load_atlas_normalMap);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

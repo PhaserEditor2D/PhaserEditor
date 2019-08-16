@@ -98,6 +98,7 @@ public abstract class AssetModel implements IAssetKey, IEditableKey, IAdaptable 
 		return help.replace("\\n", "\n");
 	}
 
+	@Deprecated
 	public static String getHelp(AssetType type, String parameter) throws JSONException {
 		PhaserMethod method = type.getPhaserMethod();
 

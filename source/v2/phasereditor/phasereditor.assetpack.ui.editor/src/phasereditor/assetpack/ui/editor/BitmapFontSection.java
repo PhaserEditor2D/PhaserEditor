@@ -34,11 +34,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -70,11 +67,60 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 		comp.setLayout(new GridLayout(3, false));
 
 		{
+
+			// textureURL
+
+			label(comp, "Texture URL", Load_bitmapFont_textureURL);
+
+			var text = new Text(comp, SWT.BORDER);
+			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			new TextListener(text) {
+
+				@Override
+				protected void accept(String value) {
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setTextureURL(value);
+						});
+					});
+				}
+			};
+
+			addUpdate(
+					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()))));
+
+			var btn = new Button(comp, 0);
+			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
+			btn.addSelectionListener(new AbstractBrowseImageListener() {
+
+				{
+					dialogName = "Texture URL";
+				}
+
+				@Override
+				protected void setUrl(String url) {
+					wrapOperation(() -> {
+						getModels().forEach(model -> {
+							model.setTextureURL(url);
+						});
+					});
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				protected String getUrl() {
+					return flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()));
+				}
+
+			});
+		}
+		
+		{
 			// fontDataURL
 
 			var atlasType = getModels().get(0).getType();
 
-			label(comp, "Font Data URL", AssetModel.getHelp(AssetType.bitmapFont, "fontDataURL"));
+			label(comp, "Font Data URL", Load_bitmapFont_fontDataURL);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -123,58 +169,11 @@ public class BitmapFontSection extends AssetPackEditorSection<BitmapFontAssetMod
 
 			});
 		}
-		{
-
-			// textureURL
-
-			label(comp, "Texture URL", AssetModel.getHelp(AssetType.bitmapFont, "textureURL"));
-
-			var text = new Text(comp, SWT.BORDER);
-			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			new TextListener(text) {
-
-				@Override
-				protected void accept(String value) {
-					wrapOperation(() -> {
-						getModels().forEach(model -> {
-							model.setTextureURL(value);
-						});
-					});
-				}
-			};
-
-			addUpdate(
-					() -> text.setText(flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()))));
-
-			var btn = new Button(comp, 0);
-			btn.setImage(EditorSharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
-			btn.addSelectionListener(new AbstractBrowseImageListener() {
-
-				{
-					dialogName = "Texture URL";
-				}
-
-				@Override
-				protected void setUrl(String url) {
-					wrapOperation(() -> {
-						getModels().forEach(model -> {
-							model.setTextureURL(url);
-						});
-					});
-				}
-
-				@SuppressWarnings("synthetic-access")
-				@Override
-				protected String getUrl() {
-					return flatValues_to_String(getModels().stream().map(model -> model.getTextureURL()));
-				}
-
-			});
-		}
+		
 
 		{
 			// normal map
-			label(comp, "Normal Map", InspectCore.phaserHelp("Phaser.Loader.FileTypes.ImageFileConfig.normalMap"));
+			label(comp, "Normal Map", Load_bitmapFont_normalMap);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

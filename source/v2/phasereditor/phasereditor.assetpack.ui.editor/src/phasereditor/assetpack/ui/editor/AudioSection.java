@@ -33,8 +33,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.ui.EditorSharedImages;
 
@@ -62,7 +60,7 @@ public class AudioSection extends AssetPackEditorSection<AudioAssetModel> {
 
 			// urls
 
-			label(comp, "URLs", AssetModel.getHelp(AssetType.audio, "urls"));
+			label(comp, "URLs", Load_audio_urls);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

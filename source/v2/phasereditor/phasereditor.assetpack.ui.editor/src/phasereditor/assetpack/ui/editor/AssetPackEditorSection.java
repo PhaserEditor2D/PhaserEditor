@@ -39,13 +39,15 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.editor.undo.AssetsOperation;
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.IPhaserFullnames;
 import phasereditor.ui.properties.FormPropertySection;
 
 /**
  * @author arian
  *
  */
-public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> {
+public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> implements IPhaserFullnames {
 
 	private AssetPackEditorPropertyPage _page;
 
@@ -71,7 +73,7 @@ public abstract class AssetPackEditorSection<T> extends FormPropertySection<T> {
 
 	@Override
 	protected String getHelp(String helpHint) {
-		return helpHint;
+		return helpHint.startsWith("*")? helpHint.substring(1) : InspectCore.getPhaserHelp().getMemberHelp(helpHint);
 	}
 
 	@Override

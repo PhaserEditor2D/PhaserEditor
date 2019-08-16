@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
@@ -53,10 +51,7 @@ public class TilemapSection extends AssetPackEditorSection<TilemapAssetModel> {
 
 	@Override
 	public boolean canEdit(Object obj) {
-		if (obj instanceof TilemapAssetModel) {
-			return ((TilemapAssetModel) obj).getType() == AssetType.tilemapCSV;
-		}
-		return false;
+		return obj instanceof TilemapAssetModel;
 	}
 
 	@SuppressWarnings("unused")
@@ -70,7 +65,7 @@ public class TilemapSection extends AssetPackEditorSection<TilemapAssetModel> {
 		{
 			// url
 
-			label(comp, "URL", "*" + AssetModel.getHelp(type, "url"));
+			label(comp, "URL", "*The absolute or relative URL to load this file from.");
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

@@ -36,9 +36,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
@@ -70,7 +68,7 @@ public class SvgSection extends AssetPackEditorSection<SvgAssetModel> {
 
 		{
 			// url
-			label(comp, "URL", AssetModel.getHelp(AssetType.svg, "url"));
+			label(comp, "URL", Load_svg_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

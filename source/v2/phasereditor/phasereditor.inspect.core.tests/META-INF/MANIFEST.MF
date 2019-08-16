@@ -5,5 +5,7 @@ Bundle-SymbolicName: phasereditor.inspect.core.tests
 Bundle-Version: 2.0.0.20190107
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: phasereditor.inspect.core,
- org.junit
+ org.junit,
+ phasereditor.assetpack.core;bundle-version="2.1.3"
 Automatic-Module-Name: phasereditor.inspect.core.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-11

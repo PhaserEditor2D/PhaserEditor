@@ -34,10 +34,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ScenePluginAssetModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
@@ -66,7 +64,7 @@ public class ScenePluginSection extends AssetPackEditorSection<ScenePluginAssetM
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(AssetType.scenePlugin, "url"));
+			label(comp, "URL", Load_scenePlugin_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -122,7 +120,7 @@ public class ScenePluginSection extends AssetPackEditorSection<ScenePluginAssetM
 
 		{
 			// systemKey
-			label(comp, "System Key", AssetModel.getHelp(AssetType.scenePlugin, "systemKey"));
+			label(comp, "System Key", Load_scenePlugin_systemKey);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {
@@ -141,7 +139,7 @@ public class ScenePluginSection extends AssetPackEditorSection<ScenePluginAssetM
 
 		{
 			// sceneKey
-			label(comp, "Scene Key", AssetModel.getHelp(AssetType.scenePlugin, "sceneKey"));
+			label(comp, "Scene Key", Load_scenePlugin_sceneKey);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {

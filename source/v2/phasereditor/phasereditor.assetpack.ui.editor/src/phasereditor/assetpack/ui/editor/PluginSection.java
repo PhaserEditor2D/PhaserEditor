@@ -34,10 +34,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.PluginAssetModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.CheckListener;
@@ -67,7 +65,7 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(AssetType.plugin, "url"));
+			label(comp, "URL", Load_plugin_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -126,7 +124,7 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 			// start
 			var btn = new Button(comp, SWT.CHECK);
 			btn.setText("Start");
-			btn.setToolTipText(AssetModel.getHelp(AssetType.plugin, "start"));
+			btn.setToolTipText(Load_plugin_start);
 			btn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 			new CheckListener(btn) {
 
@@ -147,7 +145,7 @@ public class PluginSection extends AssetPackEditorSection<PluginAssetModel> {
 
 		{
 			// mapping
-			label(comp, "Mapping", AssetModel.getHelp(AssetType.plugin, "mapping"));
+			label(comp, "Mapping", Load_plugin_mapping);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {

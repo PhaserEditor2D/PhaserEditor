@@ -34,11 +34,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 
@@ -67,7 +65,7 @@ public class MultiAtlasSection extends AssetPackEditorSection<MultiAtlasAssetMod
 		{
 			// atlasURL
 
-			label(comp, "Atlas URL", "*" + AssetModel.getHelp(AssetType.multiatlas, "atlasURL"));
+			label(comp, "Atlas URL", Load_multiatlas_atlasURL);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -117,7 +115,7 @@ public class MultiAtlasSection extends AssetPackEditorSection<MultiAtlasAssetMod
 		}
 
 		{
-			label(comp, "Path", InspectCore.phaserHelp("Phaser.Loader.FileTypes.MultiAtlasFileConfig.path"));
+			label(comp, "Path", Load_multiatlas_path);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextListener(text) {

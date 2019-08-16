@@ -30,10 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
 import phasereditor.ui.properties.TextToIntListener;
@@ -62,7 +59,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		{
 			// url
-			label(comp, "URL", AssetModel.getHelp(AssetType.spritesheet, "url"));
+			label(comp, "URL", Load_spritesheet_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -108,8 +105,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		{
 			// normal map
-			label(comp, "Normal Map",
-					InspectCore.phaserHelp("Phaser.Loader.FileTypes.SpriteSheetFileConfig.normalMap"));
+			label(comp, "Normal Map", Load_spritesheet_normalMap);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -151,8 +147,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		// frameWidth
 		{
-			label(comp, "Frame Width",
-					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.frameWidth"));
+			label(comp, "Frame Width", Load_spritesheet_frameWidth);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {
@@ -171,8 +166,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		// frameHeight
 		{
-			label(comp, "Frame Height",
-					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.frameHeight"));
+			label(comp, "Frame Height", Load_spritesheet_frameHeight);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {
@@ -191,8 +185,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		// startFrame
 		{
-			label(comp, "Start Frame",
-					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.startFrame"));
+			label(comp, "Start Frame", Load_spritesheet_startFrame);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {
@@ -211,8 +204,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		// endFrame
 		{
-			label(comp, "End Frame",
-					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.endFrame"));
+			label(comp, "End Frame", Load_spritesheet_endFrame);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {
@@ -231,8 +223,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		// spacing
 		{
-			label(comp, "Spacing",
-					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.spacing"));
+			label(comp, "Spacing", Load_spritesheet_spacing);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {
@@ -251,8 +242,7 @@ public class SpritesheetSection extends AssetPackEditorSection<SpritesheetAssetM
 
 		// margin
 		{
-			label(comp, "Margin",
-					InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFrameConfig.margin"));
+			label(comp, "Margin", Load_spritesheet_margin);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {

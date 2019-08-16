@@ -35,8 +35,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.MultiScriptAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
@@ -68,7 +66,7 @@ public class MultiScriptSection extends AssetPackEditorSection<MultiScriptAssetM
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(1, false));
 
-		label(comp, "URLs", AssetModel.getHelp(AssetType.image, "url"));
+		label(comp, "URLs", Load_scripts_url);
 
 		var viewer = new TreeViewer(comp);
 		viewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));

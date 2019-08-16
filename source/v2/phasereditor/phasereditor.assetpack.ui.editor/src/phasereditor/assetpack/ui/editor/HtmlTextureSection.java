@@ -34,10 +34,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.HtmlTextureAssetModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.properties.TextListener;
@@ -72,7 +70,7 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 		{
 			// url
 
-			label(comp, "URL", AssetModel.getHelp(AssetType.htmlTexture, "url"));
+			label(comp, "URL", Load_htmlTexture_url);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -128,7 +126,7 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 
 		// width
 		{
-			label(comp, "Width", AssetModel.getHelp(AssetType.htmlTexture, "width"));
+			label(comp, "Width", Load_htmlTexture_width);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -148,7 +146,7 @@ public class HtmlTextureSection extends AssetPackEditorSection<HtmlTextureAssetM
 
 		// height
 		{
-			label(comp, "Height", AssetModel.getHelp(AssetType.htmlTexture, "height"));
+			label(comp, "Height", Load_htmlTexture_height);
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			new TextToIntListener(text) {

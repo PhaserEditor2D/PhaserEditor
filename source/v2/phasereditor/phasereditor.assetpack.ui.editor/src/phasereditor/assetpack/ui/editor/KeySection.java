@@ -59,7 +59,7 @@ public class KeySection extends AssetPackEditorSection<IEditableKey> {
 		var comp = new Composite(parent, 0);
 		comp.setLayout(new GridLayout(2, false));
 
-		label(comp, "Key", "The asset key");
+		label(comp, "Key", "*The file key");
 
 		var text = new Text(comp, SWT.BORDER);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

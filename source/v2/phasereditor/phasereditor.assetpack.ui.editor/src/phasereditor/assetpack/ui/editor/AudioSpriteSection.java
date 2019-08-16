@@ -35,9 +35,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.ui.EditorSharedImages;
@@ -67,7 +65,7 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 		{
 			// jsonURL
 
-			label(comp, "JSON URL", AssetModel.getHelp(AssetType.audioSprite, "jsonURL"));
+			label(comp, "JSON URL", Load_audioSprite_jsonURL);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -120,7 +118,7 @@ public class AudioSpriteSection extends AssetPackEditorSection<AudioSpriteAssetM
 
 			// audioURL
 
-			label(comp, "Audio URL", AssetModel.getHelp(AssetType.audioSprite, "audioURL"));
+			label(comp, "Audio URL", Load_audioSprite_audioURL);
 
 			var text = new Text(comp, SWT.BORDER);
 			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
