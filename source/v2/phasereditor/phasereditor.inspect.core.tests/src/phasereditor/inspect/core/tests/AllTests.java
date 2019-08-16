@@ -32,9 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-		Canvas_Phaser_Help_Test.class,
-
-		Phaser_Member_Exists_Test.class
+		IPhaserFullnames_Test.class
 
 })
 public class AllTests {
