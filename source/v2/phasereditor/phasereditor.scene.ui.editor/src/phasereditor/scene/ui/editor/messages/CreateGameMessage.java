@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.ui.editor.messages;
 
+import static phasereditor.ui.PhaserEditorUI.isUsingChromium;
+
 import org.eclipse.core.runtime.Platform;
 import org.json.JSONObject;
 
@@ -63,7 +65,9 @@ public class CreateGameMessage extends ApiMessage {
 
 				switch (pref) {
 				case SceneUIEditor.PREF_VALUE_PHASER_CONTEXT_TYPE_DEFAULT:
-					webgl = !Platform.getOS().equals(Platform.OS_LINUX);
+					if (Platform.getOS().equals(Platform.OS_LINUX)) {
+						webgl = isUsingChromium();
+					}
 					break;
 				case SceneUIEditor.PREF_VALUE_PHASER_CONTEXT_TYPE_CANVAS:
 					webgl = false;
