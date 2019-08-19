@@ -1,67 +1,161 @@
-.MPartStack {
-	swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');
-	swt-selected-tab-fill:  #4f4f4f #000000 100% 100%;
-	swt-unselected-tabs-color: #4f4f4f; 
-	swt-outer-keyline-color: #404040;
-	swt-inner-keyline-color: #404040;
-	swt-tab-outline: #404040;
-	padding: 0px 2px 2px;
-	swt-shadow-visible: false;
-	swt-mru-visible: false;
-	color: '#org-eclipse-ui-workbench-INACTIVE_TAB_TEXT_COLOR';
+/*
+IEclipsePreferences#org-eclipse-ui-editors:org-eclipse-ui-themes {
+	preferences:
+		'AbstractTextEditor.Color.Background.SystemDefault=false'
+		'AbstractTextEditor.Color.SelectionForeground.SystemDefault=false'
+		'AbstractTextEditor.Color.SelectionBackground.SystemDefault=false'
+		'AbstractTextEditor.Color.Background=245,245,245'
+		'currentLineColor=222,232,244'
+}
+*/
+
+
+
+.MTrimBar ToolBar {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;    
 }
 
-.MPartStack.active.noFocus {
-	swt-selected-tab-fill: #4f4f4f #000000 100% 100%;
+.MTrimmedWindow {
+    background-color: #1f1f1f;
 }
+
+.MPartStack {
+	/*swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');*/
+	swt-tab-renderer: url('bundleclass://phasereditor.ide/phasereditor.ide.ui.MyTabRendering');	
+	swt-selected-tab-fill:  #0a0a0a;
+	swt-unselected-tabs-color: #0f0f0f; 
+	swt-unselected-hot-tab-color-background: #1a1a1a;
+	swt-outer-keyline-color: #0f0f0f;
+	swt-inner-keyline-color: #0f0f0f;
+	swt-tab-outline: #0f0f0f;
+	/*padding: 5px 5px 5px 5px;*/
+	padding: 0px;
+	swt-shadow-visible: false;
+	swt-mru-visible: true;
+	swt-simple: true;
+	color: #f0f0f0;
+	swt-tab-height: 30px;
+}
+
 
 .MPartStack.active {
-	swt-selected-tab-fill: #101010 #000000 100% 100%;
+	swt-selected-tab-fill: #101010;
 }
 
-.MPartStack.active.noFocus > CTabItem:selected {
-	color: #dddddd;
+#org-eclipse-e4-ui-compatibility-editor Canvas {
+    background-color: #0a0a0a;
 }
 
-Composite, Tree, Table, Label, .Canvas, .MToolBar {
-	background-color: #010101;
-	color: #dddddd;
-}
-
-.Canvas, Tree {
-	background-color: gradient linear #202020 #101010;
+#org-eclipse-e4-ui-compatibility-editor.active Canvas {
+    background-color: #101010;
+    color: #f0f0f0;
 }
 
 
-Button {
-	background-color: #000000;
+.MPart Composite,
+.MPart Tree,
+.MPart Table,
+.MPart Canvas,
+.MPart .Canvas,
+.MPart Label,
+.MPart TabFolder,
+.MPart TabItem,
+.MPart Browser
+{
+	background-color: #0a0a0a;
 }
 
-Text {
-	background-color: gradient linear #2f2f2f black #202020 30%;
-	color: green;
+.MPart Hyperlink,
+.MPart ImageHyperlink {
+	background-color: inherit;
 }
 
 
-Table,
-Tree {
-	swt-header-background-color: #020202;
+.MPart.active Composite, 
+/*.MPart.active Tree,*/ /* For certain reason this breaks the table focusing */
+.MPart.active Table, 
+.MPart.active Canvas,
+.MPart.active .Canvas, 
+.MPart.active Label, 
+.MPart.active TabFolder, 
+.MPart.active TabItem,
+.MPart.active Browser 
+{
+	background-color: #101010;
 }
 
-CTabItem {
-	color: #dddddd;
+
+
+.MPart Text, .MPart StyledText {
+	background-color: #202020;
+	color: #f0f0f0;
 }
 
-CTabItem:selected {
-	background-color: #030303;
-	color: #ff0000;
+.MPart Table, .MPart Tree {
+	swt-header-background-color: #0f0f0f;
 }
 
-.FormSectionTitle {
-	color: orange;
-	background-color: inherite;
+#org-eclipse-ui-editorss StyledText {
+	background-color: #0a0a0a;
 }
 
-.FormSectionHeader {
-	background-color: gradient linear black #101010 black 40% 60% 100%;
+#org-eclipse-ui-editorss StyledText {
+	background-color: inherit;
 }
+
+
+/* Forms */
+
+
+Form, FormHeading {
+	background-color: #0a0a0a;
+	background: #0a0a0a;
+	background-image: #0a0a0a;
+	color: #f0f0f0;
+}
+
+Form {
+	/* Bug 465148: Additional styling for the Form */
+	text-background-color: #505050;
+
+	tb-toggle-hover-color: #505050;
+	tb-toggle-color: #505050;
+	h-hover-full-color: #505050;
+	h-hover-light-color: #505050;
+	h-bottom-keyline-2-color: #5a5a5a;
+	h-bottom-keyline-1-color: #5a5a5a;
+}
+
+
+
+Section {
+	background-color: #0a0a0a;
+	swt-background-mode: 'force';
+  	color: #f0f0f0;
+  	background-color-titlebar: #505050;
+  	background-color-gradient-titlebar: #505050;
+  	border-color-titlebar: #505050;
+}
+
+TabbedPropertyTitle > CLabel{
+	color: #f0f0f0;
+}
+
+TabbedPropertyTitle {
+	swt-backgroundGradientStart-color:  #5a5a5a;
+	swt-backgroundGradientEnd-color:    #5a5a5a;
+	swt-backgroundBottomKeyline1-color: #5a5a5a;
+	swt-backgroundBottomKeyline2-color: #5a5a5a;
+}
+
+TabbedPropertyList {
+	swt-tabAreaBackground-color : #0a0a0a;
+	swt-tabBackground-color     : #0a0a0a;
+	swt-tabNormalShadow-color   : #0a0a0a;             /* color of shadow lines around the tabs */
+	swt-tabDarkShadow-color     : #0a0a0a; /* line color of the tiny scroll triangle (at top / at bottom) */
+	color                       : #f0f0f0; /* text color in the tab / tab area */
+}
+
