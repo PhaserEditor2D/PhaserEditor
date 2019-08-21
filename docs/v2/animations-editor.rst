@@ -90,10 +90,17 @@ Other way to create the animations is packing them all in a single JSON file, an
 Create the animations file
 --------------------------
 
-The default `project template <workbench.html#project-structure>`_ contains an animations file, but you can create other animations file with the *File* |-| *New* |-| *Animations File* menu option, or pressing the `New <workbench.html#new-button>`_ button of the main toolbar and selecting the *Animations File* option.
+The default `project template <workbench.html#project-structure>`_ contains an animations file, but you can create other animations file with the *File* |-| *New* |-| *Animations File* menu option, or pressing the `New <workbench.html#new-button>`_ button of the main toolbar and selecting the *Animations File* option. It opens the **New Animations File** wizard.
+
+The wizard contains two pages, one for setting the file location and name and other for select the `asset pack file <asset-pack-editor.html>`_ to import the file (optional).
 
 .. image:: images/animations-editor/animations-new-file.png
   :alt: New Animations File.
+
+
+.. image:: images/animations-editor/animations-new-file-wizard.png
+  :alt: New Animations File wizard.
+
 
 Adding animations to the file
 -----------------------------

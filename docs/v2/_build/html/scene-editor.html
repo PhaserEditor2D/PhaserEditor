@@ -117,7 +117,11 @@
 <li class="toctree-l1"><a class="reference internal" href="animations-editor.html">6&nbsp;&nbsp;&nbsp;Animations Editor</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">7&nbsp;&nbsp;&nbsp;Scene Editor</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#create-a-new-scene-file">7.1&nbsp;&nbsp;&nbsp;Create a new Scene file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adding-objects-to-the-scene">7.2&nbsp;&nbsp;&nbsp;Adding objects to the scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-objects-to-the-scene">7.2&nbsp;&nbsp;&nbsp;Adding objects to the scene</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-objects-from-the-blocks-view">7.2.1&nbsp;&nbsp;&nbsp;Adding objects from the Blocks view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-objects-from-the-assets-view">7.2.2&nbsp;&nbsp;&nbsp;Adding objects from the Assets view</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#supported-object-types">7.3&nbsp;&nbsp;&nbsp;Supported object types</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#common-properties">7.3.1&nbsp;&nbsp;&nbsp;Common properties</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
@@ -137,10 +141,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.6&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#text">7.3.7&nbsp;&nbsp;&nbsp;Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#group">7.3.8&nbsp;&nbsp;&nbsp;Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morphing-objects-to-a-different-type">7.3.9&nbsp;&nbsp;&nbsp;Morphing objects to a different type</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scene-compiler">7.4&nbsp;&nbsp;&nbsp;Scene Compiler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#scene-editor-preferences">7.5&nbsp;&nbsp;&nbsp;Scene Editor preferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scene-editor-preferences">7.5&nbsp;&nbsp;&nbsp;Scene Editor preferences</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scene-renderer-preferences">7.5.1&nbsp;&nbsp;&nbsp;Scene renderer preferences</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#scene-editor-toolbar">7.6&nbsp;&nbsp;&nbsp;Scene Editor toolbar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#blocks-view">7.7&nbsp;&nbsp;&nbsp;Blocks view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#outline-view">7.8&nbsp;&nbsp;&nbsp;Outline view</a></li>
@@ -227,11 +235,72 @@
 <li>We can create a scene compiler, that translate the custom scene file into <a class="reference external" href="https://phaser.io">Phaser</a> code.</li>
 </ol>
 <p>The second option plays much better with the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> philosophy of be full compatible with a vanilla <a class="reference external" href="https://phaser.io">Phaser</a> runtime. So this compiler gets a custom scene file and generates a clean, readable, hand-writing-like <a class="reference external" href="https://phaser.io">Phaser</a> code. Even this option has other advantages: it is very easy to debug the scene and know exactly how the objects are created.</p>
+<p>In previous version of <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>, we used custom scene renderers based on desktop UI toolkits, because the lack of a <strong>Web View</strong> available in all the OS platforms. However, now the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> provides better support for its <strong>Web View</strong> and we migrated the scene renderer to <a class="reference external" href="https://phaser.io">Phaser</a>. This means, what you see in the scene editor is what you get in the game, because both are built with the same technology: <a class="reference external" href="https://phaser.io">Phaser</a>.</p>
 <div class="section" id="create-a-new-scene-file">
 <h2>7.1&nbsp;&nbsp;&nbsp;Create a new Scene file<a class="headerlink" href="#create-a-new-scene-file" title="Permalink to this headline">¶</a></h2>
+<p>The scene files (<code class="docutils literal notranslate"><span class="pre">*.scene</span></code>) are created using the <strong>New Scene File</strong> wizard. This wizard can be opened from the main menu: <em>File</em> → <em>New</em> → <em>Scene File</em>, or using the <a class="reference external" href="workbench.html#new-button">New button</a>.</p>
+<img alt="New Scene File." src="_images/scene-editor-new-file.png" />
+<p>The <strong>New Scene File</strong> wizard is divided in two steps:</p>
+<ol class="arabic simple">
+<li>Set the location and name of the new scene file.</li>
+<li>Select an <a class="reference external" href="asset-pack-editor.html#importing-javascript-files">asset pack file</a> to import the scene compiled code in the game. This is optional.</li>
+</ol>
+<img alt="New Scene File wizard, page 1." src="_images/scene-editor-new-wizard-1.png" />
+<img alt="New Scene File wizard, page 2." src="_images/scene-editor-new-wizard-2.png" />
 </div>
 <div class="section" id="adding-objects-to-the-scene">
 <h2>7.2&nbsp;&nbsp;&nbsp;Adding objects to the scene<a class="headerlink" href="#adding-objects-to-the-scene" title="Permalink to this headline">¶</a></h2>
+<p>When you activate the Scene Editor (open, select, focus on) the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows a couple of buttons dedicated to the <a class="reference external" href="scene-editor.html">Scene Editor</a>. In the middle there is the <strong>Add Object</strong> button.</p>
+<p>The <strong>Add Object</strong> button shows a menu with the object types supported by the <a class="reference external" href="scene-editor.html">Scene Editor</a>.</p>
+<img alt="The Add Object button." src="_images/scene-editor-add-button.png" />
+<p>There are objects that typically uses a resource. The <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a> types use textures (images, atlas frames, sprite-sheet frames). The <a class="reference internal" href="#bitmap-text">Bitmap Text</a> uses a bitmap font. When you select to add any of these objects, the editor opens a dialog to select the asset needed by the object.</p>
+<img alt="Select texture of new object." src="_images/scene-editor-add-object-select-texture.png" />
+<p>Finally, the new object is added to the center of the scene:</p>
+<img alt="Added object." src="_images/scene-editor-add-object-done.png" />
+<p>When you select to add a <a class="reference internal" href="#text">Text</a> object, it does not open any dialog because it does not require any asset, the <a class="reference internal" href="#text">Text</a> object is created with a <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">Text</span></code> value and added to the center of the scene.</p>
+<img alt="Added a Text object." src="_images/scene-editor-add-text.png" />
+<div class="section" id="adding-objects-from-the-blocks-view">
+<h3>7.2.1&nbsp;&nbsp;&nbsp;Adding objects from the Blocks view<a class="headerlink" href="#adding-objects-from-the-blocks-view" title="Permalink to this headline">¶</a></h3>
+<p>When the <a class="reference internal" href="#blocks-view">Blocks view</a> connects with the active <a class="reference external" href="scene-editor.html">Scene Editor</a>, it shows all the <a class="reference external" href="asset-pack-editor.html">file keys or file configurations</a> that you can use to create new objects.</p>
+<p>A new object is created when you drag a file key from the <a class="reference internal" href="#blocks-view">Blocks view</a> and drop it into the scene.</p>
+<p>Each type of file creates a particular type of object by default. However, once the object is created, <a class="reference external" href="#morphing-objects-to-a-different-type">you can morph it to another type</a>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Block element</th>
+<th class="head">Scene Object type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Image key</td>
+<td><a class="reference internal" href="#image">Image</a></td>
+</tr>
+<tr class="row-odd"><td>Atlas frame key</td>
+<td><a class="reference internal" href="#image">Image</a></td>
+</tr>
+<tr class="row-even"><td>Sprite-sheet frame key</td>
+<td><a class="reference internal" href="#image">Image</a></td>
+</tr>
+<tr class="row-odd"><td>Animation key</td>
+<td><a class="reference internal" href="#sprite">Sprite</a></td>
+</tr>
+<tr class="row-even"><td>Bitmap Font key</td>
+<td><a class="reference internal" href="#bitmap-text">Bitmap Text</a></td>
+</tr>
+</tbody>
+</table>
+<img alt="Dropping an animation from the Blocks view." src="_images/scene-editor-drag-from-blocks-view.png" />
+<img alt="The new object is created with a Sprite type." src="_images/scene-editor-drag-from-blocks-view-done.png" />
+</div>
+<div class="section" id="adding-objects-from-the-assets-view">
+<h3>7.2.2&nbsp;&nbsp;&nbsp;Adding objects from the Assets view<a class="headerlink" href="#adding-objects-from-the-assets-view" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="workbench.html#assets-view">Assets view</a> shows the files created by the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> editors. In the case of the <a class="reference external" href="asset-pack-editor.html">Asset Pack files</a>, it also shows the file keys defined in the file.</p>
+<p>In the same way you <a class="reference external" href="adding-objects-from-the-blocks-view">drop file keys from the Blocks view</a> into the scene, you can drag the file keys from the <a class="reference external" href="workbench.html#assets-view">Assets view</a> and drop them into the scene. Take a look to the previous section for more details on the kind of objects are created.</p>
+<img alt="Drag file keys from the Assets view." src="_images/scene-editor-drag-from-assets-view.png" />
+</div>
 </div>
 <div class="section" id="supported-object-types">
 <h2>7.3&nbsp;&nbsp;&nbsp;Supported object types<a class="headerlink" href="#supported-object-types" title="Permalink to this headline">¶</a></h2>
@@ -283,18 +352,32 @@
 <div class="section" id="group">
 <h3>7.3.8&nbsp;&nbsp;&nbsp;Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
 </div>
+<div class="section" id="morphing-objects-to-a-different-type">
+<h3>7.3.9&nbsp;&nbsp;&nbsp;Morphing objects to a different type<a class="headerlink" href="#morphing-objects-to-a-different-type" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 <div class="section" id="scene-compiler">
 <h2>7.4&nbsp;&nbsp;&nbsp;Scene Compiler<a class="headerlink" href="#scene-compiler" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="scene-editor-preferences">
 <h2>7.5&nbsp;&nbsp;&nbsp;Scene Editor preferences<a class="headerlink" href="#scene-editor-preferences" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="scene-renderer-preferences">
+<h3>7.5.1&nbsp;&nbsp;&nbsp;Scene renderer preferences<a class="headerlink" href="#scene-renderer-preferences" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 <div class="section" id="scene-editor-toolbar">
 <h2>7.6&nbsp;&nbsp;&nbsp;Scene Editor toolbar<a class="headerlink" href="#scene-editor-toolbar" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="blocks-view">
 <h2>7.7&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="workbench.html#blocks-view">general purpose Blocks view</a> provides building blocks for the active editor. In the case of the <a class="reference external" href="scene-editor.html">Scene Editor</a>, the <a class="reference internal" href="#blocks-view">Blocks view</a> displays all the <a class="reference external" href="asset-pack-editor.html">file configurations or file keys</a> that you can use to create the scene objects:</p>
+<ul class="simple">
+<li>Image keys.</li>
+<li>Atlas frame keys.</li>
+<li>Sprite-sheet frame keys.</li>
+<li>Animation keys.</li>
+<li>Bitmap Font keys.</li>
+</ul>
 </div>
 <div class="section" id="outline-view">
 <h2>7.8&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
