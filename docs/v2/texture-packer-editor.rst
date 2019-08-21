@@ -2,7 +2,7 @@
    
 .. sectnum::
    :depth: 3
-   :start: 3
+   :start: 4
 
 Texture Packer Editor
 =====================

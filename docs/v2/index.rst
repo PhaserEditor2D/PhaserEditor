@@ -1,7 +1,11 @@
-Documentation
-=============
+Phaser Editor v2 Documentation
+================================
 
 .. |date| date::
+
+.. warning::
+
+  This documentation is in construction.
 
 Last update: |date|
 
@@ -9,6 +13,7 @@ Last update: |date|
    :maxdepth: 2
    :caption: Contents:
 
+   intro
    first-steps
    workbench
    texture-packer-editor

@@ -43,3 +43,7 @@
 
 .. |PropertiesView| replace:: Properties view
 .. _PropertiesView: workbench.html#properties-view
+
+.. warning::
+
+  This documentation is in construction.

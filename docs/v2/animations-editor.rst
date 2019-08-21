@@ -2,7 +2,7 @@
    
 .. sectnum::
    :depth: 3
-   :start: 5
+   :start: 6
 
 .. highlight:: javascript
 

@@ -19,7 +19,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6   Scene Editor &mdash; Phaser Editor Help</title>
+  <title>7   Scene Editor &mdash; Phaser Editor Help</title>
   
 
   
@@ -52,8 +52,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Phaser Editor Help" href="index.html"/>
-        <link rel="next" title="7   Code Editors" href="code-editors.html"/>
-        <link rel="prev" title="5   Animations Editor" href="animations-editor.html"/> 
+        <link rel="next" title="8   Code Editors" href="code-editors.html"/>
+        <link rel="prev" title="6   Animations Editor" href="animations-editor.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -109,16 +109,17 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="first-steps.html">1&nbsp;&nbsp;&nbsp;First Steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="workbench.html">2&nbsp;&nbsp;&nbsp;Workbench</a></li>
-<li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">3&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">4&nbsp;&nbsp;&nbsp;Asset Pack Editor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="animations-editor.html">5&nbsp;&nbsp;&nbsp;Animations Editor</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">6&nbsp;&nbsp;&nbsp;Scene Editor</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#create-a-new-scene-file">6.1&nbsp;&nbsp;&nbsp;Create a new Scene file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adding-objects-to-the-scene">6.2&nbsp;&nbsp;&nbsp;Adding objects to the scene</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#supported-object-types">6.3&nbsp;&nbsp;&nbsp;Supported object types</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#common-properties">6.3.1&nbsp;&nbsp;&nbsp;Common properties</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1&nbsp;&nbsp;&nbsp;Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first-steps.html">2&nbsp;&nbsp;&nbsp;First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workbench.html">3&nbsp;&nbsp;&nbsp;Workbench</a></li>
+<li class="toctree-l1"><a class="reference internal" href="texture-packer-editor.html">4&nbsp;&nbsp;&nbsp;Texture Packer Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pack-editor.html">5&nbsp;&nbsp;&nbsp;Asset Pack Editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animations-editor.html">6&nbsp;&nbsp;&nbsp;Animations Editor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7&nbsp;&nbsp;&nbsp;Scene Editor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-new-scene-file">7.1&nbsp;&nbsp;&nbsp;Create a new Scene file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-objects-to-the-scene">7.2&nbsp;&nbsp;&nbsp;Adding objects to the scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-object-types">7.3&nbsp;&nbsp;&nbsp;Supported object types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-properties">7.3.1&nbsp;&nbsp;&nbsp;Common properties</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#game-object-property-section">Game Object property section</a></li>
@@ -129,26 +130,26 @@
 <li class="toctree-l4"><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#game-object">6.3.2&nbsp;&nbsp;&nbsp;Game Object</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#image">6.3.3&nbsp;&nbsp;&nbsp;Image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sprite">6.3.4&nbsp;&nbsp;&nbsp;Sprite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tile-sprite">6.3.5&nbsp;&nbsp;&nbsp;Tile Sprite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bitmap-text">6.3.6&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#text">6.3.7&nbsp;&nbsp;&nbsp;Text</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#group">6.3.8&nbsp;&nbsp;&nbsp;Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game-object">7.3.2&nbsp;&nbsp;&nbsp;Game Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image">7.3.3&nbsp;&nbsp;&nbsp;Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sprite">7.3.4&nbsp;&nbsp;&nbsp;Sprite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tile-sprite">7.3.5&nbsp;&nbsp;&nbsp;Tile Sprite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.6&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#text">7.3.7&nbsp;&nbsp;&nbsp;Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group">7.3.8&nbsp;&nbsp;&nbsp;Group</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#scene-compiler">6.4&nbsp;&nbsp;&nbsp;Scene Compiler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#scene-editor-preferences">6.5&nbsp;&nbsp;&nbsp;Scene Editor preferences</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#scene-editor-toolbar">6.6&nbsp;&nbsp;&nbsp;Scene Editor toolbar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#blocks-view">6.7&nbsp;&nbsp;&nbsp;Blocks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#outline-view">6.8&nbsp;&nbsp;&nbsp;Outline view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">6.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scene-compiler">7.4&nbsp;&nbsp;&nbsp;Scene Compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scene-editor-preferences">7.5&nbsp;&nbsp;&nbsp;Scene Editor preferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scene-editor-toolbar">7.6&nbsp;&nbsp;&nbsp;Scene Editor toolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blocks-view">7.7&nbsp;&nbsp;&nbsp;Blocks view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#outline-view">7.8&nbsp;&nbsp;&nbsp;Outline view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">7.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="code-editors.html">7&nbsp;&nbsp;&nbsp;Code Editors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="phaser-labs.html">8&nbsp;&nbsp;&nbsp;Phaser Labs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="misc.html">9&nbsp;&nbsp;&nbsp;Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code-editors.html">8&nbsp;&nbsp;&nbsp;Code Editors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phaser-labs.html">9&nbsp;&nbsp;&nbsp;Phaser Labs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">10&nbsp;&nbsp;&nbsp;Miscellaneous</a></li>
 </ul>
 
             
@@ -193,7 +194,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>6&nbsp;&nbsp;&nbsp;Scene Editor</li>
+      <li>7&nbsp;&nbsp;&nbsp;Scene Editor</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -210,18 +211,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="scene-editor">
-<h1>6&nbsp;&nbsp;&nbsp;Scene Editor<a class="headerlink" href="#scene-editor" title="Permalink to this headline">¶</a></h1>
+  <div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This documentation is in construction.</p>
+</div>
+<div class="section" id="scene-editor">
+<h1>7&nbsp;&nbsp;&nbsp;Scene Editor<a class="headerlink" href="#scene-editor" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is the most important editor of the IDE. As its name suggests, this editor provides visual tools to create scenes (or levels).</p>
+<img alt="Scene Editor screenshot." src="_images/scene-editor-screenshot.png" />
+<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is pretty similar to others scene makers in the market, it has common and particular features. Maybe the most relevant difference is that this editor <a class="reference external" href="#scene-compiler">compiles the scene</a> into readable <a class="reference external" href="https://phaser.io">Phaser</a> code.</p>
+<p><a class="reference external" href="https://phaser.io">Phaser</a> provides support for certain file formats like the <a class="reference external" href="asset-pack-editor.html">asset pack</a> and the <a class="reference external" href="animations-editor.html">sprite animations</a>, but it lacks of a full-feature Scene file format suitable for level editors. And maybe it should be that way, because <a class="reference external" href="https://phaser.io">Phaser</a> is a framework and you may use it in very different ways and in very different context.</p>
+<p>So, how can we develop a scene editor? We know we need to save the scene in a custom format. We have two main options:</p>
+<ol class="arabic simple">
+<li>We can create a custom runtime, or plugin, to load the scene files in the game and create the objects in the fly.</li>
+<li>We can create a scene compiler, that translate the custom scene file into <a class="reference external" href="https://phaser.io">Phaser</a> code.</li>
+</ol>
+<p>The second option plays much better with the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> philosophy of be full compatible with a vanilla <a class="reference external" href="https://phaser.io">Phaser</a> runtime. So this compiler gets a custom scene file and generates a clean, readable, hand-writing-like <a class="reference external" href="https://phaser.io">Phaser</a> code. Even this option has other advantages: it is very easy to debug the scene and know exactly how the objects are created.</p>
 <div class="section" id="create-a-new-scene-file">
-<h2>6.1&nbsp;&nbsp;&nbsp;Create a new Scene file<a class="headerlink" href="#create-a-new-scene-file" title="Permalink to this headline">¶</a></h2>
+<h2>7.1&nbsp;&nbsp;&nbsp;Create a new Scene file<a class="headerlink" href="#create-a-new-scene-file" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="adding-objects-to-the-scene">
-<h2>6.2&nbsp;&nbsp;&nbsp;Adding objects to the scene<a class="headerlink" href="#adding-objects-to-the-scene" title="Permalink to this headline">¶</a></h2>
+<h2>7.2&nbsp;&nbsp;&nbsp;Adding objects to the scene<a class="headerlink" href="#adding-objects-to-the-scene" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="supported-object-types">
-<h2>6.3&nbsp;&nbsp;&nbsp;Supported object types<a class="headerlink" href="#supported-object-types" title="Permalink to this headline">¶</a></h2>
+<h2>7.3&nbsp;&nbsp;&nbsp;Supported object types<a class="headerlink" href="#supported-object-types" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="common-properties">
-<h3>6.3.1&nbsp;&nbsp;&nbsp;Common properties<a class="headerlink" href="#common-properties" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.1&nbsp;&nbsp;&nbsp;Common properties<a class="headerlink" href="#common-properties" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="variable-properties-section">
 <h4>Variable properties section<a class="headerlink" href="#variable-properties-section" title="Permalink to this headline">¶</a></h4>
 </div>
@@ -248,44 +263,44 @@
 </div>
 </div>
 <div class="section" id="game-object">
-<h3>6.3.2&nbsp;&nbsp;&nbsp;Game Object<a class="headerlink" href="#game-object" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.2&nbsp;&nbsp;&nbsp;Game Object<a class="headerlink" href="#game-object" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="image">
-<h3>6.3.3&nbsp;&nbsp;&nbsp;Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.3&nbsp;&nbsp;&nbsp;Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="sprite">
-<h3>6.3.4&nbsp;&nbsp;&nbsp;Sprite<a class="headerlink" href="#sprite" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.4&nbsp;&nbsp;&nbsp;Sprite<a class="headerlink" href="#sprite" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="tile-sprite">
-<h3>6.3.5&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.5&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="bitmap-text">
-<h3>6.3.6&nbsp;&nbsp;&nbsp;Bitmap Text<a class="headerlink" href="#bitmap-text" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.6&nbsp;&nbsp;&nbsp;Bitmap Text<a class="headerlink" href="#bitmap-text" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="text">
-<h3>6.3.7&nbsp;&nbsp;&nbsp;Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.7&nbsp;&nbsp;&nbsp;Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="group">
-<h3>6.3.8&nbsp;&nbsp;&nbsp;Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.8&nbsp;&nbsp;&nbsp;Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="scene-compiler">
-<h2>6.4&nbsp;&nbsp;&nbsp;Scene Compiler<a class="headerlink" href="#scene-compiler" title="Permalink to this headline">¶</a></h2>
+<h2>7.4&nbsp;&nbsp;&nbsp;Scene Compiler<a class="headerlink" href="#scene-compiler" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="scene-editor-preferences">
-<h2>6.5&nbsp;&nbsp;&nbsp;Scene Editor preferences<a class="headerlink" href="#scene-editor-preferences" title="Permalink to this headline">¶</a></h2>
+<h2>7.5&nbsp;&nbsp;&nbsp;Scene Editor preferences<a class="headerlink" href="#scene-editor-preferences" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="scene-editor-toolbar">
-<h2>6.6&nbsp;&nbsp;&nbsp;Scene Editor toolbar<a class="headerlink" href="#scene-editor-toolbar" title="Permalink to this headline">¶</a></h2>
+<h2>7.6&nbsp;&nbsp;&nbsp;Scene Editor toolbar<a class="headerlink" href="#scene-editor-toolbar" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="blocks-view">
-<h2>6.7&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
+<h2>7.7&nbsp;&nbsp;&nbsp;Blocks view<a class="headerlink" href="#blocks-view" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="outline-view">
-<h2>6.8&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
+<h2>7.8&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="keyboard-shortcuts">
-<h2>6.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
+<h2>7.9&nbsp;&nbsp;&nbsp;Keyboard shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -299,10 +314,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="code-editors.html" class="btn btn-neutral float-right" title="7   Code Editors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="code-editors.html" class="btn btn-neutral float-right" title="8   Code Editors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="animations-editor.html" class="btn btn-neutral" title="5   Animations Editor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="animations-editor.html" class="btn btn-neutral" title="6   Animations Editor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
