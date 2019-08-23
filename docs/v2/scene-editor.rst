@@ -111,8 +111,31 @@ In the same way you `drop file keys from the Blocks view <adding-objects-from-th
 Supported object types
 ----------------------
 
+The |SceneEditor|_ is in active development and only supports a very basic set of object types. Eventually we should add more types and more properties. However, you can use an `object factory <#game-object-property-section>`_ to create objects of any type, even of your own custom type.
+
+The list of supported object types is:
+
+* `Image`_
+
+* `Sprite`_
+
+* `Tile Sprite`_
+
+* `Bitmap Text`_
+
+* `Text`_
+
+* `Group`_
+
+
 Common properties
 ~~~~~~~~~~~~~~~~~
+
+Like it is in the other editors of the IDE, the `Properties view`_ connects with the active |SceneEditor|_ and show the properties of the objects selected in the scene or the `Outline view`_.
+
+In the Phaser_ API, the properties of the game object types are grouped in small classes, so a game object type extends...
+
+All object types (excepting `Group`_) share a common set of properties that are presented in the `Properties view`_ in sections. 
 
 Variable properties section
 ###########################
