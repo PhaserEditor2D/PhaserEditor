@@ -1,0 +1,92 @@
+.light body {
+    background: #a2a2a2;
+    color: #434343;
+}
+
+/* toolbar */
+
+
+.light button {
+    background: linear-gradient(#c8c8c8, #b8b8b8);
+    border-color: #909090;
+    color: #f0f0f0;    
+    text-shadow:
+        -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
+
+    border-left-color: #d0d0d0;
+    border-top-color: #d0d0d0;
+    border-right-color: #909090;
+    border-bottom-color: #909090;
+}
+
+.light button:active {
+    background: linear-gradient(#b8b8b8, #c8c8c8);
+    border-left-color: #909090;
+    border-top-color: #909090;
+    border-right-color: #d0d0d0;
+    border-bottom-color: #d0d0d0;
+}
+
+/* controls */
+
+/* panel */
+
+.light .panel {
+    background: #d2d2d2;
+}
+
+.light .panelCorner {
+    background: #c5c5c5;
+}
+
+.light .panelClientArea {
+    background: #c2c2c2;
+}
+
+.light .panel,
+.light .panelClientArea,
+.light .panelCorner,
+.light .panelTitle {
+    box-shadow: -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
+}
+
+.light .panelClientArea {
+    box-shadow: inset 2px 2px 2px #40404008,
+        inset -2px 2px 2px #40404008,
+        inset 2px -2px 2px #40404008,
+        inset -2px -2px 2px #40404008,
+        -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
+    ;
+}
+
+.light .panel .actionButton {
+    border-color: #909090;
+}
+
+.light .panel .panelTitle {
+    background: #b8b8b8;
+    background: linear-gradient(#d8d8d8, #b8b8b8);
+    color: #ffffff;
+    text-shadow:
+        -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
+}
+
+.light .panel .actionButton {
+    background: radial-gradient(#c8c8c8, #b8b8b8);
+}
+
+.light .panel .actionButton:active {
+    background: radial-gradient(#b8b8b8, #c8c8c8);
+}

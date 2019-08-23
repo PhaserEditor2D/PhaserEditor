@@ -1,0 +1,46 @@
+.dark body {
+    background-color: #2c2c2c;
+    color: #ffffff66;
+}
+
+/* parts */
+
+.dark .part {
+   
+}
+
+.dark .view {
+    
+}
+
+.dark .viewTitle {
+  
+}
+
+.dark .viewTitleText {
+    border-color:  #1a1a1a;  
+    background-color: #3a3a3a;     
+}
+
+.dark .viewContent {
+    border: 1px solid #1a1a1a;  
+    background-color: #3a3a3a;
+}
+
+/* panel */
+
+.dark .panel, .dark .panelCorner {
+    background: #2a2a2a;    
+}
+
+.dark .panelCorner {
+    background: #2e2e2e;    
+}
+
+.dark .panelClientArea {
+    background: #3a3a3a;
+}
+
+.dark .panel, .dark .panelClientArea, .dark .panelCorner {
+    border: 1px solid #1a1a1a;
+}
