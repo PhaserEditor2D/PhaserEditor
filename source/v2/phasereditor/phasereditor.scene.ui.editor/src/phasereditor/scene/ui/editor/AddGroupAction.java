@@ -86,6 +86,8 @@ public class AddGroupAction extends Action {
 
 			ParentComponent.get_children(groups).add(group);
 
+			addObjectsToNewGroup(group);
+
 			var after = GroupListSnapshotOperation.takeSnapshot(_editor);
 
 			_editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
@@ -101,6 +103,11 @@ public class AddGroupAction extends Action {
 
 			_editor.setDirty(true);
 		}
+	}
+
+	@SuppressWarnings("unused")
+	protected void addObjectsToNewGroup(GroupModel group) {
+		// to be implemented by derived types.
 	}
 
 }

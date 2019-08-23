@@ -58,6 +58,7 @@ import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.ParentComponent;
 import phasereditor.scene.core.SceneModel;
 import phasereditor.scene.core.VariableComponent;
+import phasereditor.scene.ui.editor.AddGroupAction;
 import phasereditor.scene.ui.editor.SceneEditor;
 import phasereditor.scene.ui.editor.SceneUIEditor;
 import phasereditor.scene.ui.editor.messages.UpdateScenePropertiesMessage;
@@ -204,7 +205,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 							new ScenePropertiesSnapshotOperation(before, after, "Change snapping with selection."));
 
 					user_update_UI_from_Model();
-					
+
 					editor.getBroker().sendAll(new UpdateScenePropertiesMessage(after));
 
 				}
@@ -342,60 +343,14 @@ public class GameObjectEditorSection extends ScenePropertySection {
 			});
 
 			manager.add(new Separator());
-			manager.add(new Action("Add To New Group", EditorSharedImages.getImageDescriptor(IMG_ADD)) {
+			manager.add(new AddGroupAction(editor) {
+				{
+					setText("Add To New Group");
+				}
+
 				@Override
-				public void run() {
-
-					var sceneModel = editor.getSceneModel();
-
-					var groupsModel = sceneModel.getGroupsModel();
-
-					var nameComputer = new NameComputer(groupsModel);
-
-					var initialName = nameComputer.newName("group");
-
-					var dlg = new InputDialog(editor.getSite().getShell(), "Create Group",
-							"Enter the name of the new Group:", initialName, new IInputValidator() {
-
-								@Override
-								public String isValid(String newText) {
-
-									for (var group : ParentComponent.get_children(groupsModel)) {
-										if (VariableComponent.get_variableName(group).equals(newText)) {
-											return "That name is used.";
-										}
-									}
-
-									return null;
-								}
-							});
-
-					if (dlg.open() == Window.OK) {
-						var value = dlg.getValue();
-
-						var group = new GroupModel(groupsModel);
-
-						VariableComponent.set_variableName(group, value);
-
-						var before = GroupListSnapshotOperation.takeSnapshot(editor);
-
-						groupsModel.getChildren().add(group);
-						group.getChildren().addAll(getModels());
-
-						var after = GroupListSnapshotOperation.takeSnapshot(editor);
-
-						editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
-
-						editor.refreshOutline();
-
-						editor.updatePropertyPagesContentWithSelection();
-
-						editor.setDirty(true);
-
-						user_update_UI_from_Model();
-
-					}
-
+				protected void addObjectsToNewGroup(GroupModel group) {
+					group.getChildren().addAll(getModels());
 				}
 			});
 
