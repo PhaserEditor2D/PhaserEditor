@@ -22,21 +22,16 @@
 package phasereditor.scene.ui.editor.outline;
 
 import static java.util.stream.Collectors.toList;
-import static phasereditor.ui.IEditorSharedImages.IMG_ADD;
-import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
@@ -50,18 +45,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import phasereditor.scene.core.GroupModel;
-import phasereditor.scene.core.GroupsModel;
-import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
-import phasereditor.scene.core.ParentComponent;
-import phasereditor.scene.core.VariableComponent;
 import phasereditor.scene.ui.editor.SceneEditor;
-import phasereditor.scene.ui.editor.undo.GroupListSnapshotOperation;
-import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvas;
-import phasereditor.ui.TreeCanvas.TreeCanvasItem;
-import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 import phasereditor.ui.TreeCanvasDropAdapter;
 import phasereditor.ui.TreeCanvasViewer;
 
@@ -122,19 +108,8 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				getEditor().activateSearchContext();
 			}
 		});
-		_viewer = new SceneOutlineViewer(_filterTree.getTree(), getEditor(), new SceneOutlineContentProvider()) {
 
-			@Override
-			protected void setItemProperties(TreeCanvasItem item) {
-				super.setItemProperties(item);
-
-				var data = item.getData();
-
-				if (data instanceof GroupsModel) {
-					item.setActions(List.of(new CreateNewGroupAction()));
-				}
-			}
-		};
+		_viewer = new SceneOutlineViewer(_filterTree.getTree(), getEditor(), new SceneOutlineContentProvider());
 
 		_viewer.getTree().addMouseListener(new MouseAdapter() {
 			@Override
@@ -142,7 +117,7 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 				revealSelectedObjectInScene();
 			}
 		});
-		
+
 		_viewer.setInput(_editor.getSceneModel());
 
 		_viewer.getTree().setEditActions(_editor::copy, _editor::cut, () -> {
@@ -168,67 +143,6 @@ public class SceneOutlinePage extends Page implements IContentOutlinePage {
 
 	public TreeCanvasViewer getViewer() {
 		return _viewer;
-	}
-
-	class CreateNewGroupAction extends TreeCanvasItemAction {
-		public CreateNewGroupAction() {
-			super(EditorSharedImages.getImage(IMG_ADD), "Add new group");
-		}
-
-		@Override
-		public void run(MouseEvent event) {
-			var editor = getEditor();
-
-			var sceneModel = editor.getSceneModel();
-
-			var groups = sceneModel.getGroupsModel();
-
-			var nameComputer = new NameComputer(groups);
-			var initialName = nameComputer.newName("group");
-
-			var dlg = new InputDialog(editor.getSite().getShell(), "Create Group", "Enter the name of the new Group:",
-					initialName, new IInputValidator() {
-
-						@Override
-						public String isValid(String newText) {
-
-							for (var group : ParentComponent.get_children(groups)) {
-								if (VariableComponent.get_variableName(group).equals(newText)) {
-									return "That name is used.";
-								}
-							}
-
-							return null;
-						}
-					});
-
-			if (dlg.open() == Window.OK) {
-				var value = dlg.getValue();
-
-				var group = new GroupModel(groups);
-
-				VariableComponent.set_variableName(group, value);
-
-				var before = GroupListSnapshotOperation.takeSnapshot(editor);
-
-				ParentComponent.get_children(groups).add(group);
-
-				var after = GroupListSnapshotOperation.takeSnapshot(editor);
-
-				editor.executeOperation(new GroupListSnapshotOperation(before, after, "Add group."));
-
-				// TODO: just for now, we should fix the bug of clicking on a TreeCanvas action.
-				swtRun(() -> {
-					editor.setSelection(List.of(group));
-
-					editor.updatePropertyPagesContentWithSelection();
-				});
-
-				refresh();
-
-				editor.setDirty(true);
-			}
-		}
 	}
 
 	protected void revealSelectedObjectInScene() {

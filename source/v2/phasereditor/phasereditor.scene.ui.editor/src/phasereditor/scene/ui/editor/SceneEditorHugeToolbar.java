@@ -83,6 +83,8 @@ class SceneEditorHugeToolbar implements IEditorHugeToolbar {
 				manager.add(new Separator());
 				manager.add(new AddBitmapTextAction(_editor));
 				manager.add(new AddTextAction(_editor));
+				manager.add(new Separator());
+				manager.add(new AddGroupAction(_editor));
 				manager.createContextMenu(btn).setVisible(true);
 			}));
 		}
