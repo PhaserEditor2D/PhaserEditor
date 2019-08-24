@@ -36,7 +36,13 @@ namespace phasereditor2d.ui.controls {
         constructor(tagName: string = "div") {
             this._children = [];
             this._element = document.createElement(tagName);
-            this._element.classList.add("control");
+            this.addClass("control");
+        }
+
+        addClass(...tokens: string[]): void {
+            for (let token of tokens) {
+                this._element.classList.add();
+            }
         }
 
         getElement() {
@@ -55,7 +61,7 @@ namespace phasereditor2d.ui.controls {
             return x >= 0 && x <= this._bounds.width && y >= 0 && y <= this._bounds.height;
         }
 
-        setBounds(bounds: Bounds) {
+        setBounds(bounds: Bounds): void {
             if (bounds.x !== undefined) {
                 this._bounds.x = bounds.x;
             }
@@ -68,7 +74,7 @@ namespace phasereditor2d.ui.controls {
             this.layout();
         }
 
-        setBoundsValues(x: number, y: number, w: number, h: number) {
+        setBoundsValues(x: number, y: number, w: number, h: number): void {
             this.setBounds({ x: x, y: y, width: w, height: h });
         }
 
@@ -76,21 +82,21 @@ namespace phasereditor2d.ui.controls {
             return this._bounds;
         }
 
-        setLocation(x: number, y: number) {
+        setLocation(x: number, y: number): void {
             this._element.style.left = x + "px";
             this._element.style.top = y + "px";
             this._bounds.x = x;
             this._bounds.y = y;
         }
 
-        layout() {
+        layout(): void {
             setElementBounds(this._element, this._bounds);
             for (let child of this._children) {
                 child.layout();
             }
         }
 
-        add(control: Control) {
+        add(control: Control) : void {
             this._children.push(control);
             this._element.appendChild(control.getElement());
         }

@@ -59,8 +59,18 @@ var phasereditor2d;
                     this._bounds = { x: 0, y: 0, width: 0, height: 0 };
                     this._children = [];
                     this._element = document.createElement(tagName);
-                    this._element.classList.add("control");
+                    this.addClass("control");
                 }
+                Control.prototype.addClass = function () {
+                    var tokens = [];
+                    for (var _i = 0; _i < arguments.length; _i++) {
+                        tokens[_i] = arguments[_i];
+                    }
+                    for (var _a = 0, tokens_1 = tokens; _a < tokens_1.length; _a++) {
+                        var token = tokens_1[_a];
+                        this._element.classList.add();
+                    }
+                };
                 Control.prototype.getElement = function () {
                     return this._element;
                 };
@@ -440,6 +450,191 @@ var phasereditor2d;
                 return PaddingPane;
             }(Control));
             controls.PaddingPane = PaddingPane;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                var RenderCellArgs = /** @class */ (function () {
+                    function RenderCellArgs(ctx, x, y, obj) {
+                        this.ctx = ctx;
+                        this.x = x;
+                        this.y = y;
+                        this.obj = obj;
+                    }
+                    return RenderCellArgs;
+                }());
+                viewers.RenderCellArgs = RenderCellArgs;
+                ;
+                var Rect = /** @class */ (function () {
+                    function Rect(x, y, w, h) {
+                        if (x === void 0) { x = 0; }
+                        if (y === void 0) { y = 0; }
+                        if (w === void 0) { w = 0; }
+                        if (h === void 0) { h = 0; }
+                        this.x = x;
+                        this.y = y;
+                        this.w = w;
+                        this.h = h;
+                    }
+                    Rect.prototype.contains = function (x, y) {
+                        return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
+                    };
+                    return Rect;
+                }());
+                viewers.Rect = Rect;
+                var PaintItem = /** @class */ (function (_super) {
+                    __extends(PaintItem, _super);
+                    function PaintItem(data) {
+                        var _this = _super.call(this) || this;
+                        _this.data = data;
+                        return _this;
+                    }
+                    return PaintItem;
+                }(Rect));
+                viewers.PaintItem = PaintItem;
+                var View = /** @class */ (function (_super) {
+                    __extends(View, _super);
+                    function View() {
+                        var _this = _super.call(this, "canvas") || this;
+                        _this._cellSize = 32;
+                        _this._context = _this.getCanvas().getContext("2d");
+                        _this._input = null;
+                        _this._collapsedObjects = new Set();
+                        _this._selectedObjects = new Set();
+                        return _this;
+                    }
+                    View.prototype.isCollapsed = function (obj) {
+                        return this._collapsedObjects.has(obj);
+                    };
+                    View.prototype.isExpanded = function (obj) {
+                        return !this.isCollapsed(obj);
+                    };
+                    View.prototype.isSelected = function (obj) {
+                        return this._selectedObjects.has(obj);
+                    };
+                    View.prototype.paintSelectionBackground = function (x, y, w, h) {
+                    };
+                    View.prototype.paintTreeHandler = function (x, y, collapsed) {
+                        if (collapsed) {
+                            this._context.strokeStyle = "#000";
+                            this._context.strokeRect(x, y, 16, 16);
+                        }
+                        else {
+                            this._context.fillStyle = "#000";
+                            this._context.fillRect(x, y, 16, 16);
+                        }
+                    };
+                    View.prototype.repaint = function () {
+                        this._paintItems = [];
+                        var canvas = this.getCanvas();
+                        this._context.clearRect(0, 0, canvas.width, canvas.height);
+                        if (this._cellRendererProvider && this._contentProvider && this._input !== null) {
+                            this.paint();
+                        }
+                    };
+                    View.prototype.layout = function () {
+                        var b = this.getBounds();
+                        var canvas = this.getCanvas();
+                        canvas.width = b.width;
+                        canvas.height = b.height;
+                    };
+                    View.prototype.getCanvas = function () {
+                        return this.getElement();
+                    };
+                    View.prototype.getCellSize = function () {
+                        return this._cellSize;
+                    };
+                    View.prototype.setCellSize = function (cellSize) {
+                        this._cellSize = cellSize;
+                    };
+                    View.prototype.getContentProvider = function () {
+                        return this._contentProvider;
+                    };
+                    View.prototype.setContentProvider = function (contentProvider) {
+                        this._contentProvider = contentProvider;
+                    };
+                    View.prototype.getCellRendererProvider = function () {
+                        return this._cellRendererProvider;
+                    };
+                    View.prototype.setCellRendererProvider = function (cellRendererProvider) {
+                        this._cellRendererProvider = cellRendererProvider;
+                    };
+                    View.prototype.getInput = function () {
+                        return this._input;
+                    };
+                    View.prototype.setInput = function (input) {
+                        this._input = input;
+                    };
+                    return View;
+                }(controls.Control));
+                viewers.View = View;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./viewers.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                var TreeView = /** @class */ (function (_super) {
+                    __extends(TreeView, _super);
+                    function TreeView() {
+                        return _super !== null && _super.apply(this, arguments) || this;
+                    }
+                    TreeView.prototype.paint = function () {
+                        var x = 0;
+                        var y = 0;
+                        // TODO: missing taking the scroll offset to compute the non-painting area
+                        var contentProvider = this.getContentProvider();
+                        var roots = contentProvider.getRoots();
+                        this.paintItems(roots, x, y);
+                    };
+                    TreeView.prototype.paintItems = function (objects, x, y) {
+                        var b = this.getBounds();
+                        for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
+                            var obj = objects_1[_i];
+                            var children = this.getContentProvider().getChildren(obj);
+                            var renderer = this.getCellRendererProvider().getCellRenderer(obj);
+                            var args = new viewers.RenderCellArgs(this._context, x, y, obj);
+                            var cellHeight = renderer.cellHeight(args);
+                            if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
+                                if (this.isSelected(obj)) {
+                                    this.paintSelectionBackground(x, y, b.width, cellHeight);
+                                }
+                                if (children) {
+                                    // paint collapse/expand icon
+                                    args.x += 20;
+                                }
+                                renderer.renderCell(args);
+                            }
+                            y += cellHeight;
+                            if (this.isExpanded(obj)) {
+                                this.paintItems(children, x, y);
+                            }
+                        }
+                    };
+                    TreeView.prototype.getContentProvider = function () {
+                        return _super.prototype.getContentProvider.call(this);
+                    };
+                    TreeView.prototype.setContentProvider = function (contentProvider) {
+                        _super.prototype.setContentProvider.call(this, contentProvider);
+                    };
+                    return TreeView;
+                }(viewers.View));
+                viewers.TreeView = TreeView;
+            })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
