@@ -28,15 +28,70 @@ namespace phasereditor2d.ui.controls {
             height: elem.clientHeight
         };
     }
+
+    export interface ILayout {
+        layout(parent: Control);
+    }
+
+    export class FillLayout implements ILayout {
+        private _padding: number = 0;
+
+        constructor(padding: number = 0) {
+            this._padding = padding;
+        }
+
+        getPadding() {
+            return this._padding;
+        }
+
+        setPadding(padding: number): void {
+            this._padding = padding;
+        }
+
+        layout(parent: Control) {
+            const children = parent.getChildren();
+
+            if (children.length > 1) {
+                console.warn("[FillLayout] Invalid number for children or parent control.");
+            }
+
+            const b = parent.getBounds();
+
+            setElementBounds(parent.getElement(), b);
+
+            if (children.length > 0) {
+                const child = children[0];
+                child.setBoundsValues(
+                    this._padding,
+                    this._padding,
+                    b.width - this._padding * 2,
+                    b.height - this._padding * 2
+                );
+            }
+        }
+
+    }
+
     export class Control {
         private _bounds: Bounds = { x: 0, y: 0, width: 0, height: 0 };
         private _element: HTMLElement;
         private _children: Control[];
+        private _layout: ILayout;
 
         constructor(tagName: string = "div") {
             this._children = [];
             this._element = document.createElement(tagName);
             this.addClass("control");
+            this._layout = null;
+        }
+
+        getLayout() {
+            return this._layout;
+        }
+
+        setLayout(layout: ILayout): void {
+            this._layout = layout;
+            this.layout();
         }
 
         addClass(...tokens: string[]): void {
@@ -91,11 +146,13 @@ namespace phasereditor2d.ui.controls {
 
         layout(): void {
             setElementBounds(this._element, this._bounds);
-            
-            for (let child of this._children) {
-                child.layout();
+            if (this._layout) {
+                this._layout.layout(this);
+            } else {
+                for (let child of this._children) {
+                    child.layout();
+                }
             }
-
         }
 
         add(control: Control): void {
@@ -250,6 +307,10 @@ namespace phasereditor2d.ui.controls {
 
         getToolbar(): IToolbar {
             return this._panelTitle.getToolbar();
+        }
+
+        getClientArea() {
+            return this._clientArea;
         }
 
         layout() {

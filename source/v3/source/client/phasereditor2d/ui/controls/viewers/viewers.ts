@@ -2,10 +2,11 @@ namespace phasereditor2d.ui.controls.viewers {
 
     export class RenderCellArgs {
         constructor(
-            public ctx: CanvasRenderingContext2D,
+            public canvasContext: CanvasRenderingContext2D,
             public x: number,
             public y: number,
-            public obj: any) {
+            public obj: any,
+            public view: Viewer) {
         }
     };
 
@@ -17,6 +18,23 @@ namespace phasereditor2d.ui.controls.viewers {
 
     export interface ICellRendererProvider {
         getCellRenderer(element: any): ICellRenderer;
+    }
+
+    export abstract class LabelCellRenderer implements ICellRenderer {
+
+        renderCell(args: RenderCellArgs): void {
+            const label = this.getLabel(args.obj);
+            const ctx = args.canvasContext;
+
+            ctx.fillStyle = "#000";
+            ctx.fillText(label, args.x, args.y + 13);
+        }
+
+        abstract getLabel(obj: any): string;
+
+        cellHeight(args: RenderCellArgs): number {
+            return 20;
+        }
     }
 
     export interface IContentProvider {
@@ -45,12 +63,12 @@ namespace phasereditor2d.ui.controls.viewers {
         }
     }
 
-    export abstract class View extends Control {
+    export abstract class Viewer extends Control {
         private _contentProvider: IContentProvider;
         private _cellRendererProvider: ICellRendererProvider;
         private _input: any;
         private _cellSize: number;
-        private _collapsedObjects: Set<any>;
+        private _expandedObjects: Set<any>;
         private _selectedObjects: Set<any>;
         protected _context: CanvasRenderingContext2D;
         protected _paintItems: PaintItem[];
@@ -60,27 +78,35 @@ namespace phasereditor2d.ui.controls.viewers {
             this._cellSize = 32;
             this._context = this.getCanvas().getContext("2d");
             this._input = null;
-            this._collapsedObjects = new Set();
+            this._expandedObjects = new Set();
             this._selectedObjects = new Set();
         }
 
-        isCollapsed(obj : any) {
-            return this._collapsedObjects.has(obj);
+        setExpanded(obj : any, expanded : boolean) {
+            if (expanded) {
+                this._expandedObjects.add(obj);
+            } else {
+                this._expandedObjects.delete(obj);
+            }
         }
 
-        isExpanded(obj : any) {
-            return !this.isCollapsed(obj);
+        isExpanded(obj: any) {
+            return this._expandedObjects.has(obj);
         }
 
-        isSelected(obj : any) {
+        isCollapsed(obj: any) {
+            return !this.isExpanded(obj);
+        }
+
+        isSelected(obj: any) {
             return this._selectedObjects.has(obj);
         }
 
-        protected paintSelectionBackground(x : number, y : number, w : number, h : number) {
+        protected paintSelectionBackground(x: number, y: number, w: number, h: number) {
 
         }
 
-        protected paintTreeHandler(x : number, y : number, collapsed : boolean) {
+        protected paintTreeHandler(x: number, y: number, collapsed: boolean) {
             if (collapsed) {
                 this._context.strokeStyle = "#000";
                 this._context.strokeRect(x, y, 16, 16);
@@ -104,9 +130,14 @@ namespace phasereditor2d.ui.controls.viewers {
 
         layout() {
             const b = this.getBounds();
+            ui.controls.setElementBounds(this.getElement(), b);
+
             const canvas = this.getCanvas();
+
             canvas.width = b.width;
             canvas.height = b.height;
+
+            this.repaint();
         }
 
         protected abstract paint(): void;
