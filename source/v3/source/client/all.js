@@ -68,7 +68,7 @@ var phasereditor2d;
                     }
                     for (var _a = 0, tokens_1 = tokens; _a < tokens_1.length; _a++) {
                         var token = tokens_1[_a];
-                        this._element.classList.add();
+                        this._element.classList.add(token);
                     }
                 };
                 Control.prototype.getElement = function () {
@@ -168,9 +168,6 @@ var phasereditor2d;
                 ActionButton.prototype.getAction = function () {
                     return this._action;
                 };
-                ActionButton.prototype.layout = function () {
-                    _super.prototype.layout.call(this);
-                };
                 return ActionButton;
             }(Control));
             controls.ActionButton = ActionButton;
@@ -219,9 +216,9 @@ var phasereditor2d;
                         _this._panelTitle = new PanelTitle();
                         _this.add(_this._panelTitle);
                     }
-                    _this._clientAreaElement = document.createElement("div");
-                    _this._clientAreaElement.classList.add("panelClientArea");
-                    _this.getElement().appendChild(_this._clientAreaElement);
+                    _this._clientArea = new Control("div");
+                    _this._clientArea.addClass("panelClientArea");
+                    _this.add(_this._clientArea);
                     return _this;
                 }
                 Panel.prototype.setTitle = function (title) {
@@ -235,7 +232,8 @@ var phasereditor2d;
                     return this._panelTitle.getToolbar();
                 };
                 Panel.prototype.layout = function () {
-                    _super.prototype.layout.call(this);
+                    //super.layout();
+                    setElementBounds(this.getElement(), this.getBounds());
                     var b = this.getBounds();
                     var cornerSize = ROW_HEIGHT;
                     setElementBounds(this._cornerElements[0], {
@@ -264,7 +262,7 @@ var phasereditor2d;
                     });
                     if (this._panelTitle) {
                         this._panelTitle.setBoundsValues(PANEL_BORDER_SIZE, PANEL_BORDER_SIZE, b.width - PANEL_BORDER_SIZE * 2, ROW_HEIGHT);
-                        setElementBounds(this._clientAreaElement, {
+                        this._clientArea.setBounds({
                             x: PANEL_BORDER_SIZE,
                             y: PANEL_BORDER_SIZE + ROW_HEIGHT,
                             width: b.width - PANEL_BORDER_SIZE * 2,
@@ -272,7 +270,7 @@ var phasereditor2d;
                         });
                     }
                     else {
-                        setElementBounds(this._clientAreaElement, {
+                        this._clientArea.setBounds({
                             x: PANEL_BORDER_SIZE,
                             y: PANEL_BORDER_SIZE,
                             width: b.width - PANEL_BORDER_SIZE * 2,

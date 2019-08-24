@@ -41,7 +41,7 @@ namespace phasereditor2d.ui.controls {
 
         addClass(...tokens: string[]): void {
             for (let token of tokens) {
-                this._element.classList.add();
+                this._element.classList.add(token);
             }
         }
 
@@ -91,12 +91,14 @@ namespace phasereditor2d.ui.controls {
 
         layout(): void {
             setElementBounds(this._element, this._bounds);
+            
             for (let child of this._children) {
                 child.layout();
             }
+
         }
 
-        add(control: Control) : void {
+        add(control: Control): void {
             this._children.push(control);
             this._element.appendChild(control.getElement());
         }
@@ -164,10 +166,6 @@ namespace phasereditor2d.ui.controls {
         getAction() {
             return this._action;
         }
-
-        layout() {
-            super.layout();
-        }
     }
 
     export interface IToolbar {
@@ -213,7 +211,7 @@ namespace phasereditor2d.ui.controls {
     }
 
     export class Panel extends Control {
-        private _clientAreaElement: HTMLDivElement;
+        private _clientArea: Control;
         private _cornerElements: HTMLDivElement[] = [null, null, null, null];
         private _panelTitle: PanelTitle;
         private _title: string;
@@ -235,10 +233,10 @@ namespace phasereditor2d.ui.controls {
                 this.add(this._panelTitle);
             }
 
-            this._clientAreaElement = document.createElement("div");
-            this._clientAreaElement.classList.add("panelClientArea");
+            this._clientArea = new Control("div");
+            this._clientArea.addClass("panelClientArea");
 
-            this.getElement().appendChild(this._clientAreaElement);
+            this.add(this._clientArea);
         }
 
         setTitle(title: string) {
@@ -255,7 +253,8 @@ namespace phasereditor2d.ui.controls {
         }
 
         layout() {
-            super.layout();
+            //super.layout();
+            setElementBounds(this.getElement(), this.getBounds());
 
             const b = this.getBounds();
 
@@ -292,14 +291,14 @@ namespace phasereditor2d.ui.controls {
             if (this._panelTitle) {
                 this._panelTitle.setBoundsValues(PANEL_BORDER_SIZE, PANEL_BORDER_SIZE, b.width - PANEL_BORDER_SIZE * 2, ROW_HEIGHT);
 
-                setElementBounds(this._clientAreaElement, {
+                this._clientArea.setBounds({
                     x: PANEL_BORDER_SIZE,
                     y: PANEL_BORDER_SIZE + ROW_HEIGHT,
                     width: b.width - PANEL_BORDER_SIZE * 2,
                     height: b.height - PANEL_BORDER_SIZE * 2 - ROW_HEIGHT
                 });
             } else {
-                setElementBounds(this._clientAreaElement, {
+                this._clientArea.setBounds({
                     x: PANEL_BORDER_SIZE,
                     y: PANEL_BORDER_SIZE,
                     width: b.width - PANEL_BORDER_SIZE * 2,
