@@ -316,11 +316,26 @@
 </ul>
 <div class="section" id="common-properties">
 <h3>7.3.1&nbsp;&nbsp;&nbsp;Common properties<a class="headerlink" href="#common-properties" title="Permalink to this headline">¶</a></h3>
-<p>Like it is in the other editors of the IDE, the <a href="#id1"><span class="problematic" id="id2">`Properties view`_</span></a> connects with the active <a class="reference external" href="scene-editor.html">Scene Editor</a> and show the properties of the objects selected in the scene or the <a class="reference internal" href="#outline-view">Outline view</a>.</p>
-<p>In the <a class="reference external" href="https://phaser.io">Phaser</a> API, the properties of the game object types are grouped in small classes, so a game object type extends…</p>
-<p>All object types (excepting <a class="reference internal" href="#group">Group</a>) share a common set of properties that are presented in the <a href="#id3"><span class="problematic" id="id4">`Properties view`_</span></a> in sections.</p>
+<p>Like it is in the other editors of the IDE, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> connects with the active <a class="reference external" href="scene-editor.html">Scene Editor</a> and show the properties of the objects selected in the scene or the <a class="reference internal" href="#outline-view">Outline view</a>.</p>
+<p>In the <a class="reference external" href="https://phaser.io">Phaser</a> API, the properties of the game object types are divided in dedicated classes in the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html">Phaser.GameObjects.Components</a> namespace. So, an object type contains its own properties and methods but also inherits a couple of “component” classes, like <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html">Phaser.GameObjects.Components.Transform</a> or <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">Phaser.GameObjects.Components.Tint</a>.</p>
+<p>In the <a class="reference external" href="workbench.html#properties-view">Properties view</a> of the Scene Editor we split the properties more or less in the same way, each properties section is dedicated to a specific <a class="reference external" href="https://phaser.io">Phaser</a> game object component class. There is not a 100% match, there are sections dedicated only to <a class="reference external" href="scene-editor.html">Scene Editor</a>-properties or there are sections with a merge of <a class="reference external" href="https://phaser.io">Phaser</a> API properties and editor-properties.</p>
+<p>The editor-properties are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.</p>
+<p>In this chapter we explain the properties that are common to the majority of the supported game object types.</p>
 <div class="section" id="variable-properties-section">
 <h4>Variable properties section<a class="headerlink" href="#variable-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This section is used by the editor and the <a class="reference internal" href="#scene-compiler">scene compiler</a> to identify the object and provides certain operations.</p>
+<img alt="Variable section." src="_images/scene-editor-variable-section.png" />
+<ol class="arabic simple">
+<li>The <strong>generate property</strong> button. You can check or un-check it. By default, the <a class="reference internal" href="#scene-compiler">scene compiler</a> assign the objects to local variables, but if you check this property, the object is assigned to an instance field. Do this when you need to get access to the object outside the <em>create</em> method.</li>
+<li>The <strong>go to source</strong> button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an <a class="reference external" href="code-editors.html#integration-with-external-editors">external editor</a> then it opens the external editor.</li>
+<li>The <strong>Var Name</strong> property is used by the <a class="reference internal" href="#scene-compiler">scene compiler</a> as the variable name and the <a class="reference internal" href="#outline-view">Outline view</a> use it as the label of the object.</li>
+</ol>
+<blockquote>
+<div><img alt="Variable name." src="_images/scene-editor-variable-section-var-name-property.png" />
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>The same of <em>(1)</em>.</li>
+</ol>
 </div>
 <div class="section" id="editor-properties-section">
 <h4>Editor properties section<a class="headerlink" href="#editor-properties-section" title="Permalink to this headline">¶</a></h4>

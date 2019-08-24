@@ -131,14 +131,36 @@ The list of supported object types is:
 Common properties
 ~~~~~~~~~~~~~~~~~
 
-Like it is in the other editors of the IDE, the `Properties view`_ connects with the active |SceneEditor|_ and show the properties of the objects selected in the scene or the `Outline view`_.
+Like it is in the other editors of the IDE, the `Properties view <workbench.html#properties-view>`_ connects with the active |SceneEditor|_ and show the properties of the objects selected in the scene or the `Outline view`_.
 
-In the Phaser_ API, the properties of the game object types are grouped in small classes, so a game object type extends...
+In the Phaser_ API, the properties of the game object types are divided in dedicated classes in the `Phaser.GameObjects.Components <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html>`_ namespace. So, an object type contains its own properties and methods but also inherits a couple of "component" classes, like `Phaser.GameObjects.Components.Transform <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html>`_ or `Phaser.GameObjects.Components.Tint <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_.
+ 
 
-All object types (excepting `Group`_) share a common set of properties that are presented in the `Properties view`_ in sections. 
+In the `Properties view`_ of the |SceneEditor| we split the properties more or less in the same way, each properties section is dedicated to a specific Phaser_ game object component class. There is not a 100% match, there are sections dedicated only to |SceneEditor|_-properties or there are sections with a merge of Phaser_ API properties and editor-properties.
+
+The editor-properties are not part of the Phaser_ API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.
+
+In this chapter we explain the properties that are common to the majority of the supported game object types.
 
 Variable properties section
 ###########################
+
+This section is used by the editor and the `scene compiler`_ to identify the object and provides certain operations.
+
+.. image:: images/scene-editor/scene-editor-variable-section.png
+  :alt: Variable section.
+
+
+#. The **generate property** button. You can check or un-check it. By default, the `scene compiler`_ assign the objects to local variables, but if you check this property, the object is assigned to an instance field. Do this when you need to get access to the object outside the *create* method.
+
+#. The **go to source** button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an `external editor <code-editors.html#integration-with-external-editors>`_ then it opens the external editor.
+
+#. The **Var Name** property is used by the `scene compiler`_ as the variable name and the `Outline view`_ use it as the label of the object.
+  
+  .. image:: images/scene-editor/scene-editor-variable-section-var-name-property.png
+    :alt: Variable name.
+
+4. The same of *(1)*.
 
 Editor properties section
 #########################
