@@ -31,7 +31,7 @@ namespace phasereditor2d.ui.controls.viewers {
             ctx.fillStyle = "#000";
 
             if (img) {
-                ctx.drawImage(img, x, args.y, 16, 16);
+                img.paint(ctx, x, args.y);
                 x += 20;
             }
 
@@ -40,7 +40,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         abstract getLabel(obj: any): string;
 
-        abstract getImage(obj: any): HTMLImageElement;
+        abstract getImage(obj: any): controls.IIcon;
 
         cellHeight(args: RenderCellArgs): number {
             return 20;

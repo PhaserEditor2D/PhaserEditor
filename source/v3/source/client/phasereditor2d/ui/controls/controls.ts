@@ -8,40 +8,74 @@ namespace phasereditor2d.ui.controls {
     const SPLIT_OVER_ZONE_WIDTH = 6;
 
 
-    export class Controls {
-        private static _images: Map<string, HTMLImageElement> = new Map();
+    export interface IIcon {
+        paint(context: CanvasRenderingContext2D, x: number, y: number, );
+    }
 
-        static ICON_TREE_COLLAPSED = "tree-collapsed";
-        static ICON_TREE_EXPANDED = "tree-expanded";
+    class IconImpl implements IIcon {
+
+        constructor(public img: HTMLImageElement) {
+
+        }
+
+        paint( context: CanvasRenderingContext2D, x: number, y: number,) {
+            // we assume the image size is under 16x16 (for now)
+            const w = this.img.naturalWidth;
+            const h = this.img.naturalHeight;
+            const dx = (16 - w) / 2;
+            const dy = (16 - h) / 2;
+            context.drawImage(this.img, x + dx, y + dy);
+        }
+
+    }
+
+    export class Controls {
+        private static _images: Map<string, IIcon> = new Map();
+
+        static ICON_TREE_COLLAPSE = "tree-collapse";
+        static ICON_TREE_EXPAND = "tree-expand";
         static ICON_FILE = "file";
         static ICON_FOLDER = "folder";
+        static ICON_FILE_FONT = "file-font";
+        static ICON_FILE_IMAGE = "file-image";
+        static ICON_FILE_VIDEO = "file-movie";
+        static ICON_FILE_SCRIPT = "file-script";
+        static ICON_FILE_SOUND = "file-sound";
+        static ICON_FILE_TEXT = "file-text";
+
 
         private static ICONS = [
-            Controls.ICON_TREE_COLLAPSED,
-            Controls.ICON_TREE_EXPANDED,
+            Controls.ICON_TREE_COLLAPSE,
+            Controls.ICON_TREE_EXPAND,
             Controls.ICON_FILE,
-            Controls.ICON_FOLDER
+            Controls.ICON_FOLDER,
+            Controls.ICON_FILE_FONT,
+            Controls.ICON_FILE_IMAGE,
+            Controls.ICON_FILE_SCRIPT,
+            Controls.ICON_FILE_SOUND,
+            Controls.ICON_FILE_TEXT,
+            Controls.ICON_FILE_VIDEO
         ];
 
         static async preload(callback: any) {
-            for (let icon of Controls.ICONS) {
-                const img = this.getIcon(icon);
-                await img.decode();
+            for (let name of Controls.ICONS) {
+                const icon = <IconImpl> this.getIcon(name);
+                await icon.img.decode();
             }
             callback();
         }
 
-        static getIcon(name: string): HTMLImageElement {
+        static getIcon(name: string): IIcon {
             if (Controls._images.has(name)) {
                 return Controls._images.get(name);
             }
 
-            const img = new Image(32, 32);
-            img.src = "phasereditor2d/ui/controls/images/" + name + ".png";
-
-            Controls._images.set(name, img);
-
-            return img;
+            console.log("New");
+            const img = new Image();
+            img.src = "phasereditor2d/ui/controls/images/16/" + name + ".png";
+            const icon = new IconImpl(img);
+            Controls._images.set(name, icon);
+            return icon;
         }
     }
 

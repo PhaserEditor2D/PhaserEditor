@@ -23,10 +23,19 @@ namespace phasereditor2d.ui.files {
             return (<io.FilePath>obj).getName();
         }
 
-        getImage(obj: any): HTMLImageElement {
+        getImage(obj: any): controls.IIcon {
             const file = <io.FilePath>obj;
-            let icon = file.isFile() ? controls.Controls.ICON_FILE : controls.Controls.ICON_FOLDER;
-            return controls.Controls.getIcon(icon);
+            if (file.isFile()) {
+                const type = file.getContentType();
+                const icon = Workbench.getWorkbench().getContentTypeIcon(type);
+                if (icon) {
+                    return icon;
+                }
+            } else {
+                return controls.Controls.getIcon(controls.Controls.ICON_FOLDER);
+            }
+            
+            return controls.Controls.getIcon(controls.Controls.ICON_FILE);
         }
     }
 
@@ -44,7 +53,7 @@ namespace phasereditor2d.ui.files {
 
             let root = new core.io.FilePath(null, TEST_DATA);
 
-            console.log(root.toStringTree());
+            //console.log(root.toStringTree());
 
             let tree = new viewers.TreeViewer();
             tree.setContentProvider(new FileTreeContentProvider());
@@ -64,11 +73,13 @@ namespace phasereditor2d.ui.files {
         "children": [
             {
                 "name": ".gitignore",
-                "isFile": true
+                "isFile": true,
+                "contentType": "any"
             },
             {
                 "name": "COPYRIGHTS",
-                "isFile": true
+                "isFile": true,
+                "contentType": "any"
             },
             {
                 "name": "assets",
@@ -76,7 +87,8 @@ namespace phasereditor2d.ui.files {
                 "children": [
                     {
                         "name": "animations.json",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "json"
                     },
                     {
                         "name": "atlas",
@@ -84,35 +96,43 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": ".DS_Store",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "atlas-props.json",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "json"
                             },
                             {
                                 "name": "atlas-props.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "atlas.json",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "json"
                             },
                             {
                                 "name": "atlas.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "hello.atlas",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "hello.json",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "json"
                             },
                             {
                                 "name": "hello.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             }
                         ]
                     },
@@ -122,23 +142,28 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": ".DS_Store",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "bg-clouds.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "bg-mountains.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "bg-trees.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "tileset.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             }
                         ]
                     },
@@ -148,19 +173,23 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": "arcade.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "arcade.xml",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "atari-classic.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "atari-classic.xml",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             }
                         ]
                     },
@@ -170,13 +199,15 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": "hello.html",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             }
                         ]
                     },
                     {
                         "name": "levels-pack-1.json",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "json"
                     },
                     {
                         "name": "maps",
@@ -184,11 +215,13 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": ".DS_Store",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "map.json",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "json"
                             }
                         ]
                     },
@@ -198,59 +231,73 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": "Acorn.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "Ant.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "EnemyDeath.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "GameOver.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "GameOver.scene",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "phasereditor2d.scene"
                             },
                             {
                                 "name": "Gator.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "Grasshopper.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "Level.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "Level.scene",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "phasereditor2d.scene"
                             },
                             {
                                 "name": "Player.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "Preload.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "Preload.scene",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "phasereditor2d.scene"
                             },
                             {
                                 "name": "TitleScreen.js",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "js"
                             },
                             {
                                 "name": "TitleScreen.scene",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "phasereditor2d.scene"
                             }
                         ]
                     },
@@ -260,31 +307,38 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": ".DS_Store",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "enemy-death.ogg",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "sound"
                             },
                             {
                                 "name": "hurt.ogg",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "sound"
                             },
                             {
                                 "name": "item.ogg",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "sound"
                             },
                             {
                                 "name": "jump.ogg",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "sound"
                             },
                             {
                                 "name": "music-credits.txt",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "txt"
                             },
                             {
                                 "name": "the_valley.ogg",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "sound"
                             }
                         ]
                     },
@@ -294,31 +348,38 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": ".DS_Store",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "any"
                             },
                             {
                                 "name": "credits-text.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "game-over.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "instructions.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "loading.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "press-enter-text.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             },
                             {
                                 "name": "title-screen.png",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             }
                         ]
                     },
@@ -328,7 +389,8 @@ namespace phasereditor2d.ui.files {
                         "children": [
                             {
                                 "name": "demo.svg",
-                                "isFile": true
+                                "isFile": true,
+                                "contentType": "img"
                             }
                         ]
                     }
@@ -336,7 +398,8 @@ namespace phasereditor2d.ui.files {
             },
             {
                 "name": "data.json",
-                "isFile": true
+                "isFile": true,
+                "contentType": "json"
             },
             {
                 "name": "fake-assets",
@@ -344,25 +407,30 @@ namespace phasereditor2d.ui.files {
                 "children": [
                     {
                         "name": "Collisions Layer.png",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "img"
                     },
                     {
                         "name": "Main Layer.png",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "img"
                     },
                     {
                         "name": "fake-pack.json",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "json"
                     }
                 ]
             },
             {
                 "name": "index.html",
-                "isFile": true
+                "isFile": true,
+                "contentType": "any"
             },
             {
                 "name": "jsconfig.json",
-                "isFile": true
+                "isFile": true,
+                "contentType": "json"
             },
             {
                 "name": "lib",
@@ -370,13 +438,15 @@ namespace phasereditor2d.ui.files {
                 "children": [
                     {
                         "name": "phaser.js",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "js"
                     }
                 ]
             },
             {
                 "name": "main.js",
-                "isFile": true
+                "isFile": true,
+                "contentType": "js"
             },
             {
                 "name": "typings",
@@ -384,11 +454,13 @@ namespace phasereditor2d.ui.files {
                 "children": [
                     {
                         "name": "phaser.d.ts",
-                        "isFile": true
+                        "isFile": true,
+                        "contentType": "ts"
                     }
                 ]
             }
         ]
-    };
+    }
+        ;
 
 }

@@ -74,8 +74,8 @@ namespace phasereditor2d.ui.controls.viewers {
                     if (children.length > 0) {
                         const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
                         
-                        const img = Controls.getIcon(expanded? Controls.ICON_TREE_COLLAPSED : Controls.ICON_TREE_EXPANDED);
-                        this._context.drawImage(img, x, iconY, 16, 16);
+                        const icon = Controls.getIcon(expanded? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
+                        icon.paint(this._context, x, iconY);
 
                         this._treeIconList.push({
                             rect: new Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
