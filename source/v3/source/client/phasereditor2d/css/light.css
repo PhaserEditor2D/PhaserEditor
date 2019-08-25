@@ -9,7 +9,7 @@
 .light button {
     background: linear-gradient(#c8c8c8, #b8b8b8);
     border-color: #909090;
-    color: #f0f0f0;    
+    color: #f0f0f0;
     text-shadow:
         -1px -1px 0 #909090,
         1px -1px 0 #909090,
@@ -76,6 +76,7 @@
     background: #b8b8b8;
     background: linear-gradient(#d8d8d8, #b8b8b8);
     color: #ffffff;
+
     text-shadow:
         -1px -1px 0 #909090,
         1px -1px 0 #909090,

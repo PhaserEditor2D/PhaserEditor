@@ -11,6 +11,41 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var phasereditor2d;
 (function (phasereditor2d) {
     var demo;
@@ -23,7 +58,7 @@ var phasereditor2d;
     })(demo = phasereditor2d.demo || (phasereditor2d.demo = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 window.addEventListener("load", function () {
-    phasereditor2d.demo.main();
+    phasereditor2d.ui.controls.Controls.preload(function () { return phasereditor2d.demo.main(); });
 });
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -101,6 +136,58 @@ var phasereditor2d;
             var ACTION_WIDTH = 20;
             var PANEL_BORDER_SIZE = 4;
             var SPLIT_OVER_ZONE_WIDTH = 6;
+            var Controls = /** @class */ (function () {
+                function Controls() {
+                }
+                Controls.preload = function (callback) {
+                    return __awaiter(this, void 0, void 0, function () {
+                        var _i, _a, icon, img;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    _i = 0, _a = Controls.ICONS;
+                                    _b.label = 1;
+                                case 1:
+                                    if (!(_i < _a.length)) return [3 /*break*/, 4];
+                                    icon = _a[_i];
+                                    img = this.getIcon(icon);
+                                    return [4 /*yield*/, img.decode()];
+                                case 2:
+                                    _b.sent();
+                                    _b.label = 3;
+                                case 3:
+                                    _i++;
+                                    return [3 /*break*/, 1];
+                                case 4:
+                                    callback();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    });
+                };
+                Controls.getIcon = function (name) {
+                    if (Controls._images.has(name)) {
+                        return Controls._images.get(name);
+                    }
+                    var img = new Image(32, 32);
+                    img.src = "phasereditor2d/ui/controls/images/" + name + ".png";
+                    Controls._images.set(name, img);
+                    return img;
+                };
+                Controls._images = new Map();
+                Controls.ICON_TREE_COLLAPSED = "tree-collapsed";
+                Controls.ICON_TREE_EXPANDED = "tree-expanded";
+                Controls.ICON_FILE = "file";
+                Controls.ICON_FOLDER = "folder";
+                Controls.ICONS = [
+                    Controls.ICON_TREE_COLLAPSED,
+                    Controls.ICON_TREE_EXPANDED,
+                    Controls.ICON_FILE,
+                    Controls.ICON_FOLDER
+                ];
+                return Controls;
+            }());
+            controls.Controls = Controls;
             function setElementBounds(elem, bounds) {
                 elem.style.left = bounds.x + "px";
                 elem.style.top = bounds.y + "px";
@@ -583,9 +670,15 @@ var phasereditor2d;
                     }
                     LabelCellRenderer.prototype.renderCell = function (args) {
                         var label = this.getLabel(args.obj);
+                        var img = this.getImage(args.obj);
+                        var x = args.x;
                         var ctx = args.canvasContext;
                         ctx.fillStyle = "#000";
-                        ctx.fillText(label, args.x, args.y + 13);
+                        if (img) {
+                            ctx.drawImage(img, x, args.y, 16, 16);
+                            x += 20;
+                        }
+                        ctx.fillText(label, x, args.y + 15);
                     };
                     LabelCellRenderer.prototype.cellHeight = function (args) {
                         return 20;
@@ -625,12 +718,20 @@ var phasereditor2d;
                     function Viewer() {
                         var _this = _super.call(this, "canvas") || this;
                         _this._cellSize = 32;
-                        _this._context = _this.getCanvas().getContext("2d");
+                        _this.initContext();
                         _this._input = null;
                         _this._expandedObjects = new Set();
                         _this._selectedObjects = new Set();
+                        window.cc = _this;
                         return _this;
                     }
+                    Viewer.prototype.initContext = function () {
+                        this._context = this.getCanvas().getContext("2d");
+                        this._context.imageSmoothingEnabled = false;
+                        this._context.font = "14px sans-serif";
+                        this._context.fillStyle = "red";
+                        this._context.fillText("hello", 10, 100);
+                    };
                     Viewer.prototype.setExpanded = function (obj, expanded) {
                         if (expanded) {
                             this._expandedObjects.add(obj);
@@ -674,6 +775,7 @@ var phasereditor2d;
                         var canvas = this.getCanvas();
                         canvas.width = b.width;
                         canvas.height = b.height;
+                        this.initContext();
                         this.repaint();
                     };
                     Viewer.prototype.getCanvas = function () {
@@ -720,7 +822,7 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 var TREE_ICON_SIZE = 16;
-                var LABEL_MARGIN = TREE_ICON_SIZE + 5;
+                var LABEL_MARGIN = TREE_ICON_SIZE + 0;
                 var TreeViewer = /** @class */ (function (_super) {
                     __extends(TreeViewer, _super);
                     function TreeViewer() {
@@ -741,7 +843,7 @@ var phasereditor2d;
                     };
                     TreeViewer.prototype.paint = function () {
                         var x = 0;
-                        var y = 0;
+                        var y = 5;
                         this._treeIconList = [];
                         // TODO: missing taking the scroll offset to compute the non-painting area
                         var contentProvider = this.getContentProvider();
@@ -764,14 +866,8 @@ var phasereditor2d;
                                 // render tree icon
                                 if (children.length > 0) {
                                     var iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
-                                    if (expanded) {
-                                        this._context.strokeStyle = "#000";
-                                        this._context.strokeRect(x, iconY, 16, 16);
-                                    }
-                                    else {
-                                        this._context.fillStyle = "#000";
-                                        this._context.fillRect(x, iconY, 16, 16);
-                                    }
+                                    var img = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSED : controls.Controls.ICON_TREE_EXPANDED);
+                                    this._context.drawImage(img, x, iconY, 16, 16);
                                     this._treeIconList.push({
                                         rect: new viewers.Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
                                         obj: obj
@@ -782,9 +878,10 @@ var phasereditor2d;
                             }
                             y += cellHeight;
                             if (expanded) {
-                                this.paintItems(children, x + LABEL_MARGIN, y);
+                                y = this.paintItems(children, x + LABEL_MARGIN, y);
                             }
                         }
+                        return y;
                     };
                     TreeViewer.prototype.getContentProvider = function () {
                         return _super.prototype.getContentProvider.call(this);
@@ -887,6 +984,11 @@ var phasereditor2d;
                 FileCellRenderer.prototype.getLabel = function (obj) {
                     return obj.getName();
                 };
+                FileCellRenderer.prototype.getImage = function (obj) {
+                    var file = obj;
+                    var icon = file.isFile() ? ui.controls.Controls.ICON_FILE : ui.controls.Controls.ICON_FOLDER;
+                    return ui.controls.Controls.getIcon(icon);
+                };
                 return FileCellRenderer;
             }(viewers.LabelCellRenderer));
             var FileCellRendererProvider = /** @class */ (function () {
@@ -902,26 +1004,7 @@ var phasereditor2d;
                 function FilesView() {
                     var _this = _super.call(this, "filesView") || this;
                     _this.setTitle("Files");
-                    var root = new phasereditor2d.core.io.FilePath(null, {
-                        name: "<root>",
-                        isFile: false,
-                        children: [
-                            {
-                                name: "index.html",
-                                isFile: true
-                            },
-                            {
-                                name: "assets",
-                                isFile: false,
-                                children: [
-                                    {
-                                        name: "bg.png",
-                                        isFile: true
-                                    }
-                                ]
-                            }
-                        ]
-                    });
+                    var root = new phasereditor2d.core.io.FilePath(null, TEST_DATA);
                     console.log(root.toStringTree());
                     var tree = new viewers.TreeViewer();
                     tree.setContentProvider(new FileTreeContentProvider());
@@ -935,6 +1018,338 @@ var phasereditor2d;
                 return FilesView;
             }(ui.parts.ViewPart));
             files.FilesView = FilesView;
+            var TEST_DATA = {
+                "name": "",
+                "isFile": false,
+                "children": [
+                    {
+                        "name": ".gitignore",
+                        "isFile": true
+                    },
+                    {
+                        "name": "COPYRIGHTS",
+                        "isFile": true
+                    },
+                    {
+                        "name": "assets",
+                        "isFile": false,
+                        "children": [
+                            {
+                                "name": "animations.json",
+                                "isFile": true
+                            },
+                            {
+                                "name": "atlas",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": ".DS_Store",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "atlas-props.json",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "atlas-props.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "atlas.json",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "atlas.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "hello.atlas",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "hello.json",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "hello.png",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "environment",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": ".DS_Store",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "bg-clouds.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "bg-mountains.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "bg-trees.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "tileset.png",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "fonts",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": "arcade.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "arcade.xml",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "atari-classic.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "atari-classic.xml",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "html",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": "hello.html",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "levels-pack-1.json",
+                                "isFile": true
+                            },
+                            {
+                                "name": "maps",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": ".DS_Store",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "map.json",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "scenes",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": "Acorn.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Ant.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "EnemyDeath.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "GameOver.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "GameOver.scene",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Gator.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Grasshopper.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Level.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Level.scene",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Player.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Preload.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "Preload.scene",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "TitleScreen.js",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "TitleScreen.scene",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "sounds",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": ".DS_Store",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "enemy-death.ogg",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "hurt.ogg",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "item.ogg",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "jump.ogg",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "music-credits.txt",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "the_valley.ogg",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "sprites",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": ".DS_Store",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "credits-text.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "game-over.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "instructions.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "loading.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "press-enter-text.png",
+                                        "isFile": true
+                                    },
+                                    {
+                                        "name": "title-screen.png",
+                                        "isFile": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "svg",
+                                "isFile": false,
+                                "children": [
+                                    {
+                                        "name": "demo.svg",
+                                        "isFile": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "data.json",
+                        "isFile": true
+                    },
+                    {
+                        "name": "fake-assets",
+                        "isFile": false,
+                        "children": [
+                            {
+                                "name": "Collisions Layer.png",
+                                "isFile": true
+                            },
+                            {
+                                "name": "Main Layer.png",
+                                "isFile": true
+                            },
+                            {
+                                "name": "fake-pack.json",
+                                "isFile": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "index.html",
+                        "isFile": true
+                    },
+                    {
+                        "name": "jsconfig.json",
+                        "isFile": true
+                    },
+                    {
+                        "name": "lib",
+                        "isFile": false,
+                        "children": [
+                            {
+                                "name": "phaser.js",
+                                "isFile": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "main.js",
+                        "isFile": true
+                    },
+                    {
+                        "name": "typings",
+                        "isFile": false,
+                        "children": [
+                            {
+                                "name": "phaser.d.ts",
+                                "isFile": true
+                            }
+                        ]
+                    }
+                ]
+            };
         })(files = ui.files || (ui.files = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

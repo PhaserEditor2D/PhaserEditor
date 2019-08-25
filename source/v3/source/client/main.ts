@@ -7,5 +7,9 @@ namespace phasereditor2d.demo {
 }
 
 window.addEventListener("load", () => {
-    phasereditor2d.demo.main();
+    phasereditor2d.ui.controls.Controls.preload(
+
+        () => phasereditor2d.demo.main()
+
+    );
 });

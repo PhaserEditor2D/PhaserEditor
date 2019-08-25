@@ -3,7 +3,7 @@
 namespace phasereditor2d.ui.controls.viewers {
 
     const TREE_ICON_SIZE = 16;
-    const LABEL_MARGIN = TREE_ICON_SIZE + 5;
+    const LABEL_MARGIN = TREE_ICON_SIZE + 0;
 
     export interface ITreeContentProvider {
         getRoots(input: any): any[];
@@ -39,7 +39,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         protected paint(): void {
             let x = 0;
-            let y = 0;
+            let y = 5;
 
             this._treeIconList = [];
 
@@ -52,7 +52,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this.paintItems(roots, x, y);
         }
 
-        private paintItems(objects: any[], x: number, y: number) {
+        private paintItems(objects: any[], x: number, y: number) : number {
             const b = this.getBounds();
 
             for (let obj of objects) {
@@ -74,13 +74,8 @@ namespace phasereditor2d.ui.controls.viewers {
                     if (children.length > 0) {
                         const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
                         
-                        if (expanded) {
-                            this._context.strokeStyle = "#000";
-                            this._context.strokeRect(x, iconY, 16, 16);
-                        } else {
-                            this._context.fillStyle = "#000";
-                            this._context.fillRect(x, iconY, 16, 16);
-                        }
+                        const img = Controls.getIcon(expanded? Controls.ICON_TREE_COLLAPSED : Controls.ICON_TREE_EXPANDED);
+                        this._context.drawImage(img, x, iconY, 16, 16);
 
                         this._treeIconList.push({
                             rect: new Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
@@ -95,9 +90,11 @@ namespace phasereditor2d.ui.controls.viewers {
                 y += cellHeight;
 
                 if (expanded) {
-                    this.paintItems(children, x + LABEL_MARGIN, y);
+                    y = this.paintItems(children, x + LABEL_MARGIN, y);
                 }
             }
+
+            return y;
         }
 
         getContentProvider(): ITreeContentProvider {

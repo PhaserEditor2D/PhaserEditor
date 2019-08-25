@@ -7,6 +7,44 @@ namespace phasereditor2d.ui.controls {
     const PANEL_BORDER_SIZE = 4;
     const SPLIT_OVER_ZONE_WIDTH = 6;
 
+
+    export class Controls {
+        private static _images: Map<string, HTMLImageElement> = new Map();
+
+        static ICON_TREE_COLLAPSED = "tree-collapsed";
+        static ICON_TREE_EXPANDED = "tree-expanded";
+        static ICON_FILE = "file";
+        static ICON_FOLDER = "folder";
+
+        private static ICONS = [
+            Controls.ICON_TREE_COLLAPSED,
+            Controls.ICON_TREE_EXPANDED,
+            Controls.ICON_FILE,
+            Controls.ICON_FOLDER
+        ];
+
+        static async preload(callback: any) {
+            for (let icon of Controls.ICONS) {
+                const img = this.getIcon(icon);
+                await img.decode();
+            }
+            callback();
+        }
+
+        static getIcon(name: string): HTMLImageElement {
+            if (Controls._images.has(name)) {
+                return Controls._images.get(name);
+            }
+
+            const img = new Image(32, 32);
+            img.src = "phasereditor2d/ui/controls/images/" + name + ".png";
+
+            Controls._images.set(name, img);
+
+            return img;
+        }
+    }
+
     export declare type Bounds = {
         x?: number,
         y?: number,
