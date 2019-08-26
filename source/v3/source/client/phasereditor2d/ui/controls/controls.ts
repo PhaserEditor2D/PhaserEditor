@@ -31,8 +31,72 @@ namespace phasereditor2d.ui.controls {
 
     }
 
+
+    export interface IImage {
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void;
+
+        preload(): Promise<any>;
+    }
+    export class ImageImpl implements IImage {
+        private _ready: boolean;
+
+        constructor(public readonly imageElement: HTMLImageElement) {
+            this._ready = false;
+        }
+
+        preload(): Promise<any> {
+            if (this._ready) {
+                return Promise.resolve();
+            }
+
+            return this.imageElement.decode().then(_ => {
+                this._ready = true;
+            });
+        }
+
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void {
+            if (this._ready) {
+                const center = true;
+
+                const naturalWidth = this.imageElement.naturalWidth;
+                const naturalHeight = this.imageElement.naturalHeight;
+
+                let renderHeight = h;
+                let renderWidth = w;
+
+                let imgW = naturalWidth;
+                let imgH = naturalHeight;
+
+                // compute the right width
+                imgW = imgW * (renderHeight / imgH);
+                imgH = renderHeight;
+
+                // fix width if it goes beyond the area
+                if (imgW > renderWidth) {
+                    imgH = imgH * (renderWidth / imgW);
+                    imgW = renderWidth;
+                }
+
+                let scale = imgW / naturalWidth;
+
+                let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                let imgY = y + renderHeight / 2 - imgH / 2;
+
+                let imgDstW = naturalWidth * scale;
+                let imgDstH = naturalHeight * scale;
+
+                if (imgDstW > 0 && imgDstH > 0) {
+                    context.drawImage(this.imageElement, imgX, imgY, imgDstW, imgDstH);
+                }
+            } else {
+                context.strokeRect(x, y, w, h);
+            }
+        }
+    }
+
     export class Controls {
-        private static _images: Map<string, IIcon> = new Map();
+        private static _icons: Map<string, IIcon> = new Map();
+        private static _images: Map<String, IImage> = new Map();
 
         static ICON_TREE_COLLAPSE = "tree-collapse";
         static ICON_TREE_EXPAND = "tree-expand";
@@ -70,21 +134,36 @@ namespace phasereditor2d.ui.controls {
             );
         }
 
+        static getImage(url: string, id: string = url): IImage {
+            if (Controls._images.has(id)) {
+                return Controls._images.get(id);
+            }
+
+            const img = new ImageImpl(new Image());
+
+            img.imageElement.src = url;
+
+            Controls._images.set(id, img);
+
+            return img;
+        }
+
         static getIcon(name: string): IIcon {
-            if (Controls._images.has(name)) {
-                return Controls._images.get(name);
+            if (Controls._icons.has(name)) {
+                return Controls._icons.get(name);
             }
             const img = new Image();
             img.src = "phasereditor2d/ui/controls/images/16/" + name + ".png";
             const icon = new IconImpl(img);
-            Controls._images.set(name, icon);
+            Controls._icons.set(name, icon);
             return icon;
         }
 
         private static LIGHT_THEME: Theme = {
             treeItemOverBackground: "#0000001f",
             treeItemSelectionBackground: "#5555ffdf",
-            treeItemSelectionForeground: "#fafafa"
+            treeItemSelectionForeground: "#fafafa",
+            treeItemForeground: "#000"
         };
 
         private static DARK_THEME: Theme = Controls.LIGHT_THEME;
@@ -116,6 +195,7 @@ namespace phasereditor2d.ui.controls {
         treeItemOverBackground: string;
         treeItemSelectionBackground: string;
         treeItemSelectionForeground: string;
+        treeItemForeground: string
     }
 
     export declare type Bounds = {

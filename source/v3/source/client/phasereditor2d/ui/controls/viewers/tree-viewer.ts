@@ -27,8 +27,8 @@ namespace phasereditor2d.ui.controls.viewers {
             this.getCanvas().addEventListener("click", e => this.onClick(e));
         }
 
-        private onClick(e : MouseEvent) {
-            for(let icon of this._treeIconList) {
+        private onClick(e: MouseEvent) {
+            for (let icon of this._treeIconList) {
                 if (icon.rect.contains(e.offsetX, e.offsetY)) {
                     this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
                     this.repaint();
@@ -36,6 +36,31 @@ namespace phasereditor2d.ui.controls.viewers {
                 }
             }
         }
+
+        visitObjects(visitor: Function) {
+            const list = this.getContentProvider().getRoots(this.getInput());
+            this.visitObjects2(list, visitor);
+        }
+
+        private visitObjects2(objects: any[], visitor: Function) {
+            for (var obj of objects) {
+                visitor(obj);
+                if (this.isExpanded(obj)) {
+                    const list = this.getContentProvider().getChildren(obj);
+                    this.visitObjects2(list, visitor);
+                }
+            }
+        }
+
+        async preload() {
+            const list: Promise<any>[] = [];
+            this.visitObjects(obj => {
+                var renderer = this.getCellRendererProvider().getCellRenderer(obj);
+                list.push(renderer.preload(obj));
+            });
+            return Promise.all(list);
+        }
+
 
         protected paint(): void {
             let x = 0;
@@ -52,7 +77,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this.paintItems(roots, x, y);
         }
 
-        private paintItems(objects: any[], x: number, y: number) : number {
+        private paintItems(objects: any[], x: number, y: number): number {
             const b = this.getBounds();
 
             for (let obj of objects) {
@@ -71,8 +96,8 @@ namespace phasereditor2d.ui.controls.viewers {
                     // render tree icon
                     if (children.length > 0) {
                         const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
-                        
-                        const icon = Controls.getIcon(expanded? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
+
+                        const icon = Controls.getIcon(expanded ? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
                         icon.paint(this._context, x, iconY);
 
                         this._treeIconList.push({

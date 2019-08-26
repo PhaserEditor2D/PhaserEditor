@@ -12,16 +12,16 @@ namespace phasereditor2d.core.io {
             this._parent = parent;
             this._name = fileData.name;
             this._isFile = fileData.isFile;
-            this._contentType = this._isFile? fileData.contentType : null;
-            
+            this._contentType = this._isFile ? fileData.contentType : null;
+
             if (fileData.children) {
                 this._files = [];
                 for (let child of fileData.children) {
                     this._files.push(new FilePath(this, child));
                 }
-                this._files.sort( (a, b) => {
-                    const a1 = a._isFile? 1 : 0;
-                    const b1 = b._isFile? 1 : 0;
+                this._files.sort((a, b) => {
+                    const a1 = a._isFile ? 1 : 0;
+                    const b1 = b._isFile ? 1 : 0;
                     return a1 - b1;
                 });
             } else {
@@ -34,6 +34,13 @@ namespace phasereditor2d.core.io {
         }
 
         getName() {
+            return this._name;
+        }
+
+        getFullName() {
+            if (this._parent && this._parent.getName().length > 0) {
+                return this._parent.getFullName() + "/" + this._name;
+            }
             return this._name;
         }
 

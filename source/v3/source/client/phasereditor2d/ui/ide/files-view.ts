@@ -34,13 +34,29 @@ namespace phasereditor2d.ui.files {
             } else {
                 return controls.Controls.getIcon(controls.Controls.ICON_FOLDER);
             }
-            
+
             return controls.Controls.getIcon(controls.Controls.ICON_FILE);
         }
     }
 
+    class FileImageRenderer extends viewers.ImageCellRenderer {
+        
+        getLabel(obj: io.FilePath): string {
+            return obj.getName();
+        } 
+        
+        getImage(obj: io.FilePath): controls.IImage {
+            return controls.Controls.getImage("files/" + obj.getFullName());
+        }
+
+
+    }
+
     class FileCellRendererProvider implements viewers.ICellRendererProvider {
-        getCellRenderer(element: any): viewers.ICellRenderer {
+        getCellRenderer(element: io.FilePath): viewers.ICellRenderer {
+            if (element.getContentType() === "img") {
+                return new FileImageRenderer();
+            }
             return new FileCellRenderer();
         }
     }

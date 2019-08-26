@@ -104,6 +104,12 @@ var phasereditor2d;
                 FilePath.prototype.getName = function () {
                     return this._name;
                 };
+                FilePath.prototype.getFullName = function () {
+                    if (this._parent && this._parent.getName().length > 0) {
+                        return this._parent.getFullName() + "/" + this._name;
+                    }
+                    return this._name;
+                };
                 FilePath.prototype.getParent = function () {
                     return this._parent;
                 };
@@ -170,6 +176,53 @@ var phasereditor2d;
                 };
                 return IconImpl;
             }());
+            var ImageImpl = /** @class */ (function () {
+                function ImageImpl(imageElement) {
+                    this.imageElement = imageElement;
+                    this._ready = false;
+                }
+                ImageImpl.prototype.preload = function () {
+                    var _this = this;
+                    if (this._ready) {
+                        return Promise.resolve();
+                    }
+                    return this.imageElement.decode().then(function (_) {
+                        _this._ready = true;
+                    });
+                };
+                ImageImpl.prototype.paint = function (context, x, y, w, h) {
+                    if (this._ready) {
+                        var center = true;
+                        var naturalWidth = this.imageElement.naturalWidth;
+                        var naturalHeight = this.imageElement.naturalHeight;
+                        var renderHeight = h;
+                        var renderWidth = w;
+                        var imgW = naturalWidth;
+                        var imgH = naturalHeight;
+                        // compute the right width
+                        imgW = imgW * (renderHeight / imgH);
+                        imgH = renderHeight;
+                        // fix width if it goes beyond the area
+                        if (imgW > renderWidth) {
+                            imgH = imgH * (renderWidth / imgW);
+                            imgW = renderWidth;
+                        }
+                        var scale = imgW / naturalWidth;
+                        var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                        var imgY = y + renderHeight / 2 - imgH / 2;
+                        var imgDstW = naturalWidth * scale;
+                        var imgDstH = naturalHeight * scale;
+                        if (imgDstW > 0 && imgDstH > 0) {
+                            context.drawImage(this.imageElement, imgX, imgY, imgDstW, imgDstH);
+                        }
+                    }
+                    else {
+                        context.strokeRect(x, y, w, h);
+                    }
+                };
+                return ImageImpl;
+            }());
+            controls.ImageImpl = ImageImpl;
             var Controls = /** @class */ (function () {
                 function Controls() {
                 }
@@ -180,14 +233,24 @@ var phasereditor2d;
                         return icon.img.decode();
                     }));
                 };
+                Controls.getImage = function (url, id) {
+                    if (id === void 0) { id = url; }
+                    if (Controls._images.has(id)) {
+                        return Controls._images.get(id);
+                    }
+                    var img = new ImageImpl(new Image());
+                    img.imageElement.src = url;
+                    Controls._images.set(id, img);
+                    return img;
+                };
                 Controls.getIcon = function (name) {
-                    if (Controls._images.has(name)) {
-                        return Controls._images.get(name);
+                    if (Controls._icons.has(name)) {
+                        return Controls._icons.get(name);
                     }
                     var img = new Image();
                     img.src = "phasereditor2d/ui/controls/images/16/" + name + ".png";
                     var icon = new IconImpl(img);
-                    Controls._images.set(name, icon);
+                    Controls._icons.set(name, icon);
                     return icon;
                 };
                 Controls.getSmoothingPrefix = function (context) {
@@ -209,6 +272,7 @@ var phasereditor2d;
                     return context;
                 };
                 ;
+                Controls._icons = new Map();
                 Controls._images = new Map();
                 Controls.ICON_TREE_COLLAPSE = "tree-collapse";
                 Controls.ICON_TREE_EXPAND = "tree-expand";
@@ -235,7 +299,8 @@ var phasereditor2d;
                 Controls.LIGHT_THEME = {
                     treeItemOverBackground: "#0000001f",
                     treeItemSelectionBackground: "#5555ffdf",
-                    treeItemSelectionForeground: "#fafafa"
+                    treeItemSelectionForeground: "#fafafa",
+                    treeItemForeground: "#000"
                 };
                 Controls.DARK_THEME = Controls.LIGHT_THEME;
                 Controls.theme = Controls.LIGHT_THEME;
@@ -727,7 +792,7 @@ var phasereditor2d;
                         var img = this.getImage(args.obj);
                         var x = args.x;
                         var ctx = args.canvasContext;
-                        ctx.fillStyle = "#000";
+                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
                         if (img) {
                             var h = this.cellHeight(args);
                             img.paint(ctx, x, args.y, 16, h);
@@ -743,9 +808,38 @@ var phasereditor2d;
                     LabelCellRenderer.prototype.cellHeight = function (args) {
                         return 20;
                     };
+                    LabelCellRenderer.prototype.preload = function () {
+                        return Promise.resolve();
+                    };
                     return LabelCellRenderer;
                 }());
                 viewers.LabelCellRenderer = LabelCellRenderer;
+                var ImageCellRenderer = /** @class */ (function () {
+                    function ImageCellRenderer() {
+                    }
+                    ImageCellRenderer.prototype.renderCell = function (args) {
+                        var label = this.getLabel(args.obj);
+                        var h = this.cellHeight(args);
+                        var ctx = args.canvasContext;
+                        var img = this.getImage(args.obj);
+                        img.paint(ctx, args.x, args.y, h, h);
+                        ctx.save();
+                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                        if (args.view.isSelected(args.obj)) {
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                        }
+                        ctx.fillText(label, args.x + h + 5, args.y + h / 2 + 6);
+                        ctx.restore();
+                    };
+                    ImageCellRenderer.prototype.cellHeight = function (args) {
+                        return args.view.getCellSize();
+                    };
+                    ImageCellRenderer.prototype.preload = function (obj) {
+                        return this.getImage(obj).preload();
+                    };
+                    return ImageCellRenderer;
+                }());
+                viewers.ImageCellRenderer = ImageCellRenderer;
                 var Rect = /** @class */ (function () {
                     function Rect(x, y, w, h) {
                         if (x === void 0) { x = 0; }
@@ -785,7 +879,7 @@ var phasereditor2d;
                     function Viewer() {
                         var _this = _super.call(this, "canvas") || this;
                         _this._lastSelectedItemIndex = -1;
-                        _this._cellSize = 32;
+                        _this._cellSize = 48;
                         _this.initContext();
                         _this._input = null;
                         _this._expandedObjects = new Set();
@@ -876,8 +970,6 @@ var phasereditor2d;
                         this._context.imageSmoothingEnabled = false;
                         controls.Controls.disableCanvasSmoothing(this._context);
                         this._context.font = "14px sans-serif";
-                        this._context.fillStyle = "red";
-                        this._context.fillText("hello", 10, 100);
                     };
                     Viewer.prototype.setExpanded = function (obj, expanded) {
                         if (expanded) {
@@ -907,6 +999,24 @@ var phasereditor2d;
                         }
                     };
                     Viewer.prototype.repaint = function () {
+                        return __awaiter(this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        console.log("first paint");
+                                        this.repaint2();
+                                        console.log("preload");
+                                        return [4 /*yield*/, this.preload()];
+                                    case 1:
+                                        _a.sent();
+                                        console.log("second paint");
+                                        this.repaint2();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        });
+                    };
+                    Viewer.prototype.repaint2 = function () {
                         this._paintItems = [];
                         var canvas = this.getCanvas();
                         this._context.clearRect(0, 0, canvas.width, canvas.height);
@@ -1007,6 +1117,34 @@ var phasereditor2d;
                             }
                         }
                     };
+                    TreeViewer.prototype.visitObjects = function (visitor) {
+                        var list = this.getContentProvider().getRoots(this.getInput());
+                        this.visitObjects2(list, visitor);
+                    };
+                    TreeViewer.prototype.visitObjects2 = function (objects, visitor) {
+                        for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
+                            var obj = objects_1[_i];
+                            visitor(obj);
+                            if (this.isExpanded(obj)) {
+                                var list = this.getContentProvider().getChildren(obj);
+                                this.visitObjects2(list, visitor);
+                            }
+                        }
+                    };
+                    TreeViewer.prototype.preload = function () {
+                        return __awaiter(this, void 0, void 0, function () {
+                            var list;
+                            var _this = this;
+                            return __generator(this, function (_a) {
+                                list = [];
+                                this.visitObjects(function (obj) {
+                                    var renderer = _this.getCellRendererProvider().getCellRenderer(obj);
+                                    list.push(renderer.preload(obj));
+                                });
+                                return [2 /*return*/, Promise.all(list)];
+                            });
+                        });
+                    };
                     TreeViewer.prototype.paint = function () {
                         var x = 0;
                         var y = 0;
@@ -1018,8 +1156,8 @@ var phasereditor2d;
                     };
                     TreeViewer.prototype.paintItems = function (objects, x, y) {
                         var b = this.getBounds();
-                        for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
-                            var obj = objects_1[_i];
+                        for (var _i = 0, objects_2 = objects; _i < objects_2.length; _i++) {
+                            var obj = objects_2[_i];
                             var children = this.getContentProvider().getChildren(obj);
                             var expanded = this.isExpanded(obj);
                             var renderer = this.getCellRendererProvider().getCellRenderer(obj);
@@ -1167,10 +1305,26 @@ var phasereditor2d;
                 };
                 return FileCellRenderer;
             }(viewers.LabelCellRenderer));
+            var FileImageRenderer = /** @class */ (function (_super) {
+                __extends(FileImageRenderer, _super);
+                function FileImageRenderer() {
+                    return _super !== null && _super.apply(this, arguments) || this;
+                }
+                FileImageRenderer.prototype.getLabel = function (obj) {
+                    return obj.getName();
+                };
+                FileImageRenderer.prototype.getImage = function (obj) {
+                    return ui.controls.Controls.getImage("files/" + obj.getFullName());
+                };
+                return FileImageRenderer;
+            }(viewers.ImageCellRenderer));
             var FileCellRendererProvider = /** @class */ (function () {
                 function FileCellRendererProvider() {
                 }
                 FileCellRendererProvider.prototype.getCellRenderer = function (element) {
+                    if (element.getContentType() === "img") {
+                        return new FileImageRenderer();
+                    }
                     return new FileCellRenderer();
                 };
                 return FileCellRendererProvider;

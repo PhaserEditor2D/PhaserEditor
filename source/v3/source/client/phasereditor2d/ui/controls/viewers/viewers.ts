@@ -14,6 +14,8 @@ namespace phasereditor2d.ui.controls.viewers {
         renderCell(args: RenderCellArgs): void;
 
         cellHeight(args: RenderCellArgs): number;
+
+        preload(obj: any): Promise<any>;
     }
 
     export interface ICellRendererProvider {
@@ -28,7 +30,7 @@ namespace phasereditor2d.ui.controls.viewers {
             let x = args.x;
 
             const ctx = args.canvasContext;
-            ctx.fillStyle = "#000";
+            ctx.fillStyle = Controls.theme.treeItemForeground;
 
             if (img) {
                 const h = this.cellHeight(args);
@@ -50,6 +52,45 @@ namespace phasereditor2d.ui.controls.viewers {
 
         cellHeight(args: RenderCellArgs): number {
             return 20;
+        }
+
+        preload(): Promise<any> {
+            return Promise.resolve();
+        }
+    }
+
+    export abstract class ImageCellRenderer implements ICellRenderer {
+        abstract getLabel(obj: any): string;
+
+        abstract getImage(obj: any): IImage;
+
+        renderCell(args: RenderCellArgs): void {
+            const label = this.getLabel(args.obj);
+            const h = this.cellHeight(args);
+
+            const ctx = args.canvasContext;
+
+            const img = this.getImage(args.obj);
+            img.paint(ctx, args.x, args.y, h, h);
+            ctx.save();
+
+            ctx.fillStyle = Controls.theme.treeItemForeground;
+
+            if (args.view.isSelected(args.obj)) {
+                ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
+            }
+
+            ctx.fillText(label, args.x + h + 5, args.y + h / 2 + 6);
+
+            ctx.restore();
+        }
+
+        cellHeight(args: RenderCellArgs): number {
+            return args.view.getCellSize();
+        }
+
+        preload(obj: any): Promise<any> {
+            return this.getImage(obj).preload();
         }
     }
 
@@ -101,7 +142,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         constructor() {
             super("canvas");
-            this._cellSize = 32;
+            this._cellSize = 48;
 
             this.initContext();
 
@@ -211,8 +252,6 @@ namespace phasereditor2d.ui.controls.viewers {
             this._context.imageSmoothingEnabled = false;
             Controls.disableCanvasSmoothing(this._context);
             this._context.font = "14px sans-serif";
-            this._context.fillStyle = "red";
-            this._context.fillText("hello", 10, 100);
         }
 
         setExpanded(obj: any, expanded: boolean): void {
@@ -245,7 +284,19 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        repaint(): void {
+        async repaint() {
+
+            console.log("first paint");
+            this.repaint2();
+
+            console.log("preload");
+            await this.preload();
+
+            console.log("second paint");
+            this.repaint2();
+        }
+
+        private repaint2(): void {
             this._paintItems = [];
 
             const canvas = this.getCanvas();
@@ -256,6 +307,8 @@ namespace phasereditor2d.ui.controls.viewers {
                 this.paint();
             }
         }
+
+        protected abstract preload(): Promise<any>;
 
         protected paintItemBackground(obj: any, x: number, y: number, w: number, h: number): void {
             let fillStyle = null;
