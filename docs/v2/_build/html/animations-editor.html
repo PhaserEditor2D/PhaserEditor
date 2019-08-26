@@ -210,7 +210,7 @@
 </div>
 <div class="section" id="animations-editor">
 <h1>6&nbsp;&nbsp;&nbsp;Animations Editor<a class="headerlink" href="#animations-editor" title="Permalink to this headline">¶</a></h1>
-<p>Probably, the most common animations in <a class="reference external" href="https://phaser.io">Phaser</a> games are the so called sprite-animations or frame-based animations.</p>
+<p>Probably, the most common animations in <a class="reference external" href="https://phaser.io">Phaser</a> games are the so-called sprite-animations or frame-based animations.</p>
 <p>Animation:</p>
 <img alt="Eagle animation." src="_images/eagle.gif" />
 <p>Animation frames:</p>
@@ -283,7 +283,7 @@
 <img alt="Frames added to the animation." src="_images/animations-added-frames.png" />
 <div class="section" id="automatic-creation-of-animations">
 <h3>6.2.1&nbsp;&nbsp;&nbsp;Automatic creation of animations<a class="headerlink" href="#automatic-creation-of-animations" title="Permalink to this headline">¶</a></h3>
-<p>Usually, artists name the frames of the animations with certain pattern, something like this:</p>
+<p>Usually, artists name the frames of the animations with a certain pattern, something like this:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">player-jump-1</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">player-jump-2</span></code></li>
@@ -299,7 +299,7 @@
 <li><code class="docutils literal notranslate"><span class="pre">enemy_attack03</span></code></li>
 </ul>
 <p>There are different patterns, but the common is to use some common prefix for the frames of the same animation, with a numeric suffix.</p>
-<p>The <a class="reference external" href="animations-editor.html">Animations Editor</a> takes advantage of these naming patterns and uses an algorithm to create multiple animations with a given set of frames. The algorithm is simple, it groups all the frames with a common prefix and create an animation for each group, with group frames. The prefix of a frame is extracted by removing all non-alphabetic chars at the end of the name.</p>
+<p>The <a class="reference external" href="animations-editor.html">Animations Editor</a> takes advantage of these naming patterns and uses an algorithm to create multiple animations with a given set of frames. The algorithm is simple, it groups all the frames with a common prefix and creates an animation for each group, with group frames. The prefix of a frame is extracted by removing all non-alphabetic chars at the end of the name.</p>
 <p>For example, the prefix of <code class="docutils literal notranslate"><span class="pre">enemy_idle02</span></code> is <code class="docutils literal notranslate"><span class="pre">enemy_idle</span></code>, the prefix of <code class="docutils literal notranslate"><span class="pre">player-jump-1</span></code> is <code class="docutils literal notranslate"><span class="pre">player-jump</span></code>. So, if we apply the algorithm to the frames listed before, you get the following groups:</p>
 <ul class="simple">
 <li><em>player-jump</em><ul>
@@ -334,7 +334,7 @@
 <p>To create the animations, you can drag the frames from somewhere and drop them into:</p>
 <ul class="simple">
 <li>The <a class="reference internal" href="#outline-view">Outline view</a>.</li>
-<li>The center of the editor (if it is not showing a particular animation, because in that case it will append the frames at the end of the animation).</li>
+<li>The center of the editor (if it is not showing a particular animation, because in that case, it will append the frames at the end of the animation).</li>
 </ul>
 <p>The frames can be taken from:</p>
 <ul class="simple">
@@ -348,7 +348,7 @@
 </div></blockquote>
 <p>When the frames are dropped, the editor opens a dialog to enter a prefix for all the animations. It is useful if the frames use names like <cite>idle</cite> or <cite>attack</cite> but you want to organize them so you can use a prefix <cite>enemy</cite> to get the animations <cite>enemy-idle</cite> and <cite>enemy-attack</cite>. Sure, you can leave it blank.</p>
 <blockquote>
-<div><img alt="Enter prefix for new animations." src="_images/animations-enter-prefix.png" />
+<div><img alt="Enter a prefix for new animations." src="_images/animations-enter-prefix.png" />
 </div></blockquote>
 <img alt="The created animations." src="_images/animations-created-by-drop.png" />
 </div>
@@ -441,7 +441,7 @@
 </tr>
 </tbody>
 </table>
-<p>In addition, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> shows a preview of the frame texture.</p>
+<p>Also, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> shows a preview of the frame texture.</p>
 <img alt="Animations properties." src="_images/animations-frame-properties.png" />
 </div>
 </div>
@@ -453,7 +453,7 @@
 <h3>6.6.1&nbsp;&nbsp;&nbsp;Adding frames to the timeline<a class="headerlink" href="#adding-frames-to-the-timeline" title="Permalink to this headline">¶</a></h3>
 <p>To add frames to the timeline you can drag texture frames (atlases, atlas frames, sprite-sheets, sprite-sheet frames, images) from the <a class="reference internal" href="#blocks-view">Blocks view</a> or the <a class="reference external" href="workbench.html#assets-view">Assets view</a> and drop them into the timeline.</p>
 <p>If the timeline contains frames, you can insert the new frames at any position.</p>
-<p>Also, you can drop the frames on the animation preview canvas, in that case the frames are appended to the timeline.</p>
+<p>Also, you can drop the frames on the animation preview canvas, in that case, the frames are appended to the timeline.</p>
 <img alt="Insert frames to the timeline." src="_images/animations-insert-frames-timeline.png" />
 </div>
 <div class="section" id="other-timeline-operations">
@@ -476,7 +476,7 @@
 <p>The <a class="reference internal" href="#blocks-view">Blocks view</a> is a <a class="reference external" href="workbench.html#blocks-view">general purpose view</a> that connects with the <a class="reference external" href="animations-editor.html">Animations Editor</a> and shows all the available <a class="reference external" href="asset-pack-editor.html">Asset Pack keys</a> related to textures and texture frames.</p>
 <p>You can drag the textures from the <a class="reference internal" href="#blocks-view">Blocks view</a> and drop them on:</p>
 <ul class="simple">
-<li>The <a class="reference external" href="animations-editor.html">Animations Editor</a> center area to <a class="reference external" href="#automatic-creation-of-animations">create multiple animations</a> or <a class="reference external" href="#adding-frames-to-the-timeline">append the frames</a> to a selected animation.</li>
+<li>The <a class="reference external" href="animations-editor.html">Animations Editor</a> center area to <a class="reference external" href="#automatic-creation-of-animations">create multiple animations</a> or <a class="reference external" href="#adding-frames-to-the-timeline">append the frames</a> to the selected animation.</li>
 <li>The <a class="reference external" href="#animation-timeline">timeline</a> to <a class="reference external" href="#adding-frames-to-the-timeline">insert new frames</a>.</li>
 <li>The <a class="reference internal" href="#outline-view">Outline view</a> to <a class="reference external" href="#automatic-creation-of-animations">create multiple animations</a>.</li>
 </ul>
@@ -486,7 +486,7 @@
 <h2>6.8&nbsp;&nbsp;&nbsp;Outline view<a class="headerlink" href="#outline-view" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#outline-view">Outline view</a> is a <a class="reference external" href="workbench.html#outline-view">workbench view</a> that connects with the <a class="reference external" href="animations-editor.html">Animations Editor</a> and lists all the animations.</p>
 <p>You can select one or many animations, to play them or <a class="reference external" href="#animation-properties">modify their properties</a>. Also, you can delete the selected frames by pressing the <code class="docutils literal notranslate"><span class="pre">Delete</span></code> key or using the context menu.</p>
-<p>Other function of the <a class="reference internal" href="#outline-view">Outline view</a> is as a drop-place to <a class="reference external" href="#create-the-animations-by-dropping-frames">create new animations</a>, by dropping frames on it.</p>
+<p>Another function of the <a class="reference internal" href="#outline-view">Outline view</a> is as a drop-place to <a class="reference external" href="#create-the-animations-by-dropping-frames">create new animations</a>, by dropping frames on it.</p>
 <p>This view, like many other visual elements of the IDE, can be zoomed in/out (mouse wheel plus one of the keys <code class="docutils literal notranslate"><span class="pre">Ctrl</span></code>, <code class="docutils literal notranslate"><span class="pre">Alt</span></code> or <code class="docutils literal notranslate"><span class="pre">Shift</span></code>) and you can filter its content by the key of the animations.</p>
 <img alt="Outline view." src="_images/animations-outline-view.png" />
 </div>

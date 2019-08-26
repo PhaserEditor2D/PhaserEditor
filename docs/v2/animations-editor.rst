@@ -9,7 +9,7 @@
 Animations Editor
 =================
 
-Probably, the most common animations in Phaser_ games are the so called sprite-animations or frame-based animations.
+Probably, the most common animations in Phaser_ games are the so-called sprite-animations or frame-based animations.
 
 Animation:
 
@@ -123,7 +123,7 @@ The new animation is empty, so you have to add some frames to it. The frames (or
 Automatic creation of animations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Usually, artists name the frames of the animations with certain pattern, something like this:
+Usually, artists name the frames of the animations with a certain pattern, something like this:
 
 * ``player-jump-1``
 
@@ -151,7 +151,7 @@ Usually, artists name the frames of the animations with certain pattern, somethi
 
 There are different patterns, but the common is to use some common prefix for the frames of the same animation, with a numeric suffix.
 
-The |AnimationsEditor|_ takes advantage of these naming patterns and uses an algorithm to create multiple animations with a given set of frames. The algorithm is simple, it groups all the frames with a common prefix and create an animation for each group, with group frames. The prefix of a frame is extracted by removing all non-alphabetic chars at the end of the name.
+The |AnimationsEditor|_ takes advantage of these naming patterns and uses an algorithm to create multiple animations with a given set of frames. The algorithm is simple, it groups all the frames with a common prefix and creates an animation for each group, with group frames. The prefix of a frame is extracted by removing all non-alphabetic chars at the end of the name.
 
 For example, the prefix of ``enemy_idle02`` is ``enemy_idle``, the prefix of ``player-jump-1`` is ``player-jump``. So, if we apply the algorithm to the frames listed before, you get the following groups:
 
@@ -196,7 +196,7 @@ Create the animations by dropping frames
 To create the animations, you can drag the frames from somewhere and drop them into:
 
 * The `Outline view`_.
-* The center of the editor (if it is not showing a particular animation, because in that case it will append the frames at the end of the animation).
+* The center of the editor (if it is not showing a particular animation, because in that case, it will append the frames at the end of the animation).
 
 The frames can be taken from:
 
@@ -214,7 +214,7 @@ If you drop an atlas or sprite-sheet, the editor will use all the frames inside 
 When the frames are dropped, the editor opens a dialog to enter a prefix for all the animations. It is useful if the frames use names like `idle` or `attack` but you want to organize them so you can use a prefix `enemy` to get the animations `enemy-idle` and `enemy-attack`. Sure, you can leave it blank.
 
  .. image:: images/animations-editor/animations-enter-prefix.png
-    :alt: Enter prefix for new animations.
+    :alt: Enter a prefix for new animations.
 
 .. image:: images/animations-editor/animations-created-by-drop.png
     :alt: The created animations.
@@ -292,7 +292,7 @@ When you select a frame the |PropertiesView|_ show its properties and you can ch
 *Texture Key*                  It is a |PhaserEditor|_, read-only property. It shows the key of the frame texture.
 ============================== ===========================================
 
-In addition, the |PropertiesView|_ shows a preview of the frame texture.
+Also, the |PropertiesView|_ shows a preview of the frame texture.
 
 .. image:: images/animations-editor/animations-frame-properties.png
   :alt: Animations properties.
@@ -311,7 +311,7 @@ To add frames to the timeline you can drag texture frames (atlases, atlas frames
 
 If the timeline contains frames, you can insert the new frames at any position.
 
-Also, you can drop the frames on the animation preview canvas, in that case the frames are appended to the timeline.
+Also, you can drop the frames on the animation preview canvas, in that case, the frames are appended to the timeline.
 
 .. image:: images/animations-editor/animations-insert-frames-timeline.png
   :alt: Insert frames to the timeline.
@@ -342,7 +342,7 @@ The `Blocks view`_ is a `general purpose view <workbench.html#blocks-view>`_ tha
 
 You can drag the textures from the `Blocks view`_ and drop them on: 
 
-* The |AnimationsEditor|_ center area to `create multiple animations <#automatic-creation-of-animations>`_ or `append the frames <#adding-frames-to-the-timeline>`_ to a selected animation.
+* The |AnimationsEditor|_ center area to `create multiple animations <#automatic-creation-of-animations>`_ or `append the frames <#adding-frames-to-the-timeline>`_ to the selected animation.
 
 * The `timeline <#animation-timeline>`_ to `insert new frames <#adding-frames-to-the-timeline>`_. 
 
@@ -357,7 +357,7 @@ The `Outline view`_ is a `workbench view <workbench.html#outline-view>`_ that co
 
 You can select one or many animations, to play them or `modify their properties <#animation-properties>`_. Also, you can delete the selected frames by pressing the ``Delete`` key or using the context menu.
 
-Other function of the `Outline view`_ is as a drop-place to `create new animations <#create-the-animations-by-dropping-frames>`_, by dropping frames on it.
+Another function of the `Outline view`_ is as a drop-place to `create new animations <#create-the-animations-by-dropping-frames>`_, by dropping frames on it.
 
 This view, like many other visual elements of the IDE, can be zoomed in/out (mouse wheel plus one of the keys ``Ctrl``, ``Alt`` or ``Shift``) and you can filter its content by the key of the animations.
 
