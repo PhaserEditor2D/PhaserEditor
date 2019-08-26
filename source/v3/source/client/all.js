@@ -945,10 +945,15 @@ var phasereditor2d;
                     };
                     Viewer.prototype.layout = function () {
                         var b = this.getBounds();
-                        ui.controls.setElementBounds(this.getElement(), b);
+                        ui.controls.setElementBounds(this.getElement(), {
+                            x: b.x,
+                            y: b.y,
+                            width: b.width | 0,
+                            height: b.height | 0
+                        });
                         var canvas = this.getCanvas();
-                        canvas.width = b.width;
-                        canvas.height = b.height;
+                        canvas.width = b.width | 0;
+                        canvas.height = b.height | 0;
                         this.initContext();
                         this.repaint();
                     };
