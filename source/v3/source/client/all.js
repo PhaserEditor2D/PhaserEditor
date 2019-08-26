@@ -152,13 +152,15 @@ var phasereditor2d;
                 function IconImpl(img) {
                     this.img = img;
                 }
-                IconImpl.prototype.paint = function (context, x, y) {
+                IconImpl.prototype.paint = function (context, x, y, w, h) {
                     // we assume the image size is under 16x16 (for now)
-                    var w = this.img.naturalWidth;
-                    var h = this.img.naturalHeight;
-                    var dx = (16 - w) / 2;
-                    var dy = (16 - h) / 2;
-                    context.drawImage(this.img, x + dx, y + dy);
+                    w = w ? w : 16;
+                    h = h ? h : 16;
+                    var imgW = this.img.naturalWidth;
+                    var imgH = this.img.naturalHeight;
+                    var dx = (w - imgW) / 2;
+                    var dy = (h - imgH) / 2;
+                    context.drawImage(this.img, (x + dx) | 0, (y + dy) | 0);
                 };
                 return IconImpl;
             }());
@@ -195,13 +197,31 @@ var phasereditor2d;
                     if (Controls._images.has(name)) {
                         return Controls._images.get(name);
                     }
-                    console.log("New");
                     var img = new Image();
                     img.src = "phasereditor2d/ui/controls/images/16/" + name + ".png";
                     var icon = new IconImpl(img);
                     Controls._images.set(name, icon);
                     return icon;
                 };
+                Controls.getSmoothingPrefix = function (context) {
+                    var vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];
+                    for (var i = 0; i < vendors.length; i++) {
+                        var s = vendors[i] + 'mageSmoothingEnabled';
+                        if (s in context) {
+                            return s;
+                        }
+                    }
+                    return null;
+                };
+                ;
+                Controls.disableCanvasSmoothing = function (context) {
+                    var prefix = this.getSmoothingPrefix(context);
+                    if (prefix) {
+                        context[prefix] = false;
+                    }
+                    return context;
+                };
+                ;
                 Controls._images = new Map();
                 Controls.ICON_TREE_COLLAPSE = "tree-collapse";
                 Controls.ICON_TREE_EXPAND = "tree-expand";
@@ -225,6 +245,13 @@ var phasereditor2d;
                     Controls.ICON_FILE_TEXT,
                     Controls.ICON_FILE_VIDEO
                 ];
+                Controls.LIGHT_THEME = {
+                    treeItemOverBackground: "#0000001f",
+                    treeItemSelectionBackground: "#5555ffdf",
+                    treeItemSelectionForeground: "#fafafa"
+                };
+                Controls.DARK_THEME = Controls.LIGHT_THEME;
+                Controls.theme = Controls.LIGHT_THEME;
                 return Controls;
             }());
             controls.Controls = Controls;
@@ -715,10 +742,16 @@ var phasereditor2d;
                         var ctx = args.canvasContext;
                         ctx.fillStyle = "#000";
                         if (img) {
-                            img.paint(ctx, x, args.y);
+                            var h = this.cellHeight(args);
+                            img.paint(ctx, x, args.y, 16, h);
                             x += 20;
                         }
+                        ctx.save();
+                        if (args.view.isSelected(args.obj)) {
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                        }
                         ctx.fillText(label, x, args.y + 15);
+                        ctx.restore();
                     };
                     LabelCellRenderer.prototype.cellHeight = function (args) {
                         return 20;
@@ -737,6 +770,12 @@ var phasereditor2d;
                         this.w = w;
                         this.h = h;
                     }
+                    Rect.prototype.set = function (x, y, w, h) {
+                        this.x = x;
+                        this.y = y;
+                        this.w = w;
+                        this.h = h;
+                    };
                     Rect.prototype.contains = function (x, y) {
                         return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
                     };
@@ -745,8 +784,9 @@ var phasereditor2d;
                 viewers.Rect = Rect;
                 var PaintItem = /** @class */ (function (_super) {
                     __extends(PaintItem, _super);
-                    function PaintItem(data) {
+                    function PaintItem(index, data) {
                         var _this = _super.call(this) || this;
+                        _this.index = index;
                         _this.data = data;
                         return _this;
                     }
@@ -757,17 +797,97 @@ var phasereditor2d;
                     __extends(Viewer, _super);
                     function Viewer() {
                         var _this = _super.call(this, "canvas") || this;
+                        _this._lastSelectedItemIndex = -1;
                         _this._cellSize = 32;
                         _this.initContext();
                         _this._input = null;
                         _this._expandedObjects = new Set();
                         _this._selectedObjects = new Set();
                         window.cc = _this;
+                        _this.initListeners();
                         return _this;
                     }
+                    Viewer.prototype.initListeners = function () {
+                        var _this = this;
+                        var canvas = this.getCanvas();
+                        canvas.addEventListener("mousemove", function (e) { return _this.onMouseMove(e); });
+                        canvas.addEventListener("mouseup", function (e) { return _this.onMouseUp(e); });
+                        // canvas.parentElement.addEventListener("keydown", e => this.onKeyDown(e));
+                    };
+                    Viewer.prototype.getPaintItemAt = function (e) {
+                        for (var _i = 0, _a = this._paintItems; _i < _a.length; _i++) {
+                            var item = _a[_i];
+                            if (item.contains(e.offsetX, e.offsetY)) {
+                                return item;
+                            }
+                        }
+                        return null;
+                    };
+                    Viewer.prototype.fireSelectionChanged = function () {
+                    };
+                    //TODO: is not fired, I am looking the reason.
+                    Viewer.prototype.onKeyDown = function (e) {
+                        if (e.key === "Escape") {
+                            if (this._selectedObjects.size > 0) {
+                                this._selectedObjects.clear();
+                                this.repaint();
+                                this.fireSelectionChanged();
+                            }
+                        }
+                    };
+                    Viewer.prototype.onMouseUp = function (e) {
+                        if (e.button !== 0) {
+                            return;
+                        }
+                        var item = this.getPaintItemAt(e);
+                        if (item === null) {
+                            return;
+                        }
+                        var selChanged = false;
+                        var data = item.data;
+                        if (e.ctrlKey || e.metaKey) {
+                            this._selectedObjects.add(data);
+                            selChanged = true;
+                        }
+                        else if (e.shiftKey) {
+                            if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
+                                var start = Math.min(this._lastSelectedItemIndex, item.index);
+                                var end = Math.max(this._lastSelectedItemIndex, item.index);
+                                for (var i = start; i <= end; i++) {
+                                    this._selectedObjects.add(this._paintItems[i].data);
+                                }
+                                selChanged = true;
+                            }
+                        }
+                        else {
+                            this._selectedObjects.clear();
+                            this._selectedObjects.add(data);
+                            selChanged = true;
+                        }
+                        if (selChanged) {
+                            this.repaint();
+                            this.fireSelectionChanged();
+                            this._lastSelectedItemIndex = item.index;
+                        }
+                    };
+                    Viewer.prototype.onMouseMove = function (e) {
+                        if (e.buttons !== 0) {
+                            return;
+                        }
+                        var item = this.getPaintItemAt(e);
+                        var over = item === null ? null : item.data;
+                        if (over !== this._overObject) {
+                            this._overObject = over;
+                            this.repaint();
+                        }
+                    };
+                    Viewer.prototype.getOverObject = function () {
+                        return this._overObject;
+                    };
                     Viewer.prototype.initContext = function () {
                         this._context = this.getCanvas().getContext("2d");
                         this._context.imageSmoothingEnabled = false;
+                        controls.Controls.disableCanvasSmoothing(this._context);
                         this._context.font = "14px sans-serif";
                         this._context.fillStyle = "red";
                         this._context.fillText("hello", 10, 100);
@@ -789,8 +909,6 @@ var phasereditor2d;
                     Viewer.prototype.isSelected = function (obj) {
                         return this._selectedObjects.has(obj);
                     };
-                    Viewer.prototype.paintSelectionBackground = function (x, y, w, h) {
-                    };
                     Viewer.prototype.paintTreeHandler = function (x, y, collapsed) {
                         if (collapsed) {
                             this._context.strokeStyle = "#000";
@@ -807,6 +925,22 @@ var phasereditor2d;
                         this._context.clearRect(0, 0, canvas.width, canvas.height);
                         if (this._cellRendererProvider && this._contentProvider && this._input !== null) {
                             this.paint();
+                        }
+                    };
+                    Viewer.prototype.paintItemBackground = function (obj, x, y, w, h) {
+                        var fillStyle = null;
+                        if (this.isSelected(obj)) {
+                            fillStyle = controls.Controls.theme.treeItemSelectionBackground;
+                            ;
+                        }
+                        else if (obj === this._overObject) {
+                            fillStyle = controls.Controls.theme.treeItemOverBackground;
+                        }
+                        if (fillStyle != null) {
+                            this._context.save();
+                            this._context.fillStyle = fillStyle;
+                            this._context.fillRect(x, y, w, h);
+                            this._context.restore();
                         }
                     };
                     Viewer.prototype.layout = function () {
@@ -883,7 +1017,7 @@ var phasereditor2d;
                     };
                     TreeViewer.prototype.paint = function () {
                         var x = 0;
-                        var y = 5;
+                        var y = 0;
                         this._treeIconList = [];
                         // TODO: missing taking the scroll offset to compute the non-painting area
                         var contentProvider = this.getContentProvider();
@@ -899,10 +1033,8 @@ var phasereditor2d;
                             var renderer = this.getCellRendererProvider().getCellRenderer(obj);
                             var args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, obj, this);
                             var cellHeight = renderer.cellHeight(args);
+                            _super.prototype.paintItemBackground.call(this, obj, 0, y, b.width, cellHeight);
                             if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
-                                if (this.isSelected(obj)) {
-                                    this.paintSelectionBackground(x, y, b.width, cellHeight);
-                                }
                                 // render tree icon
                                 if (children.length > 0) {
                                     var iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
@@ -915,6 +1047,9 @@ var phasereditor2d;
                                 }
                                 // client render cell
                                 renderer.renderCell(args);
+                                var item = new viewers.PaintItem(this._paintItems.length, obj);
+                                item.set(args.x, args.y, b.width, cellHeight);
+                                this._paintItems.push(item);
                             }
                             y += cellHeight;
                             if (expanded) {

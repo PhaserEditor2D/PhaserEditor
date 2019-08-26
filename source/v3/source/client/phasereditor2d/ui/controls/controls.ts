@@ -9,7 +9,7 @@ namespace phasereditor2d.ui.controls {
 
 
     export interface IIcon {
-        paint(context: CanvasRenderingContext2D, x: number, y: number, );
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w?: number, h?: number);
     }
 
     class IconImpl implements IIcon {
@@ -18,13 +18,15 @@ namespace phasereditor2d.ui.controls {
 
         }
 
-        paint( context: CanvasRenderingContext2D, x: number, y: number,) {
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w?: number, h?: number) {
             // we assume the image size is under 16x16 (for now)
-            const w = this.img.naturalWidth;
-            const h = this.img.naturalHeight;
-            const dx = (16 - w) / 2;
-            const dy = (16 - h) / 2;
-            context.drawImage(this.img, x + dx, y + dy);
+            w = w ? w : 16;
+            h = h ? h : 16;
+            const imgW = this.img.naturalWidth;
+            const imgH = this.img.naturalHeight;
+            const dx = (w - imgW) / 2;
+            const dy = (h - imgH) / 2;
+            context.drawImage(this.img, (x + dx) | 0, (y + dy) | 0);
         }
 
     }
@@ -59,7 +61,7 @@ namespace phasereditor2d.ui.controls {
 
         static async preload(callback: any) {
             for (let name of Controls.ICONS) {
-                const icon = <IconImpl> this.getIcon(name);
+                const icon = <IconImpl>this.getIcon(name);
                 await icon.img.decode();
             }
             callback();
@@ -69,14 +71,48 @@ namespace phasereditor2d.ui.controls {
             if (Controls._images.has(name)) {
                 return Controls._images.get(name);
             }
-
-            console.log("New");
             const img = new Image();
             img.src = "phasereditor2d/ui/controls/images/16/" + name + ".png";
             const icon = new IconImpl(img);
             Controls._images.set(name, icon);
             return icon;
         }
+
+        private static LIGHT_THEME : Theme = {
+            treeItemOverBackground: "#0000001f",
+            treeItemSelectionBackground: "#5555ffdf",
+            treeItemSelectionForeground: "#fafafa"
+        };
+
+        private static DARK_THEME : Theme = Controls.LIGHT_THEME;
+
+        public static theme : Theme = Controls.LIGHT_THEME;
+
+        private static getSmoothingPrefix(context: CanvasRenderingContext2D) {
+            const vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];
+            for (let i = 0; i < vendors.length; i++) {
+                const s = vendors[i] + 'mageSmoothingEnabled';
+                if (s in context) {
+                    return s;
+                }
+            }
+            return null;
+        };
+
+
+        static disableCanvasSmoothing(context: CanvasRenderingContext2D) {
+            const prefix = this.getSmoothingPrefix(context);
+            if (prefix) {
+                context[prefix] = false;
+            }
+            return context;
+        };
+    }
+
+    declare type Theme = {
+        treeItemOverBackground: string;
+        treeItemSelectionBackground: string;
+        treeItemSelectionForeground: string;
     }
 
     export declare type Bounds = {

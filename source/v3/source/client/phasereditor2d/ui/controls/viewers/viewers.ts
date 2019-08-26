@@ -31,11 +31,17 @@ namespace phasereditor2d.ui.controls.viewers {
             ctx.fillStyle = "#000";
 
             if (img) {
-                img.paint(ctx, x, args.y);
+                const h = this.cellHeight(args);
+                img.paint(ctx, x, args.y, 16, h);
                 x += 20;
             }
 
+            ctx.save();
+            if (args.view.isSelected(args.obj)) {
+                ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
+            }
             ctx.fillText(label, x, args.y + 15);
+            ctx.restore();
         }
 
         abstract getLabel(obj: any): string;
@@ -60,6 +66,13 @@ namespace phasereditor2d.ui.controls.viewers {
         ) {
         }
 
+        set(x: number, y: number, w: number, h: number) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+        }
+
         contains(x: number, y: number): boolean {
             return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
         }
@@ -67,6 +80,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
     export class PaintItem extends Rect {
         constructor(
+            public index: number,
             public data: any
         ) {
             super();
@@ -82,6 +96,8 @@ namespace phasereditor2d.ui.controls.viewers {
         private _selectedObjects: Set<any>;
         protected _context: CanvasRenderingContext2D;
         protected _paintItems: PaintItem[];
+        private _overObject: any;
+        private _lastSelectedItemIndex: number = -1;
 
         constructor() {
             super("canvas");
@@ -94,17 +110,112 @@ namespace phasereditor2d.ui.controls.viewers {
             this._selectedObjects = new Set();
 
             (<any>window).cc = this;
+
+            this.initListeners();
+        }
+
+        private initListeners() {
+            const canvas = this.getCanvas();
+            canvas.addEventListener("mousemove", e => this.onMouseMove(e));
+            canvas.addEventListener("mouseup", e => this.onMouseUp(e));
+            // canvas.parentElement.addEventListener("keydown", e => this.onKeyDown(e));
+        }
+
+
+        protected getPaintItemAt(e: MouseEvent): PaintItem {
+            for (let item of this._paintItems) {
+                if (item.contains(e.offsetX, e.offsetY)) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        private fireSelectionChanged() {
+
+        }
+
+
+        //TODO: is not fired, I am looking the reason.
+        private onKeyDown(e: KeyboardEvent): void {
+            if (e.key === "Escape") {
+                if (this._selectedObjects.size > 0) {
+                    this._selectedObjects.clear();
+                    this.repaint();
+                    this.fireSelectionChanged();
+                }
+            }
+        }
+
+        private onMouseUp(e: MouseEvent): void {
+            if (e.button !== 0) {
+                return;
+            }
+
+            const item = this.getPaintItemAt(e);
+
+            if (item === null) {
+                return;
+            }
+
+            let selChanged = false;
+
+            const data = item.data;
+
+            if (e.ctrlKey || e.metaKey) {
+                this._selectedObjects.add(data);
+                selChanged = true;
+            } else if (e.shiftKey) {
+                if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
+                    const start = Math.min(this._lastSelectedItemIndex, item.index);
+                    const end = Math.max(this._lastSelectedItemIndex, item.index);
+                    for (let i = start; i <= end; i++) {
+                        this._selectedObjects.add(this._paintItems[i].data);
+                    }
+                    selChanged = true;
+                }
+            } else {
+                this._selectedObjects.clear();
+                this._selectedObjects.add(data);
+                selChanged = true;
+            }
+
+            if (selChanged) {
+                this.repaint();
+                this.fireSelectionChanged();
+                this._lastSelectedItemIndex = item.index;
+            }
+        }
+
+        private onMouseMove(e: MouseEvent): void {
+            if (e.buttons !== 0) {
+                return;
+            }
+
+            const item = this.getPaintItemAt(e);
+
+            const over = item === null ? null : item.data;
+
+            if (over !== this._overObject) {
+                this._overObject = over;
+                this.repaint();
+            }
+        }
+
+        getOverObject() {
+            return this._overObject;
         }
 
         private initContext(): void {
             this._context = this.getCanvas().getContext("2d");
             this._context.imageSmoothingEnabled = false;
+            Controls.disableCanvasSmoothing(this._context);
             this._context.font = "14px sans-serif";
             this._context.fillStyle = "red";
             this._context.fillText("hello", 10, 100);
         }
 
-        setExpanded(obj: any, expanded: boolean) {
+        setExpanded(obj: any, expanded: boolean): void {
             if (expanded) {
                 this._expandedObjects.add(obj);
             } else {
@@ -124,11 +235,7 @@ namespace phasereditor2d.ui.controls.viewers {
             return this._selectedObjects.has(obj);
         }
 
-        protected paintSelectionBackground(x: number, y: number, w: number, h: number) {
-
-        }
-
-        protected paintTreeHandler(x: number, y: number, collapsed: boolean) {
+        protected paintTreeHandler(x: number, y: number, collapsed: boolean): void {
             if (collapsed) {
                 this._context.strokeStyle = "#000";
                 this._context.strokeRect(x, y, 16, 16);
@@ -150,7 +257,24 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        layout() {
+        protected paintItemBackground(obj: any, x: number, y: number, w: number, h: number): void {
+            let fillStyle = null;
+
+            if (this.isSelected(obj)) {
+                fillStyle = Controls.theme.treeItemSelectionBackground;;
+            } else if (obj === this._overObject) {
+                fillStyle = Controls.theme.treeItemOverBackground;
+            }
+
+            if (fillStyle != null) {
+                this._context.save();
+                this._context.fillStyle = fillStyle;
+                this._context.fillRect(x, y, w, h);
+                this._context.restore();
+            }
+        }
+
+        layout(): void {
             const b = this.getBounds();
             ui.controls.setElementBounds(this.getElement(), b);
 

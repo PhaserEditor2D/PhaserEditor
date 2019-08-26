@@ -39,7 +39,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         protected paint(): void {
             let x = 0;
-            let y = 5;
+            let y = 0;
 
             this._treeIconList = [];
 
@@ -64,11 +64,9 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const cellHeight = renderer.cellHeight(args);
 
-                if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
+                super.paintItemBackground(obj, 0, y, b.width, cellHeight);
 
-                    if (this.isSelected(obj)) {
-                        this.paintSelectionBackground(x, y, b.width, cellHeight);
-                    }
+                if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
 
                     // render tree icon
                     if (children.length > 0) {
@@ -85,6 +83,10 @@ namespace phasereditor2d.ui.controls.viewers {
 
                     // client render cell
                     renderer.renderCell(args);
+
+                    const item = new PaintItem(this._paintItems.length, obj);
+                    item.set(args.x, args.y, b.width, cellHeight);
+                    this._paintItems.push(item);
                 }
 
                 y += cellHeight;
