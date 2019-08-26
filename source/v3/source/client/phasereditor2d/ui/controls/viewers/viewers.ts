@@ -159,9 +159,9 @@ namespace phasereditor2d.ui.controls.viewers {
             const canvas = this.getCanvas();
             canvas.addEventListener("mousemove", e => this.onMouseMove(e));
             canvas.addEventListener("mouseup", e => this.onMouseUp(e));
+            canvas.addEventListener("wheel", e => this.onWheel(e))
             // canvas.parentElement.addEventListener("keydown", e => this.onKeyDown(e));
         }
-
 
         protected getPaintItemAt(e: MouseEvent): PaintItem {
             for (let item of this._paintItems) {
@@ -186,6 +186,20 @@ namespace phasereditor2d.ui.controls.viewers {
                     this.fireSelectionChanged();
                 }
             }
+        }
+
+        private onWheel(e: WheelEvent): void {
+            if (!e.shiftKey) {
+                return;
+            }
+
+            if (e.deltaY < 0) {
+                this._cellSize += 16;
+            } else if (this._cellSize > 16) {
+                this._cellSize -= 16;
+            }
+
+            this.repaint();
         }
 
         private onMouseUp(e: MouseEvent): void {
@@ -285,14 +299,11 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         async repaint() {
-
-            console.log("first paint");
+            
             this.repaint2();
-
-            console.log("preload");
+            
             await this.preload();
 
-            console.log("second paint");
             this.repaint2();
         }
 

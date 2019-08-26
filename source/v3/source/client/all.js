@@ -893,6 +893,7 @@ var phasereditor2d;
                         var canvas = this.getCanvas();
                         canvas.addEventListener("mousemove", function (e) { return _this.onMouseMove(e); });
                         canvas.addEventListener("mouseup", function (e) { return _this.onMouseUp(e); });
+                        canvas.addEventListener("wheel", function (e) { return _this.onWheel(e); });
                         // canvas.parentElement.addEventListener("keydown", e => this.onKeyDown(e));
                     };
                     Viewer.prototype.getPaintItemAt = function (e) {
@@ -915,6 +916,18 @@ var phasereditor2d;
                                 this.fireSelectionChanged();
                             }
                         }
+                    };
+                    Viewer.prototype.onWheel = function (e) {
+                        if (!e.shiftKey) {
+                            return;
+                        }
+                        if (e.deltaY < 0) {
+                            this._cellSize += 16;
+                        }
+                        else if (this._cellSize > 16) {
+                            this._cellSize -= 16;
+                        }
+                        this.repaint();
                     };
                     Viewer.prototype.onMouseUp = function (e) {
                         if (e.button !== 0) {
@@ -1003,13 +1016,10 @@ var phasereditor2d;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        console.log("first paint");
                                         this.repaint2();
-                                        console.log("preload");
                                         return [4 /*yield*/, this.preload()];
                                     case 1:
                                         _a.sent();
-                                        console.log("second paint");
                                         this.repaint2();
                                         return [2 /*return*/];
                                 }
