@@ -1,16 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -46,23 +33,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var phasereditor2d;
 (function (phasereditor2d) {
-    var demo;
-    (function (demo) {
-        function main() {
-            console.log("Starting workbench.");
-            var workbench = phasereditor2d.ui.Workbench.getWorkbench();
-            workbench.start();
-        }
-        demo.main = main;
-    })(demo = phasereditor2d.demo || (phasereditor2d.demo = {}));
+    function main() {
+        return __awaiter(this, void 0, void 0, function () {
+            var workbench;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("Preloading UI resources");
+                        return [4 /*yield*/, phasereditor2d.ui.controls.Controls.preload()];
+                    case 1:
+                        _a.sent();
+                        console.log("Starting the workbench");
+                        workbench = phasereditor2d.ui.Workbench.getWorkbench();
+                        workbench.start();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
+    phasereditor2d.main = main;
 })(phasereditor2d || (phasereditor2d = {}));
-window.addEventListener("load", function () {
-    phasereditor2d.ui.controls.Controls.preload(function () {
-        phasereditor2d.demo.main();
-    });
-});
+window.addEventListener("load", phasereditor2d.main);
 var phasereditor2d;
 (function (phasereditor2d) {
     var core;
@@ -167,31 +173,12 @@ var phasereditor2d;
             var Controls = /** @class */ (function () {
                 function Controls() {
                 }
-                Controls.preload = function (callback) {
-                    return __awaiter(this, void 0, void 0, function () {
-                        var _i, _a, name_1, icon;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    _i = 0, _a = Controls.ICONS;
-                                    _b.label = 1;
-                                case 1:
-                                    if (!(_i < _a.length)) return [3 /*break*/, 4];
-                                    name_1 = _a[_i];
-                                    icon = this.getIcon(name_1);
-                                    return [4 /*yield*/, icon.img.decode()];
-                                case 2:
-                                    _b.sent();
-                                    _b.label = 3;
-                                case 3:
-                                    _i++;
-                                    return [3 /*break*/, 1];
-                                case 4:
-                                    callback();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    });
+                Controls.preload = function () {
+                    var _this = this;
+                    return Promise.all(Controls.ICONS.map(function (name) {
+                        var icon = _this.getIcon(name);
+                        return icon.img.decode();
+                    }));
                 };
                 Controls.getIcon = function (name) {
                     if (Controls._images.has(name)) {

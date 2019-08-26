@@ -59,12 +59,15 @@ namespace phasereditor2d.ui.controls {
             Controls.ICON_FILE_VIDEO
         ];
 
-        static async preload(callback: any) {
-            for (let name of Controls.ICONS) {
-                const icon = <IconImpl>this.getIcon(name);
-                await icon.img.decode();
-            }
-            callback();
+        static preload() {
+            return Promise.all(
+                Controls.ICONS.map(
+                    name => {
+                        const icon = <IconImpl>this.getIcon(name);
+                        return icon.img.decode();
+                    }
+                )
+            );
         }
 
         static getIcon(name: string): IIcon {
@@ -78,15 +81,15 @@ namespace phasereditor2d.ui.controls {
             return icon;
         }
 
-        private static LIGHT_THEME : Theme = {
+        private static LIGHT_THEME: Theme = {
             treeItemOverBackground: "#0000001f",
             treeItemSelectionBackground: "#5555ffdf",
             treeItemSelectionForeground: "#fafafa"
         };
 
-        private static DARK_THEME : Theme = Controls.LIGHT_THEME;
+        private static DARK_THEME: Theme = Controls.LIGHT_THEME;
 
-        public static theme : Theme = Controls.LIGHT_THEME;
+        public static theme: Theme = Controls.LIGHT_THEME;
 
         private static getSmoothingPrefix(context: CanvasRenderingContext2D) {
             const vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];

@@ -1,18 +1,14 @@
-namespace phasereditor2d.demo {
+namespace phasereditor2d {
 
-    export function main() {
-        console.log("Starting workbench.");
+    export async function main() {
+
+        console.log("Preloading UI resources");
+        await ui.controls.Controls.preload();
+
+        console.log("Starting the workbench");
         const workbench = ui.Workbench.getWorkbench();
         workbench.start();
     }
 }
 
-window.addEventListener("load", () => {
-    phasereditor2d.ui.controls.Controls.preload(
-
-        () => { 
-           phasereditor2d.demo.main(); 
-        }
-
-    );
-});
+window.addEventListener("load", phasereditor2d.main);
