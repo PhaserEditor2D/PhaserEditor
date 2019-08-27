@@ -21,6 +21,10 @@ button:active {
     padding: 3px 8px 0px 12px;
 }
 
+canvas {
+    outline: none;
+}
+
 .panel,
 .panelClientArea,
 .panelCorner {

@@ -268,12 +268,18 @@ namespace phasereditor2d.ui.controls {
         private _element: HTMLElement;
         private _children: Control[];
         private _layout: ILayout;
+        private _container: Control;
 
         constructor(tagName: string = "div") {
             this._children = [];
             this._element = document.createElement(tagName);
             this.addClass("control");
             this._layout = null;
+            this._container = null;
+        }
+
+        getContainer() {
+            return this._container;
         }
 
         getLayout() {
@@ -347,8 +353,14 @@ namespace phasereditor2d.ui.controls {
         }
 
         add(control: Control): void {
+            control._container = this;
             this._children.push(control);
             this._element.appendChild(control.getElement());
+            control.onControlAdded();
+        }
+
+        protected onControlAdded() {
+
         }
 
         getChildren() {

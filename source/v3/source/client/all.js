@@ -358,7 +358,11 @@ var phasereditor2d;
                     this._element = document.createElement(tagName);
                     this.addClass("control");
                     this._layout = null;
+                    this._container = null;
                 }
+                Control.prototype.getContainer = function () {
+                    return this._container;
+                };
                 Control.prototype.getLayout = function () {
                     return this._layout;
                 };
@@ -424,8 +428,12 @@ var phasereditor2d;
                     }
                 };
                 Control.prototype.add = function (control) {
+                    control._container = this;
                     this._children.push(control);
                     this._element.appendChild(control.getElement());
+                    control.onControlAdded();
+                };
+                Control.prototype.onControlAdded = function () {
                 };
                 Control.prototype.getChildren = function () {
                     return this._children;
@@ -879,6 +887,7 @@ var phasereditor2d;
                     function Viewer() {
                         var _this = _super.call(this, "canvas") || this;
                         _this._lastSelectedItemIndex = -1;
+                        _this.getElement().tabIndex = 1;
                         _this._cellSize = 48;
                         _this.initContext();
                         _this._input = null;
@@ -894,7 +903,7 @@ var phasereditor2d;
                         canvas.addEventListener("mousemove", function (e) { return _this.onMouseMove(e); });
                         canvas.addEventListener("mouseup", function (e) { return _this.onMouseUp(e); });
                         canvas.addEventListener("wheel", function (e) { return _this.onWheel(e); });
-                        // canvas.parentElement.addEventListener("keydown", e => this.onKeyDown(e));
+                        canvas.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
                     };
                     Viewer.prototype.getPaintItemAt = function (e) {
                         for (var _i = 0, _a = this._paintItems; _i < _a.length; _i++) {
@@ -907,7 +916,6 @@ var phasereditor2d;
                     };
                     Viewer.prototype.fireSelectionChanged = function () {
                     };
-                    //TODO: is not fired, I am looking the reason.
                     Viewer.prototype.onKeyDown = function (e) {
                         if (e.key === "Escape") {
                             if (this._selectedObjects.size > 0) {

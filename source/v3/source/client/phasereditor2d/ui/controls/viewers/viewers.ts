@@ -142,6 +142,9 @@ namespace phasereditor2d.ui.controls.viewers {
 
         constructor() {
             super("canvas");
+
+            this.getElement().tabIndex = 1;
+            
             this._cellSize = 48;
 
             this.initContext();
@@ -160,7 +163,7 @@ namespace phasereditor2d.ui.controls.viewers {
             canvas.addEventListener("mousemove", e => this.onMouseMove(e));
             canvas.addEventListener("mouseup", e => this.onMouseUp(e));
             canvas.addEventListener("wheel", e => this.onWheel(e))
-            // canvas.parentElement.addEventListener("keydown", e => this.onKeyDown(e));
+            canvas.addEventListener("keydown", e => this.onKeyDown(e));
         }
 
         protected getPaintItemAt(e: MouseEvent): PaintItem {
@@ -177,7 +180,6 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
 
-        //TODO: is not fired, I am looking the reason.
         private onKeyDown(e: KeyboardEvent): void {
             if (e.key === "Escape") {
                 if (this._selectedObjects.size > 0) {
@@ -299,9 +301,9 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         async repaint() {
-            
+
             this.repaint2();
-            
+
             await this.preload();
 
             this.repaint2();
