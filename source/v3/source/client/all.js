@@ -255,6 +255,108 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
+            var PaddingPane = /** @class */ (function (_super) {
+                __extends(PaddingPane, _super);
+                function PaddingPane(control, padding) {
+                    if (padding === void 0) { padding = 5; }
+                    var _this = _super.call(this) || this;
+                    _this._padding = padding;
+                    _this.getElement().classList.add("paddingPane");
+                    _this.setControl(control);
+                    return _this;
+                }
+                PaddingPane.prototype.setControl = function (control) {
+                    this._control = control;
+                    if (this._control) {
+                        this.add(control);
+                    }
+                };
+                PaddingPane.prototype.getControl = function () {
+                    return this._control;
+                };
+                PaddingPane.prototype.setPadding = function (padding) {
+                    this._padding = padding;
+                };
+                PaddingPane.prototype.getPadding = function () {
+                    return this._padding;
+                };
+                PaddingPane.prototype.layout = function () {
+                    var b = this.getBounds();
+                    controls.setElementBounds(this.getElement(), b);
+                    if (this._control) {
+                        this._control.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
+                    }
+                };
+                return PaddingPane;
+            }(controls.Control));
+            controls.PaddingPane = PaddingPane;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var DesignWindow = /** @class */ (function (_super) {
+                __extends(DesignWindow, _super);
+                function DesignWindow() {
+                    var _this = _super.call(this) || this;
+                    _this._toolbar = new ui.toolbar.Toolbar();
+                    _this._outlineView = new ui.outline.OutlineView();
+                    _this._filesView = new ui.files.FilesViewer();
+                    _this._inspectorView = new ui.inspector.InspectorView();
+                    _this._blocksView = new ui.blocks.BlocksView();
+                    _this._editorArea = new ide.EditorArea();
+                    _this._split_Files_Blocks = new ui.controls.SplitPanel(_this._filesView, _this._blocksView);
+                    _this._split_Editor_FilesBlocks = new ui.controls.SplitPanel(_this._editorArea, _this._split_Files_Blocks, false);
+                    _this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(_this._outlineView, _this._split_Editor_FilesBlocks);
+                    _this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(_this._split_Outline_EditorFilesBlocks, _this._inspectorView);
+                    _this.setControl(_this._split_OutlineEditorFilesBlocks_Inspector);
+                    window.addEventListener("resize", function (e) {
+                        _this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
+                    });
+                    _this.initialLayout();
+                    return _this;
+                }
+                DesignWindow.prototype.initialLayout = function () {
+                    var b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
+                    this._split_Files_Blocks.setSplitFactor(0.2);
+                    this._split_Editor_FilesBlocks.setSplitFactor(0.6);
+                    this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
+                    this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
+                    this.setBounds(b);
+                };
+                DesignWindow.prototype.getOutlineView = function () {
+                    return this._outlineView;
+                };
+                DesignWindow.prototype.getFilesView = function () {
+                    return this._filesView;
+                };
+                DesignWindow.prototype.getBlocksView = function () {
+                    return this._blocksView;
+                };
+                DesignWindow.prototype.getInspectorView = function () {
+                    return this._inspectorView;
+                };
+                DesignWindow.prototype.getEditorArea = function () {
+                    return this._editorArea;
+                };
+                return DesignWindow;
+            }(ui.controls.PaddingPane));
+            ide.DesignWindow = DesignWindow;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Control.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
             var IconImpl = /** @class */ (function () {
                 function IconImpl(img) {
                     this.img = img;
@@ -560,8 +662,8 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
     (function (ui) {
-        var parts;
-        (function (parts) {
+        var ide;
+        (function (ide) {
             var Part = /** @class */ (function (_super) {
                 __extends(Part, _super);
                 function Part(id) {
@@ -575,7 +677,56 @@ var phasereditor2d;
                 };
                 return Part;
             }(ui.controls.Panel));
-            parts.Part = Part;
+            ide.Part = Part;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Part.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var EditorArea = /** @class */ (function (_super) {
+                __extends(EditorArea, _super);
+                function EditorArea() {
+                    return _super.call(this, "editorArea") || this;
+                }
+                return EditorArea;
+            }(ide.Part));
+            ide.EditorArea = EditorArea;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var toolbar;
+        (function (toolbar) {
+            var Toolbar = /** @class */ (function () {
+                function Toolbar() {
+                    this._toolbarElement = document.createElement("div");
+                    this._toolbarElement.innerHTML = "\n\n            <button>Load</button>\n            <button>Play</button>\n\n            ";
+                    this._toolbarElement.classList.add("toolbar");
+                    document.getElementsByTagName("body")[0].appendChild(this._toolbarElement);
+                }
+                Toolbar.prototype.getElement = function () {
+                    return this._toolbarElement;
+                };
+                return Toolbar;
+            }());
+            toolbar.Toolbar = Toolbar;
+        })(toolbar = ui.toolbar || (ui.toolbar = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             var ViewPart = /** @class */ (function (_super) {
                 __extends(ViewPart, _super);
                 function ViewPart(id) {
@@ -584,20 +735,53 @@ var phasereditor2d;
                     return _this;
                 }
                 return ViewPart;
-            }(Part));
-            parts.ViewPart = ViewPart;
-            var EditorArea = /** @class */ (function (_super) {
-                __extends(EditorArea, _super);
-                function EditorArea() {
-                    return _super.call(this, "editorArea") || this;
-                }
-                return EditorArea;
-            }(Part));
-            parts.EditorArea = EditorArea;
-        })(parts = ui.parts || (ui.parts = {}));
+            }(ide.Part));
+            ide.ViewPart = ViewPart;
+        })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./parts.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
+/// <reference path="../ide/ViewPart.ts"/>
+/// <reference path="../ide/DesignWindow.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var Workbench = /** @class */ (function () {
+            function Workbench() {
+                this._contentType_icon_Map = new Map();
+                this._contentType_icon_Map.set("img", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_IMAGE));
+                this._contentType_icon_Map.set("sound", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SOUND));
+                this._contentType_icon_Map.set("video", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_VIDEO));
+                this._contentType_icon_Map.set("js", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
+                this._contentType_icon_Map.set("ts", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
+                this._contentType_icon_Map.set("json", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
+                this._contentType_icon_Map.set("txt", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_TEXT));
+            }
+            Workbench.getWorkbench = function () {
+                if (!Workbench._workbench) {
+                    Workbench._workbench = new Workbench();
+                }
+                return this._workbench;
+            };
+            Workbench.prototype.start = function () {
+                this._designWindow = new ui.ide.DesignWindow();
+                document.getElementById("body").appendChild(this._designWindow.getElement());
+            };
+            Workbench.prototype.getContentTypeIcon = function (contentType) {
+                if (this._contentType_icon_Map.has(contentType)) {
+                    return this._contentType_icon_Map.get(contentType);
+                }
+                return null;
+            };
+            return Workbench;
+        }());
+        ui.Workbench = Workbench;
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../Part.ts"/>
+/// <reference path="../ViewPart.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -612,7 +796,7 @@ var phasereditor2d;
                     return _this;
                 }
                 return BlocksView;
-            }(ui.parts.ViewPart));
+            }(ui.ide.ViewPart));
             blocks.BlocksView = BlocksView;
         })(blocks = ui.blocks || (ui.blocks = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -965,9 +1149,10 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
-/// <reference path="./parts.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../Part.ts"/>
+/// <reference path="../ViewPart.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1034,9 +1219,9 @@ var phasereditor2d;
                 };
                 return FileCellRendererProvider;
             }());
-            var FilesView = /** @class */ (function (_super) {
-                __extends(FilesView, _super);
-                function FilesView() {
+            var FilesViewer = /** @class */ (function (_super) {
+                __extends(FilesViewer, _super);
+                function FilesViewer() {
                     var _this = _super.call(this, "filesView") || this;
                     _this.setTitle("Files");
                     var root = new phasereditor2d.core.io.FilePath(null, TEST_DATA);
@@ -1050,9 +1235,9 @@ var phasereditor2d;
                     tree.repaint();
                     return _this;
                 }
-                return FilesView;
-            }(ui.parts.ViewPart));
-            files.FilesView = FilesView;
+                return FilesViewer;
+            }(ui.ide.ViewPart));
+            files.FilesViewer = FilesViewer;
             var TEST_DATA = {
                 "name": "",
                 "isFile": false,
@@ -1450,7 +1635,7 @@ var phasereditor2d;
         })(files = ui.files || (ui.files = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./parts.ts"/>
+/// <reference path="../ViewPart.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1465,12 +1650,12 @@ var phasereditor2d;
                     return _this;
                 }
                 return InspectorView;
-            }(ui.parts.ViewPart));
+            }(ui.ide.ViewPart));
             inspector.InspectorView = InspectorView;
         })(inspector = ui.inspector || (ui.inspector = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./parts.ts"/>
+/// <reference path="../ViewPart.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1485,159 +1670,9 @@ var phasereditor2d;
                     return _this;
                 }
                 return OutlineView;
-            }(ui.parts.ViewPart));
+            }(ui.ide.ViewPart));
             outline.OutlineView = OutlineView;
         })(outline = ui.outline || (ui.outline = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var toolbar;
-        (function (toolbar) {
-            var Toolbar = /** @class */ (function () {
-                function Toolbar() {
-                    this._toolbarElement = document.createElement("div");
-                    this._toolbarElement.innerHTML = "\n\n            <button>Load</button>\n            <button>Play</button>\n\n            ";
-                    this._toolbarElement.classList.add("toolbar");
-                    document.getElementsByTagName("body")[0].appendChild(this._toolbarElement);
-                }
-                Toolbar.prototype.getElement = function () {
-                    return this._toolbarElement;
-                };
-                return Toolbar;
-            }());
-            toolbar.Toolbar = Toolbar;
-        })(toolbar = ui.toolbar || (ui.toolbar = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var PaddingPane = /** @class */ (function (_super) {
-                __extends(PaddingPane, _super);
-                function PaddingPane(control, padding) {
-                    if (padding === void 0) { padding = 5; }
-                    var _this = _super.call(this) || this;
-                    _this._padding = padding;
-                    _this.getElement().classList.add("paddingPane");
-                    _this.setControl(control);
-                    return _this;
-                }
-                PaddingPane.prototype.setControl = function (control) {
-                    this._control = control;
-                    if (this._control) {
-                        this.add(control);
-                    }
-                };
-                PaddingPane.prototype.getControl = function () {
-                    return this._control;
-                };
-                PaddingPane.prototype.setPadding = function (padding) {
-                    this._padding = padding;
-                };
-                PaddingPane.prototype.getPadding = function () {
-                    return this._padding;
-                };
-                PaddingPane.prototype.layout = function () {
-                    var b = this.getBounds();
-                    controls.setElementBounds(this.getElement(), b);
-                    if (this._control) {
-                        this._control.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
-                    }
-                };
-                return PaddingPane;
-            }(controls.Control));
-            controls.PaddingPane = PaddingPane;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var Workbench = /** @class */ (function () {
-            function Workbench() {
-                this._contentType_icon_Map = new Map();
-                this._contentType_icon_Map.set("img", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_IMAGE));
-                this._contentType_icon_Map.set("sound", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SOUND));
-                this._contentType_icon_Map.set("video", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_VIDEO));
-                this._contentType_icon_Map.set("js", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
-                this._contentType_icon_Map.set("ts", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
-                this._contentType_icon_Map.set("json", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
-                this._contentType_icon_Map.set("txt", ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_TEXT));
-            }
-            Workbench.getWorkbench = function () {
-                if (!Workbench._workbench) {
-                    Workbench._workbench = new Workbench();
-                }
-                return this._workbench;
-            };
-            Workbench.prototype.start = function () {
-                this._designWindow = new DesignWindow();
-                document.getElementById("body").appendChild(this._designWindow.getElement());
-            };
-            Workbench.prototype.getContentTypeIcon = function (contentType) {
-                if (this._contentType_icon_Map.has(contentType)) {
-                    return this._contentType_icon_Map.get(contentType);
-                }
-                return null;
-            };
-            return Workbench;
-        }());
-        ui.Workbench = Workbench;
-        var DesignWindow = /** @class */ (function (_super) {
-            __extends(DesignWindow, _super);
-            function DesignWindow() {
-                var _this = _super.call(this) || this;
-                _this._toolbar = new ui.toolbar.Toolbar();
-                _this._outlineView = new ui.outline.OutlineView();
-                _this._filesView = new ui.files.FilesView();
-                _this._inspectorView = new ui.inspector.InspectorView();
-                _this._blocksView = new ui.blocks.BlocksView();
-                _this._editorArea = new ui.parts.EditorArea();
-                _this._split_Files_Blocks = new ui.controls.SplitPanel(_this._filesView, _this._blocksView);
-                _this._split_Editor_FilesBlocks = new ui.controls.SplitPanel(_this._editorArea, _this._split_Files_Blocks, false);
-                _this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(_this._outlineView, _this._split_Editor_FilesBlocks);
-                _this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(_this._split_Outline_EditorFilesBlocks, _this._inspectorView);
-                _this.setControl(_this._split_OutlineEditorFilesBlocks_Inspector);
-                window.addEventListener("resize", function (e) {
-                    _this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
-                });
-                _this.initialLayout();
-                return _this;
-            }
-            DesignWindow.prototype.initialLayout = function () {
-                var b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
-                this._split_Files_Blocks.setSplitFactor(0.2);
-                this._split_Editor_FilesBlocks.setSplitFactor(0.6);
-                this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
-                this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
-                this.setBounds(b);
-            };
-            DesignWindow.prototype.getOutlineView = function () {
-                return this._outlineView;
-            };
-            DesignWindow.prototype.getFilesView = function () {
-                return this._filesView;
-            };
-            DesignWindow.prototype.getBlocksView = function () {
-                return this._blocksView;
-            };
-            DesignWindow.prototype.getInspectorView = function () {
-                return this._inspectorView;
-            };
-            DesignWindow.prototype.getEditorArea = function () {
-                return this._editorArea;
-            };
-            return DesignWindow;
-        }(ui.controls.PaddingPane));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

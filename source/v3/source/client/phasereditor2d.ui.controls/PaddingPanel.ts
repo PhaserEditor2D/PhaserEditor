@@ -1,4 +1,7 @@
+/// <reference path="./Control.ts"/>
+
 namespace phasereditor2d.ui.controls {
+
     export class PaddingPane extends Control {
         private _padding: number;
         private _control: Control;

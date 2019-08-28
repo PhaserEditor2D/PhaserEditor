@@ -1,7 +1,7 @@
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../../../phasereditor2d.ui.controls/Panel.ts"/>
 
-namespace phasereditor2d.ui.parts {    
+namespace phasereditor2d.ui.ide {
 
     export abstract class Part extends ui.controls.Panel {
         private _id: string;
@@ -14,20 +14,6 @@ namespace phasereditor2d.ui.parts {
 
         getId() {
             return this._id;
-        }
-    }
-
-    export class ViewPart extends Part {
-
-        constructor(id: string) {
-            super(id);
-            this.getElement().classList.add("view");           
-        }
-    }
-
-    export class EditorArea extends Part {
-        constructor() {
-            super("editorArea");
         }
     }
 }

@@ -1,6 +1,7 @@
-/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
-/// <reference path="./parts.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../Part.ts"/>
+/// <reference path="../ViewPart.ts"/>
 
 namespace phasereditor2d.ui.files {
 
@@ -42,11 +43,11 @@ namespace phasereditor2d.ui.files {
     }
 
     class FileImageRenderer extends viewers.ImageCellRenderer {
-        
+
         getLabel(obj: io.FilePath): string {
             return obj.getName();
-        } 
-        
+        }
+
         getImage(obj: io.FilePath): controls.IImage {
             return controls.Controls.getImage("files/" + obj.getFullName());
         }
@@ -63,8 +64,7 @@ namespace phasereditor2d.ui.files {
         }
     }
 
-
-    export class FilesView extends parts.ViewPart {
+    export class FilesViewer extends ide.ViewPart {
         constructor() {
             super("filesView");
             this.setTitle("Files");
