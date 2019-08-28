@@ -5,7 +5,7 @@ namespace phasereditor2d.ui.ide {
     export class DesignWindow extends controls.PaddingPane {
 
         private _outlineView: ui.outline.OutlineView;
-        private _filesView: ui.files.FilesViewer;
+        private _filesView: ui.files.FilesView;
         private _inspectorView: ui.inspector.InspectorView;
         private _blocksView: ui.blocks.BlocksView;
         private _editorArea: ide.EditorArea;
@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.ide {
 
             this._toolbar = new toolbar.Toolbar();
             this._outlineView = new outline.OutlineView();
-            this._filesView = new files.FilesViewer();
+            this._filesView = new files.FilesView();
             this._inspectorView = new inspector.InspectorView();
             this._blocksView = new blocks.BlocksView();
             this._editorArea = new ide.EditorArea();

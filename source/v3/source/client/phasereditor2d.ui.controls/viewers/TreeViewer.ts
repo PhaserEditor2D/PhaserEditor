@@ -5,7 +5,7 @@ namespace phasereditor2d.ui.controls.viewers {
     const TREE_ICON_SIZE = 16;
     const LABEL_MARGIN = TREE_ICON_SIZE + 0;
 
-    
+
     declare type TreeIconInfo = {
         rect: Rect,
         obj: any
@@ -59,7 +59,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         protected paint(): void {
             let x = 0;
-            let y = 0;
+            let y = this.getScrollY();
 
             this._treeIconList = [];
 
@@ -69,7 +69,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
             const roots = contentProvider.getRoots(this.getInput());
 
-            this.paintItems(roots, x, y);
+            this._contentHeight = this.paintItems(roots, x, y) - this.getScrollY();
         }
 
         private paintItems(objects: any[], x: number, y: number): number {

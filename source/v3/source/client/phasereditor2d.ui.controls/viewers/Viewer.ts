@@ -6,6 +6,7 @@
 namespace phasereditor2d.ui.controls.viewers {
 
     export abstract class Viewer extends Control {
+
         private _contentProvider: IContentProvider;
         private _cellRendererProvider: ICellRendererProvider;
         private _input: any;
@@ -16,6 +17,7 @@ namespace phasereditor2d.ui.controls.viewers {
         protected _paintItems: PaintItem[];
         private _overObject: any;
         private _lastSelectedItemIndex: number = -1;
+        protected _contentHeight : number = 0;
 
         constructor() {
             super("canvas");
@@ -184,6 +186,11 @@ namespace phasereditor2d.ui.controls.viewers {
             await this.preload();
 
             this.repaint2();
+
+            if (this.getContainer() instanceof ScrollPane) {
+                const pane = <ScrollPane>this.getContainer();
+                pane.updateScroll(this._contentHeight);
+            }
         }
 
         private repaint2(): void {
@@ -215,6 +222,11 @@ namespace phasereditor2d.ui.controls.viewers {
                 this._context.fillRect(x, y, w, h);
                 this._context.restore();
             }
+        }
+
+        setScrollY(scrollY : number) {
+            super.setScrollY(scrollY);
+            this.repaint();
         }
 
         layout(): void {

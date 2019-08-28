@@ -64,7 +64,7 @@ namespace phasereditor2d.ui.files {
         }
     }
 
-    export class FilesViewer extends ide.ViewPart {
+    export class FilesView extends ide.ViewPart {
         constructor() {
             super("filesView");
             this.setTitle("Files");
@@ -78,8 +78,10 @@ namespace phasereditor2d.ui.files {
             tree.setCellRendererProvider(new FileCellRendererProvider());
             tree.setInput(root);
 
+            let scrollPane = new controls.ScrollPane(tree);
+
             this.getClientArea().setLayout(new ui.controls.FillLayout());
-            this.getClientArea().add(tree);
+            this.getClientArea().add(scrollPane);
 
             tree.repaint();
         }
@@ -408,7 +410,7 @@ namespace phasereditor2d.ui.files {
                             {
                                 "name": "demo.svg",
                                 "isFile": true,
-                                "contentType": "img"
+                                "contentType": "svg"
                             }
                         ]
                     }

@@ -65,7 +65,6 @@
         1px -1px 0 #909090,
         -1px 1px 0 #909090,
         1px 1px 0 #909090;
-    ;
 }
 
 .light .panel .actionButton {
@@ -90,4 +89,28 @@
 
 .light .panel .actionButton:active {
     background: radial-gradient(#b8b8b8, #c8c8c8);
+}
+
+.light .scrollBar,
+.scrollHandler {
+    position: absolute;
+}
+
+.light .scrollBar {
+    background: #d2d2d2;
+    background: transparent;
+    box-shadow: inset 2px 2px 2px #40404018,
+        -1px -1px 0 #909090;
+}
+
+.light .scrollHandler {
+    background: linear-gradient(#c8c8c8, #b8b8b8);
+    box-shadow: inset -1px -1px 0 #909090,
+        inset 1px 1px 0 #e0e0e0;
+}
+
+.light .scrollHandler:active {
+    background: linear-gradient(#b0b0b0, #c0c0c0);
+    box-shadow: inset -1px -1px 0 #e0e0e0,
+        inset 1px 1px 0 #909090;
 }

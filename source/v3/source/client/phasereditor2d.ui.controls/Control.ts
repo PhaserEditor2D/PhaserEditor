@@ -1,10 +1,12 @@
 namespace phasereditor2d.ui.controls {
+    
     export class Control {
         private _bounds: Bounds = { x: 0, y: 0, width: 0, height: 0 };
         private _element: HTMLElement;
         private _children: Control[];
         private _layout: ILayout;
         private _container: Control;
+        private _scrollY : number;
 
         constructor(tagName: string = "div") {
             this._children = [];
@@ -12,6 +14,15 @@ namespace phasereditor2d.ui.controls {
             this.addClass("control");
             this._layout = null;
             this._container = null;
+            this._scrollY = 0;
+        }
+
+        getScrollY() {
+            return this._scrollY;
+        }
+
+        setScrollY(scrollY : number) {
+            this._scrollY = scrollY;
         }
 
         getContainer() {
