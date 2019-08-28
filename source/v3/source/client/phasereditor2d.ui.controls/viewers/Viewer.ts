@@ -1,132 +1,9 @@
+/// <reference path="../Rect.ts"/>
+/// <reference path="../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="./LabelCellRenderer.ts"/>
+/// <reference path="./ImageCellRenderer.ts"/>
+
 namespace phasereditor2d.ui.controls.viewers {
-
-    export class RenderCellArgs {
-        constructor(
-            public canvasContext: CanvasRenderingContext2D,
-            public x: number,
-            public y: number,
-            public obj: any,
-            public view: Viewer) {
-        }
-    };
-
-    export interface ICellRenderer {
-        renderCell(args: RenderCellArgs): void;
-
-        cellHeight(args: RenderCellArgs): number;
-
-        preload(obj: any): Promise<any>;
-    }
-
-    export interface ICellRendererProvider {
-        getCellRenderer(element: any): ICellRenderer;
-    }
-
-    export abstract class LabelCellRenderer implements ICellRenderer {
-
-        renderCell(args: RenderCellArgs): void {
-            const label = this.getLabel(args.obj);
-            const img = this.getImage(args.obj);
-            let x = args.x;
-
-            const ctx = args.canvasContext;
-            ctx.fillStyle = Controls.theme.treeItemForeground;
-
-            if (img) {
-                const h = this.cellHeight(args);
-                img.paint(ctx, x, args.y, 16, h);
-                x += 20;
-            }
-
-            ctx.save();
-            if (args.view.isSelected(args.obj)) {
-                ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
-            }
-            ctx.fillText(label, x, args.y + 15);
-            ctx.restore();
-        }
-
-        abstract getLabel(obj: any): string;
-
-        abstract getImage(obj: any): controls.IIcon;
-
-        cellHeight(args: RenderCellArgs): number {
-            return 20;
-        }
-
-        preload(): Promise<any> {
-            return Promise.resolve();
-        }
-    }
-
-    export abstract class ImageCellRenderer implements ICellRenderer {
-        abstract getLabel(obj: any): string;
-
-        abstract getImage(obj: any): IImage;
-
-        renderCell(args: RenderCellArgs): void {
-            const label = this.getLabel(args.obj);
-            const h = this.cellHeight(args);
-
-            const ctx = args.canvasContext;
-
-            const img = this.getImage(args.obj);
-            img.paint(ctx, args.x, args.y, h, h);
-            ctx.save();
-
-            ctx.fillStyle = Controls.theme.treeItemForeground;
-
-            if (args.view.isSelected(args.obj)) {
-                ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
-            }
-
-            ctx.fillText(label, args.x + h + 5, args.y + h / 2 + 6);
-
-            ctx.restore();
-        }
-
-        cellHeight(args: RenderCellArgs): number {
-            return args.view.getCellSize();
-        }
-
-        preload(obj: any): Promise<any> {
-            return this.getImage(obj).preload();
-        }
-    }
-
-    export interface IContentProvider {
-
-    }
-
-    export class Rect {
-        constructor(
-            public x: number = 0,
-            public y: number = 0,
-            public w: number = 0,
-            public h: number = 0,
-        ) {
-        }
-
-        set(x: number, y: number, w: number, h: number) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-        }
-
-        contains(x: number, y: number): boolean {
-            return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
-        }
-    }
-
-    export class PaintItem extends Rect {
-        constructor(
-            public index: number,
-            public data: any
-        ) {
-            super();
-        }
-    }
 
     export abstract class Viewer extends Control {
         private _contentProvider: IContentProvider;
@@ -144,7 +21,7 @@ namespace phasereditor2d.ui.controls.viewers {
             super("canvas");
 
             this.getElement().tabIndex = 1;
-            
+
             this._cellSize = 48;
 
             this.initContext();
@@ -267,7 +144,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this._context = this.getCanvas().getContext("2d");
             this._context.imageSmoothingEnabled = false;
             Controls.disableCanvasSmoothing(this._context);
-            this._context.font = "14px sans-serif";
+            this._context.font = `${controls.FONT_HEIGHT}px sans-serif`;
         }
 
         setExpanded(obj: any, expanded: boolean): void {

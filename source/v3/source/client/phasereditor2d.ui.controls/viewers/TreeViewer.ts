@@ -1,16 +1,11 @@
-/// <reference path="./viewers.ts"/>
+/// <reference path="./Viewer.ts"/>
 
 namespace phasereditor2d.ui.controls.viewers {
 
     const TREE_ICON_SIZE = 16;
     const LABEL_MARGIN = TREE_ICON_SIZE + 0;
 
-    export interface ITreeContentProvider {
-        getRoots(input: any): any[];
-
-        getChildren(parent: any): any[];
-    }
-
+    
     declare type TreeIconInfo = {
         rect: Rect,
         obj: any

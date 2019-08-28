@@ -1,3 +1,6 @@
+/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/Panel.ts"/>
+
 namespace phasereditor2d.ui.parts {    
 
     export abstract class Part extends ui.controls.Panel {

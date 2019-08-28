@@ -1,4 +1,5 @@
-/// <reference path="../controls/controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 
 namespace phasereditor2d.ui {
 

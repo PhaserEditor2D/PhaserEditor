@@ -154,202 +154,6 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            var ROW_HEIGHT = 20;
-            var FONT_HEIGHT = 14;
-            var FONT_OFFSET = 2;
-            var ACTION_WIDTH = 20;
-            var PANEL_BORDER_SIZE = 4;
-            var SPLIT_OVER_ZONE_WIDTH = 6;
-            var IconImpl = /** @class */ (function () {
-                function IconImpl(img) {
-                    this.img = img;
-                }
-                IconImpl.prototype.paint = function (context, x, y, w, h) {
-                    // we assume the image size is under 16x16 (for now)
-                    w = w ? w : 16;
-                    h = h ? h : 16;
-                    var imgW = this.img.naturalWidth;
-                    var imgH = this.img.naturalHeight;
-                    var dx = (w - imgW) / 2;
-                    var dy = (h - imgH) / 2;
-                    context.drawImage(this.img, (x + dx) | 0, (y + dy) | 0);
-                };
-                return IconImpl;
-            }());
-            var ImageImpl = /** @class */ (function () {
-                function ImageImpl(imageElement) {
-                    this.imageElement = imageElement;
-                    this._ready = false;
-                }
-                ImageImpl.prototype.preload = function () {
-                    var _this = this;
-                    if (this._ready) {
-                        return Promise.resolve();
-                    }
-                    return this.imageElement.decode().then(function (_) {
-                        _this._ready = true;
-                    });
-                };
-                ImageImpl.prototype.paint = function (context, x, y, w, h) {
-                    if (this._ready) {
-                        var center = true;
-                        var naturalWidth = this.imageElement.naturalWidth;
-                        var naturalHeight = this.imageElement.naturalHeight;
-                        var renderHeight = h;
-                        var renderWidth = w;
-                        var imgW = naturalWidth;
-                        var imgH = naturalHeight;
-                        // compute the right width
-                        imgW = imgW * (renderHeight / imgH);
-                        imgH = renderHeight;
-                        // fix width if it goes beyond the area
-                        if (imgW > renderWidth) {
-                            imgH = imgH * (renderWidth / imgW);
-                            imgW = renderWidth;
-                        }
-                        var scale = imgW / naturalWidth;
-                        var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
-                        var imgY = y + renderHeight / 2 - imgH / 2;
-                        var imgDstW = naturalWidth * scale;
-                        var imgDstH = naturalHeight * scale;
-                        if (imgDstW > 0 && imgDstH > 0) {
-                            context.drawImage(this.imageElement, imgX, imgY, imgDstW, imgDstH);
-                        }
-                    }
-                    else {
-                        context.strokeRect(x, y, w, h);
-                    }
-                };
-                return ImageImpl;
-            }());
-            controls.ImageImpl = ImageImpl;
-            var Controls = /** @class */ (function () {
-                function Controls() {
-                }
-                Controls.preload = function () {
-                    var _this = this;
-                    return Promise.all(Controls.ICONS.map(function (name) {
-                        var icon = _this.getIcon(name);
-                        return icon.img.decode();
-                    }));
-                };
-                Controls.getImage = function (url, id) {
-                    if (id === void 0) { id = url; }
-                    if (Controls._images.has(id)) {
-                        return Controls._images.get(id);
-                    }
-                    var img = new ImageImpl(new Image());
-                    img.imageElement.src = url;
-                    Controls._images.set(id, img);
-                    return img;
-                };
-                Controls.getIcon = function (name) {
-                    if (Controls._icons.has(name)) {
-                        return Controls._icons.get(name);
-                    }
-                    var img = new Image();
-                    img.src = "phasereditor2d/ui/controls/images/16/" + name + ".png";
-                    var icon = new IconImpl(img);
-                    Controls._icons.set(name, icon);
-                    return icon;
-                };
-                Controls.getSmoothingPrefix = function (context) {
-                    var vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];
-                    for (var i = 0; i < vendors.length; i++) {
-                        var s = vendors[i] + 'mageSmoothingEnabled';
-                        if (s in context) {
-                            return s;
-                        }
-                    }
-                    return null;
-                };
-                ;
-                Controls.disableCanvasSmoothing = function (context) {
-                    var prefix = this.getSmoothingPrefix(context);
-                    if (prefix) {
-                        context[prefix] = false;
-                    }
-                    return context;
-                };
-                ;
-                Controls._icons = new Map();
-                Controls._images = new Map();
-                Controls.ICON_TREE_COLLAPSE = "tree-collapse";
-                Controls.ICON_TREE_EXPAND = "tree-expand";
-                Controls.ICON_FILE = "file";
-                Controls.ICON_FOLDER = "folder";
-                Controls.ICON_FILE_FONT = "file-font";
-                Controls.ICON_FILE_IMAGE = "file-image";
-                Controls.ICON_FILE_VIDEO = "file-movie";
-                Controls.ICON_FILE_SCRIPT = "file-script";
-                Controls.ICON_FILE_SOUND = "file-sound";
-                Controls.ICON_FILE_TEXT = "file-text";
-                Controls.ICONS = [
-                    Controls.ICON_TREE_COLLAPSE,
-                    Controls.ICON_TREE_EXPAND,
-                    Controls.ICON_FILE,
-                    Controls.ICON_FOLDER,
-                    Controls.ICON_FILE_FONT,
-                    Controls.ICON_FILE_IMAGE,
-                    Controls.ICON_FILE_SCRIPT,
-                    Controls.ICON_FILE_SOUND,
-                    Controls.ICON_FILE_TEXT,
-                    Controls.ICON_FILE_VIDEO
-                ];
-                Controls.LIGHT_THEME = {
-                    treeItemOverBackground: "#0000001f",
-                    treeItemSelectionBackground: "#5555ffdf",
-                    treeItemSelectionForeground: "#fafafa",
-                    treeItemForeground: "#000"
-                };
-                Controls.DARK_THEME = Controls.LIGHT_THEME;
-                Controls.theme = Controls.LIGHT_THEME;
-                return Controls;
-            }());
-            controls.Controls = Controls;
-            function setElementBounds(elem, bounds) {
-                elem.style.left = bounds.x + "px";
-                elem.style.top = bounds.y + "px";
-                elem.style.width = bounds.width + "px";
-                elem.style.height = bounds.height + "px";
-            }
-            controls.setElementBounds = setElementBounds;
-            function getElementBounds(elem) {
-                return {
-                    x: elem.clientLeft,
-                    y: elem.clientTop,
-                    width: elem.clientWidth,
-                    height: elem.clientHeight
-                };
-            }
-            controls.getElementBounds = getElementBounds;
-            var FillLayout = /** @class */ (function () {
-                function FillLayout(padding) {
-                    if (padding === void 0) { padding = 0; }
-                    this._padding = 0;
-                    this._padding = padding;
-                }
-                FillLayout.prototype.getPadding = function () {
-                    return this._padding;
-                };
-                FillLayout.prototype.setPadding = function (padding) {
-                    this._padding = padding;
-                };
-                FillLayout.prototype.layout = function (parent) {
-                    var children = parent.getChildren();
-                    if (children.length > 1) {
-                        console.warn("[FillLayout] Invalid number for children or parent control.");
-                    }
-                    var b = parent.getBounds();
-                    setElementBounds(parent.getElement(), b);
-                    if (children.length > 0) {
-                        var child = children[0];
-                        child.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
-                    }
-                };
-                return FillLayout;
-            }());
-            controls.FillLayout = FillLayout;
             var Control = /** @class */ (function () {
                 function Control(tagName) {
                     if (tagName === void 0) { tagName = "div"; }
@@ -416,7 +220,7 @@ var phasereditor2d;
                     this._bounds.y = y;
                 };
                 Control.prototype.layout = function () {
-                    setElementBounds(this._element, this._bounds);
+                    controls.setElementBounds(this._element, this._bounds);
                     if (this._layout) {
                         this._layout.layout(this);
                     }
@@ -441,12 +245,177 @@ var phasereditor2d;
                 return Control;
             }());
             controls.Control = Control;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Control.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var IconImpl = /** @class */ (function () {
+                function IconImpl(img) {
+                    this.img = img;
+                }
+                IconImpl.prototype.paint = function (context, x, y, w, h) {
+                    // we assume the image size is under 16x16 (for now)
+                    w = w ? w : 16;
+                    h = h ? h : 16;
+                    var imgW = this.img.naturalWidth;
+                    var imgH = this.img.naturalHeight;
+                    var dx = (w - imgW) / 2;
+                    var dy = (h - imgH) / 2;
+                    context.drawImage(this.img, (x + dx) | 0, (y + dy) | 0);
+                };
+                return IconImpl;
+            }());
+            var ImageImpl = /** @class */ (function () {
+                function ImageImpl(imageElement) {
+                    this.imageElement = imageElement;
+                    this._ready = false;
+                }
+                ImageImpl.prototype.preload = function () {
+                    var _this = this;
+                    if (this._ready) {
+                        return Promise.resolve();
+                    }
+                    return this.imageElement.decode().then(function (_) {
+                        _this._ready = true;
+                    });
+                };
+                ImageImpl.prototype.paint = function (context, x, y, w, h) {
+                    if (this._ready) {
+                        var center = true;
+                        var naturalWidth = this.imageElement.naturalWidth;
+                        var naturalHeight = this.imageElement.naturalHeight;
+                        var renderHeight = h;
+                        var renderWidth = w;
+                        var imgW = naturalWidth;
+                        var imgH = naturalHeight;
+                        // compute the right width
+                        imgW = imgW * (renderHeight / imgH);
+                        imgH = renderHeight;
+                        // fix width if it goes beyond the area
+                        if (imgW > renderWidth) {
+                            imgH = imgH * (renderWidth / imgW);
+                            imgW = renderWidth;
+                        }
+                        var scale = imgW / naturalWidth;
+                        var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                        var imgY = y + renderHeight / 2 - imgH / 2;
+                        var imgDstW = naturalWidth * scale;
+                        var imgDstH = naturalHeight * scale;
+                        if (imgDstW > 0 && imgDstH > 0) {
+                            context.drawImage(this.imageElement, imgX, imgY, imgDstW, imgDstH);
+                        }
+                    }
+                    else {
+                        context.strokeRect(x, y, w, h);
+                    }
+                };
+                return ImageImpl;
+            }());
+            var Controls = /** @class */ (function () {
+                function Controls() {
+                }
+                Controls.preload = function () {
+                    var _this = this;
+                    return Promise.all(Controls.ICONS.map(function (name) {
+                        var icon = _this.getIcon(name);
+                        return icon.img.decode();
+                    }));
+                };
+                Controls.getImage = function (url, id) {
+                    if (id === void 0) { id = url; }
+                    if (Controls._images.has(id)) {
+                        return Controls._images.get(id);
+                    }
+                    var img = new ImageImpl(new Image());
+                    img.imageElement.src = url;
+                    Controls._images.set(id, img);
+                    return img;
+                };
+                Controls.getIcon = function (name) {
+                    if (Controls._icons.has(name)) {
+                        return Controls._icons.get(name);
+                    }
+                    var img = new Image();
+                    img.src = "phasereditor2d.ui.controls/images/16/" + name + ".png";
+                    var icon = new IconImpl(img);
+                    Controls._icons.set(name, icon);
+                    return icon;
+                };
+                Controls.getSmoothingPrefix = function (context) {
+                    var vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];
+                    for (var i = 0; i < vendors.length; i++) {
+                        var s = vendors[i] + 'mageSmoothingEnabled';
+                        if (s in context) {
+                            return s;
+                        }
+                    }
+                    return null;
+                };
+                ;
+                Controls.disableCanvasSmoothing = function (context) {
+                    var prefix = this.getSmoothingPrefix(context);
+                    if (prefix) {
+                        context[prefix] = false;
+                    }
+                    return context;
+                };
+                ;
+                Controls._icons = new Map();
+                Controls._images = new Map();
+                Controls.ICON_TREE_COLLAPSE = "tree-collapse";
+                Controls.ICON_TREE_EXPAND = "tree-expand";
+                Controls.ICON_FILE = "file";
+                Controls.ICON_FOLDER = "folder";
+                Controls.ICON_FILE_FONT = "file-font";
+                Controls.ICON_FILE_IMAGE = "file-image";
+                Controls.ICON_FILE_VIDEO = "file-movie";
+                Controls.ICON_FILE_SCRIPT = "file-script";
+                Controls.ICON_FILE_SOUND = "file-sound";
+                Controls.ICON_FILE_TEXT = "file-text";
+                Controls.ICONS = [
+                    Controls.ICON_TREE_COLLAPSE,
+                    Controls.ICON_TREE_EXPAND,
+                    Controls.ICON_FILE,
+                    Controls.ICON_FOLDER,
+                    Controls.ICON_FILE_FONT,
+                    Controls.ICON_FILE_IMAGE,
+                    Controls.ICON_FILE_SCRIPT,
+                    Controls.ICON_FILE_SOUND,
+                    Controls.ICON_FILE_TEXT,
+                    Controls.ICON_FILE_VIDEO
+                ];
+                Controls.LIGHT_THEME = {
+                    treeItemOverBackground: "#0000001f",
+                    treeItemSelectionBackground: "#5555ffdf",
+                    treeItemSelectionForeground: "#fafafa",
+                    treeItemForeground: "#000"
+                };
+                Controls.DARK_THEME = Controls.LIGHT_THEME;
+                Controls.theme = Controls.LIGHT_THEME;
+                return Controls;
+            }());
+            controls.Controls = Controls;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
             var PanelTitle = /** @class */ (function (_super) {
                 __extends(PanelTitle, _super);
                 function PanelTitle() {
                     var _this = _super.call(this) || this;
                     _this.getElement().classList.add("panelTitle");
-                    _this._textControl = new Control();
+                    _this._textControl = new controls.Control();
                     _this.add(_this._textControl);
                     _this._toolbar = new PanelToolbar();
                     _this.add(_this._toolbar);
@@ -462,33 +431,13 @@ var phasereditor2d;
                     _super.prototype.layout.call(this);
                     var b = this.getBounds();
                     var elem = this._textControl.getElement();
-                    elem.style.top = FONT_OFFSET + "px";
-                    elem.style.left = FONT_OFFSET * 2 + "px";
-                    var toolbarWidth = this._toolbar.getActions().length * ACTION_WIDTH;
-                    this._toolbar.setBoundsValues(b.width - toolbarWidth, 0, toolbarWidth, ROW_HEIGHT);
+                    elem.style.top = controls.FONT_OFFSET + "px";
+                    elem.style.left = controls.FONT_OFFSET * 2 + "px";
+                    var toolbarWidth = this._toolbar.getActions().length * controls.ACTION_WIDTH;
+                    this._toolbar.setBoundsValues(b.width - toolbarWidth, 0, toolbarWidth, controls.ROW_HEIGHT);
                 };
                 return PanelTitle;
-            }(Control));
-            var Action = /** @class */ (function () {
-                function Action() {
-                }
-                return Action;
-            }());
-            controls.Action = Action;
-            var ActionButton = /** @class */ (function (_super) {
-                __extends(ActionButton, _super);
-                function ActionButton(action) {
-                    var _this = _super.call(this, "button") || this;
-                    _this._action = action;
-                    _this.getElement().classList.add("actionButton");
-                    return _this;
-                }
-                ActionButton.prototype.getAction = function () {
-                    return this._action;
-                };
-                return ActionButton;
-            }(Control));
-            controls.ActionButton = ActionButton;
+            }(controls.Control));
             var PanelToolbar = /** @class */ (function (_super) {
                 __extends(PanelToolbar, _super);
                 function PanelToolbar() {
@@ -500,7 +449,7 @@ var phasereditor2d;
                 }
                 PanelToolbar.prototype.addAction = function (action) {
                     this._actions.push(action);
-                    var b = new ActionButton(action);
+                    var b = new controls.ActionButton(action);
                     this._buttons.push(b);
                     this.add(b);
                 };
@@ -512,11 +461,11 @@ var phasereditor2d;
                     var b = this.getBounds();
                     for (var i = 0; i < this._buttons.length; i++) {
                         var btn = this._buttons[i];
-                        btn.setBoundsValues(i * ACTION_WIDTH, 0, ACTION_WIDTH, b.height);
+                        btn.setBoundsValues(i * controls.ACTION_WIDTH, 0, controls.ACTION_WIDTH, b.height);
                     }
                 };
                 return PanelToolbar;
-            }(Control));
+            }(controls.Control));
             var Panel = /** @class */ (function (_super) {
                 __extends(Panel, _super);
                 function Panel(hasTitle) {
@@ -534,7 +483,7 @@ var phasereditor2d;
                         _this._panelTitle = new PanelTitle();
                         _this.add(_this._panelTitle);
                     }
-                    _this._clientArea = new Control("div");
+                    _this._clientArea = new controls.Control("div");
                     _this._clientArea.addClass("panelClientArea");
                     _this.add(_this._clientArea);
                     return _this;
@@ -554,221 +503,149 @@ var phasereditor2d;
                 };
                 Panel.prototype.layout = function () {
                     //super.layout();
-                    setElementBounds(this.getElement(), this.getBounds());
+                    controls.setElementBounds(this.getElement(), this.getBounds());
                     var b = this.getBounds();
-                    var cornerSize = ROW_HEIGHT;
-                    setElementBounds(this._cornerElements[0], {
+                    var cornerSize = controls.ROW_HEIGHT;
+                    controls.setElementBounds(this._cornerElements[0], {
                         x: 0,
                         y: 0,
                         width: cornerSize,
                         height: cornerSize
                     });
-                    setElementBounds(this._cornerElements[1], {
+                    controls.setElementBounds(this._cornerElements[1], {
                         x: b.width - cornerSize,
                         y: 0,
                         width: cornerSize,
                         height: cornerSize
                     });
-                    setElementBounds(this._cornerElements[2], {
+                    controls.setElementBounds(this._cornerElements[2], {
                         x: b.width - cornerSize,
                         y: b.height - cornerSize,
                         width: cornerSize,
                         height: cornerSize
                     });
-                    setElementBounds(this._cornerElements[3], {
+                    controls.setElementBounds(this._cornerElements[3], {
                         x: 0,
                         y: b.height - cornerSize,
                         width: cornerSize,
                         height: cornerSize
                     });
                     if (this._panelTitle) {
-                        this._panelTitle.setBoundsValues(PANEL_BORDER_SIZE, PANEL_BORDER_SIZE, b.width - PANEL_BORDER_SIZE * 2, ROW_HEIGHT);
+                        this._panelTitle.setBoundsValues(controls.PANEL_BORDER_SIZE, controls.PANEL_BORDER_SIZE, b.width - controls.PANEL_BORDER_SIZE * 2, controls.ROW_HEIGHT);
                         this._clientArea.setBounds({
-                            x: PANEL_BORDER_SIZE,
-                            y: PANEL_BORDER_SIZE + ROW_HEIGHT,
-                            width: b.width - PANEL_BORDER_SIZE * 2,
-                            height: b.height - PANEL_BORDER_SIZE * 2 - ROW_HEIGHT
+                            x: controls.PANEL_BORDER_SIZE,
+                            y: controls.PANEL_BORDER_SIZE + controls.ROW_HEIGHT,
+                            width: b.width - controls.PANEL_BORDER_SIZE * 2,
+                            height: b.height - controls.PANEL_BORDER_SIZE * 2 - controls.ROW_HEIGHT
                         });
                     }
                     else {
                         this._clientArea.setBounds({
-                            x: PANEL_BORDER_SIZE,
-                            y: PANEL_BORDER_SIZE,
-                            width: b.width - PANEL_BORDER_SIZE * 2,
-                            height: b.height - PANEL_BORDER_SIZE * 2
+                            x: controls.PANEL_BORDER_SIZE,
+                            y: controls.PANEL_BORDER_SIZE,
+                            width: b.width - controls.PANEL_BORDER_SIZE * 2,
+                            height: b.height - controls.PANEL_BORDER_SIZE * 2
                         });
                     }
                 };
                 return Panel;
-            }(Control));
+            }(controls.Control));
             controls.Panel = Panel;
-            var SplitPanel = /** @class */ (function (_super) {
-                __extends(SplitPanel, _super);
-                function SplitPanel(left, right, horizontal) {
-                    if (horizontal === void 0) { horizontal = true; }
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/Panel.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var parts;
+        (function (parts) {
+            var Part = /** @class */ (function (_super) {
+                __extends(Part, _super);
+                function Part(id) {
                     var _this = _super.call(this) || this;
-                    _this._startDrag = -1;
-                    _this.getElement().classList.add("split");
-                    _this._horizontal = horizontal;
-                    _this._splitPosition = 50;
-                    _this._splitFactor = 0.5;
-                    _this._splitWidth = 2;
-                    var l1 = function (e) { return _this.onMouseLeave(e); };
-                    var l2 = function (e) { return _this.onMouseDown(e); };
-                    var l3 = function (e) { return _this.onMouseUp(e); };
-                    var l4 = function (e) { return _this.onMouseMove(e); };
-                    var l5 = function (e) {
-                        if (!_this.getElement().isConnected) {
-                            window.removeEventListener("mouseleave", l1);
-                            window.removeEventListener("mousedown", l2);
-                            window.removeEventListener("mouseup", l3);
-                            window.removeEventListener("mousemove", l4);
-                            window.removeEventListener("mousemove", l5);
-                        }
-                    };
-                    window.addEventListener("mouseleave", l1);
-                    window.addEventListener("mousedown", l2);
-                    window.addEventListener("mouseup", l3);
-                    window.addEventListener("mousemove", l4);
-                    window.addEventListener("mousemove", l5);
-                    if (left) {
-                        _this.setLeftControl(left);
-                    }
-                    if (right) {
-                        _this.setRightControl(right);
-                    }
+                    _this._id = id;
+                    _this.getElement().classList.add("part");
                     return _this;
                 }
-                SplitPanel.prototype.onMouseDown = function (e) {
-                    var pos = this.getControlPosition(e.x, e.y);
-                    var offset = this._horizontal ? pos.x : pos.y;
-                    var inside = Math.abs(offset - this._splitPosition) <= SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
-                    if (inside) {
-                        e.preventDefault();
-                        this._startDrag = this._horizontal ? e.x : e.y;
-                        this._startPos = this._splitPosition;
-                    }
+                Part.prototype.getId = function () {
+                    return this._id;
                 };
-                SplitPanel.prototype.onMouseUp = function (e) {
-                    this._startDrag = -1;
-                };
-                SplitPanel.prototype.onMouseMove = function (e) {
-                    var pos = this.getControlPosition(e.x, e.y);
-                    var offset = this._horizontal ? pos.x : pos.y;
-                    var screen = this._horizontal ? e.x : e.y;
-                    var boundsSize = this._horizontal ? this.getBounds().width : this.getBounds().height;
-                    var cursorResize = this._horizontal ? "ew-resize" : "ns-resize";
-                    var inside = Math.abs(offset - this._splitPosition) <= SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
-                    if (inside) {
-                        e.preventDefault();
-                        this.getElement().style.cursor = cursorResize;
-                    }
-                    else {
-                        this.getElement().style.cursor = "inherit";
-                    }
-                    if (this._startDrag !== -1) {
-                        this.getElement().style.cursor = cursorResize;
-                        var newPos = this._startPos + screen - this._startDrag;
-                        if (newPos > 100 && boundsSize - newPos > 100) {
-                            this._splitPosition = newPos;
-                            this._splitFactor = this._splitPosition / boundsSize;
-                            this.layout();
-                        }
-                    }
-                };
-                SplitPanel.prototype.onMouseLeave = function (e) {
-                    this.getElement().style.cursor = "inherit";
-                    this._startDrag = -1;
-                };
-                SplitPanel.prototype.setHorizontal = function (horizontal) {
-                    if (horizontal === void 0) { horizontal = true; }
-                    this._horizontal = horizontal;
-                };
-                SplitPanel.prototype.setVertical = function (vertical) {
-                    if (vertical === void 0) { vertical = true; }
-                    this._horizontal = !vertical;
-                };
-                SplitPanel.prototype.getSplitFactor = function () {
-                    return this._splitFactor;
-                };
-                SplitPanel.prototype.getSize = function () {
-                    var b = this.getBounds();
-                    return this._horizontal ? b.width : b.height;
-                };
-                SplitPanel.prototype.setSplitFactor = function (factor) {
-                    this._splitFactor = Math.min(Math.max(0, factor), 1);
-                    this._splitPosition = this.getSize() * this._splitFactor;
-                };
-                SplitPanel.prototype.setLeftControl = function (control) {
-                    this._leftControl = control;
-                    this.add(control);
-                };
-                SplitPanel.prototype.getLeftControl = function () {
-                    return this._leftControl;
-                };
-                SplitPanel.prototype.setRightControl = function (control) {
-                    this._rightControl = control;
-                    this.add(control);
-                };
-                SplitPanel.prototype.getRightControl = function () {
-                    return this._rightControl;
-                };
-                SplitPanel.prototype.layout = function () {
-                    setElementBounds(this.getElement(), this.getBounds());
-                    if (!this._leftControl || !this._rightControl) {
-                        return;
-                    }
-                    this.setSplitFactor(this._splitFactor);
-                    var pos = this._splitPosition;
-                    var sw = this._splitWidth;
-                    var b = this.getBounds();
-                    if (this._horizontal) {
-                        this._leftControl.setBoundsValues(0, 0, pos - sw, b.height);
-                        this._rightControl.setBoundsValues(pos + sw, 0, b.width - pos - sw, b.height);
-                    }
-                    else {
-                        this._leftControl.setBoundsValues(0, 0, b.width, pos - sw);
-                        this._rightControl.setBoundsValues(0, pos + sw, b.width, b.height - pos - sw);
-                    }
-                };
-                return SplitPanel;
-            }(Control));
-            controls.SplitPanel = SplitPanel;
-            var PaddingPane = /** @class */ (function (_super) {
-                __extends(PaddingPane, _super);
-                function PaddingPane(control, padding) {
-                    if (padding === void 0) { padding = 5; }
-                    var _this = _super.call(this) || this;
-                    _this._padding = padding;
-                    _this.getElement().classList.add("paddingPane");
-                    _this.setControl(control);
+                return Part;
+            }(ui.controls.Panel));
+            parts.Part = Part;
+            var ViewPart = /** @class */ (function (_super) {
+                __extends(ViewPart, _super);
+                function ViewPart(id) {
+                    var _this = _super.call(this, id) || this;
+                    _this.getElement().classList.add("view");
                     return _this;
                 }
-                PaddingPane.prototype.setControl = function (control) {
-                    this._control = control;
-                    if (this._control) {
-                        this.add(control);
-                    }
+                return ViewPart;
+            }(Part));
+            parts.ViewPart = ViewPart;
+            var EditorArea = /** @class */ (function (_super) {
+                __extends(EditorArea, _super);
+                function EditorArea() {
+                    return _super.call(this, "editorArea") || this;
+                }
+                return EditorArea;
+            }(Part));
+            parts.EditorArea = EditorArea;
+        })(parts = ui.parts || (ui.parts = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./parts.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var blocks;
+        (function (blocks) {
+            var BlocksView = /** @class */ (function (_super) {
+                __extends(BlocksView, _super);
+                function BlocksView() {
+                    var _this = _super.call(this, "blocksView") || this;
+                    _this.setTitle("Blocks");
+                    return _this;
+                }
+                return BlocksView;
+            }(ui.parts.ViewPart));
+            blocks.BlocksView = BlocksView;
+        })(blocks = ui.blocks || (ui.blocks = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var Rect = /** @class */ (function () {
+                function Rect(x, y, w, h) {
+                    if (x === void 0) { x = 0; }
+                    if (y === void 0) { y = 0; }
+                    if (w === void 0) { w = 0; }
+                    if (h === void 0) { h = 0; }
+                    this.x = x;
+                    this.y = y;
+                    this.w = w;
+                    this.h = h;
+                }
+                Rect.prototype.set = function (x, y, w, h) {
+                    this.x = x;
+                    this.y = y;
+                    this.w = w;
+                    this.h = h;
                 };
-                PaddingPane.prototype.getControl = function () {
-                    return this._control;
+                Rect.prototype.contains = function (x, y) {
+                    return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
                 };
-                PaddingPane.prototype.setPadding = function (padding) {
-                    this._padding = padding;
-                };
-                PaddingPane.prototype.getPadding = function () {
-                    return this._padding;
-                };
-                PaddingPane.prototype.layout = function () {
-                    var b = this.getBounds();
-                    setElementBounds(this.getElement(), b);
-                    if (this._control) {
-                        this._control.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
-                    }
-                };
-                return PaddingPane;
-            }(Control));
-            controls.PaddingPane = PaddingPane;
+                return Rect;
+            }());
+            controls.Rect = Rect;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -780,18 +657,6 @@ var phasereditor2d;
         (function (controls) {
             var viewers;
             (function (viewers) {
-                var RenderCellArgs = /** @class */ (function () {
-                    function RenderCellArgs(canvasContext, x, y, obj, view) {
-                        this.canvasContext = canvasContext;
-                        this.x = x;
-                        this.y = y;
-                        this.obj = obj;
-                        this.view = view;
-                    }
-                    return RenderCellArgs;
-                }());
-                viewers.RenderCellArgs = RenderCellArgs;
-                ;
                 var LabelCellRenderer = /** @class */ (function () {
                     function LabelCellRenderer() {
                     }
@@ -822,6 +687,18 @@ var phasereditor2d;
                     return LabelCellRenderer;
                 }());
                 viewers.LabelCellRenderer = LabelCellRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
                 var ImageCellRenderer = /** @class */ (function () {
                     function ImageCellRenderer() {
                     }
@@ -848,40 +725,22 @@ var phasereditor2d;
                     return ImageCellRenderer;
                 }());
                 viewers.ImageCellRenderer = ImageCellRenderer;
-                var Rect = /** @class */ (function () {
-                    function Rect(x, y, w, h) {
-                        if (x === void 0) { x = 0; }
-                        if (y === void 0) { y = 0; }
-                        if (w === void 0) { w = 0; }
-                        if (h === void 0) { h = 0; }
-                        this.x = x;
-                        this.y = y;
-                        this.w = w;
-                        this.h = h;
-                    }
-                    Rect.prototype.set = function (x, y, w, h) {
-                        this.x = x;
-                        this.y = y;
-                        this.w = w;
-                        this.h = h;
-                    };
-                    Rect.prototype.contains = function (x, y) {
-                        return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
-                    };
-                    return Rect;
-                }());
-                viewers.Rect = Rect;
-                var PaintItem = /** @class */ (function (_super) {
-                    __extends(PaintItem, _super);
-                    function PaintItem(index, data) {
-                        var _this = _super.call(this) || this;
-                        _this.index = index;
-                        _this.data = data;
-                        return _this;
-                    }
-                    return PaintItem;
-                }(Rect));
-                viewers.PaintItem = PaintItem;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../Rect.ts"/>
+/// <reference path="../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="./LabelCellRenderer.ts"/>
+/// <reference path="./ImageCellRenderer.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
                 var Viewer = /** @class */ (function (_super) {
                     __extends(Viewer, _super);
                     function Viewer() {
@@ -990,7 +849,7 @@ var phasereditor2d;
                         this._context = this.getCanvas().getContext("2d");
                         this._context.imageSmoothingEnabled = false;
                         controls.Controls.disableCanvasSmoothing(this._context);
-                        this._context.font = "14px sans-serif";
+                        this._context.font = controls.FONT_HEIGHT + "px sans-serif";
                     };
                     Viewer.prototype.setExpanded = function (obj, expanded) {
                         if (expanded) {
@@ -1106,180 +965,8 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./viewers.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                var TREE_ICON_SIZE = 16;
-                var LABEL_MARGIN = TREE_ICON_SIZE + 0;
-                var TreeViewer = /** @class */ (function (_super) {
-                    __extends(TreeViewer, _super);
-                    function TreeViewer() {
-                        var _this = _super.call(this) || this;
-                        _this._treeIconList = [];
-                        _this.getCanvas().addEventListener("click", function (e) { return _this.onClick(e); });
-                        return _this;
-                    }
-                    TreeViewer.prototype.onClick = function (e) {
-                        for (var _i = 0, _a = this._treeIconList; _i < _a.length; _i++) {
-                            var icon = _a[_i];
-                            if (icon.rect.contains(e.offsetX, e.offsetY)) {
-                                this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
-                                this.repaint();
-                                return;
-                            }
-                        }
-                    };
-                    TreeViewer.prototype.visitObjects = function (visitor) {
-                        var list = this.getContentProvider().getRoots(this.getInput());
-                        this.visitObjects2(list, visitor);
-                    };
-                    TreeViewer.prototype.visitObjects2 = function (objects, visitor) {
-                        for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
-                            var obj = objects_1[_i];
-                            visitor(obj);
-                            if (this.isExpanded(obj)) {
-                                var list = this.getContentProvider().getChildren(obj);
-                                this.visitObjects2(list, visitor);
-                            }
-                        }
-                    };
-                    TreeViewer.prototype.preload = function () {
-                        return __awaiter(this, void 0, void 0, function () {
-                            var list;
-                            var _this = this;
-                            return __generator(this, function (_a) {
-                                list = [];
-                                this.visitObjects(function (obj) {
-                                    var renderer = _this.getCellRendererProvider().getCellRenderer(obj);
-                                    list.push(renderer.preload(obj));
-                                });
-                                return [2 /*return*/, Promise.all(list)];
-                            });
-                        });
-                    };
-                    TreeViewer.prototype.paint = function () {
-                        var x = 0;
-                        var y = 0;
-                        this._treeIconList = [];
-                        // TODO: missing taking the scroll offset to compute the non-painting area
-                        var contentProvider = this.getContentProvider();
-                        var roots = contentProvider.getRoots(this.getInput());
-                        this.paintItems(roots, x, y);
-                    };
-                    TreeViewer.prototype.paintItems = function (objects, x, y) {
-                        var b = this.getBounds();
-                        for (var _i = 0, objects_2 = objects; _i < objects_2.length; _i++) {
-                            var obj = objects_2[_i];
-                            var children = this.getContentProvider().getChildren(obj);
-                            var expanded = this.isExpanded(obj);
-                            var renderer = this.getCellRendererProvider().getCellRenderer(obj);
-                            var args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, obj, this);
-                            var cellHeight = renderer.cellHeight(args);
-                            _super.prototype.paintItemBackground.call(this, obj, 0, y, b.width, cellHeight);
-                            if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
-                                // render tree icon
-                                if (children.length > 0) {
-                                    var iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
-                                    var icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
-                                    icon.paint(this._context, x, iconY);
-                                    this._treeIconList.push({
-                                        rect: new viewers.Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
-                                        obj: obj
-                                    });
-                                }
-                                // client render cell
-                                renderer.renderCell(args);
-                                var item = new viewers.PaintItem(this._paintItems.length, obj);
-                                item.set(args.x, args.y, b.width, cellHeight);
-                                this._paintItems.push(item);
-                            }
-                            y += cellHeight;
-                            if (expanded) {
-                                y = this.paintItems(children, x + LABEL_MARGIN, y);
-                            }
-                        }
-                        return y;
-                    };
-                    TreeViewer.prototype.getContentProvider = function () {
-                        return _super.prototype.getContentProvider.call(this);
-                    };
-                    TreeViewer.prototype.setContentProvider = function (contentProvider) {
-                        _super.prototype.setContentProvider.call(this, contentProvider);
-                    };
-                    return TreeViewer;
-                }(viewers.Viewer));
-                viewers.TreeViewer = TreeViewer;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var parts;
-        (function (parts) {
-            var Part = /** @class */ (function (_super) {
-                __extends(Part, _super);
-                function Part(id) {
-                    var _this = _super.call(this) || this;
-                    _this._id = id;
-                    _this.getElement().classList.add("part");
-                    return _this;
-                }
-                Part.prototype.getId = function () {
-                    return this._id;
-                };
-                return Part;
-            }(ui.controls.Panel));
-            parts.Part = Part;
-            var ViewPart = /** @class */ (function (_super) {
-                __extends(ViewPart, _super);
-                function ViewPart(id) {
-                    var _this = _super.call(this, id) || this;
-                    _this.getElement().classList.add("view");
-                    return _this;
-                }
-                return ViewPart;
-            }(Part));
-            parts.ViewPart = ViewPart;
-            var EditorArea = /** @class */ (function (_super) {
-                __extends(EditorArea, _super);
-                function EditorArea() {
-                    return _super.call(this, "editorArea") || this;
-                }
-                return EditorArea;
-            }(Part));
-            parts.EditorArea = EditorArea;
-        })(parts = ui.parts || (ui.parts = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./parts.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var blocks;
-        (function (blocks) {
-            var BlocksView = /** @class */ (function (_super) {
-                __extends(BlocksView, _super);
-                function BlocksView() {
-                    var _this = _super.call(this, "blocksView") || this;
-                    _this.setTitle("Blocks");
-                    return _this;
-                }
-                return BlocksView;
-            }(ui.parts.ViewPart));
-            blocks.BlocksView = BlocksView;
-        })(blocks = ui.blocks || (ui.blocks = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
 /// <reference path="./parts.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -1825,7 +1512,52 @@ var phasereditor2d;
         })(toolbar = ui.toolbar || (ui.toolbar = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../controls/controls.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var PaddingPane = /** @class */ (function (_super) {
+                __extends(PaddingPane, _super);
+                function PaddingPane(control, padding) {
+                    if (padding === void 0) { padding = 5; }
+                    var _this = _super.call(this) || this;
+                    _this._padding = padding;
+                    _this.getElement().classList.add("paddingPane");
+                    _this.setControl(control);
+                    return _this;
+                }
+                PaddingPane.prototype.setControl = function (control) {
+                    this._control = control;
+                    if (this._control) {
+                        this.add(control);
+                    }
+                };
+                PaddingPane.prototype.getControl = function () {
+                    return this._control;
+                };
+                PaddingPane.prototype.setPadding = function (padding) {
+                    this._padding = padding;
+                };
+                PaddingPane.prototype.getPadding = function () {
+                    return this._padding;
+                };
+                PaddingPane.prototype.layout = function () {
+                    var b = this.getBounds();
+                    controls.setElementBounds(this.getElement(), b);
+                    if (this._control) {
+                        this._control.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
+                    }
+                };
+                return PaddingPane;
+            }(controls.Control));
+            controls.PaddingPane = PaddingPane;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1906,5 +1638,412 @@ var phasereditor2d;
             };
             return DesignWindow;
         }(ui.controls.PaddingPane));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var Action = /** @class */ (function () {
+                function Action() {
+                }
+                return Action;
+            }());
+            controls.Action = Action;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var ActionButton = /** @class */ (function (_super) {
+                __extends(ActionButton, _super);
+                function ActionButton(action) {
+                    var _this = _super.call(this, "button") || this;
+                    _this._action = action;
+                    _this.getElement().classList.add("actionButton");
+                    return _this;
+                }
+                ActionButton.prototype.getAction = function () {
+                    return this._action;
+                };
+                return ActionButton;
+            }(controls.Control));
+            controls.ActionButton = ActionButton;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var FillLayout = /** @class */ (function () {
+                function FillLayout(padding) {
+                    if (padding === void 0) { padding = 0; }
+                    this._padding = 0;
+                    this._padding = padding;
+                }
+                FillLayout.prototype.getPadding = function () {
+                    return this._padding;
+                };
+                FillLayout.prototype.setPadding = function (padding) {
+                    this._padding = padding;
+                };
+                FillLayout.prototype.layout = function (parent) {
+                    var children = parent.getChildren();
+                    if (children.length > 1) {
+                        console.warn("[FillLayout] Invalid number for children or parent control.");
+                    }
+                    var b = parent.getBounds();
+                    controls.setElementBounds(parent.getElement(), b);
+                    if (children.length > 0) {
+                        var child = children[0];
+                        child.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
+                    }
+                };
+                return FillLayout;
+            }());
+            controls.FillLayout = FillLayout;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var SplitPanel = /** @class */ (function (_super) {
+                __extends(SplitPanel, _super);
+                function SplitPanel(left, right, horizontal) {
+                    if (horizontal === void 0) { horizontal = true; }
+                    var _this = _super.call(this) || this;
+                    _this._startDrag = -1;
+                    _this.getElement().classList.add("split");
+                    _this._horizontal = horizontal;
+                    _this._splitPosition = 50;
+                    _this._splitFactor = 0.5;
+                    _this._splitWidth = 2;
+                    var l1 = function (e) { return _this.onMouseLeave(e); };
+                    var l2 = function (e) { return _this.onMouseDown(e); };
+                    var l3 = function (e) { return _this.onMouseUp(e); };
+                    var l4 = function (e) { return _this.onMouseMove(e); };
+                    var l5 = function (e) {
+                        if (!_this.getElement().isConnected) {
+                            window.removeEventListener("mouseleave", l1);
+                            window.removeEventListener("mousedown", l2);
+                            window.removeEventListener("mouseup", l3);
+                            window.removeEventListener("mousemove", l4);
+                            window.removeEventListener("mousemove", l5);
+                        }
+                    };
+                    window.addEventListener("mouseleave", l1);
+                    window.addEventListener("mousedown", l2);
+                    window.addEventListener("mouseup", l3);
+                    window.addEventListener("mousemove", l4);
+                    window.addEventListener("mousemove", l5);
+                    if (left) {
+                        _this.setLeftControl(left);
+                    }
+                    if (right) {
+                        _this.setRightControl(right);
+                    }
+                    return _this;
+                }
+                SplitPanel.prototype.onMouseDown = function (e) {
+                    var pos = this.getControlPosition(e.x, e.y);
+                    var offset = this._horizontal ? pos.x : pos.y;
+                    var inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
+                    if (inside) {
+                        e.preventDefault();
+                        this._startDrag = this._horizontal ? e.x : e.y;
+                        this._startPos = this._splitPosition;
+                    }
+                };
+                SplitPanel.prototype.onMouseUp = function (e) {
+                    this._startDrag = -1;
+                };
+                SplitPanel.prototype.onMouseMove = function (e) {
+                    var pos = this.getControlPosition(e.x, e.y);
+                    var offset = this._horizontal ? pos.x : pos.y;
+                    var screen = this._horizontal ? e.x : e.y;
+                    var boundsSize = this._horizontal ? this.getBounds().width : this.getBounds().height;
+                    var cursorResize = this._horizontal ? "ew-resize" : "ns-resize";
+                    var inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
+                    if (inside) {
+                        e.preventDefault();
+                        this.getElement().style.cursor = cursorResize;
+                    }
+                    else {
+                        this.getElement().style.cursor = "inherit";
+                    }
+                    if (this._startDrag !== -1) {
+                        this.getElement().style.cursor = cursorResize;
+                        var newPos = this._startPos + screen - this._startDrag;
+                        if (newPos > 100 && boundsSize - newPos > 100) {
+                            this._splitPosition = newPos;
+                            this._splitFactor = this._splitPosition / boundsSize;
+                            this.layout();
+                        }
+                    }
+                };
+                SplitPanel.prototype.onMouseLeave = function (e) {
+                    this.getElement().style.cursor = "inherit";
+                    this._startDrag = -1;
+                };
+                SplitPanel.prototype.setHorizontal = function (horizontal) {
+                    if (horizontal === void 0) { horizontal = true; }
+                    this._horizontal = horizontal;
+                };
+                SplitPanel.prototype.setVertical = function (vertical) {
+                    if (vertical === void 0) { vertical = true; }
+                    this._horizontal = !vertical;
+                };
+                SplitPanel.prototype.getSplitFactor = function () {
+                    return this._splitFactor;
+                };
+                SplitPanel.prototype.getSize = function () {
+                    var b = this.getBounds();
+                    return this._horizontal ? b.width : b.height;
+                };
+                SplitPanel.prototype.setSplitFactor = function (factor) {
+                    this._splitFactor = Math.min(Math.max(0, factor), 1);
+                    this._splitPosition = this.getSize() * this._splitFactor;
+                };
+                SplitPanel.prototype.setLeftControl = function (control) {
+                    this._leftControl = control;
+                    this.add(control);
+                };
+                SplitPanel.prototype.getLeftControl = function () {
+                    return this._leftControl;
+                };
+                SplitPanel.prototype.setRightControl = function (control) {
+                    this._rightControl = control;
+                    this.add(control);
+                };
+                SplitPanel.prototype.getRightControl = function () {
+                    return this._rightControl;
+                };
+                SplitPanel.prototype.layout = function () {
+                    controls.setElementBounds(this.getElement(), this.getBounds());
+                    if (!this._leftControl || !this._rightControl) {
+                        return;
+                    }
+                    this.setSplitFactor(this._splitFactor);
+                    var pos = this._splitPosition;
+                    var sw = this._splitWidth;
+                    var b = this.getBounds();
+                    if (this._horizontal) {
+                        this._leftControl.setBoundsValues(0, 0, pos - sw, b.height);
+                        this._rightControl.setBoundsValues(pos + sw, 0, b.width - pos - sw, b.height);
+                    }
+                    else {
+                        this._leftControl.setBoundsValues(0, 0, b.width, pos - sw);
+                        this._rightControl.setBoundsValues(0, pos + sw, b.width, b.height - pos - sw);
+                    }
+                };
+                return SplitPanel;
+            }(controls.Control));
+            controls.SplitPanel = SplitPanel;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            controls.ROW_HEIGHT = 20;
+            controls.FONT_HEIGHT = 14;
+            controls.FONT_OFFSET = 2;
+            controls.ACTION_WIDTH = 20;
+            controls.PANEL_BORDER_SIZE = 4;
+            controls.SPLIT_OVER_ZONE_WIDTH = 6;
+            function setElementBounds(elem, bounds) {
+                elem.style.left = bounds.x + "px";
+                elem.style.top = bounds.y + "px";
+                elem.style.width = bounds.width + "px";
+                elem.style.height = bounds.height + "px";
+            }
+            controls.setElementBounds = setElementBounds;
+            function getElementBounds(elem) {
+                return {
+                    x: elem.clientLeft,
+                    y: elem.clientTop,
+                    width: elem.clientWidth,
+                    height: elem.clientHeight
+                };
+            }
+            controls.getElementBounds = getElementBounds;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Viewer.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                var PaintItem = /** @class */ (function (_super) {
+                    __extends(PaintItem, _super);
+                    function PaintItem(index, data) {
+                        var _this = _super.call(this) || this;
+                        _this.index = index;
+                        _this.data = data;
+                        return _this;
+                    }
+                    return PaintItem;
+                }(controls.Rect));
+                viewers.PaintItem = PaintItem;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                var RenderCellArgs = /** @class */ (function () {
+                    function RenderCellArgs(canvasContext, x, y, obj, view) {
+                        this.canvasContext = canvasContext;
+                        this.x = x;
+                        this.y = y;
+                        this.obj = obj;
+                        this.view = view;
+                    }
+                    return RenderCellArgs;
+                }());
+                viewers.RenderCellArgs = RenderCellArgs;
+                ;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Viewer.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                var TREE_ICON_SIZE = 16;
+                var LABEL_MARGIN = TREE_ICON_SIZE + 0;
+                var TreeViewer = /** @class */ (function (_super) {
+                    __extends(TreeViewer, _super);
+                    function TreeViewer() {
+                        var _this = _super.call(this) || this;
+                        _this._treeIconList = [];
+                        _this.getCanvas().addEventListener("click", function (e) { return _this.onClick(e); });
+                        return _this;
+                    }
+                    TreeViewer.prototype.onClick = function (e) {
+                        for (var _i = 0, _a = this._treeIconList; _i < _a.length; _i++) {
+                            var icon = _a[_i];
+                            if (icon.rect.contains(e.offsetX, e.offsetY)) {
+                                this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
+                                this.repaint();
+                                return;
+                            }
+                        }
+                    };
+                    TreeViewer.prototype.visitObjects = function (visitor) {
+                        var list = this.getContentProvider().getRoots(this.getInput());
+                        this.visitObjects2(list, visitor);
+                    };
+                    TreeViewer.prototype.visitObjects2 = function (objects, visitor) {
+                        for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
+                            var obj = objects_1[_i];
+                            visitor(obj);
+                            if (this.isExpanded(obj)) {
+                                var list = this.getContentProvider().getChildren(obj);
+                                this.visitObjects2(list, visitor);
+                            }
+                        }
+                    };
+                    TreeViewer.prototype.preload = function () {
+                        return __awaiter(this, void 0, void 0, function () {
+                            var list;
+                            var _this = this;
+                            return __generator(this, function (_a) {
+                                list = [];
+                                this.visitObjects(function (obj) {
+                                    var renderer = _this.getCellRendererProvider().getCellRenderer(obj);
+                                    list.push(renderer.preload(obj));
+                                });
+                                return [2 /*return*/, Promise.all(list)];
+                            });
+                        });
+                    };
+                    TreeViewer.prototype.paint = function () {
+                        var x = 0;
+                        var y = 0;
+                        this._treeIconList = [];
+                        // TODO: missing taking the scroll offset to compute the non-painting area
+                        var contentProvider = this.getContentProvider();
+                        var roots = contentProvider.getRoots(this.getInput());
+                        this.paintItems(roots, x, y);
+                    };
+                    TreeViewer.prototype.paintItems = function (objects, x, y) {
+                        var b = this.getBounds();
+                        for (var _i = 0, objects_2 = objects; _i < objects_2.length; _i++) {
+                            var obj = objects_2[_i];
+                            var children = this.getContentProvider().getChildren(obj);
+                            var expanded = this.isExpanded(obj);
+                            var renderer = this.getCellRendererProvider().getCellRenderer(obj);
+                            var args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, obj, this);
+                            var cellHeight = renderer.cellHeight(args);
+                            _super.prototype.paintItemBackground.call(this, obj, 0, y, b.width, cellHeight);
+                            if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
+                                // render tree icon
+                                if (children.length > 0) {
+                                    var iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
+                                    var icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
+                                    icon.paint(this._context, x, iconY);
+                                    this._treeIconList.push({
+                                        rect: new controls.Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
+                                        obj: obj
+                                    });
+                                }
+                                // client render cell
+                                renderer.renderCell(args);
+                                var item = new viewers.PaintItem(this._paintItems.length, obj);
+                                item.set(args.x, args.y, b.width, cellHeight);
+                                this._paintItems.push(item);
+                            }
+                            y += cellHeight;
+                            if (expanded) {
+                                y = this.paintItems(children, x + LABEL_MARGIN, y);
+                            }
+                        }
+                        return y;
+                    };
+                    TreeViewer.prototype.getContentProvider = function () {
+                        return _super.prototype.getContentProvider.call(this);
+                    };
+                    TreeViewer.prototype.setContentProvider = function (contentProvider) {
+                        _super.prototype.setContentProvider.call(this, contentProvider);
+                    };
+                    return TreeViewer;
+                }(viewers.Viewer));
+                viewers.TreeViewer = TreeViewer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

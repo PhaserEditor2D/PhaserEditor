@@ -83,12 +83,4 @@ namespace phasereditor2d.core.io {
             return s;
         }
     }
-
-    export declare type FileData = {
-        name: string;
-        isFile: boolean;
-        children?: FileData[];
-        contentType?: string;
-    }
-
 }
