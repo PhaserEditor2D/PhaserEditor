@@ -8,10 +8,21 @@ namespace phasereditor2d.ui.controls {
     export const SPLIT_OVER_ZONE_WIDTH = 6;
 
     export function setElementBounds(elem: HTMLElement, bounds: Bounds) {
-        elem.style.left = bounds.x + "px";
-        elem.style.top = bounds.y + "px";
-        elem.style.width = bounds.width + "px";
-        elem.style.height = bounds.height + "px";
+        if (bounds.x !== undefined) {
+            elem.style.left = bounds.x + "px";
+        }
+
+        if (bounds.x !== undefined) {
+            elem.style.top = bounds.y + "px";
+        }
+
+        if (bounds.x !== undefined) {
+            elem.style.width = bounds.width + "px";
+        }
+
+        if (bounds.x !== undefined) {
+            elem.style.height = bounds.height + "px";
+        }
     }
 
     export function getElementBounds(elem: HTMLElement): Bounds {

@@ -46,7 +46,16 @@ namespace phasereditor2d.ui.controls {
         }
 
         updateScroll(clientContentHeight: number) {
-            if (clientContentHeight !== this._clientContentHeight) {
+            const scrollY = this._clientControl.getScrollY();
+            const b = this.getBounds();
+            let newScrollY = scrollY;
+            newScrollY = Math.max(-this._clientContentHeight + b.height, newScrollY);
+            newScrollY = Math.min(0, newScrollY);
+
+            if (newScrollY != scrollY) {
+                this._clientContentHeight = clientContentHeight;
+                this.setClientScrollY(scrollY);
+            } else if (clientContentHeight !== this._clientContentHeight) {
                 this._clientContentHeight = clientContentHeight;
                 this.layout();
             }
@@ -76,6 +85,7 @@ namespace phasereditor2d.ui.controls {
             y = Math.min(0, y);
 
             this._clientControl.setScrollY(y);
+
             this.layout();
         }
 
@@ -94,11 +104,8 @@ namespace phasereditor2d.ui.controls {
         private onMouseMove(e: MouseEvent) {
             if (this._startDragY !== -1) {
                 let delta = e.y - this._startDragY;
-                console.log(`----`);
-                console.log(`delta ${delta}`);
                 const b = this.getBounds();
                 delta = delta / b.height * this._clientContentHeight;
-                console.log(`delta ${delta}`);
                 this.setClientScrollY(this._startScrollY - delta);
             }
         }
@@ -136,7 +143,7 @@ namespace phasereditor2d.ui.controls {
                 const y = -(b.height - h) * this._clientControl.getScrollY() / (this._clientContentHeight - b.height);
 
                 controls.setElementBounds(this._scrollHandler, {
-                    x: b.width - SCROLL_BAR_WIDTH,
+                    x: b.width - SCROLL_BAR_WIDTH + 1,
                     y: y,
                     width: SCROLL_BAR_WIDTH,
                     height: h
@@ -144,7 +151,7 @@ namespace phasereditor2d.ui.controls {
 
             } else {
 
-                this._clientControl.setBounds(b);
+                this._clientControl.setBoundsValues(0, 0, b.width, b.height);
 
                 this._scrollBar.style.display = "none";
                 this._scrollHandler.style.display = "none";

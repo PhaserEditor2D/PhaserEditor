@@ -9,6 +9,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private _contentProvider: IContentProvider;
         private _cellRendererProvider: ICellRendererProvider;
+        private _labelProvider: ILabelProvider = null;
         private _input: any;
         private _cellSize: number;
         private _expandedObjects: Set<any>;
@@ -17,13 +18,16 @@ namespace phasereditor2d.ui.controls.viewers {
         protected _paintItems: PaintItem[];
         private _overObject: any;
         private _lastSelectedItemIndex: number = -1;
-        protected _contentHeight : number = 0;
+        protected _contentHeight: number = 0;
+        private _filterText: string;
+        protected _filterIncludeSet: Set<any>;
 
         constructor() {
             super("canvas");
 
             this.getElement().tabIndex = 1;
 
+            this._filterText = "";
             this._cellSize = 48;
 
             this.initContext();
@@ -43,6 +47,51 @@ namespace phasereditor2d.ui.controls.viewers {
             canvas.addEventListener("mouseup", e => this.onMouseUp(e));
             canvas.addEventListener("wheel", e => this.onWheel(e))
             canvas.addEventListener("keydown", e => this.onKeyDown(e));
+        }
+
+        getLabelProvider() {
+            return this._labelProvider;
+        }
+
+        setLabelProvider(labelProvider: ILabelProvider) {
+            this._labelProvider = labelProvider;
+        }
+
+        setFilterText(filterText: string) {
+            this._filterText = filterText;
+            this.repaint();
+        }
+
+        getFilterText() {
+            return this._filterText;
+        }
+
+        private prepareFiltering() {
+            this._filterIncludeSet = new Set();
+            this.buildFilterIncludeMap();
+        }
+
+        protected abstract buildFilterIncludeMap();
+
+        protected matches(obj: any): boolean {
+            const labelProvider = this.getLabelProvider();
+            const filter = this.getFilterText();
+
+            if (labelProvider === null) {
+                return true;
+            }
+
+            if (filter === "") {
+                return true;
+            }
+
+            const label = labelProvider.getLabel(obj);
+
+            if (label.indexOf(filter) !== -1) {
+                return true;
+            }
+
+            return false;
         }
 
         protected getPaintItemAt(e: MouseEvent): PaintItem {
@@ -181,12 +230,18 @@ namespace phasereditor2d.ui.controls.viewers {
 
         async repaint() {
 
+            this.prepareFiltering();
+
             this.repaint2();
 
             await this.preload();
 
             this.repaint2();
 
+            this.updateScrollPane();
+        }
+
+        private updateScrollPane() {
             if (this.getContainer() instanceof ScrollPane) {
                 const pane = <ScrollPane>this.getContainer();
                 pane.updateScroll(this._contentHeight);
@@ -224,8 +279,14 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        setScrollY(scrollY : number) {
+        setScrollY(scrollY: number) {
+            const b = this.getBounds();
+
+            scrollY = Math.max(-this._contentHeight + b.height, scrollY);
+            scrollY = Math.min(0, scrollY);
+
             super.setScrollY(scrollY);
+
             this.repaint();
         }
 

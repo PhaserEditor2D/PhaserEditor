@@ -64,26 +64,33 @@ namespace phasereditor2d.ui.files {
         }
     }
 
+    class FileLabelProvider implements viewers.ILabelProvider {
+        getLabel(obj: io.FilePath): string {
+            return obj.getName();
+        }
+    }
+
     export class FilesView extends ide.ViewPart {
         constructor() {
             super("filesView");
             this.setTitle("Files");
 
-            let root = new core.io.FilePath(null, TEST_DATA);
+            const root = new core.io.FilePath(null, TEST_DATA);
 
             //console.log(root.toStringTree());
 
-            let tree = new viewers.TreeViewer();
-            tree.setContentProvider(new FileTreeContentProvider());
-            tree.setCellRendererProvider(new FileCellRendererProvider());
-            tree.setInput(root);
+            const viewer = new viewers.TreeViewer();
+            viewer.setLabelProvider(new FileLabelProvider());
+            viewer.setContentProvider(new FileTreeContentProvider());
+            viewer.setCellRendererProvider(new FileCellRendererProvider());
+            viewer.setInput(root);
 
-            let scrollPane = new controls.ScrollPane(tree);
+            const filteredViewer = new viewers.FilteredViewer(viewer);
 
+            this.getClientArea().add(filteredViewer);
             this.getClientArea().setLayout(new ui.controls.FillLayout());
-            this.getClientArea().add(scrollPane);
 
-            tree.repaint();
+            viewer.repaint();
         }
     }
 

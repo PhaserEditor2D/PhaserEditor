@@ -45,7 +45,8 @@ canvas {
     box-shadow: inset 1px 1px 2px #00000088;
 }
 
-.scrollBar, .scrollHandler {
+.scrollBar,
+.scrollHandler {
     position: absolute;
 }
 
@@ -55,4 +56,12 @@ canvas {
 
 .scrollHandler {
     background: #000;
+}
+
+
+.filteredViewer input {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    border-style: none !important;
 }

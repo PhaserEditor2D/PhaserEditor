@@ -40,7 +40,7 @@ namespace phasereditor2d.ui.controls.viewers {
         private visitObjects2(objects: any[], visitor: Function) {
             for (var obj of objects) {
                 visitor(obj);
-                if (this.isExpanded(obj)) {
+                if (this.isExpanded(obj) || this.getFilterText() !== "") {
                     const list = this.getContentProvider().getChildren(obj);
                     this.visitObjects2(list, visitor);
                 }
@@ -72,12 +72,46 @@ namespace phasereditor2d.ui.controls.viewers {
             this._contentHeight = this.paintItems(roots, x, y) - this.getScrollY();
         }
 
+        protected buildFilterIncludeMap() {
+            const roots = this.getContentProvider().getRoots(this.getInput());
+            this.buildFilterIncludeMap2(roots);
+        }
+
+        private buildFilterIncludeMap2(objects: any[]): boolean {
+            let result = false;
+
+            for (const obj of objects) {
+                let resultThis = this.matches(obj);
+
+                const children = this.getContentProvider().getChildren(obj);
+                const resultChildren = this.buildFilterIncludeMap2(children);
+                resultThis = resultThis || resultChildren;
+
+                if (resultThis) {
+                    this._filterIncludeSet.add(obj);
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         private paintItems(objects: any[], x: number, y: number): number {
+
+            const isFiltering = this.getFilterText() !== "";
+
             const b = this.getBounds();
+            const filter = this.getFilterText();
 
             for (let obj of objects) {
+
+                if (!this._filterIncludeSet.has(obj)) {
+                    continue;
+                }
+
                 const children = this.getContentProvider().getChildren(obj);
-                const expanded = this.isExpanded(obj);
+                const expanded = this.isExpanded(obj) || isFiltering;
+
                 const renderer = this.getCellRendererProvider().getCellRenderer(obj);
 
                 const args = new RenderCellArgs(this._context, x + LABEL_MARGIN, y, obj, this);
@@ -111,7 +145,8 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 y += cellHeight;
 
-                if (expanded) {
+
+                if (expanded || filter !== "") {
                     y = this.paintItems(children, x + LABEL_MARGIN, y);
                 }
             }
