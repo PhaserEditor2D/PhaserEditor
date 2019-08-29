@@ -234,20 +234,20 @@
 <h1>7&nbsp;&nbsp;&nbsp;Scene Editor<a class="headerlink" href="#scene-editor" title="Permalink to this headline">¶</a></h1>
 <p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is the most important editor of the IDE. As its name suggests, this editor provides visual tools to create scenes (or levels).</p>
 <img alt="Scene Editor screenshot." src="_images/scene-editor-screenshot.png" />
-<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is pretty similar to others scene makers in the market, it has common and particular features. Maybe the most relevant difference is that this editor <a class="reference external" href="#scene-compiler">compiles the scene</a> into readable <a class="reference external" href="https://phaser.io">Phaser</a> code.</p>
-<p><a class="reference external" href="https://phaser.io">Phaser</a> provides support for certain file formats like the <a class="reference external" href="asset-pack-editor.html">asset pack</a> and the <a class="reference external" href="animations-editor.html">sprite animations</a>, but it lacks of a full-feature Scene file format suitable for level editors. And maybe it should be that way, because <a class="reference external" href="https://phaser.io">Phaser</a> is a framework and you may use it in very different ways and in very different context.</p>
+<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is pretty similar to other scene makers in the market, it has common and particular features. Maybe the most relevant difference is that this editor <a class="reference external" href="#scene-compiler">compiles the scene</a> into readable <a class="reference external" href="https://phaser.io">Phaser</a> code.</p>
+<p><a class="reference external" href="https://phaser.io">Phaser</a> provides support for certain file formats like the <a class="reference external" href="asset-pack-editor.html">asset pack</a> and the <a class="reference external" href="animations-editor.html">sprite animations</a>, but it lacks a full-feature Scene file format suitable for level editors. And maybe it should be that way because <a class="reference external" href="https://phaser.io">Phaser</a> is a framework and you may use it in very different ways and very different context.</p>
 <p>So, how can we develop a scene editor? We know we need to save the scene in a custom format. We have two main options:</p>
 <ol class="arabic simple">
 <li>We can create a custom runtime, or plugin, to load the scene files in the game and create the objects in the fly.</li>
-<li>We can create a scene compiler, that translate the custom scene file into <a class="reference external" href="https://phaser.io">Phaser</a> code.</li>
+<li>We can create a scene compiler, that translates the custom scene file into <a class="reference external" href="https://phaser.io">Phaser</a> code.</li>
 </ol>
-<p>The second option plays much better with the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> philosophy of be full compatible with a vanilla <a class="reference external" href="https://phaser.io">Phaser</a> runtime. So this compiler gets a custom scene file and generates a clean, readable, hand-writing-like <a class="reference external" href="https://phaser.io">Phaser</a> code. Even this option has other advantages: it is very easy to debug the scene and know exactly how the objects are created.</p>
-<p>In previous version of <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>, we used custom scene renderers based on desktop UI toolkits, because the lack of a <strong>Web View</strong> available in all the OS platforms. However, now the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> provides better support for its <strong>Web View</strong> and we migrated the scene renderer to <a class="reference external" href="https://phaser.io">Phaser</a>. This means, what you see in the scene editor is what you get in the game, because both are built with the same technology: <a class="reference external" href="https://phaser.io">Phaser</a>.</p>
+<p>The second option plays much better with the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> philosophy of being fully compatible with a vanilla <a class="reference external" href="https://phaser.io">Phaser</a> runtime. So this compiler gets a custom scene file and generates a clean, readable, hand-writing-like <a class="reference external" href="https://phaser.io">Phaser</a> code. Even this option has other advantages: it is very easy to debug the scene and know exactly how the objects are created.</p>
+<p>In the previous version of <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a>, we used custom scene renderers based on desktop UI toolkits, because of the lack of a <strong>Web View</strong> available in all the OS platforms. However, now the <a class="reference external" href="https://eclipse.org">Eclipse IDE</a> provides better support for its <strong>Web View</strong> and we migrated the scene renderer to <a class="reference external" href="https://phaser.io">Phaser</a>. This means, what you see in the scene editor is what you get in the game because both are built with the same technology: <a class="reference external" href="https://phaser.io">Phaser</a>.</p>
 <div class="section" id="create-a-new-scene-file">
 <h2>7.1&nbsp;&nbsp;&nbsp;Create a new Scene file<a class="headerlink" href="#create-a-new-scene-file" title="Permalink to this headline">¶</a></h2>
 <p>The scene files (<code class="docutils literal notranslate"><span class="pre">*.scene</span></code>) are created using the <strong>New Scene File</strong> wizard. This wizard can be opened from the main menu: <em>File</em> → <em>New</em> → <em>Scene File</em>, or using the <a class="reference external" href="workbench.html#new-button">New button</a>.</p>
 <img alt="New Scene File." src="_images/scene-editor-new-file.png" />
-<p>The <strong>New Scene File</strong> wizard is divided in two steps:</p>
+<p>The <strong>New Scene File</strong> wizard is divided into two steps:</p>
 <ol class="arabic simple">
 <li>Set the location and name of the new scene file.</li>
 <li>Select an <a class="reference external" href="asset-pack-editor.html#importing-javascript-files">asset pack file</a> to import the scene compiled code in the game. This is optional.</li>
@@ -257,11 +257,11 @@
 </div>
 <div class="section" id="adding-objects-to-the-scene">
 <h2>7.2&nbsp;&nbsp;&nbsp;Adding objects to the scene<a class="headerlink" href="#adding-objects-to-the-scene" title="Permalink to this headline">¶</a></h2>
-<p>When you activate the Scene Editor (open, select, focus on) the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows a couple of buttons dedicated to the <a class="reference external" href="scene-editor.html">Scene Editor</a>. In the middle there is the <strong>Add Object</strong> button.</p>
+<p>When you activate the Scene Editor (open, select, focus on) the <a class="reference external" href="workbench.html#main-toolbar">main toolbar</a> shows a couple of buttons dedicated to the <a class="reference external" href="scene-editor.html">Scene Editor</a>. In the middle, there is the <strong>Add Object</strong> button.</p>
 <p>The <strong>Add Object</strong> button shows a menu with the object types supported by the <a class="reference external" href="scene-editor.html">Scene Editor</a>.</p>
 <img alt="The Add Object button." src="_images/scene-editor-add-button.png" />
-<p>There are objects that typically uses a resource. The <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a> types use textures (images, atlas frames, sprite-sheet frames). The <a class="reference internal" href="#bitmap-text">Bitmap Text</a> uses a bitmap font. When you select to add any of these objects, the editor opens a dialog to select the asset needed by the object.</p>
-<img alt="Select texture of new object." src="_images/scene-editor-add-object-select-texture.png" />
+<p>Some objects typically use a resource. The <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a> types use textures (images, atlas frames, sprite-sheet frames). The <a class="reference internal" href="#bitmap-text">Bitmap Text</a> uses a bitmap font. When you select to add any of these objects, the editor opens a dialog to select the asset needed by the object.</p>
+<img alt="Select the texture of a new object." src="_images/scene-editor-add-object-select-texture.png" />
 <p>Finally, the new object is added to the center of the scene:</p>
 <img alt="Added object." src="_images/scene-editor-add-object-done.png" />
 <p>When you select to add a <a class="reference internal" href="#text">Text</a> object, it does not open any dialog because it does not require any asset, the <a class="reference internal" href="#text">Text</a> object is created with a <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">Text</span></code> value and added to the center of the scene.</p>
@@ -305,13 +305,13 @@
 <div class="section" id="adding-objects-from-the-assets-view">
 <h3>7.2.2&nbsp;&nbsp;&nbsp;Adding objects from the Assets view<a class="headerlink" href="#adding-objects-from-the-assets-view" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="workbench.html#assets-view">Assets view</a> shows the files created by the <a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> editors. In the case of the <a class="reference external" href="asset-pack-editor.html">Asset Pack files</a>, it also shows the file keys defined in the file.</p>
-<p>In the same way you <a class="reference external" href="adding-objects-from-the-blocks-view">drop file keys from the Blocks view</a> into the scene, you can drag the file keys from the <a class="reference external" href="workbench.html#assets-view">Assets view</a> and drop them into the scene. Take a look to the previous section for more details on the kind of objects are created.</p>
+<p>In the same way, you <a class="reference external" href="adding-objects-from-the-blocks-view">drop file keys from the Blocks view</a> into the scene, you can drag the file keys from the <a class="reference external" href="workbench.html#assets-view">Assets view</a> and drop them into the scene. Take a look at the previous section for more details on the kind of objects are created.</p>
 <img alt="Drag file keys from the Assets view." src="_images/scene-editor-drag-from-assets-view.png" />
 </div>
 </div>
 <div class="section" id="supported-object-types">
 <h2>7.3&nbsp;&nbsp;&nbsp;Supported object types<a class="headerlink" href="#supported-object-types" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is in active development and only supports a very basic set of object types. Eventually we should add more types and more properties. However, you can use an <a class="reference external" href="#game-object-property-section">object factory</a> to create objects of any type, even of your own custom type.</p>
+<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is in active development and only supports a very basic set of object types. Eventually, we should add more types and more properties. However, you can use an <a class="reference external" href="#game-object-property-section">object factory</a> to create objects of any type, even your custom type.</p>
 <p>The list of supported object types is:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#image">Image</a></li>
@@ -324,17 +324,17 @@
 <div class="section" id="common-properties">
 <h3>7.3.1&nbsp;&nbsp;&nbsp;Common properties<a class="headerlink" href="#common-properties" title="Permalink to this headline">¶</a></h3>
 <p>Like it is in the other editors of the IDE, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> connects with the active <a class="reference external" href="scene-editor.html">Scene Editor</a> and show the properties of the objects selected in the scene or the <a class="reference internal" href="#outline-view">Outline view</a>.</p>
-<p>In the <a class="reference external" href="https://phaser.io">Phaser</a> API, the properties of the game object types are divided in dedicated classes in the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html">Phaser.GameObjects.Components</a> namespace. So, an object type contains its own properties and methods but also inherits a couple of “component” classes, like <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html">Phaser.GameObjects.Components.Transform</a> or <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">Phaser.GameObjects.Components.Tint</a>.</p>
+<p>In the <a class="reference external" href="https://phaser.io">Phaser</a> API, the properties of the game object types are divided into dedicated classes in the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html">Phaser.GameObjects.Components</a> namespace. So, an object type contains its properties and methods but also inherits a couple of “component” classes, like <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html">Phaser.GameObjects.Components.Transform</a> or <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">Phaser.GameObjects.Components.Tint</a>.</p>
 <p>In the <a class="reference external" href="workbench.html#properties-view">Properties view</a> of the Scene Editor we split the properties more or less in the same way, each property section is dedicated to a specific <a class="reference external" href="https://phaser.io">Phaser</a> game object component class. There is not a 100% match, there are sections dedicated only to <a class="reference external" href="scene-editor.html">Scene Editor</a>-properties or there are sections with a merge of <a class="reference external" href="https://phaser.io">Phaser</a> API properties and editor-properties.</p>
 <p>The editor-properties are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.</p>
-<p>In this chapter we explain the properties that are common to the majority of the supported game object types.</p>
+<p>In this chapter, we explain the properties that are common to the majority of the supported game object types.</p>
 <div class="section" id="variable-property-section">
 <h4>Variable property section<a class="headerlink" href="#variable-property-section" title="Permalink to this headline">¶</a></h4>
 <p>This section is used by the editor and the <a class="reference internal" href="#scene-compiler">scene compiler</a> to identify the object and provides certain operations.</p>
 <img alt="Variable section." src="_images/scene-editor-variable-section.png" />
 <ol class="arabic simple">
 <li>The <strong>generate property</strong> button. You can check or un-check it. By default, the <a class="reference internal" href="#scene-compiler">scene compiler</a> assign an object to a local variable, but if you set true this property, the object is assigned to an instance field. Do this when you need to get access to the object outside the <em>create</em> method.</li>
-<li>The <strong>go to source</strong> button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an <a class="reference external" href="code-editors.html#integration-with-external-editors">external editor</a> then it opens the external editor.</li>
+<li>The <strong>go-to source</strong> button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an <a class="reference external" href="code-editors.html#integration-with-external-editors">external editor</a> then it opens the external editor.</li>
 <li>The <strong>Var Name</strong> property is used by the <a class="reference internal" href="#scene-compiler">scene compiler</a> as the variable name and the <a class="reference internal" href="#outline-view">Outline view</a> use it as the label of the object.</li>
 </ol>
 <blockquote>
@@ -349,7 +349,7 @@
 <p>A section that contains properties and buttons that are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API but are used to provide certain functionalities of the editor.</p>
 <img alt="Editor section." src="_images/scene-editor-editor-section.png" />
 <ol class="arabic simple">
-<li>The <strong>Type</strong> property displays the <a class="reference external" href="#supported-object-types">type of the game object</a>. You can click the button <a class="reference external" href="#morphing-objects-to-a-different-type">to morph the object to other type</a>, which is an important feature.</li>
+<li>The <strong>Type</strong> property displays the <a class="reference external" href="#supported-object-types">type of the game object</a>. You can click the button <a class="reference external" href="#morphing-objects-to-a-different-type">to morph the object to another type</a>, which is an important feature.</li>
 </ol>
 <blockquote>
 <div><img alt="Type property." src="_images/scene-editor-editor-section-type-property.png" />
@@ -361,7 +361,7 @@
 <div><img alt="Transparency property." src="_images/scene-editor-editor-section-transparency-property.png" />
 </div></blockquote>
 <ol class="arabic simple" start="3">
-<li>The <strong>Order</strong> buttons allow to change the order the objects are created in the scene, which is the same order they are rendered.</li>
+<li>The <strong>Order</strong> buttons allow changing the order the objects are created in the scene, which is the same order they are rendered.</li>
 </ol>
 <blockquote>
 <div><img alt="The Order buttons." src="_images/scene-editor-editor-section-order.png" />
@@ -374,7 +374,7 @@
 <p>You can see in the <a class="reference internal" href="#outline-view">Outline view</a> the result of the ordering.</p>
 </div></blockquote>
 <ol class="arabic simple" start="4">
-<li>The <strong>Groups</strong> displays the groups that contains the object, and buttons to add or remove the object to the groups. A group (that is part of the <a class="reference external" href="https://phaser.io">Phaser</a> API, see <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Group.html">Phaser.Group</a> ) is a powerful resource in your hands. You can use it as an object pool or as an object classifier. In many <a class="reference external" href="https://phaser.io">Phaser</a> examples and games, you can see how the groups are used to apply common behavior to objects instead of create custom types. <a class="reference external" href="#group">Read more about groups</a>.</li>
+<li>The <strong>Groups</strong> displays the groups that contain the object, and buttons to add or remove the object to the groups. A group (that is part of the <a class="reference external" href="https://phaser.io">Phaser</a> API, see <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Group.html">Phaser.Group</a> ) is a powerful resource in your hands. You can use it as an object pool or as an object classifier. In many <a class="reference external" href="https://phaser.io">Phaser</a> examples and games, you can see how the groups are used to apply common behavior to objects instead of creating custom types. <a class="reference external" href="#group">Read more about groups</a>.</li>
 </ol>
 <blockquote>
 <div><img alt="Groups property." src="_images/scene-editor-editor-section-group.png" />
@@ -389,10 +389,10 @@
 <li>A button to delete the object from one of its groups.</li>
 </ol>
 <blockquote>
-<div><img alt="Removes object from group." src="_images/scene-editor-editor-section-remove-from-group-button.png" />
+<div><img alt="Removes an object from a group." src="_images/scene-editor-editor-section-remove-from-group-button.png" />
 </div></blockquote>
 <ol class="arabic simple" start="4">
-<li>A button to select an specific group and see its content.</li>
+<li>A button to select a specific group and see its content.</li>
 </ol>
 <blockquote>
 <div><img alt="Select group." src="_images/scene-editor-editor-section-select-group-button.png" />

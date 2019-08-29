@@ -12,19 +12,19 @@ The |SceneEditor|_ is the most important editor of the IDE. As its name suggests
 .. image:: images/scene-editor/scene-editor-screenshot.png
   :alt: Scene Editor screenshot.
 
-The |SceneEditor|_ is pretty similar to others scene makers in the market, it has common and particular features. Maybe the most relevant difference is that this editor `compiles the scene <#scene-compiler>`_ into readable Phaser_ code.
+The |SceneEditor|_ is pretty similar to other scene makers in the market, it has common and particular features. Maybe the most relevant difference is that this editor `compiles the scene <#scene-compiler>`_ into readable Phaser_ code.
 
-Phaser_ provides support for certain file formats like the `asset pack <asset-pack-editor.html>`_ and the `sprite animations <animations-editor.html>`_, but it lacks of a full-feature Scene file format suitable for level editors. And maybe it should be that way, because Phaser_ is a framework and you may use it in very different ways and in very different context.
+Phaser_ provides support for certain file formats like the `asset pack <asset-pack-editor.html>`_ and the `sprite animations <animations-editor.html>`_, but it lacks a full-feature Scene file format suitable for level editors. And maybe it should be that way because Phaser_ is a framework and you may use it in very different ways and very different context.
 
 So, how can we develop a scene editor? We know we need to save the scene in a custom format. We have two main options:
 
 #. We can create a custom runtime, or plugin, to load the scene files in the game and create the objects in the fly.
 
-#. We can create a scene compiler, that translate the custom scene file into Phaser_ code.
+#. We can create a scene compiler, that translates the custom scene file into Phaser_ code.
 
-The second option plays much better with the |PhaserEditor|_ philosophy of be full compatible with a vanilla Phaser_ runtime. So this compiler gets a custom scene file and generates a clean, readable, hand-writing-like Phaser_ code. Even this option has other advantages: it is very easy to debug the scene and know exactly how the objects are created.
+The second option plays much better with the |PhaserEditor|_ philosophy of being fully compatible with a vanilla Phaser_ runtime. So this compiler gets a custom scene file and generates a clean, readable, hand-writing-like Phaser_ code. Even this option has other advantages: it is very easy to debug the scene and know exactly how the objects are created.
 
-In previous version of |PhaserEditor|_, we used custom scene renderers based on desktop UI toolkits, because the lack of a **Web View** available in all the OS platforms. However, now the |EclipseIDE|_ provides better support for its **Web View** and we migrated the scene renderer to Phaser_. This means, what you see in the scene editor is what you get in the game, because both are built with the same technology: Phaser_.
+In the previous version of |PhaserEditor|_, we used custom scene renderers based on desktop UI toolkits, because of the lack of a **Web View** available in all the OS platforms. However, now the |EclipseIDE|_ provides better support for its **Web View** and we migrated the scene renderer to Phaser_. This means, what you see in the scene editor is what you get in the game because both are built with the same technology: Phaser_.
 
 
 Create a new Scene file
@@ -35,7 +35,7 @@ The scene files (``*.scene``) are created using the **New Scene File** wizard. T
 .. image:: images/scene-editor/scene-editor-new-file.png
   :alt: New Scene File.
 
-The **New Scene File** wizard is divided in two steps:
+The **New Scene File** wizard is divided into two steps:
 
 #. Set the location and name of the new scene file.
 
@@ -50,17 +50,17 @@ The **New Scene File** wizard is divided in two steps:
 Adding objects to the scene
 ---------------------------
 
-When you activate the |SceneEditor| (open, select, focus on) the `main toolbar <workbench.html#main-toolbar>`_ shows a couple of buttons dedicated to the |SceneEditor|_. In the middle there is the **Add Object** button.
+When you activate the |SceneEditor| (open, select, focus on) the `main toolbar <workbench.html#main-toolbar>`_ shows a couple of buttons dedicated to the |SceneEditor|_. In the middle, there is the **Add Object** button.
 
 The **Add Object** button shows a menu with the object types supported by the |SceneEditor|_.
 
 .. image:: images/scene-editor/scene-editor-add-button.png
   :alt: The Add Object button.
 
-There are objects that typically uses a resource. The `Image`_, `Sprite`_ and `Tile Sprite`_ types use textures (images, atlas frames, sprite-sheet frames). The `Bitmap Text`_ uses a bitmap font. When you select to add any of these objects, the editor opens a dialog to select the asset needed by the object.
+Some objects typically use a resource. The `Image`_, `Sprite`_ and `Tile Sprite`_ types use textures (images, atlas frames, sprite-sheet frames). The `Bitmap Text`_ uses a bitmap font. When you select to add any of these objects, the editor opens a dialog to select the asset needed by the object.
 
 .. image:: images/scene-editor/scene-editor-add-object-select-texture.png
-  :alt: Select texture of new object.
+  :alt: Select the texture of a new object.
 
 Finally, the new object is added to the center of the scene:
 
@@ -103,7 +103,7 @@ Adding objects from the Assets view
 
 The |AssetsView|_ shows the files created by the |PhaserEditor|_ editors. In the case of the `Asset Pack files <asset-pack-editor.html>`_, it also shows the file keys defined in the file.
 
-In the same way you `drop file keys from the Blocks view <adding-objects-from-the-blocks-view>`_ into the scene, you can drag the file keys from the |AssetsView|_ and drop them into the scene. Take a look to the previous section for more details on the kind of objects are created.
+In the same way, you `drop file keys from the Blocks view <adding-objects-from-the-blocks-view>`_ into the scene, you can drag the file keys from the |AssetsView|_ and drop them into the scene. Take a look at the previous section for more details on the kind of objects are created.
 
 .. image:: images/scene-editor/scene-editor-drag-from-assets-view.png
   :alt: Drag file keys from the Assets view.
@@ -111,7 +111,7 @@ In the same way you `drop file keys from the Blocks view <adding-objects-from-th
 Supported object types
 ----------------------
 
-The |SceneEditor|_ is in active development and only supports a very basic set of object types. Eventually we should add more types and more properties. However, you can use an `object factory <#game-object-property-section>`_ to create objects of any type, even of your own custom type.
+The |SceneEditor|_ is in active development and only supports a very basic set of object types. Eventually, we should add more types and more properties. However, you can use an `object factory <#game-object-property-section>`_ to create objects of any type, even your custom type.
 
 The list of supported object types is:
 
@@ -133,14 +133,14 @@ Common properties
 
 Like it is in the other editors of the IDE, the `Properties view <workbench.html#properties-view>`_ connects with the active |SceneEditor|_ and show the properties of the objects selected in the scene or the `Outline view`_.
 
-In the Phaser_ API, the properties of the game object types are divided in dedicated classes in the `Phaser.GameObjects.Components <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html>`_ namespace. So, an object type contains its own properties and methods but also inherits a couple of "component" classes, like `Phaser.GameObjects.Components.Transform <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html>`_ or `Phaser.GameObjects.Components.Tint <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_.
+In the Phaser_ API, the properties of the game object types are divided into dedicated classes in the `Phaser.GameObjects.Components <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html>`_ namespace. So, an object type contains its properties and methods but also inherits a couple of "component" classes, like `Phaser.GameObjects.Components.Transform <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html>`_ or `Phaser.GameObjects.Components.Tint <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_.
  
 
 In the `Properties view`_ of the |SceneEditor| we split the properties more or less in the same way, each property section is dedicated to a specific Phaser_ game object component class. There is not a 100% match, there are sections dedicated only to |SceneEditor|_-properties or there are sections with a merge of Phaser_ API properties and editor-properties.
 
 The editor-properties are not part of the Phaser_ API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.
 
-In this chapter we explain the properties that are common to the majority of the supported game object types.
+In this chapter, we explain the properties that are common to the majority of the supported game object types.
 
 Variable property section
 ###########################
@@ -153,7 +153,7 @@ This section is used by the editor and the `scene compiler`_ to identify the obj
 
 #. The **generate property** button. You can check or un-check it. By default, the `scene compiler`_ assign an object to a local variable, but if you set true this property, the object is assigned to an instance field. Do this when you need to get access to the object outside the *create* method.
 
-#. The **go to source** button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an `external editor <code-editors.html#integration-with-external-editors>`_ then it opens the external editor.
+#. The **go-to source** button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an `external editor <code-editors.html#integration-with-external-editors>`_ then it opens the external editor.
 
 #. The **Var Name** property is used by the `scene compiler`_ as the variable name and the `Outline view`_ use it as the label of the object.
   
@@ -171,7 +171,7 @@ A section that contains properties and buttons that are not part of the Phaser_ 
   :alt: Editor section.
 
 
-1. The **Type** property displays the `type of the game object <#supported-object-types>`_. You can click the button `to morph the object to other type <#morphing-objects-to-a-different-type>`_, which is an important feature.
+1. The **Type** property displays the `type of the game object <#supported-object-types>`_. You can click the button `to morph the object to another type <#morphing-objects-to-a-different-type>`_, which is an important feature.
 
   .. image:: images/scene-editor/scene-editor-editor-section-type-property.png
     :alt: Type property.
@@ -181,7 +181,7 @@ A section that contains properties and buttons that are not part of the Phaser_ 
   .. image:: images/scene-editor/scene-editor-editor-section-transparency-property.png
     :alt: Transparency property.
 
-3. The **Order** buttons allow to change the order the objects are created in the scene, which is the same order they are rendered.
+3. The **Order** buttons allow changing the order the objects are created in the scene, which is the same order they are rendered.
 
   .. image:: images/scene-editor/scene-editor-editor-section-order.png
     :alt: The Order buttons.
@@ -196,7 +196,7 @@ A section that contains properties and buttons that are not part of the Phaser_ 
 
   You can see in the `Outline view`_ the result of the ordering.
 
-4. The **Groups** displays the groups that contains the object, and buttons to add or remove the object to the groups. A group (that is part of the Phaser_ API, see `Phaser.Group <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Group.html>`_ ) is a powerful resource in your hands. You can use it as an object pool or as an object classifier. In many Phaser_ examples and games, you can see how the groups are used to apply common behavior to objects instead of create custom types. `Read more about groups <#group>`_.
+4. The **Groups** displays the groups that contain the object, and buttons to add or remove the object to the groups. A group (that is part of the Phaser_ API, see `Phaser.Group <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Group.html>`_ ) is a powerful resource in your hands. You can use it as an object pool or as an object classifier. In many Phaser_ examples and games, you can see how the groups are used to apply common behavior to objects instead of creating custom types. `Read more about groups <#group>`_.
 
   .. image:: images/scene-editor/scene-editor-editor-section-group.png
     :alt: Groups property.
@@ -211,9 +211,9 @@ A section that contains properties and buttons that are not part of the Phaser_ 
   3. A button to delete the object from one of its groups.
 
     .. image:: images/scene-editor/scene-editor-editor-section-remove-from-group-button.png
-      :alt: Removes object from group.
+      :alt: Removes an object from a group.
 
-  4. A button to select an specific group and see its content.
+  4. A button to select a specific group and see its content.
 
     .. image:: images/scene-editor/scene-editor-editor-section-select-group-button.png
       :alt: Select group.
