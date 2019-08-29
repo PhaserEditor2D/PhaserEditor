@@ -180,7 +180,7 @@ public class GameObjectEditorSection extends ScenePropertySection {
 
 		{
 			// snap
-			label(comp, "Snapping", "*Set the size of the selected objects as snapping values.");
+			label(comp, "Snapping", "*(Editor) Set the size of the selected objects as snapping values.");
 			var btn = new Button(comp, 0);
 			btn.setText("");
 			btn.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

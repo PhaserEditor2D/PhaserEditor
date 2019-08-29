@@ -83,7 +83,7 @@ A new object is created when you drag a file key from the `Blocks view`_ and dro
 Each type of file creates a particular type of object by default. However, once the object is created, `you can morph it to another type <#morphing-objects-to-a-different-type>`_.
 
 ====================== ====================
-Block element          Scene Object type
+Blocks element          Scene Object type
 ====================== ====================
 Image key              `Image`_
 Atlas frame key        `Image`_
@@ -136,13 +136,13 @@ Like it is in the other editors of the IDE, the `Properties view <workbench.html
 In the Phaser_ API, the properties of the game object types are divided in dedicated classes in the `Phaser.GameObjects.Components <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html>`_ namespace. So, an object type contains its own properties and methods but also inherits a couple of "component" classes, like `Phaser.GameObjects.Components.Transform <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html>`_ or `Phaser.GameObjects.Components.Tint <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_.
  
 
-In the `Properties view`_ of the |SceneEditor| we split the properties more or less in the same way, each properties section is dedicated to a specific Phaser_ game object component class. There is not a 100% match, there are sections dedicated only to |SceneEditor|_-properties or there are sections with a merge of Phaser_ API properties and editor-properties.
+In the `Properties view`_ of the |SceneEditor| we split the properties more or less in the same way, each property section is dedicated to a specific Phaser_ game object component class. There is not a 100% match, there are sections dedicated only to |SceneEditor|_-properties or there are sections with a merge of Phaser_ API properties and editor-properties.
 
 The editor-properties are not part of the Phaser_ API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.
 
 In this chapter we explain the properties that are common to the majority of the supported game object types.
 
-Variable properties section
+Variable property section
 ###########################
 
 This section is used by the editor and the `scene compiler`_ to identify the object and provides certain operations.
@@ -151,7 +151,7 @@ This section is used by the editor and the `scene compiler`_ to identify the obj
   :alt: Variable section.
 
 
-#. The **generate property** button. You can check or un-check it. By default, the `scene compiler`_ assign the objects to local variables, but if you check this property, the object is assigned to an instance field. Do this when you need to get access to the object outside the *create* method.
+#. The **generate property** button. You can check or un-check it. By default, the `scene compiler`_ assign an object to a local variable, but if you set true this property, the object is assigned to an instance field. Do this when you need to get access to the object outside the *create* method.
 
 #. The **go to source** button. Click it to open the JavaScript editor and scroll to the line where this object is created. If you enabled an `external editor <code-editors.html#integration-with-external-editors>`_ then it opens the external editor.
 
@@ -162,25 +162,80 @@ This section is used by the editor and the `scene compiler`_ to identify the obj
 
 4. The same of *(1)*.
 
-Editor properties section
+Editor property section
 #########################
+
+A section that contains properties and buttons that are not part of the Phaser_ API but are used to provide certain functionalities of the editor.
+
+.. image:: images/scene-editor/scene-editor-editor-section.png
+  :alt: Editor section.
+
+
+1. The **Type** property displays the `type of the game object <#supported-object-types>`_. You can click the button `to morph the object to other type <#morphing-objects-to-a-different-type>`_, which is an important feature.
+
+  .. image:: images/scene-editor/scene-editor-editor-section-type-property.png
+    :alt: Type property.
+
+2. The **Transparency** property. You can change its value to render the object in the editor with certain transparency, but it is not applied to the object in the game. Note it is not included in the generated code.
+
+  .. image:: images/scene-editor/scene-editor-editor-section-transparency-property.png
+    :alt: Transparency property.
+
+3. The **Order** buttons allow to change the order the objects are created in the scene, which is the same order they are rendered.
+
+  .. image:: images/scene-editor/scene-editor-editor-section-order.png
+    :alt: The Order buttons.
+
+  1. Moves the object up in the order.
+
+  2. Moves the object down in the order.
+
+  3. Moves the object to the top of the order.
+
+  4. Moves the object to the bottom of the order.
+
+  You can see in the `Outline view`_ the result of the ordering.
+
+4. The **Groups** displays the groups that contains the object, and buttons to add or remove the object to the groups. A group (that is part of the Phaser_ API, see `Phaser.Group <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Group.html>`_ ) is a powerful resource in your hands. You can use it as an object pool or as an object classifier. In many Phaser_ examples and games, you can see how the groups are used to apply common behavior to objects instead of create custom types. `Read more about groups <#group>`_.
+
+  .. image:: images/scene-editor/scene-editor-editor-section-group.png
+    :alt: Groups property.
+
+  1. Lists the groups containing the object. One object could be added to many groups.    
+
+  2. A button to add the object to an existent group, or a new group.
+
+    .. image:: images/scene-editor/scene-editor-editor-section-add-group-button.png
+      :alt: Add to group button.
+
+  3. A button to delete the object from one of its groups.
+
+    .. image:: images/scene-editor/scene-editor-editor-section-remove-from-group-button.png
+      :alt: Removes object from group.
+
+  4. A button to select an specific group and see its content.
+
+    .. image:: images/scene-editor/scene-editor-editor-section-select-group-button.png
+      :alt: Select group.
+
+5. The **Snapping** button is a shortcut to set the snapping value of the scene editor, using the size of the selected object. Many games use fixed-size images and the objects are placed in a grid. The snapping feature of the |SceneEditor|_ helps to set a custom grid and place the objects quickly. See more in the `Snapping property section`_.
 
 Game Object property section
 ############################
 
-Transform properties section
+Transform property section
 ############################
 
-Origin properties section
+Origin property section
 #########################
 
-Flip properties section
+Flip property section
 #######################
 
-Scroll Factor properties section
+Scroll Factor property section
 ################################
 
-Tint properties section
+Tint property section
 #######################
 
 
@@ -212,6 +267,22 @@ Group
 
 Morphing objects to a different type
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Scene properties
+----------------
+
+Snapping property section
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Display property section
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Compiler property section
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+WebView property section
+~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Scene Compiler
 --------------
