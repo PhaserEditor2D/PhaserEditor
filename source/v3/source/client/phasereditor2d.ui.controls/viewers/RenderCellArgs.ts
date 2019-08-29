@@ -5,6 +5,8 @@ namespace phasereditor2d.ui.controls.viewers {
       public canvasContext: CanvasRenderingContext2D,
       public x: number,
       public y: number,
+      public w: number,
+      public h: number,
       public obj: any,
       public view: Viewer) {
     }

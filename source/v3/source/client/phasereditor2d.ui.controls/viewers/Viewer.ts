@@ -124,9 +124,9 @@ namespace phasereditor2d.ui.controls.viewers {
             }
 
             if (e.deltaY < 0) {
-                this._cellSize += 16;
+                this.setCellSize(this.getCellSize() + ROW_HEIGHT);
             } else if (this._cellSize > 16) {
-                this._cellSize -= 16;
+                this.setCellSize(this.getCellSize() - ROW_HEIGHT);
             }
 
             this.repaint();
@@ -320,7 +320,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         setCellSize(cellSize: number): void {
-            this._cellSize = cellSize;
+            this._cellSize = Math.max(ROW_HEIGHT, cellSize);
         }
 
         getContentProvider() {

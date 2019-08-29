@@ -114,13 +114,13 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const renderer = this.getCellRendererProvider().getCellRenderer(obj);
 
-                const args = new RenderCellArgs(this._context, x + LABEL_MARGIN, y, obj, this);
-
+                const args = new RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
                 const cellHeight = renderer.cellHeight(args);
+                args.h = cellHeight;
 
                 super.paintItemBackground(obj, 0, y, b.width, cellHeight);
 
-                if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
+                if (y > -this.getCellSize() && y < b.height) {
 
                     // render tree icon
                     if (children.length > 0) {
@@ -135,11 +135,10 @@ namespace phasereditor2d.ui.controls.viewers {
                         });
                     }
 
-                    // client render cell
-                    renderer.renderCell(args);
+                    this.renderCell(args, renderer);
 
                     const item = new PaintItem(this._paintItems.length, obj);
-                    item.set(args.x, args.y, b.width, cellHeight);
+                    item.set(args.x, args.y, args.w, args.h);
                     this._paintItems.push(item);
                 }
 
@@ -152,6 +151,34 @@ namespace phasereditor2d.ui.controls.viewers {
             }
 
             return y;
+        }
+
+        private renderCell(args: RenderCellArgs, renderer: ICellRenderer): void {
+            const label = this.getLabelProvider().getLabel(args.obj);
+            let x = args.x;
+            let y = args.y;
+
+            const ctx = args.canvasContext;
+            ctx.fillStyle = Controls.theme.treeItemForeground;
+
+            let args2: RenderCellArgs;
+            if (args.h <= ROW_HEIGHT) {
+                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
+                x += 20;
+                y += 15;
+            } else {
+                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
+                y += args2.h + 15;
+            }
+
+            renderer.renderCell(args2);
+
+            ctx.save();
+            if (args.view.isSelected(args.obj)) {
+                ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
+            }
+            ctx.fillText(label, x, y);
+            ctx.restore();
         }
 
         getContentProvider(): ITreeContentProvider {

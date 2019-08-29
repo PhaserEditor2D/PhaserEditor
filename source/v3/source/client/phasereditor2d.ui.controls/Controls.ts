@@ -38,10 +38,8 @@ namespace phasereditor2d.ui.controls {
             });
         }
 
-        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void {
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center : boolean): void {
             if (this._ready) {
-                const center = true;
-
                 const naturalWidth = this.imageElement.naturalWidth;
                 const naturalHeight = this.imageElement.naturalHeight;
 

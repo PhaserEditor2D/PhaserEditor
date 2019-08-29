@@ -315,9 +315,8 @@ var phasereditor2d;
                         this._ready = true;
                     });
                 }
-                paint(context, x, y, w, h) {
+                paint(context, x, y, w, h, center) {
                     if (this._ready) {
-                        const center = true;
                         const naturalWidth = this.imageElement.naturalWidth;
                         const naturalHeight = this.imageElement.naturalHeight;
                         let renderHeight = h;
@@ -705,6 +704,40 @@ var phasereditor2d;
         })(blocks = ui.blocks || (ui.blocks = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var inspector;
+        (function (inspector) {
+            class InspectorView extends ui.ide.ViewPart {
+                constructor() {
+                    super("inspectorView");
+                    this.setTitle("Inspector");
+                }
+            }
+            inspector.InspectorView = InspectorView;
+        })(inspector = ui.inspector || (ui.inspector = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var outline;
+        (function (outline) {
+            class OutlineView extends ui.ide.ViewPart {
+                constructor() {
+                    super("outlineView");
+                    this.setTitle("Outline");
+                }
+            }
+            outline.OutlineView = OutlineView;
+        })(outline = ui.outline || (ui.outline = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -742,25 +775,15 @@ var phasereditor2d;
             (function (viewers) {
                 class LabelCellRenderer {
                     renderCell(args) {
-                        const label = this.getLabel(args.obj);
                         const img = this.getImage(args.obj);
                         let x = args.x;
                         const ctx = args.canvasContext;
-                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
                         if (img) {
-                            const h = this.cellHeight(args);
-                            img.paint(ctx, x, args.y, 16, h);
-                            x += 20;
+                            img.paint(ctx, x, args.y, 16, args.h);
                         }
-                        ctx.save();
-                        if (args.view.isSelected(args.obj)) {
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
-                        }
-                        ctx.fillText(label, x, args.y + 15);
-                        ctx.restore();
                     }
                     cellHeight(args) {
-                        return 20;
+                        return controls.ROW_HEIGHT;
                     }
                     preload() {
                         return Promise.resolve();
@@ -780,19 +803,12 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class ImageCellRenderer {
+                    constructor(center) {
+                        this._center = center;
+                    }
                     renderCell(args) {
-                        const label = this.getLabel(args.obj);
-                        const h = this.cellHeight(args);
-                        const ctx = args.canvasContext;
                         const img = this.getImage(args.obj);
-                        img.paint(ctx, args.x, args.y, h, h);
-                        ctx.save();
-                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                        if (args.view.isSelected(args.obj)) {
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
-                        }
-                        ctx.fillText(label, args.x + h + 5, args.y + h / 2 + 6);
-                        ctx.restore();
+                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, this._center);
                     }
                     cellHeight(args) {
                         return args.view.getCellSize();
@@ -897,10 +913,10 @@ var phasereditor2d;
                             return;
                         }
                         if (e.deltaY < 0) {
-                            this._cellSize += 16;
+                            this.setCellSize(this.getCellSize() + controls.ROW_HEIGHT);
                         }
                         else if (this._cellSize > 16) {
-                            this._cellSize -= 16;
+                            this.setCellSize(this.getCellSize() - controls.ROW_HEIGHT);
                         }
                         this.repaint();
                     }
@@ -1051,7 +1067,7 @@ var phasereditor2d;
                         return this._cellSize;
                     }
                     setCellSize(cellSize) {
-                        this._cellSize = cellSize;
+                        this._cellSize = Math.max(controls.ROW_HEIGHT, cellSize);
                     }
                     getContentProvider() {
                         return this._contentProvider;
@@ -1077,10 +1093,10 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
-/// <reference path="../Part.ts"/>
-/// <reference path="../ViewPart.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1088,18 +1104,7 @@ var phasereditor2d;
         var files;
         (function (files) {
             var viewers = phasereditor2d.ui.controls.viewers;
-            class FileTreeContentProvider {
-                getRoots(input) {
-                    return this.getChildren(input);
-                }
-                getChildren(parent) {
-                    return parent.getFiles();
-                }
-            }
             class FileCellRenderer extends viewers.LabelCellRenderer {
-                getLabel(obj) {
-                    return obj.getName();
-                }
                 getImage(obj) {
                     const file = obj;
                     if (file.isFile()) {
@@ -1115,7 +1120,47 @@ var phasereditor2d;
                     return ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE);
                 }
             }
+            files.FileCellRenderer = FileCellRenderer;
+        })(files = ui.files || (ui.files = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var files;
+        (function (files) {
+            class FileCellRendererProvider {
+                getCellRenderer(element) {
+                    if (element.getContentType() === "img") {
+                        return new files.FileImageRenderer(false);
+                    }
+                    return new files.FileCellRenderer();
+                }
+            }
+            files.FileCellRendererProvider = FileCellRendererProvider;
+        })(files = ui.files || (ui.files = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var files;
+        (function (files) {
+            var viewers = phasereditor2d.ui.controls.viewers;
             class FileImageRenderer extends viewers.ImageCellRenderer {
+                constructor(center) {
+                    super(center);
+                }
                 getLabel(obj) {
                     return obj.getName();
                 }
@@ -1123,19 +1168,62 @@ var phasereditor2d;
                     return ui.controls.Controls.getImage("files/" + obj.getFullName());
                 }
             }
-            class FileCellRendererProvider {
-                getCellRenderer(element) {
-                    if (element.getContentType() === "img") {
-                        return new FileImageRenderer();
-                    }
-                    return new FileCellRenderer();
-                }
-            }
+            files.FileImageRenderer = FileImageRenderer;
+        })(files = ui.files || (ui.files = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var files;
+        (function (files) {
             class FileLabelProvider {
                 getLabel(obj) {
                     return obj.getName();
                 }
             }
+            files.FileLabelProvider = FileLabelProvider;
+        })(files = ui.files || (ui.files = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var files;
+        (function (files) {
+            class FileTreeContentProvider {
+                getRoots(input) {
+                    return this.getChildren(input);
+                }
+                getChildren(parent) {
+                    return parent.getFiles();
+                }
+            }
+            files.FileTreeContentProvider = FileTreeContentProvider;
+        })(files = ui.files || (ui.files = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var files;
+        (function (files) {
+            var viewers = phasereditor2d.ui.controls.viewers;
             class FilesView extends ui.ide.ViewPart {
                 constructor() {
                     super("filesView");
@@ -1143,9 +1231,9 @@ var phasereditor2d;
                     const root = new phasereditor2d.core.io.FilePath(null, TEST_DATA);
                     //console.log(root.toStringTree());
                     const viewer = new viewers.TreeViewer();
-                    viewer.setLabelProvider(new FileLabelProvider());
-                    viewer.setContentProvider(new FileTreeContentProvider());
-                    viewer.setCellRendererProvider(new FileCellRendererProvider());
+                    viewer.setLabelProvider(new files.FileLabelProvider());
+                    viewer.setContentProvider(new files.FileTreeContentProvider());
+                    viewer.setCellRendererProvider(new files.FileCellRendererProvider());
                     viewer.setInput(root);
                     const filteredViewer = new viewers.FilteredViewer(viewer);
                     this.getClientArea().add(filteredViewer);
@@ -1549,40 +1637,6 @@ var phasereditor2d;
                 ]
             };
         })(files = ui.files || (ui.files = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../ViewPart.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var inspector;
-        (function (inspector) {
-            class InspectorView extends ui.ide.ViewPart {
-                constructor() {
-                    super("inspectorView");
-                    this.setTitle("Inspector");
-                }
-            }
-            inspector.InspectorView = InspectorView;
-        })(inspector = ui.inspector || (ui.inspector = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../ViewPart.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var outline;
-        (function (outline) {
-            class OutlineView extends ui.ide.ViewPart {
-                constructor() {
-                    super("outlineView");
-                    this.setTitle("Outline");
-                }
-            }
-            outline.OutlineView = OutlineView;
-        })(outline = ui.outline || (ui.outline = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -2033,10 +2087,12 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class RenderCellArgs {
-                    constructor(canvasContext, x, y, obj, view) {
+                    constructor(canvasContext, x, y, w, h, obj, view) {
                         this.canvasContext = canvasContext;
                         this.x = x;
                         this.y = y;
+                        this.w = w;
+                        this.h = h;
                         this.obj = obj;
                         this.view = view;
                     }
@@ -2132,10 +2188,11 @@ var phasereditor2d;
                             const children = this.getContentProvider().getChildren(obj);
                             const expanded = this.isExpanded(obj) || isFiltering;
                             const renderer = this.getCellRendererProvider().getCellRenderer(obj);
-                            const args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, obj, this);
+                            const args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
                             const cellHeight = renderer.cellHeight(args);
+                            args.h = cellHeight;
                             super.paintItemBackground(obj, 0, y, b.width, cellHeight);
-                            if (y > -this.getCellSize() && y < b.height /* + scrollOffset */) {
+                            if (y > -this.getCellSize() && y < b.height) {
                                 // render tree icon
                                 if (children.length > 0) {
                                     const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
@@ -2146,10 +2203,9 @@ var phasereditor2d;
                                         obj: obj
                                     });
                                 }
-                                // client render cell
-                                renderer.renderCell(args);
+                                this.renderCell(args, renderer);
                                 const item = new viewers.PaintItem(this._paintItems.length, obj);
-                                item.set(args.x, args.y, b.width, cellHeight);
+                                item.set(args.x, args.y, args.w, args.h);
                                 this._paintItems.push(item);
                             }
                             y += cellHeight;
@@ -2158,6 +2214,30 @@ var phasereditor2d;
                             }
                         }
                         return y;
+                    }
+                    renderCell(args, renderer) {
+                        const label = this.getLabelProvider().getLabel(args.obj);
+                        let x = args.x;
+                        let y = args.y;
+                        const ctx = args.canvasContext;
+                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                        let args2;
+                        if (args.h <= controls.ROW_HEIGHT) {
+                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
+                            x += 20;
+                            y += 15;
+                        }
+                        else {
+                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
+                            y += args2.h + 15;
+                        }
+                        renderer.renderCell(args2);
+                        ctx.save();
+                        if (args.view.isSelected(args.obj)) {
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                        }
+                        ctx.fillText(label, x, y);
+                        ctx.restore();
                     }
                     getContentProvider() {
                         return super.getContentProvider();
