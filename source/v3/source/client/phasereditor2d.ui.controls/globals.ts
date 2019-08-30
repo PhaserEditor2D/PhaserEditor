@@ -1,5 +1,6 @@
 namespace phasereditor2d.ui.controls {
 
+    export const CONTROL_PADDING = 3;
     export const ROW_HEIGHT = 20;
     export const FONT_HEIGHT = 14;
     export const FONT_OFFSET = 2;

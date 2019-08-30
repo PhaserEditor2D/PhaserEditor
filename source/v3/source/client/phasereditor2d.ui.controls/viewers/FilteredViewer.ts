@@ -21,7 +21,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this._filterElement.addEventListener("input", e => this.onFilterInput(e));
         }
 
-        private onFilterInput(e : Event) {
+        private onFilterInput(e: Event) {
             this._viewer.setFilterText(this._filterElement.value);
             this._viewer.repaint();
         }
@@ -37,20 +37,22 @@ namespace phasereditor2d.ui.controls.viewers {
             const inputH = ROW_HEIGHT;
 
             controls.setElementBounds(this._filterElement, {
-                x: 0,
-                y: 0,
-                width: b.width - 4 /* padding */
+                x: CONTROL_PADDING,
+                y: CONTROL_PADDING,
+                width: b.width - CONTROL_PADDING * 2 - /* padding=4 */ 4
             });
 
             this._filterElement.style.minHeight = inputH + "px";
             this._filterElement.style.maxHeight = inputH + "px";
             this._filterElement.style.height = inputH + "px";
 
+
+            const paneY = inputH + /*padding=4*/ 4 + CONTROL_PADDING * 2;
             this._scrollPane.setBounds({
-                x : 2,
-                y : inputH + 2 + 2 /*padding*/,
-                width: b.width - 4,
-                height: b.height - inputH - 2 - 2
+                x: 0,
+                y: paneY,
+                width: b.width + 2,
+                height: b.height - paneY
             });
         }
     }

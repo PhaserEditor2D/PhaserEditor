@@ -35,11 +35,7 @@
 /* panel */
 
 .light .panel {
-    background: #d2d2d2;
-}
-
-.light .panelCorner {
-    background: #c5c5c5;
+    background: #d2d2d2;  
 }
 
 .light .panelClientArea {
@@ -48,7 +44,6 @@
 
 .light .panel,
 .light .panelClientArea,
-.light .panelCorner,
 .light .panelTitle {
     box-shadow: -1px -1px 0 #909090,
         1px -1px 0 #909090,
@@ -97,7 +92,6 @@
 }
 
 .light .scrollBar {
-    background: #d2d2d2;
     background: transparent;
     box-shadow: inset 2px 2px 2px #40404018,
         -1px -1px 0 #909090;
@@ -121,6 +115,7 @@
     background: linear-gradient(#b0b0b0, #c0c0c0);
     outline: none;
     padding: 2px;
+    border-radius: 2px;
 }
 
 .light input:focus {

@@ -417,7 +417,7 @@ var phasereditor2d;
             ];
             Controls.LIGHT_THEME = {
                 treeItemOverBackground: "#0000000a",
-                treeItemSelectionBackground: "#8f8f8f",
+                treeItemSelectionBackground: "#33e",
                 treeItemSelectionForeground: "#f0f0f0",
                 treeItemForeground: "#000"
             };
@@ -486,14 +486,7 @@ var phasereditor2d;
             class Panel extends controls.Control {
                 constructor(hasTitle = true) {
                     super();
-                    this._cornerElements = [null, null, null, null];
                     this.getElement().classList.add("panel");
-                    for (let i = 0; i < 4; i++) {
-                        const elem = document.createElement("div");
-                        elem.classList.add("panelCorner");
-                        this.getElement().appendChild(elem);
-                        this._cornerElements[i] = elem;
-                    }
                     if (hasTitle) {
                         this._panelTitle = new PanelTitle();
                         this.add(this._panelTitle);
@@ -519,31 +512,6 @@ var phasereditor2d;
                     //super.layout();
                     controls.setElementBounds(this.getElement(), this.getBounds());
                     const b = this.getBounds();
-                    const cornerSize = controls.ROW_HEIGHT;
-                    controls.setElementBounds(this._cornerElements[0], {
-                        x: 0,
-                        y: 0,
-                        width: cornerSize,
-                        height: cornerSize
-                    });
-                    controls.setElementBounds(this._cornerElements[1], {
-                        x: b.width - cornerSize,
-                        y: 0,
-                        width: cornerSize,
-                        height: cornerSize
-                    });
-                    controls.setElementBounds(this._cornerElements[2], {
-                        x: b.width - cornerSize,
-                        y: b.height - cornerSize,
-                        width: cornerSize,
-                        height: cornerSize
-                    });
-                    controls.setElementBounds(this._cornerElements[3], {
-                        x: 0,
-                        y: b.height - cornerSize,
-                        width: cornerSize,
-                        height: cornerSize
-                    });
                     if (this._panelTitle) {
                         this._panelTitle.setBoundsValues(controls.PANEL_BORDER_SIZE, controls.PANEL_BORDER_SIZE, b.width - controls.PANEL_BORDER_SIZE * 2, controls.ROW_HEIGHT);
                         this._clientArea.setBounds({
@@ -1807,7 +1775,7 @@ var phasereditor2d;
                         controls.setElementBounds(this._scrollBar, {
                             x: b.width - SCROLL_BAR_WIDTH,
                             y: 0,
-                            width: SCROLL_BAR_WIDTH,
+                            width: SCROLL_BAR_WIDTH - 2,
                             height: b.height
                         });
                         // handler
@@ -1815,9 +1783,9 @@ var phasereditor2d;
                         const h = Math.max(10, b.height / this._clientContentHeight * b.height);
                         const y = -(b.height - h) * this._clientControl.getScrollY() / (this._clientContentHeight - b.height);
                         controls.setElementBounds(this._scrollHandler, {
-                            x: b.width - SCROLL_BAR_WIDTH + 1,
+                            x: b.width - SCROLL_BAR_WIDTH,
                             y: y,
-                            width: SCROLL_BAR_WIDTH,
+                            width: SCROLL_BAR_WIDTH - 2,
                             height: h
                         });
                     }
@@ -1973,6 +1941,7 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
+            controls.CONTROL_PADDING = 3;
             controls.ROW_HEIGHT = 20;
             controls.FONT_HEIGHT = 14;
             controls.FONT_OFFSET = 2;
@@ -2037,18 +2006,19 @@ var phasereditor2d;
                         controls.setElementBounds(this.getElement(), b);
                         const inputH = controls.ROW_HEIGHT;
                         controls.setElementBounds(this._filterElement, {
-                            x: 0,
-                            y: 0,
-                            width: b.width - 4 /* padding */
+                            x: controls.CONTROL_PADDING,
+                            y: controls.CONTROL_PADDING,
+                            width: b.width - controls.CONTROL_PADDING * 2 - /* padding=4 */ 4
                         });
                         this._filterElement.style.minHeight = inputH + "px";
                         this._filterElement.style.maxHeight = inputH + "px";
                         this._filterElement.style.height = inputH + "px";
+                        const paneY = inputH + /*padding=4*/ 4 + controls.CONTROL_PADDING * 2;
                         this._scrollPane.setBounds({
-                            x: 2,
-                            y: inputH + 2 + 2 /*padding*/,
-                            width: b.width - 4,
-                            height: b.height - inputH - 2 - 2
+                            x: 0,
+                            y: paneY,
+                            width: b.width + 2,
+                            height: b.height - paneY
                         });
                     }
                 }

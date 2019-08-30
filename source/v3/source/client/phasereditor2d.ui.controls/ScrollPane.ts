@@ -132,7 +132,7 @@ namespace phasereditor2d.ui.controls {
                 controls.setElementBounds(this._scrollBar, {
                     x: b.width - SCROLL_BAR_WIDTH,
                     y: 0,
-                    width: SCROLL_BAR_WIDTH,
+                    width: SCROLL_BAR_WIDTH - 2,
                     height: b.height
                 });
 
@@ -143,9 +143,9 @@ namespace phasereditor2d.ui.controls {
                 const y = -(b.height - h) * this._clientControl.getScrollY() / (this._clientContentHeight - b.height);
 
                 controls.setElementBounds(this._scrollHandler, {
-                    x: b.width - SCROLL_BAR_WIDTH + 1,
+                    x: b.width - SCROLL_BAR_WIDTH,
                     y: y,
-                    width: SCROLL_BAR_WIDTH,
+                    width: SCROLL_BAR_WIDTH - 2,
                     height: h
                 });
 

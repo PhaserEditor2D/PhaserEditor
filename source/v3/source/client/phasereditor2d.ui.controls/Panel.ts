@@ -78,7 +78,6 @@ namespace phasereditor2d.ui.controls {
 
     export class Panel extends Control {
         private _clientArea: Control;
-        private _cornerElements: HTMLDivElement[] = [null, null, null, null];
         private _panelTitle: PanelTitle;
         private _title: string;
 
@@ -86,13 +85,6 @@ namespace phasereditor2d.ui.controls {
             super();
 
             this.getElement().classList.add("panel");
-
-            for (let i = 0; i < 4; i++) {
-                const elem = document.createElement("div");
-                elem.classList.add("panelCorner");
-                this.getElement().appendChild(elem);
-                this._cornerElements[i] = elem;
-            }
 
             if (hasTitle) {
                 this._panelTitle = new PanelTitle();
@@ -127,36 +119,6 @@ namespace phasereditor2d.ui.controls {
             setElementBounds(this.getElement(), this.getBounds());
 
             const b = this.getBounds();
-
-            const cornerSize = ROW_HEIGHT;
-
-            setElementBounds(this._cornerElements[0], {
-                x: 0,
-                y: 0,
-                width: cornerSize,
-                height: cornerSize
-            });
-
-            setElementBounds(this._cornerElements[1], {
-                x: b.width - cornerSize,
-                y: 0,
-                width: cornerSize,
-                height: cornerSize
-            });
-
-            setElementBounds(this._cornerElements[2], {
-                x: b.width - cornerSize,
-                y: b.height - cornerSize,
-                width: cornerSize,
-                height: cornerSize
-            });
-
-            setElementBounds(this._cornerElements[3], {
-                x: 0,
-                y: b.height - cornerSize,
-                width: cornerSize,
-                height: cornerSize
-            });
 
             if (this._panelTitle) {
                 this._panelTitle.setBoundsValues(PANEL_BORDER_SIZE, PANEL_BORDER_SIZE, b.width - PANEL_BORDER_SIZE * 2, ROW_HEIGHT);
