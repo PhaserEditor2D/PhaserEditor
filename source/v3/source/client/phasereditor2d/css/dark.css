@@ -1,46 +1,95 @@
 .dark body {
-    background-color: #2c2c2c;
-    color: #ffffff66;
+    background: #2c2c2c;
+    color: #f0f0f0;
 }
 
-/* parts */
+/* toolbar */
 
-.dark .part {
-   
+
+.dark button {
+    background: linear-gradient(#c8c8c8, #b8b8b8);
+    border-color: #202020;
+    color: #434343;
+    text-shadow:
+        -1px -1px 0 #202020,
+        1px -1px 0 #202020,
+        -1px 1px 0 #202020,
+        1px 1px 0 #202020;
+
+    border-left-color: #d0d0d0;
+    border-top-color: #d0d0d0;
+    border-right-color: #202020;
+    border-bottom-color: #202020;
 }
 
-.dark .view {
-    
+.dark button:active {
+    background: linear-gradient(#b8b8b8, #c8c8c8);
+    border-left-color: #202020;
+    border-top-color: #202020;
+    border-right-color: #d0d0d0;
+    border-bottom-color: #d0d0d0;
 }
 
-.dark .viewTitle {
-  
-}
-
-.dark .viewTitleText {
-    border-color:  #1a1a1a;  
-    background-color: #3a3a3a;     
-}
-
-.dark .viewContent {
-    border: 1px solid #1a1a1a;  
-    background-color: #3a3a3a;
-}
+/* controls */
 
 /* panel */
 
-.dark .panel, .dark .panelCorner {
-    background: #2a2a2a;    
+.dark .panel {
+    background: #202020;
 }
 
-.dark .panelCorner {
-    background: #2e2e2e;    
+.dark .panel .actionButton {
+    border-color: #202020;
 }
 
-.dark .panelClientArea {
+.dark .panel .panelTitle {
+    color: #e0e0e0;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.dark .panel .actionButton {
+    background: radial-gradient(#c8c8c8, #b8b8b8);
+}
+
+.dark .panel .actionButton:active {
+    background: radial-gradient(#b8b8b8, #c8c8c8);
+}
+
+.dark .scrollBar,
+.scrollHandler {
+    position: absolute;
+}
+
+.dark .scrollBar {
+    background: transparent;
+    box-shadow: inset 2px 2px 2px #10101018,
+        -1px -1px 0 #202020;
+}
+
+.dark .scrollHandler {
+    background: linear-gradient(#303030, #3a3a3a);
+    box-shadow: inset -1px -1px 0 #202020,
+        inset 1px 1px 0 #606060;
+}
+
+.dark .scrollHandler:active {
+    background: linear-gradient(#3a3a3a, #303030);
+    box-shadow: inset -1px -1px 0 #606060,
+        inset 1px 1px 0 #202020;
+}
+
+.dark input {
+    box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.3),
+        inset -1px -1px 0px rgba(255, 255, 255, 0.3);
     background: #3a3a3a;
+    outline: none;
+    padding: 2px;
+    border-radius: 2px;
+    color: #f0f0f0;
 }
 
-.dark .panel, .dark .panelClientArea, .dark .panelCorner {
-    border: 1px solid #1a1a1a;
+.dark input:focus {
+    box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.6),
+        inset -1px -1px 1px rgba(255, 255, 255, 0.6);
+    
 }

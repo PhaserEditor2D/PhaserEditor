@@ -421,8 +421,13 @@ var phasereditor2d;
                 treeItemSelectionForeground: "#f0f0f0",
                 treeItemForeground: "#000"
             };
-            Controls.DARK_THEME = Controls.LIGHT_THEME;
-            Controls.theme = Controls.LIGHT_THEME;
+            Controls.DARK_THEME = {
+                treeItemOverBackground: "#ffffff0a",
+                treeItemSelectionBackground: "#33e",
+                treeItemSelectionForeground: "#f0f0f0",
+                treeItemForeground: "#f0f0f0"
+            };
+            Controls.theme = Controls.DARK_THEME;
             controls.Controls = Controls;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
