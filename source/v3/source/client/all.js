@@ -1861,8 +1861,10 @@ var phasereditor2d;
                     const cursorResize = this._horizontal ? "ew-resize" : "ns-resize";
                     const inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
                     if (inside) {
-                        e.preventDefault();
-                        this.getElement().style.cursor = cursorResize;
+                        if (e.buttons === 0 || this._startDrag !== -1) {
+                            e.preventDefault();
+                            this.getElement().style.cursor = cursorResize;
+                        }
                     }
                     else {
                         this.getElement().style.cursor = "inherit";
