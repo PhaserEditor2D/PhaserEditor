@@ -142,6 +142,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#text">7.3.7&nbsp;&nbsp;&nbsp;Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#group">7.3.8&nbsp;&nbsp;&nbsp;Group</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#morphing-objects-to-a-different-type">7.3.9&nbsp;&nbsp;&nbsp;Morphing objects to a different type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#making-reusable-objects">7.3.10&nbsp;&nbsp;&nbsp;Making reusable objects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scene-properties">7.4&nbsp;&nbsp;&nbsp;Scene properties</a><ul>
@@ -311,7 +312,7 @@
 </div>
 <div class="section" id="supported-object-types">
 <h2>7.3&nbsp;&nbsp;&nbsp;Supported object types<a class="headerlink" href="#supported-object-types" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is in active development and only supports a very basic set of object types. Eventually, we should add more types and more properties. However, you can use an <a class="reference external" href="#game-object-property-section">object factory</a> to create objects of any type, even your custom type.</p>
+<p>The <a class="reference external" href="scene-editor.html">Scene Editor</a> is in active development and only supports a very basic set of object types. Eventually, we should add more types and more properties. However, you can use an <a class="reference external" href="#making-reusable-objects">object factory</a> to create objects of any type, even your custom type.</p>
 <p>The list of supported object types is:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#image">Image</a></li>
@@ -404,6 +405,41 @@
 </div>
 <div class="section" id="game-object-property-section">
 <h4>Game Object property section<a class="headerlink" href="#game-object-property-section" title="Permalink to this headline">¶</a></h4>
+<p>The majority of the objects you add to the scene are a subtype of the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html">Phaser.GameObjects.GameObject</a>. The <strong>Game Object</strong> section exposes properties of the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html">GameObject</a> class and other properties that are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API but are used by the editor to provide more flexibility.</p>
+<img alt="Game Object section." src="_images/scene-editor-game-object-section.png" />
+<ol class="arabic simple">
+<li>The <strong>Active</strong> button. It sets On or Off the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#active__anchor">active</a> property.</li>
+<li>The <strong>Visible</strong> button. It sets On or Off the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Visible.html#visible__anchor">visible</a> property. If this button is set On, the object will be rendered in the editor with certain transparency.</li>
+<li>The <strong>Name</strong> property. If it is selected, then the <strong>Var Name</strong> of the object will be used as <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#name__anchor">the name</a> too.</li>
+<li>The <strong>Factory</strong> property is not <a class="reference external" href="https://phaser.io">Phaser</a> API, it says to the <a class="reference internal" href="#scene-compiler">scene compiler</a> to use a different factory for the object. You can write the new factory name directly in the text-box or select one from the menu. Leaves it empty to use the default factory.</li>
+</ol>
+<blockquote>
+<div><div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// using the default factory &quot;sprite&quot;</span>
+<span class="kd">var</span> <span class="nx">gator</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mf">560.0</span><span class="p">,</span> <span class="mf">144.0</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;gator-1&quot;</span><span class="p">);</span>
+
+<span class="c1">// using the custom factory &quot;gator&quot;</span>
+<span class="kd">var</span> <span class="nx">gator</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">gator</span><span class="p">(</span><span class="mf">560.0</span><span class="p">,</span> <span class="mf">144.0</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;gator-1&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="Game Object factory." src="_images/scene-editor-game-object-factory.png" />
+<p>Learn more about factories in the <a class="reference internal" href="#making-reusable-objects">Making reusable objects</a> section.</p>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>The <strong>Factory R. Type</strong> property is not <a class="reference external" href="https://phaser.io">Phaser</a> API, you can use it together with the <strong>Factory</strong> property to create custom objects. When you use a custom factory, probably, the object returned by it is a custom type too, like <code class="docutils literal notranslate"><span class="pre">Player</span></code> or <code class="docutils literal notranslate"><span class="pre">Enemy</span></code>. You can use this property to set the return type of a custom factory. The variables that reference the object will be declared with the custom type and you will get access to all its properties and methods.</li>
+</ol>
+<blockquote>
+<div><p>In JavaScript, the code is generated like this:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">gator</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">gator</span><span class="p">(</span><span class="mf">560.0</span><span class="p">,</span> <span class="mf">144.0</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;gator-1&quot;</span><span class="p">);</span>
+<span class="cm">/** @type {Gator} */</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">fGator</span> <span class="o">=</span> <span class="nx">gator</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that, if an instance property is generated for the object (<code class="docutils literal notranslate"><span class="pre">fGator</span></code>), then it is annotated with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
+<p>In TypeScript it has even more sense, because this language supports static typing. In the above case, it will generated a property with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">private</span> <span class="nx">fGator</span><span class="o">:</span> <span class="nx">Gator</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
 </div>
 <div class="section" id="transform-property-section">
 <h4>Transform property section<a class="headerlink" href="#transform-property-section" title="Permalink to this headline">¶</a></h4>
@@ -444,6 +480,9 @@
 </div>
 <div class="section" id="morphing-objects-to-a-different-type">
 <h3>7.3.9&nbsp;&nbsp;&nbsp;Morphing objects to a different type<a class="headerlink" href="#morphing-objects-to-a-different-type" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="making-reusable-objects">
+<h3>7.3.10&nbsp;&nbsp;&nbsp;Making reusable objects<a class="headerlink" href="#making-reusable-objects" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="scene-properties">

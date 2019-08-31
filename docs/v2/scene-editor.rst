@@ -111,7 +111,7 @@ In the same way, you `drop file keys from the Blocks view <adding-objects-from-t
 Supported object types
 ----------------------
 
-The |SceneEditor|_ is in active development and only supports a very basic set of object types. Eventually, we should add more types and more properties. However, you can use an `object factory <#game-object-property-section>`_ to create objects of any type, even your custom type.
+The |SceneEditor|_ is in active development and only supports a very basic set of object types. Eventually, we should add more types and more properties. However, you can use an `object factory <#making-reusable-objects>`_ to create objects of any type, even your custom type.
 
 The list of supported object types is:
 
@@ -223,6 +223,55 @@ A section that contains properties and buttons that are not part of the Phaser_ 
 Game Object property section
 ############################
 
+The majority of the objects you add to the scene are a subtype of the `Phaser.GameObjects.GameObject <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html>`_. The **Game Object** section exposes properties of the `GameObject <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html>`_ class and other properties that are not part of the Phaser_ API but are used by the editor to provide more flexibility.
+
+.. image:: images/scene-editor/scene-editor-game-object-section.png
+  :alt: Game Object section.
+
+
+1. The **Active** button. It sets On or Off the `active <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#active__anchor>`_ property.
+
+2. The **Visible** button. It sets On or Off the `visible <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Visible.html#visible__anchor>`_ property. If this button is set On, the object will be rendered in the editor with certain transparency.
+
+3. The **Name** property. If it is selected, then the **Var Name** of the object will be used as `the name <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#name__anchor>`_ too.
+
+4. The **Factory** property is not Phaser_ API, it says to the `scene compiler`_ to use a different factory for the object. You can write the new factory name directly in the text-box or select one from the menu. Leaves it empty to use the default factory.
+
+  .. code::
+
+    // using the default factory "sprite"
+    var gator = this.add.sprite(560.0, 144.0, "atlas", "gator-1"); 
+
+    // using the custom factory "gator"
+    var gator = this.add.gator(560.0, 144.0, "atlas", "gator-1");
+
+
+  .. image:: images/scene-editor/scene-editor-game-object-factory.png
+    :alt: Game Object factory.
+
+  Learn more about factories in the `Making reusable objects`_ section.
+
+5. The **Factory R. Type** property is not Phaser_ API, you can use it together with the **Factory** property to create custom objects. When you use a custom factory, probably, the object returned by it is a custom type too, like ``Player`` or ``Enemy``. You can use this property to set the return type of a custom factory. The variables that reference the object will be declared with the custom type and you will get access to all its properties and methods.
+
+  In JavaScript, the code is generated like this:
+
+  .. code::
+
+    var gator = this.add.gator(560.0, 144.0, "atlas", "gator-1");
+    /** @type {Gator} */
+    this.fGator = gator;
+    
+
+  Note that, if an instance property is generated for the object (``fGator``), then it is annotated with the ``Gator`` type.
+
+  In TypeScript it has even more sense, because this language supports static typing. In the above case, it will generated a property with the ``Gator`` type. 
+
+  
+  .. code::
+
+    private fGator: Gator;
+
+
 Transform property section
 ############################
 
@@ -267,6 +316,11 @@ Group
 
 Morphing objects to a different type
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Making reusable objects
+~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Scene properties
 ----------------
