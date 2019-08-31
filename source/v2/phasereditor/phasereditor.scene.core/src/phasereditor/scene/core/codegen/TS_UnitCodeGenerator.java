@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.scene.core.codegen;
 
+import phasereditor.scene.core.codedom.AssignPropertyDom;
 import phasereditor.scene.core.codedom.FieldDeclDom;
 import phasereditor.scene.core.codedom.MemberDeclDom;
 import phasereditor.scene.core.codedom.UnitDom;
@@ -43,6 +44,11 @@ public class TS_UnitCodeGenerator extends JS6_UnitCodeGenerator {
 		} else {
 			super.generateMemberDecl(memberDecl);
 		}
+	}
+
+	@Override
+	protected void generateTypeAnnotation(AssignPropertyDom assign) {
+		// do nothing, in TypeScript the types are "annotated" with var declarations.
 	}
 
 }
