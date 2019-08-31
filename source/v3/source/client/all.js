@@ -427,7 +427,7 @@ var phasereditor2d;
                 treeItemSelectionForeground: "#f0f0f0",
                 treeItemForeground: "#f0f0f0"
             };
-            Controls.theme = Controls.DARK_THEME;
+            Controls.theme = Controls.LIGHT_THEME;
             controls.Controls = Controls;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -846,6 +846,9 @@ var phasereditor2d;
                     prepareFiltering() {
                         this._filterIncludeSet = new Set();
                         this.buildFilterIncludeMap();
+                    }
+                    isFilterIncluded(obj) {
+                        return this._filterIncludeSet.has(obj);
                     }
                     matches(obj) {
                         const labelProvider = this.getLabelProvider();
@@ -2003,7 +2006,6 @@ var phasereditor2d;
                     }
                     onFilterInput(e) {
                         this._viewer.setFilterText(this._filterElement.value);
-                        this._viewer.repaint();
                     }
                     getViewer() {
                         return this._viewer;
@@ -2136,6 +2138,25 @@ var phasereditor2d;
                         const roots = contentProvider.getRoots(this.getInput());
                         this._contentHeight = this.paintItems(roots, x, y) - this.getScrollY();
                     }
+                    setFilterText(filter) {
+                        super.setFilterText(filter);
+                        if (filter !== "") {
+                            this.expandFilteredParents(this.getContentProvider().getRoots(this.getInput()));
+                            this.repaint();
+                        }
+                    }
+                    expandFilteredParents(objects) {
+                        const contentProvider = this.getContentProvider();
+                        for (const obj of objects) {
+                            if (this.isFilterIncluded(obj)) {
+                                const children = contentProvider.getChildren(obj);
+                                if (children.length > 0) {
+                                    this.setExpanded(obj, true);
+                                    this.expandFilteredParents(children);
+                                }
+                            }
+                        }
+                    }
                     buildFilterIncludeMap() {
                         const roots = this.getContentProvider().getRoots(this.getInput());
                         this.buildFilterIncludeMap2(roots);
@@ -2155,38 +2176,35 @@ var phasereditor2d;
                         return result;
                     }
                     paintItems(objects, x, y) {
-                        const isFiltering = this.getFilterText() !== "";
                         const b = this.getBounds();
-                        const filter = this.getFilterText();
                         for (let obj of objects) {
-                            if (!this._filterIncludeSet.has(obj)) {
-                                continue;
-                            }
                             const children = this.getContentProvider().getChildren(obj);
-                            const expanded = this.isExpanded(obj) || isFiltering;
-                            const renderer = this.getCellRendererProvider().getCellRenderer(obj);
-                            const args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
-                            const cellHeight = renderer.cellHeight(args);
-                            args.h = cellHeight;
-                            super.paintItemBackground(obj, 0, y, b.width, cellHeight);
-                            if (y > -this.getCellSize() && y < b.height) {
-                                // render tree icon
-                                if (children.length > 0) {
-                                    const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
-                                    const icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
-                                    icon.paint(this._context, x, iconY);
-                                    this._treeIconList.push({
-                                        rect: new controls.Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
-                                        obj: obj
-                                    });
+                            const expanded = this.isExpanded(obj);
+                            if (this._filterIncludeSet.has(obj)) {
+                                const renderer = this.getCellRendererProvider().getCellRenderer(obj);
+                                const args = new viewers.RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
+                                const cellHeight = renderer.cellHeight(args);
+                                args.h = cellHeight;
+                                super.paintItemBackground(obj, 0, y, b.width, cellHeight);
+                                if (y > -this.getCellSize() && y < b.height) {
+                                    // render tree icon
+                                    if (children.length > 0) {
+                                        const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
+                                        const icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
+                                        icon.paint(this._context, x, iconY);
+                                        this._treeIconList.push({
+                                            rect: new controls.Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
+                                            obj: obj
+                                        });
+                                    }
+                                    this.renderCell(args, renderer);
+                                    const item = new viewers.PaintItem(this._paintItems.length, obj);
+                                    item.set(args.x, args.y, args.w, args.h);
+                                    this._paintItems.push(item);
                                 }
-                                this.renderCell(args, renderer);
-                                const item = new viewers.PaintItem(this._paintItems.length, obj);
-                                item.set(args.x, args.y, args.w, args.h);
-                                this._paintItems.push(item);
+                                y += cellHeight;
                             }
-                            y += cellHeight;
-                            if (expanded || filter !== "") {
+                            if (expanded) {
                                 y = this.paintItems(children, x + LABEL_MARGIN, y);
                             }
                         }

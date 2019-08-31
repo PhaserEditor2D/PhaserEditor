@@ -155,7 +155,7 @@ namespace phasereditor2d.ui.controls {
             treeItemForeground: "#f0f0f0"
         };
 
-        public static theme: Theme = Controls.DARK_THEME;
+        public static theme: Theme = Controls.LIGHT_THEME;
 
         private static getSmoothingPrefix(context: CanvasRenderingContext2D) {
             const vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];

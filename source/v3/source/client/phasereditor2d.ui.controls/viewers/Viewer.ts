@@ -12,7 +12,7 @@ namespace phasereditor2d.ui.controls.viewers {
         private _labelProvider: ILabelProvider = null;
         private _input: any;
         private _cellSize: number;
-        private _expandedObjects: Set<any>;
+        protected _expandedObjects: Set<any>;
         private _selectedObjects: Set<any>;
         protected _context: CanvasRenderingContext2D;
         protected _paintItems: PaintItem[];
@@ -69,6 +69,10 @@ namespace phasereditor2d.ui.controls.viewers {
         private prepareFiltering() {
             this._filterIncludeSet = new Set();
             this.buildFilterIncludeMap();
+        }
+
+        isFilterIncluded(obj : any) {
+            return this._filterIncludeSet.has(obj);
         }
 
         protected abstract buildFilterIncludeMap();

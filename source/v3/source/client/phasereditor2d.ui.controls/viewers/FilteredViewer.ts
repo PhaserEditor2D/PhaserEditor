@@ -23,7 +23,6 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private onFilterInput(e: Event) {
             this._viewer.setFilterText(this._filterElement.value);
-            this._viewer.repaint();
         }
 
         getViewer() {

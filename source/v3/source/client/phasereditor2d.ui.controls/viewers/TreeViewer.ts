@@ -72,8 +72,31 @@ namespace phasereditor2d.ui.controls.viewers {
             this._contentHeight = this.paintItems(roots, x, y) - this.getScrollY();
         }
 
+        setFilterText(filter: string) {
+            super.setFilterText(filter);
+
+            if (filter !== "") {
+                this.expandFilteredParents(this.getContentProvider().getRoots(this.getInput()));
+                this.repaint();
+            }
+        }
+
+        private expandFilteredParents(objects: any[]): void {
+            const contentProvider = this.getContentProvider();
+            for (const obj of objects) {
+                if (this.isFilterIncluded(obj)) {
+                    const children = contentProvider.getChildren(obj);
+                    if (children.length > 0) {
+                        this.setExpanded(obj, true);
+                        this.expandFilteredParents(children);
+                    }
+                }
+            }
+        }
+
         protected buildFilterIncludeMap() {
             const roots = this.getContentProvider().getRoots(this.getInput());
+
             this.buildFilterIncludeMap2(roots);
         }
 
@@ -85,6 +108,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const children = this.getContentProvider().getChildren(obj);
                 const resultChildren = this.buildFilterIncludeMap2(children);
+
                 resultThis = resultThis || resultChildren;
 
                 if (resultThis) {
@@ -98,54 +122,50 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private paintItems(objects: any[], x: number, y: number): number {
 
-            const isFiltering = this.getFilterText() !== "";
-
             const b = this.getBounds();
-            const filter = this.getFilterText();
 
             for (let obj of objects) {
 
-                if (!this._filterIncludeSet.has(obj)) {
-                    continue;
-                }
-
                 const children = this.getContentProvider().getChildren(obj);
-                const expanded = this.isExpanded(obj) || isFiltering;
+                const expanded = this.isExpanded(obj);
 
-                const renderer = this.getCellRendererProvider().getCellRenderer(obj);
+                if (this._filterIncludeSet.has(obj)) {
 
-                const args = new RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
-                const cellHeight = renderer.cellHeight(args);
-                args.h = cellHeight;
+                    const renderer = this.getCellRendererProvider().getCellRenderer(obj);
 
-                super.paintItemBackground(obj, 0, y, b.width, cellHeight);
+                    const args = new RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
+                    const cellHeight = renderer.cellHeight(args);
+                    args.h = cellHeight;
 
-                if (y > -this.getCellSize() && y < b.height) {
+                    super.paintItemBackground(obj, 0, y, b.width, cellHeight);
 
-                    // render tree icon
-                    if (children.length > 0) {
-                        const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
+                    if (y > -this.getCellSize() && y < b.height) {
 
-                        const icon = Controls.getIcon(expanded ? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
-                        icon.paint(this._context, x, iconY);
+                        // render tree icon
+                        if (children.length > 0) {
+                            const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
 
-                        this._treeIconList.push({
-                            rect: new Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
-                            obj: obj
-                        });
+                            const icon = Controls.getIcon(expanded ? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
+                            icon.paint(this._context, x, iconY);
+
+                            this._treeIconList.push({
+                                rect: new Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
+                                obj: obj
+                            });
+                        }
+
+                        this.renderCell(args, renderer);
+
+                        const item = new PaintItem(this._paintItems.length, obj);
+                        item.set(args.x, args.y, args.w, args.h);
+                        this._paintItems.push(item);
                     }
 
-                    this.renderCell(args, renderer);
+                    y += cellHeight;
 
-                    const item = new PaintItem(this._paintItems.length, obj);
-                    item.set(args.x, args.y, args.w, args.h);
-                    this._paintItems.push(item);
                 }
 
-                y += cellHeight;
-
-
-                if (expanded || filter !== "") {
+                if (expanded) {
                     y = this.paintItems(children, x + LABEL_MARGIN, y);
                 }
             }
