@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.editor.wizards;
+package phasereditor.project.ui.wizards;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -36,6 +36,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
 import phasereditor.assetpack.core.ScriptAssetModel;
+import phasereditor.assetpack.ui.editor.wizards.NewPage_AssetPackSection;
 import phasereditor.project.core.ProjectCore;
 
 /**

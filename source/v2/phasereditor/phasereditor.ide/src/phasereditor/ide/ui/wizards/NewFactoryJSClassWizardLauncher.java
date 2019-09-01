@@ -23,7 +23,7 @@ package phasereditor.ide.ui.wizards;
 
 import org.eclipse.ui.INewWizard;
 
-import phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard;
+import phasereditor.project.ui.wizards.NewFactoryJSFileWizard;
 
 /**
  * @author arian

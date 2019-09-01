@@ -1,4 +1,4 @@
-package phasereditor.project.ui.wizards;
+package phasereditor.project.ui;
 
 import static phasereditor.ui.PhaserEditorUI.getWorkbenchLabelProvider;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
-import phasereditor.project.ui.ProjectUI;
 import phasereditor.ui.TreeArrayContentProvider;
 
 public class OpenProjectDialog extends Dialog {

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+<extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <newWizardShortcut
+               id="phasereditor.project.ui.newproject">
+         </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.project.ui.newExampleProject">
+         </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.project.ui.newclass">
+         </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
+   
+      <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="phasereditor.project.ui.keywords.phaser"
+            label="phaser">
+      </keyword>
+   </extension>
+ <extension
+         point="org.eclipse.ui.newWizards">         
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.project.ui.wizards.NewPhaserProjectWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
+            id="phasereditor.project.ui.newproject"
+            name="Phaser Project"
+            project="true">
+      </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.project.ui.wizards.NewPhaserExampleProjectWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
+            id="phasereditor.project.ui.newExampleProject"
+            name="Phaser Example Project"
+            project="true">
+      </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.project.ui.wizards.NewJSClassFileWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/new_generic_editor.png"
+            id="phasereditor.project.ui.newclass"
+            name="JavaScript Class File">
+      </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.project.ui.wizards.NewFactoryJSFileWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/new_generic_editor.png"
+            id="phasereditor.assetpack.ui.editor.wizards.NewFactoryJSFileWizard"
+            name="Factory Code File">
+      </wizard>
+   </extension>
+
+<extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.resources.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="phasereditor.project.ui.*">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         id="phasereditor.project.ui.commonWizards"
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="phaser.new.project"
+            type="new"
+            wizardId="phasereditor.project.ui.newproject">
+         <enablement></enablement>
+      </commonWizard>
+      <commonWizard
+            menuGroupId="phaser.new.project"
+            type="new"
+            wizardId="phasereditor.project.ui.newExampleProject">
+         <enablement></enablement>
+      </commonWizard>
+      <commonWizard
+            menuGroupId="phaser.new.js"
+            type="new"
+            wizardId="phasereditor.project.ui.newclass">
+         <enablement></enablement>
+      </commonWizard>
+   </extension>
+
+</plugin>
