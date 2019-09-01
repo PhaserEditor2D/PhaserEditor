@@ -42,6 +42,7 @@
         <module>phasereditor.optipng.core</module>
         <module>phasereditor.project.core</module>
         <module>phasereditor.project.ui</module>
+        <module>phasereditor.project.ui.wizards</module>
         <module>phasereditor.resources.executables</module>
         <module>phasereditor.resources.executables.linux</module>
         <module>phasereditor.resources.executables.macos</module>

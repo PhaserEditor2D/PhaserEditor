@@ -33,6 +33,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import phasereditor.inspect.core.InspectCore;
@@ -43,6 +44,7 @@ import phasereditor.project.core.ProjectCore;
  *
  */
 public class NewFactoryJSFileWizardPage extends WizardNewFileCreationPage {
+
 	public NewFactoryJSFileWizardPage(IStructuredSelection selection) {
 		super("newfile", selection);
 		setTitle("New Factory Code File");
@@ -50,8 +52,10 @@ public class NewFactoryJSFileWizardPage extends WizardNewFileCreationPage {
 	}
 
 	@Override
-	public String getFileExtension() {
-		return "js";
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+
+		setFileExtension(ProjectCore.getProjectLanguage(ProjectCore.getActiveProject()).getExtension());
 	}
 
 	/**
@@ -117,11 +121,11 @@ public class NewFactoryJSFileWizardPage extends WizardNewFileCreationPage {
 	protected InputStream getInitialContents() {
 		String clsname = getFileName();
 		clsname = getFileName().substring(0, clsname.length() - getFileExtension().length() - 1);
-		var file = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN, "templates_newfile/Factory.js");
+		var file = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN, "templates_newfile/Factory." + getFileExtension());
 
 		try (InputStream input = Files.newInputStream(file);) {
 			var content = Files.readString(file);
-			content = content.replace("{className}", clsname);
+			content = content.replace("{className}", clsname.substring(0, 1).toUpperCase() + clsname.substring(1));
 			content = content.replace("{factoryName}", clsname.substring(0, 1).toLowerCase() + clsname.substring(1));
 			return new ByteArrayInputStream(content.getBytes());
 		} catch (IOException e) {

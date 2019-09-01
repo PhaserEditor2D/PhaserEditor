@@ -24,7 +24,6 @@ package phasereditor.project.ui.wizards;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -45,16 +44,6 @@ import phasereditor.project.core.codegen.SourceLang;
  *
  */
 public class NewPhaserProjectSettingsWizardPage extends WizardPage {
-	private static class ViewerLabelProvider extends LabelProvider {
-		public ViewerLabelProvider() {
-		}
-
-		@Override
-		public String getText(Object element) {
-			return ((SourceLang) element).getDisplayName();
-		}
-	}
-
 	private Text _widthText;
 	private Text _heightText;
 	private Combo _typeCombo;
@@ -200,7 +189,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		Combo combo = _comboLang.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		_comboLang.setContentProvider(new ArrayContentProvider());
-		_comboLang.setLabelProvider(new ViewerLabelProvider());
+		_comboLang.setLabelProvider(new SourceLangLabelProvider());
 
 		afterCreateWidgets();
 	}

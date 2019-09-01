@@ -26,6 +26,7 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -38,6 +39,7 @@ import org.eclipse.ui.ide.IDE;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.ui.editor.wizards.NewPage_AssetPackSection;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 /**
  * @author arian
@@ -49,6 +51,7 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 	private NewFactoryJSFileWizardPage _filePage;
 	private NewPage_AssetPackSection _assetPackPage;
 	private IWorkbenchPage _windowPage;
+	private SelectLangPage _langPage;
 
 	public NewFactoryJSFileWizard() {
 		setWindowTitle("New Factory Class");
@@ -57,16 +60,40 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		_filePage = new NewFactoryJSFileWizardPage(_selection);
+		_langPage = new SelectLangPage() {
+
+			@Override
+			protected void langChanged(SourceLang lang) {
+				_filePage.setFileExtension(lang.getExtension());
+
+				var filename = new Path(_filePage.getFileName())
+
+						// we need to do this twice
+						.removeFileExtension()
+						
+						.removeFileExtension()
+
+						.addFileExtension(_filePage.getFileExtension())
+
+						.toPortableString();
+
+				_filePage.setFileName(filename);
+
+				_filePage.validatePage();
+			}
+
+		};
 		_assetPackPage = new NewPage_AssetPackSection(_filePage);
 
 		addPage(_filePage);
+		addPage(_langPage);
 		addPage(_assetPackPage);
 	}
 
 	public NewFactoryJSFileWizardPage getFilePage() {
 		return _filePage;
 	}
-	
+
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		_selection = selection;
@@ -89,8 +116,7 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
 		if (file != null) {
-			
-			
+
 			var job = new WorkspaceJob("Adding file to the asset pack") {
 
 				@Override
@@ -107,7 +133,7 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 				}
 			};
 			job.schedule();
-			
+
 			// open the file in editor
 			try {
 				IDE.openEditor(_windowPage, file);
