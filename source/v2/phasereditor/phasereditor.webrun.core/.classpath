@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="libs/jetty/javax.websocket-api-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-api-9.4.15.v20190215.jar" sourcepath="/home/arian/Documents/PhaserEditor/Jetty/jetty.project-jetty-9.4.15.v20190215.zip"/>
-	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-common-9.4.15.v20190215.jar" sourcepath="/home/arian/Documents/PhaserEditor/Jetty/jetty.project-jetty-9.4.15.v20190215.zip"/>
-	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-server-9.4.15.v20190215.jar" sourcepath="/home/arian/Documents/PhaserEditor/Jetty/jetty.project-jetty-9.4.15.v20190215.zip"/>
-	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-servlet-9.4.15.v20190215.jar" sourcepath="/home/arian/Documents/PhaserEditor/Jetty/jetty.project-jetty-9.4.15.v20190215.zip"/>
+	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-api-9.4.15.v20190215.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-common-9.4.15.v20190215.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-server-9.4.15.v20190215.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jetty/websocket-servlet-9.4.15.v20190215.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

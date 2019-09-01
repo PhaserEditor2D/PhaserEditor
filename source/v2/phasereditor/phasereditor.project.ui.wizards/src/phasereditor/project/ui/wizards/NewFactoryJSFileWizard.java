@@ -70,7 +70,7 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 
 						// we need to do this twice
 						.removeFileExtension()
-						
+
 						.removeFileExtension()
 
 						.addFileExtension(_filePage.getFileExtension())
@@ -123,9 +123,11 @@ public class NewFactoryJSFileWizard extends Wizard implements INewWizard {
 				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
 					_assetPackPage.performFinish(monitor, section -> {
+						var jsFile = file.getProject()
+								.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("js"));
 						var pack = section.getPack();
-						var asset = new ScriptAssetModel(pack.createKey(file), section);
-						asset.setUrl(ProjectCore.getAssetUrl(file));
+						var asset = new ScriptAssetModel(pack.createKey(jsFile), section);
+						asset.setUrl(ProjectCore.getAssetUrl(jsFile));
 						section.addAsset(asset);
 					});
 

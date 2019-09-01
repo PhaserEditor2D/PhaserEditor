@@ -27,8 +27,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -37,7 +37,7 @@ class RunProjectWrapper {
 		var btn = new Button(parent, SWT.PUSH);
 		btn.setText("Play");
 		btn.setImage(EditorSharedImages.getImage(IMG_GAME_CONTROLLER));
-		btn.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> WebRunUI
-				.openBrowser(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getSelection())));
+		btn.addSelectionListener(
+				SelectionListener.widgetSelectedAdapter(e -> WebRunUI.openBrowser(ProjectCore.getActiveProject())));
 	}
 }
