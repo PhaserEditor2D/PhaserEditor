@@ -435,10 +435,49 @@
 </pre></div>
 </div>
 <p>Note that, if an instance property is generated for the object (<code class="docutils literal notranslate"><span class="pre">fGator</span></code>), then it is annotated with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
-<p>In TypeScript it has even more sense, because this language supports static typing. In the above case, it will generated a property with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
+<p>In TypeScript, it has even more sense, because this language supports static typing. In the above case, it will generated a property with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
 <div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">private</span> <span class="nx">fGator</span><span class="o">:</span> <span class="nx">Gator</span><span class="p">;</span>
 </pre></div>
 </div>
+<p>Learn more about factories in the <a class="reference internal" href="#making-reusable-objects">Making reusable objects</a> section.</p>
+</div></blockquote>
+<ol class="arabic simple" start="6">
+<li>The <strong>Build Object</strong> property is not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API. It indicates to the <a class="reference internal" href="#scene-compiler">scene compiler</a> to generate a call to the <code class="docutils literal notranslate"><span class="pre">build</span></code> method. This is useful for objects that are created with a custom factory and a custom object type. You can implement a <code class="docutils literal notranslate"><span class="pre">build</span></code> method in the custom type to setup the object with initial values that may depend on other object properties. Look in the next image how in the <code class="docutils literal notranslate"><span class="pre">build</span></code> method the velocity values are set regarding the user data set to the object.</li>
+</ol>
+<blockquote>
+<div><img alt="Game Object build." src="_images/scene-editor-game-object-build.png" />
+</div></blockquote>
+<ol class="arabic simple" start="7">
+<li>The <strong>Data</strong> property is associated to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setData__anchor">data</a> property of the <a class="reference external" href="https://phaser.io">Phaser</a> API. This property is a reference to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Data.DataManager.html">Phaser.Data.DataManager</a>. It allows to set user data to the object.</li>
+</ol>
+<blockquote>
+<div><p>This is the workflow:</p>
+<ol class="arabic simple">
+<li>Click in the <strong>add</strong> button and write the new data property name.</li>
+</ol>
+<blockquote>
+<div><img alt="Add data property." src="_images/scene-editor-game-object-data-add.png" />
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>The property was added, now write its value. This value is verbatim-written in the generated code. This means, you can write literals like <code class="docutils literal notranslate"><span class="pre">&quot;high&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">{value:10,</span> <span class="pre">dir:&quot;left&quot;}</span></code> or even JavaScript expressions like <code class="docutils literal notranslate"><span class="pre">Math.random()</span> <span class="pre">*</span> <span class="pre">gator.width</span></code>.</li>
+</ol>
+<blockquote>
+<div><img alt="Set the data property value." src="_images/scene-editor-game-object-data-value.png" />
+</div></blockquote>
+<p>This is how it is inserted in the generated code:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">gator</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">gator</span><span class="p">(</span><span class="mf">576.0</span><span class="p">,</span> <span class="mf">368.0</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;gator-1&quot;</span><span class="p">);</span>
+<span class="nx">gator</span><span class="p">.</span><span class="nx">setData</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+<span class="nx">gator</span><span class="p">.</span><span class="nx">setData</span><span class="p">(</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="hll"><span class="nx">gator</span><span class="p">.</span><span class="nx">setData</span><span class="p">(</span><span class="s2">&quot;power&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class="nx">gator</span><span class="p">.</span><span class="nx">build</span><span class="p">();</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Delete or select other objects with the same property or the same property and value.</li>
+</ol>
+<blockquote>
+<div><img alt="Data property menu." src="_images/scene-editor-game-object-data-value-menu.png" />
+</div></blockquote>
 </div></blockquote>
 </div>
 <div class="section" id="transform-property-section">

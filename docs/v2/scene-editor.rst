@@ -264,13 +264,50 @@ The majority of the objects you add to the scene are a subtype of the `Phaser.Ga
 
   Note that, if an instance property is generated for the object (``fGator``), then it is annotated with the ``Gator`` type.
 
-  In TypeScript it has even more sense, because this language supports static typing. In the above case, it will generated a property with the ``Gator`` type. 
+  In TypeScript, it has even more sense, because this language supports static typing. In the above case, it will generated a property with the ``Gator`` type. 
 
   
   .. code::
 
     private fGator: Gator;
 
+
+  Learn more about factories in the `Making reusable objects`_ section.
+
+6. The **Build Object** property is not part of the Phaser_ API. It indicates to the `scene compiler`_ to generate a call to the ``build`` method. This is useful for objects that are created with a custom factory and a custom object type. You can implement a ``build`` method in the custom type to setup the object with initial values that may depend on other object properties. Look in the next image how in the ``build`` method the velocity values are set regarding the user data set to the object.
+
+  .. image:: images/scene-editor/scene-editor-game-object-build.png
+    :alt: Game Object build.
+
+7. The **Data** property is associated to the `data <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setData__anchor>`_ property of the Phaser_ API. This property is a reference to the `Phaser.Data.DataManager <https://photonstorm.github.io/phaser3-docs/Phaser.Data.DataManager.html>`_. It allows to set user data to the object. 
+
+  This is the workflow:
+
+  1. Click in the **add** button and write the new data property name.
+
+    .. image:: images/scene-editor/scene-editor-game-object-data-add.png
+      :alt: Add data property.
+
+  2. The property was added, now write its value. This value is verbatim-written in the generated code. This means, you can write literals like ``"high"``, ``{value:10, dir:"left"}`` or even JavaScript expressions like ``Math.random() * gator.width``.
+
+    .. image:: images/scene-editor/scene-editor-game-object-data-value.png
+      :alt: Set the data property value.
+
+  This is how it is inserted in the generated code:
+
+  .. code-block:: javascript
+    :emphasize-lines: 4,4
+
+    var gator = this.add.gator(576.0, 368.0, "atlas", "gator-1");
+    gator.setData("distance", 40);
+    gator.setData("horizontal", false);
+    gator.setData("power", 10);
+    gator.build();
+
+  3. Delete or select other objects with the same property or the same property and value.
+
+    .. image:: images/scene-editor/scene-editor-game-object-data-value-menu.png
+      :alt: Data property menu.
 
 Transform property section
 ############################
