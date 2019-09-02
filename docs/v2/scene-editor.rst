@@ -352,6 +352,14 @@ Origin properties section
 
 This section contains the properties and tools to change the origin of an object. The origin tool can be activated by pressing the **Origin tool** button or the ``O`` key.
 
+  .. image:: images/scene-editor/scene-editor-transform-section-origin.png
+    :alt: Origin properties.
+
+  Also, the section toolbar provides shortcuts to set the origin of an object to a preset value.
+
+  .. image:: images/scene-editor/scene-editor-transform-section-origin-presets.png
+    :alt: Origin presets.
+
 Flip properties section
 #######################
 
