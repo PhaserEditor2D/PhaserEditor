@@ -124,14 +124,14 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#supported-object-types">7.3&nbsp;&nbsp;&nbsp;Supported object types</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#common-properties">7.3.1&nbsp;&nbsp;&nbsp;Common properties</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#variable-property-section">Variable property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#editor-property-section">Editor property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#game-object-property-section">Game Object property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#transform-property-section">Transform property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#origin-property-section">Origin property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#flip-property-section">Flip property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scroll-factor-property-section">Scroll Factor property section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tint-property-section">Tint property section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#game-object-properties-section">Game Object properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transform-properties-section">Transform properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#origin-properties-section">Origin properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flip-properties-section">Flip properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#game-object">7.3.2&nbsp;&nbsp;&nbsp;Game Object</a></li>
@@ -146,10 +146,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scene-properties">7.4&nbsp;&nbsp;&nbsp;Scene properties</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#snapping-property-section">7.4.1&nbsp;&nbsp;&nbsp;Snapping property section</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#display-property-section">7.4.2&nbsp;&nbsp;&nbsp;Display property section</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#compiler-property-section">7.4.3&nbsp;&nbsp;&nbsp;Compiler property section</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#webview-property-section">7.4.4&nbsp;&nbsp;&nbsp;WebView property section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snapping-properties-section">7.4.1&nbsp;&nbsp;&nbsp;Snapping properties section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#display-properties-section">7.4.2&nbsp;&nbsp;&nbsp;Display properties section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiler-properties-section">7.4.3&nbsp;&nbsp;&nbsp;Compiler properties section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#webview-properties-section">7.4.4&nbsp;&nbsp;&nbsp;WebView properties section</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scene-compiler">7.5&nbsp;&nbsp;&nbsp;Scene Compiler</a></li>
@@ -326,11 +326,11 @@
 <h3>7.3.1&nbsp;&nbsp;&nbsp;Common properties<a class="headerlink" href="#common-properties" title="Permalink to this headline">¶</a></h3>
 <p>Like it is in the other editors of the IDE, the <a class="reference external" href="workbench.html#properties-view">Properties view</a> connects with the active <a class="reference external" href="scene-editor.html">Scene Editor</a> and show the properties of the objects selected in the scene or the <a class="reference internal" href="#outline-view">Outline view</a>.</p>
 <p>In the <a class="reference external" href="https://phaser.io">Phaser</a> API, the properties of the game object types are divided into dedicated classes in the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html">Phaser.GameObjects.Components</a> namespace. So, an object type contains its properties and methods but also inherits a couple of “component” classes, like <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html">Phaser.GameObjects.Components.Transform</a> or <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">Phaser.GameObjects.Components.Tint</a>.</p>
-<p>In the <a class="reference external" href="workbench.html#properties-view">Properties view</a> of the Scene Editor we split the properties more or less in the same way, each property section is dedicated to a specific <a class="reference external" href="https://phaser.io">Phaser</a> game object component class. There is not a 100% match, there are sections dedicated only to <a class="reference external" href="scene-editor.html">Scene Editor</a>-properties or there are sections with a merge of <a class="reference external" href="https://phaser.io">Phaser</a> API properties and editor-properties.</p>
+<p>In the <a class="reference external" href="workbench.html#properties-view">Properties view</a> of the Scene Editor we split the properties more or less in the same way, each properties section is dedicated to a specific <a class="reference external" href="https://phaser.io">Phaser</a> game object component class. There is not a 100% match, there are sections dedicated only to <a class="reference external" href="scene-editor.html">Scene Editor</a>-properties or there are sections with a merge of <a class="reference external" href="https://phaser.io">Phaser</a> API properties and editor-properties.</p>
 <p>The editor-properties are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.</p>
 <p>In this chapter, we explain the properties that are common to the majority of the supported game object types.</p>
-<div class="section" id="variable-property-section">
-<h4>Variable property section<a class="headerlink" href="#variable-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="variable-properties-section">
+<h4>Variable properties section<a class="headerlink" href="#variable-properties-section" title="Permalink to this headline">¶</a></h4>
 <p>This section is used by the editor and the <a class="reference internal" href="#scene-compiler">scene compiler</a> to identify the object and provides certain operations.</p>
 <img alt="Variable section." src="_images/scene-editor-variable-section.png" />
 <ol class="arabic simple">
@@ -345,8 +345,8 @@
 <li>The same of <em>(1)</em>.</li>
 </ol>
 </div>
-<div class="section" id="editor-property-section">
-<h4>Editor property section<a class="headerlink" href="#editor-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="editor-properties-section">
+<h4>Editor properties section<a class="headerlink" href="#editor-properties-section" title="Permalink to this headline">¶</a></h4>
 <p>A section that contains properties and buttons that are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API but are used to provide certain functionalities of the editor.</p>
 <img alt="Editor section." src="_images/scene-editor-editor-section.png" />
 <ol class="arabic simple">
@@ -367,10 +367,10 @@
 <blockquote>
 <div><img alt="The Order buttons." src="_images/scene-editor-editor-section-order.png" />
 <ol class="arabic simple">
-<li>Moves the object up in the order.</li>
-<li>Moves the object down in the order.</li>
-<li>Moves the object to the top of the order.</li>
-<li>Moves the object to the bottom of the order.</li>
+<li>Moves the object up in the order (or press <code class="docutils literal notranslate"><span class="pre">PageUp</span></code> key).</li>
+<li>Moves the object down in the order (or press <code class="docutils literal notranslate"><span class="pre">PageDown</span></code> key).</li>
+<li>Moves the object to the top of the order (or press <code class="docutils literal notranslate"><span class="pre">Home</span></code> key).</li>
+<li>Moves the object to the bottom of the order (or press <code class="docutils literal notranslate"><span class="pre">End</span></code> key).</li>
 </ol>
 <p>You can see in the <a class="reference internal" href="#outline-view">Outline view</a> the result of the ordering.</p>
 </div></blockquote>
@@ -400,11 +400,11 @@
 </div></blockquote>
 </div></blockquote>
 <ol class="arabic simple" start="5">
-<li>The <strong>Snapping</strong> button is a shortcut to set the snapping value of the scene editor, using the size of the selected object. Many games use fixed-size images and the objects are placed in a grid. The snapping feature of the <a class="reference external" href="scene-editor.html">Scene Editor</a> helps to set a custom grid and place the objects quickly. See more in the <a class="reference internal" href="#snapping-property-section">Snapping property section</a>.</li>
+<li>The <strong>Snapping</strong> button is a shortcut to set the snapping value of the scene editor, using the size of the selected object. Many games use fixed-size images and the objects are placed in a grid. The snapping feature of the <a class="reference external" href="scene-editor.html">Scene Editor</a> helps to set a custom grid and place the objects quickly. See more in the <a class="reference internal" href="#snapping-properties-section">Snapping properties section</a>.</li>
 </ol>
 </div>
-<div class="section" id="game-object-property-section">
-<h4>Game Object property section<a class="headerlink" href="#game-object-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="game-object-properties-section">
+<h4>Game Object properties section<a class="headerlink" href="#game-object-properties-section" title="Permalink to this headline">¶</a></h4>
 <p>The majority of the objects you add to the scene are a subtype of the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html">Phaser.GameObjects.GameObject</a>. The <strong>Game Object</strong> section exposes properties of the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html">GameObject</a> class and other properties that are not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API but are used by the editor to provide more flexibility.</p>
 <img alt="Game Object section." src="_images/scene-editor-game-object-section.png" />
 <ol class="arabic simple">
@@ -480,20 +480,50 @@
 </div></blockquote>
 </div></blockquote>
 </div>
-<div class="section" id="transform-property-section">
-<h4>Transform property section<a class="headerlink" href="#transform-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="transform-properties-section">
+<h4>Transform properties section<a class="headerlink" href="#transform-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This section contains the properties and tools to transform the position, scale and angle of the objects. As you can see, the section toolbar contains a lot of tools, that may be repeated next to the properties or in the main IDE toolbar.</p>
+<p>You can write the value (or a JavaScript expression like <code class="docutils literal notranslate"><span class="pre">12*16</span></code>) of the properties directly in the text-box.</p>
+<img alt="Transform section." src="_images/scene-editor-transform-section.png" />
+<ol class="arabic simple">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html#x__anchor">Position X/Y properties</a> are part of the <a class="reference external" href="https://phaser.io">Phaser</a> API. You can change them directly or by pressing the <strong>Position tool</strong>. Note the position tool appears next to the property, in the section toolbar and the main IDE toolbar.</li>
+</ol>
+<blockquote>
+<div><img alt="Position properties." src="_images/scene-editor-transform-section-position.png" />
+<p>The <strong>Position tool</strong>  can be activated with the <code class="docutils literal notranslate"><span class="pre">M</span></code> key.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html#scaleX__anchor">Scale X/Y properties</a> are part of the <a class="reference external" href="https://phaser.io">Phaser</a> API. You can change it also with the <strong>Scale tool</strong>, present next to the property, in the section toolbar or the IDE toolbar. Also, you can press the <code class="docutils literal notranslate"><span class="pre">S</span></code> key.</li>
+</ol>
+<blockquote>
+<div><img alt="Scale properties." src="_images/scene-editor-transform-section-scale.png" />
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html#angle__anchor">Angle property</a> is part of the <a class="reference external" href="https://phaser.io">Phaser</a> API. It is expressed in degrees and you can change it directly or by pressing the <strong>Angle tool</strong>. This tool can be activated with the <code class="docutils literal notranslate"><span class="pre">N</span></code> key.</li>
+</ol>
+<blockquote>
+<div><img alt="Angle properties." src="_images/scene-editor-transform-section-angle.png" />
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>The section toolbar provides the buttons to activate the <strong>Position</strong>, <strong>Scale</strong> and <strong>Angle</strong> tools.</li>
+<li>The <strong>Transform Coords tool</strong> allows to change the coords of the transformations. The values are <strong>local</strong> or <strong>global</strong>.</li>
+</ol>
+<blockquote>
+<div><img alt="Transform coords." src="_images/scene-editor-transform-section-coords.png" />
+</div></blockquote>
 </div>
-<div class="section" id="origin-property-section">
-<h4>Origin property section<a class="headerlink" href="#origin-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="origin-properties-section">
+<h4>Origin properties section<a class="headerlink" href="#origin-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This section contains the properties and tools to change the origin of an object. The origin tool can be activated by pressing the <strong>Origin tool</strong> button or the <code class="docutils literal notranslate"><span class="pre">O</span></code> key.</p>
 </div>
-<div class="section" id="flip-property-section">
-<h4>Flip property section<a class="headerlink" href="#flip-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="flip-properties-section">
+<h4>Flip properties section<a class="headerlink" href="#flip-properties-section" title="Permalink to this headline">¶</a></h4>
 </div>
-<div class="section" id="scroll-factor-property-section">
-<h4>Scroll Factor property section<a class="headerlink" href="#scroll-factor-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="scroll-factor-properties-section">
+<h4>Scroll Factor properties section<a class="headerlink" href="#scroll-factor-properties-section" title="Permalink to this headline">¶</a></h4>
 </div>
-<div class="section" id="tint-property-section">
-<h4>Tint property section<a class="headerlink" href="#tint-property-section" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="tint-properties-section">
+<h4>Tint properties section<a class="headerlink" href="#tint-properties-section" title="Permalink to this headline">¶</a></h4>
 </div>
 </div>
 <div class="section" id="game-object">
@@ -526,17 +556,17 @@
 </div>
 <div class="section" id="scene-properties">
 <h2>7.4&nbsp;&nbsp;&nbsp;Scene properties<a class="headerlink" href="#scene-properties" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="snapping-property-section">
-<h3>7.4.1&nbsp;&nbsp;&nbsp;Snapping property section<a class="headerlink" href="#snapping-property-section" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="snapping-properties-section">
+<h3>7.4.1&nbsp;&nbsp;&nbsp;Snapping properties section<a class="headerlink" href="#snapping-properties-section" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="display-property-section">
-<h3>7.4.2&nbsp;&nbsp;&nbsp;Display property section<a class="headerlink" href="#display-property-section" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="display-properties-section">
+<h3>7.4.2&nbsp;&nbsp;&nbsp;Display properties section<a class="headerlink" href="#display-properties-section" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="compiler-property-section">
-<h3>7.4.3&nbsp;&nbsp;&nbsp;Compiler property section<a class="headerlink" href="#compiler-property-section" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="compiler-properties-section">
+<h3>7.4.3&nbsp;&nbsp;&nbsp;Compiler properties section<a class="headerlink" href="#compiler-properties-section" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="webview-property-section">
-<h3>7.4.4&nbsp;&nbsp;&nbsp;WebView property section<a class="headerlink" href="#webview-property-section" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="webview-properties-section">
+<h3>7.4.4&nbsp;&nbsp;&nbsp;WebView properties section<a class="headerlink" href="#webview-properties-section" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="scene-compiler">

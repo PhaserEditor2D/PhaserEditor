@@ -136,13 +136,13 @@ Like it is in the other editors of the IDE, the `Properties view <workbench.html
 In the Phaser_ API, the properties of the game object types are divided into dedicated classes in the `Phaser.GameObjects.Components <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.html>`_ namespace. So, an object type contains its properties and methods but also inherits a couple of "component" classes, like `Phaser.GameObjects.Components.Transform <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html>`_ or `Phaser.GameObjects.Components.Tint <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_.
  
 
-In the `Properties view`_ of the |SceneEditor| we split the properties more or less in the same way, each property section is dedicated to a specific Phaser_ game object component class. There is not a 100% match, there are sections dedicated only to |SceneEditor|_-properties or there are sections with a merge of Phaser_ API properties and editor-properties.
+In the `Properties view`_ of the |SceneEditor| we split the properties more or less in the same way, each properties section is dedicated to a specific Phaser_ game object component class. There is not a 100% match, there are sections dedicated only to |SceneEditor|_-properties or there are sections with a merge of Phaser_ API properties and editor-properties.
 
 The editor-properties are not part of the Phaser_ API and are needed by the editor to help create the scenes, but are not generated in the final code. They are design-time properties.
 
 In this chapter, we explain the properties that are common to the majority of the supported game object types.
 
-Variable property section
+Variable properties section
 ###########################
 
 This section is used by the editor and the `scene compiler`_ to identify the object and provides certain operations.
@@ -162,7 +162,7 @@ This section is used by the editor and the `scene compiler`_ to identify the obj
 
 4. The same of *(1)*.
 
-Editor property section
+Editor properties section
 #########################
 
 A section that contains properties and buttons that are not part of the Phaser_ API but are used to provide certain functionalities of the editor.
@@ -186,13 +186,13 @@ A section that contains properties and buttons that are not part of the Phaser_ 
   .. image:: images/scene-editor/scene-editor-editor-section-order.png
     :alt: The Order buttons.
 
-  1. Moves the object up in the order.
+  1. Moves the object up in the order (or press ``PageUp`` key).
 
-  2. Moves the object down in the order.
+  2. Moves the object down in the order (or press ``PageDown`` key).
 
-  3. Moves the object to the top of the order.
+  3. Moves the object to the top of the order (or press ``Home`` key).
 
-  4. Moves the object to the bottom of the order.
+  4. Moves the object to the bottom of the order (or press ``End`` key).
 
   You can see in the `Outline view`_ the result of the ordering.
 
@@ -218,10 +218,10 @@ A section that contains properties and buttons that are not part of the Phaser_ 
     .. image:: images/scene-editor/scene-editor-editor-section-select-group-button.png
       :alt: Select group.
 
-5. The **Snapping** button is a shortcut to set the snapping value of the scene editor, using the size of the selected object. Many games use fixed-size images and the objects are placed in a grid. The snapping feature of the |SceneEditor|_ helps to set a custom grid and place the objects quickly. See more in the `Snapping property section`_.
+5. The **Snapping** button is a shortcut to set the snapping value of the scene editor, using the size of the selected object. Many games use fixed-size images and the objects are placed in a grid. The snapping feature of the |SceneEditor|_ helps to set a custom grid and place the objects quickly. See more in the `Snapping properties section`_.
 
-Game Object property section
-############################
+Game Object properties section
+##############################
 
 The majority of the objects you add to the scene are a subtype of the `Phaser.GameObjects.GameObject <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html>`_. The **Game Object** section exposes properties of the `GameObject <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html>`_ class and other properties that are not part of the Phaser_ API but are used by the editor to provide more flexibility.
 
@@ -309,19 +309,53 @@ The majority of the objects you add to the scene are a subtype of the `Phaser.Ga
     .. image:: images/scene-editor/scene-editor-game-object-data-value-menu.png
       :alt: Data property menu.
 
-Transform property section
+Transform properties section
 ############################
 
-Origin property section
+This section contains the properties and tools to transform the position, scale and angle of the objects. As you can see, the section toolbar contains a lot of tools, that may be repeated next to the properties or in the main IDE toolbar.
+
+You can write the value (or a JavaScript expression like ``12*16``) of the properties directly in the text-box.
+
+.. image:: images/scene-editor/scene-editor-transform-section.png
+  :alt: Transform section.
+
+
+1. The `Position X/Y properties <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html#x__anchor>`_ are part of the Phaser_ API. You can change them directly or by pressing the **Position tool**. Note the position tool appears next to the property, in the section toolbar and the main IDE toolbar.
+
+  .. image:: images/scene-editor/scene-editor-transform-section-position.png
+    :alt: Position properties.
+
+  The **Position tool**  can be activated with the ``M`` key.
+
+2. The `Scale X/Y properties <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html#scaleX__anchor>`_ are part of the Phaser_ API. You can change it also with the **Scale tool**, present next to the property, in the section toolbar or the IDE toolbar. Also, you can press the ``S`` key.
+
+  .. image:: images/scene-editor/scene-editor-transform-section-scale.png
+    :alt: Scale properties.
+
+3. The `Angle property <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Transform.html#angle__anchor>`_ is part of the Phaser_ API. It is expressed in degrees and you can change it directly or by pressing the **Angle tool**. This tool can be activated with the ``N`` key.
+
+  .. image:: images/scene-editor/scene-editor-transform-section-angle.png
+    :alt: Angle properties.
+
+4. The section toolbar provides the buttons to activate the **Position**, **Scale** and **Angle** tools.  
+
+5. The **Transform Coords tool** allows to change the coords of the transformations. The values are **local** or **global**.
+
+  .. image:: images/scene-editor/scene-editor-transform-section-coords.png
+    :alt: Transform coords.
+
+Origin properties section
 #########################
 
-Flip property section
+This section contains the properties and tools to change the origin of an object. The origin tool can be activated by pressing the **Origin tool** button or the ``O`` key.
+
+Flip properties section
 #######################
 
-Scroll Factor property section
+Scroll Factor properties section
 ################################
 
-Tint property section
+Tint properties section
 #######################
 
 
@@ -362,17 +396,17 @@ Making reusable objects
 Scene properties
 ----------------
 
-Snapping property section
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Snapping properties section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Display property section
-~~~~~~~~~~~~~~~~~~~~~~~~
+Display properties section
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Compiler property section
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Compiler properties section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-WebView property section
-~~~~~~~~~~~~~~~~~~~~~~~~
+WebView properties section
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 Scene Compiler
