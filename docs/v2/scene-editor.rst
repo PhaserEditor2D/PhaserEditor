@@ -344,6 +344,9 @@ You can write the value (or a JavaScript expression like ``12*16``) of the prope
   .. image:: images/scene-editor/scene-editor-transform-section-coords.png
     :alt: Transform coords.
 
+5. The **Align tools** allow to align the objects to the left, right, center, top, bottom and middle. If you select many objects, the align operation works taking one of them as reference. If you select a single object, the align operations take as reference the borders of the scene.
+
+
 Origin properties section
 #########################
 
