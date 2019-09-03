@@ -363,22 +363,106 @@ This section contains the properties and tools to change the origin of an object
 Flip properties section
 #######################
 
+This is a simple section with two buttons to flip the object in the X (`flipX <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Flip.html#flipX__anchor>`_) or Y (`flipY <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Flip.html#flipY__anchor>`_) axes. These properties are Phaser_ API.
+
+.. image:: images/scene-editor/scene-editor-flip-section.png
+  :alt: Flip properties.
+
 Scroll Factor properties section
 ################################
+
+This section provides the `scroll factor properties <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.ScrollFactor.html>`_, that are part of the Phaser_ API.
+
+.. image:: images/scene-editor/scene-editor-scrollfactor-section.png
+  :alt: Scroll factor properties.
 
 Tint properties section
 #######################
 
+The `tint properties <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_ are used to change the tint color of the objects, without the need of create a new texture. You can apply a single tint color to the whole texture or different tint colors in different places of the texture. These properties are part of the Phaser_ API.
 
+.. warning::
+  Tint properties are applied only if the WebGL renderer is used. Learn how to configure the renderer in the `Scene renderer preferences`_ section.
 
-Game Object
-~~~~~~~~~~~
+.. image:: images/scene-editor/scene-editor-tint-section.png
+  :alt: Tint properties.
+
+1. The `isTinted <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#isTinted__anchor>`_ property. Check it to enable the tinting on the object.
+
+2. The `tintFill <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintFill__anchor>`_ property. Check it to Fill or Add the tint color.
+
+  .. image:: images/scene-editor/scene-editor-tint-section-fill.png
+    :alt: Tint fill.
+
+3. The `tint <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintFill__anchor>`_ property. It applies a single tint color to the whole object.
+
+4. The `tintTopLeft <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintTopLeft__anchor>`_ and `tintTopRight <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintTopRight__anchor>`_ properties. The tint colors to be applied to the top corners of the object. 
+
+  .. image:: images/scene-editor/scene-editor-tint-section-tint.png
+    :alt: Tint property.
+
+5. The `tintBottomLeft <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintBottomLeft__anchor>`_ and `tintBottomRight <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintBottomRight__anchor>`_ properties. The tint colors to be applied to the bottom corners of the object. 
+
+  .. image:: images/scene-editor/scene-editor-tint-section-tintTopBottom.png
+    :alt: Tint properties for the top and the bottom.
 
 
 
 Image
 ~~~~~
 
+When you drop a texture in the |SceneEditor|_, by default, it creates a  `Phaser.GameObjects.Image <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Image.html>`_ object. The main difference with the `Sprite`_ is that **Image** objects cannot `play sprite animations <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor>`_.
+
+**Image** objects are created in code using the `image factory <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#image__anchor>`_:
+
+.. code::
+
+  var branch_1 = this.add.image(192, 512, "atlas-props", "branch-01");
+
+The **Image** object contains all the `common properties`_:
+
+* `Variable properties section`_
+
+* `Editor properties section`_
+
+* `Game Object properties section`_
+
+* `Transform properties section`_
+
+* `Origin properties section`_
+
+* `Flip properties section`_
+
+* `Scroll Factor properties section`_
+
+* `Tint properties section`_
+
+Also it contains the `Texture property section`_.
+
+Texture property section
+########################
+
+There are multiple type of objects that `contains textures <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor>`_, like the `Image`_, `Sprite`_ and `Tile Sprite`_. This section displays the texture of an object and buttons to perform related actions.
+
+.. image:: images/scene-editor/scene-editor-texture-section.png
+  :alt: Texture section.
+
+
+1. The **Texture** button. It shows the **frame** and **key** of the texture. Click on it to change the texture of the object. You can double click on the texture preview too. It opens a dialog with all the textures defined in the `asset pack files <asset-pack-editor.html>`_ of the project.
+
+  .. image:: images/scene-editor/scene-editor-texture-section-change.png
+    :alt: Change the texture of the object.
+
+2. The **Delete texture** button. It removes the texture from the object.
+
+  .. image:: images/scene-editor/scene-editor-texture-section-delete.png
+    :alt: Delete the object texture.
+
+3. Click the **Select all** button to select in the scene all the objects with the same texture.
+
+4. All textures in the |SceneEditor|_ are defined in asset pack files. This button open the asset pack file containing the texture in the |AssetPackEditor|_.
+
+5. If the texture was packed with the |TexturePackerEditor|_, this button opens the atlas file that contains the texture.
 
 
 Sprite

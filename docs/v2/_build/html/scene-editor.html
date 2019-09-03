@@ -134,15 +134,17 @@
 <li class="toctree-l4"><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#game-object">7.3.2&nbsp;&nbsp;&nbsp;Game Object</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#image">7.3.3&nbsp;&nbsp;&nbsp;Image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sprite">7.3.4&nbsp;&nbsp;&nbsp;Sprite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tile-sprite">7.3.5&nbsp;&nbsp;&nbsp;Tile Sprite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.6&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#text">7.3.7&nbsp;&nbsp;&nbsp;Text</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#group">7.3.8&nbsp;&nbsp;&nbsp;Group</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#morphing-objects-to-a-different-type">7.3.9&nbsp;&nbsp;&nbsp;Morphing objects to a different type</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#making-reusable-objects">7.3.10&nbsp;&nbsp;&nbsp;Making reusable objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image">7.3.2&nbsp;&nbsp;&nbsp;Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#texture-property-section">Texture property section</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sprite">7.3.3&nbsp;&nbsp;&nbsp;Sprite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tile-sprite">7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#text">7.3.6&nbsp;&nbsp;&nbsp;Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group">7.3.7&nbsp;&nbsp;&nbsp;Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morphing-objects-to-a-different-type">7.3.8&nbsp;&nbsp;&nbsp;Morphing objects to a different type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#making-reusable-objects">7.3.9&nbsp;&nbsp;&nbsp;Making reusable objects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#scene-properties">7.4&nbsp;&nbsp;&nbsp;Scene properties</a><ul>
@@ -526,40 +528,106 @@
 </div>
 <div class="section" id="flip-properties-section">
 <h4>Flip properties section<a class="headerlink" href="#flip-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This is a simple section with two buttons to flip the object in the X (<a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Flip.html#flipX__anchor">flipX</a>) or Y (<a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Flip.html#flipY__anchor">flipY</a>) axes. These properties are <a class="reference external" href="https://phaser.io">Phaser</a> API.</p>
+<img alt="Flip properties." src="_images/scene-editor-flip-section.png" />
 </div>
 <div class="section" id="scroll-factor-properties-section">
 <h4>Scroll Factor properties section<a class="headerlink" href="#scroll-factor-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This section provides the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.ScrollFactor.html">scroll factor properties</a>, that are part of the <a class="reference external" href="https://phaser.io">Phaser</a> API.</p>
+<img alt="Scroll factor properties." src="_images/scene-editor-scrollfactor-section.png" />
 </div>
 <div class="section" id="tint-properties-section">
 <h4>Tint properties section<a class="headerlink" href="#tint-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">tint properties</a> are used to change the tint color of the objects, without the need of create a new texture. You can apply a single tint color to the whole texture or different tint colors in different places of the texture. These properties are part of the <a class="reference external" href="https://phaser.io">Phaser</a> API.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Tint properties are applied only if the WebGL renderer is used. Learn how to configure the renderer in the <a class="reference internal" href="#scene-renderer-preferences">Scene renderer preferences</a> section.</p>
 </div>
+<img alt="Tint properties." src="_images/scene-editor-tint-section.png" />
+<ol class="arabic simple">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#isTinted__anchor">isTinted</a> property. Check it to enable the tinting on the object.</li>
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintFill__anchor">tintFill</a> property. Check it to Fill or Add the tint color.</li>
+</ol>
+<blockquote>
+<div><img alt="Tint fill." src="_images/scene-editor-tint-section-fill.png" />
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintFill__anchor">tint</a> property. It applies a single tint color to the whole object.</li>
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintTopLeft__anchor">tintTopLeft</a> and <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintTopRight__anchor">tintTopRight</a> properties. The tint colors to be applied to the top corners of the object.</li>
+</ol>
+<blockquote>
+<div><img alt="Tint property." src="_images/scene-editor-tint-section-tint.png" />
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintBottomLeft__anchor">tintBottomLeft</a> and <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html#tintBottomRight__anchor">tintBottomRight</a> properties. The tint colors to be applied to the bottom corners of the object.</li>
+</ol>
+<blockquote>
+<div><img alt="Tint properties for the top and the bottom." src="_images/scene-editor-tint-section-tintTopBottom.png" />
+</div></blockquote>
 </div>
-<div class="section" id="game-object">
-<h3>7.3.2&nbsp;&nbsp;&nbsp;Game Object<a class="headerlink" href="#game-object" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="image">
-<h3>7.3.3&nbsp;&nbsp;&nbsp;Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.2&nbsp;&nbsp;&nbsp;Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h3>
+<p>When you drop a texture in the <a class="reference external" href="scene-editor.html">Scene Editor</a>, by default, it creates a  <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Image.html">Phaser.GameObjects.Image</a> object. The main difference with the <a class="reference internal" href="#sprite">Sprite</a> is that <strong>Image</strong> objects cannot <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play sprite animations</a>.</p>
+<p><strong>Image</strong> objects are created in code using the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#image__anchor">image factory</a>:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">branch_1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">192</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="s2">&quot;atlas-props&quot;</span><span class="p">,</span> <span class="s2">&quot;branch-01&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <strong>Image</strong> object contains all the <a class="reference internal" href="#common-properties">common properties</a>:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
+<li><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
+<li><a class="reference internal" href="#game-object-properties-section">Game Object properties section</a></li>
+<li><a class="reference internal" href="#transform-properties-section">Transform properties section</a></li>
+<li><a class="reference internal" href="#origin-properties-section">Origin properties section</a></li>
+<li><a class="reference internal" href="#flip-properties-section">Flip properties section</a></li>
+<li><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
+<li><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
+</ul>
+<p>Also it contains the <a class="reference internal" href="#texture-property-section">Texture property section</a>.</p>
+<div class="section" id="texture-property-section">
+<h4>Texture property section<a class="headerlink" href="#texture-property-section" title="Permalink to this headline">¶</a></h4>
+<p>There are multiple type of objects that <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor">contains textures</a>, like the <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a>. This section displays the texture of an object and buttons to perform related actions.</p>
+<img alt="Texture section." src="_images/scene-editor-texture-section.png" />
+<ol class="arabic simple">
+<li>The <strong>Texture</strong> button. It shows the <strong>frame</strong> and <strong>key</strong> of the texture. Click on it to change the texture of the object. You can double click on the texture preview too. It opens a dialog with all the textures defined in the <a class="reference external" href="asset-pack-editor.html">asset pack files</a> of the project.</li>
+</ol>
+<blockquote>
+<div><img alt="Change the texture of the object." src="_images/scene-editor-texture-section-change.png" />
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>The <strong>Delete texture</strong> button. It removes the texture from the object.</li>
+</ol>
+<blockquote>
+<div><img alt="Delete the object texture." src="_images/scene-editor-texture-section-delete.png" />
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Click the <strong>Select all</strong> button to select in the scene all the objects with the same texture.</li>
+<li>All textures in the <a class="reference external" href="scene-editor.html">Scene Editor</a> are defined in asset pack files. This button open the asset pack file containing the texture in the <a class="reference external" href="asset-pack-editor.html">Asset Pack Editor</a>.</li>
+<li>If the texture was packed with the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, this button opens the atlas file that contains the texture.</li>
+</ol>
+</div>
 </div>
 <div class="section" id="sprite">
-<h3>7.3.4&nbsp;&nbsp;&nbsp;Sprite<a class="headerlink" href="#sprite" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.3&nbsp;&nbsp;&nbsp;Sprite<a class="headerlink" href="#sprite" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="tile-sprite">
-<h3>7.3.5&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="bitmap-text">
-<h3>7.3.6&nbsp;&nbsp;&nbsp;Bitmap Text<a class="headerlink" href="#bitmap-text" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text<a class="headerlink" href="#bitmap-text" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="text">
-<h3>7.3.7&nbsp;&nbsp;&nbsp;Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.6&nbsp;&nbsp;&nbsp;Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="group">
-<h3>7.3.8&nbsp;&nbsp;&nbsp;Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.7&nbsp;&nbsp;&nbsp;Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="morphing-objects-to-a-different-type">
-<h3>7.3.9&nbsp;&nbsp;&nbsp;Morphing objects to a different type<a class="headerlink" href="#morphing-objects-to-a-different-type" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.8&nbsp;&nbsp;&nbsp;Morphing objects to a different type<a class="headerlink" href="#morphing-objects-to-a-different-type" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="making-reusable-objects">
-<h3>7.3.10&nbsp;&nbsp;&nbsp;Making reusable objects<a class="headerlink" href="#making-reusable-objects" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.9&nbsp;&nbsp;&nbsp;Making reusable objects<a class="headerlink" href="#making-reusable-objects" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="scene-properties">
