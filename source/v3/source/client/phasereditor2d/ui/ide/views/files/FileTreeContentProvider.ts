@@ -11,6 +11,15 @@ namespace phasereditor2d.ui.files {
     export class FileTreeContentProvider implements viewers.ITreeContentProvider {
 
         getRoots(input: any): any[] {
+
+            if (input instanceof io.FilePath) {
+                return [input];
+            }
+
+            if (input instanceof Array) {
+                return input;
+            }
+            
             return this.getChildren(input);
         }
 

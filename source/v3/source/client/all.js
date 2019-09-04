@@ -1220,8 +1220,15 @@ var phasereditor2d;
     (function (ui) {
         var files;
         (function (files) {
+            var io = phasereditor2d.core.io;
             class FileTreeContentProvider {
                 getRoots(input) {
+                    if (input instanceof io.FilePath) {
+                        return [input];
+                    }
+                    if (input instanceof Array) {
+                        return input;
+                    }
                     return this.getChildren(input);
                 }
                 getChildren(parent) {
