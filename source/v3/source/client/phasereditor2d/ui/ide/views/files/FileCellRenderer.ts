@@ -28,7 +28,7 @@ namespace phasereditor2d.ui.ide.files {
         preload(obj: any) {
             const file = <io.FilePath>obj;
             if (file.isFile()) {
-                return Workbench.getWorkbench().getContentTypeRegistry().findContentType(file);
+                return Workbench.getWorkbench().getContentTypeRegistry().preload(file);
             }
             return super.preload(obj);
         }

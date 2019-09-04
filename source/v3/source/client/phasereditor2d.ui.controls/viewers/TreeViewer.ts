@@ -47,19 +47,17 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        async preload() {
-            const list: Promise<any>[] = [];
+        async preload(): Promise<PreloadResult> {
+            const list: Promise<PreloadResult>[] = [];
             this.visitObjects(obj => {
-                
                 const provider = this.getCellRendererProvider();
-                list.push(provider.preload(obj));
-                
-                const renderer = provider.getCellRenderer(obj);
-                list.push(renderer.preload(obj));
-
+                list.push(provider.preload(obj).then(r => {
+                    const renderer = provider.getCellRenderer(obj);
+                    return renderer.preload(obj);
+                }));
             });
-            
-            return Promise.all(list);
+
+            return Controls.resolveAll(list);
         }
 
 

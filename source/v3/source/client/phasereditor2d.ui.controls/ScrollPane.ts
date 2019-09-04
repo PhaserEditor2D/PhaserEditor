@@ -116,14 +116,22 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        layout() {
+        private setClientBounds(x: number, y: number, w: number, h: number): void {
+            const b = this._clientControl.getBounds();
+            if (b.width != w || b.height != h) {
+                this._clientControl.setBoundsValues(x, y, w, h);
+            }
+        }
+
+        layout(): void {
             const b = this.getBounds();
+            const clientBounds = this._clientControl.getBounds();
 
             controls.setElementBounds(this.getElement(), b);
 
             if (b.height < this._clientContentHeight) {
 
-                this._clientControl.setBoundsValues(0, 0, b.width - SCROLL_BAR_WIDTH, b.height);
+                this.setClientBounds(0, 0, b.width - SCROLL_BAR_WIDTH, b.height);
 
                 // scroll bar
 
@@ -151,7 +159,7 @@ namespace phasereditor2d.ui.controls {
 
             } else {
 
-                this._clientControl.setBoundsValues(0, 0, b.width, b.height);
+                this.setClientBounds(0, 0, b.width, b.height);
 
                 this._scrollBar.style.display = "none";
                 this._scrollHandler.style.display = "none";

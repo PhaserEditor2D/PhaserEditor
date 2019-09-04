@@ -2,6 +2,12 @@
 
 namespace phasereditor2d.ui.controls {
 
+    export enum PreloadResult {
+        NOTHING_LOADED,
+        RESOURCES_LOADED
+    }
+
+
     class IconImpl implements IIcon {
 
         constructor(public img: HTMLImageElement) {
@@ -23,25 +29,33 @@ namespace phasereditor2d.ui.controls {
 
     class ImageImpl implements IImage {
         private _ready: boolean;
+        private _url: string;
+        private _img: HTMLImageElement;
 
-        constructor(public readonly imageElement: HTMLImageElement) {
+        constructor(img: HTMLImageElement, url : string) {
+            this._img = img;
+            this._url = url;
             this._ready = false;
         }
 
-        preload(): Promise<any> {
+        preload(): Promise<PreloadResult> {
+
             if (this._ready) {
-                return Promise.resolve();
+                return Controls.resolveNothingLoaded();
             }
 
-            return this.imageElement.decode().then(_ => {
+            const img = this._img;
+            this._img.src = this._url;
+            return this._img.decode().then(_ => {
                 this._ready = true;
+                return Controls.resolveResourceLoaded();
             });
         }
 
-        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center : boolean): void {
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
             if (this._ready) {
-                const naturalWidth = this.imageElement.naturalWidth;
-                const naturalHeight = this.imageElement.naturalHeight;
+                const naturalWidth = this._img.naturalWidth;
+                const naturalHeight = this._img.naturalHeight;
 
                 let renderHeight = h;
                 let renderWidth = w;
@@ -68,7 +82,7 @@ namespace phasereditor2d.ui.controls {
                 let imgDstH = naturalHeight * scale;
 
                 if (imgDstW > 0 && imgDstH > 0) {
-                    context.drawImage(this.imageElement, imgX, imgY, imgDstW, imgDstH);
+                    context.drawImage(this._img, imgX, imgY, imgDstW, imgDstH);
                 }
             } else {
                 context.strokeRect(x, y, w, h);
@@ -105,6 +119,25 @@ namespace phasereditor2d.ui.controls {
             Controls.ICON_FILE_VIDEO
         ];
 
+        static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {
+            return Promise.all(list).then(results => {
+                for (const result of results) {
+                    if (result === PreloadResult.RESOURCES_LOADED) {
+                        return Promise.resolve(PreloadResult.RESOURCES_LOADED);
+                    }
+                }
+                return Promise.resolve(PreloadResult.NOTHING_LOADED);
+            });
+        }
+
+        static resolveResourceLoaded() {
+            return Promise.resolve(PreloadResult.RESOURCES_LOADED);
+        }
+
+        static resolveNothingLoaded() {
+            return Promise.resolve(PreloadResult.NOTHING_LOADED);
+        }
+
         static preload() {
             return Promise.all(
                 Controls.ICONS.map(
@@ -121,9 +154,7 @@ namespace phasereditor2d.ui.controls {
                 return Controls._images.get(id);
             }
 
-            const img = new ImageImpl(new Image());
-
-            img.imageElement.src = url;
+            const img = new ImageImpl(new Image(), url);
 
             Controls._images.set(id, img);
 
@@ -142,14 +173,12 @@ namespace phasereditor2d.ui.controls {
         }
 
         private static LIGHT_THEME: Theme = {
-            treeItemOverBackground: "#0000000a",
             treeItemSelectionBackground: "#33e",//"#8f8f8f",
             treeItemSelectionForeground: "#f0f0f0",
             treeItemForeground: "#000"
         };
 
         private static DARK_THEME: Theme = {
-            treeItemOverBackground: "#ffffff0a",
             treeItemSelectionBackground: "#33e",//"#8f8f8f",
             treeItemSelectionForeground: "#f0f0f0",
             treeItemForeground: "#f0f0f0"

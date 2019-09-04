@@ -71,7 +71,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this.buildFilterIncludeMap();
         }
 
-        isFilterIncluded(obj : any) {
+        isFilterIncluded(obj: any) {
             return this._filterIncludeSet.has(obj);
         }
 
@@ -187,7 +187,6 @@ namespace phasereditor2d.ui.controls.viewers {
 
             if (over !== this._overObject) {
                 this._overObject = over;
-                this.repaint();
             }
         }
 
@@ -233,14 +232,15 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         async repaint() {
-
             this.prepareFiltering();
-
+            
             this.repaint2();
 
-            await this.preload();
+            const result = await this.preload();
 
-            this.repaint2();
+            if (result === PreloadResult.RESOURCES_LOADED) {
+                this.repaint2();
+            }
 
             this.updateScrollPane();
         }
@@ -264,15 +264,13 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        protected abstract preload(): Promise<any>;
+        protected abstract preload(): Promise<PreloadResult>;
 
         protected paintItemBackground(obj: any, x: number, y: number, w: number, h: number): void {
             let fillStyle = null;
 
             if (this.isSelected(obj)) {
                 fillStyle = Controls.theme.treeItemSelectionBackground;;
-            } else if (obj === this._overObject) {
-                fillStyle = Controls.theme.treeItemOverBackground;
             }
 
             if (fillStyle != null) {

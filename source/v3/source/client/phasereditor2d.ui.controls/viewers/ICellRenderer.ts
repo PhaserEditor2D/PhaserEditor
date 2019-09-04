@@ -5,7 +5,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         cellHeight(args: RenderCellArgs): number;
 
-        preload(obj: any): Promise<any>;
+        preload(obj: any): Promise<PreloadResult>;
     }
     
 }

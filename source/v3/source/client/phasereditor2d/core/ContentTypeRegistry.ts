@@ -1,4 +1,5 @@
 namespace phasereditor2d.core {
+
     export class ContentTypeRegistry {
 
         private _resolvers: IContentTypeResolver[];
@@ -23,12 +24,12 @@ namespace phasereditor2d.core {
             return CONTENT_TYPE_ANY;
         }
 
-        async findContentType(file: io.FilePath): Promise<string> {
+        async preload(file: io.FilePath): Promise<ui.controls.PreloadResult> {
             
             const id = file.getId();
 
             if (this._cache.has(id)) {
-                return Promise.resolve(this._cache.get(id));
+                return ui.controls.Controls.resolveNothingLoaded();
             }
 
             for (const resolver of this._resolvers) {
@@ -37,11 +38,11 @@ namespace phasereditor2d.core {
 
                 if (ct !== CONTENT_TYPE_ANY) {
                     this._cache.set(id, ct);
-                    return Promise.resolve(ct);
+                    return ui.controls.Controls.resolveResourceLoaded();
                 }
             }
 
-            return Promise.resolve(CONTENT_TYPE_ANY);
+            return ui.controls.Controls.resolveNothingLoaded();
         }
     }
 }

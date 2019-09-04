@@ -19,8 +19,8 @@ namespace phasereditor2d.ui.ide.files {
             return new FileCellRenderer();
         }
 
-        preload(file: io.FilePath) {
-            return Workbench.getWorkbench().getContentTypeRegistry().findContentType(file);
+        preload(file: io.FilePath) : Promise<controls.PreloadResult> {
+            return Workbench.getWorkbench().getContentTypeRegistry().preload(file);
         }
     }
 }
