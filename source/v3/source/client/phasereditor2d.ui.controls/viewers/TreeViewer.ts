@@ -50,9 +50,15 @@ namespace phasereditor2d.ui.controls.viewers {
         async preload() {
             const list: Promise<any>[] = [];
             this.visitObjects(obj => {
-                var renderer = this.getCellRendererProvider().getCellRenderer(obj);
+                
+                const provider = this.getCellRendererProvider();
+                list.push(provider.preload(obj));
+                
+                const renderer = provider.getCellRenderer(obj);
                 list.push(renderer.preload(obj));
+
             });
+            
             return Promise.all(list);
         }
 

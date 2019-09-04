@@ -18,7 +18,7 @@ namespace phasereditor2d.ui.controls.viewers {
             return controls.ROW_HEIGHT;
         }
 
-        preload(): Promise<any> {
+        preload(obj: any): Promise<any> {
             return Promise.resolve();
         }
     }

@@ -3,7 +3,7 @@
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 
-namespace phasereditor2d.ui.files {
+namespace phasereditor2d.ui.ide.files {
 
     import io = phasereditor2d.core.io;
     import viewers = phasereditor2d.ui.controls.viewers;

@@ -3,7 +3,7 @@
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 
-namespace phasereditor2d.ui.files {
+namespace phasereditor2d.ui.ide.files {
 
     import viewers = phasereditor2d.ui.controls.viewers;
 
@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.files {
             this.setTitle("Files");
 
             //const root = new core.io.FilePath(null, TEST_DATA);
-            
+
             const root = Workbench.getWorkbench().getFileStorage().getRoot();
 
             //console.log(root.toStringTree());

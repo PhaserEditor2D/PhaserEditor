@@ -3,7 +3,7 @@
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 
-namespace phasereditor2d.ui.files {
+namespace phasereditor2d.ui.ide.files {
 
     import io = phasereditor2d.core.io;
     import viewers = phasereditor2d.ui.controls.viewers;
@@ -13,8 +13,8 @@ namespace phasereditor2d.ui.files {
         getImage(obj: any): controls.IIcon {
             const file = <io.FilePath>obj;
             if (file.isFile()) {
-                const type = file.getContentType();
-                const icon = Workbench.getWorkbench().getContentTypeIcon(type);
+                const ct = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                const icon = Workbench.getWorkbench().getContentTypeIcon(ct);
                 if (icon) {
                     return icon;
                 }
@@ -23,6 +23,14 @@ namespace phasereditor2d.ui.files {
             }
 
             return controls.Controls.getIcon(controls.Controls.ICON_FILE);
+        }
+
+        preload(obj: any) {
+            const file = <io.FilePath>obj;
+            if (file.isFile()) {
+                return Workbench.getWorkbench().getContentTypeRegistry().findContentType(file);
+            }
+            return super.preload(obj);
         }
     }
 }

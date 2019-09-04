@@ -6,13 +6,26 @@ namespace phasereditor2d.core.io {
         private _name: string;
         private _isFile: boolean;
         private _files: FilePath[];
-        private _contentType: string;
+        private _ext: string;
+        private _id: string;
+        private _modTime: number;
+        private _fileSize: number;
 
         constructor(parent: FilePath, fileData: FileData) {
             this._parent = parent;
             this._name = fileData.name;
             this._isFile = fileData.isFile;
-            this._contentType = this._isFile ? fileData.contentType : null;
+            this._fileSize = fileData.size;
+            this._modTime = fileData.modTime;
+
+            {
+                const i = this._name.lastIndexOf(".");
+                if (i >= 0) {
+                    this._ext = this._name.substring(i + 1);
+                } else {
+                    this._ext = "";
+                }
+            }
 
             if (fileData.children) {
                 this._files = [];
@@ -29,19 +42,35 @@ namespace phasereditor2d.core.io {
             }
         }
 
-        getContentType() {
-            return this._contentType;
+        getExtension() {
+            return this._ext;
         }
 
         getName() {
             return this._name;
         }
 
+        getId() {
+            if (this._id) {
+                return this._id;
+            }
+
+            this._id = this.getFullName() + "@" + this._modTime + "@" + this._fileSize;
+        }
+
         getFullName() {
-            if (this._parent && this._parent.getName().length > 0) {
+            if (this._parent) {
                 return this._parent.getFullName() + "/" + this._name;
             }
             return this._name;
+        }
+
+        getUrl() {
+            if (this._parent) {
+                return this._parent.getUrl() + "/" + this._name;
+            }
+
+            return "../project";
         }
 
         getParent() {

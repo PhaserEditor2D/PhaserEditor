@@ -3,7 +3,7 @@
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 
-namespace phasereditor2d.ui.files {
+namespace phasereditor2d.ui.ide.files {
 
     import io = phasereditor2d.core.io;
     import viewers = phasereditor2d.ui.controls.viewers;
@@ -14,12 +14,12 @@ namespace phasereditor2d.ui.files {
             super(center);
         }
 
-        getLabel(obj: io.FilePath): string {
-            return obj.getName();
+        getLabel(file: io.FilePath): string {
+            return file.getName();
         }
 
-        getImage(obj: io.FilePath): controls.IImage {
-            return controls.Controls.getImage("files/" + obj.getFullName());
+        getImage(file: io.FilePath): controls.IImage {
+            return controls.Controls.getImage(file.getUrl());
         }
     }
 }

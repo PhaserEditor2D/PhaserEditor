@@ -1,6 +1,6 @@
 /// <reference path="../ViewPart.ts"/>
 
-namespace phasereditor2d.ui.outline {
+namespace phasereditor2d.ui.ide.outline {
 
     export class OutlineView extends ide.ViewPart {
         constructor() {

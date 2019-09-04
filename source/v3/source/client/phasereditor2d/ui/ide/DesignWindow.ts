@@ -4,12 +4,12 @@ namespace phasereditor2d.ui.ide {
     
     export class DesignWindow extends controls.PaddingPane {
 
-        private _outlineView: ui.outline.OutlineView;
-        private _filesView: ui.files.FilesView;
-        private _inspectorView: ui.inspector.InspectorView;
-        private _blocksView: ui.blocks.BlocksView;
+        private _outlineView: outline.OutlineView;
+        private _filesView: files.FilesView;
+        private _inspectorView: inspector.InspectorView;
+        private _blocksView: blocks.BlocksView;
         private _editorArea: ide.EditorArea;
-        private _toolbar: ui.toolbar.Toolbar;
+        private _toolbar: toolbar.Toolbar;
         private _split_Files_Blocks: controls.SplitPanel;
         private _split_Editor_FilesBlocks: controls.SplitPanel;
         private _split_Outline_EditorFilesBlocks: controls.SplitPanel;

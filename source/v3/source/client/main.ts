@@ -6,7 +6,7 @@ namespace phasereditor2d {
         await ui.controls.Controls.preload();
 
         console.log("Starting the workbench");
-        const workbench = ui.Workbench.getWorkbench();
+        const workbench = ui.ide.Workbench.getWorkbench();
         workbench.start();
     }
 }
