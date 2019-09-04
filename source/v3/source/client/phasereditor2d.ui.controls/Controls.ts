@@ -116,7 +116,7 @@ namespace phasereditor2d.ui.controls {
             );
         }
 
-        static getImage(url: string, id: string = url): IImage {
+        static getImage(url: string, id: string): IImage {
             if (Controls._images.has(id)) {
                 return Controls._images.get(id);
             }

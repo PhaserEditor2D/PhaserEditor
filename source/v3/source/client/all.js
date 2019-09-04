@@ -455,7 +455,7 @@ var phasereditor2d;
                         return icon.img.decode();
                     }));
                 }
-                static getImage(url, id = url) {
+                static getImage(url, id) {
                     if (Controls._images.has(id)) {
                         return Controls._images.get(id);
                     }
@@ -1346,7 +1346,7 @@ var phasereditor2d;
                         return file.getName();
                     }
                     getImage(file) {
-                        return ui.controls.Controls.getImage(file.getUrl());
+                        return ui.controls.Controls.getImage(file.getUrl(), file.getId());
                     }
                 }
                 files.FileImageRenderer = FileImageRenderer;
