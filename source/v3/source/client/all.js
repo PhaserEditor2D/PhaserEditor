@@ -88,6 +88,43 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var io;
+        (function (io) {
+            function makeApiRequest(method, body) {
+                return fetch("../api", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "method": method,
+                        "body": body
+                    })
+                });
+            }
+            class ServerFileStorage {
+                getRoot() {
+                    return this._root;
+                }
+                async reload() {
+                    const resp = await makeApiRequest("GetProjectFiles");
+                    const data = await resp.json();
+                    //TODO: handle error
+                    const self = this;
+                    return new Promise(function (resolve, reject) {
+                        self._root = new io.FilePath(null, data);
+                        resolve(self._root);
+                    });
+                }
+            }
+            io.ServerFileStorage = ServerFileStorage;
+        })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
     var ui;
     (function (ui) {
         var controls;
@@ -624,6 +661,7 @@ var phasereditor2d;
 /// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
+/// <reference path="../../core/io/FileStorage.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -645,9 +683,14 @@ var phasereditor2d;
                 }
                 return this._workbench;
             }
-            start() {
+            async start() {
+                this._fileStorage = new phasereditor2d.core.io.ServerFileStorage();
+                await this._fileStorage.reload();
                 this._designWindow = new ui.ide.DesignWindow();
                 document.getElementById("body").appendChild(this._designWindow.getElement());
+            }
+            getFileStorage() {
+                return this._fileStorage;
             }
             getContentTypeIcon(contentType) {
                 if (this._contentType_icon_Map.has(contentType)) {
@@ -1204,7 +1247,8 @@ var phasereditor2d;
                 constructor() {
                     super("filesView");
                     this.setTitle("Files");
-                    const root = new phasereditor2d.core.io.FilePath(null, TEST_DATA);
+                    //const root = new core.io.FilePath(null, TEST_DATA);
+                    const root = ui.Workbench.getWorkbench().getFileStorage().getRoot();
                     //console.log(root.toStringTree());
                     const viewer = new viewers.TreeViewer();
                     viewer.setLabelProvider(new files.FileLabelProvider());

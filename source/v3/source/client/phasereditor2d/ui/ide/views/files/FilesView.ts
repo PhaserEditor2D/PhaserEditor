@@ -12,7 +12,9 @@ namespace phasereditor2d.ui.files {
             super("filesView");
             this.setTitle("Files");
 
-            const root = new core.io.FilePath(null, TEST_DATA);
+            //const root = new core.io.FilePath(null, TEST_DATA);
+            
+            const root = Workbench.getWorkbench().getFileStorage().getRoot();
 
             //console.log(root.toStringTree());
 
