@@ -222,9 +222,10 @@ var phasereditor2d;
                     this.layout();
                 }
                 addClass(...tokens) {
-                    for (let token of tokens) {
-                        this._element.classList.add(token);
-                    }
+                    this._element.classList.add(...tokens);
+                }
+                removeClass(...tokens) {
+                    this._element.classList.remove(...tokens);
                 }
                 getElement() {
                     return this._element;
@@ -813,6 +814,7 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            ide.PART_DEACTIVATE_EVENT = "partDeactivate";
             ide.PART_ACTIVATE_EVENT = "partActivate";
             class Workbench extends EventTarget {
                 constructor() {
@@ -840,13 +842,23 @@ var phasereditor2d;
                 initEvents() {
                     window.addEventListener("click", e => {
                         const part = this.findPart(e.target);
+                        this.setActivePart(part);
                     });
                 }
                 getActivePart() {
                     return this._activePart;
                 }
                 setActivePart(part) {
-                    this._activePart;
+                    const old = this._activePart;
+                    this._activePart = part;
+                    if (old) {
+                        old.removeClass("activePart");
+                        console.log(old.getElement().classList);
+                        this.dispatchEvent(new CustomEvent(ide.PART_DEACTIVATE_EVENT, { detail: old }));
+                    }
+                    if (part) {
+                        part.addClass("activePart");
+                    }
                     this.dispatchEvent(new CustomEvent(ide.PART_ACTIVATE_EVENT, { detail: part }));
                 }
                 findPart(element) {
