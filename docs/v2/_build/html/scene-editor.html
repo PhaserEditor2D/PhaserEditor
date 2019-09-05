@@ -135,10 +135,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#image">7.3.2&nbsp;&nbsp;&nbsp;Image</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#texture-property-section">Texture property section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#texture-properties-section">Texture properties section</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#sprite">7.3.3&nbsp;&nbsp;&nbsp;Sprite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sprite">7.3.3&nbsp;&nbsp;&nbsp;Sprite</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#animations-properties-section">Animations properties section</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#tile-sprite">7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#text">7.3.6&nbsp;&nbsp;&nbsp;Text</a></li>
@@ -584,9 +587,9 @@
 <li><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
 <li><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
 </ul>
-<p>Also it contains the <a class="reference internal" href="#texture-property-section">Texture property section</a>.</p>
-<div class="section" id="texture-property-section">
-<h4>Texture property section<a class="headerlink" href="#texture-property-section" title="Permalink to this headline">¶</a></h4>
+<p>Also it contains the <a class="reference internal" href="#texture-properties-section">Texture properties section</a>.</p>
+<div class="section" id="texture-properties-section">
+<h4>Texture properties section<a class="headerlink" href="#texture-properties-section" title="Permalink to this headline">¶</a></h4>
 <p>There are multiple type of objects that <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor">contains textures</a>, like the <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a>. This section displays the texture of an object and buttons to perform related actions.</p>
 <img alt="Texture section." src="_images/scene-editor-texture-section.png" />
 <ol class="arabic simple">
@@ -610,6 +613,58 @@
 </div>
 <div class="section" id="sprite">
 <h3>7.3.3&nbsp;&nbsp;&nbsp;Sprite<a class="headerlink" href="#sprite" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html">Phaser.GameObjects.Sprite</a> object is often used to represent characters and items. The main difference with the <a class="reference internal" href="#image">Image</a> object is that the <strong>Sprite</strong> can <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play sprite animations</a>.</p>
+<p>To create a <strong>Sprite</strong> object you can:</p>
+<ul>
+<li><p class="first"><a class="reference external" href="#morphing-objects-to-a-different-type">Morph</a> an scene object into a <strong>Sprite</strong> object.</p>
+</li>
+<li><p class="first">Drop on the scene an animation key from the <a href="#id2"><span class="problematic" id="id3">`Blocks`_</span></a> view.</p>
+<img alt="Create sprite with animation." src="_images/scene-editor-create-sprite.png" />
+</li>
+</ul>
+<p><strong>Sprite</strong> objects are created in code using the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#sprite__anchor">sprite factory</a>:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">grasshopper</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">577</span><span class="p">,</span> <span class="mi">675</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;grasshopper-idle-1&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <strong>Player</strong> object contains all the <a class="reference internal" href="#common-properties">common properties</a>:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
+<li><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
+<li><a class="reference internal" href="#game-object-properties-section">Game Object properties section</a></li>
+<li><a class="reference internal" href="#transform-properties-section">Transform properties section</a></li>
+<li><a class="reference internal" href="#origin-properties-section">Origin properties section</a></li>
+<li><a class="reference internal" href="#flip-properties-section">Flip properties section</a></li>
+<li><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
+<li><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
+</ul>
+<p>It also contains the:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#texture-properties-section">Texture properties section</a>, that is dedicated to all the objects with texture.</li>
+<li><a class="reference internal" href="#animations-properties-section">Animations properties section</a>, that is dedicated only to the <strong>Sprite</strong> objects.</li>
+</ul>
+<div class="section" id="animations-properties-section">
+<h4>Animations properties section<a class="headerlink" href="#animations-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>As we explained in the previous topic, the <a class="reference internal" href="#sprite">Sprite</a> object an <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play sprite animations</a>. In many cases you may want to place animated objects in the scene with an initial animation. <a class="reference external" href="https://phaser.io">Phaser</a> does not provide an <strong>initial animation</strong> or <strong>auto-play animation</strong> property, but the <a class="reference external" href="scene-editor.html">Scene Editor</a> allows to set this <strong>auto-play animation</strong> to the <strong>Sprite</strong> object, and the compiler will generate an extra instruction that plays the animation:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">grasshopper</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">577</span><span class="p">,</span> <span class="mi">675</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;grasshopper-idle-1&quot;</span><span class="p">)</span>
+<span class="hll"><span class="nx">grasshopper</span><span class="p">.</span><span class="nx">anims</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;grasshopper-idle&quot;</span><span class="p">);</span>
+</span></pre></div>
+</div>
+<p>The <strong>Animations</strong> properties section shows a preview of the <strong>auto-play animation</strong> and the buttons to select the animation or remove it.</p>
+<img alt="Auto-play animation." src="_images/scene-editor-animations-section.png" />
+<ol class="arabic simple">
+<li>Button that shows the key of the animation and that you can click to select another animation.</li>
+</ol>
+<blockquote>
+<div><img alt="Select the auto-play animation." src="_images/scene-editor-animations-section-select.png" />
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Removes the <strong>auto-play animation</strong>. This means, no animation is played when the object is created.</li>
+<li>The playback buttons of the animation preview.</li>
+<li>A button to select all the objects with the same <strong>auto-play animation</strong>.</li>
+<li>A button to open the <strong>auto-play animation</strong> key in the <a class="reference external" href="asset-pack-editor.html">Asset Pack Editor</a>.</li>
+<li>A button to open the <strong>auto-play animation</strong> in the <a class="reference external" href="animations-editor.html">Animations Editor</a>.</li>
+</ol>
+</div>
 </div>
 <div class="section" id="tile-sprite">
 <h3>7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>

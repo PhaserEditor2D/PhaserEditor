@@ -437,10 +437,10 @@ The **Image** object contains all the `common properties`_:
 
 * `Tint properties section`_
 
-Also it contains the `Texture property section`_.
+Also it contains the `Texture properties section`_.
 
-Texture property section
-########################
+Texture properties section
+##########################
 
 There are multiple type of objects that `contains textures <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor>`_, like the `Image`_, `Sprite`_ and `Tile Sprite`_. This section displays the texture of an object and buttons to perform related actions.
 
@@ -467,6 +467,80 @@ There are multiple type of objects that `contains textures <https://photonstorm.
 
 Sprite
 ~~~~~~
+
+The `Phaser.GameObjects.Sprite <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html>`_ object is often used to represent characters and items. The main difference with the `Image`_ object is that the **Sprite** can `play sprite animations`_.
+
+To create a **Sprite** object you can:
+
+* `Morph <#morphing-objects-to-a-different-type>`_ an scene object into a **Sprite** object.
+
+* Drop on the scene an animation key from the `Blocks`_ view.
+
+  .. image:: images/scene-editor/scene-editor-create-sprite.png
+    :alt: Create sprite with animation.
+
+**Sprite** objects are created in code using the `sprite factory <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#sprite__anchor>`_:
+
+
+.. code::
+
+  var grasshopper = this.add.sprite(577, 675, "atlas", "grasshopper-idle-1");
+
+The **Player** object contains all the `common properties`_:
+
+* `Variable properties section`_
+
+* `Editor properties section`_
+
+* `Game Object properties section`_
+
+* `Transform properties section`_
+
+* `Origin properties section`_
+
+* `Flip properties section`_
+
+* `Scroll Factor properties section`_
+
+* `Tint properties section`_
+
+It also contains the: 
+
+* `Texture properties section`_, that is dedicated to all the objects with texture. 
+
+* `Animations properties section`_, that is dedicated only to the **Sprite** objects.
+
+Animations properties section
+#############################
+
+As we explained in the previous topic, the `Sprite`_ object an `play sprite animations`_. In many cases you may want to place animated objects in the scene with an initial animation. Phaser_ does not provide an **initial animation** or **auto-play animation** property, but the |SceneEditor|_ allows to set this **auto-play animation** to the **Sprite** object, and the compiler will generate an extra instruction that plays the animation:
+
+.. code-block:: javascript
+    :emphasize-lines: 2,2
+    
+    var grasshopper = this.add.sprite(577, 675, "atlas", "grasshopper-idle-1")
+    grasshopper.anims.play("grasshopper-idle");
+
+The **Animations** properties section shows a preview of the **auto-play animation** and the buttons to select the animation or remove it.
+
+.. image:: images/scene-editor/scene-editor-animations-section.png
+  :alt: Auto-play animation.
+
+
+1. Button that shows the key of the animation and that you can click to select another animation.
+
+  .. image:: images/scene-editor/scene-editor-animations-section-select.png
+    :alt: Select the auto-play animation.
+
+2. Removes the **auto-play animation**. This means, no animation is played when the object is created.
+
+3. The playback buttons of the animation preview.
+
+4. A button to select all the objects with the same **auto-play animation**.
+
+5. A button to open the **auto-play animation** key in the |AssetPackEditor|_.
+
+6. A button to open the **auto-play animation** in the |AnimationsEditor|_.
 
 Tile Sprite
 ~~~~~~~~~~~
