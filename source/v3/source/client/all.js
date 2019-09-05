@@ -677,7 +677,8 @@ var phasereditor2d;
                 constructor(id) {
                     super();
                     this._id = id;
-                    this.getElement().classList.add("part");
+                    this.getElement().classList.add("Part");
+                    this.getElement().__part = this;
                 }
                 getId() {
                     return this._id;
@@ -794,7 +795,7 @@ var phasereditor2d;
             class ViewPart extends ide.Part {
                 constructor(id) {
                     super(id);
-                    this.getElement().classList.add("view");
+                    this.getElement().classList.add("View");
                 }
             }
             ide.ViewPart = ViewPart;
@@ -812,8 +813,10 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            class Workbench {
+            ide.PART_ACTIVATE_EVENT = "partActivate";
+            class Workbench extends EventTarget {
                 constructor() {
+                    super();
                     this._contentType_icon_Map = new Map();
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_IMAGE, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_IMAGE));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_AUDIO, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SOUND));
@@ -830,8 +833,33 @@ var phasereditor2d;
                 async start() {
                     await this.initFileStorage();
                     this.initContentTypes();
+                    this.initEvents();
                     this._designWindow = new ide.DesignWindow();
                     document.getElementById("body").appendChild(this._designWindow.getElement());
+                }
+                initEvents() {
+                    window.addEventListener("click", e => {
+                        const part = this.findPart(e.target);
+                    });
+                }
+                getActivePart() {
+                    return this._activePart;
+                }
+                setActivePart(part) {
+                    this._activePart;
+                    this.dispatchEvent(new CustomEvent(ide.PART_ACTIVATE_EVENT, { detail: part }));
+                }
+                findPart(element) {
+                    return this.findPart2(element);
+                }
+                findPart2(element) {
+                    if (element.__part) {
+                        return element.__part;
+                    }
+                    if (element.parentElement) {
+                        return this.findPart2(element.parentElement);
+                    }
+                    return null;
                 }
                 initFileStorage() {
                     this._fileStorage = new phasereditor2d.core.io.ServerFileStorage();
@@ -880,7 +908,167 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var properties;
+            (function (properties) {
+                class PropertySectionPane extends controls.Control {
+                    constructor(section) {
+                        super();
+                        this._section = section;
+                        this.addClass("PropertySectionPane");
+                    }
+                    createOrUpdateWithSelection() {
+                        if (!this._formArea) {
+                            this._titleArea = document.createElement("div");
+                            this._titleArea.classList.add("PropertyTitleArea");
+                            this._expandBtn = document.createElement("div");
+                            this._expandBtn.classList.add("expandBtn", "expanded");
+                            this._expandBtn.addEventListener("mouseup", () => this.toggleSection());
+                            this._titleArea.appendChild(this._expandBtn);
+                            const label = document.createElement("label");
+                            label.innerText = this._section.getTitle();
+                            label.addEventListener("mouseup", () => this.toggleSection());
+                            this._titleArea.appendChild(label);
+                            this._formArea = document.createElement("div");
+                            this._formArea.classList.add("PropertyFormArea");
+                            this._section.create(this._formArea);
+                            this.getElement().appendChild(this._titleArea);
+                            this.getElement().appendChild(this._formArea);
+                        }
+                        this._section.updateWithSelection();
+                    }
+                    toggleSection() {
+                        if (this._expandBtn.classList.contains("expanded")) {
+                            this._expandBtn.classList.remove("expanded");
+                            this._expandBtn.classList.add("collapsed");
+                            this._formArea.style.display = "none";
+                        }
+                        else {
+                            this._expandBtn.classList.add("expanded");
+                            this._expandBtn.classList.remove("collapsed");
+                            this._formArea.style.display = "initial";
+                        }
+                    }
+                    getSection() {
+                        return this._section;
+                    }
+                    getFormArea() {
+                        return this._formArea;
+                    }
+                }
+                class PropertyPage extends controls.Control {
+                    constructor() {
+                        super("div");
+                        this.addClass("PropertyPage");
+                        this._sectionPanes = [];
+                        this._sectionPaneMap = new Map();
+                        this._selection = [];
+                    }
+                    layout() {
+                    }
+                    build() {
+                        const children = this.getElement().children;
+                        for (let i = 0; i < children.length; i += 1) {
+                            children.item(i).remove();
+                        }
+                        if (this._sectionProvider) {
+                            const list = [];
+                            this._sectionProvider.addSections(this, list);
+                            for (const section of list) {
+                                if (!this._sectionPaneMap.has(section.getId())) {
+                                    const pane = new PropertySectionPane(section);
+                                    this.add(pane);
+                                    this._sectionPaneMap.set(section.getId(), pane);
+                                    this._sectionPanes.push(pane);
+                                }
+                            }
+                        }
+                        this.updateWithSelection();
+                    }
+                    updateWithSelection() {
+                        const n = this._selection.length;
+                        for (const pane of this._sectionPanes) {
+                            const section = pane.getSection();
+                            if (section.canEditNumber(n)) {
+                                pane.createOrUpdateWithSelection();
+                            }
+                        }
+                    }
+                    getSelection() {
+                        return this._selection;
+                    }
+                    setSelection(sel) {
+                        this._selection = sel;
+                        this.updateWithSelection();
+                    }
+                    setSectionProvider(provider) {
+                        this._sectionProvider = provider;
+                        this.build();
+                    }
+                    getSectionProvider() {
+                        return this._sectionProvider;
+                    }
+                }
+                properties.PropertyPage = PropertyPage;
+            })(properties = controls.properties || (controls.properties = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var properties;
+            (function (properties) {
+                class PropertySection {
+                    constructor(page, id, title) {
+                        this._page = page;
+                        this._id = id;
+                        this._title = title;
+                        this._updaters = [];
+                    }
+                    updateWithSelection() {
+                        for (const updater of this._updaters) {
+                            updater();
+                        }
+                    }
+                    addUpdater(updater) {
+                        this._updaters.push(updater);
+                    }
+                    getPage() {
+                        return this._page;
+                    }
+                    *getSelection() {
+                        for (const obj of this._page.getSelection()) {
+                            yield obj;
+                        }
+                    }
+                    getId() {
+                        return this._id;
+                    }
+                    getTitle() {
+                        return this._title;
+                    }
+                    create(parent) {
+                        this.createForm(parent);
+                    }
+                }
+                properties.PropertySection = PropertySection;
+            })(properties = controls.properties || (controls.properties = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../ViewPart.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/properties/IPropertySectionProvider.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -889,10 +1077,42 @@ var phasereditor2d;
         (function (ide) {
             var inspector;
             (function (inspector) {
+                class Sample1Section extends ui.controls.properties.PropertySection {
+                    createForm(parent) {
+                        parent.innerHTML = "<label>Sample Section 1</label>";
+                    }
+                    canEdit(obj) {
+                        return true;
+                    }
+                    canEditNumber(n) {
+                        return true;
+                    }
+                }
+                class Sample2Section extends ui.controls.properties.PropertySection {
+                    createForm(parent) {
+                        parent.innerHTML = "<label>Sample Section 2</label>";
+                    }
+                    canEdit(obj) {
+                        return true;
+                    }
+                    canEditNumber(n) {
+                        return true;
+                    }
+                }
+                class SampleSectionProvider {
+                    addSections(page, sections) {
+                        sections.push(new Sample1Section(page, "sample1", "Sample 1"));
+                        sections.push(new Sample2Section(page, "sample2", "Sample 2"));
+                    }
+                }
                 class InspectorView extends ide.ViewPart {
                     constructor() {
                         super("inspectorView");
                         this.setTitle("Inspector");
+                        this._propertyPage = new ui.controls.properties.PropertyPage();
+                        this._propertyPage.setSectionProvider(new SampleSectionProvider());
+                        this.getClientArea().add(this._propertyPage);
+                        this.getClientArea().setLayout(new ui.controls.FillLayout());
                     }
                 }
                 inspector.InspectorView = InspectorView;

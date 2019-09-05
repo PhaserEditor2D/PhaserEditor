@@ -35,7 +35,7 @@
 /* panel */
 
 .light .panel {
-    background: #d2d2d2;  
+    background: #d2d2d2;
 }
 
 .light .panelClientArea {
@@ -69,13 +69,20 @@
 .light .panel .panelTitle {
     background: #b8b8b8;
     background: linear-gradient(#d8d8d8, #b8b8b8);
-    color: #ffffff;
 
+    /*
+
+    color: #ffffff;
     text-shadow:
         -1px -1px 0 #909090,
         1px -1px 0 #909090,
         -1px 1px 0 #909090,
         1px 1px 0 #909090;
+
+    */
+
+    color: #606060;
+    text-shadow: 0px 2px 2px #e0e0e0;
 }
 
 .light .panel .actionButton {
@@ -120,4 +127,24 @@
 
 .light input:focus {
     background: linear-gradient(#a8a8a8, #c8c8c8);
+}
+
+/* PropertyPage */
+
+.PropertyTitleArea {
+    background: #b8b8b8;
+    background: linear-gradient(#bfbfbf, #afafaf);
+    color: #ffffff;
+
+    box-shadow: inset 2px 2px 2px #40404008,
+        inset -2px 2px 2px #40404008,
+        inset 2px -2px 2px #40404008,
+        inset -2px -2px 2px #40404008,
+        -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
+
+    color: #606060;
+    text-shadow: 0px 2px 2px #cfcfcf;
 }

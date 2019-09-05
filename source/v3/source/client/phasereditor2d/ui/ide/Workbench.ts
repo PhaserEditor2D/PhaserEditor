@@ -6,7 +6,9 @@
 
 namespace phasereditor2d.ui.ide {
 
-    export class Workbench {
+    export const PART_ACTIVATE_EVENT = "partActivate";
+
+    export class Workbench extends EventTarget {
         private static _workbench: Workbench;
 
 
@@ -22,9 +24,10 @@ namespace phasereditor2d.ui.ide {
         private _contentType_icon_Map: Map<string, controls.IIcon>;
         private _fileStorage: core.io.IFileStorage;
         private _contentTypeRegistry: core.ContentTypeRegistry;
+        private _activePart: Part;
 
         private constructor() {
-
+            super();
             this._contentType_icon_Map = new Map();
 
             this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, controls.Controls.getIcon(controls.Controls.ICON_FILE_IMAGE));
@@ -40,8 +43,42 @@ namespace phasereditor2d.ui.ide {
 
             this.initContentTypes();
 
+            this.initEvents();
+
             this._designWindow = new ide.DesignWindow();
             document.getElementById("body").appendChild(this._designWindow.getElement());
+        }
+
+        private initEvents() {
+            window.addEventListener("click", e => {
+                const part = this.findPart(<any>e.target);
+
+            });
+        }
+
+        getActivePart() {
+            return this._activePart;
+        }
+
+        private setActivePart(part: Part): void {
+            this._activePart;
+            this.dispatchEvent(new CustomEvent(PART_ACTIVATE_EVENT, { detail: part }));
+        }
+
+        findPart(element: HTMLElement): Part {
+            return this.findPart2(element);
+        }
+
+        private findPart2(element: HTMLElement): Part {
+            if ((<any>element).__part) {
+                return (<any>element).__part;
+            }
+
+            if (element.parentElement) {
+                return this.findPart2(element.parentElement);
+            }
+
+            return null;
         }
 
         private initFileStorage() {

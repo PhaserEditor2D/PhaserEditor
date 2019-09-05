@@ -9,7 +9,8 @@ namespace phasereditor2d.ui.ide {
         constructor(id: string) {
             super();
             this._id = id;
-            this.getElement().classList.add("part");
+            this.getElement().classList.add("Part");
+            (<any>this.getElement()).__part = this;
         }
 
         getId() {

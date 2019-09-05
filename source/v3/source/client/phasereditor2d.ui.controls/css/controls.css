@@ -64,3 +64,47 @@ canvas {
     margin: 0px;
     border-style: none !important;
 }
+
+.PropertyPage {
+    
+    display: grid;
+    grid-template-columns: 100%;
+    align-items: start;
+    
+    width: 100%;
+    /*height: 100%;*/
+}
+
+.PropertySectionPane {
+    display: grid;
+    position: initial;
+}
+
+.PropertyTitleArea {
+    display: inline-grid;
+    grid-template-columns: 20px 1fr;
+    height: 1em;
+    padding: 3px 2px;
+}
+
+.PropertyTitleArea label {
+    font-weight: bold;
+}
+
+.expandBtn {
+    width: 16px;
+    height: 16px;    
+}
+
+.expandBtn.collapsed {
+    background-image: url("../images/16/tree-expand.png");
+}
+
+.expandBtn.expanded {
+    background-image: url("../images/16/tree-collapse.png");
+}
+
+.PropertyFormArea {
+    display: grid;
+    padding: 0.2em;
+}
