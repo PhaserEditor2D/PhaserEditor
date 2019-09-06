@@ -142,7 +142,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#animations-properties-section">Animations properties section</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#tile-sprite">7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tile-sprite">7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tile-sprite-properties-section">Tile Sprite properties section</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#text">7.3.6&nbsp;&nbsp;&nbsp;Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#group">7.3.7&nbsp;&nbsp;&nbsp;Group</a></li>
@@ -618,7 +621,7 @@
 <ul>
 <li><p class="first"><a class="reference external" href="#morphing-objects-to-a-different-type">Morph</a> an scene object into a <strong>Sprite</strong> object.</p>
 </li>
-<li><p class="first">Drop on the scene an animation key from the <a href="#id2"><span class="problematic" id="id3">`Blocks`_</span></a> view.</p>
+<li><p class="first">Drop on the scene an animation key from the <a class="reference internal" href="#blocks-view">Blocks view</a>.</p>
 <img alt="Create sprite with animation." src="_images/scene-editor-create-sprite.png" />
 </li>
 </ul>
@@ -626,7 +629,7 @@
 <div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">grasshopper</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">577</span><span class="p">,</span> <span class="mi">675</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;grasshopper-idle-1&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The <strong>Player</strong> object contains all the <a class="reference internal" href="#common-properties">common properties</a>:</p>
+<p>The <strong>Sprite</strong> object contains all the <a class="reference internal" href="#common-properties">common properties</a>:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
 <li><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
@@ -668,6 +671,68 @@
 </div>
 <div class="section" id="tile-sprite">
 <h3>7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html">Phaser.GameObjects.TileSprite</a> object is used in backgrounds, platforms, and any other object that can be renderer as a repeated texture. We recommend to read its <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html">API documentation</a> for tips and better understanding.</p>
+<p>To create a <strong>Tile Sprite</strong> object, you can click on the <a class="reference external" href="#adding-objects-to-the-scene">Add Object button</a> and select the <strong>Tile Sprite</strong> option. Or you can:</p>
+<ol class="arabic simple">
+<li>Create an <a class="reference internal" href="#image">Image</a> or <a class="reference internal" href="#sprite">Sprite</a> object (using any method).</li>
+<li>Morph the <a class="reference internal" href="#image">Image</a> or <a class="reference internal" href="#sprite">Sprite</a> object into a <strong>Tile Sprite</strong> object. You can do this in two ways:</li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p class="first">Morph it by selecting the <strong>Tile Sprite</strong> type in the <a class="reference internal" href="#editor-properties-section">Editor properties section</a>.</p>
+<blockquote>
+<div><img alt="Morph to Tile Sprite." src="_images/scene-editor-tilesprite-morph.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Select the object and press the <code class="docutils literal notranslate"><span class="pre">L</span></code> key. It morphs the object into a <strong>Tile Sprite</strong> and activate the ** Tile Size** tool.</p>
+<img alt="Morph to Tile Sprite and activate the Tile Size tool." src="_images/scene-editor-tilesprite-morph-and-resize.png" />
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Tile Sprite</strong> objects are created in code using the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#tileSprite__anchor">tileSprite factory</a>:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;backgrounds&quot;</span><span class="p">,</span> <span class="s2">&quot;bg-trees&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <strong>Tile Sprite</strong> object contains all the <a class="reference internal" href="#common-properties">common properties</a>:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
+<li><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
+<li><a class="reference internal" href="#game-object-properties-section">Game Object properties section</a></li>
+<li><a class="reference internal" href="#transform-properties-section">Transform properties section</a></li>
+<li><a class="reference internal" href="#origin-properties-section">Origin properties section</a></li>
+<li><a class="reference internal" href="#flip-properties-section">Flip properties section</a></li>
+<li><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
+<li><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
+</ul>
+<p>It also contains the:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#texture-properties-section">Texture properties section</a>, that is dedicated to all the objects with texture.</li>
+<li><a class="reference internal" href="#tile-sprite-properties-section">Tile Sprite properties section</a>, that is dedicated only to the <strong>Tile Sprite</strong> objects.</li>
+</ul>
+<div class="section" id="tile-sprite-properties-section">
+<h4>Tile Sprite properties section<a class="headerlink" href="#tile-sprite-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This sections provides editors for the <strong>Tile Sprite</strong> specific properties and the shortcuts to activate different <strong>Tile Sprite</strong> tools.</p>
+<img alt="Tile Sprite properties." src="_images/scene-editor-tilesprite-section.png" />
+<ol class="arabic simple">
+<li>The <strong>Tile Size</strong> has the <strong>Width</strong> and <strong>Height</strong> properties. You can set the property’s value directly in the text-boxes or activating the <strong>Tile Size tool</strong>. This tool displays three handlers to change the <strong>width</strong>, <strong>height</strong> or <strong>both</strong>. The tool can be activated also by pressing the <code class="docutils literal notranslate"><span class="pre">L</span></code> key.</li>
+</ol>
+<blockquote>
+<div><p>Also, you can set the <strong>Tile Size</strong> to the original texture size.</p>
+<img alt="Tile Sprite size properties." src="_images/scene-editor-tilesprite-section-size.png" />
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html#setTilePosition__anchor">tilePosition</a> property. You can change it with the <strong>Tile Position tool</strong> or setting the values directly in the text-boxes.</li>
+</ol>
+<blockquote>
+<div><img alt="Tile Sprite position properties." src="_images/scene-editor-tilesprite-section-tileposition.png" />
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html#setTileScale__anchor">tileScale</a> property. You can change it with the <strong>Tile Scale tool</strong> or setting the values directly in the text-boxes.</li>
+</ol>
+<blockquote>
+<div><img alt="Tile Sprite scale properties." src="_images/scene-editor-tilesprite-section-tilescale.png" />
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="bitmap-text">
 <h3>7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text<a class="headerlink" href="#bitmap-text" title="Permalink to this headline">¶</a></h3>

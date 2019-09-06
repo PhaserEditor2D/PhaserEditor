@@ -474,7 +474,7 @@ To create a **Sprite** object you can:
 
 * `Morph <#morphing-objects-to-a-different-type>`_ an scene object into a **Sprite** object.
 
-* Drop on the scene an animation key from the `Blocks`_ view.
+* Drop on the scene an animation key from the `Blocks view`_.
 
   .. image:: images/scene-editor/scene-editor-create-sprite.png
     :alt: Create sprite with animation.
@@ -486,7 +486,7 @@ To create a **Sprite** object you can:
 
   var grasshopper = this.add.sprite(577, 675, "atlas", "grasshopper-idle-1");
 
-The **Player** object contains all the `common properties`_:
+The **Sprite** object contains all the `common properties`_:
 
 * `Variable properties section`_
 
@@ -544,6 +544,81 @@ The **Animations** properties section shows a preview of the **auto-play animati
 
 Tile Sprite
 ~~~~~~~~~~~
+
+The `Phaser.GameObjects.TileSprite <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html>`_ object is used in backgrounds, platforms, and any other object that can be renderer as a repeated texture. We recommend to read its `API documentation <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html>`_ for tips and better understanding.
+
+To create a **Tile Sprite** object, you can click on the `Add Object button <#adding-objects-to-the-scene>`_ and select the **Tile Sprite** option. Or you can:
+
+1. Create an `Image`_ or `Sprite`_ object (using any method).
+
+2. Morph the `Image`_ or `Sprite`_ object into a **Tile Sprite** object. You can do this in two ways:
+
+  * Morph it by selecting the **Tile Sprite** type in the `Editor properties section`_.
+
+      .. image:: images/scene-editor/scene-editor-tilesprite-morph.png
+        :alt: Morph to Tile Sprite. 
+
+  * Select the object and press the ``L`` key. It morphs the object into a **Tile Sprite** and activate the ** Tile Size** tool.
+
+    .. image:: images/scene-editor/scene-editor-tilesprite-morph-and-resize.png
+      :alt: Morph to Tile Sprite and activate the Tile Size tool.
+
+**Tile Sprite** objects are created in code using the `tileSprite factory <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#tileSprite__anchor>`_:
+
+
+.. code::
+
+  this.add.tileSprite(0, 0, 400, 200, "backgrounds", "bg-trees");
+
+The **Tile Sprite** object contains all the `common properties`_:
+
+* `Variable properties section`_
+
+* `Editor properties section`_
+
+* `Game Object properties section`_
+
+* `Transform properties section`_
+
+* `Origin properties section`_
+
+* `Flip properties section`_
+
+* `Scroll Factor properties section`_
+
+* `Tint properties section`_
+
+It also contains the: 
+
+* `Texture properties section`_, that is dedicated to all the objects with texture. 
+
+* `Tile Sprite properties section`_, that is dedicated only to the **Tile Sprite** objects.
+
+Tile Sprite properties section
+##############################
+
+This sections provides editors for the **Tile Sprite** specific properties and the shortcuts to activate different **Tile Sprite** tools.
+
+.. image:: images/scene-editor/scene-editor-tilesprite-section.png
+  :alt: Tile Sprite properties.
+
+
+1. The **Tile Size** has the **Width** and **Height** properties. You can set the property's value directly in the text-boxes or activating the **Tile Size tool**. This tool displays three handlers to change the **width**, **height** or **both**. The tool can be activated also by pressing the ``L`` key.
+  
+  Also, you can set the **Tile Size** to the original texture size.
+
+  .. image:: images/scene-editor/scene-editor-tilesprite-section-size.png
+    :alt: Tile Sprite size properties.
+
+2. The `tilePosition <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html#setTilePosition__anchor>`_ property. You can change it with the **Tile Position tool** or setting the values directly in the text-boxes.
+
+  .. image:: images/scene-editor/scene-editor-tilesprite-section-tileposition.png
+    :alt: Tile Sprite position properties.
+
+3. The `tileScale <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html#setTileScale__anchor>`_ property. You can change it with the **Tile Scale tool** or setting the values directly in the text-boxes.
+
+  .. image:: images/scene-editor/scene-editor-tilesprite-section-tilescale.png
+    :alt: Tile Sprite scale properties.
 
 Bitmap Text
 ~~~~~~~~~~~
