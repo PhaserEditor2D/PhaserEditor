@@ -2,6 +2,8 @@
 
 namespace phasereditor2d.ui.controls {
 
+    export const SELECTION_EVENT = "selected";
+
     export enum PreloadResult {
         NOTHING_LOADED,
         RESOURCES_LOADED

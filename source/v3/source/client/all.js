@@ -95,6 +95,9 @@ var phasereditor2d;
                 getExtension() {
                     return this._ext;
                 }
+                getSize() {
+                    return this.isFile() ? this._fileSize : 0;
+                }
                 getName() {
                     return this._name;
                 }
@@ -195,8 +198,9 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            class Control {
+            class Control extends EventTarget {
                 constructor(tagName = "div") {
+                    super();
                     this._bounds = { x: 0, y: 0, width: 0, height: 0 };
                     this._children = [];
                     this._element = document.createElement(tagName);
@@ -391,6 +395,7 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
+            controls.SELECTION_EVENT = "selected";
             let PreloadResult;
             (function (PreloadResult) {
                 PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
@@ -678,11 +683,24 @@ var phasereditor2d;
                 constructor(id) {
                     super();
                     this._id = id;
+                    this._selection = [];
                     this.getElement().classList.add("Part");
                     this.getElement().__part = this;
                 }
                 getId() {
                     return this._id;
+                }
+                setSelection(selection) {
+                    this._selection = selection;
+                    this.dispatchEvent(new CustomEvent(ui.controls.SELECTION_EVENT, {
+                        detail: selection
+                    }));
+                }
+                getSelection() {
+                    return this._selection;
+                }
+                getPropertyProvider() {
+                    return null;
                 }
             }
             ide.Part = Part;
@@ -849,11 +867,13 @@ var phasereditor2d;
                     return this._activePart;
                 }
                 setActivePart(part) {
+                    if (part === this._activePart) {
+                        return;
+                    }
                     const old = this._activePart;
                     this._activePart = part;
                     if (old) {
                         old.removeClass("activePart");
-                        console.log(old.getElement().classList);
                         this.dispatchEvent(new CustomEvent(ide.PART_DEACTIVATE_EVENT, { detail: old }));
                     }
                     if (part) {
@@ -984,10 +1004,6 @@ var phasereditor2d;
                     layout() {
                     }
                     build() {
-                        const children = this.getElement().children;
-                        for (let i = 0; i < children.length; i += 1) {
-                            children.item(i).remove();
-                        }
                         if (this._sectionProvider) {
                             const list = [];
                             this._sectionProvider.addSections(this, list);
@@ -1006,8 +1022,22 @@ var phasereditor2d;
                         const n = this._selection.length;
                         for (const pane of this._sectionPanes) {
                             const section = pane.getSection();
+                            let show = false;
                             if (section.canEditNumber(n)) {
+                                show = true;
+                                for (const obj of this._selection) {
+                                    if (!section.canEdit(obj)) {
+                                        show = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (show) {
+                                pane.getElement().style.display = "grid";
                                 pane.createOrUpdateWithSelection();
+                            }
+                            else {
+                                pane.getElement().style.display = "none";
                             }
                         }
                     }
@@ -1057,10 +1087,8 @@ var phasereditor2d;
                     getPage() {
                         return this._page;
                     }
-                    *getSelection() {
-                        for (const obj of this._page.getSelection()) {
-                            yield obj;
-                        }
+                    getSelection() {
+                        return this._page.getSelection();
                     }
                     getId() {
                         return this._id;
@@ -1071,8 +1099,50 @@ var phasereditor2d;
                     create(parent) {
                         this.createForm(parent);
                     }
+                    flatValues_String(values) {
+                        return values.join(",");
+                    }
+                    createGridElement(parent, cols, simpleProps = true) {
+                        const div = document.createElement("div");
+                        div.classList.add("formGrid", "formGrid-cols-" + cols);
+                        if (simpleProps) {
+                            div.classList.add("formSimpleProps");
+                        }
+                        parent.appendChild(div);
+                        return div;
+                    }
+                    createLabel(parent, text = "") {
+                        const label = document.createElement("label");
+                        label.classList.add("formLabel");
+                        label.innerText = text;
+                        parent.appendChild(label);
+                        return label;
+                    }
+                    createText(parent, readOnly = false) {
+                        const text = document.createElement("input");
+                        text.type = "text";
+                        text.classList.add("formText");
+                        text.readOnly = readOnly;
+                        parent.appendChild(text);
+                        return text;
+                    }
                 }
                 properties.PropertySection = PropertySection;
+            })(properties = controls.properties || (controls.properties = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var properties;
+            (function (properties) {
+                class PropertySectionProvider {
+                }
+                properties.PropertySectionProvider = PropertySectionProvider;
             })(properties = controls.properties || (controls.properties = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -1080,7 +1150,7 @@ var phasereditor2d;
 /// <reference path="../ViewPart.ts"/>
 /// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts"/>
 /// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/IPropertySectionProvider.ts"/>
+/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1100,31 +1170,32 @@ var phasereditor2d;
                         return true;
                     }
                 }
-                class Sample2Section extends ui.controls.properties.PropertySection {
-                    createForm(parent) {
-                        parent.innerHTML = "<label>Sample Section 2</label>";
-                    }
-                    canEdit(obj) {
-                        return true;
-                    }
-                    canEditNumber(n) {
-                        return true;
-                    }
-                }
-                class SampleSectionProvider {
-                    addSections(page, sections) {
-                        sections.push(new Sample1Section(page, "sample1", "Sample 1"));
-                        sections.push(new Sample2Section(page, "sample2", "Sample 2"));
-                    }
-                }
                 class InspectorView extends ide.ViewPart {
                     constructor() {
                         super("inspectorView");
                         this.setTitle("Inspector");
                         this._propertyPage = new ui.controls.properties.PropertyPage();
-                        this._propertyPage.setSectionProvider(new SampleSectionProvider());
                         this.getClientArea().add(this._propertyPage);
                         this.getClientArea().setLayout(new ui.controls.FillLayout());
+                        this._selectionListener = (e) => this.onPartSelection();
+                        ide.Workbench.getWorkbench().addEventListener(ide.PART_ACTIVATE_EVENT, e => this.onPartActivate());
+                    }
+                    onPartActivate() {
+                        const part = ide.Workbench.getWorkbench().getActivePart();
+                        if (!part || part !== this && part !== this._activePart) {
+                            if (this._activePart) {
+                                this._activePart.removeEventListener(ui.controls.SELECTION_EVENT, this._selectionListener);
+                            }
+                            this._activePart = part;
+                            this._activePart.addEventListener(ui.controls.SELECTION_EVENT, this._selectionListener);
+                            this.onPartSelection();
+                        }
+                    }
+                    onPartSelection() {
+                        const sel = this._activePart.getSelection();
+                        const provider = this._activePart.getPropertyProvider();
+                        this._propertyPage.setSectionProvider(provider);
+                        this._propertyPage.setSelection(sel);
                     }
                 }
                 inspector.InspectorView = InspectorView;
@@ -1261,6 +1332,7 @@ var phasereditor2d;
                         this._input = null;
                         this._expandedObjects = new Set();
                         this._selectedObjects = new Set();
+                        this._selection = [];
                         window.cc = this;
                         this.initListeners();
                     }
@@ -1315,11 +1387,15 @@ var phasereditor2d;
                         return null;
                     }
                     fireSelectionChanged() {
+                        this.dispatchEvent(new CustomEvent(controls.SELECTION_EVENT, {
+                            detail: this._selection
+                        }));
                     }
                     onKeyDown(e) {
                         if (e.key === "Escape") {
                             if (this._selectedObjects.size > 0) {
                                 this._selectedObjects.clear();
+                                this._selection = [];
                                 this.repaint();
                                 this.fireSelectionChanged();
                             }
@@ -1349,6 +1425,7 @@ var phasereditor2d;
                         const data = item.data;
                         if (e.ctrlKey || e.metaKey) {
                             this._selectedObjects.add(data);
+                            this._selection.push(data);
                             selChanged = true;
                         }
                         else if (e.shiftKey) {
@@ -1356,7 +1433,9 @@ var phasereditor2d;
                                 const start = Math.min(this._lastSelectedItemIndex, item.index);
                                 const end = Math.max(this._lastSelectedItemIndex, item.index);
                                 for (let i = start; i <= end; i++) {
-                                    this._selectedObjects.add(this._paintItems[i].data);
+                                    const obj = this._paintItems[i].data;
+                                    this._selectedObjects.add(obj);
+                                    this._selection.push(obj);
                                 }
                                 selChanged = true;
                             }
@@ -1364,6 +1443,7 @@ var phasereditor2d;
                         else {
                             this._selectedObjects.clear();
                             this._selectedObjects.add(data);
+                            this._selection = [data];
                             selChanged = true;
                         }
                         if (selChanged) {
@@ -1628,6 +1708,78 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var files;
+            (function (files) {
+                class FilePropertySectionProvider extends ui.controls.properties.PropertySectionProvider {
+                    addSections(page, sections) {
+                        sections.push(new files.FileSection(page));
+                    }
+                }
+                files.FilePropertySectionProvider = FilePropertySectionProvider;
+            })(files = ide.files || (ide.files = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var files;
+            (function (files) {
+                class FileSection extends ui.controls.properties.PropertySection {
+                    constructor(page) {
+                        super(page, "FileSection", "File");
+                    }
+                    createForm(parent) {
+                        const comp = this.createGridElement(parent, 2);
+                        {
+                            // Name
+                            this.createLabel(comp, "Name");
+                            const text = this.createText(comp, true);
+                            this.addUpdater(() => {
+                                text.value = this.flatValues_String(this.getSelection().map(file => file.getName()));
+                            });
+                        }
+                        {
+                            // Full Name
+                            this.createLabel(comp, "Full Name");
+                            const text = this.createText(comp, true);
+                            this.addUpdater(() => {
+                                text.value = this.flatValues_String(this.getSelection().map(file => file.getFullName()));
+                            });
+                        }
+                        {
+                            // Size
+                            this.createLabel(comp, "Size");
+                            const text = this.createText(comp, true);
+                            this.addUpdater(() => {
+                                text.value = this.getSelection()
+                                    .map(f => f.getSize())
+                                    .reduce((a, b) => a + b)
+                                    .toString();
+                            });
+                        }
+                    }
+                    canEdit(obj) {
+                        return obj instanceof phasereditor2d.core.io.FilePath;
+                    }
+                    canEditNumber(n) {
+                        return n > 0;
+                    }
+                }
+                files.FileSection = FileSection;
+            })(files = ide.files || (ide.files = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
 /// <reference path="../../Part.ts"/>
@@ -1662,6 +1814,8 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 var phasereditor2d;
@@ -1676,6 +1830,7 @@ var phasereditor2d;
                 class FilesView extends ide.ViewPart {
                     constructor() {
                         super("filesView");
+                        this._propertyProvider = new files.FilePropertySectionProvider();
                         this.setTitle("Files");
                         //const root = new core.io.FilePath(null, TEST_DATA);
                         const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
@@ -1689,403 +1844,16 @@ var phasereditor2d;
                         this.getClientArea().add(filteredViewer);
                         this.getClientArea().setLayout(new ui.controls.FillLayout());
                         viewer.repaint();
+                        viewer.addEventListener(ui.controls.SELECTION_EVENT, (e) => {
+                            console.log("selection changed in " + this.getId());
+                            this.setSelection(e.detail);
+                        });
+                    }
+                    getPropertyProvider() {
+                        return this._propertyProvider;
                     }
                 }
                 files.FilesView = FilesView;
-                const TEST_DATA = {
-                    "name": "",
-                    "isFile": false,
-                    "children": [
-                        {
-                            "name": ".gitignore",
-                            "isFile": true,
-                            "contentType": "any"
-                        },
-                        {
-                            "name": "COPYRIGHTS",
-                            "isFile": true,
-                            "contentType": "any"
-                        },
-                        {
-                            "name": "assets",
-                            "isFile": false,
-                            "children": [
-                                {
-                                    "name": "animations.json",
-                                    "isFile": true,
-                                    "contentType": "json"
-                                },
-                                {
-                                    "name": "atlas",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": ".DS_Store",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "atlas-props.json",
-                                            "isFile": true,
-                                            "contentType": "json"
-                                        },
-                                        {
-                                            "name": "atlas-props.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "atlas.json",
-                                            "isFile": true,
-                                            "contentType": "json"
-                                        },
-                                        {
-                                            "name": "atlas.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "hello.atlas",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "hello.json",
-                                            "isFile": true,
-                                            "contentType": "json"
-                                        },
-                                        {
-                                            "name": "hello.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "environment",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": ".DS_Store",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "bg-clouds.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "bg-mountains.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "bg-trees.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "tileset.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "fonts",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": "arcade.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "arcade.xml",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "atari-classic.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "atari-classic.xml",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "html",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": "hello.html",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "levels-pack-1.json",
-                                    "isFile": true,
-                                    "contentType": "json"
-                                },
-                                {
-                                    "name": "maps",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": ".DS_Store",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "map.json",
-                                            "isFile": true,
-                                            "contentType": "json"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "scenes",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": "Acorn.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "Ant.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "EnemyDeath.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "GameOver.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "GameOver.scene",
-                                            "isFile": true,
-                                            "contentType": "phasereditor2d.scene"
-                                        },
-                                        {
-                                            "name": "Gator.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "Grasshopper.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "Level.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "Level.scene",
-                                            "isFile": true,
-                                            "contentType": "phasereditor2d.scene"
-                                        },
-                                        {
-                                            "name": "Player.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "Preload.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "Preload.scene",
-                                            "isFile": true,
-                                            "contentType": "phasereditor2d.scene"
-                                        },
-                                        {
-                                            "name": "TitleScreen.js",
-                                            "isFile": true,
-                                            "contentType": "js"
-                                        },
-                                        {
-                                            "name": "TitleScreen.scene",
-                                            "isFile": true,
-                                            "contentType": "phasereditor2d.scene"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "sounds",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": ".DS_Store",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "enemy-death.ogg",
-                                            "isFile": true,
-                                            "contentType": "sound"
-                                        },
-                                        {
-                                            "name": "hurt.ogg",
-                                            "isFile": true,
-                                            "contentType": "sound"
-                                        },
-                                        {
-                                            "name": "item.ogg",
-                                            "isFile": true,
-                                            "contentType": "sound"
-                                        },
-                                        {
-                                            "name": "jump.ogg",
-                                            "isFile": true,
-                                            "contentType": "sound"
-                                        },
-                                        {
-                                            "name": "music-credits.txt",
-                                            "isFile": true,
-                                            "contentType": "txt"
-                                        },
-                                        {
-                                            "name": "the_valley.ogg",
-                                            "isFile": true,
-                                            "contentType": "sound"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "sprites",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": ".DS_Store",
-                                            "isFile": true,
-                                            "contentType": "any"
-                                        },
-                                        {
-                                            "name": "credits-text.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "game-over.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "instructions.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "loading.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "press-enter-text.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        },
-                                        {
-                                            "name": "title-screen.png",
-                                            "isFile": true,
-                                            "contentType": "img"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "svg",
-                                    "isFile": false,
-                                    "children": [
-                                        {
-                                            "name": "demo.svg",
-                                            "isFile": true,
-                                            "contentType": "svg"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "data.json",
-                            "isFile": true,
-                            "contentType": "json"
-                        },
-                        {
-                            "name": "fake-assets",
-                            "isFile": false,
-                            "children": [
-                                {
-                                    "name": "Collisions Layer.png",
-                                    "isFile": true,
-                                    "contentType": "img"
-                                },
-                                {
-                                    "name": "Main Layer.png",
-                                    "isFile": true,
-                                    "contentType": "img"
-                                },
-                                {
-                                    "name": "fake-pack.json",
-                                    "isFile": true,
-                                    "contentType": "json"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "index.html",
-                            "isFile": true,
-                            "contentType": "any"
-                        },
-                        {
-                            "name": "jsconfig.json",
-                            "isFile": true,
-                            "contentType": "json"
-                        },
-                        {
-                            "name": "lib",
-                            "isFile": false,
-                            "children": [
-                                {
-                                    "name": "phaser.js",
-                                    "isFile": true,
-                                    "contentType": "js"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "main.js",
-                            "isFile": true,
-                            "contentType": "js"
-                        },
-                        {
-                            "name": "typings",
-                            "isFile": false,
-                            "children": [
-                                {
-                                    "name": "phaser.d.ts",
-                                    "isFile": true,
-                                    "contentType": "ts"
-                                }
-                            ]
-                        }
-                    ]
-                };
             })(files = ide.files || (ide.files = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));

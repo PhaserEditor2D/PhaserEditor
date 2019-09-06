@@ -21,7 +21,7 @@ namespace phasereditor2d.ui.controls.properties {
 
                 this._titleArea = document.createElement("div");
                 this._titleArea.classList.add("PropertyTitleArea");
-                
+
                 this._expandBtn = document.createElement("div");
                 this._expandBtn.classList.add("expandBtn", "expanded");
                 this._expandBtn.addEventListener("mouseup", () => this.toggleSection());
@@ -31,7 +31,7 @@ namespace phasereditor2d.ui.controls.properties {
                 label.innerText = this._section.getTitle();
                 label.addEventListener("mouseup", () => this.toggleSection());
                 this._titleArea.appendChild(label);
-                
+
 
                 this._formArea = document.createElement("div");
                 this._formArea.classList.add("PropertyFormArea");
@@ -44,7 +44,7 @@ namespace phasereditor2d.ui.controls.properties {
             this._section.updateWithSelection();
         }
 
-        private toggleSection() : void {
+        private toggleSection(): void {
             if (this._expandBtn.classList.contains("expanded")) {
                 this._expandBtn.classList.remove("expanded");
                 this._expandBtn.classList.add("collapsed");
@@ -67,7 +67,7 @@ namespace phasereditor2d.ui.controls.properties {
 
     export class PropertyPage extends Control {
 
-        private _sectionProvider: IPropertySectionProvider;
+        private _sectionProvider: PropertySectionProvider;
         private _sectionPanes: PropertySectionPane[];
         private _sectionPaneMap: Map<String, PropertySectionPane>;
         private _selection: any[];
@@ -87,12 +87,6 @@ namespace phasereditor2d.ui.controls.properties {
         }
 
         private build() {
-
-            const children = this.getElement().children;
-
-            for (let i = 0; i < children.length; i += 1) {
-                children.item(i).remove();
-            }
 
             if (this._sectionProvider) {
 
@@ -120,9 +114,22 @@ namespace phasereditor2d.ui.controls.properties {
             for (const pane of this._sectionPanes) {
 
                 const section = pane.getSection();
-
+                let show = false;
                 if (section.canEditNumber(n)) {
+                    show = true;
+                    for (const obj of this._selection) {
+                        if (!section.canEdit(obj)) {
+                            show = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (show) {
+                    pane.getElement().style.display = "grid";
                     pane.createOrUpdateWithSelection();
+                } else {
+                    pane.getElement().style.display = "none";
                 }
             }
         }
@@ -133,10 +140,11 @@ namespace phasereditor2d.ui.controls.properties {
 
         setSelection(sel: any[]): any {
             this._selection = sel;
+
             this.updateWithSelection();
         }
 
-        setSectionProvider(provider: IPropertySectionProvider): void {
+        setSectionProvider(provider: PropertySectionProvider): void {
             this._sectionProvider = provider;
 
             this.build();

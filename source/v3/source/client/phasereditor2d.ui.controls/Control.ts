@@ -1,6 +1,6 @@
 namespace phasereditor2d.ui.controls {
 
-    export class Control {
+    export class Control extends EventTarget {
         private _bounds: Bounds = { x: 0, y: 0, width: 0, height: 0 };
         private _element: HTMLElement;
         private _children: Control[];
@@ -9,6 +9,8 @@ namespace phasereditor2d.ui.controls {
         private _scrollY: number;
 
         constructor(tagName: string = "div") {
+            super();
+            
             this._children = [];
             this._element = document.createElement(tagName);
             this.addClass("control");

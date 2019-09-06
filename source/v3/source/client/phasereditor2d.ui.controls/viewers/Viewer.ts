@@ -14,6 +14,7 @@ namespace phasereditor2d.ui.controls.viewers {
         private _cellSize: number;
         protected _expandedObjects: Set<any>;
         private _selectedObjects: Set<any>;
+        private _selection: any[];
         protected _context: CanvasRenderingContext2D;
         protected _paintItems: PaintItem[];
         private _overObject: any;
@@ -35,6 +36,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this._input = null;
             this._expandedObjects = new Set();
             this._selectedObjects = new Set();
+            this._selection = [];
 
             (<any>window).cc = this;
 
@@ -108,14 +110,16 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private fireSelectionChanged() {
-
+            this.dispatchEvent(new CustomEvent(SELECTION_EVENT, {
+                detail: this._selection
+            }));
         }
-
 
         private onKeyDown(e: KeyboardEvent): void {
             if (e.key === "Escape") {
                 if (this._selectedObjects.size > 0) {
                     this._selectedObjects.clear();
+                    this._selection = [];
                     this.repaint();
                     this.fireSelectionChanged();
                 }
@@ -153,19 +157,23 @@ namespace phasereditor2d.ui.controls.viewers {
 
             if (e.ctrlKey || e.metaKey) {
                 this._selectedObjects.add(data);
+                this._selection.push(data);
                 selChanged = true;
             } else if (e.shiftKey) {
                 if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
                     const start = Math.min(this._lastSelectedItemIndex, item.index);
                     const end = Math.max(this._lastSelectedItemIndex, item.index);
                     for (let i = start; i <= end; i++) {
-                        this._selectedObjects.add(this._paintItems[i].data);
+                        const obj = this._paintItems[i].data;
+                        this._selectedObjects.add(obj);
+                        this._selection.push(obj);
                     }
                     selChanged = true;
                 }
             } else {
                 this._selectedObjects.clear();
                 this._selectedObjects.add(data);
+                this._selection = [data];
                 selChanged = true;
             }
 
@@ -233,7 +241,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         async repaint() {
             this.prepareFiltering();
-            
+
             this.repaint2();
 
             const result = await this.preload();

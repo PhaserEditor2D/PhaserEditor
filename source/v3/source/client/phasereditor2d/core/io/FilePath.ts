@@ -2,6 +2,7 @@ namespace phasereditor2d.core.io {
     const EMPTY_FILES = [];
 
     export class FilePath {
+        
         private _parent: FilePath;
         private _name: string;
         private _isFile: boolean;
@@ -44,6 +45,10 @@ namespace phasereditor2d.core.io {
 
         getExtension() {
             return this._ext;
+        }
+
+        getSize(): number {
+            return this.isFile()? this._fileSize : 0;
         }
 
         getName() {

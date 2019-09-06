@@ -1,6 +1,6 @@
 namespace phasereditor2d.ui.controls.properties {
 
-    export declare type Updater = () => {};
+    export declare type Updater = () => void;
 
     export abstract class PropertySection<T> {
 
@@ -36,10 +36,8 @@ namespace phasereditor2d.ui.controls.properties {
             return this._page;
         }
 
-        *getSelection() {
-            for (const obj of this._page.getSelection()) {
-                yield <T>obj;
-            }
+        getSelection(): T[] {
+            return this._page.getSelection();
         }
 
         getId() {
@@ -52,6 +50,37 @@ namespace phasereditor2d.ui.controls.properties {
 
         create(parent: HTMLDivElement): void {
             this.createForm(parent);
+        }
+
+        flatValues_String(values: string[]) {
+            return values.join(",");
+        }
+
+        protected createGridElement(parent: HTMLElement, cols: number, simpleProps = true) {
+            const div = document.createElement("div");
+            div.classList.add("formGrid", "formGrid-cols-" + cols);
+            if (simpleProps) {
+                div.classList.add("formSimpleProps");
+            }
+            parent.appendChild(div);
+            return div;
+        }
+
+        protected createLabel(parent: HTMLElement, text = "") {
+            const label = document.createElement("label");
+            label.classList.add("formLabel");
+            label.innerText = text;
+            parent.appendChild(label);
+            return label;
+        }
+
+        protected createText(parent: HTMLElement, readOnly = false) {
+            const text = document.createElement("input");
+            text.type = "text";
+            text.classList.add("formText");
+            text.readOnly = readOnly;
+            parent.appendChild(text);
+            return text;
         }
     }
 }

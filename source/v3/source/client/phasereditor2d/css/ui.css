@@ -11,7 +11,27 @@ body  {
     font-size: 14px;
 }
 
+input {
+    min-width: 0px;
+}
+
+label {
+    min-width: 0px;
+}
+
 .toolbar {
     padding: 5px;
+}
+
+/* PropertyPage */
+
+.formGrid {
+    display: grid;
+    align-items: center;
+    grid-gap: 5px;
+}
+
+.formGrid-cols-2 {
+    grid-template-columns: auto 1fr; 
 }
 

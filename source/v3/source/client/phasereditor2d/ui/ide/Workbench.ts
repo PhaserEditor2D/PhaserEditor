@@ -62,12 +62,15 @@ namespace phasereditor2d.ui.ide {
         }
 
         private setActivePart(part: Part): void {
+            if (part === this._activePart) {
+                return;
+            }
+            
             const old = this._activePart;
             this._activePart = part;
 
             if (old) {
                 old.removeClass("activePart");
-                console.log(old.getElement().classList);
                 this.dispatchEvent(new CustomEvent(PART_DEACTIVATE_EVENT, { detail: old }));
             }
 

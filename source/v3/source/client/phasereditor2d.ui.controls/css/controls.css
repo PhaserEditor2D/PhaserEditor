@@ -6,6 +6,14 @@
     user-select: none;
 }
 
+input {
+    -webkit-user-select: text !important;
+    -khtml-user-select: text !important;
+    -moz-user-select: text !important;
+    -o-user-select: text !important;
+    user-select: text !important;
+}
+
 .control {
     position: absolute;
 }
@@ -57,22 +65,26 @@ canvas {
     background: #000;
 }
 
+input {
+    border-style: none !important;
+}
+
+
 
 .filteredViewer input {
     position: absolute;
     padding: 0px;
     margin: 0px;
-    border-style: none !important;
 }
 
 /* PropertyPage */
 
 .PropertyPage {
-    
+
     display: grid;
     grid-template-columns: 100%;
     align-items: start;
-    
+
     width: 100%;
     /*height: 100%;*/
 }
@@ -95,7 +107,7 @@ canvas {
 
 .expandBtn {
     width: 16px;
-    height: 16px;    
+    height: 16px;
 }
 
 .expandBtn.collapsed {
@@ -107,6 +119,9 @@ canvas {
 }
 
 .PropertyFormArea {
-    display: grid;
-    padding: 0.2em;
+    display: grid;    
+}
+
+.formSimpleProps {
+    padding: 0.5em;
 }
