@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.controls {
 
+    export const CONTROL_LAYOUT_EVENT = "controlLayout";
+
     export class Control extends EventTarget {
         private _bounds: Bounds = { x: 0, y: 0, width: 0, height: 0 };
         private _element: HTMLElement;
@@ -10,7 +12,7 @@ namespace phasereditor2d.ui.controls {
 
         constructor(tagName: string = "div") {
             super();
-            
+
             this._children = [];
             this._element = document.createElement(tagName);
             this.addClass("control");
@@ -101,6 +103,12 @@ namespace phasereditor2d.ui.controls {
                     child.layout();
                 }
             }
+
+            this.dispatchLayoutEvent();
+        }
+
+        protected dispatchLayoutEvent() {
+            this.dispatchEvent(new CustomEvent(CONTROL_LAYOUT_EVENT, { detail: this.getBounds() }));
         }
 
         add(control: Control): void {

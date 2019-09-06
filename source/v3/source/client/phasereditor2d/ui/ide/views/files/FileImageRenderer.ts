@@ -19,7 +19,7 @@ namespace phasereditor2d.ui.ide.files {
         }
 
         getImage(file: io.FilePath): controls.IImage {
-            return controls.Controls.getImage(file.getUrl(), file.getId());
+            return Workbench.getWorkbench().getFileImage(file);
         }
     }
 }

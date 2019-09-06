@@ -35,3 +35,7 @@ label {
     grid-template-columns: auto 1fr; 
 }
 
+.formGrid-cols-1 {
+    grid-template-columns: 1fr; 
+}
+

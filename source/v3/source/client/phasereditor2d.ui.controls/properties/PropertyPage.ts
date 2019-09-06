@@ -83,7 +83,7 @@ namespace phasereditor2d.ui.controls.properties {
         }
 
         layout() {
-
+            this.dispatchLayoutEvent();       
         }
 
         private build() {

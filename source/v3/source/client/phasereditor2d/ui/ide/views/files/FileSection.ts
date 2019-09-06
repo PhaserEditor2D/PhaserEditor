@@ -3,7 +3,7 @@ namespace phasereditor2d.ui.ide.files {
     export class FileSection extends controls.properties.PropertySection<core.io.FilePath> {
 
         constructor(page: controls.properties.PropertyPage) {
-            super(page, "FileSection", "File");
+            super(page, "files.FileSection", "File");
         }
 
         protected createForm(parent: HTMLDivElement) {

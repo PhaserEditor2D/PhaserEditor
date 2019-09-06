@@ -47,6 +47,10 @@
     background: #c2c2c2;
 }
 
+.light .activePart .panelClientArea {
+    background: #c7c7c7;
+}
+
 .light .panel,
 .light .panelClientArea,
 .light .panelTitle {

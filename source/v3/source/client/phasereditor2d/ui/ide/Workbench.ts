@@ -125,6 +125,10 @@ namespace phasereditor2d.ui.ide {
             return null;
         }
 
+        getFileImage(file : core.io.FilePath) {
+            return controls.Controls.getImage(file.getUrl(), file.getId());
+        }
+
     }
 
 
