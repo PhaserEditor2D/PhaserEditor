@@ -12,9 +12,11 @@ namespace phasereditor2d.ui.ide {
             
             this._id = id;
             this._selection = [];
-
+            
+            this.getElement().setAttribute("id", id);
 
             this.getElement().classList.add("Part");
+            
             (<any>this.getElement()).__part = this;
         }
 

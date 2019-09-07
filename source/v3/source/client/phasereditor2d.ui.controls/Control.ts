@@ -95,7 +95,9 @@ namespace phasereditor2d.ui.controls {
         }
 
         layout(): void {
+            
             setElementBounds(this._element, this._bounds);
+
             if (this._layout) {
                 this._layout.layout(this);
             } else {
@@ -107,8 +109,8 @@ namespace phasereditor2d.ui.controls {
             this.dispatchLayoutEvent();
         }
 
-        protected dispatchLayoutEvent() {
-            this.dispatchEvent(new CustomEvent(CONTROL_LAYOUT_EVENT, { detail: this.getBounds() }));
+        dispatchLayoutEvent() {
+            this.dispatchEvent(new CustomEvent(CONTROL_LAYOUT_EVENT));
         }
 
         add(control: Control): void {

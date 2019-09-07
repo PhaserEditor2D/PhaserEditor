@@ -54,6 +54,8 @@ namespace phasereditor2d.ui.controls.properties {
                 this._expandBtn.classList.remove("collapsed");
                 this._formArea.style.display = "initial";
             }
+
+            this.dispatchLayoutEvent();
         }
 
         getSection() {
@@ -82,10 +84,6 @@ namespace phasereditor2d.ui.controls.properties {
             this._selection = [];
         }
 
-        layout() {
-            this.dispatchLayoutEvent();       
-        }
-
         private build() {
 
             if (this._sectionProvider) {
@@ -109,6 +107,8 @@ namespace phasereditor2d.ui.controls.properties {
 
         private updateWithSelection(): void {
 
+            let templateRows = "";
+
             const n = this._selection.length;
 
             for (const pane of this._sectionPanes) {
@@ -128,10 +128,14 @@ namespace phasereditor2d.ui.controls.properties {
                 if (show) {
                     pane.getElement().style.display = "grid";
                     pane.createOrUpdateWithSelection();
+                    templateRows += " " + (section.isFillSpace() ? "1fr" : "auto");
                 } else {
                     pane.getElement().style.display = "none";
                 }
             }
+
+            this.getElement().style.gridTemplateRows = templateRows;
+
         }
 
         getSelection() {

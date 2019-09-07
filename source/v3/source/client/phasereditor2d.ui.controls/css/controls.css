@@ -85,13 +85,17 @@ input {
     grid-template-columns: 100%;
     align-items: start;
 
+    /*
     width: 100%;
-    /*height: 100%;*/
+    height: 100%;
+    */
 }
 
 .PropertySectionPane {
     display: grid;
+    grid-template-rows: auto 1fr;
     position: initial;
+    height: 100%;
 }
 
 .PropertyTitleArea {

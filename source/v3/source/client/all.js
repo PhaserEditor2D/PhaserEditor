@@ -280,7 +280,7 @@ var phasereditor2d;
                     this.dispatchLayoutEvent();
                 }
                 dispatchLayoutEvent() {
-                    this.dispatchEvent(new CustomEvent(controls.CONTROL_LAYOUT_EVENT, { detail: this.getBounds() }));
+                    this.dispatchEvent(new CustomEvent(controls.CONTROL_LAYOUT_EVENT));
                 }
                 add(control) {
                     control._container = this;
@@ -689,6 +689,7 @@ var phasereditor2d;
                     super();
                     this._id = id;
                     this._selection = [];
+                    this.getElement().setAttribute("id", id);
                     this.getElement().classList.add("Part");
                     this.getElement().__part = this;
                 }
@@ -993,6 +994,7 @@ var phasereditor2d;
                             this._expandBtn.classList.remove("collapsed");
                             this._formArea.style.display = "initial";
                         }
+                        this.dispatchLayoutEvent();
                     }
                     getSection() {
                         return this._section;
@@ -1008,9 +1010,6 @@ var phasereditor2d;
                         this._sectionPanes = [];
                         this._sectionPaneMap = new Map();
                         this._selection = [];
-                    }
-                    layout() {
-                        this.dispatchLayoutEvent();
                     }
                     build() {
                         if (this._sectionProvider) {
@@ -1028,6 +1027,7 @@ var phasereditor2d;
                         this.updateWithSelection();
                     }
                     updateWithSelection() {
+                        let templateRows = "";
                         const n = this._selection.length;
                         for (const pane of this._sectionPanes) {
                             const section = pane.getSection();
@@ -1044,11 +1044,13 @@ var phasereditor2d;
                             if (show) {
                                 pane.getElement().style.display = "grid";
                                 pane.createOrUpdateWithSelection();
+                                templateRows += " " + (section.isFillSpace() ? "1fr" : "auto");
                             }
                             else {
                                 pane.getElement().style.display = "none";
                             }
                         }
+                        this.getElement().style.gridTemplateRows = templateRows;
                     }
                     getSelection() {
                         return this._selection;
@@ -1079,10 +1081,11 @@ var phasereditor2d;
             var properties;
             (function (properties) {
                 class PropertySection {
-                    constructor(page, id, title) {
+                    constructor(page, id, title, fillSpace = false) {
                         this._page = page;
                         this._id = id;
                         this._title = title;
+                        this._fillSpace = fillSpace;
                         this._updaters = [];
                     }
                     updateWithSelection() {
@@ -1092,6 +1095,9 @@ var phasereditor2d;
                     }
                     addUpdater(updater) {
                         this._updaters.push(updater);
+                    }
+                    isFillSpace() {
+                        return this._fillSpace;
                     }
                     getPage() {
                         return this._page;
@@ -1168,24 +1174,21 @@ var phasereditor2d;
         (function (ide) {
             var inspector;
             (function (inspector) {
-                class Sample1Section extends ui.controls.properties.PropertySection {
-                    createForm(parent) {
-                        parent.innerHTML = "<label>Sample Section 1</label>";
-                    }
-                    canEdit(obj) {
-                        return true;
-                    }
-                    canEditNumber(n) {
-                        return true;
+                class MyLayout {
+                    layout(parent) {
+                        const child = parent.getChildren()[0];
+                        child.getElement().style.height = parent.getBounds().height + "px";
+                        child.dispatchLayoutEvent();
                     }
                 }
                 class InspectorView extends ide.ViewPart {
                     constructor() {
-                        super("inspectorView");
+                        super("InspectorView");
                         this.setTitle("Inspector");
                         this._propertyPage = new ui.controls.properties.PropertyPage();
                         this.getClientArea().add(this._propertyPage);
-                        this.getClientArea().setLayout(new ui.controls.FillLayout());
+                        //this.getClientArea().setLayout(new ui.controls.FillLayout());
+                        this.getClientArea().setLayout(new MyLayout());
                         this._selectionListener = (e) => this.onPartSelection();
                         ide.Workbench.getWorkbench().addEventListener(ide.PART_ACTIVATE_EVENT, e => this.onPartActivate());
                     }
@@ -1878,18 +1881,20 @@ var phasereditor2d;
             (function (files) {
                 class ImageFileSection extends ui.controls.properties.PropertySection {
                     constructor(page) {
-                        super(page, "files.ImageFileSection", "Image File");
+                        super(page, "files.ImageFileSection", "Image File", true);
                     }
                     createForm(parent) {
-                        var comp = this.createGridElement(parent, 1);
+                        //var comp = this.createGridElement(parent, 1);
                         const wrapper = new ui.controls.ImageWrapper();
                         const canvas = wrapper.getCanvas();
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
+                            console.log("repaint on layout!!!");
                             wrapper.repaint();
                         });
                         canvas.style.width = "100%";
-                        canvas.style.height = "100%";
-                        comp.appendChild(canvas);
+                        canvas.style.height = "95%";
+                        canvas.style.alignSelf = "center";
+                        parent.appendChild(canvas);
                         this.addUpdater(() => {
                             const file = this.getSelection()[0];
                             const img = ide.Workbench.getWorkbench().getFileImage(file);

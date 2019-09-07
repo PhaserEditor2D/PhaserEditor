@@ -5,21 +5,14 @@
 
 namespace phasereditor2d.ui.ide.inspector {
 
-
-
-    class Sample1Section extends controls.properties.PropertySection<any> {
-
-        protected createForm(parent: HTMLDivElement) {
-            parent.innerHTML = "<label>Sample Section 1</label>";
+    class MyLayout implements controls.ILayout {
+        
+        layout(parent: controls.Control) {
+            const child = parent.getChildren()[0];
+            child.getElement().style.height = parent.getBounds().height + "px";
+            child.dispatchLayoutEvent();
         }
 
-        canEdit(obj: any) {
-            return true;
-        }
-
-        canEditNumber(n: number) {
-            return true;
-        }
     }
 
     export class InspectorView extends ide.ViewPart {
@@ -29,14 +22,15 @@ namespace phasereditor2d.ui.ide.inspector {
         private _selectionListener: any;
 
         constructor() {
-            super("inspectorView");
+            super("InspectorView");
 
             this.setTitle("Inspector");
 
             this._propertyPage = new ui.controls.properties.PropertyPage();
 
             this.getClientArea().add(this._propertyPage);
-            this.getClientArea().setLayout(new ui.controls.FillLayout());
+            //this.getClientArea().setLayout(new ui.controls.FillLayout());
+            this.getClientArea().setLayout(new MyLayout());
 
             this._selectionListener = (e : CustomEvent) => this.onPartSelection();
 

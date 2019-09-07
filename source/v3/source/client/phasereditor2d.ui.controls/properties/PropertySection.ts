@@ -8,11 +8,13 @@ namespace phasereditor2d.ui.controls.properties {
         private _title: string;
         private _page: PropertyPage;
         private _updaters: Updater[];
+        private _fillSpace: boolean;
 
-        constructor(page: PropertyPage, id: string, title: string) {
+        constructor(page: PropertyPage, id: string, title: string, fillSpace = false) {
             this._page = page;
             this._id = id;
             this._title = title;
+            this._fillSpace = fillSpace;
             this._updaters = [];
         }
 
@@ -32,6 +34,10 @@ namespace phasereditor2d.ui.controls.properties {
             this._updaters.push(updater);
         }
 
+        isFillSpace() {
+            return this._fillSpace;
+        }
+        
         getPage() {
             return this._page;
         }

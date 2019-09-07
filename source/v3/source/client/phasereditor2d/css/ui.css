@@ -25,6 +25,10 @@ label {
 
 /* PropertyPage */
 
+#InspectorView .PropertyPage {
+    width: 100%;
+}
+
 .formGrid {
     display: grid;
     align-items: center;
