@@ -22,6 +22,10 @@ namespace phasereditor2d.ui.controls {
             this._layoutChildren = true;
         }
 
+        get style() {
+            return this.getElement().style;
+        }
+
         isLayoutChildren() {
             return this._layoutChildren;
         }

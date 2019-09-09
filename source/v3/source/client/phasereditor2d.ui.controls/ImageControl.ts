@@ -1,21 +1,20 @@
 
 namespace phasereditor2d.ui.controls {
 
-    export class ImageWrapper {
+    export class ImageControl extends Control {
 
         private _image: IImage;
         private _canvas: HTMLCanvasElement;
         private _context: CanvasRenderingContext2D;
 
-
         constructor() {
-            this._canvas = document.createElement("canvas");
+            super("canvas", "ImageControl");
+            this._canvas = <HTMLCanvasElement>this.getElement();
             this._context = this._canvas.getContext("2d");
         }
 
         setImage(image: IImage): void {
             this._image = image;
-            this.repaint();
         }
 
         getImage() {
@@ -24,6 +23,13 @@ namespace phasereditor2d.ui.controls {
 
         getCanvas() {
             return this._canvas;
+        }
+
+        resizeTo(parent?: HTMLElement) {
+            parent = parent || this.getElement().parentElement;
+            this.style.width = parent.clientWidth + "px";
+            this.style.height = parent.clientHeight + "px";
+            this.repaint();
         }
 
         async repaint() {

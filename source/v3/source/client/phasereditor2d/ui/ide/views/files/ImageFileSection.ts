@@ -2,31 +2,25 @@ namespace phasereditor2d.ui.ide.files {
     export class ImageFileSection extends controls.properties.PropertySection<core.io.FilePath> {
 
         constructor(page: controls.properties.PropertyPage) {
-            super(page, "files.ImageFileSection", "Image File", true);
+            super(page, "files.ImagePreviewSection", "Image", true);
         }
 
         protected createForm(parent: HTMLDivElement) {
-            
-            //var comp = this.createGridElement(parent, 1);
+ 
+            const imgControl = new controls.ImageControl();
 
-            const wrapper = new controls.ImageWrapper();
-            const canvas = wrapper.getCanvas();
-
-            this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e : CustomEvent)  => {
-                console.log("repaint on layout!!!");
-                wrapper.repaint();
+            this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
+                imgControl.resizeTo(parent);
             })
 
-            canvas.style.width = "100%";
-            canvas.style.height = "95%";
-            canvas.style.alignSelf = "center";
-
-            parent.appendChild(canvas);
+            parent.appendChild(imgControl.getElement());
+            setTimeout(() => imgControl.resizeTo(), 1);
 
             this.addUpdater(() => {
                 const file = this.getSelection()[0];
                 const img = Workbench.getWorkbench().getFileImage(file);
-                wrapper.setImage(img);
+                imgControl.setImage(img);
+                imgControl.resizeTo(parent);
             });
         }
 

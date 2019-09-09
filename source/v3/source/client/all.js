@@ -211,6 +211,9 @@ var phasereditor2d;
                     this._scrollY = 0;
                     this._layoutChildren = true;
                 }
+                get style() {
+                    return this.getElement().style;
+                }
                 isLayoutChildren() {
                     return this._layoutChildren;
                 }
@@ -1846,24 +1849,20 @@ var phasereditor2d;
             (function (files) {
                 class ImageFileSection extends ui.controls.properties.PropertySection {
                     constructor(page) {
-                        super(page, "files.ImageFileSection", "Image File", true);
+                        super(page, "files.ImagePreviewSection", "Image", true);
                     }
                     createForm(parent) {
-                        //var comp = this.createGridElement(parent, 1);
-                        const wrapper = new ui.controls.ImageWrapper();
-                        const canvas = wrapper.getCanvas();
+                        const imgControl = new ui.controls.ImageControl();
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
-                            console.log("repaint on layout!!!");
-                            wrapper.repaint();
+                            imgControl.resizeTo(parent);
                         });
-                        canvas.style.width = "100%";
-                        canvas.style.height = "95%";
-                        canvas.style.alignSelf = "center";
-                        parent.appendChild(canvas);
+                        parent.appendChild(imgControl.getElement());
+                        setTimeout(() => imgControl.resizeTo(), 1);
                         this.addUpdater(() => {
                             const file = this.getSelection()[0];
                             const img = ide.Workbench.getWorkbench().getFileImage(file);
-                            wrapper.setImage(img);
+                            imgControl.setImage(img);
+                            imgControl.resizeTo(parent);
                         });
                     }
                     canEdit(obj) {
@@ -1954,20 +1953,26 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            class ImageWrapper {
+            class ImageControl extends controls.Control {
                 constructor() {
-                    this._canvas = document.createElement("canvas");
+                    super("canvas", "ImageControl");
+                    this._canvas = this.getElement();
                     this._context = this._canvas.getContext("2d");
                 }
                 setImage(image) {
                     this._image = image;
-                    this.repaint();
                 }
                 getImage() {
                     return this._image;
                 }
                 getCanvas() {
                     return this._canvas;
+                }
+                resizeTo(parent) {
+                    parent = parent || this.getElement().parentElement;
+                    this.style.width = parent.clientWidth + "px";
+                    this.style.height = parent.clientHeight + "px";
+                    this.repaint();
                 }
                 async repaint() {
                     if (this._image) {
@@ -1997,7 +2002,7 @@ var phasereditor2d;
                     this._image.paint(this._context, 0, 0, this._canvas.width, this._canvas.height, true);
                 }
             }
-            controls.ImageWrapper = ImageWrapper;
+            controls.ImageControl = ImageControl;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
