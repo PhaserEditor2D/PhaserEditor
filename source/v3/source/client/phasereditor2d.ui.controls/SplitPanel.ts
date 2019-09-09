@@ -10,9 +10,7 @@ namespace phasereditor2d.ui.controls {
         private _startPos: number;
 
         constructor(left?: Control, right?: Control, horizontal = true) {
-            super();
-
-            this.getElement().classList.add("split");
+            super("div", "split");
 
             this._horizontal = horizontal;
             this._splitPosition = 50;

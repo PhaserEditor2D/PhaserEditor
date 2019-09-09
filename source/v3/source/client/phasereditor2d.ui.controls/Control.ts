@@ -10,12 +10,12 @@ namespace phasereditor2d.ui.controls {
         private _container: Control;
         private _scrollY: number;
 
-        constructor(tagName: string = "div") {
+        constructor(tagName: string = "div", ...classList : string[]) {
             super();
 
             this._children = [];
             this._element = document.createElement(tagName);
-            this.addClass("control");
+            this.addClass("control", ...classList);
             this._layout = null;
             this._container = null;
             this._scrollY = 0;

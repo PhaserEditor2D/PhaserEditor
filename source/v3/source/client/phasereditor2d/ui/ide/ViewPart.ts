@@ -4,7 +4,7 @@ namespace phasereditor2d.ui.ide {
 
         constructor(id: string) {
             super(id);
-            this.getElement().classList.add("View");
+            this.addClass("View");
         }
     }
 

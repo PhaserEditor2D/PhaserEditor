@@ -200,12 +200,12 @@ var phasereditor2d;
         (function (controls) {
             controls.CONTROL_LAYOUT_EVENT = "controlLayout";
             class Control extends EventTarget {
-                constructor(tagName = "div") {
+                constructor(tagName = "div", ...classList) {
                     super();
                     this._bounds = { x: 0, y: 0, width: 0, height: 0 };
                     this._children = [];
                     this._element = document.createElement(tagName);
-                    this.addClass("control");
+                    this.addClass("control", ...classList);
                     this._layout = null;
                     this._container = null;
                     this._scrollY = 0;
@@ -307,9 +307,8 @@ var phasereditor2d;
         (function (controls) {
             class PaddingPane extends controls.Control {
                 constructor(control, padding = 5) {
-                    super();
+                    super("div", "paddingPane");
                     this._padding = padding;
-                    this.getElement().classList.add("paddingPane");
                     this.setControl(control);
                 }
                 setControl(control) {
@@ -576,8 +575,7 @@ var phasereditor2d;
         (function (controls) {
             class PanelTitle extends controls.Control {
                 constructor() {
-                    super();
-                    this.getElement().classList.add("panelTitle");
+                    super("div", "panelTitle");
                     this._textControl = new controls.Control();
                     this.add(this._textControl);
                     this._toolbar = new PanelToolbar();
@@ -601,10 +599,9 @@ var phasereditor2d;
             }
             class PanelToolbar extends controls.Control {
                 constructor() {
-                    super();
+                    super("div", "panelToolbar");
                     this._actions = [];
                     this._buttons = [];
-                    this.getElement().classList.add("panelToolbar");
                 }
                 addAction(action) {
                     this._actions.push(action);
@@ -820,7 +817,7 @@ var phasereditor2d;
             class ViewPart extends ide.Part {
                 constructor(id) {
                     super(id);
-                    this.getElement().classList.add("View");
+                    this.addClass("View");
                 }
             }
             ide.ViewPart = ViewPart;
@@ -2178,9 +2175,8 @@ var phasereditor2d;
         (function (controls) {
             class SplitPanel extends controls.Control {
                 constructor(left, right, horizontal = true) {
-                    super();
+                    super("div", "split");
                     this._startDrag = -1;
-                    this.getElement().classList.add("split");
                     this._horizontal = horizontal;
                     this._splitPosition = 50;
                     this._splitFactor = 0.5;

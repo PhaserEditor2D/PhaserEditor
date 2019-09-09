@@ -7,9 +7,8 @@ namespace phasereditor2d.ui.controls {
         private _control: Control;
 
         constructor(control?: Control, padding: number = 5) {
-            super();
+            super("div", "paddingPane");
             this._padding = padding;
-            this.getElement().classList.add("paddingPane");
             this.setControl(control);
         }
 

@@ -6,9 +6,7 @@ namespace phasereditor2d.ui.controls {
 
 
         constructor() {
-            super();
-
-            this.getElement().classList.add("panelTitle");
+            super("div", "panelTitle");
 
             this._textControl = new Control();
             this.add(this._textControl);
@@ -45,12 +43,9 @@ namespace phasereditor2d.ui.controls {
         private _buttons: ActionButton[];
 
         constructor() {
-            super();
-
+            super("div", "panelToolbar");
             this._actions = [];
             this._buttons = [];
-
-            this.getElement().classList.add("panelToolbar");
         }
 
         addAction(action: Action) {
