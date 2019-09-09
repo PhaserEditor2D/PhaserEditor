@@ -160,7 +160,7 @@ This section is used by the editor and the `scene compiler`_ to identify the obj
   .. image:: images/scene-editor/scene-editor-variable-section-var-name-property.png
     :alt: Variable name.
 
-4. The same of *(1)*.
+4. The same in *(1)*.
 
 Editor properties section
 #########################
@@ -231,7 +231,7 @@ The majority of the objects you add to the scene are a subtype of the `Phaser.Ga
 
 1. The **Active** button. It sets On or Off the `active <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#active__anchor>`_ property.
 
-2. The **Visible** button. It sets On or Off the `visible <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Visible.html#visible__anchor>`_ property. If this button is set On, the object will be rendered in the editor with certain transparency.
+2. The **Visible** button. It sets On or Off the `visible <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Visible.html#visible__anchor>`_ property. If this button is set On, the object will be rendered in the editor with a certain transparency.
 
 3. The **Name** property. If it is selected, then the **Var Name** of the object will be used as `the name <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#name__anchor>`_ too.
 
@@ -264,7 +264,7 @@ The majority of the objects you add to the scene are a subtype of the `Phaser.Ga
 
   Note that, if an instance property is generated for the object (``fGator``), then it is annotated with the ``Gator`` type.
 
-  In TypeScript, it has even more sense, because this language supports static typing. In the above case, it will generated a property with the ``Gator`` type. 
+  In TypeScript, it has even more sense, because this language supports static typing. In the above case, it will generate a property with the ``Gator`` type. 
 
   
   .. code::
@@ -274,16 +274,16 @@ The majority of the objects you add to the scene are a subtype of the `Phaser.Ga
 
   Learn more about factories in the `Making reusable objects`_ section.
 
-6. The **Build Object** property is not part of the Phaser_ API. It indicates to the `scene compiler`_ to generate a call to the ``build`` method. This is useful for objects that are created with a custom factory and a custom object type. You can implement a ``build`` method in the custom type to setup the object with initial values that may depend on other object properties. Look in the next image how in the ``build`` method the velocity values are set regarding the user data set to the object.
+6. The **Build Object** property is not part of the Phaser_ API. It indicates to the `scene compiler`_ to generate a call to the ``build`` method. This is useful for objects that are created with a custom factory and a custom object type. You can implement a ``build`` method in the custom type to set-up the object with initial values that may depend on other object properties. Look in the next image how in the ``build`` method the velocity values are set regarding the user data set to the object.
 
   .. image:: images/scene-editor/scene-editor-game-object-build.png
     :alt: Game Object build.
 
-7. The **Data** property is associated to the `data <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setData__anchor>`_ property of the Phaser_ API. This property is a reference to the `Phaser.Data.DataManager <https://photonstorm.github.io/phaser3-docs/Phaser.Data.DataManager.html>`_. It allows to set user data to the object. 
+7. The **Data** property is associated with the `data <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setData__anchor>`_ property of the Phaser_ API. This property is a reference to the `Phaser.Data.DataManager <https://photonstorm.github.io/phaser3-docs/Phaser.Data.DataManager.html>`_. It allows setting user data to the object. 
 
   This is the workflow:
 
-  1. Click in the **add** button and write the new data property name.
+  1. Click on the **add** button and write the new data property name.
 
     .. image:: images/scene-editor/scene-editor-game-object-data-add.png
       :alt: Add data property.
@@ -312,7 +312,7 @@ The majority of the objects you add to the scene are a subtype of the `Phaser.Ga
 Transform properties section
 ############################
 
-This section contains the properties and tools to transform the position, scale and angle of the objects. As you can see, the section toolbar contains a lot of tools, that may be repeated next to the properties or in the main IDE toolbar.
+This section contains the properties and tools to transform the position, scale, and angle of the objects. As you can see, the section toolbar contains a lot of tools, that may be repeated next to the properties or in the main IDE toolbar.
 
 You can write the value (or a JavaScript expression like ``12*16``) of the properties directly in the text-box.
 
@@ -339,12 +339,12 @@ You can write the value (or a JavaScript expression like ``12*16``) of the prope
 
 4. The section toolbar provides the buttons to activate the **Position**, **Scale** and **Angle** tools.  
 
-5. The **Transform Coords tool** allows to change the coords of the transformations. The values are **local** or **global**.
+5. The **Transform Coords tool** allows changing the coords of the transformations. The values are **local** or **global**.
 
   .. image:: images/scene-editor/scene-editor-transform-section-coords.png
     :alt: Transform coords.
 
-5. The **Align tools** allow to align the objects to the left, right, center, top, bottom and middle. If you select many objects, the align operation works taking one of them as reference. If you select a single object, the align operations take as reference the borders of the scene.
+5. The **Align tools** allow to align the objects to the left, right, center, top, bottom, and middle. If you select many objects, the align operation works taking one of them as reference. If you select a single object, the align operations take as reference the borders of the scene.
 
 
 Origin properties section
@@ -355,7 +355,7 @@ This section contains the properties and tools to change the origin of an object
   .. image:: images/scene-editor/scene-editor-transform-section-origin.png
     :alt: Origin properties.
 
-  Also, the section toolbar provides shortcuts to set the origin of an object to a preset value.
+  Also, section toolbar provides shortcuts to set the origin of an object to a preset value.
 
   .. image:: images/scene-editor/scene-editor-transform-section-origin-presets.png
     :alt: Origin presets.
@@ -379,7 +379,7 @@ This section provides the `scroll factor properties <https://photonstorm.github.
 Tint properties section
 #######################
 
-The `tint properties <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_ are used to change the tint color of the objects, without the need of create a new texture. You can apply a single tint color to the whole texture or different tint colors in different places of the texture. These properties are part of the Phaser_ API.
+The `tint properties <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html>`_ are used to change the tint color of the objects, without the need to create a new texture. You can apply a single tint color to the whole texture or different tint colors in different places of the texture. These properties are part of the Phaser_ API.
 
 .. warning::
   Tint properties are applied only if the WebGL renderer is used. Learn how to configure the renderer in the `Scene renderer preferences`_ section.
@@ -437,12 +437,12 @@ The **Image** object contains all the `common properties`_:
 
 * `Tint properties section`_
 
-Also it contains the `Texture properties section`_.
+Also, it contains the `Texture properties section`_.
 
 Texture properties section
 ##########################
 
-There are multiple type of objects that `contains textures <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor>`_, like the `Image`_, `Sprite`_ and `Tile Sprite`_. This section displays the texture of an object and buttons to perform related actions.
+There are multiple types of objects that `contains textures <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor>`_, like the `Image`_, `Sprite`_ and `Tile Sprite`_. This section displays the texture of an object and buttons to perform related actions.
 
 .. image:: images/scene-editor/scene-editor-texture-section.png
   :alt: Texture section.
@@ -460,7 +460,7 @@ There are multiple type of objects that `contains textures <https://photonstorm.
 
 3. Click the **Select all** button to select in the scene all the objects with the same texture.
 
-4. All textures in the |SceneEditor|_ are defined in asset pack files. This button open the asset pack file containing the texture in the |AssetPackEditor|_.
+4. All textures in the |SceneEditor|_ are defined in asset pack files. This button opens the asset pack file containing the texture in the |AssetPackEditor|_.
 
 5. If the texture was packed with the |TexturePackerEditor|_, this button opens the atlas file that contains the texture.
 
@@ -513,7 +513,7 @@ It also contains the:
 Animations properties section
 #############################
 
-As we explained in the previous topic, the `Sprite`_ object an `play sprite animations`_. In many cases you may want to place animated objects in the scene with an initial animation. Phaser_ does not provide an **initial animation** or **auto-play animation** property, but the |SceneEditor|_ allows to set this **auto-play animation** to the **Sprite** object, and the compiler will generate an extra instruction that plays the animation:
+As we explained in the previous topic, the `Sprite`_ object a `play sprite animations`_. In many cases, you may want to place animated objects in the scene with an initial animation. Phaser_ does not provide an **initial animation** or **auto-play animation** property, but the |SceneEditor|_ allows to set this **auto-play animation** to the **Sprite** object, and the compiler will generate an extra instruction that plays the animation:
 
 .. code-block:: javascript
     :emphasize-lines: 2,2
@@ -527,7 +527,7 @@ The **Animations** properties section shows a preview of the **auto-play animati
   :alt: Auto-play animation.
 
 
-1. Button that shows the key of the animation and that you can click to select another animation.
+1. A button that shows the key of the animation and that you can click to select another animation.
 
   .. image:: images/scene-editor/scene-editor-animations-section-select.png
     :alt: Select the auto-play animation.
@@ -545,7 +545,7 @@ The **Animations** properties section shows a preview of the **auto-play animati
 Tile Sprite
 ~~~~~~~~~~~
 
-The `Phaser.GameObjects.TileSprite <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html>`_ object is used in backgrounds, platforms, and any other object that can be renderer as a repeated texture. We recommend to read its `API documentation <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html>`_ for tips and better understanding.
+The `Phaser.GameObjects.TileSprite <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html>`_ object is used in backgrounds, platforms, and any other object that can be rendered as a repeated texture. We recommend reading the `API documentation <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html>`_ for tips and better understanding.
 
 To create a **Tile Sprite** object, you can click on the `Add Object button <#adding-objects-to-the-scene>`_ and select the **Tile Sprite** option. Or you can:
 
@@ -597,7 +597,7 @@ It also contains the:
 Tile Sprite properties section
 ##############################
 
-This sections provides editors for the **Tile Sprite** specific properties and the shortcuts to activate different **Tile Sprite** tools.
+This section provides editors for the **Tile Sprite** specific properties and the shortcuts to activate different **Tile Sprite** tools.
 
 .. image:: images/scene-editor/scene-editor-tilesprite-section.png
   :alt: Tile Sprite properties.

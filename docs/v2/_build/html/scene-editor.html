@@ -350,7 +350,7 @@
 <div><img alt="Variable name." src="_images/scene-editor-variable-section-var-name-property.png" />
 </div></blockquote>
 <ol class="arabic simple" start="4">
-<li>The same of <em>(1)</em>.</li>
+<li>The same in <em>(1)</em>.</li>
 </ol>
 </div>
 <div class="section" id="editor-properties-section">
@@ -417,7 +417,7 @@
 <img alt="Game Object section." src="_images/scene-editor-game-object-section.png" />
 <ol class="arabic simple">
 <li>The <strong>Active</strong> button. It sets On or Off the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#active__anchor">active</a> property.</li>
-<li>The <strong>Visible</strong> button. It sets On or Off the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Visible.html#visible__anchor">visible</a> property. If this button is set On, the object will be rendered in the editor with certain transparency.</li>
+<li>The <strong>Visible</strong> button. It sets On or Off the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Visible.html#visible__anchor">visible</a> property. If this button is set On, the object will be rendered in the editor with a certain transparency.</li>
 <li>The <strong>Name</strong> property. If it is selected, then the <strong>Var Name</strong> of the object will be used as <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#name__anchor">the name</a> too.</li>
 <li>The <strong>Factory</strong> property is not <a class="reference external" href="https://phaser.io">Phaser</a> API, it says to the <a class="reference internal" href="#scene-compiler">scene compiler</a> to use a different factory for the object. You can write the new factory name directly in the text-box or select one from the menu. Leaves it empty to use the default factory.</li>
 </ol>
@@ -443,25 +443,25 @@
 </pre></div>
 </div>
 <p>Note that, if an instance property is generated for the object (<code class="docutils literal notranslate"><span class="pre">fGator</span></code>), then it is annotated with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
-<p>In TypeScript, it has even more sense, because this language supports static typing. In the above case, it will generated a property with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
+<p>In TypeScript, it has even more sense, because this language supports static typing. In the above case, it will generate a property with the <code class="docutils literal notranslate"><span class="pre">Gator</span></code> type.</p>
 <div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">private</span> <span class="nx">fGator</span><span class="o">:</span> <span class="nx">Gator</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Learn more about factories in the <a class="reference internal" href="#making-reusable-objects">Making reusable objects</a> section.</p>
 </div></blockquote>
 <ol class="arabic simple" start="6">
-<li>The <strong>Build Object</strong> property is not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API. It indicates to the <a class="reference internal" href="#scene-compiler">scene compiler</a> to generate a call to the <code class="docutils literal notranslate"><span class="pre">build</span></code> method. This is useful for objects that are created with a custom factory and a custom object type. You can implement a <code class="docutils literal notranslate"><span class="pre">build</span></code> method in the custom type to setup the object with initial values that may depend on other object properties. Look in the next image how in the <code class="docutils literal notranslate"><span class="pre">build</span></code> method the velocity values are set regarding the user data set to the object.</li>
+<li>The <strong>Build Object</strong> property is not part of the <a class="reference external" href="https://phaser.io">Phaser</a> API. It indicates to the <a class="reference internal" href="#scene-compiler">scene compiler</a> to generate a call to the <code class="docutils literal notranslate"><span class="pre">build</span></code> method. This is useful for objects that are created with a custom factory and a custom object type. You can implement a <code class="docutils literal notranslate"><span class="pre">build</span></code> method in the custom type to set-up the object with initial values that may depend on other object properties. Look in the next image how in the <code class="docutils literal notranslate"><span class="pre">build</span></code> method the velocity values are set regarding the user data set to the object.</li>
 </ol>
 <blockquote>
 <div><img alt="Game Object build." src="_images/scene-editor-game-object-build.png" />
 </div></blockquote>
 <ol class="arabic simple" start="7">
-<li>The <strong>Data</strong> property is associated to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setData__anchor">data</a> property of the <a class="reference external" href="https://phaser.io">Phaser</a> API. This property is a reference to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Data.DataManager.html">Phaser.Data.DataManager</a>. It allows to set user data to the object.</li>
+<li>The <strong>Data</strong> property is associated with the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setData__anchor">data</a> property of the <a class="reference external" href="https://phaser.io">Phaser</a> API. This property is a reference to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Data.DataManager.html">Phaser.Data.DataManager</a>. It allows setting user data to the object.</li>
 </ol>
 <blockquote>
 <div><p>This is the workflow:</p>
 <ol class="arabic simple">
-<li>Click in the <strong>add</strong> button and write the new data property name.</li>
+<li>Click on the <strong>add</strong> button and write the new data property name.</li>
 </ol>
 <blockquote>
 <div><img alt="Add data property." src="_images/scene-editor-game-object-data-add.png" />
@@ -490,7 +490,7 @@
 </div>
 <div class="section" id="transform-properties-section">
 <h4>Transform properties section<a class="headerlink" href="#transform-properties-section" title="Permalink to this headline">¶</a></h4>
-<p>This section contains the properties and tools to transform the position, scale and angle of the objects. As you can see, the section toolbar contains a lot of tools, that may be repeated next to the properties or in the main IDE toolbar.</p>
+<p>This section contains the properties and tools to transform the position, scale, and angle of the objects. As you can see, the section toolbar contains a lot of tools, that may be repeated next to the properties or in the main IDE toolbar.</p>
 <p>You can write the value (or a JavaScript expression like <code class="docutils literal notranslate"><span class="pre">12*16</span></code>) of the properties directly in the text-box.</p>
 <img alt="Transform section." src="_images/scene-editor-transform-section.png" />
 <ol class="arabic simple">
@@ -514,13 +514,13 @@
 </div></blockquote>
 <ol class="arabic simple" start="4">
 <li>The section toolbar provides the buttons to activate the <strong>Position</strong>, <strong>Scale</strong> and <strong>Angle</strong> tools.</li>
-<li>The <strong>Transform Coords tool</strong> allows to change the coords of the transformations. The values are <strong>local</strong> or <strong>global</strong>.</li>
+<li>The <strong>Transform Coords tool</strong> allows changing the coords of the transformations. The values are <strong>local</strong> or <strong>global</strong>.</li>
 </ol>
 <blockquote>
 <div><img alt="Transform coords." src="_images/scene-editor-transform-section-coords.png" />
 </div></blockquote>
 <ol class="arabic simple" start="5">
-<li>The <strong>Align tools</strong> allow to align the objects to the left, right, center, top, bottom and middle. If you select many objects, the align operation works taking one of them as reference. If you select a single object, the align operations take as reference the borders of the scene.</li>
+<li>The <strong>Align tools</strong> allow to align the objects to the left, right, center, top, bottom, and middle. If you select many objects, the align operation works taking one of them as reference. If you select a single object, the align operations take as reference the borders of the scene.</li>
 </ol>
 </div>
 <div class="section" id="origin-properties-section">
@@ -528,7 +528,7 @@
 <p>This section contains the properties and tools to change the origin of an object. The origin tool can be activated by pressing the <strong>Origin tool</strong> button or the <code class="docutils literal notranslate"><span class="pre">O</span></code> key.</p>
 <blockquote>
 <div><img alt="Origin properties." src="_images/scene-editor-transform-section-origin.png" />
-<p>Also, the section toolbar provides shortcuts to set the origin of an object to a preset value.</p>
+<p>Also, section toolbar provides shortcuts to set the origin of an object to a preset value.</p>
 <img alt="Origin presets." src="_images/scene-editor-transform-section-origin-presets.png" />
 </div></blockquote>
 </div>
@@ -544,7 +544,7 @@
 </div>
 <div class="section" id="tint-properties-section">
 <h4>Tint properties section<a class="headerlink" href="#tint-properties-section" title="Permalink to this headline">¶</a></h4>
-<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">tint properties</a> are used to change the tint color of the objects, without the need of create a new texture. You can apply a single tint color to the whole texture or different tint colors in different places of the texture. These properties are part of the <a class="reference external" href="https://phaser.io">Phaser</a> API.</p>
+<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Tint.html">tint properties</a> are used to change the tint color of the objects, without the need to create a new texture. You can apply a single tint color to the whole texture or different tint colors in different places of the texture. These properties are part of the <a class="reference external" href="https://phaser.io">Phaser</a> API.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Tint properties are applied only if the WebGL renderer is used. Learn how to configure the renderer in the <a class="reference internal" href="#scene-renderer-preferences">Scene renderer preferences</a> section.</p>
@@ -590,10 +590,10 @@
 <li><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
 <li><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
 </ul>
-<p>Also it contains the <a class="reference internal" href="#texture-properties-section">Texture properties section</a>.</p>
+<p>Also, it contains the <a class="reference internal" href="#texture-properties-section">Texture properties section</a>.</p>
 <div class="section" id="texture-properties-section">
 <h4>Texture properties section<a class="headerlink" href="#texture-properties-section" title="Permalink to this headline">¶</a></h4>
-<p>There are multiple type of objects that <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor">contains textures</a>, like the <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a>. This section displays the texture of an object and buttons to perform related actions.</p>
+<p>There are multiple types of objects that <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Texture.html#texture__anchor">contains textures</a>, like the <a class="reference internal" href="#image">Image</a>, <a class="reference internal" href="#sprite">Sprite</a> and <a class="reference internal" href="#tile-sprite">Tile Sprite</a>. This section displays the texture of an object and buttons to perform related actions.</p>
 <img alt="Texture section." src="_images/scene-editor-texture-section.png" />
 <ol class="arabic simple">
 <li>The <strong>Texture</strong> button. It shows the <strong>frame</strong> and <strong>key</strong> of the texture. Click on it to change the texture of the object. You can double click on the texture preview too. It opens a dialog with all the textures defined in the <a class="reference external" href="asset-pack-editor.html">asset pack files</a> of the project.</li>
@@ -609,7 +609,7 @@
 </div></blockquote>
 <ol class="arabic simple" start="3">
 <li>Click the <strong>Select all</strong> button to select in the scene all the objects with the same texture.</li>
-<li>All textures in the <a class="reference external" href="scene-editor.html">Scene Editor</a> are defined in asset pack files. This button open the asset pack file containing the texture in the <a class="reference external" href="asset-pack-editor.html">Asset Pack Editor</a>.</li>
+<li>All textures in the <a class="reference external" href="scene-editor.html">Scene Editor</a> are defined in asset pack files. This button opens the asset pack file containing the texture in the <a class="reference external" href="asset-pack-editor.html">Asset Pack Editor</a>.</li>
 <li>If the texture was packed with the <a class="reference external" href="texture-packer-editor.html">Texture Packer Editor</a>, this button opens the atlas file that contains the texture.</li>
 </ol>
 </div>
@@ -647,7 +647,7 @@
 </ul>
 <div class="section" id="animations-properties-section">
 <h4>Animations properties section<a class="headerlink" href="#animations-properties-section" title="Permalink to this headline">¶</a></h4>
-<p>As we explained in the previous topic, the <a class="reference internal" href="#sprite">Sprite</a> object an <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play sprite animations</a>. In many cases you may want to place animated objects in the scene with an initial animation. <a class="reference external" href="https://phaser.io">Phaser</a> does not provide an <strong>initial animation</strong> or <strong>auto-play animation</strong> property, but the <a class="reference external" href="scene-editor.html">Scene Editor</a> allows to set this <strong>auto-play animation</strong> to the <strong>Sprite</strong> object, and the compiler will generate an extra instruction that plays the animation:</p>
+<p>As we explained in the previous topic, the <a class="reference internal" href="#sprite">Sprite</a> object a <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Sprite.html#play__anchor">play sprite animations</a>. In many cases, you may want to place animated objects in the scene with an initial animation. <a class="reference external" href="https://phaser.io">Phaser</a> does not provide an <strong>initial animation</strong> or <strong>auto-play animation</strong> property, but the <a class="reference external" href="scene-editor.html">Scene Editor</a> allows to set this <strong>auto-play animation</strong> to the <strong>Sprite</strong> object, and the compiler will generate an extra instruction that plays the animation:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">grasshopper</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">577</span><span class="p">,</span> <span class="mi">675</span><span class="p">,</span> <span class="s2">&quot;atlas&quot;</span><span class="p">,</span> <span class="s2">&quot;grasshopper-idle-1&quot;</span><span class="p">)</span>
 <span class="hll"><span class="nx">grasshopper</span><span class="p">.</span><span class="nx">anims</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;grasshopper-idle&quot;</span><span class="p">);</span>
 </span></pre></div>
@@ -655,7 +655,7 @@
 <p>The <strong>Animations</strong> properties section shows a preview of the <strong>auto-play animation</strong> and the buttons to select the animation or remove it.</p>
 <img alt="Auto-play animation." src="_images/scene-editor-animations-section.png" />
 <ol class="arabic simple">
-<li>Button that shows the key of the animation and that you can click to select another animation.</li>
+<li>A button that shows the key of the animation and that you can click to select another animation.</li>
 </ol>
 <blockquote>
 <div><img alt="Select the auto-play animation." src="_images/scene-editor-animations-section-select.png" />
@@ -671,7 +671,7 @@
 </div>
 <div class="section" id="tile-sprite">
 <h3>7.3.4&nbsp;&nbsp;&nbsp;Tile Sprite<a class="headerlink" href="#tile-sprite" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html">Phaser.GameObjects.TileSprite</a> object is used in backgrounds, platforms, and any other object that can be renderer as a repeated texture. We recommend to read its <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html">API documentation</a> for tips and better understanding.</p>
+<p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html">Phaser.GameObjects.TileSprite</a> object is used in backgrounds, platforms, and any other object that can be rendered as a repeated texture. We recommend reading the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.TileSprite.html">API documentation</a> for tips and better understanding.</p>
 <p>To create a <strong>Tile Sprite</strong> object, you can click on the <a class="reference external" href="#adding-objects-to-the-scene">Add Object button</a> and select the <strong>Tile Sprite</strong> option. Or you can:</p>
 <ol class="arabic simple">
 <li>Create an <a class="reference internal" href="#image">Image</a> or <a class="reference internal" href="#sprite">Sprite</a> object (using any method).</li>
@@ -711,7 +711,7 @@
 </ul>
 <div class="section" id="tile-sprite-properties-section">
 <h4>Tile Sprite properties section<a class="headerlink" href="#tile-sprite-properties-section" title="Permalink to this headline">¶</a></h4>
-<p>This sections provides editors for the <strong>Tile Sprite</strong> specific properties and the shortcuts to activate different <strong>Tile Sprite</strong> tools.</p>
+<p>This section provides editors for the <strong>Tile Sprite</strong> specific properties and the shortcuts to activate different <strong>Tile Sprite</strong> tools.</p>
 <img alt="Tile Sprite properties." src="_images/scene-editor-tilesprite-section.png" />
 <ol class="arabic simple">
 <li>The <strong>Tile Size</strong> has the <strong>Width</strong> and <strong>Height</strong> properties. You can set the property’s value directly in the text-boxes or activating the <strong>Tile Size tool</strong>. This tool displays three handlers to change the <strong>width</strong>, <strong>height</strong> or <strong>both</strong>. The tool can be activated also by pressing the <code class="docutils literal notranslate"><span class="pre">L</span></code> key.</li>
