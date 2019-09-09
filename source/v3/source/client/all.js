@@ -209,6 +209,13 @@ var phasereditor2d;
                     this._layout = null;
                     this._container = null;
                     this._scrollY = 0;
+                    this._layoutChildren = true;
+                }
+                isLayoutChildren() {
+                    return this._layoutChildren;
+                }
+                setLayoutChildren(layout) {
+                    this._layoutChildren = layout;
                 }
                 getScrollY() {
                     return this._scrollY;
@@ -273,8 +280,10 @@ var phasereditor2d;
                         this._layout.layout(this);
                     }
                     else {
-                        for (let child of this._children) {
-                            child.layout();
+                        if (this._layoutChildren) {
+                            for (let child of this._children) {
+                                child.layout();
+                            }
                         }
                     }
                     this.dispatchLayoutEvent();
@@ -576,49 +585,12 @@ var phasereditor2d;
             class PanelTitle extends controls.Control {
                 constructor() {
                     super("div", "PanelTitle");
-                    this._textControl = new controls.Control();
+                    this._textControl = new controls.Control("label", "PanelTitleText");
+                    this.setLayoutChildren(false);
                     this.add(this._textControl);
-                    this._toolbar = new PanelToolbar();
-                    this.add(this._toolbar);
                 }
                 setText(text) {
                     this._textControl.getElement().innerHTML = text;
-                }
-                getToolbar() {
-                    return this._toolbar;
-                }
-                layout() {
-                    super.layout();
-                    const b = this.getBounds();
-                    const elem = this._textControl.getElement();
-                    elem.style.top = controls.FONT_OFFSET + "px";
-                    elem.style.left = controls.FONT_OFFSET * 2 + "px";
-                    const toolbarWidth = this._toolbar.getActions().length * controls.ACTION_WIDTH;
-                    this._toolbar.setBoundsValues(b.width - toolbarWidth, 0, toolbarWidth, controls.ROW_HEIGHT);
-                }
-            }
-            class PanelToolbar extends controls.Control {
-                constructor() {
-                    super("div", "panelToolbar");
-                    this._actions = [];
-                    this._buttons = [];
-                }
-                addAction(action) {
-                    this._actions.push(action);
-                    const b = new controls.ActionButton(action);
-                    this._buttons.push(b);
-                    this.add(b);
-                }
-                getActions() {
-                    return this._actions;
-                }
-                layout() {
-                    super.layout();
-                    const b = this.getBounds();
-                    for (let i = 0; i < this._buttons.length; i++) {
-                        const btn = this._buttons[i];
-                        btn.setBoundsValues(i * controls.ACTION_WIDTH, 0, controls.ACTION_WIDTH, b.height);
-                    }
                 }
             }
             class Panel extends controls.Control {
@@ -639,9 +611,6 @@ var phasereditor2d;
                 getTitle() {
                     return this._title;
                 }
-                getToolbar() {
-                    return this._panelTitle.getToolbar();
-                }
                 getClientArea() {
                     return this._clientArea;
                 }
@@ -650,12 +619,12 @@ var phasereditor2d;
                     controls.setElementBounds(this.getElement(), this.getBounds());
                     const b = this.getBounds();
                     if (this._panelTitle) {
-                        this._panelTitle.setBoundsValues(controls.PANEL_BORDER_SIZE, controls.PANEL_BORDER_SIZE, b.width - controls.PANEL_BORDER_SIZE * 2, controls.ROW_HEIGHT);
+                        this._panelTitle.setBoundsValues(controls.PANEL_BORDER_SIZE, controls.PANEL_BORDER_SIZE, b.width - controls.PANEL_BORDER_SIZE * 2, controls.PANEL_TITLE_HEIGHT);
                         this._clientArea.setBounds({
                             x: controls.PANEL_BORDER_SIZE,
-                            y: controls.PANEL_BORDER_SIZE + controls.ROW_HEIGHT,
+                            y: controls.PANEL_BORDER_SIZE + controls.PANEL_TITLE_HEIGHT,
                             width: b.width - controls.PANEL_BORDER_SIZE * 2,
-                            height: b.height - controls.PANEL_BORDER_SIZE * 2 - controls.ROW_HEIGHT
+                            height: b.height - controls.PANEL_BORDER_SIZE * 2 - controls.PANEL_TITLE_HEIGHT
                         });
                     }
                     else {
@@ -2313,7 +2282,8 @@ var phasereditor2d;
             controls.FONT_HEIGHT = 14;
             controls.FONT_OFFSET = 2;
             controls.ACTION_WIDTH = 20;
-            controls.PANEL_BORDER_SIZE = 4;
+            controls.PANEL_BORDER_SIZE = 5;
+            controls.PANEL_TITLE_HEIGHT = 22;
             controls.SPLIT_OVER_ZONE_WIDTH = 6;
             function setElementBounds(elem, bounds) {
                 if (bounds.x !== undefined) {

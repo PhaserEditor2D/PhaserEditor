@@ -2,72 +2,17 @@ namespace phasereditor2d.ui.controls {
 
     class PanelTitle extends Control {
         private _textControl: Control;
-        private _toolbar: PanelToolbar;
 
 
         constructor() {
             super("div", "PanelTitle");
-
-            this._textControl = new Control();
+            this._textControl = new Control("label", "PanelTitleText");
+            this.setLayoutChildren(false);
             this.add(this._textControl);
-
-            this._toolbar = new PanelToolbar();
-            this.add(this._toolbar);
         }
 
         setText(text: string) {
             this._textControl.getElement().innerHTML = text;
-        }
-
-        getToolbar(): IToolbar {
-            return this._toolbar;
-        }
-
-        layout() {
-            super.layout();
-
-            const b = this.getBounds();
-
-            const elem = this._textControl.getElement();
-            elem.style.top = FONT_OFFSET + "px";
-            elem.style.left = FONT_OFFSET * 2 + "px";
-
-            const toolbarWidth = this._toolbar.getActions().length * ACTION_WIDTH;
-            this._toolbar.setBoundsValues(b.width - toolbarWidth, 0, toolbarWidth, ROW_HEIGHT);
-
-        }
-    }
-
-    class PanelToolbar extends Control implements IToolbar {
-        private _actions: Action[];
-        private _buttons: ActionButton[];
-
-        constructor() {
-            super("div", "panelToolbar");
-            this._actions = [];
-            this._buttons = [];
-        }
-
-        addAction(action: Action) {
-            this._actions.push(action);
-            const b = new ActionButton(action);
-            this._buttons.push(b);
-            this.add(b);
-        }
-
-        getActions() {
-            return this._actions;
-        }
-
-        layout() {
-            super.layout();
-
-            const b = this.getBounds();
-
-            for (let i = 0; i < this._buttons.length; i++) {
-                const btn = this._buttons[i];
-                btn.setBoundsValues(i * ACTION_WIDTH, 0, ACTION_WIDTH, b.height);
-            }
         }
     }
 
@@ -99,10 +44,6 @@ namespace phasereditor2d.ui.controls {
             return this._title;
         }
 
-        getToolbar(): IToolbar {
-            return this._panelTitle.getToolbar();
-        }
-
         getClientArea() {
             return this._clientArea;
         }
@@ -114,13 +55,13 @@ namespace phasereditor2d.ui.controls {
             const b = this.getBounds();
 
             if (this._panelTitle) {
-                this._panelTitle.setBoundsValues(PANEL_BORDER_SIZE, PANEL_BORDER_SIZE, b.width - PANEL_BORDER_SIZE * 2, ROW_HEIGHT);
+                this._panelTitle.setBoundsValues(PANEL_BORDER_SIZE, PANEL_BORDER_SIZE, b.width - PANEL_BORDER_SIZE * 2, PANEL_TITLE_HEIGHT);
 
                 this._clientArea.setBounds({
                     x: PANEL_BORDER_SIZE,
-                    y: PANEL_BORDER_SIZE + ROW_HEIGHT,
+                    y: PANEL_BORDER_SIZE + PANEL_TITLE_HEIGHT,
                     width: b.width - PANEL_BORDER_SIZE * 2,
-                    height: b.height - PANEL_BORDER_SIZE * 2 - ROW_HEIGHT
+                    height: b.height - PANEL_BORDER_SIZE * 2 - PANEL_TITLE_HEIGHT
                 });
             } else {
                 this._clientArea.setBounds({

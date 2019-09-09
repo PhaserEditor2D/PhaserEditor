@@ -9,16 +9,25 @@ namespace phasereditor2d.ui.controls {
         private _layout: ILayout;
         private _container: Control;
         private _scrollY: number;
+        private _layoutChildren: boolean;
 
-        constructor(tagName: string = "div", ...classList : string[]) {
+        constructor(tagName: string = "div", ...classList: string[]) {
             super();
-
             this._children = [];
             this._element = document.createElement(tagName);
             this.addClass("control", ...classList);
             this._layout = null;
             this._container = null;
             this._scrollY = 0;
+            this._layoutChildren = true;
+        }
+
+        isLayoutChildren() {
+            return this._layoutChildren;
+        }
+
+        setLayoutChildren(layout: boolean): void {
+            this._layoutChildren = layout;
         }
 
         getScrollY() {
@@ -95,14 +104,16 @@ namespace phasereditor2d.ui.controls {
         }
 
         layout(): void {
-            
+
             setElementBounds(this._element, this._bounds);
 
             if (this._layout) {
                 this._layout.layout(this);
             } else {
-                for (let child of this._children) {
-                    child.layout();
+                if (this._layoutChildren) {
+                    for (let child of this._children) {
+                        child.layout();
+                    }
                 }
             }
 

@@ -16,6 +16,7 @@ input {
 
 .control {
     position: absolute;
+    box-sizing: border-box;
 }
 
 button {
@@ -39,7 +40,17 @@ canvas {
 }
 
 .PanelTitle {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    column-gap: 5px;
+    align-items: center;
+    justify-items: start;
     font-weight: bold;
+}
+
+.PanelTitleText {
+    margin-left: 5px;
 }
 
 .Panel .actionButton {
@@ -121,7 +132,7 @@ input {
 }
 
 .PropertyFormArea {
-    display: grid;    
+    display: grid;
 }
 
 .formSimpleProps {

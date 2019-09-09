@@ -5,7 +5,8 @@ namespace phasereditor2d.ui.controls {
     export const FONT_HEIGHT = 14;
     export const FONT_OFFSET = 2;
     export const ACTION_WIDTH = 20;
-    export const PANEL_BORDER_SIZE = 4;
+    export const PANEL_BORDER_SIZE = 5;
+    export const PANEL_TITLE_HEIGHT = 22;
     export const SPLIT_OVER_ZONE_WIDTH = 6;
 
     export function setElementBounds(elem: HTMLElement, bounds: Bounds) {
