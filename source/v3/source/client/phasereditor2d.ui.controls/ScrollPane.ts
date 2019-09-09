@@ -16,11 +16,11 @@ namespace phasereditor2d.ui.controls {
             this.add(this._clientControl);
 
             this._scrollBar = document.createElement("div");
-            this._scrollBar.classList.add("scrollBar");
+            this._scrollBar.classList.add("ScrollBar");
             this.getElement().appendChild(this._scrollBar);
 
             this._scrollHandler = document.createElement("div");
-            this._scrollHandler.classList.add("scrollHandler");
+            this._scrollHandler.classList.add("ScrollHandler");
 
             this.getElement().appendChild(this._scrollHandler);
 

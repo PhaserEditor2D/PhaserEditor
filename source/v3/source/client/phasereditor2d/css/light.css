@@ -35,32 +35,32 @@
 
 /* panel */
 
-.light .panel {
+.light .Panel {
     background: #d2d2d2;
 }
 
-.light .panel.activePart  {
+.light .Panel.activePart  {
     background: #e2e2e2;
 }
 
-.light .panelClientArea {
+.light .PanelClientArea {
     background: #c2c2c2;
 }
 
-.light .activePart .panelClientArea {
+.light .activePart .PanelClientArea {
     background: #c7c7c7;
 }
 
-.light .panel,
-.light .panelClientArea,
-.light .panelTitle {
+.light .Panel,
+.light .PanelClientArea,
+.light .PanelTitle {
     box-shadow: -1px -1px 0 #909090,
         1px -1px 0 #909090,
         -1px 1px 0 #909090,
         1px 1px 0 #909090;
 }
 
-.light .panelClientArea {
+.light .PanelClientArea {
     box-shadow: inset 2px 2px 2px #40404008,
         inset -2px 2px 2px #40404008,
         inset 2px -2px 2px #40404008,
@@ -71,11 +71,11 @@
         1px 1px 0 #909090;
 }
 
-.light .panel .actionButton {
+.light .Panel .actionButton {
     border-color: #909090;
 }
 
-.light .panel .panelTitle {
+.light .Panel .PanelTitle {
     background: #b8b8b8;
     background: linear-gradient(#d8d8d8, #b8b8b8);
 
@@ -94,36 +94,36 @@
     text-shadow: 0px 2px 2px #e0e0e0;
 }
 
-.light .activePart .panelTitle {
+.light .activePart .PanelTitle {
     background: linear-gradient(#e4e4e4, #c4c4c4);
 }
 
-.light .panel .actionButton {
+.light .Panel .actionButton {
     background: radial-gradient(#c8c8c8, #b8b8b8);
 }
 
-.light .panel .actionButton:active {
+.light .Panel .actionButton:active {
     background: radial-gradient(#b8b8b8, #c8c8c8);
 }
 
-.light .scrollBar,
-.scrollHandler {
+.light .ScrollBar,
+.ScrollHandler {
     position: absolute;
 }
 
-.light .scrollBar {
+.light .ScrollBar {
     background: transparent;
     box-shadow: inset 2px 2px 2px #40404018,
         -1px -1px 0 #909090;
 }
 
-.light .scrollHandler {
+.light .ScrollHandler {
     background: linear-gradient(#c8c8c8, #b8b8b8);
     box-shadow: inset -1px -1px 0 #909090,
         inset 1px 1px 0 #e0e0e0;
 }
 
-.light .scrollHandler:active {
+.light .ScrollHandler:active {
     background: linear-gradient(#b0b0b0, #c0c0c0);
     box-shadow: inset -1px -1px 0 #e0e0e0,
         inset 1px 1px 0 #909090;

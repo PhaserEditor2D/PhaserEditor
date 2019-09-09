@@ -33,35 +33,35 @@ canvas {
     outline: none;
 }
 
-.panel,
-.panelClientArea {
+.Panel,
+.PanelClientArea {
     position: absolute;
 }
 
-.panelTitle {
+.PanelTitle {
     font-weight: bold;
 }
 
-.panel .actionButton {
+.Panel .actionButton {
     padding: 0px;
 }
 
-.panel .actionButton:active {
+.Panel .actionButton:active {
     margin-top: 0px;
     padding: 0px;
     box-shadow: inset 1px 1px 2px #00000088;
 }
 
-.scrollBar,
-.scrollHandler {
+.ScrollBar,
+.ScrollHandler {
     position: absolute;
 }
 
-.scrollBar {
+.ScrollBar {
     background: #eee;
 }
 
-.scrollHandler {
+.ScrollHandler {
     background: #000;
 }
 
@@ -69,9 +69,7 @@ input {
     border-style: none !important;
 }
 
-
-
-.filteredViewer input {
+.FilteredViewer input {
     position: absolute;
     padding: 0px;
     margin: 0px;

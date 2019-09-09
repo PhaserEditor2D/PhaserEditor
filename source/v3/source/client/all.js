@@ -575,7 +575,7 @@ var phasereditor2d;
         (function (controls) {
             class PanelTitle extends controls.Control {
                 constructor() {
-                    super("div", "panelTitle");
+                    super("div", "PanelTitle");
                     this._textControl = new controls.Control();
                     this.add(this._textControl);
                     this._toolbar = new PanelToolbar();
@@ -623,14 +623,13 @@ var phasereditor2d;
             }
             class Panel extends controls.Control {
                 constructor(hasTitle = true) {
-                    super();
-                    this.getElement().classList.add("panel");
+                    super("div", "Panel");
                     if (hasTitle) {
                         this._panelTitle = new PanelTitle();
                         this.add(this._panelTitle);
                     }
                     this._clientArea = new controls.Control("div");
-                    this._clientArea.addClass("panelClientArea");
+                    this._clientArea.addClass("PanelClientArea");
                     this.add(this._clientArea);
                 }
                 setTitle(title) {
@@ -2049,10 +2048,10 @@ var phasereditor2d;
                     this._clientControl = clientControl;
                     this.add(this._clientControl);
                     this._scrollBar = document.createElement("div");
-                    this._scrollBar.classList.add("scrollBar");
+                    this._scrollBar.classList.add("ScrollBar");
                     this.getElement().appendChild(this._scrollBar);
                     this._scrollHandler = document.createElement("div");
-                    this._scrollHandler.classList.add("scrollHandler");
+                    this._scrollHandler.classList.add("ScrollHandler");
                     this.getElement().appendChild(this._scrollHandler);
                     const l2 = (e) => this.onMouseDown(e);
                     const l3 = (e) => this.onMouseUp(e);
@@ -2353,9 +2352,8 @@ var phasereditor2d;
             (function (viewers) {
                 class FilteredViewer extends controls.Control {
                     constructor(viewer) {
-                        super();
+                        super("div", "FilteredViewer");
                         this._viewer = viewer;
-                        this.addClass("filteredViewer");
                         this._filterElement = document.createElement("input");
                         this.getElement().appendChild(this._filterElement);
                         this._scrollPane = new controls.ScrollPane(this._viewer);

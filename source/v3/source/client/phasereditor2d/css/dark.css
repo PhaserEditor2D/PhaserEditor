@@ -34,45 +34,45 @@
 
 /* panel */
 
-.dark .panel {
+.dark .Panel {
     background: #202020;
 }
 
-.dark .panel .actionButton {
+.dark .Panel .actionButton {
     border-color: #202020;
 }
 
-.dark .panel .panelTitle {
+.dark .Panel .PanelTitle {
     color: #e0e0e0;
     color: rgba(255, 255, 255, 0.7);
 }
 
-.dark .panel .actionButton {
+.dark .Panel .actionButton {
     background: radial-gradient(#c8c8c8, #b8b8b8);
 }
 
-.dark .panel .actionButton:active {
+.dark .Panel .actionButton:active {
     background: radial-gradient(#b8b8b8, #c8c8c8);
 }
 
-.dark .scrollBar,
-.scrollHandler {
+.dark .ScrollBar,
+.ScrollHandler {
     position: absolute;
 }
 
-.dark .scrollBar {
+.dark .ScrollBar {
     background: transparent;
     box-shadow: inset 2px 2px 2px #10101018,
         -1px -1px 0 #202020;
 }
 
-.dark .scrollHandler {
+.dark .ScrollHandler {
     background: linear-gradient(#303030, #3a3a3a);
     box-shadow: inset -1px -1px 0 #202020,
         inset 1px 1px 0 #606060;
 }
 
-.dark .scrollHandler:active {
+.dark .ScrollHandler:active {
     background: linear-gradient(#3a3a3a, #303030);
     box-shadow: inset -1px -1px 0 #606060,
         inset 1px 1px 0 #202020;

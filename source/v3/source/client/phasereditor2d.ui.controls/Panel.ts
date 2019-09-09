@@ -6,7 +6,7 @@ namespace phasereditor2d.ui.controls {
 
 
         constructor() {
-            super("div", "panelTitle");
+            super("div", "PanelTitle");
 
             this._textControl = new Control();
             this.add(this._textControl);
@@ -77,9 +77,7 @@ namespace phasereditor2d.ui.controls {
         private _title: string;
 
         constructor(hasTitle: boolean = true) {
-            super();
-
-            this.getElement().classList.add("panel");
+            super("div", "Panel");
 
             if (hasTitle) {
                 this._panelTitle = new PanelTitle();
@@ -87,7 +85,7 @@ namespace phasereditor2d.ui.controls {
             }
 
             this._clientArea = new Control("div");
-            this._clientArea.addClass("panelClientArea");
+            this._clientArea.addClass("PanelClientArea");
 
             this.add(this._clientArea);
         }

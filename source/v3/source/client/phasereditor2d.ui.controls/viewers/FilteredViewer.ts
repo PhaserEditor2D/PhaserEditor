@@ -7,9 +7,8 @@ namespace phasereditor2d.ui.controls.viewers {
         private _scrollPane: ScrollPane;
 
         constructor(viewer: T) {
-            super();
+            super("div", "FilteredViewer");
             this._viewer = viewer;
-            this.addClass("filteredViewer");
 
             this._filterElement = document.createElement("input");
             this.getElement().appendChild(this._filterElement);
