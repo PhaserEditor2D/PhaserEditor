@@ -55,7 +55,7 @@ namespace phasereditor2d.ui.controls.properties {
                 this._formArea.style.display = "initial";
             }
 
-            this.dispatchLayoutEvent();
+            this.getContainer().dispatchLayoutEvent();
         }
 
         getSection() {

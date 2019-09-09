@@ -994,7 +994,7 @@ var phasereditor2d;
                             this._expandBtn.classList.remove("collapsed");
                             this._formArea.style.display = "initial";
                         }
-                        this.dispatchLayoutEvent();
+                        this.getContainer().dispatchLayoutEvent();
                     }
                     getSection() {
                         return this._section;
