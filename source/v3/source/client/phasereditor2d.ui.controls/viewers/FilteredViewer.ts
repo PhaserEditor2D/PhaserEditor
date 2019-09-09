@@ -1,27 +1,46 @@
 namespace phasereditor2d.ui.controls.viewers {
 
+
+    class FilterControl extends Control {
+        private _filterElement: HTMLInputElement;
+
+        constructor() {
+            super("div", "FilterControl");
+            this.setLayoutChildren(false);
+
+            this._filterElement = document.createElement("input");
+            this.getElement().appendChild(this._filterElement);
+        }
+
+        getFilterElement() {
+            return this._filterElement;
+        }
+
+    }
+
     export class FilteredViewer<T extends Viewer> extends Control {
 
         private _viewer: T;
-        private _filterElement: HTMLInputElement;
+        private _filterControl: FilterControl;
         private _scrollPane: ScrollPane;
 
         constructor(viewer: T) {
             super("div", "FilteredViewer");
             this._viewer = viewer;
 
-            this._filterElement = document.createElement("input");
-            this.getElement().appendChild(this._filterElement);
+            this._filterControl = new FilterControl();
+            this._filterControl.getFilterElement().addEventListener("input", e => this.onFilterInput(e));
+            this.add(this._filterControl);
 
             this._scrollPane = new ScrollPane(this._viewer);
 
             this.add(this._scrollPane);
 
-            this._filterElement.addEventListener("input", e => this.onFilterInput(e));
+
         }
 
         private onFilterInput(e: Event) {
-            this._viewer.setFilterText(this._filterElement.value);
+            this._viewer.setFilterText(this._filterControl.getFilterElement().value);
         }
 
         getViewer() {
@@ -32,20 +51,11 @@ namespace phasereditor2d.ui.controls.viewers {
             const b = this.getBounds();
             controls.setElementBounds(this.getElement(), b);
 
-            const inputH = ROW_HEIGHT;
 
-            controls.setElementBounds(this._filterElement, {
-                x: CONTROL_PADDING,
-                y: CONTROL_PADDING,
-                width: b.width - CONTROL_PADDING * 2 - /* padding=4 */ 4
-            });
+            this._filterControl.setBoundsValues(0, 0, b.width, FILTERED_VIEWER_FILTER_HEIGHT);
 
-            this._filterElement.style.minHeight = inputH + "px";
-            this._filterElement.style.maxHeight = inputH + "px";
-            this._filterElement.style.height = inputH + "px";
+            const paneY = FILTERED_VIEWER_FILTER_HEIGHT;
 
-
-            const paneY = inputH + /*padding=4*/ 4 + CONTROL_PADDING * 2;
             this._scrollPane.setBounds({
                 x: 0,
                 y: paneY,

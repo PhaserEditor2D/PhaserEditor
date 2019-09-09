@@ -132,10 +132,7 @@
 .light input {
     box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3),
         inset -1px -1px 1px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(#b0b0b0, #c0c0c0);
-    outline: none;
-    padding: 2px;
-    border-radius: 2px;
+    background: linear-gradient(#b0b0b0, #c0c0c0);    
 }
 
 .light input:focus {

@@ -82,9 +82,6 @@
     box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.3),
         inset -1px -1px 0px rgba(255, 255, 255, 0.3);
     background: #3a3a3a;
-    outline: none;
-    padding: 2px;
-    border-radius: 2px;
     color: #f0f0f0;
 }
 

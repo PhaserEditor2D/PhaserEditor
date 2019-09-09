@@ -7,6 +7,7 @@ namespace phasereditor2d.ui.controls {
     export const ACTION_WIDTH = 20;
     export const PANEL_BORDER_SIZE = 5;
     export const PANEL_TITLE_HEIGHT = 22;
+    export const FILTERED_VIEWER_FILTER_HEIGHT = 30;
     export const SPLIT_OVER_ZONE_WIDTH = 6;
 
     export function setElementBounds(elem: HTMLElement, bounds: Bounds) {

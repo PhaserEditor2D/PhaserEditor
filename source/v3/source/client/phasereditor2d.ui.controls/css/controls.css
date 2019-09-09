@@ -78,12 +78,24 @@ canvas {
 
 input {
     border-style: none !important;
+    outline: none;
+    padding: 2px;
+    padding-left: 3px;
+    border-radius: 2px;
 }
 
-.FilteredViewer input {
-    position: absolute;
-    padding: 0px;
-    margin: 0px;
+.FilterControl {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
+    box-sizing: border-box;
+    padding: 5px 6px 5px 6px;
+}
+
+.FilterControl input {
+    width: 100%;
 }
 
 /* PropertyPage */

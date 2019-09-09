@@ -2284,6 +2284,7 @@ var phasereditor2d;
             controls.ACTION_WIDTH = 20;
             controls.PANEL_BORDER_SIZE = 5;
             controls.PANEL_TITLE_HEIGHT = 22;
+            controls.FILTERED_VIEWER_FILTER_HEIGHT = 30;
             controls.SPLIT_OVER_ZONE_WIDTH = 6;
             function setElementBounds(elem, bounds) {
                 if (bounds.x !== undefined) {
@@ -2320,18 +2321,29 @@ var phasereditor2d;
         (function (controls) {
             var viewers;
             (function (viewers) {
+                class FilterControl extends controls.Control {
+                    constructor() {
+                        super("div", "FilterControl");
+                        this.setLayoutChildren(false);
+                        this._filterElement = document.createElement("input");
+                        this.getElement().appendChild(this._filterElement);
+                    }
+                    getFilterElement() {
+                        return this._filterElement;
+                    }
+                }
                 class FilteredViewer extends controls.Control {
                     constructor(viewer) {
                         super("div", "FilteredViewer");
                         this._viewer = viewer;
-                        this._filterElement = document.createElement("input");
-                        this.getElement().appendChild(this._filterElement);
+                        this._filterControl = new FilterControl();
+                        this._filterControl.getFilterElement().addEventListener("input", e => this.onFilterInput(e));
+                        this.add(this._filterControl);
                         this._scrollPane = new controls.ScrollPane(this._viewer);
                         this.add(this._scrollPane);
-                        this._filterElement.addEventListener("input", e => this.onFilterInput(e));
                     }
                     onFilterInput(e) {
-                        this._viewer.setFilterText(this._filterElement.value);
+                        this._viewer.setFilterText(this._filterControl.getFilterElement().value);
                     }
                     getViewer() {
                         return this._viewer;
@@ -2339,16 +2351,8 @@ var phasereditor2d;
                     layout() {
                         const b = this.getBounds();
                         controls.setElementBounds(this.getElement(), b);
-                        const inputH = controls.ROW_HEIGHT;
-                        controls.setElementBounds(this._filterElement, {
-                            x: controls.CONTROL_PADDING,
-                            y: controls.CONTROL_PADDING,
-                            width: b.width - controls.CONTROL_PADDING * 2 - /* padding=4 */ 4
-                        });
-                        this._filterElement.style.minHeight = inputH + "px";
-                        this._filterElement.style.maxHeight = inputH + "px";
-                        this._filterElement.style.height = inputH + "px";
-                        const paneY = inputH + /*padding=4*/ 4 + controls.CONTROL_PADDING * 2;
+                        this._filterControl.setBoundsValues(0, 0, b.width, controls.FILTERED_VIEWER_FILTER_HEIGHT);
+                        const paneY = controls.FILTERED_VIEWER_FILTER_HEIGHT;
                         this._scrollPane.setBounds({
                             x: 0,
                             y: paneY,
