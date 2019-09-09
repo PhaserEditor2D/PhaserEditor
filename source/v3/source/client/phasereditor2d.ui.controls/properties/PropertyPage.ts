@@ -128,7 +128,7 @@ namespace phasereditor2d.ui.controls.properties {
                 if (show) {
                     pane.getElement().style.display = "grid";
                     pane.createOrUpdateWithSelection();
-                    templateRows += " " + (section.isFillSpace() ? "1fr" : "auto");
+                    templateRows += " " + (section.isFillSpace() ? "1fr" : "min-content");
                 } else {
                     pane.getElement().style.display = "none";
                 }
