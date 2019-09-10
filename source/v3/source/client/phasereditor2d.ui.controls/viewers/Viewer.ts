@@ -23,8 +23,8 @@ namespace phasereditor2d.ui.controls.viewers {
         private _filterText: string;
         protected _filterIncludeSet: Set<any>;
 
-        constructor() {
-            super("canvas");
+        constructor(...classList : string[]) {
+            super("canvas", "Viewer");
 
             this.getElement().tabIndex = 1;
 
@@ -205,7 +205,6 @@ namespace phasereditor2d.ui.controls.viewers {
         private initContext(): void {
             this._context = this.getCanvas().getContext("2d");
             this._context.imageSmoothingEnabled = false;
-            Controls.disableCanvasSmoothing(this._context);
             this._context.font = `${controls.FONT_HEIGHT}px sans-serif`;
         }
 
@@ -302,6 +301,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         layout(): void {
             const b = this.getBounds();
+
             ui.controls.setElementBounds(this.getElement(), {
                 x: b.x,
                 y: b.y,

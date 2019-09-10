@@ -1,4 +1,5 @@
 namespace phasereditor2d.ui.ide.files {
+
     export class ImageFileSection extends controls.properties.PropertySection<core.io.FilePath> {
 
         constructor(page: controls.properties.PropertyPage) {
@@ -9,7 +10,7 @@ namespace phasereditor2d.ui.ide.files {
  
             parent.classList.add("ImagePreviewFormArea");
 
-            const imgControl = new controls.ImageControl(10);
+            const imgControl = new controls.ImageControl(IMG_SECTION_PADDING);
 
             this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
                 imgControl.resizeTo(parent);
@@ -22,7 +23,8 @@ namespace phasereditor2d.ui.ide.files {
                 const file = this.getSelection()[0];
                 const img = Workbench.getWorkbench().getFileImage(file);
                 imgControl.setImage(img);
-                imgControl.resizeTo(parent);
+                //imgControl.resizeTo(parent);
+                setTimeout(() => imgControl.resizeTo(), 1);
             });
         }
 

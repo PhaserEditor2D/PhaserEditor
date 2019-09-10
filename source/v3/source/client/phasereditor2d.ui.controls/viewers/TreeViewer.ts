@@ -15,8 +15,8 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private _treeIconList: TreeIconInfo[];
 
-        constructor() {
-            super();
+        constructor(...classList : string[]) {
+            super("TreeViewer", ...classList);
             this._treeIconList = [];
 
             this.getCanvas().addEventListener("click", e => this.onClick(e));
@@ -124,7 +124,7 @@ namespace phasereditor2d.ui.controls.viewers {
             return result;
         }
 
-        private paintItems(objects: any[], x: number, y: number): number {
+        protected paintItems(objects: any[], x: number, y: number): number {
 
             const b = this.getBounds();
 
@@ -177,7 +177,7 @@ namespace phasereditor2d.ui.controls.viewers {
             return y;
         }
 
-        private renderCell(args: RenderCellArgs, renderer: ICellRenderer): void {
+        protected renderCell(args: RenderCellArgs, renderer: ICellRenderer): void {
             const label = this.getLabelProvider().getLabel(args.obj);
             let x = args.x;
             let y = args.y;

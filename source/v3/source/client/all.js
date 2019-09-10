@@ -256,9 +256,6 @@ var phasereditor2d;
                     return x >= 0 && x <= this._bounds.width && y >= 0 && y <= this._bounds.height;
                 }
                 setBounds(bounds) {
-                    if (bounds.x !== undefined) {
-                        this._bounds.x = bounds.x;
-                    }
                     this._bounds.x = bounds.x === undefined ? this._bounds.x : bounds.x;
                     this._bounds.y = bounds.y === undefined ? this._bounds.y : bounds.y;
                     this._bounds.width = bounds.width === undefined ? this._bounds.width : bounds.width;
@@ -520,25 +517,6 @@ var phasereditor2d;
                     Controls._icons.set(name, icon);
                     return icon;
                 }
-                static getSmoothingPrefix(context) {
-                    const vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];
-                    for (let i = 0; i < vendors.length; i++) {
-                        const s = vendors[i] + 'mageSmoothingEnabled';
-                        if (s in context) {
-                            return s;
-                        }
-                    }
-                    return null;
-                }
-                ;
-                static disableCanvasSmoothing(context) {
-                    const prefix = this.getSmoothingPrefix(context);
-                    if (prefix) {
-                        context[prefix] = false;
-                    }
-                    return context;
-                }
-                ;
             }
             Controls._icons = new Map();
             Controls._images = new Map();
@@ -893,6 +871,16 @@ var phasereditor2d;
                 }
             }
             ide.Workbench = Workbench;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            ide.IMG_SECTION_PADDING = 10;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1300,8 +1288,8 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class Viewer extends controls.Control {
-                    constructor() {
-                        super("canvas");
+                    constructor(...classList) {
+                        super("canvas", "Viewer");
                         this._labelProvider = null;
                         this._lastSelectedItemIndex = -1;
                         this._contentHeight = 0;
@@ -1448,7 +1436,6 @@ var phasereditor2d;
                     initContext() {
                         this._context = this.getCanvas().getContext("2d");
                         this._context.imageSmoothingEnabled = false;
-                        controls.Controls.disableCanvasSmoothing(this._context);
                         this._context.font = `${controls.FONT_HEIGHT}px sans-serif`;
                     }
                     setExpanded(obj, expanded) {
@@ -1700,6 +1687,7 @@ var phasereditor2d;
                     addSections(page, sections) {
                         sections.push(new files.FileSection(page));
                         sections.push(new files.ImageFileSection(page));
+                        sections.push(new files.ManyImageFileSection(page));
                     }
                 }
                 files.FilePropertySectionProvider = FilePropertySectionProvider;
@@ -1853,7 +1841,7 @@ var phasereditor2d;
                     }
                     createForm(parent) {
                         parent.classList.add("ImagePreviewFormArea");
-                        const imgControl = new ui.controls.ImageControl(10);
+                        const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
                             imgControl.resizeTo(parent);
                         });
@@ -1863,7 +1851,8 @@ var phasereditor2d;
                             const file = this.getSelection()[0];
                             const img = ide.Workbench.getWorkbench().getFileImage(file);
                             imgControl.setImage(img);
-                            imgControl.resizeTo(parent);
+                            //imgControl.resizeTo(parent);
+                            setTimeout(() => imgControl.resizeTo(), 1);
                         });
                     }
                     canEdit(obj) {
@@ -1878,6 +1867,52 @@ var phasereditor2d;
                     }
                 }
                 files.ImageFileSection = ImageFileSection;
+            })(files = ide.files || (ide.files = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var files;
+            (function (files) {
+                class ManyImageFileSection extends ui.controls.properties.PropertySection {
+                    constructor(page) {
+                        super(page, "files.ManyImageFileSection", "Images", true);
+                    }
+                    createForm(parent) {
+                        parent.classList.add("ManyImagePreviewFormArea");
+                        const viewer = new ui.controls.viewers.GridViewer();
+                        viewer.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
+                        viewer.setLabelProvider(new files.FileLabelProvider());
+                        viewer.setCellRendererProvider(new files.FileCellRendererProvider());
+                        this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
+                            console.log("resize");
+                            this.resizeTo(viewer, parent);
+                        });
+                        parent.appendChild(viewer.getElement());
+                        setTimeout(() => this.resizeTo(viewer, parent), 1);
+                        this.addUpdater(() => {
+                            viewer.setInput(this.getSelection());
+                            this.resizeTo(viewer, parent);
+                        });
+                    }
+                    resizeTo(viewer, parent) {
+                        viewer.style.width = parent.clientWidth + "px";
+                        viewer.style.height = parent.clientHeight + "px";
+                        viewer.repaint();
+                    }
+                    canEdit(obj) {
+                        return obj instanceof phasereditor2d.core.io.FilePath;
+                    }
+                    canEditNumber(n) {
+                        return n > 1;
+                    }
+                }
+                files.ManyImageFileSection = ManyImageFileSection;
             })(files = ide.files || (ide.files = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -2028,24 +2063,6 @@ var phasereditor2d;
                 }
             }
             controls.ImageControl = ImageControl;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ImageGridControl extends controls.CanvasControl {
-                constructor(padding, ...classList) {
-                    super(padding, "ImageGridControl", ...classList);
-                }
-                paint() {
-                    throw new Error("Method not implemented.");
-                }
-            }
-            controls.ImageGridControl = ImageGridControl;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2369,6 +2386,29 @@ var phasereditor2d;
         (function (controls) {
             var viewers;
             (function (viewers) {
+                viewers.EMPTY_ARRAY = [];
+                class ArrayTreeContentProvider {
+                    getRoots(input) {
+                        // ok, we assume the input is an array
+                        return input;
+                    }
+                    getChildren(parent) {
+                        return viewers.EMPTY_ARRAY;
+                    }
+                }
+                viewers.ArrayTreeContentProvider = ArrayTreeContentProvider;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
                 class FilterControl extends controls.Control {
                     constructor() {
                         super("div", "FilterControl");
@@ -2423,57 +2463,11 @@ var phasereditor2d;
         (function (controls) {
             var viewers;
             (function (viewers) {
-                class PaintItem extends controls.Rect {
-                    constructor(index, data) {
-                        super();
-                        this.index = index;
-                        this.data = data;
-                    }
-                }
-                viewers.PaintItem = PaintItem;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class RenderCellArgs {
-                    constructor(canvasContext, x, y, w, h, obj, view) {
-                        this.canvasContext = canvasContext;
-                        this.x = x;
-                        this.y = y;
-                        this.w = w;
-                        this.h = h;
-                        this.obj = obj;
-                        this.view = view;
-                    }
-                }
-                viewers.RenderCellArgs = RenderCellArgs;
-                ;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./Viewer.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
                 const TREE_ICON_SIZE = 16;
                 const LABEL_MARGIN = TREE_ICON_SIZE + 0;
                 class TreeViewer extends viewers.Viewer {
-                    constructor() {
-                        super();
+                    constructor(...classList) {
+                        super("TreeViewer", ...classList);
                         this._treeIconList = [];
                         this.getCanvas().addEventListener("click", e => this.onClick(e));
                     }
@@ -2623,6 +2617,71 @@ var phasereditor2d;
                     }
                 }
                 viewers.TreeViewer = TreeViewer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./TreeViewer.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class GridViewer extends viewers.TreeViewer {
+                    constructor(...classList) {
+                        super("GridViewer", ...classList);
+                    }
+                }
+                viewers.GridViewer = GridViewer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Viewer.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class PaintItem extends controls.Rect {
+                    constructor(index, data) {
+                        super();
+                        this.index = index;
+                        this.data = data;
+                    }
+                }
+                viewers.PaintItem = PaintItem;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class RenderCellArgs {
+                    constructor(canvasContext, x, y, w, h, obj, view) {
+                        this.canvasContext = canvasContext;
+                        this.x = x;
+                        this.y = y;
+                        this.w = w;
+                        this.h = h;
+                        this.obj = obj;
+                        this.view = view;
+                    }
+                }
+                viewers.RenderCellArgs = RenderCellArgs;
+                ;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));

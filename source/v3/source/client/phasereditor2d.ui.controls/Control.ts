@@ -80,10 +80,6 @@ namespace phasereditor2d.ui.controls {
         }
 
         setBounds(bounds: Bounds): void {
-            if (bounds.x !== undefined) {
-                this._bounds.x = bounds.x;
-            }
-
             this._bounds.x = bounds.x === undefined ? this._bounds.x : bounds.x;
             this._bounds.y = bounds.y === undefined ? this._bounds.y : bounds.y;
             this._bounds.width = bounds.width === undefined ? this._bounds.width : bounds.width;
