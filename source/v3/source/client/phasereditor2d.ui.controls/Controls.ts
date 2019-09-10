@@ -188,24 +188,5 @@ namespace phasereditor2d.ui.controls {
 
         public static theme: Theme = Controls.LIGHT_THEME;
 
-        private static getSmoothingPrefix(context: CanvasRenderingContext2D) {
-            const vendors = ['i', 'webkitI', 'msI', 'mozI', 'oI'];
-            for (let i = 0; i < vendors.length; i++) {
-                const s = vendors[i] + 'mageSmoothingEnabled';
-                if (s in context) {
-                    return s;
-                }
-            }
-            return null;
-        };
-
-
-        static disableCanvasSmoothing(context: CanvasRenderingContext2D) {
-            const prefix = this.getSmoothingPrefix(context);
-            if (prefix) {
-                context[prefix] = false;
-            }
-            return context;
-        };
     }
 }
