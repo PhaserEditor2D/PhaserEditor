@@ -1293,6 +1293,7 @@ var phasereditor2d;
                         this._labelProvider = null;
                         this._lastSelectedItemIndex = -1;
                         this._contentHeight = 0;
+                        this._handlePosition = true;
                         this.getElement().tabIndex = 1;
                         this._filterText = "";
                         this._cellSize = 48;
@@ -1303,6 +1304,12 @@ var phasereditor2d;
                         this._selection = [];
                         window.cc = this;
                         this.initListeners();
+                    }
+                    isHandlePosition() {
+                        return this._handlePosition;
+                    }
+                    setHandlePosition(_handlePosition) {
+                        this._handlePosition = _handlePosition;
                     }
                     initListeners() {
                         const canvas = this.getCanvas();
@@ -1510,12 +1517,20 @@ var phasereditor2d;
                     }
                     layout() {
                         const b = this.getBounds();
-                        ui.controls.setElementBounds(this.getElement(), {
-                            x: b.x,
-                            y: b.y,
-                            width: b.width | 0,
-                            height: b.height | 0
-                        });
+                        if (this._handlePosition) {
+                            ui.controls.setElementBounds(this.getElement(), {
+                                x: b.x,
+                                y: b.y,
+                                width: b.width | 0,
+                                height: b.height | 0
+                            });
+                        }
+                        else {
+                            ui.controls.setElementBounds(this.getElement(), {
+                                width: b.width | 0,
+                                height: b.height | 0
+                            });
+                        }
                         const canvas = this.getCanvas();
                         canvas.width = b.width | 0;
                         canvas.height = b.height | 0;
@@ -1843,7 +1858,7 @@ var phasereditor2d;
                         parent.classList.add("ImagePreviewFormArea");
                         const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
-                            imgControl.resizeTo(parent);
+                            imgControl.resizeTo();
                         });
                         parent.appendChild(imgControl.getElement());
                         setTimeout(() => imgControl.resizeTo(), 1);
@@ -1851,7 +1866,6 @@ var phasereditor2d;
                             const file = this.getSelection()[0];
                             const img = ide.Workbench.getWorkbench().getFileImage(file);
                             imgControl.setImage(img);
-                            //imgControl.resizeTo(parent);
                             setTimeout(() => imgControl.resizeTo(), 1);
                         });
                     }
@@ -1886,11 +1900,11 @@ var phasereditor2d;
                     createForm(parent) {
                         parent.classList.add("ManyImagePreviewFormArea");
                         const viewer = new ui.controls.viewers.GridViewer();
+                        viewer.setHandlePosition(false);
                         viewer.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
                         viewer.setLabelProvider(new files.FileLabelProvider());
                         viewer.setCellRendererProvider(new files.FileCellRendererProvider());
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
-                            console.log("resize");
                             this.resizeTo(viewer, parent);
                         });
                         parent.appendChild(viewer.getElement());
@@ -1901,8 +1915,10 @@ var phasereditor2d;
                         });
                     }
                     resizeTo(viewer, parent) {
-                        viewer.style.width = parent.clientWidth + "px";
-                        viewer.style.height = parent.clientHeight + "px";
+                        viewer.setBounds({
+                            width: parent.clientWidth,
+                            height: parent.clientHeight
+                        });
                         viewer.repaint();
                     }
                     canEdit(obj) {
@@ -2633,6 +2649,9 @@ var phasereditor2d;
                 class GridViewer extends viewers.TreeViewer {
                     constructor(...classList) {
                         super("GridViewer", ...classList);
+                    }
+                    async repaint() {
+                        super.repaint();
                     }
                 }
                 viewers.GridViewer = GridViewer;

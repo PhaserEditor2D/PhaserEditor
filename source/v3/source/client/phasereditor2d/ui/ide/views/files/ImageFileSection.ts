@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.ide.files {
             const imgControl = new controls.ImageControl(IMG_SECTION_PADDING);
 
             this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
-                imgControl.resizeTo(parent);
+                imgControl.resizeTo();
             })
 
             parent.appendChild(imgControl.getElement());
@@ -23,7 +23,6 @@ namespace phasereditor2d.ui.ide.files {
                 const file = this.getSelection()[0];
                 const img = Workbench.getWorkbench().getFileImage(file);
                 imgControl.setImage(img);
-                //imgControl.resizeTo(parent);
                 setTimeout(() => imgControl.resizeTo(), 1);
             });
         }

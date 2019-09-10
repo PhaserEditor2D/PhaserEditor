@@ -6,20 +6,21 @@ namespace phasereditor2d.ui.ide.files {
         }
 
         protected createForm(parent: HTMLDivElement) {
-
             parent.classList.add("ManyImagePreviewFormArea");
 
             const viewer = new ui.controls.viewers.GridViewer();
+            viewer.setHandlePosition(false);
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             viewer.setLabelProvider(new files.FileLabelProvider());
             viewer.setCellRendererProvider(new files.FileCellRendererProvider());
 
+
             this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
-                console.log("resize");
                 this.resizeTo(viewer, parent);
             })
 
             parent.appendChild(viewer.getElement());
+
             setTimeout(() => this.resizeTo(viewer, parent), 1);
 
             this.addUpdater(() => {
@@ -30,8 +31,10 @@ namespace phasereditor2d.ui.ide.files {
         }
 
         private resizeTo(viewer: controls.viewers.GridViewer, parent: HTMLElement) {
-            viewer.style.width = parent.clientWidth + "px";
-            viewer.style.height = parent.clientHeight + "px";
+            viewer.setBounds({
+                width: parent.clientWidth,
+                height: parent.clientHeight
+            });
             viewer.repaint();
         }
 

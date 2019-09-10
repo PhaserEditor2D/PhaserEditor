@@ -8,5 +8,9 @@ namespace phasereditor2d.ui.controls.viewers {
             super("GridViewer", ...classList);
         }    
 
+        async repaint() {
+            super.repaint();
+        }
+
     }
 }

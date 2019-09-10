@@ -50,6 +50,6 @@ label {
 }
 
 .ManyImagePreviewFormArea .Viewer {
-    position: relative !important;
+    position: absolute !important;
 }
 

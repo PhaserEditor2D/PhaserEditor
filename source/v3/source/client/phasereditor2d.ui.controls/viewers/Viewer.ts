@@ -22,8 +22,9 @@ namespace phasereditor2d.ui.controls.viewers {
         protected _contentHeight: number = 0;
         private _filterText: string;
         protected _filterIncludeSet: Set<any>;
+        private _handlePosition = true;
 
-        constructor(...classList : string[]) {
+        constructor(...classList: string[]) {
             super("canvas", "Viewer");
 
             this.getElement().tabIndex = 1;
@@ -41,6 +42,14 @@ namespace phasereditor2d.ui.controls.viewers {
             (<any>window).cc = this;
 
             this.initListeners();
+        }
+
+        isHandlePosition() {
+            return this._handlePosition;
+        }
+
+        setHandlePosition(_handlePosition: boolean): void {
+            this._handlePosition = _handlePosition;
         }
 
         private initListeners() {
@@ -302,12 +311,19 @@ namespace phasereditor2d.ui.controls.viewers {
         layout(): void {
             const b = this.getBounds();
 
-            ui.controls.setElementBounds(this.getElement(), {
-                x: b.x,
-                y: b.y,
-                width: b.width | 0,
-                height: b.height | 0
-            });
+            if (this._handlePosition) {
+                ui.controls.setElementBounds(this.getElement(), {
+                    x: b.x,
+                    y: b.y,
+                    width: b.width | 0,
+                    height: b.height | 0
+                });
+            } else {
+                ui.controls.setElementBounds(this.getElement(), {
+                    width: b.width | 0,
+                    height: b.height | 0
+                });
+            }
 
             const canvas = this.getCanvas();
 
