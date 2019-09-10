@@ -1,18 +1,13 @@
+/// <reference path="CanvasControl.ts" />
 
 namespace phasereditor2d.ui.controls {
 
-    export class ImageControl extends Control {
+    export class ImageControl extends CanvasControl {
 
         private _image: IImage;
-        private _canvas: HTMLCanvasElement;
-        private _context: CanvasRenderingContext2D;
-        private _padding: number;
 
-        constructor(padding : number = 0) {
-            super("canvas", "ImageControl");
-            this._padding = padding;
-            this._canvas = <HTMLCanvasElement>this.getElement();
-            this._context = this._canvas.getContext("2d");
+        constructor(padding : number = 0, ...classList : string[]) {
+            super(padding, "ImageControl", ...classList);
         }
 
         setImage(image: IImage): void {
@@ -23,26 +18,15 @@ namespace phasereditor2d.ui.controls {
             return this._image;
         }
 
-        getCanvas() {
-            return this._canvas;
-        }
-
-        resizeTo(parent?: HTMLElement) {
-            parent = parent || this.getElement().parentElement;
-            this.style.width = parent.clientWidth - this._padding * 2 + "px";
-            this.style.height = parent.clientHeight - this._padding * 2 + "px";
-            this.repaint();
-        }
-
-        async repaint() {
+        protected async paint() {
             if (this._image) {
 
-                this.repaint2();
+                this.paint2();
 
                 const result = await this._image.preload();
 
                 if (result === PreloadResult.RESOURCES_LOADED) {
-                    this.repaint2();
+                    this.paint2();
                 }
 
             } else {
@@ -50,19 +34,7 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        private ensureCanvasSize() {
-            if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
-                this._canvas.width = this._canvas.clientWidth;
-                this._canvas.height = this._canvas.clientHeight;
-            }
-        }
-
-        private clear() {
-            this.ensureCanvasSize();
-            this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-        }
-
-        private repaint2() {
+        private paint2() {
             this.ensureCanvasSize();
             this.clear();
             this._image.paint(this._context, 0, 0, this._canvas.width, this._canvas.height, true);

@@ -1920,6 +1920,50 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
+            class CanvasControl extends controls.Control {
+                constructor(padding = 0, ...classList) {
+                    super("canvas", "CanvasControl", ...classList);
+                    this._padding = padding;
+                    this._canvas = this.getElement();
+                    this._context = this._canvas.getContext("2d");
+                }
+                getCanvas() {
+                    return this._canvas;
+                }
+                resizeTo(parent) {
+                    parent = parent || this.getElement().parentElement;
+                    this.style.width = parent.clientWidth - this._padding * 2 + "px";
+                    this.style.height = parent.clientHeight - this._padding * 2 + "px";
+                    this.repaint();
+                }
+                getPadding() {
+                    return this._padding;
+                }
+                ensureCanvasSize() {
+                    if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
+                        this._canvas.width = this._canvas.clientWidth;
+                        this._canvas.height = this._canvas.clientHeight;
+                    }
+                }
+                clear() {
+                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                }
+                repaint() {
+                    this.ensureCanvasSize();
+                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                    this.paint();
+                }
+            }
+            controls.CanvasControl = CanvasControl;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
             class FillLayout {
                 constructor(padding = 0) {
                     this._padding = 0;
@@ -1948,18 +1992,16 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="CanvasControl.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
     (function (ui) {
         var controls;
         (function (controls) {
-            class ImageControl extends controls.Control {
-                constructor(padding = 0) {
-                    super("canvas", "ImageControl");
-                    this._padding = padding;
-                    this._canvas = this.getElement();
-                    this._context = this._canvas.getContext("2d");
+            class ImageControl extends controls.CanvasControl {
+                constructor(padding = 0, ...classList) {
+                    super(padding, "ImageControl", ...classList);
                 }
                 setImage(image) {
                     this._image = image;
@@ -1967,44 +2009,43 @@ var phasereditor2d;
                 getImage() {
                     return this._image;
                 }
-                getCanvas() {
-                    return this._canvas;
-                }
-                resizeTo(parent) {
-                    parent = parent || this.getElement().parentElement;
-                    this.style.width = parent.clientWidth - this._padding * 2 + "px";
-                    this.style.height = parent.clientHeight - this._padding * 2 + "px";
-                    this.repaint();
-                }
-                async repaint() {
+                async paint() {
                     if (this._image) {
-                        this.repaint2();
+                        this.paint2();
                         const result = await this._image.preload();
                         if (result === controls.PreloadResult.RESOURCES_LOADED) {
-                            this.repaint2();
+                            this.paint2();
                         }
                     }
                     else {
                         this.clear();
                     }
                 }
-                ensureCanvasSize() {
-                    if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
-                        this._canvas.width = this._canvas.clientWidth;
-                        this._canvas.height = this._canvas.clientHeight;
-                    }
-                }
-                clear() {
-                    this.ensureCanvasSize();
-                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-                }
-                repaint2() {
+                paint2() {
                     this.ensureCanvasSize();
                     this.clear();
                     this._image.paint(this._context, 0, 0, this._canvas.width, this._canvas.height, true);
                 }
             }
             controls.ImageControl = ImageControl;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ImageGridControl extends controls.CanvasControl {
+                constructor(padding, ...classList) {
+                    super(padding, "ImageGridControl", ...classList);
+                }
+                paint() {
+                    throw new Error("Method not implemented.");
+                }
+            }
+            controls.ImageGridControl = ImageGridControl;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
