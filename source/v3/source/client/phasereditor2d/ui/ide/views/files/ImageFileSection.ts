@@ -7,7 +7,9 @@ namespace phasereditor2d.ui.ide.files {
 
         protected createForm(parent: HTMLDivElement) {
  
-            const imgControl = new controls.ImageControl();
+            parent.classList.add("ImagePreviewFormArea");
+
+            const imgControl = new controls.ImageControl(10);
 
             this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
                 imgControl.resizeTo(parent);

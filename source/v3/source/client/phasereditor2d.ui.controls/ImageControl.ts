@@ -6,9 +6,11 @@ namespace phasereditor2d.ui.controls {
         private _image: IImage;
         private _canvas: HTMLCanvasElement;
         private _context: CanvasRenderingContext2D;
+        private _padding: number;
 
-        constructor() {
+        constructor(padding : number = 0) {
             super("canvas", "ImageControl");
+            this._padding = padding;
             this._canvas = <HTMLCanvasElement>this.getElement();
             this._context = this._canvas.getContext("2d");
         }
@@ -27,8 +29,8 @@ namespace phasereditor2d.ui.controls {
 
         resizeTo(parent?: HTMLElement) {
             parent = parent || this.getElement().parentElement;
-            this.style.width = parent.clientWidth + "px";
-            this.style.height = parent.clientHeight + "px";
+            this.style.width = parent.clientWidth - this._padding * 2 + "px";
+            this.style.height = parent.clientHeight - this._padding * 2 + "px";
             this.repaint();
         }
 

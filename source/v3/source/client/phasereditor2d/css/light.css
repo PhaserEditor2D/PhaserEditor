@@ -39,7 +39,7 @@
     background: #d2d2d2;
 }
 
-.light .Panel.activePart  {
+.light .Panel.activePart {
     background: #e2e2e2;
 }
 
@@ -132,7 +132,7 @@
 .light input {
     box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3),
         inset -1px -1px 1px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(#b0b0b0, #c0c0c0);    
+    background: linear-gradient(#b0b0b0, #c0c0c0);
 }
 
 .light input:focus {
@@ -159,3 +159,12 @@
     text-shadow: 0px 2px 2px #cfcfcf;
 }
 
+/* sections */
+
+.ImagePreviewFormArea {
+    background: #4a4a4a;
+    box-shadow:
+        inset 4px 0px 5px rgba(0, 0, 0, 0.2),
+        inset 0px 4px 5px rgba(0, 0, 0, 0.2),
+        inset -4px 0px 5px rgba(0, 0, 0, 0.2)        
+}

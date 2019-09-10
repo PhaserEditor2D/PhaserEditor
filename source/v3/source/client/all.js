@@ -1852,7 +1852,8 @@ var phasereditor2d;
                         super(page, "files.ImagePreviewSection", "Image", true);
                     }
                     createForm(parent) {
-                        const imgControl = new ui.controls.ImageControl();
+                        parent.classList.add("ImagePreviewFormArea");
+                        const imgControl = new ui.controls.ImageControl(10);
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
                             imgControl.resizeTo(parent);
                         });
@@ -1954,8 +1955,9 @@ var phasereditor2d;
         var controls;
         (function (controls) {
             class ImageControl extends controls.Control {
-                constructor() {
+                constructor(padding = 0) {
                     super("canvas", "ImageControl");
+                    this._padding = padding;
                     this._canvas = this.getElement();
                     this._context = this._canvas.getContext("2d");
                 }
@@ -1970,8 +1972,8 @@ var phasereditor2d;
                 }
                 resizeTo(parent) {
                     parent = parent || this.getElement().parentElement;
-                    this.style.width = parent.clientWidth + "px";
-                    this.style.height = parent.clientHeight + "px";
+                    this.style.width = parent.clientWidth - this._padding * 2 + "px";
+                    this.style.height = parent.clientHeight - this._padding * 2 + "px";
                     this.repaint();
                 }
                 async repaint() {

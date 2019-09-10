@@ -43,3 +43,9 @@ label {
     grid-template-columns: 1fr; 
 }
 
+/* sections */
+
+.ImagePreviewFormArea {
+    padding: 10px;
+}
+
