@@ -1301,7 +1301,6 @@ var phasereditor2d;
                         this._input = null;
                         this._expandedObjects = new Set();
                         this._selectedObjects = new Set();
-                        this._selection = [];
                         window.cc = this;
                         this.initListeners();
                     }
@@ -1361,16 +1360,22 @@ var phasereditor2d;
                         }
                         return null;
                     }
+                    getSelection() {
+                        const sel = [];
+                        for (const obj of this._selectedObjects) {
+                            sel.push(obj);
+                        }
+                        return sel;
+                    }
                     fireSelectionChanged() {
                         this.dispatchEvent(new CustomEvent(controls.SELECTION_EVENT, {
-                            detail: this._selection
+                            detail: this.getSelection()
                         }));
                     }
                     onKeyDown(e) {
                         if (e.key === "Escape") {
                             if (this._selectedObjects.size > 0) {
                                 this._selectedObjects.clear();
-                                this._selection = [];
                                 this.repaint();
                                 this.fireSelectionChanged();
                             }
@@ -1399,8 +1404,12 @@ var phasereditor2d;
                         let selChanged = false;
                         const data = item.data;
                         if (e.ctrlKey || e.metaKey) {
-                            this._selectedObjects.add(data);
-                            this._selection.push(data);
+                            if (this._selectedObjects.has(data)) {
+                                this._selectedObjects.delete(data);
+                            }
+                            else {
+                                this._selectedObjects.add(data);
+                            }
                             selChanged = true;
                         }
                         else if (e.shiftKey) {
@@ -1410,7 +1419,6 @@ var phasereditor2d;
                                 for (let i = start; i <= end; i++) {
                                     const obj = this._paintItems[i].data;
                                     this._selectedObjects.add(obj);
-                                    this._selection.push(obj);
                                 }
                                 selChanged = true;
                             }
@@ -1418,7 +1426,6 @@ var phasereditor2d;
                         else {
                             this._selectedObjects.clear();
                             this._selectedObjects.add(data);
-                            this._selection = [data];
                             selChanged = true;
                         }
                         if (selChanged) {
