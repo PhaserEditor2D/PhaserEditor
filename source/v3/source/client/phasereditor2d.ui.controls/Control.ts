@@ -10,6 +10,7 @@ namespace phasereditor2d.ui.controls {
         private _container: Control;
         private _scrollY: number;
         private _layoutChildren: boolean;
+        private _handlePosition = true;
 
         constructor(tagName: string = "div", ...classList: string[]) {
             super();
@@ -20,6 +21,14 @@ namespace phasereditor2d.ui.controls {
             this._container = null;
             this._scrollY = 0;
             this._layoutChildren = true;
+        }
+
+        isHandlePosition() {
+            return this._handlePosition;
+        }
+
+        setHandlePosition(_handlePosition: boolean): void {
+            this._handlePosition = _handlePosition;
         }
 
         get style() {
@@ -105,7 +114,15 @@ namespace phasereditor2d.ui.controls {
 
         layout(): void {
 
-            setElementBounds(this._element, this._bounds);
+            if (this.isHandlePosition()) {
+                setElementBounds(this._element, this._bounds);
+            } else {
+                setElementBounds(this._element, {
+                    width: this._bounds.width,
+                    height: this._bounds.height
+                });
+            }
+
 
             if (this._layout) {
                 this._layout.layout(this);

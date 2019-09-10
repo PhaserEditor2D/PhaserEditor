@@ -9,37 +9,44 @@ namespace phasereditor2d.ui.ide.files {
             parent.classList.add("ManyImagePreviewFormArea");
 
             const viewer = new ui.controls.viewers.GridViewer();
-            viewer.setHandlePosition(false);
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             viewer.setLabelProvider(new files.FileLabelProvider());
             viewer.setCellRendererProvider(new files.FileCellRendererProvider());
+            viewer.getCanvas().classList.add("PreviewBackground");
 
+            const filteredViewer = new controls.viewers.FilteredViewer(viewer);
+            filteredViewer.setHandlePosition(false);
+            filteredViewer.style.position = "relative";
+            parent.appendChild(filteredViewer.getElement());
+
+            this.resizeTo(filteredViewer, parent);
 
             this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
-                this.resizeTo(viewer, parent);
+                this.resizeTo(filteredViewer, parent);
             })
-
-            parent.appendChild(viewer.getElement());
-
-            setTimeout(() => this.resizeTo(viewer, parent), 1);
 
             this.addUpdater(() => {
                 viewer.setInput(this.getSelection());
-                this.resizeTo(viewer, parent);
+                this.resizeTo(filteredViewer, parent);
             });
-
         }
 
-        private resizeTo(viewer: controls.viewers.GridViewer, parent: HTMLElement) {
-            viewer.setBounds({
-                width: parent.clientWidth,
-                height: parent.clientHeight
-            });
-            viewer.repaint();
+        private resizeTo(filteredViewer: controls.viewers.FilteredViewer<controls.viewers.Viewer>, parent: HTMLElement) {
+            setTimeout(() => {
+                filteredViewer.setBounds({
+                    width: parent.clientWidth,
+                    height: parent.clientHeight
+                });
+                filteredViewer.getViewer().repaint();
+            }, 10);
         }
 
         canEdit(obj: any): boolean {
-            return obj instanceof core.io.FilePath;
+            if (obj instanceof core.io.FilePath) {
+                const ct = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
+                return ct === CONTENT_TYPE_IMAGE;
+            }
+            return false;
         }
 
         canEditNumber(n: number): boolean {

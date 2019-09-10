@@ -24,8 +24,8 @@ namespace phasereditor2d.ui.controls.viewers {
         private _filterControl: FilterControl;
         private _scrollPane: ScrollPane;
 
-        constructor(viewer: T) {
-            super("div", "FilteredViewer");
+        constructor(viewer: T, ...classList: string[]) {
+            super("div", "FilteredViewer", ...classList);
             this._viewer = viewer;
 
             this._filterControl = new FilterControl();
@@ -33,10 +33,9 @@ namespace phasereditor2d.ui.controls.viewers {
             this.add(this._filterControl);
 
             this._scrollPane = new ScrollPane(this._viewer);
-
             this.add(this._scrollPane);
 
-
+            this.setLayoutChildren(false);
         }
 
         private onFilterInput(e: Event) {
@@ -48,19 +47,19 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         layout() {
-            const b = this.getBounds();
-            controls.setElementBounds(this.getElement(), b);
 
+            super.layout();
+
+            const b = this.getBounds();
 
             this._filterControl.setBoundsValues(0, 0, b.width, FILTERED_VIEWER_FILTER_HEIGHT);
 
-            const paneY = FILTERED_VIEWER_FILTER_HEIGHT;
 
             this._scrollPane.setBounds({
                 x: 0,
-                y: paneY,
-                width: b.width + 2,
-                height: b.height - paneY
+                y: FILTERED_VIEWER_FILTER_HEIGHT,
+                width: b.width,
+                height: b.height - FILTERED_VIEWER_FILTER_HEIGHT
             });
         }
     }

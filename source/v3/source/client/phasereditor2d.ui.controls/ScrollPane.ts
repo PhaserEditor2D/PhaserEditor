@@ -10,7 +10,7 @@ namespace phasereditor2d.ui.controls {
         private _clientContentHeight: number = 0;
 
         constructor(clientControl: Control) {
-            super();
+            super("ScrollPane");
 
             this._clientControl = clientControl;
             this.add(this._clientControl);
@@ -125,7 +125,6 @@ namespace phasereditor2d.ui.controls {
 
         layout(): void {
             const b = this.getBounds();
-            const clientBounds = this._clientControl.getBounds();
 
             controls.setElementBounds(this.getElement(), b);
 
@@ -153,7 +152,7 @@ namespace phasereditor2d.ui.controls {
                 controls.setElementBounds(this._scrollHandler, {
                     x: b.width - SCROLL_BAR_WIDTH,
                     y: y,
-                    width: SCROLL_BAR_WIDTH - 2,
+                    width: SCROLL_BAR_WIDTH - 1,
                     height: h
                 });
 

@@ -161,8 +161,9 @@
 
 /* sections */
 
-.ImagePreviewFormArea {
+.PreviewBackground {
     background: #4a4a4a;
+    background: #a0a0a0;
     box-shadow:
         inset 4px 0px 5px rgba(0, 0, 0, 0.2),
         inset 0px 4px 5px rgba(0, 0, 0, 0.2),
