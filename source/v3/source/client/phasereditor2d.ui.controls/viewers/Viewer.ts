@@ -280,7 +280,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         protected abstract preload(): Promise<PreloadResult>;
 
-        protected paintItemBackground(obj: any, x: number, y: number, w: number, h: number): void {
+        paintItemBackground(obj: any, x: number, y: number, w: number, h: number): void {
             let fillStyle = null;
 
             if (this.isSelected(obj)) {
@@ -337,6 +337,10 @@ namespace phasereditor2d.ui.controls.viewers {
 
         getCanvas(): HTMLCanvasElement {
             return <HTMLCanvasElement>this.getElement();
+        }
+
+        getContext() {
+            return this._context;
         }
 
         getCellSize() {

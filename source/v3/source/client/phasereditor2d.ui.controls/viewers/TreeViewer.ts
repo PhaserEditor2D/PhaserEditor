@@ -2,24 +2,28 @@
 
 namespace phasereditor2d.ui.controls.viewers {
 
-    const TREE_ICON_SIZE = 16;
-    const LABEL_MARGIN = TREE_ICON_SIZE + 0;
+    export const TREE_ICON_SIZE = 16;
+    export const LABEL_MARGIN = TREE_ICON_SIZE + 0;
 
 
-    declare type TreeIconInfo = {
+    export declare type TreeIconInfo = {
         rect: Rect,
         obj: any
     }
 
     export class TreeViewer extends Viewer {
 
+        private _treeLayout: TreeViewerLayout;
         private _treeIconList: TreeIconInfo[];
 
-        constructor(...classList : string[]) {
+        constructor(...classList: string[]) {
             super("TreeViewer", ...classList);
-            this._treeIconList = [];
 
             this.getCanvas().addEventListener("click", e => this.onClick(e));
+
+            this._treeLayout = new TreeViewerLayout(this);
+
+            this._treeIconList = [];
         }
 
         private onClick(e: MouseEvent) {
@@ -62,18 +66,11 @@ namespace phasereditor2d.ui.controls.viewers {
 
 
         protected paint(): void {
-            let x = 0;
-            let y = this.getScrollY();
+            const result = this._treeLayout.paint();
 
-            this._treeIconList = [];
-
-            // TODO: missing taking the scroll offset to compute the non-painting area
-
-            const contentProvider = this.getContentProvider();
-
-            const roots = contentProvider.getRoots(this.getInput());
-
-            this._contentHeight = this.paintItems(roots, x, y) - this.getScrollY();
+            this._contentHeight = result.contentHeight;
+            this._paintItems = result.paintItems;
+            this._treeIconList = result.treeIconList;
         }
 
         setFilterText(filter: string) {
@@ -122,87 +119,6 @@ namespace phasereditor2d.ui.controls.viewers {
             }
 
             return result;
-        }
-
-        protected paintItems(objects: any[], x: number, y: number): number {
-
-            const b = this.getBounds();
-
-            for (let obj of objects) {
-
-                const children = this.getContentProvider().getChildren(obj);
-                const expanded = this.isExpanded(obj);
-
-                if (this._filterIncludeSet.has(obj)) {
-
-                    const renderer = this.getCellRendererProvider().getCellRenderer(obj);
-
-                    const args = new RenderCellArgs(this._context, x + LABEL_MARGIN, y, b.width - x - LABEL_MARGIN, 0, obj, this);
-                    const cellHeight = renderer.cellHeight(args);
-                    args.h = cellHeight;
-
-                    super.paintItemBackground(obj, 0, y, b.width, cellHeight);
-
-                    if (y > -this.getCellSize() && y < b.height) {
-
-                        // render tree icon
-                        if (children.length > 0) {
-                            const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
-
-                            const icon = Controls.getIcon(expanded ? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
-                            icon.paint(this._context, x, iconY);
-
-                            this._treeIconList.push({
-                                rect: new Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
-                                obj: obj
-                            });
-                        }
-
-                        this.renderCell(args, renderer);
-
-                        const item = new PaintItem(this._paintItems.length, obj);
-                        item.set(args.x, args.y, args.w, args.h);
-                        this._paintItems.push(item);
-                    }
-
-                    y += cellHeight;
-
-                }
-
-                if (expanded) {
-                    y = this.paintItems(children, x + LABEL_MARGIN, y);
-                }
-            }
-
-            return y;
-        }
-
-        protected renderCell(args: RenderCellArgs, renderer: ICellRenderer): void {
-            const label = this.getLabelProvider().getLabel(args.obj);
-            let x = args.x;
-            let y = args.y;
-
-            const ctx = args.canvasContext;
-            ctx.fillStyle = Controls.theme.treeItemForeground;
-
-            let args2: RenderCellArgs;
-            if (args.h <= ROW_HEIGHT) {
-                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
-                x += 20;
-                y += 15;
-            } else {
-                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
-                y += args2.h + 15;
-            }
-
-            renderer.renderCell(args2);
-
-            ctx.save();
-            if (args.view.isSelected(args.obj)) {
-                ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
-            }
-            ctx.fillText(label, x, y);
-            ctx.restore();
         }
 
         getContentProvider(): ITreeContentProvider {
