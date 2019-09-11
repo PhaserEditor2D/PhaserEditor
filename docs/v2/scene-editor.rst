@@ -623,6 +623,14 @@ This section provides editors for the **Tile Sprite** specific properties and th
 Bitmap Text
 ~~~~~~~~~~~
 
+The `Phaser.GameObjects.BitmapText <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html>`_ is widely used in Phaser_ game development to display texts.
+
+You can create a `Bitmap Text`_ object in two ways:
+
+* Drag a `BitmapFontFile <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.FileTypes.BitmapFontFile.html>`_ key from the `Blocks view`_ and drop it in the scene.
+
+* Or click on the `Add Object button`_ and select a `BitmapFontFile`_ key.
+
 Text
 ~~~~
 
