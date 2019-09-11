@@ -1,10 +1,14 @@
 namespace phasereditor2d.ui.controls.viewers {
 
-    export class TreeViewerLayout {
+    export class TreeViewerRenderer {
         private _viewer: TreeViewer;
 
         constructor(viewer: TreeViewer) {
             this._viewer = viewer;
+        }
+
+        getViewer() {
+            return this._viewer;
         }
 
         paint(): {
@@ -23,7 +27,8 @@ namespace phasereditor2d.ui.controls.viewers {
             const treeIconList: TreeIconInfo[] = [];
             const paintItems: PaintItem[] = [];
 
-            const contentHeight = this.paintItems(roots, treeIconList, paintItems, x, y) - viewer.getScrollY();
+            const result = this.paintItems(roots, treeIconList, paintItems, x, y);
+            const contentHeight = result.y - viewer.getScrollY()
 
             return {
                 contentHeight: contentHeight,
@@ -33,7 +38,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         }
 
-        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], x: number, y: number): number {
+        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], x: number, y: number) {
 
             const viewer = this._viewer;
 
@@ -83,11 +88,12 @@ namespace phasereditor2d.ui.controls.viewers {
                 }
 
                 if (expanded) {
-                    y = this.paintItems(children, treeIconList, paintItems, x + LABEL_MARGIN, y);
+                    const result = this.paintItems(children, treeIconList, paintItems, x + LABEL_MARGIN, y);
+                    y = result.y;
                 }
             }
 
-            return y;
+            return {x : x, y : y};
         }
 
         protected renderCell(args: RenderCellArgs, renderer: ICellRenderer): void {

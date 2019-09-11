@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
     export class TreeViewer extends Viewer {
 
-        private _treeLayout: TreeViewerLayout;
+        private _treeRenderer: TreeViewerRenderer;
         private _treeIconList: TreeIconInfo[];
 
         constructor(...classList: string[]) {
@@ -21,9 +21,17 @@ namespace phasereditor2d.ui.controls.viewers {
 
             this.getCanvas().addEventListener("click", e => this.onClick(e));
 
-            this._treeLayout = new TreeViewerLayout(this);
+            this._treeRenderer = new TreeViewerRenderer(this);
 
             this._treeIconList = [];
+        }
+
+        getTreeRenderer() {
+            return this._treeRenderer;
+        }
+
+        setTreeRenderer(treeRenderer: TreeViewerRenderer): void {
+            this._treeRenderer = treeRenderer;
         }
 
         private onClick(e: MouseEvent) {
@@ -66,7 +74,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
 
         protected paint(): void {
-            const result = this._treeLayout.paint();
+            const result = this._treeRenderer.paint();
 
             this._contentHeight = result.contentHeight;
             this._paintItems = result.paintItems;

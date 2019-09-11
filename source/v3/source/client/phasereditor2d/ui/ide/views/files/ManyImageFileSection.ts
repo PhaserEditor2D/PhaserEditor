@@ -1,4 +1,20 @@
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/TreeViewer.ts" />
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerLayout.ts" />
+
 namespace phasereditor2d.ui.ide.files {
+
+    class GridImageFileViewer extends controls.viewers.TreeViewer {
+
+        constructor(...classList: string[]) {
+            super("PreviewBackground", ...classList);
+
+            this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+            this.setLabelProvider(new files.FileLabelProvider());
+            this.setCellRendererProvider(new files.FileCellRendererProvider());
+            this.setTreeRenderer(new controls.viewers.GridTreeRenderer(this));
+        }
+    }
+
     export class ManyImageFileSection extends controls.properties.PropertySection<core.io.FilePath> {
 
         constructor(page: controls.properties.PropertyPage) {
@@ -8,11 +24,7 @@ namespace phasereditor2d.ui.ide.files {
         protected createForm(parent: HTMLDivElement) {
             parent.classList.add("ManyImagePreviewFormArea");
 
-            const viewer = new ui.controls.viewers.GridViewer();
-            viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
-            viewer.setLabelProvider(new files.FileLabelProvider());
-            viewer.setCellRendererProvider(new files.FileCellRendererProvider());
-            viewer.getCanvas().classList.add("PreviewBackground");
+            const viewer = new GridImageFileViewer();
 
             const filteredViewer = new controls.viewers.FilteredViewer(viewer);
             filteredViewer.setHandlePosition(false);

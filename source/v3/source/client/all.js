@@ -1903,6 +1903,287 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Viewer.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                viewers.TREE_ICON_SIZE = 16;
+                viewers.LABEL_MARGIN = viewers.TREE_ICON_SIZE + 0;
+                class TreeViewer extends viewers.Viewer {
+                    constructor(...classList) {
+                        super("TreeViewer", ...classList);
+                        this.getCanvas().addEventListener("click", e => this.onClick(e));
+                        this._treeRenderer = new viewers.TreeViewerRenderer(this);
+                        this._treeIconList = [];
+                    }
+                    getTreeRenderer() {
+                        return this._treeRenderer;
+                    }
+                    setTreeRenderer(treeRenderer) {
+                        this._treeRenderer = treeRenderer;
+                    }
+                    onClick(e) {
+                        for (let icon of this._treeIconList) {
+                            if (icon.rect.contains(e.offsetX, e.offsetY)) {
+                                this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
+                                this.repaint();
+                                return;
+                            }
+                        }
+                    }
+                    visitObjects(visitor) {
+                        const list = this.getContentProvider().getRoots(this.getInput());
+                        this.visitObjects2(list, visitor);
+                    }
+                    visitObjects2(objects, visitor) {
+                        for (var obj of objects) {
+                            visitor(obj);
+                            if (this.isExpanded(obj) || this.getFilterText() !== "") {
+                                const list = this.getContentProvider().getChildren(obj);
+                                this.visitObjects2(list, visitor);
+                            }
+                        }
+                    }
+                    async preload() {
+                        const list = [];
+                        this.visitObjects(obj => {
+                            const provider = this.getCellRendererProvider();
+                            list.push(provider.preload(obj).then(r => {
+                                const renderer = provider.getCellRenderer(obj);
+                                return renderer.preload(obj);
+                            }));
+                        });
+                        return controls.Controls.resolveAll(list);
+                    }
+                    paint() {
+                        const result = this._treeRenderer.paint();
+                        this._contentHeight = result.contentHeight;
+                        this._paintItems = result.paintItems;
+                        this._treeIconList = result.treeIconList;
+                    }
+                    setFilterText(filter) {
+                        super.setFilterText(filter);
+                        if (filter !== "") {
+                            this.expandFilteredParents(this.getContentProvider().getRoots(this.getInput()));
+                            this.repaint();
+                        }
+                    }
+                    expandFilteredParents(objects) {
+                        const contentProvider = this.getContentProvider();
+                        for (const obj of objects) {
+                            if (this.isFilterIncluded(obj)) {
+                                const children = contentProvider.getChildren(obj);
+                                if (children.length > 0) {
+                                    this.setExpanded(obj, true);
+                                    this.expandFilteredParents(children);
+                                }
+                            }
+                        }
+                    }
+                    buildFilterIncludeMap() {
+                        const roots = this.getContentProvider().getRoots(this.getInput());
+                        this.buildFilterIncludeMap2(roots);
+                    }
+                    buildFilterIncludeMap2(objects) {
+                        let result = false;
+                        for (const obj of objects) {
+                            let resultThis = this.matches(obj);
+                            const children = this.getContentProvider().getChildren(obj);
+                            const resultChildren = this.buildFilterIncludeMap2(children);
+                            resultThis = resultThis || resultChildren;
+                            if (resultThis) {
+                                this._filterIncludeSet.add(obj);
+                                result = true;
+                            }
+                        }
+                        return result;
+                    }
+                    getContentProvider() {
+                        return super.getContentProvider();
+                    }
+                    setContentProvider(contentProvider) {
+                        super.setContentProvider(contentProvider);
+                    }
+                }
+                viewers.TreeViewer = TreeViewer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class TreeViewerRenderer {
+                    constructor(viewer) {
+                        this._viewer = viewer;
+                    }
+                    getViewer() {
+                        return this._viewer;
+                    }
+                    paint() {
+                        const viewer = this._viewer;
+                        let x = 0;
+                        let y = viewer.getScrollY();
+                        const contentProvider = viewer.getContentProvider();
+                        const roots = contentProvider.getRoots(viewer.getInput());
+                        const treeIconList = [];
+                        const paintItems = [];
+                        const result = this.paintItems(roots, treeIconList, paintItems, x, y);
+                        const contentHeight = result.y - viewer.getScrollY();
+                        return {
+                            contentHeight: contentHeight,
+                            treeIconList: treeIconList,
+                            paintItems: paintItems
+                        };
+                    }
+                    paintItems(objects, treeIconList, paintItems, x, y) {
+                        const viewer = this._viewer;
+                        const context = viewer.getContext();
+                        const b = viewer.getBounds();
+                        for (let obj of objects) {
+                            const children = viewer.getContentProvider().getChildren(obj);
+                            const expanded = viewer.isExpanded(obj);
+                            if (viewer.isFilterIncluded(obj)) {
+                                const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
+                                const args = new viewers.RenderCellArgs(context, x + viewers.LABEL_MARGIN, y, b.width - x - viewers.LABEL_MARGIN, 0, obj, viewer);
+                                const cellHeight = renderer.cellHeight(args);
+                                args.h = cellHeight;
+                                viewer.paintItemBackground(obj, 0, y, b.width, cellHeight);
+                                if (y > -viewer.getCellSize() && y < b.height) {
+                                    // render tree icon
+                                    if (children.length > 0) {
+                                        const iconY = y + (cellHeight - viewers.TREE_ICON_SIZE) / 2;
+                                        const icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
+                                        icon.paint(context, x, iconY);
+                                        treeIconList.push({
+                                            rect: new controls.Rect(x, iconY, viewers.TREE_ICON_SIZE, viewers.TREE_ICON_SIZE),
+                                            obj: obj
+                                        });
+                                    }
+                                    this.renderCell(args, renderer);
+                                }
+                                const item = new viewers.PaintItem(paintItems.length, obj);
+                                item.set(args.x, args.y, args.w, args.h);
+                                paintItems.push(item);
+                                y += cellHeight;
+                            }
+                            if (expanded) {
+                                const result = this.paintItems(children, treeIconList, paintItems, x + viewers.LABEL_MARGIN, y);
+                                y = result.y;
+                            }
+                        }
+                        return { x: x, y: y };
+                    }
+                    renderCell(args, renderer) {
+                        const label = args.view.getLabelProvider().getLabel(args.obj);
+                        let x = args.x;
+                        let y = args.y;
+                        const ctx = args.canvasContext;
+                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                        let args2;
+                        if (args.h <= controls.ROW_HEIGHT) {
+                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
+                            x += 20;
+                            y += 15;
+                        }
+                        else {
+                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
+                            y += args2.h + 15;
+                        }
+                        renderer.renderCell(args2);
+                        ctx.save();
+                        if (args.view.isSelected(args.obj)) {
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                        }
+                        ctx.fillText(label, x, y);
+                        ctx.restore();
+                    }
+                }
+                viewers.TreeViewerRenderer = TreeViewerRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./TreeViewerLayout.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                const GRID_PADDING = 5;
+                class GridTreeRenderer extends viewers.TreeViewerRenderer {
+                    constructor(viewer) {
+                        super(viewer);
+                    }
+                    paintItems(objects, treeIconList, paintItems, x, y) {
+                        const viewer = this.getViewer();
+                        const context = viewer.getContext();
+                        const b = viewer.getBounds();
+                        for (let obj of objects) {
+                            const children = viewer.getContentProvider().getChildren(obj);
+                            const expanded = viewer.isExpanded(obj);
+                            if (viewer.isFilterIncluded(obj)) {
+                                const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
+                                const args = new viewers.RenderCellArgs(context, x, y, 0, 0, obj, viewer);
+                                const cellHeight = renderer.cellHeight(args);
+                                args.h = cellHeight;
+                                args.w = cellHeight;
+                                viewer.paintItemBackground(obj, x, y, args.w, args.h);
+                                if (y > -viewer.getCellSize() && y < b.height) {
+                                    x += GRID_PADDING;
+                                    this.renderCell(args, renderer);
+                                    // render tree icon
+                                    if (children.length > 0) {
+                                        const iconY = y + (cellHeight - viewers.TREE_ICON_SIZE) / 2;
+                                        const icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
+                                        icon.paint(context, x + 5, iconY);
+                                        treeIconList.push({
+                                            rect: new controls.Rect(x, iconY, viewers.TREE_ICON_SIZE, viewers.TREE_ICON_SIZE),
+                                            obj: obj
+                                        });
+                                    }
+                                }
+                                const item = new viewers.PaintItem(paintItems.length, obj);
+                                item.set(args.x, args.y, args.w, args.h);
+                                paintItems.push(item);
+                                x += cellHeight;
+                                if (x + GRID_PADDING + cellHeight > b.width) {
+                                    y += cellHeight + GRID_PADDING;
+                                    x = 0;
+                                }
+                            }
+                            if (expanded) {
+                                const result = this.paintItems(children, treeIconList, paintItems, x, y);
+                                y = result.y;
+                                x = result.x;
+                            }
+                        }
+                        return {
+                            x: x,
+                            y: y
+                        };
+                    }
+                }
+                viewers.GridTreeRenderer = GridTreeRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/TreeViewer.ts" />
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerLayout.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1911,17 +2192,22 @@ var phasereditor2d;
         (function (ide) {
             var files;
             (function (files) {
+                class GridImageFileViewer extends ui.controls.viewers.TreeViewer {
+                    constructor(...classList) {
+                        super("PreviewBackground", ...classList);
+                        this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
+                        this.setLabelProvider(new files.FileLabelProvider());
+                        this.setCellRendererProvider(new files.FileCellRendererProvider());
+                        this.setTreeRenderer(new ui.controls.viewers.GridTreeRenderer(this));
+                    }
+                }
                 class ManyImageFileSection extends ui.controls.properties.PropertySection {
                     constructor(page) {
                         super(page, "files.ManyImageFileSection", "Images", true);
                     }
                     createForm(parent) {
                         parent.classList.add("ManyImagePreviewFormArea");
-                        const viewer = new ui.controls.viewers.GridViewer();
-                        viewer.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
-                        viewer.setLabelProvider(new files.FileLabelProvider());
-                        viewer.setCellRendererProvider(new files.FileCellRendererProvider());
-                        viewer.getCanvas().classList.add("PreviewBackground");
+                        const viewer = new GridImageFileViewer();
                         const filteredViewer = new ui.controls.viewers.FilteredViewer(viewer);
                         filteredViewer.setHandlePosition(false);
                         filteredViewer.style.position = "relative";
@@ -2492,247 +2778,6 @@ var phasereditor2d;
                     }
                 }
                 viewers.FilteredViewer = FilteredViewer;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class TreeViewerLayout {
-                    constructor(viewer) {
-                        this._viewer = viewer;
-                    }
-                    paint() {
-                        const viewer = this._viewer;
-                        let x = 0;
-                        let y = viewer.getScrollY();
-                        const contentProvider = viewer.getContentProvider();
-                        const roots = contentProvider.getRoots(viewer.getInput());
-                        const treeIconList = [];
-                        const paintItems = [];
-                        const contentHeight = this.paintItems(roots, treeIconList, paintItems, x, y) - viewer.getScrollY();
-                        return {
-                            contentHeight: contentHeight,
-                            treeIconList: treeIconList,
-                            paintItems: paintItems
-                        };
-                    }
-                    paintItems(objects, treeIconList, paintItems, x, y) {
-                        const viewer = this._viewer;
-                        const context = viewer.getContext();
-                        const b = viewer.getBounds();
-                        for (let obj of objects) {
-                            const children = viewer.getContentProvider().getChildren(obj);
-                            const expanded = viewer.isExpanded(obj);
-                            if (viewer.isFilterIncluded(obj)) {
-                                const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
-                                const args = new viewers.RenderCellArgs(context, x + viewers.LABEL_MARGIN, y, b.width - x - viewers.LABEL_MARGIN, 0, obj, viewer);
-                                const cellHeight = renderer.cellHeight(args);
-                                args.h = cellHeight;
-                                viewer.paintItemBackground(obj, 0, y, b.width, cellHeight);
-                                if (y > -viewer.getCellSize() && y < b.height) {
-                                    // render tree icon
-                                    if (children.length > 0) {
-                                        const iconY = y + (cellHeight - viewers.TREE_ICON_SIZE) / 2;
-                                        const icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
-                                        icon.paint(context, x, iconY);
-                                        treeIconList.push({
-                                            rect: new controls.Rect(x, iconY, viewers.TREE_ICON_SIZE, viewers.TREE_ICON_SIZE),
-                                            obj: obj
-                                        });
-                                    }
-                                    this.renderCell(args, renderer);
-                                }
-                                const item = new viewers.PaintItem(paintItems.length, obj);
-                                item.set(args.x, args.y, args.w, args.h);
-                                paintItems.push(item);
-                                y += cellHeight;
-                            }
-                            if (expanded) {
-                                y = this.paintItems(children, treeIconList, paintItems, x + viewers.LABEL_MARGIN, y);
-                            }
-                        }
-                        return y;
-                    }
-                    renderCell(args, renderer) {
-                        const label = args.view.getLabelProvider().getLabel(args.obj);
-                        let x = args.x;
-                        let y = args.y;
-                        const ctx = args.canvasContext;
-                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                        let args2;
-                        if (args.h <= controls.ROW_HEIGHT) {
-                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
-                            x += 20;
-                            y += 15;
-                        }
-                        else {
-                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
-                            y += args2.h + 15;
-                        }
-                        renderer.renderCell(args2);
-                        ctx.save();
-                        if (args.view.isSelected(args.obj)) {
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
-                        }
-                        ctx.fillText(label, x, y);
-                        ctx.restore();
-                    }
-                }
-                viewers.TreeViewerLayout = TreeViewerLayout;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./TreeViewerLayout.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class GridTreeViewerLayout extends viewers.TreeViewerLayout {
-                    constructor(viewer) {
-                        super(viewer);
-                    }
-                }
-                viewers.GridTreeViewerLayout = GridTreeViewerLayout;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./Viewer.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                viewers.TREE_ICON_SIZE = 16;
-                viewers.LABEL_MARGIN = viewers.TREE_ICON_SIZE + 0;
-                class TreeViewer extends viewers.Viewer {
-                    constructor(...classList) {
-                        super("TreeViewer", ...classList);
-                        this.getCanvas().addEventListener("click", e => this.onClick(e));
-                        this._treeLayout = new viewers.TreeViewerLayout(this);
-                        this._treeIconList = [];
-                    }
-                    onClick(e) {
-                        for (let icon of this._treeIconList) {
-                            if (icon.rect.contains(e.offsetX, e.offsetY)) {
-                                this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
-                                this.repaint();
-                                return;
-                            }
-                        }
-                    }
-                    visitObjects(visitor) {
-                        const list = this.getContentProvider().getRoots(this.getInput());
-                        this.visitObjects2(list, visitor);
-                    }
-                    visitObjects2(objects, visitor) {
-                        for (var obj of objects) {
-                            visitor(obj);
-                            if (this.isExpanded(obj) || this.getFilterText() !== "") {
-                                const list = this.getContentProvider().getChildren(obj);
-                                this.visitObjects2(list, visitor);
-                            }
-                        }
-                    }
-                    async preload() {
-                        const list = [];
-                        this.visitObjects(obj => {
-                            const provider = this.getCellRendererProvider();
-                            list.push(provider.preload(obj).then(r => {
-                                const renderer = provider.getCellRenderer(obj);
-                                return renderer.preload(obj);
-                            }));
-                        });
-                        return controls.Controls.resolveAll(list);
-                    }
-                    paint() {
-                        const result = this._treeLayout.paint();
-                        this._contentHeight = result.contentHeight;
-                        this._paintItems = result.paintItems;
-                        this._treeIconList = result.treeIconList;
-                    }
-                    setFilterText(filter) {
-                        super.setFilterText(filter);
-                        if (filter !== "") {
-                            this.expandFilteredParents(this.getContentProvider().getRoots(this.getInput()));
-                            this.repaint();
-                        }
-                    }
-                    expandFilteredParents(objects) {
-                        const contentProvider = this.getContentProvider();
-                        for (const obj of objects) {
-                            if (this.isFilterIncluded(obj)) {
-                                const children = contentProvider.getChildren(obj);
-                                if (children.length > 0) {
-                                    this.setExpanded(obj, true);
-                                    this.expandFilteredParents(children);
-                                }
-                            }
-                        }
-                    }
-                    buildFilterIncludeMap() {
-                        const roots = this.getContentProvider().getRoots(this.getInput());
-                        this.buildFilterIncludeMap2(roots);
-                    }
-                    buildFilterIncludeMap2(objects) {
-                        let result = false;
-                        for (const obj of objects) {
-                            let resultThis = this.matches(obj);
-                            const children = this.getContentProvider().getChildren(obj);
-                            const resultChildren = this.buildFilterIncludeMap2(children);
-                            resultThis = resultThis || resultChildren;
-                            if (resultThis) {
-                                this._filterIncludeSet.add(obj);
-                                result = true;
-                            }
-                        }
-                        return result;
-                    }
-                    getContentProvider() {
-                        return super.getContentProvider();
-                    }
-                    setContentProvider(contentProvider) {
-                        super.setContentProvider(contentProvider);
-                    }
-                }
-                viewers.TreeViewer = TreeViewer;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./TreeViewer.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class GridViewer extends viewers.TreeViewer {
-                    constructor(...classList) {
-                        super("GridViewer", ...classList);
-                    }
-                    async repaint() {
-                        super.repaint();
-                    }
-                }
-                viewers.GridViewer = GridViewer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
