@@ -59,7 +59,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         setFilterText(filterText: string) {
-            this._filterText = filterText;
+            this._filterText = filterText.toLowerCase();
             this.repaint();
         }
 
@@ -91,8 +91,7 @@ namespace phasereditor2d.ui.controls.viewers {
             }
 
             const label = labelProvider.getLabel(obj);
-
-            if (label.indexOf(filter) !== -1) {
+            if (label.toLocaleLowerCase().indexOf(filter) !== -1) {
                 return true;
             }
 

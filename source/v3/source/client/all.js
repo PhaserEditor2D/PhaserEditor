@@ -1352,7 +1352,7 @@ var phasereditor2d;
                         this._labelProvider = labelProvider;
                     }
                     setFilterText(filterText) {
-                        this._filterText = filterText;
+                        this._filterText = filterText.toLowerCase();
                         this.repaint();
                     }
                     getFilterText() {
@@ -1375,7 +1375,7 @@ var phasereditor2d;
                             return true;
                         }
                         const label = labelProvider.getLabel(obj);
-                        if (label.indexOf(filter) !== -1) {
+                        if (label.toLocaleLowerCase().indexOf(filter) !== -1) {
                             return true;
                         }
                         return false;
@@ -2878,7 +2878,8 @@ var phasereditor2d;
                     }
                     onFilterInput(e) {
                         try {
-                            this._viewer.setFilterText(this._filterControl.getFilterElement().value);
+                            const value = this._filterControl.getFilterElement().value;
+                            this._viewer.setFilterText(value);
                         }
                         catch (e) {
                             console.log(e);
