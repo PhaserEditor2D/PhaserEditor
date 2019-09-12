@@ -246,17 +246,22 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         async repaint() {
-            this.prepareFiltering();
+            try {
 
-            this.repaint2();
+                this.prepareFiltering();
 
-            const result = await this.preload();
-
-            if (result === PreloadResult.RESOURCES_LOADED) {
                 this.repaint2();
-            }
 
-            this.updateScrollPane();
+                const result = await this.preload();
+
+                if (result === PreloadResult.RESOURCES_LOADED) {
+                    this.repaint2();
+                }
+
+                this.updateScrollPane();
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         private updateScrollPane() {

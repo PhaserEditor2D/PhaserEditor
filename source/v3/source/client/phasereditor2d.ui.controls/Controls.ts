@@ -31,27 +31,52 @@ namespace phasereditor2d.ui.controls {
 
     class ImageImpl implements IImage {
         private _ready: boolean;
+        private _requesting: boolean;
+        private _error: boolean;
         private _url: string;
         private _img: HTMLImageElement;
 
-        constructor(img: HTMLImageElement, url : string) {
+        constructor(img: HTMLImageElement, url: string) {
             this._img = img;
             this._url = url;
             this._ready = false;
+            this._error = false;
+            this._requesting = false;
         }
 
         preload(): Promise<PreloadResult> {
-
-            if (this._ready) {
+            if (this._ready || this._error || this._requesting) {
                 return Controls.resolveNothingLoaded();
             }
 
-            const img = this._img;
-            this._img.src = this._url;
+            this._requesting = true;
+
+            return new Promise((resolve, reject) => {
+                this._img.src = this._url;
+
+                this._img.addEventListener("load", e => {
+                    this._ready = true;
+                    resolve(PreloadResult.RESOURCES_LOADED);
+                });
+
+                this._img.addEventListener("error", e => {
+                    console.error("ERROR: Loading image " + this._url);
+                    this._error = true;
+                    resolve(PreloadResult.NOTHING_LOADED);
+                });
+            });
+
+            /*
             return this._img.decode().then(_ => {
                 this._ready = true;
                 return Controls.resolveResourceLoaded();
+            }).catch(e => {
+                this._ready = true;
+                console.error("ERROR: Cannot decode " + this._url);
+                console.error(e);
+                return Controls.resolveNothingLoaded();
             });
+            */
         }
 
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {

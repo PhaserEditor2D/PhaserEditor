@@ -39,7 +39,11 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private onFilterInput(e: Event) {
-            this._viewer.setFilterText(this._filterControl.getFilterElement().value);
+            try {
+                this._viewer.setFilterText(this._filterControl.getFilterElement().value);
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         getViewer() {

@@ -449,17 +449,37 @@ var phasereditor2d;
                     this._img = img;
                     this._url = url;
                     this._ready = false;
+                    this._error = false;
+                    this._requesting = false;
                 }
                 preload() {
-                    if (this._ready) {
+                    if (this._ready || this._error || this._requesting) {
                         return Controls.resolveNothingLoaded();
                     }
-                    const img = this._img;
-                    this._img.src = this._url;
+                    this._requesting = true;
+                    return new Promise((resolve, reject) => {
+                        this._img.src = this._url;
+                        this._img.addEventListener("load", e => {
+                            this._ready = true;
+                            resolve(PreloadResult.RESOURCES_LOADED);
+                        });
+                        this._img.addEventListener("error", e => {
+                            console.error("ERROR: Loading image " + this._url);
+                            this._error = true;
+                            resolve(PreloadResult.NOTHING_LOADED);
+                        });
+                    });
+                    /*
                     return this._img.decode().then(_ => {
                         this._ready = true;
                         return Controls.resolveResourceLoaded();
+                    }).catch(e => {
+                        this._ready = true;
+                        console.error("ERROR: Cannot decode " + this._url);
+                        console.error(e);
+                        return Controls.resolveNothingLoaded();
                     });
+                    */
                 }
                 paint(context, x, y, w, h, center) {
                     if (this._ready) {
@@ -1488,13 +1508,18 @@ var phasereditor2d;
                         }
                     }
                     async repaint() {
-                        this.prepareFiltering();
-                        this.repaint2();
-                        const result = await this.preload();
-                        if (result === controls.PreloadResult.RESOURCES_LOADED) {
+                        try {
+                            this.prepareFiltering();
                             this.repaint2();
+                            const result = await this.preload();
+                            if (result === controls.PreloadResult.RESOURCES_LOADED) {
+                                this.repaint2();
+                            }
+                            this.updateScrollPane();
                         }
-                        this.updateScrollPane();
+                        catch (e) {
+                            console.log(e);
+                        }
                     }
                     updateScrollPane() {
                         if (this.getContainer() instanceof controls.ScrollPane) {
@@ -1956,13 +1981,28 @@ var phasereditor2d;
                     }
                     async preload() {
                         const list = [];
-                        this.visitObjects(obj => {
-                            const provider = this.getCellRendererProvider();
-                            list.push(provider.preload(obj).then(r => {
-                                const renderer = provider.getCellRenderer(obj);
-                                return renderer.preload(obj);
-                            }));
-                        });
+                        try {
+                            this.visitObjects(obj => {
+                                try {
+                                    const provider = this.getCellRendererProvider();
+                                    list.push(provider.preload(obj).then(r => {
+                                        try {
+                                            const renderer = provider.getCellRenderer(obj);
+                                            return renderer.preload(obj);
+                                        }
+                                        catch (e) {
+                                            console.log(e);
+                                        }
+                                    }));
+                                }
+                                catch (e) {
+                                    console.log(e);
+                                }
+                            });
+                        }
+                        catch (e) {
+                            console.log(e);
+                        }
                         return controls.Controls.resolveAll(list);
                     }
                     paint() {
@@ -2827,7 +2867,12 @@ var phasereditor2d;
                         this.setLayoutChildren(false);
                     }
                     onFilterInput(e) {
-                        this._viewer.setFilterText(this._filterControl.getFilterElement().value);
+                        try {
+                            this._viewer.setFilterText(this._filterControl.getFilterElement().value);
+                        }
+                        catch (e) {
+                            console.log(e);
+                        }
                     }
                     getViewer() {
                         return this._viewer;
