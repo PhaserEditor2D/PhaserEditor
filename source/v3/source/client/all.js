@@ -2582,6 +2582,7 @@ var phasereditor2d;
                 }
                 onMouseDown(e) {
                     if (e.target === this._scrollHandler) {
+                        e.stopImmediatePropagation();
                         this._startDragY = e.y;
                         this._startScrollY = this._clientControl.getScrollY();
                     }
@@ -2596,7 +2597,7 @@ var phasereditor2d;
                 }
                 onMouseUp(e) {
                     if (this._startDragY !== -1) {
-                        e.stopPropagation();
+                        e.stopImmediatePropagation();
                         this._startDragY = -1;
                     }
                 }
@@ -2685,7 +2686,7 @@ var phasereditor2d;
                     const offset = this._horizontal ? pos.x : pos.y;
                     const inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
                     if (inside) {
-                        e.preventDefault();
+                        e.stopImmediatePropagation();
                         this._startDrag = this._horizontal ? e.x : e.y;
                         this._startPos = this._splitPosition;
                     }

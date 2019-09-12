@@ -96,6 +96,7 @@ namespace phasereditor2d.ui.controls {
 
         private onMouseDown(e: MouseEvent) {
             if (e.target === this._scrollHandler) {
+                e.stopImmediatePropagation();
                 this._startDragY = e.y;
                 this._startScrollY = this._clientControl.getScrollY();
             }
@@ -112,7 +113,7 @@ namespace phasereditor2d.ui.controls {
 
         private onMouseUp(e: MouseEvent) {
             if (this._startDragY !== -1) {
-                e.stopPropagation();
+                e.stopImmediatePropagation();
                 this._startDragY = -1;
             }
         }

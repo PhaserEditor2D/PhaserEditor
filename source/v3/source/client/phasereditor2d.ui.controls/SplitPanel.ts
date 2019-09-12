@@ -54,7 +54,7 @@ namespace phasereditor2d.ui.controls {
             const inside = Math.abs(offset - this._splitPosition) <= SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
 
             if (inside) {
-                e.preventDefault();
+                e.stopImmediatePropagation();
                 this._startDrag = this._horizontal ? e.x : e.y;
                 this._startPos = this._splitPosition;
             }
