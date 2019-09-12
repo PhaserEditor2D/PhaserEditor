@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.ide.files {
         getCellRenderer(file: io.FilePath): viewers.ICellRenderer {
 
             if (Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file) === ui.ide.CONTENT_TYPE_IMAGE) {
-                return new FileImageRenderer(false);
+                return new FileImageRenderer();
             }
 
             return new FileCellRenderer();

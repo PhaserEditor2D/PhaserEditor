@@ -76,7 +76,7 @@ namespace phasereditor2d.ui.controls.viewers {
                             });
                         }
 
-                        this.renderCell(args, renderer);
+                        this.renderTreeCell(args, renderer);
                     }
 
                     const item = new PaintItem(paintItems.length, obj);
@@ -96,8 +96,8 @@ namespace phasereditor2d.ui.controls.viewers {
             return {x : x, y : y};
         }
 
-        protected renderCell(args: RenderCellArgs, renderer: ICellRenderer): void {
-            const label = args.view.getLabelProvider().getLabel(args.obj);
+        private renderTreeCell(args: RenderCellArgs, renderer: ICellRenderer): void {
+            const label = args.viewer.getLabelProvider().getLabel(args.obj);
             let x = args.x;
             let y = args.y;
 
@@ -106,18 +106,18 @@ namespace phasereditor2d.ui.controls.viewers {
 
             let args2: RenderCellArgs;
             if (args.h <= ROW_HEIGHT) {
-                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
+                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.viewer);
                 x += 20;
                 y += 15;
             } else {
-                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
+                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.viewer);
                 y += args2.h + 15;
             }
 
             renderer.renderCell(args2);
 
             ctx.save();
-            if (args.view.isSelected(args.obj)) {
+            if (args.viewer.isSelected(args.obj)) {
                 ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
             }
             ctx.fillText(label, x, y);

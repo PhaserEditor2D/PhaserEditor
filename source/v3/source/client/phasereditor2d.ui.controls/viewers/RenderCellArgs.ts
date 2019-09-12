@@ -8,7 +8,8 @@ namespace phasereditor2d.ui.controls.viewers {
       public w: number,
       public h: number,
       public obj: any,
-      public view: Viewer) {
+      public viewer: Viewer,
+      public center = false) {
     }
   };
 

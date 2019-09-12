@@ -21,7 +21,7 @@ namespace phasereditor2d.ui.controls.viewers {
         protected _contentHeight: number = 0;
         private _filterText: string;
         protected _filterIncludeSet: Set<any>;
-        
+
 
         constructor(...classList: string[]) {
             super("canvas", "Viewer");
@@ -110,7 +110,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         getSelection() {
             const sel = [];
-            for(const obj of this._selectedObjects) {
+            for (const obj of this._selectedObjects) {
                 sel.push(obj);
             }
             return sel;
@@ -280,17 +280,28 @@ namespace phasereditor2d.ui.controls.viewers {
 
         protected abstract preload(): Promise<PreloadResult>;
 
-        paintItemBackground(obj: any, x: number, y: number, w: number, h: number): void {
+        paintItemBackground(obj: any, x: number, y: number, w: number, h: number, radius: number = 0): void {
             let fillStyle = null;
 
             if (this.isSelected(obj)) {
-                fillStyle = Controls.theme.treeItemSelectionBackground;;
+                fillStyle = Controls.theme.treeItemSelectionBackground;
             }
 
             if (fillStyle != null) {
                 this._context.save();
+
                 this._context.fillStyle = fillStyle;
-                this._context.fillRect(x, y, w, h);
+                this._context.strokeStyle = fillStyle;
+
+                if (radius > 0) {
+                    this._context.lineJoin = "round";
+                    this._context.lineWidth = radius;
+                    this._context.strokeRect(x + (radius / 2), y + (radius / 2), w - radius, h - radius);
+                    this._context.fillRect(x + (radius / 2), y + (radius / 2), w - radius, h - radius);
+                } else {
+                    this._context.fillRect(x, y, w, h);
+                }
+
                 this._context.restore();
             }
         }

@@ -24,6 +24,7 @@ namespace phasereditor2d.ui.ide.files {
             viewer.setLabelProvider(new FileLabelProvider());
             viewer.setContentProvider(new FileTreeContentProvider());
             viewer.setCellRendererProvider(new FileCellRendererProvider());
+            // viewer.setTreeRenderer(new viewers.GridTreeRenderer(viewer));
             viewer.setInput(root);
 
             const filteredViewer = new viewers.FilteredViewer(viewer);
@@ -34,7 +35,6 @@ namespace phasereditor2d.ui.ide.files {
             viewer.repaint();
 
             viewer.addEventListener(controls.SELECTION_EVENT, (e: CustomEvent) => {
-                console.log("selection changed in " + this.getId());
                 this.setSelection(e.detail);
             });
         }

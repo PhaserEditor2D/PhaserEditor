@@ -820,12 +820,12 @@ var phasereditor2d;
                 async start() {
                     await this.initFileStorage();
                     this.initContentTypes();
-                    this.initEvents();
                     this._designWindow = new ide.DesignWindow();
                     document.getElementById("body").appendChild(this._designWindow.getElement());
+                    this.initEvents();
                 }
                 initEvents() {
-                    window.addEventListener("click", e => {
+                    window.addEventListener("mouseup", e => {
                         const part = this.findPart(e.target);
                         this.setActivePart(part);
                     });
@@ -835,6 +835,9 @@ var phasereditor2d;
                 }
                 setActivePart(part) {
                     if (part === this._activePart) {
+                        return;
+                    }
+                    if (!part) {
                         return;
                     }
                     const old = this._activePart;
@@ -1271,15 +1274,12 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class ImageCellRenderer {
-                    constructor(center) {
-                        this._center = center;
-                    }
                     renderCell(args) {
                         const img = this.getImage(args.obj);
-                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, this._center);
+                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
                     }
                     cellHeight(args) {
-                        return args.view.getCellSize();
+                        return args.viewer.getCellSize();
                     }
                     preload(obj) {
                         return this.getImage(obj).preload();
@@ -1510,16 +1510,24 @@ var phasereditor2d;
                             this.paint();
                         }
                     }
-                    paintItemBackground(obj, x, y, w, h) {
+                    paintItemBackground(obj, x, y, w, h, radius = 0) {
                         let fillStyle = null;
                         if (this.isSelected(obj)) {
                             fillStyle = controls.Controls.theme.treeItemSelectionBackground;
-                            ;
                         }
                         if (fillStyle != null) {
                             this._context.save();
                             this._context.fillStyle = fillStyle;
-                            this._context.fillRect(x, y, w, h);
+                            this._context.strokeStyle = fillStyle;
+                            if (radius > 0) {
+                                this._context.lineJoin = "round";
+                                this._context.lineWidth = radius;
+                                this._context.strokeRect(x + (radius / 2), y + (radius / 2), w - radius, h - radius);
+                                this._context.fillRect(x + (radius / 2), y + (radius / 2), w - radius, h - radius);
+                            }
+                            else {
+                                this._context.fillRect(x, y, w, h);
+                            }
                             this._context.restore();
                         }
                     }
@@ -1644,7 +1652,7 @@ var phasereditor2d;
                 class FileCellRendererProvider {
                     getCellRenderer(file) {
                         if (ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file) === ui.ide.CONTENT_TYPE_IMAGE) {
-                            return new files.FileImageRenderer(false);
+                            return new files.FileImageRenderer();
                         }
                         return new files.FileCellRenderer();
                     }
@@ -1671,9 +1679,6 @@ var phasereditor2d;
             (function (files) {
                 var viewers = phasereditor2d.ui.controls.viewers;
                 class FileImageRenderer extends viewers.ImageCellRenderer {
-                    constructor(center) {
-                        super(center);
-                    }
                     getLabel(file) {
                         return file.getName();
                     }
@@ -1841,13 +1846,13 @@ var phasereditor2d;
                         viewer.setLabelProvider(new files.FileLabelProvider());
                         viewer.setContentProvider(new files.FileTreeContentProvider());
                         viewer.setCellRendererProvider(new files.FileCellRendererProvider());
+                        // viewer.setTreeRenderer(new viewers.GridTreeRenderer(viewer));
                         viewer.setInput(root);
                         const filteredViewer = new viewers.FilteredViewer(viewer);
                         this.getClientArea().add(filteredViewer);
                         this.getClientArea().setLayout(new ui.controls.FillLayout());
                         viewer.repaint();
                         viewer.addEventListener(ui.controls.SELECTION_EVENT, (e) => {
-                            console.log("selection changed in " + this.getId());
                             this.setSelection(e.detail);
                         });
                     }
@@ -2070,7 +2075,7 @@ var phasereditor2d;
                                             obj: obj
                                         });
                                     }
-                                    this.renderCell(args, renderer);
+                                    this.renderTreeCell(args, renderer);
                                 }
                                 const item = new viewers.PaintItem(paintItems.length, obj);
                                 item.set(args.x, args.y, args.w, args.h);
@@ -2084,25 +2089,25 @@ var phasereditor2d;
                         }
                         return { x: x, y: y };
                     }
-                    renderCell(args, renderer) {
-                        const label = args.view.getLabelProvider().getLabel(args.obj);
+                    renderTreeCell(args, renderer) {
+                        const label = args.viewer.getLabelProvider().getLabel(args.obj);
                         let x = args.x;
                         let y = args.y;
                         const ctx = args.canvasContext;
                         ctx.fillStyle = controls.Controls.theme.treeItemForeground;
                         let args2;
                         if (args.h <= controls.ROW_HEIGHT) {
-                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.view);
+                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.viewer);
                             x += 20;
                             y += 15;
                         }
                         else {
-                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.view);
+                            args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, args.w, args.h - 20, args.obj, args.viewer);
                             y += args2.h + 15;
                         }
                         renderer.renderCell(args2);
                         ctx.save();
-                        if (args.view.isSelected(args.obj)) {
+                        if (args.viewer.isSelected(args.obj)) {
                             ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
                         }
                         ctx.fillText(label, x, y);
@@ -2114,7 +2119,7 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./TreeViewerLayout.ts" />
+/// <reference path="./TreeViewerRenderer.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -2125,11 +2130,23 @@ var phasereditor2d;
             (function (viewers) {
                 const GRID_PADDING = 5;
                 class GridTreeRenderer extends viewers.TreeViewerRenderer {
-                    constructor(viewer) {
+                    constructor(viewer, center = false) {
                         super(viewer);
+                        viewer.setCellSize(128);
+                        this._center = center;
                     }
                     paintItems(objects, treeIconList, paintItems, x, y) {
                         const viewer = this.getViewer();
+                        if (viewer.getCellSize() <= 48) {
+                            return super.paintItems(objects, treeIconList, paintItems, x, y + GRID_PADDING);
+                        }
+                        const b = viewer.getBounds();
+                        const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + GRID_PADDING) / 2) : 0;
+                        return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + GRID_PADDING, offset);
+                    }
+                    paintItems2(objects, treeIconList, paintItems, x, y, offset) {
+                        const viewer = this.getViewer();
+                        const cellSize = Math.max(controls.ROW_HEIGHT, viewer.getCellSize());
                         const context = viewer.getContext();
                         const b = viewer.getBounds();
                         for (let obj of objects) {
@@ -2137,17 +2154,12 @@ var phasereditor2d;
                             const expanded = viewer.isExpanded(obj);
                             if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
-                                const args = new viewers.RenderCellArgs(context, x, y, 0, 0, obj, viewer);
-                                const cellHeight = renderer.cellHeight(args);
-                                args.h = cellHeight;
-                                args.w = cellHeight;
-                                viewer.paintItemBackground(obj, x, y, args.w, args.h);
+                                const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
                                 if (y > -viewer.getCellSize() && y < b.height) {
-                                    x += GRID_PADDING;
-                                    this.renderCell(args, renderer);
+                                    this.renderGridCell(args, renderer);
                                     // render tree icon
                                     if (children.length > 0) {
-                                        const iconY = y + (cellHeight - viewers.TREE_ICON_SIZE) / 2;
+                                        const iconY = y + (cellSize - viewers.TREE_ICON_SIZE) / 2;
                                         const icon = controls.Controls.getIcon(expanded ? controls.Controls.ICON_TREE_COLLAPSE : controls.Controls.ICON_TREE_EXPAND);
                                         icon.paint(context, x + 5, iconY);
                                         treeIconList.push({
@@ -2159,10 +2171,10 @@ var phasereditor2d;
                                 const item = new viewers.PaintItem(paintItems.length, obj);
                                 item.set(args.x, args.y, args.w, args.h);
                                 paintItems.push(item);
-                                x += cellHeight;
-                                if (x + GRID_PADDING + cellHeight > b.width) {
-                                    y += cellHeight + GRID_PADDING;
-                                    x = 0;
+                                x += cellSize + GRID_PADDING;
+                                if (x + cellSize > b.width) {
+                                    y += cellSize + GRID_PADDING;
+                                    x = 0 + offset;
                                 }
                             }
                             if (expanded) {
@@ -2176,6 +2188,56 @@ var phasereditor2d;
                             y: y
                         };
                     }
+                    renderGridCell(args, renderer) {
+                        const lineHeight = 20;
+                        let x = args.x;
+                        let y = args.y;
+                        const ctx = args.canvasContext;
+                        const label = args.viewer.getLabelProvider().getLabel(args.obj);
+                        let lines = [""];
+                        for (const c of label) {
+                            const test = lines[lines.length - 1] + c;
+                            const m = ctx.measureText(test);
+                            if (m.width > args.w) {
+                                if (lines.length === 2) {
+                                    lines[lines.length - 1] += "..";
+                                    break;
+                                }
+                                else {
+                                    lines.push("");
+                                    lines[lines.length - 1] = c;
+                                }
+                            }
+                            else {
+                                lines[lines.length - 1] += c;
+                            }
+                        }
+                        {
+                            const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - lines.length * lineHeight - 6, args.obj, args.viewer, true);
+                            const strH = lines.length * lineHeight;
+                            renderer.renderCell(args2);
+                            if (args.viewer.isSelected(args.obj)) {
+                                ctx.save();
+                                ctx.globalAlpha = 0.25;
+                                ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
+                                ctx.fillRect(args2.x, args2.y, args2.w, args2.h);
+                                ctx.restore();
+                            }
+                            args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - strH - 3, args.w, strH, 10);
+                            y += args2.h + lineHeight * lines.length;
+                        }
+                        ctx.save();
+                        if (args.viewer.isSelected(args.obj)) {
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                        }
+                        let y2 = y - lineHeight * (lines.length - 1) - 5;
+                        for (const line of lines) {
+                            const m = ctx.measureText(line);
+                            ctx.fillText(line, x + args.w / 2 - m.width / 2, y2);
+                            y2 += lineHeight;
+                        }
+                        ctx.restore();
+                    }
                 }
                 viewers.GridTreeRenderer = GridTreeRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
@@ -2183,7 +2245,7 @@ var phasereditor2d;
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../../../phasereditor2d.ui.controls/viewers/TreeViewer.ts" />
-/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerLayout.ts" />
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerRenderer.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -2198,7 +2260,8 @@ var phasereditor2d;
                         this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
                         this.setLabelProvider(new files.FileLabelProvider());
                         this.setCellRendererProvider(new files.FileCellRendererProvider());
-                        this.setTreeRenderer(new ui.controls.viewers.GridTreeRenderer(this));
+                        this.setTreeRenderer(new ui.controls.viewers.GridTreeRenderer(this, true));
+                        this.getCanvas().classList.add("PreviewBackground");
                     }
                 }
                 class ManyImageFileSection extends ui.controls.properties.PropertySection {
@@ -2578,6 +2641,9 @@ var phasereditor2d;
                     }
                 }
                 onMouseUp(e) {
+                    if (this._startDrag !== -1) {
+                        e.stopImmediatePropagation();
+                    }
                     this._startDrag = -1;
                 }
                 onMouseMove(e) {
@@ -2812,14 +2878,15 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class RenderCellArgs {
-                    constructor(canvasContext, x, y, w, h, obj, view) {
+                    constructor(canvasContext, x, y, w, h, obj, viewer, center = false) {
                         this.canvasContext = canvasContext;
                         this.x = x;
                         this.y = y;
                         this.w = w;
                         this.h = h;
                         this.obj = obj;
-                        this.view = view;
+                        this.viewer = viewer;
+                        this.center = center;
                     }
                 }
                 viewers.RenderCellArgs = RenderCellArgs;

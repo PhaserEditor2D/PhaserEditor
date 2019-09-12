@@ -10,10 +10,6 @@ namespace phasereditor2d.ui.ide.files {
 
     export class FileImageRenderer extends viewers.ImageCellRenderer {
 
-        constructor(center : boolean) {
-            super(center);
-        }
-
         getLabel(file: io.FilePath): string {
             return file.getName();
         }

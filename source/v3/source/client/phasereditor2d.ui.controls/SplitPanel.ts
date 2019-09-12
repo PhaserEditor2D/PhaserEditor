@@ -1,4 +1,5 @@
 namespace phasereditor2d.ui.controls {
+    
     export class SplitPanel extends Control {
         private _leftControl: Control;
         private _rightControl: Control;
@@ -60,6 +61,10 @@ namespace phasereditor2d.ui.controls {
         }
 
         private onMouseUp(e: MouseEvent) {
+            if (this._startDrag !== -1) {
+                e.stopImmediatePropagation();
+            }
+
             this._startDrag = -1;
         }
 

@@ -44,14 +44,14 @@ namespace phasereditor2d.ui.ide {
 
             this.initContentTypes();
 
-            this.initEvents();
-
             this._designWindow = new ide.DesignWindow();
             document.getElementById("body").appendChild(this._designWindow.getElement());
+
+            this.initEvents();
         }
 
         private initEvents() {
-            window.addEventListener("click", e => {
+            window.addEventListener("mouseup", e => {
                 const part = this.findPart(<any>e.target);
                 this.setActivePart(part);
             });
@@ -63,6 +63,10 @@ namespace phasereditor2d.ui.ide {
 
         private setActivePart(part: Part): void {
             if (part === this._activePart) {
+                return;
+            }
+
+            if (!part) {
                 return;
             }
             

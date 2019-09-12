@@ -1,5 +1,5 @@
 /// <reference path="../../../../../phasereditor2d.ui.controls/viewers/TreeViewer.ts" />
-/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerLayout.ts" />
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerRenderer.ts" />
 
 namespace phasereditor2d.ui.ide.files {
 
@@ -11,7 +11,9 @@ namespace phasereditor2d.ui.ide.files {
             this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             this.setLabelProvider(new files.FileLabelProvider());
             this.setCellRendererProvider(new files.FileCellRendererProvider());
-            this.setTreeRenderer(new controls.viewers.GridTreeRenderer(this));
+            this.setTreeRenderer(new controls.viewers.GridTreeRenderer(this, true));
+
+            this.getCanvas().classList.add("PreviewBackground");
         }
     }
 
