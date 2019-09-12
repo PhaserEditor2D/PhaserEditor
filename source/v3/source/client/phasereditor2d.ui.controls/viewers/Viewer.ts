@@ -153,41 +153,43 @@ namespace phasereditor2d.ui.controls.viewers {
 
             const item = this.getPaintItemAt(e);
 
-            if (item === null) {
-                return;
-            }
-
             let selChanged = false;
 
-            const data = item.data;
-
-            if (e.ctrlKey || e.metaKey) {
-                if (this._selectedObjects.has(data)) {
-                    this._selectedObjects.delete(data);
-                } else {
-                    this._selectedObjects.add(data);
-                }
+            if (item === null) {
+                this._selectedObjects.clear();
                 selChanged = true;
-            } else if (e.shiftKey) {
-                if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
-                    const start = Math.min(this._lastSelectedItemIndex, item.index);
-                    const end = Math.max(this._lastSelectedItemIndex, item.index);
-                    for (let i = start; i <= end; i++) {
-                        const obj = this._paintItems[i].data;
-                        this._selectedObjects.add(obj);
+            } else {
+
+                const data = item.data;
+
+                if (e.ctrlKey || e.metaKey) {
+                    if (this._selectedObjects.has(data)) {
+                        this._selectedObjects.delete(data);
+                    } else {
+                        this._selectedObjects.add(data);
                     }
                     selChanged = true;
+                } else if (e.shiftKey) {
+                    if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
+                        const start = Math.min(this._lastSelectedItemIndex, item.index);
+                        const end = Math.max(this._lastSelectedItemIndex, item.index);
+                        for (let i = start; i <= end; i++) {
+                            const obj = this._paintItems[i].data;
+                            this._selectedObjects.add(obj);
+                        }
+                        selChanged = true;
+                    }
+                } else {
+                    this._selectedObjects.clear();
+                    this._selectedObjects.add(data);
+                    selChanged = true;
                 }
-            } else {
-                this._selectedObjects.clear();
-                this._selectedObjects.add(data);
-                selChanged = true;
             }
 
             if (selChanged) {
                 this.repaint();
                 this.fireSelectionChanged();
-                this._lastSelectedItemIndex = item.index;
+                this._lastSelectedItemIndex = item? item.index : 0;
             }
         }
 
