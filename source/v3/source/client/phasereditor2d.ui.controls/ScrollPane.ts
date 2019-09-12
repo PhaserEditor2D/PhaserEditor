@@ -112,6 +112,7 @@ namespace phasereditor2d.ui.controls {
 
         private onMouseUp(e: MouseEvent) {
             if (this._startDragY !== -1) {
+                e.stopPropagation();
                 this._startDragY = -1;
             }
         }

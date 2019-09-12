@@ -51,7 +51,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         private initEvents() {
-            window.addEventListener("mouseup", e => {
+            window.addEventListener("mousedown", e => {
                 const part = this.findPart(<any>e.target);
                 this.setActivePart(part);
             });

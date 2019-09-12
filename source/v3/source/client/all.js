@@ -825,7 +825,7 @@ var phasereditor2d;
                     this.initEvents();
                 }
                 initEvents() {
-                    window.addEventListener("mouseup", e => {
+                    window.addEventListener("mousedown", e => {
                         const part = this.findPart(e.target);
                         this.setActivePart(part);
                     });
@@ -1321,7 +1321,7 @@ var phasereditor2d;
                     initListeners() {
                         const canvas = this.getCanvas();
                         canvas.addEventListener("mousemove", e => this.onMouseMove(e));
-                        canvas.addEventListener("mouseup", e => this.onMouseUp(e));
+                        canvas.addEventListener("mousedown", e => this.onMouseDown(e));
                         canvas.addEventListener("wheel", e => this.onWheel(e));
                         canvas.addEventListener("keydown", e => this.onKeyDown(e));
                     }
@@ -1401,7 +1401,7 @@ var phasereditor2d;
                         }
                         this.repaint();
                     }
-                    onMouseUp(e) {
+                    onMouseDown(e) {
                         if (e.button !== 0) {
                             return;
                         }
@@ -2547,6 +2547,7 @@ var phasereditor2d;
                 }
                 onMouseUp(e) {
                     if (this._startDragY !== -1) {
+                        e.stopPropagation();
                         this._startDragY = -1;
                     }
                 }

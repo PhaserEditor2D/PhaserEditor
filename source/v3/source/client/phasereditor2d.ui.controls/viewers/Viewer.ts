@@ -45,7 +45,7 @@ namespace phasereditor2d.ui.controls.viewers {
         private initListeners() {
             const canvas = this.getCanvas();
             canvas.addEventListener("mousemove", e => this.onMouseMove(e));
-            canvas.addEventListener("mouseup", e => this.onMouseUp(e));
+            canvas.addEventListener("mousedown", e => this.onMouseDown(e));
             canvas.addEventListener("wheel", e => this.onWheel(e))
             canvas.addEventListener("keydown", e => this.onKeyDown(e));
         }
@@ -146,7 +146,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this.repaint();
         }
 
-        private onMouseUp(e: MouseEvent): void {
+        private onMouseDown(e: MouseEvent): void {
             if (e.button !== 0) {
                 return;
             }
