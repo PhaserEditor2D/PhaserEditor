@@ -578,7 +578,7 @@ var phasereditor2d;
                 Controls.ICON_FILE_VIDEO
             ];
             Controls.LIGHT_THEME = {
-                treeItemSelectionBackground: "#33e",
+                treeItemSelectionBackground: "#555",
                 treeItemSelectionForeground: "#f0f0f0",
                 treeItemForeground: "#000"
             };
@@ -2258,13 +2258,19 @@ var phasereditor2d;
                         {
                             const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - lines.length * lineHeight - 6, args.obj, args.viewer, true);
                             const strH = lines.length * lineHeight;
-                            renderer.renderCell(args2);
                             if (args.viewer.isSelected(args.obj)) {
                                 ctx.save();
-                                ctx.globalAlpha = 0.25;
                                 ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
+                                ctx.globalAlpha = 0.5;
+                                ctx.fillRect(args2.x, args2.y, args2.w, args2.h);
+                                ctx.globalAlpha = 1;
+                                renderer.renderCell(args2);
+                                ctx.globalAlpha = 0.3;
                                 ctx.fillRect(args2.x, args2.y, args2.w, args2.h);
                                 ctx.restore();
+                            }
+                            else {
+                                renderer.renderCell(args2);
                             }
                             args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - strH - 3, args.w, strH, 10);
                             y += args2.h + lineHeight * lines.length;

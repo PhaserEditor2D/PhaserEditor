@@ -129,14 +129,23 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const strH = lines.length * lineHeight;
 
-                renderer.renderCell(args2);
-
                 if (args.viewer.isSelected(args.obj)) {
                     ctx.save();
-                    ctx.globalAlpha = 0.25;
+                    
                     ctx.fillStyle = Controls.theme.treeItemSelectionBackground;
+                    
+                    ctx.globalAlpha = 0.5;
                     ctx.fillRect(args2.x, args2.y, args2.w, args2.h);
+                    
+                    ctx.globalAlpha = 1;
+                    renderer.renderCell(args2);
+                    
+                    ctx.globalAlpha = 0.3;
+                    ctx.fillRect(args2.x, args2.y, args2.w, args2.h);
+
                     ctx.restore();
+                } else {
+                    renderer.renderCell(args2);
                 }
 
                 args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - strH - 3, args.w, strH, 10);
