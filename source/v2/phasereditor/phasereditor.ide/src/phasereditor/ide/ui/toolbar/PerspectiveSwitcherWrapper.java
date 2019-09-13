@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -51,7 +52,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -101,11 +101,11 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 			_btn.setLayoutData(new RowData(150, SWT.DEFAULT));
 		}
 
-		swtRun( () -> {
+		swtRun(() -> {
 			_window = getWorkbenchWindow(_btn);
 			_window.addPerspectiveListener(this);
 			updateButton();
-		} );
+		});
 	}
 
 	private void populatePropsMenu(MouseEvent e) {
@@ -121,30 +121,38 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 		}
 	}
 
-	/**
-	 * The action for that allows the user to choose any perspective to open.
-	 *
-	 * @since 3.1
-	 */
-	private Action _openOtherAction = new Action(WorkbenchMessages.PerspectiveMenu_otherItem) {
+	private Action _openOtherAction = new Action("Other Perspective...") {
 		@Override
 		public final void runWithEvent(final Event event) {
 			runOther(new SelectionEvent(event));
 		}
 	};
 
-	/**
-	 * Show the "other" dialog, select a perspective, and run it. Pass on the
-	 * selection event should the menu need it.
-	 *
-	 * @param event
-	 *            the selection event
-	 */
+	private Action _openNewWindowAction = new Action("New Window") {
+		@Override
+		public final void runWithEvent(final Event event) {
+			runNewWindow(new SelectionEvent(event));
+		}
+	};
+
+	@SuppressWarnings("unused")
 	static void runOther(SelectionEvent event) {
 		IHandlerService handlerService = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getService(IHandlerService.class);
 		try {
 			handlerService.executeCommand(IWorkbenchCommandConstants.PERSPECTIVES_SHOW_PERSPECTIVE, null);
+		} catch (Exception e) {
+			StatusManager.getManager().handle(new Status(IStatus.WARNING, WorkbenchPlugin.PI_WORKBENCH,
+					"Failed to execute " + IWorkbenchCommandConstants.PERSPECTIVES_SHOW_PERSPECTIVE, e)); //$NON-NLS-1$
+		}
+	}
+
+	@SuppressWarnings("unused")
+	static void runNewWindow(SelectionEvent event) {
+		IHandlerService handlerService = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getService(IHandlerService.class);
+		try {
+			handlerService.executeCommand(IWorkbenchCommandConstants.WINDOW_NEW_WINDOW, null);
 		} catch (Exception e) {
 			StatusManager.getManager().handle(new Status(IStatus.WARNING, WorkbenchPlugin.PI_WORKBENCH,
 					"Failed to execute " + IWorkbenchCommandConstants.PERSPECTIVES_SHOW_PERSPECTIVE, e)); //$NON-NLS-1$
@@ -185,6 +193,8 @@ class PerspectiveSwitcherWrapper implements IPerspectiveListener {
 		}
 
 		manager.add(_openOtherAction);
+		manager.add(new Separator());
+		manager.add(_openNewWindowAction);
 
 		showMenu(manager);
 	}
