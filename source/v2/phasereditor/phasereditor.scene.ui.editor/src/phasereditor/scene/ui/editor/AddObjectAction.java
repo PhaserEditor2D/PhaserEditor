@@ -28,11 +28,11 @@ import org.eclipse.jface.action.Action;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.scene.core.BitmapTextComponent;
-import phasereditor.scene.core.ImageModel;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
 import phasereditor.scene.core.PackReferencesCollector;
@@ -130,8 +130,9 @@ public abstract class AddObjectAction<T extends ObjectModel> extends Action {
 
 	protected IAssetKey selectAndSetTexture(ObjectModel model) {
 		var asset = AssetPackUI.openAssetDialog(getEditor().getProject(),
-				key -> key instanceof ImageModel || key instanceof AtlasAssetModel.Frame
-						|| key instanceof MultiAtlasAssetModel.Frame || key instanceof SvgAssetModel);
+				key -> key instanceof ImageAssetModel || key instanceof ImageAssetModel.Frame
+						|| key instanceof AtlasAssetModel.Frame || key instanceof MultiAtlasAssetModel.Frame
+						|| key instanceof SvgAssetModel);
 		if (asset != null) {
 			TextureComponent.set_textureKey(model, asset.getAsset().getKey());
 			TextureComponent.set_textureFrame(model, asset.getKey());
