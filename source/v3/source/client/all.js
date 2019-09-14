@@ -614,8 +614,8 @@ var phasereditor2d;
                 treeItemForeground: "#000"
             };
             Controls.DARK_THEME = {
-                treeItemSelectionBackground: "#858585",
-                treeItemSelectionForeground: "#202020",
+                treeItemSelectionBackground: "#f0a050",
+                treeItemSelectionForeground: "#0e0e0e",
                 treeItemForeground: "#f0f0f0"
             };
             Controls.theme = Controls.DARK_THEME;

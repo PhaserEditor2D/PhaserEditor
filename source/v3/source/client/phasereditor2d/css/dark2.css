@@ -47,48 +47,49 @@
 
 /* Part */
 
-.Part {
+.dark2 .Part {
     width: 100%;
     height: 100%;
 }
 
-.Part > .FilteredViewer {
+.dark2 .Part > .FilteredViewer {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.ViewerView .FilteredViewer {
+.dark2 .ViewerView .FilteredViewer {
     background: #3f3f3f;
     border-radius: 3px;
 }
 
-.ViewerView {
+.dark2 .ViewerView {
     display: grid;
     grid-template-columns: 5px 1fr 5px;
     grid-template-rows: 5px 1fr 5px;
+    color: orange;
 }
 
 
-.ViewerView .FilteredViewer {
+.dark2 .ViewerView .FilteredViewer {
     grid-column-start: 2; 
     grid-row-start: 2;
 }
 
 /* Viewer */
 
-.FilteredViewer {
+.dark2 .FilteredViewer {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
 }
 
-.FilteredViewer .FilterControl {
+.dark2 .FilteredViewer .FilterControl {
     position: relative;
     width: 100%;
 }
 
-.FilteredViewer > .ScrollPane {
+.dark2 .FilteredViewer > .ScrollPane {
     position: static;
 
     display: grid;
@@ -96,28 +97,34 @@
     grid-template-rows: 1fr;
 }
 
-.FilteredViewer .ViewerContainer {
+.dark2 .FilteredViewer .ViewerContainer {
     position: static;
 }
 
-.ViewerContainer .Viewer {
+.dark2 .ViewerContainer .Viewer {
     position: fixed;
 }
 
 /* Scroll Bar */
 
-.ScrollBar, .ScrollHandler {
+.dark2 .ScrollBar, .dark2 .ScrollHandler {
     position: relative;
     background: transparent;
 }
 
-.ScrollHandler {
+.dark2 .ScrollHandler {
     background: #858585;
+    border-radius: 3px;
 }
 
-.ScrollHandler:active {
-    background: #181818;
+.dark2 .ScrollHandler:hover {
+    background: #585858;
 }
+
+.dark2 .ScrollHandler:active {
+    background: #282828;
+}
+
 
 /* Property Page */
 
