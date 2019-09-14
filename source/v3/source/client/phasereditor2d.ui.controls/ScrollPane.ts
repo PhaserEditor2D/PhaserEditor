@@ -1,7 +1,5 @@
 namespace phasereditor2d.ui.controls {
 
-    const SCROLL_BAR_WIDTH = 15;
-
     export class ScrollPane extends Control {
 
         private _clientControl: Control;
@@ -10,7 +8,7 @@ namespace phasereditor2d.ui.controls {
         private _clientContentHeight: number = 0;
 
         constructor(clientControl: Control) {
-            super("ScrollPane");
+            super("div", "ScrollPane");
 
             this._clientControl = clientControl;
             this.add(this._clientControl);
@@ -21,8 +19,7 @@ namespace phasereditor2d.ui.controls {
 
             this._scrollHandler = document.createElement("div");
             this._scrollHandler.classList.add("ScrollHandler");
-
-            this.getElement().appendChild(this._scrollHandler);
+            this._scrollBar.appendChild(this._scrollHandler);
 
             const l2 = (e: MouseEvent) => this.onMouseDown(e);
             const l3 = (e: MouseEvent) => this.onMouseUp(e);
@@ -41,12 +38,20 @@ namespace phasereditor2d.ui.controls {
             window.addEventListener("mousemove", l4);
             window.addEventListener("mousemove", l5);
 
-            this._clientControl.getElement().addEventListener("wheel", e => this.onClientWheel(e));
+            
+            this.getViewer().getElement().addEventListener("wheel", e => this.onClientWheel(e));
             this._scrollBar.addEventListener("mousedown", e => this.onBarMouseDown(e))
         }
 
+        getViewer() {
+            if (this._clientControl instanceof viewers.ViewerContainer) {
+                return this._clientControl.getViewer();
+            }
+            return this._clientControl;
+        }
+
         updateScroll(clientContentHeight: number) {
-            const scrollY = this._clientControl.getScrollY();
+            const scrollY = this.getViewer().getScrollY();
             const b = this.getBounds();
             let newScrollY = scrollY;
             newScrollY = Math.max(-this._clientContentHeight + b.height, newScrollY);
@@ -62,6 +67,10 @@ namespace phasereditor2d.ui.controls {
         }
 
         private onBarMouseDown(e: MouseEvent) {
+            if (e.target !== this._scrollBar) {
+                return;
+            }
+            e.stopImmediatePropagation();
             const b = this.getBounds();
             this.setClientScrollY(- e.offsetY / b.height * (this._clientContentHeight - b.height));
         }
@@ -72,7 +81,7 @@ namespace phasereditor2d.ui.controls {
                 return;
             }
 
-            let y = this._clientControl.getScrollY();
+            let y = this.getViewer().getScrollY();
 
             y += e.deltaY < 0 ? 30 : -30;
 
@@ -84,7 +93,7 @@ namespace phasereditor2d.ui.controls {
             y = Math.max(-this._clientContentHeight + b.height, y);
             y = Math.min(0, y);
 
-            this._clientControl.setScrollY(y);
+            this.getViewer().setScrollY(y);
 
             this.layout();
         }
@@ -98,7 +107,7 @@ namespace phasereditor2d.ui.controls {
             if (e.target === this._scrollHandler) {
                 e.stopImmediatePropagation();
                 this._startDragY = e.y;
-                this._startScrollY = this._clientControl.getScrollY();
+                this._startScrollY = this.getViewer().getScrollY();
             }
         }
 
@@ -118,50 +127,34 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        private setClientBounds(x: number, y: number, w: number, h: number): void {
-            const b = this._clientControl.getBounds();
-            if (b.width != w || b.height != h) {
-                this._clientControl.setBoundsValues(x, y, w, h);
-            }
+        getBounds() {
+            const b = this.getElement().getBoundingClientRect();
+            return {x : 0, y : 0, width: b.width, height: b.height};
         }
 
         layout(): void {
             const b = this.getBounds();
 
-            controls.setElementBounds(this.getElement(), b);
-
             if (b.height < this._clientContentHeight) {
-
-                this.setClientBounds(0, 0, b.width - SCROLL_BAR_WIDTH, b.height);
 
                 // scroll bar
 
-                this._scrollBar.style.display = "inherit";
-
-                controls.setElementBounds(this._scrollBar, {
-                    x: b.width - SCROLL_BAR_WIDTH,
-                    y: 0,
-                    width: SCROLL_BAR_WIDTH - 2,
-                    height: b.height
-                });
+                this._scrollBar.style.display = "initial";
 
                 // handler
 
-                this._scrollHandler.style.display = "inherit";
+                this._scrollHandler.style.display = "block";
                 const h = Math.max(10, b.height / this._clientContentHeight * b.height);
-                const y = -(b.height - h) * this._clientControl.getScrollY() / (this._clientContentHeight - b.height);
+                const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
+
+                console.log("set " + h);
 
                 controls.setElementBounds(this._scrollHandler, {
-                    x: b.width - SCROLL_BAR_WIDTH,
                     y: y,
-                    width: SCROLL_BAR_WIDTH - 1,
                     height: h
                 });
 
             } else {
-
-                this.setClientBounds(0, 0, b.width, b.height);
-
                 this._scrollBar.style.display = "none";
                 this._scrollHandler.style.display = "none";
             }

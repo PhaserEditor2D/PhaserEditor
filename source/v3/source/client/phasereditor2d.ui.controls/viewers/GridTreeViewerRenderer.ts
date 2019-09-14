@@ -157,6 +157,8 @@ namespace phasereditor2d.ui.controls.viewers {
 
             if (args.viewer.isSelected(args.obj)) {
                 ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
+            } else {
+                ctx.fillStyle = Controls.theme.treeItemForeground;
             }
 
             let y2 = y - lineHeight * (lines.length - 1) - 5;

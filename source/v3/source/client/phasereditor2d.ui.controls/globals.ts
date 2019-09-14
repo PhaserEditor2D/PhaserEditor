@@ -15,15 +15,15 @@ namespace phasereditor2d.ui.controls {
             elem.style.left = bounds.x + "px";
         }
 
-        if (bounds.x !== undefined) {
+        if (bounds.y !== undefined) {
             elem.style.top = bounds.y + "px";
         }
 
-        if (bounds.x !== undefined) {
+        if (bounds.width !== undefined) {
             elem.style.width = bounds.width + "px";
         }
 
-        if (bounds.x !== undefined) {
+        if (bounds.height !== undefined) {
             elem.style.height = bounds.height + "px";
         }
     }

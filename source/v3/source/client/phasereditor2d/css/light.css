@@ -53,7 +53,8 @@
 
 .light .Panel,
 .light .PanelClientArea,
-.light .PanelTitle {
+.light .PanelTitle, 
+.light .TabPaneTitleBar {
     box-shadow: -1px -1px 0 #909090,
         1px -1px 0 #909090,
         -1px 1px 0 #909090,
@@ -75,21 +76,9 @@
     border-color: #909090;
 }
 
-.light .Panel .PanelTitle {
+.light .Panel .PanelTitle, .light .TabPaneTitleBar {
     background: #b8b8b8;
     background: linear-gradient(#d8d8d8, #b8b8b8);
-
-    /*
-
-    color: #ffffff;
-    text-shadow:
-        -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-
-    */
-
     color: #606060;
     text-shadow: 0px 2px 2px #e0e0e0;
 }
@@ -104,6 +93,45 @@
 
 .light .Panel .actionButton:active {
     background: radial-gradient(#b8b8b8, #c8c8c8);
+}
+
+
+.light .TabPaneLabel {
+    padding: 5px 1em;
+    box-sizing: border-box;
+}
+
+.light .TabPaneLabel.selected {
+    background: linear-gradient(#d2d2d2, #b2b2b2);
+    border: solid #909090;
+    border-width: 0.5px;   
+    border-bottom: none;
+    border-top: none;
+    margin-bottom: 1px;
+    padding: 5px calc(1em - 1px);
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.light .TabPaneContentArea {
+    background: #d2d2d2;
+    box-shadow: -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.light .TabPaneContentArea .ContentArea {
+    background: #c2c2c2;
+}
+
+.light .TabPaneContentArea .ContentArea.selected {
+    box-shadow: -1px -1px 0 #909090,
+        1px -1px 0 #909090,
+        -1px 1px 0 #909090,
+        1px 1px 0 #909090;
 }
 
 .light .ScrollBar,
@@ -141,7 +169,7 @@
 
 /* PropertyPage */
 
-.PropertyTitleArea {
+.light .PropertyTitleArea {
     background: #b8b8b8;
     background: linear-gradient(#bfbfbf, #afafaf);
     color: #ffffff;
@@ -161,11 +189,11 @@
 
 /* sections */
 
-.PreviewBackground {
+.light .PreviewBackground {
     background: #4a4a4a;
     background: #a0a0a0;
     box-shadow:
         inset 4px 0px 5px rgba(0, 0, 0, 0.2),
         inset 0px 4px 5px rgba(0, 0, 0, 0.2),
-        inset -4px 0px 5px rgba(0, 0, 0, 0.2)        
+        inset -4px 0px 5px rgba(0, 0, 0, 0.2)
 }

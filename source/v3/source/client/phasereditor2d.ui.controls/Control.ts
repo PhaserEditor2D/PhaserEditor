@@ -16,11 +16,16 @@ namespace phasereditor2d.ui.controls {
             super();
             this._children = [];
             this._element = document.createElement(tagName);
+            this._element["__control"] = this;
             this.addClass("control", ...classList);
             this._layout = null;
             this._container = null;
             this._scrollY = 0;
             this._layoutChildren = true;
+        }
+
+        static getControlOf(element : HTMLElement) : Control {
+            return element["__control"];
         }
 
         isHandlePosition() {

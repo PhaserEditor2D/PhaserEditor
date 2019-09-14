@@ -6,10 +6,11 @@ namespace phasereditor2d.ui.controls.properties {
         private _titleArea: HTMLDivElement;
         private _expandBtn: HTMLElement;
         private _formArea: HTMLDivElement;
+        private _page: PropertyPage;
 
-        constructor(section: PropertySection<any>) {
+        constructor(page: PropertyPage, section: PropertySection<any>) {
             super();
-
+            this._page = page;
             this._section = section;
 
             this.addClass("PropertySectionPane")
@@ -44,8 +45,12 @@ namespace phasereditor2d.ui.controls.properties {
             this._section.updateWithSelection();
         }
 
+        isExpanded() {
+            return this._expandBtn.classList.contains("expanded");
+        }
+
         private toggleSection(): void {
-            if (this._expandBtn.classList.contains("expanded")) {
+            if (this.isExpanded()) {
                 this._expandBtn.classList.remove("expanded");
                 this._expandBtn.classList.add("collapsed");
                 this._formArea.style.display = "none";
@@ -54,7 +59,7 @@ namespace phasereditor2d.ui.controls.properties {
                 this._expandBtn.classList.remove("collapsed");
                 this._formArea.style.display = "initial";
             }
-
+            this._page.updateExpandStatus();
             this.getContainer().dispatchLayoutEvent();
         }
 
@@ -68,7 +73,6 @@ namespace phasereditor2d.ui.controls.properties {
     }
 
     export class PropertyPage extends Control {
-
         private _sectionProvider: PropertySectionProvider;
         private _sectionPanes: PropertySectionPane[];
         private _sectionPaneMap: Map<String, PropertySectionPane>;
@@ -94,7 +98,7 @@ namespace phasereditor2d.ui.controls.properties {
 
                 for (const section of list) {
                     if (!this._sectionPaneMap.has(section.getId())) {
-                        const pane = new PropertySectionPane(section);
+                        const pane = new PropertySectionPane(this, section);
                         this.add(pane);
                         this._sectionPaneMap.set(section.getId(), pane);
                         this._sectionPanes.push(pane);
@@ -106,8 +110,6 @@ namespace phasereditor2d.ui.controls.properties {
         }
 
         private updateWithSelection(): void {
-
-            let templateRows = "";
 
             const n = this._selection.length;
 
@@ -128,14 +130,31 @@ namespace phasereditor2d.ui.controls.properties {
                 if (show) {
                     pane.getElement().style.display = "grid";
                     pane.createOrUpdateWithSelection();
-                    templateRows += " " + (section.isFillSpace() ? "1fr" : "min-content");
                 } else {
                     pane.getElement().style.display = "none";
                 }
             }
 
-            this.getElement().style.gridTemplateRows = templateRows;
+            this.updateExpandStatus();
 
+        }
+
+
+        updateExpandStatus() {
+            let templateRows = "";
+
+            for (const pane of this._sectionPanes) {
+                if (pane.style.display !== "none") {
+                    pane.createOrUpdateWithSelection();
+                    if (pane.isExpanded()) {
+                        templateRows += " " + (pane.getSection().isFillSpace() ? "1fr" : "min-content");
+                    } else {
+                        templateRows += " min-content";
+                    }
+                }
+            }
+
+            this.getElement().style.gridTemplateRows = templateRows + " ";
         }
 
         getSelection() {

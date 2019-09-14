@@ -266,8 +266,9 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private updateScrollPane() {
-            if (this.getContainer() instanceof ScrollPane) {
-                const pane = <ScrollPane>this.getContainer();
+            const pane = this.getContainer().getContainer();
+            console.log(pane.getElement().classList);
+            if (pane instanceof ScrollPane) {
                 pane.updateScroll(this._contentHeight);
             }
         }

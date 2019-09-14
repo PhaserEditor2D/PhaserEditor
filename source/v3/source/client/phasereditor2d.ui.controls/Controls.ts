@@ -206,12 +206,12 @@ namespace phasereditor2d.ui.controls {
         };
 
         private static DARK_THEME: Theme = {
-            treeItemSelectionBackground: "#33e",//"#8f8f8f",
-            treeItemSelectionForeground: "#f0f0f0",
+            treeItemSelectionBackground: "#858585",//"#8f8f8f",
+            treeItemSelectionForeground: "#202020",
             treeItemForeground: "#f0f0f0"
         };
 
-        public static theme: Theme = Controls.LIGHT_THEME;
+        public static theme: Theme = Controls.DARK_THEME;
 
     }
 }

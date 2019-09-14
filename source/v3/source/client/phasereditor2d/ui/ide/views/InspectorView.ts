@@ -5,16 +5,6 @@
 
 namespace phasereditor2d.ui.ide.inspector {
 
-    class MyLayout implements controls.ILayout {
-        
-        layout(parent: controls.Control) {
-            const child = parent.getChildren()[0];
-            child.getElement().style.height = parent.getBounds().height + "px";
-            child.dispatchLayoutEvent();
-        }
-
-    }
-
     export class InspectorView extends ide.ViewPart {
 
         private _propertyPage: ui.controls.properties.PropertyPage;
@@ -28,13 +18,15 @@ namespace phasereditor2d.ui.ide.inspector {
 
             this._propertyPage = new ui.controls.properties.PropertyPage();
 
-            this.getClientArea().add(this._propertyPage);
-            //this.getClientArea().setLayout(new ui.controls.FillLayout());
-            this.getClientArea().setLayout(new MyLayout());
+            this.add(this._propertyPage);
 
             this._selectionListener = (e : CustomEvent) => this.onPartSelection();
 
             Workbench.getWorkbench().addEventListener(PART_ACTIVATE_EVENT, e => this.onPartActivate());
+        }
+
+        layout() {
+            this._propertyPage.dispatchLayoutEvent();
         }
 
         private onPartActivate() {
