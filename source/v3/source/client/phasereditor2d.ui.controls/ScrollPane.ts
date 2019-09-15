@@ -38,7 +38,7 @@ namespace phasereditor2d.ui.controls {
             window.addEventListener("mousemove", l4);
             window.addEventListener("mousemove", l5);
 
-            
+
             this.getViewer().getElement().addEventListener("wheel", e => this.onClientWheel(e));
             this._scrollBar.addEventListener("mousedown", e => this.onBarMouseDown(e))
         }
@@ -57,7 +57,7 @@ namespace phasereditor2d.ui.controls {
             newScrollY = Math.max(-this._clientContentHeight + b.height, newScrollY);
             newScrollY = Math.min(0, newScrollY);
 
-            if (newScrollY != scrollY) {
+            if (newScrollY !== scrollY) {
                 this._clientContentHeight = clientContentHeight;
                 this.setClientScrollY(scrollY);
             } else if (clientContentHeight !== this._clientContentHeight) {
@@ -129,20 +129,13 @@ namespace phasereditor2d.ui.controls {
 
         getBounds() {
             const b = this.getElement().getBoundingClientRect();
-            return {x : 0, y : 0, width: b.width, height: b.height};
+            return { x: 0, y: 0, width: b.width, height: b.height };
         }
 
         layout(): void {
             const b = this.getBounds();
 
             if (b.height < this._clientContentHeight) {
-
-                // scroll bar
-
-                this._scrollBar.style.display = "initial";
-
-                // handler
-
                 this._scrollHandler.style.display = "block";
                 const h = Math.max(10, b.height / this._clientContentHeight * b.height);
                 const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
@@ -151,13 +144,12 @@ namespace phasereditor2d.ui.controls {
                     y: y,
                     height: h
                 });
-
+                this.removeClass("hideScrollBar");
             } else {
-                this._scrollBar.style.display = "none";
-                this._scrollHandler.style.display = "none";
+                this.addClass("hideScrollBar");
             }
 
-
+            this._clientControl.layout();
         }
     }
 

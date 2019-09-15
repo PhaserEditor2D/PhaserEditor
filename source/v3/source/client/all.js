@@ -2590,6 +2590,7 @@ var phasereditor2d;
                         const filteredViewer = new ui.controls.viewers.FilteredViewer(viewer);
                         filteredViewer.setHandlePosition(false);
                         filteredViewer.style.position = "relative";
+                        filteredViewer.style.height = "100%";
                         parent.appendChild(filteredViewer.getElement());
                         this.resizeTo(filteredViewer, parent);
                         this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
@@ -2824,7 +2825,7 @@ var phasereditor2d;
                     let newScrollY = scrollY;
                     newScrollY = Math.max(-this._clientContentHeight + b.height, newScrollY);
                     newScrollY = Math.min(0, newScrollY);
-                    if (newScrollY != scrollY) {
+                    if (newScrollY !== scrollY) {
                         this._clientContentHeight = clientContentHeight;
                         this.setClientScrollY(scrollY);
                     }
@@ -2884,9 +2885,6 @@ var phasereditor2d;
                 layout() {
                     const b = this.getBounds();
                     if (b.height < this._clientContentHeight) {
-                        // scroll bar
-                        this._scrollBar.style.display = "initial";
-                        // handler
                         this._scrollHandler.style.display = "block";
                         const h = Math.max(10, b.height / this._clientContentHeight * b.height);
                         const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
@@ -2894,11 +2892,12 @@ var phasereditor2d;
                             y: y,
                             height: h
                         });
+                        this.removeClass("hideScrollBar");
                     }
                     else {
-                        this._scrollBar.style.display = "none";
-                        this._scrollHandler.style.display = "none";
+                        this.addClass("hideScrollBar");
                     }
+                    this._clientControl.layout();
                 }
             }
             controls.ScrollPane = ScrollPane;

@@ -31,6 +31,7 @@ namespace phasereditor2d.ui.ide.files {
             const filteredViewer = new controls.viewers.FilteredViewer(viewer);
             filteredViewer.setHandlePosition(false);
             filteredViewer.style.position = "relative";
+            filteredViewer.style.height = "100%";
             parent.appendChild(filteredViewer.getElement());
 
             this.resizeTo(filteredViewer, parent);
