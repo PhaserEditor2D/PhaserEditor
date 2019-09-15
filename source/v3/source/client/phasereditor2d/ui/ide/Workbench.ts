@@ -50,6 +50,14 @@ namespace phasereditor2d.ui.ide {
             this.initEvents();
         }
 
+        getDesignWindow() {
+            return this._designWindow;
+        }
+
+        getActiveWindow() : ide.Window {
+            return this.getDesignWindow();
+        }
+
         private initEvents() {
             window.addEventListener("mousedown", e => {
                 const part = this.findPart(<any>e.target);

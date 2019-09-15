@@ -741,6 +741,22 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
     (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorPart extends ide.Part {
+                constructor(id) {
+                    super(id);
+                    this.addClass("EditorPart");
+                }
+            }
+            ide.EditorPart = EditorPart;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
         var controls;
         (function (controls) {
             class TabPane extends controls.Control {
@@ -813,6 +829,7 @@ var phasereditor2d;
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./Part.ts"/>
+/// <reference path="./EditorPart.ts"/>
 /// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -820,19 +837,17 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            class DemoEditor extends ide.EditorPart {
+                constructor(id) {
+                    super(id);
+                }
+            }
             class EditorArea extends ui.controls.TabPane {
                 constructor() {
                     super("EditorArea");
-                    this.createTest("Level 1.scene");
-                    this.createTest("pack.json");
-                    this.createTest("Level 3.scene");
-                }
-                createTest(label) {
-                    this.addTab(label, () => {
-                        const content = new ui.controls.Control("div");
-                        content.getElement().innerHTML = `<p>Hello I am a content</p><p>For ${label}</p>`;
-                        return content;
-                    });
+                    this.addTab("Level 1.scene", () => new DemoEditor("demoEditor1"));
+                    this.addTab("Level 2.scene", () => new DemoEditor("demoEditor2"));
+                    this.addTab("pack.json", () => new DemoEditor("demoEditor3"));
                 }
             }
             ide.EditorArea = EditorArea;
@@ -1073,6 +1088,12 @@ var phasereditor2d;
                     this._designWindow = new ide.DesignWindow();
                     document.getElementById("body").appendChild(this._designWindow.getElement());
                     this.initEvents();
+                }
+                getDesignWindow() {
+                    return this._designWindow;
+                }
+                getActiveWindow() {
+                    return this.getDesignWindow();
                 }
                 initEvents() {
                     window.addEventListener("mousedown", e => {

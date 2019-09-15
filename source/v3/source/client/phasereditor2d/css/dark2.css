@@ -49,7 +49,7 @@
 
 /* Part */
 
-.dark2 .TabPane.activePart .TabPaneLabel {
+.dark2 .TabPane.activePart .TabPaneLabel.selected {
     box-shadow: inset 0px 2px 0px #f0a050;
 }
 
