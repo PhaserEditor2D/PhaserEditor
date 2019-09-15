@@ -3,7 +3,6 @@ namespace phasereditor2d.ui.controls {
     export declare type GetContent = () => Control;
 
     export class TabPane extends Control {
-
         private _tabLabelList: HTMLElement[];
         private _tabContentList: Control[];
         private _tabGetContentList: GetContent[];
@@ -44,25 +43,35 @@ namespace phasereditor2d.ui.controls {
                 this.selectTab(0);
             }
         }
-        
-        private makeLabel(label: string, closeable : boolean) {
+
+        private makeLabel(label: string, closeable: boolean) {
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
-            const textElement = document.createElement("span"); 
+            const textElement = document.createElement("span");
             textElement.innerHTML = label;
             labelElement.appendChild(textElement);
-            
+
             if (closeable) {
                 const iconElement = Controls.createIconElement("close");
                 iconElement.classList.add("closeIcon");
+                iconElement.addEventListener("click", () => {
+                    this.closeTabWithLabelElement(labelElement);
+                });
+
                 labelElement.appendChild(iconElement);
                 labelElement.classList.add("closeable");
-            } 
-
-            console.log(labelElement.innerHTML);
+            }
 
             return labelElement;
+        }
+
+        private closeTabWithLabelElement(labelElement : HTMLElement) {
+            this._titleBarElement.removeChild(labelElement);
+            const content = labelElement["__content"];
+            if (content) {
+                this._contentAreaElement.removeChild(content.getElement());
+            }
         }
 
         getCountTabs() {
@@ -79,6 +88,7 @@ namespace phasereditor2d.ui.controls {
                 const content = this.createTabContent(index);
                 this._tabContentList[index] = content;
                 this._contentAreaElement.appendChild(content.getElement());
+                this._tabLabelList[index]["__content"] = content;
             }
 
             this._tabLabelList[index].classList.add("selected");

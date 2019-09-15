@@ -695,11 +695,20 @@ var phasereditor2d;
                     if (closeable) {
                         const iconElement = controls.Controls.createIconElement("close");
                         iconElement.classList.add("closeIcon");
+                        iconElement.addEventListener("click", () => {
+                            this.closeTabWithLabelElement(labelElement);
+                        });
                         labelElement.appendChild(iconElement);
                         labelElement.classList.add("closeable");
                     }
-                    console.log(labelElement.innerHTML);
                     return labelElement;
+                }
+                closeTabWithLabelElement(labelElement) {
+                    this._titleBarElement.removeChild(labelElement);
+                    const content = labelElement["__content"];
+                    if (content) {
+                        this._contentAreaElement.removeChild(content.getElement());
+                    }
                 }
                 getCountTabs() {
                     return this._tabContentList.length;
@@ -713,6 +722,7 @@ var phasereditor2d;
                         const content = this.createTabContent(index);
                         this._tabContentList[index] = content;
                         this._contentAreaElement.appendChild(content.getElement());
+                        this._tabLabelList[index]["__content"] = content;
                     }
                     this._tabLabelList[index].classList.add("selected");
                     this._tabContentList[index].addClass("selected");
@@ -746,6 +756,7 @@ var phasereditor2d;
             class DemoEditor extends ide.EditorPart {
                 constructor(id) {
                     super(id);
+                    this.getElement().innerHTML = id;
                 }
             }
             class EditorArea extends ui.controls.TabPane {
