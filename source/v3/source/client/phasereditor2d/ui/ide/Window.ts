@@ -1,3 +1,5 @@
+/// <reference path="../../../phasereditor2d.ui.controls/Control.ts" />
+
 namespace phasereditor2d.ui.ide {
 
     export class Window extends controls.Control {

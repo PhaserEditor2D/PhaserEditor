@@ -1,5 +1,4 @@
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
 /// <reference path="../../core/io/FileStorage.ts"/>

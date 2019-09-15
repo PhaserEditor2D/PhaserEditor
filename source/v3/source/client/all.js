@@ -329,46 +329,7 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./Control.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class PaddingPane extends controls.Control {
-                constructor(control, padding = 5) {
-                    super("div", "paddingPane");
-                    this._padding = padding;
-                    this.setControl(control);
-                }
-                setControl(control) {
-                    this._control = control;
-                    if (this._control) {
-                        this.add(control);
-                    }
-                }
-                getControl() {
-                    return this._control;
-                }
-                setPadding(padding) {
-                    this._padding = padding;
-                }
-                getPadding() {
-                    return this._padding;
-                }
-                layout() {
-                    const b = this.getBounds();
-                    controls.setElementBounds(this.getElement(), b);
-                    if (this._control) {
-                        this._control.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
-                    }
-                }
-            }
-            controls.PaddingPane = PaddingPane;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/Control.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -395,7 +356,6 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 /// <reference path="../ide/Window.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -626,73 +586,7 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class PanelTitle extends controls.Control {
-                constructor() {
-                    super("div", "PanelTitle");
-                    this._textControl = new controls.Control("label", "PanelTitleText");
-                    this.setLayoutChildren(false);
-                    this.add(this._textControl);
-                }
-                setText(text) {
-                    this._textControl.getElement().innerHTML = text;
-                }
-            }
-            class Panel extends controls.Control {
-                constructor(hasTitle = true) {
-                    super("div", "Panel");
-                    if (hasTitle) {
-                        this._panelTitle = new PanelTitle();
-                        this.add(this._panelTitle);
-                    }
-                    this._clientArea = new controls.Control("div");
-                    this._clientArea.addClass("PanelClientArea");
-                    this.add(this._clientArea);
-                }
-                setTitle(title) {
-                    this._title = title;
-                    this._panelTitle.setText(title);
-                }
-                getTitle() {
-                    return this._title;
-                }
-                getClientArea() {
-                    return this._clientArea;
-                }
-                layout() {
-                    //super.layout();
-                    controls.setElementBounds(this.getElement(), this.getBounds());
-                    const b = this.getBounds();
-                    if (this._panelTitle) {
-                        this._panelTitle.setBoundsValues(controls.PANEL_BORDER_SIZE, controls.PANEL_BORDER_SIZE, b.width - controls.PANEL_BORDER_SIZE * 2, controls.PANEL_TITLE_HEIGHT);
-                        this._clientArea.setBounds({
-                            x: controls.PANEL_BORDER_SIZE,
-                            y: controls.PANEL_BORDER_SIZE + controls.PANEL_TITLE_HEIGHT,
-                            width: b.width - controls.PANEL_BORDER_SIZE * 2,
-                            height: b.height - controls.PANEL_BORDER_SIZE * 2 - controls.PANEL_TITLE_HEIGHT
-                        });
-                    }
-                    else {
-                        this._clientArea.setBounds({
-                            x: controls.PANEL_BORDER_SIZE,
-                            y: controls.PANEL_BORDER_SIZE,
-                            width: b.width - controls.PANEL_BORDER_SIZE * 2,
-                            height: b.height - controls.PANEL_BORDER_SIZE * 2
-                        });
-                    }
-                }
-            }
-            controls.Panel = Panel;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/Panel.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1054,7 +948,6 @@ var phasereditor2d;
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
 /// <reference path="../../core/io/FileStorage.ts"/>

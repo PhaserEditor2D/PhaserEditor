@@ -1,4 +1,3 @@
-/// <reference path="../../../phasereditor2d.ui.controls/PaddingPanel.ts"/>
 /// <reference path="../ide/Window.ts"/>
 
 namespace phasereditor2d.ui.ide {
