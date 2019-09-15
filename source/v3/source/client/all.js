@@ -541,10 +541,15 @@ var phasereditor2d;
                         return Controls._icons.get(name);
                     }
                     const img = new Image();
-                    img.src = "phasereditor2d.ui.controls/images/16/" + name + ".png";
+                    img.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
                     const icon = new IconImpl(img);
                     Controls._icons.set(name, icon);
                     return icon;
+                }
+                static createIconElement(name) {
+                    const elem = new Image(16, 16);
+                    elem.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
+                    return elem;
                 }
             }
             Controls._icons = new Map();
@@ -667,11 +672,9 @@ var phasereditor2d;
                     this._contentAreaElement.classList.add("TabPaneContentArea");
                     this.getElement().appendChild(this._contentAreaElement);
                 }
-                addTab(label, getContent) {
+                addTab(label, getContent, closeable = false) {
                     {
-                        const elem = document.createElement("div");
-                        elem.classList.add("TabPaneLabel");
-                        elem.innerText = label;
+                        const elem = this.makeLabel(label, closeable);
                         this._tabLabelList.push(elem);
                         this._titleBarElement.appendChild(elem);
                         const index = this._tabLabelList.length;
@@ -682,6 +685,21 @@ var phasereditor2d;
                     if (this.getCountTabs() === 1) {
                         this.selectTab(0);
                     }
+                }
+                makeLabel(label, closeable) {
+                    const labelElement = document.createElement("div");
+                    labelElement.classList.add("TabPaneLabel");
+                    const textElement = document.createElement("span");
+                    textElement.innerHTML = label;
+                    labelElement.appendChild(textElement);
+                    if (closeable) {
+                        const iconElement = controls.Controls.createIconElement("close");
+                        iconElement.classList.add("closeIcon");
+                        labelElement.appendChild(iconElement);
+                        labelElement.classList.add("closeable");
+                    }
+                    console.log(labelElement.innerHTML);
+                    return labelElement;
                 }
                 getCountTabs() {
                     return this._tabContentList.length;
@@ -703,12 +721,6 @@ var phasereditor2d;
                 getSelectedTabContent() {
                     if (this._selectedIndex >= 0) {
                         return this._tabContentList[this._selectedIndex];
-                    }
-                    return null;
-                }
-                getSelectedTabLabel() {
-                    if (this._selectedIndex >= 0) {
-                        return this._tabLabelList[this._selectedIndex];
                     }
                     return null;
                 }
@@ -739,9 +751,9 @@ var phasereditor2d;
             class EditorArea extends ui.controls.TabPane {
                 constructor() {
                     super("EditorArea");
-                    this.addTab("Level 1.scene", () => new DemoEditor("demoEditor1"));
-                    this.addTab("Level 2.scene", () => new DemoEditor("demoEditor2"));
-                    this.addTab("pack.json", () => new DemoEditor("demoEditor3"));
+                    this.addTab("Level 1.scene", () => new DemoEditor("demoEditor1"), true);
+                    this.addTab("Level 2.scene", () => new DemoEditor("demoEditor2"), true);
+                    this.addTab("pack.json", () => new DemoEditor("demoEditor3"), true);
                 }
             }
             ide.EditorArea = EditorArea;

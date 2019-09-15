@@ -47,7 +47,22 @@ canvas {
 
 .TabPaneLabel {
     float: left;
-    padding: 0.5em;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    border-radius: 2px 2px 0 0;
+    padding: 5px 10px 5px 10px;
+}
+
+.TabPaneLabel.closeable {
+    padding: 5px 2px 5px 10px;
+}
+
+.TabPaneLabel .closeIcon:hover {
+    opacity: 0.5;
+}
+
+.TabPaneContentArea {
+    border-radius: 0 0 3px 3px;
 }
 
 .TabPaneContentArea .ContentArea {
@@ -64,6 +79,7 @@ canvas {
     width: 100%;
     height: 100%;
 }
+
 
 /* ScrollPane */
 

@@ -28,11 +28,9 @@ namespace phasereditor2d.ui.controls {
             this.getElement().appendChild(this._contentAreaElement);
         }
 
-        addTab(label: string, getContent: GetContent) {
+        addTab(label: string, getContent: GetContent, closeable = false) {
             {
-                const elem = document.createElement("div");
-                elem.classList.add("TabPaneLabel");
-                elem.innerText = label;
+                const elem = this.makeLabel(label, closeable);
                 this._tabLabelList.push(elem);
                 this._titleBarElement.appendChild(elem);
                 const index = this._tabLabelList.length;
@@ -45,6 +43,26 @@ namespace phasereditor2d.ui.controls {
             if (this.getCountTabs() === 1) {
                 this.selectTab(0);
             }
+        }
+        
+        private makeLabel(label: string, closeable : boolean) {
+            const labelElement = document.createElement("div");
+            labelElement.classList.add("TabPaneLabel");
+
+            const textElement = document.createElement("span"); 
+            textElement.innerHTML = label;
+            labelElement.appendChild(textElement);
+            
+            if (closeable) {
+                const iconElement = Controls.createIconElement("close");
+                iconElement.classList.add("closeIcon");
+                labelElement.appendChild(iconElement);
+                labelElement.classList.add("closeable");
+            } 
+
+            console.log(labelElement.innerHTML);
+
+            return labelElement;
         }
 
         getCountTabs() {
@@ -71,13 +89,6 @@ namespace phasereditor2d.ui.controls {
         getSelectedTabContent() {
             if (this._selectedIndex >= 0) {
                 return this._tabContentList[this._selectedIndex];
-            }
-            return null;
-        }
-
-        getSelectedTabLabel() {
-            if (this._selectedIndex >= 0) {
-                return this._tabLabelList[this._selectedIndex];
             }
             return null;
         }

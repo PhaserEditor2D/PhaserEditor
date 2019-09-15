@@ -118,6 +118,7 @@ namespace phasereditor2d.ui.controls {
     }
 
     export class Controls {
+
         private static _icons: Map<string, IIcon> = new Map();
         private static _images: Map<String, IImage> = new Map();
 
@@ -193,10 +194,16 @@ namespace phasereditor2d.ui.controls {
                 return Controls._icons.get(name);
             }
             const img = new Image();
-            img.src = "phasereditor2d.ui.controls/images/16/" + name + ".png";
+            img.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
             const icon = new IconImpl(img);
             Controls._icons.set(name, icon);
             return icon;
+        }
+
+        static createIconElement(name: string) {
+            const elem = new Image(16, 16);
+            elem.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
+            return elem;
         }
 
         private static LIGHT_THEME: Theme = {
