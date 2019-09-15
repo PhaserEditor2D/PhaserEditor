@@ -572,7 +572,7 @@ var phasereditor2d;
                 Controls.ICON_FILE_VIDEO
             ];
             Controls.LIGHT_THEME = {
-                treeItemSelectionBackground: "#555",
+                treeItemSelectionBackground: "#4242ff",
                 treeItemSelectionForeground: "#f0f0f0",
                 treeItemForeground: "#000"
             };

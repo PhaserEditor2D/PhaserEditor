@@ -1,0 +1,96 @@
+/*
+
+Rules to layout the Workbench.
+
+Important:
+    - Don't use colors here.
+    - To layout controls, see controls.css
+
+*/
+
+body,
+html {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family:
+        /*"dejavu sans mono";*/
+        Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+input {
+    min-width: 0px;
+    border-radius: 3px;
+    padding: 3px;
+    outline: none;
+    border-style: none;
+}
+
+label {
+    min-width: 0px;
+}
+
+/* Part */
+
+.Part {
+    width: 100%;
+    height: 100%;
+}
+
+.ViewerView {
+    display: grid;
+    grid-template-columns: 5px 1fr 5px;
+    grid-template-rows: 5px 1fr 5px;
+}
+
+.ViewerView .FilteredViewer {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    border-radius: 3px;
+}
+
+.Part>.FilteredViewer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* TabPane */
+
+.TabPaneLabel {
+    border-radius: 2px 2px 0 0;
+    padding: 5px 10px 2px 10px;
+}
+
+.TabPaneContentArea {
+    border-radius: 0 0 3px 3px;
+}
+
+/* PropertyPage */
+
+#InspectorView .PropertyPage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.formGrid {
+    display: grid;
+    align-items: center;
+    grid-gap: 5px;
+}
+
+.formGrid-cols-2 {
+    grid-template-columns: auto 1fr;
+}
+
+.formGrid-cols-1 {
+    grid-template-columns: 1fr;
+}
+
+.ImagePreviewFormArea {
+    padding: 10px;
+}

@@ -200,7 +200,7 @@ namespace phasereditor2d.ui.controls {
         }
 
         private static LIGHT_THEME: Theme = {
-            treeItemSelectionBackground: "#555",
+            treeItemSelectionBackground: "#4242ff",
             treeItemSelectionForeground: "#f0f0f0",
             treeItemForeground: "#000"
         };

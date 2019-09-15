@@ -1,92 +1,87 @@
+/*
+
+Rules to provide the dark colors
+
+Important:   
+    - No layout information should be provided.
+    - To layout a control, see controls.css.
+    - To layout a workbench UI, see workbench.css
+
+*/
+
 .dark body {
-    background: #2c2c2c;
-    color: #f0f0f0;
-}
-
-/* toolbar */
-
-
-.dark button {
-    background: linear-gradient(#c8c8c8, #b8b8b8);
-    border-color: #202020;
-    color: #434343;
-    text-shadow:
-        -1px -1px 0 #202020,
-        1px -1px 0 #202020,
-        -1px 1px 0 #202020,
-        1px 1px 0 #202020;
-
-    border-left-color: #d0d0d0;
-    border-top-color: #d0d0d0;
-    border-right-color: #202020;
-    border-bottom-color: #202020;
-}
-
-.dark button:active {
-    background: linear-gradient(#b8b8b8, #c8c8c8);
-    border-left-color: #202020;
-    border-top-color: #202020;
-    border-right-color: #d0d0d0;
-    border-bottom-color: #d0d0d0;
-}
-
-/* controls */
-
-/* panel */
-
-.dark .Panel {
-    background: #202020;
-}
-
-.dark .Panel .actionButton {
-    border-color: #202020;
-}
-
-.dark .Panel .PanelTitle {
+    background: #262626;
     color: #e0e0e0;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.dark .Panel .actionButton {
-    background: radial-gradient(#c8c8c8, #b8b8b8);
-}
-
-.dark .Panel .actionButton:active {
-    background: radial-gradient(#b8b8b8, #c8c8c8);
-}
-
-.dark .ScrollBar,
-.ScrollHandler {
-    position: absolute;
-}
-
-.dark .ScrollBar {
-    background: transparent;
-    box-shadow: inset 2px 2px 2px #10101018,
-        -1px -1px 0 #202020;
-}
-
-.dark .ScrollHandler {
-    background: linear-gradient(#303030, #3a3a3a);
-    box-shadow: inset -1px -1px 0 #202020,
-        inset 1px 1px 0 #606060;
-}
-
-.dark .ScrollHandler:active {
-    background: linear-gradient(#3a3a3a, #303030);
-    box-shadow: inset -1px -1px 0 #606060,
-        inset 1px 1px 0 #202020;
 }
 
 .dark input {
-    box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.3),
-        inset -1px -1px 0px rgba(255, 255, 255, 0.3);
-    background: #3a3a3a;
-    color: #f0f0f0;
+    background: #b5b5b5;
 }
 
 .dark input:focus {
-    box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.6),
-        inset -1px -1px 1px rgba(255, 255, 255, 0.6);
-    
+    background: #d5d5d5;
+}
+
+/* TabPane */
+
+.dark .TabPaneContentArea,
+.dark .TabPaneLabel.selected {
+    background: #5e5e5e;
+}
+
+.dark .TabPaneLabel.selected {
+    text-shadow: 1px 1px #0e0e0e;
+}
+
+/* Part */
+
+.dark .TabPane.activePart .TabPaneLabel.selected {
+    box-shadow: inset 0px 2px 0px #f0a050;
+}
+
+.dark .TabPane.activePart .TabPaneContentArea,
+.dark .TabPane.activePart .TabPaneLabel.selected {
+    background: #6e6e6e;
+}
+
+.dark .ViewerView .FilteredViewer {
+    background: #3f3f3f;
+}
+
+.dark .ViewerView {
+    color: orange;
+}
+
+/* Scroll Bar */
+
+.dark .ScrollBar,
+.dark .ScrollHandler {
+    background: transparent;
+}
+
+.dark .ScrollHandler {
+    background: #858585;
+}
+
+.dark .ScrollHandler:hover {
+    background: #585858;
+}
+
+.dark .ScrollHandler:active {
+    background: #282828;
+}
+
+/* Property Page */
+
+
+.dark .PropertyTitleArea {
+    background: linear-gradient(#343434, #323232);
+}
+
+.dark .PropertyTitleArea label {
+    font-weight: bold;
+}
+
+.dark .PropertySectionPane {
+    background: #3f3f3f;
 }

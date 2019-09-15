@@ -1,199 +1,86 @@
+/*
+
+Rules to provide the dark colors
+
+Important:   
+    - No layout information should be provided.
+    - To layout a control, see controls.css.
+    - To layout a workbench UI, see workbench.css
+
+*/
+
 .light body {
     background: #a2a2a2;
-    color: #434343;
-}
-
-/* toolbar */
-
-
-.light button {
-    background: linear-gradient(#c8c8c8, #b8b8b8);
-    border-color: #909090;
-    color: #f0f0f0;
-    text-shadow:
-        -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-
-    border-left-color: #d0d0d0;
-    border-top-color: #d0d0d0;
-    border-right-color: #909090;
-    border-bottom-color: #909090;
-}
-
-.light button:active {
-    background: linear-gradient(#b8b8b8, #c8c8c8);
-    border-left-color: #909090;
-    border-top-color: #909090;
-    border-right-color: #d0d0d0;
-    border-bottom-color: #d0d0d0;
-}
-
-
-/* controls */
-
-/* panel */
-
-.light .Panel {
-    background: #d2d2d2;
-}
-
-.light .Panel.activePart {
-    background: #e2e2e2;
-}
-
-.light .PanelClientArea {
-    background: #c2c2c2;
-}
-
-.light .activePart .PanelClientArea {
-    background: #c7c7c7;
-}
-
-.light .Panel,
-.light .PanelClientArea,
-.light .PanelTitle, 
-.light .TabPaneTitleBar {
-    box-shadow: -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-}
-
-.light .PanelClientArea {
-    box-shadow: inset 2px 2px 2px #40404008,
-        inset -2px 2px 2px #40404008,
-        inset 2px -2px 2px #40404008,
-        inset -2px -2px 2px #40404008,
-        -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-}
-
-.light .Panel .actionButton {
-    border-color: #909090;
-}
-
-.light .Panel .PanelTitle, .light .TabPaneTitleBar {
-    background: #b8b8b8;
-    background: linear-gradient(#d8d8d8, #b8b8b8);
-    color: #606060;
-    text-shadow: 0px 2px 2px #e0e0e0;
-}
-
-.light .activePart .PanelTitle {
-    background: linear-gradient(#e4e4e4, #c4c4c4);
-}
-
-.light .Panel .actionButton {
-    background: radial-gradient(#c8c8c8, #b8b8b8);
-}
-
-.light .Panel .actionButton:active {
-    background: radial-gradient(#b8b8b8, #c8c8c8);
-}
-
-
-.light .TabPaneLabel {
-    padding: 5px 1em;
-    box-sizing: border-box;
-}
-
-.light .TabPaneLabel.selected {
-    background: linear-gradient(#d2d2d2, #b2b2b2);
-    border: solid #909090;
-    border-width: 0.5px;   
-    border-bottom: none;
-    border-top: none;
-    margin-bottom: 1px;
-    padding: 5px calc(1em - 1px);
-    box-sizing: border-box;
-    z-index: 1;
-}
-
-.light .TabPaneContentArea {
-    background: #d2d2d2;
-    box-shadow: -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-    padding: 5px;
-    box-sizing: border-box;
-}
-
-.light .TabPaneContentArea .ContentArea {
-    background: #c2c2c2;
-}
-
-.light .TabPaneContentArea .ContentArea.selected {
-    box-shadow: -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-}
-
-.light .ScrollBar,
-.ScrollHandler {
-    position: absolute;
-}
-
-.light .ScrollBar {
-    background: transparent;
-    box-shadow: inset 2px 2px 2px #40404018,
-        -1px -1px 0 #909090;
-}
-
-.light .ScrollHandler {
-    background: linear-gradient(#c8c8c8, #b8b8b8);
-    box-shadow: inset -1px -1px 0 #909090,
-        inset 1px 1px 0 #e0e0e0;
-}
-
-.light .ScrollHandler:active {
-    background: linear-gradient(#b0b0b0, #c0c0c0);
-    box-shadow: inset -1px -1px 0 #e0e0e0,
-        inset 1px 1px 0 #909090;
+    color: #0e0e0e;
 }
 
 .light input {
-    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3),
-        inset -1px -1px 1px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(#b0b0b0, #c0c0c0);
+    background: #cfcfcf;
+    border: solid 1px #a0a0a0;
 }
 
 .light input:focus {
-    background: linear-gradient(#a8a8a8, #c8c8c8);
+    background: #f6f6f6;
 }
 
-/* PropertyPage */
+/* TabPane */
+
+.light .TabPaneContentArea,
+.light .TabPaneLabel.selected {
+    background: #bdbdbd;
+}
+
+.light .TabPaneLabel.selected {
+    text-shadow: 1px 1px #f0f0f0;
+}
+
+/* Part */
+
+.light .TabPane.activePart .TabPaneLabel.selected {
+    box-shadow: inset 0px 2px 0px #4242ff;
+}
+
+.light .TabPane.activePart .TabPaneContentArea,
+.light .TabPane.activePart .TabPaneLabel.selected {
+    background: #cacaca;
+}
+
+.light .ViewerView .FilteredViewer {
+    background: #dadada;
+    border: solid 1px #e0e0e0;
+}
+
+/* Scroll Bar */
+
+.light .ScrollBar,
+.light .ScrollHandler {
+    background: transparent;
+}
+
+.light .ScrollHandler {
+    background: #858585;
+}
+
+.light .ScrollHandler:hover {
+    background: #585858;
+}
+
+.light .ScrollHandler:active {
+    background: #484848;
+}
+
+/* Property Page */
+
 
 .light .PropertyTitleArea {
-    background: #b8b8b8;
-    background: linear-gradient(#bfbfbf, #afafaf);
-    color: #ffffff;
-
-    box-shadow: inset 2px 2px 2px #40404008,
-        inset -2px 2px 2px #40404008,
-        inset 2px -2px 2px #40404008,
-        inset -2px -2px 2px #40404008,
-        -1px -1px 0 #909090,
-        1px -1px 0 #909090,
-        -1px 1px 0 #909090,
-        1px 1px 0 #909090;
-
-    color: #606060;
-    text-shadow: 0px 2px 2px #cfcfcf;
+    background: linear-gradient(#d5d5d5, #aaaaaa);
 }
 
-/* sections */
+.light .PropertyTitleArea label {
+    text-shadow: 1px 1px #e0e0e0;
+}
 
-.light .PreviewBackground {
-    background: #4a4a4a;
-    background: #a0a0a0;
-    box-shadow:
-        inset 4px 0px 5px rgba(0, 0, 0, 0.2),
-        inset 0px 4px 5px rgba(0, 0, 0, 0.2),
-        inset -4px 0px 5px rgba(0, 0, 0, 0.2)
+.light .PropertySectionPane {
+    background: #d5d5d5;
+    border: solid 1px #e0e0e0;
 }
