@@ -17,7 +17,7 @@ namespace phasereditor2d.ui.controls {
             this._children = [];
             this._element = document.createElement(tagName);
             this._element["__control"] = this;
-            this.addClass("control", ...classList);
+            this.addClass("Control", ...classList);
             this._layout = null;
             this._container = null;
             this._scrollY = 0;

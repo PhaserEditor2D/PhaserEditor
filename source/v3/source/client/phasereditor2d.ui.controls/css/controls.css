@@ -14,7 +14,7 @@ input {
     user-select: text !important;
 }
 
-.control {
+.Control {
     position: absolute;
     box-sizing: border-box;
 }
