@@ -188,7 +188,7 @@ namespace phasereditor2d.ui.controls.viewers {
             if (selChanged) {
                 this.repaint();
                 this.fireSelectionChanged();
-                this._lastSelectedItemIndex = item? item.index : 0;
+                this._lastSelectedItemIndex = item ? item.index : 0;
             }
         }
 
@@ -247,27 +247,21 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         async repaint() {
-            try {
+            this.prepareFiltering();
 
-                this.prepareFiltering();
+            this.repaint2();
 
+            const result = await this.preload();
+
+            if (result === PreloadResult.RESOURCES_LOADED) {
                 this.repaint2();
-
-                const result = await this.preload();
-
-                if (result === PreloadResult.RESOURCES_LOADED) {
-                    this.repaint2();
-                }
-
-                this.updateScrollPane();
-            } catch (e) {
-                console.log(e);
             }
+
+            this.updateScrollPane();
         }
 
         private updateScrollPane() {
             const pane = this.getContainer().getContainer();
-            console.log(pane.getElement().classList);
             if (pane instanceof ScrollPane) {
                 pane.updateScroll(this._contentHeight);
             }

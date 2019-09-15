@@ -69,33 +69,65 @@ namespace phasereditor2d.ui.ide {
             if (!part) {
                 return;
             }
-            
+
             const old = this._activePart;
             this._activePart = part;
 
             if (old) {
-                old.removeClass("activePart");
+                this.toggleActivePart(old);
                 this.dispatchEvent(new CustomEvent(PART_DEACTIVATE_EVENT, { detail: old }));
             }
 
             if (part) {
-                part.addClass("activePart")
+                this.toggleActivePart(part);
             }
 
             this.dispatchEvent(new CustomEvent(PART_ACTIVATE_EVENT, { detail: part }));
         }
 
-        findPart(element: HTMLElement): Part {
-            return this.findPart2(element);
+        private toggleActivePart(part: Part) {
+            const tabPane = this.findTabPane(part.getElement());
+
+            if (part.containsClass("activePart")) {
+                part.removeClass("activePart");
+                tabPane.removeClass("activePart");
+            } else {
+                part.addClass("activePart");
+                tabPane.addClass("activePart");
+            }
         }
 
-        private findPart2(element: HTMLElement): Part {
-            if ((<any>element).__part) {
-                return (<any>element).__part;
+        private findTabPane(element : HTMLElement) {
+            if (element) {
+                const control = controls.Control.getControlOf(element);
+                if (control && control instanceof controls.TabPane) {
+                    return control;
+                }
+                return this.findTabPane(element.parentElement);
+            }
+            return null;
+        }
+
+        findPart(element: HTMLElement): Part {
+            if (element["__part"]) {
+                return element["__part"];
+            }
+
+            const control = controls.Control.getControlOf(element);
+
+            if (control && control instanceof controls.TabPane) {
+                const tabPane = <controls.TabPane>control;
+                const content = tabPane.getSelectedTabContent();
+                if (content) {
+                    const element = content.getElement().children.item(0);
+                    if (element["__part"]) {
+                        return element["__part"];
+                    }
+                }
             }
 
             if (element.parentElement) {
-                return this.findPart2(element.parentElement);
+                return this.findPart(element.parentElement);
             }
 
             return null;
@@ -129,7 +161,7 @@ namespace phasereditor2d.ui.ide {
             return null;
         }
 
-        getFileImage(file : core.io.FilePath) {
+        getFileImage(file: core.io.FilePath) {
             return controls.Controls.getImage(file.getUrl(), file.getId());
         }
 

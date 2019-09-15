@@ -253,6 +253,9 @@ var phasereditor2d;
                 removeClass(...tokens) {
                     this._element.classList.remove(...tokens);
                 }
+                containsClass(className) {
+                    return this._element.classList.contains(className);
+                }
                 getElement() {
                     return this._element;
                 }
@@ -704,7 +707,7 @@ var phasereditor2d;
                     this._selection = [];
                     this.getElement().setAttribute("id", id);
                     this.getElement().classList.add("Part");
-                    this.getElement().__part = this;
+                    this.getElement()["__part"] = this;
                 }
                 getTitle() {
                     return this._title;
@@ -786,6 +789,18 @@ var phasereditor2d;
                     this._tabLabelList[index].classList.add("selected");
                     this._tabContentList[index].addClass("selected");
                     this._selectedIndex = index;
+                }
+                getSelectedTabContent() {
+                    if (this._selectedIndex >= 0) {
+                        return this._tabContentList[this._selectedIndex];
+                    }
+                    return null;
+                }
+                getSelectedTabLabel() {
+                    if (this._selectedIndex >= 0) {
+                        return this._tabLabelList[this._selectedIndex];
+                    }
+                    return null;
                 }
                 createTabContent(index) {
                     const contentArea = new controls.Control("div", "ContentArea");
@@ -1078,23 +1093,52 @@ var phasereditor2d;
                     const old = this._activePart;
                     this._activePart = part;
                     if (old) {
-                        old.removeClass("activePart");
+                        this.toggleActivePart(old);
                         this.dispatchEvent(new CustomEvent(ide.PART_DEACTIVATE_EVENT, { detail: old }));
                     }
                     if (part) {
-                        part.addClass("activePart");
+                        this.toggleActivePart(part);
                     }
                     this.dispatchEvent(new CustomEvent(ide.PART_ACTIVATE_EVENT, { detail: part }));
                 }
-                findPart(element) {
-                    return this.findPart2(element);
+                toggleActivePart(part) {
+                    const tabPane = this.findTabPane(part.getElement());
+                    if (part.containsClass("activePart")) {
+                        part.removeClass("activePart");
+                        tabPane.removeClass("activePart");
+                    }
+                    else {
+                        part.addClass("activePart");
+                        tabPane.addClass("activePart");
+                    }
                 }
-                findPart2(element) {
-                    if (element.__part) {
-                        return element.__part;
+                findTabPane(element) {
+                    if (element) {
+                        const control = ui.controls.Control.getControlOf(element);
+                        if (control && control instanceof ui.controls.TabPane) {
+                            return control;
+                        }
+                        return this.findTabPane(element.parentElement);
+                    }
+                    return null;
+                }
+                findPart(element) {
+                    if (element["__part"]) {
+                        return element["__part"];
+                    }
+                    const control = ui.controls.Control.getControlOf(element);
+                    if (control && control instanceof ui.controls.TabPane) {
+                        const tabPane = control;
+                        const content = tabPane.getSelectedTabContent();
+                        if (content) {
+                            const element = content.getElement().children.item(0);
+                            if (element["__part"]) {
+                                return element["__part"];
+                            }
+                        }
                     }
                     if (element.parentElement) {
-                        return this.findPart2(element.parentElement);
+                        return this.findPart(element.parentElement);
                     }
                     return null;
                 }
@@ -1738,22 +1782,16 @@ var phasereditor2d;
                         }
                     }
                     async repaint() {
-                        try {
-                            this.prepareFiltering();
+                        this.prepareFiltering();
+                        this.repaint2();
+                        const result = await this.preload();
+                        if (result === controls.PreloadResult.RESOURCES_LOADED) {
                             this.repaint2();
-                            const result = await this.preload();
-                            if (result === controls.PreloadResult.RESOURCES_LOADED) {
-                                this.repaint2();
-                            }
-                            this.updateScrollPane();
                         }
-                        catch (e) {
-                            console.log(e);
-                        }
+                        this.updateScrollPane();
                     }
                     updateScrollPane() {
                         const pane = this.getContainer().getContainer();
-                        console.log(pane.getElement().classList);
                         if (pane instanceof controls.ScrollPane) {
                             pane.updateScroll(this._contentHeight);
                         }
@@ -2204,28 +2242,13 @@ var phasereditor2d;
                     }
                     async preload() {
                         const list = [];
-                        try {
-                            this.visitObjects(obj => {
-                                try {
-                                    const provider = this.getCellRendererProvider();
-                                    list.push(provider.preload(obj).then(r => {
-                                        try {
-                                            const renderer = provider.getCellRenderer(obj);
-                                            return renderer.preload(obj);
-                                        }
-                                        catch (e) {
-                                            console.log(e);
-                                        }
-                                    }));
-                                }
-                                catch (e) {
-                                    console.log(e);
-                                }
-                            });
-                        }
-                        catch (e) {
-                            console.log(e);
-                        }
+                        this.visitObjects(obj => {
+                            const provider = this.getCellRendererProvider();
+                            list.push(provider.preload(obj).then(r => {
+                                const renderer = provider.getCellRenderer(obj);
+                                return renderer.preload(obj);
+                            }));
+                        });
                         return controls.Controls.resolveAll(list);
                     }
                     paint() {
@@ -2846,7 +2869,6 @@ var phasereditor2d;
                         this._scrollHandler.style.display = "block";
                         const h = Math.max(10, b.height / this._clientContentHeight * b.height);
                         const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
-                        console.log("set " + h);
                         controls.setElementBounds(this._scrollHandler, {
                             y: y,
                             height: h

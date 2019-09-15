@@ -68,6 +68,20 @@ namespace phasereditor2d.ui.controls {
             this._selectedIndex = index;
         }
 
+        getSelectedTabContent() {
+            if (this._selectedIndex >= 0) {
+                return this._tabContentList[this._selectedIndex];
+            }
+            return null;
+        }
+
+        getSelectedTabLabel() {
+            if (this._selectedIndex >= 0) {
+                return this._tabLabelList[this._selectedIndex];
+            }
+            return null;
+        }
+
         private createTabContent(index: number) {
             const contentArea = new Control("div", "ContentArea");
             contentArea.add(this._tabGetContentList[index]());

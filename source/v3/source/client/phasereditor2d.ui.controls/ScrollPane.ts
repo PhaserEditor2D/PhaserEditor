@@ -147,8 +147,6 @@ namespace phasereditor2d.ui.controls {
                 const h = Math.max(10, b.height / this._clientContentHeight * b.height);
                 const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
 
-                console.log("set " + h);
-
                 controls.setElementBounds(this._scrollHandler, {
                     y: y,
                     height: h

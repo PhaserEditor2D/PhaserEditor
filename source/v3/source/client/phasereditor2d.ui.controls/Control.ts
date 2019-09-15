@@ -24,7 +24,7 @@ namespace phasereditor2d.ui.controls {
             this._layoutChildren = true;
         }
 
-        static getControlOf(element : HTMLElement) : Control {
+        static getControlOf(element: HTMLElement): Control {
             return element["__control"];
         }
 
@@ -76,6 +76,11 @@ namespace phasereditor2d.ui.controls {
         removeClass(...tokens: string[]): void {
             this._element.classList.remove(...tokens);
         }
+
+        containsClass(className : string) {
+            return this._element.classList.contains(className);
+        }
+
 
         getElement() {
             return this._element;

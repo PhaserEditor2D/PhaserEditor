@@ -20,6 +20,7 @@
 }
 
 /* TabPane */
+
 .dark2 .TabPaneContentArea,
 .dark2 .TabPaneLabel.selected {
     background: #5e5e5e;
@@ -34,6 +35,7 @@
     text-shadow: 1px 1px #0e0e0e;
 }
 
+
 .dark2 .TabPaneContentArea {
     border-radius: 0 0 3px 3px;
 }
@@ -46,6 +48,15 @@
 }
 
 /* Part */
+
+.dark2 .TabPane.activePart .TabPaneLabel {
+    box-shadow: inset 0px 2px 0px #f0a050;
+}
+
+.dark2 .TabPane.activePart .TabPaneContentArea,
+.dark2 .TabPane.activePart .TabPaneLabel.selected {
+    background: #6e6e6e;
+}
 
 .dark2 .Part {
     width: 100%;

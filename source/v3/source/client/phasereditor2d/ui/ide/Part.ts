@@ -19,7 +19,7 @@ namespace phasereditor2d.ui.ide {
 
             this.getElement().classList.add("Part");
             
-            (<any>this.getElement()).__part = this;
+            this.getElement()["__part"] = this;
         }
 
         getTitle() {
