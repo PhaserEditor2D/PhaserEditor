@@ -6,7 +6,7 @@
 /// <reference path="../../ViewPart.ts"/>
 /// <reference path="../../ViewerView.ts"/>
 
-namespace phasereditor2d.ui.ide.files {
+namespace phasereditor2d.ui.ide.views.files {
 
     import viewers = phasereditor2d.ui.controls.viewers;
 

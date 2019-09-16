@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.files {
+namespace phasereditor2d.ui.ide.views.files {
 
     export class ImageFileSection extends controls.properties.PropertySection<core.io.FilePath> {
 

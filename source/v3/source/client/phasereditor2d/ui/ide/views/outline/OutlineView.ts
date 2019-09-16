@@ -1,4 +1,4 @@
-/// <reference path="../ViewPart.ts"/>
+/// <reference path="../../ViewPart.ts"/>
 
 namespace phasereditor2d.ui.ide.outline {
 

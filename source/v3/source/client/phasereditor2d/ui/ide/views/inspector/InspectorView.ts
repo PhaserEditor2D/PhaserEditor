@@ -1,7 +1,7 @@
-/// <reference path="../ViewPart.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts"/>
 
 namespace phasereditor2d.ui.ide.inspector {
 

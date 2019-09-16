@@ -372,7 +372,7 @@ var phasereditor2d;
                 constructor() {
                     super();
                     this._outlineView = new ide.outline.OutlineView();
-                    this._filesView = new ide.files.FilesView();
+                    this._filesView = new ide.views.files.FilesView();
                     this._inspectorView = new ide.inspector.InspectorView();
                     this._blocksView = new ide.blocks.BlocksView();
                     this._editorArea = new ide.EditorArea();
@@ -1256,8 +1256,8 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../Part.ts"/>
-/// <reference path="../ViewPart.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1274,304 +1274,6 @@ var phasereditor2d;
                 }
                 blocks.BlocksView = BlocksView;
             })(blocks = ide.blocks || (ide.blocks = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var properties;
-            (function (properties) {
-                class PropertySectionPane extends controls.Control {
-                    constructor(page, section) {
-                        super();
-                        this._page = page;
-                        this._section = section;
-                        this.addClass("PropertySectionPane");
-                    }
-                    createOrUpdateWithSelection() {
-                        if (!this._formArea) {
-                            this._titleArea = document.createElement("div");
-                            this._titleArea.classList.add("PropertyTitleArea");
-                            this._expandBtn = document.createElement("div");
-                            this._expandBtn.classList.add("expandBtn", "expanded");
-                            this._expandBtn.addEventListener("mouseup", () => this.toggleSection());
-                            this._titleArea.appendChild(this._expandBtn);
-                            const label = document.createElement("label");
-                            label.innerText = this._section.getTitle();
-                            label.addEventListener("mouseup", () => this.toggleSection());
-                            this._titleArea.appendChild(label);
-                            this._formArea = document.createElement("div");
-                            this._formArea.classList.add("PropertyFormArea");
-                            this._section.create(this._formArea);
-                            this.getElement().appendChild(this._titleArea);
-                            this.getElement().appendChild(this._formArea);
-                        }
-                        this._section.updateWithSelection();
-                    }
-                    isExpanded() {
-                        return this._expandBtn.classList.contains("expanded");
-                    }
-                    toggleSection() {
-                        if (this.isExpanded()) {
-                            this._expandBtn.classList.remove("expanded");
-                            this._expandBtn.classList.add("collapsed");
-                            this._formArea.style.display = "none";
-                        }
-                        else {
-                            this._expandBtn.classList.add("expanded");
-                            this._expandBtn.classList.remove("collapsed");
-                            this._formArea.style.display = "initial";
-                        }
-                        this._page.updateExpandStatus();
-                        this.getContainer().dispatchLayoutEvent();
-                    }
-                    getSection() {
-                        return this._section;
-                    }
-                    getFormArea() {
-                        return this._formArea;
-                    }
-                }
-                class PropertyPage extends controls.Control {
-                    constructor() {
-                        super("div");
-                        this.addClass("PropertyPage");
-                        this._sectionPanes = [];
-                        this._sectionPaneMap = new Map();
-                        this._selection = [];
-                    }
-                    build() {
-                        if (this._sectionProvider) {
-                            const list = [];
-                            this._sectionProvider.addSections(this, list);
-                            for (const section of list) {
-                                if (!this._sectionPaneMap.has(section.getId())) {
-                                    const pane = new PropertySectionPane(this, section);
-                                    this.add(pane);
-                                    this._sectionPaneMap.set(section.getId(), pane);
-                                    this._sectionPanes.push(pane);
-                                }
-                            }
-                        }
-                        this.updateWithSelection();
-                    }
-                    updateWithSelection() {
-                        const n = this._selection.length;
-                        for (const pane of this._sectionPanes) {
-                            const section = pane.getSection();
-                            let show = false;
-                            if (section.canEditNumber(n)) {
-                                show = true;
-                                for (const obj of this._selection) {
-                                    if (!section.canEdit(obj)) {
-                                        show = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (show) {
-                                pane.getElement().style.display = "grid";
-                                pane.createOrUpdateWithSelection();
-                            }
-                            else {
-                                pane.getElement().style.display = "none";
-                            }
-                        }
-                        this.updateExpandStatus();
-                    }
-                    updateExpandStatus() {
-                        let templateRows = "";
-                        for (const pane of this._sectionPanes) {
-                            if (pane.style.display !== "none") {
-                                pane.createOrUpdateWithSelection();
-                                if (pane.isExpanded()) {
-                                    templateRows += " " + (pane.getSection().isFillSpace() ? "1fr" : "min-content");
-                                }
-                                else {
-                                    templateRows += " min-content";
-                                }
-                            }
-                        }
-                        this.getElement().style.gridTemplateRows = templateRows + " ";
-                    }
-                    getSelection() {
-                        return this._selection;
-                    }
-                    setSelection(sel) {
-                        this._selection = sel;
-                        this.updateWithSelection();
-                    }
-                    setSectionProvider(provider) {
-                        this._sectionProvider = provider;
-                        this.build();
-                    }
-                    getSectionProvider() {
-                        return this._sectionProvider;
-                    }
-                }
-                properties.PropertyPage = PropertyPage;
-            })(properties = controls.properties || (controls.properties = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var properties;
-            (function (properties) {
-                class PropertySection {
-                    constructor(page, id, title, fillSpace = false) {
-                        this._page = page;
-                        this._id = id;
-                        this._title = title;
-                        this._fillSpace = fillSpace;
-                        this._updaters = [];
-                    }
-                    updateWithSelection() {
-                        for (const updater of this._updaters) {
-                            updater();
-                        }
-                    }
-                    addUpdater(updater) {
-                        this._updaters.push(updater);
-                    }
-                    isFillSpace() {
-                        return this._fillSpace;
-                    }
-                    getPage() {
-                        return this._page;
-                    }
-                    getSelection() {
-                        return this._page.getSelection();
-                    }
-                    getId() {
-                        return this._id;
-                    }
-                    getTitle() {
-                        return this._title;
-                    }
-                    create(parent) {
-                        this.createForm(parent);
-                    }
-                    flatValues_String(values) {
-                        return values.join(",");
-                    }
-                    createGridElement(parent, cols, simpleProps = true) {
-                        const div = document.createElement("div");
-                        div.classList.add("formGrid", "formGrid-cols-" + cols);
-                        if (simpleProps) {
-                            div.classList.add("formSimpleProps");
-                        }
-                        parent.appendChild(div);
-                        return div;
-                    }
-                    createLabel(parent, text = "") {
-                        const label = document.createElement("label");
-                        label.classList.add("formLabel");
-                        label.innerText = text;
-                        parent.appendChild(label);
-                        return label;
-                    }
-                    createText(parent, readOnly = false) {
-                        const text = document.createElement("input");
-                        text.type = "text";
-                        text.classList.add("formText");
-                        text.readOnly = readOnly;
-                        parent.appendChild(text);
-                        return text;
-                    }
-                }
-                properties.PropertySection = PropertySection;
-            })(properties = controls.properties || (controls.properties = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var properties;
-            (function (properties) {
-                class PropertySectionProvider {
-                }
-                properties.PropertySectionProvider = PropertySectionProvider;
-            })(properties = controls.properties || (controls.properties = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../ViewPart.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
-/// <reference path="../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var inspector;
-            (function (inspector) {
-                class InspectorView extends ide.ViewPart {
-                    constructor() {
-                        super("InspectorView");
-                        this.setTitle("Inspector");
-                        this._propertyPage = new ui.controls.properties.PropertyPage();
-                        this.add(this._propertyPage);
-                        this._selectionListener = (e) => this.onPartSelection();
-                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
-                    }
-                    layout() {
-                        this._propertyPage.dispatchLayoutEvent();
-                    }
-                    onWorkbenchPartActivate() {
-                        const part = ide.Workbench.getWorkbench().getActivePart();
-                        if (!part || part !== this && part !== this._activePart) {
-                            if (this._activePart) {
-                                this._activePart.removeEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
-                            }
-                            this._activePart = part;
-                            this._activePart.addEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
-                            this.onPartSelection();
-                        }
-                    }
-                    onPartSelection() {
-                        const sel = this._activePart.getSelection();
-                        const provider = this._activePart.getPropertyProvider();
-                        this._propertyPage.setSectionProvider(provider);
-                        this._propertyPage.setSelection(sel);
-                    }
-                }
-                inspector.InspectorView = InspectorView;
-            })(inspector = ide.inspector || (ide.inspector = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../ViewPart.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var outline;
-            (function (outline) {
-                class OutlineView extends ide.ViewPart {
-                    constructor() {
-                        super("outlineView");
-                        this.setTitle("Outline");
-                    }
-                }
-                outline.OutlineView = OutlineView;
-            })(outline = ide.outline || (ide.outline = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1975,34 +1677,68 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                var viewers = phasereditor2d.ui.controls.viewers;
-                class FileCellRenderer extends viewers.LabelCellRenderer {
-                    getImage(obj) {
-                        const file = obj;
-                        if (file.isFile()) {
-                            const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
-                            const icon = ide.Workbench.getWorkbench().getContentTypeIcon(ct);
-                            if (icon) {
-                                return icon;
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    var viewers = phasereditor2d.ui.controls.viewers;
+                    class FileCellRenderer extends viewers.LabelCellRenderer {
+                        getImage(obj) {
+                            const file = obj;
+                            if (file.isFile()) {
+                                const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                                const icon = ide.Workbench.getWorkbench().getContentTypeIcon(ct);
+                                if (icon) {
+                                    return icon;
+                                }
                             }
+                            else {
+                                return ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FOLDER);
+                            }
+                            return ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE);
                         }
-                        else {
-                            return ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FOLDER);
+                        preload(obj) {
+                            const file = obj;
+                            if (file.isFile()) {
+                                return ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
+                            }
+                            return super.preload(obj);
                         }
-                        return ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE);
                     }
-                    preload(obj) {
-                        const file = obj;
-                        if (file.isFile()) {
+                    files.FileCellRenderer = FileCellRenderer;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    class FileCellRendererProvider {
+                        getCellRenderer(file) {
+                            if (ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file) === ui.ide.CONTENT_TYPE_IMAGE) {
+                                return new files.FileImageRenderer();
+                            }
+                            return new files.FileCellRenderer();
+                        }
+                        preload(file) {
                             return ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
                         }
-                        return super.preload(obj);
                     }
-                }
-                files.FileCellRenderer = FileCellRenderer;
-            })(files = ide.files || (ide.files = {}));
+                    files.FileCellRendererProvider = FileCellRendererProvider;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2016,21 +1752,22 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                class FileCellRendererProvider {
-                    getCellRenderer(file) {
-                        if (ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file) === ui.ide.CONTENT_TYPE_IMAGE) {
-                            return new files.FileImageRenderer();
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    var viewers = phasereditor2d.ui.controls.viewers;
+                    class FileImageRenderer extends viewers.ImageCellRenderer {
+                        getLabel(file) {
+                            return file.getName();
                         }
-                        return new files.FileCellRenderer();
+                        getImage(file) {
+                            return ide.Workbench.getWorkbench().getFileImage(file);
+                        }
                     }
-                    preload(file) {
-                        return ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
-                    }
-                }
-                files.FileCellRendererProvider = FileCellRendererProvider;
-            })(files = ide.files || (ide.files = {}));
+                    files.FileImageRenderer = FileImageRenderer;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2044,19 +1781,190 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                var viewers = phasereditor2d.ui.controls.viewers;
-                class FileImageRenderer extends viewers.ImageCellRenderer {
-                    getLabel(file) {
-                        return file.getName();
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    class FileLabelProvider {
+                        getLabel(obj) {
+                            return obj.getName();
+                        }
                     }
-                    getImage(file) {
-                        return ide.Workbench.getWorkbench().getFileImage(file);
+                    files.FileLabelProvider = FileLabelProvider;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var properties;
+            (function (properties) {
+                class PropertySection {
+                    constructor(page, id, title, fillSpace = false) {
+                        this._page = page;
+                        this._id = id;
+                        this._title = title;
+                        this._fillSpace = fillSpace;
+                        this._updaters = [];
+                    }
+                    updateWithSelection() {
+                        for (const updater of this._updaters) {
+                            updater();
+                        }
+                    }
+                    addUpdater(updater) {
+                        this._updaters.push(updater);
+                    }
+                    isFillSpace() {
+                        return this._fillSpace;
+                    }
+                    getPage() {
+                        return this._page;
+                    }
+                    getSelection() {
+                        return this._page.getSelection();
+                    }
+                    getId() {
+                        return this._id;
+                    }
+                    getTitle() {
+                        return this._title;
+                    }
+                    create(parent) {
+                        this.createForm(parent);
+                    }
+                    flatValues_String(values) {
+                        return values.join(",");
+                    }
+                    createGridElement(parent, cols, simpleProps = true) {
+                        const div = document.createElement("div");
+                        div.classList.add("formGrid", "formGrid-cols-" + cols);
+                        if (simpleProps) {
+                            div.classList.add("formSimpleProps");
+                        }
+                        parent.appendChild(div);
+                        return div;
+                    }
+                    createLabel(parent, text = "") {
+                        const label = document.createElement("label");
+                        label.classList.add("formLabel");
+                        label.innerText = text;
+                        parent.appendChild(label);
+                        return label;
+                    }
+                    createText(parent, readOnly = false) {
+                        const text = document.createElement("input");
+                        text.type = "text";
+                        text.classList.add("formText");
+                        text.readOnly = readOnly;
+                        parent.appendChild(text);
+                        return text;
                     }
                 }
-                files.FileImageRenderer = FileImageRenderer;
-            })(files = ide.files || (ide.files = {}));
+                properties.PropertySection = PropertySection;
+            })(properties = controls.properties || (controls.properties = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var properties;
+            (function (properties) {
+                class PropertySectionProvider {
+                }
+                properties.PropertySectionProvider = PropertySectionProvider;
+            })(properties = controls.properties || (controls.properties = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySection.ts" />
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    class FilePropertySectionProvider extends ui.controls.properties.PropertySectionProvider {
+                        addSections(page, sections) {
+                            sections.push(new files.FileSection(page));
+                            sections.push(new files.ImageFileSection(page));
+                            sections.push(new files.ManyImageFileSection(page));
+                        }
+                    }
+                    files.FilePropertySectionProvider = FilePropertySectionProvider;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    class FileSection extends ui.controls.properties.PropertySection {
+                        constructor(page) {
+                            super(page, "files.FileSection", "File");
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 2);
+                            {
+                                // Name
+                                this.createLabel(comp, "Name");
+                                const text = this.createText(comp, true);
+                                this.addUpdater(() => {
+                                    text.value = this.flatValues_String(this.getSelection().map(file => file.getName()));
+                                });
+                            }
+                            {
+                                // Full Name
+                                this.createLabel(comp, "Full Name");
+                                const text = this.createText(comp, true);
+                                this.addUpdater(() => {
+                                    text.value = this.flatValues_String(this.getSelection().map(file => file.getFullName()));
+                                });
+                            }
+                            {
+                                // Size
+                                this.createLabel(comp, "Size");
+                                const text = this.createText(comp, true);
+                                this.addUpdater(() => {
+                                    text.value = this.getSelection()
+                                        .map(f => f.getSize())
+                                        .reduce((a, b) => a + b)
+                                        .toString();
+                                });
+                            }
+                        }
+                        canEdit(obj) {
+                            return obj instanceof phasereditor2d.core.io.FilePath;
+                        }
+                        canEditNumber(n) {
+                            return n > 0;
+                        }
+                    }
+                    files.FileSection = FileSection;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2070,121 +1978,28 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                class FileLabelProvider {
-                    getLabel(obj) {
-                        return obj.getName();
-                    }
-                }
-                files.FileLabelProvider = FileLabelProvider;
-            })(files = ide.files || (ide.files = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var files;
-            (function (files) {
-                class FilePropertySectionProvider extends ui.controls.properties.PropertySectionProvider {
-                    addSections(page, sections) {
-                        sections.push(new files.FileSection(page));
-                        sections.push(new files.ImageFileSection(page));
-                        sections.push(new files.ManyImageFileSection(page));
-                    }
-                }
-                files.FilePropertySectionProvider = FilePropertySectionProvider;
-            })(files = ide.files || (ide.files = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var files;
-            (function (files) {
-                class FileSection extends ui.controls.properties.PropertySection {
-                    constructor(page) {
-                        super(page, "files.FileSection", "File");
-                    }
-                    createForm(parent) {
-                        const comp = this.createGridElement(parent, 2);
-                        {
-                            // Name
-                            this.createLabel(comp, "Name");
-                            const text = this.createText(comp, true);
-                            this.addUpdater(() => {
-                                text.value = this.flatValues_String(this.getSelection().map(file => file.getName()));
-                            });
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    var io = phasereditor2d.core.io;
+                    class FileTreeContentProvider {
+                        getRoots(input) {
+                            if (input instanceof io.FilePath) {
+                                return [input];
+                            }
+                            if (input instanceof Array) {
+                                return input;
+                            }
+                            return this.getChildren(input);
                         }
-                        {
-                            // Full Name
-                            this.createLabel(comp, "Full Name");
-                            const text = this.createText(comp, true);
-                            this.addUpdater(() => {
-                                text.value = this.flatValues_String(this.getSelection().map(file => file.getFullName()));
-                            });
-                        }
-                        {
-                            // Size
-                            this.createLabel(comp, "Size");
-                            const text = this.createText(comp, true);
-                            this.addUpdater(() => {
-                                text.value = this.getSelection()
-                                    .map(f => f.getSize())
-                                    .reduce((a, b) => a + b)
-                                    .toString();
-                            });
+                        getChildren(parent) {
+                            return parent.getFiles();
                         }
                     }
-                    canEdit(obj) {
-                        return obj instanceof phasereditor2d.core.io.FilePath;
-                    }
-                    canEditNumber(n) {
-                        return n > 0;
-                    }
-                }
-                files.FileSection = FileSection;
-            })(files = ide.files || (ide.files = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
-/// <reference path="../../Part.ts"/>
-/// <reference path="../../ViewPart.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var files;
-            (function (files) {
-                var io = phasereditor2d.core.io;
-                class FileTreeContentProvider {
-                    getRoots(input) {
-                        if (input instanceof io.FilePath) {
-                            return [input];
-                        }
-                        if (input instanceof Array) {
-                            return input;
-                        }
-                        return this.getChildren(input);
-                    }
-                    getChildren(parent) {
-                        return parent.getFiles();
-                    }
-                }
-                files.FileTreeContentProvider = FileTreeContentProvider;
-            })(files = ide.files || (ide.files = {}));
+                    files.FileTreeContentProvider = FileTreeContentProvider;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2201,34 +2016,37 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                var viewers = phasereditor2d.ui.controls.viewers;
-                class FilesView extends ide.ViewerView {
-                    constructor() {
-                        super("filesView");
-                        this._propertyProvider = new files.FilePropertySectionProvider();
-                        this.setTitle("Files");
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    var viewers = phasereditor2d.ui.controls.viewers;
+                    class FilesView extends ide.ViewerView {
+                        constructor() {
+                            super("filesView");
+                            this._propertyProvider = new files.FilePropertySectionProvider();
+                            this.setTitle("Files");
+                        }
+                        createViewer() {
+                            return new viewers.TreeViewer();
+                        }
+                        getPropertyProvider() {
+                            return this._propertyProvider;
+                        }
+                        createPart() {
+                            super.createPart();
+                            const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
+                            const viewer = this._viewer;
+                            viewer.setLabelProvider(new files.FileLabelProvider());
+                            viewer.setContentProvider(new files.FileTreeContentProvider());
+                            viewer.setCellRendererProvider(new files.FileCellRendererProvider());
+                            viewer.setInput(root);
+                            viewer.repaint();
+                        }
                     }
-                    createViewer() {
-                        return new viewers.TreeViewer();
-                    }
-                    getPropertyProvider() {
-                        return this._propertyProvider;
-                    }
-                    createPart() {
-                        super.createPart();
-                        const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
-                        const viewer = this._viewer;
-                        viewer.setLabelProvider(new files.FileLabelProvider());
-                        viewer.setContentProvider(new files.FileTreeContentProvider());
-                        viewer.setCellRendererProvider(new files.FileCellRendererProvider());
-                        viewer.setInput(root);
-                        viewer.repaint();
-                    }
-                }
-                files.FilesView = FilesView;
-            })(files = ide.files || (ide.files = {}));
+                    files.FilesView = FilesView;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2238,40 +2056,43 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                class ImageFileSection extends ui.controls.properties.PropertySection {
-                    constructor(page) {
-                        super(page, "files.ImagePreviewSection", "Image", true);
-                    }
-                    createForm(parent) {
-                        parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
-                        const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
-                        this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
-                            imgControl.resizeTo();
-                        });
-                        parent.appendChild(imgControl.getElement());
-                        setTimeout(() => imgControl.resizeTo(), 1);
-                        this.addUpdater(() => {
-                            const file = this.getSelection()[0];
-                            const img = ide.Workbench.getWorkbench().getFileImage(file);
-                            imgControl.setImage(img);
-                            setTimeout(() => imgControl.resizeTo(), 1);
-                        });
-                    }
-                    canEdit(obj) {
-                        if (obj instanceof phasereditor2d.core.io.FilePath) {
-                            const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                            return ct === ide.CONTENT_TYPE_IMAGE;
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    class ImageFileSection extends ui.controls.properties.PropertySection {
+                        constructor(page) {
+                            super(page, "files.ImagePreviewSection", "Image", true);
                         }
-                        return false;
+                        createForm(parent) {
+                            parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
+                            const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
+                            this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                                imgControl.resizeTo();
+                            });
+                            parent.appendChild(imgControl.getElement());
+                            setTimeout(() => imgControl.resizeTo(), 1);
+                            this.addUpdater(() => {
+                                const file = this.getSelection()[0];
+                                const img = ide.Workbench.getWorkbench().getFileImage(file);
+                                imgControl.setImage(img);
+                                setTimeout(() => imgControl.resizeTo(), 1);
+                            });
+                        }
+                        canEdit(obj) {
+                            if (obj instanceof phasereditor2d.core.io.FilePath) {
+                                const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
+                                return ct === ide.CONTENT_TYPE_IMAGE;
+                            }
+                            return false;
+                        }
+                        canEditNumber(n) {
+                            return n == 1;
+                        }
                     }
-                    canEditNumber(n) {
-                        return n == 1;
-                    }
-                }
-                files.ImageFileSection = ImageFileSection;
-            })(files = ide.files || (ide.files = {}));
+                    files.ImageFileSection = ImageFileSection;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2628,61 +2449,272 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var files;
-            (function (files) {
-                class GridImageFileViewer extends ui.controls.viewers.TreeViewer {
-                    constructor(...classList) {
-                        super("PreviewBackground", ...classList);
-                        this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
-                        this.setLabelProvider(new files.FileLabelProvider());
-                        this.setCellRendererProvider(new files.FileCellRendererProvider());
-                        this.setTreeRenderer(new ui.controls.viewers.GridTreeRenderer(this, true));
-                        this.getCanvas().classList.add("PreviewBackground");
-                    }
-                }
-                class ManyImageFileSection extends ui.controls.properties.PropertySection {
-                    constructor(page) {
-                        super(page, "files.ManyImageFileSection", "Images", true);
-                    }
-                    createForm(parent) {
-                        parent.classList.add("ManyImagePreviewFormArea");
-                        const viewer = new GridImageFileViewer();
-                        const filteredViewer = new ui.controls.viewers.FilteredViewer(viewer);
-                        filteredViewer.setHandlePosition(false);
-                        filteredViewer.style.position = "relative";
-                        filteredViewer.style.height = "100%";
-                        parent.appendChild(filteredViewer.getElement());
-                        this.resizeTo(filteredViewer, parent);
-                        this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
-                            this.resizeTo(filteredViewer, parent);
-                        });
-                        this.addUpdater(() => {
-                            viewer.setInput(this.getSelection());
-                            this.resizeTo(filteredViewer, parent);
-                        });
-                    }
-                    resizeTo(filteredViewer, parent) {
-                        setTimeout(() => {
-                            filteredViewer.setBounds({
-                                width: parent.clientWidth,
-                                height: parent.clientHeight
-                            });
-                            filteredViewer.getViewer().repaint();
-                        }, 10);
-                    }
-                    canEdit(obj) {
-                        if (obj instanceof phasereditor2d.core.io.FilePath) {
-                            const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                            return ct === ide.CONTENT_TYPE_IMAGE;
+            var views;
+            (function (views) {
+                var files;
+                (function (files) {
+                    class GridImageFileViewer extends ui.controls.viewers.TreeViewer {
+                        constructor(...classList) {
+                            super("PreviewBackground", ...classList);
+                            this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
+                            this.setLabelProvider(new files.FileLabelProvider());
+                            this.setCellRendererProvider(new files.FileCellRendererProvider());
+                            this.setTreeRenderer(new ui.controls.viewers.GridTreeRenderer(this, true));
+                            this.getCanvas().classList.add("PreviewBackground");
                         }
-                        return false;
                     }
-                    canEditNumber(n) {
-                        return n > 1;
+                    class ManyImageFileSection extends ui.controls.properties.PropertySection {
+                        constructor(page) {
+                            super(page, "files.ManyImageFileSection", "Images", true);
+                        }
+                        createForm(parent) {
+                            parent.classList.add("ManyImagePreviewFormArea");
+                            const viewer = new GridImageFileViewer();
+                            const filteredViewer = new ui.controls.viewers.FilteredViewer(viewer);
+                            filteredViewer.setHandlePosition(false);
+                            filteredViewer.style.position = "relative";
+                            filteredViewer.style.height = "100%";
+                            parent.appendChild(filteredViewer.getElement());
+                            this.resizeTo(filteredViewer, parent);
+                            this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                                this.resizeTo(filteredViewer, parent);
+                            });
+                            this.addUpdater(() => {
+                                viewer.setInput(this.getSelection());
+                                this.resizeTo(filteredViewer, parent);
+                            });
+                        }
+                        resizeTo(filteredViewer, parent) {
+                            setTimeout(() => {
+                                filteredViewer.setBounds({
+                                    width: parent.clientWidth,
+                                    height: parent.clientHeight
+                                });
+                                filteredViewer.getViewer().repaint();
+                            }, 10);
+                        }
+                        canEdit(obj) {
+                            if (obj instanceof phasereditor2d.core.io.FilePath) {
+                                const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
+                                return ct === ide.CONTENT_TYPE_IMAGE;
+                            }
+                            return false;
+                        }
+                        canEditNumber(n) {
+                            return n > 1;
+                        }
+                    }
+                    files.ManyImageFileSection = ManyImageFileSection;
+                })(files = views.files || (views.files = {}));
+            })(views = ide.views || (ide.views = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var properties;
+            (function (properties) {
+                class PropertySectionPane extends controls.Control {
+                    constructor(page, section) {
+                        super();
+                        this._page = page;
+                        this._section = section;
+                        this.addClass("PropertySectionPane");
+                    }
+                    createOrUpdateWithSelection() {
+                        if (!this._formArea) {
+                            this._titleArea = document.createElement("div");
+                            this._titleArea.classList.add("PropertyTitleArea");
+                            this._expandBtn = document.createElement("div");
+                            this._expandBtn.classList.add("expandBtn", "expanded");
+                            this._expandBtn.addEventListener("mouseup", () => this.toggleSection());
+                            this._titleArea.appendChild(this._expandBtn);
+                            const label = document.createElement("label");
+                            label.innerText = this._section.getTitle();
+                            label.addEventListener("mouseup", () => this.toggleSection());
+                            this._titleArea.appendChild(label);
+                            this._formArea = document.createElement("div");
+                            this._formArea.classList.add("PropertyFormArea");
+                            this._section.create(this._formArea);
+                            this.getElement().appendChild(this._titleArea);
+                            this.getElement().appendChild(this._formArea);
+                        }
+                        this._section.updateWithSelection();
+                    }
+                    isExpanded() {
+                        return this._expandBtn.classList.contains("expanded");
+                    }
+                    toggleSection() {
+                        if (this.isExpanded()) {
+                            this._expandBtn.classList.remove("expanded");
+                            this._expandBtn.classList.add("collapsed");
+                            this._formArea.style.display = "none";
+                        }
+                        else {
+                            this._expandBtn.classList.add("expanded");
+                            this._expandBtn.classList.remove("collapsed");
+                            this._formArea.style.display = "initial";
+                        }
+                        this._page.updateExpandStatus();
+                        this.getContainer().dispatchLayoutEvent();
+                    }
+                    getSection() {
+                        return this._section;
+                    }
+                    getFormArea() {
+                        return this._formArea;
                     }
                 }
-                files.ManyImageFileSection = ManyImageFileSection;
-            })(files = ide.files || (ide.files = {}));
+                class PropertyPage extends controls.Control {
+                    constructor() {
+                        super("div");
+                        this.addClass("PropertyPage");
+                        this._sectionPanes = [];
+                        this._sectionPaneMap = new Map();
+                        this._selection = [];
+                    }
+                    build() {
+                        if (this._sectionProvider) {
+                            const list = [];
+                            this._sectionProvider.addSections(this, list);
+                            for (const section of list) {
+                                if (!this._sectionPaneMap.has(section.getId())) {
+                                    const pane = new PropertySectionPane(this, section);
+                                    this.add(pane);
+                                    this._sectionPaneMap.set(section.getId(), pane);
+                                    this._sectionPanes.push(pane);
+                                }
+                            }
+                        }
+                        this.updateWithSelection();
+                    }
+                    updateWithSelection() {
+                        const n = this._selection.length;
+                        for (const pane of this._sectionPanes) {
+                            const section = pane.getSection();
+                            let show = false;
+                            if (section.canEditNumber(n)) {
+                                show = true;
+                                for (const obj of this._selection) {
+                                    if (!section.canEdit(obj)) {
+                                        show = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (show) {
+                                pane.getElement().style.display = "grid";
+                                pane.createOrUpdateWithSelection();
+                            }
+                            else {
+                                pane.getElement().style.display = "none";
+                            }
+                        }
+                        this.updateExpandStatus();
+                    }
+                    updateExpandStatus() {
+                        let templateRows = "";
+                        for (const pane of this._sectionPanes) {
+                            if (pane.style.display !== "none") {
+                                pane.createOrUpdateWithSelection();
+                                if (pane.isExpanded()) {
+                                    templateRows += " " + (pane.getSection().isFillSpace() ? "1fr" : "min-content");
+                                }
+                                else {
+                                    templateRows += " min-content";
+                                }
+                            }
+                        }
+                        this.getElement().style.gridTemplateRows = templateRows + " ";
+                    }
+                    getSelection() {
+                        return this._selection;
+                    }
+                    setSelection(sel) {
+                        this._selection = sel;
+                        this.updateWithSelection();
+                    }
+                    setSectionProvider(provider) {
+                        this._sectionProvider = provider;
+                        this.build();
+                    }
+                    getSectionProvider() {
+                        return this._sectionProvider;
+                    }
+                }
+                properties.PropertyPage = PropertyPage;
+            })(properties = controls.properties || (controls.properties = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../ViewPart.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySection.ts"/>
+/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var inspector;
+            (function (inspector) {
+                class InspectorView extends ide.ViewPart {
+                    constructor() {
+                        super("InspectorView");
+                        this.setTitle("Inspector");
+                        this._propertyPage = new ui.controls.properties.PropertyPage();
+                        this.add(this._propertyPage);
+                        this._selectionListener = (e) => this.onPartSelection();
+                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
+                    }
+                    layout() {
+                        this._propertyPage.dispatchLayoutEvent();
+                    }
+                    onWorkbenchPartActivate() {
+                        const part = ide.Workbench.getWorkbench().getActivePart();
+                        if (!part || part !== this && part !== this._activePart) {
+                            if (this._activePart) {
+                                this._activePart.removeEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                            }
+                            this._activePart = part;
+                            this._activePart.addEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                            this.onPartSelection();
+                        }
+                    }
+                    onPartSelection() {
+                        const sel = this._activePart.getSelection();
+                        const provider = this._activePart.getPropertyProvider();
+                        this._propertyPage.setSectionProvider(provider);
+                        this._propertyPage.setSelection(sel);
+                    }
+                }
+                inspector.InspectorView = InspectorView;
+            })(inspector = ide.inspector || (ide.inspector = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../ViewPart.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var outline;
+            (function (outline) {
+                class OutlineView extends ide.ViewPart {
+                    constructor() {
+                        super("outlineView");
+                        this.setTitle("Outline");
+                    }
+                }
+                outline.OutlineView = OutlineView;
+            })(outline = ide.outline || (ide.outline = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

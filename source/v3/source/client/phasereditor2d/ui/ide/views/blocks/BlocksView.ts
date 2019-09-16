@@ -1,5 +1,5 @@
-/// <reference path="../Part.ts"/>
-/// <reference path="../ViewPart.ts"/>
+/// <reference path="../../Part.ts"/>
+/// <reference path="../../ViewPart.ts"/>
 
 namespace phasereditor2d.ui.ide.blocks {
     export class BlocksView extends ide.ViewPart {
