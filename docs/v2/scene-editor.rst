@@ -629,7 +629,82 @@ You can create a `Bitmap Text`_ object in two ways:
 
 * Drag a `BitmapFontFile <https://photonstorm.github.io/phaser3-docs/Phaser.Loader.FileTypes.BitmapFontFile.html>`_ key from the `Blocks view`_ and drop it in the scene.
 
+  .. image:: images/scene-editor/scene-editor-bitmap-text-drop.png
+    :alt: Drop BitmapFont key to create a BitmapText object.
+
 * Or click on the `Add Object button`_ and select a `BitmapFontFile`_ key.
+
+  .. image:: images/scene-editor/scene-editor-bitmap-text-create.png
+    :alt: Create a BitmapText object.
+
+**Bitmap Text** objects are created in code using the `bitmapText factory <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#bitmapText__anchor>`_:
+
+
+.. code::
+
+  this.add.bitmapText(100, 150, "desyrel", "Hello bitmap text!", 70, 0);
+
+The **Bitmap Text** type contains all the `common properties`_:
+
+* `Variable properties section`_
+
+* `Editor properties section`_
+
+* `Game Object properties section`_
+
+* `Transform properties section`_
+
+* `Origin properties section`_
+
+* `Flip properties section`_
+
+* `Scroll Factor properties section`_
+
+* `Tint properties section`_
+
+It also contains the: 
+
+* `Text properties section`_, that is dedicated to all the objects with texts. 
+
+* `Bitmap Text properties section`_, that is dedicated only to the **Bitmap Text** objects.
+
+
+Text properties section
+#######################
+
+|PhaserEditor|_ supports two type of objects that display texts: `Text`_ and `Bitmap Text`_. This section is shared by both types, and it is just about to edit the text value of the objects.
+
+.. image:: images/scene-editor/scene-editor-text-section.png
+  :alt: Text section.
+
+Bitmap Text properties section
+##############################
+
+This section is dedicated only to **Bitmap Text** objects.
+
+.. image:: images/scene-editor/scene-editor-bitmap-text-section.png
+  :alt: Bitmap Text section.
+
+
+1. The `align <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#align__anchor>`_ property. You can align the multi-line text to the left, center, or right.
+
+  .. image:: images/scene-editor/scene-editor-bitmap-text-section-align.png
+    :alt: Align property.
+
+2. The **Font** property is used to pass the key of the font (from the BitmapFont cache) to the `bitmapText factory`_. It is a button, click it to select a new font key.
+
+  .. image:: images/scene-editor/scene-editor-bitmap-text-section-font.png
+    :alt: Change the font to to the Bitmap Text.
+
+3. The `fontSize <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#fontSize__anchor>`_ property. In the section toolbar there are buttons to increase/decrease the size.
+
+4. The `letterSpacing <https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#letterSpacing__anchor>`_ property.
+
+5. The align buttons in the toolbar. Just like in point 1.
+
+6. A button to change the font. Just like in point 2.
+
+7. The buttons to increase/decrease the `fontSize`_.
 
 Text
 ~~~~

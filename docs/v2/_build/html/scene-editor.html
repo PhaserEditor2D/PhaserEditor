@@ -146,7 +146,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#tile-sprite-properties-section">Tile Sprite properties section</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bitmap-text">7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#text-properties-section">Text properties section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bitmap-text-properties-section">Bitmap Text properties section</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#text">7.3.6&nbsp;&nbsp;&nbsp;Text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#group">7.3.7&nbsp;&nbsp;&nbsp;Group</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#morphing-objects-to-a-different-type">7.3.8&nbsp;&nbsp;&nbsp;Morphing objects to a different type</a></li>
@@ -738,10 +742,63 @@
 <h3>7.3.5&nbsp;&nbsp;&nbsp;Bitmap Text<a class="headerlink" href="#bitmap-text" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html">Phaser.GameObjects.BitmapText</a> is widely used in <a class="reference external" href="https://phaser.io">Phaser</a> game development to display texts.</p>
 <p>You can create a <a class="reference internal" href="#bitmap-text">Bitmap Text</a> object in two ways:</p>
-<ul class="simple">
-<li>Drag a <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.FileTypes.BitmapFontFile.html">BitmapFontFile</a> key from the <a class="reference internal" href="#blocks-view">Blocks view</a> and drop it in the scene.</li>
-<li>Or click on the <a class="reference external" href="#adding-objects-to-the-scene">Add Object button</a> and select a <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.FileTypes.BitmapFontFile.html">BitmapFontFile</a> key.</li>
+<ul>
+<li><p class="first">Drag a <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.FileTypes.BitmapFontFile.html">BitmapFontFile</a> key from the <a class="reference internal" href="#blocks-view">Blocks view</a> and drop it in the scene.</p>
+<img alt="Drop BitmapFont key to create a BitmapText object." src="_images/scene-editor-bitmap-text-drop.png" />
+</li>
+<li><p class="first">Or click on the <a class="reference external" href="#adding-objects-to-the-scene">Add Object button</a> and select a <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.Loader.FileTypes.BitmapFontFile.html">BitmapFontFile</a> key.</p>
+<img alt="Create a BitmapText object." src="_images/scene-editor-bitmap-text-create.png" />
+</li>
 </ul>
+<p><strong>Bitmap Text</strong> objects are created in code using the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#bitmapText__anchor">bitmapText factory</a>:</p>
+<div class="code highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s2">&quot;desyrel&quot;</span><span class="p">,</span> <span class="s2">&quot;Hello bitmap text!&quot;</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <strong>Bitmap Text</strong> type contains all the <a class="reference internal" href="#common-properties">common properties</a>:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#variable-properties-section">Variable properties section</a></li>
+<li><a class="reference internal" href="#editor-properties-section">Editor properties section</a></li>
+<li><a class="reference internal" href="#game-object-properties-section">Game Object properties section</a></li>
+<li><a class="reference internal" href="#transform-properties-section">Transform properties section</a></li>
+<li><a class="reference internal" href="#origin-properties-section">Origin properties section</a></li>
+<li><a class="reference internal" href="#flip-properties-section">Flip properties section</a></li>
+<li><a class="reference internal" href="#scroll-factor-properties-section">Scroll Factor properties section</a></li>
+<li><a class="reference internal" href="#tint-properties-section">Tint properties section</a></li>
+</ul>
+<p>It also contains the:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#text-properties-section">Text properties section</a>, that is dedicated to all the objects with texts.</li>
+<li><a class="reference internal" href="#bitmap-text-properties-section">Bitmap Text properties section</a>, that is dedicated only to the <strong>Bitmap Text</strong> objects.</li>
+</ul>
+<div class="section" id="text-properties-section">
+<h4>Text properties section<a class="headerlink" href="#text-properties-section" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="https://phasereditor2d.com">Phaser Editor 2D</a> supports two type of objects that display texts: <a class="reference internal" href="#text">Text</a> and <a class="reference internal" href="#bitmap-text">Bitmap Text</a>. This section is shared by both types, and it is just about to edit the text value of the objects.</p>
+<img alt="Text section." src="_images/scene-editor-text-section.png" />
+</div>
+<div class="section" id="bitmap-text-properties-section">
+<h4>Bitmap Text properties section<a class="headerlink" href="#bitmap-text-properties-section" title="Permalink to this headline">¶</a></h4>
+<p>This section is dedicated only to <strong>Bitmap Text</strong> objects.</p>
+<img alt="Bitmap Text section." src="_images/scene-editor-bitmap-text-section.png" />
+<ol class="arabic simple">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#align__anchor">align</a> property. You can align the multi-line text to the left, center, or right.</li>
+</ol>
+<blockquote>
+<div><img alt="Align property." src="_images/scene-editor-bitmap-text-section-align.png" />
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>The <strong>Font</strong> property is used to pass the key of the font (from the BitmapFont cache) to the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObjectFactory.html#bitmapText__anchor">bitmapText factory</a>. It is a button, click it to select a new font key.</li>
+</ol>
+<blockquote>
+<div><img alt="Change the font to to the Bitmap Text." src="_images/scene-editor-bitmap-text-section-font.png" />
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#fontSize__anchor">fontSize</a> property. In the section toolbar there are buttons to increase/decrease the size.</li>
+<li>The <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#letterSpacing__anchor">letterSpacing</a> property.</li>
+<li>The align buttons in the toolbar. Just like in point 1.</li>
+<li>A button to change the font. Just like in point 2.</li>
+<li>The buttons to increase/decrease the <a class="reference external" href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.BitmapText.html#fontSize__anchor">fontSize</a>.</li>
+</ol>
+</div>
 </div>
 <div class="section" id="text">
 <h3>7.3.6&nbsp;&nbsp;&nbsp;Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
