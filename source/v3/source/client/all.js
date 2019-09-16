@@ -845,6 +845,50 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            class EditorFactory {
+                constructor(id) {
+                    this._id = id;
+                }
+                getId() {
+                    return this._id;
+                }
+            }
+            ide.EditorFactory = EditorFactory;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorRegistry {
+                constructor() {
+                    this._map = new Map();
+                }
+                registerFactory(factory) {
+                    this._map.set(factory.getId(), factory);
+                }
+                getFactoryForInput(input) {
+                    for (const factory of this._map.values()) {
+                        if (factory.acceptInput(input)) {
+                            return factory;
+                        }
+                    }
+                    return null;
+                }
+            }
+            ide.EditorRegistry = EditorRegistry;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             ide.CONTENT_TYPE_IMAGE = "image";
             ide.CONTENT_TYPE_AUDIO = "audio";
             ide.CONTENT_TYPE_VIDEO = "video";
@@ -1194,6 +1238,8 @@ var phasereditor2d;
                 }
                 getFileImage(file) {
                     return ui.controls.Controls.getImage(file.getUrl(), file.getId());
+                }
+                openEditor(input) {
                 }
             }
             ide.Workbench = Workbench;

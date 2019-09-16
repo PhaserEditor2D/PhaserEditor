@@ -176,6 +176,10 @@ namespace phasereditor2d.ui.ide {
             return controls.Controls.getImage(file.getUrl(), file.getId());
         }
 
+        openEditor(input : object) {
+
+        }
+
     }
 
 
