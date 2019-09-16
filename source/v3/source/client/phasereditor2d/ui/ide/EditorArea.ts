@@ -1,24 +1,30 @@
 /// <reference path="./Part.ts"/>
 /// <reference path="./EditorPart.ts"/>
+/// <reference path="./PartTabPane.ts"/>
 /// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts"/>
 
 namespace phasereditor2d.ui.ide {
 
     class DemoEditor extends EditorPart {
 
-        constructor(id: string) {
+        public constructor(id: string, title: string) {
             super(id);
-            this.getElement().innerHTML = id;
+            this.setTitle(title);
+        }
+
+        createPart(): void {
+            this.getElement().innerHTML = "Editor " + this.getId();
         }
     }
 
-    export class EditorArea extends controls.TabPane {
+    export class EditorArea extends PartTabPane {
 
-        constructor() {
+        public constructor() {
             super("EditorArea");
-            this.addTab("Level 1.scene", new DemoEditor("demoEditor1"), true);
-            this.addTab("Level 2.scene", new DemoEditor("demoEditor2"), true);
-            this.addTab("pack.json", new DemoEditor("demoEditor3"), true);
+
+            this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
+            this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
+            this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
         }
 
     }

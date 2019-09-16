@@ -12,7 +12,9 @@ namespace phasereditor2d.ui.ide.files {
 
     export class FilesView extends ide.ViewerView {
 
-        constructor() {
+        private _propertyProvider = new FilePropertySectionProvider();
+
+        public constructor() {
             super("filesView", new viewers.TreeViewer());
             
             this.setTitle("Files");
@@ -28,9 +30,7 @@ namespace phasereditor2d.ui.ide.files {
             viewer.repaint();
         }
 
-        private _propertyProvider = new FilePropertySectionProvider();
-
-        getPropertyProvider() {
+        public getPropertyProvider() {
             return this._propertyProvider;
         }
 

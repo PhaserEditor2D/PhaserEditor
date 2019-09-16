@@ -1,6 +1,7 @@
 namespace phasereditor2d.ui.controls {
 
-    export const EVENT_TAB_CLOSE = "tabClosed";
+    export const EVENT_TAB_CLOSED = "tabClosed";
+    export const EVENT_TAB_SELECTED = "tabSelected";
 
     export class TabPane extends Control {
         private _selectionHistoryLabelElement: HTMLElement[];
@@ -63,7 +64,7 @@ namespace phasereditor2d.ui.controls {
 
         private closeTab(labelElement: HTMLElement): void {
             this._titleBarElement.removeChild(labelElement);
-            const contentArea = labelElement["__contentArea"];
+            const contentArea = <HTMLElement> labelElement["__contentArea"];
             this._contentAreaElement.removeChild(contentArea);
 
             let toSelectLabel : HTMLElement = null;
@@ -80,6 +81,10 @@ namespace phasereditor2d.ui.controls {
                     }
                 }
             }
+
+            this.dispatchEvent(new CustomEvent(EVENT_TAB_CLOSED, {
+                detail: Control.getControlOf(<HTMLElement> contentArea.firstChild)
+            }));
 
             if (toSelectLabel) {
                 this.selectTab(toSelectLabel);
@@ -103,6 +108,10 @@ namespace phasereditor2d.ui.controls {
             const toSelectContentArea = this.getContentAreaFromLabel(toSelectLabel);
             toSelectContentArea.classList.add("selected");
             this._selectionHistoryLabelElement.push(toSelectLabel);
+
+            this.dispatchEvent(new CustomEvent(EVENT_TAB_SELECTED, {
+                detail: Control.getControlOf(<HTMLElement> toSelectContentArea.firstChild)
+            }));
         }
 
         public getSelectedTabContent(): Control {

@@ -22,14 +22,14 @@ namespace phasereditor2d.ui.ide.inspector {
 
             this._selectionListener = (e : CustomEvent) => this.onPartSelection();
 
-            Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATE, e => this.onPartActivate());
+            Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
         }
 
         layout() {
             this._propertyPage.dispatchLayoutEvent();
         }
 
-        private onPartActivate() {
+        private onWorkbenchPartActivate() {
             const part = Workbench.getWorkbench().getActivePart();
 
             if (!part || part !== this && part !== this._activePart) {

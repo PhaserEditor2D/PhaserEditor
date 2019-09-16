@@ -604,6 +604,7 @@ var phasereditor2d;
                     this._id = id;
                     this._title = "";
                     this._selection = [];
+                    this._partCreated = false;
                     this.getElement().setAttribute("id", id);
                     this.getElement().classList.add("Part");
                     this.getElement()["__part"] = this;
@@ -630,6 +631,15 @@ var phasereditor2d;
                     return null;
                 }
                 layout() {
+                }
+                onPartClosed() {
+                }
+                onPartActivated() {
+                    if (!this._partCreated) {
+                        this.createPart();
+                    }
+                }
+                createPart() {
                 }
             }
             ide.Part = Part;
@@ -658,7 +668,8 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            controls.EVENT_TAB_CLOSE = "tabClosed";
+            controls.EVENT_TAB_CLOSED = "tabClosed";
+            controls.EVENT_TAB_SELECTED = "tabSelected";
             class TabPane extends controls.Control {
                 constructor(...classList) {
                     super("div", "TabPane", ...classList);
@@ -719,6 +730,9 @@ var phasereditor2d;
                             }
                         }
                     }
+                    this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_CLOSED, {
+                        detail: controls.Control.getControlOf(contentArea.firstChild)
+                    }));
                     if (toSelectLabel) {
                         this.selectTab(toSelectLabel);
                     }
@@ -737,6 +751,9 @@ var phasereditor2d;
                     const toSelectContentArea = this.getContentAreaFromLabel(toSelectLabel);
                     toSelectContentArea.classList.add("selected");
                     this._selectionHistoryLabelElement.push(toSelectLabel);
+                    this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_SELECTED, {
+                        detail: controls.Control.getControlOf(toSelectContentArea.firstChild)
+                    }));
                 }
                 getSelectedTabContent() {
                     const label = this.getSelectedLabelElement();
@@ -756,8 +773,36 @@ var phasereditor2d;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class PartTabPane extends ui.controls.TabPane {
+                constructor(...classList) {
+                    super("PartsTabPane", ...classList);
+                    this.addEventListener(ui.controls.EVENT_TAB_CLOSED, (e) => {
+                        const part = e.detail;
+                        part.onPartClosed();
+                    });
+                    this.addEventListener(ui.controls.EVENT_TAB_SELECTED, (e) => {
+                        const part = e.detail;
+                        part.onPartActivated();
+                    });
+                }
+                addPart(part, closeable = false) {
+                    this.addTab(part.getTitle(), part, closeable);
+                }
+            }
+            ide.PartTabPane = PartTabPane;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./Part.ts"/>
 /// <reference path="./EditorPart.ts"/>
+/// <reference path="./PartTabPane.ts"/>
 /// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -766,17 +811,20 @@ var phasereditor2d;
         var ide;
         (function (ide) {
             class DemoEditor extends ide.EditorPart {
-                constructor(id) {
+                constructor(id, title) {
                     super(id);
-                    this.getElement().innerHTML = id;
+                    this.setTitle(title);
+                }
+                createPart() {
+                    this.getElement().innerHTML = "Editor " + this.getId();
                 }
             }
-            class EditorArea extends ui.controls.TabPane {
+            class EditorArea extends ide.PartTabPane {
                 constructor() {
                     super("EditorArea");
-                    this.addTab("Level 1.scene", new DemoEditor("demoEditor1"), true);
-                    this.addTab("Level 2.scene", new DemoEditor("demoEditor2"), true);
-                    this.addTab("pack.json", new DemoEditor("demoEditor3"), true);
+                    this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
+                    this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
+                    this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
                 }
             }
             ide.EditorArea = EditorArea;
@@ -1405,12 +1453,12 @@ var phasereditor2d;
                         this._propertyPage = new ui.controls.properties.PropertyPage();
                         this.add(this._propertyPage);
                         this._selectionListener = (e) => this.onPartSelection();
-                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onPartActivate());
+                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
                     }
                     layout() {
                         this._propertyPage.dispatchLayoutEvent();
                     }
-                    onPartActivate() {
+                    onWorkbenchPartActivate() {
                         const part = ide.Workbench.getWorkbench().getActivePart();
                         if (!part || part !== this && part !== this._activePart) {
                             if (this._activePart) {

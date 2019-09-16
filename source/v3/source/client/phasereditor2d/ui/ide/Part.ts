@@ -6,13 +6,15 @@ namespace phasereditor2d.ui.ide {
         private _id: string;
         private _title: string;
         private _selection: any[];
+        private _partCreated : boolean;
 
-        constructor(id: string) {
+        public constructor(id: string) {
             super();
             
             this._id = id;
             this._title = "";
             this._selection = [];
+            this._partCreated = false;
             
             this.getElement().setAttribute("id", id);
 
@@ -21,34 +23,48 @@ namespace phasereditor2d.ui.ide {
             this.getElement()["__part"] = this;
         }
 
-        getTitle() {
+        public getTitle() {
             return this._title;
         }
 
-        setTitle(title : string) : void {
+        public setTitle(title : string) : void {
             this._title = title;
         }
 
-        getId() {
+        public getId() {
             return this._id;
         }
 
-        setSelection(selection: any[]) {
+        public setSelection(selection: any[]) : void {
             this._selection = selection;
             this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION, {
                 detail: selection
             }));
         }
 
-        getSelection() {
+        public getSelection() {
             return this._selection;
         }
 
-        getPropertyProvider() : controls.properties.PropertySectionProvider {
+        public getPropertyProvider() : controls.properties.PropertySectionProvider {
             return null;
         }
 
-        layout() {
+        public layout() : void {
+            
+        }
+
+        public onPartClosed() : void {
+
+        }
+
+        public onPartActivated() : void {
+            if (!this._partCreated) {
+                this.createPart();
+            }
+        }
+
+        protected createPart() : void {
             
         }
     }
