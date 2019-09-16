@@ -95,6 +95,11 @@ namespace phasereditor2d.ui.ide {
         private toggleActivePart(part: Part) {
             const tabPane = this.findTabPane(part.getElement());
 
+            if (!tabPane) {
+                // maybe the clicked part was closed
+                return;
+            }
+
             if (part.containsClass("activePart")) {
                 part.removeClass("activePart");
                 tabPane.removeClass("activePart");
@@ -126,7 +131,7 @@ namespace phasereditor2d.ui.ide {
                 const tabPane = <controls.TabPane>control;
                 const content = tabPane.getSelectedTabContent();
                 if (content) {
-                    const element = content.getElement().children.item(0);
+                    const element = content.getElement();
                     if (element["__part"]) {
                         return element["__part"];
                     }

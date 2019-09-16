@@ -29,6 +29,10 @@ Important:
     background: #5e5e5e;
 }
 
+.dark .TabPaneContentArea:empty {
+    background: transparent !important;
+}
+
 .dark .TabPaneLabel.selected {
     text-shadow: 1px 1px #0e0e0e;
 }

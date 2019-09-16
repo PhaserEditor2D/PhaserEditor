@@ -16,9 +16,9 @@ namespace phasereditor2d.ui.ide {
 
         constructor() {
             super("EditorArea");
-            this.addTab("Level 1.scene", () => new DemoEditor("demoEditor1"), true);
-            this.addTab("Level 2.scene", () => new DemoEditor("demoEditor2"), true);
-            this.addTab("pack.json", () => new DemoEditor("demoEditor3"), true);
+            this.addTab("Level 1.scene", new DemoEditor("demoEditor1"), true);
+            this.addTab("Level 2.scene", new DemoEditor("demoEditor2"), true);
+            this.addTab("pack.json", new DemoEditor("demoEditor3"), true);
         }
 
     }

@@ -1,22 +1,14 @@
 namespace phasereditor2d.ui.controls {
 
-    export declare type GetContent = () => Control;
-
     export class TabPane extends Control {
-        private _tabLabelList: HTMLElement[];
-        private _tabContentList: Control[];
-        private _tabGetContentList: GetContent[];
-        private _selectedIndex: number;
+        private _selectionHistoryLabelElement: HTMLElement[];
         private _titleBarElement: HTMLElement;
         private _contentAreaElement: HTMLElement;
 
         constructor(...classList: string[]) {
             super("div", "TabPane", ...classList);
 
-            this._tabLabelList = [];
-            this._tabContentList = [];
-            this._tabGetContentList = [];
-            this._selectedIndex = -1;
+            this._selectionHistoryLabelElement = [];
 
             this._titleBarElement = document.createElement("div");
             this._titleBarElement.classList.add("TabPaneTitleBar");
@@ -27,24 +19,23 @@ namespace phasereditor2d.ui.controls {
             this.getElement().appendChild(this._contentAreaElement);
         }
 
-        addTab(label: string, getContent: GetContent, closeable = false) {
-            {
-                const elem = this.makeLabel(label, closeable);
-                this._tabLabelList.push(elem);
-                this._titleBarElement.appendChild(elem);
-                const index = this._tabLabelList.length;
-                elem.addEventListener("click", e => this.selectTab(index - 1));
-            }
+        public addTab(label: string, content: Control, closeable = false): void {
+            const labelElement = this.makeLabel(label, closeable);
+            this._titleBarElement.appendChild(labelElement);
+            labelElement.addEventListener("click", e => this.selectTab(labelElement));
 
-            this._tabContentList.push(null);
-            this._tabGetContentList.push(getContent);
+            const contentArea = new Control("div", "ContentArea");
+            contentArea.add(content);
+            this._contentAreaElement.appendChild(contentArea.getElement());
 
-            if (this.getCountTabs() === 1) {
-                this.selectTab(0);
+            labelElement["__contentArea"] = contentArea.getElement();
+
+            if (this._titleBarElement.childElementCount === 1) {
+                this.selectTab(labelElement);
             }
         }
 
-        private makeLabel(label: string, closeable: boolean) {
+        private makeLabel(label: string, closeable: boolean): HTMLElement {
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
@@ -55,8 +46,9 @@ namespace phasereditor2d.ui.controls {
             if (closeable) {
                 const iconElement = Controls.createIconElement("close");
                 iconElement.classList.add("closeIcon");
-                iconElement.addEventListener("click", () => {
-                    this.closeTabWithLabelElement(labelElement);
+                iconElement.addEventListener("click", e => {
+                    e.stopImmediatePropagation();
+                    this.closeTab(labelElement);
                 });
 
                 labelElement.appendChild(iconElement);
@@ -66,49 +58,65 @@ namespace phasereditor2d.ui.controls {
             return labelElement;
         }
 
-        private closeTabWithLabelElement(labelElement : HTMLElement) {
+        private closeTab(labelElement: HTMLElement): void {
             this._titleBarElement.removeChild(labelElement);
-            const content = labelElement["__content"];
-            if (content) {
-                this._contentAreaElement.removeChild(content.getElement());
+            const contentArea = labelElement["__contentArea"];
+            this._contentAreaElement.removeChild(contentArea);
+
+            let toSelectLabel : HTMLElement = null;
+
+            const selectedLabel = this.getSelectedLabelElement();
+            if (selectedLabel === labelElement) {
+                this._selectionHistoryLabelElement.pop();
+                const nextInHistory = this._selectionHistoryLabelElement.pop();;
+                if (nextInHistory) {
+                    toSelectLabel = nextInHistory;
+                } else {
+                    if (this._titleBarElement.childElementCount > 0) {
+                        toSelectLabel = <HTMLElement> this._titleBarElement.firstChild;
+                    }
+                }
+            }
+
+            if (toSelectLabel) {
+                this.selectTab(toSelectLabel);
             }
         }
 
-        getCountTabs() {
-            return this._tabContentList.length;
+        private getContentAreaFromLabel(labelElement: HTMLElement): HTMLElement {
+            return labelElement["__contentArea"];
         }
 
-        selectTab(index: number): void {
-            if (this._selectedIndex >= 0) {
-                this._tabLabelList[this._selectedIndex].classList.remove("selected");
-                this._tabContentList[this._selectedIndex].removeClass("selected");
+        private selectTab(toSelectLabel: HTMLElement): void {
+            const selectedLabel = this._selectionHistoryLabelElement.pop();
+
+            if (selectedLabel) {
+                selectedLabel.classList.remove("selected");
+                const selectedContentArea = this.getContentAreaFromLabel(selectedLabel);
+                selectedContentArea.classList.remove("selected");
             }
 
-            if (!this._tabContentList[index]) {
-                const content = this.createTabContent(index);
-                this._tabContentList[index] = content;
-                this._contentAreaElement.appendChild(content.getElement());
-                this._tabLabelList[index]["__content"] = content;
-            }
-
-            this._tabLabelList[index].classList.add("selected");
-            this._tabContentList[index].addClass("selected");
-            this._selectedIndex = index;
+            toSelectLabel.classList.add("selected");
+            const toSelectContentArea = this.getContentAreaFromLabel(toSelectLabel);
+            toSelectContentArea.classList.add("selected");
+            this._selectionHistoryLabelElement.push(toSelectLabel);
         }
 
-        getSelectedTabContent() {
-            if (this._selectedIndex >= 0) {
-                return this._tabContentList[this._selectedIndex];
+        public getSelectedTabContent(): Control {
+            const label = this.getSelectedLabelElement();
+            if (label) {
+                const area = this.getContentAreaFromLabel(label);
+                return Control.getControlOf(<HTMLElement>area.firstChild);
             }
             return null;
         }
 
-        private createTabContent(index: number) {
-            const contentArea = new Control("div", "ContentArea");
-            contentArea.add(this._tabGetContentList[index]());
-            return contentArea;
-        }
 
+        private getSelectedLabelElement(): HTMLElement {
+            return this._selectionHistoryLabelElement.length > 0 ?
+                this._selectionHistoryLabelElement[this._selectionHistoryLabelElement.length - 1]
+                : null;
+        }
     }
 
 }

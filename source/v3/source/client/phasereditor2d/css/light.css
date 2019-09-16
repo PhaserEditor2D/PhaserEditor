@@ -30,6 +30,10 @@ Important:
     background: #bdbdbd;
 }
 
+.light .TabPaneContentArea:empty {
+    background: transparent !important;
+}
+
 .light .TabPaneLabel.selected {
     text-shadow: 1px 1px #f0f0f0;
 }

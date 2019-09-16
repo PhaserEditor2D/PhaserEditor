@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.ide {
             const tabPane = new controls.TabPane("WorkbenchFolder", "PartFolder");
 
             for(const part of parts) {
-                tabPane.addTab(part.getTitle(), () => part);
+                tabPane.addTab(part.getTitle(), part);
 
                 tabPane.addEventListener(controls.CONTROL_LAYOUT_EVENT, () => {
                     part.layout();
