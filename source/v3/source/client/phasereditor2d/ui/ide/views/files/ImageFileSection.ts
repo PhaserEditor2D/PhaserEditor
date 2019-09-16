@@ -12,7 +12,7 @@ namespace phasereditor2d.ui.ide.files {
 
             const imgControl = new controls.ImageControl(IMG_SECTION_PADDING);
 
-            this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
+            this.getPage().addEventListener(controls.EVENT_CONTROL_LAYOUT, (e: CustomEvent) => {
                 imgControl.resizeTo();
             })
 

@@ -36,7 +36,7 @@ namespace phasereditor2d.ui.ide.files {
 
             this.resizeTo(filteredViewer, parent);
 
-            this.getPage().addEventListener(controls.CONTROL_LAYOUT_EVENT, (e: CustomEvent) => {
+            this.getPage().addEventListener(controls.EVENT_CONTROL_LAYOUT, (e: CustomEvent) => {
                 this.resizeTo(filteredViewer, parent);
             })
 

@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.controls {
 
+    export const EVENT_TAB_CLOSE = "tabClosed";
+
     export class TabPane extends Control {
         private _selectionHistoryLabelElement: HTMLElement[];
         private _titleBarElement: HTMLElement;
@@ -7,6 +9,7 @@ namespace phasereditor2d.ui.controls {
 
         constructor(...classList: string[]) {
             super("div", "TabPane", ...classList);
+
 
             this._selectionHistoryLabelElement = [];
 

@@ -15,7 +15,7 @@ namespace phasereditor2d.ui.ide {
             for(const part of parts) {
                 tabPane.addTab(part.getTitle(), part);
 
-                tabPane.addEventListener(controls.CONTROL_LAYOUT_EVENT, () => {
+                tabPane.addEventListener(controls.EVENT_CONTROL_LAYOUT, () => {
                     part.layout();
                 })
             }

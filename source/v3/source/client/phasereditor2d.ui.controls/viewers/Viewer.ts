@@ -116,7 +116,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private fireSelectionChanged() {
-            this.dispatchEvent(new CustomEvent(SELECTION_EVENT, {
+            this.dispatchEvent(new CustomEvent(EVENT_SELECTION, {
                 detail: this.getSelection()
             }));
         }

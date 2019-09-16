@@ -22,7 +22,7 @@ namespace phasereditor2d.ui.ide.inspector {
 
             this._selectionListener = (e : CustomEvent) => this.onPartSelection();
 
-            Workbench.getWorkbench().addEventListener(PART_ACTIVATE_EVENT, e => this.onPartActivate());
+            Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATE, e => this.onPartActivate());
         }
 
         layout() {
@@ -35,12 +35,12 @@ namespace phasereditor2d.ui.ide.inspector {
             if (!part || part !== this && part !== this._activePart) {
                 
                 if (this._activePart) {
-                    this._activePart.removeEventListener(controls.SELECTION_EVENT, this._selectionListener);
+                    this._activePart.removeEventListener(controls.EVENT_SELECTION, this._selectionListener);
                 }
 
                 this._activePart = part;
                 
-                this._activePart.addEventListener(controls.SELECTION_EVENT, this._selectionListener);
+                this._activePart.addEventListener(controls.EVENT_SELECTION, this._selectionListener);
 
                 this.onPartSelection();
             }

@@ -35,7 +35,7 @@ namespace phasereditor2d.ui.ide {
 
         setSelection(selection: any[]) {
             this._selection = selection;
-            this.dispatchEvent(new CustomEvent(controls.SELECTION_EVENT, {
+            this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION, {
                 detail: selection
             }));
         }

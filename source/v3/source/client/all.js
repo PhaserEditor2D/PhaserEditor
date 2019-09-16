@@ -198,7 +198,7 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            controls.CONTROL_LAYOUT_EVENT = "controlLayout";
+            controls.EVENT_CONTROL_LAYOUT = "controlLayout";
             class Control extends EventTarget {
                 constructor(tagName = "div", ...classList) {
                     super();
@@ -311,7 +311,7 @@ var phasereditor2d;
                     this.dispatchLayoutEvent();
                 }
                 dispatchLayoutEvent() {
-                    this.dispatchEvent(new CustomEvent(controls.CONTROL_LAYOUT_EVENT));
+                    this.dispatchEvent(new CustomEvent(controls.EVENT_CONTROL_LAYOUT));
                 }
                 add(control) {
                     control._container = this;
@@ -345,7 +345,7 @@ var phasereditor2d;
                     const tabPane = new ui.controls.TabPane("WorkbenchFolder", "PartFolder");
                     for (const part of parts) {
                         tabPane.addTab(part.getTitle(), part);
-                        tabPane.addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, () => {
+                        tabPane.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, () => {
                             part.layout();
                         });
                     }
@@ -417,7 +417,7 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            controls.SELECTION_EVENT = "selected";
+            controls.EVENT_SELECTION = "selected";
             let PreloadResult;
             (function (PreloadResult) {
                 PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
@@ -619,7 +619,7 @@ var phasereditor2d;
                 }
                 setSelection(selection) {
                     this._selection = selection;
-                    this.dispatchEvent(new CustomEvent(ui.controls.SELECTION_EVENT, {
+                    this.dispatchEvent(new CustomEvent(ui.controls.EVENT_SELECTION, {
                         detail: selection
                     }));
                 }
@@ -658,6 +658,7 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
+            controls.EVENT_TAB_CLOSE = "tabClosed";
             class TabPane extends controls.Control {
                 constructor(...classList) {
                     super("div", "TabPane", ...classList);
@@ -969,7 +970,7 @@ var phasereditor2d;
                     this.addClass("ViewerView");
                     this._filteredViewer = new ui.controls.viewers.FilteredViewer(viewer);
                     this.add(this._filteredViewer);
-                    viewer.addEventListener(ui.controls.SELECTION_EVENT, (e) => {
+                    viewer.addEventListener(ui.controls.EVENT_SELECTION, (e) => {
                         this.setSelection(e.detail);
                     });
                 }
@@ -991,8 +992,8 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            ide.PART_DEACTIVATE_EVENT = "partDeactivate";
-            ide.PART_ACTIVATE_EVENT = "partActivate";
+            ide.EVENT_PART_DEACTIVATE = "partDeactivate";
+            ide.EVENT_PART_ACTIVATE = "partActivate";
             class Workbench extends EventTarget {
                 constructor() {
                     super();
@@ -1042,12 +1043,12 @@ var phasereditor2d;
                     this._activePart = part;
                     if (old) {
                         this.toggleActivePart(old);
-                        this.dispatchEvent(new CustomEvent(ide.PART_DEACTIVATE_EVENT, { detail: old }));
+                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATE, { detail: old }));
                     }
                     if (part) {
                         this.toggleActivePart(part);
                     }
-                    this.dispatchEvent(new CustomEvent(ide.PART_ACTIVATE_EVENT, { detail: part }));
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATE, { detail: part }));
                 }
                 toggleActivePart(part) {
                     const tabPane = this.findTabPane(part.getElement());
@@ -1404,7 +1405,7 @@ var phasereditor2d;
                         this._propertyPage = new ui.controls.properties.PropertyPage();
                         this.add(this._propertyPage);
                         this._selectionListener = (e) => this.onPartSelection();
-                        ide.Workbench.getWorkbench().addEventListener(ide.PART_ACTIVATE_EVENT, e => this.onPartActivate());
+                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onPartActivate());
                     }
                     layout() {
                         this._propertyPage.dispatchLayoutEvent();
@@ -1413,10 +1414,10 @@ var phasereditor2d;
                         const part = ide.Workbench.getWorkbench().getActivePart();
                         if (!part || part !== this && part !== this._activePart) {
                             if (this._activePart) {
-                                this._activePart.removeEventListener(ui.controls.SELECTION_EVENT, this._selectionListener);
+                                this._activePart.removeEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
                             }
                             this._activePart = part;
-                            this._activePart.addEventListener(ui.controls.SELECTION_EVENT, this._selectionListener);
+                            this._activePart.addEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
                             this.onPartSelection();
                         }
                     }
@@ -1619,7 +1620,7 @@ var phasereditor2d;
                         return sel;
                     }
                     fireSelectionChanged() {
-                        this.dispatchEvent(new CustomEvent(controls.SELECTION_EVENT, {
+                        this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION, {
                             detail: this.getSelection()
                         }));
                     }
@@ -2118,7 +2119,7 @@ var phasereditor2d;
                     createForm(parent) {
                         parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
                         const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
-                        this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
+                        this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
                             imgControl.resizeTo();
                         });
                         parent.appendChild(imgControl.getElement());
@@ -2524,7 +2525,7 @@ var phasereditor2d;
                         filteredViewer.style.height = "100%";
                         parent.appendChild(filteredViewer.getElement());
                         this.resizeTo(filteredViewer, parent);
-                        this.getPage().addEventListener(ui.controls.CONTROL_LAYOUT_EVENT, (e) => {
+                        this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
                             this.resizeTo(filteredViewer, parent);
                         });
                         this.addUpdater(() => {

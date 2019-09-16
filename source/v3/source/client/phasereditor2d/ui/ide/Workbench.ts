@@ -5,8 +5,8 @@
 
 namespace phasereditor2d.ui.ide {
 
-    export const PART_DEACTIVATE_EVENT = "partDeactivate";
-    export const PART_ACTIVATE_EVENT = "partActivate";
+    export const EVENT_PART_DEACTIVATE = "partDeactivate";
+    export const EVENT_PART_ACTIVATE = "partActivate";
 
     export class Workbench extends EventTarget {
         private static _workbench: Workbench;
@@ -82,14 +82,14 @@ namespace phasereditor2d.ui.ide {
 
             if (old) {
                 this.toggleActivePart(old);
-                this.dispatchEvent(new CustomEvent(PART_DEACTIVATE_EVENT, { detail: old }));
+                this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATE, { detail: old }));
             }
 
             if (part) {
                 this.toggleActivePart(part);
             }
 
-            this.dispatchEvent(new CustomEvent(PART_ACTIVATE_EVENT, { detail: part }));
+            this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATE, { detail: part }));
         }
 
         private toggleActivePart(part: Part) {
