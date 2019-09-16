@@ -9,18 +9,26 @@ namespace phasereditor2d.ui.ide {
             this.setLayout(new controls.FillLayout(5));
         }
 
-        createPartFolder(...parts : Part[]) : controls.TabPane {
-            const tabPane = new controls.TabPane("WorkbenchFolder", "PartFolder");
+        createViewFolder(...parts : Part[]) : ViewFolder {
 
+            const folder = new ViewFolder();
             for(const part of parts) {
-                tabPane.addTab(part.getTitle(), part);
-
-                tabPane.addEventListener(controls.EVENT_CONTROL_LAYOUT, () => {
-                    part.layout();
-                })
+                folder.addPart(part);
             }
 
-            return tabPane;
+            return folder;
+
+            // const tabPane = new controls.TabPane();
+
+            // for(const part of parts) {
+            //     tabPane.addTab(part.getTitle(), part);
+
+            //     tabPane.addEventListener(controls.EVENT_CONTROL_LAYOUT, () => {
+            //         part.layout();
+            //     })
+            // }
+
+            // return tabPane;
         }
     }
 }

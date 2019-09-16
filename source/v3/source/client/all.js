@@ -341,15 +341,20 @@ var phasereditor2d;
                     super("div", "Window");
                     this.setLayout(new ui.controls.FillLayout(5));
                 }
-                createPartFolder(...parts) {
-                    const tabPane = new ui.controls.TabPane("WorkbenchFolder", "PartFolder");
+                createViewFolder(...parts) {
+                    const folder = new ide.ViewFolder();
                     for (const part of parts) {
-                        tabPane.addTab(part.getTitle(), part);
-                        tabPane.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, () => {
-                            part.layout();
-                        });
+                        folder.addPart(part);
                     }
-                    return tabPane;
+                    return folder;
+                    // const tabPane = new controls.TabPane();
+                    // for(const part of parts) {
+                    //     tabPane.addTab(part.getTitle(), part);
+                    //     tabPane.addEventListener(controls.EVENT_CONTROL_LAYOUT, () => {
+                    //         part.layout();
+                    //     })
+                    // }
+                    // return tabPane;
                 }
             }
             ide.Window = Window;
@@ -366,16 +371,15 @@ var phasereditor2d;
             class DesignWindow extends ide.Window {
                 constructor() {
                     super();
-                    //this._toolbar = new toolbar.Toolbar();
                     this._outlineView = new ide.outline.OutlineView();
                     this._filesView = new ide.files.FilesView();
                     this._inspectorView = new ide.inspector.InspectorView();
                     this._blocksView = new ide.blocks.BlocksView();
                     this._editorArea = new ide.EditorArea();
-                    this._split_Files_Blocks = new ui.controls.SplitPanel(this.createPartFolder(this._filesView), this.createPartFolder(this._blocksView));
+                    this._split_Files_Blocks = new ui.controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
                     this._split_Editor_FilesBlocks = new ui.controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
-                    this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(this.createPartFolder(this._outlineView), this._split_Editor_FilesBlocks);
-                    this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createPartFolder(this._inspectorView));
+                    this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
+                    this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
                     this.add(this._split_OutlineEditorFilesBlocks_Inspector);
                     window.addEventListener("resize", e => {
                         this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
@@ -389,21 +393,6 @@ var phasereditor2d;
                     this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
                     this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
                     this.setBounds(b);
-                }
-                getOutlineView() {
-                    return this._outlineView;
-                }
-                getFilesView() {
-                    return this._filesView;
-                }
-                getBlocksView() {
-                    return this._blocksView;
-                }
-                getInspectorView() {
-                    return this._inspectorView;
-                }
-                getEditorArea() {
-                    return this._editorArea;
                 }
             }
             ide.DesignWindow = DesignWindow;
@@ -636,6 +625,7 @@ var phasereditor2d;
                 }
                 onPartActivated() {
                     if (!this._partCreated) {
+                        this._partCreated = true;
                         this.createPart();
                     }
                 }
@@ -740,6 +730,9 @@ var phasereditor2d;
                 getContentAreaFromLabel(labelElement) {
                     return labelElement["__contentArea"];
                 }
+                getContentFromLabel(labelElement) {
+                    return controls.Control.getControlOf(this.getContentAreaFromLabel(labelElement).firstChild);
+                }
                 selectTab(toSelectLabel) {
                     const selectedLabel = this._selectionHistoryLabelElement.pop();
                     if (selectedLabel) {
@@ -752,7 +745,7 @@ var phasereditor2d;
                     toSelectContentArea.classList.add("selected");
                     this._selectionHistoryLabelElement.push(toSelectLabel);
                     this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_SELECTED, {
-                        detail: controls.Control.getControlOf(toSelectContentArea.firstChild)
+                        detail: this.getContentFromLabel(toSelectLabel)
                     }));
                 }
                 getSelectedTabContent() {
@@ -762,6 +755,15 @@ var phasereditor2d;
                         return controls.Control.getControlOf(area.firstChild);
                     }
                     return null;
+                }
+                getContentList() {
+                    const list = [];
+                    for (let i = 0; i < this._titleBarElement.children.length; i++) {
+                        const label = this._titleBarElement.children.item(0);
+                        const content = this.getContentFromLabel(label);
+                        list.push(content);
+                    }
+                    return list;
                 }
                 getSelectedLabelElement() {
                     return this._selectionHistoryLabelElement.length > 0 ?
@@ -780,9 +782,15 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            class PartTabPane extends ui.controls.TabPane {
+            class PartFolder extends ui.controls.TabPane {
                 constructor(...classList) {
                     super("PartsTabPane", ...classList);
+                    this.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                        const parts = this.getContentList();
+                        for (const part of parts) {
+                            part.layout();
+                        }
+                    });
                     this.addEventListener(ui.controls.EVENT_TAB_CLOSED, (e) => {
                         const part = e.detail;
                         part.onPartClosed();
@@ -796,13 +804,13 @@ var phasereditor2d;
                     this.addTab(part.getTitle(), part, closeable);
                 }
             }
-            ide.PartTabPane = PartTabPane;
+            ide.PartFolder = PartFolder;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./Part.ts"/>
 /// <reference path="./EditorPart.ts"/>
-/// <reference path="./PartTabPane.ts"/>
+/// <reference path="./PartFolder.ts"/>
 /// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -819,7 +827,7 @@ var phasereditor2d;
                     this.getElement().innerHTML = "Editor " + this.getId();
                 }
             }
-            class EditorArea extends ide.PartTabPane {
+            class EditorArea extends ide.PartFolder {
                 constructor() {
                     super("EditorArea");
                     this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
@@ -911,6 +919,21 @@ var phasereditor2d;
             }
             toolbar.Toolbar = Toolbar;
         })(toolbar = ui.toolbar || (ui.toolbar = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewFolder extends ide.PartFolder {
+                constructor(...classList) {
+                    super("ViewFolder", ...classList);
+                }
+            }
+            ide.ViewFolder = ViewFolder;
+        })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1012,18 +1035,23 @@ var phasereditor2d;
         var ide;
         (function (ide) {
             class ViewerView extends ide.ViewPart {
-                constructor(id, viewer) {
+                constructor(id) {
                     super(id);
-                    this._viewer = viewer;
+                }
+                createPart() {
+                    super.createPart();
+                    this._viewer = this.createViewer();
                     this.addClass("ViewerView");
-                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(viewer);
+                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
                     this.add(this._filteredViewer);
-                    viewer.addEventListener(ui.controls.EVENT_SELECTION, (e) => {
+                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION, (e) => {
                         this.setSelection(e.detail);
                     });
                 }
                 layout() {
-                    this._filteredViewer.layout();
+                    if (this._filteredViewer) {
+                        this._filteredViewer.layout();
+                    }
                 }
             }
             ide.ViewerView = ViewerView;
@@ -2132,9 +2160,18 @@ var phasereditor2d;
                 var viewers = phasereditor2d.ui.controls.viewers;
                 class FilesView extends ide.ViewerView {
                     constructor() {
-                        super("filesView", new viewers.TreeViewer());
+                        super("filesView");
                         this._propertyProvider = new files.FilePropertySectionProvider();
                         this.setTitle("Files");
+                    }
+                    createViewer() {
+                        return new viewers.TreeViewer();
+                    }
+                    getPropertyProvider() {
+                        return this._propertyProvider;
+                    }
+                    createPart() {
+                        super.createPart();
                         const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
                         const viewer = this._viewer;
                         viewer.setLabelProvider(new files.FileLabelProvider());
@@ -2142,9 +2179,6 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new files.FileCellRendererProvider());
                         viewer.setInput(root);
                         viewer.repaint();
-                    }
-                    getPropertyProvider() {
-                        return this._propertyProvider;
                     }
                 }
                 files.FilesView = FilesView;

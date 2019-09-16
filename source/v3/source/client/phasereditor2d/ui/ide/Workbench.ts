@@ -11,8 +11,7 @@ namespace phasereditor2d.ui.ide {
     export class Workbench extends EventTarget {
         private static _workbench: Workbench;
 
-
-        static getWorkbench() {
+        public static getWorkbench() {
             if (!Workbench._workbench) {
                 Workbench._workbench = new Workbench();
             }
@@ -38,7 +37,7 @@ namespace phasereditor2d.ui.ide {
 
         }
 
-        async start() {
+        public async start() {
             await this.initFileStorage();
 
             this.initContentTypes();
@@ -49,11 +48,11 @@ namespace phasereditor2d.ui.ide {
             this.initEvents();
         }
 
-        getDesignWindow() {
+        public getDesignWindow() {
             return this._designWindow;
         }
 
-        getActiveWindow() : ide.Window {
+        public getActiveWindow() : ide.Window {
             return this.getDesignWindow();
         }
 
@@ -64,7 +63,7 @@ namespace phasereditor2d.ui.ide {
             });
         }
 
-        getActivePart() {
+        public getActivePart() {
             return this._activePart;
         }
 
@@ -120,7 +119,7 @@ namespace phasereditor2d.ui.ide {
             return null;
         }
 
-        findPart(element: HTMLElement): Part {
+        public findPart(element: HTMLElement): Part {
             if (element["__part"]) {
                 return element["__part"];
             }
@@ -158,22 +157,22 @@ namespace phasereditor2d.ui.ide {
             this._contentTypeRegistry = reg;
         }
 
-        getContentTypeRegistry() {
+        public getContentTypeRegistry() {
             return this._contentTypeRegistry;
         }
 
-        getFileStorage(): core.io.IFileStorage {
+        public getFileStorage(): core.io.IFileStorage {
             return this._fileStorage;
         }
 
-        getContentTypeIcon(contentType: string): controls.IIcon {
+        public getContentTypeIcon(contentType: string): controls.IIcon {
             if (this._contentType_icon_Map.has(contentType)) {
                 return this._contentType_icon_Map.get(contentType);
             }
             return null;
         }
 
-        getFileImage(file: core.io.FilePath) {
+        public getFileImage(file: core.io.FilePath) {
             return controls.Controls.getImage(file.getUrl(), file.getId());
         }
 

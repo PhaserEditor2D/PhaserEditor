@@ -64,10 +64,10 @@ namespace phasereditor2d.ui.controls {
 
         private closeTab(labelElement: HTMLElement): void {
             this._titleBarElement.removeChild(labelElement);
-            const contentArea = <HTMLElement> labelElement["__contentArea"];
+            const contentArea = <HTMLElement>labelElement["__contentArea"];
             this._contentAreaElement.removeChild(contentArea);
 
-            let toSelectLabel : HTMLElement = null;
+            let toSelectLabel: HTMLElement = null;
 
             const selectedLabel = this.getSelectedLabelElement();
             if (selectedLabel === labelElement) {
@@ -77,13 +77,13 @@ namespace phasereditor2d.ui.controls {
                     toSelectLabel = nextInHistory;
                 } else {
                     if (this._titleBarElement.childElementCount > 0) {
-                        toSelectLabel = <HTMLElement> this._titleBarElement.firstChild;
+                        toSelectLabel = <HTMLElement>this._titleBarElement.firstChild;
                     }
                 }
             }
 
             this.dispatchEvent(new CustomEvent(EVENT_TAB_CLOSED, {
-                detail: Control.getControlOf(<HTMLElement> contentArea.firstChild)
+                detail: Control.getControlOf(<HTMLElement>contentArea.firstChild)
             }));
 
             if (toSelectLabel) {
@@ -93,6 +93,10 @@ namespace phasereditor2d.ui.controls {
 
         private getContentAreaFromLabel(labelElement: HTMLElement): HTMLElement {
             return labelElement["__contentArea"];
+        }
+
+        private getContentFromLabel(labelElement: HTMLElement) {
+            return Control.getControlOf(<HTMLElement>this.getContentAreaFromLabel(labelElement).firstChild);
         }
 
         private selectTab(toSelectLabel: HTMLElement): void {
@@ -110,7 +114,7 @@ namespace phasereditor2d.ui.controls {
             this._selectionHistoryLabelElement.push(toSelectLabel);
 
             this.dispatchEvent(new CustomEvent(EVENT_TAB_SELECTED, {
-                detail: Control.getControlOf(<HTMLElement> toSelectContentArea.firstChild)
+                detail: this.getContentFromLabel(toSelectLabel)
             }));
         }
 
@@ -121,6 +125,18 @@ namespace phasereditor2d.ui.controls {
                 return Control.getControlOf(<HTMLElement>area.firstChild);
             }
             return null;
+        }
+
+        public getContentList(): controls.Control[] {
+            const list: controls.Control[] = [];
+
+            for (let i = 0; i < this._titleBarElement.children.length; i++) {
+                const label = <HTMLElement>this._titleBarElement.children.item(0);
+                const content = this.getContentFromLabel(label);
+                list.push(content);
+            }
+
+            return list;
         }
 
 

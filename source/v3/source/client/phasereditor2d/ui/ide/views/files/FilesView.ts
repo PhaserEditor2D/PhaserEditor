@@ -15,9 +15,21 @@ namespace phasereditor2d.ui.ide.files {
         private _propertyProvider = new FilePropertySectionProvider();
 
         public constructor() {
-            super("filesView", new viewers.TreeViewer());
-            
+            super("filesView");
+
             this.setTitle("Files");
+        }
+
+        protected createViewer() {
+            return new viewers.TreeViewer();
+        }
+
+        public getPropertyProvider() {
+            return this._propertyProvider;
+        }
+
+        protected createPart(): void {
+            super.createPart();
 
             const root = Workbench.getWorkbench().getFileStorage().getRoot();
 
@@ -28,10 +40,6 @@ namespace phasereditor2d.ui.ide.files {
             viewer.setInput(root);
 
             viewer.repaint();
-        }
-
-        public getPropertyProvider() {
-            return this._propertyProvider;
         }
 
     }

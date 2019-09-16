@@ -60,6 +60,7 @@ namespace phasereditor2d.ui.ide {
 
         public onPartActivated() : void {
             if (!this._partCreated) {
+                this._partCreated = true;
                 this.createPart();
             }
         }

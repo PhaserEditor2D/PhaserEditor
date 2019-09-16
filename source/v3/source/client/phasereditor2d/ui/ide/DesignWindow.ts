@@ -15,20 +15,19 @@ namespace phasereditor2d.ui.ide {
         private _split_Outline_EditorFilesBlocks: controls.SplitPanel;
         private _split_OutlineEditorFilesBlocks_Inspector: controls.SplitPanel;
 
-        constructor() {
+        public constructor() {
             super();
 
-            //this._toolbar = new toolbar.Toolbar();
             this._outlineView = new outline.OutlineView();
             this._filesView = new files.FilesView();
             this._inspectorView = new inspector.InspectorView();
             this._blocksView = new blocks.BlocksView();
             this._editorArea = new ide.EditorArea();
 
-            this._split_Files_Blocks = new controls.SplitPanel(this.createPartFolder(this._filesView), this.createPartFolder(this._blocksView));
+            this._split_Files_Blocks = new controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
             this._split_Editor_FilesBlocks = new controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
-            this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createPartFolder(this._outlineView), this._split_Editor_FilesBlocks);
-            this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createPartFolder(this._inspectorView));
+            this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
+            this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
             this.add(this._split_OutlineEditorFilesBlocks_Inspector);
 
             window.addEventListener("resize", e => {
@@ -47,26 +46,6 @@ namespace phasereditor2d.ui.ide {
             this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
 
             this.setBounds(b);
-        }
-
-        getOutlineView() {
-            return this._outlineView;
-        }
-
-        getFilesView() {
-            return this._filesView;
-        }
-
-        getBlocksView() {
-            return this._blocksView;
-        }
-
-        getInspectorView() {
-            return this._inspectorView;
-        }
-
-        getEditorArea() {
-            return this._editorArea;
         }
     }
 }
