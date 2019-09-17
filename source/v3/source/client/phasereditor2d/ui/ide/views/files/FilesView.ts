@@ -40,6 +40,10 @@ namespace phasereditor2d.ui.ide.views.files {
             viewer.setInput(root);
 
             viewer.repaint();
+
+            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e: CustomEvent) => {
+                Workbench.getWorkbench().openEditor(e.detail);
+            });
         }
 
     }

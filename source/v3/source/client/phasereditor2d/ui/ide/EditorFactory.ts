@@ -14,7 +14,7 @@ namespace phasereditor2d.ui.ide {
 
         public abstract acceptInput(input : any) : boolean;
 
-        public abstract createEditor(input: any): EditorPart;
+        public abstract createEditor(): EditorPart;
 
     }
 }

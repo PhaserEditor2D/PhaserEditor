@@ -4,6 +4,8 @@
 /// <reference path="./ImageCellRenderer.ts"/>
 
 namespace phasereditor2d.ui.controls.viewers {
+    
+    export const EVENT_OPEN_ITEM = "itemOpened";
 
     export abstract class Viewer extends Control {
 
@@ -16,7 +18,6 @@ namespace phasereditor2d.ui.controls.viewers {
         private _selectedObjects: Set<any>;
         protected _context: CanvasRenderingContext2D;
         protected _paintItems: PaintItem[];
-        private _overObject: any;
         private _lastSelectedItemIndex: number = -1;
         protected _contentHeight: number = 0;
         private _filterText: string;
@@ -44,10 +45,10 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private initListeners() {
             const canvas = this.getCanvas();
-            canvas.addEventListener("mousemove", e => this.onMouseMove(e));
             canvas.addEventListener("mousedown", e => this.onMouseDown(e));
             canvas.addEventListener("wheel", e => this.onWheel(e))
             canvas.addEventListener("keydown", e => this.onKeyDown(e));
+            canvas.addEventListener("dblclick", e => this.onDoubleClick(e));
         }
 
         getLabelProvider() {
@@ -145,6 +146,13 @@ namespace phasereditor2d.ui.controls.viewers {
             this.repaint();
         }
 
+        private onDoubleClick(e: MouseEvent) {
+            const item = this.getPaintItemAt(e);
+            this.dispatchEvent(new CustomEvent(EVENT_OPEN_ITEM, {
+                detail: item.data
+            }))
+        }
+
         private onMouseDown(e: MouseEvent): void {
             if (e.button !== 0) {
                 return;
@@ -190,24 +198,6 @@ namespace phasereditor2d.ui.controls.viewers {
                 this.fireSelectionChanged();
                 this._lastSelectedItemIndex = item ? item.index : 0;
             }
-        }
-
-        private onMouseMove(e: MouseEvent): void {
-            if (e.buttons !== 0) {
-                return;
-            }
-
-            const item = this.getPaintItemAt(e);
-
-            const over = item === null ? null : item.data;
-
-            if (over !== this._overObject) {
-                this._overObject = over;
-            }
-        }
-
-        getOverObject() {
-            return this._overObject;
         }
 
         private initContext(): void {

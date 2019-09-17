@@ -37,6 +37,10 @@ namespace phasereditor2d.ui.ide {
             this.initialLayout();
         }
 
+        public getEditorArea() {
+            return this._editorArea;
+        }
+
         private initialLayout() {
             const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
 

@@ -347,14 +347,6 @@ var phasereditor2d;
                         folder.addPart(part);
                     }
                     return folder;
-                    // const tabPane = new controls.TabPane();
-                    // for(const part of parts) {
-                    //     tabPane.addTab(part.getTitle(), part);
-                    //     tabPane.addEventListener(controls.EVENT_CONTROL_LAYOUT, () => {
-                    //         part.layout();
-                    //     })
-                    // }
-                    // return tabPane;
                 }
             }
             ide.Window = Window;
@@ -385,6 +377,9 @@ var phasereditor2d;
                         this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
                     });
                     this.initialLayout();
+                }
+                getEditorArea() {
+                    return this._editorArea;
                 }
                 initialLayout() {
                     const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
@@ -587,6 +582,7 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            ide.EVENT_PART_TITLE_UPDATED = "partTitledUpdated";
             class Part extends ui.controls.Control {
                 constructor(id) {
                     super();
@@ -603,6 +599,7 @@ var phasereditor2d;
                 }
                 setTitle(title) {
                     this._title = title;
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
                 }
                 getId() {
                     return this._id;
@@ -623,7 +620,7 @@ var phasereditor2d;
                 }
                 onPartClosed() {
                 }
-                onPartActivated() {
+                onPartShown() {
                     if (!this._partCreated) {
                         this._partCreated = true;
                         this.createPart();
@@ -646,6 +643,12 @@ var phasereditor2d;
                 constructor(id) {
                     super(id);
                     this.addClass("EditorPart");
+                }
+                getInput() {
+                    return this._input;
+                }
+                setInput(input) {
+                    this._input = input;
                 }
             }
             ide.EditorPart = EditorPart;
@@ -727,15 +730,44 @@ var phasereditor2d;
                         this.selectTab(toSelectLabel);
                     }
                 }
+                setTabTitle(content, title) {
+                    for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
+                        const label = this._titleBarElement.children.item(i);
+                        const content2 = this.getContentFromLabel(label);
+                        if (content2 === content) {
+                            label.firstChild.innerHTML = title;
+                        }
+                    }
+                }
+                getLabelFromContent(content) {
+                    for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
+                        const label = this._titleBarElement.children.item(i);
+                        const content2 = this.getContentFromLabel(label);
+                        if (content2 === content) {
+                            return label;
+                        }
+                    }
+                    return null;
+                }
                 getContentAreaFromLabel(labelElement) {
                     return labelElement["__contentArea"];
                 }
                 getContentFromLabel(labelElement) {
                     return controls.Control.getControlOf(this.getContentAreaFromLabel(labelElement).firstChild);
                 }
+                selectTabWithContent(content) {
+                    const label = this.getLabelFromContent(content);
+                    if (label) {
+                        this.selectTab(label);
+                    }
+                }
                 selectTab(toSelectLabel) {
                     const selectedLabel = this._selectionHistoryLabelElement.pop();
                     if (selectedLabel) {
+                        if (selectedLabel === toSelectLabel) {
+                            this._selectionHistoryLabelElement.push(selectedLabel);
+                            return;
+                        }
                         selectedLabel.classList.remove("selected");
                         const selectedContentArea = this.getContentAreaFromLabel(selectedLabel);
                         selectedContentArea.classList.remove("selected");
@@ -747,6 +779,7 @@ var phasereditor2d;
                     this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_SELECTED, {
                         detail: this.getContentFromLabel(toSelectLabel)
                     }));
+                    this.dispatchLayoutEvent();
                 }
                 getSelectedTabContent() {
                     const label = this.getSelectedLabelElement();
@@ -786,9 +819,9 @@ var phasereditor2d;
                 constructor(...classList) {
                     super("PartsTabPane", ...classList);
                     this.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
-                        const parts = this.getContentList();
-                        for (const part of parts) {
-                            part.layout();
+                        const content = this.getSelectedTabContent();
+                        if (content) {
+                            content.layout();
                         }
                     });
                     this.addEventListener(ui.controls.EVENT_TAB_CLOSED, (e) => {
@@ -797,10 +830,13 @@ var phasereditor2d;
                     });
                     this.addEventListener(ui.controls.EVENT_TAB_SELECTED, (e) => {
                         const part = e.detail;
-                        part.onPartActivated();
+                        part.onPartShown();
                     });
                 }
                 addPart(part, closeable = false) {
+                    part.addEventListener(ide.EVENT_PART_TITLE_UPDATED, (e) => {
+                        this.setTabTitle(part, part.getTitle());
+                    });
                     this.addTab(part.getTitle(), part, closeable);
                 }
             }
@@ -830,9 +866,9 @@ var phasereditor2d;
             class EditorArea extends ide.PartFolder {
                 constructor() {
                     super("EditorArea");
-                    this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
-                    this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
-                    this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
+                    //this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
+                    //this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
+                    //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
                 }
             }
             ide.EditorArea = EditorArea;
@@ -1102,10 +1138,84 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var image;
+                (function (image) {
+                    class ImageEditorFactory extends ide.EditorFactory {
+                        constructor() {
+                            super("phasereditor2d.ImageEditorFactory");
+                        }
+                        acceptInput(input) {
+                            if (input instanceof phasereditor2d.core.io.FilePath) {
+                                const file = input;
+                                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                                if (contentType === ide.CONTENT_TYPE_IMAGE) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        createEditor() {
+                            return new ImageEditor();
+                        }
+                    }
+                    class ImageEditor extends ide.EditorPart {
+                        constructor() {
+                            super("phasereditor2d.ImageEditor");
+                        }
+                        static getFactory() {
+                            return new ImageEditorFactory();
+                        }
+                        async createPart() {
+                            super.createPart();
+                            this._imageControl = new ui.controls.ImageControl();
+                            this.add(this._imageControl);
+                            this.updateImage();
+                        }
+                        async updateImage() {
+                            const file = this.getInput();
+                            if (!file) {
+                                return;
+                            }
+                            const img = ide.Workbench.getWorkbench().getFileImage(file);
+                            this._imageControl.setImage(img);
+                            this._imageControl.repaint();
+                            const result = await img.preload();
+                            if (result === ui.controls.PreloadResult.RESOURCES_LOADED) {
+                                this._imageControl.repaint();
+                            }
+                        }
+                        layout() {
+                            if (this._imageControl) {
+                                this._imageControl.resizeTo();
+                            }
+                        }
+                        setInput(input) {
+                            super.setInput(input);
+                            this.setTitle(input.getName());
+                            if (this._imageControl) {
+                                this.updateImage();
+                            }
+                        }
+                    }
+                    image.ImageEditor = ImageEditor;
+                })(image = editors.image || (editors.image = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
 /// <reference path="../../core/io/FileStorage.ts"/>
+/// <reference path="./editors/image/ImageEditor.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1123,6 +1233,7 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_VIDEO));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_TEXT));
+                    this._editorRegistry = new ide.EditorRegistry();
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
@@ -1133,9 +1244,13 @@ var phasereditor2d;
                 async start() {
                     await this.initFileStorage();
                     this.initContentTypes();
+                    this.initEditors();
                     this._designWindow = new ide.DesignWindow();
                     document.getElementById("body").appendChild(this._designWindow.getElement());
                     this.initEvents();
+                }
+                initEditors() {
+                    this._editorRegistry.registerFactory(ide.editors.image.ImageEditor.getFactory());
                 }
                 getDesignWindow() {
                     return this._designWindow;
@@ -1239,7 +1354,22 @@ var phasereditor2d;
                 getFileImage(file) {
                     return ui.controls.Controls.getImage(file.getUrl(), file.getId());
                 }
+                getEditorRegistry() {
+                    return this._editorRegistry;
+                }
                 openEditor(input) {
+                    const factory = this._editorRegistry.getFactoryForInput(input);
+                    if (factory) {
+                        //TODO: check if the input is already opened!
+                        const editor = factory.createEditor();
+                        const area = this.getActiveWindow().getEditorArea();
+                        area.addPart(editor, true);
+                        editor.setInput(input);
+                        area.selectTabWithContent(editor);
+                    }
+                    else {
+                        alert("Editor not found for the given input.");
+                    }
                 }
             }
             ide.Workbench = Workbench;
@@ -1370,6 +1500,7 @@ var phasereditor2d;
         (function (controls) {
             var viewers;
             (function (viewers) {
+                viewers.EVENT_OPEN_ITEM = "itemOpened";
                 class Viewer extends controls.Control {
                     constructor(...classList) {
                         super("canvas", "Viewer");
@@ -1388,10 +1519,10 @@ var phasereditor2d;
                     }
                     initListeners() {
                         const canvas = this.getCanvas();
-                        canvas.addEventListener("mousemove", e => this.onMouseMove(e));
                         canvas.addEventListener("mousedown", e => this.onMouseDown(e));
                         canvas.addEventListener("wheel", e => this.onWheel(e));
                         canvas.addEventListener("keydown", e => this.onKeyDown(e));
+                        canvas.addEventListener("dblclick", e => this.onDoubleClick(e));
                     }
                     getLabelProvider() {
                         return this._labelProvider;
@@ -1469,6 +1600,12 @@ var phasereditor2d;
                         }
                         this.repaint();
                     }
+                    onDoubleClick(e) {
+                        const item = this.getPaintItemAt(e);
+                        this.dispatchEvent(new CustomEvent(viewers.EVENT_OPEN_ITEM, {
+                            detail: item.data
+                        }));
+                    }
                     onMouseDown(e) {
                         if (e.button !== 0) {
                             return;
@@ -1512,19 +1649,6 @@ var phasereditor2d;
                             this.fireSelectionChanged();
                             this._lastSelectedItemIndex = item ? item.index : 0;
                         }
-                    }
-                    onMouseMove(e) {
-                        if (e.buttons !== 0) {
-                            return;
-                        }
-                        const item = this.getPaintItemAt(e);
-                        const over = item === null ? null : item.data;
-                        if (over !== this._overObject) {
-                            this._overObject = over;
-                        }
-                    }
-                    getOverObject() {
-                        return this._overObject;
                     }
                     initContext() {
                         this._context = this.getCanvas().getContext("2d");
@@ -2042,6 +2166,9 @@ var phasereditor2d;
                             viewer.setCellRendererProvider(new files.FileCellRendererProvider());
                             viewer.setInput(root);
                             viewer.repaint();
+                            viewer.addEventListener(ui.controls.viewers.EVENT_OPEN_ITEM, (e) => {
+                                ide.Workbench.getWorkbench().openEditor(e.detail);
+                            });
                         }
                     }
                     files.FilesView = FilesView;

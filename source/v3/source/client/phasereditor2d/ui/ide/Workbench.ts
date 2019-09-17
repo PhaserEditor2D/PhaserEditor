@@ -2,6 +2,7 @@
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
 /// <reference path="../../core/io/FileStorage.ts"/>
+/// <reference path="./editors/image/ImageEditor.ts"/>
 
 namespace phasereditor2d.ui.ide {
 
@@ -24,9 +25,11 @@ namespace phasereditor2d.ui.ide {
         private _fileStorage: core.io.IFileStorage;
         private _contentTypeRegistry: core.ContentTypeRegistry;
         private _activePart: Part;
+        private _editorRegistry: EditorRegistry;
 
         private constructor() {
             super();
+
             this._contentType_icon_Map = new Map();
 
             this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, controls.Controls.getIcon(controls.Controls.ICON_FILE_IMAGE));
@@ -35,6 +38,8 @@ namespace phasereditor2d.ui.ide {
             this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, controls.Controls.getIcon(controls.Controls.ICON_FILE_SCRIPT));
             this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, controls.Controls.getIcon(controls.Controls.ICON_FILE_TEXT));
 
+            this._editorRegistry = new EditorRegistry();
+
         }
 
         public async start() {
@@ -42,17 +47,23 @@ namespace phasereditor2d.ui.ide {
 
             this.initContentTypes();
 
+            this.initEditors();
+
             this._designWindow = new ide.DesignWindow();
             document.getElementById("body").appendChild(this._designWindow.getElement());
 
             this.initEvents();
         }
 
+        private initEditors(): void {
+            this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
+        }
+
         public getDesignWindow() {
             return this._designWindow;
         }
 
-        public getActiveWindow() : ide.Window {
+        public getActiveWindow(): ide.Window {
             return this.getDesignWindow();
         }
 
@@ -108,7 +119,7 @@ namespace phasereditor2d.ui.ide {
             }
         }
 
-        private findTabPane(element : HTMLElement) {
+        private findTabPane(element: HTMLElement) {
             if (element) {
                 const control = controls.Control.getControlOf(element);
                 if (control && control instanceof controls.TabPane) {
@@ -176,11 +187,24 @@ namespace phasereditor2d.ui.ide {
             return controls.Controls.getImage(file.getUrl(), file.getId());
         }
 
-        openEditor(input : object) {
+        public getEditorRegistry() {
+            return this._editorRegistry;
+        }
 
+        public openEditor(input: any): void {
+            const factory = this._editorRegistry.getFactoryForInput(input);
+            if (factory) {
+                //TODO: check if the input is already opened!
+                const editor = factory.createEditor();
+                const area = this.getActiveWindow().getEditorArea();
+                area.addPart(editor, true);
+                editor.setInput(input);
+                area.selectTabWithContent(editor);
+            } else {
+                alert("Editor not found for the given input.");
+            }
         }
 
     }
-
 
 }

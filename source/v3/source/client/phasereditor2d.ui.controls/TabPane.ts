@@ -91,6 +91,27 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
+        public setTabTitle(content: Control, title: string) {
+            for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
+                const label = <HTMLElement>this._titleBarElement.children.item(i);
+                const content2 = this.getContentFromLabel(label);
+                if (content2 === content) {
+                    (<HTMLElement>label.firstChild).innerHTML = title;
+                }
+            }
+        }
+
+        private getLabelFromContent(content : Control) {
+            for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
+                const label = <HTMLElement>this._titleBarElement.children.item(i);
+                const content2 = this.getContentFromLabel(label);
+                if (content2 === content) {
+                    return label;
+                }
+            }
+            return null;
+        }
+
         private getContentAreaFromLabel(labelElement: HTMLElement): HTMLElement {
             return labelElement["__contentArea"];
         }
@@ -99,10 +120,21 @@ namespace phasereditor2d.ui.controls {
             return Control.getControlOf(<HTMLElement>this.getContentAreaFromLabel(labelElement).firstChild);
         }
 
+        public selectTabWithContent(content : Control) {
+            const label = this.getLabelFromContent(content);
+            if (label) {
+                this.selectTab(label);
+            }
+        }
+
         private selectTab(toSelectLabel: HTMLElement): void {
             const selectedLabel = this._selectionHistoryLabelElement.pop();
 
             if (selectedLabel) {
+                if (selectedLabel === toSelectLabel) {
+                    this._selectionHistoryLabelElement.push(selectedLabel);
+                    return;
+                }
                 selectedLabel.classList.remove("selected");
                 const selectedContentArea = this.getContentAreaFromLabel(selectedLabel);
                 selectedContentArea.classList.remove("selected");
@@ -116,6 +148,8 @@ namespace phasereditor2d.ui.controls {
             this.dispatchEvent(new CustomEvent(EVENT_TAB_SELECTED, {
                 detail: this.getContentFromLabel(toSelectLabel)
             }));
+
+            this.dispatchLayoutEvent();
         }
 
         public getSelectedTabContent(): Control {

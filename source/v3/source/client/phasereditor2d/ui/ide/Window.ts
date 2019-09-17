@@ -2,14 +2,15 @@
 
 namespace phasereditor2d.ui.ide {
 
-    export class Window extends controls.Control {
-        constructor() {
+    export abstract class Window extends controls.Control {
+
+        public constructor() {
             super("div", "Window");
 
             this.setLayout(new controls.FillLayout(5));
         }
 
-        createViewFolder(...parts : Part[]) : ViewFolder {
+        protected createViewFolder(...parts : Part[]) : ViewFolder {
 
             const folder = new ViewFolder();
             for(const part of parts) {
@@ -17,18 +18,8 @@ namespace phasereditor2d.ui.ide {
             }
 
             return folder;
-
-            // const tabPane = new controls.TabPane();
-
-            // for(const part of parts) {
-            //     tabPane.addTab(part.getTitle(), part);
-
-            //     tabPane.addEventListener(controls.EVENT_CONTROL_LAYOUT, () => {
-            //         part.layout();
-            //     })
-            // }
-
-            // return tabPane;
         }
+
+        public abstract getEditorArea() : EditorArea;
     }
 }

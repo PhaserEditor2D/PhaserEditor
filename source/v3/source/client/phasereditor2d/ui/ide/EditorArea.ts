@@ -22,9 +22,9 @@ namespace phasereditor2d.ui.ide {
         public constructor() {
             super("EditorArea");
 
-            this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
-            this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
-            this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
+            //this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
+            //this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
+            //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
         }
 
     }
