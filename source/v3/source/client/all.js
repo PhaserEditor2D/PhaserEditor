@@ -2909,7 +2909,7 @@ var phasereditor2d;
                     super("canvas", "CanvasControl", ...classList);
                     this._padding = padding;
                     this._canvas = this.getElement();
-                    this._context = this._canvas.getContext("2d");
+                    this.initContext();
                 }
                 getCanvas() {
                     return this._canvas;
@@ -2927,6 +2927,7 @@ var phasereditor2d;
                     if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
                         this._canvas.width = this._canvas.clientWidth;
                         this._canvas.height = this._canvas.clientHeight;
+                        this.initContext();
                     }
                 }
                 clear() {
@@ -2936,6 +2937,11 @@ var phasereditor2d;
                     this.ensureCanvasSize();
                     this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
                     this.paint();
+                }
+                initContext() {
+                    this._context = this.getCanvas().getContext("2d");
+                    this._context.imageSmoothingEnabled = false;
+                    this._context.font = `${controls.FONT_HEIGHT}px sans-serif`;
                 }
             }
             controls.CanvasControl = CanvasControl;
