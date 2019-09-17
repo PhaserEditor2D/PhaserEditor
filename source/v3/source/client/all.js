@@ -653,6 +653,13 @@ var phasereditor2d;
                     this._title = title;
                     this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
                 }
+                setIcon(icon) {
+                    this._icon = icon;
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
+                }
+                getIcon() {
+                    return this._icon;
+                }
                 getId() {
                     return this._id;
                 }
@@ -741,17 +748,23 @@ var phasereditor2d;
                 makeLabel(label, closeable) {
                     const labelElement = document.createElement("div");
                     labelElement.classList.add("TabPaneLabel");
+                    const tabIconElement = document.createElement("canvas");
+                    tabIconElement.width = 16;
+                    tabIconElement.height = 16;
+                    tabIconElement.style.width = tabIconElement.width + "px";
+                    tabIconElement.style.height = tabIconElement.height + "px";
+                    labelElement.appendChild(tabIconElement);
                     const textElement = document.createElement("span");
                     textElement.innerHTML = label;
                     labelElement.appendChild(textElement);
                     if (closeable) {
-                        const iconElement = controls.Controls.createIconElement("close");
-                        iconElement.classList.add("closeIcon");
-                        iconElement.addEventListener("click", e => {
+                        const closeIconElement = controls.Controls.createIconElement("close");
+                        closeIconElement.classList.add("closeIcon");
+                        closeIconElement.addEventListener("click", e => {
                             e.stopImmediatePropagation();
                             this.closeTab(labelElement);
                         });
-                        labelElement.appendChild(iconElement);
+                        labelElement.appendChild(closeIconElement);
                         labelElement.classList.add("closeable");
                     }
                     return labelElement;
@@ -782,12 +795,17 @@ var phasereditor2d;
                         this.selectTab(toSelectLabel);
                     }
                 }
-                setTabTitle(content, title) {
+                setTabTitle(content, title, icon) {
                     for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                         const label = this._titleBarElement.children.item(i);
                         const content2 = this.getContentFromLabel(label);
                         if (content2 === content) {
-                            label.firstChild.innerHTML = title;
+                            const iconElement = label.firstChild;
+                            const textElement = iconElement.nextSibling;
+                            if (icon) {
+                                icon.paint(iconElement.getContext("2d"), 0, 0);
+                            }
+                            textElement.innerHTML = title;
                         }
                     }
                 }
@@ -887,7 +905,7 @@ var phasereditor2d;
                 }
                 addPart(part, closeable = false) {
                     part.addEventListener(ide.EVENT_PART_TITLE_UPDATED, (e) => {
-                        this.setTabTitle(part, part.getTitle());
+                        this.setTabTitle(part, part.getTitle(), part.getIcon());
                     });
                     this.addTab(part.getTitle(), part, closeable);
                 }
@@ -990,6 +1008,12 @@ var phasereditor2d;
                 }
                 getInput() {
                     return super.getInput();
+                }
+                getIcon() {
+                    const wb = ide.Workbench.getWorkbench();
+                    const ct = wb.getContentTypeRegistry().getCachedContentType(this.getInput());
+                    const icon = wb.getContentTypeIcon(ct);
+                    return icon;
                 }
             }
             ide.FileEditor = FileEditor;

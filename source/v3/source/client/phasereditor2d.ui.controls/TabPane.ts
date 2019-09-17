@@ -43,19 +43,27 @@ namespace phasereditor2d.ui.controls {
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
+            const tabIconElement = document.createElement("canvas");
+            tabIconElement.width = 16;
+            tabIconElement.height = 16;
+            tabIconElement.style.width = tabIconElement.width + "px";
+            tabIconElement.style.height = tabIconElement.height + "px";
+
+            labelElement.appendChild(tabIconElement);
+
             const textElement = document.createElement("span");
             textElement.innerHTML = label;
             labelElement.appendChild(textElement);
 
             if (closeable) {
-                const iconElement = Controls.createIconElement("close");
-                iconElement.classList.add("closeIcon");
-                iconElement.addEventListener("click", e => {
+                const closeIconElement = Controls.createIconElement("close");
+                closeIconElement.classList.add("closeIcon");
+                closeIconElement.addEventListener("click", e => {
                     e.stopImmediatePropagation();
                     this.closeTab(labelElement);
                 });
 
-                labelElement.appendChild(iconElement);
+                labelElement.appendChild(closeIconElement);
                 labelElement.classList.add("closeable");
             }
 
@@ -91,12 +99,17 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        public setTabTitle(content: Control, title: string) {
+        public setTabTitle(content: Control, title: string, icon? : IIcon) {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
                 const content2 = this.getContentFromLabel(label);
                 if (content2 === content) {
-                    (<HTMLElement>label.firstChild).innerHTML = title;
+                    const iconElement : HTMLCanvasElement = <HTMLCanvasElement> label.firstChild;
+                    const textElement = <HTMLElement> iconElement.nextSibling;
+                    if (icon) {
+                        icon.paint(iconElement.getContext("2d"), 0, 0);
+                    }
+                    textElement.innerHTML = title;
                 }
             }
         }

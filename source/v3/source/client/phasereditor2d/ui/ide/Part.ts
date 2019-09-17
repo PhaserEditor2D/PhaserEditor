@@ -9,6 +9,7 @@ namespace phasereditor2d.ui.ide {
         private _title: string;
         private _selection: any[];
         private _partCreated: boolean;
+        private _icon: controls.IIcon;
 
         public constructor(id: string) {
             super();
@@ -32,6 +33,15 @@ namespace phasereditor2d.ui.ide {
         public setTitle(title: string): void {
             this._title = title;
             this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
+        }
+
+        public setIcon(icon: controls.IIcon) {
+            this._icon = icon;
+            this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
+        }
+
+        public getIcon() {
+            return this._icon;
         }
 
         public getId() {
