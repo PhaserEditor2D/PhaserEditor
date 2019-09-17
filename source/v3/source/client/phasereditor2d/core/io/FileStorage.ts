@@ -24,12 +24,19 @@ namespace phasereditor2d.core.io {
     export class ServerFileStorage implements IFileStorage {
         
         private _root : FilePath;
+        private _fileStringContentMap : Map<string, string>;
+
+        public constructor() {
+            this._fileStringContentMap = new Map();
+        }
 
         public getRoot(): FilePath {
             return this._root;
         }
 
         public async reload(): Promise<FilePath> {
+            this._fileStringContentMap = new Map();
+
             const resp = await makeApiRequest("GetProjectFiles");
             const data = await resp.json();
 
@@ -43,13 +50,28 @@ namespace phasereditor2d.core.io {
         }
 
         public async getFileString(file: FilePath): Promise<string> {
+            const id = file.getId();
+
+            if (this._fileStringContentMap.has(id)) {
+                const content = this._fileStringContentMap.get(id);
+                return content;
+            }
+
             const resp = await makeApiRequest("GetFileString", {
                 path: file.getFullName()
             });
+
             const data = await resp.json();
-            return new Promise(function (resolve, reject) {
-                resolve(data["content"]);
-            });
+
+            if (data.error) {
+                alert(`Cannot get file content of '${file.getFullName()}'`);
+                return null;
+            }
+
+            const content = data["content"];
+            this._fileStringContentMap.set(id, content);
+
+            return content;
         }
     }
 }

@@ -164,6 +164,7 @@ namespace phasereditor2d.ui.ide {
         private initContentTypes() {
             const reg = new core.ContentTypeRegistry();
 
+            reg.registerResolver(new core.pack.AssetPackContentTypeResolver());
             reg.registerResolver(new DefaultExtensionTypeResolver());
 
             this._contentTypeRegistry = reg;
@@ -219,7 +220,7 @@ namespace phasereditor2d.ui.ide {
                 editorArea.activateEditor(editor);
                 this.setActivePart(editor);
             } else {
-                alert("Editor not found for the given input.");
+                alert("No editor available for the given input.");
             }
         }
 

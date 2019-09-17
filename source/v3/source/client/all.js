@@ -174,10 +174,14 @@ var phasereditor2d;
                 });
             }
             class ServerFileStorage {
+                constructor() {
+                    this._fileStringContentMap = new Map();
+                }
                 getRoot() {
                     return this._root;
                 }
                 async reload() {
+                    this._fileStringContentMap = new Map();
                     const resp = await makeApiRequest("GetProjectFiles");
                     const data = await resp.json();
                     //TODO: handle error
@@ -188,17 +192,57 @@ var phasereditor2d;
                     });
                 }
                 async getFileString(file) {
+                    const id = file.getId();
+                    if (this._fileStringContentMap.has(id)) {
+                        const content = this._fileStringContentMap.get(id);
+                        return content;
+                    }
                     const resp = await makeApiRequest("GetFileString", {
                         path: file.getFullName()
                     });
                     const data = await resp.json();
-                    return new Promise(function (resolve, reject) {
-                        resolve(data["content"]);
-                    });
+                    if (data.error) {
+                        alert(`Cannot get file content of '${file.getFullName()}'`);
+                        return null;
+                    }
+                    const content = data["content"];
+                    this._fileStringContentMap.set(id, content);
+                    return content;
                 }
             }
             io.ServerFileStorage = ServerFileStorage;
         })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var pack;
+        (function (pack) {
+            pack.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
+            class AssetPackContentTypeResolver {
+                async computeContentType(file) {
+                    console.log(`testing ${file.getFullName()}`);
+                    if (file.getExtension() === "json") {
+                        const content = await phasereditor2d.ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                        if (content !== null) {
+                            try {
+                                const data = JSON.parse(content);
+                                const meta = data["meta"];
+                                if (meta["contentType"] === "Phaser v3 Asset Pack") {
+                                    return pack.CONTENT_TYPE_ASSET_PACK;
+                                }
+                            }
+                            catch (e) {
+                            }
+                        }
+                    }
+                    return core.CONTENT_TYPE_ANY;
+                }
+            }
+            pack.AssetPackContentTypeResolver = AssetPackContentTypeResolver;
+        })(pack = core.pack || (core.pack = {}));
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1375,6 +1419,7 @@ var phasereditor2d;
                 }
                 initContentTypes() {
                     const reg = new phasereditor2d.core.ContentTypeRegistry();
+                    reg.registerResolver(new phasereditor2d.core.pack.AssetPackContentTypeResolver());
                     reg.registerResolver(new ide.DefaultExtensionTypeResolver());
                     this._contentTypeRegistry = reg;
                 }
@@ -1421,7 +1466,7 @@ var phasereditor2d;
                         this.setActivePart(editor);
                     }
                     else {
-                        alert("Editor not found for the given input.");
+                        alert("No editor available for the given input.");
                     }
                 }
             }
@@ -1455,7 +1500,11 @@ var phasereditor2d;
                             super("phasereditor2d.AssetPackEditorFactory");
                         }
                         acceptInput(input) {
-                            return input instanceof io.FilePath && input.getExtension() === "json";
+                            if (input instanceof io.FilePath) {
+                                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                                return contentType === phasereditor2d.core.pack.CONTENT_TYPE_ASSET_PACK;
+                            }
+                            return false;
                         }
                         createEditor() {
                             return new AssetPackEditor();

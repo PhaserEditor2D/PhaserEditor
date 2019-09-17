@@ -9,7 +9,11 @@ namespace phasereditor2d.ui.ide.editors.pack {
         }
 
         public acceptInput(input: any): boolean {
-            return input instanceof io.FilePath && input.getExtension() === "json";
+            if (input instanceof io.FilePath) {
+                const contentType = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                return contentType === core.pack.CONTENT_TYPE_ASSET_PACK;
+            }
+            return false;
         }        
         
         public createEditor(): EditorPart {
