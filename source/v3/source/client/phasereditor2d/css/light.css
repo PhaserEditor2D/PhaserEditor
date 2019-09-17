@@ -60,16 +60,20 @@ Important:
     background: transparent;
 }
 
+.light .ScrollBar {
+    background: #e5e5e5;
+}
+
 .light .ScrollHandler {
-    background: #858585;
+    background: #b7b7b7;
 }
 
 .light .ScrollHandler:hover {
-    background: #585858;
+    background: #a7a7a7;
 }
 
 .light .ScrollHandler:active {
-    background: #484848;
+    background: #979797;
 }
 
 /* Property Page */

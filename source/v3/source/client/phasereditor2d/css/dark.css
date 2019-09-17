@@ -63,6 +63,10 @@ Important:
     background: transparent;
 }
 
+.dark .ScrollBar {
+    background: #ffffff11;
+}
+
 .dark .ScrollHandler {
     background: #858585;
 }
