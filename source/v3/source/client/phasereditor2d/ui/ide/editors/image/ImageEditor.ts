@@ -1,3 +1,5 @@
+/// <reference path="../../FileEditor.ts" />
+
 namespace phasereditor2d.ui.ide.editors.image {
 
     class ImageEditorFactory extends EditorFactory {
@@ -22,10 +24,9 @@ namespace phasereditor2d.ui.ide.editors.image {
             return new ImageEditor();
         }
 
-
     }
 
-    export class ImageEditor extends EditorPart {
+    export class ImageEditor extends FileEditor {
         private _imageControl: controls.ImageControl;
 
         constructor() {
@@ -79,7 +80,6 @@ namespace phasereditor2d.ui.ide.editors.image {
 
         public setInput(input: core.io.FilePath) {
             super.setInput(input);
-            this.setTitle(input.getName());
             if (this._imageControl) {
                 this.updateImage();
             }

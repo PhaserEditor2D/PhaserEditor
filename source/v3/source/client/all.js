@@ -187,6 +187,15 @@ var phasereditor2d;
                         resolve(self._root);
                     });
                 }
+                async getFileString(file) {
+                    const resp = await makeApiRequest("GetFileString", {
+                        path: file.getFullName()
+                    });
+                    const data = await resp.json();
+                    return new Promise(function (resolve, reject) {
+                        resolve(data["content"]);
+                    });
+                }
             }
             io.ServerFileStorage = ServerFileStorage;
         })(io = core.io || (core.io = {}));
@@ -928,6 +937,28 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            class FileEditor extends ide.EditorPart {
+                constructor(id) {
+                    super(id);
+                }
+                setInput(file) {
+                    super.setInput(file);
+                    this.setTitle(file.getName());
+                }
+                getInput() {
+                    return super.getInput();
+                }
+            }
+            ide.FileEditor = FileEditor;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             ide.CONTENT_TYPE_IMAGE = "image";
             ide.CONTENT_TYPE_AUDIO = "audio";
             ide.CONTENT_TYPE_VIDEO = "video";
@@ -1141,6 +1172,7 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../FileEditor.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1169,7 +1201,7 @@ var phasereditor2d;
                             return new ImageEditor();
                         }
                     }
-                    class ImageEditor extends ide.EditorPart {
+                    class ImageEditor extends ide.FileEditor {
                         constructor() {
                             super("phasereditor2d.ImageEditor");
                             this.addClass("ImageEditor");
@@ -1206,7 +1238,6 @@ var phasereditor2d;
                         }
                         setInput(input) {
                             super.setInput(input);
-                            this.setTitle(input.getName());
                             if (this._imageControl) {
                                 this.updateImage();
                             }
@@ -1258,6 +1289,7 @@ var phasereditor2d;
                 }
                 initEditors() {
                     this._editorRegistry.registerFactory(ide.editors.image.ImageEditor.getFactory());
+                    this._editorRegistry.registerFactory(ide.editors.pack.AssetPackEditor.getFactory());
                 }
                 getDesignWindow() {
                     return this._designWindow;
@@ -1404,6 +1436,60 @@ var phasereditor2d;
         var ide;
         (function (ide) {
             ide.IMG_SECTION_PADDING = 10;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    var io = phasereditor2d.core.io;
+                    class AssetPackEditorFactory extends ide.EditorFactory {
+                        constructor() {
+                            super("phasereditor2d.AssetPackEditorFactory");
+                        }
+                        acceptInput(input) {
+                            return input instanceof io.FilePath && input.getExtension() === "json";
+                        }
+                        createEditor() {
+                            return new AssetPackEditor();
+                        }
+                    }
+                    pack.AssetPackEditorFactory = AssetPackEditorFactory;
+                    class AssetPackEditor extends ide.FileEditor {
+                        constructor() {
+                            super("phasereditor2d.AssetPackEditor");
+                            this.addClass("AssetPackEditor");
+                        }
+                        static getFactory() {
+                            return new AssetPackEditorFactory();
+                        }
+                        createPart() {
+                            super.createPart();
+                            this.updateContent();
+                        }
+                        async updateContent() {
+                            const file = this.getInput();
+                            if (!file) {
+                                return;
+                            }
+                            const content = await ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                            this.getElement().innerHTML = content;
+                        }
+                        setInput(file) {
+                            super.setInput(file);
+                            this.updateContent();
+                        }
+                    }
+                    pack.AssetPackEditor = AssetPackEditor;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

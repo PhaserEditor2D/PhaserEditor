@@ -57,6 +57,7 @@ namespace phasereditor2d.ui.ide {
 
         private initEditors(): void {
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
+            this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
         }
 
         public getDesignWindow() {

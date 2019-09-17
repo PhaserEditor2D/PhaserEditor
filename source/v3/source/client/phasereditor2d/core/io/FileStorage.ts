@@ -4,6 +4,8 @@ namespace phasereditor2d.core.io {
         reload(): Promise<FilePath>;
 
         getRoot(): FilePath;
+
+        getFileString(file : FilePath) : Promise<string>;
     }
 
     function makeApiRequest(method: string, body?: any): Promise<Response> {
@@ -20,13 +22,14 @@ namespace phasereditor2d.core.io {
     }
 
     export class ServerFileStorage implements IFileStorage {
+        
         private _root : FilePath;
 
-        getRoot(): FilePath {
+        public getRoot(): FilePath {
             return this._root;
         }
 
-        async reload(): Promise<FilePath> {
+        public async reload(): Promise<FilePath> {
             const resp = await makeApiRequest("GetProjectFiles");
             const data = await resp.json();
 
@@ -39,5 +42,14 @@ namespace phasereditor2d.core.io {
             });
         }
 
+        public async getFileString(file: FilePath): Promise<string> {
+            const resp = await makeApiRequest("GetFileString", {
+                path: file.getFullName()
+            });
+            const data = await resp.json();
+            return new Promise(function (resolve, reject) {
+                resolve(data["content"]);
+            });
+        }
     }
 }
