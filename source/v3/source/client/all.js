@@ -223,7 +223,6 @@ var phasereditor2d;
             pack.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
             class AssetPackContentTypeResolver {
                 async computeContentType(file) {
-                    console.log(`testing ${file.getFullName()}`);
                     if (file.getExtension() === "json") {
                         const content = await phasereditor2d.ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
                         if (content !== null) {
@@ -573,12 +572,12 @@ var phasereditor2d;
                     Controls._images.set(id, img);
                     return img;
                 }
-                static getIcon(name) {
+                static getIcon(name, baseUrl = "phasereditor2d.ui.controls/images") {
                     if (Controls._icons.has(name)) {
                         return Controls._icons.get(name);
                     }
                     const img = new Image();
-                    img.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
+                    img.src = `${baseUrl}/16/${name}.png`;
                     const icon = new IconImpl(img);
                     Controls._icons.set(name, icon);
                     return icon;
@@ -1306,6 +1305,8 @@ var phasereditor2d;
         (function (ide) {
             ide.EVENT_PART_DEACTIVATE = "partDeactivate";
             ide.EVENT_PART_ACTIVATE = "partActivate";
+            ide.ICON_ASSET_PACK = "asset-pack";
+            ide.IDE_ICONS_URL = "phasereditor2d/ui/ide/images";
             class Workbench extends EventTarget {
                 constructor() {
                     super();
@@ -1315,6 +1316,7 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_VIDEO));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_TEXT));
+                    this._contentType_icon_Map.set(phasereditor2d.core.pack.CONTENT_TYPE_ASSET_PACK, ui.controls.Controls.getIcon(ide.ICON_ASSET_PACK, ide.IDE_ICONS_URL));
                     this._editorRegistry = new ide.EditorRegistry();
                 }
                 static getWorkbench() {

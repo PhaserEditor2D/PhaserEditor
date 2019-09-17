@@ -5,7 +5,6 @@ namespace phasereditor2d.core.pack {
     export class AssetPackContentTypeResolver implements core.IContentTypeResolver {
 
         async computeContentType(file: io.FilePath): Promise<string> {
-            console.log(`testing ${file.getFullName()}`);
             if (file.getExtension() === "json") {
                 const content = await ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
                 if (content !== null) {

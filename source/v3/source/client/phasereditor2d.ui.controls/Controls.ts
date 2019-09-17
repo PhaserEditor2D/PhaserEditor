@@ -189,12 +189,12 @@ namespace phasereditor2d.ui.controls {
             return img;
         }
 
-        static getIcon(name: string): IIcon {
+        static getIcon(name: string, baseUrl : string = "phasereditor2d.ui.controls/images"): IIcon {
             if (Controls._icons.has(name)) {
                 return Controls._icons.get(name);
             }
             const img = new Image();
-            img.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
+            img.src = `${baseUrl}/16/${name}.png`;
             const icon = new IconImpl(img);
             Controls._icons.set(name, icon);
             return icon;
