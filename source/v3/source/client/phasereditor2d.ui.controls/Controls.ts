@@ -117,7 +117,16 @@ namespace phasereditor2d.ui.controls {
                     context.drawImage(this._img, imgX, imgY, imgDstW, imgDstH);
                 }
             } else {
-                context.strokeRect(x, y, w, h);
+                if (w > 10 && h > 10) {
+                    context.save();
+                    context.strokeStyle = Controls.theme.treeItemForeground;
+                    const cx = x + w / 2;
+                    const cy = y + h / 2;
+                    context.strokeRect(cx, cy - 1, 2, 2);
+                    context.strokeRect(cx - 5, cy - 1, 2, 2);
+                    context.strokeRect(cx + 5, cy - 1, 2, 2);
+                    context.restore();
+                }
             }
         }
     }
@@ -194,7 +203,7 @@ namespace phasereditor2d.ui.controls {
             return img;
         }
 
-        static getIcon(name: string, baseUrl : string = "phasereditor2d.ui.controls/images"): IIcon {
+        static getIcon(name: string, baseUrl: string = "phasereditor2d.ui.controls/images"): IIcon {
             if (Controls._icons.has(name)) {
                 return Controls._icons.get(name);
             }

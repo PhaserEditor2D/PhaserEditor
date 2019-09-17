@@ -541,7 +541,16 @@ var phasereditor2d;
                         }
                     }
                     else {
-                        context.strokeRect(x, y, w, h);
+                        if (w > 10 && h > 10) {
+                            context.save();
+                            context.strokeStyle = Controls.theme.treeItemForeground;
+                            const cx = x + w / 2;
+                            const cy = y + h / 2;
+                            context.strokeRect(cx, cy - 1, 2, 2);
+                            context.strokeRect(cx - 5, cy - 1, 2, 2);
+                            context.strokeRect(cx + 5, cy - 1, 2, 2);
+                            context.restore();
+                        }
                     }
                 }
             }
