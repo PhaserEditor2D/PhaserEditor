@@ -107,7 +107,9 @@ namespace phasereditor2d.ui.controls {
                     const iconElement : HTMLCanvasElement = <HTMLCanvasElement> label.firstChild;
                     const textElement = <HTMLElement> iconElement.nextSibling;
                     if (icon) {
-                        icon.paint(iconElement.getContext("2d"), 0, 0);
+                        const context = iconElement.getContext("2d");
+                        context.clearRect(0, 0, iconElement.width, iconElement.height);
+                        icon.paint(context, 0, 0, iconElement.width, iconElement.height);
                     }
                     textElement.innerHTML = title;
                 }

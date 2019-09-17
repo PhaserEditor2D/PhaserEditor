@@ -42,7 +42,7 @@ namespace phasereditor2d.ui.ide.editors.image {
             super.createPart();
 
             this._imageControl = new controls.ImageControl();
-            
+
             const container = document.createElement("div");
             container.classList.add("ImageEditorContainer");
             container.appendChild(this._imageControl.getElement());
@@ -70,6 +70,13 @@ namespace phasereditor2d.ui.ide.editors.image {
             if (result === controls.PreloadResult.RESOURCES_LOADED) {
                 this._imageControl.repaint();
             }
+
+            this.dispatchTitleUpdatedEvent();
+        }
+
+        public getIcon(): controls.IIcon {
+            const img = Workbench.getWorkbench().getFileImage(this.getInput());
+            return new controls.ImageIcon(img);
         }
 
         layout() {
@@ -80,6 +87,7 @@ namespace phasereditor2d.ui.ide.editors.image {
 
         public setInput(input: core.io.FilePath) {
             super.setInput(input);
+
             if (this._imageControl) {
                 this.updateImage();
             }

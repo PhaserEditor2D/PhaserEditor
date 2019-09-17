@@ -32,12 +32,16 @@ namespace phasereditor2d.ui.ide {
 
         public setTitle(title: string): void {
             this._title = title;
-            this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
+            this.dispatchTitleUpdatedEvent();
         }
 
         public setIcon(icon: controls.IIcon) {
             this._icon = icon;
-            this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
+            this.dispatchTitleUpdatedEvent();
+        }
+
+        protected dispatchTitleUpdatedEvent() {
+            this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));   
         }
 
         public getIcon() {

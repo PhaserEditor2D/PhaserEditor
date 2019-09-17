@@ -480,25 +480,29 @@ var phasereditor2d;
                     this._url = url;
                     this._ready = false;
                     this._error = false;
-                    this._requesting = false;
                 }
                 preload() {
-                    if (this._ready || this._error || this._requesting) {
+                    if (this._ready || this._error) {
                         return Controls.resolveNothingLoaded();
                     }
-                    this._requesting = true;
-                    return new Promise((resolve, reject) => {
+                    if (this._requestPromise) {
+                        return this._requestPromise;
+                    }
+                    this._requestPromise = new Promise((resolve, reject) => {
                         this._img.src = this._url;
                         this._img.addEventListener("load", e => {
+                            this._requestPromise = null;
                             this._ready = true;
                             resolve(PreloadResult.RESOURCES_LOADED);
                         });
                         this._img.addEventListener("error", e => {
                             console.error("ERROR: Loading image " + this._url);
+                            this._requestPromise = null;
                             this._error = true;
                             resolve(PreloadResult.NOTHING_LOADED);
                         });
                     });
+                    return this._requestPromise;
                     /*
                     return this._img.decode().then(_ => {
                         this._ready = true;
@@ -651,10 +655,13 @@ var phasereditor2d;
                 }
                 setTitle(title) {
                     this._title = title;
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
+                    this.dispatchTitleUpdatedEvent();
                 }
                 setIcon(icon) {
                     this._icon = icon;
+                    this.dispatchTitleUpdatedEvent();
+                }
+                dispatchTitleUpdatedEvent() {
                     this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
                 }
                 getIcon() {
@@ -803,7 +810,9 @@ var phasereditor2d;
                             const iconElement = label.firstChild;
                             const textElement = iconElement.nextSibling;
                             if (icon) {
-                                icon.paint(iconElement.getContext("2d"), 0, 0);
+                                const context = iconElement.getContext("2d");
+                                context.clearRect(0, 0, iconElement.width, iconElement.height);
+                                icon.paint(context, 0, 0, iconElement.width, iconElement.height);
                             }
                             textElement.innerHTML = title;
                         }
@@ -1297,6 +1306,11 @@ var phasereditor2d;
                             if (result === ui.controls.PreloadResult.RESOURCES_LOADED) {
                                 this._imageControl.repaint();
                             }
+                            this.dispatchTitleUpdatedEvent();
+                        }
+                        getIcon() {
+                            const img = ide.Workbench.getWorkbench().getFileImage(this.getInput());
+                            return new ui.controls.ImageIcon(img);
                         }
                         layout() {
                             if (this._imageControl) {
@@ -3140,6 +3154,24 @@ var phasereditor2d;
                 }
             }
             controls.FillLayout = FillLayout;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ImageIcon {
+                constructor(image) {
+                    this._image = image;
+                }
+                paint(context, x, y, w = 16, h = 16) {
+                    this._image.paint(context, x, y, w, h, true);
+                }
+            }
+            controls.ImageIcon = ImageIcon;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

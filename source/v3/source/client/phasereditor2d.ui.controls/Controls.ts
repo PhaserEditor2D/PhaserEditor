@@ -31,40 +31,45 @@ namespace phasereditor2d.ui.controls {
 
     class ImageImpl implements IImage {
         private _ready: boolean;
-        private _requesting: boolean;
         private _error: boolean;
         private _url: string;
         private _img: HTMLImageElement;
+        private _requestPromise: Promise<PreloadResult>;
 
         constructor(img: HTMLImageElement, url: string) {
             this._img = img;
             this._url = url;
             this._ready = false;
             this._error = false;
-            this._requesting = false;
         }
 
         preload(): Promise<PreloadResult> {
-            if (this._ready || this._error || this._requesting) {
+            if (this._ready || this._error) {
                 return Controls.resolveNothingLoaded();
             }
 
-            this._requesting = true;
+            if (this._requestPromise) {
+                return this._requestPromise;
+            }
 
-            return new Promise((resolve, reject) => {
+            this._requestPromise = new Promise((resolve, reject) => {
                 this._img.src = this._url;
 
                 this._img.addEventListener("load", e => {
+                    this._requestPromise = null;
                     this._ready = true;
                     resolve(PreloadResult.RESOURCES_LOADED);
                 });
 
                 this._img.addEventListener("error", e => {
                     console.error("ERROR: Loading image " + this._url);
+                    this._requestPromise = null;
                     this._error = true;
                     resolve(PreloadResult.NOTHING_LOADED);
                 });
             });
+
+            return this._requestPromise;
 
             /*
             return this._img.decode().then(_ => {
