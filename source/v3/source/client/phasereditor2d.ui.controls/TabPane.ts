@@ -165,7 +165,7 @@ namespace phasereditor2d.ui.controls {
             const list: controls.Control[] = [];
 
             for (let i = 0; i < this._titleBarElement.children.length; i++) {
-                const label = <HTMLElement>this._titleBarElement.children.item(0);
+                const label = <HTMLElement>this._titleBarElement.children.item(i);
                 const content = this.getContentFromLabel(label);
                 list.push(content);
             }

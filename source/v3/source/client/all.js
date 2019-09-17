@@ -792,7 +792,7 @@ var phasereditor2d;
                 getContentList() {
                     const list = [];
                     for (let i = 0; i < this._titleBarElement.children.length; i++) {
-                        const label = this._titleBarElement.children.item(0);
+                        const label = this._titleBarElement.children.item(i);
                         const content = this.getContentFromLabel(label);
                         list.push(content);
                     }
@@ -869,6 +869,9 @@ var phasereditor2d;
                     //this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
                     //this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
                     //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
+                }
+                activateEditor(editor) {
+                    super.selectTabWithContent(editor);
                 }
             }
             ide.EditorArea = EditorArea;
@@ -1169,6 +1172,7 @@ var phasereditor2d;
                     class ImageEditor extends ide.EditorPart {
                         constructor() {
                             super("phasereditor2d.ImageEditor");
+                            this.addClass("ImageEditor");
                         }
                         static getFactory() {
                             return new ImageEditorFactory();
@@ -1176,7 +1180,10 @@ var phasereditor2d;
                         async createPart() {
                             super.createPart();
                             this._imageControl = new ui.controls.ImageControl();
-                            this.add(this._imageControl);
+                            const container = document.createElement("div");
+                            container.classList.add("ImageEditorContainer");
+                            container.appendChild(this._imageControl.getElement());
+                            this.getElement().appendChild(container);
                             this.updateImage();
                         }
                         async updateImage() {
@@ -1357,15 +1364,29 @@ var phasereditor2d;
                 getEditorRegistry() {
                     return this._editorRegistry;
                 }
+                getEditors() {
+                    const editorArea = this.getActiveWindow().getEditorArea();
+                    return editorArea.getContentList();
+                }
                 openEditor(input) {
+                    const editorArea = this.getActiveWindow().getEditorArea();
+                    {
+                        const editors = this.getEditors();
+                        for (let editor of editors) {
+                            if (editor.getInput() === input) {
+                                editorArea.activateEditor(editor);
+                                this.setActivePart(editor);
+                                return;
+                            }
+                        }
+                    }
                     const factory = this._editorRegistry.getFactoryForInput(input);
                     if (factory) {
-                        //TODO: check if the input is already opened!
                         const editor = factory.createEditor();
-                        const area = this.getActiveWindow().getEditorArea();
-                        area.addPart(editor, true);
+                        editorArea.addPart(editor, true);
                         editor.setInput(input);
-                        area.selectTabWithContent(editor);
+                        editorArea.activateEditor(editor);
+                        this.setActivePart(editor);
                     }
                     else {
                         alert("Editor not found for the given input.");

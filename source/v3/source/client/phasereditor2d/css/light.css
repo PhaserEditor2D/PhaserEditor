@@ -51,7 +51,6 @@ Important:
 
 .light .ViewerView .FilteredViewer {
     background: #dadada;
-    border: solid 1px #e0e0e0;
 }
 
 /* Scroll Bar */
@@ -77,14 +76,21 @@ Important:
 
 
 .light .PropertyTitleArea {
-    background: linear-gradient(#d5d5d5, #aaaaaa);
+    background: #b2b2b2;
 }
 
 .light .PropertyTitleArea label {
-    text-shadow: 1px 1px #e0e0e0;
+    color: rgba(0, 0, 0, 0.75);
 }
 
 .light .PropertySectionPane {
     background: #d5d5d5;
-    border: solid 1px #e0e0e0;
+}
+
+/* EDITORS */
+
+/* ImageEditor */
+
+.light .ImageEditor .ImageControl {
+    background: #d5d5d5;
 }

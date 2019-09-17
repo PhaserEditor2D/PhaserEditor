@@ -27,5 +27,9 @@ namespace phasereditor2d.ui.ide {
             //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
         }
 
+        public activateEditor(editor : EditorPart) : void {
+            super.selectTabWithContent(editor);
+        }
+
     }
 }

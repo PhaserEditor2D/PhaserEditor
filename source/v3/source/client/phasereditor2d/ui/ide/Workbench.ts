@@ -191,15 +191,32 @@ namespace phasereditor2d.ui.ide {
             return this._editorRegistry;
         }
 
+        public getEditors(): EditorPart[] {
+            const editorArea = this.getActiveWindow().getEditorArea();
+            return <EditorPart[]>editorArea.getContentList();
+        }
+
         public openEditor(input: any): void {
+            const editorArea = this.getActiveWindow().getEditorArea();
+
+            {
+                const editors = this.getEditors();
+                for (let editor of editors) {
+                    if (editor.getInput() === input) {
+                        editorArea.activateEditor(editor);
+                        this.setActivePart(editor);
+                        return;
+                    }
+                }
+            }
+
             const factory = this._editorRegistry.getFactoryForInput(input);
             if (factory) {
-                //TODO: check if the input is already opened!
                 const editor = factory.createEditor();
-                const area = this.getActiveWindow().getEditorArea();
-                area.addPart(editor, true);
+                editorArea.addPart(editor, true);
                 editor.setInput(input);
-                area.selectTabWithContent(editor);
+                editorArea.activateEditor(editor);
+                this.setActivePart(editor);
             } else {
                 alert("Editor not found for the given input.");
             }

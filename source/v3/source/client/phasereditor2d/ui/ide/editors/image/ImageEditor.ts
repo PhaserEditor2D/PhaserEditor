@@ -30,6 +30,7 @@ namespace phasereditor2d.ui.ide.editors.image {
 
         constructor() {
             super("phasereditor2d.ImageEditor");
+            this.addClass("ImageEditor");
         }
 
         public static getFactory(): EditorFactory {
@@ -40,8 +41,12 @@ namespace phasereditor2d.ui.ide.editors.image {
             super.createPart();
 
             this._imageControl = new controls.ImageControl();
+            
+            const container = document.createElement("div");
+            container.classList.add("ImageEditorContainer");
+            container.appendChild(this._imageControl.getElement());
 
-            this.add(this._imageControl);
+            this.getElement().appendChild(container);
 
             this.updateImage();
         }
