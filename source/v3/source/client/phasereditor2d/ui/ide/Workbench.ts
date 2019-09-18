@@ -9,9 +9,6 @@ namespace phasereditor2d.ui.ide {
     export const EVENT_PART_DEACTIVATE = "partDeactivate";
     export const EVENT_PART_ACTIVATE = "partActivate";
 
-    export const ICON_ASSET_PACK = "asset-pack";
-    export const IDE_ICONS_URL = "phasereditor2d/ui/ide/images";
-
     export class Workbench extends EventTarget {
         private static _workbench: Workbench;
 
@@ -40,7 +37,7 @@ namespace phasereditor2d.ui.ide {
             this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, controls.Controls.getIcon(controls.Controls.ICON_FILE_VIDEO));
             this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, controls.Controls.getIcon(controls.Controls.ICON_FILE_SCRIPT));
             this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, controls.Controls.getIcon(controls.Controls.ICON_FILE_TEXT));
-            this._contentType_icon_Map.set(core.pack.CONTENT_TYPE_ASSET_PACK, controls.Controls.getIcon(ICON_ASSET_PACK, IDE_ICONS_URL));
+            this._contentType_icon_Map.set(core.pack.CONTENT_TYPE_ASSET_PACK, controls.Controls.getIcon(controls.Controls.ICON_ASSET_PACK));
 
             this._editorRegistry = new EditorRegistry();
 

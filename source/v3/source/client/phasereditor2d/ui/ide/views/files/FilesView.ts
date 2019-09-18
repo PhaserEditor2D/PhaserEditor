@@ -46,5 +46,9 @@ namespace phasereditor2d.ui.ide.views.files {
             });
         }
 
+        public getIcon() {
+            return controls.Controls.getIcon(controls.Controls.ICON_FOLDER);
+        }
+
     }
 }

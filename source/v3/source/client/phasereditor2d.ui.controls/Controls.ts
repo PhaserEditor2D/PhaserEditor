@@ -146,6 +146,7 @@ namespace phasereditor2d.ui.controls {
         static ICON_FILE_SCRIPT = "file-script";
         static ICON_FILE_SOUND = "file-sound";
         static ICON_FILE_TEXT = "file-text";
+        static ICON_ASSET_PACK = "asset-pack";
 
 
         private static ICONS = [
@@ -158,7 +159,8 @@ namespace phasereditor2d.ui.controls {
             Controls.ICON_FILE_SCRIPT,
             Controls.ICON_FILE_SOUND,
             Controls.ICON_FILE_TEXT,
-            Controls.ICON_FILE_VIDEO
+            Controls.ICON_FILE_VIDEO,
+            Controls.ICON_ASSET_PACK
         ];
 
         static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {

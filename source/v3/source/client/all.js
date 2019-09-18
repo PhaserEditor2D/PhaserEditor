@@ -613,6 +613,7 @@ var phasereditor2d;
             Controls.ICON_FILE_SCRIPT = "file-script";
             Controls.ICON_FILE_SOUND = "file-sound";
             Controls.ICON_FILE_TEXT = "file-text";
+            Controls.ICON_ASSET_PACK = "asset-pack";
             Controls.ICONS = [
                 Controls.ICON_TREE_COLLAPSE,
                 Controls.ICON_TREE_EXPAND,
@@ -623,7 +624,8 @@ var phasereditor2d;
                 Controls.ICON_FILE_SCRIPT,
                 Controls.ICON_FILE_SOUND,
                 Controls.ICON_FILE_TEXT,
-                Controls.ICON_FILE_VIDEO
+                Controls.ICON_FILE_VIDEO,
+                Controls.ICON_ASSET_PACK
             ];
             Controls.LIGHT_THEME = {
                 treeItemSelectionBackground: "#4242ff",
@@ -1352,8 +1354,6 @@ var phasereditor2d;
         (function (ide) {
             ide.EVENT_PART_DEACTIVATE = "partDeactivate";
             ide.EVENT_PART_ACTIVATE = "partActivate";
-            ide.ICON_ASSET_PACK = "asset-pack";
-            ide.IDE_ICONS_URL = "phasereditor2d/ui/ide/images";
             class Workbench extends EventTarget {
                 constructor() {
                     super();
@@ -1363,7 +1363,7 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_VIDEO));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_SCRIPT));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FILE_TEXT));
-                    this._contentType_icon_Map.set(phasereditor2d.core.pack.CONTENT_TYPE_ASSET_PACK, ui.controls.Controls.getIcon(ide.ICON_ASSET_PACK, ide.IDE_ICONS_URL));
+                    this._contentType_icon_Map.set(phasereditor2d.core.pack.CONTENT_TYPE_ASSET_PACK, ui.controls.Controls.getIcon(ui.controls.Controls.ICON_ASSET_PACK));
                     this._editorRegistry = new ide.EditorRegistry();
                 }
                 static getWorkbench() {
@@ -2374,6 +2374,9 @@ var phasereditor2d;
                             viewer.addEventListener(ui.controls.viewers.EVENT_OPEN_ITEM, (e) => {
                                 ide.Workbench.getWorkbench().openEditor(e.detail);
                             });
+                        }
+                        getIcon() {
+                            return ui.controls.Controls.getIcon(ui.controls.Controls.ICON_FOLDER);
                         }
                     }
                     files.FilesView = FilesView;
