@@ -20,6 +20,7 @@ namespace phasereditor2d.ui.ide {
     export const ICON_ASSET_PACK = "asset-pack";
     export const ICON_OUTLINE = "outline";
     export const ICON_INSPECTOR = "inspector";
+    export const ICON_BLOCKS = "blocks";
 
     const ICONS = [
         ICON_FILE,
@@ -32,7 +33,8 @@ namespace phasereditor2d.ui.ide {
         ICON_FILE_TEXT,
         ICON_ASSET_PACK,
         ICON_OUTLINE,
-        ICON_INSPECTOR
+        ICON_INSPECTOR,
+        ICON_BLOCKS
     ];
 
     export class Workbench extends EventTarget {

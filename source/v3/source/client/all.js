@@ -1335,6 +1335,7 @@ var phasereditor2d;
             ide.ICON_ASSET_PACK = "asset-pack";
             ide.ICON_OUTLINE = "outline";
             ide.ICON_INSPECTOR = "inspector";
+            ide.ICON_BLOCKS = "blocks";
             const ICONS = [
                 ide.ICON_FILE,
                 ide.ICON_FOLDER,
@@ -1346,7 +1347,8 @@ var phasereditor2d;
                 ide.ICON_FILE_TEXT,
                 ide.ICON_ASSET_PACK,
                 ide.ICON_OUTLINE,
-                ide.ICON_INSPECTOR
+                ide.ICON_INSPECTOR,
+                ide.ICON_BLOCKS
             ];
             class Workbench extends EventTarget {
                 constructor() {
@@ -1606,6 +1608,7 @@ var phasereditor2d;
                     constructor() {
                         super("blocksView");
                         this.setTitle("Blocks");
+                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_BLOCKS));
                     }
                 }
                 blocks.BlocksView = BlocksView;
