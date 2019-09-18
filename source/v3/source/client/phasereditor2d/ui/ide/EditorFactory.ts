@@ -4,17 +4,17 @@ namespace phasereditor2d.ui.ide {
 
         private _id: string;
 
-        public constructor(id: string) {
+        constructor(id: string) {
             this._id = id;
         }
 
-        public getId() {
+        getId() {
             return this._id;
         }
 
-        public abstract acceptInput(input : any) : boolean;
+        abstract acceptInput(input : any) : boolean;
 
-        public abstract createEditor(): EditorPart;
+        abstract createEditor(): EditorPart;
 
     }
 }

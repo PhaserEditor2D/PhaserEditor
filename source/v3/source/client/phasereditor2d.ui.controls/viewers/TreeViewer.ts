@@ -2,7 +2,7 @@
 
 namespace phasereditor2d.ui.controls.viewers {
 
-    export const TREE_ICON_SIZE = 16;
+    export const TREE_ICON_SIZE = ICON_SIZE;
     export const LABEL_MARGIN = TREE_ICON_SIZE + 0;
 
 

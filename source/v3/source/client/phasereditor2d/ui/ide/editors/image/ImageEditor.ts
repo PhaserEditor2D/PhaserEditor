@@ -4,11 +4,11 @@ namespace phasereditor2d.ui.ide.editors.image {
 
     class ImageEditorFactory extends EditorFactory {
 
-        public constructor() {
+        constructor() {
             super("phasereditor2d.ImageEditorFactory");
         }
 
-        public acceptInput(input: any): boolean {
+        acceptInput(input: any): boolean {
             if (input instanceof core.io.FilePath) {
 
                 const file = <core.io.FilePath>input;
@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.ide.editors.image {
             return false;
         }
 
-        public createEditor(): EditorPart {
+        createEditor(): EditorPart {
             return new ImageEditor();
         }
 
@@ -34,7 +34,7 @@ namespace phasereditor2d.ui.ide.editors.image {
             this.addClass("ImageEditor");
         }
 
-        public static getFactory(): EditorFactory {
+        static getFactory(): EditorFactory {
             return new ImageEditorFactory();
         }
 
@@ -74,9 +74,9 @@ namespace phasereditor2d.ui.ide.editors.image {
             this.dispatchTitleUpdatedEvent();
         }
 
-        public getIcon(): controls.IIcon {
+        getIcon(): controls.IImage {
             const img = Workbench.getWorkbench().getFileImage(this.getInput());
-            return new controls.ImageIcon(img);
+            return img;
         }
 
         layout() {
@@ -85,7 +85,7 @@ namespace phasereditor2d.ui.ide.editors.image {
             }
         }
 
-        public setInput(input: core.io.FilePath) {
+        setInput(input: core.io.FilePath) {
             super.setInput(input);
 
             if (this._imageControl) {

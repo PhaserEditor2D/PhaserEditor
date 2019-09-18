@@ -15,7 +15,7 @@ namespace phasereditor2d.ui.ide {
         private _split_Outline_EditorFilesBlocks: controls.SplitPanel;
         private _split_OutlineEditorFilesBlocks_Inspector: controls.SplitPanel;
 
-        public constructor() {
+        constructor() {
             super();
 
             this._outlineView = new outline.OutlineView();
@@ -37,7 +37,7 @@ namespace phasereditor2d.ui.ide {
             this.initialLayout();
         }
 
-        public getEditorArea() {
+        getEditorArea() {
             return this._editorArea;
         }
 

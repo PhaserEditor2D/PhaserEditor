@@ -4,7 +4,7 @@ namespace phasereditor2d.ui.ide {
 
     export class PartFolder extends controls.TabPane {
 
-        public constructor(...classList: string[]) {
+        constructor(...classList: string[]) {
             super("PartsTabPane", ...classList);
 
             this.addEventListener(controls.EVENT_CONTROL_LAYOUT, (e: CustomEvent) => {
@@ -25,7 +25,7 @@ namespace phasereditor2d.ui.ide {
             });
         }
 
-        public addPart(part: Part, closeable = false): void {
+        addPart(part: Part, closeable = false): void {
             part.addEventListener(EVENT_PART_TITLE_UPDATED, (e: CustomEvent) => {
                 this.setTabTitle(part, part.getTitle(), part.getIcon());
             });

@@ -10,7 +10,7 @@ namespace phasereditor2d.ui.ide.views.files {
 
     export class FileCellRenderer extends viewers.LabelCellRenderer {
 
-        getImage(obj: any): controls.IIcon {
+        getImage(obj: any): controls.IImage {
             const file = <io.FilePath>obj;
             if (file.isFile()) {
                 const ct = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
@@ -19,10 +19,10 @@ namespace phasereditor2d.ui.ide.views.files {
                     return icon;
                 }
             } else {
-                return controls.Controls.getIcon(controls.Controls.ICON_FOLDER);
+                return controls.Controls.getIcon(ICON_FOLDER);
             }
 
-            return controls.Controls.getIcon(controls.Controls.ICON_FILE);
+            return controls.Controls.getIcon(ICON_FILE);
         }
 
         preload(obj: any) {

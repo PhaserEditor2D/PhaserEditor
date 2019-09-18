@@ -139,7 +139,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
             if (e.deltaY < 0) {
                 this.setCellSize(this.getCellSize() + ROW_HEIGHT);
-            } else if (this._cellSize > 16) {
+            } else if (this._cellSize > ICON_SIZE) {
                 this.setCellSize(this.getCellSize() - ROW_HEIGHT);
             }
 
@@ -229,10 +229,10 @@ namespace phasereditor2d.ui.controls.viewers {
         protected paintTreeHandler(x: number, y: number, collapsed: boolean): void {
             if (collapsed) {
                 this._context.strokeStyle = "#000";
-                this._context.strokeRect(x, y, 16, 16);
+                this._context.strokeRect(x, y, ICON_SIZE, ICON_SIZE);
             } else {
                 this._context.fillStyle = "#000";
-                this._context.fillRect(x, y, 16, 16);
+                this._context.fillRect(x, y, ICON_SIZE, ICON_SIZE);
             }
         }
 

@@ -8,7 +8,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             super("phasereditor2d.AssetPackEditorFactory");
         }
 
-        public acceptInput(input: any): boolean {
+        acceptInput(input: any): boolean {
             if (input instanceof io.FilePath) {
                 const contentType = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                 return contentType === core.pack.CONTENT_TYPE_ASSET_PACK;
@@ -16,7 +16,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return false;
         }        
         
-        public createEditor(): EditorPart {
+        createEditor(): EditorPart {
             return new AssetPackEditor();
         }   
 
@@ -24,16 +24,16 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
     export class AssetPackEditor extends FileEditor {
 
-        public constructor() {
+        constructor() {
             super("phasereditor2d.AssetPackEditor");
             this.addClass("AssetPackEditor");
         }
 
-        public static getFactory() : AssetPackEditorFactory {
+        static getFactory() : AssetPackEditorFactory {
             return new AssetPackEditorFactory();
         }
 
-        public createPart() : void {
+        createPart() : void {
             super.createPart();
             this.updateContent();
         }
@@ -48,7 +48,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             this.getElement().innerHTML = content;
         }
 
-        public setInput(file : io.FilePath) : void {
+        setInput(file : io.FilePath) : void {
             super.setInput(file);
             this.updateContent();
         }

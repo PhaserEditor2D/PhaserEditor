@@ -4,16 +4,16 @@ namespace phasereditor2d.ui.ide {
 
         private _input : any;
 
-        public constructor(id: string) {
+        constructor(id: string) {
             super(id);
             this.addClass("EditorPart");
         }
 
-        public getInput() {
+        getInput() {
             return this._input;
         }
 
-        public setInput(input : any) : void {
+        setInput(input : any) : void {
             this._input = input;
         }
 

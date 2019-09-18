@@ -9,9 +9,9 @@ namespace phasereditor2d.ui.ide {
         private _title: string;
         private _selection: any[];
         private _partCreated: boolean;
-        private _icon: controls.IIcon;
+        private _icon: controls.IImage;
 
-        public constructor(id: string) {
+        constructor(id: string) {
             super();
 
             this._id = id;
@@ -26,16 +26,16 @@ namespace phasereditor2d.ui.ide {
             this.getElement()["__part"] = this;
         }
 
-        public getTitle() {
+        getTitle() {
             return this._title;
         }
 
-        public setTitle(title: string): void {
+        setTitle(title: string): void {
             this._title = title;
             this.dispatchTitleUpdatedEvent();
         }
 
-        public setIcon(icon: controls.IIcon) {
+        setIcon(icon: controls.IImage) {
             this._icon = icon;
             this.dispatchTitleUpdatedEvent();
         }
@@ -44,38 +44,38 @@ namespace phasereditor2d.ui.ide {
             this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));   
         }
 
-        public getIcon() {
+        getIcon() {
             return this._icon;
         }
 
-        public getId() {
+        getId() {
             return this._id;
         }
 
-        public setSelection(selection: any[]): void {
+        setSelection(selection: any[]): void {
             this._selection = selection;
             this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION, {
                 detail: selection
             }));
         }
 
-        public getSelection() {
+        getSelection() {
             return this._selection;
         }
 
-        public getPropertyProvider(): controls.properties.PropertySectionProvider {
+        getPropertyProvider(): controls.properties.PropertySectionProvider {
             return null;
         }
 
-        public layout(): void {
+        layout(): void {
 
         }
 
-        public onPartClosed(): void {
+        onPartClosed(): void {
 
         }
 
-        public onPartShown(): void {
+        onPartShown(): void {
             if (!this._partCreated) {
                 this._partCreated = true;
                 this.createPart();

@@ -10,25 +10,6 @@ namespace phasereditor2d.ui.controls {
     }
 
 
-    class IconImpl implements IIcon {
-
-        constructor(public img: HTMLImageElement) {
-
-        }
-
-        paint(context: CanvasRenderingContext2D, x: number, y: number, w?: number, h?: number) {
-            // we assume the image size is under 16x16 (for now)
-            w = w ? w : 16;
-            h = h ? h : 16;
-            const imgW = this.img.naturalWidth;
-            const imgH = this.img.naturalHeight;
-            const dx = (w - imgW) / 2;
-            const dy = (h - imgH) / 2;
-            context.drawImage(this.img, (x + dx) | 0, (y + dy) | 0);
-        }
-
-    }
-
     class ImageImpl implements IImage {
         private _ready: boolean;
         private _error: boolean;
@@ -131,37 +112,20 @@ namespace phasereditor2d.ui.controls {
         }
     }
 
+    export const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
+    export const ICON_CONTROL_TREE_EXPAND = "tree-expand";
+    export const ICON_CONTROL_CLOSE = "close";
+    export const ICON_SIZE = 16;
+
+    const ICONS = [
+        ICON_CONTROL_TREE_COLLAPSE,
+        ICON_CONTROL_TREE_EXPAND,
+        ICON_CONTROL_CLOSE
+    ];
+
     export class Controls {
 
-        private static _icons: Map<string, IIcon> = new Map();
         private static _images: Map<String, IImage> = new Map();
-
-        static ICON_TREE_COLLAPSE = "tree-collapse";
-        static ICON_TREE_EXPAND = "tree-expand";
-        static ICON_FILE = "file";
-        static ICON_FOLDER = "folder";
-        static ICON_FILE_FONT = "file-font";
-        static ICON_FILE_IMAGE = "file-image";
-        static ICON_FILE_VIDEO = "file-movie";
-        static ICON_FILE_SCRIPT = "file-script";
-        static ICON_FILE_SOUND = "file-sound";
-        static ICON_FILE_TEXT = "file-text";
-        static ICON_ASSET_PACK = "asset-pack";
-
-
-        private static ICONS = [
-            Controls.ICON_TREE_COLLAPSE,
-            Controls.ICON_TREE_EXPAND,
-            Controls.ICON_FILE,
-            Controls.ICON_FOLDER,
-            Controls.ICON_FILE_FONT,
-            Controls.ICON_FILE_IMAGE,
-            Controls.ICON_FILE_SCRIPT,
-            Controls.ICON_FILE_SOUND,
-            Controls.ICON_FILE_TEXT,
-            Controls.ICON_FILE_VIDEO,
-            Controls.ICON_ASSET_PACK
-        ];
 
         static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {
             return Promise.all(list).then(results => {
@@ -182,15 +146,8 @@ namespace phasereditor2d.ui.controls {
             return Promise.resolve(PreloadResult.NOTHING_LOADED);
         }
 
-        static preload() {
-            return Promise.all(
-                Controls.ICONS.map(
-                    name => {
-                        const icon = <IconImpl>this.getIcon(name);
-                        return icon.img.decode();
-                    }
-                )
-            );
+        static async preload() {
+            return Promise.all(ICONS.map(icon => this.getIcon(icon).preload()));
         }
 
         static getImage(url: string, id: string): IImage {
@@ -205,21 +162,22 @@ namespace phasereditor2d.ui.controls {
             return img;
         }
 
-        static getIcon(name: string, baseUrl: string = "phasereditor2d.ui.controls/images"): IIcon {
-            if (Controls._icons.has(name)) {
-                return Controls._icons.get(name);
-            }
-            const img = new Image();
-            img.src = `${baseUrl}/16/${name}.png`;
-            const icon = new IconImpl(img);
-            Controls._icons.set(name, icon);
-            return icon;
+        static getIcon(name: string, baseUrl: string = "phasereditor2d.ui.controls/images"): IImage {
+            const url = `${baseUrl}/${ICON_SIZE}/${name}.png`;
+            return Controls.getImage(url, name);
         }
 
-        static createIconElement(name: string) {
-            const elem = new Image(16, 16);
-            elem.src = `phasereditor2d.ui.controls/images/16/${name}.png`;
-            return elem;
+        static createIconElement(icon: IImage) {
+            // const elem = new Image(ICON_SIZE, ICON_SIZE);
+            // elem.src = `phasereditor2d.ui.controls/images/${ICON_SIZE}/${name}.png`;
+            // return elem;
+            const element = document.createElement("canvas");
+            element.width = element.height = ICON_SIZE;
+            element.style.width = element.style.height = ICON_SIZE + "px";
+            const context = element.getContext("2d");
+            context.imageSmoothingEnabled = false;
+            icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
+            return element;
         }
 
         private static LIGHT_THEME: Theme = {
@@ -234,7 +192,7 @@ namespace phasereditor2d.ui.controls {
             treeItemForeground: "#f0f0f0"
         };
 
-        public static theme: Theme = Controls.DARK_THEME;
+        static theme: Theme = Controls.DARK_THEME;
 
     }
 }

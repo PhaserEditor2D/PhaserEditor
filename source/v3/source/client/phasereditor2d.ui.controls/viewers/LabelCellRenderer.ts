@@ -8,11 +8,11 @@ namespace phasereditor2d.ui.controls.viewers {
 
             const ctx = args.canvasContext;
             if (img) {
-                img.paint(ctx, x, args.y, 16, args.h);
+                img.paint(ctx, x, args.y, ICON_SIZE, args.h, false);
             }
         }
         
-        abstract getImage(obj: any): controls.IIcon;
+        abstract getImage(obj: any): controls.IImage;
 
         cellHeight(args: RenderCellArgs): number {
             return controls.ROW_HEIGHT;

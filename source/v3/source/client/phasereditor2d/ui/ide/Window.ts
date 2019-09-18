@@ -4,7 +4,7 @@ namespace phasereditor2d.ui.ide {
 
     export abstract class Window extends controls.Control {
 
-        public constructor() {
+        constructor() {
             super("div", "Window");
 
             this.setLayout(new controls.FillLayout(5));
@@ -20,6 +20,6 @@ namespace phasereditor2d.ui.ide {
             return folder;
         }
 
-        public abstract getEditorArea() : EditorArea;
+        abstract getEditorArea() : EditorArea;
     }
 }

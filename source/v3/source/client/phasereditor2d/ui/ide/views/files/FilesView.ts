@@ -14,7 +14,7 @@ namespace phasereditor2d.ui.ide.views.files {
 
         private _propertyProvider = new FilePropertySectionProvider();
 
-        public constructor() {
+        constructor() {
             super("filesView");
 
             this.setTitle("Files");
@@ -24,7 +24,7 @@ namespace phasereditor2d.ui.ide.views.files {
             return new viewers.TreeViewer();
         }
 
-        public getPropertyProvider() {
+        getPropertyProvider() {
             return this._propertyProvider;
         }
 
@@ -46,8 +46,8 @@ namespace phasereditor2d.ui.ide.views.files {
             });
         }
 
-        public getIcon() {
-            return controls.Controls.getIcon(controls.Controls.ICON_FOLDER);
+        getIcon() {
+            return controls.Controls.getIcon(ICON_FOLDER);
         }
 
     }

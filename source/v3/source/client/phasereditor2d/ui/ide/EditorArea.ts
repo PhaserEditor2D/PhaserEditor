@@ -7,7 +7,7 @@ namespace phasereditor2d.ui.ide {
 
     class DemoEditor extends EditorPart {
 
-        public constructor(id: string, title: string) {
+        constructor(id: string, title: string) {
             super(id);
             this.setTitle(title);
         }
@@ -19,7 +19,7 @@ namespace phasereditor2d.ui.ide {
 
     export class EditorArea extends PartFolder {
 
-        public constructor() {
+        constructor() {
             super("EditorArea");
 
             //this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
@@ -27,7 +27,7 @@ namespace phasereditor2d.ui.ide {
             //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
         }
 
-        public activateEditor(editor : EditorPart) : void {
+        activateEditor(editor : EditorPart) : void {
             super.selectTabWithContent(editor);
         }
 

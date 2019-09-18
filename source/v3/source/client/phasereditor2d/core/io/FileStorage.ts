@@ -26,15 +26,15 @@ namespace phasereditor2d.core.io {
         private _root : FilePath;
         private _fileStringContentMap : Map<string, string>;
 
-        public constructor() {
+        constructor() {
             this._fileStringContentMap = new Map();
         }
 
-        public getRoot(): FilePath {
+        getRoot(): FilePath {
             return this._root;
         }
 
-        public async reload(): Promise<FilePath> {
+        async reload(): Promise<FilePath> {
             this._fileStringContentMap = new Map();
 
             const resp = await makeApiRequest("GetProjectFiles");
@@ -49,7 +49,7 @@ namespace phasereditor2d.core.io {
             });
         }
 
-        public async getFileString(file: FilePath): Promise<string> {
+        async getFileString(file: FilePath): Promise<string> {
             const id = file.getId();
 
             if (this._fileStringContentMap.has(id)) {

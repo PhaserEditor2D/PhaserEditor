@@ -9,10 +9,31 @@ namespace phasereditor2d.ui.ide {
     export const EVENT_PART_DEACTIVATE = "partDeactivate";
     export const EVENT_PART_ACTIVATE = "partActivate";
 
+    export const ICON_FILE = "file";
+    export const ICON_FOLDER = "folder";
+    export const ICON_FILE_FONT = "file-font";
+    export const ICON_FILE_IMAGE = "file-image";
+    export const ICON_FILE_VIDEO = "file-movie";
+    export const ICON_FILE_SCRIPT = "file-script";
+    export const ICON_FILE_SOUND = "file-sound";
+    export const ICON_FILE_TEXT = "file-text";
+    export const ICON_ASSET_PACK = "asset-pack";
+    const ICONS = [
+        ICON_FILE,
+        ICON_FOLDER,
+        ICON_FILE_FONT,
+        ICON_FILE_IMAGE,
+        ICON_FILE_VIDEO,
+        ICON_FILE_SCRIPT,
+        ICON_FILE_SOUND,
+        ICON_FILE_TEXT,
+        ICON_ASSET_PACK,
+    ];
+
     export class Workbench extends EventTarget {
         private static _workbench: Workbench;
 
-        public static getWorkbench() {
+        static getWorkbench() {
             if (!Workbench._workbench) {
                 Workbench._workbench = new Workbench();
             }
@@ -21,7 +42,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         private _designWindow: ide.DesignWindow;
-        private _contentType_icon_Map: Map<string, controls.IIcon>;
+        private _contentType_icon_Map: Map<string, controls.IImage>;
         private _fileStorage: core.io.IFileStorage;
         private _contentTypeRegistry: core.ContentTypeRegistry;
         private _activePart: Part;
@@ -32,19 +53,23 @@ namespace phasereditor2d.ui.ide {
 
             this._contentType_icon_Map = new Map();
 
-            this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, controls.Controls.getIcon(controls.Controls.ICON_FILE_IMAGE));
-            this._contentType_icon_Map.set(CONTENT_TYPE_AUDIO, controls.Controls.getIcon(controls.Controls.ICON_FILE_SOUND));
-            this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, controls.Controls.getIcon(controls.Controls.ICON_FILE_VIDEO));
-            this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, controls.Controls.getIcon(controls.Controls.ICON_FILE_SCRIPT));
-            this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, controls.Controls.getIcon(controls.Controls.ICON_FILE_TEXT));
-            this._contentType_icon_Map.set(core.pack.CONTENT_TYPE_ASSET_PACK, controls.Controls.getIcon(controls.Controls.ICON_ASSET_PACK));
+            this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, this.getWorkbenchIcon(ICON_FILE_IMAGE));
+            this._contentType_icon_Map.set(CONTENT_TYPE_AUDIO, this.getWorkbenchIcon(ICON_FILE_SOUND));
+            this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ICON_FILE_VIDEO));
+            this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ICON_FILE_SCRIPT));
+            this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
+            this._contentType_icon_Map.set(core.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
 
             this._editorRegistry = new EditorRegistry();
 
         }
 
-        public async start() {
+        async start() {
+
+            await this.preloadIcons();
+
             await this.initFileStorage();
+
 
             this.initContentTypes();
 
@@ -56,16 +81,20 @@ namespace phasereditor2d.ui.ide {
             this.initEvents();
         }
 
+        private async preloadIcons() {
+            return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
+        }
+
         private initEditors(): void {
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
             this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
         }
 
-        public getDesignWindow() {
+        getDesignWindow() {
             return this._designWindow;
         }
 
-        public getActiveWindow(): ide.Window {
+        getActiveWindow(): ide.Window {
             return this.getDesignWindow();
         }
 
@@ -76,7 +105,7 @@ namespace phasereditor2d.ui.ide {
             });
         }
 
-        public getActivePart() {
+        getActivePart() {
             return this._activePart;
         }
 
@@ -132,7 +161,7 @@ namespace phasereditor2d.ui.ide {
             return null;
         }
 
-        public findPart(element: HTMLElement): Part {
+        findPart(element: HTMLElement): Part {
             if (element["__part"]) {
                 return element["__part"];
             }
@@ -171,35 +200,39 @@ namespace phasereditor2d.ui.ide {
             this._contentTypeRegistry = reg;
         }
 
-        public getContentTypeRegistry() {
+        getContentTypeRegistry() {
             return this._contentTypeRegistry;
         }
 
-        public getFileStorage(): core.io.IFileStorage {
+        getFileStorage(): core.io.IFileStorage {
             return this._fileStorage;
         }
 
-        public getContentTypeIcon(contentType: string): controls.IIcon {
+        getContentTypeIcon(contentType: string): controls.IImage {
             if (this._contentType_icon_Map.has(contentType)) {
                 return this._contentType_icon_Map.get(contentType);
             }
             return null;
         }
 
-        public getFileImage(file: core.io.FilePath) {
+        getFileImage(file: core.io.FilePath) {
             return controls.Controls.getImage(file.getUrl(), file.getId());
         }
 
-        public getEditorRegistry() {
+        getWorkbenchIcon(name: string) {
+            return controls.Controls.getIcon(name, "phasereditor2d/ui/ide/images");
+        }
+
+        getEditorRegistry() {
             return this._editorRegistry;
         }
 
-        public getEditors(): EditorPart[] {
+        getEditors(): EditorPart[] {
             const editorArea = this.getActiveWindow().getEditorArea();
             return <EditorPart[]>editorArea.getContentList();
         }
 
-        public openEditor(input: any): void {
+        openEditor(input: any): void {
             const editorArea = this.getActiveWindow().getEditorArea();
 
             {

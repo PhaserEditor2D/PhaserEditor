@@ -8,16 +8,16 @@ namespace phasereditor2d.ui.ide {
         }
 
 
-        public setInput(file: io.FilePath) {
+        setInput(file: io.FilePath) {
             super.setInput(file);
             this.setTitle(file.getName());
         }
 
-        public getInput(): core.io.FilePath {
+        getInput(): core.io.FilePath {
             return super.getInput();
         }
 
-        public getIcon() {
+        getIcon() {
             const wb = Workbench.getWorkbench();
             const ct = wb.getContentTypeRegistry().getCachedContentType(this.getInput());
             const icon = wb.getContentTypeIcon(ct);

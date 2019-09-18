@@ -23,7 +23,7 @@ namespace phasereditor2d.ui.controls {
             this.getElement().appendChild(this._contentAreaElement);
         }
 
-        public addTab(label: string, content: Control, closeable = false): void {
+        addTab(label: string, content: Control, closeable = false): void {
             const labelElement = this.makeLabel(label, closeable);
             this._titleBarElement.appendChild(labelElement);
             labelElement.addEventListener("click", e => this.selectTab(labelElement));
@@ -44,8 +44,8 @@ namespace phasereditor2d.ui.controls {
             labelElement.classList.add("TabPaneLabel");
 
             const tabIconElement = document.createElement("canvas");
-            tabIconElement.width = 16;
-            tabIconElement.height = 16;
+            tabIconElement.width = ICON_SIZE;
+            tabIconElement.height = ICON_SIZE;
             tabIconElement.style.width = tabIconElement.width + "px";
             tabIconElement.style.height = tabIconElement.height + "px";
 
@@ -56,7 +56,7 @@ namespace phasereditor2d.ui.controls {
             labelElement.appendChild(textElement);
 
             if (closeable) {
-                const closeIconElement = Controls.createIconElement("close");
+                const closeIconElement = Controls.createIconElement(Controls.getIcon(ICON_CONTROL_CLOSE));
                 closeIconElement.classList.add("closeIcon");
                 closeIconElement.addEventListener("click", e => {
                     e.stopImmediatePropagation();
@@ -99,7 +99,7 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        public setTabTitle(content: Control, title: string, icon? : IIcon) {
+        setTabTitle(content: Control, title: string, icon? : IImage) {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
                 const content2 = this.getContentFromLabel(label);
@@ -109,7 +109,7 @@ namespace phasereditor2d.ui.controls {
                     if (icon) {
                         const context = iconElement.getContext("2d");
                         context.clearRect(0, 0, iconElement.width, iconElement.height);
-                        icon.paint(context, 0, 0, iconElement.width, iconElement.height);
+                        icon.paint(context, 0, 0, iconElement.width, iconElement.height, false);
                     }
                     textElement.innerHTML = title;
                 }
@@ -135,7 +135,7 @@ namespace phasereditor2d.ui.controls {
             return Control.getControlOf(<HTMLElement>this.getContentAreaFromLabel(labelElement).firstChild);
         }
 
-        public selectTabWithContent(content : Control) {
+        selectTabWithContent(content : Control) {
             const label = this.getLabelFromContent(content);
             if (label) {
                 this.selectTab(label);
@@ -167,7 +167,7 @@ namespace phasereditor2d.ui.controls {
             this.dispatchLayoutEvent();
         }
 
-        public getSelectedTabContent(): Control {
+        getSelectedTabContent(): Control {
             const label = this.getSelectedLabelElement();
             if (label) {
                 const area = this.getContentAreaFromLabel(label);
@@ -176,7 +176,7 @@ namespace phasereditor2d.ui.controls {
             return null;
         }
 
-        public getContentList(): controls.Control[] {
+        getContentList(): controls.Control[] {
             const list: controls.Control[] = [];
 
             for (let i = 0; i < this._titleBarElement.children.length; i++) {

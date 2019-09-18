@@ -67,8 +67,8 @@ namespace phasereditor2d.ui.controls.viewers {
                         if (children.length > 0) {
                             const iconY = y + (cellHeight - TREE_ICON_SIZE) / 2;
 
-                            const icon = Controls.getIcon(expanded ? Controls.ICON_TREE_COLLAPSE : Controls.ICON_TREE_EXPAND);
-                            icon.paint(context, x, iconY);
+                            const icon = Controls.getIcon(expanded ? ICON_CONTROL_TREE_COLLAPSE : ICON_CONTROL_TREE_EXPAND);
+                            icon.paint(context, x, iconY, ICON_SIZE, ICON_SIZE, false);
 
                             treeIconList.push({
                                 rect: new Rect(x, iconY, TREE_ICON_SIZE, TREE_ICON_SIZE),
@@ -106,7 +106,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
             let args2: RenderCellArgs;
             if (args.h <= ROW_HEIGHT) {
-                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, 16, args.h, args.obj, args.viewer);
+                args2 = new RenderCellArgs(args.canvasContext, args.x, args.y, ICON_SIZE, args.h, args.obj, args.viewer);
                 x += 20;
                 y += 15;
             } else {
