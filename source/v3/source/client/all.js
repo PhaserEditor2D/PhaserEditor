@@ -581,15 +581,14 @@ var phasereditor2d;
                     return Controls.getImage(url, name);
                 }
                 static createIconElement(icon) {
-                    // const elem = new Image(ICON_SIZE, ICON_SIZE);
-                    // elem.src = `phasereditor2d.ui.controls/images/${ICON_SIZE}/${name}.png`;
-                    // return elem;
                     const element = document.createElement("canvas");
                     element.width = element.height = controls.ICON_SIZE;
                     element.style.width = element.style.height = controls.ICON_SIZE + "px";
                     const context = element.getContext("2d");
                     context.imageSmoothingEnabled = false;
-                    icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                    if (icon) {
+                        icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                    }
                     return element;
                 }
             }
@@ -718,8 +717,8 @@ var phasereditor2d;
                     this._contentAreaElement.classList.add("TabPaneContentArea");
                     this.getElement().appendChild(this._contentAreaElement);
                 }
-                addTab(label, content, closeable = false) {
-                    const labelElement = this.makeLabel(label, closeable);
+                addTab(label, icon, content, closeable = false) {
+                    const labelElement = this.makeLabel(label, icon, closeable);
                     this._titleBarElement.appendChild(labelElement);
                     labelElement.addEventListener("click", e => this.selectTab(labelElement));
                     const contentArea = new controls.Control("div", "ContentArea");
@@ -730,14 +729,10 @@ var phasereditor2d;
                         this.selectTab(labelElement);
                     }
                 }
-                makeLabel(label, closeable) {
+                makeLabel(label, icon, closeable) {
                     const labelElement = document.createElement("div");
                     labelElement.classList.add("TabPaneLabel");
-                    const tabIconElement = document.createElement("canvas");
-                    tabIconElement.width = controls.ICON_SIZE;
-                    tabIconElement.height = controls.ICON_SIZE;
-                    tabIconElement.style.width = tabIconElement.width + "px";
-                    tabIconElement.style.height = tabIconElement.height + "px";
+                    const tabIconElement = controls.Controls.createIconElement(icon);
                     labelElement.appendChild(tabIconElement);
                     const textElement = document.createElement("span");
                     textElement.innerHTML = label;
@@ -894,7 +889,7 @@ var phasereditor2d;
                     part.addEventListener(ide.EVENT_PART_TITLE_UPDATED, (e) => {
                         this.setTabTitle(part, part.getTitle(), part.getIcon());
                     });
-                    this.addTab(part.getTitle(), part, closeable);
+                    this.addTab(part.getTitle(), part.getIcon(), part, closeable);
                 }
             }
             ide.PartFolder = PartFolder;
@@ -997,8 +992,12 @@ var phasereditor2d;
                     return super.getInput();
                 }
                 getIcon() {
+                    const file = this.getInput();
+                    if (!file) {
+                        return ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE);
+                    }
                     const wb = ide.Workbench.getWorkbench();
-                    const ct = wb.getContentTypeRegistry().getCachedContentType(this.getInput());
+                    const ct = wb.getContentTypeRegistry().getCachedContentType(file);
                     const icon = wb.getContentTypeIcon(ct);
                     return icon;
                 }
@@ -1287,7 +1286,11 @@ var phasereditor2d;
                             this.dispatchTitleUpdatedEvent();
                         }
                         getIcon() {
-                            const img = ide.Workbench.getWorkbench().getFileImage(this.getInput());
+                            const file = this.getInput();
+                            if (!file) {
+                                return super.getIcon();
+                            }
+                            const img = ide.Workbench.getWorkbench().getFileImage(file);
                             return img;
                         }
                         layout() {
@@ -2349,6 +2352,7 @@ var phasereditor2d;
                             super("filesView");
                             this._propertyProvider = new files.FilePropertySectionProvider();
                             this.setTitle("Files");
+                            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER));
                         }
                         createViewer() {
                             return new viewers.TreeViewer();

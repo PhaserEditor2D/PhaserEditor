@@ -50,7 +50,7 @@ canvas {
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     border-radius: 2px 2px 0 0;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 10px 5px 5px;
 }
 
 .TabPaneLabel span {
@@ -58,7 +58,7 @@ canvas {
 }
 
 .TabPaneLabel.closeable {
-    padding: 5px 2px 5px 2px;
+    padding: 5px 2px 5px 5px;
 }
 
 .TabPaneLabel .closeIcon:hover {

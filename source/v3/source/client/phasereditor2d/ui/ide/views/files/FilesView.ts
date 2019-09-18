@@ -16,8 +16,8 @@ namespace phasereditor2d.ui.ide.views.files {
 
         constructor() {
             super("filesView");
-
             this.setTitle("Files");
+            this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_FOLDER));
         }
 
         protected createViewer() {

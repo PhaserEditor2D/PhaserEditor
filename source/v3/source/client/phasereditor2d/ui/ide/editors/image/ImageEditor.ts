@@ -75,7 +75,12 @@ namespace phasereditor2d.ui.ide.editors.image {
         }
 
         getIcon(): controls.IImage {
-            const img = Workbench.getWorkbench().getFileImage(this.getInput());
+            const file = this.getInput();
+            if (!file) {
+                return super.getIcon();
+            }
+            
+            const img = Workbench.getWorkbench().getFileImage(file);
             return img;
         }
 

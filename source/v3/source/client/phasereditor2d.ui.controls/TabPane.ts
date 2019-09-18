@@ -23,8 +23,8 @@ namespace phasereditor2d.ui.controls {
             this.getElement().appendChild(this._contentAreaElement);
         }
 
-        addTab(label: string, content: Control, closeable = false): void {
-            const labelElement = this.makeLabel(label, closeable);
+        addTab(label: string, icon : IImage, content: Control, closeable = false): void {
+            const labelElement = this.makeLabel(label, icon, closeable);
             this._titleBarElement.appendChild(labelElement);
             labelElement.addEventListener("click", e => this.selectTab(labelElement));
 
@@ -39,15 +39,11 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        private makeLabel(label: string, closeable: boolean): HTMLElement {
+        private makeLabel(label: string, icon : IImage, closeable: boolean): HTMLElement {
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
-            const tabIconElement = document.createElement("canvas");
-            tabIconElement.width = ICON_SIZE;
-            tabIconElement.height = ICON_SIZE;
-            tabIconElement.style.width = tabIconElement.width + "px";
-            tabIconElement.style.height = tabIconElement.height + "px";
+            const tabIconElement = Controls.createIconElement(icon);
 
             labelElement.appendChild(tabIconElement);
 

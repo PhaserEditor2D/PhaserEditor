@@ -167,16 +167,15 @@ namespace phasereditor2d.ui.controls {
             return Controls.getImage(url, name);
         }
 
-        static createIconElement(icon: IImage) {
-            // const elem = new Image(ICON_SIZE, ICON_SIZE);
-            // elem.src = `phasereditor2d.ui.controls/images/${ICON_SIZE}/${name}.png`;
-            // return elem;
+        static createIconElement(icon?: IImage) {
             const element = document.createElement("canvas");
             element.width = element.height = ICON_SIZE;
             element.style.width = element.style.height = ICON_SIZE + "px";
             const context = element.getContext("2d");
             context.imageSmoothingEnabled = false;
-            icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
+            if (icon) {
+                icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
+            }
             return element;
         }
 

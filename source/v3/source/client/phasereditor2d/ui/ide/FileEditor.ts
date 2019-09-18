@@ -18,9 +18,15 @@ namespace phasereditor2d.ui.ide {
         }
 
         getIcon() {
+            const file = this.getInput();
+            if (!file) {
+                return Workbench.getWorkbench().getWorkbenchIcon(ICON_FILE);
+            }
+
             const wb = Workbench.getWorkbench();
-            const ct = wb.getContentTypeRegistry().getCachedContentType(this.getInput());
+            const ct = wb.getContentTypeRegistry().getCachedContentType(file);
             const icon = wb.getContentTypeIcon(ct);
+
             return icon;
         }
     }
