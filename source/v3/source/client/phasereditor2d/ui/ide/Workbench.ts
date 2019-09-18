@@ -18,6 +18,9 @@ namespace phasereditor2d.ui.ide {
     export const ICON_FILE_SOUND = "file-sound";
     export const ICON_FILE_TEXT = "file-text";
     export const ICON_ASSET_PACK = "asset-pack";
+    export const ICON_OUTLINE = "outline";
+    export const ICON_INSPECTOR = "inspector";
+
     const ICONS = [
         ICON_FILE,
         ICON_FOLDER,
@@ -28,6 +31,8 @@ namespace phasereditor2d.ui.ide {
         ICON_FILE_SOUND,
         ICON_FILE_TEXT,
         ICON_ASSET_PACK,
+        ICON_OUTLINE,
+        ICON_INSPECTOR
     ];
 
     export class Workbench extends EventTarget {

@@ -15,6 +15,15 @@ namespace phasereditor2d.ui.ide.inspector {
             super("InspectorView");
 
             this.setTitle("Inspector");
+            this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_INSPECTOR));
+        }
+
+        layout() {
+            this._propertyPage.dispatchLayoutEvent();
+        }
+
+        createPart() {
+            super.createPart();
 
             this._propertyPage = new ui.controls.properties.PropertyPage();
 
@@ -23,10 +32,6 @@ namespace phasereditor2d.ui.ide.inspector {
             this._selectionListener = (e : CustomEvent) => this.onPartSelection();
 
             Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
-        }
-
-        layout() {
-            this._propertyPage.dispatchLayoutEvent();
         }
 
         private onWorkbenchPartActivate() {

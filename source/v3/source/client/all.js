@@ -1333,6 +1333,8 @@ var phasereditor2d;
             ide.ICON_FILE_SOUND = "file-sound";
             ide.ICON_FILE_TEXT = "file-text";
             ide.ICON_ASSET_PACK = "asset-pack";
+            ide.ICON_OUTLINE = "outline";
+            ide.ICON_INSPECTOR = "inspector";
             const ICONS = [
                 ide.ICON_FILE,
                 ide.ICON_FOLDER,
@@ -1343,6 +1345,8 @@ var phasereditor2d;
                 ide.ICON_FILE_SOUND,
                 ide.ICON_FILE_TEXT,
                 ide.ICON_ASSET_PACK,
+                ide.ICON_OUTLINE,
+                ide.ICON_INSPECTOR
             ];
             class Workbench extends EventTarget {
                 constructor() {
@@ -3000,13 +3004,17 @@ var phasereditor2d;
                     constructor() {
                         super("InspectorView");
                         this.setTitle("Inspector");
+                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_INSPECTOR));
+                    }
+                    layout() {
+                        this._propertyPage.dispatchLayoutEvent();
+                    }
+                    createPart() {
+                        super.createPart();
                         this._propertyPage = new ui.controls.properties.PropertyPage();
                         this.add(this._propertyPage);
                         this._selectionListener = (e) => this.onPartSelection();
                         ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
-                    }
-                    layout() {
-                        this._propertyPage.dispatchLayoutEvent();
                     }
                     onWorkbenchPartActivate() {
                         const part = ide.Workbench.getWorkbench().getActivePart();
@@ -3044,6 +3052,7 @@ var phasereditor2d;
                     constructor() {
                         super("outlineView");
                         this.setTitle("Outline");
+                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
                     }
                 }
                 outline.OutlineView = OutlineView;
