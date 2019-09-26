@@ -2,6 +2,7 @@
     "compilerOptions": {
         "lib": ["es2018", "dom"] ,
         "target": "es2018",
-        "outFile": "./all.js",              
+        "outFile": "./all.js",         
+        "typeRoots": ["./types"]     
     }    
 }

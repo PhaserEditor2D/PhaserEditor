@@ -1594,6 +1594,3557 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class PositionAction {
+                        constructor(msg) {
+                            let displayList = scene.Editor.getInstance().getObjectScene().sys.displayList;
+                            let list = msg.list;
+                            this._objects = list.map(id => displayList.getByName(id));
+                        }
+                        run() {
+                            this.runPositionAction();
+                            let list = this._objects.map((obj) => {
+                                return {
+                                    id: obj.name,
+                                    x: obj.x,
+                                    y: obj.y
+                                };
+                            });
+                            scene.Editor.getInstance().sendMessage({
+                                method: "SetObjectPosition",
+                                list: list
+                            });
+                        }
+                    }
+                    scene.PositionAction = PositionAction;
+                    class AlignAction extends PositionAction {
+                        constructor(msg) {
+                            super(msg);
+                            this._align = msg.actionData.align;
+                        }
+                        runPositionAction() {
+                            let editor = scene.Editor.getInstance();
+                            let minX = Number.MAX_VALUE;
+                            let minY = Number.MAX_VALUE;
+                            let maxX = Number.MIN_VALUE;
+                            let maxY = Number.MIN_VALUE;
+                            let width = 0;
+                            let height = 0;
+                            let tx = new Phaser.GameObjects.Components.TransformMatrix();
+                            let point = new Phaser.Math.Vector2();
+                            if (this._objects.length === 1) {
+                                minX = scene.ScenePropertiesComponent.get_borderX(editor.sceneProperties);
+                                maxX = minX + scene.ScenePropertiesComponent.get_borderWidth(editor.sceneProperties);
+                                minY = scene.ScenePropertiesComponent.get_borderY(editor.sceneProperties);
+                                maxY = minY + scene.ScenePropertiesComponent.get_borderHeight(editor.sceneProperties);
+                            }
+                            else {
+                                let points = [];
+                                let objects = [];
+                                for (let obj of this._objects) {
+                                    let obj2 = obj;
+                                    let w = obj2.width;
+                                    let h = obj2.height;
+                                    let ox = obj2.originX;
+                                    let oy = obj2.originY;
+                                    let x = -w * ox;
+                                    let y = -h * oy;
+                                    obj2.getWorldTransformMatrix(tx);
+                                    tx.transformPoint(x, y, point);
+                                    points.push(point.clone());
+                                    tx.transformPoint(x + w, y, point);
+                                    points.push(point.clone());
+                                    tx.transformPoint(x + w, y + h, point);
+                                    points.push(point.clone());
+                                    tx.transformPoint(x, y + h, point);
+                                    points.push(point.clone());
+                                }
+                                for (let point of points) {
+                                    minX = Math.min(minX, point.x);
+                                    minY = Math.min(minY, point.y);
+                                    maxX = Math.max(maxX, point.x);
+                                    maxY = Math.max(maxY, point.y);
+                                }
+                            }
+                            for (let obj of this._objects) {
+                                let objWidth = obj.displayWidth;
+                                let objHeight = obj.displayHeight;
+                                let objOriginX = obj.displayOriginX * obj.scaleX;
+                                let objOriginY = obj.displayOriginY * obj.scaleY;
+                                switch (this._align) {
+                                    case "LEFT":
+                                        this.setX(obj, minX + objOriginX);
+                                        break;
+                                    case "RIGHT":
+                                        this.setX(obj, maxX - objWidth + objOriginX);
+                                        break;
+                                    case "HORIZONTAL_CENTER":
+                                        this.setX(obj, (minX + maxX) / 2 - objWidth / 2 + objOriginX);
+                                        break;
+                                    case "TOP":
+                                        this.setY(obj, minY + objOriginY);
+                                        break;
+                                    case "BOTTOM":
+                                        this.setY(obj, maxY + height - objHeight + objOriginY);
+                                        break;
+                                    case "VERTICAL_CENTER":
+                                        this.setY(obj, (minY + maxY) / 2 - objHeight / 2 + objOriginY);
+                                        break;
+                                }
+                            }
+                        }
+                        setX(obj, x) {
+                            if (obj.parentContainer) {
+                                let tx = obj.parentContainer.getWorldTransformMatrix();
+                                let point = tx.applyInverse(x, 0);
+                                obj.x = point.x;
+                            }
+                            else {
+                                obj.x = x;
+                            }
+                        }
+                        setY(obj, y) {
+                            if (obj.parentContainer) {
+                                let tx = obj.parentContainer.getWorldTransformMatrix();
+                                let point = tx.applyInverse(0, y);
+                                obj.y = point.y;
+                            }
+                            else {
+                                obj.y = y;
+                            }
+                        }
+                    }
+                    scene.AlignAction = AlignAction;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    function get_value(data, name, defaultValue) {
+                        var value = data[name];
+                        if (value === undefined) {
+                            return defaultValue;
+                        }
+                        return value;
+                    }
+                    function get_property(name, defaultValue) {
+                        return function (data) {
+                            return get_value(data, name, defaultValue);
+                        };
+                    }
+                    function set_property(name) {
+                        return function (data, value) {
+                            data[name] = value;
+                        };
+                    }
+                    scene.GameObjectEditorComponent = {
+                        get_gameObjectEditorTransparency: get_property("gameObjectEditorTransparency", 1),
+                        updateObject: function (obj, data) {
+                            obj.alpha *= this.get_gameObjectEditorTransparency(data);
+                        }
+                    };
+                    scene.TransformComponent = {
+                        get_x: get_property("x", 0),
+                        set_x: set_property("x"),
+                        get_y: get_property("y", 0),
+                        set_y: set_property("y"),
+                        get_scaleX: get_property("scaleX", 1),
+                        set_scaleX: set_property("scaleX"),
+                        get_scaleY: get_property("scaleY", 1),
+                        set_scaleY: set_property("scaleY"),
+                        get_angle: get_property("angle", 0),
+                        set_angle: set_property("angle"),
+                        updateObject: function (obj, data) {
+                            obj.x = this.get_x(data);
+                            obj.y = this.get_y(data);
+                            obj.scaleX = this.get_scaleX(data);
+                            obj.scaleY = this.get_scaleY(data);
+                            obj.angle = this.get_angle(data);
+                        },
+                        updateData: function (obj, data) {
+                            this.set_x(data, obj.x);
+                            this.set_y(data, obj.y);
+                            this.set_scaleX(data, obj.scaleX);
+                            this.set_scaleY(data, obj.scaleY);
+                            this.set_angle(data, obj.angle);
+                        }
+                    };
+                    scene.OriginComponent = {
+                        updateObject: function (obj, data) {
+                            obj.setOrigin(get_value(data, "originX", 0.5), get_value(data, "originY", 0.5));
+                        },
+                        updateData: function (obj, data) {
+                            data.originX = obj.originX;
+                            data.originY = obj.originY;
+                        }
+                    };
+                    scene.TextureComponent = {
+                        get_textureKey: get_property("textureKey"),
+                        get_textureFrame: get_property("textureFrame"),
+                        updateObject: function (obj, data) {
+                            var key = this.get_textureKey(data);
+                            if (!key) {
+                                obj.setTexture("<empty>");
+                            }
+                        }
+                    };
+                    scene.TileSpriteComponent = {
+                        get_tilePositionX: get_property("tilePositionX", 0),
+                        set_tilePositionX: set_property("tilePositionX"),
+                        get_tilePositionY: get_property("tilePositionY", 0),
+                        set_tilePositionY: set_property("tilePositionY"),
+                        get_tileScaleX: get_property("tileScaleX", 1),
+                        set_tileScaleX: set_property("tileScaleX"),
+                        get_tileScaleY: get_property("tileScaleY", 1),
+                        set_tileScaleY: set_property("tileScaleY"),
+                        get_width: get_property("width", -1),
+                        set_width: set_property("width"),
+                        get_height: get_property("height", -1),
+                        set_height: set_property("height"),
+                        updateObject: function (obj, data) {
+                            obj.setTilePosition(this.get_tilePositionX(data), this.get_tilePositionY(data));
+                            obj.setTileScale(this.get_tileScaleX(data), this.get_tileScaleY(data));
+                            obj.width = this.get_width(data);
+                            obj.height = this.get_height(data);
+                        },
+                        updateData: function (obj, data) {
+                            this.set_tilePositionX(data, obj.tilePositionX);
+                            this.set_tilePositionY(data, obj.tilePositionY);
+                            this.set_tileScaleX(data, obj.tileScaleX);
+                            this.set_tileScaleY(data, obj.tileScaleY);
+                            this.set_width(data, obj.width);
+                            this.set_height(data, obj.height);
+                        }
+                    };
+                    scene.FlipComponent = {
+                        get_flipX: get_property("flipX", false),
+                        get_flipY: get_property("flipY", false),
+                        updateObject: function (obj, data) {
+                            obj.flipX = this.get_flipX(data);
+                            obj.flipY = this.get_flipY(data);
+                        }
+                    };
+                    scene.BitmapTextComponent = {
+                        get_fontSize: get_property("fontSize", 0),
+                        get_align: get_property("align", 0),
+                        get_letterSpacing: get_property("letterSpacing", 0),
+                        get_fontAssetKey: get_property("fontAssetKey"),
+                        // the BitmapText object has a default origin of 0, 0
+                        get_originX: get_property("originX", 0),
+                        get_originY: get_property("originY", 0),
+                        updateObject: function (obj, data) {
+                            obj.text = scene.TextualComponent.get_text(data);
+                            obj.fontSize = this.get_fontSize(data);
+                            obj.align = this.get_align(data);
+                            obj.letterSpacing = this.get_letterSpacing(data);
+                            obj.setOrigin(this.get_originX(data), this.get_originY(data));
+                        }
+                    };
+                    scene.DynamicBitmapTextComponent = {
+                        get_cropWidth: get_property("cropWidth", 0),
+                        get_cropHeight: get_property("cropHeight", 0),
+                        get_scrollX: get_property("scrollX", 0),
+                        get_scrollY: get_property("scrollY", 0),
+                        updateObject: function (obj, data) {
+                            obj.cropWidth = this.get_cropWidth(data);
+                            obj.cropHeight = this.get_cropHeight(data);
+                            obj.scrollX = this.get_scrollX(data);
+                            obj.scrollY = this.get_scrollY(data);
+                        }
+                    };
+                    scene.TextualComponent = {
+                        get_text: get_property("text", ""),
+                        updateObject: function (obj, data) {
+                            obj.text = data.text;
+                        }
+                    };
+                    scene.TextComponent = {
+                        updateObject: function (obj, data) {
+                            obj.style.align = data.align || "left";
+                            obj.style.fontFamily = data.fontFamily || "Courier";
+                            obj.style.fontSize = data.fontSize || "16px";
+                            obj.style.fontStyle = data.fontStyle || "normal";
+                            obj.style.backgroundColor = data.backgroundColor || null;
+                            obj.style.color = data.color || "#fff";
+                            obj.style.stroke = data.stroke || "#fff";
+                            obj.style.strokeThickness = data.strokeThickness || 0;
+                            obj.style.maxLines = data.maxLines || 0;
+                            obj.style.fixedWidth = data.fixedWidth || 0;
+                            obj.style.fixedHeight = data.fixedHeight || 0;
+                            obj.style.baselineX = data.baselineX || 1.2;
+                            obj.style.baselineY = data.baselineY || 1.4;
+                            obj.style.shadowOffsetX = data["shadow.offsetX"] || 0;
+                            obj.style.shadowOffsetY = data["shadow.offsetY"] || 0;
+                            obj.style.shadowColor = data["shadow.color"] || "#000";
+                            obj.style.shadowBlur = data["shadow.blur"] || 0;
+                            obj.style.shadowStroke = data["shadow.stroke"] || false;
+                            obj.style.shadowFill = data["shadow.fill"] || false;
+                            obj.style.setWordWrapWidth(data["wordWrap.width"] || 0, data["wordWrap.useAdvancedWrap"] || false);
+                            obj.style.update(true);
+                            obj.setLineSpacing(data.lineSpacing || 0);
+                            obj.setPadding(data.paddingLeft, data.paddingTop, data.paddingRight, data.paddingBottom);
+                            // Text object has default origin at 0,0
+                            obj.setOrigin(data.originX || 0, data.originY || 0);
+                        }
+                    };
+                    scene.VisibleComponent = {
+                        get_visible: get_property("visible", true),
+                        updateObject: function (obj, data) {
+                            obj.alpha = this.get_visible(data) ? 1 : 0.5;
+                        }
+                    };
+                    scene.ScenePropertiesComponent = {
+                        get_snapEnabled: get_property("snapEnabled", false),
+                        get_snapWidth: get_property("snapWidth", 16),
+                        get_snapHeight: get_property("snapHeight", 16),
+                        get_backgroundColor: get_property("backgroundColor", "192,192,182"),
+                        get_foregroundColor: get_property("foregroundColor", "255,255,255"),
+                        get_borderX: get_property("borderX", 0),
+                        get_borderY: get_property("borderY", 0),
+                        get_borderWidth: get_property("borderWidth", 800),
+                        get_borderHeight: get_property("borderHeight", 600),
+                    };
+                    scene.TintComponent = {
+                        get_isTinted: get_property("isTinted", false),
+                        get_tintFill: get_property("tintFill", false),
+                        get_tintTopLeft: get_property("tintTopLeft", 0xffffff),
+                        get_tintTopRight: get_property("tintTopRight", 0xffffff),
+                        get_tintBottomLeft: get_property("tintBottomLeft", 0xffffff),
+                        get_tintBottomRight: get_property("tintBottomRight", 0xffffff),
+                        updateObject: function (obj, data) {
+                            if (this.get_isTinted(data)) {
+                                if (this.get_tintFill(data)) {
+                                    obj.setTintFill(this.get_tintTopLeft(data), this.get_tintTopRight(data), this.get_tintBottomLeft(data), this.get_tintBottomRight(data));
+                                }
+                                else {
+                                    obj.setTint(this.get_tintTopLeft(data), this.get_tintTopRight(data), this.get_tintBottomLeft(data), this.get_tintBottomRight(data));
+                                }
+                            }
+                            else {
+                                obj.clearTint();
+                            }
+                        }
+                    };
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene_1) {
+                    class Create {
+                        constructor(interactive = true) {
+                            this._interactive = interactive;
+                        }
+                        createWorld(scene, displayList) {
+                            var list = displayList.children;
+                            for (var i = 0; i < list.length; i++) {
+                                var data = list[i];
+                                this.createObject(scene, data);
+                            }
+                        }
+                        createObject(scene, data) {
+                            var type = data["-type"];
+                            var obj;
+                            let add = scene.add;
+                            switch (type) {
+                                case "Image":
+                                case "Sprite":
+                                    var x = scene_1.TransformComponent.get_x(data);
+                                    var y = scene_1.TransformComponent.get_y(data);
+                                    var key = scene_1.TextureComponent.get_textureKey(data);
+                                    var frame = scene_1.TextureComponent.get_textureFrame(data);
+                                    obj = add.image(x, y, key, frame);
+                                    break;
+                                case "TileSprite":
+                                    var x = scene_1.TransformComponent.get_x(data);
+                                    var y = scene_1.TransformComponent.get_y(data);
+                                    var width = scene_1.TileSpriteComponent.get_width(data);
+                                    var height = scene_1.TileSpriteComponent.get_height(data);
+                                    var key = scene_1.TextureComponent.get_textureKey(data);
+                                    var frame = scene_1.TextureComponent.get_textureFrame(data);
+                                    obj = add.tileSprite(x, y, width, height, key, frame);
+                                    break;
+                                case "BitmapText":
+                                    var x = scene_1.TransformComponent.get_x(data);
+                                    var y = scene_1.TransformComponent.get_y(data);
+                                    var key = scene_1.BitmapTextComponent.get_fontAssetKey(data);
+                                    obj = add.bitmapText(x, y, key);
+                                    break;
+                                case "DynamicBitmapText":
+                                    var x = scene_1.TransformComponent.get_x(data);
+                                    var y = scene_1.TransformComponent.get_y(data);
+                                    var key = scene_1.BitmapTextComponent.get_fontAssetKey(data);
+                                    obj = add.dynamicBitmapText(x, y, key);
+                                    break;
+                                case "Text":
+                                    var x = scene_1.TransformComponent.get_x(data);
+                                    var y = scene_1.TransformComponent.get_y(data);
+                                    var text = scene_1.TextualComponent.get_text(data);
+                                    obj = add.text(x, y, text);
+                                    break;
+                            }
+                            if (this._interactive) {
+                                switch (type) {
+                                    case "TileSprite":
+                                        if (scene_1.Editor.getInstance().isWebGL()) {
+                                            //obj.setInteractive(TileSpriteCallback);
+                                            obj.setInteractive(getAlpha_RenderTexture);
+                                        }
+                                        else {
+                                            obj.setInteractive(getAlpha_CanvasTexture);
+                                        }
+                                        break;
+                                    case "BitmapText":
+                                    case "DynamicBitmapText":
+                                        obj.setInteractive(inBounds_BitmapText);
+                                        break;
+                                    case "Text":
+                                        obj.setInteractive();
+                                        break;
+                                    default:
+                                        obj.setInteractive(getAlpha_SharedTexture);
+                                        break;
+                                }
+                            }
+                            this.updateObject(obj, data);
+                        }
+                        updateObject(obj, data) {
+                            var type = data["-type"];
+                            obj.name = data["-id"];
+                            scene_1.VisibleComponent.updateObject(obj, data);
+                            switch (type) {
+                                case "Image":
+                                case "Sprite":
+                                case "TileSprite":
+                                    scene_1.TextureComponent.updateObject(obj, data);
+                                    break;
+                            }
+                            switch (type) {
+                                case "Image":
+                                case "Sprite":
+                                case "TileSprite":
+                                case "BitmapText":
+                                case "DynamicBitmapText":
+                                case "Text":
+                                    scene_1.GameObjectEditorComponent.updateObject(obj, data);
+                                    scene_1.TransformComponent.updateObject(obj, data);
+                                    scene_1.OriginComponent.updateObject(obj, data);
+                                    scene_1.FlipComponent.updateObject(obj, data);
+                                    scene_1.TintComponent.updateObject(obj, data);
+                                    break;
+                            }
+                            switch (type) {
+                                case "TileSprite":
+                                    scene_1.TileSpriteComponent.updateObject(obj, data);
+                                    break;
+                                case "BitmapText":
+                                    scene_1.BitmapTextComponent.updateObject(obj, data);
+                                    break;
+                                case "DynamicBitmapText":
+                                    scene_1.BitmapTextComponent.updateObject(obj, data);
+                                    scene_1.DynamicBitmapTextComponent.updateObject(obj, data);
+                                    break;
+                                case "Text":
+                                    scene_1.TextualComponent.updateObject(obj, data);
+                                    scene_1.TextComponent.updateObject(obj, data);
+                                    break;
+                            }
+                        }
+                    }
+                    scene_1.Create = Create;
+                    function inBounds_BitmapText(hitArea, x, y, gameObject) {
+                        // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
+                        let w = gameObject.width / gameObject.scaleX;
+                        let h = gameObject.height / gameObject.scaleY;
+                        return x >= 0 && y >= 0 && x <= w && y <= h;
+                    }
+                    function inBounds_TileSprite(hitArea, x, y, obj) {
+                        return x >= 0 && y >= 0 && x <= obj.width && y <= obj.height;
+                    }
+                    // this is not working at this moment!
+                    function getAlpha_RenderTexture(hitArea, x, y, sprite) {
+                        var hitBounds = x >= 0 && y >= 0 && x <= sprite.width && y <= sprite.height;
+                        if (!hitBounds) {
+                            return false;
+                        }
+                        const scene = scene_1.Editor.getInstance().getObjectScene();
+                        const renderTexture = new Phaser.GameObjects.RenderTexture(scene, 0, 0, 1, 1);
+                        const scaleX = sprite.scaleX;
+                        const scaleY = sprite.scaleY;
+                        const originX = sprite.originX;
+                        const originY = sprite.originY;
+                        const angle = sprite.angle;
+                        sprite.scaleX = 1;
+                        sprite.scaleY = 1;
+                        sprite.originX = 0;
+                        sprite.originY = 0;
+                        sprite.angle = 0;
+                        renderTexture.draw([sprite], -x, -y);
+                        sprite.scaleX = scaleX;
+                        sprite.scaleY = scaleY;
+                        sprite.originX = originX;
+                        sprite.originY = originY;
+                        sprite.angle = angle;
+                        const colorArray = [];
+                        renderTexture.snapshotPixel(0, 0, (function (colorArray) {
+                            return function (c) {
+                                consoleLog(c);
+                                colorArray[0] = c;
+                            };
+                        })(colorArray));
+                        renderTexture.destroy();
+                        const color = colorArray[0];
+                        const alpha = color.alpha;
+                        return alpha > 0;
+                    }
+                    function getAlpha_CanvasTexture(hitArea, x, y, sprite) {
+                        if (sprite.flipX) {
+                            x = 2 * sprite.displayOriginX - x;
+                        }
+                        if (sprite.flipY) {
+                            y = 2 * sprite.displayOriginY - y;
+                        }
+                        var alpha = getCanvasTexturePixelAlpha(x, y, sprite.texture);
+                        return alpha > 0;
+                    }
+                    function getCanvasTexturePixelAlpha(x, y, canvasTexture) {
+                        if (canvasTexture) {
+                            //if (x >= 0 && x < canvasTexture.width && y >= 0 && y < canvasTexture.height) 
+                            let imgData = canvasTexture.getContext().getImageData(x, y, 1, 1);
+                            let rgb = imgData.data;
+                            let alpha = rgb[3];
+                            return alpha;
+                        }
+                        return 0;
+                    }
+                    function getAlpha_SharedTexture(hitArea, x, y, sprite) {
+                        if (sprite.flipX) {
+                            x = 2 * sprite.displayOriginX - x;
+                        }
+                        if (sprite.flipY) {
+                            y = 2 * sprite.displayOriginY - y;
+                        }
+                        const textureManager = scene_1.Editor.getInstance().getGame().textures;
+                        var alpha = textureManager.getPixelAlpha(x, y, sprite.texture.key, sprite.frame.name);
+                        return alpha;
+                    }
+                    ;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene_2) {
+                    class Editor {
+                        constructor() {
+                            this._closed = false;
+                            this._isReloading = false;
+                            this.selection = [];
+                            Editor._instance = this;
+                            this.openSocket();
+                        }
+                        hitTestPointer(scene, pointer) {
+                            const input = scene.game.input;
+                            const real = input.real_hitTest;
+                            const fake = input.hitTest;
+                            input.hitTest = real;
+                            const result = scene.input.hitTestPointer(pointer);
+                            input.hitTest = fake;
+                            return result;
+                        }
+                        static getInstance() {
+                            return Editor._instance;
+                        }
+                        repaint() {
+                            consoleLog("repaint");
+                            this._game.loop.tick();
+                        }
+                        stop() {
+                            consoleLog("loop.stop");
+                            this._game.loop.stop();
+                        }
+                        getCreate() {
+                            return this._create;
+                        }
+                        getGame() {
+                            return this._game;
+                        }
+                        getObjectScene() {
+                            return this._objectScene;
+                        }
+                        getToolScene() {
+                            return this.getObjectScene().getToolScene();
+                        }
+                        sceneCreated() {
+                            const self = this;
+                            this._game.canvas.addEventListener("mousedown", function (e) {
+                                if (self._closed) {
+                                    return;
+                                }
+                                if (self.getToolScene().containsPointer()) {
+                                    self.getToolScene().onToolsMouseDown();
+                                }
+                                else {
+                                    self.getObjectScene().getDragCameraManager().onMouseDown(e);
+                                    self.getObjectScene().getPickManager().onMouseDown(e);
+                                    const dragging = self.getObjectScene().getDragObjectsManager().onMouseDown(e);
+                                    if (!dragging) {
+                                        self.getToolScene().onSelectionDragMouseDown(e);
+                                    }
+                                }
+                            });
+                            this._game.canvas.addEventListener("mousemove", function (e) {
+                                if (self._closed) {
+                                    return;
+                                }
+                                if (self.getToolScene().isEditing()) {
+                                    self.getToolScene().onToolsMouseMove();
+                                }
+                                else {
+                                    self.getObjectScene().getDragObjectsManager().onMouseMove(e);
+                                    self.getObjectScene().getDragCameraManager().onMouseMove(e);
+                                    const repaint = self.getToolScene().onSelectionDragMouseMove(e);
+                                    if (repaint) {
+                                        self.repaint();
+                                    }
+                                }
+                            });
+                            this._game.canvas.addEventListener("mouseup", function (e) {
+                                if (self._closed) {
+                                    return;
+                                }
+                                if (self.getToolScene().isEditing()) {
+                                    self.getToolScene().onToolsMouseUp();
+                                }
+                                else {
+                                    //self.getObjectScene().getDragObjectsManager().onMouseUp();
+                                    self.getObjectScene().getDragCameraManager().onMouseUp();
+                                    const found = self.getObjectScene().getPickManager().onMouseUp(e);
+                                    self.getObjectScene().getDragObjectsManager().onMouseUp();
+                                    if (found) {
+                                        self.getToolScene().selectionDragClear();
+                                    }
+                                    else {
+                                        self.getToolScene().onSelectionDragMouseUp(e);
+                                    }
+                                }
+                            });
+                            this._game.canvas.addEventListener("mouseleave", function () {
+                                if (self._closed) {
+                                    return;
+                                }
+                                self.getObjectScene().getDragObjectsManager().onMouseUp();
+                                self.getObjectScene().getDragCameraManager().onMouseUp();
+                            });
+                            this.sendMessage({
+                                method: "GetInitialState"
+                            });
+                        }
+                        sendKeyDown(e) {
+                            const data = {
+                                keyCode: e.keyCode,
+                                ctrlKey: e.ctrlKey || e.metaKey,
+                                shiftKey: e.shiftKey,
+                            };
+                            this.sendMessage({
+                                method: "KeyDown",
+                                data: data
+                            });
+                        }
+                        onResize() {
+                            for (let scene of this._game.scene.scenes) {
+                                const scene2 = scene;
+                                scene2.cameras.main.setSize(window.innerWidth, window.innerHeight);
+                                scene2.scale.resize(window.innerWidth, window.innerHeight);
+                            }
+                            this.repaint();
+                        }
+                        openSocket() {
+                            consoleLog("Open socket");
+                            this._socket = new WebSocket(this.getWebSocketUrl());
+                            const self = this;
+                            // we should create the socket when the editor scene is ready, it means, the first time the preload method is called.
+                            this._socket.onopen = function () {
+                                self.sendMessage({
+                                    method: "GetCreateGame"
+                                });
+                            };
+                            this._socket.onmessage = function (event) {
+                                var msg = JSON.parse(event.data);
+                                self.onServerMessage(msg);
+                            };
+                            this._socket.onclose = function (event) {
+                                self.onClosedSocket();
+                            };
+                            window.addEventListener("beforeunload", (event) => {
+                                if (self._socket) {
+                                    consoleLog("Closing socket...");
+                                    self.closeSocket();
+                                }
+                                //event.preventDefault();
+                                //event.returnValue = "";
+                            });
+                        }
+                        closeSocket() {
+                            this._socket.onclose = function () { };
+                            this._socket.close();
+                        }
+                        onClosedSocket() {
+                            consoleLog("Socket closed");
+                            if (this._isReloading) {
+                                consoleLog("Closed because a reload.");
+                                return;
+                            }
+                            this._closed = true;
+                            let body = document.getElementById("body");
+                            var elem = document.createElement("div");
+                            elem.innerHTML = "<p><br><br><br>Lost the connection with Phaser Editor</p><button onclick='document.location.reload()'>Reload</button>";
+                            elem.setAttribute("class", "lostConnection");
+                            body.appendChild(elem);
+                        }
+                        onSelectObjects(msg) {
+                            this.selection = msg.objectIds;
+                            this.getToolScene().updateSelectionObjects();
+                            let list = [];
+                            let point = new Phaser.Math.Vector2(0, 0);
+                            let tx = new Phaser.GameObjects.Components.TransformMatrix();
+                            for (let obj of this.getToolScene().getSelectedObjects()) {
+                                let objTx = obj;
+                                objTx.getWorldTransformMatrix(tx);
+                                tx.transformPoint(0, 0, point);
+                                let info = {
+                                    id: obj.name
+                                };
+                                if (obj instanceof Phaser.GameObjects.BitmapText) {
+                                    info.displayWidth = obj.width;
+                                    info.displayHeight = obj.height;
+                                }
+                                else {
+                                    info.displayWidth = obj.displayWidth;
+                                    info.displayHeight = obj.displayHeight;
+                                }
+                                list.push(info);
+                            }
+                            this.sendMessage({
+                                method: "SetObjectDisplayProperties",
+                                list: list
+                            });
+                        }
+                        ;
+                        onUpdateObjects(msg) {
+                            var list = msg.objects;
+                            for (var i = 0; i < list.length; i++) {
+                                var objData = list[i];
+                                var id = objData["-id"];
+                                var obj = this._objectScene.sys.displayList.getByName(id);
+                                this._create.updateObject(obj, objData);
+                            }
+                        }
+                        onReloadPage() {
+                            this._isReloading = true;
+                            this._socket.close();
+                            window.location.reload();
+                        }
+                        onUpdateSceneProperties(msg) {
+                            this.sceneProperties = msg.sceneProperties;
+                            this.getObjectScene().updateBackground();
+                            this.getToolScene().updateFromSceneProperties();
+                            this.updateBodyColor();
+                        }
+                        updateBodyColor() {
+                            const body = document.getElementsByTagName("body")[0];
+                            body.style.backgroundColor = "rgb(" + scene_2.ScenePropertiesComponent.get_backgroundColor(this.sceneProperties) + ")";
+                        }
+                        onCreateGame(msg) {
+                            const self = this;
+                            // update the model
+                            this._webgl = msg.webgl;
+                            this._chromiumWebview = msg.chromiumWebview;
+                            this.sceneProperties = msg.sceneProperties;
+                            // create the game
+                            this._create = new scene_2.Create();
+                            this._game = new Phaser.Game({
+                                title: "Phaser Editor 2D - Web Scene Editor",
+                                width: window.innerWidth,
+                                height: window.innerWidth,
+                                // WEBGL is problematic on Linux
+                                type: this._webgl ? Phaser.WEBGL : Phaser.CANVAS,
+                                render: {
+                                    pixelArt: true
+                                },
+                                audio: {
+                                    noAudio: true
+                                },
+                                url: "https://phasereditor2d.com",
+                                scale: {
+                                    mode: Phaser.Scale.RESIZE
+                                }
+                            });
+                            this._game.config.postBoot = function (game) {
+                                consoleLog("Game booted");
+                                setTimeout(() => self.stop(), 500);
+                            };
+                            // default hitTest is a NOOP, so it does not run heavy tests in all mouse moves.
+                            const input = this._game.input;
+                            input.real_hitTest = input.hitTest;
+                            input.hitTest = function () {
+                                return [];
+                            };
+                            // --
+                            this._objectScene = new scene_2.ObjectScene();
+                            this._game.scene.add("ObjectScene", this._objectScene);
+                            this._game.scene.add("ToolScene", scene_2.ToolScene);
+                            this._game.scene.start("ObjectScene", {
+                                displayList: msg.displayList,
+                                projectUrl: msg.projectUrl,
+                                pack: msg.pack
+                            });
+                            this._resizeToken = 0;
+                            window.addEventListener('resize', function (event) {
+                                if (self._closed) {
+                                    return;
+                                }
+                                self._resizeToken += 1;
+                                setTimeout((function (token) {
+                                    return function () {
+                                        if (token === self._resizeToken) {
+                                            self.onResize();
+                                        }
+                                    };
+                                })(self._resizeToken), 200);
+                            }, false);
+                            window.addEventListener("wheel", function (e) {
+                                if (self._closed) {
+                                    return;
+                                }
+                                self.getObjectScene().onMouseWheel(e);
+                                self.repaint();
+                            });
+                            this.updateBodyColor();
+                        }
+                        snapValueX(x) {
+                            const props = this.sceneProperties;
+                            if (scene_2.ScenePropertiesComponent.get_snapEnabled(props)) {
+                                const snap = scene_2.ScenePropertiesComponent.get_snapWidth(props);
+                                return Math.round(x / snap) * snap;
+                            }
+                            return x;
+                        }
+                        snapValueY(y) {
+                            const props = this.sceneProperties;
+                            if (scene_2.ScenePropertiesComponent.get_snapEnabled(props)) {
+                                const snap = scene_2.ScenePropertiesComponent.get_snapHeight(props);
+                                return Math.round(y / snap) * snap;
+                            }
+                            return y;
+                        }
+                        onDropObjects(msg) {
+                            consoleLog("onDropObjects()");
+                            const list = msg.list;
+                            for (let model of list) {
+                                this._create.createObject(this.getObjectScene(), model);
+                            }
+                            this.repaint();
+                        }
+                        onDeleteObjects(msg) {
+                            let scene = this.getObjectScene();
+                            let list = msg.list;
+                            for (let id of list) {
+                                var obj = scene.sys.displayList.getByName(id);
+                                if (obj) {
+                                    obj.destroy();
+                                }
+                            }
+                        }
+                        onResetScene(msg) {
+                            let scene = this.getObjectScene();
+                            scene.removeAllObjects();
+                            this._create.createWorld(scene, msg.displayList);
+                        }
+                        onRunPositionAction(msg) {
+                            let actionName = msg.action;
+                            let action;
+                            switch (actionName) {
+                                case "Align":
+                                    action = new scene_2.AlignAction(msg);
+                                    break;
+                            }
+                            if (action) {
+                                action.run();
+                            }
+                        }
+                        onServerMessage(batch) {
+                            consoleLog("onServerMessage:");
+                            consoleLog(batch);
+                            consoleLog("----");
+                            var list = batch.list;
+                            this.processMessageList(0, list);
+                        }
+                        ;
+                        onLoadAssets(index, list) {
+                            let loadMsg = list[index];
+                            const self = this;
+                            if (loadMsg.pack) {
+                                let scene = this.getObjectScene();
+                                Editor.getInstance().stop();
+                                scene.load.once(Phaser.Loader.Events.COMPLETE, (function (index2, list2) {
+                                    return function () {
+                                        consoleLog("Loader complete.");
+                                        self.processMessageList(index2, list2);
+                                    };
+                                })(index + 1, list), this);
+                                consoleLog("Load: ");
+                                consoleLog(loadMsg.pack);
+                                scene.load.crossOrigin = "anonymous";
+                                scene.load.addPack(loadMsg.pack);
+                                scene.load.start();
+                                setTimeout(() => this.repaint(), 100);
+                            }
+                            else {
+                                this.processMessageList(index + 1, list);
+                            }
+                        }
+                        onSetObjectOriginKeepPosition(msg) {
+                            let list = msg.list;
+                            let value = msg.value;
+                            let is_x_axis = msg.axis === "x";
+                            let displayList = this.getObjectScene().sys.displayList;
+                            let point = new Phaser.Math.Vector2();
+                            let tx = new Phaser.GameObjects.Components.TransformMatrix();
+                            let data = [];
+                            for (let id of list) {
+                                let obj = displayList.getByName(id);
+                                let x = -obj.width * obj.originX;
+                                let y = -obj.height * obj.originY;
+                                obj.getWorldTransformMatrix(tx);
+                                tx.transformPoint(x, y, point);
+                                data.push({
+                                    obj: obj,
+                                    x: point.x,
+                                    y: point.y
+                                });
+                            }
+                            for (let item of data) {
+                                let obj = item.obj;
+                                if (is_x_axis) {
+                                    obj.setOrigin(value, obj.originY);
+                                }
+                                else {
+                                    obj.setOrigin(obj.originX, value);
+                                }
+                            }
+                            this.repaint();
+                            let list2 = [];
+                            for (let item of data) {
+                                let obj = item.obj;
+                                // restore the position!
+                                let x = -obj.width * obj.originX;
+                                let y = -obj.height * obj.originY;
+                                obj.getWorldTransformMatrix(tx);
+                                tx.transformPoint(x, y, point);
+                                obj.x += item.x - point.x;
+                                obj.y += item.y - point.y;
+                                // build message data
+                                list2.push({
+                                    id: obj.name,
+                                    originX: obj.originX,
+                                    originY: obj.originY,
+                                    x: obj.x,
+                                    y: obj.y
+                                });
+                            }
+                            Editor.getInstance().sendMessage({
+                                method: "SetObjectOrigin",
+                                list: list2
+                            });
+                        }
+                        onSetCameraState(msg) {
+                            let cam = this.getObjectScene().cameras.main;
+                            if (msg.cameraState.scrollX !== undefined) {
+                                cam.scrollX = msg.cameraState.scrollX;
+                                cam.scrollY = msg.cameraState.scrollY;
+                                cam.zoom = msg.cameraState.zoom;
+                            }
+                        }
+                        onSetInteractiveTool(msg) {
+                            const tools = [];
+                            for (let name of msg.list) {
+                                const tools2 = scene_2.ToolFactory.createByName(name);
+                                for (let tool of tools2) {
+                                    tools.push(tool);
+                                }
+                            }
+                            this._transformLocalCoords = msg.transformLocalCoords;
+                            this.getToolScene().setTools(tools);
+                        }
+                        isTransformLocalCoords() {
+                            return this._transformLocalCoords;
+                        }
+                        isWebGL() {
+                            return this._webgl;
+                        }
+                        isChromiumWebview() {
+                            return this._chromiumWebview;
+                        }
+                        onSetTransformCoords(msg) {
+                            this._transformLocalCoords = msg.transformLocalCoords;
+                        }
+                        onGetPastePosition(msg) {
+                            let x = 0;
+                            let y = 0;
+                            if (msg.placeAtCursorPosition) {
+                                const pointer = this.getObjectScene().input.activePointer;
+                                const point = this.getObjectScene().getScenePoint(pointer.x, pointer.y);
+                                x = point.x;
+                                y = point.y;
+                            }
+                            else {
+                                let cam = this.getObjectScene().cameras.main;
+                                x = cam.midPoint.x;
+                                y = cam.midPoint.y;
+                            }
+                            this.sendMessage({
+                                method: "PasteEvent",
+                                parent: msg.parent,
+                                x: x,
+                                y: y
+                            });
+                        }
+                        onRevealObject(msg) {
+                            const sprite = this.getObjectScene().sys.displayList.getByName(msg.id);
+                            if (sprite) {
+                                const tx = sprite.getWorldTransformMatrix();
+                                let p = new Phaser.Math.Vector2();
+                                tx.transformPoint(0, 0, p);
+                                const cam = this.getObjectScene().cameras.main;
+                                cam.setScroll(p.x - cam.width / 2, p.y - cam.height / 2);
+                            }
+                        }
+                        processMessageList(startIndex, list) {
+                            for (var i = startIndex; i < list.length; i++) {
+                                var msg = list[i];
+                                var method = msg.method;
+                                switch (method) {
+                                    case "ReloadPage":
+                                        this.onReloadPage();
+                                        break;
+                                    case "CreateGame":
+                                        this.onCreateGame(msg);
+                                        break;
+                                    case "UpdateObjects":
+                                        this.onUpdateObjects(msg);
+                                        break;
+                                    case "SelectObjects":
+                                        this.onSelectObjects(msg);
+                                        break;
+                                    case "UpdateSceneProperties":
+                                        this.onUpdateSceneProperties(msg);
+                                        break;
+                                    case "DropObjects":
+                                        this.onDropObjects(msg);
+                                        break;
+                                    case "DeleteObjects":
+                                        this.onDeleteObjects(msg);
+                                        break;
+                                    case "ResetScene":
+                                        this.onResetScene(msg);
+                                        break;
+                                    case "RunPositionAction":
+                                        this.onRunPositionAction(msg);
+                                        break;
+                                    case "LoadAssets":
+                                        this.onLoadAssets(i, list);
+                                        // break the loop, the remaining messages are processed after the load
+                                        return;
+                                    case "SetObjectOriginKeepPosition":
+                                        this.onSetObjectOriginKeepPosition(msg);
+                                        break;
+                                    case "SetCameraState":
+                                        this.onSetCameraState(msg);
+                                        break;
+                                    case "SetInteractiveTool":
+                                        this.onSetInteractiveTool(msg);
+                                        break;
+                                    case "SetTransformCoords":
+                                        this.onSetTransformCoords(msg);
+                                        break;
+                                    case "GetPastePosition":
+                                        this.onGetPastePosition(msg);
+                                        break;
+                                    case "RevealObject":
+                                        this.onRevealObject(msg);
+                                        break;
+                                }
+                            }
+                            this.repaint();
+                        }
+                        sendMessage(msg) {
+                            consoleLog("Sending message:");
+                            consoleLog(msg);
+                            consoleLog("----");
+                            this._socket.send(JSON.stringify(msg));
+                        }
+                        getWebSocketUrl() {
+                            var loc = document.location;
+                            var channel = this.getChannelId();
+                            return "ws://" + loc.host + "/ws/api?channel=" + channel;
+                        }
+                        getChannelId() {
+                            var s = document.location.search;
+                            var i = s.indexOf("=");
+                            var c = s.substring(i + 1);
+                            return c;
+                        }
+                        getWorldBounds(sprite, points) {
+                            let w = sprite.width;
+                            let h = sprite.height;
+                            if (sprite instanceof Phaser.GameObjects.BitmapText) {
+                                // the bitmaptext width is considered a displayWidth, it is already multiplied by the scale
+                                w = w / sprite.scaleX;
+                                h = h / sprite.scaleY;
+                            }
+                            let flipX = sprite.flipX ? -1 : 1;
+                            let flipY = sprite.flipY ? -1 : 1;
+                            if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                                flipX = 1;
+                                flipY = 1;
+                            }
+                            const ox = sprite.originX;
+                            const oy = sprite.originY;
+                            const x = -w * ox * flipX;
+                            const y = -h * oy * flipY;
+                            let worldTx = sprite.getWorldTransformMatrix();
+                            worldTx.transformPoint(x, y, points[0]);
+                            worldTx.transformPoint(x + w * flipX, y, points[1]);
+                            worldTx.transformPoint(x + w * flipX, y + h * flipY, points[2]);
+                            worldTx.transformPoint(x, y + h * flipY, points[3]);
+                            let cam = this.getObjectScene().cameras.main;
+                            for (let p of points) {
+                                p.set((p.x - cam.scrollX) * cam.zoom, (p.y - cam.scrollY) * cam.zoom);
+                            }
+                        }
+                    }
+                    scene_2.Editor = Editor;
+                    class PaintDelayUtil {
+                        constructor() {
+                            this._delayPaint = Editor.getInstance().isChromiumWebview();
+                        }
+                        startPaintLoop() {
+                            if (this._delayPaint) {
+                                this._now = Date.now();
+                            }
+                        }
+                        shouldPaintThisTime() {
+                            if (this._delayPaint) {
+                                const now = Date.now();
+                                if (now - this._now > 40) {
+                                    this._now = now;
+                                    return true;
+                                }
+                                return false;
+                            }
+                            return true;
+                        }
+                    }
+                    scene_2.PaintDelayUtil = PaintDelayUtil;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class BuildMessage {
+                        static SetTileSpriteProperties(objects) {
+                            const list = [];
+                            for (let obj of objects) {
+                                const sprite = obj;
+                                const data = { id: sprite.name };
+                                scene.TileSpriteComponent.updateData(sprite, data);
+                                list.push(data);
+                            }
+                            return {
+                                method: "SetTileSpriteProperties",
+                                list: list
+                            };
+                        }
+                        static SetOriginProperties(objects) {
+                            const list = [];
+                            for (let obj of objects) {
+                                const data = { id: obj.name };
+                                scene.OriginComponent.updateData(obj, data);
+                                scene.TransformComponent.set_x(data, obj.x);
+                                scene.TransformComponent.set_y(data, obj.y);
+                                list.push(data);
+                            }
+                            return {
+                                method: "SetOriginProperties",
+                                list: list
+                            };
+                        }
+                        static SetTransformProperties(objects) {
+                            const list = [];
+                            for (let obj of objects) {
+                                const data = { id: obj.name };
+                                scene.TransformComponent.updateData(obj, data);
+                                list.push(data);
+                            }
+                            return {
+                                method: "SetTransformProperties",
+                                list: list
+                            };
+                        }
+                    }
+                    scene.BuildMessage = BuildMessage;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene_3) {
+                    class ObjectScene extends Phaser.Scene {
+                        constructor() {
+                            super("ObjectScene");
+                        }
+                        init(initData) {
+                            this._initData = initData;
+                        }
+                        preload() {
+                            consoleLog("preload()");
+                            this.load.setBaseURL(this._initData.projectUrl);
+                            this.load.pack("pack", this._initData.pack);
+                        }
+                        create() {
+                            const editor = scene_3.Editor.getInstance();
+                            this._dragCameraManager = new DragCameraManager(this);
+                            this._dragObjectsManager = new DragObjectsManager();
+                            this._pickManager = new PickObjectManager();
+                            new DropManager();
+                            this.initCamera();
+                            this.initSelectionScene();
+                            editor.getCreate().createWorld(this, this._initData.displayList);
+                            editor.sceneCreated();
+                            this.sendRecordCameraStateMessage();
+                            editor.stop();
+                        }
+                        updateBackground() {
+                            const rgb = "rgb(" + scene_3.ScenePropertiesComponent.get_backgroundColor(scene_3.Editor.getInstance().sceneProperties) + ")";
+                            this.cameras.main.setBackgroundColor(rgb);
+                        }
+                        getPickManager() {
+                            return this._pickManager;
+                        }
+                        getDragCameraManager() {
+                            return this._dragCameraManager;
+                        }
+                        getDragObjectsManager() {
+                            return this._dragObjectsManager;
+                        }
+                        removeAllObjects() {
+                            let list = this.sys.displayList.list;
+                            for (let obj of list) {
+                                obj.destroy();
+                            }
+                            this.sys.displayList.removeAll(false);
+                        }
+                        getScenePoint(pointerX, pointerY) {
+                            const cam = this.cameras.main;
+                            const sceneX = pointerX / cam.zoom + cam.scrollX;
+                            const sceneY = pointerY / cam.zoom + cam.scrollY;
+                            return new Phaser.Math.Vector2(sceneX, sceneY);
+                        }
+                        initSelectionScene() {
+                            this.scene.launch("ToolScene");
+                            this._toolScene = this.scene.get("ToolScene");
+                        }
+                        initCamera() {
+                            var cam = this.cameras.main;
+                            cam.setOrigin(0, 0);
+                            cam.setRoundPixels(true);
+                            this.updateBackground();
+                            this.scale.resize(window.innerWidth, window.innerHeight);
+                        }
+                        ;
+                        getToolScene() {
+                            return this._toolScene;
+                        }
+                        onMouseWheel(e) {
+                            var cam = this.cameras.main;
+                            var delta = e.deltaY;
+                            var zoom = (delta > 0 ? 0.9 : 1.1);
+                            const pointer = this.input.activePointer;
+                            const point1 = cam.getWorldPoint(pointer.x, pointer.y);
+                            cam.zoom *= zoom;
+                            // update the camera matrix
+                            cam.preRender(this.scale.resolution);
+                            const point2 = cam.getWorldPoint(pointer.x, pointer.y);
+                            const dx = point2.x - point1.x;
+                            const dy = point2.y - point1.y;
+                            cam.scrollX += -dx;
+                            cam.scrollY += -dy;
+                            this.sendRecordCameraStateMessage();
+                        }
+                        sendRecordCameraStateMessage() {
+                            let cam = this.cameras.main;
+                            scene_3.Editor.getInstance().sendMessage({
+                                method: "RecordCameraState",
+                                cameraState: {
+                                    scrollX: cam.scrollX,
+                                    scrollY: cam.scrollY,
+                                    width: cam.width,
+                                    height: cam.height,
+                                    zoom: cam.zoom
+                                }
+                            });
+                        }
+                        performResize() {
+                            this.cameras.main.setSize(window.innerWidth, window.innerHeight);
+                        }
+                    }
+                    scene_3.ObjectScene = ObjectScene;
+                    class PickObjectManager {
+                        constructor() {
+                            this._temp = [
+                                new Phaser.Math.Vector2(0, 0),
+                                new Phaser.Math.Vector2(0, 0),
+                                new Phaser.Math.Vector2(0, 0),
+                                new Phaser.Math.Vector2(0, 0)
+                            ];
+                        }
+                        onMouseDown(e) {
+                            this._down = e;
+                        }
+                        onMouseUp(e) {
+                            if (!this._down || this._down.x !== e.x || this._down.y !== e.y || !scene_3.isLeftButton(this._down)) {
+                                return null;
+                            }
+                            const editor = scene_3.Editor.getInstance();
+                            const scene = editor.getObjectScene();
+                            const pointer = scene.input.activePointer;
+                            const result = editor.hitTestPointer(scene, pointer);
+                            consoleLog(result);
+                            let gameObj = result.pop();
+                            editor.sendMessage({
+                                method: "ClickObject",
+                                ctrl: e.ctrlKey,
+                                shift: e.shiftKey,
+                                id: gameObj ? gameObj.name : undefined
+                            });
+                            return gameObj;
+                        }
+                        selectArea(start, end) {
+                            console.log("---");
+                            const editor = scene_3.Editor.getInstance();
+                            const scene = editor.getObjectScene();
+                            const list = scene.children.getAll();
+                            let x = start.x;
+                            let y = start.y;
+                            let width = end.x - start.x;
+                            let height = end.y - start.y;
+                            if (width < 0) {
+                                x = end.x;
+                                width = -width;
+                            }
+                            if (height < 0) {
+                                y = end.y;
+                                height = -height;
+                            }
+                            const area = new Phaser.Geom.Rectangle(x, y, width, height);
+                            const selection = [];
+                            for (let obj of list) {
+                                if (obj.name) {
+                                    const sprite = obj;
+                                    const points = this._temp;
+                                    editor.getWorldBounds(sprite, points);
+                                    if (area.contains(points[0].x, points[0].y)
+                                        && area.contains(points[1].x, points[1].y)
+                                        && area.contains(points[2].x, points[2].y)
+                                        && area.contains(points[3].x, points[3].y)) {
+                                        selection.push(sprite.name);
+                                    }
+                                }
+                            }
+                            editor.sendMessage({
+                                method: "SetSelection",
+                                list: selection
+                            });
+                        }
+                    }
+                    class DragObjectsManager {
+                        constructor() {
+                            this._startPoint = null;
+                            this._dragging = false;
+                            this._now = 0;
+                            this._paintDelayUtil = new scene_3.PaintDelayUtil();
+                        }
+                        getScene() {
+                            return scene_3.Editor.getInstance().getObjectScene();
+                        }
+                        getSelectedObjects() {
+                            return scene_3.Editor.getInstance().getToolScene().getSelectedObjects();
+                        }
+                        getPointer() {
+                            return this.getScene().input.activePointer;
+                        }
+                        onMouseDown(e) {
+                            if (!scene_3.isLeftButton(e)) {
+                                return false;
+                            }
+                            const set1 = new Phaser.Structs.Set(scene_3.Editor.getInstance().hitTestPointer(this.getScene(), this.getPointer()));
+                            const set2 = new Phaser.Structs.Set(this.getSelectedObjects());
+                            const hit = set1.intersect(set2).size > 0;
+                            if (!hit) {
+                                return false;
+                            }
+                            this._paintDelayUtil.startPaintLoop();
+                            this._startPoint = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
+                            const tx = new Phaser.GameObjects.Components.TransformMatrix();
+                            const p = new Phaser.Math.Vector2();
+                            for (let obj of this.getSelectedObjects()) {
+                                const sprite = obj;
+                                sprite.getWorldTransformMatrix(tx);
+                                tx.transformPoint(0, 0, p);
+                                sprite.setData("DragObjectsManager", {
+                                    initX: p.x,
+                                    initY: p.y
+                                });
+                            }
+                            return true;
+                        }
+                        onMouseMove(e) {
+                            if (!scene_3.isLeftButton(e) || this._startPoint === null) {
+                                return;
+                            }
+                            this._dragging = true;
+                            const pos = this.getScene().getScenePoint(this.getPointer().x, this.getPointer().y);
+                            const dx = pos.x - this._startPoint.x;
+                            const dy = pos.y - this._startPoint.y;
+                            for (let obj of this.getSelectedObjects()) {
+                                const sprite = obj;
+                                const data = sprite.getData("DragObjectsManager");
+                                if (!data) {
+                                    continue;
+                                }
+                                const x = scene_3.Editor.getInstance().snapValueX(data.initX + dx);
+                                const y = scene_3.Editor.getInstance().snapValueX(data.initY + dy);
+                                if (sprite.parentContainer) {
+                                    const tx = sprite.parentContainer.getWorldTransformMatrix();
+                                    const p = new Phaser.Math.Vector2();
+                                    tx.applyInverse(x, y, p);
+                                    sprite.setPosition(p.x, p.y);
+                                }
+                                else {
+                                    sprite.setPosition(x, y);
+                                }
+                            }
+                            if (this._paintDelayUtil.shouldPaintThisTime()) {
+                                scene_3.Editor.getInstance().repaint();
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._startPoint !== null && this._dragging) {
+                                this._dragging = false;
+                                this._startPoint = null;
+                                scene_3.Editor.getInstance().sendMessage(scene_3.BuildMessage.SetTransformProperties(this.getSelectedObjects()));
+                            }
+                            for (let obj of this.getSelectedObjects()) {
+                                const sprite = obj;
+                                if (sprite.data) {
+                                    sprite.data.remove("DragObjectsManager");
+                                }
+                            }
+                            scene_3.Editor.getInstance().repaint();
+                        }
+                    }
+                    class DragCameraManager {
+                        constructor(scene) {
+                            this._scene = scene;
+                            this._dragStartPoint = null;
+                        }
+                        onMouseDown(e) {
+                            // if middle button peressed
+                            if (scene_3.isMiddleButton(e)) {
+                                this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
+                                const cam = this._scene.cameras.main;
+                                this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
+                                e.preventDefault();
+                            }
+                        }
+                        onMouseMove(e) {
+                            if (this._dragStartPoint === null) {
+                                return;
+                            }
+                            const dx = this._dragStartPoint.x - e.clientX;
+                            const dy = this._dragStartPoint.y - e.clientY;
+                            const cam = this._scene.cameras.main;
+                            cam.scrollX = this._dragStartCameraScroll.x + dx / cam.zoom;
+                            cam.scrollY = this._dragStartCameraScroll.y + dy / cam.zoom;
+                            scene_3.Editor.getInstance().repaint();
+                            e.preventDefault();
+                        }
+                        onMouseUp() {
+                            if (this._dragStartPoint !== null) {
+                                this._scene.sendRecordCameraStateMessage();
+                            }
+                            this._dragStartPoint = null;
+                            this._dragStartCameraScroll = null;
+                        }
+                    }
+                    class DropManager {
+                        constructor() {
+                            window.addEventListener("drop", function (e) {
+                                let editor = scene_3.Editor.getInstance();
+                                let point = editor.getObjectScene().cameras.main.getWorldPoint(e.clientX, e.clientY);
+                                editor.sendMessage({
+                                    method: "DropEvent",
+                                    x: point.x,
+                                    y: point.y
+                                });
+                            });
+                            window.addEventListener("dragover", function (e) {
+                                e.preventDefault();
+                            });
+                        }
+                    }
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var PAINT_COUNT = 0;
+                    class ToolScene extends Phaser.Scene {
+                        constructor() {
+                            super("ToolScene");
+                            this._axisToken = null;
+                            this._axisLabels = [];
+                            this._selectionBoxPoints = [
+                                new Phaser.Math.Vector2(0, 0),
+                                new Phaser.Math.Vector2(0, 0),
+                                new Phaser.Math.Vector2(0, 0),
+                                new Phaser.Math.Vector2(0, 0)
+                            ];
+                            this._selectionDragStart = null;
+                            this._selectionDragEnd = null;
+                            this._selectedObjects = [];
+                            this._selectionGraphics = null;
+                            this._tools = [];
+                            this._paintDelayUtils = new scene.PaintDelayUtil();
+                        }
+                        create() {
+                            this.initCamera();
+                            this._axisToken = "";
+                            this._gridGraphics = this.add.graphics();
+                            this._gridGraphics.depth = -1;
+                            this._selectionGraphics = this.add.graphics({
+                                fillStyle: {
+                                    color: 0x00ff00
+                                },
+                                lineStyle: {
+                                    color: 0x00ff00,
+                                    width: 2
+                                }
+                            });
+                            this._selectionGraphics.depth = -1;
+                            this._paintCallsLabel = this.add.text(10, 10, "", { "color": "blue", "backgroundColor": "red" });
+                            this._paintCallsLabel.depth = 1000;
+                        }
+                        initCamera() {
+                            this.cameras.main.setRoundPixels(true);
+                            this.cameras.main.setOrigin(0, 0);
+                        }
+                        updateFromSceneProperties() {
+                            this._axisToken = "";
+                            this.renderAxis();
+                        }
+                        renderAxis() {
+                            const editor = scene.Editor.getInstance();
+                            const cam = editor.getObjectScene().cameras.main;
+                            const w = window.innerWidth;
+                            const h = window.innerHeight;
+                            let dx = 16;
+                            let dy = 16;
+                            if (scene.ScenePropertiesComponent.get_snapEnabled(editor.sceneProperties)) {
+                                dx = scene.ScenePropertiesComponent.get_snapWidth(editor.sceneProperties);
+                                dy = scene.ScenePropertiesComponent.get_snapHeight(editor.sceneProperties);
+                            }
+                            let i = 1;
+                            while (dx * i * cam.zoom < 32) {
+                                i++;
+                            }
+                            dx = dx * i;
+                            i = 1;
+                            while (dy * i * cam.zoom < 32) {
+                                i++;
+                            }
+                            dy = dy * i;
+                            const sx = ((cam.scrollX / dx) | 0) * dx;
+                            const sy = ((cam.scrollY / dy) | 0) * dy;
+                            const bx = scene.ScenePropertiesComponent.get_borderX(editor.sceneProperties);
+                            const by = scene.ScenePropertiesComponent.get_borderY(editor.sceneProperties);
+                            const bw = scene.ScenePropertiesComponent.get_borderWidth(editor.sceneProperties);
+                            const bh = scene.ScenePropertiesComponent.get_borderHeight(editor.sceneProperties);
+                            const token = w + "-" + h + "-" + dx + "-" + dy + "-" + cam.zoom + "-" + cam.scrollX + "-" + cam.scrollY
+                                + "-" + bx + "-" + by + "-" + bw + "-" + bh;
+                            if (this._axisToken !== null && this._axisToken === token) {
+                                return;
+                            }
+                            this._axisToken = token;
+                            this._gridGraphics.clear();
+                            const fg = Phaser.Display.Color.RGBStringToColor("rgb(" + scene.ScenePropertiesComponent.get_foregroundColor(editor.sceneProperties) + ")");
+                            this._gridGraphics.lineStyle(1, fg.color, 0.5);
+                            for (const label of this._axisLabels) {
+                                label.destroy();
+                            }
+                            // labels
+                            let label = null;
+                            let labelHeight = 0;
+                            this._axisLabels = [];
+                            for (let x = sx;; x += dx) {
+                                const x2 = (x - cam.scrollX) * cam.zoom;
+                                if (x2 > w) {
+                                    break;
+                                }
+                                if (label != null) {
+                                    if (label.x + label.width * 2 > x2) {
+                                        continue;
+                                    }
+                                }
+                                label = this.add.text(x2, 0, x.toString());
+                                label.style.setShadow(1, 1);
+                                this._axisLabels.push(label);
+                                labelHeight = label.height;
+                                label.setOrigin(0.5, 0);
+                            }
+                            let labelWidth = 0;
+                            for (let y = sy;; y += dy) {
+                                const y2 = (y - cam.scrollY) * cam.zoom;
+                                if (y2 > h) {
+                                    break;
+                                }
+                                if (y2 < labelHeight) {
+                                    continue;
+                                }
+                                const label = this.add.text(0, y2, (y).toString());
+                                label.style.setShadow(1, 1);
+                                label.setOrigin(0, 0.5);
+                                this._axisLabels.push(label);
+                                labelWidth = Math.max(label.width, labelWidth);
+                            }
+                            // lines
+                            for (let x = sx;; x += dx) {
+                                const x2 = (x - cam.scrollX) * cam.zoom;
+                                if (x2 > w) {
+                                    break;
+                                }
+                                if (x2 < labelWidth) {
+                                    continue;
+                                }
+                                this._gridGraphics.lineBetween(x2, labelHeight, x2, h);
+                            }
+                            for (let y = sy;; y += dy) {
+                                const y2 = (y - cam.scrollY) * cam.zoom;
+                                if (y2 > h) {
+                                    break;
+                                }
+                                if (y2 < labelHeight) {
+                                    continue;
+                                }
+                                this._gridGraphics.lineBetween(labelWidth, y2, w, y2);
+                            }
+                            // border
+                            this._gridGraphics.lineStyle(4, 0x000000, 1);
+                            this._gridGraphics.strokeRect((bx - cam.scrollX) * cam.zoom, (by - cam.scrollY) * cam.zoom, bw * cam.zoom, bh * cam.zoom);
+                            this._gridGraphics.lineStyle(2, 0xffffff, 1);
+                            this._gridGraphics.strokeRect(((bx - cam.scrollX) * cam.zoom), (by - cam.scrollY) * cam.zoom, bw * cam.zoom, bh * cam.zoom);
+                        }
+                        getSelectedObjects() {
+                            return this._selectedObjects;
+                        }
+                        updateSelectionObjects() {
+                            const editor = scene.Editor.getInstance();
+                            this._selectedObjects = [];
+                            let objectScene = scene.Editor.getInstance().getObjectScene();
+                            for (let id of editor.selection) {
+                                const obj = objectScene.sys.displayList.getByName(id);
+                                if (obj) {
+                                    this._selectedObjects.push(obj);
+                                }
+                            }
+                        }
+                        update() {
+                            this.renderAxis();
+                            this.renderSelection();
+                            this.updateTools();
+                            this._paintCallsLabel.visible = scene.Editor.getInstance().sceneProperties.debugPaintCalls;
+                            if (this._paintCallsLabel.visible) {
+                                this._paintCallsLabel.text = PAINT_COUNT.toString();
+                                PAINT_COUNT += 1;
+                            }
+                        }
+                        setTools(tools) {
+                            for (let tool of this._tools) {
+                                tool.clear();
+                            }
+                            for (let tool of tools) {
+                                tool.activated();
+                            }
+                            this._tools = tools;
+                        }
+                        updateTools() {
+                            for (let tool of this._tools) {
+                                tool.update();
+                            }
+                        }
+                        renderSelection() {
+                            this._selectionGraphics.clear();
+                            const g2 = this._selectionGraphics;
+                            for (let obj of this._selectedObjects) {
+                                this.paintSelectionBox(g2, obj);
+                            }
+                            if (this._selectionDragStart && !this._selectionDragStart.equals(this._selectionDragEnd)) {
+                                const x = this._selectionDragStart.x;
+                                const y = this._selectionDragStart.y;
+                                const width = this._selectionDragEnd.x - x;
+                                const height = this._selectionDragEnd.y - y;
+                                const g2 = this._selectionGraphics;
+                                g2.lineStyle(4, 0x000000);
+                                g2.strokeRect(x, y, width, height);
+                                g2.lineStyle(2, 0x00ff00);
+                                g2.strokeRect(x, y, width, height);
+                            }
+                        }
+                        paintSelectionBox(graphics, sprite) {
+                            scene.Editor.getInstance().getWorldBounds(sprite, this._selectionBoxPoints);
+                            graphics.lineStyle(4, 0x000000);
+                            graphics.strokePoints(this._selectionBoxPoints, true);
+                            graphics.lineStyle(2, 0x00ff00);
+                            graphics.strokePoints(this._selectionBoxPoints, true);
+                        }
+                        containsPointer() {
+                            for (let tool of this._tools) {
+                                const b = tool.containsPointer();
+                                if (b) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        isEditing() {
+                            for (let tool of this._tools) {
+                                if (tool.isEditing()) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        testRepaint() {
+                            for (let tool of this._tools) {
+                                if (tool.requestRepaint) {
+                                    tool.requestRepaint = false;
+                                    scene.Editor.getInstance().repaint();
+                                    return;
+                                }
+                            }
+                        }
+                        onToolsMouseDown() {
+                            this._paintDelayUtils.startPaintLoop();
+                            for (let tool of this._tools) {
+                                tool.onMouseDown();
+                            }
+                            this.testRepaint();
+                        }
+                        onToolsMouseMove() {
+                            for (let tool of this._tools) {
+                                tool.onMouseMove();
+                            }
+                            if (this._paintDelayUtils.shouldPaintThisTime()) {
+                                this.testRepaint();
+                            }
+                        }
+                        onToolsMouseUp() {
+                            for (let tool of this._tools) {
+                                tool.onMouseUp();
+                            }
+                            this.testRepaint();
+                        }
+                        onSelectionDragMouseDown(e) {
+                            if (!scene.isLeftButton(e)) {
+                                return;
+                            }
+                            this._paintDelayUtils.startPaintLoop();
+                            const pointer = this.input.activePointer;
+                            this._selectionDragStart = new Phaser.Math.Vector2(pointer.x, pointer.y);
+                            this._selectionDragEnd = this._selectionDragStart.clone();
+                        }
+                        onSelectionDragMouseMove(e) {
+                            if (this._selectionDragStart) {
+                                const pointer = this.input.activePointer;
+                                this._selectionDragEnd.set(pointer.x, pointer.y);
+                                return this._paintDelayUtils.shouldPaintThisTime();
+                            }
+                            return false;
+                        }
+                        selectionDragClear() {
+                            this._selectionDragStart = null;
+                            this._selectionDragEnd = null;
+                        }
+                        onSelectionDragMouseUp(e) {
+                            if (this._selectionDragStart) {
+                                scene.Editor.getInstance().getObjectScene().getPickManager().selectArea(this._selectionDragStart, this._selectionDragEnd);
+                                this.selectionDragClear();
+                            }
+                        }
+                    }
+                    scene.ToolScene = ToolScene;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    function main() {
+                        new scene.Editor();
+                    }
+                    window.addEventListener("keydown", function (e) {
+                        scene.Editor.getInstance().sendKeyDown(e);
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    });
+                    window.addEventListener("keyup", function (e) {
+                        // I don't know why the ESC key is not captured in the keydown.
+                        if (e.keyCode === 27) {
+                            scene.Editor.getInstance().sendKeyDown(e);
+                        }
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    });
+                    window.addEventListener("load", main);
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    let ws;
+                    let game;
+                    let MODEL_LIST = [];
+                    let CURRENT_MODEL;
+                    function mainScreenshot() {
+                        connect();
+                    }
+                    scene.mainScreenshot = mainScreenshot;
+                    function connect() {
+                        ws = new WebSocket(getWebSocketUrl());
+                        ws.addEventListener("message", onMessage);
+                        ws.addEventListener("close", onClose);
+                    }
+                    function onClose() {
+                        connect();
+                    }
+                    function createGame() {
+                        game = new Phaser.Game({
+                            width: CURRENT_MODEL,
+                            height: 380,
+                            render: {
+                                pixelArt: true
+                            },
+                            backgroundColor: "#f0f0f0",
+                            audio: {
+                                noAudio: true
+                            },
+                            scale: {
+                                mode: Phaser.Scale.NONE
+                            }
+                        });
+                        game.scene.add("Preload", Preload);
+                        game.scene.add("Level", Level);
+                    }
+                    function getWebSocketUrl() {
+                        var loc = document.location;
+                        return "ws://" + loc.host + "/ws/api?channel=sceneScreenshot";
+                    }
+                    function onMessage(event) {
+                        const data = JSON.parse(event.data);
+                        consoleLog("message: " + data.method);
+                        consoleLog(data);
+                        if (data.method === "CreateScreenshot") {
+                            MODEL_LIST.push(data);
+                            if (MODEL_LIST.length === 1) {
+                                nextModel();
+                            }
+                        }
+                    }
+                    function nextModel() {
+                        //window.location.reload();
+                        if (game) {
+                            game.destroy(false);
+                        }
+                        if (MODEL_LIST.length > 0) {
+                            CURRENT_MODEL = MODEL_LIST.pop();
+                            consoleLog("Start processing new model at project " + CURRENT_MODEL.projectUrl);
+                            createGame();
+                            game.scene.start("Preload");
+                        }
+                    }
+                    class Preload extends Phaser.Scene {
+                        constructor() {
+                            super("Preload");
+                        }
+                        preload() {
+                            this.load.setBaseURL(CURRENT_MODEL.projectUrl);
+                            this.load.pack("pack", CURRENT_MODEL.pack);
+                        }
+                        create() {
+                            this.scene.start("Level");
+                        }
+                    }
+                    class Level extends Phaser.Scene {
+                        constructor() {
+                            super("Level");
+                        }
+                        create() {
+                            const sceneInfo = CURRENT_MODEL.scenes.pop();
+                            var x = scene.ScenePropertiesComponent.get_borderX(sceneInfo.model);
+                            var y = scene.ScenePropertiesComponent.get_borderY(sceneInfo.model);
+                            var width = scene.ScenePropertiesComponent.get_borderWidth(sceneInfo.model);
+                            var height = scene.ScenePropertiesComponent.get_borderHeight(sceneInfo.model);
+                            this.cameras.main.setSize(width, height);
+                            this.cameras.main.setScroll(x, y);
+                            this.scale.resize(width, height);
+                            var create = new scene.Create(false);
+                            create.createWorld(this, sceneInfo.model.displayList);
+                            this.game.renderer.snapshot(function (image) {
+                                var imageData = image.src;
+                                const _GetDataURL = window.GetDataURL;
+                                if (_GetDataURL) {
+                                    _GetDataURL(imageData);
+                                }
+                                else {
+                                    var file = sceneInfo.file;
+                                    consoleLog("Sending screenshot data of " + file);
+                                    var loc = document.location;
+                                    var url = "http://" + loc.host + "/sceneScreenshotService/sceneInfo?" + file;
+                                    var req = new XMLHttpRequest();
+                                    req.open("POST", url);
+                                    req.setRequestHeader("Content-Type", "application/upload");
+                                    req.send(JSON.stringify({
+                                        file: file,
+                                        imageData: imageData
+                                    }));
+                                }
+                                if (CURRENT_MODEL.scenes.length === 0) {
+                                    nextModel();
+                                }
+                                else {
+                                    game.scene.start("Level");
+                                }
+                            });
+                        }
+                    }
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+window.addEventListener("load", phasereditor2d.ui.ide.editors.scene.mainScreenshot);
+window.addEventListener("onerror", function (e) {
+    alert("WebView ERROR: " + e);
+});
+// needed to fix errors in MacOS SWT Browser.
+window.AudioContext = function () { };
+// disable log on production
+var CONSOLE_LOG = false;
+function consoleLog(msg) {
+    if (CONSOLE_LOG) {
+        console.log(msg);
+    }
+}
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    function isLeftButton(e) {
+                        if (e.buttons === undefined) {
+                            // macos swt browser
+                            return e.button === 0;
+                        }
+                        return e.buttons === 1;
+                    }
+                    scene.isLeftButton = isLeftButton;
+                    function isMiddleButton(e) {
+                        if (e.buttons === undefined) {
+                            // macos swt browser
+                            return e.button === 1;
+                        }
+                        return e.buttons === 4;
+                    }
+                    scene.isMiddleButton = isMiddleButton;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+// missing types in Phaser definitions
+class ActiveXObject {
+}
+var Phaser;
+(function (Phaser) {
+    var Types;
+    (function (Types) {
+        var Tweens;
+        (function (Tweens) {
+            class StaggerBuilderConfig {
+            }
+            Tweens.StaggerBuilderConfig = StaggerBuilderConfig;
+        })(Tweens = Types.Tweens || (Types.Tweens = {}));
+    })(Types = Phaser.Types || (Phaser.Types = {}));
+})(Phaser || (Phaser = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    scene.ARROW_LENGTH = 80;
+                    class InteractiveTool {
+                        constructor() {
+                            this.toolScene = scene.Editor.getInstance().getToolScene();
+                            this.objScene = scene.Editor.getInstance().getObjectScene();
+                            this.requestRepaint = false;
+                        }
+                        getObjects() {
+                            const sel = this.toolScene.getSelectedObjects();
+                            return sel.filter(obj => this.canEdit(obj));
+                        }
+                        containsPointer() {
+                            return false;
+                        }
+                        isEditing() {
+                            return false;
+                        }
+                        clear() {
+                        }
+                        activated() {
+                        }
+                        update() {
+                            const list = this.getObjects();
+                            if (list.length === 0) {
+                                this.clear();
+                            }
+                            else {
+                                this.render(list);
+                            }
+                        }
+                        render(objects) {
+                        }
+                        onMouseDown() {
+                        }
+                        onMouseUp() {
+                        }
+                        onMouseMove() {
+                        }
+                        getToolPointer() {
+                            return this.toolScene.input.activePointer;
+                        }
+                        getScenePoint(toolX, toolY) {
+                            return this.objScene.getScenePoint(toolX, toolY);
+                        }
+                        objectGlobalAngle(obj) {
+                            let a = obj.angle;
+                            const parent = obj.parentContainer;
+                            if (parent) {
+                                a += this.objectGlobalAngle(parent);
+                            }
+                            return a;
+                        }
+                        objectGlobalScale(obj) {
+                            let scaleX = obj.scaleX;
+                            let scaleY = obj.scaleY;
+                            const parent = obj.parentContainer;
+                            if (parent) {
+                                const parentScale = this.objectGlobalScale(parent);
+                                scaleX *= parentScale.x;
+                                scaleY *= parentScale.y;
+                            }
+                            return new Phaser.Math.Vector2(scaleX, scaleY);
+                        }
+                        angle2(a, b) {
+                            return this.angle(a.x, a.y, b.x, b.y);
+                        }
+                        angle(x1, y1, x2, y2) {
+                            const delta = (x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+                            if (delta > 1.0) {
+                                return 0;
+                            }
+                            if (delta < -1.0) {
+                                return 180;
+                            }
+                            return Phaser.Math.RadToDeg(Math.acos(delta));
+                        }
+                        snapValueX(x) {
+                            return scene.Editor.getInstance().snapValueX(x);
+                        }
+                        snapValueY(y) {
+                            return scene.Editor.getInstance().snapValueY(y);
+                        }
+                        createArrowShape() {
+                            const s = this.toolScene.add.triangle(0, 0, 0, 0, 12, 0, 6, 12);
+                            s.setStrokeStyle(1, 0, 0.8);
+                            return s;
+                        }
+                        createRectangleShape() {
+                            const s = this.toolScene.add.rectangle(0, 0, 12, 12);
+                            s.setStrokeStyle(1, 0, 0.8);
+                            return s;
+                        }
+                        createCircleShape() {
+                            const s = this.toolScene.add.circle(0, 0, 6);
+                            s.setStrokeStyle(1, 0, 0.8);
+                            return s;
+                        }
+                        createEllipseShape() {
+                            const s = this.toolScene.add.ellipse(0, 0, 10, 10);
+                            s.setStrokeStyle(1, 0, 0.8);
+                            return s;
+                        }
+                        createLineShape() {
+                            const s = this.toolScene.add.line();
+                            return s;
+                        }
+                        localToParent(sprite, point) {
+                            const result = new Phaser.Math.Vector2();
+                            const tx = new Phaser.GameObjects.Components.TransformMatrix();
+                            sprite.getWorldTransformMatrix(tx);
+                            tx.transformPoint(point.x, point.y, result);
+                            if (sprite.parentContainer) {
+                                sprite.parentContainer.getWorldTransformMatrix(tx);
+                                tx.applyInverse(result.x, result.y, result);
+                            }
+                            return result;
+                        }
+                    }
+                    scene.InteractiveTool = InteractiveTool;
+                    class SimpleLineTool extends InteractiveTool {
+                        constructor(tool1, tool2, color) {
+                            super();
+                            this._color = color;
+                            this._tool1 = tool1;
+                            this._tool2 = tool2;
+                            this._line = this.createLineShape();
+                            this._line.setStrokeStyle(4, 0);
+                            this._line.setOrigin(0, 0);
+                            this._line.depth = -1;
+                            this._line2 = this.createLineShape();
+                            this._line2.setStrokeStyle(2, color);
+                            this._line2.setOrigin(0, 0);
+                            this._line2.depth = -1;
+                        }
+                        canEdit(obj) {
+                            return this._tool1.canEdit(obj) && this._tool2.canEdit(obj);
+                        }
+                        render(objects) {
+                            this._line.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
+                            this._line2.setTo(this._tool1.getX(), this._tool1.getY(), this._tool2.getX(), this._tool2.getY());
+                            this._line.visible = true;
+                            this._line2.visible = true;
+                        }
+                        clear() {
+                            this._line.visible = false;
+                            this._line2.visible = false;
+                        }
+                        onMouseDown() {
+                            if (this._tool2.isEditing()) {
+                                this._line2.strokeColor = 0xffffff;
+                            }
+                        }
+                        onMouseUp() {
+                            this._line2.strokeColor = this._color;
+                        }
+                    }
+                    scene.SimpleLineTool = SimpleLineTool;
+                    class ToolFactory {
+                        static createByName(name) {
+                            switch (name) {
+                                case "TileSize": {
+                                    return [
+                                        new scene.TileSizeTool(true, false),
+                                        new scene.TileSizeTool(false, true),
+                                        new scene.TileSizeTool(true, true)
+                                    ];
+                                }
+                                case "TilePosition": {
+                                    const toolX = new scene.TilePositionTool(true, false);
+                                    const toolY = new scene.TilePositionTool(false, true);
+                                    const toolXY = new scene.TilePositionTool(true, true);
+                                    return [
+                                        toolX,
+                                        toolY,
+                                        toolXY,
+                                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                                    ];
+                                }
+                                case "TileScale": {
+                                    const toolX = new scene.TileScaleTool(true, false);
+                                    const toolY = new scene.TileScaleTool(false, true);
+                                    const toolXY = new scene.TileScaleTool(true, true);
+                                    return [
+                                        toolX,
+                                        toolY,
+                                        toolXY,
+                                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                                    ];
+                                }
+                                case "Origin": {
+                                    const toolX = new scene.OriginTool(true, false);
+                                    const toolY = new scene.OriginTool(false, true);
+                                    const toolXY = new scene.OriginTool(true, true);
+                                    return [
+                                        toolX,
+                                        toolY,
+                                        toolXY,
+                                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                                    ];
+                                }
+                                case "Angle": {
+                                    const tool = new scene.AngleTool();
+                                    return [
+                                        tool,
+                                        new scene.AngleLineTool(tool, true),
+                                        new scene.AngleLineTool(tool, false)
+                                    ];
+                                }
+                                case "Scale": {
+                                    return [
+                                        new scene.ScaleTool(true, false),
+                                        new scene.ScaleTool(false, true),
+                                        new scene.ScaleTool(true, true)
+                                    ];
+                                }
+                                case "Position": {
+                                    const toolX = new scene.PositionTool(true, false);
+                                    const toolY = new scene.PositionTool(false, true);
+                                    const toolXY = new scene.PositionTool(true, true);
+                                    return [
+                                        toolX,
+                                        toolY,
+                                        toolXY,
+                                        new SimpleLineTool(toolXY, toolX, 0xff0000),
+                                        new SimpleLineTool(toolXY, toolY, 0x00ff00),
+                                    ];
+                                }
+                                case "Hand": {
+                                    return [new scene.HandTool()];
+                                }
+                            }
+                            return [];
+                        }
+                    }
+                    scene.ToolFactory = ToolFactory;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Tools.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class AngleLineTool extends scene.InteractiveTool {
+                        constructor(angleTool, start) {
+                            super();
+                            this._angleTool = angleTool;
+                            this._start = start;
+                            this._color = 0xaaaaff;
+                            this._shapeBorder = this.toolScene.add.rectangle(0, 0, scene.AngleTool.RADIUS, 4);
+                            this._shapeBorder.setFillStyle(0);
+                            this._shapeBorder.setOrigin(0, 0.5);
+                            this._shapeBorder.depth = -1;
+                            this._shape = this.createLineShape();
+                            this._shape.setStrokeStyle(2, this._color);
+                            this._shape.setOrigin(0, 0);
+                            this._shape.setTo(0, 0, scene.AngleTool.RADIUS, 0);
+                            this._shape.depth = -1;
+                        }
+                        clear() {
+                            this._shape.visible = false;
+                            this._shapeBorder.visible = false;
+                        }
+                        containsPointer() {
+                            return false;
+                        }
+                        canEdit(obj) {
+                            return this._angleTool.canEdit(obj);
+                        }
+                        isEditing() {
+                            return this._angleTool.isEditing();
+                        }
+                        render(objects) {
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let globalStartAngle = 0;
+                            let globalEndAngle = 0;
+                            const localCoords = scene.Editor.getInstance().isTransformLocalCoords();
+                            for (let sprite of objects) {
+                                const worldXY = new Phaser.Math.Vector2();
+                                const worldTx = sprite.getWorldTransformMatrix();
+                                worldTx.transformPoint(0, 0, worldXY);
+                                pos.add(worldXY);
+                                const endAngle = this.objectGlobalAngle(sprite);
+                                const startAngle = localCoords ? endAngle - sprite.angle : 0;
+                                globalStartAngle += startAngle;
+                                globalEndAngle += endAngle;
+                            }
+                            const len = this.getObjects().length;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            globalStartAngle /= len;
+                            globalEndAngle /= len;
+                            this._shape.setPosition(cameraX, cameraY);
+                            this._shape.angle = this._start ? globalStartAngle : globalEndAngle;
+                            this._shape.visible = true;
+                            this._shapeBorder.setPosition(cameraX, cameraY);
+                            this._shapeBorder.angle = this._shape.angle;
+                            this._shapeBorder.visible = this._shape.visible;
+                        }
+                        onMouseDown() {
+                            this._shape.strokeColor = 0xffffff;
+                        }
+                        onMouseUp() {
+                            this._shape.strokeColor = this._color;
+                        }
+                    }
+                    scene.AngleLineTool = AngleLineTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class AngleTool extends scene.InteractiveTool {
+                        constructor() {
+                            super();
+                            this._dragging = false;
+                            this._color = 0xaaaaff;
+                            this._handlerShapeBorder = this.createEllipseShape();
+                            this._handlerShapeBorder.setFillStyle(0, 0);
+                            this._handlerShapeBorder.setStrokeStyle(4, 0);
+                            this._handlerShapeBorder.setSize(AngleTool.RADIUS * 2, AngleTool.RADIUS * 2);
+                            this._handlerShape = this.createEllipseShape();
+                            this._handlerShape.setFillStyle(0, 0);
+                            this._handlerShape.setStrokeStyle(2, this._color);
+                            this._handlerShape.setSize(AngleTool.RADIUS * 2, AngleTool.RADIUS * 2);
+                            this._centerShape = this.createCircleShape();
+                            this._centerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj.angle !== undefined;
+                        }
+                        render(objects) {
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            for (let sprite of objects) {
+                                const worldXY = new Phaser.Math.Vector2();
+                                const worldTx = sprite.getWorldTransformMatrix();
+                                worldTx.transformPoint(0, 0, worldXY);
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.visible = true;
+                            this._handlerShapeBorder.setPosition(cameraX, cameraY);
+                            this._handlerShapeBorder.visible = true;
+                            this._centerShape.setPosition(cameraX, cameraY);
+                            this._centerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const pointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return Math.abs(d - AngleTool.RADIUS) <= 10;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                            this._handlerShapeBorder.visible = false;
+                            this._centerShape.visible = false;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                this._handlerShape.strokeColor = 0xffffff;
+                                this._centerShape.setFillStyle(0xffffff);
+                                this._cursorStartX = this.getToolPointer().x;
+                                this._cursorStartY = this.getToolPointer().y;
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    obj.setData("AngleTool", {
+                                        initAngle: sprite.angle
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            const pointer = this.getToolPointer();
+                            const cursorX = pointer.x;
+                            const cursorY = pointer.y;
+                            const dx = this._cursorStartX - cursorX;
+                            const dy = this._cursorStartY - cursorY;
+                            if (Math.abs(dx) < 1 || Math.abs(dy) < 1) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = obj.data.get("AngleTool");
+                                const deltaRadians = angleBetweenTwoPointsWithFixedPoint(cursorX, cursorY, this._cursorStartX, this._cursorStartY, this._centerShape.x, this._centerShape.y);
+                                const deltaAngle = Phaser.Math.RadToDeg(deltaRadians);
+                                sprite.angle = data.initAngle + deltaAngle;
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetTransformProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.strokeColor = this._color;
+                            this._centerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    AngleTool.RADIUS = 100;
+                    scene.AngleTool = AngleTool;
+                    function angleBetweenTwoPointsWithFixedPoint(point1X, point1Y, point2X, point2Y, fixedX, fixedY) {
+                        const angle1 = Math.atan2(point1Y - fixedY, point1X - fixedX);
+                        const angle2 = Math.atan2(point2Y - fixedY, point2X - fixedX);
+                        return angle1 - angle2;
+                    }
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class HandTool extends scene.InteractiveTool {
+                        constructor() {
+                            super();
+                        }
+                        canEdit(obj) {
+                            return true;
+                        }
+                        containsPointer() {
+                            return true;
+                        }
+                        update() {
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            this._dragging = true;
+                            const pointer = this.getToolPointer();
+                            this._dragStartPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+                            const cam = this.objScene.cameras.main;
+                            this._dragStartCameraScroll = new Phaser.Math.Vector2(cam.scrollX, cam.scrollY);
+                        }
+                        onMouseMove() {
+                            if (this._dragging) {
+                                //this.objScene.input.setDefaultCursor("grabbing");
+                                this.objScene.input.setDefaultCursor("move");
+                                const pointer = this.getToolPointer();
+                                const dx = this._dragStartPoint.x - pointer.x;
+                                const dy = this._dragStartPoint.y - pointer.y;
+                                const cam = this.objScene.cameras.main;
+                                cam.scrollX = this._dragStartCameraScroll.x + dx / cam.zoom;
+                                cam.scrollY = this._dragStartCameraScroll.y + dy / cam.zoom;
+                                scene.Editor.getInstance().repaint();
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                this._dragging = false;
+                                //this.objScene.input.setDefaultCursor("grab");
+                                this.objScene.input.setDefaultCursor("move");
+                                this.objScene.sendRecordCameraStateMessage();
+                            }
+                        }
+                        activated() {
+                            //this.objScene.input.setDefaultCursor("grab");
+                            this.objScene.input.setDefaultCursor("move");
+                        }
+                        clear() {
+                            this.objScene.input.setDefaultCursor("default");
+                        }
+                    }
+                    scene.HandTool = HandTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class OriginTool extends scene.InteractiveTool {
+                        constructor(changeX, changeY) {
+                            super();
+                            this._dragging = false;
+                            this._changeX = changeX;
+                            this._changeY = changeY;
+                            if (changeX && changeY) {
+                                this._color = 0xffff00;
+                            }
+                            else if (changeX) {
+                                this._color = 0xff0000;
+                            }
+                            else {
+                                this._color = 0x00ff00;
+                            }
+                            this._handlerShape = changeX && changeY ? this.createCircleShape() : this.createArrowShape();
+                            this._handlerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj.hasOwnProperty("originX");
+                        }
+                        getX() {
+                            return this._handlerShape.x;
+                        }
+                        getY() {
+                            return this._handlerShape.y;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                        }
+                        render(list) {
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let angle = 0;
+                            for (let obj of list) {
+                                const sprite = obj;
+                                const worldXY = new Phaser.Math.Vector2();
+                                const worldTx = sprite.getWorldTransformMatrix();
+                                let localX = 0;
+                                let localY = 0;
+                                const scale = this.objectGlobalScale(sprite);
+                                if (!this._changeX || !this._changeY) {
+                                    if (this._changeX) {
+                                        localX += scene.ARROW_LENGTH / scale.x / cam.zoom * (sprite.flipX ? -1 : 1);
+                                        if (sprite.flipX) {
+                                            angle += 180;
+                                        }
+                                    }
+                                    else {
+                                        localY += scene.ARROW_LENGTH / scale.y / cam.zoom * (sprite.flipY ? -1 : 1);
+                                        if (sprite.flipY) {
+                                            angle += 180;
+                                        }
+                                    }
+                                }
+                                angle += this.objectGlobalAngle(sprite);
+                                worldTx.transformPoint(localX, localY, worldXY);
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.angle = angle / len;
+                            if (this._changeX) {
+                                this._handlerShape.angle -= 90;
+                            }
+                            this._handlerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const pointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return d <= this._handlerShape.width;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                this._handlerShape.setFillStyle(0xffffff);
+                                const shapePos = this.getScenePoint(this._handlerShape.x, this._handlerShape.y);
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    const initLocalPos = new Phaser.Math.Vector2();
+                                    const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                                    sprite.getWorldTransformMatrix(worldTx);
+                                    worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
+                                    obj.setData("OriginTool", {
+                                        initOriginX: sprite.originX,
+                                        initOriginY: sprite.originY,
+                                        initX: sprite.x,
+                                        initY: sprite.y,
+                                        initWorldTx: worldTx,
+                                        initLocalPos: initLocalPos
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            const pointer = this.getToolPointer();
+                            const pointerPos = this.getScenePoint(pointer.x, pointer.y);
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = obj.data.get("OriginTool");
+                                const initLocalPos = data.initLocalPos;
+                                const flipX = sprite.flipX ? -1 : 1;
+                                const flipY = sprite.flipY ? -1 : 1;
+                                const localPos = new Phaser.Math.Vector2();
+                                const worldTx = data.initWorldTx;
+                                worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
+                                const dx = (localPos.x - initLocalPos.x) * flipX;
+                                const dy = (localPos.y - initLocalPos.y) * flipY;
+                                const width = sprite.width;
+                                const height = sprite.height;
+                                const originDX = dx / width;
+                                const originDY = dy / height;
+                                consoleLog("---");
+                                consoleLog("width " + width);
+                                consoleLog("dx " + dx);
+                                consoleLog("originDX " + originDX);
+                                const newOriginX = data.initOriginX + (this._changeX ? originDX : 0);
+                                const newOriginY = data.initOriginY + (this._changeY ? originDY : 0);
+                                // restore position
+                                const local1 = new Phaser.Math.Vector2(data.initOriginX * width, data.initOriginY * height);
+                                const local2 = new Phaser.Math.Vector2(newOriginX * width, newOriginY * height);
+                                const parent1 = this.localToParent(sprite, local1);
+                                const parent2 = this.localToParent(sprite, local2);
+                                const dx2 = parent2.x - parent1.x;
+                                const dy2 = parent2.y - parent1.y;
+                                sprite.x = data.initX + dx2 * flipX;
+                                sprite.y = data.initY + dy2 * flipY;
+                                sprite.setOrigin(newOriginX, newOriginY);
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetOriginProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    scene.OriginTool = OriginTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class PositionTool extends scene.InteractiveTool {
+                        constructor(changeX, changeY) {
+                            super();
+                            this._dragging = false;
+                            this._changeX = changeX;
+                            this._changeY = changeY;
+                            if (changeX && changeY) {
+                                this._color = 0xffff00;
+                            }
+                            else if (changeX) {
+                                this._color = 0xff0000;
+                            }
+                            else {
+                                this._color = 0x00ff00;
+                            }
+                            this._handlerShape = changeX && changeY ? this.createRectangleShape() : this.createArrowShape();
+                            this._handlerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj.x !== null;
+                        }
+                        getX() {
+                            return this._handlerShape.x;
+                        }
+                        getY() {
+                            return this._handlerShape.y;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                        }
+                        render(list) {
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let angle = 0;
+                            const localCoords = scene.Editor.getInstance().isTransformLocalCoords();
+                            const globalCenterXY = new Phaser.Math.Vector2();
+                            for (let sprite of list) {
+                                const worldTx = sprite.getWorldTransformMatrix();
+                                const centerXY = new Phaser.Math.Vector2();
+                                worldTx.transformPoint(0, 0, centerXY);
+                                globalCenterXY.add(centerXY);
+                                const worldXY = new Phaser.Math.Vector2();
+                                let localX = 0;
+                                let localY = 0;
+                                if (localCoords) {
+                                    if (!this._changeX || !this._changeY) {
+                                        if (this._changeX) {
+                                            localX += scene.ARROW_LENGTH / cam.zoom / sprite.scaleX;
+                                        }
+                                        else {
+                                            localY += scene.ARROW_LENGTH / cam.zoom / sprite.scaleY;
+                                        }
+                                    }
+                                    angle += this.objectGlobalAngle(sprite);
+                                    worldTx.transformPoint(localX, localY, worldXY);
+                                }
+                                else {
+                                    if (!this._changeX || !this._changeY) {
+                                        worldTx.transformPoint(0, 0, worldXY);
+                                        if (this._changeX) {
+                                            worldXY.x += scene.ARROW_LENGTH / cam.zoom;
+                                        }
+                                        else {
+                                            worldXY.y += scene.ARROW_LENGTH / cam.zoom;
+                                        }
+                                    }
+                                    else {
+                                        worldTx.transformPoint(0, 0, worldXY);
+                                    }
+                                }
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            pos.x /= len;
+                            pos.y /= len;
+                            this._arrowPoint = new Phaser.Math.Vector2(pos.x, pos.y);
+                            this._centerPoint = new Phaser.Math.Vector2(globalCenterXY.x / len, globalCenterXY.y / len);
+                            const cameraX = (pos.x - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.angle = angle / len;
+                            if (this._changeX) {
+                                this._handlerShape.angle -= 90;
+                            }
+                            this._handlerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const pointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return d <= this._handlerShape.width;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                const pointer = this.getToolPointer();
+                                this._startCursor = this.getScenePoint(pointer.x, pointer.y);
+                                this._handlerShape.setFillStyle(0xffffff);
+                                this._startVector = new Phaser.Math.Vector2(this._arrowPoint.x - this._centerPoint.x, this._arrowPoint.y - this._centerPoint.y);
+                                let p = new Phaser.Math.Vector2();
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    const tx = sprite.getWorldTransformMatrix();
+                                    tx.applyInverse(0, 0, p);
+                                    sprite.setData("PositionTool", {
+                                        initX: sprite.x,
+                                        initY: sprite.y,
+                                        initWorldTx: tx
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            const pointer = this.getToolPointer();
+                            const endCursor = this.getScenePoint(pointer.x, pointer.y);
+                            const localCoords = scene.Editor.getInstance().isTransformLocalCoords();
+                            const changeXY = this._changeX && this._changeY;
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = sprite.data.get("PositionTool");
+                                const p0 = new Phaser.Math.Vector2();
+                                const p1 = new Phaser.Math.Vector2();
+                                if (sprite.parentContainer) {
+                                    const tx = sprite.parentContainer.getWorldTransformMatrix();
+                                    tx.transformPoint(this._startCursor.x, this._startCursor.y, p0);
+                                    tx.transformPoint(endCursor.x, endCursor.y, p1);
+                                }
+                                else {
+                                    p0.setFromObject(this._startCursor);
+                                    p1.setFromObject(endCursor);
+                                }
+                                let x;
+                                let y;
+                                if (changeXY) {
+                                    const dx = p1.x - p0.x;
+                                    const dy = p1.y - p0.y;
+                                    x = data.initX + dx;
+                                    y = data.initY + dy;
+                                }
+                                else {
+                                    const vector = new Phaser.Math.Vector2(this._changeX ? 1 : 0, this._changeY ? 1 : 0);
+                                    if (localCoords) {
+                                        const tx = new Phaser.GameObjects.Components.TransformMatrix();
+                                        tx.rotate(sprite.rotation);
+                                        tx.transformPoint(vector.x, vector.y, vector);
+                                    }
+                                    const moveVector = new Phaser.Math.Vector2(endCursor.x - this._startCursor.x, endCursor.y - this._startCursor.y);
+                                    const d = moveVector.dot(this._startVector) / this._startVector.length();
+                                    vector.x *= d;
+                                    vector.y *= d;
+                                    x = data.initX + vector.x;
+                                    y = data.initY + vector.y;
+                                }
+                                x = this.snapValueX(x);
+                                y = this.snapValueY(y);
+                                sprite.setPosition(x, y);
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetTransformProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    scene.PositionTool = PositionTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class ScaleTool extends scene.InteractiveTool {
+                        constructor(changeX, changeY) {
+                            super();
+                            this._dragging = false;
+                            this._changeX = changeX;
+                            this._changeY = changeY;
+                            if (changeX && changeY) {
+                                this._color = 0xffff00;
+                            }
+                            else if (changeX) {
+                                this._color = 0xff0000;
+                            }
+                            else {
+                                this._color = 0x00ff00;
+                            }
+                            this._handlerShape = this.createRectangleShape();
+                            this._handlerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj.scaleX !== undefined;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                        }
+                        render(list) {
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let angle = 0;
+                            for (let sprite of list) {
+                                let flipX = sprite.flipX ? -1 : 1;
+                                let flipY = sprite.flipY ? -1 : 1;
+                                if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                                    flipX = 1;
+                                    flipY = 1;
+                                }
+                                angle += this.objectGlobalAngle(sprite);
+                                const width = sprite.width * flipX;
+                                const height = sprite.height * flipY;
+                                let x = -width * sprite.originX;
+                                let y = -height * sprite.originY;
+                                let worldXY = new Phaser.Math.Vector2();
+                                let worldTx = sprite.getWorldTransformMatrix();
+                                const localX = this._changeX ? x + width : x + width / 2;
+                                const localY = this._changeY ? y + height : y + height / 2;
+                                worldTx.transformPoint(localX, localY, worldXY);
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.angle = angle / len + (this._changeX && !this._changeY ? -90 : 0);
+                            this._handlerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const toolPointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(toolPointer.x, toolPointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return d <= this._handlerShape.width;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                this._handlerShape.setFillStyle(0xffffff);
+                                const shapePos = this.getScenePoint(this._handlerShape.x, this._handlerShape.y);
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                                    const initLocalPos = new Phaser.Math.Vector2();
+                                    sprite.getWorldTransformMatrix(worldTx);
+                                    worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
+                                    sprite.setData("ScaleTool", {
+                                        initScaleX: sprite.scaleX,
+                                        initScaleY: sprite.scaleY,
+                                        initWidth: sprite.width,
+                                        initHeight: sprite.height,
+                                        initLocalPos: initLocalPos,
+                                        initWorldTx: worldTx
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            const pointer = this.getToolPointer();
+                            const pointerPos = this.getScenePoint(pointer.x, pointer.y);
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = sprite.data.get("ScaleTool");
+                                const initLocalPos = data.initLocalPos;
+                                const localPos = new Phaser.Math.Vector2();
+                                const worldTx = data.initWorldTx;
+                                worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
+                                let flipX = sprite.flipX ? -1 : 1;
+                                let flipY = sprite.flipY ? -1 : 1;
+                                if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                                    flipX = 1;
+                                    flipY = 1;
+                                }
+                                const dx = (localPos.x - initLocalPos.x) * flipX;
+                                const dy = (localPos.y - initLocalPos.y) * flipY;
+                                let width = data.initWidth - sprite.displayOriginX;
+                                let height = data.initHeight - sprite.displayOriginY;
+                                if (width === 0) {
+                                    width = data.initWidth;
+                                }
+                                if (height === 0) {
+                                    height = data.initHeight;
+                                }
+                                const scaleDX = dx / width * data.initScaleX;
+                                const scaleDY = dy / height * data.initScaleY;
+                                const newScaleX = data.initScaleX + scaleDX;
+                                const newScaleY = data.initScaleY + scaleDY;
+                                if (this._changeX) {
+                                    sprite.scaleX = newScaleX;
+                                }
+                                if (this._changeY) {
+                                    sprite.scaleY = newScaleY;
+                                }
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetTransformProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    scene.ScaleTool = ScaleTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class TilePositionTool extends scene.InteractiveTool {
+                        constructor(changeX, changeY) {
+                            super();
+                            this._dragging = false;
+                            this._changeX = changeX;
+                            this._changeY = changeY;
+                            if (changeX && changeY) {
+                                this._color = 0xffff00;
+                            }
+                            else if (changeX) {
+                                this._color = 0xff0000;
+                            }
+                            else {
+                                this._color = 0x00ff00;
+                            }
+                            this._handlerShape = changeX && changeY ? this.createRectangleShape() : this.createArrowShape();
+                            this._handlerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj instanceof Phaser.GameObjects.TileSprite;
+                        }
+                        getX() {
+                            return this._handlerShape.x;
+                        }
+                        getY() {
+                            return this._handlerShape.y;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                        }
+                        render(list) {
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let angle = 0;
+                            for (let obj of list) {
+                                const sprite = obj;
+                                const worldXY = new Phaser.Math.Vector2();
+                                const worldTx = sprite.getWorldTransformMatrix();
+                                const localLeft = -sprite.width * sprite.originX;
+                                const localTop = -sprite.height * sprite.originY;
+                                let localX = localLeft + sprite.tilePositionX;
+                                let localY = localTop + sprite.tilePositionY;
+                                if (!this._changeX || !this._changeY) {
+                                    if (this._changeX) {
+                                        localX += scene.ARROW_LENGTH / cam.zoom / sprite.scaleX;
+                                    }
+                                    else {
+                                        localY += scene.ARROW_LENGTH / cam.zoom / sprite.scaleY;
+                                    }
+                                }
+                                angle += this.objectGlobalAngle(sprite);
+                                worldTx.transformPoint(localX, localY, worldXY);
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.angle = angle / len;
+                            if (this._changeX) {
+                                this._handlerShape.angle -= 90;
+                            }
+                            this._handlerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const pointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return d <= this._handlerShape.width;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                this._handlerShape.setFillStyle(0xffffff);
+                                const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                                const shapePos = this.getScenePoint(this._handlerShape.x, this._handlerShape.y);
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    const initLocalPos = new Phaser.Math.Vector2();
+                                    sprite.getWorldTransformMatrix(worldTx);
+                                    worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
+                                    sprite.setData("TilePositionTool", {
+                                        initTilePositionX: sprite.tilePositionX,
+                                        initTilePositionY: sprite.tilePositionY,
+                                        initLocalPos: initLocalPos
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            const pointer = this.getToolPointer();
+                            const pointerPos = this.getScenePoint(pointer.x, pointer.y);
+                            const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = sprite.data.get("TilePositionTool");
+                                const initLocalPos = data.initLocalPos;
+                                const localPos = new Phaser.Math.Vector2();
+                                sprite.getWorldTransformMatrix(worldTx);
+                                worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
+                                const dx = localPos.x - initLocalPos.x;
+                                const dy = localPos.y - initLocalPos.y;
+                                let tilePositionX = (data.initTilePositionX + dx) | 0;
+                                let tilePositionY = (data.initTilePositionY + dy) | 0;
+                                tilePositionX = this.snapValueX(tilePositionX);
+                                tilePositionY = this.snapValueY(tilePositionY);
+                                if (this._changeX) {
+                                    sprite.tilePositionX = tilePositionX;
+                                }
+                                if (this._changeY) {
+                                    sprite.tilePositionY = tilePositionY;
+                                }
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetTileSpriteProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    scene.TilePositionTool = TilePositionTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class TileScaleTool extends scene.InteractiveTool {
+                        constructor(changeX, changeY) {
+                            super();
+                            this._dragging = false;
+                            this._changeX = changeX;
+                            this._changeY = changeY;
+                            if (changeX && changeY) {
+                                this._color = 0xffff00;
+                            }
+                            else if (changeX) {
+                                this._color = 0xff0000;
+                            }
+                            else {
+                                this._color = 0x00ff00;
+                            }
+                            this._handlerShape = this.createRectangleShape();
+                            this._handlerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj instanceof Phaser.GameObjects.TileSprite;
+                        }
+                        getX() {
+                            return this._handlerShape.x;
+                        }
+                        getY() {
+                            return this._handlerShape.y;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                        }
+                        render(list) {
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let angle = 0;
+                            for (let obj of list) {
+                                const sprite = obj;
+                                const worldXY = new Phaser.Math.Vector2();
+                                const worldTx = sprite.getWorldTransformMatrix();
+                                const localLeft = -sprite.width * sprite.originX;
+                                const localTop = -sprite.height * sprite.originY;
+                                let localX = localLeft + sprite.tilePositionX;
+                                let localY = localTop + sprite.tilePositionY;
+                                if (!this._changeX || !this._changeY) {
+                                    if (this._changeX) {
+                                        localX += sprite.width * sprite.tileScaleX;
+                                    }
+                                    else {
+                                        localY += sprite.height * sprite.tileScaleY;
+                                    }
+                                }
+                                angle += this.objectGlobalAngle(sprite);
+                                worldTx.transformPoint(localX, localY, worldXY);
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.angle = angle / len;
+                            if (this._changeX) {
+                                this._handlerShape.angle -= 90;
+                            }
+                            this._handlerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const pointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(pointer.x, pointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return d <= this._handlerShape.width;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                this._handlerShape.setFillStyle(0xffffff);
+                                const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                                const shapePos = this.getScenePoint(this._handlerShape.x, this._handlerShape.y);
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    const initLocalPos = new Phaser.Math.Vector2();
+                                    sprite.getWorldTransformMatrix(worldTx);
+                                    worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
+                                    sprite.setData("TileScaleTool", {
+                                        initTileScaleX: sprite.tileScaleX,
+                                        initTileScaleY: sprite.tileScaleY,
+                                        initLocalPos: initLocalPos
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            const pointer = this.getToolPointer();
+                            const pointerPos = this.getScenePoint(pointer.x, pointer.y);
+                            const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = sprite.data.get("TileScaleTool");
+                                const initLocalPos = data.initLocalPos;
+                                const localPos = new Phaser.Math.Vector2();
+                                sprite.getWorldTransformMatrix(worldTx);
+                                worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
+                                const dx = localPos.x - initLocalPos.x;
+                                const dy = localPos.y - initLocalPos.y;
+                                const tileScaleX = data.initTileScaleX + dx / sprite.width;
+                                const tileScaleY = data.initTileScaleY + dy / sprite.height;
+                                if (this._changeX) {
+                                    sprite.tileScaleX = tileScaleX;
+                                }
+                                if (this._changeY) {
+                                    sprite.tileScaleY = tileScaleY;
+                                }
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetTileSpriteProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    scene.TileScaleTool = TileScaleTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class TileSizeTool extends scene.InteractiveTool {
+                        constructor(changeX, changeY) {
+                            super();
+                            this._dragging = false;
+                            this._changeX = changeX;
+                            this._changeY = changeY;
+                            if (changeX && changeY) {
+                                this._color = 0xffff00;
+                            }
+                            else if (changeX) {
+                                this._color = 0xff0000;
+                            }
+                            else {
+                                this._color = 0x00ff00;
+                            }
+                            this._handlerShape = this.createRectangleShape();
+                            this._handlerShape.setFillStyle(this._color);
+                        }
+                        canEdit(obj) {
+                            return obj instanceof Phaser.GameObjects.TileSprite;
+                        }
+                        clear() {
+                            this._handlerShape.visible = false;
+                        }
+                        render(list) {
+                            const pos = new Phaser.Math.Vector2(0, 0);
+                            let angle = 0;
+                            for (let obj of list) {
+                                let sprite = obj;
+                                angle += this.objectGlobalAngle(sprite);
+                                const width = sprite.width;
+                                const height = sprite.height;
+                                let x = -width * sprite.originX;
+                                let y = -height * sprite.originY;
+                                let worldXY = new Phaser.Math.Vector2();
+                                let worldTx = sprite.getWorldTransformMatrix();
+                                const localX = this._changeX ? x + width : x + width / 2;
+                                const localY = this._changeY ? y + height : y + height / 2;
+                                worldTx.transformPoint(localX, localY, worldXY);
+                                pos.add(worldXY);
+                            }
+                            const len = this.getObjects().length;
+                            const cam = scene.Editor.getInstance().getObjectScene().cameras.main;
+                            const cameraX = (pos.x / len - cam.scrollX) * cam.zoom;
+                            const cameraY = (pos.y / len - cam.scrollY) * cam.zoom;
+                            this._handlerShape.setPosition(cameraX, cameraY);
+                            this._handlerShape.angle = angle / len + (this._changeX && !this._changeY ? -90 : 0);
+                            this._handlerShape.visible = true;
+                        }
+                        containsPointer() {
+                            const toolPointer = this.getToolPointer();
+                            const d = Phaser.Math.Distance.Between(toolPointer.x, toolPointer.y, this._handlerShape.x, this._handlerShape.y);
+                            return d <= this._handlerShape.width;
+                        }
+                        isEditing() {
+                            return this._dragging;
+                        }
+                        onMouseDown() {
+                            if (this.containsPointer()) {
+                                this._dragging = true;
+                                this.requestRepaint = true;
+                                this._handlerShape.setFillStyle(0xffffff);
+                                const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                                const shapePos = this.getScenePoint(this._handlerShape.x, this._handlerShape.y);
+                                for (let obj of this.getObjects()) {
+                                    const sprite = obj;
+                                    const initLocalPos = new Phaser.Math.Vector2();
+                                    sprite.getWorldTransformMatrix(worldTx);
+                                    worldTx.applyInverse(shapePos.x, shapePos.y, initLocalPos);
+                                    sprite.setData("TileSizeTool", {
+                                        initWidth: sprite.width,
+                                        initHeight: sprite.height,
+                                        initLocalPos: initLocalPos
+                                    });
+                                }
+                            }
+                        }
+                        onMouseMove() {
+                            if (!this._dragging) {
+                                return;
+                            }
+                            this.requestRepaint = true;
+                            const pointer = this.getToolPointer();
+                            const pointerPos = this.getScenePoint(pointer.x, pointer.y);
+                            const worldTx = new Phaser.GameObjects.Components.TransformMatrix();
+                            for (let obj of this.getObjects()) {
+                                const sprite = obj;
+                                const data = sprite.data.get("TileSizeTool");
+                                const initLocalPos = data.initLocalPos;
+                                const localPos = new Phaser.Math.Vector2();
+                                sprite.getWorldTransformMatrix(worldTx);
+                                worldTx.applyInverse(pointerPos.x, pointerPos.y, localPos);
+                                const flipX = sprite.flipX ? -1 : 1;
+                                const flipY = sprite.flipY ? -1 : 1;
+                                const dx = (localPos.x - initLocalPos.x) * flipX;
+                                const dy = (localPos.y - initLocalPos.y) * flipY;
+                                let width = (data.initWidth + dx) | 0;
+                                let height = (data.initHeight + dy) | 0;
+                                width = this.snapValueX(width);
+                                height = this.snapValueY(height);
+                                if (this._changeX) {
+                                    sprite.setSize(width, sprite.height);
+                                }
+                                if (this._changeY) {
+                                    sprite.setSize(sprite.width, height);
+                                }
+                            }
+                        }
+                        onMouseUp() {
+                            if (this._dragging) {
+                                const msg = scene.BuildMessage.SetTileSpriteProperties(this.getObjects());
+                                scene.Editor.getInstance().sendMessage(msg);
+                            }
+                            this._dragging = false;
+                            this._handlerShape.setFillStyle(this._color);
+                            this.requestRepaint = true;
+                        }
+                    }
+                    scene.TileSizeTool = TileSizeTool;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 var phasereditor2d;
