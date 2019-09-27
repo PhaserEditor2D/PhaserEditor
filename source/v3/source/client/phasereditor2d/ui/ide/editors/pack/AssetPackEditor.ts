@@ -11,7 +11,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         acceptInput(input: any): boolean {
             if (input instanceof io.FilePath) {
                 const contentType = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
-                return contentType === core.pack.CONTENT_TYPE_ASSET_PACK;
+                return contentType === CONTENT_TYPE_ASSET_PACK;
             }
             return false;
         }        
@@ -33,8 +33,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return new AssetPackEditorFactory();
         }
 
-        createPart() : void {
-            super.createPart();
+        protected createPart() : void {
             this.updateContent();
         }
 

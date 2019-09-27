@@ -22,9 +22,7 @@ namespace phasereditor2d.ui.ide.inspector {
             this._propertyPage.dispatchLayoutEvent();
         }
 
-        createPart() {
-            super.createPart();
-
+        protected createPart() {
             this._propertyPage = new ui.controls.properties.PropertyPage();
 
             this.add(this._propertyPage);

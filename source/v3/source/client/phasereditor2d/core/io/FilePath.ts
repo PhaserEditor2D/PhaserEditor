@@ -61,6 +61,8 @@ namespace phasereditor2d.core.io {
             }
 
             this._id = this.getFullName() + "@" + this._modTime + "@" + this._fileSize;
+
+            return this._id;
         }
 
         getFullName() {
@@ -76,6 +78,18 @@ namespace phasereditor2d.core.io {
             }
 
             return "../project";
+        }
+
+        getSibling(name : string) {
+            const parent = this.getParent();
+            if (parent) {
+                return parent.getChild(name);
+            }
+            return null;
+        }
+
+        getChild(name : string) {
+            return this.getFiles().find(file => file.getName() === name);
         }
 
         getParent() {

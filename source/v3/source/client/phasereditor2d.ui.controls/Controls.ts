@@ -11,6 +11,7 @@ namespace phasereditor2d.ui.controls {
 
 
     class ImageImpl implements IImage {
+
         private _ready: boolean;
         private _error: boolean;
         private _url: string;
@@ -65,6 +66,14 @@ namespace phasereditor2d.ui.controls {
             */
         }
 
+        getWidth() {
+            return this._ready? this._img.naturalWidth : 16;
+        }
+
+        getHeight() {
+            return this._ready? this._img.naturalHeight : 16;
+        }
+
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
             if (this._ready) {
                 const naturalWidth = this._img.naturalWidth;
@@ -98,16 +107,28 @@ namespace phasereditor2d.ui.controls {
                     context.drawImage(this._img, imgX, imgY, imgDstW, imgDstH);
                 }
             } else {
-                if (w > 10 && h > 10) {
-                    context.save();
-                    context.strokeStyle = Controls.theme.treeItemForeground;
-                    const cx = x + w / 2;
-                    const cy = y + h / 2;
-                    context.strokeRect(cx, cy - 1, 2, 2);
-                    context.strokeRect(cx - 5, cy - 1, 2, 2);
-                    context.strokeRect(cx + 5, cy - 1, 2, 2);
-                    context.restore();
-                }
+                this.paintEmpty(context, x, y, w, h)
+            }
+        }
+
+        private paintEmpty(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
+            if (w > 10 && h > 10) {
+                context.save();
+                context.strokeStyle = Controls.theme.treeItemForeground;
+                const cx = x + w / 2;
+                const cy = y + h / 2;
+                context.strokeRect(cx, cy - 1, 2, 2);
+                context.strokeRect(cx - 5, cy - 1, 2, 2);
+                context.strokeRect(cx + 5, cy - 1, 2, 2);
+                context.restore();
+            }
+        }
+
+        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
+            if (this._ready) {
+                context.drawImage(this._img, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+            } else {
+                this.paintEmpty(context, dstX, dstY, dstW, dstH);
             }
         }
     }

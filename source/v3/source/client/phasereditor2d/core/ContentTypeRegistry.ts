@@ -25,7 +25,6 @@ namespace phasereditor2d.core {
         }
 
         async preload(file: io.FilePath): Promise<ui.controls.PreloadResult> {
-            
             const id = file.getId();
 
             if (this._cache.has(id)) {

@@ -82,8 +82,6 @@ namespace phasereditor2d.ui.ide {
             }
         }
 
-        protected createPart(): void {
-
-        }
+        protected abstract createPart(): void;
     }
 }

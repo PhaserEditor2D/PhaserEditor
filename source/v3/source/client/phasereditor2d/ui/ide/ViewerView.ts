@@ -12,7 +12,6 @@ namespace phasereditor2d.ui.ide {
         protected abstract  createViewer() : controls.viewers.Viewer;
 
         protected createPart() : void {
-            super.createPart();
 
             this._viewer = this.createViewer();
 

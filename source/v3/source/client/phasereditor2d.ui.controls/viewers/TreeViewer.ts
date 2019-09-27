@@ -45,7 +45,8 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         visitObjects(visitor: Function) {
-            const list = this.getContentProvider().getRoots(this.getInput());
+            const provider = this.getContentProvider();
+            const list = provider ? provider.getRoots(this.getInput()) : [];
             this.visitObjects2(list, visitor);
         }
 
@@ -61,14 +62,14 @@ namespace phasereditor2d.ui.controls.viewers {
 
         async preload(): Promise<PreloadResult> {
             const list: Promise<PreloadResult>[] = [];
-                this.visitObjects(obj => {
-                    const provider = this.getCellRendererProvider();
-                    list.push(provider.preload(obj).then(r => {
-                        const renderer = provider.getCellRenderer(obj);
-                        return renderer.preload(obj);
+            this.visitObjects(obj => {
+                const provider = this.getCellRendererProvider();
+                list.push(provider.preload(obj).then(r => {
+                    const renderer = provider.getCellRenderer(obj);
+                    return renderer.preload(obj);
 
-                    }));
-                });
+                }));
+            });
             return Controls.resolveAll(list);
         }
 
@@ -104,8 +105,8 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         protected buildFilterIncludeMap() {
-            const roots = this.getContentProvider().getRoots(this.getInput());
-
+            const provider = this.getContentProvider();
+            const roots = provider ? provider.getRoots(this.getInput()) : [];
             this.buildFilterIncludeMap2(roots);
         }
 

@@ -41,7 +41,7 @@ namespace phasereditor2d.ui.controls.viewers {
                 const children = viewer.getContentProvider().getChildren(obj);
                 const expanded = viewer.isExpanded(obj);
 
-                if (viewer.isFilterIncluded(obj)) {
+                if (viewer.isFilterIncluded(obj) || true) {
 
                     const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
 

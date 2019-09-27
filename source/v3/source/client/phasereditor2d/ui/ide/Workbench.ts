@@ -65,7 +65,7 @@ namespace phasereditor2d.ui.ide {
             this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ICON_FILE_VIDEO));
             this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ICON_FILE_SCRIPT));
             this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
-            this._contentType_icon_Map.set(core.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
+            this._contentType_icon_Map.set(editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
 
             this._editorRegistry = new EditorRegistry();
 
@@ -77,8 +77,7 @@ namespace phasereditor2d.ui.ide {
 
             await this.initFileStorage();
 
-
-            this.initContentTypes();
+            await this.initContentTypes();
 
             this.initEditors();
 
@@ -95,6 +94,7 @@ namespace phasereditor2d.ui.ide {
         private initEditors(): void {
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
             this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
+            this._editorRegistry.registerFactory(editors.scene.SceneEditor.getFactory());
         }
 
         getDesignWindow() {
@@ -193,15 +193,16 @@ namespace phasereditor2d.ui.ide {
             return null;
         }
 
-        private initFileStorage() {
+        private async initFileStorage() {
             this._fileStorage = new core.io.ServerFileStorage();
-            return this._fileStorage.reload();
+            await this._fileStorage.reload();
         }
 
-        private initContentTypes() {
+        private async initContentTypes() {
             const reg = new core.ContentTypeRegistry();
 
-            reg.registerResolver(new core.pack.AssetPackContentTypeResolver());
+            reg.registerResolver(new editors.pack.AssetPackContentTypeResolver());
+            reg.registerResolver(new editors.scene.SceneContentTypeResolver());
             reg.registerResolver(new DefaultExtensionTypeResolver());
 
             this._contentTypeRegistry = reg;

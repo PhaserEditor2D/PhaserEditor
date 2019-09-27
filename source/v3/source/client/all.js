@@ -106,6 +106,7 @@ var phasereditor2d;
                         return this._id;
                     }
                     this._id = this.getFullName() + "@" + this._modTime + "@" + this._fileSize;
+                    return this._id;
                 }
                 getFullName() {
                     if (this._parent) {
@@ -118,6 +119,16 @@ var phasereditor2d;
                         return this._parent.getUrl() + "/" + this._name;
                     }
                     return "../project";
+                }
+                getSibling(name) {
+                    const parent = this.getParent();
+                    if (parent) {
+                        return parent.getChild(name);
+                    }
+                    return null;
+                }
+                getChild(name) {
+                    return this.getFiles().find(file => file.getName() === name);
                 }
                 getParent() {
                     return this._parent;
@@ -191,6 +202,17 @@ var phasereditor2d;
                         resolve(self._root);
                     });
                 }
+                hasFileStringInCache(file) {
+                    return this._fileStringContentMap.has(file.getId());
+                }
+                getFileStringFromCache(file) {
+                    const id = file.getId();
+                    if (this._fileStringContentMap.has(id)) {
+                        const content = this._fileStringContentMap.get(id);
+                        return content;
+                    }
+                    return null;
+                }
                 async getFileString(file) {
                     const id = file.getId();
                     if (this._fileStringContentMap.has(id)) {
@@ -212,36 +234,6 @@ var phasereditor2d;
             }
             io.ServerFileStorage = ServerFileStorage;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var core;
-    (function (core) {
-        var pack;
-        (function (pack) {
-            pack.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
-            class AssetPackContentTypeResolver {
-                async computeContentType(file) {
-                    if (file.getExtension() === "json") {
-                        const content = await phasereditor2d.ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
-                        if (content !== null) {
-                            try {
-                                const data = JSON.parse(content);
-                                const meta = data["meta"];
-                                if (meta["contentType"] === "Phaser v3 Asset Pack") {
-                                    return pack.CONTENT_TYPE_ASSET_PACK;
-                                }
-                            }
-                            catch (e) {
-                            }
-                        }
-                    }
-                    return core.CONTENT_TYPE_ANY;
-                }
-            }
-            pack.AssetPackContentTypeResolver = AssetPackContentTypeResolver;
-        })(pack = core.pack || (core.pack = {}));
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -500,6 +492,12 @@ var phasereditor2d;
                     });
                     */
                 }
+                getWidth() {
+                    return this._ready ? this._img.naturalWidth : 16;
+                }
+                getHeight() {
+                    return this._ready ? this._img.naturalHeight : 16;
+                }
                 paint(context, x, y, w, h, center) {
                     if (this._ready) {
                         const naturalWidth = this._img.naturalWidth;
@@ -526,16 +524,27 @@ var phasereditor2d;
                         }
                     }
                     else {
-                        if (w > 10 && h > 10) {
-                            context.save();
-                            context.strokeStyle = Controls.theme.treeItemForeground;
-                            const cx = x + w / 2;
-                            const cy = y + h / 2;
-                            context.strokeRect(cx, cy - 1, 2, 2);
-                            context.strokeRect(cx - 5, cy - 1, 2, 2);
-                            context.strokeRect(cx + 5, cy - 1, 2, 2);
-                            context.restore();
-                        }
+                        this.paintEmpty(context, x, y, w, h);
+                    }
+                }
+                paintEmpty(context, x, y, w, h) {
+                    if (w > 10 && h > 10) {
+                        context.save();
+                        context.strokeStyle = Controls.theme.treeItemForeground;
+                        const cx = x + w / 2;
+                        const cy = y + h / 2;
+                        context.strokeRect(cx, cy - 1, 2, 2);
+                        context.strokeRect(cx - 5, cy - 1, 2, 2);
+                        context.strokeRect(cx + 5, cy - 1, 2, 2);
+                        context.restore();
+                    }
+                }
+                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                    if (this._ready) {
+                        context.drawImage(this._img, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                    }
+                    else {
+                        this.paintEmpty(context, dstX, dstY, dstW, dstH);
                     }
                 }
             }
@@ -669,8 +678,6 @@ var phasereditor2d;
                         this.createPart();
                     }
                 }
-                createPart() {
-                }
             }
             ide.Part = Part;
         })(ide = ui.ide || (ui.ide = {}));
@@ -692,6 +699,9 @@ var phasereditor2d;
                 }
                 setInput(input) {
                     this._input = input;
+                }
+                getBlocksProvider() {
+                    return null;
                 }
             }
             ide.EditorPart = EditorPart;
@@ -936,6 +946,18 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            class EditorBlocksProvider {
+            }
+            ide.EditorBlocksProvider = EditorBlocksProvider;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             class EditorFactory {
                 constructor(id) {
                     this._id = id;
@@ -1003,6 +1025,70 @@ var phasereditor2d;
                 }
             }
             ide.FileEditor = FileEditor;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class FileUtils {
+                static getImage(file) {
+                    return ide.Workbench.getWorkbench().getFileImage(file);
+                }
+                static getFileStringFromCache(file) {
+                    return ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
+                }
+                static async preloadFileString(file) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    if (storage.hasFileStringInCache(file)) {
+                        return ui.controls.Controls.resolveNothingLoaded();
+                    }
+                    await storage.getFileString(file);
+                    return ui.controls.Controls.resolveResourceLoaded();
+                }
+                static getFileFromPath(path) {
+                    const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
+                    const names = path.split("/");
+                    let result = root;
+                    for (const name of names) {
+                        const child = result.getFiles().find(file => file.getName() === name);
+                        if (child) {
+                            result = child;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    return result;
+                }
+                static async getFilesWithContentType(contentType) {
+                    const reg = ide.Workbench.getWorkbench().getContentTypeRegistry();
+                    const files = this.getAllFiles();
+                    for (const file of files) {
+                        await reg.preload(file);
+                    }
+                    return files.filter(file => reg.getCachedContentType(file) === contentType);
+                }
+                static getAllFiles() {
+                    const files = [];
+                    this.getAllFiles2(ide.Workbench.getWorkbench().getFileStorage().getRoot(), files);
+                    return files;
+                }
+                static getAllFiles2(folder, files) {
+                    for (const file of folder.getFiles()) {
+                        if (file.isFolder()) {
+                            this.getAllFiles2(file, files);
+                        }
+                        else {
+                            files.push(file);
+                        }
+                    }
+                }
+            }
+            ide.FileUtils = FileUtils;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1206,7 +1292,6 @@ var phasereditor2d;
                     super(id);
                 }
                 createPart() {
-                    super.createPart();
                     this._viewer = this.createViewer();
                     this.addClass("ViewerView");
                     this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
@@ -1263,7 +1348,6 @@ var phasereditor2d;
                             return new ImageEditorFactory();
                         }
                         async createPart() {
-                            super.createPart();
                             this._imageControl = new ui.controls.ImageControl();
                             const container = document.createElement("div");
                             container.classList.add("ImageEditorContainer");
@@ -1359,7 +1443,7 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ide.ICON_FILE_VIDEO));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ide.ICON_FILE_SCRIPT));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ide.ICON_FILE_TEXT));
-                    this._contentType_icon_Map.set(phasereditor2d.core.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ide.ICON_ASSET_PACK));
+                    this._contentType_icon_Map.set(ide.editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ide.ICON_ASSET_PACK));
                     this._editorRegistry = new ide.EditorRegistry();
                 }
                 static getWorkbench() {
@@ -1371,7 +1455,7 @@ var phasereditor2d;
                 async start() {
                     await this.preloadIcons();
                     await this.initFileStorage();
-                    this.initContentTypes();
+                    await this.initContentTypes();
                     this.initEditors();
                     this._designWindow = new ide.DesignWindow();
                     document.getElementById("body").appendChild(this._designWindow.getElement());
@@ -1383,6 +1467,7 @@ var phasereditor2d;
                 initEditors() {
                     this._editorRegistry.registerFactory(ide.editors.image.ImageEditor.getFactory());
                     this._editorRegistry.registerFactory(ide.editors.pack.AssetPackEditor.getFactory());
+                    this._editorRegistry.registerFactory(ide.editors.scene.SceneEditor.getFactory());
                 }
                 getDesignWindow() {
                     return this._designWindow;
@@ -1462,13 +1547,14 @@ var phasereditor2d;
                     }
                     return null;
                 }
-                initFileStorage() {
+                async initFileStorage() {
                     this._fileStorage = new phasereditor2d.core.io.ServerFileStorage();
-                    return this._fileStorage.reload();
+                    await this._fileStorage.reload();
                 }
-                initContentTypes() {
+                async initContentTypes() {
                     const reg = new phasereditor2d.core.ContentTypeRegistry();
-                    reg.registerResolver(new phasereditor2d.core.pack.AssetPackContentTypeResolver());
+                    reg.registerResolver(new ide.editors.pack.AssetPackContentTypeResolver());
+                    reg.registerResolver(new ide.editors.scene.SceneContentTypeResolver());
                     reg.registerResolver(new ide.DefaultExtensionTypeResolver());
                     this._contentTypeRegistry = reg;
                 }
@@ -1546,6 +1632,164 @@ var phasereditor2d;
             (function (editors) {
                 var pack;
                 (function (pack) {
+                    class AssetPack {
+                        constructor(file, content) {
+                            this._file = file;
+                            this._items = [];
+                            if (content) {
+                                try {
+                                    const data = JSON.parse(content);
+                                    for (const sectionId in data) {
+                                        const sectionData = data[sectionId];
+                                        const filesData = sectionData["files"];
+                                        if (filesData) {
+                                            for (const fileData of filesData) {
+                                                const item = new pack.AssetPackItem(this, fileData);
+                                                this._items.push(item);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                    alert(e.message);
+                                }
+                            }
+                        }
+                        static async createFromFile(file) {
+                            const content = await ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                            return new AssetPack(file, content);
+                        }
+                        getItems() {
+                            return this._items;
+                        }
+                        getFile() {
+                            return this._file;
+                        }
+                    }
+                    pack.AssetPack = AssetPack;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class AssetPackCellRendererProvider {
+                        getCellRenderer(element) {
+                            if (element instanceof pack.AssetPackItem) {
+                                const type = element.getType();
+                                switch (type) {
+                                    case "image":
+                                        return new pack.ImageAssetPackItemCellRenderer();
+                                    default:
+                                        break;
+                                }
+                            }
+                            else if (element instanceof pack.ImageFrame) {
+                                return new pack.ImageFrameCellRenderer(true);
+                            }
+                            return new ui.controls.viewers.EmptyCellRenderer();
+                        }
+                        preload(element) {
+                            return ui.controls.Controls.resolveNothingLoaded();
+                        }
+                    }
+                    pack.AssetPackCellRendererProvider = AssetPackCellRendererProvider;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class AssetPackContentProvider {
+                        getChildren(parent) {
+                            if (parent instanceof pack.AssetPack) {
+                                return parent.getItems();
+                            }
+                            if (parent instanceof pack.AssetPackItem) {
+                                const type = parent.getType();
+                                switch (type) {
+                                    case "multiatlas":
+                                        const parser = new pack.MultiAtlasParser(parent);
+                                        const frames = parser.parse();
+                                        return frames;
+                                    default:
+                                        break;
+                                }
+                            }
+                            return [];
+                        }
+                    }
+                    pack.AssetPackContentProvider = AssetPackContentProvider;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    pack.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
+                    class AssetPackContentTypeResolver {
+                        async computeContentType(file) {
+                            if (file.getExtension() === "json") {
+                                const content = await ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                                if (content !== null) {
+                                    try {
+                                        const data = JSON.parse(content);
+                                        const meta = data["meta"];
+                                        if (meta["contentType"] === "Phaser v3 Asset Pack") {
+                                            return pack.CONTENT_TYPE_ASSET_PACK;
+                                        }
+                                    }
+                                    catch (e) {
+                                    }
+                                }
+                            }
+                            return phasereditor2d.core.CONTENT_TYPE_ANY;
+                        }
+                    }
+                    pack.AssetPackContentTypeResolver = AssetPackContentTypeResolver;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
                     var io = phasereditor2d.core.io;
                     class AssetPackEditorFactory extends ide.EditorFactory {
                         constructor() {
@@ -1554,7 +1798,7 @@ var phasereditor2d;
                         acceptInput(input) {
                             if (input instanceof io.FilePath) {
                                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
-                                return contentType === phasereditor2d.core.pack.CONTENT_TYPE_ASSET_PACK;
+                                return contentType === pack.CONTENT_TYPE_ASSET_PACK;
                             }
                             return false;
                         }
@@ -1572,7 +1816,6 @@ var phasereditor2d;
                             return new AssetPackEditorFactory();
                         }
                         createPart() {
-                            super.createPart();
                             this.updateContent();
                         }
                         async updateContent() {
@@ -1594,6 +1837,498 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack_1) {
+                    class AssetPackItem {
+                        constructor(pack, data) {
+                            this._pack = pack;
+                            this._data = data;
+                        }
+                        getPack() {
+                            return this._pack;
+                        }
+                        getKey() {
+                            return this._data["key"];
+                        }
+                        getType() {
+                            return this._data["type"];
+                        }
+                        getData() {
+                            return this._data;
+                        }
+                    }
+                    pack_1.AssetPackItem = AssetPackItem;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class AssetPackLabelProvider {
+                        getLabel(obj) {
+                            if (obj instanceof pack.AssetPack) {
+                                return obj.getFile().getName();
+                            }
+                            if (obj instanceof pack.AssetPackItem) {
+                                return obj.getKey();
+                            }
+                            if (obj instanceof pack.ImageFrame) {
+                                return obj.getName();
+                            }
+                            return "";
+                        }
+                    }
+                    pack.AssetPackLabelProvider = AssetPackLabelProvider;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack_2) {
+                    class AssetPackUtils {
+                        static async preloadAssetPackItems(packItems) {
+                            for (const item of packItems) {
+                                const type = item.getType();
+                                switch (type) {
+                                    case "multiatlas": {
+                                        const parser = new pack.MultiAtlasParser(item);
+                                        await parser.preload();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        static async getAllPacks() {
+                            const files = await ide.FileUtils.getFilesWithContentType(pack_2.CONTENT_TYPE_ASSET_PACK);
+                            const packs = [];
+                            for (const file of files) {
+                                const pack = await pack_2.AssetPack.createFromFile(file);
+                                packs.push(pack);
+                            }
+                            return packs;
+                        }
+                        static getFileFromPackUrl(url) {
+                            return ide.FileUtils.getFileFromPath(url);
+                        }
+                        static getImageFromPackUrl(url) {
+                            const file = this.getFileFromPackUrl(url);
+                            if (file) {
+                                return ide.Workbench.getWorkbench().getFileImage(file);
+                            }
+                            return null;
+                        }
+                    }
+                    pack_2.AssetPackUtils = AssetPackUtils;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class FrameData {
+                        constructor(index, src, dst, srcSize) {
+                            this.index = index;
+                            this.src = src;
+                            this.dst = dst;
+                            this.srcSize = srcSize;
+                        }
+                    }
+                    pack.FrameData = FrameData;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class ImageCellRenderer {
+                    renderCell(args) {
+                        const img = this.getImage(args.obj);
+                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                    }
+                    cellHeight(args) {
+                        return args.viewer.getCellSize();
+                    }
+                    preload(obj) {
+                        return this.getImage(obj).preload();
+                    }
+                }
+                viewers.ImageCellRenderer = ImageCellRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/ImageCellRenderer.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class ImageAssetPackItemCellRenderer extends ui.controls.viewers.ImageCellRenderer {
+                        getImage(obj) {
+                            const item = obj;
+                            const data = item.getData();
+                            return pack.AssetPackUtils.getImageFromPackUrl(data.url);
+                        }
+                    }
+                    pack.ImageAssetPackItemCellRenderer = ImageAssetPackItemCellRenderer;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class ImageFrame {
+                        constructor(name, image, frameData) {
+                            this._name = name;
+                            this._image = image;
+                            this._frameData = frameData;
+                        }
+                        getName() {
+                            return this._name;
+                        }
+                        getImage() {
+                            return this._image;
+                        }
+                        getFrameData() {
+                            return this._frameData;
+                        }
+                    }
+                    pack.ImageFrame = ImageFrame;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class ImageFrameCellRenderer {
+                        constructor(center) {
+                            this._center = center;
+                        }
+                        renderCell(args) {
+                            const item = args.obj;
+                            const img = item.getImage();
+                            const fd = item.getFrameData();
+                            const renderHeight = args.h;
+                            const renderWidth = args.w;
+                            let imgW = fd.src.w;
+                            let imgH = fd.src.h;
+                            // compute the right width
+                            imgW = imgW * (renderHeight / imgH);
+                            imgH = renderHeight;
+                            // fix width if it goes beyond the area
+                            if (imgW > renderWidth) {
+                                imgH = imgH * (renderWidth / imgW);
+                                imgW = renderWidth;
+                            }
+                            const scale = imgW / fd.src.w;
+                            var imgX = args.x + (this._center ? renderWidth / 2 - imgW / 2 : 0);
+                            var imgY = args.y + renderHeight / 2 - imgH / 2;
+                            const imgDstW = fd.src.w * scale;
+                            const imgDstH = fd.src.h * scale;
+                            if (imgDstW > 0 && imgDstH > 0) {
+                                img.paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX + fd.dst.x, imgY + fd.dst.y, imgDstW, imgDstH);
+                            }
+                        }
+                        renderCell2(args) {
+                            const item = args.obj;
+                            const fd = item.getFrameData();
+                            item.getImage().paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, args.x + fd.dst.x, args.y + fd.dst.y, args.w, args.h);
+                        }
+                        cellHeight(args) {
+                            return args.viewer.getCellSize();
+                        }
+                        preload(obj) {
+                            const item = obj;
+                            return item.getImage().preload();
+                        }
+                    }
+                    pack.ImageFrameCellRenderer = ImageFrameCellRenderer;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class MultiAtlasParser {
+                        constructor(packItem) {
+                            this._packItem = packItem;
+                        }
+                        async preload() {
+                            if (this._packItem["__frames"]) {
+                                return ui.controls.Controls.resolveNothingLoaded();
+                            }
+                            const data = this._packItem.getData();
+                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.url);
+                            if (dataFile) {
+                                let result = await ide.FileUtils.preloadFileString(dataFile);
+                                const str = ide.FileUtils.getFileStringFromCache(dataFile);
+                                try {
+                                    const data = JSON.parse(str);
+                                    if (data.textures) {
+                                        for (const texture of data.textures) {
+                                            const imageName = texture.image;
+                                            const imageFile = dataFile.getSibling(imageName);
+                                            if (imageFile) {
+                                                const image = ide.Workbench.getWorkbench().getFileImage(imageFile);
+                                                const result2 = await image.preload();
+                                                result = Math.max(result, result2);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (e) {
+                                }
+                                this._packItem["__frames"] = result;
+                                return result;
+                            }
+                            return ui.controls.Controls.resolveNothingLoaded();
+                        }
+                        parse() {
+                            if (this._packItem["__frames"]) {
+                                return this._packItem["__frames"];
+                            }
+                            const list = [];
+                            const data = this._packItem.getData();
+                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.url);
+                            if (dataFile) {
+                                const str = ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(dataFile);
+                                try {
+                                    const data = JSON.parse(str);
+                                    if (data.textures) {
+                                        for (const textureData of data.textures) {
+                                            const imageName = textureData.image;
+                                            const imageFile = dataFile.getSibling(imageName);
+                                            const image = ide.FileUtils.getImage(imageFile);
+                                            for (const frame of textureData.frames) {
+                                                const frameData = this.buildFrameData(image, frame, list.length);
+                                                list.push(frameData);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                            return list;
+                        }
+                        buildFrameData(image, frame, index) {
+                            const src = new ui.controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
+                            const dst = new ui.controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
+                            const srcSize = new ui.controls.Point(frame.sourceSize.w, frame.sourceSize.h);
+                            const frameData = new pack.FrameData(index, src, dst, srcSize);
+                            return new pack.ImageFrame(frame.filename, image, frameData);
+                        }
+                    }
+                    pack.MultiAtlasParser = MultiAtlasParser;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    scene.CONTENT_TYPE_SCENE = "Scene";
+                    class SceneContentTypeResolver {
+                        async computeContentType(file) {
+                            if (file.getExtension() === "scene") {
+                                return scene.CONTENT_TYPE_SCENE;
+                            }
+                            return phasereditor2d.core.CONTENT_TYPE_ANY;
+                        }
+                    }
+                    scene.SceneContentTypeResolver = SceneContentTypeResolver;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../EditorBlocksProvider.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var io = phasereditor2d.core.io;
+                    class SceneEditorFactory extends ide.EditorFactory {
+                        constructor() {
+                            super("phasereditor2d.SceneEditorFactory");
+                        }
+                        acceptInput(input) {
+                            if (input instanceof io.FilePath) {
+                                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                                return contentType === scene.CONTENT_TYPE_SCENE;
+                            }
+                            return false;
+                        }
+                        createEditor() {
+                            return new SceneEditor();
+                        }
+                    }
+                    class SceneEditor extends ide.FileEditor {
+                        constructor() {
+                            super("phasereditor2d.SceneEditor");
+                            this._blocksProvider = new scene.SceneEditorBlocksProvider();
+                        }
+                        static getFactory() {
+                            return new SceneEditorFactory();
+                        }
+                        createPart() {
+                            const label = document.createElement("label");
+                            label.innerHTML = "Hello Scene Editor";
+                            this.getElement().appendChild(label);
+                        }
+                        getBlocksProvider() {
+                            return this._blocksProvider;
+                        }
+                    }
+                    scene.SceneEditor = SceneEditor;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    //const SUPPORTED_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
+                    const SUPPORTED_PACK_ITEM_TYPES = new Set(["multiatlas"]);
+                    class SceneEditorBlocksContentProvider extends editors.pack.AssetPackContentProvider {
+                        constructor(packs) {
+                            super();
+                            this._items = packs
+                                .flatMap(pack => pack.getItems())
+                                .filter(item => SUPPORTED_PACK_ITEM_TYPES.has(item.getType()));
+                        }
+                        getItems() {
+                            return this._items;
+                        }
+                        getRoots(input) {
+                            return this._items;
+                        }
+                        getChildren(parent) {
+                            return super.getChildren(parent);
+                        }
+                    }
+                    class SceneEditorBlocksProvider extends ide.EditorBlocksProvider {
+                        async preload() {
+                            const packs = await editors.pack.AssetPackUtils.getAllPacks();
+                            this._contentProvider = new SceneEditorBlocksContentProvider(packs);
+                            await editors.pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getItems());
+                        }
+                        getContentProvider() {
+                            return this._contentProvider;
+                        }
+                        getLabelProvider() {
+                            return new editors.pack.AssetPackLabelProvider();
+                        }
+                        getCellRendererProvider() {
+                            return new editors.pack.AssetPackCellRendererProvider();
+                        }
+                        getInput() {
+                            return this;
+                        }
+                    }
+                    scene.SceneEditorBlocksProvider = SceneEditorBlocksProvider;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
 var phasereditor2d;
@@ -1604,11 +2339,47 @@ var phasereditor2d;
         (function (ide) {
             var blocks;
             (function (blocks) {
-                class BlocksView extends ide.ViewPart {
+                var viewers = ui.controls.viewers;
+                class BlocksView extends ide.ViewerView {
                     constructor() {
                         super("blocksView");
                         this.setTitle("Blocks");
                         this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_BLOCKS));
+                    }
+                    createViewer() {
+                        const viewer = new viewers.TreeViewer();
+                        viewer.setTreeRenderer(new viewers.GridTreeRenderer(viewer, true));
+                        return viewer;
+                    }
+                    createPart() {
+                        super.createPart();
+                        this._selectionListener = (e) => this.onPartSelection();
+                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
+                    }
+                    onWorkbenchPartActivate() {
+                        const part = ide.Workbench.getWorkbench().getActivePart();
+                        if (!part || part instanceof ide.EditorPart && part !== this._activeEditor) {
+                            if (this._activeEditor) {
+                                this._activeEditor.removeEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                            }
+                            this._activeEditor = part;
+                            this._activeEditor.addEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                            this.onPartSelection();
+                        }
+                    }
+                    async onPartSelection() {
+                        const provider = this._activeEditor.getBlocksProvider();
+                        if (!provider) {
+                            this._viewer.setInput(null);
+                        }
+                        await provider.preload();
+                        this._viewer.setLabelProvider(provider.getLabelProvider());
+                        this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
+                        this._viewer.setContentProvider(provider.getContentProvider());
+                        this._viewer.setInput(provider.getInput());
+                        this._viewer.repaint();
+                        //this._propertyPage.setSectionProvider(provider);
+                        //this._propertyPage.setSelection(sel);
                     }
                 }
                 blocks.BlocksView = BlocksView;
@@ -1668,31 +2439,6 @@ var phasereditor2d;
                     }
                 }
                 viewers.LabelCellRenderer = LabelCellRenderer;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class ImageCellRenderer {
-                    renderCell(args) {
-                        const img = this.getImage(args.obj);
-                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
-                    }
-                    cellHeight(args) {
-                        return args.viewer.getCellSize();
-                    }
-                    preload(obj) {
-                        return this.getImage(obj).preload();
-                    }
-                }
-                viewers.ImageCellRenderer = ImageCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -2470,7 +3216,8 @@ var phasereditor2d;
                         }
                     }
                     visitObjects(visitor) {
-                        const list = this.getContentProvider().getRoots(this.getInput());
+                        const provider = this.getContentProvider();
+                        const list = provider ? provider.getRoots(this.getInput()) : [];
                         this.visitObjects2(list, visitor);
                     }
                     visitObjects2(objects, visitor) {
@@ -2519,7 +3266,8 @@ var phasereditor2d;
                         }
                     }
                     buildFilterIncludeMap() {
-                        const roots = this.getContentProvider().getRoots(this.getInput());
+                        const provider = this.getContentProvider();
+                        const roots = provider ? provider.getRoots(this.getInput()) : [];
                         this.buildFilterIncludeMap2(roots);
                     }
                     buildFilterIncludeMap2(objects) {
@@ -2680,7 +3428,7 @@ var phasereditor2d;
                         for (let obj of objects) {
                             const children = viewer.getContentProvider().getChildren(obj);
                             const expanded = viewer.isExpanded(obj);
-                            if (viewer.isFilterIncluded(obj)) {
+                            if (viewer.isFilterIncluded(obj) || true) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
                                 if (y > -viewer.getCellSize() && y < b.height) {
@@ -3013,7 +3761,6 @@ var phasereditor2d;
                         this._propertyPage.dispatchLayoutEvent();
                     }
                     createPart() {
-                        super.createPart();
                         this._propertyPage = new ui.controls.properties.PropertyPage();
                         this.add(this._propertyPage);
                         this._selectionListener = (e) => this.onPartSelection();
@@ -3056,6 +3803,8 @@ var phasereditor2d;
                         super("outlineView");
                         this.setTitle("Outline");
                         this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
+                    }
+                    createPart() {
                     }
                 }
                 outline.OutlineView = OutlineView;
@@ -3215,6 +3964,22 @@ var phasereditor2d;
                 }
             }
             controls.ImageControl = ImageControl;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class Point {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+            controls.Point = Point;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -3547,6 +4312,29 @@ var phasereditor2d;
                     }
                 }
                 viewers.ArrayTreeContentProvider = ArrayTreeContentProvider;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class EmptyCellRenderer {
+                    renderCell(args) {
+                    }
+                    cellHeight(args) {
+                        return args.viewer.getCellSize();
+                    }
+                    preload(obj) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                viewers.EmptyCellRenderer = EmptyCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));

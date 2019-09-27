@@ -39,7 +39,6 @@ namespace phasereditor2d.ui.ide.editors.image {
         }
 
         async createPart() {
-            super.createPart();
 
             this._imageControl = new controls.ImageControl();
 
