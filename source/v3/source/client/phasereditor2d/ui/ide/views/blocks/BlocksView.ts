@@ -19,7 +19,7 @@ namespace phasereditor2d.ui.ide.blocks {
         protected createViewer(): viewers.Viewer {
 
             const viewer = new viewers.TreeViewer();
-            viewer.setTreeRenderer(new viewers.GridTreeRenderer(viewer, true));
+            viewer.setTreeRenderer(new viewers.GridTreeViewerRenderer(viewer, true));
 
             return viewer;
         }

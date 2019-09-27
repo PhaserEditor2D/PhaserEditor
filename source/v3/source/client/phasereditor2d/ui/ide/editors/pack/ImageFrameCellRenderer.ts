@@ -1,11 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
     export class ImageFrameCellRenderer implements controls.viewers.ICellRenderer {
-        private _center: boolean;
-
-        constructor(center: boolean) {
-            this._center = center;
-        }
 
         renderCell(args: controls.viewers.RenderCellArgs): void {
             const item = <ImageFrame>args.obj;
@@ -30,7 +25,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
             const scale = imgW / fd.src.w;
 
-            var imgX = args.x + (this._center ? renderWidth / 2 - imgW / 2 : 0);
+            var imgX = args.x + (args.center ? renderWidth / 2 - imgW / 2 : 0);
             var imgY = args.y + renderHeight / 2 - imgH / 2;
 
             const imgDstW = fd.src.w * scale;
@@ -42,17 +37,6 @@ namespace phasereditor2d.ui.ide.editors.pack {
                     imgX + fd.dst.x, imgY + fd.dst.y, imgDstW, imgDstH
                 )
             }
-
-        }
-
-        renderCell2(args: controls.viewers.RenderCellArgs): void {
-            const item = <ImageFrame>args.obj;
-            const fd = item.getFrameData();
-
-            item.getImage().paintFrame(args.canvasContext,
-                fd.src.x, fd.src.y, fd.src.w, fd.src.h,
-                args.x + fd.dst.x, args.y + fd.dst.y, args.w, args.h
-            );
 
         }
 

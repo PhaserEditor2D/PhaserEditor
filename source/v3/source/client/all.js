@@ -1695,7 +1695,7 @@ var phasereditor2d;
                                 }
                             }
                             else if (element instanceof pack.ImageFrame) {
-                                return new pack.ImageFrameCellRenderer(true);
+                                return new pack.ImageFrameCellRenderer();
                             }
                             return new ui.controls.viewers.EmptyCellRenderer();
                         }
@@ -2066,9 +2066,6 @@ var phasereditor2d;
                 var pack;
                 (function (pack) {
                     class ImageFrameCellRenderer {
-                        constructor(center) {
-                            this._center = center;
-                        }
                         renderCell(args) {
                             const item = args.obj;
                             const img = item.getImage();
@@ -2086,18 +2083,13 @@ var phasereditor2d;
                                 imgW = renderWidth;
                             }
                             const scale = imgW / fd.src.w;
-                            var imgX = args.x + (this._center ? renderWidth / 2 - imgW / 2 : 0);
+                            var imgX = args.x + (args.center ? renderWidth / 2 - imgW / 2 : 0);
                             var imgY = args.y + renderHeight / 2 - imgH / 2;
                             const imgDstW = fd.src.w * scale;
                             const imgDstH = fd.src.h * scale;
                             if (imgDstW > 0 && imgDstH > 0) {
                                 img.paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX + fd.dst.x, imgY + fd.dst.y, imgDstW, imgDstH);
                             }
-                        }
-                        renderCell2(args) {
-                            const item = args.obj;
-                            const fd = item.getFrameData();
-                            item.getImage().paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, args.x + fd.dst.x, args.y + fd.dst.y, args.w, args.h);
                         }
                         cellHeight(args) {
                             return args.viewer.getCellSize();
@@ -2152,7 +2144,6 @@ var phasereditor2d;
                                 }
                                 catch (e) {
                                 }
-                                this._packItem["__frames"] = result;
                                 return result;
                             }
                             return ui.controls.Controls.resolveNothingLoaded();
@@ -2184,6 +2175,7 @@ var phasereditor2d;
                                     console.error(e);
                                 }
                             }
+                            this._packItem["__frames"] = list;
                             return list;
                         }
                         buildFrameData(image, frame, index) {
@@ -2348,7 +2340,7 @@ var phasereditor2d;
                     }
                     createViewer() {
                         const viewer = new viewers.TreeViewer();
-                        viewer.setTreeRenderer(new viewers.GridTreeRenderer(viewer, true));
+                        viewer.setTreeRenderer(new viewers.GridTreeViewerRenderer(viewer, true));
                         return viewer;
                     }
                     createPart() {
@@ -3405,7 +3397,7 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 const GRID_PADDING = 5;
-                class GridTreeRenderer extends viewers.TreeViewerRenderer {
+                class GridTreeViewerRenderer extends viewers.TreeViewerRenderer {
                     constructor(viewer, center = false) {
                         super(viewer);
                         viewer.setCellSize(128);
@@ -3454,7 +3446,7 @@ var phasereditor2d;
                                 }
                             }
                             if (expanded) {
-                                const result = this.paintItems(children, treeIconList, paintItems, x, y);
+                                const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset);
                                 y = result.y;
                                 x = result.x;
                             }
@@ -3488,10 +3480,11 @@ var phasereditor2d;
                                 lines[lines.length - 1] += c;
                             }
                         }
+                        const selected = args.viewer.isSelected(args.obj);
                         {
                             const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - lines.length * lineHeight - 6, args.obj, args.viewer, true);
                             const strH = lines.length * lineHeight;
-                            if (args.viewer.isSelected(args.obj)) {
+                            if (selected) {
                                 ctx.save();
                                 ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
                                 ctx.globalAlpha = 0.5;
@@ -3509,7 +3502,7 @@ var phasereditor2d;
                             y += args2.h + lineHeight * lines.length;
                         }
                         ctx.save();
-                        if (args.viewer.isSelected(args.obj)) {
+                        if (selected) {
                             ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
                         }
                         else {
@@ -3524,7 +3517,7 @@ var phasereditor2d;
                         ctx.restore();
                     }
                 }
-                viewers.GridTreeRenderer = GridTreeRenderer;
+                viewers.GridTreeViewerRenderer = GridTreeViewerRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -3547,7 +3540,7 @@ var phasereditor2d;
                             this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
                             this.setLabelProvider(new files.FileLabelProvider());
                             this.setCellRendererProvider(new files.FileCellRendererProvider());
-                            this.setTreeRenderer(new ui.controls.viewers.GridTreeRenderer(this, true));
+                            this.setTreeRenderer(new ui.controls.viewers.GridTreeViewerRenderer(this, true));
                             this.getCanvas().classList.add("PreviewBackground");
                         }
                     }

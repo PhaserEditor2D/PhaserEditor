@@ -36,8 +36,6 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
                 }
 
-                this._packItem["__frames"] = result;
-
                 return result;
             }
 
@@ -75,6 +73,8 @@ namespace phasereditor2d.ui.ide.editors.pack {
                     console.error(e);
                 }
             }
+
+            this._packItem["__frames"] = list;
 
             return list;
         }

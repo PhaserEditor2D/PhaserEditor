@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
                         break;
                 }
             } else if (element instanceof ImageFrame) {
-                return new ImageFrameCellRenderer(true);
+                return new ImageFrameCellRenderer();
             }
 
             return new controls.viewers.EmptyCellRenderer();

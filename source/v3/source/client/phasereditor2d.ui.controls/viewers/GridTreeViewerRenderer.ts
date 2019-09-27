@@ -4,7 +4,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
     const GRID_PADDING = 5;
 
-    export class GridTreeRenderer extends TreeViewerRenderer {
+    export class GridTreeViewerRenderer extends TreeViewerRenderer {
 
         private _center: boolean;
 
@@ -78,7 +78,7 @@ namespace phasereditor2d.ui.controls.viewers {
                 }
 
                 if (expanded) {
-                    const result = this.paintItems(children, treeIconList, paintItems, x, y);
+                    const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset);
                     y = result.y;
                     x = result.x;
                 }
@@ -115,6 +115,8 @@ namespace phasereditor2d.ui.controls.viewers {
                 }
             }
 
+            const selected = args.viewer.isSelected(args.obj);
+
             {
                 const args2 = new RenderCellArgs(
                     args.canvasContext,
@@ -129,7 +131,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const strH = lines.length * lineHeight;
 
-                if (args.viewer.isSelected(args.obj)) {
+                if (selected) {
                     ctx.save();
                     
                     ctx.fillStyle = Controls.theme.treeItemSelectionBackground;
@@ -155,7 +157,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
             ctx.save();
 
-            if (args.viewer.isSelected(args.obj)) {
+            if (selected) {
                 ctx.fillStyle = Controls.theme.treeItemSelectionForeground;
             } else {
                 ctx.fillStyle = Controls.theme.treeItemForeground;
