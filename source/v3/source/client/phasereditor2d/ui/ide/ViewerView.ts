@@ -3,13 +3,13 @@
 namespace phasereditor2d.ui.ide {
     export abstract class ViewerView extends ViewPart {
         protected _filteredViewer: controls.viewers.FilteredViewer<any>;
-        protected _viewer : controls.viewers.Viewer;
+        protected _viewer : controls.viewers.TreeViewer;
 
         constructor(id : string) {
             super(id)
         }
 
-        protected abstract  createViewer() : controls.viewers.Viewer;
+        protected abstract  createViewer() : controls.viewers.TreeViewer;
 
         protected createPart() : void {
 

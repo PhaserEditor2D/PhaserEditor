@@ -16,12 +16,8 @@ namespace phasereditor2d.ui.ide.blocks {
             this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_BLOCKS));
         }
 
-        protected createViewer(): viewers.Viewer {
-
-            const viewer = new viewers.TreeViewer();
-            viewer.setTreeRenderer(new viewers.GridTreeViewerRenderer(viewer, true));
-
-            return viewer;
+        protected createViewer(): viewers.TreeViewer {
+            return new viewers.TreeViewer();
         }
 
         protected createPart() : void {
@@ -58,15 +54,13 @@ namespace phasereditor2d.ui.ide.blocks {
 
             await provider.preload();
 
+            this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
             this._viewer.setLabelProvider(provider.getLabelProvider());
             this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
             this._viewer.setContentProvider(provider.getContentProvider());
             this._viewer.setInput(provider.getInput());
 
             this._viewer.repaint();
-
-            //this._propertyPage.setSectionProvider(provider);
-            //this._propertyPage.setSelection(sel);
         }
     }
 }

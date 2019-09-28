@@ -10,6 +10,8 @@ namespace phasereditor2d.ui.ide {
 
         abstract getCellRendererProvider() : viewers.ICellRendererProvider;
 
+        abstract getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) : viewers.TreeViewerRenderer;
+
         abstract getInput() : any;
 
         abstract preload() : Promise<void>;
