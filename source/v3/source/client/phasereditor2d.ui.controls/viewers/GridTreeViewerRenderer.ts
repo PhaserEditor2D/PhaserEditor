@@ -23,7 +23,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
             const b = viewer.getBounds();
 
-            const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + TREE_RENDERER_GRID_PADDING) / 2) : 0;
+            const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + TREE_RENDERER_GRID_PADDING) / 2) : TREE_RENDERER_GRID_PADDING;
 
             return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + TREE_RENDERER_GRID_PADDING, offset, 0, 0);
         }

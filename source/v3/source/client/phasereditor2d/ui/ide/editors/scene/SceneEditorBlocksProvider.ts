@@ -25,7 +25,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) {
-            return new pack.BlocksTreeViewerRenderer(viewer);
+            return new pack.AssetPackBlocksTreeViewerRenderer(viewer);
         }
 
         getInput() {

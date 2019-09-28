@@ -2,10 +2,10 @@
 
 namespace phasereditor2d.ui.ide.editors.pack {
 
-    export class BlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
+    export class AssetPackBlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
 
         constructor(viewer: controls.viewers.TreeViewer) {
-            super(viewer, true);
+            super(viewer, false);
         }
 
         renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, labelHeight: number) {
