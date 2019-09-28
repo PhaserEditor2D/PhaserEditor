@@ -10,6 +10,11 @@ namespace phasereditor2d.ui.ide.editors.pack {
                         await parser.preload();
                         break;
                     }
+                    case "atlas" : {
+                        const parser = new pack.AtlasParser(item);
+                        await parser.preload();
+                        break;
+                    }
                 }
             }
         }

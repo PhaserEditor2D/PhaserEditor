@@ -64,7 +64,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
                             const imageFile = dataFile.getSibling(imageName);
                             const image = FileUtils.getImage(imageFile);
                             for (const frame of textureData.frames) {
-                                const frameData = this.buildFrameData(image, frame, list.length);
+                                const frameData = AtlasParser.buildFrameData(image, frame, list.length);
                                 list.push(frameData);
                             }
                         }
@@ -77,15 +77,6 @@ namespace phasereditor2d.ui.ide.editors.pack {
             this._packItem["__frames"] = list;
 
             return list;
-        }
-
-        private buildFrameData(image: controls.IImage, frame: FrameDataType, index: number) {
-            const src = new controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
-            const dst = new controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
-            const srcSize = new controls.Point(frame.sourceSize.w, frame.sourceSize.h);
-
-            const frameData = new FrameData(index, src, dst, srcSize);
-            return new ImageFrame(frame.filename, image, frameData);
         }
     }
 

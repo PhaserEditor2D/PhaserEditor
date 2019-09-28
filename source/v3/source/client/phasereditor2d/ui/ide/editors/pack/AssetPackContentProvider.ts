@@ -1,7 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
     export abstract class AssetPackContentProvider implements controls.viewers.ITreeContentProvider {
-        
+
         abstract getRoots(input: any): any[];
 
         getChildren(parent: any): any[] {
@@ -13,10 +13,16 @@ namespace phasereditor2d.ui.ide.editors.pack {
                 const type = parent.getType();
 
                 switch (type) {
-                    case "multiatlas":
+                    case "multiatlas": {
                         const parser = new MultiAtlasParser(parent);
                         const frames = parser.parse();
                         return frames;
+                    }
+                    case "atlas": {
+                        const parser = new AtlasParser(parent);
+                        const frames = parser.parse();
+                        return frames;
+                    }
                     default:
                         break;
                 }

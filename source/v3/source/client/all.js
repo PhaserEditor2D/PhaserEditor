@@ -1732,10 +1732,16 @@ var phasereditor2d;
                             if (parent instanceof pack.AssetPackItem) {
                                 const type = parent.getType();
                                 switch (type) {
-                                    case "multiatlas":
+                                    case "multiatlas": {
                                         const parser = new pack.MultiAtlasParser(parent);
                                         const frames = parser.parse();
                                         return frames;
+                                    }
+                                    case "atlas": {
+                                        const parser = new pack.AtlasParser(parent);
+                                        const frames = parser.parse();
+                                        return frames;
+                                    }
                                     default:
                                         break;
                                 }
@@ -1926,6 +1932,11 @@ var phasereditor2d;
                                         await parser.preload();
                                         break;
                                     }
+                                    case "atlas": {
+                                        const parser = new pack.AtlasParser(item);
+                                        await parser.preload();
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -1950,6 +1961,81 @@ var phasereditor2d;
                         }
                     }
                     pack_2.AssetPackUtils = AssetPackUtils;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class AtlasParser {
+                        constructor(packItem) {
+                            this._packItem = packItem;
+                        }
+                        async preload() {
+                            if (this._packItem["__frames"]) {
+                                return ui.controls.Controls.resolveNothingLoaded();
+                            }
+                            const data = this._packItem.getData();
+                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                            let result1 = await ide.FileUtils.preloadFileString(dataFile);
+                            const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
+                            const image = ide.FileUtils.getImage(imageFile);
+                            let result2 = await image.preload();
+                            return Math.max(result1, result2);
+                        }
+                        parse() {
+                            if (this._packItem["__frames"]) {
+                                return this._packItem["__frames"];
+                            }
+                            const list = [];
+                            const data = this._packItem.getData();
+                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                            const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
+                            const image = ide.FileUtils.getImage(imageFile);
+                            if (dataFile) {
+                                const str = ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(dataFile);
+                                try {
+                                    const data = JSON.parse(str);
+                                    if (Array.isArray(data.frames)) {
+                                        for (const frame of data.frames) {
+                                            const frameData = AtlasParser.buildFrameData(image, frame, list.length);
+                                            list.push(frameData);
+                                        }
+                                    }
+                                    else {
+                                        for (const name in data.frames) {
+                                            const frame = data.frames[name];
+                                            frame.filename = name;
+                                            const frameData = AtlasParser.buildFrameData(image, frame, list.length);
+                                            list.push(frameData);
+                                        }
+                                    }
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                            this._packItem["__frames"] = list;
+                            return list;
+                        }
+                        static buildFrameData(image, frame, index) {
+                            const src = new ui.controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
+                            const dst = new ui.controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
+                            const srcSize = new ui.controls.Point(frame.sourceSize.w, frame.sourceSize.h);
+                            const frameData = new pack.FrameData(index, src, dst, srcSize);
+                            return new pack.ImageFrame(frame.filename, image, frameData);
+                        }
+                    }
+                    pack.AtlasParser = AtlasParser;
                 })(pack = editors.pack || (editors.pack = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -2170,7 +2256,7 @@ var phasereditor2d;
                                             const imageFile = dataFile.getSibling(imageName);
                                             const image = ide.FileUtils.getImage(imageFile);
                                             for (const frame of textureData.frames) {
-                                                const frameData = this.buildFrameData(image, frame, list.length);
+                                                const frameData = pack.AtlasParser.buildFrameData(image, frame, list.length);
                                                 list.push(frameData);
                                             }
                                         }
@@ -2182,13 +2268,6 @@ var phasereditor2d;
                             }
                             this._packItem["__frames"] = list;
                             return list;
-                        }
-                        buildFrameData(image, frame, index) {
-                            const src = new ui.controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
-                            const dst = new ui.controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
-                            const srcSize = new ui.controls.Point(frame.sourceSize.w, frame.sourceSize.h);
-                            const frameData = new pack.FrameData(index, src, dst, srcSize);
-                            return new pack.ImageFrame(frame.filename, image, frameData);
                         }
                     }
                     pack.MultiAtlasParser = MultiAtlasParser;
