@@ -9,6 +9,11 @@ namespace phasereditor2d.ui.ide.editors.pack {
                 switch (type) {
                     case "image":
                         return new ImageAssetPackItemCellRenderer();
+                    case "multiatlas":
+                    case "atlas":
+                    case "unityAtlas":
+                    case "atlasXML":
+                        return new controls.viewers.FolderCellRenderer();
                     default:
                         break;
                 }

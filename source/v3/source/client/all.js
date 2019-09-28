@@ -1690,6 +1690,11 @@ var phasereditor2d;
                                 switch (type) {
                                     case "image":
                                         return new pack.ImageAssetPackItemCellRenderer();
+                                    case "multiatlas":
+                                    case "atlas":
+                                    case "unityAtlas":
+                                    case "atlasXML":
+                                        return new ui.controls.viewers.FolderCellRenderer();
                                     default:
                                         break;
                                 }
@@ -4332,6 +4337,38 @@ var phasereditor2d;
                     }
                 }
                 viewers.EmptyCellRenderer = EmptyCellRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class FolderCellRenderer {
+                    renderCell(args) {
+                        const ctx = args.canvasContext;
+                        ctx.save();
+                        ctx.globalAlpha = 0.5;
+                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                        const header = Math.floor(args.h * 0.15);
+                        let w = args.h;
+                        ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
+                        ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
+                        ctx.restore();
+                    }
+                    cellHeight(args) {
+                        return args.viewer.getCellSize();
+                    }
+                    preload(obj) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                viewers.FolderCellRenderer = FolderCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
