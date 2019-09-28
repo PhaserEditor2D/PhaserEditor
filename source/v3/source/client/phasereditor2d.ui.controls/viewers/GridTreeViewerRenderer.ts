@@ -41,13 +41,13 @@ namespace phasereditor2d.ui.controls.viewers {
                 const children = viewer.getContentProvider().getChildren(obj);
                 const expanded = viewer.isExpanded(obj);
 
-                if (viewer.isFilterIncluded(obj) || true) {
+                if (viewer.isFilterIncluded(obj)) {
 
                     const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
 
                     const args = new RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
 
-                    if (y > -viewer.getCellSize() && y < b.height) {
+                    if (y > -cellSize && y < b.height) {
 
                         this.renderGridCell(args, renderer);
 

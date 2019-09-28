@@ -27,8 +27,15 @@ namespace phasereditor2d.ui.controls.viewers {
             const treeIconList: TreeIconInfo[] = [];
             const paintItems: PaintItem[] = [];
 
-            const result = this.paintItems(roots, treeIconList, paintItems, x, y);
-            const contentHeight = result.y - viewer.getScrollY()
+            this.paintItems(roots, treeIconList, paintItems, x, y);
+            
+            let contentHeight = Number.MIN_VALUE;
+
+            for(const paintItem of paintItems) {
+                contentHeight = Math.max(paintItem.y + paintItem.h, contentHeight);
+            }
+
+            contentHeight -= viewer.getScrollY();
 
             return {
                 contentHeight: contentHeight,

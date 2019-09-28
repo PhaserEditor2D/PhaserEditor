@@ -2277,8 +2277,8 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene) {
-                    //const SUPPORTED_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
-                    const SUPPORTED_PACK_ITEM_TYPES = new Set(["multiatlas"]);
+                    const SUPPORTED_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
+                    //const SUPPORTED_PACK_ITEM_TYPES = new Set(["multiatlas"]);
                     class SceneEditorBlocksContentProvider extends editors.pack.AssetPackContentProvider {
                         constructor(packs) {
                             super();
@@ -3311,8 +3311,12 @@ var phasereditor2d;
                         const roots = contentProvider.getRoots(viewer.getInput());
                         const treeIconList = [];
                         const paintItems = [];
-                        const result = this.paintItems(roots, treeIconList, paintItems, x, y);
-                        const contentHeight = result.y - viewer.getScrollY();
+                        this.paintItems(roots, treeIconList, paintItems, x, y);
+                        let contentHeight = Number.MIN_VALUE;
+                        for (const paintItem of paintItems) {
+                            contentHeight = Math.max(paintItem.y + paintItem.h, contentHeight);
+                        }
+                        contentHeight -= viewer.getScrollY();
                         return {
                             contentHeight: contentHeight,
                             treeIconList: treeIconList,
@@ -3420,10 +3424,10 @@ var phasereditor2d;
                         for (let obj of objects) {
                             const children = viewer.getContentProvider().getChildren(obj);
                             const expanded = viewer.isExpanded(obj);
-                            if (viewer.isFilterIncluded(obj) || true) {
+                            if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
-                                if (y > -viewer.getCellSize() && y < b.height) {
+                                if (y > -cellSize && y < b.height) {
                                     this.renderGridCell(args, renderer);
                                     // render tree icon
                                     if (children.length > 0) {
