@@ -3415,13 +3415,13 @@ var phasereditor2d;
                     paintItems(objects, treeIconList, paintItems, x, y) {
                         const viewer = this.getViewer();
                         if (viewer.getCellSize() <= 48) {
-                            return super.paintItems(objects, treeIconList, paintItems, x, y + GRID_PADDING);
+                            return super.paintItems(objects, treeIconList, paintItems, x, y);
                         }
                         const b = viewer.getBounds();
                         const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + GRID_PADDING) / 2) : 0;
-                        return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + GRID_PADDING, offset);
+                        return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + GRID_PADDING, offset, 0);
                     }
-                    paintItems2(objects, treeIconList, paintItems, x, y, offset) {
+                    paintItems2(objects, treeIconList, paintItems, x, y, offset, extra) {
                         const viewer = this.getViewer();
                         const cellSize = Math.max(controls.ROW_HEIGHT, viewer.getCellSize());
                         const context = viewer.getContext();
@@ -3432,8 +3432,9 @@ var phasereditor2d;
                             if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
+                                let cellExtra = this.renderGridCell(args, renderer);
+                                extra = Math.max(cellExtra, extra);
                                 if (y > -cellSize && y < b.height) {
-                                    this.renderGridCell(args, renderer);
                                     // render tree icon
                                     if (children.length > 0) {
                                         const iconY = y + (cellSize - viewers.TREE_ICON_SIZE) / 2;
@@ -3446,26 +3447,31 @@ var phasereditor2d;
                                     }
                                 }
                                 const item = new viewers.PaintItem(paintItems.length, obj);
-                                item.set(args.x, args.y, args.w, args.h);
+                                item.set(args.x, args.y, args.w, args.h + cellExtra);
                                 paintItems.push(item);
                                 x += cellSize + GRID_PADDING;
                                 if (x + cellSize > b.width) {
-                                    y += cellSize + GRID_PADDING;
+                                    y += cellSize + extra + GRID_PADDING;
                                     x = 0 + offset;
+                                    extra = 0;
                                 }
                             }
                             if (expanded) {
-                                const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset);
+                                const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset, extra);
                                 y = result.y;
                                 x = result.x;
+                                extra = Math.max(extra, result.extra);
                             }
                         }
                         return {
                             x: x,
-                            y: y
+                            y: y,
+                            extra: extra
                         };
                     }
                     renderGridCell(args, renderer) {
+                        const cellSize = args.viewer.getCellSize();
+                        const b = args.viewer.getBounds();
                         const lineHeight = 20;
                         let x = args.x;
                         let y = args.y;
@@ -3477,7 +3483,11 @@ var phasereditor2d;
                             const m = ctx.measureText(test);
                             if (m.width > args.w) {
                                 if (lines.length === 2) {
-                                    lines[lines.length - 1] += "..";
+                                    let str = lines[lines.length - 1];
+                                    if (str.length > 2) {
+                                        str = str.substring(0, str.length - 2) + "..";
+                                    }
+                                    lines[lines.length - 1] = str;
                                     break;
                                 }
                                 else {
@@ -3490,40 +3500,49 @@ var phasereditor2d;
                             }
                         }
                         const selected = args.viewer.isSelected(args.obj);
+                        let strH;
+                        let visible;
                         {
-                            const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - lines.length * lineHeight - 6, args.obj, args.viewer, true);
-                            const strH = lines.length * lineHeight;
+                            const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - 6, args.obj, args.viewer, true);
+                            strH = lines.length * lineHeight;
+                            visible = args.y > -(cellSize + strH) && args.y < b.height;
+                            if (visible) {
+                                if (selected) {
+                                    ctx.save();
+                                    ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
+                                    ctx.globalAlpha = 0.5;
+                                    ctx.fillRect(args.x, args.y, args.w, args.h + strH);
+                                    ctx.globalAlpha = 1;
+                                    renderer.renderCell(args2);
+                                    ctx.globalAlpha = 0.3;
+                                    ctx.fillRect(args.x, args.y, args.w, args.h + strH);
+                                    ctx.restore();
+                                }
+                                else {
+                                    renderer.renderCell(args2);
+                                }
+                                args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h, args.w, strH, 10);
+                            }
+                            y += args.h + strH;
+                        }
+                        if (visible) {
+                            ctx.save();
                             if (selected) {
-                                ctx.save();
-                                ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
-                                ctx.globalAlpha = 0.5;
-                                ctx.fillRect(args2.x - 3, args2.y - 3, args2.w + 6, args2.h + 6);
-                                ctx.globalAlpha = 1;
-                                renderer.renderCell(args2);
-                                ctx.globalAlpha = 0.3;
-                                ctx.fillRect(args2.x - 3, args2.y - 3, args2.w + 6, args2.h + 6);
-                                ctx.restore();
+                                ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
                             }
                             else {
-                                renderer.renderCell(args2);
+                                ctx.fillStyle = controls.Controls.theme.treeItemForeground;
                             }
-                            args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - strH - 3, args.w, strH, 10);
-                            y += args2.h + lineHeight * lines.length;
+                            let y2 = y - lineHeight * (lines.length - 1) - 5;
+                            for (const line of lines) {
+                                const m = ctx.measureText(line);
+                                const x2 = Math.max(x, x + args.w / 2 - m.width / 2);
+                                ctx.fillText(line, x2, y2);
+                                y2 += lineHeight;
+                            }
+                            ctx.restore();
                         }
-                        ctx.save();
-                        if (selected) {
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
-                        }
-                        else {
-                            ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                        }
-                        let y2 = y - lineHeight * (lines.length - 1) - 5;
-                        for (const line of lines) {
-                            const m = ctx.measureText(line);
-                            ctx.fillText(line, x + args.w / 2 - m.width / 2, y2);
-                            y2 += lineHeight;
-                        }
-                        ctx.restore();
+                        return strH;
                     }
                 }
                 viewers.GridTreeViewerRenderer = GridTreeViewerRenderer;
