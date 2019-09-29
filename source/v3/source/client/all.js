@@ -445,7 +445,8 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            controls.EVENT_SELECTION = "selected";
+            controls.EVENT_SELECTION = "selectionChanged";
+            controls.EVENT_THEME = "themeChanged";
             let PreloadResult;
             (function (PreloadResult) {
                 PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
@@ -599,6 +600,36 @@ var phasereditor2d;
                         icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
                     }
                     return element;
+                }
+                static switchTheme() {
+                    const classList = document.getElementsByTagName("html")[0].classList;
+                    if (classList.contains("light")) {
+                        this.theme = this.DARK_THEME;
+                        classList.remove("light");
+                        classList.add("dark");
+                    }
+                    else {
+                        this.theme = this.LIGHT_THEME;
+                        classList.remove("dark");
+                        classList.add("light");
+                    }
+                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME, { detail: this.theme }));
+                }
+                static drawRoundedRect(ctx, x, y, w, h, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x + topLeft, y);
+                    ctx.lineTo(x + w - topRight, y);
+                    ctx.quadraticCurveTo(x + w, y, x + w, y + topRight);
+                    ctx.lineTo(x + w, y + h - bottomRight);
+                    ctx.quadraticCurveTo(x + w, y + h, x + w - bottomRight, y + h);
+                    ctx.lineTo(x + bottomLeft, y + h);
+                    ctx.quadraticCurveTo(x, y + h, x, y + h - bottomLeft);
+                    ctx.lineTo(x, y + topLeft);
+                    ctx.quadraticCurveTo(x, y, x + topLeft, y);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.restore();
                 }
             }
             Controls._images = new Map();
@@ -2506,13 +2537,15 @@ var phasereditor2d;
                         const cellSize = Math.max(controls.ROW_HEIGHT, viewer.getCellSize());
                         const context = viewer.getContext();
                         const b = viewer.getBounds();
+                        const included = objects.filter(obj => viewer.isFilterIncluded(obj));
+                        const lastObj = included.length === 0 ? null : included[included.length - 1];
                         for (let obj of objects) {
                             const children = viewer.getContentProvider().getChildren(obj);
                             const expanded = viewer.isExpanded(obj);
                             if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
-                                this.renderGridCell(args, renderer, depth);
+                                this.renderGridCell(args, renderer, depth, obj === lastObj);
                                 if (y > -cellSize && y < b.height) {
                                     // render tree icon
                                     if (children.length > 0) {
@@ -2545,7 +2578,7 @@ var phasereditor2d;
                             y: y
                         };
                     }
-                    renderGridCell(args, renderer, depth) {
+                    renderGridCell(args, renderer, depth, isLastChild) {
                         const cellSize = args.viewer.getCellSize();
                         const b = args.viewer.getBounds();
                         const lineHeight = 20;
@@ -2590,10 +2623,10 @@ var phasereditor2d;
                                 //     }
                                 //     ctx.restore();
                                 // }
-                                this.renderCellBack(args, selected);
+                                this.renderCellBack(args, selected, isLastChild);
                                 const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - 6 - lineHeight, args.obj, args.viewer, args.center);
                                 renderer.renderCell(args2);
-                                this.renderCellFront(args, selected);
+                                this.renderCellFront(args, selected, isLastChild);
                                 args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - lineHeight, args.w, labelHeight, 10);
                             }
                         }
@@ -2611,7 +2644,7 @@ var phasereditor2d;
                             ctx.restore();
                         }
                     }
-                    renderCellBack(args, selected) {
+                    renderCellBack(args, selected, isLastChild) {
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
@@ -2621,7 +2654,7 @@ var phasereditor2d;
                             ctx.restore();
                         }
                     }
-                    renderCellFront(args, selected) {
+                    renderCellFront(args, selected, isLastChild) {
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
@@ -2654,16 +2687,34 @@ var phasereditor2d;
                                 super(viewer, false);
                                 viewer.setCellSize(64);
                             }
-                            renderCellBack(args, selected) {
-                                super.renderCellBack(args, selected);
+                            renderCellBack(args, selected, isLastChild) {
+                                super.renderCellBack(args, selected, isLastChild);
                                 const isParent = this.isParent(args.obj);
                                 const isChild = this.isChild(args.obj);
-                                if (isParent || isChild) {
-                                    const margin = isChild ? ui.controls.viewers.TREE_RENDERER_GRID_PADDING : 0;
+                                const expanded = args.viewer.isExpanded(args.obj);
+                                if (isParent) {
                                     const ctx = args.canvasContext;
                                     ctx.save();
                                     ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                                    ctx.fillRect(args.x - margin, args.y, args.w + margin, args.h);
+                                    if (expanded) {
+                                        ui.controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
+                                    }
+                                    else {
+                                        ui.controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
+                                    }
+                                    ctx.restore();
+                                }
+                                else if (isChild) {
+                                    const margin = ui.controls.viewers.TREE_RENDERER_GRID_PADDING;
+                                    const ctx = args.canvasContext;
+                                    ctx.save();
+                                    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                                    if (isLastChild) {
+                                        ui.controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
+                                    }
+                                    else {
+                                        ui.controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
+                                    }
                                     ctx.restore();
                                 }
                             }
@@ -4910,15 +4961,22 @@ var phasereditor2d;
                         this._maxCount = maxCount;
                     }
                     renderCell(args) {
-                        this.renderFolder(args);
-                        this.renderGrid(args);
+                        if (this.cellHeight(args) === controls.ROW_HEIGHT) {
+                            this.renderFolder(args);
+                        }
+                        else {
+                            this.renderGrid(args);
+                        }
+                    }
+                    renderFolder(args) {
+                        const icon = ui.ide.Workbench.getWorkbench().getWorkbenchIcon(ui.ide.ICON_FOLDER);
+                        icon.paint(args.canvasContext, args.x, args.y, args.w, args.h, true);
                     }
                     renderGrid(args) {
                         const contentProvider = args.viewer.getContentProvider();
                         const children = contentProvider.getChildren(args.obj);
-                        const header = Math.floor(args.h * 0.15);
                         const width = args.w - 20;
-                        const height = args.h - header - 4;
+                        const height = args.h - 2;
                         if (children) {
                             const realCount = children.length;
                             let frameCount = realCount;
@@ -4938,7 +4996,7 @@ var phasereditor2d;
                             var itemX = 0;
                             var itemY = 0;
                             const startX = 20 + args.x + marginX;
-                            const startY = header + 2 + args.y + marginY;
+                            const startY = 2 + args.y + marginY;
                             for (var i = 0; i < frameCount; i++) {
                                 if (itemY + size > height) {
                                     break;
@@ -4956,20 +5014,8 @@ var phasereditor2d;
                             }
                         }
                     }
-                    renderFolder(args) {
-                        const ctx = args.canvasContext;
-                        ctx.save();
-                        ctx.globalAlpha = 0.5;
-                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                        ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
-                        let w = args.w < args.h * 3 ? args.w : args.h;
-                        const header = Math.floor(args.h * 0.15);
-                        ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
-                        ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
-                        ctx.restore();
-                    }
                     cellHeight(args) {
-                        return args.viewer.getCellSize();
+                        return args.viewer.getCellSize() < 50 ? controls.ROW_HEIGHT : args.viewer.getCellSize();
                     }
                     preload(obj) {
                         return controls.Controls.resolveNothingLoaded();

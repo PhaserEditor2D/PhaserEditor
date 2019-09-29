@@ -8,17 +8,24 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         renderCell(args: RenderCellArgs): void {
-            this.renderFolder(args);
-            this.renderGrid(args);
+            if (this.cellHeight(args) === ROW_HEIGHT) {
+                this.renderFolder(args);
+            } else {
+                this.renderGrid(args);
+            }
+        }
+
+        private renderFolder(args: RenderCellArgs) {
+            const icon = ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER);
+            icon.paint(args.canvasContext, args.x, args.y, args.w, args.h, true);
         }
 
         protected renderGrid(args: RenderCellArgs) {
             const contentProvider = <ITreeContentProvider>args.viewer.getContentProvider();
             const children = contentProvider.getChildren(args.obj);
 
-            const header = Math.floor(args.h * 0.15);
             const width = args.w - 20;
-            const height = args.h - header - 4;
+            const height = args.h - 2;
 
             if (children) {
 
@@ -46,7 +53,7 @@ namespace phasereditor2d.ui.controls.viewers {
                 var itemY = 0;
 
                 const startX = 20 + args.x + marginX;
-                const startY = header + 2 + args.y + marginY;
+                const startY = 2 + args.y + marginY;
 
 
                 for (var i = 0; i < frameCount; i++) {
@@ -77,26 +84,8 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        private renderFolder(args: RenderCellArgs) {
-            const ctx = args.canvasContext;
-
-            ctx.save();
-
-            ctx.globalAlpha = 0.5;
-            ctx.fillStyle = Controls.theme.treeItemForeground;
-            ctx.strokeStyle = Controls.theme.treeItemForeground;
-
-            let w = args.w < args.h * 3 ? args.w : args.h;
-            const header = Math.floor(args.h * 0.15);
-
-            ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
-            ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
-
-            ctx.restore();
-        }
-
         cellHeight(args: RenderCellArgs): number {
-            return args.viewer.getCellSize();
+            return args.viewer.getCellSize() < 50 ? ROW_HEIGHT : args.viewer.getCellSize();
         }
 
         preload(obj: any): Promise<PreloadResult> {

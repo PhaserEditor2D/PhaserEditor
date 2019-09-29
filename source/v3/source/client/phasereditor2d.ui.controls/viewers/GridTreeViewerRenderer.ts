@@ -35,6 +35,8 @@ namespace phasereditor2d.ui.controls.viewers {
             const context = viewer.getContext();
 
             const b = viewer.getBounds();
+            const included = objects.filter(obj => viewer.isFilterIncluded(obj));
+            const lastObj = included.length === 0? null : included[included.length - 1];
 
             for (let obj of objects) {
 
@@ -47,7 +49,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                     const args = new RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
 
-                    this.renderGridCell(args, renderer, depth);
+                    this.renderGridCell(args, renderer, depth, obj === lastObj);
 
                     if (y > -cellSize && y < b.height) {
                         // render tree icon
@@ -91,7 +93,7 @@ namespace phasereditor2d.ui.controls.viewers {
             };
         }
 
-        private renderGridCell(args: RenderCellArgs, renderer: ICellRenderer, depth: number) {
+        private renderGridCell(args: RenderCellArgs, renderer: ICellRenderer, depth: number, isLastChild : boolean) {
             const cellSize = args.viewer.getCellSize();
             const b = args.viewer.getBounds();
             const lineHeight = 20;
@@ -147,7 +149,7 @@ namespace phasereditor2d.ui.controls.viewers {
                     //     ctx.restore();
                     // }
 
-                    this.renderCellBack(args, selected);
+                    this.renderCellBack(args, selected, isLastChild);
 
                     const args2 = new RenderCellArgs(args.canvasContext,
                         args.x + 3, args.y + 3,
@@ -157,7 +159,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                     renderer.renderCell(args2);
 
-                    this.renderCellFront(args, selected);
+                    this.renderCellFront(args, selected, isLastChild);
 
                     args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - lineHeight, args.w, labelHeight, 10);
                 }
@@ -181,7 +183,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
 
-        protected renderCellBack(args: RenderCellArgs, selected: boolean) {
+        protected renderCellBack(args: RenderCellArgs, selected: boolean, isLastChild : boolean) {
             if (selected) {
                 const ctx = args.canvasContext;
                 ctx.save();
@@ -192,7 +194,7 @@ namespace phasereditor2d.ui.controls.viewers {
             }
         }
 
-        protected renderCellFront(args: RenderCellArgs, selected: boolean) {
+        protected renderCellFront(args: RenderCellArgs, selected: boolean, isLastChild : boolean) {
             if (selected) {
                 const ctx = args.canvasContext;
                 ctx.save();

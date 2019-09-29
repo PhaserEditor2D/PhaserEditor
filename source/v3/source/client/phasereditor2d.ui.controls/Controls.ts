@@ -2,13 +2,13 @@
 
 namespace phasereditor2d.ui.controls {
 
-    export const EVENT_SELECTION = "selected";
+    export const EVENT_SELECTION = "selectionChanged";
+    export const EVENT_THEME = "themeChanged";
 
     export enum PreloadResult {
         NOTHING_LOADED,
         RESOURCES_LOADED
     }
-
 
     class ImageImpl implements IImage {
 
@@ -67,11 +67,11 @@ namespace phasereditor2d.ui.controls {
         }
 
         getWidth() {
-            return this._ready? this._img.naturalWidth : 16;
+            return this._ready ? this._img.naturalWidth : 16;
         }
 
         getHeight() {
-            return this._ready? this._img.naturalHeight : 16;
+            return this._ready ? this._img.naturalHeight : 16;
         }
 
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
@@ -213,6 +213,37 @@ namespace phasereditor2d.ui.controls {
         };
 
         static theme: Theme = Controls.DARK_THEME;
+
+        static switchTheme() {
+            const classList = document.getElementsByTagName("html")[0].classList;
+            if (classList.contains("light")) {
+                this.theme = this.DARK_THEME;
+                classList.remove("light");
+                classList.add("dark");
+            } else {
+                this.theme = this.LIGHT_THEME;
+                classList.remove("dark");
+                classList.add("light");
+            }
+            window.dispatchEvent(new CustomEvent(EVENT_THEME, { detail: this.theme }));
+        }
+
+        static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x + topLeft, y);
+            ctx.lineTo(x + w - topRight, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + topRight);
+            ctx.lineTo(x + w, y + h - bottomRight);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - bottomRight, y + h);
+            ctx.lineTo(x + bottomLeft, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - bottomLeft);
+            ctx.lineTo(x, y + topLeft);
+            ctx.quadraticCurveTo(x, y, x + topLeft, y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
 
     }
 }
