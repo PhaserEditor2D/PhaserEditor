@@ -1873,34 +1873,26 @@ var phasereditor2d;
                             labelHeight = lineHeight;
                             visible = args.y > -(cellSize + labelHeight) && args.y < b.height;
                             if (visible) {
-                                if (depth > 0) {
-                                    const space = args.h / (depth + 1);
-                                    const arrowH = space / 2;
-                                    let arrowY = args.y + space;
-                                    ctx.save();
-                                    ctx.lineWidth = 1;
-                                    ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
-                                    for (let i = 0; i < depth; i++) {
-                                        ctx.beginPath();
-                                        ctx.moveTo(args.x - 5, arrowY - arrowH);
-                                        ctx.lineTo(args.x, arrowY);
-                                        ctx.lineTo(args.x - 5, arrowY + arrowH);
-                                        ctx.stroke();
-                                        arrowY += space;
-                                    }
-                                    ctx.restore();
-                                }
+                                // if (depth > 0) {
+                                //     const space = args.h / (depth + 1);
+                                //     const arrowH = 5;//space / 2;
+                                //     let arrowY = args.y + space;
+                                //     ctx.save();
+                                //     ctx.lineWidth = 1;
+                                //     ctx.strokeStyle = Controls.theme.treeItemForeground;
+                                //     for (let i = 0; i < depth; i++) {
+                                //         ctx.beginPath();
+                                //         ctx.moveTo(args.x - 5, arrowY - arrowH);
+                                //         ctx.lineTo(args.x, arrowY);
+                                //         ctx.lineTo(args.x - 5, arrowY + arrowH);
+                                //         ctx.stroke()
+                                //         arrowY += space;
+                                //     }
+                                //     ctx.restore();
+                                // }
                                 this.renderCellBack(args, selected);
                                 const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - 6 - lineHeight, args.obj, args.viewer, args.center);
-                                if (selected) {
-                                    ctx.save();
-                                    ctx.globalAlpha = 0.5;
-                                    renderer.renderCell(args2);
-                                    ctx.restore();
-                                }
-                                else {
-                                    renderer.renderCell(args2);
-                                }
+                                renderer.renderCell(args2);
                                 this.renderCellFront(args, selected);
                                 args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - lineHeight, args.w, labelHeight, 10);
                             }
@@ -1920,23 +1912,23 @@ var phasereditor2d;
                         }
                     }
                     renderCellBack(args, selected) {
-                        // if (selected) {
-                        //     const ctx = args.canvasContext;
-                        //     ctx.save();
-                        //     ctx.fillStyle = Controls.theme.treeItemSelectionBackground;
-                        //     ctx.globalAlpha = 0.5;
-                        //     ctx.fillRect(args.x, args.y, args.w, args.h + labelHeight);
-                        //     ctx.restore();
-                        // }
+                        if (selected) {
+                            const ctx = args.canvasContext;
+                            ctx.save();
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
+                            ctx.globalAlpha = 0.5;
+                            ctx.fillRect(args.x, args.y, args.w, args.h);
+                            ctx.restore();
+                        }
                     }
                     renderCellFront(args, selected) {
-                        // if (selected) {
-                        //     const ctx = args.canvasContext;
-                        //     ctx.save();
-                        //     ctx.globalAlpha = 0.3;
-                        //     ctx.fillRect(args.x, args.y, args.w, args.h + labelHeight);
-                        //     ctx.restore();
-                        // }
+                        if (selected) {
+                            const ctx = args.canvasContext;
+                            ctx.save();
+                            ctx.globalAlpha = 0.3;
+                            ctx.fillRect(args.x, args.y, args.w, args.h);
+                            ctx.restore();
+                        }
                     }
                 }
                 viewers.GridTreeViewerRenderer = GridTreeViewerRenderer;
@@ -2484,8 +2476,8 @@ var phasereditor2d;
                             const item = args.obj;
                             const img = item.getImage();
                             const fd = item.getFrameData();
-                            const renderHeight = args.h;
                             const renderWidth = args.w;
+                            const renderHeight = args.h;
                             let imgW = fd.src.w;
                             let imgH = fd.src.h;
                             // compute the right width
@@ -2502,7 +2494,7 @@ var phasereditor2d;
                             const imgDstW = fd.src.w * scale;
                             const imgDstH = fd.src.h * scale;
                             if (imgDstW > 0 && imgDstH > 0) {
-                                img.paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX + fd.dst.x, imgY + fd.dst.y, imgDstW, imgDstH);
+                                img.paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX, imgY, imgDstW, imgDstH);
                             }
                         }
                         cellHeight(args) {
@@ -4530,12 +4522,13 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class FolderCellRenderer {
-                    constructor(maxCount = 4) {
+                    constructor(maxCount = 8) {
                         this._maxCount = maxCount;
                     }
                     renderCell(args) {
                         this.renderFolder(args);
-                        if (!args.viewer.isExpanded(args.obj)) {
+                        // if (!args.viewer.isExpanded(args.obj)) 
+                        {
                             this.renderGrid(args);
                         }
                     }
@@ -4544,7 +4537,7 @@ var phasereditor2d;
                         const children = contentProvider.getChildren(args.obj);
                         const header = Math.floor(args.h * 0.15);
                         const width = args.w - 20;
-                        const height = args.h - header;
+                        const height = args.h - header - 4;
                         if (children) {
                             const realCount = children.length;
                             let frameCount = realCount;
@@ -4556,7 +4549,7 @@ var phasereditor2d;
                                 step = frameCount / this._maxCount;
                                 frameCount = this._maxCount;
                             }
-                            var size = Math.floor(Math.sqrt(width * height / frameCount) * 0.9) + 1;
+                            var size = Math.floor(Math.sqrt(width * height / frameCount) * 0.8) + 1;
                             var cols = width / size;
                             var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
                             var marginX = Math.max(0, (width - cols * size) / 2);
@@ -4564,7 +4557,7 @@ var phasereditor2d;
                             var itemX = 0;
                             var itemY = 0;
                             const startX = 20 + args.x + marginX;
-                            const startY = header + args.y + marginY;
+                            const startY = header + 2 + args.y + marginY;
                             for (var i = 0; i < frameCount; i++) {
                                 if (itemY + size > height) {
                                     break;
@@ -4587,8 +4580,9 @@ var phasereditor2d;
                         ctx.save();
                         ctx.globalAlpha = 0.5;
                         ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                        const header = Math.floor(args.h * 0.15);
+                        ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
                         let w = args.w < args.h * 3 ? args.w : args.h;
+                        const header = Math.floor(args.h * 0.15);
                         ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
                         ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
                         ctx.restore();

@@ -7,8 +7,8 @@ namespace phasereditor2d.ui.ide.editors.pack {
             const img = item.getImage();
             const fd = item.getFrameData();
 
-            const renderHeight = args.h;
             const renderWidth = args.w;
+            const renderHeight = args.h;
 
             let imgW = fd.src.w;
             let imgH = fd.src.h;
@@ -24,7 +24,6 @@ namespace phasereditor2d.ui.ide.editors.pack {
             }
 
             const scale = imgW / fd.src.w;
-
             var imgX = args.x + (args.center ? renderWidth / 2 - imgW / 2 : 0);
             var imgY = args.y + renderHeight / 2 - imgH / 2;
 
@@ -32,9 +31,10 @@ namespace phasereditor2d.ui.ide.editors.pack {
             const imgDstH = fd.src.h * scale;
 
             if (imgDstW > 0 && imgDstH > 0) {
+
                 img.paintFrame(args.canvasContext,
                     fd.src.x, fd.src.y, fd.src.w, fd.src.h,
-                    imgX + fd.dst.x, imgY + fd.dst.y, imgDstW, imgDstH
+                    imgX, imgY, imgDstW, imgDstH
                 )
             }
 

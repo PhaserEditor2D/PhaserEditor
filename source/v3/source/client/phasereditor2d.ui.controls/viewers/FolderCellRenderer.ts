@@ -3,14 +3,15 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private _maxCount: number;
 
-        constructor(maxCount: number = 4) {
+        constructor(maxCount: number = 8) {
             this._maxCount = maxCount;
         }
 
         renderCell(args: RenderCellArgs): void {
             this.renderFolder(args);
-            
-            if (!args.viewer.isExpanded(args.obj)) {
+
+            // if (!args.viewer.isExpanded(args.obj)) 
+            {
                 this.renderGrid(args);
             }
         }
@@ -21,7 +22,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
             const header = Math.floor(args.h * 0.15);
             const width = args.w - 20;
-            const height = args.h - header;
+            const height = args.h - header - 4;
 
             if (children) {
 
@@ -38,7 +39,7 @@ namespace phasereditor2d.ui.controls.viewers {
                     frameCount = this._maxCount;
                 }
 
-                var size = Math.floor(Math.sqrt(width * height / frameCount) * 0.9) + 1;
+                var size = Math.floor(Math.sqrt(width * height / frameCount) * 0.8) + 1;
 
                 var cols = width / size;
                 var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
@@ -49,7 +50,7 @@ namespace phasereditor2d.ui.controls.viewers {
                 var itemY = 0;
 
                 const startX = 20 + args.x + marginX;
-                const startY = header + args.y + marginY;
+                const startY = header + 2 + args.y + marginY;
 
 
                 for (var i = 0; i < frameCount; i++) {
@@ -60,7 +61,7 @@ namespace phasereditor2d.ui.controls.viewers {
                     const index = Math.min(realCount - 1, Math.round(i * step));
                     const obj = children[index];
                     const renderer = args.viewer.getCellRendererProvider().getCellRenderer(obj);
-                    
+
                     const args2 = new RenderCellArgs(args.canvasContext,
                         startX + itemX, startY + itemY,
                         size, size,
@@ -77,19 +78,24 @@ namespace phasereditor2d.ui.controls.viewers {
                     }
                 }
 
-
             }
         }
 
         private renderFolder(args: RenderCellArgs) {
             const ctx = args.canvasContext;
+
             ctx.save();
+
             ctx.globalAlpha = 0.5;
             ctx.fillStyle = Controls.theme.treeItemForeground;
+            ctx.strokeStyle = Controls.theme.treeItemForeground;
+
+            let w = args.w < args.h * 3 ? args.w : args.h;
             const header = Math.floor(args.h * 0.15);
-            let w = args.w < args.h * 3? args.w : args.h;
+
             ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
             ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
+
             ctx.restore();
         }
 

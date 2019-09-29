@@ -64,7 +64,7 @@ namespace phasereditor2d.ui.controls.viewers {
                         }
 
                     }
-                    
+
                     const item = new PaintItem(paintItems.length, obj);
                     item.set(args.x, args.y, args.w, args.h);
                     paintItems.push(item);
@@ -127,25 +127,25 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 if (visible) {
 
-                    if (depth > 0) {
-                        const space = args.h / (depth + 1);
-                        const arrowH = space / 2;
-                        let arrowY = args.y + space;
+                    // if (depth > 0) {
+                    //     const space = args.h / (depth + 1);
+                    //     const arrowH = 5;//space / 2;
+                    //     let arrowY = args.y + space;
 
-                        ctx.save();
-                        ctx.lineWidth = 1;
-                        ctx.strokeStyle = Controls.theme.treeItemForeground;
+                    //     ctx.save();
+                    //     ctx.lineWidth = 1;
+                    //     ctx.strokeStyle = Controls.theme.treeItemForeground;
 
-                        for (let i = 0; i < depth; i++) {
-                            ctx.beginPath();
-                            ctx.moveTo(args.x - 5, arrowY - arrowH);
-                            ctx.lineTo(args.x, arrowY);
-                            ctx.lineTo(args.x - 5, arrowY + arrowH);
-                            ctx.stroke()
-                            arrowY += space;
-                        }
-                        ctx.restore();
-                    }
+                    //     for (let i = 0; i < depth; i++) {
+                    //         ctx.beginPath();
+                    //         ctx.moveTo(args.x - 5, arrowY - arrowH);
+                    //         ctx.lineTo(args.x, arrowY);
+                    //         ctx.lineTo(args.x - 5, arrowY + arrowH);
+                    //         ctx.stroke()
+                    //         arrowY += space;
+                    //     }
+                    //     ctx.restore();
+                    // }
 
                     this.renderCellBack(args, selected);
 
@@ -155,14 +155,7 @@ namespace phasereditor2d.ui.controls.viewers {
                         args.obj, args.viewer, args.center
                     );
 
-                    if (selected) {
-                        ctx.save();
-                        ctx.globalAlpha = 0.5;
-                        renderer.renderCell(args2);
-                        ctx.restore();
-                    } else {
-                        renderer.renderCell(args2);
-                    }
+                    renderer.renderCell(args2);
 
                     this.renderCellFront(args, selected);
 
@@ -189,24 +182,24 @@ namespace phasereditor2d.ui.controls.viewers {
 
 
         protected renderCellBack(args: RenderCellArgs, selected: boolean) {
-            // if (selected) {
-            //     const ctx = args.canvasContext;
-            //     ctx.save();
-            //     ctx.fillStyle = Controls.theme.treeItemSelectionBackground;
-            //     ctx.globalAlpha = 0.5;
-            //     ctx.fillRect(args.x, args.y, args.w, args.h + labelHeight);
-            //     ctx.restore();
-            // }
+            if (selected) {
+                const ctx = args.canvasContext;
+                ctx.save();
+                ctx.fillStyle = Controls.theme.treeItemSelectionBackground;
+                ctx.globalAlpha = 0.5;
+                ctx.fillRect(args.x, args.y, args.w, args.h);
+                ctx.restore();
+            }
         }
 
         protected renderCellFront(args: RenderCellArgs, selected: boolean) {
-            // if (selected) {
-            //     const ctx = args.canvasContext;
-            //     ctx.save();
-            //     ctx.globalAlpha = 0.3;
-            //     ctx.fillRect(args.x, args.y, args.w, args.h + labelHeight);
-            //     ctx.restore();
-            // }
+            if (selected) {
+                const ctx = args.canvasContext;
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(args.x, args.y, args.w, args.h);
+                ctx.restore();
+            }
         }
     }
 
