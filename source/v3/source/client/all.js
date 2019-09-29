@@ -2124,6 +2124,10 @@ var phasereditor2d;
                                         const frames = parser.parse();
                                         return frames;
                                     }
+                                    case "atlasXML":
+                                        const parser = new pack.AtlasXMLParser(parent);
+                                        const frames = parser.parse();
+                                        return frames;
                                     default:
                                         break;
                                 }
@@ -2324,6 +2328,11 @@ var phasereditor2d;
                                         await parser.preload();
                                         break;
                                     }
+                                    case "atlasXML": {
+                                        const parser = new pack.AtlasXMLParser(item);
+                                        await parser.preload();
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -2399,6 +2408,58 @@ var phasereditor2d;
                         }
                     }
                     pack.AtlasParser = AtlasParser;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AbstractAtlasParser.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    class AtlasXMLParser extends pack.AbstractAtlasParser {
+                        constructor(packItem) {
+                            super(packItem);
+                        }
+                        parse2(imageFrames, image, atlas) {
+                            try {
+                                const parser = new DOMParser();
+                                const data = parser.parseFromString(atlas, "text/xml");
+                                const elements = data.getElementsByTagName("SubTexture");
+                                for (let i = 0; i < elements.length; i++) {
+                                    const elem = elements.item(i);
+                                    const name = elem.getAttribute("name");
+                                    const frameX = Number.parseInt(elem.getAttribute("x"));
+                                    const frameY = Number.parseInt(elem.getAttribute("y"));
+                                    const frameW = Number.parseInt(elem.getAttribute("width"));
+                                    const frameH = Number.parseInt(elem.getAttribute("height"));
+                                    let spriteX = frameX;
+                                    let spriteY = frameY;
+                                    let spriteW = frameW;
+                                    let spriteH = frameH;
+                                    if (elem.hasAttribute("frameX")) {
+                                        spriteX = Number.parseInt(elem.getAttribute("frameX"));
+                                        spriteY = Number.parseInt(elem.getAttribute("frameY"));
+                                        spriteW = Number.parseInt(elem.getAttribute("frameWidth"));
+                                        spriteH = Number.parseInt(elem.getAttribute("frameHeight"));
+                                    }
+                                    const fd = new pack.FrameData(i, new ui.controls.Rect(frameX, frameY, frameW, frameH), new ui.controls.Rect(spriteX, spriteY, spriteW, spriteH), new ui.controls.Point(frameW, frameH));
+                                    imageFrames.push(new pack.ImageFrame(name, image, fd));
+                                }
+                            }
+                            catch (e) {
+                                console.error(e);
+                            }
+                        }
+                    }
+                    pack.AtlasXMLParser = AtlasXMLParser;
                 })(pack = editors.pack || (editors.pack = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
