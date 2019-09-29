@@ -13,9 +13,8 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                     case "atlas":
                     case "unityAtlas":
                     case "atlasXML":
-                        return new controls.viewers.FolderCellRenderer();
                     case "spritesheet":
-                        return new SpriteSheetPackItemCellRenderer();
+                        return new controls.viewers.FolderCellRenderer();
                     default:
                         break;
                 }

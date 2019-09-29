@@ -1835,6 +1835,11 @@ var phasereditor2d;
                                         await parser.preload();
                                         break;
                                     }
+                                    case "spritesheet": {
+                                        const parser = new pack.parsers.SpriteSheetParser(item);
+                                        await parser.preload();
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -2170,6 +2175,90 @@ var phasereditor2d;
                             }
                         }
                         parsers.MultiAtlasParser = MultiAtlasParser;
+                    })(parsers = pack.parsers || (pack.parsers = {}));
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AbstractAtlasParser.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
+                    var parsers;
+                    (function (parsers) {
+                        class SpriteSheetParser {
+                            constructor(packItem) {
+                                this._packItem = packItem;
+                            }
+                            async preload() {
+                                if (this._packItem["__frames"]) {
+                                    return ui.controls.Controls.resolveNothingLoaded();
+                                }
+                                const data = this._packItem.getData();
+                                const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.url);
+                                const image = ide.FileUtils.getImage(imageFile);
+                                return await image.preload();
+                            }
+                            parse() {
+                                if (this._packItem["__frames"]) {
+                                    return this._packItem["__frames"];
+                                }
+                                const frames = [];
+                                const data = this._packItem.getData();
+                                const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.url);
+                                const image = ide.FileUtils.getImage(imageFile);
+                                const w = data.frameConfig.frameWidth;
+                                const h = data.frameConfig.frameHeight;
+                                const margin = data.frameConfig.margin || 0;
+                                const spacing = data.frameConfig.spacing || 0;
+                                const startFrame = data.frameConfig.startFrame || 0;
+                                const endFrame = data.frameConfig.endFrame || -1;
+                                if (w <= 0 || h <= 0 || spacing < 0 || margin < 0) {
+                                    // invalid values
+                                    return frames;
+                                }
+                                const start = startFrame < 0 ? 0 : startFrame;
+                                const end = endFrame < 0 ? Number.MAX_VALUE : endFrame;
+                                let i = 0;
+                                let row = 0;
+                                let column = 0;
+                                let x = margin;
+                                let y = margin;
+                                while (true) {
+                                    if (i > end || y >= image.getHeight() || i > 50) {
+                                        break;
+                                    }
+                                    if (i >= start) {
+                                        if (x + w <= image.getWidth() && y + h <= image.getHeight()) {
+                                            // FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
+                                            // list.add(frame);
+                                            const fd = new pack.FrameData(i, new ui.controls.Rect(x, y, w, h), new ui.controls.Rect(0, 0, w, h), new ui.controls.Point(w, h));
+                                            frames.push(new pack.ImageFrame(i.toString(), image, fd));
+                                        }
+                                    }
+                                    column++;
+                                    x += w + spacing;
+                                    if (x >= image.getWidth()) {
+                                        x = margin;
+                                        y += h + spacing;
+                                        column = 0;
+                                        row++;
+                                    }
+                                    i++;
+                                }
+                                this._packItem["__frames"] = frames;
+                                return frames;
+                            }
+                        }
+                        parsers.SpriteSheetParser = SpriteSheetParser;
                     })(parsers = pack.parsers || (pack.parsers = {}));
                 })(pack = editors.pack || (editors.pack = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -2585,6 +2674,7 @@ var phasereditor2d;
                                         case "multiatlas":
                                         case "atlasXML":
                                         case "unityAtlas":
+                                        case "spritesheet":
                                             return true;
                                         default:
                                             return false;
@@ -2626,9 +2716,8 @@ var phasereditor2d;
                                         case "atlas":
                                         case "unityAtlas":
                                         case "atlasXML":
-                                            return new ui.controls.viewers.FolderCellRenderer();
                                         case "spritesheet":
-                                            return new viewers.SpriteSheetPackItemCellRenderer();
+                                            return new ui.controls.viewers.FolderCellRenderer();
                                         default:
                                             break;
                                     }
@@ -2684,10 +2773,16 @@ var phasereditor2d;
                                             const frames = parser.parse();
                                             return frames;
                                         }
-                                        case "atlasXML":
+                                        case "atlasXML": {
                                             const parser = new pack.parsers.AtlasXMLParser(parent);
                                             const frames = parser.parse();
                                             return frames;
+                                        }
+                                        case "spritesheet": {
+                                            const parser = new pack.parsers.SpriteSheetParser(parent);
+                                            const frames = parser.parse();
+                                            return frames;
+                                        }
                                         default:
                                             break;
                                     }
@@ -2848,33 +2943,6 @@ var phasereditor2d;
         (function (ide) {
             var editors;
             (function (editors) {
-                var pack;
-                (function (pack) {
-                    var viewers;
-                    (function (viewers) {
-                        class SpriteSheetPackItemCellRenderer extends ui.controls.viewers.ImageCellRenderer {
-                            getImage(obj) {
-                                const item = obj;
-                                const url = item.getData().url;
-                                const image = pack.AssetPackUtils.getImageFromPackUrl(url);
-                                return image;
-                            }
-                        }
-                        viewers.SpriteSheetPackItemCellRenderer = SpriteSheetPackItemCellRenderer;
-                    })(viewers = pack.viewers || (pack.viewers = {}));
-                })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
                 var scene;
                 (function (scene) {
                     scene.CONTENT_TYPE_SCENE = "Scene";
@@ -2942,6 +3010,7 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../pack/viewers/AssetPackContentProvider.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -4819,10 +4888,7 @@ var phasereditor2d;
                     }
                     renderCell(args) {
                         this.renderFolder(args);
-                        // if (!args.viewer.isExpanded(args.obj)) 
-                        {
-                            this.renderGrid(args);
-                        }
+                        this.renderGrid(args);
                     }
                     renderGrid(args) {
                         const contentProvider = args.viewer.getContentProvider();

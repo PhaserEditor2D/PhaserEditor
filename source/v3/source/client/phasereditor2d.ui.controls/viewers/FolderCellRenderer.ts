@@ -9,14 +9,10 @@ namespace phasereditor2d.ui.controls.viewers {
 
         renderCell(args: RenderCellArgs): void {
             this.renderFolder(args);
-
-            // if (!args.viewer.isExpanded(args.obj)) 
-            {
-                this.renderGrid(args);
-            }
+            this.renderGrid(args);
         }
 
-        private renderGrid(args: RenderCellArgs) {
+        protected renderGrid(args: RenderCellArgs) {
             const contentProvider = <ITreeContentProvider>args.viewer.getContentProvider();
             const children = contentProvider.getChildren(args.obj);
 

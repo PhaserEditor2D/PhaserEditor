@@ -25,6 +25,11 @@ namespace phasereditor2d.ui.ide.editors.pack {
                         await parser.preload();
                         break;
                     }
+                    case "spritesheet" : {
+                        const parser = new pack.parsers.SpriteSheetParser(item);
+                        await parser.preload();
+                        break;
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
             const isChild = this.isChild(args.obj);
 
             if (isParent || isChild) {
-                const margin = isChild? controls.viewers.TREE_RENDERER_GRID_PADDING : 0;
+                const margin = isChild ? controls.viewers.TREE_RENDERER_GRID_PADDING : 0;
                 const ctx = args.canvasContext;
                 ctx.save();
                 ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
@@ -32,6 +32,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                     case "multiatlas":
                     case "atlasXML":
                     case "unityAtlas":
+                    case "spritesheet":
                         return true;
                     default:
                         return false;

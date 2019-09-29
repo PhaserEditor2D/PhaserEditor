@@ -28,10 +28,16 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                         const frames = parser.parse();
                         return frames;
                     }
-                    case "atlasXML":
+                    case "atlasXML": {
                         const parser = new parsers.AtlasXMLParser(parent);
                         const frames = parser.parse();
                         return frames;
+                    }
+                    case "spritesheet": {
+                        const parser = new parsers.SpriteSheetParser(parent);
+                        const frames = parser.parse();
+                        return frames;
+                    }
                     default:
                         break;
                 }
