@@ -15,6 +15,11 @@ namespace phasereditor2d.ui.ide.editors.pack {
                         await parser.preload();
                         break;
                     }
+                    case "unityAtlas" : {
+                        const parser = new pack.UnityAtlasParser(item);
+                        await parser.preload();
+                        break;
+                    }
                 }
             }
         }

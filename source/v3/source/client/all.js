@@ -1632,6 +1632,67 @@ var phasereditor2d;
             (function (editors) {
                 var pack;
                 (function (pack) {
+                    class AbstractAtlasParser {
+                        constructor(packItem) {
+                            this._packItem = packItem;
+                        }
+                        async preload() {
+                            if (this._packItem["__frames"]) {
+                                return ui.controls.Controls.resolveNothingLoaded();
+                            }
+                            const data = this._packItem.getData();
+                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                            let result1 = await ide.FileUtils.preloadFileString(dataFile);
+                            const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
+                            const image = ide.FileUtils.getImage(imageFile);
+                            let result2 = await image.preload();
+                            return Math.max(result1, result2);
+                        }
+                        parse() {
+                            if (this._packItem["__frames"]) {
+                                return this._packItem["__frames"];
+                            }
+                            const list = [];
+                            const data = this._packItem.getData();
+                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                            const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
+                            const image = ide.FileUtils.getImage(imageFile);
+                            if (dataFile) {
+                                const str = ide.FileUtils.getFileStringFromCache(dataFile);
+                                try {
+                                    this.parse2(list, image, str);
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                            this._packItem["__frames"] = list;
+                            return list;
+                        }
+                        static buildFrameData(image, frame, index) {
+                            const src = new ui.controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
+                            const dst = new ui.controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
+                            const srcSize = new ui.controls.Point(frame.sourceSize.w, frame.sourceSize.h);
+                            const frameData = new pack.FrameData(index, src, dst, srcSize);
+                            return new pack.ImageFrame(frame.filename, image, frameData);
+                        }
+                    }
+                    pack.AbstractAtlasParser = AbstractAtlasParser;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var pack;
+                (function (pack) {
                     class AssetPack {
                         constructor(file, content) {
                             this._file = file;
@@ -2058,6 +2119,11 @@ var phasereditor2d;
                                         const frames = parser.parse();
                                         return frames;
                                     }
+                                    case "unityAtlas": {
+                                        const parser = new pack.UnityAtlasParser(parent);
+                                        const frames = parser.parse();
+                                        return frames;
+                                    }
                                     default:
                                         break;
                                 }
@@ -2253,6 +2319,11 @@ var phasereditor2d;
                                         await parser.preload();
                                         break;
                                     }
+                                    case "unityAtlas": {
+                                        const parser = new pack.UnityAtlasParser(item);
+                                        await parser.preload();
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -2282,6 +2353,7 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AbstractAtlasParser.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -2292,56 +2364,31 @@ var phasereditor2d;
             (function (editors) {
                 var pack;
                 (function (pack) {
-                    class AtlasParser {
+                    class AtlasParser extends pack.AbstractAtlasParser {
                         constructor(packItem) {
-                            this._packItem = packItem;
+                            super(packItem);
                         }
-                        async preload() {
-                            if (this._packItem["__frames"]) {
-                                return ui.controls.Controls.resolveNothingLoaded();
-                            }
-                            const data = this._packItem.getData();
-                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
-                            let result1 = await ide.FileUtils.preloadFileString(dataFile);
-                            const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
-                            const image = ide.FileUtils.getImage(imageFile);
-                            let result2 = await image.preload();
-                            return Math.max(result1, result2);
-                        }
-                        parse() {
-                            if (this._packItem["__frames"]) {
-                                return this._packItem["__frames"];
-                            }
-                            const list = [];
-                            const data = this._packItem.getData();
-                            const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
-                            const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
-                            const image = ide.FileUtils.getImage(imageFile);
-                            if (dataFile) {
-                                const str = ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(dataFile);
-                                try {
-                                    const data = JSON.parse(str);
-                                    if (Array.isArray(data.frames)) {
-                                        for (const frame of data.frames) {
-                                            const frameData = AtlasParser.buildFrameData(image, frame, list.length);
-                                            list.push(frameData);
-                                        }
-                                    }
-                                    else {
-                                        for (const name in data.frames) {
-                                            const frame = data.frames[name];
-                                            frame.filename = name;
-                                            const frameData = AtlasParser.buildFrameData(image, frame, list.length);
-                                            list.push(frameData);
-                                        }
+                        parse2(imageFrames, image, atlas) {
+                            try {
+                                const data = JSON.parse(atlas);
+                                if (Array.isArray(data.frames)) {
+                                    for (const frame of data.frames) {
+                                        const frameData = AtlasParser.buildFrameData(image, frame, imageFrames.length);
+                                        imageFrames.push(frameData);
                                     }
                                 }
-                                catch (e) {
-                                    console.error(e);
+                                else {
+                                    for (const name in data.frames) {
+                                        const frame = data.frames[name];
+                                        frame.filename = name;
+                                        const frameData = AtlasParser.buildFrameData(image, frame, imageFrames.length);
+                                        imageFrames.push(frameData);
+                                    }
                                 }
                             }
-                            this._packItem["__frames"] = list;
-                            return list;
+                            catch (e) {
+                                console.error(e);
+                            }
                         }
                         static buildFrameData(image, frame, index) {
                             const src = new ui.controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
@@ -2600,6 +2647,111 @@ var phasereditor2d;
         (function (ide) {
             var editors;
             (function (editors) {
+                var pack;
+                (function (pack) {
+                    class UnityAtlasParser extends pack.AbstractAtlasParser {
+                        parse2(imageFrames, image, atlas) {
+                            // Taken from Phaser code.
+                            const data = atlas.split('\n');
+                            const lineRegExp = /^[ ]*(- )*(\w+)+[: ]+(.*)/;
+                            let prevSprite = '';
+                            let currentSprite = '';
+                            let rect = { x: 0, y: 0, width: 0, height: 0 };
+                            // const pivot = { x: 0, y: 0 };
+                            // const border = { x: 0, y: 0, z: 0, w: 0 };
+                            for (let i = 0; i < data.length; i++) {
+                                const results = data[i].match(lineRegExp);
+                                if (!results) {
+                                    continue;
+                                }
+                                const isList = (results[1] === '- ');
+                                const key = results[2];
+                                const value = results[3];
+                                if (isList) {
+                                    if (currentSprite !== prevSprite) {
+                                        this.addFrame(image, imageFrames, currentSprite, rect);
+                                        prevSprite = currentSprite;
+                                    }
+                                    rect = { x: 0, y: 0, width: 0, height: 0 };
+                                }
+                                if (key === 'name') {
+                                    //  Start new list
+                                    currentSprite = value;
+                                    continue;
+                                }
+                                switch (key) {
+                                    case 'x':
+                                    case 'y':
+                                    case 'width':
+                                    case 'height':
+                                        rect[key] = parseInt(value, 10);
+                                        break;
+                                    // case 'pivot':
+                                    //     pivot = eval('const obj = ' + value);
+                                    //     break;
+                                    // case 'border':
+                                    //     border = eval('const obj = ' + value);
+                                    //     break;
+                                }
+                            }
+                            if (currentSprite !== prevSprite) {
+                                this.addFrame(image, imageFrames, currentSprite, rect);
+                            }
+                        }
+                        addFrame(image, imageFrames, spriteName, rect) {
+                            const src = new ui.controls.Rect(rect.x, rect.y, rect.width, rect.height);
+                            src.y = image.getHeight() - src.y - src.h;
+                            const dst = new ui.controls.Rect(0, 0, rect.width, rect.height);
+                            const srcSize = new ui.controls.Point(rect.width, rect.height);
+                            const fd = new pack.FrameData(imageFrames.length, src, dst, srcSize);
+                            imageFrames.push(new pack.ImageFrame(spriteName, image, fd));
+                        }
+                    }
+                    pack.UnityAtlasParser = UnityAtlasParser;
+                })(pack = editors.pack || (editors.pack = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/*
+
+TextureImporter:
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  spriteSheet:
+    sprites:
+    - name: asteroids_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 328
+        width: 65
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: asteroids_1
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 322
+        width: 53
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: Asteroids
+
+  */ 
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
                 var scene;
                 (function (scene) {
                     scene.CONTENT_TYPE_SCENE = "Scene";
@@ -2816,6 +2968,9 @@ var phasereditor2d;
                 }
                 contains(x, y) {
                     return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
+                }
+                clone() {
+                    return new Rect(this.x, this.y, this.w, this.h);
                 }
             }
             controls.Rect = Rect;

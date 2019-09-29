@@ -1,67 +1,32 @@
+/// <reference path="./AbstractAtlasParser.ts" />
+
 namespace phasereditor2d.ui.ide.editors.pack {
-    export class AtlasParser {
 
-        private _packItem: AssetPackItem;
+    export class AtlasParser extends AbstractAtlasParser {
 
-        constructor(packItem: AssetPackItem) {
-            this._packItem = packItem;
+        constructor(packItem : AssetPackItem) {
+            super(packItem);
         }
 
-        async preload(): Promise<controls.PreloadResult> {
-            if (this._packItem["__frames"]) {
-                return controls.Controls.resolveNothingLoaded();
-            }
-
-            const data = this._packItem.getData();
-
-            const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
-            let result1 = await FileUtils.preloadFileString(dataFile);
-
-            const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
-            const image = FileUtils.getImage(imageFile);
-            let result2 = await image.preload();
-
-            return Math.max(result1, result2);
-        }
-
-        parse(): ImageFrame[] {
-
-            if (this._packItem["__frames"]) {
-                return this._packItem["__frames"];
-            }
-
-            const list: ImageFrame[] = [];
-
-            const data = this._packItem.getData();
-            const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
-            const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
-            const image = FileUtils.getImage(imageFile); 
-
-            if (dataFile) {
-                const str = Workbench.getWorkbench().getFileStorage().getFileStringFromCache(dataFile);
-                try {
-                    const data = JSON.parse(str);
-                    if (Array.isArray(data.frames)) {
-                        for (const frame of data.frames) {
-                            const frameData = AtlasParser.buildFrameData(image, frame, list.length);
-                            list.push(frameData);
-                        }
-                    } else {
-                        for(const name in data.frames) {
-                            const frame = data.frames[name];
-                            frame.filename = name;
-                            const frameData = AtlasParser.buildFrameData(image, frame, list.length);
-                            list.push(frameData);
-                        }
+        protected parse2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
+            try {
+                const data = JSON.parse(atlas);
+                if (Array.isArray(data.frames)) {
+                    for (const frame of data.frames) {
+                        const frameData = AtlasParser.buildFrameData(image, frame, imageFrames.length);
+                        imageFrames.push(frameData);
                     }
-                } catch (e) {
-                    console.error(e);
+                } else {
+                    for(const name in data.frames) {
+                        const frame = data.frames[name];
+                        frame.filename = name;
+                        const frameData = AtlasParser.buildFrameData(image, frame, imageFrames.length);
+                        imageFrames.push(frameData);
+                    }
                 }
+            } catch (e) {
+                console.error(e);
             }
-
-            this._packItem["__frames"] = list;
-
-            return list;
         }
 
         static buildFrameData(image: controls.IImage, frame: FrameDataType, index: number) {
@@ -72,7 +37,6 @@ namespace phasereditor2d.ui.ide.editors.pack {
             const frameData = new FrameData(index, src, dst, srcSize);
             return new ImageFrame(frame.filename, image, frameData);
         }
-
 
     }
 }
