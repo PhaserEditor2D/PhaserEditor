@@ -4,7 +4,7 @@
 /// <reference path="./ImageCellRenderer.ts"/>
 
 namespace phasereditor2d.ui.controls.viewers {
-    
+
     export const EVENT_OPEN_ITEM = "itemOpened";
 
     export abstract class Viewer extends Control {
@@ -153,8 +153,14 @@ namespace phasereditor2d.ui.controls.viewers {
             }))
         }
 
+        protected abstract canSelectAtPoint(e: MouseEvent): boolean;
+
         private onMouseDown(e: MouseEvent): void {
             if (e.button !== 0) {
+                return;
+            }
+
+            if (!this.canSelectAtPoint(e)) {
                 return;
             }
 

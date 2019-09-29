@@ -34,13 +34,25 @@ namespace phasereditor2d.ui.controls.viewers {
             this._treeRenderer = treeRenderer;
         }
 
-        private onClick(e: MouseEvent) {
+        canSelectAtPoint(e: MouseEvent) {
+            const icon = this.getTreeIconAtPoint(e);
+            return icon === null;
+        }
+
+        private getTreeIconAtPoint(e: MouseEvent) {
             for (let icon of this._treeIconList) {
                 if (icon.rect.contains(e.offsetX, e.offsetY)) {
-                    this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
-                    this.repaint();
-                    return;
+                    return icon;
                 }
+            }
+            return null;
+        }
+
+        private onClick(e: MouseEvent) {
+            const icon = this.getTreeIconAtPoint(e);
+            if (icon) {
+                this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
+                this.repaint();
             }
         }
 

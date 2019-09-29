@@ -3189,6 +3189,9 @@ var phasereditor2d;
                         if (e.button !== 0) {
                             return;
                         }
+                        if (!this.canSelectAtPoint(e)) {
+                            return;
+                        }
                         const item = this.getPaintItemAt(e);
                         let selChanged = false;
                         if (item === null) {
@@ -3830,13 +3833,23 @@ var phasereditor2d;
                     setTreeRenderer(treeRenderer) {
                         this._treeRenderer = treeRenderer;
                     }
-                    onClick(e) {
+                    canSelectAtPoint(e) {
+                        const icon = this.getTreeIconAtPoint(e);
+                        return icon === null;
+                    }
+                    getTreeIconAtPoint(e) {
                         for (let icon of this._treeIconList) {
                             if (icon.rect.contains(e.offsetX, e.offsetY)) {
-                                this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
-                                this.repaint();
-                                return;
+                                return icon;
                             }
+                        }
+                        return null;
+                    }
+                    onClick(e) {
+                        const icon = this.getTreeIconAtPoint(e);
+                        if (icon) {
+                            this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
+                            this.repaint();
                         }
                     }
                     visitObjects(visitor) {
