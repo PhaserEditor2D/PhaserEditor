@@ -6,6 +6,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
         constructor(viewer: controls.viewers.TreeViewer) {
             super(viewer, false);
+            viewer.setCellSize(64);
         }
 
         renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean) {

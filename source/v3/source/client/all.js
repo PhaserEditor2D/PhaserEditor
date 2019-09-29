@@ -1950,6 +1950,7 @@ var phasereditor2d;
                     class AssetPackBlocksTreeViewerRenderer extends ui.controls.viewers.GridTreeViewerRenderer {
                         constructor(viewer) {
                             super(viewer, false);
+                            viewer.setCellSize(64);
                         }
                         renderCellBack(args, selected) {
                             super.renderCellBack(args, selected);
