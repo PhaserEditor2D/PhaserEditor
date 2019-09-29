@@ -24,6 +24,8 @@ namespace phasereditor2d.ui.controls.viewers {
             this._treeRenderer = new TreeViewerRenderer(this);
 
             this._treeIconList = [];
+
+            this.setContentProvider(new controls.viewers.EmptyTreeContentProvider());
         }
 
         getTreeRenderer() {

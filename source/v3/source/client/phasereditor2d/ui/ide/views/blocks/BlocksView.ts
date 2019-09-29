@@ -50,6 +50,7 @@ namespace phasereditor2d.ui.ide.blocks {
             
             if (!provider) {
                 this._viewer.setInput(null);
+                this._viewer.setContentProvider(new controls.viewers.EmptyTreeContentProvider());
             }
 
             await provider.preload();

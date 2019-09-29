@@ -2838,6 +2838,27 @@ var phasereditor2d;
         (function (controls) {
             var viewers;
             (function (viewers) {
+                class EmptyTreeContentProvider {
+                    getRoots(input) {
+                        return viewers.EMPTY_ARRAY;
+                    }
+                    getChildren(parent) {
+                        return viewers.EMPTY_ARRAY;
+                    }
+                }
+                viewers.EmptyTreeContentProvider = EmptyTreeContentProvider;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
                 class ImageCellRenderer {
                     renderCell(args) {
                         const img = this.getImage(args.obj);
@@ -3124,6 +3145,7 @@ var phasereditor2d;
                         const provider = this._activeEditor.getBlocksProvider();
                         if (!provider) {
                             this._viewer.setInput(null);
+                            this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
                         }
                         await provider.preload();
                         this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
@@ -3957,6 +3979,7 @@ var phasereditor2d;
                         this.getCanvas().addEventListener("click", e => this.onClick(e));
                         this._treeRenderer = new viewers.TreeViewerRenderer(this);
                         this._treeIconList = [];
+                        this.setContentProvider(new controls.viewers.EmptyTreeContentProvider());
                     }
                     getTreeRenderer() {
                         return this._treeRenderer;
