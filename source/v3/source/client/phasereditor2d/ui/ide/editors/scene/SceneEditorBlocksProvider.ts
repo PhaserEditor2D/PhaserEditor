@@ -17,15 +17,15 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         getLabelProvider(): controls.viewers.ILabelProvider {
-            return new pack.AssetPackLabelProvider();
+            return new pack.viewers.AssetPackLabelProvider();
         }
 
         getCellRendererProvider(): controls.viewers.ICellRendererProvider {
-            return new pack.AssetPackCellRendererProvider();
+            return new pack.viewers.AssetPackCellRendererProvider();
         }
 
         getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) {
-            return new pack.AssetPackBlocksTreeViewerRenderer(viewer);
+            return new pack.viewers.AssetPackBlocksTreeViewerRenderer(viewer);
         }
 
         getInput() {

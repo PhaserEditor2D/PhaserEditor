@@ -1,6 +1,6 @@
 /// <reference path="./AbstractAtlasParser.ts" />
 
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
     export class AtlasXMLParser extends AbstractAtlasParser {
 

@@ -3,7 +3,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
     const SUPPORTED_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
     //const SUPPORTED_PACK_ITEM_TYPES = new Set(["multiatlas"]);
 
-    export class SceneEditorBlocksContentProvider extends pack.AssetPackContentProvider {
+    export class SceneEditorBlocksContentProvider extends pack.viewers.AssetPackContentProvider {
         private _items: pack.AssetPackItem[];
 
         constructor(packs: pack.AssetPack[]) {

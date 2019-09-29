@@ -1,4 +1,5 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.ui.ide.editors.pack.parsers {
+
     export abstract class AbstractAtlasParser {
 
         private _packItem: AssetPackItem;
@@ -24,7 +25,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return Math.max(result1, result2);
         }
 
-        protected abstract parse2(frames : ImageFrame[], image : controls.IImage, atlas : string);
+        protected abstract parse2(frames: ImageFrame[], image: controls.IImage, atlas: string);
 
         parse(): ImageFrame[] {
 
@@ -37,7 +38,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             const data = this._packItem.getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
-            const image = FileUtils.getImage(imageFile); 
+            const image = FileUtils.getImage(imageFile);
 
             if (dataFile) {
                 const str = FileUtils.getFileStringFromCache(dataFile);

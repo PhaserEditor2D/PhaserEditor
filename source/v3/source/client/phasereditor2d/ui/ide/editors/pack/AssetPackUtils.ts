@@ -6,22 +6,22 @@ namespace phasereditor2d.ui.ide.editors.pack {
                 const type = item.getType();
                 switch(type) {
                     case "multiatlas": {
-                        const parser = new pack.MultiAtlasParser(item);
+                        const parser = new pack.parsers.MultiAtlasParser(item);
                         await parser.preload();
                         break;
                     }
                     case "atlas" : {
-                        const parser = new pack.AtlasParser(item);
+                        const parser = new pack.parsers.AtlasParser(item);
                         await parser.preload();
                         break;
                     }
                     case "unityAtlas" : {
-                        const parser = new pack.UnityAtlasParser(item);
+                        const parser = new pack.parsers.UnityAtlasParser(item);
                         await parser.preload();
                         break;
                     }
                     case "atlasXML" : {
-                        const parser = new pack.AtlasXMLParser(item);
+                        const parser = new pack.parsers.AtlasXMLParser(item);
                         await parser.preload();
                         break;
                     }

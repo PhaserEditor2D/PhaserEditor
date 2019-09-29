@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
     export class AssetPackCellRendererProvider implements controls.viewers.ICellRendererProvider {
 
@@ -14,6 +14,8 @@ namespace phasereditor2d.ui.ide.editors.pack {
                     case "unityAtlas":
                     case "atlasXML":
                         return new controls.viewers.FolderCellRenderer();
+                    case "spritesheet":
+                        return new SpriteSheetPackItemCellRenderer();
                     default:
                         break;
                 }

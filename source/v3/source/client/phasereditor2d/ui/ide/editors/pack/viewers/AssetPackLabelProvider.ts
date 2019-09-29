@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
     export class AssetPackLabelProvider implements controls.viewers.ILabelProvider {
 

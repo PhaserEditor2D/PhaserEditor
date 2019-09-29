@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
     export abstract class AssetPackContentProvider implements controls.viewers.ITreeContentProvider {
 
@@ -14,22 +14,22 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
                 switch (type) {
                     case "multiatlas": {
-                        const parser = new MultiAtlasParser(parent);
+                        const parser = new parsers.MultiAtlasParser(parent);
                         const frames = parser.parse();
                         return frames;
                     }
                     case "atlas": {
-                        const parser = new AtlasParser(parent);
+                        const parser = new parsers.AtlasParser(parent);
                         const frames = parser.parse();
                         return frames;
                     }
                     case "unityAtlas": {
-                        const parser = new UnityAtlasParser(parent);
+                        const parser = new parsers.UnityAtlasParser(parent);
                         const frames = parser.parse();
                         return frames;
                     }
                     case "atlasXML":
-                        const parser = new AtlasXMLParser(parent);
+                        const parser = new parsers.AtlasXMLParser(parent);
                         const frames = parser.parse();
                         return frames;
                     default:
