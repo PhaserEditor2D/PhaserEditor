@@ -60,8 +60,7 @@ namespace phasereditor2d.ui.controls.viewers {
                     const index = Math.min(realCount - 1, Math.round(i * step));
                     const obj = children[index];
                     const renderer = args.viewer.getCellRendererProvider().getCellRenderer(obj);
-
-                    //renderer.render(canvas, gc, startX + itemX, startY + itemY, size, size);
+                    
                     const args2 = new RenderCellArgs(args.canvasContext,
                         startX + itemX, startY + itemY,
                         size, size,
@@ -88,7 +87,7 @@ namespace phasereditor2d.ui.controls.viewers {
             ctx.globalAlpha = 0.5;
             ctx.fillStyle = Controls.theme.treeItemForeground;
             const header = Math.floor(args.h * 0.15);
-            let w = args.h;
+            let w = args.w < args.h * 3? args.w : args.h;
             ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
             ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
             ctx.restore();

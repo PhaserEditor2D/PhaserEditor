@@ -1799,9 +1799,9 @@ var phasereditor2d;
                         }
                         const b = viewer.getBounds();
                         const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + viewers.TREE_RENDERER_GRID_PADDING) / 2) : viewers.TREE_RENDERER_GRID_PADDING;
-                        return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + viewers.TREE_RENDERER_GRID_PADDING, offset, 0, 0);
+                        return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + viewers.TREE_RENDERER_GRID_PADDING, offset, 0);
                     }
-                    paintItems2(objects, treeIconList, paintItems, x, y, offset, extra, depth) {
+                    paintItems2(objects, treeIconList, paintItems, x, y, offset, depth) {
                         const viewer = this.getViewer();
                         const cellSize = Math.max(controls.ROW_HEIGHT, viewer.getCellSize());
                         const context = viewer.getContext();
@@ -1812,8 +1812,7 @@ var phasereditor2d;
                             if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
-                                let cellExtra = this.renderGridCell(args, renderer, depth);
-                                extra = Math.max(cellExtra, extra);
+                                this.renderGridCell(args, renderer, depth);
                                 if (y > -cellSize && y < b.height) {
                                     // render tree icon
                                     if (children.length > 0) {
@@ -1827,26 +1826,23 @@ var phasereditor2d;
                                     }
                                 }
                                 const item = new viewers.PaintItem(paintItems.length, obj);
-                                item.set(args.x, args.y, args.w, args.h + cellExtra);
+                                item.set(args.x, args.y, args.w, args.h);
                                 paintItems.push(item);
                                 x += cellSize + viewers.TREE_RENDERER_GRID_PADDING;
                                 if (x + cellSize > b.width) {
-                                    y += cellSize + extra + viewers.TREE_RENDERER_GRID_PADDING;
+                                    y += cellSize + viewers.TREE_RENDERER_GRID_PADDING;
                                     x = 0 + offset;
-                                    extra = 0;
                                 }
                             }
                             if (expanded) {
-                                const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset, extra, depth + 1);
+                                const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset, depth + 1);
                                 y = result.y;
                                 x = result.x;
-                                extra = Math.max(extra, result.extra);
                             }
                         }
                         return {
                             x: x,
-                            y: y,
-                            extra: extra
+                            y: y
                         };
                     }
                     renderGridCell(args, renderer, depth) {
@@ -1854,39 +1850,29 @@ var phasereditor2d;
                         const b = args.viewer.getBounds();
                         const lineHeight = 20;
                         let x = args.x;
-                        let y = args.y;
                         const ctx = args.canvasContext;
                         const label = args.viewer.getLabelProvider().getLabel(args.obj);
-                        let lines = [""];
+                        let line = "";
                         for (const c of label) {
-                            const test = lines[lines.length - 1] + c;
+                            const test = line + c;
                             const m = ctx.measureText(test);
                             if (m.width > args.w) {
-                                if (lines.length === 2) {
-                                    let str = lines[lines.length - 1];
-                                    if (str.length > 2) {
-                                        str = str.substring(0, str.length - 2) + "..";
-                                    }
-                                    lines[lines.length - 1] = str;
-                                    break;
+                                if (line.length > 2) {
+                                    line = line.substring(0, line.length - 2) + "..";
                                 }
-                                else {
-                                    lines.push("");
-                                    lines[lines.length - 1] = c;
-                                }
+                                break;
                             }
                             else {
-                                lines[lines.length - 1] += c;
+                                line += c;
                             }
                         }
                         const selected = args.viewer.isSelected(args.obj);
                         let labelHeight;
                         let visible;
                         {
-                            labelHeight = lines.length * lineHeight;
+                            labelHeight = lineHeight;
                             visible = args.y > -(cellSize + labelHeight) && args.y < b.height;
                             if (visible) {
-                                const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - 6, args.obj, args.viewer, args.center);
                                 if (depth > 0) {
                                     const space = args.h / (depth + 1);
                                     const arrowH = space / 2;
@@ -1904,7 +1890,8 @@ var phasereditor2d;
                                     }
                                     ctx.restore();
                                 }
-                                this.renderCellBack(args, selected, labelHeight);
+                                this.renderCellBack(args, selected);
+                                const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - 6 - lineHeight, args.obj, args.viewer, args.center);
                                 if (selected) {
                                     ctx.save();
                                     ctx.globalAlpha = 0.5;
@@ -1914,10 +1901,9 @@ var phasereditor2d;
                                 else {
                                     renderer.renderCell(args2);
                                 }
-                                this.renderCellBack(args, selected, labelHeight);
-                                args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h, args.w, labelHeight, 10);
+                                this.renderCellFront(args, selected);
+                                args.viewer.paintItemBackground(args.obj, args.x, args.y + args.h - lineHeight, args.w, labelHeight, 10);
                             }
-                            y += args.h + labelHeight;
                         }
                         if (visible) {
                             ctx.save();
@@ -1927,18 +1913,13 @@ var phasereditor2d;
                             else {
                                 ctx.fillStyle = controls.Controls.theme.treeItemForeground;
                             }
-                            let y2 = y - lineHeight * (lines.length - 1) - 5;
-                            for (const line of lines) {
-                                const m = ctx.measureText(line);
-                                const x2 = Math.max(x, x + args.w / 2 - m.width / 2);
-                                ctx.fillText(line, x2, y2);
-                                y2 += lineHeight;
-                            }
+                            const m = ctx.measureText(line);
+                            const x2 = Math.max(x, x + args.w / 2 - m.width / 2);
+                            ctx.fillText(line, x2, args.y + args.h - 5);
                             ctx.restore();
                         }
-                        return labelHeight;
                     }
-                    renderCellBack(args, selected, labelHeight) {
+                    renderCellBack(args, selected) {
                         // if (selected) {
                         //     const ctx = args.canvasContext;
                         //     ctx.save();
@@ -1948,7 +1929,7 @@ var phasereditor2d;
                         //     ctx.restore();
                         // }
                     }
-                    renderCellFront(args, selected, labelHeight) {
+                    renderCellFront(args, selected) {
                         // if (selected) {
                         //     const ctx = args.canvasContext;
                         //     ctx.save();
@@ -1978,8 +1959,8 @@ var phasereditor2d;
                         constructor(viewer) {
                             super(viewer, false);
                         }
-                        renderCellBack(args, selected, labelHeight) {
-                            super.renderCellBack(args, selected, labelHeight);
+                        renderCellBack(args, selected) {
+                            super.renderCellBack(args, selected);
                             const isParent = this.isParent(args.obj);
                             const isChild = this.isChild(args.obj);
                             if (isParent || isChild) {
@@ -1987,7 +1968,7 @@ var phasereditor2d;
                                 const ctx = args.canvasContext;
                                 ctx.save();
                                 ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                                ctx.fillRect(args.x - margin, args.y, args.w + margin, args.h + labelHeight);
+                                ctx.fillRect(args.x - margin, args.y, args.w + margin, args.h);
                                 ctx.restore();
                             }
                         }
@@ -4591,7 +4572,6 @@ var phasereditor2d;
                                 const index = Math.min(realCount - 1, Math.round(i * step));
                                 const obj = children[index];
                                 const renderer = args.viewer.getCellRendererProvider().getCellRenderer(obj);
-                                //renderer.render(canvas, gc, startX + itemX, startY + itemY, size, size);
                                 const args2 = new viewers.RenderCellArgs(args.canvasContext, startX + itemX, startY + itemY, size, size, obj, args.viewer, true);
                                 renderer.renderCell(args2);
                                 itemX += size;
@@ -4608,7 +4588,7 @@ var phasereditor2d;
                         ctx.globalAlpha = 0.5;
                         ctx.fillStyle = controls.Controls.theme.treeItemForeground;
                         const header = Math.floor(args.h * 0.15);
-                        let w = args.h;
+                        let w = args.w < args.h * 3 ? args.w : args.h;
                         ctx.fillRect(args.x, args.y + 2, (w - 2) * 0.6, header);
                         ctx.fillRect(args.x, args.y + 2 + header, w - 2, args.h - 2 - header - 2);
                         ctx.restore();

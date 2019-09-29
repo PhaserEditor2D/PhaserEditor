@@ -8,8 +8,8 @@ namespace phasereditor2d.ui.ide.editors.pack {
             super(viewer, false);
         }
 
-        renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, labelHeight: number) {
-            super.renderCellBack(args, selected, labelHeight);
+        renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean) {
+            super.renderCellBack(args, selected);
 
             const isParent = this.isParent(args.obj);
             const isChild = this.isChild(args.obj);
@@ -19,7 +19,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
                 const ctx = args.canvasContext;
                 ctx.save();
                 ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                ctx.fillRect(args.x - margin, args.y, args.w + margin, args.h + labelHeight);
+                ctx.fillRect(args.x - margin, args.y, args.w + margin, args.h);
                 ctx.restore();
             }
         }
