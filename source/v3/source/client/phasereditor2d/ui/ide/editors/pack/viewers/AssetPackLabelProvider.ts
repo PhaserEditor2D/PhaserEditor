@@ -11,7 +11,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                 return obj.getKey();
             }
 
-            if (obj instanceof ImageFrame) {
+            if (obj instanceof controls.ImageFrame) {
                 return obj.getName();
             }
 

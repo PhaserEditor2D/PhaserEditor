@@ -36,8 +36,8 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return controls.Controls.resolveNothingLoaded();
         }
 
-        parseFrames(): ImageFrame[] {
-            const list: ImageFrame[] = [];
+        parseFrames(): controls.ImageFrame[] {
+            const list: controls.ImageFrame[] = [];
 
             const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);

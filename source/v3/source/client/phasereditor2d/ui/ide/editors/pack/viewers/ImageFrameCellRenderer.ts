@@ -3,7 +3,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
     export class ImageFrameCellRenderer implements controls.viewers.ICellRenderer {
 
         renderCell(args: controls.viewers.RenderCellArgs): void {
-            const item = <ImageFrame>args.obj;
+            const item = <controls.ImageFrame>args.obj;
             const img = item.getImage();
             const fd = item.getFrameData();
 
@@ -45,7 +45,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
         }
 
         preload(obj: any): Promise<controls.PreloadResult> {
-            const item = <ImageFrame>obj;
+            const item = <controls.ImageFrame>obj;
             return item.getImage().preload();
         }
     }

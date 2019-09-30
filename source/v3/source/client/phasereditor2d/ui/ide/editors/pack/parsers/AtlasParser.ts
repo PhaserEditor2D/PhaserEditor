@@ -8,7 +8,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             super(packItem);
         }
 
-        protected parseFrames2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
+        protected parseFrames2(imageFrames: ui.controls.ImageFrame[], image: controls.IImage, atlas: string) {
             try {
                 const data = JSON.parse(atlas);
                 if (Array.isArray(data.frames)) {
@@ -34,8 +34,8 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             const dst = new controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
             const srcSize = new controls.Point(frame.sourceSize.w, frame.sourceSize.h);
 
-            const frameData = new FrameData(index, src, dst, srcSize);
-            return new ImageFrame(frame.filename, image, frameData);
+            const frameData = new controls.FrameData(index, src, dst, srcSize);
+            return new controls.ImageFrame(frame.filename, image, frameData);
         }
 
     }

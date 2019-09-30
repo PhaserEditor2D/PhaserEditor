@@ -120,7 +120,7 @@ namespace phasereditor2d.ui.controls.properties {
                 if (section.canEditNumber(n)) {
                     show = true;
                     for (const obj of this._selection) {
-                        if (!section.canEdit(obj)) {
+                        if (!section.canEdit(obj, n)) {
                             show = false;
                             break;
                         }

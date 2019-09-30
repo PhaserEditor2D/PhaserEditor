@@ -64,7 +64,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
         }
 
         protected isChild(obj: any) {
-            return obj instanceof ImageFrame;
+            return obj instanceof controls.ImageFrame;
         }
     }
 }

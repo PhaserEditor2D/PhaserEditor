@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.controls.properties {
 
         protected abstract createForm(parent: HTMLDivElement);
 
-        abstract canEdit(obj: any): boolean;
+        abstract canEdit(obj: any, n : number): boolean;
 
         abstract canEditNumber(n: number): boolean;
 

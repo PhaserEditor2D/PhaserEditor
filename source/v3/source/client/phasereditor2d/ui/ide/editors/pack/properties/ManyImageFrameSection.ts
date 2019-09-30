@@ -34,18 +34,21 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
                     return AssetPackUtils.getImageFrames(obj);
                 }
 
-                return [(<ImageFrame>obj)]
+                return [(<controls.ImageFrame>obj)]
             });
 
             return frames;
         }
 
-        canEdit(obj: any): boolean {
-            return obj instanceof ImageFrame || obj instanceof AssetPackItem && AssetPackUtils.isImageFrameContainer(obj);
+        canEdit(obj: any, n: number): boolean {
+            if (n === 1) {
+                return obj instanceof AssetPackItem && obj.getType() !== IMAGE_TYPE && AssetPackUtils.isImageFrameContainer(obj);
+            }
+            return obj instanceof controls.ImageFrame || obj instanceof AssetPackItem && AssetPackUtils.isImageFrameContainer(obj);
         }
 
         canEditNumber(n: number): boolean {
-            return n > 1;
+            return n > 0;
         }
 
     }

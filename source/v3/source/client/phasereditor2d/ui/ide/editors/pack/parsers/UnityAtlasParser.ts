@@ -2,7 +2,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
     export class UnityAtlasParser extends BaseAtlasParser {
 
-        protected parseFrames2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
+        protected parseFrames2(imageFrames: controls.ImageFrame[], image: controls.IImage, atlas: string) {
 
             // Taken from Phaser code.
 
@@ -67,13 +67,13 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
         }
 
-        private addFrame(image: controls.IImage, imageFrames: ImageFrame[], spriteName: string, rect: any) {
+        private addFrame(image: controls.IImage, imageFrames: controls.ImageFrame[], spriteName: string, rect: any) {
             const src = new controls.Rect(rect.x, rect.y, rect.width, rect.height);
             src.y = image.getHeight() - src.y - src.h;
             const dst = new controls.Rect(0, 0, rect.width, rect.height);
             const srcSize = new controls.Point(rect.width, rect.height);
-            const fd = new FrameData(imageFrames.length, src, dst, srcSize);
-            imageFrames.push(new ImageFrame(spriteName, image, fd));
+            const fd = new controls.FrameData(imageFrames.length, src, dst, srcSize);
+            imageFrames.push(new controls.ImageFrame(spriteName, image, fd));
         }
 
     }

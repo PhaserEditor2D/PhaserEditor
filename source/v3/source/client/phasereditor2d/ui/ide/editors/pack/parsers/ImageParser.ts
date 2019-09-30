@@ -12,17 +12,17 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return img.preload();
         }
 
-        protected parseFrames(): ImageFrame[] {
+        protected parseFrames(): controls.ImageFrame[] {
             const url = this.getPackItem().getData().url;
             const img = AssetPackUtils.getImageFromPackUrl(url);
 
-            const fd = new FrameData(0, 
+            const fd = new controls.FrameData(0, 
                 new controls.Rect(0, 0, img.getWidth(), img.getHeight()),
                 new controls.Rect(0, 0, img.getWidth(), img.getHeight()), 
                 new controls.Point(img.getWidth(), img.getWidth())
             );
 
-            return [new ImageFrame(this.getPackItem().getKey(), img, fd)];
+            return [new controls.ImageFrame(this.getPackItem().getKey(), img, fd)];
         }
 
 

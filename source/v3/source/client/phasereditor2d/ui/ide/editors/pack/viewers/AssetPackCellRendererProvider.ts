@@ -18,7 +18,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                     default:
                         break;
                 }
-            } else if (element instanceof ImageFrame) {
+            } else if (element instanceof controls.ImageFrame) {
                 return new ImageFrameCellRenderer();
             }
 

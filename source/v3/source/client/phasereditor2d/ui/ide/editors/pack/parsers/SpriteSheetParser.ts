@@ -15,8 +15,8 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return await image.preload();
         }
 
-        parseFrames(): ImageFrame[] {
-            const frames: ImageFrame[] = [];
+        parseFrames(): controls.ImageFrame[] {
+            const frames: controls.ImageFrame[] = [];
 
             const data = this.getPackItem().getData();
 
@@ -53,12 +53,12 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                     if (x + w <= image.getWidth() && y + h <= image.getHeight()) {
                         // FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
                         // list.add(frame);
-                        const fd = new FrameData(i,
+                        const fd = new controls.FrameData(i,
                             new controls.Rect(x, y, w, h),
                             new controls.Rect(0, 0, w, h),
                             new controls.Point(w, h)
                         );
-                        frames.push(new ImageFrame(i.toString(), image, fd));
+                        frames.push(new controls.ImageFrame(i.toString(), image, fd));
                     }
                 }
 

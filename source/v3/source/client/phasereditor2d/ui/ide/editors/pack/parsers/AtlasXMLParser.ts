@@ -8,7 +8,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             super(packItem);
         }
 
-        protected parseFrames2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
+        protected parseFrames2(imageFrames: controls.ImageFrame[], image: controls.IImage, atlas: string) {
             try {
                 const parser = new DOMParser();
                 const data = parser.parseFromString(atlas, "text/xml");
@@ -36,12 +36,12 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                         spriteH = Number.parseInt(elem.getAttribute("frameHeight"));
                     }
 
-                    const fd = new FrameData(i,
+                    const fd = new controls.FrameData(i,
                         new controls.Rect(frameX, frameY, frameW, frameH),
                         new controls.Rect(spriteX, spriteY, spriteW, spriteH),
                         new controls.Point(frameW, frameH)
                     );
-                    imageFrames.push(new ImageFrame(name, image, fd));
+                    imageFrames.push(new controls.ImageFrame(name, image, fd));
                 }
             } catch (e) {
                 console.error(e);

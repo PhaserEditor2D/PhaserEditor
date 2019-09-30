@@ -1,4 +1,5 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.ui.controls {
+   
     export class FrameData {
         constructor(
             public index: number,

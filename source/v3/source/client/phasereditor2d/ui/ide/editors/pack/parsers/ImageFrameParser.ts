@@ -7,11 +7,11 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             this._packItem = packItem;
         }
 
-        protected setCachedFrames(frames: ImageFrame[]) {
+        protected setCachedFrames(frames: controls.ImageFrame[]) {
             this._packItem.getEditorData()["__frames_cache"] = frames;
         }
 
-        protected getCachedFrames(): ImageFrame[] {
+        protected getCachedFrames(): controls.ImageFrame[] {
             return this._packItem.getEditorData()["__frames_cache"];
         }
 
@@ -31,7 +31,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return this.preloadFrames();
         }
 
-        parse(): ImageFrame[] {
+        parse(): controls.ImageFrame[] {
             if (this.hasCachedFrames()) {
                 return this.getCachedFrames();
             }
@@ -45,7 +45,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
         protected abstract async preloadFrames(): Promise<controls.PreloadResult>;
 
-        protected abstract parseFrames(): ImageFrame[];
+        protected abstract parseFrames(): controls.ImageFrame[];
     }
 
 }

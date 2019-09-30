@@ -21,15 +21,15 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return Math.max(result1, result2);
         }
 
-        protected abstract parseFrames2(frames: ImageFrame[], image: controls.IImage, atlas: string);
+        protected abstract parseFrames2(frames: controls.ImageFrame[], image: controls.IImage, atlas: string);
 
-        parseFrames(): ImageFrame[] {
+        parseFrames(): controls.ImageFrame[] {
 
             if (this.hasCachedFrames()) {
                 return this.getCachedFrames();
             }
 
-            const list: ImageFrame[] = [];
+            const list: controls.ImageFrame[] = [];
 
             const data = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
@@ -53,8 +53,8 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             const dst = new controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
             const srcSize = new controls.Point(frame.sourceSize.w, frame.sourceSize.h);
 
-            const frameData = new FrameData(index, src, dst, srcSize);
-            return new ImageFrame(frame.filename, image, frameData);
+            const frameData = new controls.FrameData(index, src, dst, srcSize);
+            return new controls.ImageFrame(frame.filename, image, frameData);
         }
 
 
