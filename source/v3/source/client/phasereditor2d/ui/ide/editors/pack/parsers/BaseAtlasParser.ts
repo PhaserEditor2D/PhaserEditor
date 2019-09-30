@@ -1,19 +1,15 @@
+/// <reference path="./ImageFrameParser.ts" />
+
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
-    export abstract class AbstractAtlasParser {
-
-        private _packItem: AssetPackItem;
+    export abstract class BaseAtlasParser extends ImageFrameParser {
 
         constructor(packItem: AssetPackItem) {
-            this._packItem = packItem;
+            super(packItem);
         }
 
-        async preload(): Promise<controls.PreloadResult> {
-            if (this._packItem["__frames"]) {
-                return controls.Controls.resolveNothingLoaded();
-            }
-
-            const data = this._packItem.getData();
+        async preloadFrames(): Promise<controls.PreloadResult> {
+            const data = this.getPackItem().getData();
 
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
             let result1 = await FileUtils.preloadFileString(dataFile);
@@ -25,17 +21,17 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return Math.max(result1, result2);
         }
 
-        protected abstract parse2(frames: ImageFrame[], image: controls.IImage, atlas: string);
+        protected abstract parseFrames2(frames: ImageFrame[], image: controls.IImage, atlas: string);
 
-        parse(): ImageFrame[] {
+        parseFrames(): ImageFrame[] {
 
-            if (this._packItem["__frames"]) {
-                return this._packItem["__frames"];
+            if (this.hasCachedFrames()) {
+                return this.getCachedFrames();
             }
 
             const list: ImageFrame[] = [];
 
-            const data = this._packItem.getData();
+            const data = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
             const image = FileUtils.getImage(imageFile);
@@ -43,13 +39,11 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             if (dataFile) {
                 const str = FileUtils.getFileStringFromCache(dataFile);
                 try {
-                    this.parse2(list, image, str);
+                    this.parseFrames2(list, image, str);
                 } catch (e) {
                     console.error(e);
                 }
             }
-
-            this._packItem["__frames"] = list;
 
             return list;
         }

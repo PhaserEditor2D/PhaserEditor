@@ -6,9 +6,10 @@ namespace phasereditor2d.ui.ide.blocks {
     import viewers = controls.viewers;
 
     export class BlocksView extends ide.ViewerView {
-        
-        private _selectionListener : any;
-        private _activeEditor : EditorPart;
+
+        private _selectionListener: any;
+        private _activeEditor: EditorPart;
+        private _currentBlocksProvider: EditorBlocksProvider;
 
         constructor() {
             super("blocksView");
@@ -20,10 +21,10 @@ namespace phasereditor2d.ui.ide.blocks {
             return new viewers.TreeViewer();
         }
 
-        protected createPart() : void {
+        protected createPart(): void {
             super.createPart();
 
-            this._selectionListener = (e : CustomEvent) => this.onPartSelection();
+            this._selectionListener = (e: CustomEvent) => this.onPartSelection();
 
             Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
         }
@@ -32,13 +33,13 @@ namespace phasereditor2d.ui.ide.blocks {
             const part = Workbench.getWorkbench().getActivePart();
 
             if (!part || part instanceof EditorPart && part !== this._activeEditor) {
-                
+
                 if (this._activeEditor) {
                     this._activeEditor.removeEventListener(controls.EVENT_SELECTION, this._selectionListener);
                 }
 
-                this._activeEditor = <EditorPart> part;
-                
+                this._activeEditor = <EditorPart>part;
+
                 this._activeEditor.addEventListener(controls.EVENT_SELECTION, this._selectionListener);
 
                 this.onPartSelection();
@@ -47,11 +48,15 @@ namespace phasereditor2d.ui.ide.blocks {
 
         private async onPartSelection() {
             const provider = this._activeEditor.getBlocksProvider();
-            
+
             if (!provider) {
                 this._viewer.setInput(null);
                 this._viewer.setContentProvider(new controls.viewers.EmptyTreeContentProvider());
+                this._currentBlocksProvider = provider;
+                return;
             }
+
+            this._currentBlocksProvider = provider;
 
             await provider.preload();
 
@@ -62,6 +67,13 @@ namespace phasereditor2d.ui.ide.blocks {
             this._viewer.setInput(provider.getInput());
 
             this._viewer.repaint();
+        }
+
+        getPropertyProvider() {
+            if (this._currentBlocksProvider) {
+                return this._currentBlocksProvider.getPropertySectionProvider();
+            }
+            return null;
         }
     }
 }

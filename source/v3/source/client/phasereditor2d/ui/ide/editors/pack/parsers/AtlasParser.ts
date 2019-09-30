@@ -1,14 +1,14 @@
-/// <reference path="./AbstractAtlasParser.ts" />
+/// <reference path="./BaseAtlasParser.ts" />
 
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
-    export class AtlasParser extends AbstractAtlasParser {
+    export class AtlasParser extends BaseAtlasParser {
 
         constructor(packItem : AssetPackItem) {
             super(packItem);
         }
 
-        protected parse2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
+        protected parseFrames2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
             try {
                 const data = JSON.parse(atlas);
                 if (Array.isArray(data.frames)) {

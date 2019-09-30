@@ -1,19 +1,13 @@
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
-    export class MultiAtlasParser {
-
-        private _packItem: AssetPackItem;
+    export class MultiAtlasParser extends ImageFrameParser {
 
         constructor(packItem: AssetPackItem) {
-            this._packItem = packItem;
+            super(packItem);
         }
 
-        async preload(): Promise<controls.PreloadResult> {
-            if (this._packItem["__frames"]) {
-                return controls.Controls.resolveNothingLoaded();
-            }
-
-            const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this._packItem.getData();
+        async preloadFrames(): Promise<controls.PreloadResult> {
+            const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
             if (dataFile) {
@@ -42,15 +36,10 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return controls.Controls.resolveNothingLoaded();
         }
 
-        parse(): ImageFrame[] {
-
-            if (this._packItem["__frames"]) {
-                return this._packItem["__frames"];
-            }
-
+        parseFrames(): ImageFrame[] {
             const list: ImageFrame[] = [];
 
-            const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this._packItem.getData();
+            const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
             if (dataFile) {
@@ -73,9 +62,6 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                     console.error(e);
                 }
             }
-
-            this._packItem["__frames"] = list;
-
             return list;
         }
     }

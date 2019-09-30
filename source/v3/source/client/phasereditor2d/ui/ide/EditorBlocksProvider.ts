@@ -12,6 +12,8 @@ namespace phasereditor2d.ui.ide {
 
         abstract getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) : viewers.TreeViewerRenderer;
 
+        abstract getPropertySectionProvider() : controls.properties.PropertySectionProvider;
+
         abstract getInput() : any;
 
         abstract preload() : Promise<void>;

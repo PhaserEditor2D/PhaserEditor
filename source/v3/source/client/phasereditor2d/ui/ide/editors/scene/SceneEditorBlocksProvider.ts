@@ -28,6 +28,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return new pack.viewers.AssetPackBlocksTreeViewerRenderer(viewer);
         }
 
+        getPropertySectionProvider(): controls.properties.PropertySectionProvider {
+            return new SceneEditorBlockPropertyProvider();
+        }
+
         getInput() {
             return this;
         }

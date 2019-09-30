@@ -1,35 +1,24 @@
-/// <reference path="./AbstractAtlasParser.ts" />
+/// <reference path="./BaseAtlasParser.ts" />
 
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
-    export class SpriteSheetParser {
-
-        private _packItem: AssetPackItem;
+    export class SpriteSheetParser extends ImageFrameParser {
 
         constructor(packItem: AssetPackItem) {
-            this._packItem = packItem;
+            super(packItem);
         }
 
-        async preload(): Promise<controls.PreloadResult> {
-            if (this._packItem["__frames"]) {
-                return controls.Controls.resolveNothingLoaded();
-            }
-
-            const data = this._packItem.getData();
+        async preloadFrames(): Promise<controls.PreloadResult> {
+            const data = this.getPackItem().getData();
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
             const image = FileUtils.getImage(imageFile);
             return await image.preload();
         }
 
-        parse(): ImageFrame[] {
-
-            if (this._packItem["__frames"]) {
-                return this._packItem["__frames"];
-            }
-
+        parseFrames(): ImageFrame[] {
             const frames: ImageFrame[] = [];
 
-            const data = this._packItem.getData();
+            const data = this.getPackItem().getData();
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
             const image = FileUtils.getImage(imageFile);
@@ -86,8 +75,6 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
                 i++;
             }
-
-            this._packItem["__frames"] = frames;
 
             return frames;
         }

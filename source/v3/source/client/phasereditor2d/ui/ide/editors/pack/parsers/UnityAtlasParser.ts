@@ -1,8 +1,8 @@
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
-    export class UnityAtlasParser extends AbstractAtlasParser {
+    export class UnityAtlasParser extends BaseAtlasParser {
 
-        protected parse2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
+        protected parseFrames2(imageFrames: ImageFrame[], image: controls.IImage, atlas: string) {
 
             // Taken from Phaser code.
 

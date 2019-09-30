@@ -1,5 +1,22 @@
 namespace phasereditor2d.ui.ide.editors.pack {
+
+    const IMAGE_FRAME_CONTAINER_TYPES = new Set([
+        "multiatlas",
+        "atlas",
+        "unityAtlas",
+        "atlasXML",
+        "spritesheet"
+    ]);
+
     export class AssetPackUtils {
+
+        static isImageFrameContainer(packItem : AssetPackItem) {
+            return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());
+        }
+
+        static getImageFrames(packItem : AssetPackItem) {
+             
+        }
 
         static async preloadAssetPackItems(packItems : AssetPackItem[]) {
             for(const item of packItems) {
