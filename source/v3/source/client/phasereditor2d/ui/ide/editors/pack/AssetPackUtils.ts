@@ -1,11 +1,12 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
     const IMAGE_FRAME_CONTAINER_TYPES = new Set([
-        "multiatlas",
-        "atlas",
-        "unityAtlas",
-        "atlasXML",
-        "spritesheet"
+        IMAGE_TYPE,
+        MULTI_ATLAS_TYPE,
+        ATLAS_TYPE,
+        UNITY_ATLAS_TYPE,
+        ATLAS_XML_TYPE,
+        SPRITESHEET_TYPE
     ]);
 
     export class AssetPackUtils {
@@ -24,15 +25,17 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
         static getImageFrameParser(packItem: AssetPackItem) {
             switch (packItem.getType()) {
-                case "atlas":
+                case IMAGE_TYPE:
+                    return new pack.parsers.ImageParser(packItem);
+                case ATLAS_TYPE:
                     return new pack.parsers.AtlasParser(packItem);
-                case "atlasXML":
+                case ATLAS_XML_TYPE:
                     return new pack.parsers.AtlasXMLParser(packItem);
-                case "unityAtlas":
+                case UNITY_ATLAS_TYPE:
                     return new pack.parsers.UnityAtlasParser(packItem);
-                case "multiatlas":
+                case MULTI_ATLAS_TYPE:
                     return new pack.parsers.MultiAtlasParser(packItem);
-                case "spritesheet":
+                case SPRITESHEET_TYPE:
                     return new pack.parsers.SpriteSheetParser(packItem);
                 default:
                     break;

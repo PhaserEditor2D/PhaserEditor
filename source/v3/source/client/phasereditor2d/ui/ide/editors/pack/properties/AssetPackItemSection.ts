@@ -2,7 +2,7 @@
 
 namespace phasereditor2d.ui.ide.editors.pack.properties {
 
-    export class AssetPackItemPropertySection extends controls.properties.PropertySection<AssetPackItem> {
+    export class AssetPackItemSection extends controls.properties.PropertySection<AssetPackItem> {
 
         constructor(page : controls.properties.PropertyPage) {
             super(page, "AssetPackItemPropertySection", "File Key", false)

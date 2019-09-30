@@ -9,7 +9,13 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                 return parent.getItems();
             }
 
+
             if (parent instanceof AssetPackItem) {
+                
+                if (parent.getType() === IMAGE_TYPE) {
+                    return [];
+                }
+
                 if (AssetPackUtils.isImageFrameContainer(parent)) {
                     return AssetPackUtils.getImageFrames(parent);
                 }

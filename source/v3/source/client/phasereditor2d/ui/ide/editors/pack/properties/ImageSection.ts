@@ -1,6 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.pack.properties {
 
-    export class ImageAssetPackItemPreviewSection extends controls.properties.PropertySection<AssetPackItem> {
+    export class ImageSection extends controls.properties.PropertySection<AssetPackItem> {
 
         constructor(page: controls.properties.PropertyPage) {
             super(page, "id", "Image Key Preview", true);

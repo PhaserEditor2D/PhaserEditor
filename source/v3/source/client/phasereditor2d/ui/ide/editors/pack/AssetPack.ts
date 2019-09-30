@@ -1,5 +1,12 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
+    export const IMAGE_TYPE = "image";
+    export const ATLAS_TYPE = "atlas";
+    export const ATLAS_XML_TYPE = "atlasXML";
+    export const UNITY_ATLAS_TYPE = "unityAtlas";
+    export const MULTI_ATLAS_TYPE = "multiatlas";
+    export const SPRITESHEET_TYPE = "spritesheet";
+
     export class AssetPack {
         private _file: core.io.FilePath;
         private _items: AssetPackItem[];
