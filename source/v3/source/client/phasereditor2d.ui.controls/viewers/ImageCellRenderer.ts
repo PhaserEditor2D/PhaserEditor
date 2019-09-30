@@ -1,8 +1,10 @@
 namespace phasereditor2d.ui.controls.viewers {
 
-    export abstract class ImageCellRenderer implements ICellRenderer {
+    export class ImageCellRenderer implements ICellRenderer {
 
-        abstract getImage(obj: any): IImage;
+        getImage(obj: any): IImage {
+            return obj;
+        }
 
         renderCell(args: RenderCellArgs): void {
             const img = this.getImage(args.obj);

@@ -1,8 +1,8 @@
 namespace phasereditor2d.ui.ide.editors.pack.properties {
 
-    export class ManyImageFrameSection extends controls.properties.PropertySection<any> {
+    export class ManyImageSection extends controls.properties.PropertySection<any> {
         constructor(page: controls.properties.PropertyPage) {
-            super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageFrameSection", "Images", true);
+            super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageSection", "Images", true);
         }
 
         protected createForm(parent: HTMLDivElement) {

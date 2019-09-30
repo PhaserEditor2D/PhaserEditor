@@ -15,11 +15,11 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                     case "atlasXML":
                     case "spritesheet":
                         return new controls.viewers.FolderCellRenderer();
-                    default:
+                    default: 
                         break;
                 }
             } else if (element instanceof controls.ImageFrame) {
-                return new ImageFrameCellRenderer();
+                return new controls.viewers.ImageCellRenderer();
             }
 
             return new controls.viewers.EmptyCellRenderer();

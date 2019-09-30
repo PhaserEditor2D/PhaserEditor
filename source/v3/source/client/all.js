@@ -452,103 +452,6 @@ var phasereditor2d;
                 PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
                 PreloadResult[PreloadResult["RESOURCES_LOADED"] = 1] = "RESOURCES_LOADED";
             })(PreloadResult = controls.PreloadResult || (controls.PreloadResult = {}));
-            class ImageImpl {
-                constructor(img, url) {
-                    this._img = img;
-                    this._url = url;
-                    this._ready = false;
-                    this._error = false;
-                }
-                preload() {
-                    if (this._ready || this._error) {
-                        return Controls.resolveNothingLoaded();
-                    }
-                    if (this._requestPromise) {
-                        return this._requestPromise;
-                    }
-                    this._requestPromise = new Promise((resolve, reject) => {
-                        this._img.src = this._url;
-                        this._img.addEventListener("load", e => {
-                            this._requestPromise = null;
-                            this._ready = true;
-                            resolve(PreloadResult.RESOURCES_LOADED);
-                        });
-                        this._img.addEventListener("error", e => {
-                            console.error("ERROR: Loading image " + this._url);
-                            this._requestPromise = null;
-                            this._error = true;
-                            resolve(PreloadResult.NOTHING_LOADED);
-                        });
-                    });
-                    return this._requestPromise;
-                    /*
-                    return this._img.decode().then(_ => {
-                        this._ready = true;
-                        return Controls.resolveResourceLoaded();
-                    }).catch(e => {
-                        this._ready = true;
-                        console.error("ERROR: Cannot decode " + this._url);
-                        console.error(e);
-                        return Controls.resolveNothingLoaded();
-                    });
-                    */
-                }
-                getWidth() {
-                    return this._ready ? this._img.naturalWidth : 16;
-                }
-                getHeight() {
-                    return this._ready ? this._img.naturalHeight : 16;
-                }
-                paint(context, x, y, w, h, center) {
-                    if (this._ready) {
-                        const naturalWidth = this._img.naturalWidth;
-                        const naturalHeight = this._img.naturalHeight;
-                        let renderHeight = h;
-                        let renderWidth = w;
-                        let imgW = naturalWidth;
-                        let imgH = naturalHeight;
-                        // compute the right width
-                        imgW = imgW * (renderHeight / imgH);
-                        imgH = renderHeight;
-                        // fix width if it goes beyond the area
-                        if (imgW > renderWidth) {
-                            imgH = imgH * (renderWidth / imgW);
-                            imgW = renderWidth;
-                        }
-                        let scale = imgW / naturalWidth;
-                        let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
-                        let imgY = y + renderHeight / 2 - imgH / 2;
-                        let imgDstW = naturalWidth * scale;
-                        let imgDstH = naturalHeight * scale;
-                        if (imgDstW > 0 && imgDstH > 0) {
-                            context.drawImage(this._img, imgX, imgY, imgDstW, imgDstH);
-                        }
-                    }
-                    else {
-                        this.paintEmpty(context, x, y, w, h);
-                    }
-                }
-                paintEmpty(context, x, y, w, h) {
-                    if (w > 10 && h > 10) {
-                        context.save();
-                        context.strokeStyle = Controls.theme.treeItemForeground;
-                        const cx = x + w / 2;
-                        const cy = y + h / 2;
-                        context.strokeRect(cx, cy - 1, 2, 2);
-                        context.strokeRect(cx - 5, cy - 1, 2, 2);
-                        context.strokeRect(cx + 5, cy - 1, 2, 2);
-                        context.restore();
-                    }
-                }
-                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
-                    if (this._ready) {
-                        context.drawImage(this._img, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
-                    }
-                    else {
-                        this.paintEmpty(context, dstX, dstY, dstW, dstH);
-                    }
-                }
-            }
             controls.ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
             controls.ICON_CONTROL_TREE_EXPAND = "tree-expand";
             controls.ICON_CONTROL_CLOSE = "close";
@@ -582,7 +485,7 @@ var phasereditor2d;
                     if (Controls._images.has(id)) {
                         return Controls._images.get(id);
                     }
-                    const img = new ImageImpl(new Image(), url);
+                    const img = new controls.DefaultImage(new Image(), url);
                     Controls._images.set(id, img);
                     return img;
                 }
@@ -2581,14 +2484,20 @@ var phasereditor2d;
                                 parent.appendChild(imgControl.getElement());
                                 setTimeout(() => imgControl.resizeTo(), 1);
                                 this.addUpdater(() => {
-                                    const packItem = this.getSelection()[0];
-                                    const img = pack.AssetPackUtils.getImageFromPackUrl(packItem.getData().url);
+                                    const obj = this.getSelection()[0];
+                                    let img;
+                                    if (obj instanceof pack.AssetPackItem) {
+                                        img = pack.AssetPackUtils.getImageFromPackUrl(obj.getData().url);
+                                    }
+                                    else {
+                                        img = obj;
+                                    }
                                     imgControl.setImage(img);
                                     setTimeout(() => imgControl.resizeTo(), 1);
                                 });
                             }
                             canEdit(obj) {
-                                return obj instanceof pack.AssetPackItem && obj.getType() === "image";
+                                return obj instanceof pack.AssetPackItem && obj.getType() === "image" || obj instanceof ui.controls.ImageFrame;
                             }
                             canEditNumber(n) {
                                 return n === 1;
@@ -2613,9 +2522,9 @@ var phasereditor2d;
                 (function (pack) {
                     var properties;
                     (function (properties) {
-                        class ManyImageFrameSection extends ui.controls.properties.PropertySection {
+                        class ManyImageSection extends ui.controls.properties.PropertySection {
                             constructor(page) {
-                                super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageFrameSection", "Images", true);
+                                super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageSection", "Images", true);
                             }
                             createForm(parent) {
                                 parent.classList.add("ManyImagePreviewFormArea");
@@ -2653,7 +2562,7 @@ var phasereditor2d;
                                 return n > 0;
                             }
                         }
-                        properties.ManyImageFrameSection = ManyImageFrameSection;
+                        properties.ManyImageSection = ManyImageSection;
                     })(properties = pack.properties || (pack.properties = {}));
                 })(pack = editors.pack || (editors.pack = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -3030,7 +2939,7 @@ var phasereditor2d;
                                     }
                                 }
                                 else if (element instanceof ui.controls.ImageFrame) {
-                                    return new viewers.ImageFrameCellRenderer();
+                                    return new ui.controls.viewers.ImageCellRenderer();
                                 }
                                 return new ui.controls.viewers.EmptyCellRenderer();
                             }
@@ -3143,6 +3052,9 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class ImageCellRenderer {
+                    getImage(obj) {
+                        return obj;
+                    }
                     renderCell(args) {
                         const img = this.getImage(args.obj);
                         img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
@@ -3180,59 +3092,6 @@ var phasereditor2d;
                             }
                         }
                         viewers.ImageAssetPackItemCellRenderer = ImageAssetPackItemCellRenderer;
-                    })(viewers = pack.viewers || (pack.viewers = {}));
-                })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
-                var pack;
-                (function (pack) {
-                    var viewers;
-                    (function (viewers) {
-                        class ImageFrameCellRenderer {
-                            renderCell(args) {
-                                const item = args.obj;
-                                const img = item.getImage();
-                                const fd = item.getFrameData();
-                                const renderWidth = args.w;
-                                const renderHeight = args.h;
-                                let imgW = fd.src.w;
-                                let imgH = fd.src.h;
-                                // compute the right width
-                                imgW = imgW * (renderHeight / imgH);
-                                imgH = renderHeight;
-                                // fix width if it goes beyond the area
-                                if (imgW > renderWidth) {
-                                    imgH = imgH * (renderWidth / imgW);
-                                    imgW = renderWidth;
-                                }
-                                const scale = imgW / fd.src.w;
-                                var imgX = args.x + (args.center ? renderWidth / 2 - imgW / 2 : 0);
-                                var imgY = args.y + renderHeight / 2 - imgH / 2;
-                                const imgDstW = fd.src.w * scale;
-                                const imgDstH = fd.src.h * scale;
-                                if (imgDstW > 0 && imgDstH > 0) {
-                                    img.paintFrame(args.canvasContext, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX, imgY, imgDstW, imgDstH);
-                                }
-                            }
-                            cellHeight(args) {
-                                return args.viewer.getCellSize();
-                            }
-                            preload(obj) {
-                                const item = obj;
-                                return item.getImage().preload();
-                            }
-                        }
-                        viewers.ImageFrameCellRenderer = ImageFrameCellRenderer;
                     })(viewers = pack.viewers || (pack.viewers = {}));
                 })(pack = editors.pack || (editors.pack = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -3344,7 +3203,7 @@ var phasereditor2d;
                         addSections(page, sections) {
                             sections.push(new editors.pack.properties.AssetPackItemSection(page));
                             sections.push(new editors.pack.properties.ImageSection(page));
-                            sections.push(new editors.pack.properties.ManyImageFrameSection(page));
+                            sections.push(new editors.pack.properties.ManyImageSection(page));
                         }
                     }
                     scene.SceneEditorBlockPropertyProvider = SceneEditorBlockPropertyProvider;
@@ -3449,12 +3308,14 @@ var phasereditor2d;
                         });
                     }
                     resizeTo() {
-                        const parent = this.getElement().parentElement;
                         setTimeout(() => {
-                            this.setBounds({
-                                width: parent.clientWidth,
-                                height: parent.clientHeight
-                            });
+                            const parent = this.getElement().parentElement;
+                            if (parent) {
+                                this.setBounds({
+                                    width: parent.clientWidth,
+                                    height: parent.clientHeight
+                                });
+                            }
                             this.getViewer().repaint();
                         }, 10);
                     }
@@ -4720,6 +4581,113 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
+            class DefaultImage {
+                constructor(img, url) {
+                    this._img = img;
+                    this._url = url;
+                    this._ready = false;
+                    this._error = false;
+                }
+                preload() {
+                    if (this._ready || this._error) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                    if (this._requestPromise) {
+                        return this._requestPromise;
+                    }
+                    this._requestPromise = new Promise((resolve, reject) => {
+                        this._img.src = this._url;
+                        this._img.addEventListener("load", e => {
+                            this._requestPromise = null;
+                            this._ready = true;
+                            resolve(controls.PreloadResult.RESOURCES_LOADED);
+                        });
+                        this._img.addEventListener("error", e => {
+                            console.error("ERROR: Loading image " + this._url);
+                            this._requestPromise = null;
+                            this._error = true;
+                            resolve(controls.PreloadResult.NOTHING_LOADED);
+                        });
+                    });
+                    return this._requestPromise;
+                    /*
+                    return this._img.decode().then(_ => {
+                        this._ready = true;
+                        return Controls.resolveResourceLoaded();
+                    }).catch(e => {
+                        this._ready = true;
+                        console.error("ERROR: Cannot decode " + this._url);
+                        console.error(e);
+                        return Controls.resolveNothingLoaded();
+                    });
+                    */
+                }
+                getWidth() {
+                    return this._ready ? this._img.naturalWidth : 16;
+                }
+                getHeight() {
+                    return this._ready ? this._img.naturalHeight : 16;
+                }
+                paint(context, x, y, w, h, center) {
+                    if (this._ready) {
+                        const naturalWidth = this._img.naturalWidth;
+                        const naturalHeight = this._img.naturalHeight;
+                        let renderHeight = h;
+                        let renderWidth = w;
+                        let imgW = naturalWidth;
+                        let imgH = naturalHeight;
+                        // compute the right width
+                        imgW = imgW * (renderHeight / imgH);
+                        imgH = renderHeight;
+                        // fix width if it goes beyond the area
+                        if (imgW > renderWidth) {
+                            imgH = imgH * (renderWidth / imgW);
+                            imgW = renderWidth;
+                        }
+                        let scale = imgW / naturalWidth;
+                        let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                        let imgY = y + renderHeight / 2 - imgH / 2;
+                        let imgDstW = naturalWidth * scale;
+                        let imgDstH = naturalHeight * scale;
+                        if (imgDstW > 0 && imgDstH > 0) {
+                            context.drawImage(this._img, imgX, imgY, imgDstW, imgDstH);
+                        }
+                    }
+                    else {
+                        this.paintEmpty(context, x, y, w, h);
+                    }
+                }
+                paintEmpty(context, x, y, w, h) {
+                    if (w > 10 && h > 10) {
+                        context.save();
+                        context.strokeStyle = controls.Controls.theme.treeItemForeground;
+                        const cx = x + w / 2;
+                        const cy = y + h / 2;
+                        context.strokeRect(cx, cy - 1, 2, 2);
+                        context.strokeRect(cx - 5, cy - 1, 2, 2);
+                        context.strokeRect(cx + 5, cy - 1, 2, 2);
+                        context.restore();
+                    }
+                }
+                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                    if (this._ready) {
+                        context.drawImage(this._img, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                    }
+                    else {
+                        this.paintEmpty(context, dstX, dstY, dstW, dstH);
+                    }
+                }
+            }
+            controls.DefaultImage = DefaultImage;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
             class FillLayout {
                 constructor(padding = 0) {
                     this._padding = 0;
@@ -4760,6 +4728,9 @@ var phasereditor2d;
                     this.src = src;
                     this.dst = dst;
                     this.srcSize = srcSize;
+                }
+                static fromRect(index, rect) {
+                    return new FrameData(0, rect.clone(), new controls.Rect(0, 0, rect.w, rect.h), new controls.Point(rect.w, rect.h));
                 }
             }
             controls.FrameData = FrameData;
@@ -4825,6 +4796,42 @@ var phasereditor2d;
                 }
                 getFrameData() {
                     return this._frameData;
+                }
+                paint(context, x, y, w, h, center) {
+                    const fd = this._frameData;
+                    const img = this._image;
+                    const renderWidth = w;
+                    const renderHeight = h;
+                    let imgW = fd.srcSize.x;
+                    let imgH = fd.srcSize.y;
+                    // compute the right width
+                    imgW = imgW * (renderHeight / imgH);
+                    imgH = renderHeight;
+                    // fix width if it goes beyond the area
+                    if (imgW > renderWidth) {
+                        imgH = imgH * (renderWidth / imgW);
+                        imgW = renderWidth;
+                    }
+                    const scale = imgW / fd.src.w;
+                    var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                    var imgY = y + renderHeight / 2 - imgH / 2;
+                    const imgDstW = fd.src.w * scale;
+                    const imgDstH = fd.src.h * scale;
+                    if (imgDstW > 0 && imgDstH > 0) {
+                        img.paintFrame(context, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX, imgY, imgDstW, imgDstH);
+                    }
+                }
+                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                    // not implemented fow now
+                }
+                preload() {
+                    return this._image.preload();
+                }
+                getWidth() {
+                    return this._frameData.srcSize.x;
+                }
+                getHeight() {
+                    return this._frameData.srcSize.y;
                 }
             }
             controls.ImageFrame = ImageFrame;

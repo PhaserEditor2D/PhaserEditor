@@ -17,12 +17,14 @@ namespace phasereditor2d.ui.ide.properties {
         }
 
         resizeTo() {
-            const parent = this.getElement().parentElement;
             setTimeout(() => {
-                this.setBounds({
-                    width: parent.clientWidth,
-                    height: parent.clientHeight
-                });
+                const parent = this.getElement().parentElement;
+                if (parent) {
+                    this.setBounds({
+                        width: parent.clientWidth,
+                        height: parent.clientHeight
+                    });
+                }
                 this.getViewer().repaint();
             }, 10);
         }

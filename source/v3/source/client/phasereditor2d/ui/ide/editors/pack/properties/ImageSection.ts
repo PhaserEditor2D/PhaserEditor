@@ -19,15 +19,20 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
             setTimeout(() => imgControl.resizeTo(), 1);
 
             this.addUpdater(() => {
-                const packItem = this.getSelection()[0];
-                const img = AssetPackUtils.getImageFromPackUrl(packItem.getData().url);
+                const obj = this.getSelection()[0];
+                let img: controls.IImage;
+                if (obj instanceof AssetPackItem) {
+                    img = AssetPackUtils.getImageFromPackUrl(obj.getData().url);
+                } else {
+                    img = obj;
+                }
                 imgControl.setImage(img);
                 setTimeout(() => imgControl.resizeTo(), 1);
             });
         }
 
         canEdit(obj: any): boolean {
-            return obj instanceof AssetPackItem && obj.getType() === "image";
+            return obj instanceof AssetPackItem && obj.getType() === "image" || obj instanceof controls.ImageFrame;
         }
 
         canEditNumber(n: number): boolean {

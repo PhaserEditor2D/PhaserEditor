@@ -1,6 +1,7 @@
 namespace phasereditor2d.ui.controls {
-   
+
     export class FrameData {
+
         constructor(
             public index: number,
             public src: controls.Rect,
@@ -8,6 +9,10 @@ namespace phasereditor2d.ui.controls {
             public srcSize: controls.Point,
         ) {
 
+        }
+
+        static fromRect(index: number, rect: Rect) {
+            return new FrameData(0, rect.clone(), new Rect(0, 0, rect.w, rect.h), new Point(rect.w, rect.h));
         }
     }
 }
