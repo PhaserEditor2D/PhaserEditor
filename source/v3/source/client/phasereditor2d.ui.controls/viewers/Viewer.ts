@@ -28,6 +28,7 @@ namespace phasereditor2d.ui.controls.viewers {
             super("canvas", "Viewer");
 
             this.getElement().tabIndex = 1;
+            this.getElement().draggable = true;
 
             this._filterText = "";
             this._cellSize = 48;
@@ -49,6 +50,29 @@ namespace phasereditor2d.ui.controls.viewers {
             canvas.addEventListener("wheel", e => this.onWheel(e))
             canvas.addEventListener("keydown", e => this.onKeyDown(e));
             canvas.addEventListener("dblclick", e => this.onDoubleClick(e));
+            canvas.addEventListener("dragstart", e => this.onDragStart(e));
+        }
+
+        private onDragStart(e: DragEvent) {
+            console.log("start dragging");
+            const item = this.getPaintItemAt(e);
+            if (item) {
+                const renderer = this.getCellRendererProvider().getCellRenderer(item.data);
+
+                const canvas = document.createElement("canvas");
+                canvas.width = 64;
+                canvas.height = 64;
+                canvas.style.width = canvas.width + "px";
+                canvas.style.height = canvas.height + "px";
+                const ctx = canvas.getContext("2d");
+                
+                renderer.renderCell(new RenderCellArgs(ctx, 0, 0, canvas.width, canvas.height, item.data, this, true));
+
+                e.dataTransfer.setData("plain/text", this.getLabelProvider().getLabel(item.data));
+                e.dataTransfer.setDragImage(canvas, 10, 10);
+            } else {
+                e.preventDefault();
+            }
         }
 
         getLabelProvider() {
