@@ -2670,7 +2670,34 @@ var phasereditor2d;
                     var properties;
                     (function (properties) {
                         class ManyImageFrameSection extends ui.controls.properties.PropertySection {
+                            constructor(page) {
+                                super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageFrameSection", "Images", true);
+                            }
                             createForm(parent) {
+                                parent.classList.add("ManyImagePreviewFormArea");
+                                const viewer = new ui.controls.viewers.TreeViewer("PreviewBackground");
+                                viewer.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
+                                viewer.setTreeRenderer(new ui.controls.viewers.GridTreeViewerRenderer(viewer, true));
+                                viewer.setLabelProvider(new pack.viewers.AssetPackLabelProvider());
+                                viewer.setCellRendererProvider(new pack.viewers.AssetPackCellRendererProvider());
+                                const filteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), viewer);
+                                parent.appendChild(filteredViewer.getElement());
+                                this.addUpdater(async () => {
+                                    const frames = await this.getImageFrames();
+                                    viewer.setInput(frames);
+                                    filteredViewer.resizeTo();
+                                });
+                            }
+                            async getImageFrames() {
+                                const packItems = this.getSelection().filter(e => e instanceof pack.AssetPackItem);
+                                await pack.AssetPackUtils.preloadAssetPackItems(packItems);
+                                const frames = this.getSelection().flatMap(obj => {
+                                    if (obj instanceof pack.AssetPackItem) {
+                                        return pack.AssetPackUtils.getImageFrames(obj);
+                                    }
+                                    return [obj];
+                                });
+                                return frames;
                             }
                             canEdit(obj) {
                                 return obj instanceof pack.ImageFrame || obj instanceof pack.AssetPackItem && pack.AssetPackUtils.isImageFrameContainer(obj);
@@ -3370,6 +3397,7 @@ var phasereditor2d;
                         addSections(page, sections) {
                             sections.push(new editors.pack.properties.AssetPackItemSection(page));
                             sections.push(new editors.pack.properties.ImageSection(page));
+                            sections.push(new editors.pack.properties.ManyImageFrameSection(page));
                         }
                     }
                     scene.SceneEditorBlockPropertyProvider = SceneEditorBlockPropertyProvider;
