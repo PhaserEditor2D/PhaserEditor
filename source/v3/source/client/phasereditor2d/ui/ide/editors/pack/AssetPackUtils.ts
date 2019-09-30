@@ -10,43 +10,41 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
     export class AssetPackUtils {
 
-        static isImageFrameContainer(packItem : AssetPackItem) {
+        static isImageFrameContainer(packItem: AssetPackItem) {
             return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());
         }
 
-        static getImageFrames(packItem : AssetPackItem) {
-             
+        static getImageFrames(packItem: AssetPackItem) {
+            const parser = this.getImageFrameParser(packItem);
+            if (parser) {
+                return parser.parse();
+            }
+            return [];
         }
 
-        static async preloadAssetPackItems(packItems : AssetPackItem[]) {
-            for(const item of packItems) {
-                const type = item.getType();
-                switch(type) {
-                    case "multiatlas": {
-                        const parser = new pack.parsers.MultiAtlasParser(item);
-                        await parser.preload();
-                        break;
-                    }
-                    case "atlas" : {
-                        const parser = new pack.parsers.AtlasParser(item);
-                        await parser.preload();
-                        break;
-                    }
-                    case "unityAtlas" : {
-                        const parser = new pack.parsers.UnityAtlasParser(item);
-                        await parser.preload();
-                        break;
-                    }
-                    case "atlasXML" : {
-                        const parser = new pack.parsers.AtlasXMLParser(item);
-                        await parser.preload();
-                        break;
-                    }
-                    case "spritesheet" : {
-                        const parser = new pack.parsers.SpriteSheetParser(item);
-                        await parser.preload();
-                        break;
-                    }
+        static getImageFrameParser(packItem: AssetPackItem) {
+            switch (packItem.getType()) {
+                case "atlas":
+                    return new pack.parsers.AtlasParser(packItem);
+                case "atlasXML":
+                    return new pack.parsers.AtlasXMLParser(packItem);
+                case "unityAtlas":
+                    return new pack.parsers.UnityAtlasParser(packItem);
+                case "multiatlas":
+                    return new pack.parsers.MultiAtlasParser(packItem);
+                case "spritesheet":
+                    return new pack.parsers.SpriteSheetParser(packItem);
+                default:
+                    break;
+            }
+            return null;
+        }
+
+        static async preloadAssetPackItems(packItems: AssetPackItem[]) {
+            for (const item of packItems) {
+                if (this.isImageFrameContainer(item)) {
+                    const parser = this.getImageFrameParser(item);
+                    await parser.preload();
                 }
             }
         }

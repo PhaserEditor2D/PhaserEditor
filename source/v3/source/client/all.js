@@ -1857,36 +1857,34 @@ var phasereditor2d;
                             return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());
                         }
                         static getImageFrames(packItem) {
+                            const parser = this.getImageFrameParser(packItem);
+                            if (parser) {
+                                return parser.parse();
+                            }
+                            return [];
+                        }
+                        static getImageFrameParser(packItem) {
+                            switch (packItem.getType()) {
+                                case "atlas":
+                                    return new pack.parsers.AtlasParser(packItem);
+                                case "atlasXML":
+                                    return new pack.parsers.AtlasXMLParser(packItem);
+                                case "unityAtlas":
+                                    return new pack.parsers.UnityAtlasParser(packItem);
+                                case "multiatlas":
+                                    return new pack.parsers.MultiAtlasParser(packItem);
+                                case "spritesheet":
+                                    return new pack.parsers.SpriteSheetParser(packItem);
+                                default:
+                                    break;
+                            }
+                            return null;
                         }
                         static async preloadAssetPackItems(packItems) {
                             for (const item of packItems) {
-                                const type = item.getType();
-                                switch (type) {
-                                    case "multiatlas": {
-                                        const parser = new pack.parsers.MultiAtlasParser(item);
-                                        await parser.preload();
-                                        break;
-                                    }
-                                    case "atlas": {
-                                        const parser = new pack.parsers.AtlasParser(item);
-                                        await parser.preload();
-                                        break;
-                                    }
-                                    case "unityAtlas": {
-                                        const parser = new pack.parsers.UnityAtlasParser(item);
-                                        await parser.preload();
-                                        break;
-                                    }
-                                    case "atlasXML": {
-                                        const parser = new pack.parsers.AtlasXMLParser(item);
-                                        await parser.preload();
-                                        break;
-                                    }
-                                    case "spritesheet": {
-                                        const parser = new pack.parsers.SpriteSheetParser(item);
-                                        await parser.preload();
-                                        break;
-                                    }
+                                if (this.isImageFrameContainer(item)) {
+                                    const parser = this.getImageFrameParser(item);
+                                    await parser.preload();
                                 }
                             }
                         }
@@ -3018,35 +3016,8 @@ var phasereditor2d;
                                     return parent.getItems();
                                 }
                                 if (parent instanceof pack.AssetPackItem) {
-                                    const type = parent.getType();
-                                    switch (type) {
-                                        case "multiatlas": {
-                                            const parser = new pack.parsers.MultiAtlasParser(parent);
-                                            const frames = parser.parse();
-                                            return frames;
-                                        }
-                                        case "atlas": {
-                                            const parser = new pack.parsers.AtlasParser(parent);
-                                            const frames = parser.parse();
-                                            return frames;
-                                        }
-                                        case "unityAtlas": {
-                                            const parser = new pack.parsers.UnityAtlasParser(parent);
-                                            const frames = parser.parse();
-                                            return frames;
-                                        }
-                                        case "atlasXML": {
-                                            const parser = new pack.parsers.AtlasXMLParser(parent);
-                                            const frames = parser.parse();
-                                            return frames;
-                                        }
-                                        case "spritesheet": {
-                                            const parser = new pack.parsers.SpriteSheetParser(parent);
-                                            const frames = parser.parse();
-                                            return frames;
-                                        }
-                                        default:
-                                            break;
+                                    if (pack.AssetPackUtils.isImageFrameContainer(parent)) {
+                                        return pack.AssetPackUtils.getImageFrames(parent);
                                     }
                                 }
                                 return [];
