@@ -2344,7 +2344,12 @@ var phasereditor2d;
                                 super(packItem);
                             }
                             addToPhaserCache(game) {
-                                //TODO:
+                                const item = this.getPackItem();
+                                if (!game.textures.exists(item.getKey())) {
+                                    const data = item.getData();
+                                    const image = pack.AssetPackUtils.getImageFromPackUrl(data.url);
+                                    game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+                                }
                             }
                             async preloadFrames() {
                                 const data = this.getPackItem().getData();

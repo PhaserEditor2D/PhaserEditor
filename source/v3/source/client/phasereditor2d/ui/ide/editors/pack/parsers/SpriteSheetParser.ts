@@ -8,8 +8,13 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             super(packItem);
         }
 
-        addToPhaserCache(game : Phaser.Game) {
-            //TODO:
+        addToPhaserCache(game: Phaser.Game) {
+            const item = this.getPackItem();
+            if (!game.textures.exists(item.getKey())) {
+                const data = item.getData();
+                const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(data.url);
+                game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+            }
         }
 
         async preloadFrames(): Promise<controls.PreloadResult> {
