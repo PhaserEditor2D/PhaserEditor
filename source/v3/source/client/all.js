@@ -3294,6 +3294,76 @@ var phasereditor2d;
             var editors;
             (function (editors) {
                 var scene;
+                (function (scene_1) {
+                    class CameraManager {
+                        constructor(editor) {
+                            this._editor = editor;
+                            this._dragStartPoint = null;
+                            const canvas = this._editor.getGameCanvas();
+                            canvas.addEventListener("wheel", e => this.onWheel(e));
+                            canvas.addEventListener("mousedown", e => this.onMouseDown(e));
+                            canvas.addEventListener("mousemove", e => this.onMouseMove(e));
+                            canvas.addEventListener("mouseup", e => this.onMouseUp(e));
+                        }
+                        getCamera() {
+                            return this._editor.getGameScene().getCamera();
+                        }
+                        onMouseDown(e) {
+                            if (e.button === 1) {
+                                const camera = this.getCamera();
+                                this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
+                                this._dragStartCameraScroll = new Phaser.Math.Vector2(camera.scrollX, camera.scrollY);
+                                e.preventDefault();
+                            }
+                        }
+                        onMouseMove(e) {
+                            if (this._dragStartPoint === null) {
+                                return;
+                            }
+                            const dx = this._dragStartPoint.x - e.clientX;
+                            const dy = this._dragStartPoint.y - e.clientY;
+                            const camera = this.getCamera();
+                            camera.scrollX = this._dragStartCameraScroll.x + dx / camera.zoom;
+                            camera.scrollY = this._dragStartCameraScroll.y + dy / camera.zoom;
+                            this._editor.repaint();
+                            e.preventDefault();
+                        }
+                        onMouseUp(e) {
+                            this._dragStartPoint = null;
+                            this._dragStartCameraScroll = null;
+                        }
+                        onWheel(e) {
+                            const scene = this._editor.getGameScene();
+                            const camera = scene.getCamera();
+                            const delta = e.deltaY;
+                            const zoom = (delta > 0 ? 0.9 : 1.1);
+                            const pointer = scene.input.activePointer;
+                            const point1 = camera.getWorldPoint(pointer.x, pointer.y);
+                            camera.zoom *= zoom;
+                            // update the camera matrix
+                            camera.preRender(scene.scale.resolution);
+                            const point2 = camera.getWorldPoint(pointer.x, pointer.y);
+                            const dx = point2.x - point1.x;
+                            const dy = point2.y - point1.y;
+                            camera.scrollX += -dx;
+                            camera.scrollY += -dy;
+                        }
+                    }
+                    scene_1.CameraManager = CameraManager;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
                 (function (scene) {
                     class DropManager {
                         constructor(editor) {
@@ -3357,6 +3427,9 @@ var phasereditor2d;
                         constructor(editor) {
                             super("ObjectScene");
                             this._editor = editor;
+                        }
+                        getCamera() {
+                            return this.cameras.main;
                         }
                         create() {
                             this.add.text(100, 100, "Hello scene editor");
@@ -3435,9 +3508,6 @@ var phasereditor2d;
                             this._gameCanvas = document.createElement("canvas");
                             this._gameCanvas.style.position = "absolute";
                             this.getElement().appendChild(this._gameCanvas);
-                            // init managers and factories
-                            this._objectMaker = new scene.SceneObjectMaker(this);
-                            this._dropManager = new scene.DropManager(this);
                             // create game scene
                             this._gameScene = new scene.GameScene(this);
                             this._game = new Phaser.Game({
@@ -3455,6 +3525,10 @@ var phasereditor2d;
                                 },
                                 scene: this._gameScene
                             });
+                            // init managers and factories
+                            this._objectMaker = new scene.SceneObjectMaker(this);
+                            this._dropManager = new scene.DropManager(this);
+                            this._cameraManager = new scene.CameraManager(this);
                         }
                         getGameCanvas() {
                             return this._gameCanvas;
@@ -3683,7 +3757,7 @@ var phasereditor2d;
             var editors;
             (function (editors) {
                 var scene;
-                (function (scene_1) {
+                (function (scene_2) {
                     class SceneObjectMaker {
                         constructor(editor) {
                             this._editor = editor;
@@ -3729,7 +3803,7 @@ var phasereditor2d;
                         initSprite(sprite) {
                         }
                     }
-                    scene_1.SceneObjectMaker = SceneObjectMaker;
+                    scene_2.SceneObjectMaker = SceneObjectMaker;
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));

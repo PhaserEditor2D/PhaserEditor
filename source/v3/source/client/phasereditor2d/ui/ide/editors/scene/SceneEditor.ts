@@ -26,7 +26,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
     }
 
     export class SceneEditor extends FileEditor {
-        
+
         private _blocksProvider: SceneEditorBlocksProvider;
         private _game: Phaser.Game;
         private _background: SceneEditorBackground;
@@ -34,6 +34,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _gameScene: GameScene;
         private _objectMaker: SceneObjectMaker;
         private _dropManager: DropManager;
+        private _cameraManager: CameraManager;
 
         static getFactory(): EditorFactory {
             return new SceneEditorFactory();
@@ -56,11 +57,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._gameCanvas.style.position = "absolute";
             this.getElement().appendChild(this._gameCanvas);
 
-            // init managers and factories
-
-            this._objectMaker = new SceneObjectMaker(this);
-            this._dropManager = new DropManager(this);
-
             // create game scene
 
             this._gameScene = new GameScene(this);
@@ -81,6 +77,11 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 scene: this._gameScene
             });
 
+            // init managers and factories
+
+            this._objectMaker = new SceneObjectMaker(this);
+            this._dropManager = new DropManager(this);
+            this._cameraManager = new CameraManager(this);
         }
 
         getGameCanvas() {
