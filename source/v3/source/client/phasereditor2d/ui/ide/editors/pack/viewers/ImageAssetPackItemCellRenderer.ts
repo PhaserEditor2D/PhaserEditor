@@ -6,7 +6,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
         getImage(obj: any): controls.IImage {
             const item = <AssetPackItem>obj;
-            const data: Phaser.Loader.FileTypes.ImageFileConfig = item.getData();
+            const data = item.getData();
             return AssetPackUtils.getImageFromPackUrl(data.url);
         }
 

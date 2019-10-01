@@ -8,7 +8,19 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             super(packItem);
         }
 
-        protected parseFrames2(imageFrames: controls.ImageFrame[], image: controls.IImage, atlas: string) {
+        addToPhaserCache(game: Phaser.Game) {
+            const item = this.getPackItem();
+
+            if (!game.textures.exists(item.getKey())) {
+                const atlasURL = item.getData().atlasURL;
+                const atlasData = pack.AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
+                const textureURL = item.getData().textureURL;
+                const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
+                game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
+            }
+        }
+
+        protected parseFrames2(imageFrames: AssetPackImageFrame[], image: controls.IImage, atlas: string) {
             try {
                 const parser = new DOMParser();
                 const data = parser.parseFromString(atlas, "text/xml");
@@ -41,7 +53,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                         new controls.Rect(spriteX, spriteY, spriteW, spriteH),
                         new controls.Point(frameW, frameH)
                     );
-                    imageFrames.push(new controls.ImageFrame(name, image, fd));
+                    imageFrames.push(new AssetPackImageFrame(this.getPackItem(), name, image, fd));
                 }
             } catch (e) {
                 console.error(e);

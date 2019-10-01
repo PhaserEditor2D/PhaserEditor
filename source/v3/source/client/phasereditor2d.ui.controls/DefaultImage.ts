@@ -5,14 +5,18 @@ namespace phasereditor2d.ui.controls {
         private _ready: boolean;
         private _error: boolean;
         private _url: string;
-        private _img: HTMLImageElement;
+        private _imageElement: HTMLImageElement;
         private _requestPromise: Promise<PreloadResult>;
 
         constructor(img: HTMLImageElement, url: string) {
-            this._img = img;
+            this._imageElement = img;
             this._url = url;
             this._ready = false;
             this._error = false;
+        }
+
+        getImageElement() {
+            return this._imageElement;
         }
 
         preload(): Promise<PreloadResult> {
@@ -25,15 +29,15 @@ namespace phasereditor2d.ui.controls {
             }
 
             this._requestPromise = new Promise((resolve, reject) => {
-                this._img.src = this._url;
+                this._imageElement.src = this._url;
 
-                this._img.addEventListener("load", e => {
+                this._imageElement.addEventListener("load", e => {
                     this._requestPromise = null;
                     this._ready = true;
                     resolve(PreloadResult.RESOURCES_LOADED);
                 });
 
-                this._img.addEventListener("error", e => {
+                this._imageElement.addEventListener("error", e => {
                     console.error("ERROR: Loading image " + this._url);
                     this._requestPromise = null;
                     this._error = true;
@@ -57,17 +61,17 @@ namespace phasereditor2d.ui.controls {
         }
 
         getWidth() {
-            return this._ready ? this._img.naturalWidth : 16;
+            return this._ready ? this._imageElement.naturalWidth : 16;
         }
 
         getHeight() {
-            return this._ready ? this._img.naturalHeight : 16;
+            return this._ready ? this._imageElement.naturalHeight : 16;
         }
 
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
             if (this._ready) {
-                const naturalWidth = this._img.naturalWidth;
-                const naturalHeight = this._img.naturalHeight;
+                const naturalWidth = this._imageElement.naturalWidth;
+                const naturalHeight = this._imageElement.naturalHeight;
 
                 let renderHeight = h;
                 let renderWidth = w;
@@ -94,7 +98,7 @@ namespace phasereditor2d.ui.controls {
                 let imgDstH = naturalHeight * scale;
 
                 if (imgDstW > 0 && imgDstH > 0) {
-                    context.drawImage(this._img, imgX, imgY, imgDstW, imgDstH);
+                    context.drawImage(this._imageElement, imgX, imgY, imgDstW, imgDstH);
                 }
             } else {
                 this.paintEmpty(context, x, y, w, h)
@@ -116,7 +120,7 @@ namespace phasereditor2d.ui.controls {
 
         paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
             if (this._ready) {
-                context.drawImage(this._img, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                context.drawImage(this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
             } else {
                 this.paintEmpty(context, dstX, dstY, dstW, dstH);
             }

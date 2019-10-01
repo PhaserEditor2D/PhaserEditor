@@ -6,8 +6,27 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             super(packItem);
         }
 
+        addToPhaserCache(game: Phaser.Game) {
+            const packItemData = this.getPackItem().getData();
+            const atlasDataFile = AssetPackUtils.getFileFromPackUrl(packItemData.url);
+            const atlasData = AssetPackUtils.getFileJSONFromPackUrl(packItemData.url);
+
+            const images : HTMLImageElement[] = [];
+            const jsonArrayData = [];
+
+            for (const textureData of atlasData.textures) {
+                const imageName = textureData.image;
+                const imageFile = atlasDataFile.getSibling(imageName);
+                const image = <controls.DefaultImage>FileUtils.getImage(imageFile);
+                images.push(image.getImageElement());
+                jsonArrayData.push(textureData);
+            }
+
+            game.textures.addAtlasJSONArray(this.getPackItem().getKey(), images, jsonArrayData);
+        }
+
         async preloadFrames(): Promise<controls.PreloadResult> {
-            const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this.getPackItem().getData();
+            const data = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
             if (dataFile) {
@@ -36,10 +55,10 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return controls.Controls.resolveNothingLoaded();
         }
 
-        parseFrames(): controls.ImageFrame[] {
-            const list: controls.ImageFrame[] = [];
+        parseFrames(): AssetPackImageFrame[] {
+            const list: AssetPackImageFrame[] = [];
 
-            const data: Phaser.Loader.FileTypes.MultiAtlasFileConfig = this.getPackItem().getData();
+            const data = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
             if (dataFile) {
@@ -53,7 +72,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                             const imageFile = dataFile.getSibling(imageName);
                             const image = FileUtils.getImage(imageFile);
                             for (const frame of textureData.frames) {
-                                const frameData = AtlasParser.buildFrameData(image, frame, list.length);
+                                const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, list.length);
                                 list.push(frameData);
                             }
                         }

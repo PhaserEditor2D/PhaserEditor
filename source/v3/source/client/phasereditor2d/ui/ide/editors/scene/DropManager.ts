@@ -16,24 +16,27 @@ namespace phasereditor2d.ui.ide.editors.scene {
             const dataArray = controls.Controls.getApplicationDragDataAndClean();
 
             if (this.acceptsDropDataArray(dataArray)) {
-                console.log("drop");
-                console.log(dataArray);
-                return false;
+                this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
+                e.preventDefault();
             }
-
-            return true;
         }
 
         private onDragOver(e: DragEvent) {
-            e.preventDefault();
+            if (this.acceptsDropDataArray(controls.Controls.getApplicationDragData())) {
+                e.preventDefault();
+            }
         }
 
         private acceptsDropData(data: any): boolean {
+
             if (data instanceof pack.AssetPackItem) {
                 if (data.getType() === pack.IMAGE_TYPE) {
                     return true;
                 }
+            } else if (data instanceof pack.AssetPackImageFrame) {
+                return true;
             }
+
             return false;
         }
 

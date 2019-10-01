@@ -8,6 +8,10 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             super(packItem);
         }
 
+        addToPhaserCache(game : Phaser.Game) {
+            //TODO:
+        }
+
         async preloadFrames(): Promise<controls.PreloadResult> {
             const data = this.getPackItem().getData();
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
@@ -15,8 +19,8 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return await image.preload();
         }
 
-        parseFrames(): controls.ImageFrame[] {
-            const frames: controls.ImageFrame[] = [];
+        parseFrames(): AssetPackImageFrame[] {
+            const frames: AssetPackImageFrame[] = [];
 
             const data = this.getPackItem().getData();
 
@@ -58,7 +62,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                             new controls.Rect(0, 0, w, h),
                             new controls.Point(w, h)
                         );
-                        frames.push(new controls.ImageFrame(i.toString(), image, fd));
+                        frames.push(new AssetPackImageFrame(this.getPackItem(), i.toString(), image, fd));
                     }
                 }
 

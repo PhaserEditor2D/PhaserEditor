@@ -26,13 +26,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
     }
 
     export class SceneEditor extends FileEditor {
-
+        
         private _blocksProvider: SceneEditorBlocksProvider;
         private _game: Phaser.Game;
         private _background: SceneEditorBackground;
         private _gameCanvas: HTMLCanvasElement;
         private _gameScene: GameScene;
-        private _objectFactory: SceneObjectFactory;
+        private _objectMaker: SceneObjectMaker;
         private _dropManager: DropManager;
 
         static getFactory(): EditorFactory {
@@ -58,7 +58,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             // init managers and factories
 
-            this._objectFactory = new SceneObjectFactory(this);
+            this._objectMaker = new SceneObjectMaker(this);
             this._dropManager = new DropManager(this);
 
             // create game scene
@@ -91,8 +91,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return this._gameScene;
         }
 
-        getObjectFactory() {
-            return this._objectFactory;
+        getGame() {
+            return this._game;
+        }
+
+        getObjectMaker() {
+            return this._objectMaker;
         }
 
         layout() {
@@ -107,6 +111,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         getBlocksProvider() {
             return this._blocksProvider;
+        }
+
+        repaint() {
+            // TODO
         }
     }
 

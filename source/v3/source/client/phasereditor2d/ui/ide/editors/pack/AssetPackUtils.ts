@@ -69,6 +69,22 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return FileUtils.getFileFromPath(url);
         }
 
+        static getFileStringFromPackUrl(url: string): string {
+            const file = FileUtils.getFileFromPath(url);
+            const str = Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
+            return str;
+        }
+
+        static getFileJSONFromPackUrl(url: string): any {
+            const str = this.getFileStringFromPackUrl(url);
+            return JSON.parse(str);
+        }
+        static getFileXMLFromPackUrl(url: string): Document {
+            const str = this.getFileStringFromPackUrl(url);
+            const parser = new DOMParser();
+            return parser.parseFromString(str, "text/xml");
+        }
+
         static getImageFromPackUrl(url: string): controls.IImage {
             const file = this.getFileFromPackUrl(url);
             if (file) {

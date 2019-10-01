@@ -2,7 +2,19 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
     export class UnityAtlasParser extends BaseAtlasParser {
 
-        protected parseFrames2(imageFrames: controls.ImageFrame[], image: controls.IImage, atlas: string) {
+        addToPhaserCache(game : Phaser.Game) {
+            const item = this.getPackItem();
+
+            if (!game.textures.exists(item.getKey())) {
+                const atlasURL = item.getData().atlasURL;
+                const atlasData = pack.AssetPackUtils.getFileStringFromPackUrl(atlasURL);
+                const textureURL = item.getData().textureURL;
+                const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
+                game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), <any> atlasData);
+            }
+        }
+
+        protected parseFrames2(imageFrames: AssetPackImageFrame[], image: controls.IImage, atlas: string) {
 
             // Taken from Phaser code.
 
@@ -67,13 +79,13 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
         }
 
-        private addFrame(image: controls.IImage, imageFrames: controls.ImageFrame[], spriteName: string, rect: any) {
+        private addFrame(image: controls.IImage, imageFrames: AssetPackImageFrame[], spriteName: string, rect: any) {
             const src = new controls.Rect(rect.x, rect.y, rect.width, rect.height);
             src.y = image.getHeight() - src.y - src.h;
             const dst = new controls.Rect(0, 0, rect.width, rect.height);
             const srcSize = new controls.Point(rect.width, rect.height);
             const fd = new controls.FrameData(imageFrames.length, src, dst, srcSize);
-            imageFrames.push(new controls.ImageFrame(spriteName, image, fd));
+            imageFrames.push(new AssetPackImageFrame(this.getPackItem(), spriteName, image, fd));
         }
 
     }
