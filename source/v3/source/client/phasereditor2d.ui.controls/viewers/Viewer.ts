@@ -70,9 +70,9 @@ namespace phasereditor2d.ui.controls.viewers {
                     }
                 }
 
-                const renderer = this.getCellRendererProvider().getCellRenderer(paintItemUnderCursor.data);
                 Controls.setDragEventImage(e, (ctx, w, h) => {
                     for (const obj of dragObjects) {
+                        const renderer = this.getCellRendererProvider().getCellRenderer(obj);
                         renderer.renderCell(new RenderCellArgs(ctx, 0, 0, w, h, obj, this, true));
                     }
                 })

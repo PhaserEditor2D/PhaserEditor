@@ -3965,9 +3965,9 @@ var phasereditor2d;
                                     dragObjects = [paintItemUnderCursor.data];
                                 }
                             }
-                            const renderer = this.getCellRendererProvider().getCellRenderer(paintItemUnderCursor.data);
                             controls.Controls.setDragEventImage(e, (ctx, w, h) => {
                                 for (const obj of dragObjects) {
+                                    const renderer = this.getCellRendererProvider().getCellRenderer(obj);
                                     renderer.renderCell(new viewers.RenderCellArgs(ctx, 0, 0, w, h, obj, this, true));
                                 }
                             });
