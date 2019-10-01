@@ -46,7 +46,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private initListeners() {
             const canvas = this.getCanvas();
-            canvas.addEventListener("mousedown", e => this.onMouseDown(e));
+            canvas.addEventListener("mouseup", e => this.onMouseUp(e));
             canvas.addEventListener("wheel", e => this.onWheel(e))
             canvas.addEventListener("keydown", e => this.onKeyDown(e));
             canvas.addEventListener("dblclick", e => this.onDoubleClick(e));
@@ -54,22 +54,33 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private onDragStart(e: DragEvent) {
-            console.log("start dragging");
-            const item = this.getPaintItemAt(e);
-            if (item) {
-                const renderer = this.getCellRendererProvider().getCellRenderer(item.data);
+            const paintItemUnderCursor = this.getPaintItemAt(e);
 
-                const canvas = document.createElement("canvas");
-                canvas.width = 64;
-                canvas.height = 64;
-                canvas.style.width = canvas.width + "px";
-                canvas.style.height = canvas.height + "px";
-                const ctx = canvas.getContext("2d");
-                
-                renderer.renderCell(new RenderCellArgs(ctx, 0, 0, canvas.width, canvas.height, item.data, this, true));
+            if (paintItemUnderCursor) {
 
-                e.dataTransfer.setData("plain/text", this.getLabelProvider().getLabel(item.data));
-                e.dataTransfer.setDragImage(canvas, 10, 10);
+                let dragObjects = [];
+
+                {
+                    const sel = this.getSelection();
+
+                    if (new Set(sel).has(paintItemUnderCursor.data)) {
+                        dragObjects = sel;
+                    } else {
+                        dragObjects = [paintItemUnderCursor.data];
+                    }
+                }
+
+                const renderer = this.getCellRendererProvider().getCellRenderer(paintItemUnderCursor.data);
+                Controls.setDragEventImage(e, (ctx, w, h) => {
+                    for (const obj of dragObjects) {
+                        renderer.renderCell(new RenderCellArgs(ctx, 0, 0, w, h, obj, this, true));
+                    }
+                })
+
+                const labels = dragObjects.map(obj => this.getLabelProvider().getLabel(obj)).join(",");
+                e.dataTransfer.setData("application/x-viewer-label", labels);
+                Controls.setApplicationDragData(dragObjects);
+
             } else {
                 e.preventDefault();
             }
@@ -179,7 +190,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         protected abstract canSelectAtPoint(e: MouseEvent): boolean;
 
-        private onMouseDown(e: MouseEvent): void {
+        private onMouseUp(e: MouseEvent): void {
             if (e.button !== 0) {
                 return;
             }

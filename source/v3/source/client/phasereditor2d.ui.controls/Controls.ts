@@ -10,7 +10,7 @@ namespace phasereditor2d.ui.controls {
         RESOURCES_LOADED
     }
 
-    
+
 
     export const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
     export const ICON_CONTROL_TREE_EXPAND = "tree-expand";
@@ -26,6 +26,46 @@ namespace phasereditor2d.ui.controls {
     export class Controls {
 
         private static _images: Map<String, IImage> = new Map();
+        private static _applicationDragData: any[] = null;
+
+        static setDragEventImage(e: DragEvent, render: (ctx: CanvasRenderingContext2D, w: number, h: number) => void) {
+            let canvas = <HTMLCanvasElement>document.getElementById("__drag__canvas");
+            if (!canvas) {
+                canvas = document.createElement("canvas");
+                canvas.setAttribute("id", "__drag__canvas");
+                canvas.style.imageRendering = "crisp-edges";
+                canvas.width = 64;
+                canvas.height = 64;
+                canvas.style.width = canvas.width + "px";
+                canvas.style.height = canvas.height + "px";
+                canvas.style.position = "fixed";
+                canvas.style.left = -100 + "px";
+                document.body.appendChild(canvas);
+            }
+
+            const ctx = canvas.getContext("2d");
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            render(ctx, canvas.width, canvas.height);
+
+            e.dataTransfer.setDragImage(canvas, 10, 10);
+        }
+
+        static getApplicationDragData() {
+            return this._applicationDragData;
+        }
+
+        static getApplicationDragDataAndClean() {
+            const data = this._applicationDragData;
+            this._applicationDragData = null;
+            return data;
+        }
+
+        static setApplicationDragData(data: any[]) {
+            this._applicationDragData = data;
+        }
+
 
         static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {
             return Promise.all(list).then(results => {

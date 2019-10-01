@@ -31,6 +31,7 @@ input {
 
 canvas {
     outline: none;
+    image-rendering: crisp-edges;
 }
 
 /* TabPane */
