@@ -1,3 +1,4 @@
+
 namespace phasereditor2d.ui.ide.editors.scene {
 
     export class GameScene extends Phaser.Scene {
@@ -15,7 +16,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         create() {
-            this.add.text(100, 100, "Hello scene editor");
+            this.getCamera().setOrigin(0, 0);
+            
+            this.add.text(0, 0, "Hello scene editor").setScale(2, 2).setOrigin(0, 0);
         }
     }
 

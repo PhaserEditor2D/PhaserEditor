@@ -59,13 +59,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             const delta: number = e.deltaY;
 
-            const zoom = (delta > 0 ? 0.9 : 1.1);
+            const zoomDelta = (delta > 0 ? 0.9 : 1.1);
 
             const pointer = scene.input.activePointer;
 
             const point1 = camera.getWorldPoint(pointer.x, pointer.y);
 
-            camera.zoom *= zoom;
+            camera.zoom *= zoomDelta;
 
             // update the camera matrix
             (<any>camera).preRender(scene.scale.resolution);
@@ -77,6 +77,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             camera.scrollX += -dx;
             camera.scrollY += -dy;
+
+            this._editor.repaint();
         }
 
     }

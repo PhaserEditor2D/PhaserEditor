@@ -29,12 +29,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         private _blocksProvider: SceneEditorBlocksProvider;
         private _game: Phaser.Game;
-        private _background: SceneEditorBackground;
+        private _background: BackgroundRenderer;
         private _gameCanvas: HTMLCanvasElement;
         private _gameScene: GameScene;
         private _objectMaker: SceneObjectMaker;
         private _dropManager: DropManager;
         private _cameraManager: CameraManager;
+        private _gameBooted: boolean;
 
         static getFactory(): EditorFactory {
             return new SceneEditorFactory();
@@ -50,7 +51,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             this.setLayoutChildren(false);
 
-            this._background = new SceneEditorBackground(this);
+            this._background = new BackgroundRenderer(this);
             this.getElement().appendChild(this._background.getCanvas());
 
             this._gameCanvas = document.createElement("canvas");
@@ -64,7 +65,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._game = new Phaser.Game({
                 type: Phaser.WEBGL,
                 canvas: this._gameCanvas,
-                scale: {
+                scale : {
                     mode: Phaser.Scale.NONE
                 },
                 render: {
@@ -74,8 +75,16 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 audio: {
                     noAudio: true
                 },
-                scene: this._gameScene
+                scene: this._gameScene,
             });
+
+            this._gameBooted = false;
+
+            (<any>this._game.config).postBoot = () => {
+                this.onGameBoot();
+            };
+
+            this._game.loop.stop();
 
             // init managers and factories
 
@@ -103,19 +112,40 @@ namespace phasereditor2d.ui.ide.editors.scene {
         layout() {
             super.layout();
 
-            this._background.resizeTo();
-            this._background.render();
+            if (!this._gameBooted) {
+                return;
+            }
 
-            const parent = this.getElement().parentElement;
-            this._game.scale.resize(parent.clientWidth, parent.clientHeight);
+            this._background.resizeTo();
+
+            const parent = this.getElement();
+            const w = parent.clientWidth;
+            const h = parent.clientHeight;
+
+            this._game.scale.resize(w, h);
+            this._gameScene.scale.resize(w, h);
+            this._gameScene.getCamera().setSize(w, h);
+
+            this.repaint();
         }
 
         getBlocksProvider() {
             return this._blocksProvider;
         }
 
-        repaint() {
-            // TODO
+        private onGameBoot() : void {
+            this._gameBooted = true;
+            this.layout();
+        }
+
+        repaint() : void {
+            if (!this._gameBooted) {
+                return;
+            }
+
+            this._game.loop.tick();
+
+            this._background.render();
         }
     }
 

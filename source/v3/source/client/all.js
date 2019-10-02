@@ -3294,6 +3294,161 @@ var phasereditor2d;
             var editors;
             (function (editors) {
                 var scene;
+                (function (scene) {
+                    class BackgroundRenderer {
+                        constructor(editor) {
+                            this._editor = editor;
+                            this._canvas = document.createElement("canvas");
+                            this._canvas.style.position = "absolute";
+                        }
+                        getCanvas() {
+                            return this._canvas;
+                        }
+                        resetContext() {
+                            this._ctx = this._canvas.getContext("2d");
+                            this._ctx.imageSmoothingEnabled = false;
+                            this._ctx.font = "12px Monospace";
+                        }
+                        resizeTo() {
+                            const parent = this._canvas.parentElement;
+                            this._canvas.width = parent.clientWidth;
+                            this._canvas.height = parent.clientHeight;
+                            this._canvas.style.width = this._canvas.width + "px";
+                            this._canvas.style.height = this._canvas.height + "px";
+                            this.resetContext();
+                        }
+                        render() {
+                            if (!this._ctx) {
+                                this.resetContext();
+                            }
+                            const camera = this._editor.getGameScene().getCamera();
+                            // parameters from settings
+                            const snapEnabled = false;
+                            const snapX = 10;
+                            const snapY = 10;
+                            const borderX = 0;
+                            const borderY = 0;
+                            const borderWidth = 800;
+                            const borderHeight = 600;
+                            const ctx = this._ctx;
+                            const canvasWidth = this._canvas.width;
+                            const canvasHeight = this._canvas.height;
+                            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                            // render solid background
+                            ctx.fillStyle = "#6e6e6e";
+                            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                            // render grid
+                            ctx.strokeStyle = "#aeaeae";
+                            ctx.lineWidth = 1;
+                            let gapX = 4;
+                            let gapY = 4;
+                            if (snapEnabled) {
+                                gapX = snapX;
+                                gapY = snapY;
+                            }
+                            {
+                                for (let i = 1; true; i++) {
+                                    const delta = camera.getScreenPoint(gapX * i, gapY * i).subtract(camera.getScreenPoint(0, 0));
+                                    if (delta.x > 64 && delta.y > 64) {
+                                        gapX = gapX * i;
+                                        gapY = gapY * i;
+                                        break;
+                                    }
+                                }
+                            }
+                            const worldStartPoint = camera.getWorldPoint(0, 0);
+                            worldStartPoint.x = Phaser.Math.Snap.Floor(worldStartPoint.x, gapX);
+                            worldStartPoint.y = Phaser.Math.Snap.Floor(worldStartPoint.y, gapY);
+                            const worldEndPoint = camera.getWorldPoint(canvasWidth, canvasHeight);
+                            const grid = (render) => {
+                                let worldY = worldStartPoint.y;
+                                while (worldY < worldEndPoint.y) {
+                                    let point = camera.getScreenPoint(0, worldY);
+                                    render.horizontal(worldY, point.y | 0);
+                                    worldY += gapY;
+                                }
+                                let worldX = worldStartPoint.x;
+                                while (worldX < worldEndPoint.x) {
+                                    let point = camera.getScreenPoint(worldX, 0);
+                                    render.vertical(worldX, point.x | 0);
+                                    worldX += gapX;
+                                }
+                            };
+                            let labelWidth = 0;
+                            ctx.save();
+                            ctx.fillStyle = ctx.strokeStyle;
+                            // labels
+                            grid({
+                                horizontal: (worldY, screenY) => {
+                                    const w = ctx.measureText(worldY.toString()).width;
+                                    labelWidth = Math.max(labelWidth, w + 2);
+                                    ctx.fillText(worldY.toString(), 0, screenY + 4);
+                                },
+                                vertical: (worldX, screenX) => {
+                                    if (screenX < labelWidth) {
+                                        return;
+                                    }
+                                    const w = ctx.measureText(worldX.toString()).width;
+                                    ctx.fillText(worldX.toString(), screenX - w / 2, 15);
+                                }
+                            });
+                            // lines 
+                            grid({
+                                horizontal: (worldY, screenY) => {
+                                    if (screenY < 20) {
+                                        return;
+                                    }
+                                    ctx.beginPath();
+                                    ctx.moveTo(labelWidth, screenY);
+                                    ctx.lineTo(canvasWidth, screenY);
+                                    ctx.stroke();
+                                },
+                                vertical: (worldX, screenX) => {
+                                    if (screenX < labelWidth) {
+                                        return;
+                                    }
+                                    ctx.beginPath();
+                                    ctx.moveTo(screenX, 20);
+                                    ctx.lineTo(screenX, canvasHeight);
+                                    ctx.stroke();
+                                }
+                            });
+                            ctx.restore();
+                            {
+                                ctx.save();
+                                ctx.lineWidth = 2;
+                                const a = camera.getScreenPoint(borderX, borderY);
+                                const b = camera.getScreenPoint(borderX + borderWidth, borderY + borderHeight);
+                                ctx.save();
+                                ctx.strokeStyle = "#404040";
+                                ctx.strokeRect(a.x + 2, a.y + 2, b.x - a.x, b.y - a.y);
+                                ctx.restore();
+                                ctx.lineWidth = 1;
+                                ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
+                                ctx.restore();
+                            }
+                        }
+                    }
+                    scene.BackgroundRenderer = BackgroundRenderer;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+Phaser.Cameras.Scene2D.Camera.prototype.getScreenPoint = function (worldX, worldY) {
+    let x = worldX * this.zoom - this.scrollX * this.zoom;
+    let y = worldY * this.zoom - this.scrollY * this.zoom;
+    return new Phaser.Math.Vector2(x, y);
+};
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
                 (function (scene_1) {
                     class CameraManager {
                         constructor(editor) {
@@ -3336,10 +3491,10 @@ var phasereditor2d;
                             const scene = this._editor.getGameScene();
                             const camera = scene.getCamera();
                             const delta = e.deltaY;
-                            const zoom = (delta > 0 ? 0.9 : 1.1);
+                            const zoomDelta = (delta > 0 ? 0.9 : 1.1);
                             const pointer = scene.input.activePointer;
                             const point1 = camera.getWorldPoint(pointer.x, pointer.y);
-                            camera.zoom *= zoom;
+                            camera.zoom *= zoomDelta;
                             // update the camera matrix
                             camera.preRender(scene.scale.resolution);
                             const point2 = camera.getWorldPoint(pointer.x, pointer.y);
@@ -3347,6 +3502,7 @@ var phasereditor2d;
                             const dy = point2.y - point1.y;
                             camera.scrollX += -dx;
                             camera.scrollY += -dy;
+                            this._editor.repaint();
                         }
                     }
                     scene_1.CameraManager = CameraManager;
@@ -3432,7 +3588,8 @@ var phasereditor2d;
                             return this.cameras.main;
                         }
                         create() {
-                            this.add.text(100, 100, "Hello scene editor");
+                            this.getCamera().setOrigin(0, 0);
+                            this.add.text(0, 0, "Hello scene editor").setScale(2, 2).setOrigin(0, 0);
                         }
                     }
                     scene.GameScene = GameScene;
@@ -3503,7 +3660,7 @@ var phasereditor2d;
                         }
                         createPart() {
                             this.setLayoutChildren(false);
-                            this._background = new scene.SceneEditorBackground(this);
+                            this._background = new scene.BackgroundRenderer(this);
                             this.getElement().appendChild(this._background.getCanvas());
                             this._gameCanvas = document.createElement("canvas");
                             this._gameCanvas.style.position = "absolute";
@@ -3523,8 +3680,13 @@ var phasereditor2d;
                                 audio: {
                                     noAudio: true
                                 },
-                                scene: this._gameScene
+                                scene: this._gameScene,
                             });
+                            this._gameBooted = false;
+                            this._game.config.postBoot = () => {
+                                this.onGameBoot();
+                            };
+                            this._game.loop.stop();
                             // init managers and factories
                             this._objectMaker = new scene.SceneObjectMaker(this);
                             this._dropManager = new scene.DropManager(this);
@@ -3544,90 +3706,34 @@ var phasereditor2d;
                         }
                         layout() {
                             super.layout();
+                            if (!this._gameBooted) {
+                                return;
+                            }
                             this._background.resizeTo();
-                            this._background.render();
-                            const parent = this.getElement().parentElement;
-                            this._game.scale.resize(parent.clientWidth, parent.clientHeight);
+                            const parent = this.getElement();
+                            const w = parent.clientWidth;
+                            const h = parent.clientHeight;
+                            this._game.scale.resize(w, h);
+                            this._gameScene.scale.resize(w, h);
+                            this._gameScene.getCamera().setSize(w, h);
+                            this.repaint();
                         }
                         getBlocksProvider() {
                             return this._blocksProvider;
                         }
+                        onGameBoot() {
+                            this._gameBooted = true;
+                            this.layout();
+                        }
                         repaint() {
-                            // TODO
+                            if (!this._gameBooted) {
+                                return;
+                            }
+                            this._game.loop.tick();
+                            this._background.render();
                         }
                     }
                     scene.SceneEditor = SceneEditor;
-                })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
-                var scene;
-                (function (scene) {
-                    class SceneEditorBackground {
-                        constructor(editor) {
-                            this._editor = editor;
-                            this._canvas = document.createElement("canvas");
-                            this._canvas.style.position = "absolute";
-                        }
-                        getCanvas() {
-                            return this._canvas;
-                        }
-                        resetContext() {
-                            this._ctx = this._canvas.getContext("2d");
-                            this._ctx.imageSmoothingEnabled = false;
-                        }
-                        resizeTo() {
-                            const parent = this._canvas.parentElement;
-                            this._canvas.width = parent.clientWidth;
-                            this._canvas.height = parent.clientHeight;
-                            this._canvas.style.width = this._canvas.width + "px";
-                            this._canvas.style.height = this._canvas.height + "px";
-                            this.resetContext();
-                        }
-                        render() {
-                            if (!this._ctx) {
-                                this.resetContext();
-                            }
-                            const ctx = this._ctx;
-                            const canvasWidth = this._canvas.width;
-                            const canvasHeight = this._canvas.height;
-                            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-                            // render solid background
-                            ctx.fillStyle = "#6e6e6e";
-                            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-                            // render grid
-                            ctx.strokeStyle = "#aeaeae";
-                            ctx.lineWidth = 1;
-                            let x = 0;
-                            while (x < canvasWidth) {
-                                ctx.beginPath();
-                                ctx.moveTo(x, 0);
-                                ctx.lineTo(x, canvasHeight);
-                                ctx.closePath();
-                                ctx.stroke();
-                                let y = 0;
-                                while (y < canvasHeight) {
-                                    ctx.beginPath();
-                                    ctx.moveTo(0, y);
-                                    ctx.lineTo(canvasWidth, y);
-                                    ctx.closePath();
-                                    ctx.stroke();
-                                    y += 80;
-                                }
-                                x += 80;
-                            }
-                        }
-                    }
-                    scene.SceneEditorBackground = SceneEditorBackground;
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
