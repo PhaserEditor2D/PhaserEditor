@@ -8,7 +8,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._editor = editor;
             this._dragStartPoint = null;
 
-            const canvas = this._editor.getGameCanvas();
+            const canvas = this._editor.getOverlayLayer().getCanvas();
             canvas.addEventListener("wheel", e => this.onWheel(e));
             canvas.addEventListener("mousedown", e => this.onMouseDown(e));
             canvas.addEventListener("mousemove", e => this.onMouseMove(e));

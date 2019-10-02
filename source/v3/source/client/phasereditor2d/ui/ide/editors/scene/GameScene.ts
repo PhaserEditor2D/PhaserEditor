@@ -3,9 +3,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     export class GameScene extends Phaser.Scene {
 
-        private _editor : SceneEditor;
+        private _editor: SceneEditor;
 
-        constructor(editor : SceneEditor) {
+        constructor(editor: SceneEditor) {
             super("ObjectScene");
 
             this._editor = editor;
@@ -16,9 +16,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         create() {
-            this.getCamera().setOrigin(0, 0);
-            
-            this.add.text(0, 0, "Hello scene editor").setScale(2, 2).setOrigin(0, 0);
+            const camera = this.getCamera();
+            camera.setOrigin(0, 0);
+            camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
         }
     }
 

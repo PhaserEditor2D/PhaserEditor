@@ -1,6 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
-    export class BackgroundRenderer {
+    export class OverlayLayer {
 
         private _editor: SceneEditor;
         private _canvas: HTMLCanvasElement;
@@ -54,11 +54,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
             const canvasHeight = this._canvas.height;
 
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-            // render solid background
-
-            ctx.fillStyle = "#6e6e6e";
-            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
             // render grid
 
@@ -125,15 +120,22 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 horizontal: (worldY, screenY) => {
                     const w = ctx.measureText(worldY.toString()).width;
                     labelWidth = Math.max(labelWidth, w + 2);
+                    ctx.save();
+                    ctx.fillStyle = "#000000";
+                    ctx.fillText(worldY.toString(), 0 + 1, screenY + 4 + 1);
+                    ctx.restore();
                     ctx.fillText(worldY.toString(), 0, screenY + 4);
-
                 },
                 vertical: (worldX, screenX) => {
                     if (screenX < labelWidth) {
                         return;
                     }
                     const w = ctx.measureText(worldX.toString()).width;
-                    ctx.fillText(worldX.toString(), screenX - w / 2, 15)
+                    ctx.save();
+                    ctx.fillStyle = "#000000";
+                    ctx.fillText(worldX.toString(), screenX - w / 2 + 1, 15 + 1);
+                    ctx.restore();
+                    ctx.fillText(worldX.toString(), screenX - w / 2, 15);
                 }
             });
 

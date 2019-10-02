@@ -29,7 +29,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         private _blocksProvider: SceneEditorBlocksProvider;
         private _game: Phaser.Game;
-        private _background: BackgroundRenderer;
+        private _overlayLayer: OverlayLayer;
         private _gameCanvas: HTMLCanvasElement;
         private _gameScene: GameScene;
         private _objectMaker: SceneObjectMaker;
@@ -51,12 +51,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             this.setLayoutChildren(false);
 
-            this._background = new BackgroundRenderer(this);
-            this.getElement().appendChild(this._background.getCanvas());
-
             this._gameCanvas = document.createElement("canvas");
             this._gameCanvas.style.position = "absolute";
             this.getElement().appendChild(this._gameCanvas);
+
+            this._overlayLayer = new OverlayLayer(this);
+            this.getElement().appendChild(this._overlayLayer.getCanvas());
+
 
             // create game scene
 
@@ -93,6 +94,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._cameraManager = new CameraManager(this);
         }
 
+        getOverlayLayer() {
+            return this._overlayLayer;
+        }
+
         getGameCanvas() {
             return this._gameCanvas;
         }
@@ -116,7 +121,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 return;
             }
 
-            this._background.resizeTo();
+            this._overlayLayer.resizeTo();
 
             const parent = this.getElement();
             const w = parent.clientWidth;
@@ -145,7 +150,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             this._game.loop.tick();
 
-            this._background.render();
+            this._overlayLayer.render();
         }
     }
 

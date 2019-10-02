@@ -3285,156 +3285,6 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
-                var scene;
-                (function (scene) {
-                    class BackgroundRenderer {
-                        constructor(editor) {
-                            this._editor = editor;
-                            this._canvas = document.createElement("canvas");
-                            this._canvas.style.position = "absolute";
-                        }
-                        getCanvas() {
-                            return this._canvas;
-                        }
-                        resetContext() {
-                            this._ctx = this._canvas.getContext("2d");
-                            this._ctx.imageSmoothingEnabled = false;
-                            this._ctx.font = "12px Monospace";
-                        }
-                        resizeTo() {
-                            const parent = this._canvas.parentElement;
-                            this._canvas.width = parent.clientWidth;
-                            this._canvas.height = parent.clientHeight;
-                            this._canvas.style.width = this._canvas.width + "px";
-                            this._canvas.style.height = this._canvas.height + "px";
-                            this.resetContext();
-                        }
-                        render() {
-                            if (!this._ctx) {
-                                this.resetContext();
-                            }
-                            const camera = this._editor.getGameScene().getCamera();
-                            // parameters from settings
-                            const snapEnabled = false;
-                            const snapX = 10;
-                            const snapY = 10;
-                            const borderX = 0;
-                            const borderY = 0;
-                            const borderWidth = 800;
-                            const borderHeight = 600;
-                            const ctx = this._ctx;
-                            const canvasWidth = this._canvas.width;
-                            const canvasHeight = this._canvas.height;
-                            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-                            // render solid background
-                            ctx.fillStyle = "#6e6e6e";
-                            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-                            // render grid
-                            ctx.strokeStyle = "#aeaeae";
-                            ctx.lineWidth = 1;
-                            let gapX = 4;
-                            let gapY = 4;
-                            if (snapEnabled) {
-                                gapX = snapX;
-                                gapY = snapY;
-                            }
-                            {
-                                for (let i = 1; true; i++) {
-                                    const delta = camera.getScreenPoint(gapX * i, gapY * i).subtract(camera.getScreenPoint(0, 0));
-                                    if (delta.x > 64 && delta.y > 64) {
-                                        gapX = gapX * i;
-                                        gapY = gapY * i;
-                                        break;
-                                    }
-                                }
-                            }
-                            const worldStartPoint = camera.getWorldPoint(0, 0);
-                            worldStartPoint.x = Phaser.Math.Snap.Floor(worldStartPoint.x, gapX);
-                            worldStartPoint.y = Phaser.Math.Snap.Floor(worldStartPoint.y, gapY);
-                            const worldEndPoint = camera.getWorldPoint(canvasWidth, canvasHeight);
-                            const grid = (render) => {
-                                let worldY = worldStartPoint.y;
-                                while (worldY < worldEndPoint.y) {
-                                    let point = camera.getScreenPoint(0, worldY);
-                                    render.horizontal(worldY, point.y | 0);
-                                    worldY += gapY;
-                                }
-                                let worldX = worldStartPoint.x;
-                                while (worldX < worldEndPoint.x) {
-                                    let point = camera.getScreenPoint(worldX, 0);
-                                    render.vertical(worldX, point.x | 0);
-                                    worldX += gapX;
-                                }
-                            };
-                            let labelWidth = 0;
-                            ctx.save();
-                            ctx.fillStyle = ctx.strokeStyle;
-                            // labels
-                            grid({
-                                horizontal: (worldY, screenY) => {
-                                    const w = ctx.measureText(worldY.toString()).width;
-                                    labelWidth = Math.max(labelWidth, w + 2);
-                                    ctx.fillText(worldY.toString(), 0, screenY + 4);
-                                },
-                                vertical: (worldX, screenX) => {
-                                    if (screenX < labelWidth) {
-                                        return;
-                                    }
-                                    const w = ctx.measureText(worldX.toString()).width;
-                                    ctx.fillText(worldX.toString(), screenX - w / 2, 15);
-                                }
-                            });
-                            // lines 
-                            grid({
-                                horizontal: (worldY, screenY) => {
-                                    if (screenY < 20) {
-                                        return;
-                                    }
-                                    ctx.beginPath();
-                                    ctx.moveTo(labelWidth, screenY);
-                                    ctx.lineTo(canvasWidth, screenY);
-                                    ctx.stroke();
-                                },
-                                vertical: (worldX, screenX) => {
-                                    if (screenX < labelWidth) {
-                                        return;
-                                    }
-                                    ctx.beginPath();
-                                    ctx.moveTo(screenX, 20);
-                                    ctx.lineTo(screenX, canvasHeight);
-                                    ctx.stroke();
-                                }
-                            });
-                            ctx.restore();
-                            {
-                                ctx.save();
-                                ctx.lineWidth = 2;
-                                const a = camera.getScreenPoint(borderX, borderY);
-                                const b = camera.getScreenPoint(borderX + borderWidth, borderY + borderHeight);
-                                ctx.save();
-                                ctx.strokeStyle = "#404040";
-                                ctx.strokeRect(a.x + 2, a.y + 2, b.x - a.x, b.y - a.y);
-                                ctx.restore();
-                                ctx.lineWidth = 1;
-                                ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
-                                ctx.restore();
-                            }
-                        }
-                    }
-                    scene.BackgroundRenderer = BackgroundRenderer;
-                })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
 Phaser.Cameras.Scene2D.Camera.prototype.getScreenPoint = function (worldX, worldY) {
     let x = worldX * this.zoom - this.scrollX * this.zoom;
     let y = worldY * this.zoom - this.scrollY * this.zoom;
@@ -3454,7 +3304,7 @@ var phasereditor2d;
                         constructor(editor) {
                             this._editor = editor;
                             this._dragStartPoint = null;
-                            const canvas = this._editor.getGameCanvas();
+                            const canvas = this._editor.getOverlayLayer().getCanvas();
                             canvas.addEventListener("wheel", e => this.onWheel(e));
                             canvas.addEventListener("mousedown", e => this.onMouseDown(e));
                             canvas.addEventListener("mousemove", e => this.onMouseMove(e));
@@ -3524,7 +3374,7 @@ var phasereditor2d;
                     class DropManager {
                         constructor(editor) {
                             this._editor = editor;
-                            const canvas = this._editor.getGameCanvas();
+                            const canvas = this._editor.getOverlayLayer().getCanvas();
                             canvas.addEventListener("dragover", e => this.onDragOver(e));
                             canvas.addEventListener("drop", e => this.onDragDrop(e));
                         }
@@ -3588,11 +3438,167 @@ var phasereditor2d;
                             return this.cameras.main;
                         }
                         create() {
-                            this.getCamera().setOrigin(0, 0);
-                            this.add.text(0, 0, "Hello scene editor").setScale(2, 2).setOrigin(0, 0);
+                            const camera = this.getCamera();
+                            camera.setOrigin(0, 0);
+                            camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
                         }
                     }
                     scene.GameScene = GameScene;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class OverlayLayer {
+                        constructor(editor) {
+                            this._editor = editor;
+                            this._canvas = document.createElement("canvas");
+                            this._canvas.style.position = "absolute";
+                        }
+                        getCanvas() {
+                            return this._canvas;
+                        }
+                        resetContext() {
+                            this._ctx = this._canvas.getContext("2d");
+                            this._ctx.imageSmoothingEnabled = false;
+                            this._ctx.font = "12px Monospace";
+                        }
+                        resizeTo() {
+                            const parent = this._canvas.parentElement;
+                            this._canvas.width = parent.clientWidth;
+                            this._canvas.height = parent.clientHeight;
+                            this._canvas.style.width = this._canvas.width + "px";
+                            this._canvas.style.height = this._canvas.height + "px";
+                            this.resetContext();
+                        }
+                        render() {
+                            if (!this._ctx) {
+                                this.resetContext();
+                            }
+                            const camera = this._editor.getGameScene().getCamera();
+                            // parameters from settings
+                            const snapEnabled = false;
+                            const snapX = 10;
+                            const snapY = 10;
+                            const borderX = 0;
+                            const borderY = 0;
+                            const borderWidth = 800;
+                            const borderHeight = 600;
+                            const ctx = this._ctx;
+                            const canvasWidth = this._canvas.width;
+                            const canvasHeight = this._canvas.height;
+                            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                            // render grid
+                            ctx.strokeStyle = "#aeaeae";
+                            ctx.lineWidth = 1;
+                            let gapX = 4;
+                            let gapY = 4;
+                            if (snapEnabled) {
+                                gapX = snapX;
+                                gapY = snapY;
+                            }
+                            {
+                                for (let i = 1; true; i++) {
+                                    const delta = camera.getScreenPoint(gapX * i, gapY * i).subtract(camera.getScreenPoint(0, 0));
+                                    if (delta.x > 64 && delta.y > 64) {
+                                        gapX = gapX * i;
+                                        gapY = gapY * i;
+                                        break;
+                                    }
+                                }
+                            }
+                            const worldStartPoint = camera.getWorldPoint(0, 0);
+                            worldStartPoint.x = Phaser.Math.Snap.Floor(worldStartPoint.x, gapX);
+                            worldStartPoint.y = Phaser.Math.Snap.Floor(worldStartPoint.y, gapY);
+                            const worldEndPoint = camera.getWorldPoint(canvasWidth, canvasHeight);
+                            const grid = (render) => {
+                                let worldY = worldStartPoint.y;
+                                while (worldY < worldEndPoint.y) {
+                                    let point = camera.getScreenPoint(0, worldY);
+                                    render.horizontal(worldY, point.y | 0);
+                                    worldY += gapY;
+                                }
+                                let worldX = worldStartPoint.x;
+                                while (worldX < worldEndPoint.x) {
+                                    let point = camera.getScreenPoint(worldX, 0);
+                                    render.vertical(worldX, point.x | 0);
+                                    worldX += gapX;
+                                }
+                            };
+                            let labelWidth = 0;
+                            ctx.save();
+                            ctx.fillStyle = ctx.strokeStyle;
+                            // labels
+                            grid({
+                                horizontal: (worldY, screenY) => {
+                                    const w = ctx.measureText(worldY.toString()).width;
+                                    labelWidth = Math.max(labelWidth, w + 2);
+                                    ctx.save();
+                                    ctx.fillStyle = "#000000";
+                                    ctx.fillText(worldY.toString(), 0 + 1, screenY + 4 + 1);
+                                    ctx.restore();
+                                    ctx.fillText(worldY.toString(), 0, screenY + 4);
+                                },
+                                vertical: (worldX, screenX) => {
+                                    if (screenX < labelWidth) {
+                                        return;
+                                    }
+                                    const w = ctx.measureText(worldX.toString()).width;
+                                    ctx.save();
+                                    ctx.fillStyle = "#000000";
+                                    ctx.fillText(worldX.toString(), screenX - w / 2 + 1, 15 + 1);
+                                    ctx.restore();
+                                    ctx.fillText(worldX.toString(), screenX - w / 2, 15);
+                                }
+                            });
+                            // lines 
+                            grid({
+                                horizontal: (worldY, screenY) => {
+                                    if (screenY < 20) {
+                                        return;
+                                    }
+                                    ctx.beginPath();
+                                    ctx.moveTo(labelWidth, screenY);
+                                    ctx.lineTo(canvasWidth, screenY);
+                                    ctx.stroke();
+                                },
+                                vertical: (worldX, screenX) => {
+                                    if (screenX < labelWidth) {
+                                        return;
+                                    }
+                                    ctx.beginPath();
+                                    ctx.moveTo(screenX, 20);
+                                    ctx.lineTo(screenX, canvasHeight);
+                                    ctx.stroke();
+                                }
+                            });
+                            ctx.restore();
+                            {
+                                ctx.save();
+                                ctx.lineWidth = 2;
+                                const a = camera.getScreenPoint(borderX, borderY);
+                                const b = camera.getScreenPoint(borderX + borderWidth, borderY + borderHeight);
+                                ctx.save();
+                                ctx.strokeStyle = "#404040";
+                                ctx.strokeRect(a.x + 2, a.y + 2, b.x - a.x, b.y - a.y);
+                                ctx.restore();
+                                ctx.lineWidth = 1;
+                                ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
+                                ctx.restore();
+                            }
+                        }
+                    }
+                    scene.OverlayLayer = OverlayLayer;
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -3660,11 +3666,11 @@ var phasereditor2d;
                         }
                         createPart() {
                             this.setLayoutChildren(false);
-                            this._background = new scene.BackgroundRenderer(this);
-                            this.getElement().appendChild(this._background.getCanvas());
                             this._gameCanvas = document.createElement("canvas");
                             this._gameCanvas.style.position = "absolute";
                             this.getElement().appendChild(this._gameCanvas);
+                            this._overlayLayer = new scene.OverlayLayer(this);
+                            this.getElement().appendChild(this._overlayLayer.getCanvas());
                             // create game scene
                             this._gameScene = new scene.GameScene(this);
                             this._game = new Phaser.Game({
@@ -3692,6 +3698,9 @@ var phasereditor2d;
                             this._dropManager = new scene.DropManager(this);
                             this._cameraManager = new scene.CameraManager(this);
                         }
+                        getOverlayLayer() {
+                            return this._overlayLayer;
+                        }
                         getGameCanvas() {
                             return this._gameCanvas;
                         }
@@ -3709,7 +3718,7 @@ var phasereditor2d;
                             if (!this._gameBooted) {
                                 return;
                             }
-                            this._background.resizeTo();
+                            this._overlayLayer.resizeTo();
                             const parent = this.getElement();
                             const w = parent.clientWidth;
                             const h = parent.clientHeight;
@@ -3730,7 +3739,7 @@ var phasereditor2d;
                                 return;
                             }
                             this._game.loop.tick();
-                            this._background.render();
+                            this._overlayLayer.render();
                         }
                     }
                     scene.SceneEditor = SceneEditor;

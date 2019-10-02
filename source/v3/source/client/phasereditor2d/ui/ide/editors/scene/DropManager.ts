@@ -7,7 +7,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         constructor(editor: SceneEditor) {
             this._editor = editor;
 
-            const canvas = this._editor.getGameCanvas();
+            const canvas = this._editor.getOverlayLayer().getCanvas();
             canvas.addEventListener("dragover", e => this.onDragOver(e));
             canvas.addEventListener("drop", e => this.onDragDrop(e));
         }
