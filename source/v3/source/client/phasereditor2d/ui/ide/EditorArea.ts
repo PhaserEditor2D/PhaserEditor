@@ -5,26 +5,10 @@
 
 namespace phasereditor2d.ui.ide {
 
-    class DemoEditor extends EditorPart {
-
-        constructor(id: string, title: string) {
-            super(id);
-            this.setTitle(title);
-        }
-
-        createPart(): void {
-            this.getElement().innerHTML = "Editor " + this.getId();
-        }
-    }
-
     export class EditorArea extends PartFolder {
 
         constructor() {
             super("EditorArea");
-
-            //this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
-            //this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
-            //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
         }
 
         activateEditor(editor : EditorPart) : void {

@@ -26,7 +26,7 @@ namespace phasereditor2d.ui.controls {
         addTab(label: string, icon : IImage, content: Control, closeable = false): void {
             const labelElement = this.makeLabel(label, icon, closeable);
             this._titleBarElement.appendChild(labelElement);
-            labelElement.addEventListener("click", e => this.selectTab(labelElement));
+            labelElement.addEventListener("mousedown", e => this.selectTab(labelElement));
 
             const contentArea = new Control("div", "ContentArea");
             contentArea.add(content);
@@ -98,7 +98,7 @@ namespace phasereditor2d.ui.controls {
         setTabTitle(content: Control, title: string, icon? : IImage) {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
-                const content2 = this.getContentFromLabel(label);
+                const content2 = TabPane.getContentFromLabel(label);
                 if (content2 === content) {
                     const iconElement : HTMLCanvasElement = <HTMLCanvasElement> label.firstChild;
                     const textElement = <HTMLElement> iconElement.nextSibling;
@@ -112,10 +112,14 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
+        static isTabLabel(element : HTMLElement) {
+            return element.classList.contains("TabPaneLabel");
+        }
+
         private getLabelFromContent(content : Control) {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
-                const content2 = this.getContentFromLabel(label);
+                const content2 = TabPane.getContentFromLabel(label);
                 if (content2 === content) {
                     return label;
                 }
@@ -123,11 +127,11 @@ namespace phasereditor2d.ui.controls {
             return null;
         }
 
-        private getContentAreaFromLabel(labelElement: HTMLElement): HTMLElement {
+        private static getContentAreaFromLabel(labelElement: HTMLElement): HTMLElement {
             return labelElement["__contentArea"];
         }
 
-        private getContentFromLabel(labelElement: HTMLElement) {
+        static getContentFromLabel(labelElement: HTMLElement) {
             return Control.getControlOf(<HTMLElement>this.getContentAreaFromLabel(labelElement).firstChild);
         }
 
@@ -147,17 +151,17 @@ namespace phasereditor2d.ui.controls {
                     return;
                 }
                 selectedLabel.classList.remove("selected");
-                const selectedContentArea = this.getContentAreaFromLabel(selectedLabel);
+                const selectedContentArea = TabPane.getContentAreaFromLabel(selectedLabel);
                 selectedContentArea.classList.remove("selected");
             }
 
             toSelectLabel.classList.add("selected");
-            const toSelectContentArea = this.getContentAreaFromLabel(toSelectLabel);
+            const toSelectContentArea = TabPane.getContentAreaFromLabel(toSelectLabel);
             toSelectContentArea.classList.add("selected");
             this._selectionHistoryLabelElement.push(toSelectLabel);
 
             this.dispatchEvent(new CustomEvent(EVENT_TAB_SELECTED, {
-                detail: this.getContentFromLabel(toSelectLabel)
+                detail: TabPane.getContentFromLabel(toSelectLabel)
             }));
 
             this.dispatchLayoutEvent();
@@ -166,7 +170,7 @@ namespace phasereditor2d.ui.controls {
         getSelectedTabContent(): Control {
             const label = this.getSelectedLabelElement();
             if (label) {
-                const area = this.getContentAreaFromLabel(label);
+                const area = TabPane.getContentAreaFromLabel(label);
                 return Control.getControlOf(<HTMLElement>area.firstChild);
             }
             return null;
@@ -177,7 +181,7 @@ namespace phasereditor2d.ui.controls {
 
             for (let i = 0; i < this._titleBarElement.children.length; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
-                const content = this.getContentFromLabel(label);
+                const content = TabPane.getContentFromLabel(label);
                 list.push(content);
             }
 

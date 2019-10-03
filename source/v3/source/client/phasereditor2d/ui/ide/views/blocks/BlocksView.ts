@@ -7,8 +7,7 @@ namespace phasereditor2d.ui.ide.views.blocks {
 
     export class BlocksView extends ide.ViewerView {
 
-        private _selectionListener: any;
-        private _activeEditor: EditorPart;
+        private _currentEditor: EditorPart;
         private _currentBlocksProvider: EditorBlocksProvider;
 
         constructor() {
@@ -24,47 +23,42 @@ namespace phasereditor2d.ui.ide.views.blocks {
         protected createPart(): void {
             super.createPart();
 
-            this._selectionListener = (e: CustomEvent) => this.onPartSelection();
-
-            Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
+            Workbench.getWorkbench().addEventListener(EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
         }
 
-        private onWorkbenchPartActivate() {
-            const part = Workbench.getWorkbench().getActivePart();
+        private async onWorkbenchEditorActivated() {
 
-            if (!part || part instanceof EditorPart && part !== this._activeEditor) {
+            const editor = Workbench.getWorkbench().getActiveEditor();
 
-                if (this._activeEditor) {
-                    this._activeEditor.removeEventListener(controls.EVENT_SELECTION, this._selectionListener);
+            console.log("editor " + editor.getTitle() + " activated ");
+
+            let provider: EditorBlocksProvider = null;
+
+            if (editor) {
+                if (editor === this._currentEditor) {
+                    provider = this._currentBlocksProvider;
+                } else {
+                    provider = editor.getBlocksProvider();
                 }
-
-                this._activeEditor = <EditorPart>part;
-
-                this._activeEditor.addEventListener(controls.EVENT_SELECTION, this._selectionListener);
-
-                this.onPartSelection();
             }
-        }
 
-        private async onPartSelection() {
-            const provider = this._activeEditor.getBlocksProvider();
+            if (provider) {
+                this._currentBlocksProvider = provider;
 
-            if (!provider) {
+                await provider.preload();
+
+                this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
+                this._viewer.setLabelProvider(provider.getLabelProvider());
+                this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
+                this._viewer.setContentProvider(provider.getContentProvider());
+                this._viewer.setInput(provider.getInput());
+
+            } else {
+                this._currentBlocksProvider = null;
+
                 this._viewer.setInput(null);
                 this._viewer.setContentProvider(new controls.viewers.EmptyTreeContentProvider());
-                this._currentBlocksProvider = provider;
-                return;
             }
-
-            this._currentBlocksProvider = provider;
-
-            await provider.preload();
-
-            this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
-            this._viewer.setLabelProvider(provider.getLabelProvider());
-            this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
-            this._viewer.setContentProvider(provider.getContentProvider());
-            this._viewer.setInput(provider.getInput());
 
             this._viewer.repaint();
         }

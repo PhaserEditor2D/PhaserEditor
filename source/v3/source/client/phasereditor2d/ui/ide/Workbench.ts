@@ -6,8 +6,11 @@
 
 namespace phasereditor2d.ui.ide {
 
-    export const EVENT_PART_DEACTIVATE = "partDeactivate";
-    export const EVENT_PART_ACTIVATE = "partActivate";
+    export const EVENT_PART_DEACTIVATED = "partDeactivated";
+    export const EVENT_PART_ACTIVATED = "partActivated";
+
+    export const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
+    export const EVENT_EDITOR_ACTIVATED = "editorActivated";
 
     export const ICON_FILE = "file";
     export const ICON_FOLDER = "folder";
@@ -40,6 +43,7 @@ namespace phasereditor2d.ui.ide {
     export class Workbench extends EventTarget {
         private static _workbench: Workbench;
 
+
         static getWorkbench() {
             if (!Workbench._workbench) {
                 Workbench._workbench = new Workbench();
@@ -53,6 +57,7 @@ namespace phasereditor2d.ui.ide {
         private _fileStorage: core.io.IFileStorage;
         private _contentTypeRegistry: core.ContentTypeRegistry;
         private _activePart: Part;
+        private _activeEditor: EditorPart;
         private _editorRegistry: EditorRegistry;
 
         private constructor() {
@@ -68,6 +73,9 @@ namespace phasereditor2d.ui.ide {
             this._contentType_icon_Map.set(editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
 
             this._editorRegistry = new EditorRegistry();
+
+            this._activePart = null;
+            this._activeEditor = null;
 
         }
 
@@ -116,7 +124,41 @@ namespace phasereditor2d.ui.ide {
             return this._activePart;
         }
 
+        getActiveEditor() {
+            return this._activeEditor;
+        }
+
+        private setActiveEditor(editor: EditorPart) {
+            if (editor === this._activeEditor) {
+                return;
+            }
+
+            if (!editor) {
+                this._activeEditor = null;
+                return;
+            }
+
+            const old = this._activeEditor;
+            this._activeEditor = editor;
+
+            if (old) {
+                this.toggleActivePart(old);
+                this.dispatchEvent(new CustomEvent(EVENT_EDITOR_DEACTIVATED, { detail: old }));
+            }
+
+            if (editor) {
+                this.toggleActivePart(editor);
+            }
+
+            this.dispatchEvent(new CustomEvent(EVENT_EDITOR_ACTIVATED, { detail: editor }));
+        }
+
         private setActivePart(part: Part): void {
+
+            if (part instanceof EditorPart) {
+                this.setActiveEditor(part);
+            }
+
             if (part === this._activePart) {
                 return;
             }
@@ -130,14 +172,14 @@ namespace phasereditor2d.ui.ide {
 
             if (old) {
                 this.toggleActivePart(old);
-                this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATE, { detail: old }));
+                this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATED, { detail: old }));
             }
 
             if (part) {
                 this.toggleActivePart(part);
             }
 
-            this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATE, { detail: part }));
+            this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATED, { detail: part }));
         }
 
         private toggleActivePart(part: Part) {
@@ -169,10 +211,15 @@ namespace phasereditor2d.ui.ide {
         }
 
         findPart(element: HTMLElement): Part {
+            if (controls.TabPane.isTabLabel(element)) {
+                element = controls.TabPane.getContentFromLabel(element).getElement();
+            }
+
             if (element["__part"]) {
                 return element["__part"];
             }
 
+            /*
             const control = controls.Control.getControlOf(element);
 
             if (control && control instanceof controls.TabPane) {
@@ -185,6 +232,7 @@ namespace phasereditor2d.ui.ide {
                     }
                 }
             }
+            */
 
             if (element.parentElement) {
                 return this.findPart(element.parentElement);

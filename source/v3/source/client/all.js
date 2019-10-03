@@ -668,6 +668,9 @@ var phasereditor2d;
                 getBlocksProvider() {
                     return null;
                 }
+                getOutlineProvider() {
+                    return null;
+                }
             }
             ide.EditorPart = EditorPart;
         })(ide = ui.ide || (ui.ide = {}));
@@ -695,7 +698,7 @@ var phasereditor2d;
                 addTab(label, icon, content, closeable = false) {
                     const labelElement = this.makeLabel(label, icon, closeable);
                     this._titleBarElement.appendChild(labelElement);
-                    labelElement.addEventListener("click", e => this.selectTab(labelElement));
+                    labelElement.addEventListener("mousedown", e => this.selectTab(labelElement));
                     const contentArea = new controls.Control("div", "ContentArea");
                     contentArea.add(content);
                     this._contentAreaElement.appendChild(contentArea.getElement());
@@ -753,7 +756,7 @@ var phasereditor2d;
                 setTabTitle(content, title, icon) {
                     for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                         const label = this._titleBarElement.children.item(i);
-                        const content2 = this.getContentFromLabel(label);
+                        const content2 = TabPane.getContentFromLabel(label);
                         if (content2 === content) {
                             const iconElement = label.firstChild;
                             const textElement = iconElement.nextSibling;
@@ -766,20 +769,23 @@ var phasereditor2d;
                         }
                     }
                 }
+                static isTabLabel(element) {
+                    return element.classList.contains("TabPaneLabel");
+                }
                 getLabelFromContent(content) {
                     for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                         const label = this._titleBarElement.children.item(i);
-                        const content2 = this.getContentFromLabel(label);
+                        const content2 = TabPane.getContentFromLabel(label);
                         if (content2 === content) {
                             return label;
                         }
                     }
                     return null;
                 }
-                getContentAreaFromLabel(labelElement) {
+                static getContentAreaFromLabel(labelElement) {
                     return labelElement["__contentArea"];
                 }
-                getContentFromLabel(labelElement) {
+                static getContentFromLabel(labelElement) {
                     return controls.Control.getControlOf(this.getContentAreaFromLabel(labelElement).firstChild);
                 }
                 selectTabWithContent(content) {
@@ -796,22 +802,22 @@ var phasereditor2d;
                             return;
                         }
                         selectedLabel.classList.remove("selected");
-                        const selectedContentArea = this.getContentAreaFromLabel(selectedLabel);
+                        const selectedContentArea = TabPane.getContentAreaFromLabel(selectedLabel);
                         selectedContentArea.classList.remove("selected");
                     }
                     toSelectLabel.classList.add("selected");
-                    const toSelectContentArea = this.getContentAreaFromLabel(toSelectLabel);
+                    const toSelectContentArea = TabPane.getContentAreaFromLabel(toSelectLabel);
                     toSelectContentArea.classList.add("selected");
                     this._selectionHistoryLabelElement.push(toSelectLabel);
                     this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_SELECTED, {
-                        detail: this.getContentFromLabel(toSelectLabel)
+                        detail: TabPane.getContentFromLabel(toSelectLabel)
                     }));
                     this.dispatchLayoutEvent();
                 }
                 getSelectedTabContent() {
                     const label = this.getSelectedLabelElement();
                     if (label) {
-                        const area = this.getContentAreaFromLabel(label);
+                        const area = TabPane.getContentAreaFromLabel(label);
                         return controls.Control.getControlOf(area.firstChild);
                     }
                     return null;
@@ -820,7 +826,7 @@ var phasereditor2d;
                     const list = [];
                     for (let i = 0; i < this._titleBarElement.children.length; i++) {
                         const label = this._titleBarElement.children.item(i);
-                        const content = this.getContentFromLabel(label);
+                        const content = TabPane.getContentFromLabel(label);
                         list.push(content);
                     }
                     return list;
@@ -881,21 +887,9 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            class DemoEditor extends ide.EditorPart {
-                constructor(id, title) {
-                    super(id);
-                    this.setTitle(title);
-                }
-                createPart() {
-                    this.getElement().innerHTML = "Editor " + this.getId();
-                }
-            }
             class EditorArea extends ide.PartFolder {
                 constructor() {
                     super("EditorArea");
-                    //this.addPart(new DemoEditor("demoEditor1", "Level1.scene"), true);
-                    //this.addPart(new DemoEditor("demoEditor2", "Level2.scene"), true);
-                    //this.addPart(new DemoEditor("demoEditor3", "pack.json"), true);
                 }
                 activateEditor(editor) {
                     super.selectTabWithContent(editor);
@@ -1110,6 +1104,22 @@ var phasereditor2d;
                 }
             }
             ide.DefaultExtensionTypeResolver = DefaultExtensionTypeResolver;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class OutlineProvider extends EventTarget {
+                constructor(editor) {
+                    super();
+                    this._editor = editor;
+                }
+            }
+            ide.OutlineProvider = OutlineProvider;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1371,8 +1381,10 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            ide.EVENT_PART_DEACTIVATE = "partDeactivate";
-            ide.EVENT_PART_ACTIVATE = "partActivate";
+            ide.EVENT_PART_DEACTIVATED = "partDeactivated";
+            ide.EVENT_PART_ACTIVATED = "partActivated";
+            ide.EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
+            ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
             ide.ICON_FILE = "file";
             ide.ICON_FOLDER = "folder";
             ide.ICON_FILE_FONT = "file-font";
@@ -1410,6 +1422,8 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ide.ICON_FILE_TEXT));
                     this._contentType_icon_Map.set(ide.editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ide.ICON_ASSET_PACK));
                     this._editorRegistry = new ide.EditorRegistry();
+                    this._activePart = null;
+                    this._activeEditor = null;
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
@@ -1449,7 +1463,32 @@ var phasereditor2d;
                 getActivePart() {
                     return this._activePart;
                 }
+                getActiveEditor() {
+                    return this._activeEditor;
+                }
+                setActiveEditor(editor) {
+                    if (editor === this._activeEditor) {
+                        return;
+                    }
+                    if (!editor) {
+                        this._activeEditor = null;
+                        return;
+                    }
+                    const old = this._activeEditor;
+                    this._activeEditor = editor;
+                    if (old) {
+                        this.toggleActivePart(old);
+                        this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_DEACTIVATED, { detail: old }));
+                    }
+                    if (editor) {
+                        this.toggleActivePart(editor);
+                    }
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
+                }
                 setActivePart(part) {
+                    if (part instanceof ide.EditorPart) {
+                        this.setActiveEditor(part);
+                    }
                     if (part === this._activePart) {
                         return;
                     }
@@ -1460,12 +1499,12 @@ var phasereditor2d;
                     this._activePart = part;
                     if (old) {
                         this.toggleActivePart(old);
-                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATE, { detail: old }));
+                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
                     }
                     if (part) {
                         this.toggleActivePart(part);
                     }
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATE, { detail: part }));
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
                 }
                 toggleActivePart(part) {
                     const tabPane = this.findTabPane(part.getElement());
@@ -1493,12 +1532,17 @@ var phasereditor2d;
                     return null;
                 }
                 findPart(element) {
+                    if (ui.controls.TabPane.isTabLabel(element)) {
+                        element = ui.controls.TabPane.getContentFromLabel(element).getElement();
+                    }
                     if (element["__part"]) {
                         return element["__part"];
                     }
-                    const control = ui.controls.Control.getControlOf(element);
-                    if (control && control instanceof ui.controls.TabPane) {
-                        const tabPane = control;
+                    /*
+                    const control = controls.Control.getControlOf(element);
+        
+                    if (control && control instanceof controls.TabPane) {
+                        const tabPane = <controls.TabPane>control;
                         const content = tabPane.getSelectedTabContent();
                         if (content) {
                             const element = content.getElement();
@@ -1507,6 +1551,7 @@ var phasereditor2d;
                             }
                         }
                     }
+                    */
                     if (element.parentElement) {
                         return this.findPart(element.parentElement);
                     }
@@ -4152,35 +4197,34 @@ var phasereditor2d;
                         }
                         createPart() {
                             super.createPart();
-                            this._selectionListener = (e) => this.onPartSelection();
-                            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
+                            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
                         }
-                        onWorkbenchPartActivate() {
-                            const part = ide.Workbench.getWorkbench().getActivePart();
-                            if (!part || part instanceof ide.EditorPart && part !== this._activeEditor) {
-                                if (this._activeEditor) {
-                                    this._activeEditor.removeEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                        async onWorkbenchEditorActivated() {
+                            const editor = ide.Workbench.getWorkbench().getActiveEditor();
+                            console.log("editor " + editor.getTitle() + " activated ");
+                            let provider = null;
+                            if (editor) {
+                                if (editor === this._currentEditor) {
+                                    provider = this._currentBlocksProvider;
                                 }
-                                this._activeEditor = part;
-                                this._activeEditor.addEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
-                                this.onPartSelection();
+                                else {
+                                    provider = editor.getBlocksProvider();
+                                }
                             }
-                        }
-                        async onPartSelection() {
-                            const provider = this._activeEditor.getBlocksProvider();
-                            if (!provider) {
+                            if (provider) {
+                                this._currentBlocksProvider = provider;
+                                await provider.preload();
+                                this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
+                                this._viewer.setLabelProvider(provider.getLabelProvider());
+                                this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
+                                this._viewer.setContentProvider(provider.getContentProvider());
+                                this._viewer.setInput(provider.getInput());
+                            }
+                            else {
+                                this._currentBlocksProvider = null;
                                 this._viewer.setInput(null);
                                 this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
-                                this._currentBlocksProvider = provider;
-                                return;
                             }
-                            this._currentBlocksProvider = provider;
-                            await provider.preload();
-                            this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
-                            this._viewer.setLabelProvider(provider.getLabelProvider());
-                            this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
-                            this._viewer.setContentProvider(provider.getContentProvider());
-                            this._viewer.setInput(provider.getInput());
                             this._viewer.repaint();
                         }
                         getPropertyProvider() {
@@ -5282,7 +5326,7 @@ var phasereditor2d;
                             this._propertyPage = new ui.controls.properties.PropertyPage();
                             this.add(this._propertyPage);
                             this._selectionListener = (e) => this.onPartSelection();
-                            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATE, e => this.onWorkbenchPartActivate());
+                            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
                         }
                         onWorkbenchPartActivate() {
                             const part = ide.Workbench.getWorkbench().getActivePart();
@@ -5319,13 +5363,14 @@ var phasereditor2d;
             (function (views) {
                 var outline;
                 (function (outline) {
-                    class OutlineView extends ide.ViewPart {
+                    class OutlineView extends ide.ViewerView {
                         constructor() {
-                            super("outlineView");
+                            super("OutlineView");
                             this.setTitle("Outline");
                             this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
                         }
-                        createPart() {
+                        createViewer() {
+                            return new ui.controls.viewers.TreeViewer();
                         }
                     }
                     outline.OutlineView = OutlineView;

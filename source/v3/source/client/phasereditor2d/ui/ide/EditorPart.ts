@@ -2,7 +2,7 @@ namespace phasereditor2d.ui.ide {
 
     export abstract class EditorPart extends Part {
 
-        private _input : any;
+        private _input: any;
 
         constructor(id: string) {
             super(id);
@@ -13,11 +13,15 @@ namespace phasereditor2d.ui.ide {
             return this._input;
         }
 
-        setInput(input : any) : void {
+        setInput(input: any): void {
             this._input = input;
         }
 
-        getBlocksProvider() : EditorBlocksProvider {
+        getBlocksProvider(): EditorBlocksProvider {
+            return null;
+        }
+
+        getOutlineProvider(): OutlineProvider {
             return null;
         }
 

@@ -2,16 +2,16 @@
 
 namespace phasereditor2d.ui.ide.views.outline {
 
-    export class OutlineView extends ide.ViewPart {
-        
+    export class OutlineView extends ide.ViewerView {
+
         constructor() {
-            super("outlineView");
+            super("OutlineView");
             this.setTitle("Outline");
             this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_OUTLINE));
         }
 
-        protected createPart(): void {
-            
+        protected createViewer(): controls.viewers.TreeViewer {
+            return new controls.viewers.TreeViewer();
         }
     }
 }
