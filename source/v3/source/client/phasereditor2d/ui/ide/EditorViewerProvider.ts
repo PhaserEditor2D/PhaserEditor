@@ -2,7 +2,7 @@ namespace phasereditor2d.ui.ide {
 
     import viewers = controls.viewers;
 
-    export abstract class EditorBlocksProvider {
+    export abstract class EditorViewerProvider {
 
         abstract getContentProvider() : viewers.ITreeContentProvider;
 

@@ -1,6 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
-    export class SceneEditorBlocksProvider extends EditorBlocksProvider {
+    export class SceneEditorViewerProvider extends EditorViewerProvider {
 
         private _contentProvider: SceneEditorBlocksContentProvider;
 

@@ -1,4 +1,5 @@
 /// <reference path="../../../phasereditor2d.ui.controls/viewers/FilteredViewer.ts" />
+/// <reference path="./ViewPart.ts" />
 
 namespace phasereditor2d.ui.ide {
     export abstract class ViewerView extends ViewPart {

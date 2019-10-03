@@ -665,10 +665,7 @@ var phasereditor2d;
                 setInput(input) {
                     this._input = input;
                 }
-                getBlocksProvider() {
-                    return null;
-                }
-                getOutlineProvider() {
+                getEditorViewerProvider(editorViewerType) {
                     return null;
                 }
             }
@@ -905,18 +902,6 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            class EditorBlocksProvider {
-            }
-            ide.EditorBlocksProvider = EditorBlocksProvider;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
             class EditorFactory {
                 constructor(id) {
                     this._id = id;
@@ -952,6 +937,206 @@ var phasereditor2d;
                 }
             }
             ide.EditorRegistry = EditorRegistry;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorViewerProvider {
+            }
+            ide.EditorViewerProvider = EditorViewerProvider;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class FilterControl extends controls.Control {
+                    constructor() {
+                        super("div", "FilterControl");
+                        this.setLayoutChildren(false);
+                        this._filterElement = document.createElement("input");
+                        this.getElement().appendChild(this._filterElement);
+                    }
+                    getFilterElement() {
+                        return this._filterElement;
+                    }
+                }
+                class ViewerContainer extends controls.Control {
+                    constructor(viewer) {
+                        super("div", "ViewerContainer");
+                        this._viewer = viewer;
+                        this.add(viewer);
+                        setTimeout(() => this.layout(), 1);
+                    }
+                    getViewer() {
+                        return this._viewer;
+                    }
+                    layout() {
+                        const b = this.getElement().getBoundingClientRect();
+                        this._viewer.setBoundsValues(b.left, b.top, b.width, b.height);
+                    }
+                }
+                viewers.ViewerContainer = ViewerContainer;
+                class FilteredViewer extends controls.Control {
+                    constructor(viewer, ...classList) {
+                        super("div", "FilteredViewer", ...classList);
+                        this._viewer = viewer;
+                        this._filterControl = new FilterControl();
+                        this._filterControl.getFilterElement().addEventListener("input", e => this.onFilterInput(e));
+                        this.add(this._filterControl);
+                        this._viewerContainer = new ViewerContainer(this._viewer);
+                        this._scrollPane = new controls.ScrollPane(this._viewerContainer);
+                        this.add(this._scrollPane);
+                        this.setLayoutChildren(false);
+                    }
+                    onFilterInput(e) {
+                        const value = this._filterControl.getFilterElement().value;
+                        this._viewer.setFilterText(value);
+                    }
+                    getViewer() {
+                        return this._viewer;
+                    }
+                    layout() {
+                        this._viewerContainer.layout();
+                        this._scrollPane.layout();
+                    }
+                    __layout() {
+                        super.layout();
+                        const b = this.getBounds();
+                        this._filterControl.setBoundsValues(0, 0, b.width, controls.FILTERED_VIEWER_FILTER_HEIGHT);
+                        this._scrollPane.setBounds({
+                            x: 0,
+                            y: controls.FILTERED_VIEWER_FILTER_HEIGHT,
+                            width: b.width,
+                            height: b.height - controls.FILTERED_VIEWER_FILTER_HEIGHT
+                        });
+                    }
+                }
+                viewers.FilteredViewer = FilteredViewer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewPart extends ide.Part {
+                constructor(id) {
+                    super(id);
+                    this.addClass("View");
+                }
+            }
+            ide.ViewPart = ViewPart;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.ui.controls/viewers/FilteredViewer.ts" />
+/// <reference path="./ViewPart.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewerView extends ide.ViewPart {
+                constructor(id) {
+                    super(id);
+                }
+                createPart() {
+                    this._viewer = this.createViewer();
+                    this.addClass("ViewerView");
+                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
+                    this.add(this._filteredViewer);
+                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION, (e) => {
+                        this.setSelection(e.detail);
+                    });
+                }
+                layout() {
+                    if (this._filteredViewer) {
+                        this._filteredViewer.layout();
+                    }
+                }
+            }
+            ide.ViewerView = ViewerView;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./ViewerView.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var viewers = ui.controls.viewers;
+            class EditorViewerView extends ide.ViewerView {
+                constructor(id) {
+                    super(id);
+                    this._viewerMap = new Map();
+                }
+                createViewer() {
+                    return new viewers.TreeViewer();
+                }
+                createPart() {
+                    super.createPart();
+                    ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
+                }
+                async onWorkbenchEditorActivated() {
+                    if (this._currentEditor !== null) {
+                        const state = this._viewer.getState();
+                        this._viewerMap.set(this._currentEditor, state);
+                    }
+                    const editor = ide.Workbench.getWorkbench().getActiveEditor();
+                    let provider = null;
+                    if (editor) {
+                        if (editor === this._currentEditor) {
+                            provider = this._currentViewerProvider;
+                        }
+                        else {
+                            provider = this.getViewerProvider(editor);
+                        }
+                    }
+                    if (provider) {
+                        await provider.preload();
+                        this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
+                        this._viewer.setLabelProvider(provider.getLabelProvider());
+                        this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
+                        this._viewer.setContentProvider(provider.getContentProvider());
+                        this._viewer.setInput(provider.getInput());
+                        const state = this._viewerMap.get(editor);
+                        if (state) {
+                            this._viewer.setState(state);
+                        }
+                    }
+                    else {
+                        this._viewer.setInput(null);
+                        this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
+                    }
+                    this._currentViewerProvider = provider;
+                    this._currentEditor = editor;
+                    this._viewer.repaint();
+                }
+                getPropertyProvider() {
+                    if (this._currentViewerProvider) {
+                        return this._currentViewerProvider.getPropertySectionProvider();
+                    }
+                    return null;
+                }
+            }
+            ide.EditorViewerView = EditorViewerView;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1161,127 +1346,6 @@ var phasereditor2d;
                 }
             }
             ide.ViewFolder = ViewFolder;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class ViewPart extends ide.Part {
-                constructor(id) {
-                    super(id);
-                    this.addClass("View");
-                }
-            }
-            ide.ViewPart = ViewPart;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class FilterControl extends controls.Control {
-                    constructor() {
-                        super("div", "FilterControl");
-                        this.setLayoutChildren(false);
-                        this._filterElement = document.createElement("input");
-                        this.getElement().appendChild(this._filterElement);
-                    }
-                    getFilterElement() {
-                        return this._filterElement;
-                    }
-                }
-                class ViewerContainer extends controls.Control {
-                    constructor(viewer) {
-                        super("div", "ViewerContainer");
-                        this._viewer = viewer;
-                        this.add(viewer);
-                        setTimeout(() => this.layout(), 1);
-                    }
-                    getViewer() {
-                        return this._viewer;
-                    }
-                    layout() {
-                        const b = this.getElement().getBoundingClientRect();
-                        this._viewer.setBoundsValues(b.left, b.top, b.width, b.height);
-                    }
-                }
-                viewers.ViewerContainer = ViewerContainer;
-                class FilteredViewer extends controls.Control {
-                    constructor(viewer, ...classList) {
-                        super("div", "FilteredViewer", ...classList);
-                        this._viewer = viewer;
-                        this._filterControl = new FilterControl();
-                        this._filterControl.getFilterElement().addEventListener("input", e => this.onFilterInput(e));
-                        this.add(this._filterControl);
-                        this._viewerContainer = new ViewerContainer(this._viewer);
-                        this._scrollPane = new controls.ScrollPane(this._viewerContainer);
-                        this.add(this._scrollPane);
-                        this.setLayoutChildren(false);
-                    }
-                    onFilterInput(e) {
-                        const value = this._filterControl.getFilterElement().value;
-                        this._viewer.setFilterText(value);
-                    }
-                    getViewer() {
-                        return this._viewer;
-                    }
-                    layout() {
-                        this._viewerContainer.layout();
-                        this._scrollPane.layout();
-                    }
-                    __layout() {
-                        super.layout();
-                        const b = this.getBounds();
-                        this._filterControl.setBoundsValues(0, 0, b.width, controls.FILTERED_VIEWER_FILTER_HEIGHT);
-                        this._scrollPane.setBounds({
-                            x: 0,
-                            y: controls.FILTERED_VIEWER_FILTER_HEIGHT,
-                            width: b.width,
-                            height: b.height - controls.FILTERED_VIEWER_FILTER_HEIGHT
-                        });
-                    }
-                }
-                viewers.FilteredViewer = FilteredViewer;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/viewers/FilteredViewer.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class ViewerView extends ide.ViewPart {
-                constructor(id) {
-                    super(id);
-                }
-                createPart() {
-                    this._viewer = this.createViewer();
-                    this.addClass("ViewerView");
-                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
-                    this.add(this._filteredViewer);
-                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION, (e) => {
-                        this.setSelection(e.detail);
-                    });
-                }
-                layout() {
-                    if (this._filteredViewer) {
-                        this._filteredViewer.layout();
-                    }
-                }
-            }
-            ide.ViewerView = ViewerView;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -3764,7 +3828,7 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../EditorBlocksProvider.ts" />
+/// <reference path="../../EditorViewerProvider.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -3794,7 +3858,7 @@ var phasereditor2d;
                     class SceneEditor extends ide.FileEditor {
                         constructor() {
                             super("phasereditor2d.SceneEditor");
-                            this._blocksProvider = new scene.SceneEditorBlocksProvider();
+                            this._blocksProvider = new scene.SceneEditorViewerProvider();
                         }
                         static getFactory() {
                             return new SceneEditorFactory();
@@ -3863,8 +3927,14 @@ var phasereditor2d;
                             this._gameScene.getCamera().setSize(w, h);
                             this.repaint();
                         }
-                        getBlocksProvider() {
-                            return this._blocksProvider;
+                        getEditorViewerProvider(editorViewerType) {
+                            switch (editorViewerType) {
+                                case "Blocks":
+                                    return this._blocksProvider;
+                                default:
+                                    break;
+                            }
+                            return null;
                         }
                         onGameBoot() {
                             this._gameBooted = true;
@@ -3968,7 +4038,7 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene) {
-                    class SceneEditorBlocksProvider extends ide.EditorBlocksProvider {
+                    class SceneEditorViewerProvider extends ide.EditorViewerProvider {
                         async preload() {
                             if (this._contentProvider) {
                                 return;
@@ -3996,7 +4066,7 @@ var phasereditor2d;
                             return this;
                         }
                     }
-                    scene.SceneEditorBlocksProvider = SceneEditorBlocksProvider;
+                    scene.SceneEditorViewerProvider = SceneEditorViewerProvider;
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -4178,6 +4248,7 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../Part.ts"/>
 /// <reference path="../../ViewPart.ts"/>
+/// <reference path="../../EditorViewerView.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -4188,64 +4259,14 @@ var phasereditor2d;
             (function (views) {
                 var blocks;
                 (function (blocks) {
-                    var viewers = ui.controls.viewers;
-                    class BlocksView extends ide.ViewerView {
+                    class BlocksView extends ide.EditorViewerView {
                         constructor() {
-                            super("blocksView");
+                            super("BlocksView");
                             this.setTitle("Blocks");
                             this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_BLOCKS));
-                            this._viewerMap = new Map();
                         }
-                        createViewer() {
-                            return new viewers.TreeViewer();
-                        }
-                        createPart() {
-                            super.createPart();
-                            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
-                        }
-                        async onWorkbenchEditorActivated() {
-                            if (this._currentEditor !== null) {
-                                const state = this._viewer.getState();
-                                this._viewerMap.set(this._currentEditor, state);
-                                console.log("save state");
-                                console.log(state);
-                                console.log("---");
-                            }
-                            const editor = ide.Workbench.getWorkbench().getActiveEditor();
-                            let provider = null;
-                            if (editor) {
-                                if (editor === this._currentEditor) {
-                                    provider = this._currentBlocksProvider;
-                                }
-                                else {
-                                    provider = editor.getBlocksProvider();
-                                }
-                            }
-                            if (provider) {
-                                await provider.preload();
-                                this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
-                                this._viewer.setLabelProvider(provider.getLabelProvider());
-                                this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
-                                this._viewer.setContentProvider(provider.getContentProvider());
-                                this._viewer.setInput(provider.getInput());
-                                const state = this._viewerMap.get(editor);
-                                if (state) {
-                                    this._viewer.setState(state);
-                                }
-                            }
-                            else {
-                                this._viewer.setInput(null);
-                                this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
-                            }
-                            this._currentBlocksProvider = provider;
-                            this._currentEditor = editor;
-                            this._viewer.repaint();
-                        }
-                        getPropertyProvider() {
-                            if (this._currentBlocksProvider) {
-                                return this._currentBlocksProvider.getPropertySectionProvider();
-                            }
-                            return null;
+                        getViewerProvider(editor) {
+                            return editor.getEditorViewerProvider("Blocks");
                         }
                     }
                     blocks.BlocksView = BlocksView;

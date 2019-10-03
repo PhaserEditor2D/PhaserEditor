@@ -1,4 +1,4 @@
-/// <reference path="../../EditorBlocksProvider.ts" />
+/// <reference path="../../EditorViewerProvider.ts" />
 
 namespace phasereditor2d.ui.ide.editors.scene {
 
@@ -11,10 +11,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         acceptInput(input: any): boolean {
+
             if (input instanceof io.FilePath) {
                 const contentType = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                 return contentType === CONTENT_TYPE_SCENE;
             }
+
             return false;
         }
 
@@ -27,7 +29,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     export class SceneEditor extends FileEditor {
 
-        private _blocksProvider: SceneEditorBlocksProvider;
+        private _blocksProvider: SceneEditorViewerProvider;
         private _game: Phaser.Game;
         private _overlayLayer: OverlayLayer;
         private _gameCanvas: HTMLCanvasElement;
@@ -35,7 +37,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _objectMaker: SceneObjectMaker;
         private _dropManager: DropManager;
         private _cameraManager: CameraManager;
-        private _selectionManager : SelectionManager;
+        private _selectionManager: SelectionManager;
         private _gameBooted: boolean;
 
         static getFactory(): EditorFactory {
@@ -45,7 +47,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         constructor() {
             super("phasereditor2d.SceneEditor");
 
-            this._blocksProvider = new SceneEditorBlocksProvider();
+            this._blocksProvider = new SceneEditorViewerProvider();
         }
 
         protected createPart() {
@@ -67,7 +69,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._game = new Phaser.Game({
                 type: Phaser.WEBGL,
                 canvas: this._gameCanvas,
-                scale : {
+                scale: {
                     mode: Phaser.Scale.NONE
                 },
                 render: {
@@ -117,6 +119,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         layout() {
+
             super.layout();
 
             if (!this._gameBooted) {
@@ -136,16 +139,27 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this.repaint();
         }
 
-        getBlocksProvider() {
-            return this._blocksProvider;
+        getEditorViewerProvider(editorViewerType: string) {
+
+            switch (editorViewerType) {
+                case "Blocks":
+                    return this._blocksProvider;
+                default:
+                    break;
+            }
+
+            return null;
         }
 
-        private onGameBoot() : void {
+        private onGameBoot(): void {
+
             this._gameBooted = true;
             this.layout();
+
         }
 
-        repaint() : void {
+        repaint(): void {
+
             if (!this._gameBooted) {
                 return;
             }
