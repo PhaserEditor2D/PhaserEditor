@@ -5,6 +5,11 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _contentProvider: SceneEditorBlocksContentProvider;
 
         async preload() {
+
+            if (this._contentProvider) {
+                return;
+            }
+
             const packs = await pack.AssetPackUtils.getAllPacks();
 
             this._contentProvider = new SceneEditorBlocksContentProvider(packs);

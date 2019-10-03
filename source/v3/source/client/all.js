@@ -3970,6 +3970,9 @@ var phasereditor2d;
                 (function (scene) {
                     class SceneEditorBlocksProvider extends ide.EditorBlocksProvider {
                         async preload() {
+                            if (this._contentProvider) {
+                                return;
+                            }
                             const packs = await editors.pack.AssetPackUtils.getAllPacks();
                             this._contentProvider = new scene.SceneEditorBlocksContentProvider(packs);
                             await editors.pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getItems());
@@ -4191,6 +4194,7 @@ var phasereditor2d;
                             super("blocksView");
                             this.setTitle("Blocks");
                             this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_BLOCKS));
+                            this._viewerMap = new Map();
                         }
                         createViewer() {
                             return new viewers.TreeViewer();
@@ -4200,8 +4204,14 @@ var phasereditor2d;
                             ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
                         }
                         async onWorkbenchEditorActivated() {
+                            if (this._currentEditor !== null) {
+                                const state = this._viewer.getState();
+                                this._viewerMap.set(this._currentEditor, state);
+                                console.log("save state");
+                                console.log(state);
+                                console.log("---");
+                            }
                             const editor = ide.Workbench.getWorkbench().getActiveEditor();
-                            console.log("editor " + editor.getTitle() + " activated ");
                             let provider = null;
                             if (editor) {
                                 if (editor === this._currentEditor) {
@@ -4212,19 +4222,23 @@ var phasereditor2d;
                                 }
                             }
                             if (provider) {
-                                this._currentBlocksProvider = provider;
                                 await provider.preload();
                                 this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
                                 this._viewer.setLabelProvider(provider.getLabelProvider());
                                 this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
                                 this._viewer.setContentProvider(provider.getContentProvider());
                                 this._viewer.setInput(provider.getInput());
+                                const state = this._viewerMap.get(editor);
+                                if (state) {
+                                    this._viewer.setState(state);
+                                }
                             }
                             else {
-                                this._currentBlocksProvider = null;
                                 this._viewer.setInput(null);
                                 this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
                             }
+                            this._currentBlocksProvider = provider;
+                            this._currentEditor = editor;
                             this._viewer.repaint();
                         }
                         getPropertyProvider() {
@@ -4509,6 +4523,9 @@ var phasereditor2d;
                     isExpanded(obj) {
                         return this._expandedObjects.has(obj);
                     }
+                    getExpandedObjects() {
+                        return this._expandedObjects;
+                    }
                     isCollapsed(obj) {
                         return !this.isExpanded(obj);
                     }
@@ -4627,6 +4644,16 @@ var phasereditor2d;
                     }
                     setInput(input) {
                         this._input = input;
+                    }
+                    getState() {
+                        return {
+                            filterText: this._filterText,
+                            expandedObjects: this._expandedObjects
+                        };
+                    }
+                    setState(state) {
+                        this._expandedObjects = state.expandedObjects;
+                        this.setFilterText(state.filterText);
                     }
                 }
                 viewers.Viewer = Viewer;

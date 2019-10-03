@@ -259,6 +259,10 @@ namespace phasereditor2d.ui.controls.viewers {
             return this._expandedObjects.has(obj);
         }
 
+        getExpandedObjects() {
+            return this._expandedObjects;
+        }
+
         isCollapsed(obj: any) {
             return !this.isExpanded(obj);
         }
@@ -416,6 +420,18 @@ namespace phasereditor2d.ui.controls.viewers {
 
         setInput(input: any): void {
             this._input = input;
+        }
+
+        getState(): any {
+            return {
+                filterText: this._filterText,
+                expandedObjects: this._expandedObjects
+            };
+        }
+
+        setState(state: any): void {
+            this._expandedObjects = state.expandedObjects;
+            this.setFilterText(state.filterText);
         }
     }
 }
