@@ -384,6 +384,10 @@ var phasereditor2d;
                 constructor() {
                     super("div", "Window");
                     this.setLayout(new ui.controls.FillLayout(5));
+                    window.addEventListener("resize", e => {
+                        this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
+                    });
+                    window.addEventListener(ui.controls.EVENT_THEME_CHANGED, e => this.layout());
                 }
                 createViewFolder(...parts) {
                     const folder = new ide.ViewFolder();
@@ -417,9 +421,6 @@ var phasereditor2d;
                     this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
                     this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
                     this.add(this._split_OutlineEditorFilesBlocks_Inspector);
-                    window.addEventListener("resize", e => {
-                        this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
-                    });
                     this.initialLayout();
                 }
                 getEditorArea() {
@@ -446,7 +447,7 @@ var phasereditor2d;
         var controls;
         (function (controls) {
             controls.EVENT_SELECTION = "selectionChanged";
-            controls.EVENT_THEME = "themeChanged";
+            controls.EVENT_THEME_CHANGED = "themeChanged";
             let PreloadResult;
             (function (PreloadResult) {
                 PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
@@ -546,7 +547,7 @@ var phasereditor2d;
                         classList.remove("dark");
                         classList.add("light");
                     }
-                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME, { detail: this.theme }));
+                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this.theme }));
                 }
                 static drawRoundedRect(ctx, x, y, w, h, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
                     ctx.save();

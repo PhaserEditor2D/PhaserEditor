@@ -3,7 +3,7 @@
 namespace phasereditor2d.ui.controls {
 
     export const EVENT_SELECTION = "selectionChanged";
-    export const EVENT_THEME = "themeChanged";
+    export const EVENT_THEME_CHANGED = "themeChanged";
 
     export enum PreloadResult {
         NOTHING_LOADED,
@@ -144,7 +144,8 @@ namespace phasereditor2d.ui.controls {
                 classList.remove("dark");
                 classList.add("light");
             }
-            window.dispatchEvent(new CustomEvent(EVENT_THEME, { detail: this.theme }));
+
+            window.dispatchEvent(new CustomEvent(EVENT_THEME_CHANGED, { detail: this.theme }));
         }
 
         static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {

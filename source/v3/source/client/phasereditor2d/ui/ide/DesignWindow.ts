@@ -29,10 +29,6 @@ namespace phasereditor2d.ui.ide {
             this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
             this.add(this._split_OutlineEditorFilesBlocks_Inspector);
 
-            window.addEventListener("resize", e => {
-                this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
-            });
-
             this.initialLayout();
         }
 
