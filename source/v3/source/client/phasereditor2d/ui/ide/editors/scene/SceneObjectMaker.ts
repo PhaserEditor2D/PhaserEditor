@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
+    export declare type SpriteObj = Phaser.GameObjects.TileSprite | Phaser.GameObjects.Image;
+
+    let SPRITE_ID = 0; 
+
     export class SceneObjectMaker {
 
         private _editor: SceneEditor;
@@ -19,18 +23,20 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 this.updateTextureCacheWithAssetData(data);
             }
 
+            const sprites: SpriteObj[] = [];
+
             for (const data of dropDataArray) {
                 if (data instanceof pack.AssetPackImageFrame) {
 
                     const sprite = scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
-                    this.initSprite(sprite);
+                    sprites.push(sprite);
 
                 } else if (data instanceof pack.AssetPackItem) {
                     switch (data.getType()) {
                         case pack.IMAGE_TYPE: {
 
                             const sprite = scene.add.image(x, y, data.getKey());
-                            this.initSprite(sprite);
+                            sprites.push(sprite);
 
                             break;
                         }
@@ -38,7 +44,17 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 }
             }
 
+            for (const sprite of sprites) {
+                this.initSprite(sprite);
+            }
+
             this._editor.repaint();
+        }
+
+        private initSprite(sprite: SpriteObj) {
+            sprite.name = (SPRITE_ID++).toString();
+            // TODO: missing add the custom hit tests.
+            sprite.setInteractive();
         }
 
         private updateTextureCacheWithAssetData(data: any) {
@@ -56,10 +72,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 const parser = pack.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
                 parser.addToPhaserCache(game);
             }
-
-        }
-
-        private initSprite(sprite: Phaser.GameObjects.Sprite | Phaser.GameObjects.Image) {
 
         }
 

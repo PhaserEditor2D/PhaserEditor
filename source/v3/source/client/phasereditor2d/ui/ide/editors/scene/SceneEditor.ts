@@ -35,6 +35,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _objectMaker: SceneObjectMaker;
         private _dropManager: DropManager;
         private _cameraManager: CameraManager;
+        private _selectionManager : SelectionManager;
         private _gameBooted: boolean;
 
         static getFactory(): EditorFactory {
@@ -92,6 +93,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._objectMaker = new SceneObjectMaker(this);
             this._dropManager = new DropManager(this);
             this._cameraManager = new CameraManager(this);
+            this._selectionManager = new SelectionManager(this);
         }
 
         getOverlayLayer() {

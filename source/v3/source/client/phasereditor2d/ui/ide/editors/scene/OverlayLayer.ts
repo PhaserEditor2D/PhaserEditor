@@ -36,6 +36,49 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 this.resetContext();
             }
 
+            this.renderGrid();
+            this.renderSelection();
+        }
+
+        private renderSelection() {
+            const ctx = this._ctx;
+
+            ctx.save();
+
+
+            const camera = this._editor.getGameScene().getCamera();
+            for (const obj of this._editor.getSelection()) {
+                if (obj instanceof Phaser.GameObjects.GameObject) {
+                    const points = obj.getScreenBounds(camera);
+
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = 4;
+
+                    ctx.beginPath();
+                    ctx.moveTo(points[0].x, points[0].y);
+                    ctx.lineTo(points[1].x, points[1].y);
+                    ctx.lineTo(points[2].x, points[2].y);
+                    ctx.lineTo(points[3].x, points[3].y);
+                    ctx.closePath();
+                    ctx.stroke();
+
+                    ctx.strokeStyle = "#00ff00";
+                    ctx.lineWidth = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(points[0].x, points[0].y);
+                    ctx.lineTo(points[1].x, points[1].y);
+                    ctx.lineTo(points[2].x, points[2].y);
+                    ctx.lineTo(points[3].x, points[3].y);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+
+            ctx.restore();
+        }
+
+        private renderGrid() {
             const camera = this._editor.getGameScene().getCamera();
 
             // parameters from settings
