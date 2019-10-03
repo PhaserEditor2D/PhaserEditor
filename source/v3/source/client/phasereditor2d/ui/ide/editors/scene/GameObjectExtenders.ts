@@ -1,11 +1,24 @@
 namespace Phaser.GameObjects {
 
-    export interface GetScreenBounds {
-        getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
-    }
+    export interface GameObject {
 
-    export interface GameObject extends GetScreenBounds { }
+        getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
+
+        getEditorLabel(): string;
+
+        setEditorLabel(label: string): void;
+    }
 }
+
+Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
+    const self: Phaser.GameObjects.GameObject = this;
+    return self.getData("editorLabel") || "";
+};
+
+Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label: string) {
+    const self: Phaser.GameObjects.GameObject = this;
+    self.setData("editorLabel", label);
+};
 
 for (const proto of [
     Phaser.GameObjects.Image.prototype,

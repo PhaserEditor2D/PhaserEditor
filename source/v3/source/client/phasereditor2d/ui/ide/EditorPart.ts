@@ -17,7 +17,7 @@ namespace phasereditor2d.ui.ide {
             this._input = input;
         }
 
-        getEditorViewerProvider(editorViewerType: string): EditorViewerProvider {
+        getEditorViewerProvider(key: string): EditorViewerProvider {
             return null;
         }
     }

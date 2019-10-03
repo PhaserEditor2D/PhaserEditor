@@ -1,6 +1,6 @@
-/// <reference path="../pack/viewers/AssetPackContentProvider.ts" />
+/// <reference path="../../pack/viewers/AssetPackContentProvider.ts" />
 
-namespace phasereditor2d.ui.ide.editors.scene {
+namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
     const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
 

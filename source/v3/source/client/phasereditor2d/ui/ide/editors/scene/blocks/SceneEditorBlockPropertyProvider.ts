@@ -1,6 +1,6 @@
-/// <reference path="../../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts" />
+/// <reference path="../../../../../../phasereditor2d.ui.controls/properties/PropertySectionProvider.ts" />
 
-namespace phasereditor2d.ui.ide.editors.scene {
+namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
     export class SceneEditorBlockPropertyProvider extends controls.properties.PropertySectionProvider {
 

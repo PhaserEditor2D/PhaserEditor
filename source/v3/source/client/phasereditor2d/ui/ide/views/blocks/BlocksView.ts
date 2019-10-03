@@ -8,6 +8,8 @@ namespace phasereditor2d.ui.ide.views.blocks {
 
     export class BlocksView extends ide.EditorViewerView {
 
+        static EDITOR_VIEWER_PROVIDER_KEY = "Blocks";
+
         constructor() {
             super("BlocksView");
 
@@ -17,7 +19,7 @@ namespace phasereditor2d.ui.ide.views.blocks {
         }
 
         getViewerProvider(editor: EditorPart) {
-            return editor.getEditorViewerProvider("Blocks");
+            return editor.getEditorViewerProvider(BlocksView.EDITOR_VIEWER_PROVIDER_KEY);
         }
     }
 }

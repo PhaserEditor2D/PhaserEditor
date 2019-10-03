@@ -1,4 +1,5 @@
 /// <reference path="../../EditorViewerProvider.ts" />
+/// <reference path="./outline/SceneEditorOutlineProvider.ts" />
 
 namespace phasereditor2d.ui.ide.editors.scene {
 
@@ -29,7 +30,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     export class SceneEditor extends FileEditor {
 
-        private _blocksProvider: SceneEditorViewerProvider;
+        private _blocksProvider: blocks.SceneEditorBlocksProvider;
+        private _outlineProvider: SceneEditorOutlineProvider;
         private _game: Phaser.Game;
         private _overlayLayer: OverlayLayer;
         private _gameCanvas: HTMLCanvasElement;
@@ -47,7 +49,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
         constructor() {
             super("phasereditor2d.SceneEditor");
 
-            this._blocksProvider = new SceneEditorViewerProvider();
+            this._blocksProvider = new blocks.SceneEditorBlocksProvider();
+            this._outlineProvider = new SceneEditorOutlineProvider(this);
         }
 
         protected createPart() {
@@ -139,11 +142,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this.repaint();
         }
 
-        getEditorViewerProvider(editorViewerType: string) {
+        getEditorViewerProvider(key: string) {
 
-            switch (editorViewerType) {
-                case "Blocks":
+            switch (key) {
+                case views.blocks.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
                     return this._blocksProvider;
+                case views.outline.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
+                    return this._outlineProvider;
                 default:
                     break;
             }
