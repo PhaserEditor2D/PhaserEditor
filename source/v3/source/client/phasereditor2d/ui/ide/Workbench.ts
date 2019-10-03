@@ -138,51 +138,40 @@ namespace phasereditor2d.ui.ide {
                 return;
             }
 
-            const old = this._activeEditor;
             this._activeEditor = editor;
-
-            if (old) {
-                this.toggleActivePart(old);
-                this.dispatchEvent(new CustomEvent(EVENT_EDITOR_DEACTIVATED, { detail: old }));
-            }
-
-            if (editor) {
-                this.toggleActivePart(editor);
-            }
 
             this.dispatchEvent(new CustomEvent(EVENT_EDITOR_ACTIVATED, { detail: editor }));
         }
 
         private setActivePart(part: Part): void {
 
+            if (part !== this._activePart) {
+
+                if (part) {
+
+                    const old = this._activePart;
+
+                    this._activePart = part;
+
+                    if (old) {
+                        this.toggleActivePartClass(old);
+                        this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATED, { detail: old }));
+                    }
+
+                    if (part) {
+                        this.toggleActivePartClass(part);
+                    }
+
+                    this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATED, { detail: part }));
+                }
+            }
+
             if (part instanceof EditorPart) {
                 this.setActiveEditor(part);
             }
-
-            if (part === this._activePart) {
-                return;
-            }
-
-            if (!part) {
-                return;
-            }
-
-            const old = this._activePart;
-            this._activePart = part;
-
-            if (old) {
-                this.toggleActivePart(old);
-                this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATED, { detail: old }));
-            }
-
-            if (part) {
-                this.toggleActivePart(part);
-            }
-
-            this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATED, { detail: part }));
         }
 
-        private toggleActivePart(part: Part) {
+        private toggleActivePartClass(part: Part) {
             const tabPane = this.findTabPane(part.getElement());
 
             if (!tabPane) {
@@ -219,7 +208,6 @@ namespace phasereditor2d.ui.ide {
                 return element["__part"];
             }
 
-            /*
             const control = controls.Control.getControlOf(element);
 
             if (control && control instanceof controls.TabPane) {
@@ -232,7 +220,6 @@ namespace phasereditor2d.ui.ide {
                     }
                 }
             }
-            */
 
             if (element.parentElement) {
                 return this.findPart(element.parentElement);

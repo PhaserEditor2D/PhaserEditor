@@ -1551,39 +1551,29 @@ var phasereditor2d;
                         this._activeEditor = null;
                         return;
                     }
-                    const old = this._activeEditor;
                     this._activeEditor = editor;
-                    if (old) {
-                        this.toggleActivePart(old);
-                        this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_DEACTIVATED, { detail: old }));
-                    }
-                    if (editor) {
-                        this.toggleActivePart(editor);
-                    }
                     this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
                 }
                 setActivePart(part) {
+                    if (part !== this._activePart) {
+                        if (part) {
+                            const old = this._activePart;
+                            this._activePart = part;
+                            if (old) {
+                                this.toggleActivePartClass(old);
+                                this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
+                            }
+                            if (part) {
+                                this.toggleActivePartClass(part);
+                            }
+                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
+                        }
+                    }
                     if (part instanceof ide.EditorPart) {
                         this.setActiveEditor(part);
                     }
-                    if (part === this._activePart) {
-                        return;
-                    }
-                    if (!part) {
-                        return;
-                    }
-                    const old = this._activePart;
-                    this._activePart = part;
-                    if (old) {
-                        this.toggleActivePart(old);
-                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
-                    }
-                    if (part) {
-                        this.toggleActivePart(part);
-                    }
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
                 }
-                toggleActivePart(part) {
+                toggleActivePartClass(part) {
                     const tabPane = this.findTabPane(part.getElement());
                     if (!tabPane) {
                         // maybe the clicked part was closed
@@ -1615,11 +1605,9 @@ var phasereditor2d;
                     if (element["__part"]) {
                         return element["__part"];
                     }
-                    /*
-                    const control = controls.Control.getControlOf(element);
-        
-                    if (control && control instanceof controls.TabPane) {
-                        const tabPane = <controls.TabPane>control;
+                    const control = ui.controls.Control.getControlOf(element);
+                    if (control && control instanceof ui.controls.TabPane) {
+                        const tabPane = control;
                         const content = tabPane.getSelectedTabContent();
                         if (content) {
                             const element = content.getElement();
@@ -1628,7 +1616,6 @@ var phasereditor2d;
                             }
                         }
                     }
-                    */
                     if (element.parentElement) {
                         return this.findPart(element.parentElement);
                     }
