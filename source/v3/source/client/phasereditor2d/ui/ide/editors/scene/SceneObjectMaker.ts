@@ -11,8 +11,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
         createWithDropEvent(e: DragEvent, dropDataArray: any[]): void {
             const scene = this._editor.getGameScene();
 
-            const x = e.x;
-            const y = e.y;
+            const worldPoint = scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
+            const x = worldPoint.x;
+            const y = worldPoint.y;
 
             for (const data of dropDataArray) {
                 this.updateTextureCacheWithAssetData(data);

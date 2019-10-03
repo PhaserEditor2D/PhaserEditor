@@ -24,8 +24,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         resizeTo() {
             const parent = this._canvas.parentElement;
-            this._canvas.width = parent.clientWidth;
-            this._canvas.height = parent.clientHeight;
+            this._canvas.width = parent.clientWidth | 0;
+            this._canvas.height = parent.clientHeight | 0;
             this._canvas.style.width = this._canvas.width + "px";
             this._canvas.style.height = this._canvas.height + "px";
             this.resetContext();
@@ -179,7 +179,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
                 ctx.restore();
             }
-
         }
     }
 

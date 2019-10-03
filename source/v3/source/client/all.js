@@ -3316,7 +3316,7 @@ var phasereditor2d;
                         onMouseDown(e) {
                             if (e.button === 1) {
                                 const camera = this.getCamera();
-                                this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
+                                this._dragStartPoint = new Phaser.Math.Vector2(e.offsetX, e.offsetY);
                                 this._dragStartCameraScroll = new Phaser.Math.Vector2(camera.scrollX, camera.scrollY);
                                 e.preventDefault();
                             }
@@ -3325,8 +3325,8 @@ var phasereditor2d;
                             if (this._dragStartPoint === null) {
                                 return;
                             }
-                            const dx = this._dragStartPoint.x - e.clientX;
-                            const dy = this._dragStartPoint.y - e.clientY;
+                            const dx = this._dragStartPoint.x - e.offsetX;
+                            const dy = this._dragStartPoint.y - e.offsetY;
                             const camera = this.getCamera();
                             camera.scrollX = this._dragStartCameraScroll.x + dx / camera.zoom;
                             camera.scrollY = this._dragStartCameraScroll.y + dy / camera.zoom;
@@ -3342,12 +3342,12 @@ var phasereditor2d;
                             const camera = scene.getCamera();
                             const delta = e.deltaY;
                             const zoomDelta = (delta > 0 ? 0.9 : 1.1);
-                            const pointer = scene.input.activePointer;
-                            const point1 = camera.getWorldPoint(pointer.x, pointer.y);
+                            //const pointer = scene.input.activePointer;
+                            const point1 = camera.getWorldPoint(e.offsetX, e.offsetY);
                             camera.zoom *= zoomDelta;
                             // update the camera matrix
                             camera.preRender(scene.scale.resolution);
-                            const point2 = camera.getWorldPoint(pointer.x, pointer.y);
+                            const point2 = camera.getWorldPoint(e.offsetX, e.offsetY);
                             const dx = point2.x - point1.x;
                             const dy = point2.y - point1.y;
                             camera.scrollX += -dx;
@@ -3475,8 +3475,8 @@ var phasereditor2d;
                         }
                         resizeTo() {
                             const parent = this._canvas.parentElement;
-                            this._canvas.width = parent.clientWidth;
-                            this._canvas.height = parent.clientHeight;
+                            this._canvas.width = parent.clientWidth | 0;
+                            this._canvas.height = parent.clientHeight | 0;
                             this._canvas.style.width = this._canvas.width + "px";
                             this._canvas.style.height = this._canvas.height + "px";
                             this.resetContext();
@@ -3879,8 +3879,9 @@ var phasereditor2d;
                         }
                         createWithDropEvent(e, dropDataArray) {
                             const scene = this._editor.getGameScene();
-                            const x = e.x;
-                            const y = e.y;
+                            const worldPoint = scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
+                            const x = worldPoint.x;
+                            const y = worldPoint.y;
                             for (const data of dropDataArray) {
                                 this.updateTextureCacheWithAssetData(data);
                             }

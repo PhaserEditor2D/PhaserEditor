@@ -23,7 +23,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private onMouseDown(e: MouseEvent): void {
             if (e.button === 1) {
                 const camera = this.getCamera();
-                this._dragStartPoint = new Phaser.Math.Vector2(e.clientX, e.clientY);
+                this._dragStartPoint = new Phaser.Math.Vector2(e.offsetX, e.offsetY);
                 this._dragStartCameraScroll = new Phaser.Math.Vector2(camera.scrollX, camera.scrollY);
                 e.preventDefault();
             }
@@ -35,8 +35,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 return;
             }
 
-            const dx = this._dragStartPoint.x - e.clientX;
-            const dy = this._dragStartPoint.y - e.clientY;
+            const dx = this._dragStartPoint.x - e.offsetX;
+            const dy = this._dragStartPoint.y - e.offsetY;
 
             const camera = this.getCamera();
             camera.scrollX = this._dragStartCameraScroll.x + dx / camera.zoom;
@@ -61,16 +61,16 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             const zoomDelta = (delta > 0 ? 0.9 : 1.1);
 
-            const pointer = scene.input.activePointer;
+            //const pointer = scene.input.activePointer;
 
-            const point1 = camera.getWorldPoint(pointer.x, pointer.y);
+            const point1 = camera.getWorldPoint(e.offsetX, e.offsetY);
 
             camera.zoom *= zoomDelta;
 
             // update the camera matrix
             (<any>camera).preRender(scene.scale.resolution);
 
-            const point2 = camera.getWorldPoint(pointer.x, pointer.y);
+            const point2 = camera.getWorldPoint(e.offsetX, e.offsetY);
 
             const dx = point2.x - point1.x;
             const dy = point2.y - point1.y;
