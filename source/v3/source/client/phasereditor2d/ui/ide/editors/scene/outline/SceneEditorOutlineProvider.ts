@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.scene {
+namespace phasereditor2d.ui.ide.editors.scene.outline {
 
     class SceneEditorOutlineLabelProvider implements controls.viewers.ILabelProvider {
 
@@ -23,7 +23,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             const editor: SceneEditor = input;
 
-            return [editor.getGameScene().sys.displayList];
+            const displayList = editor.getGameScene().sys.displayList;
+
+            if (displayList) {
+                return [displayList];
+            }
+
+            return [];
         }
 
         getChildren(parent: any): any[] {
@@ -39,10 +45,23 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     class SceneEditorOutlineRendererProvider implements controls.viewers.ICellRendererProvider {
 
+        private _editor: SceneEditor;
+        private _assetRendererProvider: pack.viewers.AssetPackCellRendererProvider;
+
+        constructor(editor: SceneEditor) {
+            this._editor = editor;
+            this._assetRendererProvider = new pack.viewers.AssetPackCellRendererProvider();
+        }
+
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
-           return new controls.viewers.EmptyCellRenderer();
-        }        
-        
+
+            if (element instanceof Phaser.GameObjects.Image) {
+                return new GameObjectCellRenderer();
+            }
+
+            return new controls.viewers.EmptyCellRenderer(false);
+        }
+
         preload(element: any): Promise<controls.PreloadResult> {
             return controls.Controls.resolveNothingLoaded();
         }
@@ -68,11 +87,11 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         getCellRendererProvider(): controls.viewers.ICellRendererProvider {
-            return new SceneEditorOutlineRendererProvider();
+            return new SceneEditorOutlineRendererProvider(this._editor);
         }
 
         getTreeViewerRenderer(viewer: controls.viewers.TreeViewer): controls.viewers.TreeViewerRenderer {
-            return new controls.viewers.TreeViewerRenderer(viewer);
+            return new controls.viewers.TreeViewerRenderer(viewer, 48);
         }
 
         getPropertySectionProvider(): controls.properties.PropertySectionProvider {

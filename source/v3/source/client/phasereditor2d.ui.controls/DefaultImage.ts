@@ -70,42 +70,46 @@ namespace phasereditor2d.ui.controls {
 
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
             if (this._ready) {
-                const naturalWidth = this._imageElement.naturalWidth;
-                const naturalHeight = this._imageElement.naturalHeight;
-
-                let renderHeight = h;
-                let renderWidth = w;
-
-                let imgW = naturalWidth;
-                let imgH = naturalHeight;
-
-                // compute the right width
-                imgW = imgW * (renderHeight / imgH);
-                imgH = renderHeight;
-
-                // fix width if it goes beyond the area
-                if (imgW > renderWidth) {
-                    imgH = imgH * (renderWidth / imgW);
-                    imgW = renderWidth;
-                }
-
-                let scale = imgW / naturalWidth;
-
-                let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
-                let imgY = y + renderHeight / 2 - imgH / 2;
-
-                let imgDstW = naturalWidth * scale;
-                let imgDstH = naturalHeight * scale;
-
-                if (imgDstW > 0 && imgDstH > 0) {
-                    context.drawImage(this._imageElement, imgX, imgY, imgDstW, imgDstH);
-                }
+                DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
             } else {
-                this.paintEmpty(context, x, y, w, h)
+                DefaultImage.paintEmpty(context, x, y, w, h)
             }
         }
 
-        private paintEmpty(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
+        static paintImageElement(context: CanvasRenderingContext2D, image: HTMLImageElement, x: number, y: number, w: number, h: number, center: boolean) {
+            const naturalWidth = image.naturalWidth;
+            const naturalHeight = image.naturalHeight;
+
+            let renderHeight = h;
+            let renderWidth = w;
+
+            let imgW = naturalWidth;
+            let imgH = naturalHeight;
+
+            // compute the right width
+            imgW = imgW * (renderHeight / imgH);
+            imgH = renderHeight;
+
+            // fix width if it goes beyond the area
+            if (imgW > renderWidth) {
+                imgH = imgH * (renderWidth / imgW);
+                imgW = renderWidth;
+            }
+
+            let scale = imgW / naturalWidth;
+
+            let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+            let imgY = y + renderHeight / 2 - imgH / 2;
+
+            let imgDstW = naturalWidth * scale;
+            let imgDstH = naturalHeight * scale;
+
+            if (imgDstW > 0 && imgDstH > 0) {
+                context.drawImage(image, imgX, imgY, imgDstW, imgDstH);
+            }
+        }
+
+        static paintEmpty(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
             if (w > 10 && h > 10) {
                 context.save();
                 context.strokeStyle = Controls.theme.treeItemForeground;
@@ -118,11 +122,16 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
+
+        static paintImageElementFrame(context: CanvasRenderingContext2D, image: HTMLImageElement, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
+            context.drawImage(image, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+        }
+
         paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
             if (this._ready) {
-                context.drawImage(this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
             } else {
-                this.paintEmpty(context, dstX, dstY, dstW, dstH);
+                DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
             }
         }
     }

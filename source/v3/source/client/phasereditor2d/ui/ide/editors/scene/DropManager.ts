@@ -13,18 +13,24 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         onDragDrop(e: DragEvent) {
+            
             const dataArray = controls.Controls.getApplicationDragDataAndClean();
 
             if (this.acceptsDropDataArray(dataArray)) {
+
                 this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
+                this._editor.refreshOutline();
+
                 e.preventDefault();
             }
         }
 
         private onDragOver(e: DragEvent) {
+
             if (this.acceptsDropDataArray(controls.Controls.getApplicationDragData())) {
                 e.preventDefault();
             }
+
         }
 
         private acceptsDropData(data: any): boolean {
@@ -41,6 +47,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         private acceptsDropDataArray(dataArray: any[]) {
+
             if (!dataArray) {
                 return false;
             }

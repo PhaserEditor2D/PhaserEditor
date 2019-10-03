@@ -7,17 +7,27 @@ namespace Phaser.GameObjects {
         getEditorLabel(): string;
 
         setEditorLabel(label: string): void;
+
+        getEditorAsset(): any;
+
+        setEditorAsset(asset: any): void;
     }
 }
 
 Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
-    const self: Phaser.GameObjects.GameObject = this;
-    return self.getData("editorLabel") || "";
+    return this.getData("editorLabel") || "";
 };
 
 Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label: string) {
-    const self: Phaser.GameObjects.GameObject = this;
-    self.setData("editorLabel", label);
+    this.setData("editorLabel", label);
+};
+
+Phaser.GameObjects.GameObject.prototype.getEditorAsset = function () {
+    return this.getData("editorAsset");
+};
+
+Phaser.GameObjects.GameObject.prototype.setEditorAsset = function (asset: any) {
+    this.setData("editorAsset", asset);
 };
 
 for (const proto of [

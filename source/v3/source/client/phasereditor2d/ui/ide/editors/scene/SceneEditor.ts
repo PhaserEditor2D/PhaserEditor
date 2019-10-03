@@ -31,7 +31,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
     export class SceneEditor extends FileEditor {
 
         private _blocksProvider: blocks.SceneEditorBlocksProvider;
-        private _outlineProvider: SceneEditorOutlineProvider;
+        private _outlineProvider: outline.SceneEditorOutlineProvider;
         private _game: Phaser.Game;
         private _overlayLayer: OverlayLayer;
         private _gameCanvas: HTMLCanvasElement;
@@ -50,7 +50,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             super("phasereditor2d.SceneEditor");
 
             this._blocksProvider = new blocks.SceneEditorBlocksProvider();
-            this._outlineProvider = new SceneEditorOutlineProvider(this);
+            this._outlineProvider = new outline.SceneEditorOutlineProvider(this);
         }
 
         protected createPart() {
@@ -156,11 +156,16 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return null;
         }
 
+        refreshOutline() {
+            this._outlineProvider.refreshViewer();
+        }
+
         private onGameBoot(): void {
 
             this._gameBooted = true;
             this.layout();
 
+            this.refreshOutline();
         }
 
         repaint(): void {

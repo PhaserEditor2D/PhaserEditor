@@ -7,22 +7,26 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
         }
 
         addToPhaserCache(game: Phaser.Game) {
-            const packItemData = this.getPackItem().getData();
-            const atlasDataFile = AssetPackUtils.getFileFromPackUrl(packItemData.url);
-            const atlasData = AssetPackUtils.getFileJSONFromPackUrl(packItemData.url);
+            const item = this.getPackItem();
 
-            const images : HTMLImageElement[] = [];
-            const jsonArrayData = [];
+            if (!game.textures.exists(item.getKey())) {
+                const packItemData = item.getData();
+                const atlasDataFile = AssetPackUtils.getFileFromPackUrl(packItemData.url);
+                const atlasData = AssetPackUtils.getFileJSONFromPackUrl(packItemData.url);
 
-            for (const textureData of atlasData.textures) {
-                const imageName = textureData.image;
-                const imageFile = atlasDataFile.getSibling(imageName);
-                const image = <controls.DefaultImage>FileUtils.getImage(imageFile);
-                images.push(image.getImageElement());
-                jsonArrayData.push(textureData);
+                const images: HTMLImageElement[] = [];
+                const jsonArrayData = [];
+
+                for (const textureData of atlasData.textures) {
+                    const imageName = textureData.image;
+                    const imageFile = atlasDataFile.getSibling(imageName);
+                    const image = <controls.DefaultImage>FileUtils.getImage(imageFile);
+                    images.push(image.getImageElement());
+                    jsonArrayData.push(textureData);
+                }
+
+                game.textures.addAtlasJSONArray(this.getPackItem().getKey(), images, jsonArrayData);
             }
-
-            game.textures.addAtlasJSONArray(this.getPackItem().getKey(), images, jsonArrayData);
         }
 
         async preloadFrames(): Promise<controls.PreloadResult> {

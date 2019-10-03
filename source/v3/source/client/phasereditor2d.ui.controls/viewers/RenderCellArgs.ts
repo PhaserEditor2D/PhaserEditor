@@ -11,6 +11,10 @@ namespace phasereditor2d.ui.controls.viewers {
       public viewer: Viewer,
       public center = false) {
     }
+
+    clone() {
+      return new RenderCellArgs(this.canvasContext, this.x, this.y, this.w, this.h, this.obj, this.viewer, this.center);
+    }
   };
 
 }

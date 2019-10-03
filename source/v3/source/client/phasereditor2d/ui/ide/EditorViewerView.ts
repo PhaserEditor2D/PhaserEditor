@@ -53,6 +53,8 @@ namespace phasereditor2d.ui.ide {
 
             if (provider) {
 
+                provider.setRefreshAction(() => this._viewer.repaint());
+
                 await provider.preload();
 
                 this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));

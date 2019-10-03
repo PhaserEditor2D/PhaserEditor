@@ -3,8 +3,9 @@ namespace phasereditor2d.ui.controls.viewers {
     export class TreeViewerRenderer {
         private _viewer: TreeViewer;
 
-        constructor(viewer: TreeViewer) {
+        constructor(viewer: TreeViewer, cellSize : number = ROW_HEIGHT) {
             this._viewer = viewer;
+            this._viewer.setCellSize(cellSize);
         }
 
         getViewer() {

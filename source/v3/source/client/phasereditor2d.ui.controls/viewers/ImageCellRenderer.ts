@@ -8,7 +8,11 @@ namespace phasereditor2d.ui.controls.viewers {
 
         renderCell(args: RenderCellArgs): void {
             const img = this.getImage(args.obj);
-            img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+            if (!img) {
+                DefaultImage.paintEmpty(args.canvasContext, args.x, args.y, args.w, args.h);
+            } else {
+                img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+            }
         }
 
         cellHeight(args: RenderCellArgs): number {

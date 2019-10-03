@@ -37,7 +37,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 if (data instanceof pack.AssetPackImageFrame) {
 
                     const sprite = scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
+
                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
+                    sprite.setEditorAsset(data);
+                    
                     sprites.push(sprite);
 
                 } else if (data instanceof pack.AssetPackItem) {
@@ -46,7 +49,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
                         case pack.IMAGE_TYPE: {
 
                             const sprite = scene.add.image(x, y, data.getKey());
+                            
                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
+                            sprite.setEditorAsset(data);
+
                             sprites.push(sprite);
 
                             break;

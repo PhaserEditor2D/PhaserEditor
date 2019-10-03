@@ -4,18 +4,34 @@ namespace phasereditor2d.ui.ide {
 
     export abstract class EditorViewerProvider {
 
-        abstract getContentProvider() : viewers.ITreeContentProvider;
+        private _refresh: () => void;
 
-        abstract getLabelProvider() : viewers.ILabelProvider;
+        constructor() {
+            this._refresh = null;
+        }
 
-        abstract getCellRendererProvider() : viewers.ICellRendererProvider;
+        setRefreshAction(action: () => void) {
+            this._refresh = action;
+        }
 
-        abstract getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) : viewers.TreeViewerRenderer;
+        refreshViewer() {
+            if (this._refresh) {
+                this._refresh();
+            }
+        }
 
-        abstract getPropertySectionProvider() : controls.properties.PropertySectionProvider;
+        abstract getContentProvider(): viewers.ITreeContentProvider;
 
-        abstract getInput() : any;
+        abstract getLabelProvider(): viewers.ILabelProvider;
 
-        abstract preload() : Promise<void>;
+        abstract getCellRendererProvider(): viewers.ICellRendererProvider;
+
+        abstract getTreeViewerRenderer(viewer: controls.viewers.TreeViewer): viewers.TreeViewerRenderer;
+
+        abstract getPropertySectionProvider(): controls.properties.PropertySectionProvider;
+
+        abstract getInput(): any;
+
+        abstract preload(): Promise<void>;
     }
 }
