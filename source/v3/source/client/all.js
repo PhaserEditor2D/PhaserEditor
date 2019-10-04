@@ -3630,6 +3630,7 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var GAME = null;
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -4030,7 +4031,6 @@ var phasereditor2d;
                             this._game.config.postBoot = () => {
                                 this.onGameBoot();
                             };
-                            this._game.loop.stop();
                             // init managers and factories
                             this._objectMaker = new scene.SceneObjectMaker(this);
                             this._dropManager = new scene.DropManager(this);
@@ -4087,6 +4087,8 @@ var phasereditor2d;
                             this._gameBooted = true;
                             this.layout();
                             this.refreshOutline();
+                            // for some reason, we should do this after a time, or the game is not stopped well.
+                            setTimeout(() => this._game.loop.stop(), 500);
                         }
                         repaint() {
                             if (!this._gameBooted) {
@@ -4659,7 +4661,7 @@ var phasereditor2d;
                                 }
                             });
                             const labels = dragObjects.map(obj => this.getLabelProvider().getLabel(obj)).join(",");
-                            e.dataTransfer.setData("application/x-viewer-label", labels);
+                            e.dataTransfer.setData("plain/text", labels);
                             controls.Controls.setApplicationDragData(dragObjects);
                         }
                         else {

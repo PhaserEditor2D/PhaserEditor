@@ -91,8 +91,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 this.onGameBoot();
             };
 
-            this._game.loop.stop();
-
             // init managers and factories
 
             this._objectMaker = new SceneObjectMaker(this);
@@ -165,11 +163,14 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         private onGameBoot(): void {
-
             this._gameBooted = true;
+
             this.layout();
 
             this.refreshOutline();
+
+            // for some reason, we should do this after a time, or the game is not stopped well.
+            setTimeout(() => this._game.loop.stop(), 500);
         }
 
         repaint(): void {

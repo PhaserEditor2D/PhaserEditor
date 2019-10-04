@@ -54,6 +54,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private onDragStart(e: DragEvent) {
+            
             const paintItemUnderCursor = this.getPaintItemAt(e);
 
             if (paintItemUnderCursor) {
@@ -78,7 +79,9 @@ namespace phasereditor2d.ui.controls.viewers {
                 })
 
                 const labels = dragObjects.map(obj => this.getLabelProvider().getLabel(obj)).join(",");
-                e.dataTransfer.setData("application/x-viewer-label", labels);
+
+                e.dataTransfer.setData("plain/text", labels);
+
                 Controls.setApplicationDragData(dragObjects);
 
             } else {
