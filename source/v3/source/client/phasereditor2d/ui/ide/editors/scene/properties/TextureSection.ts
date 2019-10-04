@@ -1,9 +1,9 @@
-namespace phasereditor2d.ui.ide.editors.pack.properties {
+namespace phasereditor2d.ui.ide.editors.scene.properties {
 
-    export class ImageSection extends controls.properties.PropertySection<AssetPackItem> {
+    export class TextureSection extends SceneSection<Phaser.GameObjects.Image> {
 
         constructor(page: controls.properties.PropertyPage) {
-            super(page, "pack.ImageSection", "Image", true);
+            super(page, "SceneEditor.TextureSection", "Texture", true);
         }
 
         protected createForm(parent: HTMLDivElement) {
@@ -20,19 +20,23 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
 
             this.addUpdater(() => {
                 const obj = this.getSelection()[0];
+                const asset = obj.getEditorAsset();
                 let img: controls.IImage;
-                if (obj instanceof AssetPackItem) {
-                    img = AssetPackUtils.getImageFromPackUrl(obj.getData().url);
+                if (asset instanceof pack.AssetPackItem && asset.getType() === pack.IMAGE_TYPE) {
+                    img = pack.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
+                } else if (asset instanceof pack.AssetPackImageFrame) {
+                    img = asset;
                 } else {
-                    img = obj;
+                    img = new controls.ImageWrapper(null);
                 }
+
                 imgControl.setImage(img);
                 setTimeout(() => imgControl.resizeTo(), 1);
             });
         }
 
         canEdit(obj: any): boolean {
-            return obj instanceof AssetPackItem && obj.getType() === "image" || obj instanceof controls.ImageFrame;
+            return obj instanceof Phaser.GameObjects.Image;
         }
 
         canEditNumber(n: number): boolean {

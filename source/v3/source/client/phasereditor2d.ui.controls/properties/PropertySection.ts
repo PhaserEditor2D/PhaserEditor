@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.controls.properties {
 
         protected abstract createForm(parent: HTMLDivElement);
 
-        abstract canEdit(obj: any, n : number): boolean;
+        abstract canEdit(obj: any, n: number): boolean;
 
         abstract canEditNumber(n: number): boolean;
 
@@ -37,7 +37,7 @@ namespace phasereditor2d.ui.controls.properties {
         isFillSpace() {
             return this._fillSpace;
         }
-        
+
         getPage() {
             return this._page;
         }
@@ -58,13 +58,30 @@ namespace phasereditor2d.ui.controls.properties {
             this.createForm(parent);
         }
 
-        flatValues_String(values: string[]) {
+        flatValues_Number(values: number[]): string {
+            const set = new Set(values);
+
+            if (set.size == 1) {
+                const value = set.values().next().value;
+                return value.toString();
+            }
+
+            return "";
+        }
+
+        flatValues_StringJoin(values: string[]): string {
             return values.join(",");
         }
 
-        protected createGridElement(parent: HTMLElement, cols: number, simpleProps = true) {
+        protected createGridElement(parent: HTMLElement, cols = 0, simpleProps = true) {
             const div = document.createElement("div");
-            div.classList.add("formGrid", "formGrid-cols-" + cols);
+            
+            div.classList.add("formGrid");
+
+            if (cols > 0) {
+                div.classList.add("formGrid-cols-" + cols);
+            }
+            
             if (simpleProps) {
                 div.classList.add("formSimpleProps");
             }

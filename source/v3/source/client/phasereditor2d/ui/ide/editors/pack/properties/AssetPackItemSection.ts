@@ -17,7 +17,7 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
                 this.createLabel(comp, "Key");
                 const text = this.createText(comp, true);
                 this.addUpdater(() => {
-                    text.value = this.flatValues_String(this.getSelection().map(item => item.getKey()));
+                    text.value = this.flatValues_StringJoin(this.getSelection().map(item => item.getKey()));
                 });
             }
         }

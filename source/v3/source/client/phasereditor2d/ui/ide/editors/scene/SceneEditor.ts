@@ -32,6 +32,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         private _blocksProvider: blocks.SceneEditorBlocksProvider;
         private _outlineProvider: outline.SceneEditorOutlineProvider;
+        private _propertyProvider: properties.SceneEditorSectionProvider;
         private _game: Phaser.Game;
         private _overlayLayer: OverlayLayer;
         private _gameCanvas: HTMLCanvasElement;
@@ -51,6 +52,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             this._blocksProvider = new blocks.SceneEditorBlocksProvider();
             this._outlineProvider = new outline.SceneEditorOutlineProvider(this);
+            this._propertyProvider = new properties.SceneEditorSectionProvider();
         }
 
         protected createPart() {
@@ -138,6 +140,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._gameScene.getCamera().setSize(w, h);
 
             this.repaint();
+        }
+
+        getPropertyProvider() {
+            return this._propertyProvider;
         }
 
         getEditorViewerProvider(key: string) {

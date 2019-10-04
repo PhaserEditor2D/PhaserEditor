@@ -14,7 +14,7 @@ namespace phasereditor2d.ui.ide.views.files {
                 this.createLabel(comp, "Name");
                 const text = this.createText(comp, true);
                 this.addUpdater(() => {
-                    text.value = this.flatValues_String(this.getSelection().map(file => file.getName()));
+                    text.value = this.flatValues_StringJoin(this.getSelection().map(file => file.getName()));
                 });
             }
 
@@ -24,7 +24,7 @@ namespace phasereditor2d.ui.ide.views.files {
                 this.createLabel(comp, "Full Name");
                 const text = this.createText(comp, true);
                 this.addUpdater(() => {
-                    text.value = this.flatValues_String(this.getSelection().map(file => file.getFullName()));
+                    text.value = this.flatValues_StringJoin(this.getSelection().map(file => file.getFullName()));
                 });
             }
 
