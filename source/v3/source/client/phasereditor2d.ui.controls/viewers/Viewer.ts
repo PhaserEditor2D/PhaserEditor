@@ -151,8 +151,16 @@ namespace phasereditor2d.ui.controls.viewers {
             return sel;
         }
 
+        setSelection(selection : any[], notify = true) {
+            this._selectedObjects = new Set(selection);
+            if (notify) {
+                this.fireSelectionChanged();
+                this.repaint();
+            }
+        }
+
         private fireSelectionChanged() {
-            this.dispatchEvent(new CustomEvent(EVENT_SELECTION, {
+            this.dispatchEvent(new CustomEvent(EVENT_SELECTION_CHANGED, {
                 detail: this.getSelection()
             }));
         }

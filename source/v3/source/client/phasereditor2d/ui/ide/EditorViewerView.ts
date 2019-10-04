@@ -17,7 +17,16 @@ namespace phasereditor2d.ui.ide {
         }
 
         protected createViewer(): viewers.TreeViewer {
-            return new viewers.TreeViewer();
+
+            const viewer = new viewers.TreeViewer()
+
+            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                if (this._currentViewerProvider) {
+                    this._currentViewerProvider.onViewerSelectionChanged(this._viewer.getSelection());
+                }
+            })
+
+            return viewer;
         }
 
         protected createPart(): void {
@@ -53,7 +62,7 @@ namespace phasereditor2d.ui.ide {
 
             if (provider) {
 
-                provider.setRefreshAction(() => this._viewer.repaint());
+                provider.setViewer(this._viewer);
 
                 await provider.preload();
 

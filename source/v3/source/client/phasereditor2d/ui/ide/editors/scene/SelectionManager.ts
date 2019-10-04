@@ -5,8 +5,18 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         constructor(editor: SceneEditor) {
             this._editor = editor;
+
             const canvas = this._editor.getOverlayLayer().getCanvas();
             canvas.addEventListener("click", e => this.onMouseClick(e));
+
+            this._editor.addEventListener(controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
+
+        }
+
+        private updateOutlineSelection(): void {
+            const provider = this._editor.getOutlineProvider();
+            provider.setSelection(this._editor.getSelection(), false);
+            provider.repaint();
         }
 
         private onMouseClick(e: MouseEvent): void {

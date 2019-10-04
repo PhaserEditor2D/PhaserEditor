@@ -38,12 +38,12 @@ namespace phasereditor2d.ui.ide.views.inspector {
             if (!part || part !== this && part !== this._activePart) {
                 
                 if (this._activePart) {
-                    this._activePart.removeEventListener(controls.EVENT_SELECTION, this._selectionListener);
+                    this._activePart.removeEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                 }
 
                 this._activePart = part;
                 
-                this._activePart.addEventListener(controls.EVENT_SELECTION, this._selectionListener);
+                this._activePart.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
 
                 this.onPartSelection();
             }

@@ -41,7 +41,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         protected dispatchTitleUpdatedEvent() {
-            this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));   
+            this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
         }
 
         getIcon() {
@@ -52,11 +52,14 @@ namespace phasereditor2d.ui.ide {
             return this._id;
         }
 
-        setSelection(selection: any[]): void {
+        setSelection(selection: any[], notify = true): void {
             this._selection = selection;
-            this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION, {
-                detail: selection
-            }));
+
+            if (notify) {
+                this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION_CHANGED, {
+                    detail: selection
+                }));
+            }
         }
 
         getSelection() {

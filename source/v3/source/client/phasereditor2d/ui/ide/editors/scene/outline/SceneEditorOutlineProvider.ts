@@ -70,7 +70,7 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
     }
 
     export class SceneEditorOutlineProvider extends ide.EditorViewerProvider {
-
+        
         private _editor: SceneEditor;
 
         constructor(editor: SceneEditor) {
@@ -104,6 +104,11 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
         preload(): Promise<void> {
             return;
+        }
+
+        onViewerSelectionChanged(selection : any[]) {
+            this._editor.setSelection(selection, false);
+            this._editor.repaint();
         }
     }
 

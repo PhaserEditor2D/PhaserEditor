@@ -156,8 +156,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return null;
         }
 
+        getOutlineProvider() {
+            return this._outlineProvider;
+        }
+
         refreshOutline() {
-            this._outlineProvider.refreshViewer();
+            this._outlineProvider.repaint();
         }
 
         private onGameBoot(): void {

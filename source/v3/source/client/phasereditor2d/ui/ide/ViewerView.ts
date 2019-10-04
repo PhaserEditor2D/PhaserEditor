@@ -21,7 +21,7 @@ namespace phasereditor2d.ui.ide {
             this._filteredViewer = new controls.viewers.FilteredViewer(this._viewer);
             this.add(this._filteredViewer);
 
-            this._viewer.addEventListener(controls.EVENT_SELECTION, (e: CustomEvent) => {
+            this._viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, (e: CustomEvent) => {
                 this.setSelection(e.detail);
             });
         }

@@ -446,7 +446,7 @@ var phasereditor2d;
     (function (ui) {
         var controls;
         (function (controls) {
-            controls.EVENT_SELECTION = "selectionChanged";
+            controls.EVENT_SELECTION_CHANGED = "selectionChanged";
             controls.EVENT_THEME_CHANGED = "themeChanged";
             let PreloadResult;
             (function (PreloadResult) {
@@ -622,11 +622,13 @@ var phasereditor2d;
                 getId() {
                     return this._id;
                 }
-                setSelection(selection) {
+                setSelection(selection, notify = true) {
                     this._selection = selection;
-                    this.dispatchEvent(new CustomEvent(ui.controls.EVENT_SELECTION, {
-                        detail: selection
-                    }));
+                    if (notify) {
+                        this.dispatchEvent(new CustomEvent(ui.controls.EVENT_SELECTION_CHANGED, {
+                            detail: selection
+                        }));
+                    }
                 }
                 getSelection() {
                     return this._selection;
@@ -949,14 +951,29 @@ var phasereditor2d;
         (function (ide) {
             class EditorViewerProvider {
                 constructor() {
-                    this._refresh = null;
+                    this._viewer = null;
+                    this._initialSelection = null;
+                    this._initialListeners = [];
                 }
-                setRefreshAction(action) {
-                    this._refresh = action;
+                setViewer(viewer) {
+                    this._viewer = viewer;
+                    if (this._initialSelection) {
+                        this._viewer.setSelection(this._initialSelection, false);
+                    }
                 }
-                refreshViewer() {
-                    if (this._refresh) {
-                        this._refresh();
+                setSelection(selection, notify) {
+                    if (this._viewer) {
+                        this._viewer.setSelection(selection, notify);
+                    }
+                    else {
+                        this._initialSelection = selection;
+                    }
+                }
+                onViewerSelectionChanged(selection) {
+                }
+                repaint() {
+                    if (this._viewer) {
+                        this._viewer.repaint();
                     }
                 }
             }
@@ -1072,7 +1089,7 @@ var phasereditor2d;
                     this.addClass("ViewerView");
                     this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
                     this.add(this._filteredViewer);
-                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION, (e) => {
+                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, (e) => {
                         this.setSelection(e.detail);
                     });
                 }
@@ -1100,7 +1117,13 @@ var phasereditor2d;
                     this._viewerMap = new Map();
                 }
                 createViewer() {
-                    return new viewers.TreeViewer();
+                    const viewer = new viewers.TreeViewer();
+                    viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, e => {
+                        if (this._currentViewerProvider) {
+                            this._currentViewerProvider.onViewerSelectionChanged(this._viewer.getSelection());
+                        }
+                    });
+                    return viewer;
                 }
                 createPart() {
                     super.createPart();
@@ -1122,7 +1145,7 @@ var phasereditor2d;
                         }
                     }
                     if (provider) {
-                        provider.setRefreshAction(() => this._viewer.repaint());
+                        provider.setViewer(this._viewer);
                         await provider.preload();
                         this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
                         this._viewer.setLabelProvider(provider.getLabelProvider());
@@ -3930,6 +3953,10 @@ var phasereditor2d;
                             preload() {
                                 return;
                             }
+                            onViewerSelectionChanged(selection) {
+                                this._editor.setSelection(selection, false);
+                                this._editor.repaint();
+                            }
                         }
                         outline.SceneEditorOutlineProvider = SceneEditorOutlineProvider;
                     })(outline = scene.outline || (scene.outline = {}));
@@ -4050,8 +4077,11 @@ var phasereditor2d;
                             }
                             return null;
                         }
+                        getOutlineProvider() {
+                            return this._outlineProvider;
+                        }
                         refreshOutline() {
-                            this._outlineProvider.refreshViewer();
+                            this._outlineProvider.repaint();
                         }
                         onGameBoot() {
                             this._gameBooted = true;
@@ -4183,6 +4213,12 @@ var phasereditor2d;
                             this._editor = editor;
                             const canvas = this._editor.getOverlayLayer().getCanvas();
                             canvas.addEventListener("click", e => this.onMouseClick(e));
+                            this._editor.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
+                        }
+                        updateOutlineSelection() {
+                            const provider = this._editor.getOutlineProvider();
+                            provider.setSelection(this._editor.getSelection(), false);
+                            provider.repaint();
                         }
                         onMouseClick(e) {
                             const result = this.hitTestOfActivePointer();
@@ -4680,8 +4716,15 @@ var phasereditor2d;
                         }
                         return sel;
                     }
+                    setSelection(selection, notify = true) {
+                        this._selectedObjects = new Set(selection);
+                        if (notify) {
+                            this.fireSelectionChanged();
+                            this.repaint();
+                        }
+                    }
                     fireSelectionChanged() {
-                        this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION, {
+                        this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION_CHANGED, {
                             detail: this.getSelection()
                         }));
                     }
@@ -5611,10 +5654,10 @@ var phasereditor2d;
                             const part = ide.Workbench.getWorkbench().getActivePart();
                             if (!part || part !== this && part !== this._activePart) {
                                 if (this._activePart) {
-                                    this._activePart.removeEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                                    this._activePart.removeEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                                 }
                                 this._activePart = part;
-                                this._activePart.addEventListener(ui.controls.EVENT_SELECTION, this._selectionListener);
+                                this._activePart.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                                 this.onPartSelection();
                             }
                         }

@@ -2,7 +2,7 @@
 
 namespace phasereditor2d.ui.controls {
 
-    export const EVENT_SELECTION = "selectionChanged";
+    export const EVENT_SELECTION_CHANGED = "selectionChanged";
     export const EVENT_THEME_CHANGED = "themeChanged";
 
     export enum PreloadResult {
