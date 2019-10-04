@@ -953,17 +953,18 @@ var phasereditor2d;
                 constructor() {
                     this._viewer = null;
                     this._initialSelection = null;
-                    this._initialListeners = [];
                 }
                 setViewer(viewer) {
                     this._viewer = viewer;
                     if (this._initialSelection) {
-                        this._viewer.setSelection(this._initialSelection, false);
+                        this.setSelection(this._initialSelection, true, true);
+                        this._initialSelection = null;
                     }
                 }
-                setSelection(selection, notify) {
+                setSelection(selection, reveal, notify) {
                     if (this._viewer) {
                         this._viewer.setSelection(selection, notify);
+                        this._viewer.reveal(...selection);
                     }
                     else {
                         this._initialSelection = selection;
@@ -4219,7 +4220,7 @@ var phasereditor2d;
                         }
                         updateOutlineSelection() {
                             const provider = this._editor.getOutlineProvider();
-                            provider.setSelection(this._editor.getSelection(), false);
+                            provider.setSelection(this._editor.getSelection(), true, false);
                             provider.repaint();
                         }
                         onMouseClick(e) {
@@ -5332,6 +5333,38 @@ var phasereditor2d;
                     canSelectAtPoint(e) {
                         const icon = this.getTreeIconAtPoint(e);
                         return icon === null;
+                    }
+                    reveal(...objects) {
+                        for (const obj of objects) {
+                            const path = this.getObjectPath(obj);
+                            this.revealPath(path);
+                        }
+                    }
+                    revealPath(path) {
+                        for (let i = 0; i < path.length - 1; i++) {
+                            this.setExpanded(path[i], true);
+                        }
+                    }
+                    getObjectPath(obj) {
+                        const list = this.getContentProvider().getRoots(this.getInput());
+                        const path = [];
+                        this.getObjectPath2(obj, path, list);
+                        return path;
+                    }
+                    getObjectPath2(obj, path, children) {
+                        const contentProvider = this.getContentProvider();
+                        for (const child of children) {
+                            path.push(child);
+                            if (obj === child) {
+                                return true;
+                            }
+                            const found = this.getObjectPath2(obj, path, contentProvider.getChildren(child));
+                            if (found) {
+                                return true;
+                            }
+                            path.pop();
+                        }
+                        return false;
                     }
                     getTreeIconAtPoint(e) {
                         for (let icon of this._treeIconList) {

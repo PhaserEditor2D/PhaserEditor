@@ -37,21 +37,80 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         canSelectAtPoint(e: MouseEvent) {
+
             const icon = this.getTreeIconAtPoint(e);
             return icon === null;
+
+        }
+
+        reveal(...objects: any[]): void {
+
+            for (const obj of objects) {
+                const path = this.getObjectPath(obj);
+                this.revealPath(path);
+            }
+
+        }
+
+
+        revealPath(path: any[]) {
+
+            for (let i = 0; i < path.length - 1; i++) {
+                this.setExpanded(path[i], true);
+            }
+
+        }
+
+        getObjectPath(obj: any) {
+
+            const list = this.getContentProvider().getRoots(this.getInput());
+
+            const path = [];
+
+            this.getObjectPath2(obj, path, list);
+
+            return path;
+        }
+
+        private getObjectPath2(obj: any, path: any[], children: any[]): boolean {
+
+            const contentProvider = this.getContentProvider();
+
+            for (const child of children) {
+
+                path.push(child);
+
+                if (obj === child) {
+                    return true;
+                }
+
+                const found = this.getObjectPath2(obj, path, contentProvider.getChildren(child));
+
+                if (found) {
+                    return true;
+                }
+
+                path.pop();
+            }
+
+            return false;
         }
 
         private getTreeIconAtPoint(e: MouseEvent) {
+
             for (let icon of this._treeIconList) {
                 if (icon.rect.contains(e.offsetX, e.offsetY)) {
                     return icon;
                 }
             }
+
             return null;
         }
 
         private onClick(e: MouseEvent) {
+
             const icon = this.getTreeIconAtPoint(e);
+
             if (icon) {
                 this.setExpanded(icon.obj, !this.isExpanded(icon.obj));
                 this.repaint();

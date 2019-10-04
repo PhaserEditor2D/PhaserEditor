@@ -54,7 +54,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         private onDragStart(e: DragEvent) {
-            
+
             const paintItemUnderCursor = this.getPaintItemAt(e);
 
             if (paintItemUnderCursor) {
@@ -154,13 +154,15 @@ namespace phasereditor2d.ui.controls.viewers {
             return sel;
         }
 
-        setSelection(selection : any[], notify = true) {
+        setSelection(selection: any[], notify = true) {
             this._selectedObjects = new Set(selection);
             if (notify) {
                 this.fireSelectionChanged();
                 this.repaint();
             }
         }
+
+        abstract reveal(obj: any): void;
 
         private fireSelectionChanged() {
             this.dispatchEvent(new CustomEvent(EVENT_SELECTION_CHANGED, {

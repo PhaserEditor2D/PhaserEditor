@@ -5,32 +5,38 @@ namespace phasereditor2d.ui.ide {
     export abstract class EditorViewerProvider {
 
         private _viewer: controls.viewers.TreeViewer;
-        private _initialSelection : any[];
-        private _initialListeners: any[];
+        private _initialSelection: any[];
 
         constructor() {
             this._viewer = null;
             this._initialSelection = null;
-            this._initialListeners = [];
         }
 
         setViewer(viewer: controls.viewers.TreeViewer) {
+
             this._viewer = viewer;
 
             if (this._initialSelection) {
-                this._viewer.setSelection(this._initialSelection, false);
+                this.setSelection(this._initialSelection, true, true);
+                this._initialSelection = null;
             }
+
         }
 
-        setSelection(selection: any[], notify: boolean) {
+        setSelection(selection: any[], reveal: boolean, notify: boolean) {
+
             if (this._viewer) {
+
                 this._viewer.setSelection(selection, notify);
+                this._viewer.reveal(...selection);
+
             } else {
                 this._initialSelection = selection;
             }
+
         }
 
-        onViewerSelectionChanged(selection : any[]) {
+        onViewerSelectionChanged(selection: any[]) {
 
         }
 
