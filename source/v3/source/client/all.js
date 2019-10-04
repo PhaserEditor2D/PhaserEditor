@@ -4186,18 +4186,24 @@ var phasereditor2d;
                         }
                         onMouseClick(e) {
                             const result = this.hitTestOfActivePointer();
+                            let next = [];
                             if (result) {
+                                const current = this._editor.getSelection();
                                 const selected = result.pop();
                                 if (e.ctrlKey || e.metaKey) {
-                                    this._editor.setSelection(this._editor.getSelection().filter(obj => obj !== selected));
+                                    if (new Set(current).has(selected)) {
+                                        next = current.filter(obj => obj !== selected);
+                                    }
+                                    else {
+                                        next = current;
+                                        next.push(selected);
+                                    }
                                 }
                                 else {
-                                    this._editor.setSelection([selected]);
+                                    next = [selected];
                                 }
                             }
-                            else {
-                                this._editor.setSelection([]);
-                            }
+                            this._editor.setSelection(next);
                             this._editor.repaint();
                         }
                         hitTestOfActivePointer() {
