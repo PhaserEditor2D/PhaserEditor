@@ -65,6 +65,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 this.initSprite(sprite);
             }
 
+            this._editor.setSelection(sprites);
+
             this._editor.repaint();
         }
 

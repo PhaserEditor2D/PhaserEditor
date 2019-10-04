@@ -4155,6 +4155,7 @@ var phasereditor2d;
                             for (const sprite of sprites) {
                                 this.initSprite(sprite);
                             }
+                            this._editor.setSelection(sprites);
                             this._editor.repaint();
                         }
                         initSprite(sprite) {
