@@ -32,8 +32,8 @@ namespace phasereditor2d.ui.controls {
             const renderWidth = w;
             const renderHeight = h;
 
-            let imgW = fd.srcSize.x;
-            let imgH = fd.srcSize.y;
+            let imgW = fd.src.w;
+            let imgH = fd.src.h;
 
             // compute the right width
             imgW = imgW * (renderHeight / imgH);
@@ -49,6 +49,7 @@ namespace phasereditor2d.ui.controls {
             var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
             var imgY = y + renderHeight / 2 - imgH / 2;
 
+            // here we use the trimmed version of the image, maybe this should be parametrized
             const imgDstW = fd.src.w * scale;
             const imgDstH = fd.src.h * scale;
 
