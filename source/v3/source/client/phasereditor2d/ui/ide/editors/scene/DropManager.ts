@@ -20,6 +20,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
                 this._editor.refreshOutline();
+                //TODO: for testing purpose only
+                this._editor.setDirty(!this._editor.isDirty());
 
                 e.preventDefault();
             }

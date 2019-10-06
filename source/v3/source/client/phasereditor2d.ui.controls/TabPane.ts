@@ -3,6 +3,61 @@ namespace phasereditor2d.ui.controls {
     export const EVENT_TAB_CLOSED = "tabClosed";
     export const EVENT_TAB_SELECTED = "tabSelected";
 
+
+    class CloseIconManager {
+
+        private _element: HTMLCanvasElement;
+        private _context: CanvasRenderingContext2D;
+        private _icon: IImage;
+        private _overIcon: IImage;
+
+        constructor() {
+
+            this._element = document.createElement("canvas");
+            this._element.classList.add("closeIcon");
+            this._element.width = ICON_SIZE;
+            this._element.height = ICON_SIZE;
+            this._element.style.width = ICON_SIZE + "px";
+            this._element.style.height = ICON_SIZE + "px";
+
+            this._context = this._element.getContext("2d");
+
+            this._element.addEventListener("mouseenter", e => {
+                this.paint(this._overIcon);
+            });
+
+            this._element.addEventListener("mouseleave", e => {
+                this.paint(this._icon);
+            });
+        }
+
+        setIcon(icon: IImage) {
+            this._icon = icon;
+        }
+
+        setOverIcon(icon: IImage) {
+            this._overIcon = icon;
+        }
+
+        getElement() {
+            return this._element;
+        }
+
+        repaint() {
+            this.paint(this._icon);
+        }
+
+        paint(icon: IImage) {
+
+            if (icon) {
+
+                this._context.clearRect(0, 0, ICON_SIZE, ICON_SIZE);
+                icon.paint(this._context, 0, 0, ICON_SIZE, ICON_SIZE, true);
+
+            }
+        }
+    }
+
     export class TabPane extends Control {
         private _selectionHistoryLabelElement: HTMLElement[];
         private _titleBarElement: HTMLElement;
@@ -10,7 +65,6 @@ namespace phasereditor2d.ui.controls {
 
         constructor(...classList: string[]) {
             super("div", "TabPane", ...classList);
-
 
             this._selectionHistoryLabelElement = [];
 
@@ -23,7 +77,7 @@ namespace phasereditor2d.ui.controls {
             this.getElement().appendChild(this._contentAreaElement);
         }
 
-        addTab(label: string, icon : IImage, content: Control, closeable = false): void {
+        addTab(label: string, icon: IImage, content: Control, closeable = false): void {
             const labelElement = this.makeLabel(label, icon, closeable);
             this._titleBarElement.appendChild(labelElement);
             labelElement.addEventListener("mousedown", e => this.selectTab(labelElement));
@@ -39,7 +93,7 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        private makeLabel(label: string, icon : IImage, closeable: boolean): HTMLElement {
+        private makeLabel(label: string, icon: IImage, closeable: boolean): HTMLElement {
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
@@ -52,18 +106,36 @@ namespace phasereditor2d.ui.controls {
             labelElement.appendChild(textElement);
 
             if (closeable) {
-                const closeIconElement = Controls.createIconElement(Controls.getIcon(ICON_CONTROL_CLOSE));
-                closeIconElement.classList.add("closeIcon");
-                closeIconElement.addEventListener("click", e => {
-                    e.stopImmediatePropagation();
-                    this.closeTab(labelElement);
-                });
-
-                labelElement.appendChild(closeIconElement);
+                const manager = new CloseIconManager();
+                manager.setIcon(Controls.getIcon(ICON_CONTROL_CLOSE));
+                manager.repaint();
+                labelElement.appendChild(manager.getElement());
                 labelElement.classList.add("closeable");
+                labelElement["__CloseIconManager"] = manager;
+
+                // const closeIconElement = Controls.createIconElement(Controls.getIcon(ICON_CONTROL_TREE_COLLAPSE), Controls.getIcon(ICON_CONTROL_CLOSE));
+                // closeIconElement.classList.add("closeIcon");
+                // closeIconElement.addEventListener("click", e => {
+                //     e.stopImmediatePropagation();
+                //     this.closeTab(labelElement);
+                // });
+
+                // labelElement.appendChild(closeIconElement);
+                // labelElement.classList.add("closeable");
             }
 
             return labelElement;
+        }
+
+        setTabCloseIcons(labelElement: HTMLElement, icon: IImage, overIcon: IImage) {
+
+            const manager = <CloseIconManager>labelElement["__CloseIconManager"];
+
+            if (manager) {
+                manager.setIcon(icon);
+                manager.setOverIcon(overIcon);
+                manager.repaint();
+            }
         }
 
         private closeTab(labelElement: HTMLElement): void {
@@ -95,13 +167,13 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        setTabTitle(content: Control, title: string, icon? : IImage) {
+        setTabTitle(content: Control, title: string, icon?: IImage) {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
                 const content2 = TabPane.getContentFromLabel(label);
                 if (content2 === content) {
-                    const iconElement : HTMLCanvasElement = <HTMLCanvasElement> label.firstChild;
-                    const textElement = <HTMLElement> iconElement.nextSibling;
+                    const iconElement: HTMLCanvasElement = <HTMLCanvasElement>label.firstChild;
+                    const textElement = <HTMLElement>iconElement.nextSibling;
                     if (icon) {
                         const context = iconElement.getContext("2d");
                         context.clearRect(0, 0, iconElement.width, iconElement.height);
@@ -112,11 +184,11 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        static isTabLabel(element : HTMLElement) {
+        static isTabLabel(element: HTMLElement) {
             return element.classList.contains("TabPaneLabel");
         }
 
-        private getLabelFromContent(content : Control) {
+        getLabelFromContent(content: Control) {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
                 const content2 = TabPane.getContentFromLabel(label);
@@ -135,7 +207,7 @@ namespace phasereditor2d.ui.controls {
             return Control.getControlOf(<HTMLElement>this.getContentAreaFromLabel(labelElement).firstChild);
         }
 
-        selectTabWithContent(content : Control) {
+        selectTabWithContent(content: Control) {
             const label = this.getLabelFromContent(content);
             if (label) {
                 this.selectTab(label);

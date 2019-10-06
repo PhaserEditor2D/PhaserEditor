@@ -10,6 +10,7 @@ namespace phasereditor2d.ui.ide {
         private _selection: any[];
         private _partCreated: boolean;
         private _icon: controls.IImage;
+        private _folder : PartFolder;
 
         constructor(id: string) {
             super();
@@ -24,6 +25,14 @@ namespace phasereditor2d.ui.ide {
             this.getElement().classList.add("Part");
 
             this.getElement()["__part"] = this;
+        }
+
+        getPartFolder() {
+            return this._folder;
+        }
+
+        setPartFolder(folder : PartFolder) {
+            this._folder = folder;
         }
 
         getTitle() {

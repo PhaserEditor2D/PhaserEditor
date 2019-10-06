@@ -29,7 +29,10 @@ namespace phasereditor2d.ui.ide {
             part.addEventListener(EVENT_PART_TITLE_UPDATED, (e: CustomEvent) => {
                 this.setTabTitle(part, part.getTitle(), part.getIcon());
             });
+
             this.addTab(part.getTitle(), part.getIcon(), part, closeable);
+
+            part.setPartFolder(this);
         }
     }
 

@@ -62,10 +62,6 @@ canvas {
     padding: 5px 2px 5px 5px;
 }
 
-.TabPaneLabel .closeIcon:hover {
-    opacity: 0.5;
-}
-
 .TabPaneContentArea {
     border-radius: 0 3px 3px 3px;
 }

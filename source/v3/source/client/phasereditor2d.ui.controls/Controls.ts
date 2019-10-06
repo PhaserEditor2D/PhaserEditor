@@ -15,12 +15,14 @@ namespace phasereditor2d.ui.controls {
     export const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
     export const ICON_CONTROL_TREE_EXPAND = "tree-expand";
     export const ICON_CONTROL_CLOSE = "close";
+    export const ICON_CONTROL_DIRTY = "dirty";
     export const ICON_SIZE = 16;
 
     const ICONS = [
         ICON_CONTROL_TREE_COLLAPSE,
         ICON_CONTROL_TREE_EXPAND,
-        ICON_CONTROL_CLOSE
+        ICON_CONTROL_CLOSE,
+        ICON_CONTROL_DIRTY
     ];
 
     export class Controls {
@@ -107,15 +109,32 @@ namespace phasereditor2d.ui.controls {
             return Controls.getImage(url, name);
         }
 
-        static createIconElement(icon?: IImage) {
+        static createIconElement(icon?: IImage, overIcon?: IImage) {
             const element = document.createElement("canvas");
             element.width = element.height = ICON_SIZE;
             element.style.width = element.style.height = ICON_SIZE + "px";
+
             const context = element.getContext("2d");
             context.imageSmoothingEnabled = false;
+
+            if (overIcon) {
+
+                element.addEventListener("mouseenter", e => {
+                    context.clearRect(0, 0, ICON_SIZE, ICON_SIZE);
+                    overIcon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
+                });
+
+                element.addEventListener("mouseleave", e => {
+                    context.clearRect(0, 0, ICON_SIZE, ICON_SIZE);
+                    icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
+                });
+
+            }
+
             if (icon) {
                 icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
             }
+
             return element;
         }
 

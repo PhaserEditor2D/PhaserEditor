@@ -456,11 +456,13 @@ var phasereditor2d;
             controls.ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
             controls.ICON_CONTROL_TREE_EXPAND = "tree-expand";
             controls.ICON_CONTROL_CLOSE = "close";
+            controls.ICON_CONTROL_DIRTY = "dirty";
             controls.ICON_SIZE = 16;
             const ICONS = [
                 controls.ICON_CONTROL_TREE_COLLAPSE,
                 controls.ICON_CONTROL_TREE_EXPAND,
-                controls.ICON_CONTROL_CLOSE
+                controls.ICON_CONTROL_CLOSE,
+                controls.ICON_CONTROL_DIRTY
             ];
             class Controls {
                 static setDragEventImage(e, render) {
@@ -524,12 +526,22 @@ var phasereditor2d;
                     const url = `${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
                     return Controls.getImage(url, name);
                 }
-                static createIconElement(icon) {
+                static createIconElement(icon, overIcon) {
                     const element = document.createElement("canvas");
                     element.width = element.height = controls.ICON_SIZE;
                     element.style.width = element.style.height = controls.ICON_SIZE + "px";
                     const context = element.getContext("2d");
                     context.imageSmoothingEnabled = false;
+                    if (overIcon) {
+                        element.addEventListener("mouseenter", e => {
+                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
+                            overIcon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                        });
+                        element.addEventListener("mouseleave", e => {
+                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
+                            icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                        });
+                    }
                     if (icon) {
                         icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
                     }
@@ -602,6 +614,12 @@ var phasereditor2d;
                     this.getElement().classList.add("Part");
                     this.getElement()["__part"] = this;
                 }
+                getPartFolder() {
+                    return this._folder;
+                }
+                setPartFolder(folder) {
+                    this._folder = folder;
+                }
                 getTitle() {
                     return this._title;
                 }
@@ -661,6 +679,18 @@ var phasereditor2d;
                 constructor(id) {
                     super(id);
                     this.addClass("EditorPart");
+                    this._dirty = false;
+                }
+                setDirty(dirty) {
+                    this._dirty = dirty;
+                    const folder = this.getPartFolder();
+                    const label = folder.getLabelFromContent(this);
+                    const iconClose = ui.controls.Controls.getIcon(ui.controls.ICON_CONTROL_CLOSE);
+                    const iconDirty = dirty ? ui.controls.Controls.getIcon(ui.controls.ICON_CONTROL_DIRTY) : iconClose;
+                    folder.setTabCloseIcons(label, iconDirty, iconClose);
+                }
+                isDirty() {
+                    return this._dirty;
                 }
                 getInput() {
                     return this._input;
@@ -684,6 +714,41 @@ var phasereditor2d;
         (function (controls) {
             controls.EVENT_TAB_CLOSED = "tabClosed";
             controls.EVENT_TAB_SELECTED = "tabSelected";
+            class CloseIconManager {
+                constructor() {
+                    this._element = document.createElement("canvas");
+                    this._element.classList.add("closeIcon");
+                    this._element.width = controls.ICON_SIZE;
+                    this._element.height = controls.ICON_SIZE;
+                    this._element.style.width = controls.ICON_SIZE + "px";
+                    this._element.style.height = controls.ICON_SIZE + "px";
+                    this._context = this._element.getContext("2d");
+                    this._element.addEventListener("mouseenter", e => {
+                        this.paint(this._overIcon);
+                    });
+                    this._element.addEventListener("mouseleave", e => {
+                        this.paint(this._icon);
+                    });
+                }
+                setIcon(icon) {
+                    this._icon = icon;
+                }
+                setOverIcon(icon) {
+                    this._overIcon = icon;
+                }
+                getElement() {
+                    return this._element;
+                }
+                repaint() {
+                    this.paint(this._icon);
+                }
+                paint(icon) {
+                    if (icon) {
+                        this._context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
+                        icon.paint(this._context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, true);
+                    }
+                }
+            }
             class TabPane extends controls.Control {
                 constructor(...classList) {
                     super("div", "TabPane", ...classList);
@@ -716,16 +781,30 @@ var phasereditor2d;
                     textElement.innerHTML = label;
                     labelElement.appendChild(textElement);
                     if (closeable) {
-                        const closeIconElement = controls.Controls.createIconElement(controls.Controls.getIcon(controls.ICON_CONTROL_CLOSE));
-                        closeIconElement.classList.add("closeIcon");
-                        closeIconElement.addEventListener("click", e => {
-                            e.stopImmediatePropagation();
-                            this.closeTab(labelElement);
-                        });
-                        labelElement.appendChild(closeIconElement);
+                        const manager = new CloseIconManager();
+                        manager.setIcon(controls.Controls.getIcon(controls.ICON_CONTROL_CLOSE));
+                        manager.repaint();
+                        labelElement.appendChild(manager.getElement());
                         labelElement.classList.add("closeable");
+                        labelElement["__CloseIconManager"] = manager;
+                        // const closeIconElement = Controls.createIconElement(Controls.getIcon(ICON_CONTROL_TREE_COLLAPSE), Controls.getIcon(ICON_CONTROL_CLOSE));
+                        // closeIconElement.classList.add("closeIcon");
+                        // closeIconElement.addEventListener("click", e => {
+                        //     e.stopImmediatePropagation();
+                        //     this.closeTab(labelElement);
+                        // });
+                        // labelElement.appendChild(closeIconElement);
+                        // labelElement.classList.add("closeable");
                     }
                     return labelElement;
+                }
+                setTabCloseIcons(labelElement, icon, overIcon) {
+                    const manager = labelElement["__CloseIconManager"];
+                    if (manager) {
+                        manager.setIcon(icon);
+                        manager.setOverIcon(overIcon);
+                        manager.repaint();
+                    }
                 }
                 closeTab(labelElement) {
                     this._titleBarElement.removeChild(labelElement);
@@ -871,6 +950,7 @@ var phasereditor2d;
                         this.setTabTitle(part, part.getTitle(), part.getIcon());
                     });
                     this.addTab(part.getTitle(), part.getIcon(), part, closeable);
+                    part.setPartFolder(this);
                 }
             }
             ide.PartFolder = PartFolder;
@@ -3537,6 +3617,8 @@ var phasereditor2d;
                             if (this.acceptsDropDataArray(dataArray)) {
                                 this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
                                 this._editor.refreshOutline();
+                                //TODO: for testing purpose only
+                                this._editor.setDirty(!this._editor.isDirty());
                                 e.preventDefault();
                             }
                         }
