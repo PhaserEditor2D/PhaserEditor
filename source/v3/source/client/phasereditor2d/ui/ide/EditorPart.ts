@@ -31,6 +31,15 @@ namespace phasereditor2d.ui.ide {
             return this._dirty;
         }
 
+        onPartClosed() {
+
+            if (this.isDirty()) {
+                return confirm("This editor is not saved, do you want to close it?");
+            }
+
+            return true;
+        }
+
         getInput() {
             return this._input;
         }

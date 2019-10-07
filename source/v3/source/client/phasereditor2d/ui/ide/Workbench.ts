@@ -143,27 +143,26 @@ namespace phasereditor2d.ui.ide {
             this.dispatchEvent(new CustomEvent(EVENT_EDITOR_ACTIVATED, { detail: editor }));
         }
 
-        private setActivePart(part: Part): void {
-
+        /**
+         * Users may not call this method. This is public only for convenience.
+         */
+        setActivePart(part: Part): void {
             if (part !== this._activePart) {
 
-                if (part) {
+                const old = this._activePart;
 
-                    const old = this._activePart;
+                this._activePart = part;
 
-                    this._activePart = part;
-
-                    if (old) {
-                        this.toggleActivePartClass(old);
-                        this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATED, { detail: old }));
-                    }
-
-                    if (part) {
-                        this.toggleActivePartClass(part);
-                    }
-
-                    this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATED, { detail: part }));
+                if (old) {
+                    this.toggleActivePartClass(old);
+                    this.dispatchEvent(new CustomEvent(EVENT_PART_DEACTIVATED, { detail: old }));
                 }
+
+                if (part) {
+                    this.toggleActivePartClass(part);
+                }
+
+                this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATED, { detail: part }));
             }
 
             if (part instanceof EditorPart) {

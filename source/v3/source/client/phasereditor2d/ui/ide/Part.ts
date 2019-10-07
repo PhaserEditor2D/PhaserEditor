@@ -83,8 +83,8 @@ namespace phasereditor2d.ui.ide {
 
         }
 
-        onPartClosed(): void {
-
+        onPartClosed(): boolean {
+            return true;
         }
 
         onPartShown(): void {

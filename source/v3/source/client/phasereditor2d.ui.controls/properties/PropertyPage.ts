@@ -104,9 +104,16 @@ namespace phasereditor2d.ui.controls.properties {
                         this._sectionPanes.push(pane);
                     }
                 }
-            }
 
-            this.updateWithSelection();
+                this.updateWithSelection();
+
+            } else {
+
+                for(const pane of this._sectionPanes) {
+                    pane.getElement().style.display = "none";
+                }
+                
+            }
         }
 
         private updateWithSelection(): void {

@@ -16,11 +16,19 @@ namespace phasereditor2d.ui.ide {
 
             this.addEventListener(controls.EVENT_TAB_CLOSED, (e: CustomEvent) => {
                 const part = <Part>e.detail;
-                part.onPartClosed();
+
+                if (part.onPartClosed()) {
+                    if (this.getContentList().length === 1) {
+                        Workbench.getWorkbench().setActivePart(null);
+                    }
+                } else {
+                    e.preventDefault();
+                }
             });
 
             this.addEventListener(controls.EVENT_TAB_SELECTED, (e: CustomEvent) => {
                 const part = <Part>e.detail;
+                Workbench.getWorkbench().setActivePart(part);
                 part.onPartShown();
             });
         }

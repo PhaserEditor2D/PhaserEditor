@@ -657,6 +657,7 @@ var phasereditor2d;
                 layout() {
                 }
                 onPartClosed() {
+                    return true;
                 }
                 onPartShown() {
                     if (!this._partCreated) {
@@ -691,6 +692,12 @@ var phasereditor2d;
                 }
                 isDirty() {
                     return this._dirty;
+                }
+                onPartClosed() {
+                    if (this.isDirty()) {
+                        return confirm("This editor is not saved, do you want to close it?");
+                    }
+                    return true;
                 }
                 getInput() {
                     return this._input;
@@ -787,14 +794,10 @@ var phasereditor2d;
                         labelElement.appendChild(manager.getElement());
                         labelElement.classList.add("closeable");
                         labelElement["__CloseIconManager"] = manager;
-                        // const closeIconElement = Controls.createIconElement(Controls.getIcon(ICON_CONTROL_TREE_COLLAPSE), Controls.getIcon(ICON_CONTROL_CLOSE));
-                        // closeIconElement.classList.add("closeIcon");
-                        // closeIconElement.addEventListener("click", e => {
-                        //     e.stopImmediatePropagation();
-                        //     this.closeTab(labelElement);
-                        // });
-                        // labelElement.appendChild(closeIconElement);
-                        // labelElement.classList.add("closeable");
+                        manager.getElement().addEventListener("click", e => {
+                            e.stopImmediatePropagation();
+                            this.closeTab(labelElement);
+                        });
                     }
                     return labelElement;
                 }
@@ -807,6 +810,16 @@ var phasereditor2d;
                     }
                 }
                 closeTab(labelElement) {
+                    {
+                        const content = TabPane.getContentFromLabel(labelElement);
+                        const event = new CustomEvent(controls.EVENT_TAB_CLOSED, {
+                            detail: content,
+                            cancelable: true
+                        });
+                        if (!this.dispatchEvent(event)) {
+                            return;
+                        }
+                    }
                     this._titleBarElement.removeChild(labelElement);
                     const contentArea = labelElement["__contentArea"];
                     this._contentAreaElement.removeChild(contentArea);
@@ -825,9 +838,6 @@ var phasereditor2d;
                             }
                         }
                     }
-                    this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_CLOSED, {
-                        detail: controls.Control.getControlOf(contentArea.firstChild)
-                    }));
                     if (toSelectLabel) {
                         this.selectTab(toSelectLabel);
                     }
@@ -938,10 +948,18 @@ var phasereditor2d;
                     });
                     this.addEventListener(ui.controls.EVENT_TAB_CLOSED, (e) => {
                         const part = e.detail;
-                        part.onPartClosed();
+                        if (part.onPartClosed()) {
+                            if (this.getContentList().length === 1) {
+                                ide.Workbench.getWorkbench().setActivePart(null);
+                            }
+                        }
+                        else {
+                            e.preventDefault();
+                        }
                     });
                     this.addEventListener(ui.controls.EVENT_TAB_SELECTED, (e) => {
                         const part = e.detail;
+                        ide.Workbench.getWorkbench().setActivePart(part);
                         part.onPartShown();
                     });
                 }
@@ -1658,20 +1676,21 @@ var phasereditor2d;
                     this._activeEditor = editor;
                     this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
                 }
+                /**
+                 * Users may not call this method. This is public only for convenience.
+                 */
                 setActivePart(part) {
                     if (part !== this._activePart) {
-                        if (part) {
-                            const old = this._activePart;
-                            this._activePart = part;
-                            if (old) {
-                                this.toggleActivePartClass(old);
-                                this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
-                            }
-                            if (part) {
-                                this.toggleActivePartClass(part);
-                            }
-                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
+                        const old = this._activePart;
+                        this._activePart = part;
+                        if (old) {
+                            this.toggleActivePartClass(old);
+                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
                         }
+                        if (part) {
+                            this.toggleActivePartClass(part);
+                        }
+                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
                     }
                     if (part instanceof ide.EditorPart) {
                         this.setActiveEditor(part);
@@ -4696,8 +4715,13 @@ var phasereditor2d;
                                     this._sectionPanes.push(pane);
                                 }
                             }
+                            this.updateWithSelection();
                         }
-                        this.updateWithSelection();
+                        else {
+                            for (const pane of this._sectionPanes) {
+                                pane.getElement().style.display = "none";
+                            }
+                        }
                     }
                     updateWithSelection() {
                         const n = this._selection.length;
@@ -6068,18 +6092,23 @@ var phasereditor2d;
                         }
                         onWorkbenchPartActivate() {
                             const part = ide.Workbench.getWorkbench().getActivePart();
-                            if (!part || part !== this && part !== this._activePart) {
-                                if (this._activePart) {
-                                    this._activePart.removeEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                            if (part !== this && part !== this._currentPart) {
+                                if (this._currentPart) {
+                                    this._currentPart.removeEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                                 }
-                                this._activePart = part;
-                                this._activePart.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
-                                this.onPartSelection();
+                                this._currentPart = part;
+                                if (part) {
+                                    part.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                                    this.onPartSelection();
+                                }
+                                else {
+                                    this._propertyPage.setSectionProvider(null);
+                                }
                             }
                         }
                         onPartSelection() {
-                            const sel = this._activePart.getSelection();
-                            const provider = this._activePart.getPropertyProvider();
+                            const sel = this._currentPart.getSelection();
+                            const provider = this._currentPart.getPropertyProvider();
                             this._propertyPage.setSectionProvider(provider);
                             this._propertyPage.setSelection(sel);
                         }

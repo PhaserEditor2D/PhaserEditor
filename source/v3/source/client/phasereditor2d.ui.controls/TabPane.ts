@@ -3,7 +3,6 @@ namespace phasereditor2d.ui.controls {
     export const EVENT_TAB_CLOSED = "tabClosed";
     export const EVENT_TAB_SELECTED = "tabSelected";
 
-
     class CloseIconManager {
 
         private _element: HTMLCanvasElement;
@@ -112,16 +111,11 @@ namespace phasereditor2d.ui.controls {
                 labelElement.appendChild(manager.getElement());
                 labelElement.classList.add("closeable");
                 labelElement["__CloseIconManager"] = manager;
+                manager.getElement().addEventListener("click", e => {
+                    e.stopImmediatePropagation();
+                    this.closeTab(labelElement);
+                });
 
-                // const closeIconElement = Controls.createIconElement(Controls.getIcon(ICON_CONTROL_TREE_COLLAPSE), Controls.getIcon(ICON_CONTROL_CLOSE));
-                // closeIconElement.classList.add("closeIcon");
-                // closeIconElement.addEventListener("click", e => {
-                //     e.stopImmediatePropagation();
-                //     this.closeTab(labelElement);
-                // });
-
-                // labelElement.appendChild(closeIconElement);
-                // labelElement.classList.add("closeable");
             }
 
             return labelElement;
@@ -139,6 +133,19 @@ namespace phasereditor2d.ui.controls {
         }
 
         private closeTab(labelElement: HTMLElement): void {
+            {
+                const content = TabPane.getContentFromLabel(labelElement);
+                const event = new CustomEvent(EVENT_TAB_CLOSED, {
+                    detail: content,
+                    cancelable: true
+                });
+
+                if (!this.dispatchEvent(event)) {
+                    return;
+                }
+            }
+
+
             this._titleBarElement.removeChild(labelElement);
             const contentArea = <HTMLElement>labelElement["__contentArea"];
             this._contentAreaElement.removeChild(contentArea);
@@ -157,10 +164,6 @@ namespace phasereditor2d.ui.controls {
                     }
                 }
             }
-
-            this.dispatchEvent(new CustomEvent(EVENT_TAB_CLOSED, {
-                detail: Control.getControlOf(<HTMLElement>contentArea.firstChild)
-            }));
 
             if (toSelectLabel) {
                 this.selectTab(toSelectLabel);
@@ -259,7 +262,6 @@ namespace phasereditor2d.ui.controls {
 
             return list;
         }
-
 
         private getSelectedLabelElement(): HTMLElement {
             return this._selectionHistoryLabelElement.length > 0 ?

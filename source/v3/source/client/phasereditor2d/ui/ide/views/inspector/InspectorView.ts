@@ -8,7 +8,7 @@ namespace phasereditor2d.ui.ide.views.inspector {
     export class InspectorView extends ide.ViewPart {
 
         private _propertyPage: ui.controls.properties.PropertyPage;
-        private _activePart : Part;
+        private _currentPart: Part;
         private _selectionListener: any;
 
         constructor() {
@@ -27,7 +27,7 @@ namespace phasereditor2d.ui.ide.views.inspector {
 
             this.add(this._propertyPage);
 
-            this._selectionListener = (e : CustomEvent) => this.onPartSelection();
+            this._selectionListener = (e: CustomEvent) => this.onPartSelection();
 
             Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
         }
@@ -35,23 +35,26 @@ namespace phasereditor2d.ui.ide.views.inspector {
         private onWorkbenchPartActivate() {
             const part = Workbench.getWorkbench().getActivePart();
 
-            if (!part || part !== this && part !== this._activePart) {
-                
-                if (this._activePart) {
-                    this._activePart.removeEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+            if (part !== this && part !== this._currentPart) {
+
+                if (this._currentPart) {
+                    this._currentPart.removeEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                 }
 
-                this._activePart = part;
-                
-                this._activePart.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                this._currentPart = part;
 
-                this.onPartSelection();
+                if (part) {
+                    part.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                    this.onPartSelection();
+                } else {
+                    this._propertyPage.setSectionProvider(null);
+                }
             }
         }
 
         private onPartSelection() {
-            const sel = this._activePart.getSelection();
-            const provider = this._activePart.getPropertyProvider();
+            const sel = this._currentPart.getSelection();
+            const provider = this._currentPart.getPropertyProvider();
             this._propertyPage.setSectionProvider(provider);
             this._propertyPage.setSelection(sel);
         }
