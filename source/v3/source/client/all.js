@@ -610,9 +610,13 @@ var phasereditor2d;
                     this._title = "";
                     this._selection = [];
                     this._partCreated = false;
+                    this._undoManager = new ide.undo.UndoManager();
                     this.getElement().setAttribute("id", id);
                     this.getElement().classList.add("Part");
                     this.getElement()["__part"] = this;
+                }
+                getUndoManager() {
+                    return this._undoManager;
                 }
                 getPartFolder() {
                     return this._folder;
@@ -1386,29 +1390,48 @@ var phasereditor2d;
         var ide;
         (function (ide) {
             ide.CMD_SAVE = "save";
-            ide.CMD_EDIT_DELETE = "delete";
-            ide.CMD_EDIT_RENAME = "rename";
+            ide.CMD_DELETE = "delete";
+            ide.CMD_RENAME = "rename";
+            ide.CMD_UNDO = "undo";
+            ide.CMD_REDO = "redo";
             class IDECommands {
                 static init() {
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
                     // register commands
                     manager.addCommandHelper(ide.CMD_SAVE);
-                    manager.addCommandHelper(ide.CMD_EDIT_DELETE);
-                    manager.addCommandHelper(ide.CMD_EDIT_RENAME);
+                    manager.addCommandHelper(ide.CMD_DELETE);
+                    manager.addCommandHelper(ide.CMD_RENAME);
+                    manager.addCommandHelper(ide.CMD_UNDO);
+                    manager.addCommandHelper(ide.CMD_REDO);
                     // register handlers
                     manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
                         args.activeEditor.save();
+                    });
+                    manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => {
+                        args.activePart.getUndoManager().undo();
+                    });
+                    manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => {
+                        args.activePart.getUndoManager().redo();
                     });
                     // register bindings
                     manager.addKeyBinding(ide.CMD_SAVE, new ide.commands.KeyMatcher({
                         control: true,
                         key: "s"
                     }));
-                    manager.addKeyBinding(ide.CMD_EDIT_DELETE, new ide.commands.KeyMatcher({
+                    manager.addKeyBinding(ide.CMD_DELETE, new ide.commands.KeyMatcher({
                         key: "delete"
                     }));
-                    manager.addKeyBinding(ide.CMD_EDIT_DELETE, new ide.commands.KeyMatcher({
+                    manager.addKeyBinding(ide.CMD_RENAME, new ide.commands.KeyMatcher({
                         key: "f2"
+                    }));
+                    manager.addKeyBinding(ide.CMD_UNDO, new ide.commands.KeyMatcher({
+                        control: true,
+                        key: "z"
+                    }));
+                    manager.addKeyBinding(ide.CMD_REDO, new ide.commands.KeyMatcher({
+                        control: true,
+                        shift: true,
+                        key: "z"
                     }));
                 }
             }
@@ -3906,6 +3929,7 @@ var phasereditor2d;
                                 //TODO: for testing purpose only
                                 this._editor.setDirty(true);
                                 e.preventDefault();
+                                this._editor.getUndoManager().execute(new scene.undo.AddObjectsOperation(this._editor));
                             }
                         }
                         onDragOver(e) {
@@ -4798,7 +4822,7 @@ var phasereditor2d;
                     class SceneEditorCommands {
                         static init() {
                             const manager = ide.Workbench.getWorkbench().getCommandManager();
-                            manager.addHandlerHelper(ide.CMD_EDIT_DELETE, args => isSceneScope(args), args => {
+                            manager.addHandlerHelper(ide.CMD_DELETE, args => isSceneScope(args), args => {
                                 const editor = args.activeEditor;
                                 editor.getActionManager().deleteObjects();
                             });
@@ -5298,6 +5322,78 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            var undo;
+            (function (undo) {
+                class Operation {
+                }
+                undo.Operation = Operation;
+            })(undo = ide.undo || (ide.undo = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../undo/Operation.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var undo;
+                    (function (undo) {
+                        class SceneEditorOperation extends ide.undo.Operation {
+                            constructor(editor) {
+                                super();
+                                this._editor = editor;
+                            }
+                        }
+                        undo.SceneEditorOperation = SceneEditorOperation;
+                    })(undo = scene.undo || (scene.undo = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./SceneEditorOperation.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var undo;
+                    (function (undo) {
+                        class AddObjectsOperation extends undo.SceneEditorOperation {
+                            undo() {
+                                console.log("Remove the objects");
+                            }
+                            redo() {
+                                console.log("Add the objects");
+                            }
+                            execute() {
+                                console.log("Add the objects");
+                            }
+                        }
+                        undo.AddObjectsOperation = AddObjectsOperation;
+                    })(undo = scene.undo || (scene.undo = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             var properties;
             (function (properties) {
                 class FilteredViewerInPropertySection extends ui.controls.viewers.FilteredViewer {
@@ -5326,6 +5422,44 @@ var phasereditor2d;
                 }
                 properties.FilteredViewerInPropertySection = FilteredViewerInPropertySection;
             })(properties = ide.properties || (ide.properties = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var undo;
+            (function (undo) {
+                class UndoManager {
+                    constructor() {
+                        this._undoList = [];
+                        this._redoList = [];
+                    }
+                    execute(op) {
+                        op.execute();
+                        this._undoList.push(op);
+                        this._redoList = [];
+                    }
+                    undo() {
+                        if (this._undoList.length > 0) {
+                            const op = this._undoList.pop();
+                            op.undo();
+                            this._redoList.push(op);
+                        }
+                    }
+                    redo() {
+                        if (this._redoList.length > 0) {
+                            const op = this._redoList.pop();
+                            op.redo();
+                            this._undoList.push(op);
+                        }
+                    }
+                }
+                undo.UndoManager = UndoManager;
+            })(undo = ide.undo || (ide.undo = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

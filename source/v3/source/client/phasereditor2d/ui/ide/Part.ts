@@ -10,15 +10,21 @@ namespace phasereditor2d.ui.ide {
         private _selection: any[];
         private _partCreated: boolean;
         private _icon: controls.IImage;
-        private _folder : PartFolder;
+        private _folder: PartFolder;
+        private _undoManager: undo.UndoManager;
 
         constructor(id: string) {
             super();
 
             this._id = id;
+
             this._title = "";
+
             this._selection = [];
+
             this._partCreated = false;
+
+            this._undoManager = new undo.UndoManager();
 
             this.getElement().setAttribute("id", id);
 
@@ -27,11 +33,15 @@ namespace phasereditor2d.ui.ide {
             this.getElement()["__part"] = this;
         }
 
+        getUndoManager() {
+            return this._undoManager;
+        }
+
         getPartFolder() {
             return this._folder;
         }
 
-        setPartFolder(folder : PartFolder) {
+        setPartFolder(folder: PartFolder) {
             this._folder = folder;
         }
 

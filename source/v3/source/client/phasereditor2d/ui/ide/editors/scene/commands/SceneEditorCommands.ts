@@ -12,7 +12,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
  
             const manager = Workbench.getWorkbench().getCommandManager();
 
-            manager.addHandlerHelper(ide.CMD_EDIT_DELETE,
+            manager.addHandlerHelper(ide.CMD_DELETE,
 
                 args => isSceneScope(args),
 

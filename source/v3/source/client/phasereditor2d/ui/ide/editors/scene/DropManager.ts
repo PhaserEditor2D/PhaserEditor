@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         onDragDrop(e: DragEvent) {
-            
+
             const dataArray = controls.Controls.getApplicationDragDataAndClean();
 
             if (this.acceptsDropDataArray(dataArray)) {
@@ -24,6 +24,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 this._editor.setDirty(true);
 
                 e.preventDefault();
+
+                this._editor.getUndoManager().execute(new undo.AddObjectsOperation(this._editor));
             }
         }
 
