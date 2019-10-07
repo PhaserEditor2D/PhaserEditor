@@ -2,18 +2,16 @@ namespace phasereditor2d.ui.ide.commands {
 
     export class CommandManager {
 
-        private _commandMap: Map<String, Command>;
+        private _commandIdMap: Map<String, Command>;
         private _commands: Command[];
-        private _handlerMatcherMap: Map<string, KeyMatcher[]>;
-        private _handlerCommandMap: Map<Command, CommandHandler[]>;
-        private _handlerMap: Map<string, CommandHandler>;
+        private _commandMatcherMap: Map<Command, KeyMatcher[]>;
+        private _commandHandlerMap: Map<Command, CommandHandler[]>;
 
         constructor() {
             this._commands = [];
-            this._commandMap = new Map();
-            this._handlerMap = new Map();
-            this._handlerMatcherMap = new Map();
-            this._handlerCommandMap = new Map();
+            this._commandIdMap = new Map();
+            this._commandMatcherMap = new Map();
+            this._commandHandlerMap = new Map();
 
             window.addEventListener("keydown", e => { this.onKeyDown(e); })
         }
@@ -27,27 +25,27 @@ namespace phasereditor2d.ui.ide.commands {
 
             for (const command of this._commands) {
 
-                const handlers = this._handlerCommandMap.get(command);
+                let eventMatches = false;
 
-                for (const handler of handlers) {
+                const matchers = this._commandMatcherMap.get(command);
 
-                    let eventMatches = false;
+                for (const matcher of matchers) {
 
-                    const matchers = this.getMatchers(handler.getId());
+                    if (matcher.matchesKeys(event) && matcher.matchesTarget(event.target)) {
 
-                    for (const matcher of matchers) {
+                        event.preventDefault();
 
-                        if (matcher.matches(event)) {
+                        eventMatches = true;
 
-                            event.preventDefault();
-
-                            eventMatches = true;
-
-                            break;
-                        }
+                        break;
                     }
+                }
 
-                    if (eventMatches) {
+                if (eventMatches) {
+
+                    const handlers = this._commandHandlerMap.get(command);
+
+                    for (const handler of handlers) {
 
                         if (handler.test(args)) {
                             handler.execute(args);
@@ -59,13 +57,14 @@ namespace phasereditor2d.ui.ide.commands {
         }
 
         addCommand(cmd: Command): void {
-            this._commandMap.set(cmd.getId(), cmd);
             this._commands.push(cmd);
-            this._handlerCommandMap.set(cmd, []);
+            this._commandIdMap.set(cmd.getId(), cmd);
+            this._commandMatcherMap.set(cmd, []);
+            this._commandHandlerMap.set(cmd, []);
         }
 
-        getCommand(id: string): Command {
-            return this._commandMap.get(id);
+        addCommandHelper(id: string) {
+            this.addCommand(new Command(id));
         }
 
         private makeArgs() {
@@ -78,42 +77,40 @@ namespace phasereditor2d.ui.ide.commands {
             );
         }
 
-        addKeyBinding(handlerId: string, matcher: KeyMatcher): void {
+        getCommand(id: string) {
+            const command = this._commandIdMap.get(id);
 
-            const handler = this._handlerMap.get(handlerId);
-
-            if (handler) {
-                this.getMatchers(handlerId).push(matcher);
-            } else {
-                console.warn(`Handler ${handler.getId()} not found.`);
+            if (!command) {
+                console.warn(`Command ${id} not found.`);
             }
 
+            return command;
+        }
+
+        addKeyBinding(commandId: string, matcher: KeyMatcher): void {
+            const command = this.getCommand(commandId);
+
+            if (command) {
+                this._commandMatcherMap.get(command).push(matcher);
+            }
         }
 
         addHandler(commandId: string, handler: CommandHandler) {
 
-            this._handlerMap.set(handler.getId(), handler);
-
-            const command = this._commandMap.get(commandId);
+            const command = this.getCommand(commandId);
 
             if (command) {
-                this._handlerCommandMap.get(command).push(handler);
-            } else {
-                console.warn(`Command ${handler.getId()} not found.`);
+                this._commandHandlerMap.get(command).push(handler);
             }
         }
 
-        private getMatchers(handlerId: string) {
-            let matchers = this._handlerMatcherMap.get(handlerId);
+        addHandlerHelper(commandId: string, testFunc: (args: CommandArgs) => boolean, executeFunc: (args: CommandArgs) => void) {
 
-            if (matchers === undefined) {
-                matchers = [];
-                this._handlerMatcherMap.set(handlerId, matchers);
-            }
-
-            return matchers;
+            this.addHandler(commandId, new CommandHandler({
+                testFunc: testFunc,
+                executeFunc: executeFunc
+            }));
         }
-
     }
 
 }

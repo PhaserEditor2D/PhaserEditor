@@ -104,7 +104,9 @@ namespace phasereditor2d.ui.ide {
 
         private initCommands() {
             this._commandManager = new commands.CommandManager();
+            
             IDECommands.init();
+            editors.scene.SceneEditorCommands.init();
         }
 
         getCommandManager() {

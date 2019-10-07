@@ -1386,24 +1386,29 @@ var phasereditor2d;
         var ide;
         (function (ide) {
             ide.CMD_SAVE = "save";
-            ide.HANDLER_SAVE = "save";
+            ide.CMD_EDIT_DELETE = "delete";
+            ide.CMD_EDIT_RENAME = "rename";
             class IDECommands {
                 static init() {
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
                     // register commands
-                    manager.addCommand(new ide.commands.Command(ide.CMD_SAVE));
+                    manager.addCommandHelper(ide.CMD_SAVE);
+                    manager.addCommandHelper(ide.CMD_EDIT_DELETE);
+                    manager.addCommandHelper(ide.CMD_EDIT_RENAME);
                     // register handlers
-                    manager.addHandler(ide.CMD_SAVE, new ide.commands.CommandHandler({
-                        id: ide.HANDLER_SAVE,
-                        testFunc: args => args.activeEditor && args.activeEditor.isDirty(),
-                        executeFunc: args => {
-                            args.activeEditor.save();
-                        }
-                    }));
+                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
+                        args.activeEditor.save();
+                    });
                     // register bindings
-                    manager.addKeyBinding(ide.HANDLER_SAVE, new ide.commands.KeyMatcher({
+                    manager.addKeyBinding(ide.CMD_SAVE, new ide.commands.KeyMatcher({
                         control: true,
                         key: "s"
+                    }));
+                    manager.addKeyBinding(ide.CMD_EDIT_DELETE, new ide.commands.KeyMatcher({
+                        key: "delete"
+                    }));
+                    manager.addKeyBinding(ide.CMD_EDIT_DELETE, new ide.commands.KeyMatcher({
+                        key: "f2"
                     }));
                 }
             }
@@ -1686,6 +1691,7 @@ var phasereditor2d;
                 initCommands() {
                     this._commandManager = new ide.commands.CommandManager();
                     ide.IDECommands.init();
+                    ide.editors.scene.SceneEditorCommands.init();
                 }
                 getCommandManager() {
                     return this._commandManager;
@@ -1917,12 +1923,8 @@ var phasereditor2d;
             (function (commands) {
                 class CommandHandler {
                     constructor(config) {
-                        this._id = config.id;
                         this._testFunc = config.testFunc;
                         this._executeFunc = config.executeFunc;
-                    }
-                    getId() {
-                        return this._id;
                     }
                     test(args) {
                         return this._testFunc ? this._testFunc(args) : true;
@@ -1949,10 +1951,9 @@ var phasereditor2d;
                 class CommandManager {
                     constructor() {
                         this._commands = [];
-                        this._commandMap = new Map();
-                        this._handlerMap = new Map();
-                        this._handlerMatcherMap = new Map();
-                        this._handlerCommandMap = new Map();
+                        this._commandIdMap = new Map();
+                        this._commandMatcherMap = new Map();
+                        this._commandHandlerMap = new Map();
                         window.addEventListener("keydown", e => { this.onKeyDown(e); });
                     }
                     onKeyDown(event) {
@@ -1961,18 +1962,18 @@ var phasereditor2d;
                         }
                         const args = this.makeArgs();
                         for (const command of this._commands) {
-                            const handlers = this._handlerCommandMap.get(command);
-                            for (const handler of handlers) {
-                                let eventMatches = false;
-                                const matchers = this.getMatchers(handler.getId());
-                                for (const matcher of matchers) {
-                                    if (matcher.matches(event)) {
-                                        event.preventDefault();
-                                        eventMatches = true;
-                                        break;
-                                    }
+                            let eventMatches = false;
+                            const matchers = this._commandMatcherMap.get(command);
+                            for (const matcher of matchers) {
+                                if (matcher.matchesKeys(event) && matcher.matchesTarget(event.target)) {
+                                    event.preventDefault();
+                                    eventMatches = true;
+                                    break;
                                 }
-                                if (eventMatches) {
+                            }
+                            if (eventMatches) {
+                                const handlers = this._commandHandlerMap.get(command);
+                                for (const handler of handlers) {
                                     if (handler.test(args)) {
                                         handler.execute(args);
                                         return;
@@ -1982,43 +1983,42 @@ var phasereditor2d;
                         }
                     }
                     addCommand(cmd) {
-                        this._commandMap.set(cmd.getId(), cmd);
                         this._commands.push(cmd);
-                        this._handlerCommandMap.set(cmd, []);
+                        this._commandIdMap.set(cmd.getId(), cmd);
+                        this._commandMatcherMap.set(cmd, []);
+                        this._commandHandlerMap.set(cmd, []);
                     }
-                    getCommand(id) {
-                        return this._commandMap.get(id);
+                    addCommandHelper(id) {
+                        this.addCommand(new commands.Command(id));
                     }
                     makeArgs() {
                         const wb = ide.Workbench.getWorkbench();
                         return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor());
                     }
-                    addKeyBinding(handlerId, matcher) {
-                        const handler = this._handlerMap.get(handlerId);
-                        if (handler) {
-                            this.getMatchers(handlerId).push(matcher);
+                    getCommand(id) {
+                        const command = this._commandIdMap.get(id);
+                        if (!command) {
+                            console.warn(`Command ${id} not found.`);
                         }
-                        else {
-                            console.warn(`Handler ${handler.getId()} not found.`);
+                        return command;
+                    }
+                    addKeyBinding(commandId, matcher) {
+                        const command = this.getCommand(commandId);
+                        if (command) {
+                            this._commandMatcherMap.get(command).push(matcher);
                         }
                     }
                     addHandler(commandId, handler) {
-                        this._handlerMap.set(handler.getId(), handler);
-                        const command = this._commandMap.get(commandId);
+                        const command = this.getCommand(commandId);
                         if (command) {
-                            this._handlerCommandMap.get(command).push(handler);
-                        }
-                        else {
-                            console.warn(`Command ${handler.getId()} not found.`);
+                            this._commandHandlerMap.get(command).push(handler);
                         }
                     }
-                    getMatchers(handlerId) {
-                        let matchers = this._handlerMatcherMap.get(handlerId);
-                        if (matchers === undefined) {
-                            matchers = [];
-                            this._handlerMatcherMap.set(handlerId, matchers);
-                        }
-                        return matchers;
+                    addHandlerHelper(commandId, testFunc, executeFunc) {
+                        this.addHandler(commandId, new commands.CommandHandler({
+                            testFunc: testFunc,
+                            executeFunc: executeFunc
+                        }));
                     }
                 }
                 commands.CommandManager = CommandManager;
@@ -2041,13 +2041,20 @@ var phasereditor2d;
                         this._alt = config.alt === undefined ? false : config.alt;
                         this._meta = config.meta === undefined ? false : config.meta;
                         this._key = config.key === undefined ? "" : config.key;
+                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
                     }
-                    matches(event) {
+                    matchesKeys(event) {
                         return event.ctrlKey === this._control
                             && event.shiftKey === this._shift
                             && event.altKey === this._alt
                             && event.metaKey === this._meta
                             && event.key.toLowerCase() === this._key.toLowerCase();
+                    }
+                    matchesTarget(element) {
+                        if (this._filterInputElements) {
+                            return !(element instanceof HTMLInputElement);
+                        }
+                        return true;
                     }
                 }
                 commands.KeyMatcher = KeyMatcher;
@@ -3774,6 +3781,30 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    class ActionManager {
+                        constructor(editor) {
+                            this._editor = editor;
+                        }
+                        deleteObjects() {
+                            console.log("scene editor delete objects!");
+                        }
+                    }
+                    scene.ActionManager = ActionManager;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 Phaser.Cameras.Scene2D.Camera.prototype.getScreenPoint = function (worldX, worldY) {
     let x = worldX * this.zoom - this.scrollX * this.zoom;
     let y = worldY * this.zoom - this.scrollY * this.zoom;
@@ -4390,6 +4421,10 @@ var phasereditor2d;
                             this._dropManager = new scene.DropManager(this);
                             this._cameraManager = new scene.CameraManager(this);
                             this._selectionManager = new scene.SelectionManager(this);
+                            this._actionManager = new scene.ActionManager(this);
+                        }
+                        getActionManager() {
+                            return this._actionManager;
                         }
                         getOverlayLayer() {
                             return this._overlayLayer;
@@ -4741,6 +4776,35 @@ var phasereditor2d;
                         }
                         blocks.SceneEditorBlocksProvider = SceneEditorBlocksProvider;
                     })(blocks = scene.blocks || (scene.blocks = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    function isSceneScope(args) {
+                        return args.activePart instanceof scene.SceneEditor ||
+                            args.activePart instanceof ide.views.outline.OutlineView && args.activeEditor instanceof scene.SceneEditor;
+                    }
+                    class SceneEditorCommands {
+                        static init() {
+                            const manager = ide.Workbench.getWorkbench().getCommandManager();
+                            manager.addHandlerHelper(ide.CMD_EDIT_DELETE, args => isSceneScope(args), args => {
+                                const editor = args.activeEditor;
+                                editor.getActionManager().deleteObjects();
+                            });
+                        }
+                    }
+                    scene.SceneEditorCommands = SceneEditorCommands;
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
