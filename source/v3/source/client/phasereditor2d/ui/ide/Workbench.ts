@@ -59,6 +59,7 @@ namespace phasereditor2d.ui.ide {
         private _activePart: Part;
         private _activeEditor: EditorPart;
         private _editorRegistry: EditorRegistry;
+        private _commandManager: commands.CommandManager;
 
         private constructor() {
             super();
@@ -87,6 +88,8 @@ namespace phasereditor2d.ui.ide {
 
             await this.initContentTypes();
 
+            this.initCommands();
+
             this.initEditors();
 
             this._designWindow = new ide.DesignWindow();
@@ -97,6 +100,15 @@ namespace phasereditor2d.ui.ide {
 
         private async preloadIcons() {
             return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
+        }
+
+        private initCommands() {
+            this._commandManager = new commands.CommandManager();
+            IDECommands.init();
+        }
+
+        getCommandManager() {
+            return this._commandManager;
         }
 
         private initEditors(): void {

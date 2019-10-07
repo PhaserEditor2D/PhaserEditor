@@ -31,6 +31,10 @@ namespace phasereditor2d.ui.ide {
             return this._dirty;
         }
 
+        save() {
+
+        }
+
         onPartClosed() {
 
             if (this.isDirty()) {

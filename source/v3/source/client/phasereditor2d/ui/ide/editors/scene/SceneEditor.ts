@@ -55,6 +55,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._propertyProvider = new properties.SceneEditorSectionProvider();
         }
 
+        save() : void {
+            this.setDirty(false);
+        }
+
         protected createPart() {
 
             this.setLayoutChildren(false);

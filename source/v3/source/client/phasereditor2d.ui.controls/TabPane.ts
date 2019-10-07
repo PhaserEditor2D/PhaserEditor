@@ -113,7 +113,7 @@ namespace phasereditor2d.ui.controls {
                 labelElement["__CloseIconManager"] = manager;
                 manager.getElement().addEventListener("click", e => {
                     e.stopImmediatePropagation();
-                    this.closeTab(labelElement);
+                    this.closeTabLabel(labelElement);
                 });
 
             }
@@ -132,7 +132,17 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        private closeTab(labelElement: HTMLElement): void {
+
+        closeTab(content: controls.Control) {
+
+            const label = this.getLabelFromContent(content);
+
+            if (label) {
+                this.closeTabLabel(label);
+            }
+        }
+
+        private closeTabLabel(labelElement: HTMLElement): void {
             {
                 const content = TabPane.getContentFromLabel(labelElement);
                 const event = new CustomEvent(EVENT_TAB_CLOSED, {
