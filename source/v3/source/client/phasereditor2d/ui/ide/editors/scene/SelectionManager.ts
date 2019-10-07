@@ -13,6 +13,15 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         }
 
+        cleanSelection() {
+            this._editor.setSelection(this._editor.getSelection().filter(obj => {
+                if (obj instanceof Phaser.GameObjects.GameObject) {
+                    return this._editor.getGameScene().sys.displayList.exists(obj);
+                }
+                return true;
+            }))
+        }
+
         private updateOutlineSelection(): void {
             const provider = this._editor.getOutlineProvider();
             provider.setSelection(this._editor.getSelection(), true, false);

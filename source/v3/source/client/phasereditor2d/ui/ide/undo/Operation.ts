@@ -6,8 +6,6 @@ namespace phasereditor2d.ui.ide.undo {
 
         abstract redo() : void;
 
-        abstract execute() : void;
-
     }
 
 }

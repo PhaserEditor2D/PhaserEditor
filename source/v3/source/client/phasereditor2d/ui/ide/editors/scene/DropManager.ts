@@ -18,14 +18,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             if (this.acceptsDropDataArray(dataArray)) {
 
-                this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
-                this._editor.refreshOutline();
-                //TODO: for testing purpose only
-                this._editor.setDirty(true);
-
                 e.preventDefault();
 
-                this._editor.getUndoManager().execute(new undo.AddObjectsOperation(this._editor));
+                const sprites = this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
+                this._editor.refreshOutline();
+
+                this._editor.getUndoManager().add(new undo.AddObjectsOperation(this._editor, sprites));
             }
         }
 

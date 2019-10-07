@@ -238,6 +238,28 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var json;
+        (function (json) {
+            function write(data, name, value, defaultValue) {
+                if (value !== defaultValue) {
+                    data[name] = value;
+                }
+            }
+            json.write = write;
+            function read(data, name, defaultValue) {
+                if (name in data) {
+                    return data[name];
+                }
+                return defaultValue;
+            }
+            json.read = read;
+        })(json = core.json || (core.json = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
     var ui;
     (function (ui) {
         var controls;
@@ -3924,12 +3946,10 @@ var phasereditor2d;
                         onDragDrop(e) {
                             const dataArray = ui.controls.Controls.getApplicationDragDataAndClean();
                             if (this.acceptsDropDataArray(dataArray)) {
-                                this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
-                                this._editor.refreshOutline();
-                                //TODO: for testing purpose only
-                                this._editor.setDirty(true);
                                 e.preventDefault();
-                                this._editor.getUndoManager().execute(new scene.undo.AddObjectsOperation(this._editor));
+                                const sprites = this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
+                                this._editor.refreshOutline();
+                                this._editor.getUndoManager().add(new scene.undo.AddObjectsOperation(this._editor, sprites));
                             }
                         }
                         onDragOver(e) {
@@ -4450,6 +4470,9 @@ var phasereditor2d;
                         getActionManager() {
                             return this._actionManager;
                         }
+                        getSelectionManager() {
+                            return this._selectionManager;
+                        }
                         getOverlayLayer() {
                             return this._overlayLayer;
                         }
@@ -4535,6 +4558,18 @@ var phasereditor2d;
                         constructor(editor) {
                             this._editor = editor;
                         }
+                        createObject(data) {
+                            const scene = this._editor.getGameScene();
+                            const type = data.type;
+                            let sprite = null;
+                            if (type === "Image") {
+                                sprite = scene.add.image(0, 0, "");
+                            }
+                            if (sprite) {
+                                sprite.readJSON(data);
+                            }
+                            return sprite;
+                        }
                         createWithDropEvent(e, dropDataArray) {
                             const scene = this._editor.getGameScene();
                             const nameMaker = new ide.utils.NameMaker(obj => {
@@ -4545,7 +4580,7 @@ var phasereditor2d;
                             const x = worldPoint.x;
                             const y = worldPoint.y;
                             for (const data of dropDataArray) {
-                                this.updateTextureCacheWithAssetData(data);
+                                SceneObjectMaker.updateTextureCacheWithAssetData(data, scene.game);
                             }
                             const sprites = [];
                             for (const data of dropDataArray) {
@@ -4572,14 +4607,14 @@ var phasereditor2d;
                             }
                             this._editor.setSelection(sprites);
                             this._editor.repaint();
+                            return sprites;
                         }
                         initSprite(sprite) {
                             sprite.name = (SPRITE_ID++).toString();
                             // TODO: missing add the custom hit tests.
                             sprite.setInteractive();
                         }
-                        updateTextureCacheWithAssetData(data) {
-                            const game = this._editor.getGame();
+                        static updateTextureCacheWithAssetData(data, game) {
                             let imageFrameContainerPackItem = null;
                             if (data instanceof editors.pack.AssetPackItem && data.getType() === editors.pack.IMAGE_TYPE) {
                                 imageFrameContainerPackItem = data;
@@ -4633,6 +4668,14 @@ var phasereditor2d;
                             const canvas = this._editor.getOverlayLayer().getCanvas();
                             canvas.addEventListener("click", e => this.onMouseClick(e));
                             this._editor.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
+                        }
+                        cleanSelection() {
+                            this._editor.setSelection(this._editor.getSelection().filter(obj => {
+                                if (obj instanceof Phaser.GameObjects.GameObject) {
+                                    return this._editor.getGameScene().sys.displayList.exists(obj);
+                                }
+                                return true;
+                            }));
                         }
                         updateOutlineSelection() {
                             const provider = this._editor.getOutlineProvider();
@@ -4829,6 +4872,86 @@ var phasereditor2d;
                         }
                     }
                     scene.SceneEditorCommands = SceneEditorCommands;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+Phaser.GameObjects.Image.prototype.writeJSON = function (data) {
+    data.type = "Image";
+    const json = phasereditor2d.ui.ide.editors.scene.json;
+    json.Transform_write(this, data);
+    json.Texture_write(this, data);
+};
+Phaser.GameObjects.Image.prototype.readJSON = function (data) {
+    const json = phasereditor2d.ui.ide.editors.scene.json;
+    json.Transform_read(this, data);
+    json.Texture_read(this, data);
+};
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var json;
+                    (function (json) {
+                        var write = phasereditor2d.core.json.write;
+                        var read = phasereditor2d.core.json.read;
+                        function Variable_write(sprite, data) {
+                            write(data, "editorLabel", sprite.getEditorLabel());
+                        }
+                        json.Variable_write = Variable_write;
+                        function Variable_read(sprite, data) {
+                            sprite.setEditorLabel(read(data, "editorLabel"));
+                        }
+                        json.Variable_read = Variable_read;
+                        function Object_write(sprite, data) {
+                            write(data, "name", sprite.name);
+                        }
+                        json.Object_write = Object_write;
+                        function Object_read(sprite, data) {
+                            sprite.name = read(data, "name");
+                        }
+                        json.Object_read = Object_read;
+                        function Transform_write(sprite, data) {
+                            write(data, "x", sprite.x, 0);
+                            write(data, "y", sprite.y, 0);
+                            write(data, "scaleX", sprite.scaleX, 1);
+                            write(data, "scaleY", sprite.scaleY, 1);
+                            write(data, "angle", sprite.angle, 0);
+                        }
+                        json.Transform_write = Transform_write;
+                        function Transform_read(sprite, data) {
+                            sprite.x = read(data, "x", 0);
+                            sprite.y = read(data, "y", 0);
+                            sprite.scaleX = read(data, "scaleX", 1);
+                            sprite.scaleY = read(data, "scaleX", 1);
+                            sprite.angle = read(data, "angle", 0);
+                        }
+                        json.Transform_read = Transform_read;
+                        function Texture_write(sprite, data) {
+                            const asset = sprite.getEditorAsset();
+                            if (asset instanceof editors.pack.AssetPackImageFrame) {
+                                write(data, "textureKey", asset.getPackItem().getKey());
+                                write(data, "frameKey", asset.getName());
+                            }
+                            else if (asset instanceof editors.pack.AssetPackItem) {
+                                write(data, "textureKey", asset.getKey());
+                            }
+                        }
+                        json.Texture_write = Texture_write;
+                        function Texture_read(sprite, data) {
+                            const key = read(data, "textureKey");
+                            const frame = read(data, "frameKey");
+                            sprite.setTexture(key, frame);
+                        }
+                        json.Texture_read = Texture_read;
+                    })(json = scene.json || (scene.json = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -5371,14 +5494,36 @@ var phasereditor2d;
                     var undo;
                     (function (undo) {
                         class AddObjectsOperation extends undo.SceneEditorOperation {
+                            constructor(editor, objects) {
+                                super(editor);
+                                this._dataList = objects.map(obj => {
+                                    const data = {};
+                                    obj.writeJSON(data);
+                                    return data;
+                                });
+                            }
                             undo() {
-                                console.log("Remove the objects");
+                                const displayList = this._editor.getGameScene().sys.displayList;
+                                for (const data of this._dataList) {
+                                    const obj = displayList.getByName(data.name);
+                                    if (obj) {
+                                        obj.destroy();
+                                    }
+                                }
+                                this._editor.getSelectionManager().cleanSelection();
+                                this.updateEditor();
                             }
                             redo() {
-                                console.log("Add the objects");
+                                const maker = this._editor.getObjectMaker();
+                                for (const data of this._dataList) {
+                                    maker.createObject(data);
+                                }
+                                this.updateEditor();
                             }
-                            execute() {
-                                console.log("Add the objects");
+                            updateEditor() {
+                                this._editor.setDirty(true);
+                                this._editor.repaint();
+                                this._editor.refreshOutline();
                             }
                         }
                         undo.AddObjectsOperation = AddObjectsOperation;
@@ -5438,8 +5583,7 @@ var phasereditor2d;
                         this._undoList = [];
                         this._redoList = [];
                     }
-                    execute(op) {
-                        op.execute();
+                    add(op) {
                         this._undoList.push(op);
                         this._redoList = [];
                     }

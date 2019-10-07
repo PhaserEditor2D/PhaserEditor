@@ -1,18 +1,33 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
-    export declare type SpriteObj = Phaser.GameObjects.TileSprite | Phaser.GameObjects.Image;
-
     let SPRITE_ID = 0;
 
     export class SceneObjectMaker {
-
         private _editor: SceneEditor;
 
         constructor(editor: SceneEditor) {
             this._editor = editor;
         }
 
-        createWithDropEvent(e: DragEvent, dropDataArray: any[]): void {
+        createObject(data: any) {
+            const scene = this._editor.getGameScene();
+
+            const type = data.type;
+
+            let sprite: Phaser.GameObjects.GameObject = null;
+
+            if (type === "Image") {
+                sprite = scene.add.image(0, 0, "");
+            }
+
+            if (sprite) {
+                sprite.readJSON(data);
+            }
+
+            return sprite;
+        }
+
+        createWithDropEvent(e: DragEvent, dropDataArray: any[]) {
 
             const scene = this._editor.getGameScene();
 
@@ -27,10 +42,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             const y = worldPoint.y;
 
             for (const data of dropDataArray) {
-                this.updateTextureCacheWithAssetData(data);
+                SceneObjectMaker.updateTextureCacheWithAssetData(data, scene.game);
             }
 
-            const sprites: SpriteObj[] = [];
+            const sprites: Phaser.GameObjects.GameObject[] = [];
 
             for (const data of dropDataArray) {
 
@@ -40,7 +55,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
                     sprite.setEditorAsset(data);
-                    
+
                     sprites.push(sprite);
 
                 } else if (data instanceof pack.AssetPackItem) {
@@ -49,7 +64,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                         case pack.IMAGE_TYPE: {
 
                             const sprite = scene.add.image(x, y, data.getKey());
-                            
+
                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
                             sprite.setEditorAsset(data);
 
@@ -68,9 +83,11 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._editor.setSelection(sprites);
 
             this._editor.repaint();
+
+            return sprites;
         }
 
-        private initSprite(sprite: SpriteObj) {
+        private initSprite(sprite: Phaser.GameObjects.GameObject) {
 
             sprite.name = (SPRITE_ID++).toString();
             // TODO: missing add the custom hit tests.
@@ -78,9 +95,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         }
 
-        private updateTextureCacheWithAssetData(data: any) {
-
-            const game = this._editor.getGame();
+        static updateTextureCacheWithAssetData(data: any, game: Phaser.Game) {
 
             let imageFrameContainerPackItem: pack.AssetPackItem = null;
 

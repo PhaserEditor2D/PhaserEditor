@@ -10,10 +10,7 @@ namespace phasereditor2d.ui.ide.undo {
             this._redoList = [];
         }
 
-        execute(op: Operation) {
-            
-            op.execute();
-
+        add(op: Operation) {
             this._undoList.push(op);
             this._redoList = [];
         }

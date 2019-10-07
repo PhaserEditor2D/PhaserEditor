@@ -4,17 +4,53 @@ namespace phasereditor2d.ui.ide.editors.scene.undo {
 
     export class AddObjectsOperation extends SceneEditorOperation {
 
+        private _dataList: any[];
+
+        constructor(editor: SceneEditor, objects: Phaser.GameObjects.GameObject[]) {
+            super(editor);
+
+            this._dataList = objects.map(obj => {
+                const data = {};
+
+                obj.writeJSON(data);
+
+                return data;
+            });
+
+        }
 
         undo(): void {
-            console.log("Remove the objects");
+            const displayList = this._editor.getGameScene().sys.displayList;
+
+            for (const data of this._dataList) {
+
+                const obj = displayList.getByName(data.name);
+
+                if (obj) {
+                    obj.destroy();
+                }
+            }
+
+            this._editor.getSelectionManager().cleanSelection();
+
+            this.updateEditor();
         }
 
         redo(): void {
-            console.log("Add the objects");
+
+            const maker = this._editor.getObjectMaker();
+
+            for (const data of this._dataList) {
+                maker.createObject(data);
+            }
+
+            this.updateEditor();
         }
 
-        execute(): void {
-            console.log("Add the objects");
+        private updateEditor() {
+            this._editor.setDirty(true);
+            this._editor.repaint();
+            this._editor.refreshOutline();
         }
 
     }

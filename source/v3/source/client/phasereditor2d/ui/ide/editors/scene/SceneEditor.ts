@@ -111,6 +111,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return this._actionManager;
         }
 
+        getSelectionManager() {
+            return this._selectionManager;
+        }
+
         getOverlayLayer() {
             return this._overlayLayer;
         }
