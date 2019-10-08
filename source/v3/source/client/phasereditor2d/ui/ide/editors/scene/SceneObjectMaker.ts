@@ -22,6 +22,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             if (sprite) {
                 sprite.readJSON(data);
+                this.initSprite(sprite);
             }
 
             return sprite;
@@ -54,7 +55,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                     const sprite = scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
 
                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
-                    sprite.setEditorAsset(data);
+                    sprite.setEditorTexture(data.getPackItem().getKey(), data.getName());
 
                     sprites.push(sprite);
 
@@ -66,7 +67,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                             const sprite = scene.add.image(x, y, data.getKey());
 
                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
-                            sprite.setEditorAsset(data);
+                            sprite.setEditorTexture(data.getKey(), null);
 
                             sprites.push(sprite);
 

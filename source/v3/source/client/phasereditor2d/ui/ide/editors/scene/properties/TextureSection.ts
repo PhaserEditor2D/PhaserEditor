@@ -18,19 +18,16 @@ namespace phasereditor2d.ui.ide.editors.scene.properties {
             parent.appendChild(imgControl.getElement());
             setTimeout(() => imgControl.resizeTo(), 1);
 
-            this.addUpdater(() => {
+            this.addUpdater(async () => {
                 const obj = this.getSelection()[0];
-                const asset = obj.getEditorAsset();
-                let img: controls.IImage;
-                if (asset instanceof pack.AssetPackItem && asset.getType() === pack.IMAGE_TYPE) {
-                    img = pack.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
-                } else if (asset instanceof pack.AssetPackImageFrame) {
-                    img = asset;
-                } else {
-                    img = new controls.ImageWrapper(null);
-                }
+                const { key, frame } = obj.getEditorTexture();
+                
+                const packs = await pack.AssetPackUtils.getAllPacks();
+
+                const img = pack.AssetPackUtils.getAssetPackItemImage(packs, key, frame);
 
                 imgControl.setImage(img);
+
                 setTimeout(() => imgControl.resizeTo(), 1);
             });
         }

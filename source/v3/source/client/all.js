@@ -668,6 +668,7 @@ var phasereditor2d;
                 }
                 setSelection(selection, notify = true) {
                     this._selection = selection;
+                    window["SELECTION"] = selection;
                     if (notify) {
                         this.dispatchEvent(new CustomEvent(ui.controls.EVENT_SELECTION_CHANGED, {
                             detail: selection
@@ -2449,6 +2450,39 @@ var phasereditor2d;
                             }
                             return packs;
                         }
+                        static findAssetPackItem(packs, key) {
+                            return packs
+                                .flatMap(pack => pack.getItems())
+                                .find(item => item.getKey() === key);
+                        }
+                        static getAssetPackItemOrFrame(packs, key, frame) {
+                            let item = this.findAssetPackItem(packs, key);
+                            if (!item) {
+                                return null;
+                            }
+                            if (item.getType() === pack_2.IMAGE_TYPE) {
+                                if (frame === null || frame === undefined) {
+                                    return item;
+                                }
+                                return null;
+                            }
+                            else if (this.isImageFrameContainer(item)) {
+                                const frames = this.getImageFrames(item);
+                                const imageFrame = frames.find(imageFrame => imageFrame.getName() === frame);
+                                return imageFrame;
+                            }
+                            return item;
+                        }
+                        static getAssetPackItemImage(packs, key, frame) {
+                            const asset = this.getAssetPackItemOrFrame(packs, key, frame);
+                            if (asset instanceof pack.AssetPackItem && asset.getType() === pack.IMAGE_TYPE) {
+                                return pack.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
+                            }
+                            else if (asset instanceof pack.AssetPackImageFrame) {
+                                return asset;
+                            }
+                            return new ui.controls.ImageWrapper(null);
+                        }
                         static getFileFromPackUrl(url) {
                             return ide.FileUtils.getFileFromPath(url);
                         }
@@ -3987,16 +4021,20 @@ var phasereditor2d;
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
-    return this.getData("editorLabel") || "";
+    return this.getData("label") || "";
 };
 Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label) {
-    this.setData("editorLabel", label);
+    this.setData("label", label);
 };
-Phaser.GameObjects.GameObject.prototype.getEditorAsset = function () {
-    return this.getData("editorAsset");
+Phaser.GameObjects.Image.prototype.setEditorTexture = function (key, frame) {
+    this.setData("textureKey", key);
+    this.setData("textureFrameKey", frame);
 };
-Phaser.GameObjects.GameObject.prototype.setEditorAsset = function (asset) {
-    this.setData("editorAsset", asset);
+Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
+    return {
+        key: this.getData("textureKey"),
+        frame: this.getData("textureFrameKey")
+    };
 };
 for (const proto of [
     Phaser.GameObjects.Image.prototype,
@@ -4342,14 +4380,23 @@ var phasereditor2d;
                             constructor(editor) {
                                 this._editor = editor;
                                 this._assetRendererProvider = new editors.pack.viewers.AssetPackCellRendererProvider();
+                                this._packs = null;
                             }
                             getCellRenderer(element) {
-                                if (element instanceof Phaser.GameObjects.Image) {
-                                    return new outline.GameObjectCellRenderer();
+                                if (this._packs !== null) {
+                                    if (element instanceof Phaser.GameObjects.Image) {
+                                        return new outline.GameObjectCellRenderer(this._packs);
+                                    }
                                 }
                                 return new ui.controls.viewers.EmptyCellRenderer(false);
                             }
-                            preload(element) {
+                            async preload(element) {
+                                if (this._packs === null) {
+                                    return editors.pack.AssetPackUtils.getAllPacks().then(packs => {
+                                        this._packs = packs;
+                                        return ui.controls.PreloadResult.RESOURCES_LOADED;
+                                    });
+                                }
                                 return ui.controls.Controls.resolveNothingLoaded();
                             }
                         }
@@ -4567,6 +4614,7 @@ var phasereditor2d;
                             }
                             if (sprite) {
                                 sprite.readJSON(data);
+                                this.initSprite(sprite);
                             }
                             return sprite;
                         }
@@ -4587,7 +4635,7 @@ var phasereditor2d;
                                 if (data instanceof editors.pack.AssetPackImageFrame) {
                                     const sprite = scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
                                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
-                                    sprite.setEditorAsset(data);
+                                    sprite.setEditorTexture(data.getPackItem().getKey(), data.getName());
                                     sprites.push(sprite);
                                 }
                                 else if (data instanceof editors.pack.AssetPackItem) {
@@ -4595,7 +4643,7 @@ var phasereditor2d;
                                         case editors.pack.IMAGE_TYPE: {
                                             const sprite = scene.add.image(x, y, data.getKey());
                                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
-                                            sprite.setEditorAsset(data);
+                                            sprite.setEditorTexture(data.getKey(), null);
                                             sprites.push(sprite);
                                             break;
                                         }
@@ -4903,11 +4951,11 @@ var phasereditor2d;
                         var write = phasereditor2d.core.json.write;
                         var read = phasereditor2d.core.json.read;
                         function Variable_write(sprite, data) {
-                            write(data, "editorLabel", sprite.getEditorLabel());
+                            write(data, "label", sprite.getEditorLabel());
                         }
                         json.Variable_write = Variable_write;
                         function Variable_read(sprite, data) {
-                            sprite.setEditorLabel(read(data, "editorLabel"));
+                            sprite.setEditorLabel(read(data, "label"));
                         }
                         json.Variable_read = Variable_read;
                         function Object_write(sprite, data) {
@@ -4935,19 +4983,15 @@ var phasereditor2d;
                         }
                         json.Transform_read = Transform_read;
                         function Texture_write(sprite, data) {
-                            const asset = sprite.getEditorAsset();
-                            if (asset instanceof editors.pack.AssetPackImageFrame) {
-                                write(data, "textureKey", asset.getPackItem().getKey());
-                                write(data, "frameKey", asset.getName());
-                            }
-                            else if (asset instanceof editors.pack.AssetPackItem) {
-                                write(data, "textureKey", asset.getKey());
-                            }
+                            const texture = sprite.getEditorTexture();
+                            write(data, "textureKey", texture.key);
+                            write(data, "frameKey", texture.frame);
                         }
                         json.Texture_write = Texture_write;
                         function Texture_read(sprite, data) {
                             const key = read(data, "textureKey");
                             const frame = read(data, "frameKey");
+                            sprite.setEditorTexture(key, frame);
                             sprite.setTexture(key, frame);
                         }
                         json.Texture_read = Texture_read;
@@ -4970,32 +5014,21 @@ var phasereditor2d;
                     var outline;
                     (function (outline) {
                         class GameObjectCellRenderer {
-                            renderCell(args) {
-                                const { renderer, asset } = this.getRenderer(args);
-                                if (renderer) {
-                                    const args2 = args.clone();
-                                    args2.obj = asset;
-                                    renderer.renderCell(args2);
-                                }
+                            constructor(packs) {
+                                this._packs = packs;
                             }
-                            getRenderer(args) {
+                            renderCell(args) {
                                 const sprite = args.obj;
-                                const asset = sprite.getEditorAsset();
-                                if (asset) {
-                                    const provider = new editors.pack.viewers.AssetPackCellRendererProvider();
-                                    return {
-                                        renderer: provider.getCellRenderer(asset),
-                                        asset: asset
-                                    };
+                                if (sprite instanceof Phaser.GameObjects.Image) {
+                                    const { key, frame } = sprite.getEditorTexture();
+                                    const img = editors.pack.AssetPackUtils.getAssetPackItemImage(this._packs, key, frame);
+                                    if (img) {
+                                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
+                                    }
                                 }
-                                return {
-                                    renderer: null,
-                                    asset: null
-                                };
                             }
                             cellHeight(args) {
-                                const { renderer, asset } = this.getRenderer(args);
-                                if (renderer) {
+                                if (args.obj instanceof Phaser.GameObjects.Image) {
                                     return args.viewer.getCellSize();
                                 }
                                 return ui.controls.ROW_HEIGHT;
@@ -5284,19 +5317,11 @@ var phasereditor2d;
                                 });
                                 parent.appendChild(imgControl.getElement());
                                 setTimeout(() => imgControl.resizeTo(), 1);
-                                this.addUpdater(() => {
+                                this.addUpdater(async () => {
                                     const obj = this.getSelection()[0];
-                                    const asset = obj.getEditorAsset();
-                                    let img;
-                                    if (asset instanceof editors.pack.AssetPackItem && asset.getType() === editors.pack.IMAGE_TYPE) {
-                                        img = editors.pack.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
-                                    }
-                                    else if (asset instanceof editors.pack.AssetPackImageFrame) {
-                                        img = asset;
-                                    }
-                                    else {
-                                        img = new ui.controls.ImageWrapper(null);
-                                    }
+                                    const { key, frame } = obj.getEditorTexture();
+                                    const packs = await editors.pack.AssetPackUtils.getAllPacks();
+                                    const img = editors.pack.AssetPackUtils.getAssetPackItemImage(packs, key, frame);
                                     imgControl.setImage(img);
                                     setTimeout(() => imgControl.resizeTo(), 1);
                                 });

@@ -55,7 +55,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         static async getAllPacks() {
             const files = await FileUtils.getFilesWithContentType(CONTENT_TYPE_ASSET_PACK);
 
-            const packs = [];
+            const packs: AssetPack[] = [];
 
             for (const file of files) {
                 const pack = await AssetPack.createFromFile(file);
@@ -63,6 +63,57 @@ namespace phasereditor2d.ui.ide.editors.pack {
             }
 
             return packs;
+        }
+
+        static findAssetPackItem(packs: AssetPack[], key: string) {
+            return packs
+                .flatMap(pack => pack.getItems())
+                .find(item => item.getKey() === key);
+        }
+
+        static getAssetPackItemOrFrame(packs: AssetPack[], key: string, frame: any) {
+
+            let item = this.findAssetPackItem(packs, key);
+
+            if (!item) {
+                return null;
+            }
+
+            if (item.getType() === IMAGE_TYPE) {
+
+                if (frame === null || frame === undefined) {
+                    return item;
+                }
+
+                return null;
+
+            } else if (this.isImageFrameContainer(item)) {
+
+                const frames = this.getImageFrames(item);
+
+                const imageFrame = frames.find(imageFrame => imageFrame.getName() === frame);
+
+                return imageFrame;
+            }
+
+            return item;
+        }
+
+        static getAssetPackItemImage(packs: AssetPack[], key: string, frame: any): controls.IImage {
+
+            const asset = this.getAssetPackItemOrFrame(packs, key, frame);
+
+            if (asset instanceof pack.AssetPackItem && asset.getType() === pack.IMAGE_TYPE) {
+
+                return pack.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
+
+            } else if (asset instanceof pack.AssetPackImageFrame) {
+
+                return asset;
+
+            }
+
+            return new controls.ImageWrapper(null);
         }
 
         static getFileFromPackUrl(url: string): core.io.FilePath {

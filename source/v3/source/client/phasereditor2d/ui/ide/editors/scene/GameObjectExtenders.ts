@@ -1,5 +1,12 @@
 namespace Phaser.GameObjects {
 
+    interface EditorTexture {
+
+        setEditorTexture(key: string, frame: string): void;
+
+        getEditorTexture(): { key: string, frame: any };
+    }
+
     export interface GameObject {
 
         getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
@@ -8,27 +15,34 @@ namespace Phaser.GameObjects {
 
         setEditorLabel(label: string): void;
 
-        getEditorAsset(): any;
+    }
 
-        setEditorAsset(asset: any): void;
+    export interface Image extends EditorTexture {
+
     }
 }
 
 Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
-    return this.getData("editorLabel") || "";
+    return this.getData("label") || "";
 };
 
 Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label: string) {
-    this.setData("editorLabel", label);
+    this.setData("label", label);
 };
 
-Phaser.GameObjects.GameObject.prototype.getEditorAsset = function () {
-    return this.getData("editorAsset");
+Phaser.GameObjects.Image.prototype.setEditorTexture = function (key: string, frame: any) {
+    this.setData("textureKey", key);
+    this.setData("textureFrameKey", frame);
 };
 
-Phaser.GameObjects.GameObject.prototype.setEditorAsset = function (asset: any) {
-    this.setData("editorAsset", asset);
+
+Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
+    return {
+        key: this.getData("textureKey"),
+        frame: this.getData("textureFrameKey")
+    };
 };
+
 
 for (const proto of [
     Phaser.GameObjects.Image.prototype,

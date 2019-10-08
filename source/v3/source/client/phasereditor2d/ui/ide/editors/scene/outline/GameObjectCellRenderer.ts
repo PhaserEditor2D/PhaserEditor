@@ -2,40 +2,32 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
     export class GameObjectCellRenderer implements controls.viewers.ICellRenderer {
 
-        renderCell(args: controls.viewers.RenderCellArgs): void {
-            const { renderer, asset } = this.getRenderer(args);
+        private _packs: pack.AssetPack[];
 
-            if (renderer) {
-                const args2 = args.clone();
-                args2.obj = asset;
-                renderer.renderCell(args2);
-            }
-
+        constructor(packs: pack.AssetPack[]) {
+            this._packs = packs;
         }
 
-        private getRenderer(args: controls.viewers.RenderCellArgs) {
-            const sprite = <Phaser.GameObjects.GameObject>args.obj;
-            const asset = sprite.getEditorAsset();
+        renderCell(args: controls.viewers.RenderCellArgs): void {
 
-            if (asset) {
-                const provider = new pack.viewers.AssetPackCellRendererProvider();
-                return {
-                    renderer: provider.getCellRenderer(asset),
-                    asset: asset
-                };
+            const sprite = <Phaser.GameObjects.GameObject>args.obj;
+
+            if (sprite instanceof Phaser.GameObjects.Image) {
+
+                const { key, frame } = sprite.getEditorTexture();
+
+                const img = pack.AssetPackUtils.getAssetPackItemImage(this._packs, key, frame);
+
+                if (img) {
+                    img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
+                }
             }
 
-            return {
-                renderer: null,
-                asset: null
-            };
         }
 
         cellHeight(args: controls.viewers.RenderCellArgs): number {
 
-            const { renderer, asset } = this.getRenderer(args);
-
-            if (renderer) {
+            if (args.obj instanceof Phaser.GameObjects.Image) {
                 return args.viewer.getCellSize();
             }
 

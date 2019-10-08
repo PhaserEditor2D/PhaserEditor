@@ -47,22 +47,36 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
         private _editor: SceneEditor;
         private _assetRendererProvider: pack.viewers.AssetPackCellRendererProvider;
+        private _packs: pack.AssetPack[];
 
         constructor(editor: SceneEditor) {
             this._editor = editor;
             this._assetRendererProvider = new pack.viewers.AssetPackCellRendererProvider();
+            this._packs = null;
         }
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
-            if (element instanceof Phaser.GameObjects.Image) {
-                return new GameObjectCellRenderer();
+            if (this._packs !== null) {
+
+                if (element instanceof Phaser.GameObjects.Image) {
+                    return new GameObjectCellRenderer(this._packs);
+                }
+
             }
 
             return new controls.viewers.EmptyCellRenderer(false);
         }
 
-        preload(element: any): Promise<controls.PreloadResult> {
+        async preload(element: any): Promise<controls.PreloadResult> {
+
+            if (this._packs === null) {
+                return pack.AssetPackUtils.getAllPacks().then(packs => {
+                    this._packs = packs;
+                    return controls.PreloadResult.RESOURCES_LOADED;
+                });
+            }
+
             return controls.Controls.resolveNothingLoaded();
         }
 
@@ -70,7 +84,7 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
     }
 
     export class SceneEditorOutlineProvider extends ide.EditorViewerProvider {
-        
+
         private _editor: SceneEditor;
 
         constructor(editor: SceneEditor) {
@@ -106,7 +120,7 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
             return;
         }
 
-        onViewerSelectionChanged(selection : any[]) {
+        onViewerSelectionChanged(selection: any[]) {
             this._editor.setSelection(selection, false);
             this._editor.repaint();
         }
