@@ -3982,8 +3982,9 @@ var phasereditor2d;
                             if (this.acceptsDropDataArray(dataArray)) {
                                 e.preventDefault();
                                 const sprites = this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
-                                this._editor.refreshOutline();
                                 this._editor.getUndoManager().add(new scene.undo.AddObjectsOperation(this._editor, sprites));
+                                this._editor.refreshOutline();
+                                ide.Workbench.getWorkbench().setActivePart(this._editor);
                             }
                         }
                         onDragOver(e) {
