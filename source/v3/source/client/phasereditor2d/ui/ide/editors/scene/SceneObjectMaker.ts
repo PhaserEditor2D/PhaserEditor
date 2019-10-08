@@ -1,31 +1,16 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
-    let SPRITE_ID = 0;
+    export class SceneMaker {
 
-    export class SceneObjectMaker {
         private _editor: SceneEditor;
 
         constructor(editor: SceneEditor) {
             this._editor = editor;
         }
 
-        createObject(data: any) {
-            const scene = this._editor.getGameScene();
-
-            const type = data.type;
-
-            let sprite: Phaser.GameObjects.GameObject = null;
-
-            if (type === "Image") {
-                sprite = scene.add.image(0, 0, "");
-            }
-
-            if (sprite) {
-                sprite.readJSON(data);
-                this.initSprite(sprite);
-            }
-
-            return sprite;
+        createObject(objData: any) {
+            const reader = new json.SceneParser(this._editor.getGameScene());
+            reader.createObject(objData);
         }
 
         createWithDropEvent(e: DragEvent, dropDataArray: any[]) {
@@ -42,8 +27,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             const x = worldPoint.x;
             const y = worldPoint.y;
 
+            const parser = new json.SceneParser(scene);
+
             for (const data of dropDataArray) {
-                SceneObjectMaker.updateTextureCacheWithAssetData(data, scene.game);
+                parser.addToCache(data);
             }
 
             const sprites: Phaser.GameObjects.GameObject[] = [];
@@ -78,8 +65,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             }
 
             for (const sprite of sprites) {
-                this.setNewId(sprite);
-                this.initSprite(sprite);
+                json.SceneParser.setNewId(sprite);
             }
 
             this._editor.setSelection(sprites);
@@ -87,35 +73,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._editor.repaint();
 
             return sprites;
-        }
-
-        private setNewId(sprite : Phaser.GameObjects.GameObject) {
-            sprite.name = (SPRITE_ID++).toString();
-        }
-
-        private initSprite(sprite: Phaser.GameObjects.GameObject) {
-            
-            // TODO: missing add the custom hit tests.
-            sprite.setInteractive();
-
-        }
-
-        static updateTextureCacheWithAssetData(data: any, game: Phaser.Game) {
-
-            let imageFrameContainerPackItem: pack.AssetPackItem = null;
-
-            if (data instanceof pack.AssetPackItem && data.getType() === pack.IMAGE_TYPE) {
-                imageFrameContainerPackItem = data;
-            } else if (data instanceof pack.AssetPackImageFrame) {
-                imageFrameContainerPackItem = data.getPackItem();
-            }
-
-            if (imageFrameContainerPackItem !== null) {
-
-                const parser = pack.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
-                parser.addToPhaserCache(game);
-
-            }
         }
 
     }

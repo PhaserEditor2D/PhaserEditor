@@ -37,7 +37,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _overlayLayer: OverlayLayer;
         private _gameCanvas: HTMLCanvasElement;
         private _gameScene: GameScene;
-        private _objectMaker: SceneObjectMaker;
+        private _sceneMaker: SceneMaker;
         private _dropManager: DropManager;
         private _cameraManager: CameraManager;
         private _selectionManager: SelectionManager;
@@ -54,6 +54,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._blocksProvider = new blocks.SceneEditorBlocksProvider();
             this._outlineProvider = new outline.SceneEditorOutlineProvider(this);
             this._propertyProvider = new properties.SceneEditorSectionProvider();
+
         }
 
         save(): void {
@@ -100,11 +101,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             // init managers and factories
 
-            this._objectMaker = new SceneObjectMaker(this);
+            this._sceneMaker = new SceneMaker(this);
             this._dropManager = new DropManager(this);
             this._cameraManager = new CameraManager(this);
             this._selectionManager = new SelectionManager(this);
             this._actionManager = new ActionManager(this);
+
         }
 
         getActionManager() {
@@ -131,8 +133,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return this._game;
         }
 
-        getObjectMaker() {
-            return this._objectMaker;
+        getSceneMaker() {
+            return this._sceneMaker;
         }
 
         layout() {

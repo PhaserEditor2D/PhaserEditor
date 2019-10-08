@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 e.preventDefault();
 
-                const sprites = this._editor.getObjectMaker().createWithDropEvent(e, dataArray);
+                const sprites = this._editor.getSceneMaker().createWithDropEvent(e, dataArray);
                 
                 this._editor.getUndoManager().add(new undo.AddObjectsOperation(this._editor, sprites));
 

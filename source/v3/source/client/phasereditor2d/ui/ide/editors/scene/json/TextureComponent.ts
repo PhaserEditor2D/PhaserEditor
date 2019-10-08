@@ -5,18 +5,22 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
 
     export class TextureComponent {
 
+
+        static textureKey = "textureKey";
+        static frameKey = "frameKey";
+
         static write(sprite: Phaser.GameObjects.Image, data: any): void {
 
             const texture = sprite.getEditorTexture();
 
-            write(data, "textureKey", texture.key);
-            write(data, "frameKey", texture.frame);
+            write(data, this.textureKey, texture.key);
+            write(data, this.frameKey, texture.frame);
         }
 
         static read(sprite: Phaser.GameObjects.Image, data: any): void {
 
-            const key = read(data, "textureKey");
-            const frame = read(data, "frameKey");
+            const key = read(data, this.textureKey);
+            const frame = read(data, this.frameKey);
 
             sprite.setEditorTexture(key, frame);
             sprite.setTexture(key, frame);

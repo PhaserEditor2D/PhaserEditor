@@ -15,6 +15,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         }
 
         static read(sprite: Phaser.GameObjects.Image, data: any): void {
+
             ObjectComponent.read(sprite, data);
 
             VariableComponent.read(sprite, data);

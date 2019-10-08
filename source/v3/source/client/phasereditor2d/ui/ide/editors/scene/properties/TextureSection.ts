@@ -21,10 +21,10 @@ namespace phasereditor2d.ui.ide.editors.scene.properties {
             this.addUpdater(async () => {
                 const obj = this.getSelection()[0];
                 const { key, frame } = obj.getEditorTexture();
-                
-                const packs = await pack.AssetPackUtils.getAllPacks();
 
-                const img = pack.AssetPackUtils.getAssetPackItemImage(packs, key, frame);
+                const finder = await pack.AssetFinder.create();
+
+                const img = finder.getAssetPackItemImage(key, frame);
 
                 imgControl.setImage(img);
 

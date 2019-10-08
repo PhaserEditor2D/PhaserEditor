@@ -16,7 +16,8 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
                 const { key, frame } = sprite.getEditorTexture();
 
-                const img = pack.AssetPackUtils.getAssetPackItemImage(this._packs, key, frame);
+                const finder = new pack.AssetFinder(this._packs);
+                const img = finder.getAssetPackItemImage(key, frame);
 
                 if (img) {
                     img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);

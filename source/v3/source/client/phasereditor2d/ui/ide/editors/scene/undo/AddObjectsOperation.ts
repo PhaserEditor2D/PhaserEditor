@@ -40,7 +40,7 @@ namespace phasereditor2d.ui.ide.editors.scene.undo {
 
         redo(): void {
 
-            const maker = this._editor.getObjectMaker();
+            const maker = this._editor.getSceneMaker();
 
             for (const data of this._dataList) {
                 maker.createObject(data);
