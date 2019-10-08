@@ -11,20 +11,35 @@ namespace phasereditor2d.core.io {
 
         getFileString(file: FilePath): Promise<string>;
 
-        setFileString(file : FilePath, content : string) : Promise<boolean>;
+        setFileString(file: FilePath, content: string): Promise<boolean>;
     }
 
-    function makeApiRequest(method: string, body?: any): Promise<Response> {
-        return fetch("../api", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "method": method,
-                "body": body
-            })
-        });
+    async function makeApiRequest(method: string, body?: any) {
+        try {
+
+            const resp = await fetch("../api", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "method": method,
+                    "body": body
+                })
+            });
+
+            const json = await resp.json();
+
+            return json;
+
+        } catch (e) {
+            console.error(e);
+            return new Promise((resolve, reject) => {
+                resolve({
+                    error: e.message
+                });
+            });
+        }
     }
 
     export class ServerFileStorage implements IFileStorage {
@@ -43,8 +58,7 @@ namespace phasereditor2d.core.io {
         async reload(): Promise<FilePath> {
             this._fileStringContentMap = new Map();
 
-            const resp = await makeApiRequest("GetProjectFiles");
-            const data = await resp.json();
+            const data = await makeApiRequest("GetProjectFiles");
 
             //TODO: handle error
             const self = this;
@@ -78,11 +92,9 @@ namespace phasereditor2d.core.io {
                 return content;
             }
 
-            const resp = await makeApiRequest("GetFileString", {
+            const data = await makeApiRequest("GetFileString", {
                 path: file.getFullName()
             });
-
-            const data = await resp.json();
 
             if (data.error) {
                 alert(`Cannot get file content of '${file.getFullName()}'`);
@@ -95,14 +107,12 @@ namespace phasereditor2d.core.io {
             return content;
         }
 
-        async setFileString(file : FilePath, content : string) : Promise<boolean> {
+        async setFileString(file: FilePath, content: string): Promise<boolean> {
 
-            const resp = await makeApiRequest("SetFileString", {
+            const data = await makeApiRequest("SetFileString", {
                 path: file.getFullName(),
                 content: content
             });
-
-            const data = await resp.json();
 
             if (data.error) {
                 alert(`Cannot set file content to '${file.getFullName()}'`);

@@ -175,17 +175,29 @@ var phasereditor2d;
     (function (core) {
         var io;
         (function (io) {
-            function makeApiRequest(method, body) {
-                return fetch("../api", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        "method": method,
-                        "body": body
-                    })
-                });
+            async function makeApiRequest(method, body) {
+                try {
+                    const resp = await fetch("../api", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "method": method,
+                            "body": body
+                        })
+                    });
+                    const json = await resp.json();
+                    return json;
+                }
+                catch (e) {
+                    console.error(e);
+                    return new Promise((resolve, reject) => {
+                        resolve({
+                            error: e.message
+                        });
+                    });
+                }
             }
             class ServerFileStorage {
                 constructor() {
@@ -196,8 +208,7 @@ var phasereditor2d;
                 }
                 async reload() {
                     this._fileStringContentMap = new Map();
-                    const resp = await makeApiRequest("GetProjectFiles");
-                    const data = await resp.json();
+                    const data = await makeApiRequest("GetProjectFiles");
                     //TODO: handle error
                     const self = this;
                     return new Promise(function (resolve, reject) {
@@ -222,10 +233,9 @@ var phasereditor2d;
                         const content = this._fileStringContentMap.get(id);
                         return content;
                     }
-                    const resp = await makeApiRequest("GetFileString", {
+                    const data = await makeApiRequest("GetFileString", {
                         path: file.getFullName()
                     });
-                    const data = await resp.json();
                     if (data.error) {
                         alert(`Cannot get file content of '${file.getFullName()}'`);
                         return null;
@@ -235,11 +245,10 @@ var phasereditor2d;
                     return content;
                 }
                 async setFileString(file, content) {
-                    const resp = await makeApiRequest("SetFileString", {
+                    const data = await makeApiRequest("SetFileString", {
                         path: file.getFullName(),
                         content: content
                     });
-                    const data = await resp.json();
                     if (data.error) {
                         alert(`Cannot set file content to '${file.getFullName()}'`);
                         return false;
