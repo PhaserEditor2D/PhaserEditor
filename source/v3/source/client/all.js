@@ -4651,14 +4651,17 @@ var phasereditor2d;
                                 }
                             }
                             for (const sprite of sprites) {
+                                this.setNewId(sprite);
                                 this.initSprite(sprite);
                             }
                             this._editor.setSelection(sprites);
                             this._editor.repaint();
                             return sprites;
                         }
-                        initSprite(sprite) {
+                        setNewId(sprite) {
                             sprite.name = (SPRITE_ID++).toString();
+                        }
+                        initSprite(sprite) {
                             // TODO: missing add the custom hit tests.
                             sprite.setInteractive();
                         }
@@ -4929,12 +4932,14 @@ Phaser.GameObjects.Image.prototype.writeJSON = function (data) {
     data.type = "Image";
     const json = phasereditor2d.ui.ide.editors.scene.json;
     json.Object_write(this, data);
+    json.Variable_write(this, data);
     json.Transform_write(this, data);
     json.Texture_write(this, data);
 };
 Phaser.GameObjects.Image.prototype.readJSON = function (data) {
     const json = phasereditor2d.ui.ide.editors.scene.json;
     json.Object_read(this, data);
+    json.Variable_read(this, data);
     json.Transform_read(this, data);
     json.Texture_read(this, data);
 };
@@ -5535,6 +5540,9 @@ var phasereditor2d;
                                     const obj = displayList.getByName(data.name);
                                     if (obj) {
                                         obj.destroy();
+                                    }
+                                    else {
+                                        console.warn(`Undo: object with id=${data.name} not found.`);
                                     }
                                 }
                                 this._editor.getSelectionManager().cleanSelection();

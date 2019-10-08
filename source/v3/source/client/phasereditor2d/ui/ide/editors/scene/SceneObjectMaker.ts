@@ -78,6 +78,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             }
 
             for (const sprite of sprites) {
+                this.setNewId(sprite);
                 this.initSprite(sprite);
             }
 
@@ -88,9 +89,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
             return sprites;
         }
 
-        private initSprite(sprite: Phaser.GameObjects.GameObject) {
-
+        private setNewId(sprite : Phaser.GameObjects.GameObject) {
             sprite.name = (SPRITE_ID++).toString();
+        }
+
+        private initSprite(sprite: Phaser.GameObjects.GameObject) {
+            
             // TODO: missing add the custom hit tests.
             sprite.setInteractive();
 

@@ -28,6 +28,8 @@ namespace phasereditor2d.ui.ide.editors.scene.undo {
 
                 if (obj) {
                     obj.destroy();
+                } else {
+                    console.warn(`Undo: object with id=${data.name} not found.`);
                 }
             }
 
