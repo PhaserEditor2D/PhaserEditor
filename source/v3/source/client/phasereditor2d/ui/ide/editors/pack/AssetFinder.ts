@@ -16,6 +16,10 @@ namespace phasereditor2d.ui.ide.editors.pack {
             this._packs = await AssetPackUtils.getAllPacks();
         }
 
+        getPacks() {
+            return this._packs;
+        }
+
         findAssetPackItem(key: string) {
             return this._packs
                 .flatMap(pack => pack.getItems())

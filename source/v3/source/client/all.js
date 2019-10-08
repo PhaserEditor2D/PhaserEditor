@@ -1361,6 +1361,9 @@ var phasereditor2d;
                 static getFileStringFromCache(file) {
                     return ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
                 }
+                static getFileString(file) {
+                    return ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                }
                 static async preloadFileString(file) {
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     if (storage.hasFileStringInCache(file)) {
@@ -2129,6 +2132,9 @@ var phasereditor2d;
                         }
                         async update() {
                             this._packs = await pack_1.AssetPackUtils.getAllPacks();
+                        }
+                        getPacks() {
+                            return this._packs;
                         }
                         findAssetPackItem(key) {
                             return this._packs
@@ -4533,6 +4539,7 @@ var phasereditor2d;
                                 },
                                 scene: this._gameScene,
                             });
+                            this._sceneRead = false;
                             this._gameBooted = false;
                             this._game.config.postBoot = () => {
                                 this.onGameBoot();
@@ -4543,6 +4550,27 @@ var phasereditor2d;
                             this._cameraManager = new scene.CameraManager(this);
                             this._selectionManager = new scene.SelectionManager(this);
                             this._actionManager = new scene.ActionManager(this);
+                        }
+                        async setInput(file) {
+                            super.setInput(file);
+                            if (this._gameBooted) {
+                                await this.readScene();
+                            }
+                        }
+                        async readScene() {
+                            this._sceneRead = true;
+                            try {
+                                const file = this.getInput();
+                                const content = await ide.FileUtils.getFileString(file);
+                                const data = JSON.parse(content);
+                                const parser = new scene.json.SceneParser(this.getGameScene());
+                                await parser.createSceneCache_async(data);
+                                await parser.createScene(data);
+                            }
+                            catch (e) {
+                                alert(e.message);
+                                throw e;
+                            }
                         }
                         getActionManager() {
                             return this._actionManager;
@@ -4599,8 +4627,11 @@ var phasereditor2d;
                         refreshOutline() {
                             this._outlineProvider.repaint();
                         }
-                        onGameBoot() {
+                        async onGameBoot() {
                             this._gameBooted = true;
+                            if (!this._sceneRead) {
+                                await this.readScene();
+                            }
                             this.layout();
                             this.refreshOutline();
                             // for some reason, we should do this after a time, or the game is not stopped well.
@@ -4680,24 +4711,6 @@ var phasereditor2d;
                         }
                     }
                     scene_2.SceneMaker = SceneMaker;
-                })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
-                var scene;
-                (function (scene) {
-                    class SceneParser {
-                    }
-                    scene.SceneParser = SceneParser;
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -5016,18 +5029,21 @@ var phasereditor2d;
                                 this._scene = scene;
                             }
                             createScene(data) {
-                                this.createSceneCache(data);
                                 for (const objData of data.displayList) {
                                     this.createObject(objData);
                                 }
                             }
-                            createSceneCache(data) {
+                            async createSceneCache_async(data) {
                                 for (const objData of data.displayList) {
                                     const type = objData.type;
                                     switch (type) {
                                         case "Image":
-                                            const key = data[json.TextureComponent.textureKey];
-                                            const frame = data[json.TextureComponent.frameKey];
+                                            const key = objData[json.TextureComponent.textureKey];
+                                            const finder = await editors.pack.AssetFinder.create();
+                                            const item = finder.findAssetPackItem(key);
+                                            if (item) {
+                                                this.addToCache(item);
+                                            }
                                             break;
                                     }
                                 }

@@ -43,6 +43,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _selectionManager: SelectionManager;
         private _actionManager: ActionManager;
         private _gameBooted: boolean;
+        private _sceneRead: boolean;
 
         static getFactory(): EditorFactory {
             return new SceneEditorFactory();
@@ -93,6 +94,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 scene: this._gameScene,
             });
 
+            this._sceneRead = false;
+
             this._gameBooted = false;
 
             (<any>this._game.config).postBoot = () => {
@@ -107,6 +110,38 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._selectionManager = new SelectionManager(this);
             this._actionManager = new ActionManager(this);
 
+        }
+
+        async setInput(file: core.io.FilePath) {
+            super.setInput(file);
+
+            if (this._gameBooted) {
+                await this.readScene();
+            }
+        }
+
+        private async readScene() {
+
+            this._sceneRead = true;
+
+            try {
+
+                const file = this.getInput();
+
+                const content = await FileUtils.getFileString(file);
+
+                const data = JSON.parse(content);
+
+                const parser = new json.SceneParser(this.getGameScene());
+
+                await parser.createSceneCache_async(data);
+
+                await parser.createScene(data);
+
+            } catch (e) {
+                alert(e.message);
+                throw e;
+            }
         }
 
         getActionManager() {
@@ -184,8 +219,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
             this._outlineProvider.repaint();
         }
 
-        private onGameBoot(): void {
+        private async onGameBoot() {
             this._gameBooted = true;
+
+            if (!this._sceneRead) {
+                await this.readScene();
+            }
 
             this.layout();
 

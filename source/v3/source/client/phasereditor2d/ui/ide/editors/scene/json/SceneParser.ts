@@ -11,24 +11,25 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
             this._scene = scene;
         }
 
-        createScene(data: SceneData): void {
-
-            this.createSceneCache(data);
+        createScene(data: SceneData) {
 
             for (const objData of data.displayList) {
                 this.createObject(objData);
             }
         }
 
-        createSceneCache(data: SceneData) {
+        async createSceneCache_async(data: SceneData) {
 
             for (const objData of data.displayList) {
                 const type = objData.type;
                 switch (type) {
                     case "Image":
-                        const key = data[TextureComponent.textureKey];
-                        const frame = data[TextureComponent.frameKey];
-
+                        const key = objData[TextureComponent.textureKey];
+                        const finder = await pack.AssetFinder.create();
+                        const item = finder.findAssetPackItem(key);
+                        if (item) {
+                            this.addToCache(item);
+                        }
                         break;
                 }
             }

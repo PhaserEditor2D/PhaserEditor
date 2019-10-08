@@ -10,6 +10,10 @@ namespace phasereditor2d.ui.ide {
             return Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
         }
 
+        static getFileString(file : core.io.FilePath) {
+            return Workbench.getWorkbench().getFileStorage().getFileString(file);
+        }
+
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
             const storage = Workbench.getWorkbench().getFileStorage();
 
