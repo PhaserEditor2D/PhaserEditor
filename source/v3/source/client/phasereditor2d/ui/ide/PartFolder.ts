@@ -20,6 +20,9 @@ namespace phasereditor2d.ui.ide {
                 if (part.onPartClosed()) {
                     if (this.getContentList().length === 1) {
                         Workbench.getWorkbench().setActivePart(null);
+                        if (this instanceof EditorArea) {
+                            Workbench.getWorkbench().setActiveEditor(null);
+                        }
                     }
                 } else {
                     e.preventDefault();

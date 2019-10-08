@@ -986,6 +986,9 @@ var phasereditor2d;
                         if (part.onPartClosed()) {
                             if (this.getContentList().length === 1) {
                                 ide.Workbench.getWorkbench().setActivePart(null);
+                                if (this instanceof ide.EditorArea) {
+                                    ide.Workbench.getWorkbench().setActiveEditor(null);
+                                }
                             }
                         }
                         else {
@@ -1767,10 +1770,6 @@ var phasereditor2d;
                 }
                 setActiveEditor(editor) {
                     if (editor === this._activeEditor) {
-                        return;
-                    }
-                    if (!editor) {
-                        this._activeEditor = null;
                         return;
                     }
                     this._activeEditor = editor;

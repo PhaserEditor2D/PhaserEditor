@@ -142,13 +142,9 @@ namespace phasereditor2d.ui.ide {
             return this._activeEditor;
         }
 
-        private setActiveEditor(editor: EditorPart) {
-            if (editor === this._activeEditor) {
-                return;
-            }
+        setActiveEditor(editor: EditorPart) {
 
-            if (!editor) {
-                this._activeEditor = null;
+            if (editor === this._activeEditor) {
                 return;
             }
 
@@ -180,7 +176,7 @@ namespace phasereditor2d.ui.ide {
             }
 
             if (part instanceof EditorPart) {
-                this.setActiveEditor(part);
+                this.setActiveEditor(<EditorPart>part);
             }
         }
 
