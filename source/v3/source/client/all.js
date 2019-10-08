@@ -4931,20 +4931,74 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var json;
+                    (function (json) {
+                        class ImageComponent {
+                            static write(sprite, data) {
+                                json.ObjectComponent.write(sprite, data);
+                                json.VariableComponent.write(sprite, data);
+                                json.TransformComponent.write(sprite, data);
+                                json.TextureComponent.write(sprite, data);
+                            }
+                            static read(sprite, data) {
+                                json.ObjectComponent.read(sprite, data);
+                                json.VariableComponent.read(sprite, data);
+                                json.TransformComponent.read(sprite, data);
+                                json.TextureComponent.read(sprite, data);
+                            }
+                        }
+                        json.ImageComponent = ImageComponent;
+                    })(json = scene.json || (scene.json = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var json;
+                    (function (json) {
+                        var write = phasereditor2d.core.json.write;
+                        var read = phasereditor2d.core.json.read;
+                        class ObjectComponent {
+                            static write(sprite, data) {
+                                write(data, "name", sprite.name);
+                            }
+                            static read(sprite, data) {
+                                sprite.name = read(data, "name");
+                            }
+                        }
+                        json.ObjectComponent = ObjectComponent;
+                    })(json = scene.json || (scene.json = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 Phaser.GameObjects.Image.prototype.writeJSON = function (data) {
     data.type = "Image";
-    const json = phasereditor2d.ui.ide.editors.scene.json;
-    json.Object_write(this, data);
-    json.Variable_write(this, data);
-    json.Transform_write(this, data);
-    json.Texture_write(this, data);
+    phasereditor2d.ui.ide.editors.scene.json.ImageComponent.write(this, data);
 };
 Phaser.GameObjects.Image.prototype.readJSON = function (data) {
-    const json = phasereditor2d.ui.ide.editors.scene.json;
-    json.Object_read(this, data);
-    json.Variable_read(this, data);
-    json.Transform_read(this, data);
-    json.Texture_read(this, data);
+    phasereditor2d.ui.ide.editors.scene.json.ImageComponent.read(this, data);
 };
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -4960,51 +5014,86 @@ var phasereditor2d;
                     (function (json) {
                         var write = phasereditor2d.core.json.write;
                         var read = phasereditor2d.core.json.read;
-                        function Variable_write(sprite, data) {
-                            write(data, "label", sprite.getEditorLabel());
+                        class TextureComponent {
+                            static write(sprite, data) {
+                                const texture = sprite.getEditorTexture();
+                                write(data, "textureKey", texture.key);
+                                write(data, "frameKey", texture.frame);
+                            }
+                            static read(sprite, data) {
+                                const key = read(data, "textureKey");
+                                const frame = read(data, "frameKey");
+                                sprite.setEditorTexture(key, frame);
+                                sprite.setTexture(key, frame);
+                            }
                         }
-                        json.Variable_write = Variable_write;
-                        function Variable_read(sprite, data) {
-                            sprite.setEditorLabel(read(data, "label"));
+                        json.TextureComponent = TextureComponent;
+                    })(json = scene.json || (scene.json = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var json;
+                    (function (json) {
+                        var write = phasereditor2d.core.json.write;
+                        var read = phasereditor2d.core.json.read;
+                        class TransformComponent {
+                            static write(sprite, data) {
+                                write(data, "x", sprite.x, 0);
+                                write(data, "y", sprite.y, 0);
+                                write(data, "scaleX", sprite.scaleX, 1);
+                                write(data, "scaleY", sprite.scaleY, 1);
+                                write(data, "angle", sprite.angle, 0);
+                            }
+                            static read(sprite, data) {
+                                sprite.x = read(data, "x", 0);
+                                sprite.y = read(data, "y", 0);
+                                sprite.scaleX = read(data, "scaleX", 1);
+                                sprite.scaleY = read(data, "scaleX", 1);
+                                sprite.angle = read(data, "angle", 0);
+                            }
                         }
-                        json.Variable_read = Variable_read;
-                        function Object_write(sprite, data) {
-                            write(data, "name", sprite.name);
+                        json.TransformComponent = TransformComponent;
+                    })(json = scene.json || (scene.json = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var json;
+                    (function (json) {
+                        var write = phasereditor2d.core.json.write;
+                        var read = phasereditor2d.core.json.read;
+                        class VariableComponent {
+                            static write(sprite, data) {
+                                write(data, "label", sprite.getEditorLabel());
+                            }
+                            static read(sprite, data) {
+                                sprite.setEditorLabel(read(data, "label"));
+                            }
                         }
-                        json.Object_write = Object_write;
-                        function Object_read(sprite, data) {
-                            sprite.name = read(data, "name");
-                        }
-                        json.Object_read = Object_read;
-                        function Transform_write(sprite, data) {
-                            write(data, "x", sprite.x, 0);
-                            write(data, "y", sprite.y, 0);
-                            write(data, "scaleX", sprite.scaleX, 1);
-                            write(data, "scaleY", sprite.scaleY, 1);
-                            write(data, "angle", sprite.angle, 0);
-                        }
-                        json.Transform_write = Transform_write;
-                        function Transform_read(sprite, data) {
-                            sprite.x = read(data, "x", 0);
-                            sprite.y = read(data, "y", 0);
-                            sprite.scaleX = read(data, "scaleX", 1);
-                            sprite.scaleY = read(data, "scaleX", 1);
-                            sprite.angle = read(data, "angle", 0);
-                        }
-                        json.Transform_read = Transform_read;
-                        function Texture_write(sprite, data) {
-                            const texture = sprite.getEditorTexture();
-                            write(data, "textureKey", texture.key);
-                            write(data, "frameKey", texture.frame);
-                        }
-                        json.Texture_write = Texture_write;
-                        function Texture_read(sprite, data) {
-                            const key = read(data, "textureKey");
-                            const frame = read(data, "frameKey");
-                            sprite.setEditorTexture(key, frame);
-                            sprite.setTexture(key, frame);
-                        }
-                        json.Texture_read = Texture_read;
+                        json.VariableComponent = VariableComponent;
                     })(json = scene.json || (scene.json = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
