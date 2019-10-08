@@ -26,6 +26,8 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 this._editor.refreshOutline();
 
+                this._editor.setDirty(true);
+
                 Workbench.getWorkbench().setActivePart(this._editor);
             }
         }

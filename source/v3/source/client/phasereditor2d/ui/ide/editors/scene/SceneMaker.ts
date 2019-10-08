@@ -66,6 +66,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             for (const sprite of sprites) {
                 json.SceneParser.setNewId(sprite);
+                json.SceneParser.initSprite(sprite);
             }
 
             this._editor.setSelection(sprites);

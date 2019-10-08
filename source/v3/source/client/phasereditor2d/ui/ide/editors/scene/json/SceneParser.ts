@@ -23,14 +23,18 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
             for (const objData of data.displayList) {
                 const type = objData.type;
                 switch (type) {
-                    case "Image":
+                    case "Image": {
+
                         const key = objData[TextureComponent.textureKey];
                         const finder = await pack.AssetFinder.create();
                         const item = finder.findAssetPackItem(key);
+
                         if (item) {
                             this.addToCache(item);
                         }
+
                         break;
+                    }
                 }
             }
 
@@ -40,8 +44,12 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
 
             let imageFrameContainerPackItem: pack.AssetPackItem = null;
 
-            if (data instanceof pack.AssetPackItem && data.getType() === pack.IMAGE_TYPE) {
-                imageFrameContainerPackItem = data;
+            if (data instanceof pack.AssetPackItem) {
+                if (data.getType() === pack.IMAGE_TYPE) {
+                    imageFrameContainerPackItem = data;
+                } else if (pack.AssetPackUtils.isImageFrameContainer(data)) {
+                    imageFrameContainerPackItem = data;
+                }
             } else if (data instanceof pack.AssetPackImageFrame) {
                 imageFrameContainerPackItem = data.getPackItem();
             }
@@ -49,6 +57,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
             if (imageFrameContainerPackItem !== null) {
 
                 const parser = pack.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
+
                 parser.addToPhaserCache(this._scene.game);
 
             }
@@ -71,11 +80,15 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
 
                 SceneParser.setNewId(sprite);
 
-                sprite.setInteractive();
+                SceneParser.initSprite(sprite);
 
             }
 
             return sprite;
+        }
+
+        static initSprite(sprite: Phaser.GameObjects.GameObject) {
+            sprite.setInteractive();
         }
 
         static setNewId(sprite: Phaser.GameObjects.GameObject) {

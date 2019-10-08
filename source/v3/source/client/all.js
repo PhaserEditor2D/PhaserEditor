@@ -234,6 +234,19 @@ var phasereditor2d;
                     this._fileStringContentMap.set(id, content);
                     return content;
                 }
+                async setFileString(file, content) {
+                    const resp = await makeApiRequest("SetFileString", {
+                        path: file.getFullName(),
+                        content: content
+                    });
+                    const data = await resp.json();
+                    if (data.error) {
+                        alert(`Cannot set file content to '${file.getFullName()}'`);
+                        return false;
+                    }
+                    this._fileStringContentMap.set(file.getId(), content);
+                    return true;
+                }
             }
             io.ServerFileStorage = ServerFileStorage;
         })(io = core.io || (core.io = {}));
@@ -1363,6 +1376,9 @@ var phasereditor2d;
                 }
                 static getFileString(file) {
                     return ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                }
+                static setFileString(file, content) {
+                    return ide.Workbench.getWorkbench().getFileStorage().setFileString(file, content);
                 }
                 static async preloadFileString(file) {
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
@@ -4019,6 +4035,7 @@ var phasereditor2d;
                                 const sprites = this._editor.getSceneMaker().createWithDropEvent(e, dataArray);
                                 this._editor.getUndoManager().add(new scene.undo.AddObjectsOperation(this._editor, sprites));
                                 this._editor.refreshOutline();
+                                this._editor.setDirty(true);
                                 ide.Workbench.getWorkbench().setActivePart(this._editor);
                             }
                         }
@@ -4512,8 +4529,14 @@ var phasereditor2d;
                         static getFactory() {
                             return new SceneEditorFactory();
                         }
-                        save() {
-                            this.setDirty(false);
+                        async save() {
+                            const writer = new scene.json.SceneWriter(this.getGameScene());
+                            const data = writer.toJSON();
+                            const content = JSON.stringify(data, null, 4);
+                            const ok = await ide.FileUtils.setFileString(this.getInput(), content);
+                            if (ok) {
+                                this.setDirty(false);
+                            }
                         }
                         createPart() {
                             this.setLayoutChildren(false);
@@ -4704,6 +4727,7 @@ var phasereditor2d;
                             }
                             for (const sprite of sprites) {
                                 scene_2.json.SceneParser.setNewId(sprite);
+                                scene_2.json.SceneParser.initSprite(sprite);
                             }
                             this._editor.setSelection(sprites);
                             this._editor.repaint();
@@ -5037,7 +5061,7 @@ var phasereditor2d;
                                 for (const objData of data.displayList) {
                                     const type = objData.type;
                                     switch (type) {
-                                        case "Image":
+                                        case "Image": {
                                             const key = objData[json.TextureComponent.textureKey];
                                             const finder = await editors.pack.AssetFinder.create();
                                             const item = finder.findAssetPackItem(key);
@@ -5045,13 +5069,19 @@ var phasereditor2d;
                                                 this.addToCache(item);
                                             }
                                             break;
+                                        }
                                     }
                                 }
                             }
                             addToCache(data) {
                                 let imageFrameContainerPackItem = null;
-                                if (data instanceof editors.pack.AssetPackItem && data.getType() === editors.pack.IMAGE_TYPE) {
-                                    imageFrameContainerPackItem = data;
+                                if (data instanceof editors.pack.AssetPackItem) {
+                                    if (data.getType() === editors.pack.IMAGE_TYPE) {
+                                        imageFrameContainerPackItem = data;
+                                    }
+                                    else if (editors.pack.AssetPackUtils.isImageFrameContainer(data)) {
+                                        imageFrameContainerPackItem = data;
+                                    }
                                 }
                                 else if (data instanceof editors.pack.AssetPackImageFrame) {
                                     imageFrameContainerPackItem = data.getPackItem();
@@ -5072,9 +5102,12 @@ var phasereditor2d;
                                 if (sprite) {
                                     sprite.readJSON(data);
                                     SceneParser.setNewId(sprite);
-                                    sprite.setInteractive();
+                                    SceneParser.initSprite(sprite);
                                 }
                                 return sprite;
+                            }
+                            static initSprite(sprite) {
+                                sprite.setInteractive();
                             }
                             static setNewId(sprite) {
                                 sprite.name = (SPRITE_ID++).toString();
@@ -5188,7 +5221,7 @@ var phasereditor2d;
                                 sprite.x = read(data, "x", 0);
                                 sprite.y = read(data, "y", 0);
                                 sprite.scaleX = read(data, "scaleX", 1);
-                                sprite.scaleY = read(data, "scaleX", 1);
+                                sprite.scaleY = read(data, "scaleY", 1);
                                 sprite.angle = read(data, "angle", 0);
                             }
                         }

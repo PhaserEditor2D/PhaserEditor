@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
             sprite.x = read(data, "x", 0);
             sprite.y = read(data, "y", 0);
             sprite.scaleX = read(data, "scaleX", 1);
-            sprite.scaleY = read(data, "scaleX", 1);
+            sprite.scaleY = read(data, "scaleY", 1);
             sprite.angle = read(data, "angle", 0);
 
         }

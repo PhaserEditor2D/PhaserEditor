@@ -58,8 +58,19 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         }
 
-        save(): void {
-            this.setDirty(false);
+        async save() {
+
+            const writer = new json.SceneWriter(this.getGameScene());
+
+            const data = writer.toJSON();
+
+            const content = JSON.stringify(data, null, 4);
+
+            const ok = await FileUtils.setFileString(this.getInput(), content);
+
+            if (ok) {
+                this.setDirty(false);
+            }
         }
 
         protected createPart() {

@@ -10,6 +10,8 @@ namespace phasereditor2d.core.io {
         getFileStringFromCache(file: FilePath): string;
 
         getFileString(file: FilePath): Promise<string>;
+
+        setFileString(file : FilePath, content : string) : Promise<boolean>;
     }
 
     function makeApiRequest(method: string, body?: any): Promise<Response> {
@@ -91,6 +93,25 @@ namespace phasereditor2d.core.io {
             this._fileStringContentMap.set(id, content);
 
             return content;
+        }
+
+        async setFileString(file : FilePath, content : string) : Promise<boolean> {
+
+            const resp = await makeApiRequest("SetFileString", {
+                path: file.getFullName(),
+                content: content
+            });
+
+            const data = await resp.json();
+
+            if (data.error) {
+                alert(`Cannot set file content to '${file.getFullName()}'`);
+                return false;
+            }
+
+            this._fileStringContentMap.set(file.getId(), content);
+
+            return true;
         }
     }
 }
