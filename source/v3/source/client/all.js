@@ -4928,11 +4928,13 @@ var phasereditor2d;
 Phaser.GameObjects.Image.prototype.writeJSON = function (data) {
     data.type = "Image";
     const json = phasereditor2d.ui.ide.editors.scene.json;
+    json.Object_write(this, data);
     json.Transform_write(this, data);
     json.Texture_write(this, data);
 };
 Phaser.GameObjects.Image.prototype.readJSON = function (data) {
     const json = phasereditor2d.ui.ide.editors.scene.json;
+    json.Object_read(this, data);
     json.Transform_read(this, data);
     json.Texture_read(this, data);
 };
