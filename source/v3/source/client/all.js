@@ -6443,12 +6443,14 @@ var phasereditor2d;
                     getState() {
                         return {
                             filterText: this._filterText,
-                            expandedObjects: this._expandedObjects
+                            expandedObjects: this._expandedObjects,
+                            cellSize: this._cellSize
                         };
                     }
                     setState(state) {
                         this._expandedObjects = state.expandedObjects;
                         this.setFilterText(state.filterText);
+                        this.setCellSize(state.cellSize);
                     }
                 }
                 viewers.Viewer = Viewer;

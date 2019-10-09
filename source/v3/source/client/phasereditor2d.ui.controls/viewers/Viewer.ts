@@ -440,13 +440,15 @@ namespace phasereditor2d.ui.controls.viewers {
         getState(): any {
             return {
                 filterText: this._filterText,
-                expandedObjects: this._expandedObjects
+                expandedObjects: this._expandedObjects,
+                cellSize: this._cellSize
             };
         }
 
         setState(state: any): void {
             this._expandedObjects = state.expandedObjects;
             this.setFilterText(state.filterText);
+            this.setCellSize(state.cellSize);
         }
     }
 }

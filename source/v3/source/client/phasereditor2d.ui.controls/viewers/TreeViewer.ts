@@ -210,5 +210,6 @@ namespace phasereditor2d.ui.controls.viewers {
         setContentProvider(contentProvider: ITreeContentProvider): void {
             super.setContentProvider(contentProvider);
         }
+        
     }
 }
