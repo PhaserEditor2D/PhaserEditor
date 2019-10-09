@@ -5,6 +5,7 @@ namespace phasereditor2d.ui.ide {
     export const CMD_RENAME = "rename";
     export const CMD_UNDO = "undo";
     export const CMD_REDO = "redo";
+    export const CMD_SWITCH_THEME = "switchTheme";
 
 
     export class IDECommands {
@@ -19,6 +20,7 @@ namespace phasereditor2d.ui.ide {
             manager.addCommandHelper(CMD_RENAME);
             manager.addCommandHelper(CMD_UNDO);
             manager.addCommandHelper(CMD_REDO);
+            manager.addCommandHelper(CMD_SWITCH_THEME);
 
             // register handlers
 
@@ -49,6 +51,15 @@ namespace phasereditor2d.ui.ide {
                 }
             );
 
+            manager.addHandlerHelper(CMD_SWITCH_THEME,
+
+                args => true,
+
+                args => {
+                    controls.Controls.switchTheme()
+                }
+            );
+
             // register bindings
 
             manager.addKeyBinding(CMD_SAVE, new commands.KeyMatcher({
@@ -73,6 +84,11 @@ namespace phasereditor2d.ui.ide {
                 control: true,
                 shift: true,
                 key: "z"
+            }));
+
+            manager.addKeyBinding(CMD_SWITCH_THEME, new commands.KeyMatcher({
+                control: true,
+                key: "2"
             }));
         }
 

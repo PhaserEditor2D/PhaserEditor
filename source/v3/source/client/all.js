@@ -1452,6 +1452,7 @@ var phasereditor2d;
             ide.CMD_RENAME = "rename";
             ide.CMD_UNDO = "undo";
             ide.CMD_REDO = "redo";
+            ide.CMD_SWITCH_THEME = "switchTheme";
             class IDECommands {
                 static init() {
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
@@ -1461,6 +1462,7 @@ var phasereditor2d;
                     manager.addCommandHelper(ide.CMD_RENAME);
                     manager.addCommandHelper(ide.CMD_UNDO);
                     manager.addCommandHelper(ide.CMD_REDO);
+                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
                     // register handlers
                     manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
                         args.activeEditor.save();
@@ -1470,6 +1472,9 @@ var phasereditor2d;
                     });
                     manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => {
                         args.activePart.getUndoManager().redo();
+                    });
+                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => {
+                        ui.controls.Controls.switchTheme();
                     });
                     // register bindings
                     manager.addKeyBinding(ide.CMD_SAVE, new ide.commands.KeyMatcher({
@@ -1490,6 +1495,10 @@ var phasereditor2d;
                         control: true,
                         shift: true,
                         key: "z"
+                    }));
+                    manager.addKeyBinding(ide.CMD_SWITCH_THEME, new ide.commands.KeyMatcher({
+                        control: true,
+                        key: "2"
                     }));
                 }
             }
