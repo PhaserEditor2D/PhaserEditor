@@ -19,7 +19,7 @@ Phaser.GameObjects.DisplayList.prototype.getByEditorId = function (id: string) {
     const obj = phasereditor2d.ui.ide.editors.scene.getByEditorId(displayList.list, id);
 
     if (!obj) {
-        console.error(`Object with id=${this._containerId} not found.`);
+        console.error(`Object with id=${id} not found.`);
     }
 
     return obj;
@@ -65,7 +65,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
             }
 
             if (obj instanceof Phaser.GameObjects.Container) {
-                return getByEditorId(obj.list, id);
+                
+                const result = getByEditorId(obj.list, id);
+
+                if (result) {
+                    return result;
+                }
             }
         }
 

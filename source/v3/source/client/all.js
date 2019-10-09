@@ -4144,7 +4144,7 @@ Phaser.GameObjects.DisplayList.prototype.getByEditorId = function (id) {
     const displayList = this;
     const obj = phasereditor2d.ui.ide.editors.scene.getByEditorId(displayList.list, id);
     if (!obj) {
-        console.error(`Object with id=${this._containerId} not found.`);
+        console.error(`Object with id=${id} not found.`);
     }
     return obj;
 };
@@ -4185,7 +4185,10 @@ var phasereditor2d;
                                 return obj;
                             }
                             if (obj instanceof Phaser.GameObjects.Container) {
-                                return getByEditorId(obj.list, id);
+                                const result = getByEditorId(obj.list, id);
+                                if (result) {
+                                    return result;
+                                }
                             }
                         }
                         return null;
@@ -4928,7 +4931,7 @@ var phasereditor2d;
                             const nameMaker = new ide.utils.NameMaker(obj => {
                                 return obj.getEditorLabel();
                             });
-                            nameMaker.update(this._scene.sys.displayList.getChildren());
+                            this._scene.sys.displayList.visit(obj => nameMaker.update([obj]));
                             const worldPoint = this._scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
                             const x = worldPoint.x;
                             const y = worldPoint.y;
