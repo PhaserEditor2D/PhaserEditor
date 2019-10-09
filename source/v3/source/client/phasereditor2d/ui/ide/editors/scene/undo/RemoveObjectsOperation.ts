@@ -1,23 +1,19 @@
 namespace phasereditor2d.ui.ide.editors.scene.undo {
 
-    export class RemoveObjectsOperation extends SceneEditorOperation {
-        
-        private _idList : string[];
+    export class RemoveObjectsOperation extends AddObjectsOperation {
 
-        constructor(editor : SceneEditor, objects : Phaser.GameObjects.GameObject[]) {
-            super(editor);
-            this._idList = objects.map(obj => obj.getEditorId());
+
+        constructor(editor: SceneEditor, objects: Phaser.GameObjects.GameObject[]) {
+            super(editor, objects);
         }
-        
+
         undo(): void {
-            throw new Error("Method not implemented.");
-        }        
-        
-        redo(): void {
-            throw new Error("Method not implemented.");
+            super.redo();
         }
 
-
+        redo(): void {
+            super.undo();
+        }
     }
 
 }

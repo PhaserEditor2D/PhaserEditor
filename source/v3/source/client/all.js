@@ -4029,13 +4029,17 @@ var phasereditor2d;
                             this._editor = editor;
                         }
                         deleteObjects() {
-                            const sel = this._editor.getSelection();
-                            for (const obj of sel) {
-                                if (obj instanceof Phaser.GameObjects.GameObject) {
-                                    obj.destroy();
-                                }
+                            const objects = this._editor
+                                .getSelection()
+                                .filter(obj => obj instanceof Phaser.GameObjects.GameObject);
+                            // create the undo-operation before destroy the objects
+                            this._editor.getUndoManager().add(new scene.undo.RemoveObjectsOperation(this._editor, objects));
+                            for (const obj of objects) {
+                                obj.destroy();
                             }
+                            this._editor.refreshOutline();
                             this._editor.getSelectionManager().cleanSelection();
+                            this._editor.setDirty(true);
                             this._editor.repaint();
                         }
                     }
@@ -4814,7 +4818,7 @@ var phasereditor2d;
                         }
                         createObject(objData) {
                             const reader = new scene_2.json.SceneParser(this._editor.getGameScene());
-                            reader.createObject(objData);
+                            return reader.createObject(objData);
                         }
                         async createWithDropEvent_async(e, dropDataArray) {
                             const scene = this._editor.getGameScene();
@@ -5192,7 +5196,8 @@ var phasereditor2d;
                 (function (scene_4) {
                     var json;
                     (function (json) {
-                        let SPRITE_ID = 0;
+                        // TODO: better use UUID
+                        let SPRITE_ID = Date.now();
                         class SceneParser {
                             constructor(scene) {
                                 this._scene = scene;
@@ -5250,12 +5255,12 @@ var phasereditor2d;
                                 }
                                 if (sprite) {
                                     sprite.readJSON(data);
-                                    SceneParser.setNewId(sprite);
                                     SceneParser.initSprite(sprite);
                                 }
                                 return sprite;
                             }
                             static initSprite(sprite) {
+                                sprite.setDataEnabled();
                                 sprite.setInteractive();
                             }
                             static setNewId(sprite) {
@@ -5983,16 +5988,15 @@ var phasereditor2d;
                 (function (scene) {
                     var undo;
                     (function (undo) {
-                        class RemoveObjectsOperation extends undo.SceneEditorOperation {
+                        class RemoveObjectsOperation extends undo.AddObjectsOperation {
                             constructor(editor, objects) {
-                                super(editor);
-                                this._idList = objects.map(obj => obj.getEditorId());
+                                super(editor, objects);
                             }
                             undo() {
-                                throw new Error("Method not implemented.");
+                                super.redo();
                             }
                             redo() {
-                                throw new Error("Method not implemented.");
+                                super.undo();
                             }
                         }
                         undo.RemoveObjectsOperation = RemoveObjectsOperation;

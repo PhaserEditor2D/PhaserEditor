@@ -1,7 +1,8 @@
 
 namespace phasereditor2d.ui.ide.editors.scene.json {
 
-    let SPRITE_ID = 0;
+    // TODO: better use UUID
+    let SPRITE_ID = Date.now();
 
     export class SceneParser {
 
@@ -83,8 +84,6 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
 
                 sprite.readJSON(data);
 
-                SceneParser.setNewId(sprite);
-
                 SceneParser.initSprite(sprite);
 
             }
@@ -93,6 +92,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         }
 
         static initSprite(sprite: Phaser.GameObjects.GameObject) {
+            sprite.setDataEnabled();
             sprite.setInteractive();
         }
 

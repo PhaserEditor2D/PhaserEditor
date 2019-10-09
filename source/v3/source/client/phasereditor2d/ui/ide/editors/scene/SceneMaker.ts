@@ -9,8 +9,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         createObject(objData: any) {
+            
             const reader = new json.SceneParser(this._editor.getGameScene());
-            reader.createObject(objData);
+
+            return reader.createObject(objData);
         }
 
         async createWithDropEvent_async(e: DragEvent, dropDataArray: any[]) {
