@@ -155,7 +155,7 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         setSelection(selection: any[], notify = true) {
-            
+
             this._selectedObjects = new Set(selection);
 
             if (notify) {
@@ -198,9 +198,14 @@ namespace phasereditor2d.ui.controls.viewers {
 
         private onDoubleClick(e: MouseEvent) {
             const item = this.getPaintItemAt(e);
-            this.dispatchEvent(new CustomEvent(EVENT_OPEN_ITEM, {
-                detail: item.data
-            }))
+
+            if (item) {
+
+                this.dispatchEvent(new CustomEvent(EVENT_OPEN_ITEM, {
+                    detail: item.data
+                }));
+
+            }
         }
 
         protected abstract canSelectAtPoint(e: MouseEvent): boolean;

@@ -48,6 +48,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             const camera = this._editor.getGameScene().getCamera();
             for (const obj of this._editor.getSelection()) {
+                
+                if (obj instanceof Phaser.GameObjects.Container) {
+                    //TODO: missing to implement containers
+                    continue;
+                }
+
                 if (obj instanceof Phaser.GameObjects.GameObject) {
                     const points = obj.getScreenBounds(camera);
 

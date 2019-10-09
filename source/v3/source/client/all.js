@@ -2154,7 +2154,7 @@ var phasereditor2d;
                     getCommand(id) {
                         const command = this._commandIdMap.get(id);
                         if (!command) {
-                            console.warn(`Command ${id} not found.`);
+                            console.error(`Command ${id} not found.`);
                         }
                         return command;
                     }
@@ -4029,9 +4029,7 @@ var phasereditor2d;
                             this._editor = editor;
                         }
                         deleteObjects() {
-                            const objects = this._editor
-                                .getSelection()
-                                .filter(obj => obj instanceof Phaser.GameObjects.GameObject);
+                            const objects = this._editor.getSelectedGameObjects();
                             // create the undo-operation before destroy the objects
                             this._editor.getUndoManager().add(new scene.undo.RemoveObjectsOperation(this._editor, objects));
                             for (const obj of objects) {
@@ -4039,6 +4037,21 @@ var phasereditor2d;
                             }
                             this._editor.refreshOutline();
                             this._editor.getSelectionManager().cleanSelection();
+                            this._editor.setDirty(true);
+                            this._editor.repaint();
+                        }
+                        joinObjectsInContainer() {
+                            const sel = this._editor.getSelectedGameObjects();
+                            for (const obj of sel) {
+                                if (obj instanceof Phaser.GameObjects.Container || obj.parentContainer) {
+                                    alert("Nested containers are not supported");
+                                    return;
+                                }
+                            }
+                            const container = this._editor.getSceneMaker().createContainerWithObjects(sel);
+                            this._editor.getUndoManager().add(new scene.undo.JoinObjectsInContainerOperation(this._editor, container));
+                            this._editor.setSelection([container]);
+                            this._editor.refreshOutline();
                             this._editor.setDirty(true);
                             this._editor.repaint();
                         }
@@ -4125,6 +4138,62 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+Phaser.GameObjects.DisplayList.prototype.getByEditorId = function (id) {
+    const displayList = this;
+    const obj = phasereditor2d.ui.ide.editors.scene.getByEditorId(displayList.list, id);
+    if (!obj) {
+        console.error(`Object with id=${this._containerId} not found.`);
+    }
+    return obj;
+};
+Phaser.GameObjects.DisplayList.prototype.visit = function (visitor) {
+    for (const obj of this.list) {
+        phasereditor2d.ui.ide.editors.scene.runObjectVisitor(obj, visitor);
+    }
+};
+Phaser.GameObjects.DisplayList.prototype.makeNewName = function (baseName) {
+    const nameMaker = new phasereditor2d.ui.ide.utils.NameMaker((obj) => {
+        return obj.getEditorLabel();
+    });
+    this.visit(obj => nameMaker.update([obj]));
+    return nameMaker.makeName(baseName);
+};
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    function runObjectVisitor(obj, visitor) {
+                        visitor(obj);
+                        if (obj instanceof Phaser.GameObjects.Container) {
+                            for (const child of obj.list) {
+                                visitor(child);
+                            }
+                        }
+                    }
+                    scene.runObjectVisitor = runObjectVisitor;
+                    function getByEditorId(list, id) {
+                        for (const obj of list) {
+                            if (obj.getEditorId() === id) {
+                                return obj;
+                            }
+                            if (obj instanceof Phaser.GameObjects.Container) {
+                                return getByEditorId(obj.list, id);
+                            }
+                        }
+                        return null;
+                    }
+                    scene.getByEditorId = getByEditorId;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -4148,8 +4217,10 @@ var phasereditor2d;
                                 e.preventDefault();
                                 const sprites = await this._editor.getSceneMaker().createWithDropEvent_async(e, dataArray);
                                 this._editor.getUndoManager().add(new scene.undo.AddObjectsOperation(this._editor, sprites));
+                                this._editor.setSelection(sprites);
                                 this._editor.refreshOutline();
                                 this._editor.setDirty(true);
+                                this._editor.repaint();
                                 ide.Workbench.getWorkbench().setActivePart(this._editor);
                             }
                         }
@@ -4187,6 +4258,7 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+// GameObject
 Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
     return this.name;
 };
@@ -4199,6 +4271,13 @@ Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
 Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label) {
     this.setData("label", label);
 };
+Phaser.GameObjects.GameObject.prototype.getEditorScene = function () {
+    return this.getData("editorScene");
+};
+Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene) {
+    this.setData("editorScene", scene);
+};
+// Image
 Phaser.GameObjects.Image.prototype.setEditorTexture = function (key, frame) {
     this.setData("textureKey", key);
     this.setData("textureFrameKey", frame);
@@ -4209,6 +4288,7 @@ Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
         frame: this.getData("textureFrameKey")
     };
 };
+// All
 for (const proto of [
     Phaser.GameObjects.Image.prototype,
     Phaser.GameObjects.TileSprite.prototype,
@@ -4341,6 +4421,10 @@ var phasereditor2d;
                             ctx.save();
                             const camera = this._editor.getGameScene().getCamera();
                             for (const obj of this._editor.getSelection()) {
+                                if (obj instanceof Phaser.GameObjects.Container) {
+                                    //TODO: missing to implement containers
+                                    continue;
+                                }
                                 if (obj instanceof Phaser.GameObjects.GameObject) {
                                     const points = obj.getScreenBounds(camera);
                                     ctx.strokeStyle = "black";
@@ -4546,6 +4630,9 @@ var phasereditor2d;
                                 if (parent instanceof Phaser.GameObjects.DisplayList) {
                                     return parent.getChildren();
                                 }
+                                else if (parent instanceof Phaser.GameObjects.Container) {
+                                    return parent.list;
+                                }
                                 return [];
                             }
                         }
@@ -4691,7 +4778,7 @@ var phasereditor2d;
                                 this.onGameBoot();
                             };
                             // init managers and factories
-                            this._sceneMaker = new scene.SceneMaker(this);
+                            this._sceneMaker = new scene.SceneMaker(this.getGameScene());
                             this._dropManager = new scene.DropManager(this);
                             this._cameraManager = new scene.CameraManager(this);
                             this._selectionManager = new scene.SelectionManager(this);
@@ -4722,6 +4809,11 @@ var phasereditor2d;
                                 alert(e.message);
                                 throw e;
                             }
+                        }
+                        getSelectedGameObjects() {
+                            return this.getSelection()
+                                .filter(obj => obj instanceof Phaser.GameObjects.GameObject)
+                                .map(obj => obj);
                         }
                         getActionManager() {
                             return this._actionManager;
@@ -4813,30 +4905,36 @@ var phasereditor2d;
                 var scene;
                 (function (scene_2) {
                     class SceneMaker {
-                        constructor(editor) {
-                            this._editor = editor;
+                        constructor(scene) {
+                            this._scene = scene;
                         }
                         createObject(objData) {
-                            const reader = new scene_2.json.SceneParser(this._editor.getGameScene());
+                            const reader = new scene_2.json.SceneParser(this._scene);
                             return reader.createObject(objData);
                         }
+                        createContainerWithObjects(objects) {
+                            const container = this._scene.add.container(0, 0, objects);
+                            const name = this._scene.sys.displayList.makeNewName("container");
+                            container.setEditorLabel(name);
+                            scene_2.json.SceneParser.setNewId(container);
+                            return container;
+                        }
                         async createWithDropEvent_async(e, dropDataArray) {
-                            const scene = this._editor.getGameScene();
                             const nameMaker = new ide.utils.NameMaker(obj => {
                                 return obj.getEditorLabel();
                             });
-                            nameMaker.update(scene.sys.displayList.getChildren());
-                            const worldPoint = scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
+                            nameMaker.update(this._scene.sys.displayList.getChildren());
+                            const worldPoint = this._scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
                             const x = worldPoint.x;
                             const y = worldPoint.y;
-                            const parser = new scene_2.json.SceneParser(scene);
+                            const parser = new scene_2.json.SceneParser(this._scene);
                             for (const data of dropDataArray) {
                                 await parser.addToCache_async(data);
                             }
                             const sprites = [];
                             for (const data of dropDataArray) {
                                 if (data instanceof editors.pack.AssetPackImageFrame) {
-                                    const sprite = scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
+                                    const sprite = this._scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
                                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
                                     sprite.setEditorTexture(data.getPackItem().getKey(), data.getName());
                                     sprites.push(sprite);
@@ -4844,7 +4942,7 @@ var phasereditor2d;
                                 else if (data instanceof editors.pack.AssetPackItem) {
                                     switch (data.getType()) {
                                         case editors.pack.IMAGE_TYPE: {
-                                            const sprite = scene.add.image(x, y, data.getKey());
+                                            const sprite = this._scene.add.image(x, y, data.getKey());
                                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
                                             sprite.setEditorTexture(data.getKey(), null);
                                             sprites.push(sprite);
@@ -4854,11 +4952,10 @@ var phasereditor2d;
                                 }
                             }
                             for (const sprite of sprites) {
+                                sprite.setEditorScene(this._scene);
                                 scene_2.json.SceneParser.setNewId(sprite);
                                 scene_2.json.SceneParser.initSprite(sprite);
                             }
-                            this._editor.setSelection(sprites);
-                            this._editor.repaint();
                             return sprites;
                         }
                     }
@@ -5094,6 +5191,7 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene) {
+                    const CMD_JOIN_IN_CONTAINER = "joinObjectsInContainer";
                     function isSceneScope(args) {
                         return args.activePart instanceof scene.SceneEditor ||
                             args.activePart instanceof ide.views.outline.OutlineView && args.activeEditor instanceof scene.SceneEditor;
@@ -5106,9 +5204,63 @@ var phasereditor2d;
                                 const editor = args.activeEditor;
                                 editor.getActionManager().deleteObjects();
                             });
+                            // join in container
+                            manager.addCommandHelper(CMD_JOIN_IN_CONTAINER);
+                            manager.addHandlerHelper(CMD_JOIN_IN_CONTAINER, args => isSceneScope(args), args => {
+                                const editor = args.activeEditor;
+                                editor.getActionManager().joinObjectsInContainer();
+                            });
+                            manager.addKeyBinding(CMD_JOIN_IN_CONTAINER, new ide.commands.KeyMatcher({
+                                key: "j"
+                            }));
                         }
                     }
                     scene.SceneEditorCommands = SceneEditorCommands;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var json;
+                    (function (json) {
+                        class ContainerComponent {
+                            static write(container, data) {
+                                const sprite = container;
+                                json.ObjectComponent.write(sprite, data);
+                                json.VariableComponent.write(sprite, data);
+                                json.TransformComponent.write(sprite, data);
+                                // container
+                                data.list = container.list.map(obj => {
+                                    const objData = {};
+                                    obj.writeJSON(objData);
+                                    return objData;
+                                });
+                            }
+                            static read(container, data) {
+                                const sprite = container;
+                                json.ObjectComponent.read(sprite, data);
+                                json.VariableComponent.read(sprite, data);
+                                json.TransformComponent.read(sprite, data);
+                                // container
+                                const parser = new json.SceneParser(container.getEditorScene());
+                                for (const objData of data.list) {
+                                    const sprite = parser.createObject(objData);
+                                    container.add(sprite);
+                                }
+                            }
+                        }
+                        json.ContainerComponent = ContainerComponent;
+                    })(json = scene.json || (scene.json = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -5177,6 +5329,15 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+// Container
+Phaser.GameObjects.Container.prototype.writeJSON = function (data) {
+    data.type = "Container";
+    phasereditor2d.ui.ide.editors.scene.json.ContainerComponent.write(this, data);
+};
+Phaser.GameObjects.Container.prototype.readJSON = function (data) {
+    phasereditor2d.ui.ide.editors.scene.json.ContainerComponent.read(this, data);
+};
+// Image
 Phaser.GameObjects.Image.prototype.writeJSON = function (data) {
     data.type = "Image";
     phasereditor2d.ui.ide.editors.scene.json.ImageComponent.write(this, data);
@@ -5212,18 +5373,26 @@ var phasereditor2d;
                             }
                             async createSceneCache_async(data) {
                                 for (const objData of data.displayList) {
-                                    const type = objData.type;
-                                    switch (type) {
-                                        case "Image": {
-                                            const key = objData[json.TextureComponent.textureKey];
-                                            const finder = await editors.pack.AssetFinder.create();
-                                            const item = finder.findAssetPackItem(key);
-                                            if (item) {
-                                                await this.addToCache_async(item);
-                                            }
-                                            break;
+                                    await this.updateSceneCacheWithObjectData_async(objData);
+                                }
+                            }
+                            async updateSceneCacheWithObjectData_async(objData) {
+                                const type = objData.type;
+                                switch (type) {
+                                    case "Image": {
+                                        const key = objData[json.TextureComponent.textureKey];
+                                        const finder = await editors.pack.AssetFinder.create();
+                                        const item = finder.findAssetPackItem(key);
+                                        if (item) {
+                                            await this.addToCache_async(item);
                                         }
+                                        break;
                                     }
+                                    case "Container":
+                                        for (const childData of objData.list) {
+                                            await this.updateSceneCacheWithObjectData_async(childData);
+                                        }
+                                        break;
                                 }
                             }
                             async addToCache_async(data) {
@@ -5252,8 +5421,12 @@ var phasereditor2d;
                                     case "Image":
                                         sprite = this._scene.add.image(0, 0, "");
                                         break;
+                                    case "Container":
+                                        sprite = this._scene.add.container(0, 0, []);
+                                        break;
                                 }
                                 if (sprite) {
+                                    sprite.setEditorScene(this._scene);
                                     sprite.readJSON(data);
                                     SceneParser.initSprite(sprite);
                                 }
@@ -5261,7 +5434,9 @@ var phasereditor2d;
                             }
                             static initSprite(sprite) {
                                 sprite.setDataEnabled();
-                                sprite.setInteractive();
+                                if (sprite instanceof Phaser.GameObjects.Image) {
+                                    sprite.setInteractive();
+                                }
                             }
                             static setNewId(sprite) {
                                 sprite.setEditorId((SPRITE_ID++).toString());
@@ -5945,12 +6120,9 @@ var phasereditor2d;
                             undo() {
                                 const displayList = this._editor.getGameScene().sys.displayList;
                                 for (const data of this._dataList) {
-                                    const obj = displayList.getByName(data.id);
+                                    const obj = displayList.getByEditorId(data.id);
                                     if (obj) {
                                         obj.destroy();
-                                    }
-                                    else {
-                                        console.warn(`Undo: object with id=${data.id} not found.`);
                                     }
                                 }
                                 this._editor.getSelectionManager().cleanSelection();
@@ -5970,6 +6142,60 @@ var phasereditor2d;
                             }
                         }
                         undo.AddObjectsOperation = AddObjectsOperation;
+                    })(undo = scene.undo || (scene.undo = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var undo;
+                    (function (undo) {
+                        class JoinObjectsInContainerOperation extends undo.SceneEditorOperation {
+                            constructor(editor, container) {
+                                super(editor);
+                                this._containerId = container.getEditorId();
+                                this._objectsIdList = container.list.map(obj => obj.getEditorId());
+                            }
+                            undo() {
+                                const displayList = this._editor.getGameScene().sys.displayList;
+                                const container = displayList.getByEditorId(this._containerId);
+                                for (const id of this._objectsIdList) {
+                                    const obj = scene.getByEditorId(container.list, id);
+                                    if (obj) {
+                                        container.remove(obj);
+                                        displayList.add(obj);
+                                    }
+                                    else {
+                                        console.error(`Undo: child with id=${id} not found in container ${this._containerId}`);
+                                    }
+                                }
+                                container.destroy();
+                                this.updateEditor();
+                            }
+                            redo() {
+                                const displayList = this._editor.getGameScene().sys.displayList;
+                                const objects = this._objectsIdList.map(id => displayList.getByEditorId(id));
+                                const container = this._editor.getSceneMaker().createContainerWithObjects(objects);
+                                container.setEditorId(this._containerId);
+                                this.updateEditor();
+                            }
+                            updateEditor() {
+                                this._editor.setDirty(true);
+                                this._editor.refreshOutline();
+                                this._editor.repaint();
+                            }
+                        }
+                        undo.JoinObjectsInContainerOperation = JoinObjectsInContainerOperation;
                     })(undo = scene.undo || (scene.undo = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -6354,9 +6580,11 @@ var phasereditor2d;
                     }
                     onDoubleClick(e) {
                         const item = this.getPaintItemAt(e);
-                        this.dispatchEvent(new CustomEvent(viewers.EVENT_OPEN_ITEM, {
-                            detail: item.data
-                        }));
+                        if (item) {
+                            this.dispatchEvent(new CustomEvent(viewers.EVENT_OPEN_ITEM, {
+                                detail: item.data
+                            }));
+                        }
                     }
                     onMouseUp(e) {
                         if (e.button !== 0) {

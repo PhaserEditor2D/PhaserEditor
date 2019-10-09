@@ -20,12 +20,18 @@ namespace Phaser.GameObjects {
 
         setEditorLabel(label: string): void;
 
+        getEditorScene() : phasereditor2d.ui.ide.editors.scene.GameScene;
+
+        setEditorScene(scene : phasereditor2d.ui.ide.editors.scene.GameScene) : void; 
+
     }
 
     export interface Image extends EditorTexture {
 
     }
 }
+
+// GameObject
 
 Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
     return this.name;
@@ -43,6 +49,16 @@ Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label: string
     this.setData("label", label);
 };
 
+Phaser.GameObjects.GameObject.prototype.getEditorScene = function () {
+    return this.getData("editorScene");
+};
+
+Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene : phasereditor2d.ui.ide.editors.scene.GameScene) {
+    this.setData("editorScene", scene);
+};
+
+// Image
+
 Phaser.GameObjects.Image.prototype.setEditorTexture = function (key: string, frame: any) {
     this.setData("textureKey", key);
     this.setData("textureFrameKey", frame);
@@ -56,6 +72,7 @@ Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
     };
 };
 
+// All
 
 for (const proto of [
     Phaser.GameObjects.Image.prototype,

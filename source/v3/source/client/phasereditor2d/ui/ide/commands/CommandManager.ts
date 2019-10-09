@@ -82,7 +82,7 @@ namespace phasereditor2d.ui.ide.commands {
             const command = this._commandIdMap.get(id);
 
             if (!command) {
-                console.warn(`Command ${id} not found.`);
+                console.error(`Command ${id} not found.`);
             }
 
             return command;

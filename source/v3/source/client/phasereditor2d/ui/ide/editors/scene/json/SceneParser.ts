@@ -25,23 +25,36 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         async createSceneCache_async(data: SceneData) {
 
             for (const objData of data.displayList) {
-                const type = objData.type;
-                switch (type) {
-                    case "Image": {
-
-                        const key = objData[TextureComponent.textureKey];
-                        const finder = await pack.AssetFinder.create();
-                        const item = finder.findAssetPackItem(key);
-
-                        if (item) {
-                            await this.addToCache_async(item);
-                        }
-
-                        break;
-                    }
-                }
+                await this.updateSceneCacheWithObjectData_async(objData);
             }
 
+        }
+
+        private async updateSceneCacheWithObjectData_async(objData: any) {
+            const type = objData.type;
+            switch (type) {
+
+                case "Image": {
+
+                    const key = objData[TextureComponent.textureKey];
+                    const finder = await pack.AssetFinder.create();
+                    const item = finder.findAssetPackItem(key);
+
+                    if (item) {
+                        await this.addToCache_async(item);
+                    }
+
+                    break;
+                }
+
+                case "Container":
+
+                    for (const childData of objData.list) {
+                        await this.updateSceneCacheWithObjectData_async(childData);
+                    }
+
+                    break;
+            }
         }
 
         async addToCache_async(data: pack.AssetPackItem | pack.AssetPackImageFrame) {
@@ -78,9 +91,14 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
                 case "Image":
                     sprite = this._scene.add.image(0, 0, "");
                     break;
+                case "Container":
+                    sprite = this._scene.add.container(0, 0, []);
+                    break;
             }
 
             if (sprite) {
+
+                sprite.setEditorScene(this._scene);
 
                 sprite.readJSON(data);
 
@@ -92,8 +110,13 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         }
 
         static initSprite(sprite: Phaser.GameObjects.GameObject) {
+
             sprite.setDataEnabled();
-            sprite.setInteractive();
+
+            if (sprite instanceof Phaser.GameObjects.Image) {
+                sprite.setInteractive();
+            }
+
         }
 
         static setNewId(sprite: Phaser.GameObjects.GameObject) {

@@ -1,35 +1,47 @@
+
 namespace phasereditor2d.ui.ide.editors.scene {
 
     export class SceneMaker {
 
-        private _editor: SceneEditor;
+        private _scene: GameScene;
 
-        constructor(editor: SceneEditor) {
-            this._editor = editor;
+        constructor(scene: GameScene) {
+            this._scene = scene;
         }
 
         createObject(objData: any) {
-            
-            const reader = new json.SceneParser(this._editor.getGameScene());
+
+            const reader = new json.SceneParser(this._scene);
 
             return reader.createObject(objData);
         }
 
-        async createWithDropEvent_async(e: DragEvent, dropDataArray: any[]) {
+        createContainerWithObjects(objects: Phaser.GameObjects.GameObject[]) {
 
-            const scene = this._editor.getGameScene();
+            const container = this._scene.add.container(0, 0, objects);
+
+            const name = this._scene.sys.displayList.makeNewName("container");
+
+            container.setEditorLabel(name);
+
+            json.SceneParser.setNewId(container);
+
+            return container;
+        }
+
+        async createWithDropEvent_async(e: DragEvent, dropDataArray: any[]) {
 
             const nameMaker = new utils.NameMaker(obj => {
                 return (<Phaser.GameObjects.GameObject>obj).getEditorLabel();
             });
 
-            nameMaker.update(scene.sys.displayList.getChildren());
+            nameMaker.update(this._scene.sys.displayList.getChildren());
 
-            const worldPoint = scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
+            const worldPoint = this._scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
             const x = worldPoint.x;
             const y = worldPoint.y;
 
-            const parser = new json.SceneParser(scene);
+            const parser = new json.SceneParser(this._scene);
 
             for (const data of dropDataArray) {
                 await parser.addToCache_async(data);
@@ -41,7 +53,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 if (data instanceof pack.AssetPackImageFrame) {
 
-                    const sprite = scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
+                    const sprite = this._scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
 
                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
                     sprite.setEditorTexture(data.getPackItem().getKey(), data.getName());
@@ -53,7 +65,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                     switch (data.getType()) {
                         case pack.IMAGE_TYPE: {
 
-                            const sprite = scene.add.image(x, y, data.getKey());
+                            const sprite = this._scene.add.image(x, y, data.getKey());
 
                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
                             sprite.setEditorTexture(data.getKey(), null);
@@ -67,13 +79,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
             }
 
             for (const sprite of sprites) {
+
+                sprite.setEditorScene(this._scene);
+
                 json.SceneParser.setNewId(sprite);
                 json.SceneParser.initSprite(sprite);
             }
-
-            this._editor.setSelection(sprites);
-
-            this._editor.repaint();
 
             return sprites;
         }

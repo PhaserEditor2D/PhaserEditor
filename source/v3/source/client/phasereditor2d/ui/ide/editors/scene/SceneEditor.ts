@@ -115,7 +115,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             // init managers and factories
 
-            this._sceneMaker = new SceneMaker(this);
+            this._sceneMaker = new SceneMaker(this.getGameScene());
             this._dropManager = new DropManager(this);
             this._cameraManager = new CameraManager(this);
             this._selectionManager = new SelectionManager(this);
@@ -159,6 +159,12 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 alert(e.message);
                 throw e;
             }
+        }
+
+        getSelectedGameObjects() {
+            return this.getSelection()
+                .filter(obj => obj instanceof Phaser.GameObjects.GameObject)
+                .map(obj => <Phaser.GameObjects.GameObject>obj);
         }
 
         getActionManager() {

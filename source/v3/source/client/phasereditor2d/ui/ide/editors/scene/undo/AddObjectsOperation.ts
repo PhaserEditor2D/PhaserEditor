@@ -24,12 +24,10 @@ namespace phasereditor2d.ui.ide.editors.scene.undo {
 
             for (const data of this._dataList) {
 
-                const obj = displayList.getByName(data.id);
+                const obj = displayList.getByEditorId(data.id);
 
                 if (obj) {
                     obj.destroy();
-                } else {
-                    console.warn(`Undo: object with id=${data.id} not found.`);
                 }
             }
 

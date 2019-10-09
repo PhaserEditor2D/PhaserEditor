@@ -35,7 +35,13 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
         getChildren(parent: any): any[] {
 
             if (parent instanceof Phaser.GameObjects.DisplayList) {
+
                 return parent.getChildren();
+
+            } else if (parent instanceof Phaser.GameObjects.Container) {
+
+                return parent.list;
+
             }
 
             return [];

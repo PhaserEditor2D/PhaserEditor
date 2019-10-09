@@ -24,9 +24,13 @@ namespace phasereditor2d.ui.ide.editors.scene {
                 
                 this._editor.getUndoManager().add(new undo.AddObjectsOperation(this._editor, sprites));
 
+                this._editor.setSelection(sprites);
+
                 this._editor.refreshOutline();
 
                 this._editor.setDirty(true);
+
+                this._editor.repaint();
 
                 Workbench.getWorkbench().setActivePart(this._editor);
             }
