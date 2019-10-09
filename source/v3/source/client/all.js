@@ -1795,6 +1795,7 @@ var phasereditor2d;
             ide.ICON_OUTLINE = "outline";
             ide.ICON_INSPECTOR = "inspector";
             ide.ICON_BLOCKS = "blocks";
+            ide.ICON_GROUP = "group";
             const ICONS = [
                 ide.ICON_FILE,
                 ide.ICON_FOLDER,
@@ -1807,7 +1808,8 @@ var phasereditor2d;
                 ide.ICON_ASSET_PACK,
                 ide.ICON_OUTLINE,
                 ide.ICON_INSPECTOR,
-                ide.ICON_BLOCKS
+                ide.ICON_BLOCKS,
+                ide.ICON_GROUP
             ];
             class Workbench extends EventTarget {
                 constructor() {
@@ -4646,6 +4648,9 @@ var phasereditor2d;
                                 if (this._packs !== null) {
                                     if (element instanceof Phaser.GameObjects.Image) {
                                         return new outline.GameObjectCellRenderer(this._packs);
+                                    }
+                                    else if (element instanceof Phaser.GameObjects.Container) {
+                                        return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_GROUP));
                                     }
                                     else if (element instanceof Phaser.GameObjects.DisplayList) {
                                         return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_FOLDER));

@@ -69,6 +69,10 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
                     return new GameObjectCellRenderer(this._packs);
 
+                } else if (element instanceof Phaser.GameObjects.Container) {
+
+                    return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_GROUP));
+
                 } else if (element instanceof Phaser.GameObjects.DisplayList) {
 
                     return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_FOLDER));
