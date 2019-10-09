@@ -30,7 +30,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
                         const item = finder.findAssetPackItem(key);
 
                         if (item) {
-                            await this.addToCache(item);
+                            await this.addToCache_async(item);
                         }
 
                         break;
@@ -40,7 +40,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
 
         }
 
-        async addToCache(data: pack.AssetPackItem | pack.AssetPackImageFrame) {
+        async addToCache_async(data: pack.AssetPackItem | pack.AssetPackImageFrame) {
 
             let imageFrameContainerPackItem: pack.AssetPackItem = null;
 

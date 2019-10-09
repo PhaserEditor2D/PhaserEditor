@@ -3628,9 +3628,6 @@ var phasereditor2d;
                         let x = args.x;
                         const ctx = args.canvasContext;
                         const label = args.viewer.getLabelProvider().getLabel(args.obj);
-                        if (!label) {
-                            console.log(args.obj);
-                        }
                         let line = "";
                         for (const c of label) {
                             const test = line + c;
@@ -3893,7 +3890,10 @@ var phasereditor2d;
                                 if (obj instanceof ui.controls.ImageFrame) {
                                     return obj.getName();
                                 }
-                                return obj;
+                                if (typeof (obj) === "string") {
+                                    return obj;
+                                }
+                                return "";
                             }
                         }
                         viewers.AssetPackLabelProvider = AssetPackLabelProvider;
@@ -4099,13 +4099,13 @@ var phasereditor2d;
                             this._editor = editor;
                             const canvas = this._editor.getOverlayLayer().getCanvas();
                             canvas.addEventListener("dragover", e => this.onDragOver(e));
-                            canvas.addEventListener("drop", e => this.onDragDrop(e));
+                            canvas.addEventListener("drop", e => this.onDragDrop_async(e));
                         }
-                        onDragDrop(e) {
+                        async onDragDrop_async(e) {
                             const dataArray = ui.controls.Controls.getApplicationDragDataAndClean();
                             if (this.acceptsDropDataArray(dataArray)) {
                                 e.preventDefault();
-                                const sprites = this._editor.getSceneMaker().createWithDropEvent(e, dataArray);
+                                const sprites = await this._editor.getSceneMaker().createWithDropEvent_async(e, dataArray);
                                 this._editor.getUndoManager().add(new scene.undo.AddObjectsOperation(this._editor, sprites));
                                 this._editor.refreshOutline();
                                 this._editor.setDirty(true);
@@ -4765,7 +4765,7 @@ var phasereditor2d;
                             const reader = new scene_2.json.SceneParser(this._editor.getGameScene());
                             reader.createObject(objData);
                         }
-                        createWithDropEvent(e, dropDataArray) {
+                        async createWithDropEvent_async(e, dropDataArray) {
                             const scene = this._editor.getGameScene();
                             const nameMaker = new ide.utils.NameMaker(obj => {
                                 return obj.getEditorLabel();
@@ -4776,7 +4776,7 @@ var phasereditor2d;
                             const y = worldPoint.y;
                             const parser = new scene_2.json.SceneParser(scene);
                             for (const data of dropDataArray) {
-                                parser.addToCache(data);
+                                await parser.addToCache_async(data);
                             }
                             const sprites = [];
                             for (const data of dropDataArray) {
@@ -5159,14 +5159,14 @@ var phasereditor2d;
                                             const finder = await editors.pack.AssetFinder.create();
                                             const item = finder.findAssetPackItem(key);
                                             if (item) {
-                                                await this.addToCache(item);
+                                                await this.addToCache_async(item);
                                             }
                                             break;
                                         }
                                     }
                                 }
                             }
-                            async addToCache(data) {
+                            async addToCache_async(data) {
                                 let imageFrameContainerPackItem = null;
                                 if (data instanceof editors.pack.AssetPackItem) {
                                     if (data.getType() === editors.pack.IMAGE_TYPE) {

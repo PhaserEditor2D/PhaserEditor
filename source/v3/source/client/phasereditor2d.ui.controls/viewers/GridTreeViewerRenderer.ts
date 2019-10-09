@@ -178,9 +178,6 @@ namespace phasereditor2d.ui.controls.viewers {
 
             const label = args.viewer.getLabelProvider().getLabel(args.obj);
 
-            if (!label) {
-                console.log(args.obj);
-            }
             let line = "";
             for (const c of label) {
                 const test = line + c;

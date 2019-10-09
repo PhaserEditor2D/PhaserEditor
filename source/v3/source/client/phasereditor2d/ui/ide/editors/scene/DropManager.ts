@@ -9,10 +9,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             const canvas = this._editor.getOverlayLayer().getCanvas();
             canvas.addEventListener("dragover", e => this.onDragOver(e));
-            canvas.addEventListener("drop", e => this.onDragDrop(e));
+            canvas.addEventListener("drop", e => this.onDragDrop_async(e));
         }
 
-        onDragDrop(e: DragEvent) {
+        async onDragDrop_async(e: DragEvent) {
 
             const dataArray = controls.Controls.getApplicationDragDataAndClean();
 
@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 e.preventDefault();
 
-                const sprites = this._editor.getSceneMaker().createWithDropEvent(e, dataArray);
+                const sprites = await this._editor.getSceneMaker().createWithDropEvent_async(e, dataArray);
                 
                 this._editor.getUndoManager().add(new undo.AddObjectsOperation(this._editor, sprites));
 

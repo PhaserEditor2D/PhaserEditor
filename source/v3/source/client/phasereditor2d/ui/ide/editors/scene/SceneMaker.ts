@@ -13,7 +13,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             reader.createObject(objData);
         }
 
-        createWithDropEvent(e: DragEvent, dropDataArray: any[]) {
+        async createWithDropEvent_async(e: DragEvent, dropDataArray: any[]) {
 
             const scene = this._editor.getGameScene();
 
@@ -30,7 +30,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
             const parser = new json.SceneParser(scene);
 
             for (const data of dropDataArray) {
-                parser.addToCache(data);
+                await parser.addToCache_async(data);
             }
 
             const sprites: Phaser.GameObjects.GameObject[] = [];
