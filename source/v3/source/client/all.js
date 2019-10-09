@@ -3559,13 +3559,13 @@ var phasereditor2d;
                                     .toUpperCase();
                                 ctx.save();
                                 ctx.fillStyle = controls.Controls.theme.treeItemForeground + "44";
-                                {
-                                    ctx.fillText(label, x2, y2);
-                                }
+                                const m = ctx.measureText(label);
+                                ctx.fillText(label, x2, y2);
                                 ctx.strokeStyle = controls.Controls.theme.treeItemForeground + "44";
+                                ctx.setLineDash([2, 10]);
                                 ctx.beginPath();
-                                ctx.moveTo(0, y2 + 5);
-                                ctx.lineTo(b.width, y2 + 5);
+                                ctx.moveTo(m.width + 20, y2 - 5);
+                                ctx.lineTo(b.width, y2 - 5);
                                 ctx.stroke();
                                 ctx.restore();
                                 y2 += 10;
