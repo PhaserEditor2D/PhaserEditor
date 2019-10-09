@@ -77,22 +77,5 @@ namespace phasereditor2d.ui.controls.viewers {
             this._viewerContainer.layout();
             this._scrollPane.layout();
         }
-
-        __layout() {
-
-            super.layout();
-
-            const b = this.getBounds();
-
-            this._filterControl.setBoundsValues(0, 0, b.width, FILTERED_VIEWER_FILTER_HEIGHT);
-
-
-            this._scrollPane.setBounds({
-                x: 0,
-                y: FILTERED_VIEWER_FILTER_HEIGHT,
-                width: b.width,
-                height: b.height - FILTERED_VIEWER_FILTER_HEIGHT
-            });
-        }
     }
 }

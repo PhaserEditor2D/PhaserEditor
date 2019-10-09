@@ -1202,17 +1202,6 @@ var phasereditor2d;
                         this._viewerContainer.layout();
                         this._scrollPane.layout();
                     }
-                    __layout() {
-                        super.layout();
-                        const b = this.getBounds();
-                        this._filterControl.setBoundsValues(0, 0, b.width, controls.FILTERED_VIEWER_FILTER_HEIGHT);
-                        this._scrollPane.setBounds({
-                            x: 0,
-                            y: controls.FILTERED_VIEWER_FILTER_HEIGHT,
-                            width: b.width,
-                            height: b.height - controls.FILTERED_VIEWER_FILTER_HEIGHT
-                        });
-                    }
                 }
                 viewers.FilteredViewer = FilteredViewer;
             })(viewers = controls.viewers || (controls.viewers = {}));
@@ -6366,6 +6355,9 @@ var phasereditor2d;
                         this._context.clearRect(0, 0, canvas.width, canvas.height);
                         if (this._cellRendererProvider && this._contentProvider && this._input !== null) {
                             this.paint();
+                        }
+                        else {
+                            this._contentHeight = 0;
                         }
                     }
                     paintItemBackground(obj, x, y, w, h, radius = 0) {

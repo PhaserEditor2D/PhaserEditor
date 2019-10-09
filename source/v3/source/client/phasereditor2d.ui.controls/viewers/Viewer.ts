@@ -308,7 +308,7 @@ namespace phasereditor2d.ui.controls.viewers {
             this.updateScrollPane();
         }
 
-        private updateScrollPane() {
+        updateScrollPane() {
             const pane = this.getContainer().getContainer();
             if (pane instanceof ScrollPane) {
                 pane.updateScroll(this._contentHeight);
@@ -324,6 +324,8 @@ namespace phasereditor2d.ui.controls.viewers {
 
             if (this._cellRendererProvider && this._contentProvider && this._input !== null) {
                 this.paint();
+            } else {
+                this._contentHeight = 0;
             }
         }
 
