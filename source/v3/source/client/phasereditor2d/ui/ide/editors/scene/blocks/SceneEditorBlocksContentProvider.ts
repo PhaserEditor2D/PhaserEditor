@@ -24,6 +24,19 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
         }
 
         getChildren(parent: any): any[] {
+            if (typeof (parent) === "string") {
+
+                switch (parent) {
+                    case pack.ATLAS_TYPE:
+                    case pack.ATLAS_XML_TYPE:
+                    case pack.MULTI_ATLAS_TYPE:
+                    case pack.UNITY_ATLAS_TYPE:
+                        return this._items.filter(item => pack.AssetPackUtils.isAtlasPackItem(item));
+                }
+
+                return this._items.filter(item => item.getType() === parent);
+            }
+
             return super.getChildren(parent);
         }
     }

@@ -1,5 +1,18 @@
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
+    class SceneEditorTreeRendererProvider extends pack.viewers.AssetPackBlocksTreeViewerRenderer {
+
+        constructor(viewer : controls.viewers.TreeViewer) {
+            super(viewer);
+
+            this.setSections([
+                "image",
+                "atlas",
+                "spritesheet"
+            ]);
+        }
+    }
+
     export class SceneEditorBlocksProvider extends EditorViewerProvider {
 
         private _contentProvider: SceneEditorBlocksContentProvider;
@@ -30,7 +43,7 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
         }
 
         getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) {
-            return new pack.viewers.AssetPackBlocksTreeViewerRenderer(viewer);
+            return new SceneEditorTreeRendererProvider(viewer);
         }
 
         getPropertySectionProvider(): controls.properties.PropertySectionProvider {

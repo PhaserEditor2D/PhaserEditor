@@ -2496,7 +2496,16 @@ var phasereditor2d;
                         pack_3.ATLAS_XML_TYPE,
                         pack_3.SPRITESHEET_TYPE
                     ]);
+                    const ATLAS_TYPES = new Set([
+                        pack_3.MULTI_ATLAS_TYPE,
+                        pack_3.ATLAS_TYPE,
+                        pack_3.UNITY_ATLAS_TYPE,
+                        pack_3.ATLAS_XML_TYPE,
+                    ]);
                     class AssetPackUtils {
+                        static isAtlasPackItem(packItem) {
+                            return ATLAS_TYPES.has(packItem.getType());
+                        }
                         static isImageFrameContainer(packItem) {
                             return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());
                         }
@@ -3504,15 +3513,67 @@ var phasereditor2d;
                         super(viewer);
                         viewer.setCellSize(128);
                         this._center = center;
+                        this._sections = [];
+                    }
+                    setSections(sections) {
+                        this._sections = sections;
+                    }
+                    getSections() {
+                        return this._sections;
                     }
                     paintItems(objects, treeIconList, paintItems, x, y) {
                         const viewer = this.getViewer();
-                        if (viewer.getCellSize() <= 48) {
+                        const cellSize = viewer.getCellSize();
+                        if (cellSize <= 48) {
                             return super.paintItems(objects, treeIconList, paintItems, x, y);
                         }
                         const b = viewer.getBounds();
-                        const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + viewers.TREE_RENDERER_GRID_PADDING) / 2) : viewers.TREE_RENDERER_GRID_PADDING;
-                        return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + viewers.TREE_RENDERER_GRID_PADDING, offset, 0);
+                        if (this._sections.length > 0) {
+                            const ctx = viewer.getContext();
+                            let y2 = y + 20;
+                            let x2 = x + viewers.TREE_RENDERER_GRID_PADDING;
+                            for (const section of this._sections) {
+                                const objects2 = viewer
+                                    .getContentProvider()
+                                    .getChildren(section)
+                                    .filter(obj => viewer.isFilterIncluded(obj));
+                                if (objects2.length === 0) {
+                                    continue;
+                                }
+                                const label = viewer
+                                    .getLabelProvider()
+                                    .getLabel(section)
+                                    .toUpperCase();
+                                ctx.save();
+                                ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                                ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
+                                {
+                                    const m = ctx.measureText(label);
+                                    //ctx.fillText(label, b.width - m.width - 10, y2);
+                                    ctx.fillText(label, x2, y2);
+                                }
+                                ctx.globalAlpha = 0.1;
+                                ctx.beginPath();
+                                ctx.moveTo(0, y2 + 5);
+                                ctx.lineTo(b.width, y2 + 5);
+                                ctx.stroke();
+                                ctx.restore();
+                                y2 += 10;
+                                const result = this.paintItems2(objects2, treeIconList, paintItems, x2, y2, viewers.TREE_RENDERER_GRID_PADDING, 0);
+                                y2 = result.y + 20;
+                                if (result.x > viewers.TREE_RENDERER_GRID_PADDING) {
+                                    y2 += cellSize;
+                                }
+                            }
+                            return {
+                                x: viewers.TREE_RENDERER_GRID_PADDING,
+                                y: y2
+                            };
+                        }
+                        else {
+                            const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + viewers.TREE_RENDERER_GRID_PADDING) / 2) : viewers.TREE_RENDERER_GRID_PADDING;
+                            return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + viewers.TREE_RENDERER_GRID_PADDING, offset, 0);
+                        }
                     }
                     paintItems2(objects, treeIconList, paintItems, x, y, offset, depth) {
                         const viewer = this.getViewer();
@@ -3567,6 +3628,9 @@ var phasereditor2d;
                         let x = args.x;
                         const ctx = args.canvasContext;
                         const label = args.viewer.getLabelProvider().getLabel(args.obj);
+                        if (!label) {
+                            console.log(args.obj);
+                        }
                         let line = "";
                         for (const c of label) {
                             const test = line + c;
@@ -3829,7 +3893,7 @@ var phasereditor2d;
                                 if (obj instanceof ui.controls.ImageFrame) {
                                     return obj.getName();
                                 }
-                                return "";
+                                return obj;
                             }
                         }
                         viewers.AssetPackLabelProvider = AssetPackLabelProvider;
@@ -4888,6 +4952,16 @@ var phasereditor2d;
                                 return this._items;
                             }
                             getChildren(parent) {
+                                if (typeof (parent) === "string") {
+                                    switch (parent) {
+                                        case editors.pack.ATLAS_TYPE:
+                                        case editors.pack.ATLAS_XML_TYPE:
+                                        case editors.pack.MULTI_ATLAS_TYPE:
+                                        case editors.pack.UNITY_ATLAS_TYPE:
+                                            return this._items.filter(item => editors.pack.AssetPackUtils.isAtlasPackItem(item));
+                                    }
+                                    return this._items.filter(item => item.getType() === parent);
+                                }
                                 return super.getChildren(parent);
                             }
                         }
@@ -4910,6 +4984,16 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
+                        class SceneEditorTreeRendererProvider extends editors.pack.viewers.AssetPackBlocksTreeViewerRenderer {
+                            constructor(viewer) {
+                                super(viewer);
+                                this.setSections([
+                                    "image",
+                                    "atlas",
+                                    "spritesheet"
+                                ]);
+                            }
+                        }
                         class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
                             async preload() {
                                 if (this._contentProvider) {
@@ -4929,7 +5013,7 @@ var phasereditor2d;
                                 return new editors.pack.viewers.AssetPackCellRendererProvider();
                             }
                             getTreeViewerRenderer(viewer) {
-                                return new editors.pack.viewers.AssetPackBlocksTreeViewerRenderer(viewer);
+                                return new SceneEditorTreeRendererProvider(viewer);
                             }
                             getPropertySectionProvider() {
                                 return new blocks.SceneEditorBlockPropertyProvider();
@@ -5075,14 +5159,14 @@ var phasereditor2d;
                                             const finder = await editors.pack.AssetFinder.create();
                                             const item = finder.findAssetPackItem(key);
                                             if (item) {
-                                                this.addToCache(item);
+                                                await this.addToCache(item);
                                             }
                                             break;
                                         }
                                     }
                                 }
                             }
-                            addToCache(data) {
+                            async addToCache(data) {
                                 let imageFrameContainerPackItem = null;
                                 if (data instanceof editors.pack.AssetPackItem) {
                                     if (data.getType() === editors.pack.IMAGE_TYPE) {
@@ -5097,6 +5181,7 @@ var phasereditor2d;
                                 }
                                 if (imageFrameContainerPackItem !== null) {
                                     const parser = editors.pack.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
+                                    await parser.preload();
                                     parser.addToPhaserCache(this._scene.game);
                                 }
                             }

@@ -9,7 +9,18 @@ namespace phasereditor2d.ui.ide.editors.pack {
         SPRITESHEET_TYPE
     ]);
 
+    const ATLAS_TYPES = new Set([
+        MULTI_ATLAS_TYPE,
+        ATLAS_TYPE,
+        UNITY_ATLAS_TYPE,
+        ATLAS_XML_TYPE,
+    ]);
+
     export class AssetPackUtils {
+
+        static isAtlasPackItem(packItem : AssetPackItem) {
+            return ATLAS_TYPES.has(packItem.getType());
+        }
 
         static isImageFrameContainer(packItem: AssetPackItem) {
             return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());

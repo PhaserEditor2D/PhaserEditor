@@ -15,7 +15,7 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
                 return obj.getName();
             }
 
-            return "";
+            return obj;
         }
 
     }
