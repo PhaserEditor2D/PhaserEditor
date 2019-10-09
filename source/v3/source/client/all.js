@@ -4304,6 +4304,9 @@ for (const proto of [
         return phasereditor2d.ui.ide.editors.scene.getScreenBounds(this, camera);
     };
 }
+Phaser.GameObjects.Container.prototype.getScreenBounds = function (camera) {
+    return phasereditor2d.ui.ide.editors.scene.getContainerScreenBounds(this, camera);
+};
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -4314,6 +4317,29 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene) {
+                    function getContainerScreenBounds(container, camera) {
+                        if (container.list.length === 0) {
+                            return [];
+                        }
+                        const minPoint = new Phaser.Math.Vector2(Number.MAX_VALUE, Number.MAX_VALUE);
+                        const maxPoint = new Phaser.Math.Vector2(Number.MIN_VALUE, Number.MIN_VALUE);
+                        for (const obj of container.list) {
+                            const bounds = obj.getScreenBounds(camera);
+                            for (const point of bounds) {
+                                minPoint.x = Math.min(minPoint.x, point.x);
+                                minPoint.y = Math.min(minPoint.y, point.y);
+                                maxPoint.x = Math.max(maxPoint.x, point.x);
+                                maxPoint.y = Math.max(maxPoint.y, point.y);
+                            }
+                        }
+                        return [
+                            new Phaser.Math.Vector2(minPoint.x, minPoint.y),
+                            new Phaser.Math.Vector2(maxPoint.x, minPoint.y),
+                            new Phaser.Math.Vector2(maxPoint.x, maxPoint.y),
+                            new Phaser.Math.Vector2(minPoint.x, maxPoint.y)
+                        ];
+                    }
+                    scene.getContainerScreenBounds = getContainerScreenBounds;
                     function getScreenBounds(sprite, camera) {
                         const points = [
                             new Phaser.Math.Vector2(0, 0),
@@ -4426,30 +4452,28 @@ var phasereditor2d;
                             ctx.save();
                             const camera = this._editor.getGameScene().getCamera();
                             for (const obj of this._editor.getSelection()) {
-                                if (obj instanceof Phaser.GameObjects.Container) {
-                                    //TODO: missing to implement containers
-                                    continue;
-                                }
                                 if (obj instanceof Phaser.GameObjects.GameObject) {
                                     const points = obj.getScreenBounds(camera);
-                                    ctx.strokeStyle = "black";
-                                    ctx.lineWidth = 4;
-                                    ctx.beginPath();
-                                    ctx.moveTo(points[0].x, points[0].y);
-                                    ctx.lineTo(points[1].x, points[1].y);
-                                    ctx.lineTo(points[2].x, points[2].y);
-                                    ctx.lineTo(points[3].x, points[3].y);
-                                    ctx.closePath();
-                                    ctx.stroke();
-                                    ctx.strokeStyle = "#00ff00";
-                                    ctx.lineWidth = 2;
-                                    ctx.beginPath();
-                                    ctx.moveTo(points[0].x, points[0].y);
-                                    ctx.lineTo(points[1].x, points[1].y);
-                                    ctx.lineTo(points[2].x, points[2].y);
-                                    ctx.lineTo(points[3].x, points[3].y);
-                                    ctx.closePath();
-                                    ctx.stroke();
+                                    if (points.length === 4) {
+                                        ctx.strokeStyle = "black";
+                                        ctx.lineWidth = 4;
+                                        ctx.beginPath();
+                                        ctx.moveTo(points[0].x, points[0].y);
+                                        ctx.lineTo(points[1].x, points[1].y);
+                                        ctx.lineTo(points[2].x, points[2].y);
+                                        ctx.lineTo(points[3].x, points[3].y);
+                                        ctx.closePath();
+                                        ctx.stroke();
+                                        ctx.strokeStyle = "#00ff00";
+                                        ctx.lineWidth = 2;
+                                        ctx.beginPath();
+                                        ctx.moveTo(points[0].x, points[0].y);
+                                        ctx.lineTo(points[1].x, points[1].y);
+                                        ctx.lineTo(points[2].x, points[2].y);
+                                        ctx.lineTo(points[3].x, points[3].y);
+                                        ctx.closePath();
+                                        ctx.stroke();
+                                    }
                                 }
                             }
                             ctx.restore();

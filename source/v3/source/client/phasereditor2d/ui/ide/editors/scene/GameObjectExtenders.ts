@@ -10,9 +10,9 @@ namespace Phaser.GameObjects {
 
     export interface GameObject {
 
-        getEditorId() : string;
+        getEditorId(): string;
 
-        setEditorId(id : string) : void;
+        setEditorId(id: string): void;
 
         getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
 
@@ -20,9 +20,9 @@ namespace Phaser.GameObjects {
 
         setEditorLabel(label: string): void;
 
-        getEditorScene() : phasereditor2d.ui.ide.editors.scene.GameScene;
+        getEditorScene(): phasereditor2d.ui.ide.editors.scene.GameScene;
 
-        setEditorScene(scene : phasereditor2d.ui.ide.editors.scene.GameScene) : void; 
+        setEditorScene(scene: phasereditor2d.ui.ide.editors.scene.GameScene): void;
 
     }
 
@@ -37,7 +37,7 @@ Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
     return this.name;
 };
 
-Phaser.GameObjects.GameObject.prototype.setEditorId = function (id : string) {
+Phaser.GameObjects.GameObject.prototype.setEditorId = function (id: string) {
     this.name = id;
 };
 
@@ -53,7 +53,7 @@ Phaser.GameObjects.GameObject.prototype.getEditorScene = function () {
     return this.getData("editorScene");
 };
 
-Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene : phasereditor2d.ui.ide.editors.scene.GameScene) {
+Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene: phasereditor2d.ui.ide.editors.scene.GameScene) {
     this.setData("editorScene", scene);
 };
 
@@ -85,7 +85,38 @@ for (const proto of [
     }
 }
 
+Phaser.GameObjects.Container.prototype.getScreenBounds = function (camera: Phaser.Cameras.Scene2D.Camera) {
+    return phasereditor2d.ui.ide.editors.scene.getContainerScreenBounds(this, camera);
+}
+
 namespace phasereditor2d.ui.ide.editors.scene {
+
+    export function getContainerScreenBounds(container: Phaser.GameObjects.Container, camera: Phaser.Cameras.Scene2D.Camera) {
+
+        if (container.list.length === 0) {
+            return [];
+        }
+
+        const minPoint = new Phaser.Math.Vector2(Number.MAX_VALUE, Number.MAX_VALUE);
+        const maxPoint = new Phaser.Math.Vector2(Number.MIN_VALUE, Number.MIN_VALUE);
+
+        for (const obj of container.list) {
+            const bounds = obj.getScreenBounds(camera);
+            for (const point of bounds) {
+                minPoint.x = Math.min(minPoint.x, point.x);
+                minPoint.y = Math.min(minPoint.y, point.y);
+                maxPoint.x = Math.max(maxPoint.x, point.x);
+                maxPoint.y = Math.max(maxPoint.y, point.y);
+            }
+        }
+
+        return [
+            new Phaser.Math.Vector2(minPoint.x, minPoint.y),
+            new Phaser.Math.Vector2(maxPoint.x, minPoint.y),
+            new Phaser.Math.Vector2(maxPoint.x, maxPoint.y),
+            new Phaser.Math.Vector2(minPoint.x, maxPoint.y)
+        ];
+    }
 
     export function getScreenBounds(sprite: Phaser.GameObjects.Image, camera: Phaser.Cameras.Scene2D.Camera) {
 
