@@ -9,7 +9,16 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         deleteObjects() {
-            console.log("scene editor delete objects!");
+            const sel = this._editor.getSelection();
+
+            for (const obj of sel) {
+                if (obj instanceof Phaser.GameObjects.GameObject) {
+                    obj.destroy();
+                }
+            }
+
+            this._editor.getSelectionManager().cleanSelection();
+            this._editor.repaint();
         }
 
     }

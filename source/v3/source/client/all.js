@@ -4029,7 +4029,14 @@ var phasereditor2d;
                             this._editor = editor;
                         }
                         deleteObjects() {
-                            console.log("scene editor delete objects!");
+                            const sel = this._editor.getSelection();
+                            for (const obj of sel) {
+                                if (obj instanceof Phaser.GameObjects.GameObject) {
+                                    obj.destroy();
+                                }
+                            }
+                            this._editor.getSelectionManager().cleanSelection();
+                            this._editor.repaint();
                         }
                     }
                     scene.ActionManager = ActionManager;
@@ -4176,6 +4183,12 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
+    return this.name;
+};
+Phaser.GameObjects.GameObject.prototype.setEditorId = function (id) {
+    this.name = id;
+};
 Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
     return this.getData("label") || "";
 };
@@ -4692,9 +4705,14 @@ var phasereditor2d;
                                 const file = this.getInput();
                                 const content = await ide.FileUtils.getFileString(file);
                                 const data = JSON.parse(content);
-                                const parser = new scene.json.SceneParser(this.getGameScene());
-                                await parser.createSceneCache_async(data);
-                                await parser.createScene(data);
+                                if (scene.json.SceneParser.isValidSceneDataFormat(data)) {
+                                    const parser = new scene.json.SceneParser(this.getGameScene());
+                                    await parser.createSceneCache_async(data);
+                                    await parser.createScene(data);
+                                }
+                                else {
+                                    alert("Invalid file format.");
+                                }
                             }
                             catch (e) {
                                 alert(e.message);
@@ -5079,6 +5097,7 @@ var phasereditor2d;
                     class SceneEditorCommands {
                         static init() {
                             const manager = ide.Workbench.getWorkbench().getCommandManager();
+                            // delete 
                             manager.addHandlerHelper(ide.CMD_DELETE, args => isSceneScope(args), args => {
                                 const editor = args.activeEditor;
                                 editor.getActionManager().deleteObjects();
@@ -5140,11 +5159,11 @@ var phasereditor2d;
                         var read = phasereditor2d.core.json.read;
                         class ObjectComponent {
                             static write(sprite, data) {
-                                write(data, "name", sprite.name);
+                                write(data, "id", sprite.getEditorId());
                                 write(data, "type", sprite.type);
                             }
                             static read(sprite, data) {
-                                sprite.name = read(data, "name");
+                                sprite.setEditorId(read(data, "id"));
                             }
                         }
                         json.ObjectComponent = ObjectComponent;
@@ -5177,6 +5196,9 @@ var phasereditor2d;
                         class SceneParser {
                             constructor(scene) {
                                 this._scene = scene;
+                            }
+                            static isValidSceneDataFormat(data) {
+                                return "displayList" in data && Array.isArray(data.displayList);
                             }
                             createScene(data) {
                                 for (const objData of data.displayList) {
@@ -5237,7 +5259,7 @@ var phasereditor2d;
                                 sprite.setInteractive();
                             }
                             static setNewId(sprite) {
-                                sprite.name = (SPRITE_ID++).toString();
+                                sprite.setEditorId((SPRITE_ID++).toString());
                             }
                         }
                         json.SceneParser = SceneParser;
@@ -5918,12 +5940,12 @@ var phasereditor2d;
                             undo() {
                                 const displayList = this._editor.getGameScene().sys.displayList;
                                 for (const data of this._dataList) {
-                                    const obj = displayList.getByName(data.name);
+                                    const obj = displayList.getByName(data.id);
                                     if (obj) {
                                         obj.destroy();
                                     }
                                     else {
-                                        console.warn(`Undo: object with id=${data.name} not found.`);
+                                        console.warn(`Undo: object with id=${data.id} not found.`);
                                     }
                                 }
                                 this._editor.getSelectionManager().cleanSelection();
@@ -5943,6 +5965,37 @@ var phasereditor2d;
                             }
                         }
                         undo.AddObjectsOperation = AddObjectsOperation;
+                    })(undo = scene.undo || (scene.undo = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var undo;
+                    (function (undo) {
+                        class RemoveObjectsOperation extends undo.SceneEditorOperation {
+                            constructor(editor, objects) {
+                                super(editor);
+                                this._idList = objects.map(obj => obj.getEditorId());
+                            }
+                            undo() {
+                                throw new Error("Method not implemented.");
+                            }
+                            redo() {
+                                throw new Error("Method not implemented.");
+                            }
+                        }
+                        undo.RemoveObjectsOperation = RemoveObjectsOperation;
                     })(undo = scene.undo || (scene.undo = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));

@@ -11,8 +11,11 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
             this._scene = scene;
         }
 
-        createScene(data: SceneData) {
+        static isValidSceneDataFormat(data: SceneData) {
+            return "displayList" in data && Array.isArray(data.displayList);
+        }
 
+        createScene(data: SceneData) {
             for (const objData of data.displayList) {
                 this.createObject(objData);
             }
@@ -94,7 +97,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         }
 
         static setNewId(sprite: Phaser.GameObjects.GameObject) {
-            sprite.name = (SPRITE_ID++).toString();
+            sprite.setEditorId((SPRITE_ID++).toString());
         }
 
     }

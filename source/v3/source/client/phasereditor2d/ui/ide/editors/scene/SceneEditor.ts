@@ -143,11 +143,17 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 const data = JSON.parse(content);
 
-                const parser = new json.SceneParser(this.getGameScene());
+                if (json.SceneParser.isValidSceneDataFormat(data)) {
 
-                await parser.createSceneCache_async(data);
+                    const parser = new json.SceneParser(this.getGameScene());
 
-                await parser.createScene(data);
+                    await parser.createSceneCache_async(data);
+
+                    await parser.createScene(data);
+
+                } else {
+                    alert("Invalid file format.");
+                }
 
             } catch (e) {
                 alert(e.message);

@@ -5,9 +5,14 @@ namespace Phaser.GameObjects {
         setEditorTexture(key: string, frame: string): void;
 
         getEditorTexture(): { key: string, frame: any };
+
     }
 
     export interface GameObject {
+
+        getEditorId() : string;
+
+        setEditorId(id : string) : void;
 
         getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
 
@@ -21,6 +26,14 @@ namespace Phaser.GameObjects {
 
     }
 }
+
+Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
+    return this.name;
+};
+
+Phaser.GameObjects.GameObject.prototype.setEditorId = function (id : string) {
+    this.name = id;
+};
 
 Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
     return this.getData("label") || "";
