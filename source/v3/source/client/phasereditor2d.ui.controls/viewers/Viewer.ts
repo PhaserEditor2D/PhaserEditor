@@ -155,7 +155,9 @@ namespace phasereditor2d.ui.controls.viewers {
         }
 
         setSelection(selection: any[], notify = true) {
+            
             this._selectedObjects = new Set(selection);
+
             if (notify) {
                 this.fireSelectionChanged();
                 this.repaint();
@@ -278,6 +280,24 @@ namespace phasereditor2d.ui.controls.viewers {
 
         isCollapsed(obj: any) {
             return !this.isExpanded(obj);
+        }
+
+        collapseAll() {
+            this._expandedObjects = new Set();
+        }
+
+        expandCollapseBranch(obj: any) {
+            const parents = [];
+
+            const item = this._paintItems.find(item => item.data === obj);
+
+            if (item && item.parent) {
+                const parentObj = item.parent.data;
+                this.setExpanded(parentObj, !this.isExpanded(parentObj));
+                parents.push(parentObj);
+            }
+
+            return parents;
         }
 
         isSelected(obj: any) {

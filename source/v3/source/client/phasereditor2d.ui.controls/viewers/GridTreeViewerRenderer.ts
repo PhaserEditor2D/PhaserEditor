@@ -24,13 +24,13 @@ namespace phasereditor2d.ui.controls.viewers {
             return this._sections;
         }
 
-        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], x: number, y: number) {
+        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
             const viewer = this.getViewer();
 
             const cellSize = viewer.getCellSize();
 
             if (cellSize <= 48) {
-                return super.paintItems(objects, treeIconList, paintItems, x, y);
+                return super.paintItems(objects, treeIconList, paintItems, null, x, y);
             }
 
             const b = viewer.getBounds();
@@ -77,7 +77,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                     y2 += 10;
 
-                    const result = this.paintItems2(objects2, treeIconList, paintItems, x2, y2, TREE_RENDERER_GRID_PADDING, 0);
+                    const result = this.paintItems2(objects2, treeIconList, paintItems, null, x2, y2, TREE_RENDERER_GRID_PADDING, 0);
 
                     y2 = result.y + 20;
 
@@ -96,13 +96,13 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + TREE_RENDERER_GRID_PADDING) / 2) : TREE_RENDERER_GRID_PADDING;
 
-                return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + TREE_RENDERER_GRID_PADDING, offset, 0);
+                return this.paintItems2(objects, treeIconList, paintItems, null, x + offset, y + TREE_RENDERER_GRID_PADDING, offset, 0);
 
             }
 
         }
 
-        private paintItems2(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], x: number, y: number, offset: number, depth: number) {
+        private paintItems2(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number, offset: number, depth: number) {
 
             const viewer = this.getViewer();
             const cellSize = Math.max(ROW_HEIGHT, viewer.getCellSize());
@@ -116,6 +116,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const children = viewer.getContentProvider().getChildren(obj);
                 const expanded = viewer.isExpanded(obj);
+                let newParentPaintItem: PaintItem = null;
 
                 if (viewer.isFilterIncluded(obj)) {
 
@@ -141,9 +142,10 @@ namespace phasereditor2d.ui.controls.viewers {
 
                     }
 
-                    const item = new PaintItem(paintItems.length, obj);
+                    const item = new PaintItem(paintItems.length, obj, parentPaintItem);
                     item.set(args.x, args.y, args.w, args.h);
                     paintItems.push(item);
+                    newParentPaintItem = item;
 
 
                     x += cellSize + TREE_RENDERER_GRID_PADDING;
@@ -155,7 +157,7 @@ namespace phasereditor2d.ui.controls.viewers {
                 }
 
                 if (expanded) {
-                    const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset, depth + 1);
+                    const result = this.paintItems2(children, treeIconList, paintItems, newParentPaintItem, x, y, offset, depth + 1);
                     y = result.y;
                     x = result.x;
                 }

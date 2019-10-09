@@ -1245,6 +1245,9 @@ var phasereditor2d;
                         this.setSelection(e.detail);
                     });
                 }
+                getViewer() {
+                    return this._viewer;
+                }
                 layout() {
                     if (this._filteredViewer) {
                         this._filteredViewer.layout();
@@ -1436,55 +1439,130 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
+            var commands;
+            (function (commands) {
+                class KeyMatcher {
+                    constructor(config) {
+                        this._control = config.control === undefined ? false : config.control;
+                        this._shift = config.shift === undefined ? false : config.shift;
+                        this._alt = config.alt === undefined ? false : config.alt;
+                        this._meta = config.meta === undefined ? false : config.meta;
+                        this._key = config.key === undefined ? "" : config.key;
+                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
+                    }
+                    matchesKeys(event) {
+                        return event.ctrlKey === this._control
+                            && event.shiftKey === this._shift
+                            && event.altKey === this._alt
+                            && event.metaKey === this._meta
+                            && event.key.toLowerCase() === this._key.toLowerCase();
+                    }
+                    matchesTarget(element) {
+                        if (this._filterInputElements) {
+                            return !(element instanceof HTMLInputElement);
+                        }
+                        return true;
+                    }
+                }
+                commands.KeyMatcher = KeyMatcher;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./commands/KeyMatcher.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var KeyMatcher = phasereditor2d.ui.ide.commands.KeyMatcher;
             ide.CMD_SAVE = "save";
             ide.CMD_DELETE = "delete";
             ide.CMD_RENAME = "rename";
             ide.CMD_UNDO = "undo";
             ide.CMD_REDO = "redo";
             ide.CMD_SWITCH_THEME = "switchTheme";
+            ide.CMD_COLLAPSE_ALL = "collapseAll";
+            ide.CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
             class IDECommands {
                 static init() {
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
-                    // save
-                    manager.addCommandHelper(ide.CMD_SAVE);
-                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
-                        args.activeEditor.save();
+                    this.initEdit(manager);
+                    this.initUndo(manager);
+                    this.initTheme(manager);
+                    this.initViewer(manager);
+                }
+                static initViewer(manager) {
+                    // collapse all
+                    manager.addCommandHelper(ide.CMD_COLLAPSE_ALL);
+                    manager.addHandlerHelper(ide.CMD_COLLAPSE_ALL, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
+                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                        viewer.collapseAll();
+                        viewer.repaint();
                     });
-                    manager.addKeyBinding(ide.CMD_SAVE, new ide.commands.KeyMatcher({
+                    manager.addKeyBinding(ide.CMD_COLLAPSE_ALL, new KeyMatcher({
+                        key: "c"
+                    }));
+                    // collapse expand branch
+                    manager.addCommandHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH);
+                    manager.addHandlerHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
+                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                        const parents = [];
+                        for (const obj of viewer.getSelection()) {
+                            const objParents = viewer.expandCollapseBranch(obj);
+                            parents.push(...objParents);
+                        }
+                        viewer.setSelection(parents);
+                    });
+                    manager.addKeyBinding(ide.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
+                        key: " "
+                    }));
+                }
+                static initTheme(manager) {
+                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
+                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
+                    manager.addKeyBinding(ide.CMD_SWITCH_THEME, new KeyMatcher({
                         control: true,
-                        key: "s"
+                        key: "2"
                     }));
-                    // delete
-                    manager.addCommandHelper(ide.CMD_DELETE);
-                    manager.addKeyBinding(ide.CMD_DELETE, new ide.commands.KeyMatcher({
-                        key: "delete"
-                    }));
-                    // rename
-                    manager.addCommandHelper(ide.CMD_RENAME);
-                    manager.addKeyBinding(ide.CMD_RENAME, new ide.commands.KeyMatcher({
-                        key: "f2"
-                    }));
+                }
+                static initUndo(manager) {
                     // undo
                     manager.addCommandHelper(ide.CMD_UNDO);
                     manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => args.activePart.getUndoManager().undo());
-                    manager.addKeyBinding(ide.CMD_UNDO, new ide.commands.KeyMatcher({
+                    manager.addKeyBinding(ide.CMD_UNDO, new KeyMatcher({
                         control: true,
                         key: "z"
                     }));
                     // redo
                     manager.addCommandHelper(ide.CMD_REDO);
                     manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => args.activePart.getUndoManager().redo());
-                    manager.addKeyBinding(ide.CMD_REDO, new ide.commands.KeyMatcher({
+                    manager.addKeyBinding(ide.CMD_REDO, new KeyMatcher({
                         control: true,
                         shift: true,
                         key: "z"
                     }));
-                    // switch theme
-                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
-                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
-                    manager.addKeyBinding(ide.CMD_SWITCH_THEME, new ide.commands.KeyMatcher({
+                }
+                static initEdit(manager) {
+                    // save
+                    manager.addCommandHelper(ide.CMD_SAVE);
+                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
+                        args.activeEditor.save();
+                    });
+                    manager.addKeyBinding(ide.CMD_SAVE, new KeyMatcher({
                         control: true,
-                        key: "2"
+                        key: "s"
+                    }));
+                    // delete
+                    manager.addCommandHelper(ide.CMD_DELETE);
+                    manager.addKeyBinding(ide.CMD_DELETE, new KeyMatcher({
+                        key: "delete"
+                    }));
+                    // rename
+                    manager.addCommandHelper(ide.CMD_RENAME);
+                    manager.addKeyBinding(ide.CMD_RENAME, new KeyMatcher({
+                        key: "f2"
                     }));
                 }
             }
@@ -1744,6 +1822,7 @@ var phasereditor2d;
                     this._editorRegistry = new ide.EditorRegistry();
                     this._activePart = null;
                     this._activeEditor = null;
+                    this._activeElement = null;
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
@@ -1785,9 +1864,13 @@ var phasereditor2d;
                 }
                 initEvents() {
                     window.addEventListener("mousedown", e => {
+                        this._activeElement = e.target;
                         const part = this.findPart(e.target);
                         this.setActivePart(part);
                     });
+                }
+                getActiveElement() {
+                    return this._activeElement;
                 }
                 getActivePart() {
                     return this._activePart;
@@ -1975,9 +2058,10 @@ var phasereditor2d;
             var commands;
             (function (commands) {
                 class CommandArgs {
-                    constructor(activePart, activeEditor) {
+                    constructor(activePart, activeEditor, activeElement) {
                         this.activePart = activePart;
                         this.activeEditor = activeEditor;
+                        this.activeElement = activeElement;
                     }
                 }
                 commands.CommandArgs = CommandArgs;
@@ -2065,7 +2149,7 @@ var phasereditor2d;
                     }
                     makeArgs() {
                         const wb = ide.Workbench.getWorkbench();
-                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor());
+                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement());
                     }
                     getCommand(id) {
                         const command = this._commandIdMap.get(id);
@@ -2094,42 +2178,6 @@ var phasereditor2d;
                     }
                 }
                 commands.CommandManager = CommandManager;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var commands;
-            (function (commands) {
-                class KeyMatcher {
-                    constructor(config) {
-                        this._control = config.control === undefined ? false : config.control;
-                        this._shift = config.shift === undefined ? false : config.shift;
-                        this._alt = config.alt === undefined ? false : config.alt;
-                        this._meta = config.meta === undefined ? false : config.meta;
-                        this._key = config.key === undefined ? "" : config.key;
-                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
-                    }
-                    matchesKeys(event) {
-                        return event.ctrlKey === this._control
-                            && event.shiftKey === this._shift
-                            && event.altKey === this._alt
-                            && event.metaKey === this._meta
-                            && event.key.toLowerCase() === this._key.toLowerCase();
-                    }
-                    matchesTarget(element) {
-                        if (this._filterInputElements) {
-                            return !(element instanceof HTMLInputElement);
-                        }
-                        return true;
-                    }
-                }
-                commands.KeyMatcher = KeyMatcher;
             })(commands = ide.commands || (ide.commands = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
@@ -3417,7 +3465,7 @@ var phasereditor2d;
                         const roots = contentProvider.getRoots(viewer.getInput());
                         const treeIconList = [];
                         const paintItems = [];
-                        this.paintItems(roots, treeIconList, paintItems, x, y);
+                        this.paintItems(roots, treeIconList, paintItems, null, x, y);
                         let contentHeight = Number.MIN_VALUE;
                         for (const paintItem of paintItems) {
                             contentHeight = Math.max(paintItem.y + paintItem.h, contentHeight);
@@ -3429,13 +3477,14 @@ var phasereditor2d;
                             paintItems: paintItems
                         };
                     }
-                    paintItems(objects, treeIconList, paintItems, x, y) {
+                    paintItems(objects, treeIconList, paintItems, parentPaintItem, x, y) {
                         const viewer = this._viewer;
                         const context = viewer.getContext();
                         const b = viewer.getBounds();
                         for (let obj of objects) {
                             const children = viewer.getContentProvider().getChildren(obj);
                             const expanded = viewer.isExpanded(obj);
+                            let newParentPaintItem = null;
                             if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x + viewers.LABEL_MARGIN, y, b.width - x - viewers.LABEL_MARGIN, 0, obj, viewer);
@@ -3455,13 +3504,14 @@ var phasereditor2d;
                                     }
                                     this.renderTreeCell(args, renderer);
                                 }
-                                const item = new viewers.PaintItem(paintItems.length, obj);
+                                const item = new viewers.PaintItem(paintItems.length, obj, parentPaintItem);
                                 item.set(args.x, args.y, args.w, args.h);
                                 paintItems.push(item);
+                                newParentPaintItem = item;
                                 y += cellHeight;
                             }
                             if (expanded) {
-                                const result = this.paintItems(children, treeIconList, paintItems, x + viewers.LABEL_MARGIN, y);
+                                const result = this.paintItems(children, treeIconList, paintItems, newParentPaintItem, x + viewers.LABEL_MARGIN, y);
                                 y = result.y;
                             }
                         }
@@ -3520,11 +3570,11 @@ var phasereditor2d;
                     getSections() {
                         return this._sections;
                     }
-                    paintItems(objects, treeIconList, paintItems, x, y) {
+                    paintItems(objects, treeIconList, paintItems, parentPaintItem, x, y) {
                         const viewer = this.getViewer();
                         const cellSize = viewer.getCellSize();
                         if (cellSize <= 48) {
-                            return super.paintItems(objects, treeIconList, paintItems, x, y);
+                            return super.paintItems(objects, treeIconList, paintItems, null, x, y);
                         }
                         const b = viewer.getBounds();
                         if (this._sections.length > 0) {
@@ -3555,7 +3605,7 @@ var phasereditor2d;
                                 ctx.stroke();
                                 ctx.restore();
                                 y2 += 10;
-                                const result = this.paintItems2(objects2, treeIconList, paintItems, x2, y2, viewers.TREE_RENDERER_GRID_PADDING, 0);
+                                const result = this.paintItems2(objects2, treeIconList, paintItems, null, x2, y2, viewers.TREE_RENDERER_GRID_PADDING, 0);
                                 y2 = result.y + 20;
                                 if (result.x > viewers.TREE_RENDERER_GRID_PADDING) {
                                     y2 += cellSize;
@@ -3568,10 +3618,10 @@ var phasereditor2d;
                         }
                         else {
                             const offset = this._center ? Math.floor(b.width % (viewer.getCellSize() + viewers.TREE_RENDERER_GRID_PADDING) / 2) : viewers.TREE_RENDERER_GRID_PADDING;
-                            return this.paintItems2(objects, treeIconList, paintItems, x + offset, y + viewers.TREE_RENDERER_GRID_PADDING, offset, 0);
+                            return this.paintItems2(objects, treeIconList, paintItems, null, x + offset, y + viewers.TREE_RENDERER_GRID_PADDING, offset, 0);
                         }
                     }
-                    paintItems2(objects, treeIconList, paintItems, x, y, offset, depth) {
+                    paintItems2(objects, treeIconList, paintItems, parentPaintItem, x, y, offset, depth) {
                         const viewer = this.getViewer();
                         const cellSize = Math.max(controls.ROW_HEIGHT, viewer.getCellSize());
                         const context = viewer.getContext();
@@ -3581,6 +3631,7 @@ var phasereditor2d;
                         for (let obj of objects) {
                             const children = viewer.getContentProvider().getChildren(obj);
                             const expanded = viewer.isExpanded(obj);
+                            let newParentPaintItem = null;
                             if (viewer.isFilterIncluded(obj)) {
                                 const renderer = viewer.getCellRendererProvider().getCellRenderer(obj);
                                 const args = new viewers.RenderCellArgs(context, x, y, cellSize, cellSize, obj, viewer, true);
@@ -3597,9 +3648,10 @@ var phasereditor2d;
                                         });
                                     }
                                 }
-                                const item = new viewers.PaintItem(paintItems.length, obj);
+                                const item = new viewers.PaintItem(paintItems.length, obj, parentPaintItem);
                                 item.set(args.x, args.y, args.w, args.h);
                                 paintItems.push(item);
+                                newParentPaintItem = item;
                                 x += cellSize + viewers.TREE_RENDERER_GRID_PADDING;
                                 if (x + cellSize > b.width) {
                                     y += cellSize + viewers.TREE_RENDERER_GRID_PADDING;
@@ -3607,7 +3659,7 @@ var phasereditor2d;
                                 }
                             }
                             if (expanded) {
-                                const result = this.paintItems2(children, treeIconList, paintItems, x, y, offset, depth + 1);
+                                const result = this.paintItems2(children, treeIconList, paintItems, newParentPaintItem, x, y, offset, depth + 1);
                                 y = result.y;
                                 x = result.x;
                             }
@@ -6318,6 +6370,19 @@ var phasereditor2d;
                     isCollapsed(obj) {
                         return !this.isExpanded(obj);
                     }
+                    collapseAll() {
+                        this._expandedObjects = new Set();
+                    }
+                    expandCollapseBranch(obj) {
+                        const parents = [];
+                        const item = this._paintItems.find(item => item.data === obj);
+                        if (item && item.parent) {
+                            const parentObj = item.parent.data;
+                            this.setExpanded(parentObj, !this.isExpanded(parentObj));
+                            parents.push(parentObj);
+                        }
+                        return parents;
+                    }
                     isSelected(obj) {
                         return this._selectedObjects.has(obj);
                     }
@@ -6951,6 +7016,13 @@ var phasereditor2d;
                     }
                     setContentProvider(contentProvider) {
                         super.setContentProvider(contentProvider);
+                    }
+                    expandCollapseBranch(obj) {
+                        if (this.getContentProvider().getChildren(obj).length > 0) {
+                            this.setExpanded(obj, !this.isExpanded(obj));
+                            return [obj];
+                        }
+                        return super.expandCollapseBranch(obj);
                     }
                 }
                 viewers.TreeViewer = TreeViewer;
@@ -7926,10 +7998,11 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class PaintItem extends controls.Rect {
-                    constructor(index, data) {
+                    constructor(index, data, parent = null) {
                         super();
                         this.index = index;
                         this.data = data;
+                        this.parent = parent;
                     }
                 }
                 viewers.PaintItem = PaintItem;

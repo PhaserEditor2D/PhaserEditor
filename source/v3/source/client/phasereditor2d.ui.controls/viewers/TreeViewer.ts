@@ -210,6 +210,18 @@ namespace phasereditor2d.ui.controls.viewers {
         setContentProvider(contentProvider: ITreeContentProvider): void {
             super.setContentProvider(contentProvider);
         }
-        
+
+        expandCollapseBranch(obj: any) {
+
+            if (this.getContentProvider().getChildren(obj).length > 0) {
+                
+                this.setExpanded(obj, !this.isExpanded(obj));
+                
+                return [obj];
+            }
+
+            return super.expandCollapseBranch(obj);
+        }
+
     }
 }

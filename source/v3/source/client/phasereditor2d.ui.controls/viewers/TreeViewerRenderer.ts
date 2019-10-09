@@ -3,7 +3,7 @@ namespace phasereditor2d.ui.controls.viewers {
     export class TreeViewerRenderer {
         private _viewer: TreeViewer;
 
-        constructor(viewer: TreeViewer, cellSize : number = ROW_HEIGHT) {
+        constructor(viewer: TreeViewer, cellSize: number = ROW_HEIGHT) {
             this._viewer = viewer;
             this._viewer.setCellSize(cellSize);
         }
@@ -28,11 +28,11 @@ namespace phasereditor2d.ui.controls.viewers {
             const treeIconList: TreeIconInfo[] = [];
             const paintItems: PaintItem[] = [];
 
-            this.paintItems(roots, treeIconList, paintItems, x, y);
-            
+            this.paintItems(roots, treeIconList, paintItems, null, x, y);
+
             let contentHeight = Number.MIN_VALUE;
 
-            for(const paintItem of paintItems) {
+            for (const paintItem of paintItems) {
                 contentHeight = Math.max(paintItem.y + paintItem.h, contentHeight);
             }
 
@@ -46,7 +46,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
         }
 
-        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], x: number, y: number) {
+        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
 
             const viewer = this._viewer;
 
@@ -58,6 +58,7 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 const children = viewer.getContentProvider().getChildren(obj);
                 const expanded = viewer.isExpanded(obj);
+                let newParentPaintItem : PaintItem = null;
 
                 if (viewer.isFilterIncluded(obj)) {
 
@@ -87,21 +88,23 @@ namespace phasereditor2d.ui.controls.viewers {
                         this.renderTreeCell(args, renderer);
                     }
 
-                    const item = new PaintItem(paintItems.length, obj);
+                    const item = new PaintItem(paintItems.length, obj, parentPaintItem);
                     item.set(args.x, args.y, args.w, args.h);
                     paintItems.push(item);
+
+                    newParentPaintItem = item;
 
                     y += cellHeight;
 
                 }
 
                 if (expanded) {
-                    const result = this.paintItems(children, treeIconList, paintItems, x + LABEL_MARGIN, y);
+                    const result = this.paintItems(children, treeIconList, paintItems, newParentPaintItem, x + LABEL_MARGIN, y);
                     y = result.y;
                 }
             }
 
-            return {x : x, y : y};
+            return { x: x, y: y };
         }
 
         private renderTreeCell(args: RenderCellArgs, renderer: ICellRenderer): void {

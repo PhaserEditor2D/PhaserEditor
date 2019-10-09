@@ -58,6 +58,7 @@ namespace phasereditor2d.ui.ide {
         private _contentTypeRegistry: core.ContentTypeRegistry;
         private _activePart: Part;
         private _activeEditor: EditorPart;
+        private _activeElement: HTMLElement;
         private _editorRegistry: EditorRegistry;
         private _commandManager: commands.CommandManager;
 
@@ -77,6 +78,7 @@ namespace phasereditor2d.ui.ide {
 
             this._activePart = null;
             this._activeEditor = null;
+            this._activeElement = null;
 
         }
 
@@ -104,7 +106,7 @@ namespace phasereditor2d.ui.ide {
 
         private initCommands() {
             this._commandManager = new commands.CommandManager();
-            
+
             IDECommands.init();
             editors.scene.SceneEditorCommands.init();
         }
@@ -129,9 +131,14 @@ namespace phasereditor2d.ui.ide {
 
         private initEvents() {
             window.addEventListener("mousedown", e => {
+                this._activeElement = <HTMLElement>e.target;
                 const part = this.findPart(<any>e.target);
                 this.setActivePart(part);
             });
+        }
+
+        getActiveElement() {
+            return this._activeElement;
         }
 
         getActivePart() {

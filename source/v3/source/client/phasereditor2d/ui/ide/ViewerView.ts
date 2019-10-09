@@ -26,6 +26,10 @@ namespace phasereditor2d.ui.ide {
             });
         }
 
+        getViewer() {
+            return this._viewer;
+        }
+
         layout() {
             if (this._filteredViewer) {
                 this._filteredViewer.layout();
