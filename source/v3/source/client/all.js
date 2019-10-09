@@ -628,9 +628,10 @@ var phasereditor2d;
             Controls._images = new Map();
             Controls._applicationDragData = null;
             Controls.LIGHT_THEME = {
-                treeItemSelectionBackground: "#4242ff",
+                //treeItemSelectionBackground: "#4242ff",
+                treeItemSelectionBackground: "#525252",
                 treeItemSelectionForeground: "#f0f0f0",
-                treeItemForeground: "#000"
+                treeItemForeground: "#000000"
             };
             Controls.DARK_THEME = {
                 treeItemSelectionBackground: "#f0a050",
@@ -3548,14 +3549,11 @@ var phasereditor2d;
                                     .getLabel(section)
                                     .toUpperCase();
                                 ctx.save();
-                                ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                                ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
+                                ctx.fillStyle = controls.Controls.theme.treeItemForeground + "44";
                                 {
-                                    const m = ctx.measureText(label);
-                                    //ctx.fillText(label, b.width - m.width - 10, y2);
                                     ctx.fillText(label, x2, y2);
                                 }
-                                ctx.globalAlpha = 0.1;
+                                ctx.strokeStyle = controls.Controls.theme.treeItemForeground + "44";
                                 ctx.beginPath();
                                 ctx.moveTo(0, y2 + 5);
                                 ctx.lineTo(b.width, y2 + 5);
@@ -3652,23 +3650,6 @@ var phasereditor2d;
                             labelHeight = lineHeight;
                             visible = args.y > -(cellSize + labelHeight) && args.y < b.height;
                             if (visible) {
-                                // if (depth > 0) {
-                                //     const space = args.h / (depth + 1);
-                                //     const arrowH = 5;//space / 2;
-                                //     let arrowY = args.y + space;
-                                //     ctx.save();
-                                //     ctx.lineWidth = 1;
-                                //     ctx.strokeStyle = Controls.theme.treeItemForeground;
-                                //     for (let i = 0; i < depth; i++) {
-                                //         ctx.beginPath();
-                                //         ctx.moveTo(args.x - 5, arrowY - arrowH);
-                                //         ctx.lineTo(args.x, arrowY);
-                                //         ctx.lineTo(args.x - 5, arrowY + arrowH);
-                                //         ctx.stroke()
-                                //         arrowY += space;
-                                //     }
-                                //     ctx.restore();
-                                // }
                                 this.renderCellBack(args, selected, isLastChild);
                                 const args2 = new viewers.RenderCellArgs(args.canvasContext, args.x + 3, args.y + 3, args.w - 6, args.h - 6 - lineHeight, args.obj, args.viewer, args.center);
                                 renderer.renderCell(args2);
@@ -3694,8 +3675,7 @@ var phasereditor2d;
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground;
-                            ctx.globalAlpha = 0.5;
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground + "88";
                             ctx.fillRect(args.x, args.y, args.w, args.h);
                             ctx.restore();
                         }
@@ -3704,7 +3684,7 @@ var phasereditor2d;
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
-                            ctx.globalAlpha = 0.3;
+                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground + "44";
                             ctx.fillRect(args.x, args.y, args.w, args.h);
                             ctx.restore();
                         }

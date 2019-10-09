@@ -59,16 +59,15 @@ namespace phasereditor2d.ui.controls.viewers {
                         .toUpperCase();
 
                     ctx.save();
-                    ctx.fillStyle = controls.Controls.theme.treeItemForeground;
-                    ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
+
+                    ctx.fillStyle = controls.Controls.theme.treeItemForeground + "44";
 
                     {
-                        const m = ctx.measureText(label);
-                        //ctx.fillText(label, b.width - m.width - 10, y2);
                         ctx.fillText(label, x2, y2);
                     }
 
-                    ctx.globalAlpha = 0.1;
+                    ctx.strokeStyle = controls.Controls.theme.treeItemForeground + "44";
+
                     ctx.beginPath();
                     ctx.moveTo(0, y2 + 5);
                     ctx.lineTo(b.width, y2 + 5);
@@ -205,26 +204,6 @@ namespace phasereditor2d.ui.controls.viewers {
 
                 if (visible) {
 
-                    // if (depth > 0) {
-                    //     const space = args.h / (depth + 1);
-                    //     const arrowH = 5;//space / 2;
-                    //     let arrowY = args.y + space;
-
-                    //     ctx.save();
-                    //     ctx.lineWidth = 1;
-                    //     ctx.strokeStyle = Controls.theme.treeItemForeground;
-
-                    //     for (let i = 0; i < depth; i++) {
-                    //         ctx.beginPath();
-                    //         ctx.moveTo(args.x - 5, arrowY - arrowH);
-                    //         ctx.lineTo(args.x, arrowY);
-                    //         ctx.lineTo(args.x - 5, arrowY + arrowH);
-                    //         ctx.stroke()
-                    //         arrowY += space;
-                    //     }
-                    //     ctx.restore();
-                    // }
-
                     this.renderCellBack(args, selected, isLastChild);
 
                     const args2 = new RenderCellArgs(args.canvasContext,
@@ -263,8 +242,7 @@ namespace phasereditor2d.ui.controls.viewers {
             if (selected) {
                 const ctx = args.canvasContext;
                 ctx.save();
-                ctx.fillStyle = Controls.theme.treeItemSelectionBackground;
-                ctx.globalAlpha = 0.5;
+                ctx.fillStyle = Controls.theme.treeItemSelectionBackground + "88";
                 ctx.fillRect(args.x, args.y, args.w, args.h);
                 ctx.restore();
             }
@@ -274,7 +252,7 @@ namespace phasereditor2d.ui.controls.viewers {
             if (selected) {
                 const ctx = args.canvasContext;
                 ctx.save();
-                ctx.globalAlpha = 0.3;
+                ctx.fillStyle = Controls.theme.treeItemSelectionBackground + "44";
                 ctx.fillRect(args.x, args.y, args.w, args.h);
                 ctx.restore();
             }
