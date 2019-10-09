@@ -1445,46 +1445,43 @@ var phasereditor2d;
             class IDECommands {
                 static init() {
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
-                    // register commands
+                    // save
                     manager.addCommandHelper(ide.CMD_SAVE);
-                    manager.addCommandHelper(ide.CMD_DELETE);
-                    manager.addCommandHelper(ide.CMD_RENAME);
-                    manager.addCommandHelper(ide.CMD_UNDO);
-                    manager.addCommandHelper(ide.CMD_REDO);
-                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
-                    // register handlers
                     manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
                         args.activeEditor.save();
                     });
-                    manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => {
-                        args.activePart.getUndoManager().undo();
-                    });
-                    manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => {
-                        args.activePart.getUndoManager().redo();
-                    });
-                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => {
-                        ui.controls.Controls.switchTheme();
-                    });
-                    // register bindings
                     manager.addKeyBinding(ide.CMD_SAVE, new ide.commands.KeyMatcher({
                         control: true,
                         key: "s"
                     }));
+                    // delete
+                    manager.addCommandHelper(ide.CMD_DELETE);
                     manager.addKeyBinding(ide.CMD_DELETE, new ide.commands.KeyMatcher({
                         key: "delete"
                     }));
+                    // rename
+                    manager.addCommandHelper(ide.CMD_RENAME);
                     manager.addKeyBinding(ide.CMD_RENAME, new ide.commands.KeyMatcher({
                         key: "f2"
                     }));
+                    // undo
+                    manager.addCommandHelper(ide.CMD_UNDO);
+                    manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => args.activePart.getUndoManager().undo());
                     manager.addKeyBinding(ide.CMD_UNDO, new ide.commands.KeyMatcher({
                         control: true,
                         key: "z"
                     }));
+                    // redo
+                    manager.addCommandHelper(ide.CMD_REDO);
+                    manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => args.activePart.getUndoManager().redo());
                     manager.addKeyBinding(ide.CMD_REDO, new ide.commands.KeyMatcher({
                         control: true,
                         shift: true,
                         key: "z"
                     }));
+                    // switch theme
+                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
+                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
                     manager.addKeyBinding(ide.CMD_SWITCH_THEME, new ide.commands.KeyMatcher({
                         control: true,
                         key: "2"
