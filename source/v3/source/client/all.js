@@ -4516,6 +4516,9 @@ var phasereditor2d;
                                     if (element instanceof Phaser.GameObjects.Image) {
                                         return new outline.GameObjectCellRenderer(this._packs);
                                     }
+                                    else if (element instanceof Phaser.GameObjects.DisplayList) {
+                                        return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_FOLDER));
+                                    }
                                 }
                                 return new ui.controls.viewers.EmptyCellRenderer(false);
                             }
@@ -7909,6 +7912,31 @@ var phasereditor2d;
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./Viewer.ts"/>
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class IconImageCellRenderer extends viewers.ImageCellRenderer {
+                    constructor(icon) {
+                        super();
+                        this._icon = icon;
+                    }
+                    getImage() {
+                        return this._icon;
+                    }
+                    cellHeight(args) {
+                        return controls.ROW_HEIGHT;
+                    }
+                }
+                viewers.IconImageCellRenderer = IconImageCellRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;

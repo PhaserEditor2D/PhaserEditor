@@ -24,6 +24,7 @@ namespace phasereditor2d.ui.ide.views.files {
 
             return controls.Controls.getIcon(ICON_FILE);
         }
+        
         preload(obj: any) {
             const file = <io.FilePath>obj;
             if (file.isFile()) {

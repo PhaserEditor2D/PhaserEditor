@@ -60,7 +60,13 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
             if (this._packs !== null) {
 
                 if (element instanceof Phaser.GameObjects.Image) {
+
                     return new GameObjectCellRenderer(this._packs);
+
+                } else if (element instanceof Phaser.GameObjects.DisplayList) {
+
+                    return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_FOLDER));
+
                 }
 
             }
