@@ -3362,6 +3362,9 @@ var phasereditor2d;
                                 parent.appendChild(filteredViewer.getElement());
                                 this.addUpdater(async () => {
                                     const frames = await this.getImageFrames();
+                                    // clean the viewer first
+                                    viewer.setInput([]);
+                                    viewer.repaint();
                                     viewer.setInput(frames);
                                     filteredViewer.resizeTo();
                                 });
@@ -7004,6 +7007,9 @@ var phasereditor2d;
                             const filteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), viewer);
                             parent.appendChild(filteredViewer.getElement());
                             this.addUpdater(() => {
+                                // clean the viewer first
+                                viewer.setInput([]);
+                                viewer.repaint();
                                 viewer.setInput(this.getSelection());
                                 filteredViewer.resizeTo();
                             });

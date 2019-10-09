@@ -19,6 +19,11 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
 
             this.addUpdater(async () => {
                 const frames = await this.getImageFrames();
+                
+                // clean the viewer first
+                viewer.setInput([]);
+                viewer.repaint();
+
                 viewer.setInput(frames);
                 filteredViewer.resizeTo();
             });

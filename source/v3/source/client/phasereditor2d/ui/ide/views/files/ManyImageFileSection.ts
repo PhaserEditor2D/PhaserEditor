@@ -32,7 +32,13 @@ namespace phasereditor2d.ui.ide.views.files {
             parent.appendChild(filteredViewer.getElement());
 
             this.addUpdater(() => {
+                
+                // clean the viewer first
+                viewer.setInput([]);
+                viewer.repaint();
+
                 viewer.setInput(this.getSelection());
+
                 filteredViewer.resizeTo();
             });
         }
