@@ -4644,79 +4644,19 @@ var phasereditor2d;
                 (function (scene) {
                     var outline;
                     (function (outline) {
-                        class SceneEditorOutlineLabelProvider {
-                            getLabel(obj) {
-                                if (obj instanceof Phaser.GameObjects.GameObject) {
-                                    return obj.getEditorLabel();
-                                }
-                                if (obj instanceof Phaser.GameObjects.DisplayList) {
-                                    return "Display List";
-                                }
-                                return "" + obj;
-                            }
-                        }
-                        class SceneEditorOutlineContentProvider {
-                            getRoots(input) {
-                                const editor = input;
-                                const displayList = editor.getGameScene().sys.displayList;
-                                if (displayList) {
-                                    return [displayList];
-                                }
-                                return [];
-                            }
-                            getChildren(parent) {
-                                if (parent instanceof Phaser.GameObjects.DisplayList) {
-                                    return parent.getChildren();
-                                }
-                                else if (parent instanceof Phaser.GameObjects.Container) {
-                                    return parent.list;
-                                }
-                                return [];
-                            }
-                        }
-                        class SceneEditorOutlineRendererProvider {
-                            constructor(editor) {
-                                this._editor = editor;
-                                this._assetRendererProvider = new editors.pack.viewers.AssetPackCellRendererProvider();
-                                this._packs = null;
-                            }
-                            getCellRenderer(element) {
-                                if (this._packs !== null) {
-                                    if (element instanceof Phaser.GameObjects.Image) {
-                                        return new outline.GameObjectCellRenderer(this._packs);
-                                    }
-                                    else if (element instanceof Phaser.GameObjects.Container) {
-                                        return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_GROUP));
-                                    }
-                                    else if (element instanceof Phaser.GameObjects.DisplayList) {
-                                        return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_FOLDER));
-                                    }
-                                }
-                                return new ui.controls.viewers.EmptyCellRenderer(false);
-                            }
-                            async preload(element) {
-                                if (this._packs === null) {
-                                    return editors.pack.AssetPackUtils.getAllPacks().then(packs => {
-                                        this._packs = packs;
-                                        return ui.controls.PreloadResult.RESOURCES_LOADED;
-                                    });
-                                }
-                                return ui.controls.Controls.resolveNothingLoaded();
-                            }
-                        }
                         class SceneEditorOutlineProvider extends ide.EditorViewerProvider {
                             constructor(editor) {
                                 super();
                                 this._editor = editor;
                             }
                             getContentProvider() {
-                                return new SceneEditorOutlineContentProvider();
+                                return new outline.SceneEditorOutlineContentProvider();
                             }
                             getLabelProvider() {
-                                return new SceneEditorOutlineLabelProvider();
+                                return new outline.SceneEditorOutlineLabelProvider();
                             }
                             getCellRendererProvider() {
-                                return new SceneEditorOutlineRendererProvider(this._editor);
+                                return new outline.SceneEditorOutlineRendererProvider(this._editor);
                             }
                             getTreeViewerRenderer(viewer) {
                                 return new ui.controls.viewers.TreeViewerRenderer(viewer, 48);
@@ -5057,20 +4997,30 @@ var phasereditor2d;
                         }
                         async preload() {
                             if (this._image == null) {
+                                if (this._promise) {
+                                    return this._promise;
+                                }
                                 const content = await ide.FileUtils.getFileString(this._file);
-                                const imageElement = await new Promise((resolve, reject) => {
+                                this._promise = new Promise((resolve, reject) => {
                                     const data = JSON.parse(content);
                                     const width = 800;
                                     const height = 600;
-                                    const scene = new ThumbnailScene(data, image => {
-                                        resolve(image);
-                                    });
                                     const canvas = document.createElement("canvas");
                                     canvas.style.width = (canvas.width = width) + "px";
                                     canvas.style.height = (canvas.height = height) + "px";
+                                    const parent = document.createElement("div");
+                                    parent.style.position = "fixed";
+                                    parent.style.left = -width - 10 + "px";
+                                    parent.appendChild(canvas);
+                                    document.body.appendChild(parent);
+                                    const scene = new ThumbnailScene(data, image => {
+                                        resolve(image);
+                                        parent.remove();
+                                    });
                                     const game = new Phaser.Game({
                                         type: Phaser.WEBGL,
                                         canvas: canvas,
+                                        parent: null,
                                         width: width,
                                         height: height,
                                         scale: {
@@ -5085,9 +5035,12 @@ var phasereditor2d;
                                         },
                                         scene: scene,
                                     });
+                                }).then(imageElement => {
+                                    this._image = new ui.controls.ImageWrapper(imageElement);
+                                    this._promise = null;
+                                    return ui.controls.PreloadResult.RESOURCES_LOADED;
                                 });
-                                this._image = new ui.controls.ImageWrapper(imageElement);
-                                return ui.controls.Controls.resolveResourceLoaded();
+                                return this._promise;
                             }
                             return ui.controls.Controls.resolveNothingLoaded();
                         }
@@ -5893,6 +5846,123 @@ var phasereditor2d;
                             }
                         }
                         outline.GameObjectCellRenderer = GameObjectCellRenderer;
+                    })(outline = scene.outline || (scene.outline = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var outline;
+                    (function (outline) {
+                        class SceneEditorOutlineContentProvider {
+                            getRoots(input) {
+                                const editor = input;
+                                const displayList = editor.getGameScene().sys.displayList;
+                                if (displayList) {
+                                    return [displayList];
+                                }
+                                return [];
+                            }
+                            getChildren(parent) {
+                                if (parent instanceof Phaser.GameObjects.DisplayList) {
+                                    return parent.getChildren();
+                                }
+                                else if (parent instanceof Phaser.GameObjects.Container) {
+                                    return parent.list;
+                                }
+                                return [];
+                            }
+                        }
+                        outline.SceneEditorOutlineContentProvider = SceneEditorOutlineContentProvider;
+                    })(outline = scene.outline || (scene.outline = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var outline;
+                    (function (outline) {
+                        class SceneEditorOutlineLabelProvider {
+                            getLabel(obj) {
+                                if (obj instanceof Phaser.GameObjects.GameObject) {
+                                    return obj.getEditorLabel();
+                                }
+                                if (obj instanceof Phaser.GameObjects.DisplayList) {
+                                    return "Display List";
+                                }
+                                return "" + obj;
+                            }
+                        }
+                        outline.SceneEditorOutlineLabelProvider = SceneEditorOutlineLabelProvider;
+                    })(outline = scene.outline || (scene.outline = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var outline;
+                    (function (outline) {
+                        class SceneEditorOutlineRendererProvider {
+                            constructor(editor) {
+                                this._editor = editor;
+                                this._assetRendererProvider = new editors.pack.viewers.AssetPackCellRendererProvider();
+                                this._packs = null;
+                            }
+                            getCellRenderer(element) {
+                                if (this._packs !== null) {
+                                    if (element instanceof Phaser.GameObjects.Image) {
+                                        return new outline.GameObjectCellRenderer(this._packs);
+                                    }
+                                    else if (element instanceof Phaser.GameObjects.Container) {
+                                        return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_GROUP));
+                                    }
+                                    else if (element instanceof Phaser.GameObjects.DisplayList) {
+                                        return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_FOLDER));
+                                    }
+                                }
+                                return new ui.controls.viewers.EmptyCellRenderer(false);
+                            }
+                            async preload(element) {
+                                if (this._packs === null) {
+                                    return editors.pack.AssetPackUtils.getAllPacks().then(packs => {
+                                        this._packs = packs;
+                                        return ui.controls.PreloadResult.RESOURCES_LOADED;
+                                    });
+                                }
+                                return ui.controls.Controls.resolveNothingLoaded();
+                            }
+                        }
+                        outline.SceneEditorOutlineRendererProvider = SceneEditorOutlineRendererProvider;
                     })(outline = scene.outline || (scene.outline = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -7130,8 +7200,12 @@ var phasereditor2d;
                 (function (files) {
                     class FileCellRendererProvider {
                         getCellRenderer(file) {
-                            if (ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file) === ui.ide.CONTENT_TYPE_IMAGE) {
-                                return new files.FileImageRenderer();
+                            const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                            switch (contentType) {
+                                case ui.ide.CONTENT_TYPE_IMAGE:
+                                    return new files.FileImageRenderer();
+                                case ui.ide.editors.scene.CONTENT_TYPE_SCENE:
+                                    return new ui.ide.editors.scene.blocks.SceneCellRenderer();
                             }
                             return new files.FileCellRenderer();
                         }

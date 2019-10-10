@@ -32,6 +32,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         private _file: core.io.FilePath;
         private _image: controls.ImageWrapper;
+        private _promise: Promise<controls.PreloadResult>;
 
         constructor(file: core.io.FilePath) {
             this._file = file;
@@ -64,26 +65,39 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             if (this._image == null) {
 
+                if (this._promise) {
+                    return this._promise;
+                }
+
                 const content = await FileUtils.getFileString(this._file);
 
-                const imageElement = await new Promise<HTMLImageElement>((resolve, reject) => {
+                this._promise = new Promise<HTMLImageElement>((resolve, reject) => {
 
                     const data: json.SceneData = JSON.parse(content);
 
                     const width = 800;
                     const height = 600;
 
-                    const scene = new ThumbnailScene(data, image => {
-                        resolve(image);
-                    });
-
                     const canvas = document.createElement("canvas");
                     canvas.style.width = (canvas.width = width) + "px";
                     canvas.style.height = (canvas.height = height) + "px";
 
+                    const parent = document.createElement("div");
+                    parent.style.position = "fixed";
+                    parent.style.left = -width - 10 + "px";
+                    parent.appendChild(canvas);
+
+                    document.body.appendChild(parent);
+
+                    const scene = new ThumbnailScene(data, image => {
+                        resolve(image);
+                        parent.remove();
+                    });
+
                     const game = new Phaser.Game({
                         type: Phaser.WEBGL,
                         canvas: canvas,
+                        parent: null,
                         width: width,
                         height: height,
                         scale: {
@@ -99,11 +113,16 @@ namespace phasereditor2d.ui.ide.editors.scene {
                         scene: scene,
                     });
 
+                }).then(imageElement => {
+
+                    this._image = new controls.ImageWrapper(imageElement);
+
+                    this._promise = null;
+
+                    return controls.PreloadResult.RESOURCES_LOADED;
                 });
 
-                this._image = new controls.ImageWrapper(imageElement);
-
-                return controls.Controls.resolveResourceLoaded();
+                return this._promise;
             }
 
             return controls.Controls.resolveNothingLoaded();
