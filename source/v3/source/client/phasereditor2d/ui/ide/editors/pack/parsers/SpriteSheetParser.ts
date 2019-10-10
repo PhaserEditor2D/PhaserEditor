@@ -18,13 +18,18 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
         }
 
         async preloadFrames(): Promise<controls.PreloadResult> {
+
             const data = this.getPackItem().getData();
+
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
+
             const image = FileUtils.getImage(imageFile);
+
             return await image.preload();
         }
 
         parseFrames(): AssetPackImageFrame[] {
+            
             const frames: AssetPackImageFrame[] = [];
 
             const data = this.getPackItem().getData();

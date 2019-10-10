@@ -30,9 +30,6 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
         }
 
         private async getImageFrames() {
-            const packItems = this.getSelection().filter(e => e instanceof AssetPackItem);
-            await AssetPackUtils.preloadAssetPackItems(packItems);
-
             const frames = this.getSelection().flatMap(obj => {
 
                 if (obj instanceof AssetPackItem) {

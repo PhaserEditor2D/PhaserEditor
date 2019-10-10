@@ -18,13 +18,13 @@ namespace phasereditor2d.ui.ide.editors.scene.properties {
             parent.appendChild(imgControl.getElement());
             setTimeout(() => imgControl.resizeTo(), 1);
 
-            this.addUpdater(async () => {
+            this.addUpdater(() => {
+
                 const obj = this.getSelection()[0];
+                
                 const { key, frame } = obj.getEditorTexture();
 
-                const finder = await pack.AssetFinder.create();
-
-                const img = finder.getAssetPackItemImage(key, frame);
+                const img = pack.PackFinder.getAssetPackItemImage(key, frame);
 
                 imgControl.setImage(img);
 

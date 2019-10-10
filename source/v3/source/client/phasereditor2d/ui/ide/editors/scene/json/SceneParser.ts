@@ -37,8 +37,8 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
                 case "Image": {
 
                     const key = objData[TextureComponent.textureKey];
-                    const finder = await pack.AssetFinder.create();
-                    const item = finder.findAssetPackItem(key);
+
+                    const item = pack.PackFinder.findAssetPackItem(key);
 
                     if (item) {
                         await this.addToCache_async(item);

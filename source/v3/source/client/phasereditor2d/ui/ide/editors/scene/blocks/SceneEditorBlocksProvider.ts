@@ -2,30 +2,12 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
     export class SceneEditorBlocksProvider extends EditorViewerProvider {
 
-        private _contentProvider: SceneEditorBlocksContentProvider;
-        private _assetFinder: pack.AssetFinder;
-
-        constructor(assetFinder: pack.AssetFinder) {
-            super();
-
-            this._assetFinder = assetFinder;
-        }
-
         async preload() {
-
-            if (this._contentProvider) {
-                return;
-            }
-
-            await this._assetFinder.update();
-
-            this._contentProvider = new SceneEditorBlocksContentProvider(this._assetFinder);
-
-            await pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getPackItems());
+            pack.PackFinder.preload();
         }
 
         getContentProvider(): controls.viewers.ITreeContentProvider {
-            return this._contentProvider;
+            return new SceneEditorBlocksContentProvider();
         }
 
         getLabelProvider(): controls.viewers.ILabelProvider {

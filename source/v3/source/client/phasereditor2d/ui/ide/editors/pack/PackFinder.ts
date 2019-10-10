@@ -1,32 +1,42 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
-    export class AssetFinder {
+    export class PackFinder {
 
-        private _packs : AssetPack[];
+        private static _packs: AssetPack[] = [];
+        private static _loaded: boolean = false;
 
-        constructor(packs : AssetPack[]) {
-            this._packs = packs;
+        private constructor() {
+            
         }
 
-        static async create() {
-            return new AssetFinder(await AssetPackUtils.getAllPacks());
-        }
+        static async preload(): Promise<controls.PreloadResult> {
 
-        async update() {
+            if (this._loaded) {
+
+                return controls.Controls.resolveNothingLoaded();
+                
+            }
+
             this._packs = await AssetPackUtils.getAllPacks();
+
+            const items = this._packs.flatMap(pack => pack.getItems());
+
+            await AssetPackUtils.preloadAssetPackItems(items);
+
+            return controls.Controls.resolveResourceLoaded();
         }
 
-        getPacks() {
+        static getPacks() {
             return this._packs;
         }
 
-        findAssetPackItem(key: string) {
+        static findAssetPackItem(key: string) {
             return this._packs
                 .flatMap(pack => pack.getItems())
                 .find(item => item.getKey() === key);
         }
 
-        getAssetPackItemOrFrame(key: string, frame: any) {
+        static getAssetPackItemOrFrame(key: string, frame: any) {
 
             let item = this.findAssetPackItem(key);
 
@@ -54,7 +64,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return item;
         }
 
-        getAssetPackItemImage(key: string, frame: any): controls.IImage {
+        static getAssetPackItemImage(key: string, frame: any): controls.IImage {
 
             const asset = this.getAssetPackItemOrFrame(key, frame);
 

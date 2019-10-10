@@ -30,22 +30,33 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
         }
 
         async preloadFrames(): Promise<controls.PreloadResult> {
+
             const data = this.getPackItem().getData();
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
             if (dataFile) {
+
                 let result = await FileUtils.preloadFileString(dataFile);
+                
                 const str = FileUtils.getFileStringFromCache(dataFile);
+
                 try {
+
                     const data = JSON.parse(str);
+
                     if (data.textures) {
+
                         for (const texture of data.textures) {
+
                             const imageName: string = texture.image;
                             const imageFile = dataFile.getSibling(imageName);
+                            
                             if (imageFile) {
+
                                 const image = Workbench.getWorkbench().getFileImage(imageFile);
                                 const result2 = await image.preload();
                                 result = Math.max(result, result2);
+                                
                             }
                         }
                     }

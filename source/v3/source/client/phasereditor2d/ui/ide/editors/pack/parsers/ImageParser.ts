@@ -17,8 +17,11 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
         }
 
         protected preloadFrames(): Promise<controls.PreloadResult> {
+
             const url = this.getPackItem().getData().url;
+            
             const img = AssetPackUtils.getImageFromPackUrl(url);
+
             return img.preload();
         }
 

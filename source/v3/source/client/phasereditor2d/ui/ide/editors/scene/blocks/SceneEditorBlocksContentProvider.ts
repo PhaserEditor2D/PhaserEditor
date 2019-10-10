@@ -6,15 +6,8 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
     export class SceneEditorBlocksContentProvider extends pack.viewers.AssetPackContentProvider {
 
-        private _assetFinder: pack.AssetFinder;
-
-        constructor(assetFinder: pack.AssetFinder) {
-            super();
-            this._assetFinder = assetFinder;
-        }
-
         getPackItems() {
-            return this._assetFinder
+            return pack.PackFinder
 
                 .getPacks()
 
@@ -24,7 +17,7 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
         }
 
         getRoots(input: any): any[] {
-            
+
             const roots = [];
 
             roots.push(...this.getSceneFiles());

@@ -26,6 +26,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
         }
 
         async preload(): Promise<controls.PreloadResult> {
+            
             if (this.hasCachedFrames()) {
                 return controls.Controls.resolveNothingLoaded();
             }

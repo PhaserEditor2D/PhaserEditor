@@ -43,12 +43,15 @@ namespace phasereditor2d.ui.ide {
     ];
 
     export class Workbench extends EventTarget {
+
         private static _workbench: Workbench;
 
-
         static getWorkbench() {
+
             if (!Workbench._workbench) {
+
                 Workbench._workbench = new Workbench();
+
             }
 
             return this._workbench;
@@ -65,16 +68,8 @@ namespace phasereditor2d.ui.ide {
         private _commandManager: commands.CommandManager;
 
         private constructor() {
+
             super();
-
-            this._contentType_icon_Map = new Map();
-
-            this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, this.getWorkbenchIcon(ICON_FILE_IMAGE));
-            this._contentType_icon_Map.set(CONTENT_TYPE_AUDIO, this.getWorkbenchIcon(ICON_FILE_SOUND));
-            this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ICON_FILE_VIDEO));
-            this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ICON_FILE_SCRIPT));
-            this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
-            this._contentType_icon_Map.set(editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
 
             this._editorRegistry = new EditorRegistry();
 
@@ -86,11 +81,23 @@ namespace phasereditor2d.ui.ide {
 
         async start() {
 
+            console.log("Workbench: starting.");
+
+            await ui.controls.Controls.preload();
+
+            console.log("Workbench: fetching UI resources.");
+
             await this.preloadIcons();
 
-            await this.initFileStorage();
+            console.log("Workbench: fetching project metadata.");
 
-            await this.initContentTypes();
+            await this.preloadFileStorage();
+
+            console.log("Workbench: fetching project resources.");
+
+            await this.preloadContentTypes();
+
+            await this.preloadProjectResources();
 
             this.initCommands();
 
@@ -100,9 +107,28 @@ namespace phasereditor2d.ui.ide {
             document.getElementById("body").appendChild(this._designWindow.getElement());
 
             this.initEvents();
+
+            console.log("Workbench: started.");
+
+        }
+
+        private async preloadProjectResources() {
+
+            await editors.pack.PackFinder.preload();
+
         }
 
         private async preloadIcons() {
+
+            this._contentType_icon_Map = new Map();
+
+            this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, this.getWorkbenchIcon(ICON_FILE_IMAGE));
+            this._contentType_icon_Map.set(CONTENT_TYPE_AUDIO, this.getWorkbenchIcon(ICON_FILE_SOUND));
+            this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ICON_FILE_VIDEO));
+            this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ICON_FILE_SCRIPT));
+            this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
+            this._contentType_icon_Map.set(editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
+
             return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
         }
 
@@ -118,9 +144,11 @@ namespace phasereditor2d.ui.ide {
         }
 
         private initEditors(): void {
+
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
             this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
             this._editorRegistry.registerFactory(editors.scene.SceneEditor.getFactory());
+
         }
 
         getDesignWindow() {
@@ -246,12 +274,14 @@ namespace phasereditor2d.ui.ide {
             return null;
         }
 
-        private async initFileStorage() {
+        private async preloadFileStorage() {
+
             this._fileStorage = new core.io.ServerFileStorage();
+
             await this._fileStorage.reload();
         }
 
-        private async initContentTypes() {
+        private async preloadContentTypes() {
             const reg = new core.ContentTypeRegistry();
 
             reg.registerResolver(new editors.pack.AssetPackContentTypeResolver());

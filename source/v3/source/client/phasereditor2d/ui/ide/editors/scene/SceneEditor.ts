@@ -44,7 +44,6 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _actionManager: ActionManager;
         private _gameBooted: boolean;
         private _sceneRead: boolean;
-        private _assetFinder: pack.AssetFinder;
 
         static getFactory(): EditorFactory {
             return new SceneEditorFactory();
@@ -53,9 +52,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         constructor() {
             super("phasereditor2d.SceneEditor");
 
-            this._assetFinder = new pack.AssetFinder([]);
-
-            this._blocksProvider = new blocks.SceneEditorBlocksProvider(this._assetFinder);
+            this._blocksProvider = new blocks.SceneEditorBlocksProvider();
             this._outlineProvider = new outline.SceneEditorOutlineProvider(this);
             this._propertyProvider = new properties.SceneEditorSectionProvider();
 

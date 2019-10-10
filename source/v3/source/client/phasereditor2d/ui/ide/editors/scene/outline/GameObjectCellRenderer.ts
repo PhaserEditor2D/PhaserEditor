@@ -2,12 +2,6 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
     export class GameObjectCellRenderer implements controls.viewers.ICellRenderer {
 
-        private _packs: pack.AssetPack[];
-
-        constructor(packs: pack.AssetPack[]) {
-            this._packs = packs;
-        }
-
         renderCell(args: controls.viewers.RenderCellArgs): void {
 
             const sprite = <Phaser.GameObjects.GameObject>args.obj;
@@ -16,8 +10,7 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
                 const { key, frame } = sprite.getEditorTexture();
 
-                const finder = new pack.AssetFinder(this._packs);
-                const img = finder.getAssetPackItemImage(key, frame);
+                const img = pack.PackFinder.getAssetPackItemImage(key, frame);
 
                 if (img) {
                     img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);

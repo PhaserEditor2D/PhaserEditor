@@ -12,13 +12,8 @@ namespace phasereditor2d {
             "background-color:silver",
         );
 
-        console.log("");
-
-        console.log("Preloading UI resources");
-        await ui.controls.Controls.preload();
-
-        console.log("Starting the workbench");
         const workbench = ui.ide.Workbench.getWorkbench();
+
         workbench.start();
     }
 }
