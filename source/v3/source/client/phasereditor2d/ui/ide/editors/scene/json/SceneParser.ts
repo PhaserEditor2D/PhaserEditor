@@ -1,9 +1,6 @@
 
 namespace phasereditor2d.ui.ide.editors.scene.json {
 
-    // TODO: better use UUID
-    let SPRITE_ID = Date.now();
-
     export class SceneParser {
 
         private _scene: GameScene;
@@ -120,7 +117,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         }
 
         static setNewId(sprite: Phaser.GameObjects.GameObject) {
-            sprite.setEditorId((SPRITE_ID++).toString());
+            sprite.setEditorId(Phaser.Utils.String.UUID());
         }
 
     }
