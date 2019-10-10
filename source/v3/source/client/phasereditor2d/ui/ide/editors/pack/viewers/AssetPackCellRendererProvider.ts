@@ -5,21 +5,26 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
             if (element instanceof AssetPackItem) {
+
                 const type = element.getType();
+
                 switch (type) {
-                    case "image":
+                    case pack.IMAGE_TYPE:
                         return new ImageAssetPackItemCellRenderer();
-                    case "multiatlas":
-                    case "atlas":
-                    case "unityAtlas":
-                    case "atlasXML":
-                    case "spritesheet":
+                    case pack.MULTI_ATLAS_TYPE:
+                    case pack.ATLAS_TYPE:
+                    case pack.UNITY_ATLAS_TYPE:
+                    case pack.ATLAS_XML_TYPE:
+                    case pack.SPRITESHEET_TYPE:
                         return new controls.viewers.FolderCellRenderer();
-                    default: 
+                    default:
                         break;
                 }
+
             } else if (element instanceof controls.ImageFrame) {
+
                 return new controls.viewers.ImageCellRenderer();
+
             }
 
             return new controls.viewers.EmptyCellRenderer();

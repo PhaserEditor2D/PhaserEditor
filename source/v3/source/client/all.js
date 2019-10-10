@@ -3796,11 +3796,11 @@ var phasereditor2d;
                             isParent(obj) {
                                 if (obj instanceof pack.AssetPackItem) {
                                     switch (obj.getType()) {
-                                        case "atlas":
-                                        case "multiatlas":
-                                        case "atlasXML":
-                                        case "unityAtlas":
-                                        case "spritesheet":
+                                        case pack.ATLAS_TYPE:
+                                        case pack.MULTI_ATLAS_TYPE:
+                                        case pack.ATLAS_XML_TYPE:
+                                        case pack.UNITY_ATLAS_TYPE:
+                                        case pack.SPRITESHEET_TYPE:
                                             return true;
                                         default:
                                             return false;
@@ -3836,13 +3836,13 @@ var phasereditor2d;
                                 if (element instanceof pack.AssetPackItem) {
                                     const type = element.getType();
                                     switch (type) {
-                                        case "image":
+                                        case pack.IMAGE_TYPE:
                                             return new viewers.ImageAssetPackItemCellRenderer();
-                                        case "multiatlas":
-                                        case "atlas":
-                                        case "unityAtlas":
-                                        case "atlasXML":
-                                        case "spritesheet":
+                                        case pack.MULTI_ATLAS_TYPE:
+                                        case pack.ATLAS_TYPE:
+                                        case pack.UNITY_ATLAS_TYPE:
+                                        case pack.ATLAS_XML_TYPE:
+                                        case pack.SPRITESHEET_TYPE:
                                             return new ui.controls.viewers.FolderCellRenderer();
                                         default:
                                             break;
@@ -4389,17 +4389,26 @@ var phasereditor2d;
                 var scene;
                 (function (scene) {
                     class GameScene extends Phaser.Scene {
-                        constructor(editor) {
+                        constructor(inEditor = true) {
                             super("ObjectScene");
-                            this._editor = editor;
+                            this._inEditor = inEditor;
+                            this._sceneType = "Scene";
+                        }
+                        getSceneType() {
+                            return this._sceneType;
+                        }
+                        setSceneType(sceneType) {
+                            this._sceneType = sceneType;
                         }
                         getCamera() {
                             return this.cameras.main;
                         }
                         create() {
-                            const camera = this.getCamera();
-                            camera.setOrigin(0, 0);
-                            camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+                            if (this._inEditor) {
+                                const camera = this.getCamera();
+                                camera.setOrigin(0, 0);
+                                camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+                            }
                         }
                     }
                     scene.GameScene = GameScene;
@@ -4764,7 +4773,8 @@ var phasereditor2d;
                     class SceneEditor extends ide.FileEditor {
                         constructor() {
                             super("phasereditor2d.SceneEditor");
-                            this._blocksProvider = new scene.blocks.SceneEditorBlocksProvider();
+                            this._assetFinder = new editors.pack.AssetFinder([]);
+                            this._blocksProvider = new scene.blocks.SceneEditorBlocksProvider(this._assetFinder);
                             this._outlineProvider = new scene.outline.SceneEditorOutlineProvider(this);
                             this._propertyProvider = new scene.properties.SceneEditorSectionProvider();
                         }
@@ -4788,7 +4798,7 @@ var phasereditor2d;
                             this._overlayLayer = new scene.OverlayLayer(this);
                             this.getElement().appendChild(this._overlayLayer.getCanvas());
                             // create game scene
-                            this._gameScene = new scene.GameScene(this);
+                            this._gameScene = new scene.GameScene();
                             this._game = new Phaser.Game({
                                 type: Phaser.WEBGL,
                                 canvas: this._gameCanvas,
@@ -5007,6 +5017,97 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene_3) {
+                    class ThumbnailScene extends scene_3.GameScene {
+                        constructor(data, callback) {
+                            super(false);
+                            this._data = data;
+                            this._callback = callback;
+                        }
+                        create() {
+                            const parser = new scene_3.json.SceneParser(this);
+                            parser.createSceneCache_async(this._data)
+                                .then(() => {
+                                parser.createScene(this._data);
+                                this.sys.renderer.snapshot(img => {
+                                    this._callback(img);
+                                });
+                            });
+                        }
+                    }
+                    class SceneThumbnail {
+                        constructor(file) {
+                            this._file = file;
+                            this._image = null;
+                        }
+                        paint(context, x, y, w, h, center) {
+                            if (this._image) {
+                                this._image.paint(context, x, y, w, h, center);
+                            }
+                        }
+                        paintFrame(context, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
+                            if (this._image) {
+                                this._image.paintFrame(context, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+                            }
+                        }
+                        getWidth() {
+                            return this._image ? this._image.getWidth() : 16;
+                        }
+                        getHeight() {
+                            return this._image ? this._image.getHeight() : 16;
+                        }
+                        async preload() {
+                            if (this._image == null) {
+                                const content = await ide.FileUtils.getFileString(this._file);
+                                const imageElement = await new Promise((resolve, reject) => {
+                                    const data = JSON.parse(content);
+                                    const width = 800;
+                                    const height = 600;
+                                    const scene = new ThumbnailScene(data, image => {
+                                        resolve(image);
+                                    });
+                                    const canvas = document.createElement("canvas");
+                                    canvas.style.width = (canvas.width = width) + "px";
+                                    canvas.style.height = (canvas.height = height) + "px";
+                                    const game = new Phaser.Game({
+                                        type: Phaser.WEBGL,
+                                        canvas: canvas,
+                                        width: width,
+                                        height: height,
+                                        scale: {
+                                            mode: Phaser.Scale.NONE
+                                        },
+                                        render: {
+                                            pixelArt: true,
+                                            transparent: true
+                                        },
+                                        audio: {
+                                            noAudio: true
+                                        },
+                                        scene: scene,
+                                    });
+                                });
+                                this._image = new ui.controls.ImageWrapper(imageElement);
+                                return ui.controls.Controls.resolveResourceLoaded();
+                            }
+                            return ui.controls.Controls.resolveNothingLoaded();
+                        }
+                    }
+                    scene_3.SceneThumbnail = SceneThumbnail;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene_4) {
                     class SelectionManager {
                         constructor(editor) {
                             this._editor = editor;
@@ -5060,7 +5161,162 @@ var phasereditor2d;
                             return result;
                         }
                     }
-                    scene_3.SelectionManager = SelectionManager;
+                    scene_4.SelectionManager = SelectionManager;
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var blocks;
+                    (function (blocks) {
+                        const SceneThumbnailCache = new Map();
+                        class SceneCellRenderer {
+                            renderCell(args) {
+                                const file = args.obj;
+                                const image = SceneThumbnailCache.get(file.getId());
+                                if (image) {
+                                    image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                                }
+                            }
+                            cellHeight(args) {
+                                return args.viewer.getCellSize();
+                            }
+                            async preload(obj) {
+                                const file = obj;
+                                const id = file.getId();
+                                if (SceneThumbnailCache.has(id)) {
+                                    const image = SceneThumbnailCache.get(id);
+                                    return image.preload();
+                                }
+                                const thumbnail = new scene.SceneThumbnail(file);
+                                SceneThumbnailCache.set(id, thumbnail);
+                                return await thumbnail.preload();
+                            }
+                        }
+                        blocks.SceneCellRenderer = SceneCellRenderer;
+                    })(blocks = scene.blocks || (scene.blocks = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var blocks;
+                    (function (blocks) {
+                        class SceneEditorBlocksCellRendererProvider extends editors.pack.viewers.AssetPackCellRendererProvider {
+                            getCellRenderer(element) {
+                                if (element instanceof phasereditor2d.core.io.FilePath) {
+                                    return new blocks.SceneCellRenderer();
+                                }
+                                return super.getCellRenderer(element);
+                            }
+                        }
+                        blocks.SceneEditorBlocksCellRendererProvider = SceneEditorBlocksCellRendererProvider;
+                    })(blocks = scene.blocks || (scene.blocks = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../pack/viewers/AssetPackContentProvider.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var blocks;
+                    (function (blocks) {
+                        const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
+                        class SceneEditorBlocksContentProvider extends editors.pack.viewers.AssetPackContentProvider {
+                            constructor(assetFinder) {
+                                super();
+                                this._assetFinder = assetFinder;
+                            }
+                            getPackItems() {
+                                return this._assetFinder
+                                    .getPacks()
+                                    .flatMap(pack => pack.getItems())
+                                    .filter(item => SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES.has(item.getType()));
+                            }
+                            getRoots(input) {
+                                const roots = [];
+                                roots.push(...this.getSceneFiles());
+                                roots.push(...this.getPackItems());
+                                return roots;
+                            }
+                            getSceneFiles() {
+                                return ide.FileUtils.getAllFiles().filter(file => file.getExtension() === "scene");
+                            }
+                            getChildren(parent) {
+                                if (typeof (parent) === "string") {
+                                    switch (parent) {
+                                        case editors.pack.ATLAS_TYPE:
+                                            return this.getPackItems()
+                                                .filter(item => editors.pack.AssetPackUtils.isAtlasPackItem(item));
+                                        case blocks.PREFAB_SECTION:
+                                            //TODO: we need to implement the PrefabFinder
+                                            const files = this.getSceneFiles();
+                                            return files;
+                                    }
+                                    return this.getPackItems()
+                                        .filter(item => item.getType() === parent);
+                                }
+                                return super.getChildren(parent);
+                            }
+                        }
+                        blocks.SceneEditorBlocksContentProvider = SceneEditorBlocksContentProvider;
+                    })(blocks = scene.blocks || (scene.blocks = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var blocks;
+                    (function (blocks) {
+                        class SceneEditorBlocksLabelProvider extends editors.pack.viewers.AssetPackLabelProvider {
+                            getLabel(obj) {
+                                if (obj instanceof phasereditor2d.core.io.FilePath) {
+                                    return obj.getName();
+                                }
+                                return super.getLabel(obj);
+                            }
+                        }
+                        blocks.SceneEditorBlocksLabelProvider = SceneEditorBlocksLabelProvider;
+                    })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -5094,62 +5350,14 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
-                        class SceneEditorBlockPropertyProvider extends ui.controls.properties.PropertySectionProvider {
+                        class SceneEditorBlocksPropertyProvider extends ui.controls.properties.PropertySectionProvider {
                             addSections(page, sections) {
                                 sections.push(new editors.pack.properties.AssetPackItemSection(page));
                                 sections.push(new editors.pack.properties.ImageSection(page));
                                 sections.push(new editors.pack.properties.ManyImageSection(page));
                             }
                         }
-                        blocks.SceneEditorBlockPropertyProvider = SceneEditorBlockPropertyProvider;
-                    })(blocks = scene.blocks || (scene.blocks = {}));
-                })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../pack/viewers/AssetPackContentProvider.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
-                var scene;
-                (function (scene) {
-                    var blocks;
-                    (function (blocks) {
-                        const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
-                        class SceneEditorBlocksContentProvider extends editors.pack.viewers.AssetPackContentProvider {
-                            constructor(packs) {
-                                super();
-                                this._items = packs
-                                    .flatMap(pack => pack.getItems())
-                                    .filter(item => SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES.has(item.getType()));
-                            }
-                            getItems() {
-                                return this._items;
-                            }
-                            getRoots(input) {
-                                return this._items;
-                            }
-                            getChildren(parent) {
-                                if (typeof (parent) === "string") {
-                                    switch (parent) {
-                                        case editors.pack.ATLAS_TYPE:
-                                        case editors.pack.ATLAS_XML_TYPE:
-                                        case editors.pack.MULTI_ATLAS_TYPE:
-                                        case editors.pack.UNITY_ATLAS_TYPE:
-                                            return this._items.filter(item => editors.pack.AssetPackUtils.isAtlasPackItem(item));
-                                    }
-                                    return this._items.filter(item => item.getType() === parent);
-                                }
-                                return super.getChildren(parent);
-                            }
-                        }
-                        blocks.SceneEditorBlocksContentProvider = SceneEditorBlocksContentProvider;
+                        blocks.SceneEditorBlocksPropertyProvider = SceneEditorBlocksPropertyProvider;
                     })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -5168,45 +5376,70 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
-                        class SceneEditorTreeRendererProvider extends editors.pack.viewers.AssetPackBlocksTreeViewerRenderer {
-                            constructor(viewer) {
-                                super(viewer);
-                                this.setSections([
-                                    "image",
-                                    "atlas",
-                                    "spritesheet"
-                                ]);
-                            }
-                        }
                         class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
+                            constructor(assetFinder) {
+                                super();
+                                this._assetFinder = assetFinder;
+                            }
                             async preload() {
                                 if (this._contentProvider) {
                                     return;
                                 }
-                                const packs = await editors.pack.AssetPackUtils.getAllPacks();
-                                this._contentProvider = new blocks.SceneEditorBlocksContentProvider(packs);
-                                await editors.pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getItems());
+                                await this._assetFinder.update();
+                                this._contentProvider = new blocks.SceneEditorBlocksContentProvider(this._assetFinder);
+                                await editors.pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getPackItems());
                             }
                             getContentProvider() {
                                 return this._contentProvider;
                             }
                             getLabelProvider() {
-                                return new editors.pack.viewers.AssetPackLabelProvider();
+                                return new blocks.SceneEditorBlocksLabelProvider();
                             }
                             getCellRendererProvider() {
-                                return new editors.pack.viewers.AssetPackCellRendererProvider();
+                                return new blocks.SceneEditorBlocksCellRendererProvider();
                             }
                             getTreeViewerRenderer(viewer) {
-                                return new SceneEditorTreeRendererProvider(viewer);
+                                return new blocks.SceneEditorBlocksTreeRendererProvider(viewer);
                             }
                             getPropertySectionProvider() {
-                                return new blocks.SceneEditorBlockPropertyProvider();
+                                return new blocks.SceneEditorBlocksPropertyProvider();
                             }
                             getInput() {
                                 return this;
                             }
                         }
                         blocks.SceneEditorBlocksProvider = SceneEditorBlocksProvider;
+                    })(blocks = scene.blocks || (scene.blocks = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var blocks;
+                    (function (blocks) {
+                        blocks.PREFAB_SECTION = "prefab";
+                        class SceneEditorBlocksTreeRendererProvider extends editors.pack.viewers.AssetPackBlocksTreeViewerRenderer {
+                            constructor(viewer) {
+                                super(viewer);
+                                this.setSections([
+                                    blocks.PREFAB_SECTION,
+                                    editors.pack.IMAGE_TYPE,
+                                    editors.pack.ATLAS_TYPE,
+                                    editors.pack.SPRITESHEET_TYPE
+                                ]);
+                            }
+                        }
+                        blocks.SceneEditorBlocksTreeRendererProvider = SceneEditorBlocksTreeRendererProvider;
                     })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -5386,11 +5619,9 @@ var phasereditor2d;
             var editors;
             (function (editors) {
                 var scene;
-                (function (scene_4) {
+                (function (scene_5) {
                     var json;
                     (function (json) {
-                        // TODO: better use UUID
-                        let SPRITE_ID = Date.now();
                         class SceneParser {
                             constructor(scene) {
                                 this._scene = scene;
@@ -5399,6 +5630,7 @@ var phasereditor2d;
                                 return "displayList" in data && Array.isArray(data.displayList);
                             }
                             createScene(data) {
+                                this._scene.setSceneType(data.sceneType);
                                 for (const objData of data.displayList) {
                                     this.createObject(objData);
                                 }
@@ -5471,11 +5703,11 @@ var phasereditor2d;
                                 }
                             }
                             static setNewId(sprite) {
-                                sprite.setEditorId((SPRITE_ID++).toString());
+                                sprite.setEditorId(Phaser.Utils.String.UUID());
                             }
                         }
                         json.SceneParser = SceneParser;
-                    })(json = scene_4.json || (scene_4.json = {}));
+                    })(json = scene_5.json || (scene_5.json = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -5490,7 +5722,7 @@ var phasereditor2d;
             var editors;
             (function (editors) {
                 var scene;
-                (function (scene_5) {
+                (function (scene_6) {
                     var json;
                     (function (json_1) {
                         class SceneWriter {
@@ -5499,6 +5731,7 @@ var phasereditor2d;
                             }
                             toJSON() {
                                 const sceneData = {
+                                    sceneType: this._scene.getSceneType(),
                                     displayList: []
                                 };
                                 for (const obj of this._scene.sys.displayList.getChildren()) {
@@ -5514,7 +5747,7 @@ var phasereditor2d;
                             }
                         }
                         json_1.SceneWriter = SceneWriter;
-                    })(json = scene_5.json || (scene_5.json = {}));
+                    })(json = scene_6.json || (scene_6.json = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
@@ -7799,9 +8032,9 @@ var phasereditor2d;
                         controls.DefaultImage.paintEmpty(context, x, y, w, h);
                     }
                 }
-                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                paintFrame(context, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
                     if (this._imageElement) {
-                        controls.DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                        controls.DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
                     }
                     else {
                         controls.DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);

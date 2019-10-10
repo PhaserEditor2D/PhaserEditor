@@ -1,21 +1,15 @@
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
-    class SceneEditorTreeRendererProvider extends pack.viewers.AssetPackBlocksTreeViewerRenderer {
-
-        constructor(viewer : controls.viewers.TreeViewer) {
-            super(viewer);
-
-            this.setSections([
-                "image",
-                "atlas",
-                "spritesheet"
-            ]);
-        }
-    }
-
     export class SceneEditorBlocksProvider extends EditorViewerProvider {
 
         private _contentProvider: SceneEditorBlocksContentProvider;
+        private _assetFinder: pack.AssetFinder;
+
+        constructor(assetFinder: pack.AssetFinder) {
+            super();
+
+            this._assetFinder = assetFinder;
+        }
 
         async preload() {
 
@@ -23,11 +17,11 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
                 return;
             }
 
-            const packs = await pack.AssetPackUtils.getAllPacks();
+            await this._assetFinder.update();
 
-            this._contentProvider = new SceneEditorBlocksContentProvider(packs);
+            this._contentProvider = new SceneEditorBlocksContentProvider(this._assetFinder);
 
-            await pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getItems());
+            await pack.AssetPackUtils.preloadAssetPackItems(this._contentProvider.getPackItems());
         }
 
         getContentProvider(): controls.viewers.ITreeContentProvider {
@@ -35,19 +29,19 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
         }
 
         getLabelProvider(): controls.viewers.ILabelProvider {
-            return new pack.viewers.AssetPackLabelProvider();
+            return new SceneEditorBlocksLabelProvider();
         }
 
         getCellRendererProvider(): controls.viewers.ICellRendererProvider {
-            return new pack.viewers.AssetPackCellRendererProvider();
+            return new SceneEditorBlocksCellRendererProvider();
         }
 
-        getTreeViewerRenderer(viewer : controls.viewers.TreeViewer) {
-            return new SceneEditorTreeRendererProvider(viewer);
+        getTreeViewerRenderer(viewer: controls.viewers.TreeViewer) {
+            return new SceneEditorBlocksTreeRendererProvider(viewer);
         }
 
         getPropertySectionProvider(): controls.properties.PropertySectionProvider {
-            return new SceneEditorBlockPropertyProvider();
+            return new SceneEditorBlocksPropertyProvider();
         }
 
         getInput() {

@@ -14,6 +14,9 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
         }
 
         createScene(data: SceneData) {
+
+            this._scene.setSceneType(data.sceneType);
+
             for (const objData of data.displayList) {
                 this.createObject(objData);
             }

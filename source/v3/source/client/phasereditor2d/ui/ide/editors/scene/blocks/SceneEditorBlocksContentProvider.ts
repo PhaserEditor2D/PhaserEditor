@@ -5,22 +5,37 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
     const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
 
     export class SceneEditorBlocksContentProvider extends pack.viewers.AssetPackContentProvider {
-        private _items: pack.AssetPackItem[];
 
-        constructor(packs: pack.AssetPack[]) {
+        private _assetFinder: pack.AssetFinder;
+
+        constructor(assetFinder: pack.AssetFinder) {
             super();
+            this._assetFinder = assetFinder;
+        }
 
-            this._items = packs
+        getPackItems() {
+            return this._assetFinder
+
+                .getPacks()
+
                 .flatMap(pack => pack.getItems())
+
                 .filter(item => SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES.has(item.getType()));
         }
 
-        getItems() {
-            return this._items;
+        getRoots(input: any): any[] {
+            
+            const roots = [];
+
+            roots.push(...this.getSceneFiles());
+
+            roots.push(...this.getPackItems());
+
+            return roots;
         }
 
-        getRoots(input: any): any[] {
-            return this._items;
+        getSceneFiles() {
+            return FileUtils.getAllFiles().filter(file => file.getExtension() === "scene");
         }
 
         getChildren(parent: any): any[] {
@@ -28,13 +43,17 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
                 switch (parent) {
                     case pack.ATLAS_TYPE:
-                    case pack.ATLAS_XML_TYPE:
-                    case pack.MULTI_ATLAS_TYPE:
-                    case pack.UNITY_ATLAS_TYPE:
-                        return this._items.filter(item => pack.AssetPackUtils.isAtlasPackItem(item));
+                        return this.getPackItems()
+                            .filter(item => pack.AssetPackUtils.isAtlasPackItem(item));
+
+                    case PREFAB_SECTION:
+                        //TODO: we need to implement the PrefabFinder
+                        const files = this.getSceneFiles();
+                        return files;
                 }
 
-                return this._items.filter(item => item.getType() === parent);
+                return this.getPackItems()
+                    .filter(item => item.getType() === parent);
             }
 
             return super.getChildren(parent);

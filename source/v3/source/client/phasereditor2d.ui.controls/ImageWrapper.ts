@@ -16,12 +16,18 @@ namespace phasereditor2d.ui.controls {
             }
         }
 
-        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
+        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, srcW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
+
             if (this._imageElement) {
-                DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+
+                DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+
             } else {
+
                 DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
+
             }
+
         }
 
         preload(): Promise<PreloadResult> {

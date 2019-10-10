@@ -2,7 +2,7 @@
 
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
-    export class SceneEditorBlockPropertyProvider extends controls.properties.PropertySectionProvider {
+    export class SceneEditorBlocksPropertyProvider extends controls.properties.PropertySectionProvider {
 
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void {
             sections.push(new pack.properties.AssetPackItemSection(page));

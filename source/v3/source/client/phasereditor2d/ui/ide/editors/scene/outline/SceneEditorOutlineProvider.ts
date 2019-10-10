@@ -53,6 +53,7 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
 
         private _editor: SceneEditor;
         private _assetRendererProvider: pack.viewers.AssetPackCellRendererProvider;
+        //TODO: we should use the asset finder of the editor!
         private _packs: pack.AssetPack[];
 
         constructor(editor: SceneEditor) {

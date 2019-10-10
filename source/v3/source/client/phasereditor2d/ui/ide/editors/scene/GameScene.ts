@@ -3,12 +3,23 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     export class GameScene extends Phaser.Scene {
 
-        private _editor: SceneEditor;
+        private _sceneType: json.SceneType;
+        private _inEditor: boolean;
 
-        constructor(editor: SceneEditor) {
+        constructor(inEditor = true) {
             super("ObjectScene");
 
-            this._editor = editor;
+            this._inEditor = inEditor;
+
+            this._sceneType = "Scene";
+        }
+
+        getSceneType() {
+            return this._sceneType;
+        }
+
+        setSceneType(sceneType: json.SceneType): void {
+            this._sceneType = sceneType;
         }
 
         getCamera() {
@@ -16,9 +27,14 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         create() {
-            const camera = this.getCamera();
-            camera.setOrigin(0, 0);
-            camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+
+            if (this._inEditor) {
+
+                const camera = this.getCamera();
+                camera.setOrigin(0, 0);
+                camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+            }
+
         }
     }
 
