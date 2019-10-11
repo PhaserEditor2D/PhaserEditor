@@ -6,14 +6,14 @@ namespace phasereditor2d.core.io {
 
     export class FileContentCache<T> {
 
-        private _getContent: GetFileContent<T>;
-        private _setContent: SetFileContent<T>;
+        private _backendGetContent: GetFileContent<T>;
+        private _backendSetContent: SetFileContent<T>;
         private _map: Map<string, ContentEntry<T>>;
 
         constructor(getContent: GetFileContent<T>, setContent?: SetFileContent<T>) {
 
-            this._getContent = getContent;
-            this._setContent = setContent;
+            this._backendGetContent = getContent;
+            this._backendSetContent = setContent;
 
             this._map = new Map();
         }
@@ -28,7 +28,7 @@ namespace phasereditor2d.core.io {
                     return ui.controls.Controls.resolveNothingLoaded();
                 }
 
-                return this._getContent(file)
+                return this._backendGetContent(file)
 
                     .then((content) => {
 
@@ -39,7 +39,7 @@ namespace phasereditor2d.core.io {
                     });
             }
 
-            return this._getContent(file)
+            return this._backendGetContent(file)
 
                 .then((content) => {
 
@@ -60,8 +60,8 @@ namespace phasereditor2d.core.io {
 
         async setContent(file: FilePath, content: T): Promise<void> {
 
-            if (this._setContent) {
-                await this._setContent(file, content);
+            if (this._backendSetContent) {
+                await this._backendSetContent(file, content);
             }
 
             const name = file.getFullName();

@@ -28,21 +28,17 @@ namespace phasereditor2d.core.io {
         }
     }
 
-    export class HTTPServerFileStorage implements IFileStorage {
+    export class FileStorage_HTTPServer implements IFileStorage {
 
         private _root: FilePath;
-        private _fileStringContentMap: Map<string, string>;
         private _changeListeners: ChangeListenerFunc[];
 
         constructor() {
 
             this._root = null;
 
-            this._fileStringContentMap = new Map();
-
             this._changeListeners = [];
 
-            this._fileStringContentMap = new Map();
         }
 
         addChangeListener(listener: ChangeListenerFunc) {
@@ -65,7 +61,7 @@ namespace phasereditor2d.core.io {
 
             if (oldRoot) {
 
-                const change = HTTPServerFileStorage.compare(oldRoot, newRoot);
+                const change = FileStorage_HTTPServer.compare(oldRoot, newRoot);
                 this.fireChange(change);
             }
         }
@@ -129,29 +125,7 @@ namespace phasereditor2d.core.io {
             return new FileStorageChange(modified, added, deleted);
         }
 
-        hasFileStringInCache(file: FilePath) {
-            return this._fileStringContentMap.has(file.getId());
-        }
-
-        getFileStringFromCache(file: FilePath) {
-            const id = file.getId();
-
-            if (this._fileStringContentMap.has(id)) {
-                const content = this._fileStringContentMap.get(id);
-                return content;
-            }
-
-            return null;
-        }
-
         async getFileString(file: FilePath): Promise<string> {
-            const id = file.getId();
-
-            if (this._fileStringContentMap.has(id)) {
-                const content = this._fileStringContentMap.get(id);
-                return content;
-            }
-
             const data = await apiRequest("GetFileString", {
                 path: file.getFullName()
             });
@@ -162,7 +136,6 @@ namespace phasereditor2d.core.io {
             }
 
             const content = data["content"];
-            this._fileStringContentMap.set(id, content);
 
             return content;
         }
@@ -179,10 +152,8 @@ namespace phasereditor2d.core.io {
                 throw new Error(data.error);
             }
 
-            // TODO: get the new timestamp of the file and update it.
-
-            this._fileStringContentMap.set(file.getId(), content);
-
+            file["_modTime"] = data["modTime"];
+            
             this.fireChange(new FileStorageChange([file], [], []));
         }
     }

@@ -6,12 +6,19 @@ namespace phasereditor2d.ui.ide {
             return Workbench.getWorkbench().getFileImage(file);
         }
 
+        static async preloadAndGetFileString(file: core.io.FilePath): Promise<string> {
+            
+            await this.preloadFileString(file);
+
+            return this.getFileString(file);
+        }
+
         static getFileString(file: core.io.FilePath): string {
             return Workbench.getWorkbench().getFileStringCache().getContent(file);
         }
 
         static setFileString_async(file: core.io.FilePath, content: string): Promise<void> {
-            return Workbench.getWorkbench().getFileStorage().setFileString(file, content);
+            return Workbench.getWorkbench().getFileStringCache().setContent(file, content);
         }
 
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
@@ -22,7 +29,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         static getFileFromPath(path: string): core.io.FilePath {
-            const root = Workbench.getWorkbench().getFileStorage().getRoot();
+            const root = Workbench.getWorkbench().getProjectRoot();
 
             const names = path.split("/");
 
@@ -57,7 +64,7 @@ namespace phasereditor2d.ui.ide {
 
             const files: core.io.FilePath[] = [];
 
-            Workbench.getWorkbench().getFileStorage().getRoot().flatTree(files, false);
+            Workbench.getWorkbench().getProjectRoot().flatTree(files, false);
 
             return files;
         }

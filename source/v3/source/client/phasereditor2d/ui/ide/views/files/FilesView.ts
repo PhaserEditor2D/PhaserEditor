@@ -31,7 +31,7 @@ namespace phasereditor2d.ui.ide.views.files {
         protected createPart(): void {
             super.createPart();
 
-            const root = Workbench.getWorkbench().getFileStorage().getRoot();
+            const root = Workbench.getWorkbench().getProjectRoot();
 
             const viewer = this._viewer;
             viewer.setLabelProvider(new FileLabelProvider());

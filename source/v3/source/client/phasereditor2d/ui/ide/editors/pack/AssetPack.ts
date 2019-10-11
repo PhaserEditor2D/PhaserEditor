@@ -36,7 +36,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         }
 
         static async createFromFile(file: core.io.FilePath) {
-            const content = await ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+            const content = await FileUtils.preloadAndGetFileString(file);
             return new AssetPack(file, content);
         }
 

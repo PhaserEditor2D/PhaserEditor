@@ -286,7 +286,7 @@ namespace phasereditor2d.ui.ide {
 
         private async preloadFileStorage() {
 
-            this._fileStorage = new core.io.HTTPServerFileStorage();
+            this._fileStorage = new core.io.FileStorage_HTTPServer();
 
             this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
 
@@ -307,8 +307,8 @@ namespace phasereditor2d.ui.ide {
             return this._contentTypeRegistry;
         }
 
-        getFileStorage(): core.io.IFileStorage {
-            return this._fileStorage;
+        getProjectRoot(): core.io.FilePath {
+            return this._fileStorage.getRoot();
         }
 
         getContentTypeIcon(contentType: string): controls.IImage {

@@ -61,8 +61,8 @@ var phasereditor2d;
         (function (io) {
             class FileContentCache {
                 constructor(getContent, setContent) {
-                    this._getContent = getContent;
-                    this._setContent = setContent;
+                    this._backendGetContent = getContent;
+                    this._backendSetContent = setContent;
                     this._map = new Map();
                 }
                 preload(file) {
@@ -71,14 +71,14 @@ var phasereditor2d;
                         if (entry.modTime === file.getModTime()) {
                             return phasereditor2d.ui.controls.Controls.resolveNothingLoaded();
                         }
-                        return this._getContent(file)
+                        return this._backendGetContent(file)
                             .then((content) => {
                             entry.modTime = file.getModTime();
                             entry.content = content;
                             return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
                         });
                     }
-                    return this._getContent(file)
+                    return this._backendGetContent(file)
                         .then((content) => {
                         this._map.set(file.getFullName(), new ContentEntry(content, file.getModTime()));
                         return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
@@ -89,8 +89,8 @@ var phasereditor2d;
                     return entry ? entry.content : null;
                 }
                 async setContent(file, content) {
-                    if (this._setContent) {
-                        await this._setContent(file, content);
+                    if (this._backendSetContent) {
+                        await this._backendSetContent(file, content);
                     }
                     const name = file.getFullName();
                     const modTime = file.getModTime();
@@ -325,12 +325,10 @@ var phasereditor2d;
                     });
                 }
             }
-            class HTTPServerFileStorage {
+            class FileStorage_HTTPServer {
                 constructor() {
                     this._root = null;
-                    this._fileStringContentMap = new Map();
                     this._changeListeners = [];
-                    this._fileStringContentMap = new Map();
                 }
                 addChangeListener(listener) {
                     this._changeListeners.push(listener);
@@ -344,7 +342,7 @@ var phasereditor2d;
                     const newRoot = new io.FilePath(null, data);
                     this._root = newRoot;
                     if (oldRoot) {
-                        const change = HTTPServerFileStorage.compare(oldRoot, newRoot);
+                        const change = FileStorage_HTTPServer.compare(oldRoot, newRoot);
                         this.fireChange(change);
                     }
                 }
@@ -391,23 +389,7 @@ var phasereditor2d;
                     }
                     return new io.FileStorageChange(modified, added, deleted);
                 }
-                hasFileStringInCache(file) {
-                    return this._fileStringContentMap.has(file.getId());
-                }
-                getFileStringFromCache(file) {
-                    const id = file.getId();
-                    if (this._fileStringContentMap.has(id)) {
-                        const content = this._fileStringContentMap.get(id);
-                        return content;
-                    }
-                    return null;
-                }
                 async getFileString(file) {
-                    const id = file.getId();
-                    if (this._fileStringContentMap.has(id)) {
-                        const content = this._fileStringContentMap.get(id);
-                        return content;
-                    }
                     const data = await apiRequest("GetFileString", {
                         path: file.getFullName()
                     });
@@ -416,7 +398,6 @@ var phasereditor2d;
                         return null;
                     }
                     const content = data["content"];
-                    this._fileStringContentMap.set(id, content);
                     return content;
                 }
                 async setFileString(file, content) {
@@ -428,12 +409,11 @@ var phasereditor2d;
                         alert(`Cannot set file content to '${file.getFullName()}'`);
                         throw new Error(data.error);
                     }
-                    // TODO: get the new timestamp of the file and update it.
-                    this._fileStringContentMap.set(file.getId(), content);
+                    file["_modTime"] = data["modTime"];
                     this.fireChange(new io.FileStorageChange([file], [], []));
                 }
             }
-            io.HTTPServerFileStorage = HTTPServerFileStorage;
+            io.FileStorage_HTTPServer = FileStorage_HTTPServer;
         })(io = core.io || (core.io = {}));
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1549,18 +1529,22 @@ var phasereditor2d;
                 static getImage(file) {
                     return ide.Workbench.getWorkbench().getFileImage(file);
                 }
+                static async preloadAndGetFileString(file) {
+                    await this.preloadFileString(file);
+                    return this.getFileString(file);
+                }
                 static getFileString(file) {
                     return ide.Workbench.getWorkbench().getFileStringCache().getContent(file);
                 }
                 static setFileString_async(file, content) {
-                    return ide.Workbench.getWorkbench().getFileStorage().setFileString(file, content);
+                    return ide.Workbench.getWorkbench().getFileStringCache().setContent(file, content);
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();
                     return cache.preload(file);
                 }
                 static getFileFromPath(path) {
-                    const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
+                    const root = ide.Workbench.getWorkbench().getProjectRoot();
                     const names = path.split("/");
                     let result = root;
                     for (const name of names) {
@@ -1584,7 +1568,7 @@ var phasereditor2d;
                 }
                 static getAllFiles() {
                     const files = [];
-                    ide.Workbench.getWorkbench().getFileStorage().getRoot().flatTree(files, false);
+                    ide.Workbench.getWorkbench().getProjectRoot().flatTree(files, false);
                     return files;
                 }
             }
@@ -2131,7 +2115,7 @@ var phasereditor2d;
                     return null;
                 }
                 async preloadFileStorage() {
-                    this._fileStorage = new phasereditor2d.core.io.HTTPServerFileStorage();
+                    this._fileStorage = new phasereditor2d.core.io.FileStorage_HTTPServer();
                     this._fileStringCache = new phasereditor2d.core.io.FileStringCache(this._fileStorage);
                     await this._fileStorage.reload();
                 }
@@ -2145,8 +2129,8 @@ var phasereditor2d;
                 getContentTypeRegistry() {
                     return this._contentTypeRegistry;
                 }
-                getFileStorage() {
-                    return this._fileStorage;
+                getProjectRoot() {
+                    return this._fileStorage.getRoot();
                 }
                 getContentTypeIcon(contentType) {
                     if (this._contentType_icon_Map.has(contentType)) {
@@ -2401,7 +2385,7 @@ var phasereditor2d;
                             }
                         }
                         static async createFromFile(file) {
-                            const content = await ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
                             return new AssetPack(file, content);
                         }
                         getItems() {
@@ -2431,7 +2415,7 @@ var phasereditor2d;
                     class AssetPackContentTypeResolver {
                         async computeContentType(file) {
                             if (file.getExtension() === "json") {
-                                const content = await ui.ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                                const content = await ide.FileUtils.preloadAndGetFileString(file);
                                 if (content !== null) {
                                     try {
                                         const data = JSON.parse(content);
@@ -2496,7 +2480,7 @@ var phasereditor2d;
                             if (!file) {
                                 return;
                             }
-                            const content = await ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
                             this.getElement().innerHTML = content;
                         }
                         setInput(file) {
@@ -5314,28 +5298,18 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
-                        const SceneThumbnailCache = new Map();
                         class SceneCellRenderer {
                             renderCell(args) {
                                 const file = args.obj;
-                                const image = SceneThumbnailCache.get(file.getId());
-                                if (image) {
-                                    image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
-                                }
+                                const image = blocks.SceneThumbnailCache.getInstance().getContent(file);
+                                image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
                             }
                             cellHeight(args) {
                                 return args.viewer.getCellSize();
                             }
                             async preload(obj) {
                                 const file = obj;
-                                const id = file.getId();
-                                if (SceneThumbnailCache.has(id)) {
-                                    const image = SceneThumbnailCache.get(id);
-                                    return image.preload();
-                                }
-                                const thumbnail = new scene.SceneThumbnail(file);
-                                SceneThumbnailCache.set(id, thumbnail);
-                                return await thumbnail.preload();
+                                return blocks.SceneThumbnailCache.getInstance().preload(file);
                             }
                         }
                         blocks.SceneCellRenderer = SceneCellRenderer;
@@ -5562,6 +5536,40 @@ var phasereditor2d;
                             }
                         }
                         blocks.SceneEditorBlocksTreeRendererProvider = SceneEditorBlocksTreeRendererProvider;
+                    })(blocks = scene.blocks || (scene.blocks = {}));
+                })(scene = editors.scene || (editors.scene = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var scene;
+                (function (scene) {
+                    var blocks;
+                    (function (blocks) {
+                        class SceneThumbnailCache extends phasereditor2d.core.io.FileContentCache {
+                            constructor() {
+                                super(async (file) => {
+                                    const image = new scene.SceneThumbnail(file);
+                                    await image.preload();
+                                    return Promise.resolve(image);
+                                });
+                            }
+                            static getInstance() {
+                                if (!this._instance) {
+                                    this._instance = new SceneThumbnailCache();
+                                }
+                                return this._instance;
+                            }
+                        }
+                        blocks.SceneThumbnailCache = SceneThumbnailCache;
                     })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
             })(editors = ide.editors || (ide.editors = {}));
@@ -7577,7 +7585,7 @@ var phasereditor2d;
                         }
                         createPart() {
                             super.createPart();
-                            const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
+                            const root = ide.Workbench.getWorkbench().getProjectRoot();
                             const viewer = this._viewer;
                             viewer.setLabelProvider(new files.FileLabelProvider());
                             viewer.setContentProvider(new files.FileTreeContentProvider());

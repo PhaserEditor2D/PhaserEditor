@@ -43,7 +43,8 @@ namespace phasereditor2d.ui.ide.editors.pack {
                 return;
             }
 
-            const content = await Workbench.getWorkbench().getFileStorage().getFileString(file);
+            const content = await FileUtils.preloadAndGetFileString(file);
+            
             this.getElement().innerHTML = content;
         }
 
