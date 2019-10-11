@@ -1,6 +1,6 @@
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
-/// <reference path="../ide/DesignWindow.ts"/>
+/// <reference path="../../../plugins/phasereditor2d.ui.ide.design/DesignWindow.ts"/>
 /// <reference path="../../core/io/IFileStorage.ts"/>
 /// <reference path="./editors/image/ImageEditor.ts"/>
 
@@ -59,7 +59,7 @@ namespace phasereditor2d.ui.ide {
 
         private _fileStringCache: core.io.FileStringCache;
         private _fileImageCache: ImageFileCache;
-        private _designWindow: ide.DesignWindow;
+        private _activeWindow: ide.WorkbenchWindow;
         private _contentType_icon_Map: Map<string, controls.IImage>;
         private _fileStorage: core.io.IFileStorage;
         private _contentTypeRegistry: core.ContentTypeRegistry;
@@ -82,7 +82,7 @@ namespace phasereditor2d.ui.ide {
             this._fileImageCache = new ImageFileCache();
         }
 
-        async start(plugins: Plugin[]) {
+        async launch(plugins: Plugin[]) {
 
             console.log("Workbench: starting.");
 
@@ -114,17 +114,23 @@ namespace phasereditor2d.ui.ide {
 
         }
 
-        private registerWindow(plugins : Plugin[]) {
+        private registerWindow(plugins: Plugin[]) {
 
-            const windows : ide.Window[] = [];
+            const windows: ide.WorkbenchWindow[] = [];
 
-            for(const plugin of plugins) {
+            for (const plugin of plugins) {
                 plugin.createWindow(windows);
             }
 
-            this._designWindow = new ide.DesignWindow();
+            if (windows.length === 0) {
 
-            document.body.appendChild(this._designWindow.getElement());
+                alert("No workbench window provided.");
+
+            } else {
+
+                this._activeWindow = windows[0];
+                document.body.appendChild(this._activeWindow.getElement());
+            }
         }
 
         private async preloadProjectResources(plugins: Plugin[]) {
@@ -134,7 +140,7 @@ namespace phasereditor2d.ui.ide {
             }
         }
 
-        private async preloadIcons(plugins : Plugin[]) {
+        private async preloadIcons(plugins: Plugin[]) {
 
             this._contentType_icon_Map = new Map();
 
@@ -152,12 +158,12 @@ namespace phasereditor2d.ui.ide {
             return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
         }
 
-        private initCommands(plugins : Plugin[]) {
+        private initCommands(plugins: Plugin[]) {
             this._commandManager = new commands.CommandManager();
 
             IDECommands.init();
 
-            for(const plugin of plugins) {
+            for (const plugin of plugins) {
                 plugin.registerCommands(this._commandManager);
             }
         }
@@ -170,22 +176,18 @@ namespace phasereditor2d.ui.ide {
             return this._commandManager;
         }
 
-        private registerEditors(plugins : Plugin[]): void {
+        private registerEditors(plugins: Plugin[]): void {
 
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
-            
-            for(const plugin of plugins) {
+
+            for (const plugin of plugins) {
                 plugin.registerEditor(this._editorRegistry);
             }
 
         }
 
-        getDesignWindow() {
-            return this._designWindow;
-        }
-
-        getActiveWindow(): ide.Window {
-            return this.getDesignWindow();
+        getActiveWindow() {
+            return this._activeWindow;
         }
 
         private initEvents() {

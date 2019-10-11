@@ -2,7 +2,7 @@
 
 namespace phasereditor2d.ui.ide {
 
-    export abstract class Window extends controls.Control {
+    export abstract class WorkbenchWindow extends controls.Control {
 
         constructor() {
             super("div", "Window");

@@ -1,7 +1,8 @@
-/// <reference path="../ide/Window.ts"/>
+/// <reference path="../../phasereditor2d/ui/ide/WorkbenchWindow.ts" />
 
-namespace phasereditor2d.ui.ide {
-    export class DesignWindow extends ide.Window {
+namespace phasereditor2d.ui.ide.design {
+
+    export class DesignWindow extends WorkbenchWindow {
 
         private _outlineView: views.outline.OutlineView;
         private _filesView: views.files.FilesView;

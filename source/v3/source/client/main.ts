@@ -12,15 +12,17 @@ namespace phasereditor2d {
             "background-color:silver",
         );
 
-        const workbench = ui.ide.Workbench.getWorkbench();
+        await ui.ide.Workbench.getWorkbench()
 
-        workbench.start([
+            .launch([
 
-            ui.ide.editors.scene.SceneEditorPlugin.getInstance(),
+                ui.ide.editors.scene.SceneEditorPlugin.getInstance(),
 
-            ui.ide.editors.pack.AssetPackEditorPlugin.getInstance()
+                ui.ide.editors.pack.AssetPackEditorPlugin.getInstance(),
 
-        ]);
+                ui.ide.design.DesignPlugin.getInstance()
+
+            ]);
     }
 }
 

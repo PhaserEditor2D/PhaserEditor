@@ -9,7 +9,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     export class SceneEditorCommands {
 
-        static register(manager : commands.CommandManager) {
+        static registerCommands(manager : commands.CommandManager) {
 
             // delete 
 

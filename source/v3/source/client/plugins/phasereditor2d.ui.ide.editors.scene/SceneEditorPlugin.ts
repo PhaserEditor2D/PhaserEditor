@@ -21,7 +21,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         registerCommands(manager: commands.CommandManager) {
-            SceneEditorCommands.register(manager);
+            SceneEditorCommands.registerCommands(manager);
         }
     }
 

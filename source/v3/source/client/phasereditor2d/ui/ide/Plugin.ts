@@ -32,7 +32,7 @@ namespace phasereditor2d.ui.ide {
 
         }
 
-        createWindow(windows: ide.Window[]): void {
+        createWindow(windows: ide.WorkbenchWindow[]): void {
 
         }
 
