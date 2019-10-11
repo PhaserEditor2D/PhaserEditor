@@ -18,9 +18,17 @@ namespace phasereditor2d.core.io {
             this._map = new Map();
         }
 
+        private _preloadMap = new Map<string, Promise<ui.controls.PreloadResult>>();
+
         preload(file: FilePath): Promise<ui.controls.PreloadResult> {
 
-            const entry = this._map.get(file.getFullName());
+            const filename = file.getFullName();
+
+            if (this._preloadMap.has(filename)) {
+                return this._preloadMap.get(filename);
+            }
+
+            const entry = this._map.get(filename);
 
             if (entry) {
 
@@ -28,26 +36,37 @@ namespace phasereditor2d.core.io {
                     return ui.controls.Controls.resolveNothingLoaded();
                 }
 
-                return this._backendGetContent(file)
+                const promise = this._backendGetContent(file)
 
                     .then((content) => {
+
+                        this._preloadMap.delete(filename);
 
                         entry.modTime = file.getModTime();
                         entry.content = content;
 
                         return ui.controls.PreloadResult.RESOURCES_LOADED;
                     });
+
+                this._preloadMap.set(filename, promise);
+
+                return promise;
             }
 
-            return this._backendGetContent(file)
+            const promise = this._backendGetContent(file)
 
                 .then((content) => {
 
-                    this._map.set(file.getFullName(), new ContentEntry(content, file.getModTime()));
+                    this._preloadMap.delete(filename);
+
+                    this._map.set(filename, new ContentEntry(content, file.getModTime()));
 
                     return ui.controls.PreloadResult.RESOURCES_LOADED;
                 });
 
+            this._preloadMap.set(filename, promise);
+
+            return promise;
         }
 
         getContent(file: FilePath) {

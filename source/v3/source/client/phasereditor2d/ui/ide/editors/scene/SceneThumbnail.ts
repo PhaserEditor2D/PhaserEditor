@@ -69,65 +69,71 @@ namespace phasereditor2d.ui.ide.editors.scene {
                     return this._promise;
                 }
 
-                await FileUtils.preloadFileString(this._file);
+                this._promise = FileUtils.preloadFileString(this._file)
 
-                const content = FileUtils.getFileString(this._file);
+                    .then(() => this.createImageElement())
 
-                this._promise = new Promise<HTMLImageElement>((resolve, reject) => {
+                    .then(imageElement => {
 
-                    const data: json.SceneData = JSON.parse(content);
+                        this._image = new controls.ImageWrapper(imageElement);
 
-                    const width = 800;
-                    const height = 600;
+                        this._promise = null;
 
-                    const canvas = document.createElement("canvas");
-                    canvas.style.width = (canvas.width = width) + "px";
-                    canvas.style.height = (canvas.height = height) + "px";
-
-                    const parent = document.createElement("div");
-                    parent.style.position = "fixed";
-                    parent.style.left = -width - 10 + "px";
-                    parent.appendChild(canvas);
-
-                    document.body.appendChild(parent);
-
-                    const scene = new ThumbnailScene(data, image => {
-                        resolve(image);
-                        parent.remove();
+                        return controls.PreloadResult.RESOURCES_LOADED;
                     });
-
-                    const game = new Phaser.Game({
-                        type: Phaser.WEBGL,
-                        canvas: canvas,
-                        parent: null,
-                        width: width,
-                        height: height,
-                        scale: {
-                            mode: Phaser.Scale.NONE
-                        },
-                        render: {
-                            pixelArt: true,
-                            transparent: true
-                        },
-                        audio: {
-                            noAudio: true
-                        },
-                        scene: scene,
-                    });
-
-                }).then(imageElement => {
-
-                    this._image = new controls.ImageWrapper(imageElement);
-
-                    this._promise = null;
-
-                    return controls.PreloadResult.RESOURCES_LOADED;
-                });
 
                 return this._promise;
             }
 
             return controls.Controls.resolveNothingLoaded();
+        }
+
+        private createImageElement() {
+
+            return new Promise<HTMLImageElement>((resolve, reject) => {
+
+                const content = FileUtils.getFileString(this._file);
+
+                const data: json.SceneData = JSON.parse(content);
+
+                const width = 800;
+                const height = 600;
+
+                const canvas = document.createElement("canvas");
+                canvas.style.width = (canvas.width = width) + "px";
+                canvas.style.height = (canvas.height = height) + "px";
+
+                const parent = document.createElement("div");
+                parent.style.position = "fixed";
+                parent.style.left = -width - 10 + "px";
+                parent.appendChild(canvas);
+
+                document.body.appendChild(parent);
+
+                const scene = new ThumbnailScene(data, image => {
+                    resolve(image);
+                    parent.remove();
+                });
+
+                const game = new Phaser.Game({
+                    type: Phaser.WEBGL,
+                    canvas: canvas,
+                    parent: null,
+                    width: width,
+                    height: height,
+                    scale: {
+                        mode: Phaser.Scale.NONE
+                    },
+                    render: {
+                        pixelArt: true,
+                        transparent: true
+                    },
+                    audio: {
+                        noAudio: true
+                    },
+                    scene: scene,
+                });
+            });
         }
 
     }

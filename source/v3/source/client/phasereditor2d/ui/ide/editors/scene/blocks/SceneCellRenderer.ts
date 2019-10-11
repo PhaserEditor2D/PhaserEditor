@@ -17,7 +17,7 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
 
         async preload(obj: any): Promise<controls.PreloadResult> {
-
+            
             const file = <core.io.FilePath>obj;
 
             return SceneThumbnailCache.getInstance().preload(file);

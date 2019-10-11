@@ -13,76 +13,43 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var core;
     (function (core) {
-        class ContentTypeRegistry {
-            constructor() {
-                this._resolvers = [];
-                this._cache = new Map();
-            }
-            registerResolver(resolver) {
-                this._resolvers.push(resolver);
-            }
-            getCachedContentType(file) {
-                const id = file.getId();
-                if (this._cache.has(id)) {
-                    return this._cache.get(id);
-                }
-                return core.CONTENT_TYPE_ANY;
-            }
-            async preload(file) {
-                const id = file.getId();
-                if (this._cache.has(id)) {
-                    return phasereditor2d.ui.controls.Controls.resolveNothingLoaded();
-                }
-                for (const resolver of this._resolvers) {
-                    const ct = await resolver.computeContentType(file);
-                    if (ct !== core.CONTENT_TYPE_ANY) {
-                        this._cache.set(id, ct);
-                        return phasereditor2d.ui.controls.Controls.resolveResourceLoaded();
-                    }
-                }
-                return phasereditor2d.ui.controls.Controls.resolveNothingLoaded();
-            }
-        }
-        core.ContentTypeRegistry = ContentTypeRegistry;
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var core;
-    (function (core) {
-        core.CONTENT_TYPE_ANY = "any";
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var core;
-    (function (core) {
         var io;
         (function (io) {
             class FileContentCache {
                 constructor(getContent, setContent) {
+                    this._preloadMap = new Map();
                     this._backendGetContent = getContent;
                     this._backendSetContent = setContent;
                     this._map = new Map();
                 }
                 preload(file) {
-                    const entry = this._map.get(file.getFullName());
+                    const filename = file.getFullName();
+                    if (this._preloadMap.has(filename)) {
+                        return this._preloadMap.get(filename);
+                    }
+                    const entry = this._map.get(filename);
                     if (entry) {
                         if (entry.modTime === file.getModTime()) {
                             return phasereditor2d.ui.controls.Controls.resolveNothingLoaded();
                         }
-                        return this._backendGetContent(file)
+                        const promise = this._backendGetContent(file)
                             .then((content) => {
+                            this._preloadMap.delete(filename);
                             entry.modTime = file.getModTime();
                             entry.content = content;
                             return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
                         });
+                        this._preloadMap.set(filename, promise);
+                        return promise;
                     }
-                    return this._backendGetContent(file)
+                    const promise = this._backendGetContent(file)
                         .then((content) => {
-                        this._map.set(file.getFullName(), new ContentEntry(content, file.getModTime()));
+                        this._preloadMap.delete(filename);
+                        this._map.set(filename, new ContentEntry(content, file.getModTime()));
                         return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
                     });
+                    this._preloadMap.set(filename, promise);
+                    return promise;
                 }
                 getContent(file) {
                     const entry = this._map.get(file.getFullName());
@@ -115,6 +82,52 @@ var phasereditor2d;
                 }
             }
         })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./io/FileContentCache.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        class ContentTypeRegistry {
+            constructor() {
+                this._resolvers = [];
+                this._cache = new ContentTypeFileCache(this);
+            }
+            registerResolver(resolver) {
+                this._resolvers.push(resolver);
+            }
+            getResolvers() {
+                return this._resolvers;
+            }
+            getCachedContentType(file) {
+                return this._cache.getContent(file);
+            }
+            async preload(file) {
+                return this._cache.preload(file);
+            }
+        }
+        core.ContentTypeRegistry = ContentTypeRegistry;
+        class ContentTypeFileCache extends core.io.FileContentCache {
+            constructor(registry) {
+                super(async (file) => {
+                    for (const resolver of registry.getResolvers()) {
+                        const ct = await resolver.computeContentType(file);
+                        if (ct !== core.CONTENT_TYPE_ANY) {
+                            return ct;
+                        }
+                    }
+                    return core.CONTENT_TYPE_ANY;
+                });
+            }
+        }
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        core.CONTENT_TYPE_ANY = "any";
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -5165,43 +5178,9 @@ var phasereditor2d;
                                 if (this._promise) {
                                     return this._promise;
                                 }
-                                await ide.FileUtils.preloadFileString(this._file);
-                                const content = ide.FileUtils.getFileString(this._file);
-                                this._promise = new Promise((resolve, reject) => {
-                                    const data = JSON.parse(content);
-                                    const width = 800;
-                                    const height = 600;
-                                    const canvas = document.createElement("canvas");
-                                    canvas.style.width = (canvas.width = width) + "px";
-                                    canvas.style.height = (canvas.height = height) + "px";
-                                    const parent = document.createElement("div");
-                                    parent.style.position = "fixed";
-                                    parent.style.left = -width - 10 + "px";
-                                    parent.appendChild(canvas);
-                                    document.body.appendChild(parent);
-                                    const scene = new ThumbnailScene(data, image => {
-                                        resolve(image);
-                                        parent.remove();
-                                    });
-                                    const game = new Phaser.Game({
-                                        type: Phaser.WEBGL,
-                                        canvas: canvas,
-                                        parent: null,
-                                        width: width,
-                                        height: height,
-                                        scale: {
-                                            mode: Phaser.Scale.NONE
-                                        },
-                                        render: {
-                                            pixelArt: true,
-                                            transparent: true
-                                        },
-                                        audio: {
-                                            noAudio: true
-                                        },
-                                        scene: scene,
-                                    });
-                                }).then(imageElement => {
+                                this._promise = ide.FileUtils.preloadFileString(this._file)
+                                    .then(() => this.createImageElement())
+                                    .then(imageElement => {
                                     this._image = new ui.controls.ImageWrapper(imageElement);
                                     this._promise = null;
                                     return ui.controls.PreloadResult.RESOURCES_LOADED;
@@ -5209,6 +5188,44 @@ var phasereditor2d;
                                 return this._promise;
                             }
                             return ui.controls.Controls.resolveNothingLoaded();
+                        }
+                        createImageElement() {
+                            return new Promise((resolve, reject) => {
+                                const content = ide.FileUtils.getFileString(this._file);
+                                const data = JSON.parse(content);
+                                const width = 800;
+                                const height = 600;
+                                const canvas = document.createElement("canvas");
+                                canvas.style.width = (canvas.width = width) + "px";
+                                canvas.style.height = (canvas.height = height) + "px";
+                                const parent = document.createElement("div");
+                                parent.style.position = "fixed";
+                                parent.style.left = -width - 10 + "px";
+                                parent.appendChild(canvas);
+                                document.body.appendChild(parent);
+                                const scene = new ThumbnailScene(data, image => {
+                                    resolve(image);
+                                    parent.remove();
+                                });
+                                const game = new Phaser.Game({
+                                    type: Phaser.WEBGL,
+                                    canvas: canvas,
+                                    parent: null,
+                                    width: width,
+                                    height: height,
+                                    scale: {
+                                        mode: Phaser.Scale.NONE
+                                    },
+                                    render: {
+                                        pixelArt: true,
+                                        transparent: true
+                                    },
+                                    audio: {
+                                        noAudio: true
+                                    },
+                                    scene: scene,
+                                });
+                            });
                         }
                     }
                     scene_3.SceneThumbnail = SceneThumbnail;

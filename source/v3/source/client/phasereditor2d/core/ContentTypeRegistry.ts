@@ -1,47 +1,49 @@
+/// <reference path="./io/FileContentCache.ts" />
+
 namespace phasereditor2d.core {
 
     export class ContentTypeRegistry {
 
         private _resolvers: IContentTypeResolver[];
-        private _cache: Map<string, string>;
+        private _cache: ContentTypeFileCache;
 
         constructor() {
             this._resolvers = [];
-            this._cache = new Map();
+            this._cache = new ContentTypeFileCache(this);
         }
 
         registerResolver(resolver: IContentTypeResolver) {
             this._resolvers.push(resolver);
         }
 
-        getCachedContentType(file: io.FilePath) {
-            const id = file.getId();
-            
-            if (this._cache.has(id)) {
-                return this._cache.get(id);
-            }
+        getResolvers() {
+            return this._resolvers;
+        }
 
-            return CONTENT_TYPE_ANY;
+        getCachedContentType(file: io.FilePath) {
+            return this._cache.getContent(file);
         }
 
         async preload(file: io.FilePath): Promise<ui.controls.PreloadResult> {
-            const id = file.getId();
+            return this._cache.preload(file);
+        }
+    }
 
-            if (this._cache.has(id)) {
-                return ui.controls.Controls.resolveNothingLoaded();
-            }
+    class ContentTypeFileCache extends io.FileContentCache<string> {
+        constructor(registry: ContentTypeRegistry) {
+            super(async (file) => {
 
-            for (const resolver of this._resolvers) {
+                for (const resolver of registry.getResolvers()) {
 
-                const ct = await resolver.computeContentType(file);
+                    const ct = await resolver.computeContentType(file);
 
-                if (ct !== CONTENT_TYPE_ANY) {
-                    this._cache.set(id, ct);
-                    return ui.controls.Controls.resolveResourceLoaded();
+                    if (ct !== CONTENT_TYPE_ANY) {
+                        return ct;
+                    }
                 }
-            }
 
-            return ui.controls.Controls.resolveNothingLoaded();
+                return CONTENT_TYPE_ANY;
+            });
         }
     }
 }

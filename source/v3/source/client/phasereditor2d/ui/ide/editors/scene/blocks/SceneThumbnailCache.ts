@@ -7,7 +7,6 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
         static getInstance() {
 
             if (!this._instance) {
-
                 this._instance = new SceneThumbnailCache();
             }
 
