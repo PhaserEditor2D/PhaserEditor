@@ -37,8 +37,8 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             if (dataFile) {
 
                 let result = await FileUtils.preloadFileString(dataFile);
-                
-                const str = FileUtils.getFileStringFromCache(dataFile);
+
+                const str = FileUtils.getFileString(dataFile);
 
                 try {
 
@@ -50,13 +50,13 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
                             const imageName: string = texture.image;
                             const imageFile = dataFile.getSibling(imageName);
-                            
+
                             if (imageFile) {
 
                                 const image = Workbench.getWorkbench().getFileImage(imageFile);
                                 const result2 = await image.preload();
                                 result = Math.max(result, result2);
-                                
+
                             }
                         }
                     }
@@ -78,14 +78,20 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
             if (dataFile) {
 
-                const str = Workbench.getWorkbench().getFileStorage().getFileStringFromCache(dataFile);
+                const str = FileUtils.getFileString(dataFile);
+
                 try {
+
                     const data = JSON.parse(str);
+
                     if (data.textures) {
+
                         for (const textureData of data.textures) {
+
                             const imageName = textureData.image;
                             const imageFile = dataFile.getSibling(imageName);
                             const image = FileUtils.getImage(imageFile);
+
                             for (const frame of textureData.frames) {
                                 const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, list.length);
                                 list.push(frameData);

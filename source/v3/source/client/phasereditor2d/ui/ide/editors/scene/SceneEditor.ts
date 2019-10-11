@@ -66,10 +66,14 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             const content = JSON.stringify(data, null, 4);
 
-            const ok = await FileUtils.setFileString(this.getInput(), content);
+            try {
 
-            if (ok) {
+                await FileUtils.setFileString_async(this.getInput(), content);
+
                 this.setDirty(false);
+
+            } catch (e) {
+                console.error(e);
             }
         }
 
@@ -139,7 +143,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 const file = this.getInput();
 
-                const content = await FileUtils.getFileString(file);
+                await FileUtils.preloadFileString(file);
+
+                const content = FileUtils.getFileString(file);
 
                 const data = JSON.parse(content);
 

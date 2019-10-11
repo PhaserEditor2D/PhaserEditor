@@ -84,7 +84,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
         static getFileStringFromPackUrl(url: string): string {
             const file = FileUtils.getFileFromPath(url);
-            const str = Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
+            const str = FileUtils.getFileString(file);
             return str;
         }
 

@@ -2,7 +2,7 @@ namespace phasereditor2d.core.io {
     const EMPTY_FILES = [];
 
     export class FilePath {
-        
+
         private _parent: FilePath;
         private _name: string;
         private _isFile: boolean;
@@ -13,6 +13,7 @@ namespace phasereditor2d.core.io {
         private _fileSize: number;
 
         constructor(parent: FilePath, fileData: FileData) {
+
             this._parent = parent;
             this._name = fileData.name;
             this._isFile = fileData.isFile;
@@ -29,17 +30,25 @@ namespace phasereditor2d.core.io {
             }
 
             if (fileData.children) {
+
                 this._files = [];
+
                 for (let child of fileData.children) {
                     this._files.push(new FilePath(this, child));
                 }
+
                 this._files.sort((a, b) => {
+
                     const a1 = a._isFile ? 1 : 0;
                     const b1 = b._isFile ? 1 : 0;
+
                     return a1 - b1;
                 });
+
             } else {
+
                 this._files = EMPTY_FILES;
+
             }
         }
 
@@ -48,14 +57,19 @@ namespace phasereditor2d.core.io {
         }
 
         getSize(): number {
-            return this.isFile()? this._fileSize : 0;
+            return this.isFile() ? this._fileSize : 0;
         }
 
         getName() {
             return this._name;
         }
 
+        getModTime() {
+            return this._modTime;
+        }
+
         getId() {
+
             if (this._id) {
                 return this._id;
             }
@@ -80,15 +94,17 @@ namespace phasereditor2d.core.io {
             return "../project";
         }
 
-        getSibling(name : string) {
+        getSibling(name: string) {
+            
             const parent = this.getParent();
+
             if (parent) {
-                return parent.getChild(name);
+                return parent.getFile(name);
             }
             return null;
         }
 
-        getChild(name : string) {
+        getFile(name: string) {
             return this.getFiles().find(file => file.getName() === name);
         }
 
@@ -106,6 +122,27 @@ namespace phasereditor2d.core.io {
 
         getFiles() {
             return this._files;
+        }
+
+        flatTree(files: FilePath[], includeFolders: boolean): FilePath[] {
+
+            if (this.isFolder()) {
+
+                if (includeFolders) {
+                    files.push(this);
+                }
+
+                for (const file of this.getFiles()) {
+                    file.flatTree(files, includeFolders);
+                }
+
+            } else {
+
+                files.push(this);
+
+            }
+
+            return files;
         }
 
         toString() {

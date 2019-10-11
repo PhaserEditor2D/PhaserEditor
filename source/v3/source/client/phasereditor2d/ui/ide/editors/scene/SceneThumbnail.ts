@@ -69,7 +69,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
                     return this._promise;
                 }
 
-                const content = await FileUtils.getFileString(this._file);
+                await FileUtils.preloadFileString(this._file);
+
+                const content = FileUtils.getFileString(this._file);
 
                 this._promise = new Promise<HTMLImageElement>((resolve, reject) => {
 

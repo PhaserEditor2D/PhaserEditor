@@ -1,7 +1,7 @@
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
-/// <reference path="../../core/io/FileStorage.ts"/>
+/// <reference path="../../core/io/IFileStorage.ts"/>
 /// <reference path="./editors/image/ImageEditor.ts"/>
 
 namespace phasereditor2d.ui.ide {
@@ -57,6 +57,7 @@ namespace phasereditor2d.ui.ide {
             return this._workbench;
         }
 
+        private _fileStringCache: core.io.FileStringCache;
         private _designWindow: ide.DesignWindow;
         private _contentType_icon_Map: Map<string, controls.IImage>;
         private _fileStorage: core.io.IFileStorage;
@@ -76,7 +77,6 @@ namespace phasereditor2d.ui.ide {
             this._activePart = null;
             this._activeEditor = null;
             this._activeElement = null;
-
         }
 
         async start() {
@@ -93,7 +93,7 @@ namespace phasereditor2d.ui.ide {
 
             await this.preloadFileStorage();
 
-            console.log("Workbench: fetching project resources.");
+            console.log("Workbench: fetching required project resources.");
 
             await this.preloadContentTypes();
 
@@ -103,13 +103,19 @@ namespace phasereditor2d.ui.ide {
 
             this.initEditors();
 
-            this._designWindow = new ide.DesignWindow();
-            document.getElementById("body").appendChild(this._designWindow.getElement());
+            this.initWindow();
 
             this.initEvents();
 
             console.log("Workbench: started.");
 
+        }
+
+        private initWindow() {
+
+            this._designWindow = new ide.DesignWindow();
+
+            document.body.appendChild(this._designWindow.getElement());
         }
 
         private async preloadProjectResources() {
@@ -137,6 +143,10 @@ namespace phasereditor2d.ui.ide {
 
             IDECommands.init();
             editors.scene.SceneEditorCommands.init();
+        }
+
+        getFileStringCache() {
+            return this._fileStringCache;
         }
 
         getCommandManager() {
@@ -276,7 +286,9 @@ namespace phasereditor2d.ui.ide {
 
         private async preloadFileStorage() {
 
-            this._fileStorage = new core.io.ServerFileStorage();
+            this._fileStorage = new core.io.HTTPServerFileStorage();
+
+            this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
 
             await this._fileStorage.reload();
         }

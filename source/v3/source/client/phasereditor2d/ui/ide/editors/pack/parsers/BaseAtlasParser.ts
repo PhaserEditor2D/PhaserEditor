@@ -49,7 +49,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             const image = FileUtils.getImage(imageFile);
 
             if (dataFile) {
-                const str = FileUtils.getFileStringFromCache(dataFile);
+                const str = FileUtils.getFileString(dataFile);
                 try {
                     this.parseFrames2(list, image, str);
                 } catch (e) {

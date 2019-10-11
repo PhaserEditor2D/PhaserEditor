@@ -6,28 +6,19 @@ namespace phasereditor2d.ui.ide {
             return Workbench.getWorkbench().getFileImage(file);
         }
 
-        static getFileStringFromCache(file : core.io.FilePath) {
-            return Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
+        static getFileString(file: core.io.FilePath): string {
+            return Workbench.getWorkbench().getFileStringCache().getContent(file);
         }
 
-        static getFileString(file : core.io.FilePath) {
-            return Workbench.getWorkbench().getFileStorage().getFileString(file);
-        }
-
-        static setFileString(file : core.io.FilePath, content : string) {
+        static setFileString_async(file: core.io.FilePath, content: string): Promise<void> {
             return Workbench.getWorkbench().getFileStorage().setFileString(file, content);
         }
 
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
-            const storage = Workbench.getWorkbench().getFileStorage();
 
-            if (storage.hasFileStringInCache(file)) {
-                return controls.Controls.resolveNothingLoaded();
-            }
+            const cache = Workbench.getWorkbench().getFileStringCache();
 
-            await storage.getFileString(file);
-
-            return controls.Controls.resolveResourceLoaded();
+            return cache.preload(file);
         }
 
         static getFileFromPath(path: string): core.io.FilePath {
@@ -38,7 +29,7 @@ namespace phasereditor2d.ui.ide {
             let result = root;
 
             for (const name of names) {
-                const child = result.getFiles().find(file => file.getName() === name);
+                const child = result.getFile(name);
                 if (child) {
                     result = child;
                 } else {
@@ -50,6 +41,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         static async getFilesWithContentType(contentType: string) {
+
             const reg = Workbench.getWorkbench().getContentTypeRegistry();
 
             const files = this.getAllFiles();
@@ -62,19 +54,13 @@ namespace phasereditor2d.ui.ide {
         }
 
         static getAllFiles() {
+
             const files: core.io.FilePath[] = [];
-            this.getAllFiles2(Workbench.getWorkbench().getFileStorage().getRoot(), files);
+
+            Workbench.getWorkbench().getFileStorage().getRoot().flatTree(files, false);
+
             return files;
         }
 
-        private static getAllFiles2(folder: core.io.FilePath, files: core.io.FilePath[]) {
-            for (const file of folder.getFiles()) {
-                if (file.isFolder()) {
-                    this.getAllFiles2(file, files);
-                } else {
-                    files.push(file);
-                }
-            }
-        }
     }
 }

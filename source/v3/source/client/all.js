@@ -59,6 +59,70 @@ var phasereditor2d;
     (function (core) {
         var io;
         (function (io) {
+            class FileContentCache {
+                constructor(getContent, setContent) {
+                    this._getContent = getContent;
+                    this._setContent = setContent;
+                    this._map = new Map();
+                }
+                preload(file) {
+                    const entry = this._map.get(file.getFullName());
+                    if (entry) {
+                        if (entry.modTime === file.getModTime()) {
+                            return phasereditor2d.ui.controls.Controls.resolveNothingLoaded();
+                        }
+                        return this._getContent(file)
+                            .then((content) => {
+                            entry.modTime = file.getModTime();
+                            entry.content = content;
+                            return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
+                        });
+                    }
+                    return this._getContent(file)
+                        .then((content) => {
+                        this._map.set(file.getFullName(), new ContentEntry(content, file.getModTime()));
+                        return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
+                    });
+                }
+                getContent(file) {
+                    const entry = this._map.get(file.getFullName());
+                    return entry ? entry.content : null;
+                }
+                async setContent(file, content) {
+                    if (this._setContent) {
+                        await this._setContent(file, content);
+                    }
+                    const name = file.getFullName();
+                    const modTime = file.getModTime();
+                    let entry = this._map.get(name);
+                    if (entry) {
+                        entry.content = content;
+                        entry.modTime = modTime;
+                    }
+                    else {
+                        this._map.set(name, entry = new ContentEntry(content, modTime));
+                    }
+                }
+                hasFile(file) {
+                    return this._map.has(file.getFullName());
+                }
+            }
+            io.FileContentCache = FileContentCache;
+            class ContentEntry {
+                constructor(content, modTime) {
+                    this.content = content;
+                    this.modTime = modTime;
+                }
+            }
+        })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var io;
+        (function (io) {
             const EMPTY_FILES = [];
             class FilePath {
                 constructor(parent, fileData) {
@@ -100,6 +164,9 @@ var phasereditor2d;
                 getName() {
                     return this._name;
                 }
+                getModTime() {
+                    return this._modTime;
+                }
                 getId() {
                     if (this._id) {
                         return this._id;
@@ -122,11 +189,11 @@ var phasereditor2d;
                 getSibling(name) {
                     const parent = this.getParent();
                     if (parent) {
-                        return parent.getChild(name);
+                        return parent.getFile(name);
                     }
                     return null;
                 }
-                getChild(name) {
+                getFile(name) {
                     return this.getFiles().find(file => file.getName() === name);
                 }
                 getParent() {
@@ -140,6 +207,20 @@ var phasereditor2d;
                 }
                 getFiles() {
                     return this._files;
+                }
+                flatTree(files, includeFolders) {
+                    if (this.isFolder()) {
+                        if (includeFolders) {
+                            files.push(this);
+                        }
+                        for (const file of this.getFiles()) {
+                            file.flatTree(files, includeFolders);
+                        }
+                    }
+                    else {
+                        files.push(this);
+                    }
+                    return files;
                 }
                 toString() {
                     if (this._parent) {
@@ -171,7 +252,56 @@ var phasereditor2d;
     (function (core) {
         var io;
         (function (io) {
-            async function makeApiRequest(method, body) {
+            class FileStorageChange {
+                constructor(modified, added, deleted) {
+                    this._modified = modified;
+                    this._modifiedFileNameSet = new Set(modified.map(file => file.getFullName()));
+                    this._added = added;
+                    this._deleted = deleted;
+                    this._deletedFileNameSet = new Set(deleted.map(file => file.getFullName()));
+                }
+                isModified(file) {
+                    return this._modifiedFileNameSet.has(file.getFullName());
+                }
+                isDeleted(file) {
+                    return this._deletedFileNameSet.has(file.getFullName());
+                }
+                getAddedFiles() {
+                    return this._added;
+                }
+                getModifiedFiles() {
+                    return this._modified;
+                }
+                getDeletedFiles() {
+                    return this._deleted;
+                }
+            }
+            io.FileStorageChange = FileStorageChange;
+        })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var io;
+        (function (io) {
+            class FileStringCache extends io.FileContentCache {
+                constructor(storage) {
+                    super(file => storage.getFileString(file), (file, content) => storage.setFileString(file, content));
+                }
+            }
+            io.FileStringCache = FileStringCache;
+        })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var io;
+        (function (io) {
+            async function apiRequest(method, body) {
                 try {
                     const resp = await fetch("../api", {
                         method: "POST",
@@ -195,22 +325,71 @@ var phasereditor2d;
                     });
                 }
             }
-            class ServerFileStorage {
+            class HTTPServerFileStorage {
                 constructor() {
+                    this._root = null;
                     this._fileStringContentMap = new Map();
+                    this._changeListeners = [];
+                    this._fileStringContentMap = new Map();
+                }
+                addChangeListener(listener) {
+                    this._changeListeners.push(listener);
                 }
                 getRoot() {
                     return this._root;
                 }
                 async reload() {
-                    this._fileStringContentMap = new Map();
-                    const data = await makeApiRequest("GetProjectFiles");
-                    //TODO: handle error
-                    const self = this;
-                    return new Promise(function (resolve, reject) {
-                        self._root = new io.FilePath(null, data);
-                        resolve(self._root);
-                    });
+                    const data = await apiRequest("GetProjectFiles");
+                    const oldRoot = this._root;
+                    const newRoot = new io.FilePath(null, data);
+                    this._root = newRoot;
+                    if (oldRoot) {
+                        const change = HTTPServerFileStorage.compare(oldRoot, newRoot);
+                        this.fireChange(change);
+                    }
+                }
+                fireChange(change) {
+                    for (const listener of this._changeListeners) {
+                        try {
+                            listener(change);
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                    }
+                }
+                static compare(oldRoot, newRoot) {
+                    const oldFiles = [];
+                    const newFiles = [];
+                    oldRoot.flatTree(oldFiles, false);
+                    newRoot.flatTree(newFiles, false);
+                    const newNameMap = new Map();
+                    for (const file of newFiles) {
+                        newNameMap.set(file.getFullName(), file);
+                    }
+                    const newNameSet = new Set(newFiles.map(file => file.getFullName()));
+                    const oldNameSet = new Set(oldFiles.map(file => file.getFullName()));
+                    const deleted = [];
+                    const modified = [];
+                    const added = [];
+                    for (const oldFile of oldFiles) {
+                        const oldName = oldFile.getFullName();
+                        if (newNameSet.has(oldName)) {
+                            const newFile = newNameMap.get(oldName);
+                            if (newFile.getId() !== oldFile.getId()) {
+                                modified.push(newFile);
+                            }
+                        }
+                        else {
+                            deleted.push(oldFile);
+                        }
+                    }
+                    for (const newFile of newFiles) {
+                        if (!oldNameSet.has(newFile.getFullName())) {
+                            added.push(newFile);
+                        }
+                    }
+                    return new io.FileStorageChange(modified, added, deleted);
                 }
                 hasFileStringInCache(file) {
                     return this._fileStringContentMap.has(file.getId());
@@ -229,7 +408,7 @@ var phasereditor2d;
                         const content = this._fileStringContentMap.get(id);
                         return content;
                     }
-                    const data = await makeApiRequest("GetFileString", {
+                    const data = await apiRequest("GetFileString", {
                         path: file.getFullName()
                     });
                     if (data.error) {
@@ -241,19 +420,20 @@ var phasereditor2d;
                     return content;
                 }
                 async setFileString(file, content) {
-                    const data = await makeApiRequest("SetFileString", {
+                    const data = await apiRequest("SetFileString", {
                         path: file.getFullName(),
                         content: content
                     });
                     if (data.error) {
                         alert(`Cannot set file content to '${file.getFullName()}'`);
-                        return false;
+                        throw new Error(data.error);
                     }
+                    // TODO: get the new timestamp of the file and update it.
                     this._fileStringContentMap.set(file.getId(), content);
-                    return true;
+                    this.fireChange(new io.FileStorageChange([file], [], []));
                 }
             }
-            io.ServerFileStorage = ServerFileStorage;
+            io.HTTPServerFileStorage = HTTPServerFileStorage;
         })(io = core.io || (core.io = {}));
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1369,29 +1549,22 @@ var phasereditor2d;
                 static getImage(file) {
                     return ide.Workbench.getWorkbench().getFileImage(file);
                 }
-                static getFileStringFromCache(file) {
-                    return ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
-                }
                 static getFileString(file) {
-                    return ide.Workbench.getWorkbench().getFileStorage().getFileString(file);
+                    return ide.Workbench.getWorkbench().getFileStringCache().getContent(file);
                 }
-                static setFileString(file, content) {
+                static setFileString_async(file, content) {
                     return ide.Workbench.getWorkbench().getFileStorage().setFileString(file, content);
                 }
                 static async preloadFileString(file) {
-                    const storage = ide.Workbench.getWorkbench().getFileStorage();
-                    if (storage.hasFileStringInCache(file)) {
-                        return ui.controls.Controls.resolveNothingLoaded();
-                    }
-                    await storage.getFileString(file);
-                    return ui.controls.Controls.resolveResourceLoaded();
+                    const cache = ide.Workbench.getWorkbench().getFileStringCache();
+                    return cache.preload(file);
                 }
                 static getFileFromPath(path) {
                     const root = ide.Workbench.getWorkbench().getFileStorage().getRoot();
                     const names = path.split("/");
                     let result = root;
                     for (const name of names) {
-                        const child = result.getFiles().find(file => file.getName() === name);
+                        const child = result.getFile(name);
                         if (child) {
                             result = child;
                         }
@@ -1411,18 +1584,8 @@ var phasereditor2d;
                 }
                 static getAllFiles() {
                     const files = [];
-                    this.getAllFiles2(ide.Workbench.getWorkbench().getFileStorage().getRoot(), files);
+                    ide.Workbench.getWorkbench().getFileStorage().getRoot().flatTree(files, false);
                     return files;
-                }
-                static getAllFiles2(folder, files) {
-                    for (const file of folder.getFiles()) {
-                        if (file.isFolder()) {
-                            this.getAllFiles2(file, files);
-                        }
-                        else {
-                            files.push(file);
-                        }
-                    }
                 }
             }
             ide.FileUtils = FileUtils;
@@ -1767,7 +1930,7 @@ var phasereditor2d;
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
 /// <reference path="../ide/DesignWindow.ts"/>
-/// <reference path="../../core/io/FileStorage.ts"/>
+/// <reference path="../../core/io/IFileStorage.ts"/>
 /// <reference path="./editors/image/ImageEditor.ts"/>
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -1828,15 +1991,18 @@ var phasereditor2d;
                     await this.preloadIcons();
                     console.log("Workbench: fetching project metadata.");
                     await this.preloadFileStorage();
-                    console.log("Workbench: fetching project resources.");
+                    console.log("Workbench: fetching required project resources.");
                     await this.preloadContentTypes();
                     await this.preloadProjectResources();
                     this.initCommands();
                     this.initEditors();
-                    this._designWindow = new ide.DesignWindow();
-                    document.getElementById("body").appendChild(this._designWindow.getElement());
+                    this.initWindow();
                     this.initEvents();
                     console.log("Workbench: started.");
+                }
+                initWindow() {
+                    this._designWindow = new ide.DesignWindow();
+                    document.body.appendChild(this._designWindow.getElement());
                 }
                 async preloadProjectResources() {
                     await ide.editors.pack.PackFinder.preload();
@@ -1855,6 +2021,9 @@ var phasereditor2d;
                     this._commandManager = new ide.commands.CommandManager();
                     ide.IDECommands.init();
                     ide.editors.scene.SceneEditorCommands.init();
+                }
+                getFileStringCache() {
+                    return this._fileStringCache;
                 }
                 getCommandManager() {
                     return this._commandManager;
@@ -1962,7 +2131,8 @@ var phasereditor2d;
                     return null;
                 }
                 async preloadFileStorage() {
-                    this._fileStorage = new phasereditor2d.core.io.ServerFileStorage();
+                    this._fileStorage = new phasereditor2d.core.io.HTTPServerFileStorage();
+                    this._fileStringCache = new phasereditor2d.core.io.FileStringCache(this._fileStorage);
                     await this._fileStorage.reload();
                 }
                 async preloadContentTypes() {
@@ -2546,7 +2716,7 @@ var phasereditor2d;
                         }
                         static getFileStringFromPackUrl(url) {
                             const file = ide.FileUtils.getFileFromPath(url);
-                            const str = ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(file);
+                            const str = ide.FileUtils.getFileString(file);
                             return str;
                         }
                         static getFileJSONFromPackUrl(url) {
@@ -2735,7 +2905,7 @@ var phasereditor2d;
                                 const imageFile = pack.AssetPackUtils.getFileFromPackUrl(data.textureURL);
                                 const image = ide.FileUtils.getImage(imageFile);
                                 if (dataFile) {
-                                    const str = ide.FileUtils.getFileStringFromCache(dataFile);
+                                    const str = ide.FileUtils.getFileString(dataFile);
                                     try {
                                         this.parseFrames2(list, image, str);
                                     }
@@ -2954,7 +3124,7 @@ var phasereditor2d;
                                 const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.url);
                                 if (dataFile) {
                                     let result = await ide.FileUtils.preloadFileString(dataFile);
-                                    const str = ide.FileUtils.getFileStringFromCache(dataFile);
+                                    const str = ide.FileUtils.getFileString(dataFile);
                                     try {
                                         const data = JSON.parse(str);
                                         if (data.textures) {
@@ -2980,7 +3150,7 @@ var phasereditor2d;
                                 const data = this.getPackItem().getData();
                                 const dataFile = pack.AssetPackUtils.getFileFromPackUrl(data.url);
                                 if (dataFile) {
-                                    const str = ide.Workbench.getWorkbench().getFileStorage().getFileStringFromCache(dataFile);
+                                    const str = ide.FileUtils.getFileString(dataFile);
                                     try {
                                         const data = JSON.parse(str);
                                         if (data.textures) {
@@ -4732,9 +4902,12 @@ var phasereditor2d;
                             const writer = new scene.json.SceneWriter(this.getGameScene());
                             const data = writer.toJSON();
                             const content = JSON.stringify(data, null, 4);
-                            const ok = await ide.FileUtils.setFileString(this.getInput(), content);
-                            if (ok) {
+                            try {
+                                await ide.FileUtils.setFileString_async(this.getInput(), content);
                                 this.setDirty(false);
+                            }
+                            catch (e) {
+                                console.error(e);
                             }
                         }
                         createPart() {
@@ -4783,7 +4956,8 @@ var phasereditor2d;
                             this._sceneRead = true;
                             try {
                                 const file = this.getInput();
-                                const content = await ide.FileUtils.getFileString(file);
+                                await ide.FileUtils.preloadFileString(file);
+                                const content = ide.FileUtils.getFileString(file);
                                 const data = JSON.parse(content);
                                 if (scene.json.SceneParser.isValidSceneDataFormat(data)) {
                                     const parser = new scene.json.SceneParser(this.getGameScene());
@@ -5007,7 +5181,8 @@ var phasereditor2d;
                                 if (this._promise) {
                                     return this._promise;
                                 }
-                                const content = await ide.FileUtils.getFileString(this._file);
+                                await ide.FileUtils.preloadFileString(this._file);
+                                const content = ide.FileUtils.getFileString(this._file);
                                 this._promise = new Promise((resolve, reject) => {
                                     const data = JSON.parse(content);
                                     const width = 800;
