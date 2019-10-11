@@ -9,9 +9,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     export class SceneEditorCommands {
 
-        static init() {
-
-            const manager = Workbench.getWorkbench().getCommandManager();
+        static register(manager : commands.CommandManager) {
 
             // delete 
 

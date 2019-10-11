@@ -1,4 +1,3 @@
-/// <reference path="../../pack/viewers/AssetPackContentProvider.ts" />
 
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 

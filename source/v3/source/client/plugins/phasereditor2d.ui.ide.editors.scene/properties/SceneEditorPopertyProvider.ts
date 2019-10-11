@@ -1,4 +1,3 @@
-/// <reference path="../../../../../../phasereditor2d.ui.controls/properties/PropertyPage.ts" />
 
 namespace phasereditor2d.ui.ide.editors.scene.properties {
 

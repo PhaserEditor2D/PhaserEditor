@@ -90,11 +90,7 @@ namespace phasereditor2d.ui.ide {
 
             console.log("Workbench: fetching UI resources.");
 
-            await this.preloadIcons();
-
-            for (const plugin of plugins) {
-                await plugin.preloadIcons(this);
-            }
+            await this.preloadIcons(plugins);
 
             console.log("Workbench: fetching project metadata.");
 
@@ -140,7 +136,7 @@ namespace phasereditor2d.ui.ide {
             }
         }
 
-        private async preloadIcons() {
+        private async preloadIcons(plugins : Plugin[]) {
 
             this._contentType_icon_Map = new Map();
 
@@ -151,6 +147,10 @@ namespace phasereditor2d.ui.ide {
             this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
             this._contentType_icon_Map.set(editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
 
+            for (const plugin of plugins) {
+                await plugin.preloadIcons();
+            }
+
             return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
         }
 
@@ -158,8 +158,6 @@ namespace phasereditor2d.ui.ide {
             this._commandManager = new commands.CommandManager();
 
             IDECommands.init();
-
-            editors.scene.SceneEditorCommands.init();
 
             for(const plugin of plugins) {
                 plugin.registerCommands(this._commandManager);
@@ -178,7 +176,6 @@ namespace phasereditor2d.ui.ide {
 
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
             this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
-            this._editorRegistry.registerFactory(editors.scene.SceneEditor.getFactory());
 
             for(const plugin of plugins) {
                 plugin.registerEditor(this._editorRegistry);
@@ -322,11 +319,11 @@ namespace phasereditor2d.ui.ide {
             const reg = new core.ContentTypeRegistry();
 
             for (const plugin of plugins) {
-                plugin.registerContentTypes(this, reg);
+                plugin.registerContentTypes(reg);
             }
 
             reg.registerResolver(new editors.pack.AssetPackContentTypeResolver());
-            reg.registerResolver(new editors.scene.SceneContentTypeResolver());
+            
             reg.registerResolver(new DefaultExtensionTypeResolver());
 
             this._contentTypeRegistry = reg;

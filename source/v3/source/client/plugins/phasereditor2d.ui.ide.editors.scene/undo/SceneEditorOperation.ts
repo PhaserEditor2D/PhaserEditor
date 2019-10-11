@@ -1,5 +1,3 @@
-/// <reference path="../../../undo/Operation.ts" />
-
 namespace phasereditor2d.ui.ide.editors.scene.undo {
 
     export abstract class SceneEditorOperation extends ide.undo.Operation {

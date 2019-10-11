@@ -1,5 +1,3 @@
-/// <reference path="../../EditorViewerProvider.ts" />
-/// <reference path="./outline/SceneEditorOutlineProvider.ts" />
 
 namespace phasereditor2d.ui.ide.editors.scene {
 

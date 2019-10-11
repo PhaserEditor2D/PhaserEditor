@@ -1,6 +1,7 @@
 namespace phasereditor2d.ui.ide {
 
     export abstract class Plugin {
+
         private _id: string;
 
         constructor(id: string) {
@@ -11,17 +12,29 @@ namespace phasereditor2d.ui.ide {
             return this._id;
         }
 
-        abstract preloadIcons(workbench: Workbench): Promise<void>;
+        preloadIcons(): Promise<void> {
+            return Promise.resolve();
+        }
 
-        abstract registerContentTypes(workbench: Workbench, registry: core.ContentTypeRegistry): void;
+        registerContentTypes(registry: core.ContentTypeRegistry): void {
+            
+        }
 
-        abstract preloadProjectResources(): Promise<void>;
+        preloadProjectResources(): Promise<void> {
+            return Promise.resolve();
+        }
 
-        abstract registerCommands(manager: commands.CommandManager): void;
+        registerCommands(manager: commands.CommandManager): void {
 
-        abstract registerEditor(registry: EditorRegistry): void;
+        }
 
-        abstract createWindow(windows: ide.Window[]): void;
+        registerEditor(registry: EditorRegistry): void {
+
+        }
+
+        createWindow(windows: ide.Window[]): void {
+
+        }
 
     }
 
