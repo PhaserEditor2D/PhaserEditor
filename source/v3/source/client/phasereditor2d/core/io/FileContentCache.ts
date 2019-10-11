@@ -103,7 +103,7 @@ namespace phasereditor2d.core.io {
         }
     }
 
-    class ContentEntry<T> {
+    export class ContentEntry<T> {
         constructor(
             public content: T,
             public modTime: number

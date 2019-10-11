@@ -68,17 +68,6 @@ namespace phasereditor2d.core.io {
             return this._modTime;
         }
 
-        getId() {
-
-            if (this._id) {
-                return this._id;
-            }
-
-            this._id = this.getFullName() + "@" + this._modTime + "@" + this._fileSize;
-
-            return this._id;
-        }
-
         getFullName() {
             if (this._parent) {
                 return this._parent.getFullName() + "/" + this._name;

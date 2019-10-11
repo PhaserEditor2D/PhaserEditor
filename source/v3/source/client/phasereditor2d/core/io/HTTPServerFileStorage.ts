@@ -106,7 +106,7 @@ namespace phasereditor2d.core.io {
 
                     const newFile = newNameMap.get(oldName);
 
-                    if (newFile.getId() !== oldFile.getId()) {
+                    if (newFile.getModTime() !== oldFile.getModTime()) {
                         modified.push(newFile);
                     }
 

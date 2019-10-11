@@ -81,6 +81,7 @@ var phasereditor2d;
                     this.modTime = modTime;
                 }
             }
+            io.ContentEntry = ContentEntry;
         })(io = core.io || (core.io = {}));
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -179,13 +180,6 @@ var phasereditor2d;
                 }
                 getModTime() {
                     return this._modTime;
-                }
-                getId() {
-                    if (this._id) {
-                        return this._id;
-                    }
-                    this._id = this.getFullName() + "@" + this._modTime + "@" + this._fileSize;
-                    return this._id;
                 }
                 getFullName() {
                     if (this._parent) {
@@ -387,7 +381,7 @@ var phasereditor2d;
                         const oldName = oldFile.getFullName();
                         if (newNameSet.has(oldName)) {
                             const newFile = newNameMap.get(oldName);
-                            if (newFile.getId() !== oldFile.getId()) {
+                            if (newFile.getModTime() !== oldFile.getModTime()) {
                                 modified.push(newFile);
                             }
                         }
@@ -427,6 +421,41 @@ var phasereditor2d;
                 }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
+        })(io = core.io || (core.io = {}));
+    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var core;
+    (function (core) {
+        var io;
+        (function (io) {
+            class SyncFileContentCache {
+                constructor(builder) {
+                    this._getContent = builder;
+                    this._map = new Map();
+                }
+                getContent(file) {
+                    const filename = file.getFullName();
+                    const entry = this._map.get(filename);
+                    if (entry) {
+                        if (entry.modTime === file.getModTime()) {
+                            return entry.content;
+                        }
+                        const content = this._getContent(file);
+                        entry.modTime = file.getModTime();
+                        entry.content = content;
+                        return content;
+                    }
+                    const content = this._getContent(file);
+                    this._map.set(filename, new io.ContentEntry(content, file.getModTime()));
+                    return content;
+                }
+                hasFile(file) {
+                    return this._map.has(file.getFullName());
+                }
+            }
+            io.SyncFileContentCache = SyncFileContentCache;
         })(io = core.io || (core.io = {}));
     })(core = phasereditor2d.core || (phasereditor2d.core = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1782,6 +1811,22 @@ var phasereditor2d;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d/core/io/SyncFileContentCache.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ImageFileCache extends phasereditor2d.core.io.SyncFileContentCache {
+                constructor() {
+                    super(file => new ui.controls.DefaultImage(new Image(), file.getUrl()));
+                }
+            }
+            ide.ImageFileCache = ImageFileCache;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
@@ -1974,6 +2019,7 @@ var phasereditor2d;
                     this._activePart = null;
                     this._activeEditor = null;
                     this._activeElement = null;
+                    this._fileImageCache = new ide.ImageFileCache();
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
@@ -2152,7 +2198,7 @@ var phasereditor2d;
                     return null;
                 }
                 getFileImage(file) {
-                    return ui.controls.Controls.getImage(file.getUrl(), file.getId());
+                    return this._fileImageCache.getContent(file);
                 }
                 getWorkbenchIcon(name) {
                     return ui.controls.Controls.getIcon(name, "phasereditor2d/ui/ide/images");

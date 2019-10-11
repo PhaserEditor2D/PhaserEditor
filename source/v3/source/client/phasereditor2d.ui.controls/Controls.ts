@@ -10,8 +10,6 @@ namespace phasereditor2d.ui.controls {
         RESOURCES_LOADED
     }
 
-
-
     export const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
     export const ICON_CONTROL_TREE_EXPAND = "tree-expand";
     export const ICON_CONTROL_CLOSE = "close";
@@ -92,7 +90,7 @@ namespace phasereditor2d.ui.controls {
             return Promise.all(ICONS.map(icon => this.getIcon(icon).preload()));
         }
 
-        static getImage(url: string, id: string): IImage {
+        private static getImage(url: string, id: string): IImage {
             if (Controls._images.has(id)) {
                 return Controls._images.get(id);
             }

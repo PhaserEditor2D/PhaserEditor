@@ -58,6 +58,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         private _fileStringCache: core.io.FileStringCache;
+        private _fileImageCache : ImageFileCache;
         private _designWindow: ide.DesignWindow;
         private _contentType_icon_Map: Map<string, controls.IImage>;
         private _fileStorage: core.io.IFileStorage;
@@ -77,6 +78,8 @@ namespace phasereditor2d.ui.ide {
             this._activePart = null;
             this._activeEditor = null;
             this._activeElement = null;
+
+            this._fileImageCache = new ImageFileCache();
         }
 
         async start() {
@@ -312,14 +315,18 @@ namespace phasereditor2d.ui.ide {
         }
 
         getContentTypeIcon(contentType: string): controls.IImage {
+            
             if (this._contentType_icon_Map.has(contentType)) {
+                
                 return this._contentType_icon_Map.get(contentType);
+                
             }
+
             return null;
         }
 
         getFileImage(file: core.io.FilePath) {
-            return controls.Controls.getImage(file.getUrl(), file.getId());
+            return this._fileImageCache.getContent(file);
         }
 
         getWorkbenchIcon(name: string) {
