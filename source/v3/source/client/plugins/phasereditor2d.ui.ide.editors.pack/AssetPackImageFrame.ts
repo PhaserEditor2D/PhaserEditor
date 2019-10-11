@@ -1,5 +1,3 @@
-/// <reference path="../../../../../phasereditor2d.ui.controls/ImageFrame.ts" />
-
 namespace phasereditor2d.ui.ide.editors.pack {
 
     export class AssetPackImageFrame extends controls.ImageFrame {

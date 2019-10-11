@@ -129,8 +129,6 @@ namespace phasereditor2d.ui.ide {
 
         private async preloadProjectResources(plugins: Plugin[]) {
 
-            await editors.pack.PackFinder.preload();
-
             for (const plugin of plugins) {
                 await plugin.preloadProjectResources();
             }
@@ -175,8 +173,7 @@ namespace phasereditor2d.ui.ide {
         private registerEditors(plugins : Plugin[]): void {
 
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
-            this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
-
+            
             for(const plugin of plugins) {
                 plugin.registerEditor(this._editorRegistry);
             }
@@ -322,8 +319,6 @@ namespace phasereditor2d.ui.ide {
                 plugin.registerContentTypes(reg);
             }
 
-            reg.registerResolver(new editors.pack.AssetPackContentTypeResolver());
-            
             reg.registerResolver(new DefaultExtensionTypeResolver());
 
             this._contentTypeRegistry = reg;

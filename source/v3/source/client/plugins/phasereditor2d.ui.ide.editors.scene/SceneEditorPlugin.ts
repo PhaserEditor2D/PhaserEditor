@@ -9,7 +9,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         }
 
         private constructor() {
-            super("phasereditor2d.sceneEditor");
+            super("phasereditor2d.ui.ide.editors.scene.SceneEditorPlugin");
         }
 
         registerContentTypes(registry: core.ContentTypeRegistry) {

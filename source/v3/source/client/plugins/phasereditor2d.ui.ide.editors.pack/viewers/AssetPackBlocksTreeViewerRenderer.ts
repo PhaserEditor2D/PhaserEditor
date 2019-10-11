@@ -1,5 +1,3 @@
-/// <reference path="../../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerRenderer.ts" />
-
 namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
     export class AssetPackBlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {

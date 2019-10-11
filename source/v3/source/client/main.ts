@@ -16,7 +16,9 @@ namespace phasereditor2d {
 
         workbench.start([
 
-            ui.ide.editors.scene.SceneEditorPlugin.getInstance()
+            ui.ide.editors.scene.SceneEditorPlugin.getInstance(),
+
+            ui.ide.editors.pack.AssetPackEditorPlugin.getInstance()
 
         ]);
     }

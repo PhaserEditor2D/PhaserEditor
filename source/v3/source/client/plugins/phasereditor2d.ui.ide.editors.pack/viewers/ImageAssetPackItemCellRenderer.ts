@@ -1,5 +1,3 @@
-/// <reference path="../../../../../../phasereditor2d.ui.controls/viewers/ImageCellRenderer.ts" />
-
 namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
     export class ImageAssetPackItemCellRenderer extends controls.viewers.ImageCellRenderer {

@@ -1,5 +1,3 @@
-/// <reference path="../../../../../../phasereditor2d.ui.controls/properties/PropertySection.ts" />
-
 namespace phasereditor2d.ui.ide.editors.pack.properties {
 
     export class AssetPackItemSection extends controls.properties.PropertySection<AssetPackItem> {
