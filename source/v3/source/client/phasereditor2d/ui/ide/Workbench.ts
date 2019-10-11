@@ -58,7 +58,7 @@ namespace phasereditor2d.ui.ide {
         }
 
         private _fileStringCache: core.io.FileStringCache;
-        private _fileImageCache : ImageFileCache;
+        private _fileImageCache: ImageFileCache;
         private _designWindow: ide.DesignWindow;
         private _contentType_icon_Map: Map<string, controls.IImage>;
         private _fileStorage: core.io.IFileStorage;
@@ -82,7 +82,7 @@ namespace phasereditor2d.ui.ide {
             this._fileImageCache = new ImageFileCache();
         }
 
-        async start() {
+        async start(plugins: Plugin[]) {
 
             console.log("Workbench: starting.");
 
@@ -92,21 +92,25 @@ namespace phasereditor2d.ui.ide {
 
             await this.preloadIcons();
 
+            for (const plugin of plugins) {
+                await plugin.preloadIcons(this);
+            }
+
             console.log("Workbench: fetching project metadata.");
 
             await this.preloadFileStorage();
 
             console.log("Workbench: fetching required project resources.");
 
-            await this.preloadContentTypes();
+            this.registerContentTypes(plugins);
 
-            await this.preloadProjectResources();
+            await this.preloadProjectResources(plugins);
 
-            this.initCommands();
+            this.initCommands(plugins);
 
-            this.initEditors();
+            this.registerEditors(plugins);
 
-            this.initWindow();
+            this.registerWindow(plugins);
 
             this.initEvents();
 
@@ -114,17 +118,26 @@ namespace phasereditor2d.ui.ide {
 
         }
 
-        private initWindow() {
+        private registerWindow(plugins : Plugin[]) {
+
+            const windows : ide.Window[] = [];
+
+            for(const plugin of plugins) {
+                plugin.createWindow(windows);
+            }
 
             this._designWindow = new ide.DesignWindow();
 
             document.body.appendChild(this._designWindow.getElement());
         }
 
-        private async preloadProjectResources() {
+        private async preloadProjectResources(plugins: Plugin[]) {
 
             await editors.pack.PackFinder.preload();
 
+            for (const plugin of plugins) {
+                await plugin.preloadProjectResources();
+            }
         }
 
         private async preloadIcons() {
@@ -141,11 +154,16 @@ namespace phasereditor2d.ui.ide {
             return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
         }
 
-        private initCommands() {
+        private initCommands(plugins : Plugin[]) {
             this._commandManager = new commands.CommandManager();
 
             IDECommands.init();
+
             editors.scene.SceneEditorCommands.init();
+
+            for(const plugin of plugins) {
+                plugin.registerCommands(this._commandManager);
+            }
         }
 
         getFileStringCache() {
@@ -156,11 +174,15 @@ namespace phasereditor2d.ui.ide {
             return this._commandManager;
         }
 
-        private initEditors(): void {
+        private registerEditors(plugins : Plugin[]): void {
 
             this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
             this._editorRegistry.registerFactory(editors.pack.AssetPackEditor.getFactory());
             this._editorRegistry.registerFactory(editors.scene.SceneEditor.getFactory());
+
+            for(const plugin of plugins) {
+                plugin.registerEditor(this._editorRegistry);
+            }
 
         }
 
@@ -296,8 +318,12 @@ namespace phasereditor2d.ui.ide {
             await this._fileStorage.reload();
         }
 
-        private async preloadContentTypes() {
+        private registerContentTypes(plugins: Plugin[]) {
             const reg = new core.ContentTypeRegistry();
+
+            for (const plugin of plugins) {
+                plugin.registerContentTypes(this, reg);
+            }
 
             reg.registerResolver(new editors.pack.AssetPackContentTypeResolver());
             reg.registerResolver(new editors.scene.SceneContentTypeResolver());
@@ -315,11 +341,11 @@ namespace phasereditor2d.ui.ide {
         }
 
         getContentTypeIcon(contentType: string): controls.IImage {
-            
+
             if (this._contentType_icon_Map.has(contentType)) {
-                
+
                 return this._contentType_icon_Map.get(contentType);
-                
+
             }
 
             return null;

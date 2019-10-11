@@ -4,7 +4,7 @@ var phasereditor2d;
     async function main() {
         console.log(`%c %c Phaser Editor 2D %c v${phasereditor2d.VER} %c %c https://phasereditor2d.com `, "background-color:red", "background-color:#3f3f3f;color:whitesmoke", "background-color:orange;color:black", "background-color:red", "background-color:silver");
         const workbench = phasereditor2d.ui.ide.Workbench.getWorkbench();
-        workbench.start();
+        workbench.start([]);
     }
     phasereditor2d.main = main;
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1847,6 +1847,24 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
     (function (ui) {
+        var ide;
+        (function (ide) {
+            class Plugin {
+                constructor(id) {
+                    this._id = id;
+                }
+                getId() {
+                    return this._id;
+                }
+            }
+            ide.Plugin = Plugin;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
         var toolbar;
         (function (toolbar) {
             class Toolbar {
@@ -2027,28 +2045,38 @@ var phasereditor2d;
                     }
                     return this._workbench;
                 }
-                async start() {
+                async start(plugins) {
                     console.log("Workbench: starting.");
                     await ui.controls.Controls.preload();
                     console.log("Workbench: fetching UI resources.");
                     await this.preloadIcons();
+                    for (const plugin of plugins) {
+                        await plugin.preloadIcons(this);
+                    }
                     console.log("Workbench: fetching project metadata.");
                     await this.preloadFileStorage();
                     console.log("Workbench: fetching required project resources.");
-                    await this.preloadContentTypes();
-                    await this.preloadProjectResources();
-                    this.initCommands();
-                    this.initEditors();
-                    this.initWindow();
+                    this.registerContentTypes(plugins);
+                    await this.preloadProjectResources(plugins);
+                    this.initCommands(plugins);
+                    this.registerEditors(plugins);
+                    this.registerWindow(plugins);
                     this.initEvents();
                     console.log("Workbench: started.");
                 }
-                initWindow() {
+                registerWindow(plugins) {
+                    const windows = [];
+                    for (const plugin of plugins) {
+                        plugin.createWindow(windows);
+                    }
                     this._designWindow = new ide.DesignWindow();
                     document.body.appendChild(this._designWindow.getElement());
                 }
-                async preloadProjectResources() {
+                async preloadProjectResources(plugins) {
                     await ide.editors.pack.PackFinder.preload();
+                    for (const plugin of plugins) {
+                        await plugin.preloadProjectResources();
+                    }
                 }
                 async preloadIcons() {
                     this._contentType_icon_Map = new Map();
@@ -2060,10 +2088,13 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ide.ICON_ASSET_PACK));
                     return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
                 }
-                initCommands() {
+                initCommands(plugins) {
                     this._commandManager = new ide.commands.CommandManager();
                     ide.IDECommands.init();
                     ide.editors.scene.SceneEditorCommands.init();
+                    for (const plugin of plugins) {
+                        plugin.registerCommands(this._commandManager);
+                    }
                 }
                 getFileStringCache() {
                     return this._fileStringCache;
@@ -2071,10 +2102,13 @@ var phasereditor2d;
                 getCommandManager() {
                     return this._commandManager;
                 }
-                initEditors() {
+                registerEditors(plugins) {
                     this._editorRegistry.registerFactory(ide.editors.image.ImageEditor.getFactory());
                     this._editorRegistry.registerFactory(ide.editors.pack.AssetPackEditor.getFactory());
                     this._editorRegistry.registerFactory(ide.editors.scene.SceneEditor.getFactory());
+                    for (const plugin of plugins) {
+                        plugin.registerEditor(this._editorRegistry);
+                    }
                 }
                 getDesignWindow() {
                     return this._designWindow;
@@ -2178,8 +2212,11 @@ var phasereditor2d;
                     this._fileStringCache = new phasereditor2d.core.io.FileStringCache(this._fileStorage);
                     await this._fileStorage.reload();
                 }
-                async preloadContentTypes() {
+                registerContentTypes(plugins) {
                     const reg = new phasereditor2d.core.ContentTypeRegistry();
+                    for (const plugin of plugins) {
+                        plugin.registerContentTypes(this, reg);
+                    }
                     reg.registerResolver(new ide.editors.pack.AssetPackContentTypeResolver());
                     reg.registerResolver(new ide.editors.scene.SceneContentTypeResolver());
                     reg.registerResolver(new ide.DefaultExtensionTypeResolver());
