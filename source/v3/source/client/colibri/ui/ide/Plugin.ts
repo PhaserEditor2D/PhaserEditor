@@ -1,6 +1,7 @@
 namespace colibri.ui.ide {
 
     export abstract class Plugin {
+        
 
         private _id: string;
 
@@ -22,6 +23,14 @@ namespace colibri.ui.ide {
 
         preloadIcons() : Promise<void> {
             return Promise.resolve();
+        }
+
+        registerCSSUrls(urls: string[]) {
+            
+        }
+
+        registerScriptFiles(urls: string[]) {
+            
         }
 
         registerContentTypeIcons(contentTypeIconMap : Map<string, controls.IImage>): void {

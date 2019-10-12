@@ -62,6 +62,14 @@ namespace colibri.ui.ide {
 
             await ui.controls.Controls.preload();
 
+            console.log("Workbench: fetching CSS files.");
+
+            await this.preloadCSSFiles(plugins);
+
+            console.log("Workbench: fetching script files.");
+
+            await this.preloadScriptFiles(plugins);
+
             console.log("Workbench: fetching UI icons.");
 
             await this.preloadIcons(plugins);
@@ -77,7 +85,7 @@ namespace colibri.ui.ide {
             this.registerContentTypeIcons(plugins);
 
             console.log("Workbench: fetching required project resources.");
-            
+
             await this.preloadProjectResources(plugins);
 
             console.log("Workbench: initializing UI.");
@@ -92,6 +100,68 @@ namespace colibri.ui.ide {
 
             console.log("%cWorkbench: started.", "color:green");
 
+        }
+
+        private async preloadCSSFiles(plugins: Plugin[]) {
+
+            const urls: string[] = [
+
+                "colibri/ui/controls/css/controls.css",
+                "colibri/css/workbench.css",
+                "colibri/css/dark.css",
+                "colibri/css/light.css"
+
+            ];
+
+            for (const plugin of plugins) {
+                plugin.registerCSSUrls(urls);
+            }
+
+            for (const url of urls) {
+
+                try {
+
+                    const resp = await fetch(url);
+                    const text = await resp.text();
+
+                    const element = document.createElement("style");
+                    element.innerHTML = text;
+
+                    document.head.appendChild(element);
+
+                } catch (e) {
+                    console.error(`Workbench: Error fetching CSS url ${url}`);
+                    console.error(e.message);
+                }
+            }
+        }
+
+        private async preloadScriptFiles(plugins: Plugin[]) {
+
+            const urls: string[] = [];
+
+            for (const plugin of plugins) {
+                plugin.registerScriptFiles(urls);
+            }
+
+            for (const url of urls) {
+
+                try {
+
+                    const resp = await fetch(url);
+                    const text = await resp.text();
+
+                    const element = document.createElement("script");
+                    element.type = "text/javascript";
+                    element.text = text;
+
+                    document.head.appendChild(element);
+
+                } catch (e) {
+                    console.error(`Workbench: Error fetching CSS url ${url}`);
+                    console.error(e.message);
+                }
+            }
         }
 
         private registerWindow(plugins: Plugin[]) {
@@ -120,7 +190,7 @@ namespace colibri.ui.ide {
             }
         }
 
-        private async preloadIcons(plugins : Plugin[]) {
+        private async preloadIcons(plugins: Plugin[]) {
 
             await this.getWorkbenchIcon(ICON_FILE).preload();
             await this.getWorkbenchIcon(ICON_FOLDER).preload();
@@ -151,12 +221,13 @@ namespace colibri.ui.ide {
             }
         }
 
-        getFileStringCache() {
-            return this._fileStringCache;
-        }
 
-        getCommandManager() {
-            return this._commandManager;
+        private initEvents() {
+            window.addEventListener("mousedown", e => {
+                this._activeElement = <HTMLElement>e.target;
+                const part = this.findPart(<any>e.target);
+                this.setActivePart(part);
+            });
         }
 
         private registerEditors(plugins: Plugin[]): void {
@@ -167,16 +238,16 @@ namespace colibri.ui.ide {
 
         }
 
-        getActiveWindow() {
-            return this._activeWindow;
+        getFileStringCache() {
+            return this._fileStringCache;
         }
 
-        private initEvents() {
-            window.addEventListener("mousedown", e => {
-                this._activeElement = <HTMLElement>e.target;
-                const part = this.findPart(<any>e.target);
-                this.setActivePart(part);
-            });
+        getCommandManager() {
+            return this._commandManager;
+        }
+
+        getActiveWindow() {
+            return this._activeWindow;
         }
 
         getActiveElement() {
@@ -257,6 +328,26 @@ namespace colibri.ui.ide {
             return null;
         }
 
+        private async preloadFileStorage() {
+
+            this._fileStorage = new core.io.FileStorage_HTTPServer();
+
+            this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
+
+            await this._fileStorage.reload();
+        }
+
+        private registerContentTypes(plugins: Plugin[]) {
+
+            const reg = new core.ContentTypeRegistry();
+
+            for (const plugin of plugins) {
+                plugin.registerContentTypes(reg);
+            }
+
+            this._contentTypeRegistry = reg;
+        }
+
         findPart(element: HTMLElement): Part {
             if (controls.TabPane.isTabLabel(element)) {
                 element = controls.TabPane.getContentFromLabel(element).getElement();
@@ -284,26 +375,6 @@ namespace colibri.ui.ide {
             }
 
             return null;
-        }
-
-        private async preloadFileStorage() {
-
-            this._fileStorage = new core.io.FileStorage_HTTPServer();
-
-            this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
-
-            await this._fileStorage.reload();
-        }
-
-        private registerContentTypes(plugins: Plugin[]) {
-            
-            const reg = new core.ContentTypeRegistry();
-
-            for (const plugin of plugins) {
-                plugin.registerContentTypes(reg);
-            }
-
-            this._contentTypeRegistry = reg;
         }
 
         getContentTypeRegistry() {

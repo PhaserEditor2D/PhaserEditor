@@ -4,10 +4,15 @@ namespace Phaser.Cameras.Scene2D {
     }
 }
 
-Phaser.Cameras.Scene2D.Camera.prototype.getScreenPoint = function (worldX: number, worldY: number) {
+namespace phasereditor2d.scene.ui {
 
-    let x = worldX * this.zoom - this.scrollX * this.zoom;
-    let y = worldY * this.zoom - this.scrollY * this.zoom;
+    Phaser.Cameras.Scene2D.Camera.prototype.getScreenPoint = function (worldX: number, worldY: number) {
 
-    return new Phaser.Math.Vector2(x, y);
-};
+        let x = worldX * this.zoom - this.scrollX * this.zoom;
+        let y = worldY * this.zoom - this.scrollY * this.zoom;
+
+        return new Phaser.Math.Vector2(x, y);
+    };
+
+}
+

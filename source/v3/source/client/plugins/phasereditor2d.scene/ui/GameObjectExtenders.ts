@@ -31,67 +31,68 @@ namespace Phaser.GameObjects {
     }
 }
 
-// GameObject
 
-Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
-    return this.name;
-};
+namespace phasereditor2d.scene.ui {
 
-Phaser.GameObjects.GameObject.prototype.setEditorId = function (id: string) {
-    this.name = id;
-};
+    // GameObject
 
-Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
-    return this.getData("label") || "";
-};
-
-Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label: string) {
-    this.setData("label", label);
-};
-
-Phaser.GameObjects.GameObject.prototype.getEditorScene = function () {
-    return this.getData("editorScene");
-};
-
-Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene: phasereditor2d.scene.ui.GameScene) {
-    this.setData("editorScene", scene);
-};
-
-// Image
-
-Phaser.GameObjects.Image.prototype.setEditorTexture = function (key: string, frame: any) {
-    this.setData("textureKey", key);
-    this.setData("textureFrameKey", frame);
-};
-
-
-Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
-    return {
-        key: this.getData("textureKey"),
-        frame: this.getData("textureFrameKey")
+    Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
+        return this.name;
     };
-};
 
-// All
+    Phaser.GameObjects.GameObject.prototype.setEditorId = function (id: string) {
+        this.name = id;
+    };
 
-for (const proto of [
-    Phaser.GameObjects.Image.prototype,
-    Phaser.GameObjects.TileSprite.prototype,
-    Phaser.GameObjects.BitmapText.prototype,
-    Phaser.GameObjects.Text.prototype
-]) {
-    proto.getScreenBounds = function (camera: Phaser.Cameras.Scene2D.Camera) {
-        return phasereditor2d.scene.ui.editor.getScreenBounds(this, camera);
+    Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
+        return this.getData("label") || "";
+    };
+
+    Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label: string) {
+        this.setData("label", label);
+    };
+
+    Phaser.GameObjects.GameObject.prototype.getEditorScene = function () {
+        return this.getData("editorScene");
+    };
+
+    Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene: phasereditor2d.scene.ui.GameScene) {
+        this.setData("editorScene", scene);
+    };
+
+    // Image
+
+    Phaser.GameObjects.Image.prototype.setEditorTexture = function (key: string, frame: any) {
+        this.setData("textureKey", key);
+        this.setData("textureFrameKey", frame);
+    };
+
+
+    Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
+        return {
+            key: this.getData("textureKey"),
+            frame: this.getData("textureFrameKey")
+        };
+    };
+
+    // All
+
+    for (const proto of [
+        Phaser.GameObjects.Image.prototype,
+        Phaser.GameObjects.TileSprite.prototype,
+        Phaser.GameObjects.BitmapText.prototype,
+        Phaser.GameObjects.Text.prototype
+    ]) {
+        proto.getScreenBounds = function (camera: Phaser.Cameras.Scene2D.Camera) {
+            return getScreenBounds(this, camera);
+        }
     }
-}
 
-Phaser.GameObjects.Container.prototype.getScreenBounds = function (camera: Phaser.Cameras.Scene2D.Camera) {
-    return phasereditor2d.scene.ui.editor.getContainerScreenBounds(this, camera);
-}
+    Phaser.GameObjects.Container.prototype.getScreenBounds = function (camera: Phaser.Cameras.Scene2D.Camera) {
+        return getContainerScreenBounds(this, camera);
+    }
 
-namespace phasereditor2d.scene.ui.editor {
-
-    export function getContainerScreenBounds(container: Phaser.GameObjects.Container, camera: Phaser.Cameras.Scene2D.Camera) {
+    function getContainerScreenBounds(container: Phaser.GameObjects.Container, camera: Phaser.Cameras.Scene2D.Camera) {
 
         if (container.list.length === 0) {
             return [];
@@ -159,4 +160,5 @@ namespace phasereditor2d.scene.ui.editor {
 
         return points.map(p => camera.getScreenPoint(p.x, p.y));
     }
+
 }

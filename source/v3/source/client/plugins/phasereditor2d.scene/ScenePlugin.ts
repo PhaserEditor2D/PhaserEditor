@@ -36,6 +36,7 @@ namespace phasereditor2d.scene {
         registerCommands(manager: ide.commands.CommandManager) {
             ui.editor.commands.SceneEditorCommands.registerCommands(manager);
         }
+
     }
 
 }

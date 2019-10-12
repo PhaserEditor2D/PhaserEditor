@@ -15,6 +15,16 @@ namespace phasereditor2d.images {
             super("phasereditor2d.images.ImagesPlugin");
         }
 
+        registerCSSUrls(urls: string[]) {
+
+            urls.push(
+                "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
+                "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css",
+                "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
+            );
+
+        }
+
         registerEditor(registry: ide.EditorRegistry) {
             registry.registerFactory(ui.editors.ImageEditor.getFactory());
         }

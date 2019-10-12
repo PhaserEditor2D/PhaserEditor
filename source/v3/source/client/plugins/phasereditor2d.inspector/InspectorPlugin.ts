@@ -18,9 +18,11 @@ namespace phasereditor2d.inspector {
         }
 
         async preloadIcons() {
-
             await this.getIcon(ICON_INSPECTOR).preload();
+        }
 
+        registerCSSUrls(urls: string[]) {
+            urls.push("plugins/phasereditor2d.inspector/ui/css/InspectorView.css");
         }
 
         getIcon(name: string) {

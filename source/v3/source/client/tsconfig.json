@@ -2,7 +2,6 @@
     "compilerOptions": {
         "lib": ["es2019", "dom"] ,
         "target": "es2018",
-        "outFile": "./all.js",         
-        "typeRoots": ["plugins/phaser/types"]     
+        "outFile": "./all.js"         
     }    
 }

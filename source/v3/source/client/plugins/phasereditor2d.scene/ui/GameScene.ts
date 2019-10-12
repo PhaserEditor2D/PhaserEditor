@@ -1,4 +1,4 @@
-var GAME = null;
+
 namespace phasereditor2d.scene.ui {
 
     export class GameScene extends Phaser.Scene {

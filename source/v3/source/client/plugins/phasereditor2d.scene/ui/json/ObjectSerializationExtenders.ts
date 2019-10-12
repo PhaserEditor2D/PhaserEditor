@@ -1,35 +1,39 @@
-// Container
-
-Phaser.GameObjects.Container.prototype.writeJSON = function (data: any) {
-
-    data.type = "Container";
-
-    phasereditor2d.scene.ui.json.ContainerComponent.write(this, data);
-
-};
-
-Phaser.GameObjects.Container.prototype.readJSON = function (data: any) {
-
-    phasereditor2d.scene.ui.json.ContainerComponent.read(this, data);
-
-};
+namespace phasereditor2d.scene.ui.json {
 
 
-// Image
+    // Container
 
-Phaser.GameObjects.Image.prototype.writeJSON = function (data: any) {
+    Phaser.GameObjects.Container.prototype.writeJSON = function (data: any) {
 
-    data.type = "Image";
+        data.type = "Container";
 
-    phasereditor2d.scene.ui.json.ImageComponent.write(this, data);
+        phasereditor2d.scene.ui.json.ContainerComponent.write(this, data);
 
-};
+    };
 
-Phaser.GameObjects.Image.prototype.readJSON = function (data: any) {
+    Phaser.GameObjects.Container.prototype.readJSON = function (data: any) {
 
-    phasereditor2d.scene.ui.json.ImageComponent.read(this, data);
+        phasereditor2d.scene.ui.json.ContainerComponent.read(this, data);
 
-};
+    };
+
+
+    // Image
+
+    Phaser.GameObjects.Image.prototype.writeJSON = function (data: any) {
+
+        data.type = "Image";
+
+        phasereditor2d.scene.ui.json.ImageComponent.write(this, data);
+
+    };
+
+    Phaser.GameObjects.Image.prototype.readJSON = function (data: any) {
+
+        phasereditor2d.scene.ui.json.ImageComponent.read(this, data);
+
+    };
+}
 
 namespace Phaser.GameObjects {
 
