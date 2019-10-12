@@ -1,6 +1,6 @@
 /// <reference path="../../phasereditor2d/ui/ide/WorkbenchWindow.ts" />
 
-namespace phasereditor2d.ui.ide.design {
+namespace phasereditor2d.ui.ide {
 
     export class DesignWindow extends WorkbenchWindow {
 

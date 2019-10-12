@@ -7,7 +7,7 @@ var phasereditor2d;
             .launch([
             phasereditor2d.ui.ide.editors.scene.SceneEditorPlugin.getInstance(),
             phasereditor2d.ui.ide.editors.pack.AssetPackEditorPlugin.getInstance(),
-            phasereditor2d.ui.ide.design.DesignPlugin.getInstance()
+            phasereditor2d.ui.ide.DesignPlugin.getInstance()
         ]);
     }
     phasereditor2d.main = main;
@@ -1889,37 +1889,34 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var design;
-            (function (design) {
-                class DesignWindow extends ide.WorkbenchWindow {
-                    constructor() {
-                        super();
-                        this._outlineView = new ide.views.outline.OutlineView();
-                        this._filesView = new ide.views.files.FilesView();
-                        this._inspectorView = new ide.views.inspector.InspectorView();
-                        this._blocksView = new ide.views.blocks.BlocksView();
-                        this._editorArea = new ide.EditorArea();
-                        this._split_Files_Blocks = new ui.controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
-                        this._split_Editor_FilesBlocks = new ui.controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
-                        this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
-                        this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
-                        this.add(this._split_OutlineEditorFilesBlocks_Inspector);
-                        this.initialLayout();
-                    }
-                    getEditorArea() {
-                        return this._editorArea;
-                    }
-                    initialLayout() {
-                        const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
-                        this._split_Files_Blocks.setSplitFactor(0.2);
-                        this._split_Editor_FilesBlocks.setSplitFactor(0.6);
-                        this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
-                        this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
-                        this.setBounds(b);
-                    }
+            class DesignWindow extends ide.WorkbenchWindow {
+                constructor() {
+                    super();
+                    this._outlineView = new ide.views.outline.OutlineView();
+                    this._filesView = new ide.views.files.FilesView();
+                    this._inspectorView = new ide.views.inspector.InspectorView();
+                    this._blocksView = new ide.views.blocks.BlocksView();
+                    this._editorArea = new ide.EditorArea();
+                    this._split_Files_Blocks = new ui.controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
+                    this._split_Editor_FilesBlocks = new ui.controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
+                    this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
+                    this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
+                    this.add(this._split_OutlineEditorFilesBlocks_Inspector);
+                    this.initialLayout();
                 }
-                design.DesignWindow = DesignWindow;
-            })(design = ide.design || (ide.design = {}));
+                getEditorArea() {
+                    return this._editorArea;
+                }
+                initialLayout() {
+                    const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
+                    this._split_Files_Blocks.setSplitFactor(0.2);
+                    this._split_Editor_FilesBlocks.setSplitFactor(0.6);
+                    this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
+                    this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
+                    this.setBounds(b);
+                }
+            }
+            ide.DesignWindow = DesignWindow;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2010,7 +2007,7 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
-/// <reference path="../../../plugins/phasereditor2d.ui.ide.design/DesignWindow.ts"/>
+/// <reference path="../../../plugins/phasereditor2d.ui.ide/DesignWindow.ts"/>
 /// <reference path="../../core/io/IFileStorage.ts"/>
 /// <reference path="./editors/image/ImageEditor.ts"/>
 var phasereditor2d;
@@ -5215,22 +5212,19 @@ var phasereditor2d;
     (function (ui) {
         var ide;
         (function (ide) {
-            var design;
-            (function (design) {
-                class DesignPlugin extends ide.Plugin {
-                    constructor() {
-                        super("phasereditor2d.ui.ide.design.DesignPlugin");
-                    }
-                    static getInstance() {
-                        return this._instance;
-                    }
-                    createWindow(windows) {
-                        windows.push(new design.DesignWindow());
-                    }
+            class DesignPlugin extends ide.Plugin {
+                constructor() {
+                    super("phasereditor2d.ui.ide.DesignPlugin");
                 }
-                DesignPlugin._instance = new DesignPlugin();
-                design.DesignPlugin = DesignPlugin;
-            })(design = ide.design || (ide.design = {}));
+                static getInstance() {
+                    return this._instance;
+                }
+                createWindow(windows) {
+                    windows.push(new ide.DesignWindow());
+                }
+            }
+            DesignPlugin._instance = new DesignPlugin();
+            ide.DesignPlugin = DesignPlugin;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

@@ -1,6 +1,6 @@
 /// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
 /// <reference path="../ide/ViewPart.ts"/>
-/// <reference path="../../../plugins/phasereditor2d.ui.ide.design/DesignWindow.ts"/>
+/// <reference path="../../../plugins/phasereditor2d.ui.ide/DesignWindow.ts"/>
 /// <reference path="../../core/io/IFileStorage.ts"/>
 /// <reference path="./editors/image/ImageEditor.ts"/>
 

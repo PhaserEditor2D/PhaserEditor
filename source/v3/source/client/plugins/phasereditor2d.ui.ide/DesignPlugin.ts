@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.design {
+namespace phasereditor2d.ui.ide {
 
     export class DesignPlugin extends Plugin {
 
@@ -9,10 +9,10 @@ namespace phasereditor2d.ui.ide.design {
         }
 
         private constructor() {
-            super("phasereditor2d.ui.ide.design.DesignPlugin");
+            super("phasereditor2d.ui.ide.DesignPlugin");
         }
 
-        createWindow(windows: ide.WorkbenchWindow[]): void {
+        createWindow(windows: ui.ide.WorkbenchWindow[]): void {
             windows.push(new DesignWindow());
         }
 
