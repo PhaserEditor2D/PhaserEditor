@@ -14,7 +14,7 @@ namespace phasereditor2d.files.ui.views {
 
             switch (contentType) {
 
-                case ide.CONTENT_TYPE_IMAGE:
+                case files.core.CONTENT_TYPE_IMAGE:
                     return new FileImageRenderer();
 
                 case scene.core.CONTENT_TYPE_SCENE:

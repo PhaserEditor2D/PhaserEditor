@@ -9,7 +9,7 @@ namespace phasereditor2d.pack {
 
         private static _instance = new AssetPackPlugin();
 
-        static getInstance(): ide.Plugin {
+        static getInstance() {
             return this._instance;
         }
 
@@ -25,11 +25,15 @@ namespace phasereditor2d.pack {
             await pack.core.PackFinder.preload();
         }
 
-        async preloadIcons(contentTypeIconMap: Map<string, controls.IImage>): Promise<void> {
+        async preloadIcons(): Promise<void> {
 
             await this.getIcon(ICON_ASSET_PACK).preload();
+        }
+
+        async registerContentTypeIcons(contentTypeIconMap: Map<string, controls.IImage>): Promise<void> {
 
             contentTypeIconMap.set(pack.core.CONTENT_TYPE_ASSET_PACK, this.getIcon(ICON_ASSET_PACK));
+
         }
 
         registerEditor(registry: ide.EditorRegistry) {

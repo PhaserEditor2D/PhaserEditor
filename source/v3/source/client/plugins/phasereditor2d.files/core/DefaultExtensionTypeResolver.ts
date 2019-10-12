@@ -1,30 +1,12 @@
-namespace colibri.ui.ide {
+/// <reference path="./ExtensionContentTypeResolver.ts" />
+
+namespace phasereditor2d.files.core {
+
     export const CONTENT_TYPE_IMAGE = "image";
     export const CONTENT_TYPE_AUDIO = "audio";
     export const CONTENT_TYPE_VIDEO = "video";
     export const CONTENT_TYPE_SCRIPT = "script";
     export const CONTENT_TYPE_TEXT = "text";
-
-
-    export class ExtensionContentTypeResolver implements core.IContentTypeResolver {
-        private _map: Map<string, string>;
-
-        constructor(defs: string[][]) {
-            this._map = new Map();
-            for (const def of defs) {
-                this._map.set(def[0].toUpperCase(), def[1]);
-            }
-        }
-
-        computeContentType(file: core.io.FilePath): Promise<string> {
-            const ext = file.getExtension().toUpperCase();
-            if (this._map.has(ext)) {
-                return Promise.resolve(this._map.get(ext));
-            }
-            return Promise.resolve(core.CONTENT_TYPE_ANY);
-        }
-
-    }
 
     export class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor() {
@@ -56,4 +38,5 @@ namespace colibri.ui.ide {
 
         }
     }
+
 }

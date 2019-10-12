@@ -20,8 +20,12 @@ namespace colibri.ui.ide {
             return Promise.resolve();
         }
 
-        preloadIcons(contentTypeIconMap : Map<string, controls.IImage>): Promise<void> {
+        preloadIcons() : Promise<void> {
             return Promise.resolve();
+        }
+
+        registerContentTypeIcons(contentTypeIconMap : Map<string, controls.IImage>): void {
+            
         }
 
         registerContentTypes(registry: core.ContentTypeRegistry): void {

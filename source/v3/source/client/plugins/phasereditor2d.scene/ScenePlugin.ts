@@ -21,10 +21,8 @@ namespace phasereditor2d.scene {
             registry.registerResolver(new core.SceneContentTypeResolver());
         }
 
-        async preloadIcons(contentTypeIconMap: Map<string, controls.IImage>) {
-
+        async preloadIcons() {
             await this.getIcon(ICON_GROUP).preload();
-
         }
 
         getIcon(name: string) {

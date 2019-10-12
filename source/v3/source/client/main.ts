@@ -17,11 +17,15 @@ namespace phasereditor2d {
 
             .launch([
 
-                blocks.BlocksPlugin.getInstance(),
-
                 inspector.InspectorPlugin.getInstance(),
 
                 outline.OutlinePlugin.getInstance(),
+
+                blocks.BlocksPlugin.getInstance(),
+
+                files.FilesPlugin.getInstance(),
+
+                images.ImagesPlugin.getInstance(),
 
                 pack.AssetPackPlugin.getInstance(),
 

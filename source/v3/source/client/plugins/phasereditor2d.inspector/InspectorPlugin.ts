@@ -17,7 +17,7 @@ namespace phasereditor2d.inspector {
             super("phasereditor2d.inspector.InspectorPlugin");
         }
 
-        async preloadIcons(contentTypeIconMap: Map<string, controls.IImage>) {
+        async preloadIcons() {
 
             await this.getIcon(ICON_INSPECTOR).preload();
 

@@ -10,23 +10,6 @@ namespace colibri.ui.ide {
 
     export const ICON_FILE = "file";
     export const ICON_FOLDER = "folder";
-    export const ICON_FILE_FONT = "file-font";
-    export const ICON_FILE_IMAGE = "file-image";
-    export const ICON_FILE_VIDEO = "file-movie";
-    export const ICON_FILE_SCRIPT = "file-script";
-    export const ICON_FILE_SOUND = "file-sound";
-    export const ICON_FILE_TEXT = "file-text";
-
-    const ICONS = [
-        ICON_FILE,
-        ICON_FOLDER,
-        ICON_FILE_FONT,
-        ICON_FILE_IMAGE,
-        ICON_FILE_VIDEO,
-        ICON_FILE_SCRIPT,
-        ICON_FILE_SOUND,
-        ICON_FILE_TEXT
-    ];
 
     export class Workbench extends EventTarget {
 
@@ -79,7 +62,7 @@ namespace colibri.ui.ide {
 
             await ui.controls.Controls.preload();
 
-            console.log("Workbench: fetching UI resources.");
+            console.log("Workbench: fetching UI icons.");
 
             await this.preloadIcons(plugins);
 
@@ -87,11 +70,17 @@ namespace colibri.ui.ide {
 
             await this.preloadFileStorage();
 
-            console.log("Workbench: fetching required project resources.");
+            console.log("Workbench: registering content types.");
 
             this.registerContentTypes(plugins);
 
+            this.registerContentTypeIcons(plugins);
+
+            console.log("Workbench: fetching required project resources.");
+            
             await this.preloadProjectResources(plugins);
+
+            console.log("Workbench: initializing UI.");
 
             this.initCommands(plugins);
 
@@ -131,21 +120,25 @@ namespace colibri.ui.ide {
             }
         }
 
-        private async preloadIcons(plugins: Plugin[]) {
+        private async preloadIcons(plugins : Plugin[]) {
+
+            await this.getWorkbenchIcon(ICON_FILE).preload();
+            await this.getWorkbenchIcon(ICON_FOLDER).preload();
+
+            for (const plugin of plugins) {
+                await plugin.preloadIcons();
+            }
+
+        }
+
+        private registerContentTypeIcons(plugins: Plugin[]) {
 
             this._contentType_icon_Map = new Map();
 
-            this._contentType_icon_Map.set(CONTENT_TYPE_IMAGE, this.getWorkbenchIcon(ICON_FILE_IMAGE));
-            this._contentType_icon_Map.set(CONTENT_TYPE_AUDIO, this.getWorkbenchIcon(ICON_FILE_SOUND));
-            this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ICON_FILE_VIDEO));
-            this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ICON_FILE_SCRIPT));
-            this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
-
             for (const plugin of plugins) {
-                await plugin.preloadIcons(this._contentType_icon_Map);
+                plugin.registerContentTypeIcons(this._contentType_icon_Map);
             }
 
-            return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
         }
 
         private initCommands(plugins: Plugin[]) {
@@ -167,8 +160,6 @@ namespace colibri.ui.ide {
         }
 
         private registerEditors(plugins: Plugin[]): void {
-
-            this._editorRegistry.registerFactory(editors.image.ImageEditor.getFactory());
 
             for (const plugin of plugins) {
                 plugin.registerEditor(this._editorRegistry);
@@ -305,13 +296,12 @@ namespace colibri.ui.ide {
         }
 
         private registerContentTypes(plugins: Plugin[]) {
+            
             const reg = new core.ContentTypeRegistry();
 
             for (const plugin of plugins) {
                 plugin.registerContentTypes(reg);
             }
-
-            reg.registerResolver(new DefaultExtensionTypeResolver());
 
             this._contentTypeRegistry = reg;
         }
@@ -340,7 +330,7 @@ namespace colibri.ui.ide {
         }
 
         getWorkbenchIcon(name: string) {
-            return controls.Controls.getIcon(name, "colibri/ui/ide/images");
+            return controls.Controls.getIcon(name, "colibri/ui/icons");
         }
 
         getEditorRegistry() {

@@ -17,7 +17,7 @@ namespace phasereditor2d.blocks {
             super("phasereditor.blocks.BlocksPlugin");
         }
 
-        async preloadIcons(contentTypeIconMap: Map<string, controls.IImage>) {
+        async preloadIcons() {
             await this.getIcon(ICON_BLOCKS).preload();
         }
 

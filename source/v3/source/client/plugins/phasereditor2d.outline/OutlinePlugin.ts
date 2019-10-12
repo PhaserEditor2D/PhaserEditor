@@ -18,7 +18,7 @@ namespace phasereditor2d.outline {
         }
 
 
-        async preloadIcons(contentTypeIconMap: Map<string, controls.IImage>) {
+        async preloadIcons() {
 
             await this.getIcon(ICON_OUTLINE).preload();
 

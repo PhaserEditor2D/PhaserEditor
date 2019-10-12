@@ -19,6 +19,7 @@ namespace colibri.ui.ide {
 
         getIcon() {
             const file = this.getInput();
+            
             if (!file) {
                 return Workbench.getWorkbench().getWorkbenchIcon(ICON_FILE);
             }
