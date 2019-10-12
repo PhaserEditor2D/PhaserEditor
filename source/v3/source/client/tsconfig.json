@@ -3,6 +3,6 @@
         "lib": ["es2019", "dom"] ,
         "target": "es2018",
         "outFile": "./all.js",         
-        "typeRoots": ["./types"]     
+        "typeRoots": ["plugins/phaser/types"]     
     }    
 }
