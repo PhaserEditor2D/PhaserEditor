@@ -8,7 +8,7 @@ namespace phasereditor2d.ui.ide {
 
     export class DesignWindow extends ide.WorkbenchWindow {
 
-        private _outlineView: views.outline.OutlineView;
+        private _outlineView: outline.ui.views.OutlineView;
         private _filesView: files.ui.views.FilesView;
         private _inspectorView: views.inspector.InspectorView;
         private _blocksView: blocks.ui.views.BlocksView;
@@ -21,7 +21,7 @@ namespace phasereditor2d.ui.ide {
         constructor() {
             super();
 
-            this._outlineView = new views.outline.OutlineView();
+            this._outlineView = new outline.ui.views.OutlineView();
             this._filesView = new files.ui.views.FilesView();
             this._inspectorView = new views.inspector.InspectorView();
             this._blocksView = new blocks.ui.views.BlocksView();

@@ -230,7 +230,7 @@ namespace phasereditor2d.scene.ui.editor {
                 case phasereditor2d.blocks.ui.views.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
                     return this._blocksProvider;
 
-                case phasereditor2d.ui.ide.views.outline.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
+                case phasereditor2d.outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
                     return this._outlineProvider;
 
                 default:

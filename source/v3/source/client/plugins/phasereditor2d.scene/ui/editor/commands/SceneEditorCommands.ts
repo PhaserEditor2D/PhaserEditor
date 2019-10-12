@@ -7,7 +7,7 @@ namespace phasereditor2d.scene.ui.editor.commands {
 
     function isSceneScope(args: colibri.ui.ide.commands.CommandArgs) {
         return args.activePart instanceof SceneEditor ||
-            args.activePart instanceof phasereditor2d.ui.ide.views.outline.OutlineView && args.activeEditor instanceof SceneEditor
+            args.activePart instanceof phasereditor2d.outline.ui.views.OutlineView && args.activeEditor instanceof SceneEditor
     }
 
     export class SceneEditorCommands {

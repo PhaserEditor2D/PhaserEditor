@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.views.outline {
+namespace phasereditor2d.outline.ui.views {
 
     import ide = colibri.ui.ide;
 

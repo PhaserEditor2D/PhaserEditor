@@ -4699,7 +4699,7 @@ var phasereditor2d;
             class DesignWindow extends ide.WorkbenchWindow {
                 constructor() {
                     super();
-                    this._outlineView = new ide_2.views.outline.OutlineView();
+                    this._outlineView = new phasereditor2d.outline.ui.views.OutlineView();
                     this._filesView = new phasereditor2d.files.ui.views.FilesView();
                     this._inspectorView = new ide_2.views.inspector.InspectorView();
                     this._blocksView = new phasereditor2d.blocks.ui.views.BlocksView();
@@ -4780,34 +4780,6 @@ var phasereditor2d;
                     inspector.InspectorView = InspectorView;
                 })(inspector = views.inspector || (views.inspector = {}));
             })(views = ide_3.views || (ide_3.views = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide_4) {
-            var views;
-            (function (views) {
-                var outline;
-                (function (outline) {
-                    var ide = colibri.ui.ide;
-                    class OutlineView extends ide.EditorViewerView {
-                        constructor() {
-                            super("OutlineView");
-                            this.setTitle("Outline");
-                            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
-                        }
-                        getViewerProvider(editor) {
-                            return editor.getEditorViewerProvider(OutlineView.EDITOR_VIEWER_PROVIDER_KEY);
-                        }
-                    }
-                    OutlineView.EDITOR_VIEWER_PROVIDER_KEY = "Outline";
-                    outline.OutlineView = OutlineView;
-                })(outline = views.outline || (views.outline = {}));
-            })(views = ide_4.views || (ide_4.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5195,6 +5167,31 @@ var phasereditor2d;
             })(views = ui.views || (ui.views = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var outline;
+    (function (outline) {
+        var ui;
+        (function (ui) {
+            var views;
+            (function (views) {
+                var ide = colibri.ui.ide;
+                class OutlineView extends ide.EditorViewerView {
+                    constructor() {
+                        super("OutlineView");
+                        this.setTitle("Outline");
+                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
+                    }
+                    getViewerProvider(editor) {
+                        return editor.getEditorViewerProvider(OutlineView.EDITOR_VIEWER_PROVIDER_KEY);
+                    }
+                }
+                OutlineView.EDITOR_VIEWER_PROVIDER_KEY = "Outline";
+                views.OutlineView = OutlineView;
+            })(views = ui.views || (ui.views = {}));
+        })(ui = outline.ui || (outline.ui = {}));
+    })(outline = phasereditor2d.outline || (phasereditor2d.outline = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -7617,7 +7614,7 @@ var phasereditor2d;
                         switch (key) {
                             case phasereditor2d.blocks.ui.views.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
                                 return this._blocksProvider;
-                            case phasereditor2d.ui.ide.views.outline.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
+                            case phasereditor2d.outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
                                 return this._outlineProvider;
                             default:
                                 break;
@@ -7733,7 +7730,7 @@ var phasereditor2d;
                     const CMD_JOIN_IN_CONTAINER = "joinObjectsInContainer";
                     function isSceneScope(args) {
                         return args.activePart instanceof editor_6.SceneEditor ||
-                            args.activePart instanceof phasereditor2d.ui.ide.views.outline.OutlineView && args.activeEditor instanceof editor_6.SceneEditor;
+                            args.activePart instanceof phasereditor2d.outline.ui.views.OutlineView && args.activeEditor instanceof editor_6.SceneEditor;
                     }
                     class SceneEditorCommands {
                         static registerCommands(manager) {
