@@ -1,5 +1,3 @@
-/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/TreeViewer.ts" />
-/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/GridTreeViewerRenderer.ts" />
 
 namespace phasereditor2d.ui.ide.views.files {
 

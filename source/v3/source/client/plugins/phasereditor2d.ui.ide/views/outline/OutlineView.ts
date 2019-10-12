@@ -1,5 +1,3 @@
-/// <reference path="../../ViewPart.ts"/>
-
 namespace phasereditor2d.ui.ide.views.outline {
 
     export class OutlineView extends ide.EditorViewerView {

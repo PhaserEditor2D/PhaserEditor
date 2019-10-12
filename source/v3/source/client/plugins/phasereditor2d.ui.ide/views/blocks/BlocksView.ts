@@ -1,6 +1,3 @@
-/// <reference path="../../Part.ts"/>
-/// <reference path="../../ViewPart.ts"/>
-/// <reference path="../../EditorViewerView.ts"/>
 
 namespace phasereditor2d.ui.ide.views.blocks {
 

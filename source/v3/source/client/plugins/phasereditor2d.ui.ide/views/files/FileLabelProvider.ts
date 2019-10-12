@@ -1,7 +1,3 @@
-/// <reference path="../../../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../../../../../phasereditor2d.ui.controls/viewers/Viewer.ts"/>
-/// <reference path="../../Part.ts"/>
-/// <reference path="../../ViewPart.ts"/>
 
 namespace phasereditor2d.ui.ide.views.files {
 
