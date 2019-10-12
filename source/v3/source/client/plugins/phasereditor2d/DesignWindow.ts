@@ -10,7 +10,7 @@ namespace phasereditor2d.ui.ide {
 
         private _outlineView: outline.ui.views.OutlineView;
         private _filesView: files.ui.views.FilesView;
-        private _inspectorView: views.inspector.InspectorView;
+        private _inspectorView: inspector.ui.views.InspectorView;
         private _blocksView: blocks.ui.views.BlocksView;
         private _editorArea: ide.EditorArea;
         private _split_Files_Blocks: controls.SplitPanel;
@@ -23,7 +23,7 @@ namespace phasereditor2d.ui.ide {
 
             this._outlineView = new outline.ui.views.OutlineView();
             this._filesView = new files.ui.views.FilesView();
-            this._inspectorView = new views.inspector.InspectorView();
+            this._inspectorView = new inspector.ui.views.InspectorView();
             this._blocksView = new blocks.ui.views.BlocksView();
             this._editorArea = new ide.EditorArea();
 
@@ -31,7 +31,7 @@ namespace phasereditor2d.ui.ide {
             this._split_Editor_FilesBlocks = new controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
             this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
             this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
-            
+
             this.add(this._split_OutlineEditorFilesBlocks_Inspector);
 
             this.initialLayout();

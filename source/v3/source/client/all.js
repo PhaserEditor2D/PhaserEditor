@@ -4701,7 +4701,7 @@ var phasereditor2d;
                     super();
                     this._outlineView = new phasereditor2d.outline.ui.views.OutlineView();
                     this._filesView = new phasereditor2d.files.ui.views.FilesView();
-                    this._inspectorView = new ide_2.views.inspector.InspectorView();
+                    this._inspectorView = new phasereditor2d.inspector.ui.views.InspectorView();
                     this._blocksView = new phasereditor2d.blocks.ui.views.BlocksView();
                     this._editorArea = new ide.EditorArea();
                     this._split_Files_Blocks = new controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
@@ -4724,62 +4724,6 @@ var phasereditor2d;
                 }
             }
             ide_2.DesignWindow = DesignWindow;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide_3) {
-            var views;
-            (function (views) {
-                var inspector;
-                (function (inspector) {
-                    var controls = colibri.ui.controls;
-                    var ide = colibri.ui.ide;
-                    class InspectorView extends ide.ViewPart {
-                        constructor() {
-                            super("InspectorView");
-                            this.setTitle("Inspector");
-                            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_INSPECTOR));
-                        }
-                        layout() {
-                            this._propertyPage.dispatchLayoutEvent();
-                        }
-                        createPart() {
-                            this._propertyPage = new controls.properties.PropertyPage();
-                            this.add(this._propertyPage);
-                            this._selectionListener = (e) => this.onPartSelection();
-                            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
-                        }
-                        onWorkbenchPartActivate() {
-                            const part = ide.Workbench.getWorkbench().getActivePart();
-                            if (part !== this && part !== this._currentPart) {
-                                if (this._currentPart) {
-                                    this._currentPart.removeEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
-                                }
-                                this._currentPart = part;
-                                if (part) {
-                                    part.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
-                                    this.onPartSelection();
-                                }
-                                else {
-                                    this._propertyPage.setSectionProvider(null);
-                                }
-                            }
-                        }
-                        onPartSelection() {
-                            const sel = this._currentPart.getSelection();
-                            const provider = this._currentPart.getPropertyProvider();
-                            this._propertyPage.setSectionProvider(provider);
-                            this._propertyPage.setSelection(sel);
-                        }
-                    }
-                    inspector.InspectorView = InspectorView;
-                })(inspector = views.inspector || (views.inspector = {}));
-            })(views = ide_3.views || (ide_3.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5167,6 +5111,59 @@ var phasereditor2d;
             })(views = ui.views || (ui.views = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var inspector;
+    (function (inspector) {
+        var ui;
+        (function (ui) {
+            var views;
+            (function (views) {
+                var controls = colibri.ui.controls;
+                var ide = colibri.ui.ide;
+                class InspectorView extends ide.ViewPart {
+                    constructor() {
+                        super("InspectorView");
+                        this.setTitle("Inspector");
+                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_INSPECTOR));
+                    }
+                    layout() {
+                        this._propertyPage.dispatchLayoutEvent();
+                    }
+                    createPart() {
+                        this._propertyPage = new controls.properties.PropertyPage();
+                        this.add(this._propertyPage);
+                        this._selectionListener = (e) => this.onPartSelection();
+                        ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
+                    }
+                    onWorkbenchPartActivate() {
+                        const part = ide.Workbench.getWorkbench().getActivePart();
+                        if (part !== this && part !== this._currentPart) {
+                            if (this._currentPart) {
+                                this._currentPart.removeEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                            }
+                            this._currentPart = part;
+                            if (part) {
+                                part.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                                this.onPartSelection();
+                            }
+                            else {
+                                this._propertyPage.setSectionProvider(null);
+                            }
+                        }
+                    }
+                    onPartSelection() {
+                        const sel = this._currentPart.getSelection();
+                        const provider = this._currentPart.getPropertyProvider();
+                        this._propertyPage.setSectionProvider(provider);
+                        this._propertyPage.setSelection(sel);
+                    }
+                }
+                views.InspectorView = InspectorView;
+            })(views = ui.views || (ui.views = {}));
+        })(ui = inspector.ui || (inspector.ui = {}));
+    })(inspector = phasereditor2d.inspector || (phasereditor2d.inspector = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {

@@ -1,5 +1,5 @@
 
-namespace phasereditor2d.ui.ide.views.inspector {
+namespace phasereditor2d.inspector.ui.views {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
