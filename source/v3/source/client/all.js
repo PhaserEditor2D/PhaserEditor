@@ -3925,6 +3925,12 @@ var colibri;
                 getId() {
                     return this._id;
                 }
+                starting() {
+                    return Promise.resolve();
+                }
+                started() {
+                    return Promise.resolve();
+                }
                 preloadIcons(contentTypeIconMap) {
                     return Promise.resolve();
                 }
@@ -4039,6 +4045,10 @@ var colibri;
                 }
                 async launch(plugins) {
                     console.log("Workbench: starting.");
+                    for (const plugin of plugins) {
+                        console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
+                        await plugin.starting();
+                    }
                     await ui.controls.Controls.preload();
                     console.log("Workbench: fetching UI resources.");
                     await this.preloadIcons(plugins);
@@ -4051,7 +4061,7 @@ var colibri;
                     this.registerEditors(plugins);
                     this.registerWindow(plugins);
                     this.initEvents();
-                    console.log("Workbench: started.");
+                    console.log("%cWorkbench: started.", "color:green");
                 }
                 registerWindow(plugins) {
                     const windows = [];
@@ -5198,7 +5208,7 @@ var phasereditor2d;
         pack.ICON_ASSET_PACK = "asset-pack";
         class AssetPackPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.ui.ide.editors.pack.AssetPackEditorPlugin");
+                super("phasereditor2d.pack.AssetPackPlugin");
             }
             static getInstance() {
                 return this._instance;

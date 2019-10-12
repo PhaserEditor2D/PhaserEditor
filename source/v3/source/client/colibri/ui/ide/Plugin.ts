@@ -12,6 +12,14 @@ namespace colibri.ui.ide {
             return this._id;
         }
 
+        starting() : Promise<void> {
+            return Promise.resolve();
+        }
+
+        started() : Promise<void> {
+            return Promise.resolve();
+        }
+
         preloadIcons(contentTypeIconMap : Map<string, controls.IImage>): Promise<void> {
             return Promise.resolve();
         }

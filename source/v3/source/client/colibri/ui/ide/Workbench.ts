@@ -16,7 +16,7 @@ namespace colibri.ui.ide {
     export const ICON_FILE_SCRIPT = "file-script";
     export const ICON_FILE_SOUND = "file-sound";
     export const ICON_FILE_TEXT = "file-text";
-    
+
     export const ICON_OUTLINE = "outline";
     export const ICON_INSPECTOR = "inspector";
     export const ICON_BLOCKS = "blocks";
@@ -81,6 +81,11 @@ namespace colibri.ui.ide {
 
             console.log("Workbench: starting.");
 
+            for (const plugin of plugins) {
+                console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
+                await plugin.starting();
+            }
+
             await ui.controls.Controls.preload();
 
             console.log("Workbench: fetching UI resources.");
@@ -105,7 +110,7 @@ namespace colibri.ui.ide {
 
             this.initEvents();
 
-            console.log("Workbench: started.");
+            console.log("%cWorkbench: started.", "color:green");
 
         }
 

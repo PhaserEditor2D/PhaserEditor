@@ -14,7 +14,7 @@ namespace phasereditor2d.pack {
         }
 
         private constructor() {
-            super("phasereditor2d.ui.ide.editors.pack.AssetPackEditorPlugin");
+            super("phasereditor2d.pack.AssetPackPlugin");
         }
 
         registerContentTypes(registry: colibri.core.ContentTypeRegistry): void {
