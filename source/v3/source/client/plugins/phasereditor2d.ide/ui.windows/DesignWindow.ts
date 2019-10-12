@@ -1,6 +1,4 @@
-/// <reference path="../../colibri/ui/ide/WorkbenchWindow.ts" />
-
-namespace phasereditor2d.ui.ide {
+namespace phasereditor2d.ide.ui.windows {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
